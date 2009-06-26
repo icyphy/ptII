@@ -225,14 +225,14 @@ public class PropertyConstraintFSMHelper extends PropertyConstraintCompositeHelp
 
     protected List<ASTPtRootNode> _getAttributeParseTrees() throws IllegalActionException {
         List<ASTPtRootNode> result = super._getAttributeParseTrees();
-    
+
         ptolemy.domains.fsm.kernel.FSMActor actor =
             (ptolemy.domains.fsm.kernel.FSMActor) getComponent();
-    
+
         Iterator states = actor.entityList(State.class).iterator();
         while (states.hasNext()) {
             State state = (State) states.next();
-    
+
             result.addAll(getParseTrees(state));
         }
         return result;
@@ -281,7 +281,7 @@ public class PropertyConstraintFSMHelper extends PropertyConstraintCompositeHelp
             FSMActor actor,
             Set<NamedObj> setDestinations1,
             Set<NamedObj> setDestinations2) {
-    
+
         Iterator outputs = actor.outputPortList().iterator();
         while (outputs.hasNext()) {
             IOPort output = (IOPort) outputs.next();
@@ -300,14 +300,14 @@ public class PropertyConstraintFSMHelper extends PropertyConstraintCompositeHelp
             }
         }
     }
-    
+
     /**
      * @param actions
      * @return
      */
     private List<ASTPtRootNode> _getParseTrees(AbstractActionsAttribute actions) {
         List<ASTPtRootNode> parseTrees = actions.getParseTreeList();
-    
+
         Iterator iterator = parseTrees.iterator();
         while (iterator.hasNext()) {
             putAttribute((ASTPtRootNode) iterator.next(), actions);

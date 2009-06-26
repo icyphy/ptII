@@ -94,7 +94,7 @@ public class TimedPlotter extends Plotter implements TimedActor {
 
     /** Input port, which has type DoubleToken. */
     public TypedIOPort input;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -110,7 +110,7 @@ public class TimedPlotter extends Plotter implements TimedActor {
         TimedPlotter newObject = (TimedPlotter) super.clone(workspace);
         newObject._connected = new ArrayList<Boolean>();
         return newObject;
-    }    
+    }
 
     /** Initialize this actor.  Derived classes override this method
      *  to perform actions that should occur once at the beginning of
@@ -127,7 +127,7 @@ public class TimedPlotter extends Plotter implements TimedActor {
             _connected.add(true);
         }
     }
-    
+
     /** Read at most one input from each channel and plot it as a
      *  function of time.
      *  This is done in postfire to ensure that data has settled.
@@ -138,7 +138,7 @@ public class TimedPlotter extends Plotter implements TimedActor {
     public boolean postfire() throws IllegalActionException {
         double currentTimeValue;
         int width = input.getWidth();
-        
+
         boolean disconnectOnAbsent = ((BooleanToken) disconnectGraphOnAbsentValue.getToken()).booleanValue();
         int offset = ((IntToken) startingDataset.getToken()).intValue();
 
@@ -158,15 +158,15 @@ public class TimedPlotter extends Plotter implements TimedActor {
             } else if (disconnectOnAbsent) {
                 // We have not token, and hence we want to create a gap
                 // in the graph.
-                _connected.set(i, false);                                       
+                _connected.set(i, false);
             }
         }
 
         return super.postfire();
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     private ArrayList<Boolean> _connected = new ArrayList<Boolean>();
 }

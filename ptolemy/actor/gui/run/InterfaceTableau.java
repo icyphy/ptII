@@ -49,7 +49,7 @@ import ptolemy.kernel.util.NamedObj;
  and its director, if any, a set of buttons to control execution
  of the model, and a panel displaying the placeable entities within
  the model.
- 
+
  FIXME: Customization
 
  @author Edward A. Lee

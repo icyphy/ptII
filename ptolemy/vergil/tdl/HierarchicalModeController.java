@@ -62,7 +62,7 @@ import diva.graph.GraphController;
     @since Ptolemy II 8.0
     @Pt.ProposedRating Red (eal)
     @Pt.AcceptedRating Red (eal)
- */   
+ */
 public class HierarchicalModeController extends StateController {
     /** Create a state controller associated with the specified graph
      *  controller.

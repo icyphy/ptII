@@ -48,7 +48,7 @@ import ptolemy.kernel.util.NamedObj;
     @since Ptolemy II 8.0
     @Pt.ProposedRating Red (eal)
     @Pt.AcceptedRating Red (eal)
- */   
+ */
 public class TdlTableauFactory extends TableauFactory {
     /** Create a factory with the given name and container.
      *  @param container The container.

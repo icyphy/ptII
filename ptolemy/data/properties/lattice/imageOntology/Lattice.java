@@ -77,14 +77,14 @@ public class Lattice extends PropertyLattice {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     public Property IMAGE = new Image(this);
-    
+
     public Property RGBIMAGE = new RGBImage(this);
-    
+
     public Property GRAYSCALEIMAGE = new GrayScaleImage(this);
 
     public Property UNKNOWN = new Unknown(this);
-    
+
     public Property TOP = new Top(this);
 }

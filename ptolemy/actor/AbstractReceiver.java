@@ -303,13 +303,13 @@ public abstract class AbstractReceiver implements Receiver {
         // Cache the containers for each receiver to minimize
         // the number of calls to getContainer.
         // FIXME: What if the model mutates between
-        // when we check the receivers and when we do the 
+        // when we check the receivers and when we do the
         // conversion?
         IOPort[] containers = new IOPort[receivers.length];
         for (int j = 0; j < receivers.length; j++) {
             containers[j] = receivers[j].getContainer();
         }
-        
+
         // Loop through the tokens on the outer loop and
         // the receivers on the inner loop. See
         // pn/kernel/test/block.xml for a test case
@@ -323,7 +323,7 @@ public abstract class AbstractReceiver implements Receiver {
                 }
             }
         }
-    } 
+    }
 
     /** Put to all receivers in the specified array.
      *  Implementers will assume that all such receivers

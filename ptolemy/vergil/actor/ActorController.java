@@ -107,7 +107,7 @@ import diva.gui.GUIUtilities;
  * NOTE: This class is abstract because it is missing the code for laying out
  * ports. Use the concrete subclasses ActorInstanceController or
  * ClassDefinitionController instead.
- * 
+ *
  * @author Steve Neuendorffer and Edward A. Lee, Elaine Cheong
  * @version $Id$
  * @since Ptolemy II 2.0
@@ -120,7 +120,7 @@ public abstract class ActorController extends AttributeController {
     /**
      * Create an entity controller associated with the specified graph
      * controller with full access.
-     * 
+     *
      * @param controller
      *            The associated graph controller.
      */
@@ -131,7 +131,7 @@ public abstract class ActorController extends AttributeController {
     /**
      * Create an entity controller associated with the specified graph
      * controller.
-     * 
+     *
      * @param controller
      *            The associated graph controller.
      * @param access
@@ -209,7 +209,7 @@ public abstract class ActorController extends AttributeController {
     /**
      * If access is FULL, then add the jni.ArgumentDailogFactory() to
      * _menuFactory. If access is not FULL, then do nothing.
-     * 
+     *
      * @param menuItemFactory
      *            The MenuItemFactory to be added.
      */
@@ -224,7 +224,7 @@ public abstract class ActorController extends AttributeController {
     /**
      * Add hot keys to the actions in the given JGraph. It would be better that
      * this method was added higher in the hierarchy. Now most controllers
-     * 
+     *
      * @param jgraph
      *            The JGraph to which hot keys are to be added.
      */
@@ -235,7 +235,7 @@ public abstract class ActorController extends AttributeController {
 
     /**
      * Set the configuration. This is used to open documentation files.
-     * 
+     *
      * @param configuration
      *            The configuration.
      */
@@ -262,7 +262,7 @@ public abstract class ActorController extends AttributeController {
 
     /**
      * Get the class label of the component.
-     * 
+     *
      * @return the class label of the component.
      */
     protected String _getComponentType() {
@@ -410,7 +410,7 @@ public abstract class ActorController extends AttributeController {
 
         /**
          * Layout the ports of the specified node.
-         * 
+         *
          * @param node
          *            The node, which is assumed to be an entity.
          */
@@ -671,9 +671,9 @@ public abstract class ActorController extends AttributeController {
      */
     public static class ListenToActorAction extends FigureAction {
         // Kepler uses this action.
-        
+
         /** Create an action to listen to debug messages.
-         * 
+         *
          * @param tableauFrame The associated TableauFrame.
          */
         public ListenToActorAction(TableauFrame tableauFrame) {
@@ -682,7 +682,7 @@ public abstract class ActorController extends AttributeController {
         }
 
         /** Create an action to listen to debug messages in the actor.
-         * 
+         *
          * @param controller The controller associated with this action.
          */
         public ListenToActorAction(BasicGraphController controller) {
@@ -691,7 +691,7 @@ public abstract class ActorController extends AttributeController {
         }
 
         /** Create an action to listen to debug messages in the actor.
-         *      
+         *
          * @param target The actor to which to listen.
          * @param controller  The controller associated with this action.
          */
@@ -748,10 +748,10 @@ public abstract class ActorController extends AttributeController {
                 MessageHandler.error("Failed to create debug listener.", ex);
             }
         }
-        
+
         /**
          * Set the configuration for use by the help screen.
-         * 
+         *
          * @param configuration
          *            The configuration.
          */
@@ -774,7 +774,7 @@ public abstract class ActorController extends AttributeController {
     private class LookInsideAction extends FigureAction {
         public LookInsideAction() {
             super("Open Actor");
-            
+
             // For some inexplicable reason, the I key doesn't work here.
             // Use L, which used to be used for layout.
             // Avoid Control_O, which is open file.
@@ -911,7 +911,7 @@ public abstract class ActorController extends AttributeController {
         /**
          * Create a new instance of the current model in the actor library of
          * the configuration.
-         * 
+         *
          * @param event
          *            The action event.
          */

@@ -78,7 +78,7 @@ public interface CausalityInterface {
      *  @param index The superdense time index.
      */
     public void declareDelayDependency(IOPort input, IOPort output, double timeDelay, int index);
-    
+
     /** Return a collection of the ports in this actor that depend on
      *  or are depended on by the specified port. A port Y depends
      *  on a port X if Y is an output and X is an input and

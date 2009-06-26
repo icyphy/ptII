@@ -158,7 +158,7 @@ import ptolemy.kernel.util.Workspace;
  enabled and they are all marked nondeterministic, then one is chosen
  at random in the fire() method. If the fire() method is invoked more
  than once in an iteration, then subsequent invocations in the same
- iteration will always choose the same transition.  However, 
+ iteration will always choose the same transition.  However,
  if more transitions become enabled in subsequent firings and
  they are not all marked nondeterminate, then an
  exception will thrown. Note that this
@@ -587,7 +587,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         List transitionList = _currentState.outgoingPort.linkedRelationList();
         chooseTransition(transitionList);
     }
-    
+
     /** Notify the refinements of the current state, if any,
      *  that a {@link Director#fireAt(Actor,Time)}
      *  request was skipped, and that current time has passed the
@@ -1611,7 +1611,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         }
 
         // If the chosen transition is a reset transition, initialize the destination
-        // refinement. Otherwise, set the current time and index in the destination 
+        // refinement. Otherwise, set the current time and index in the destination
         // refinement. Note that initializing the director will normally also have
         // the side effect of setting its time and time to match the enclosing
         // director. This is done before invoking the set actions because (1)
@@ -2114,7 +2114,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
     /** Given a transitions, find any input ports
      *  referenced in the guard expressions of the
      *  transitions, and if any of those input ports has status
-     *  unknown, return false. 
+     *  unknown, return false.
      *  FIXME: bogus:
      *  Also, if the port identifier does
      *  not end with "_isPresent", then return false if port
@@ -2131,12 +2131,12 @@ public class FSMActor extends CompositeEntity implements TypedActor,
      */
     private boolean _referencedInputPortsByGuardKnown(Transition transition)
             throws IllegalActionException {
-        
+
         // FIXME: This method is wrong!
         // E.g., if the guard expression is (!in_isPresent || in == 1)
         // then this method will return false when in is absent!
         // The next method below may also be wrong!
-        
+
         String string = transition.getGuardExpression();
         if (string.trim().equals("")) {
             return true;

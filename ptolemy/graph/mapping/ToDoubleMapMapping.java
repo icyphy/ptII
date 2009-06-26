@@ -87,7 +87,7 @@ public class ToDoubleMapMapping extends MapMapping implements ToDoubleMapping {
     /** Return the object associated with the given object.
      *  @param object The given object.
      *  @return The object that is associated with given object under
-     *  this mapping.        
+     *  this mapping.
      */
     public Object toObject(Object object) {
         return _map.get(object);

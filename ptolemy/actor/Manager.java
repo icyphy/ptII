@@ -1376,7 +1376,7 @@ public class Manager extends NamedObj implements Runnable {
     protected void _makeManagerOf(CompositeActor compositeActor) {
         if (compositeActor != null) {
             _workspace.remove(this);
-        }        
+        }
 
         _container = compositeActor;
     }

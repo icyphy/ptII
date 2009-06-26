@@ -50,12 +50,12 @@ import ptolemy.kernel.util.IllegalActionException;
  @Pt.AcceptedRating Red (cxh)
  */
 public class LongDouble extends LatticeProperty implements TypeProperty {
-        
+
     public LongDouble(PropertyLattice lattice) {
         super(lattice);
     }
-    
-// FIXME: Is there a java representation for the C long double type?    
+
+// FIXME: Is there a java representation for the C long double type?
     public Token getMaxValue() {
         return new DoubleToken(1.7976931348623157E308);
     }
@@ -67,11 +67,11 @@ public class LongDouble extends LatticeProperty implements TypeProperty {
     public boolean hasMinMaxValue() {
        return true;
     }
-    
+
     public boolean isInRange(Token token) throws IllegalActionException {
         if ((((ScalarToken)token).doubleValue() < ((ScalarToken)getMinValue()).doubleValue()) ||
             (((ScalarToken)token).doubleValue() > ((ScalarToken)getMaxValue()).doubleValue())) {
-            
+
             return false;
         } else {
             return true;

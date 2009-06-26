@@ -61,7 +61,7 @@ public interface Actor extends Executable, Nameable {
      *  @see CompositeActor#createReceivers
      */
     public void createReceivers() throws IllegalActionException;
-    
+
     /** Notify this actor that a {@link Director#fireAt(Actor,Time)}
      *  request was skipped, and that current time has passed the
      *  requested time. A director calls this method when in a modal

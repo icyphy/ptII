@@ -103,7 +103,7 @@ public class ASTPtArrayConstructNode extends ASTPtRootNode {
                 Property childProperty =
                     getSolver().getProperty(childNode);
 
-                if ((childProperty == null) || (childProperty == _lattice.getElement("UNKNOWN")) 
+                if ((childProperty == null) || (childProperty == _lattice.getElement("UNKNOWN"))
                         || (childProperty == _lattice.getElement("FALSE"))) {
                     return childProperty;
                 } else if (!(childNode.isConstant() && childNode.isEvaluated())) {
@@ -132,7 +132,7 @@ public class ASTPtArrayConstructNode extends ASTPtRootNode {
 
         ///////////////////////////////////////////////////////////////////
         ////                      protected methods                    ////
-        
+
         protected InequalityTerm[] _getDependentTerms() {
             List<InequalityTerm> terms = new ArrayList<InequalityTerm>();
 

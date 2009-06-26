@@ -50,7 +50,7 @@ import ptolemy.kernel.util.IllegalActionException;
  @Pt.AcceptedRating Red (cxh)
  */
 public class Double extends LatticeProperty implements TypeProperty {
-        
+
     public Double(PropertyLattice lattice) {
         super(lattice);
     }
@@ -69,7 +69,7 @@ public class Double extends LatticeProperty implements TypeProperty {
     public boolean isInRange(Token token) throws IllegalActionException {
         if ((((ScalarToken)token).doubleValue() < ((ScalarToken)getMinValue()).doubleValue()) ||
             (((ScalarToken)token).doubleValue() > ((ScalarToken)getMaxValue()).doubleValue())) {
-            
+
             return false;
         } else {
             return true;

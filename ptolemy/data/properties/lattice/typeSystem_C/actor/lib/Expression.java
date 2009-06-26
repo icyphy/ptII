@@ -53,9 +53,9 @@ public class Expression extends AtomicActor {
      * be STATIC, but does not use the default actor constraints.
      * @param solver The given solver.
      * @param actor The given Source actor
-     * @throws IllegalActionException 
+     * @throws IllegalActionException
      */
-    public Expression(PropertyConstraintSolver solver, 
+    public Expression(PropertyConstraintSolver solver,
             ptolemy.actor.lib.Expression actor)
             throws IllegalActionException {
 
@@ -72,7 +72,7 @@ public class Expression extends AtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     private ptolemy.actor.lib.Expression _actor;
-/*    
+/*
     protected List<Attribute> _getPropertyableAttributes() {
         ptolemy.actor.lib.Expression actor =
             (ptolemy.actor.lib.Expression) _component;
@@ -81,5 +81,5 @@ public class Expression extends AtomicActor {
         result.add(actor.expression);
         return result;
     }
-*/    
+*/
 }

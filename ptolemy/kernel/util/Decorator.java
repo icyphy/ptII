@@ -46,15 +46,15 @@ and the NamedObj.
 */
 
 public interface Decorator {
-    
+
     /** Return the name of the decorator.
      * @return The name of the decorator.
-     */    
+     */
     public String getDecoratorName();
-    
+
     /** Return the decorated attributes for the target NamedObj.
      * @param target The NamedObj that will be decorated.
-     * @return A list of decorated attributes for the target NamedObj. 
+     * @return A list of decorated attributes for the target NamedObj.
      */
     public List<DecoratedAttribute> getDecoratorAttributes(NamedObj target);
 }

@@ -204,7 +204,7 @@ public class EventIcon extends StateIcon {
     private static final Color _FINAL_COLOR = new Color(255, 64, 64);
 
     private static final Color _INITIAL_COLOR = new Color(64, 255, 64);
-    
+
     private static final Color _ENDING_COLOR = new Color(255, 64, 64);
 
     private static final double _MIN_HEIGHT = 20.0;

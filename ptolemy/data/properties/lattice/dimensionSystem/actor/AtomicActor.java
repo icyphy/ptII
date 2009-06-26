@@ -65,7 +65,7 @@ public class AtomicActor extends PropertyConstraintHelper {
         super(solver, actor);
     }
 
-    
+
     public AtomicActor(PropertyConstraintSolver solver,
             ptolemy.actor.AtomicActor actor,
             boolean useDefaultConstraints)
@@ -73,8 +73,8 @@ public class AtomicActor extends PropertyConstraintHelper {
 
         super(solver, actor, useDefaultConstraints);
     }
-    
-    
+
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 

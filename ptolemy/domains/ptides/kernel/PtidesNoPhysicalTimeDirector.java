@@ -43,7 +43,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-/** 
+/**
  *  This director has a local notion time, decoupled from that of the
  *  enclosing director. The enclosing director's time
  *  represents physical time, whereas this time represents model
@@ -90,7 +90,7 @@ public class PtidesNoPhysicalTimeDirector extends PtidesBasicDirector {
         _eventAtPort = new HashMap<IOPort, PriorityQueue>();
 
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                     protected methods                     ////
 
@@ -107,7 +107,7 @@ public class PtidesNoPhysicalTimeDirector extends PtidesBasicDirector {
         events.add(new Tag(getModelTime(), _microstep));
         _eventAtPort.put(ioPort, events);
     }
-    
+
     /** Return all the events in the event queue that are of the same tag as the event
      *  passed in.
      *  <p>
@@ -135,25 +135,25 @@ public class PtidesNoPhysicalTimeDirector extends PtidesBasicDirector {
         }
         return eventList;
     }
-    
+
     /** Return the actor associated with this event. This method takes
-     *  all events of the same tag destined for the same actor from the event 
+     *  all events of the same tag destined for the same actor from the event
      *  queue, and return the actor associated with it.
-     *  
+     *
      */
     protected Actor _getNextActorToFireForTheseEvents(List<DEEvent> events) throws IllegalActionException {
         if (events.get(0) != ((DEListEventQueue)_eventQueue).get(_peekingIndex)) {
             throw new IllegalActionException("The event to get is not the event pointed " +
                         "to by peeking index.");
         }
-        // Assume the event queue orders by Tag and depth so all these events should be 
+        // Assume the event queue orders by Tag and depth so all these events should be
         // next to each other.
         for (int i = 0; (_peekingIndex + i) < events.size(); i++) {
             ((DEListEventQueue)_eventQueue).take(_peekingIndex + i);
         }
         return events.get(0).actor();
     }
-    
+
     /** Return the next event we want to process, which is the event of smallest tag
      *  that is safe to process.
      */
@@ -175,9 +175,9 @@ public class PtidesNoPhysicalTimeDirector extends PtidesBasicDirector {
      *  is safe to process, otherwise it is not.
      *  If the event is a pure event, it also needs to wait for all events to be
      *  present at the current inputs to ensure this event is safe to process.
-     *  
+     *
      *  FIXME: this does not work properly for variable delay yet.
-     * 
+     *
      *  FIXME: assumes each input port is not multiport.
      *
      *  @param event The event checked for safe to process
@@ -212,9 +212,9 @@ public class PtidesNoPhysicalTimeDirector extends PtidesBasicDirector {
                 } else {
                     result = false;
                 }
-            } 
+            }
         }
-        
+
         // the event at this input port is the smallest among them all, so we take it
         // out of _eventAtPort.
         if (result == true) {
@@ -231,7 +231,7 @@ public class PtidesNoPhysicalTimeDirector extends PtidesBasicDirector {
         }
         return result;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                     protected variables                   ////
 
@@ -240,7 +240,7 @@ public class PtidesNoPhysicalTimeDirector extends PtidesBasicDirector {
 
     ///////////////////////////////////////////////////////////////////
     ////                     private variables                     ////
-    
+
     private HashMap<IOPort, PriorityQueue> _eventAtPort;
 
     /** Index that indicates the index of the top event in the event queue that
@@ -248,5 +248,5 @@ public class PtidesNoPhysicalTimeDirector extends PtidesBasicDirector {
      *  each iteration within _getNextSafeEvent().
      *  @see #_getNextSafeEvent()
      */
-    
+
 }

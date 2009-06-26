@@ -78,11 +78,11 @@ public class Lattice extends PropertyLattice {
     ////                         private variables                 ////
 
     private Property TOP = new Top(this);
-    
+
     private Property TIME = new Time(this);
 
     private Property ACCELERATION = new Acceleration(this);
-    
+
     private Property SPEED = new Speed(this);
 
     private Property POSITION = new Position(this);
@@ -90,5 +90,5 @@ public class Lattice extends PropertyLattice {
     private Property UNITLESS = new Unitless(this);
 
     private Property UNKNOWN = new Unknown(this);
-    
+
 }

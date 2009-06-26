@@ -14,7 +14,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 
-/** 
+/**
  *  This director implements preemptive PTIDES scheduling algorithm, and uses
  *  EDF as the foundation to determine whether we should preempt executing events.
  *  This director is different from its super class because PtidesBasicPreemptiveDDFDirector
@@ -25,7 +25,7 @@ import ptolemy.kernel.util.NamedObj;
  *  <p>
  *  Notice this director has to use RealDependency, though all PTIDES directors should be
  *  using RealDependency. The reason it is used here is because safe to process relies on
- *  the correct ordering of depth in order to provide the correct answer, and 
+ *  the correct ordering of depth in order to provide the correct answer, and
  *  BooleanDependency does not return the correct value for depth.
  *
  *  @author Slobodan Matic, Jia Zou
@@ -61,10 +61,10 @@ public class PtidesPreemptiveEDFDirector extends PtidesNoPhysicalTimeDirector {
         _eventToProcess = null;
 
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                     protected methods                     ////
-    
+
     /** Return all the events in the event queue that are of the same tag as the event
      *  passed in.
      *  <p>
@@ -90,9 +90,9 @@ public class PtidesPreemptiveEDFDirector extends PtidesNoPhysicalTimeDirector {
     }
 
     /** Return the actor associated with this event. This method takes
-     *  all events of the same tag destined for the same actor from the event 
+     *  all events of the same tag destined for the same actor from the event
      *  queue, and return the actor associated with it.
-     *  
+     *
      */
     protected Actor _getNextActorToFireForTheseEvents(List<DEEvent> events) throws IllegalActionException {
         if (events.get(0) != ((DEListEventQueue)_eventQueue).get(_peekingIndex)) {
@@ -101,7 +101,7 @@ public class PtidesPreemptiveEDFDirector extends PtidesNoPhysicalTimeDirector {
         }
         // take from the event queue all the events from the event queue starting
         // for _peekingIndex. Here we assume _peekingIndex is the index of the smallest
-        // event in the event queue. that we want to process. (This is set in 
+        // event in the event queue. that we want to process. (This is set in
         // _getAllSameTagEventsFromQueue()).
         for (int i = 0; i < events.size(); i++) {
             // We always take the one from _peekingIndex because it points to the next
@@ -110,7 +110,7 @@ public class PtidesPreemptiveEDFDirector extends PtidesNoPhysicalTimeDirector {
         }
         return events.get(0).actor();
     }
-    
+
     /** Returns the event that was selected to preempt in _preemptExecutingActor.
      *  If no event was selected, return the event of smallest deadline that is
      *  safe to process.
@@ -135,10 +135,10 @@ public class PtidesPreemptiveEDFDirector extends PtidesNoPhysicalTimeDirector {
         _eventToProcess = null;
         return tempEvent;
     }
-    
+
     /** This method finds the event in the queue that is of the smallest deadline
      *  The event found is stored in _eventToProcess. It then stores the
-     *  index of the event in _peekingIndex. 
+     *  index of the event in _peekingIndex.
      *  @return false if no event is found. returns false, otherwise returns true.
      *  @throws IllegalActionException
      */
@@ -148,10 +148,10 @@ public class PtidesPreemptiveEDFDirector extends PtidesNoPhysicalTimeDirector {
         _eventToProcess = null;
         Time smallestDeadline = new Time(this, Double.POSITIVE_INFINITY);
         int result = 0;
-        
+
         for (int eventIndex = 0; eventIndex < _eventQueue.size(); eventIndex++) {
             DEEvent event = ((DEListEventQueue)_eventQueue).get(eventIndex);
-            IOPort port = event.ioPort();    
+            IOPort port = event.ioPort();
             if (port == null) {
                 List<IOPort> inputPortList = event.actor().inputPortList();
                 if (inputPortList.size() == 0) {
@@ -180,7 +180,7 @@ public class PtidesPreemptiveEDFDirector extends PtidesNoPhysicalTimeDirector {
                 }
             }
         }
-        
+
         if (_eventToProcess == null) {
             return false;
         } else {
@@ -195,8 +195,8 @@ public class PtidesPreemptiveEDFDirector extends PtidesNoPhysicalTimeDirector {
      *  the event in the queue that is both safe, and also has the smallest
      *  deadline. This event is then stored in _eventToProcess, and returned
      *  in _getNextSafeEvent().
-     *  If there are several safe events with the smallest deadline, then the 
-     *  event of smallest tag + depth is stored in _eventToProcess. 
+     *  If there are several safe events with the smallest deadline, then the
+     *  event of smallest tag + depth is stored in _eventToProcess.
      *  @return whether we want to preempt the executing event.
      *  @throws IllegalActionException
      *  @see #_getNextSafeEvent()
@@ -208,7 +208,7 @@ public class PtidesPreemptiveEDFDirector extends PtidesNoPhysicalTimeDirector {
         if (!_getSmallestDeadlineSafeEventFromQueue()) {
             return false;
         }
-        
+
         // check if we want to preempt whatever that's executing with _eventToProcess.
         // First make smallestDeadline the smallest deadline among all events
         // at the top of the stack.
@@ -224,14 +224,14 @@ public class PtidesPreemptiveEDFDirector extends PtidesNoPhysicalTimeDirector {
         }
 
         Time smallestQueueDeadline = _getAbsoluteDeadline(_eventToProcess);
-            
+
         // if we decide not to preempt because the one on stack has smaller deadline,
         // then we set _eventToProcess back to null;
         if (smallestQueueDeadline.compareTo(smallestStackDeadline) > 0 ) {
             _eventToProcess = null;
         } else if (smallestQueueDeadline.compareTo(smallestStackDeadline) == 0 ) {
             if (_eventToProcess.compareTo(executingEvent) >= 0) {
-                _eventToProcess = null;    
+                _eventToProcess = null;
             } // if the deadline and tag and depth are all equal, don't preempt.
         }
 
@@ -247,7 +247,7 @@ public class PtidesPreemptiveEDFDirector extends PtidesNoPhysicalTimeDirector {
 
             if (_debugging) {
                 _debug("We decided to preempt the current " +
-                                "executing event at actor: " + 
+                                "executing event at actor: " +
                                 executingEvent.actor() +
                                 " with another event at actor: " + _eventToProcess.actor() +
                                 ". This preemption happened at physical time " +
@@ -257,15 +257,15 @@ public class PtidesPreemptiveEDFDirector extends PtidesNoPhysicalTimeDirector {
             return true;
         }
     }
-    
-    /** This method first uses the super of _safeToProcess, which only tests if all 
+
+    /** This method first uses the super of _safeToProcess, which only tests if all
      *  ports at the same actor
      *  contain an event of larger timestamp. If they do, then the super method
      *  returns true, otherwise it returns false. If the super method (check against
      *  model times) returned true, then the event is safe to process, otherwise,
      *  we check against physical time, and see if the event is safe to process. If
      *  this is true, the event is safe to process, otherwise it is not.
-     *  
+     *
      *  FIXME: Currently the check in super method is commented out...
      */
     protected boolean _safeToProcess(DEEvent event) throws IllegalActionException {
@@ -296,7 +296,7 @@ public class PtidesPreemptiveEDFDirector extends PtidesNoPhysicalTimeDirector {
             }
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                     protected variables                   ////
 

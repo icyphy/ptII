@@ -61,7 +61,7 @@ public class ClassUtilities {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Return the directories in a jar URI, relative to the jar entry, 
+    /** Return the directories in a jar URI, relative to the jar entry,
      *  if any.   .
      *  Jar URLS have several forms, the most common being:
      *  <code>jar:file:///foo/bar.jar/!/bif/baz</code>, which means that
@@ -71,7 +71,7 @@ public class ClassUtilities {
      *  @param jarURL The Jar URL for which we are to look for directories.
      *  @return An list of Strings that name the directories
      */
-    public static List jarURLDirectories(URL jarURL) 
+    public static List jarURLDirectories(URL jarURL)
             throws IOException {
         List directories = new LinkedList();
         JarURLConnection connection = (JarURLConnection)(jarURL.openConnection());
@@ -84,9 +84,9 @@ public class ClassUtilities {
         while ( entries.hasMoreElements()) {
             JarEntry entry = (JarEntry)entries.nextElement();
             String name = entry.getName();
-            int jarEntryIndex = name.indexOf(jarEntryName + "/"); 
+            int jarEntryIndex = name.indexOf(jarEntryName + "/");
             int jarEntrySlashIndex = jarEntryIndex + jarEntryName.length() + 1;
-            
+
             int nextSlashIndex = name.indexOf("/", jarEntrySlashIndex);
             int lastSlashIndex = name.indexOf("/", jarEntrySlashIndex);
 

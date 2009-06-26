@@ -66,11 +66,11 @@ public class Comparator extends PropertyConstraintHelper {
 
     public List<Inequality> constraintList()
             throws IllegalActionException {
-        ptolemy.actor.lib.logic.Comparator actor = 
+        ptolemy.actor.lib.logic.Comparator actor =
             (ptolemy.actor.lib.logic.Comparator) getComponent();
 
         setAtLeast(actor.output, new FunctionTerm(actor.left, actor.right));
-        
+
         return super.constraintList();
     }
 
@@ -83,7 +83,7 @@ public class Comparator extends PropertyConstraintHelper {
 
         TypedIOPort _left;
         TypedIOPort _right;
-        
+
         public FunctionTerm(TypedIOPort left, TypedIOPort right) {
             _left = left;
             _right = right;
@@ -97,20 +97,20 @@ public class Comparator extends PropertyConstraintHelper {
          * @exception IllegalActionException
          */
         public Object getValue() throws IllegalActionException {
-            
+
             Property leftProperty = (Property) getSolver().getProperty(_left);
             Property rightProperty = (Property) getSolver().getProperty(_right);
 
             Property unknown = _lattice.getElement("UNKNOWN");
-            
+
             if (leftProperty == unknown || rightProperty == unknown) {
                 return unknown;
-            } 
+            }
 
             if (leftProperty == rightProperty) {
                 return _lattice.getElement("UNITLESS");
             }
-            
+
             return _lattice.getElement("TOP");
         }
 

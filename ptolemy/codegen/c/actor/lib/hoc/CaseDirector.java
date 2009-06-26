@@ -95,12 +95,12 @@ public class CaseDirector extends Director {
             boolean fireRefinement = true;
             refinementCount++;
             CompositeActor refinement = (CompositeActor) refinements.next();
-            CodeGeneratorHelper refinementHelper = 
+            CodeGeneratorHelper refinementHelper =
                 (CodeGeneratorHelper) _getHelper(refinement);
-            
+
             // FIXME: the refinement name may contain '$' signs.
             String refinementName = refinement.getName();
-            
+
             if (!refinementName.equals("default")) {
                 if (useSwitch) {
                     code.append("case " + refinementName + ":");
@@ -110,15 +110,15 @@ public class CaseDirector extends Director {
                     } else {
                         code.append("} else if (!strcmp(");
                     }
-                    
-                    String controlVariable = 
+
+                    String controlVariable =
                         _codeGenerator.generateVariableName(container.control);
-                    
-                    String controlType = 
+
+                    String controlType =
                         codeGenType(container.control.getType());
-                    
+
                     if (!controlType.equals("String")) {
-                        controlVariable = 
+                        controlVariable =
                             "$convert_" + controlType + "_String(" +
                             controlVariable + ")";
                     }

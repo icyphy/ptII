@@ -53,18 +53,18 @@ public class Director extends ptolemy.codegen.actor.Director {
     public Director(ptolemy.actor.Director director) {
         super(director);
     }
-    
-    public List<String> getBlockCodeList(String blockName, String ... args) 
+
+    public List<String> getBlockCodeList(String blockName, String ... args)
             throws IllegalActionException {
         List<Actor> actors = ((CompositeActor) _director.getContainer()).deepEntityList();
-        
+
         List<String> ret = new LinkedList();
-        
+
         for (Actor actor : actors) {
             RTMaudeAdaptor helper = (RTMaudeAdaptor) _getHelper((NamedObj) actor);
             ret.addAll(helper.getBlockCodeList(blockName, args));
         }
-  
+
         return ret;
-    }    
+    }
 }

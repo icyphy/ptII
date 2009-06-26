@@ -68,26 +68,26 @@ public class Scale extends AtomicActor {
 
     public List<Inequality> constraintList()
             throws IllegalActionException {
-        ptolemy.actor.lib.Scale actor = 
+        ptolemy.actor.lib.Scale actor =
             (ptolemy.actor.lib.Scale) getComponent();
 
         setAtLeast(actor.output, new OutputFunctionTerm(actor.input, actor.factor));
         setAtLeast(actor.input, new InputFunctionTerm(actor.output, actor.factor));
-        
+
         return super.constraintList();
     }
-    
-    
+
+
     // Added by Charles Shelton 05/11/09:
     // The factor parameter for the Scale actor must be added to the list of
     // propertyable attributes in order for its property to be resolved.
-    
+
     protected List<Attribute> _getPropertyableAttributes() {
         List<Attribute> result = super._getPropertyableAttributes();
         result.add(((ptolemy.actor.lib.Scale) getComponent()).factor);
         return result;
     }
-    
+
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
@@ -98,7 +98,7 @@ public class Scale extends AtomicActor {
 
         TypedIOPort _input;
         Parameter _factor;
-        
+
         public OutputFunctionTerm(TypedIOPort input, Parameter parameter) {
             _input = input;
             _factor = parameter;
@@ -112,7 +112,7 @@ public class Scale extends AtomicActor {
          * @exception IllegalActionException
          */
         public Object getValue() throws IllegalActionException {
-            
+
             Property inputProperty = (Property) getSolver().getProperty(_input);
             Property factorProperty = (Property) getSolver().getProperty(_factor);
 
@@ -123,13 +123,13 @@ public class Scale extends AtomicActor {
             Property unitless = _lattice.getElement("UNITLESS");
             Property unknown = _lattice.getElement("UNKNOWN");
             Property top = _lattice.getElement("TOP");
-            
+
             if ((inputProperty == speed && factorProperty == time) ||
                 (inputProperty == time && factorProperty == speed)) {
                 return position;
             }
 
-            if ((inputProperty == acceleration && factorProperty == time) || 
+            if ((inputProperty == acceleration && factorProperty == time) ||
                 (inputProperty == time && factorProperty == acceleration)) {
                 return speed;
             }
@@ -137,11 +137,11 @@ public class Scale extends AtomicActor {
             if (inputProperty == unknown || factorProperty == unknown) {
                 return unknown;
             }
-            
+
             if (inputProperty == top || factorProperty == top) {
                 return top;
             }
-                
+
             if (factorProperty == unitless) {
                 return inputProperty;
             }
@@ -149,7 +149,7 @@ public class Scale extends AtomicActor {
             if (inputProperty == unitless) {
                 return factorProperty;
             }
-            
+
             return top;
         }
 
@@ -167,12 +167,12 @@ public class Scale extends AtomicActor {
             };
         }
     }
-    
+
     private class InputFunctionTerm extends MonotonicFunction {
 
         TypedIOPort _output;
         Parameter _factor;
-        
+
         public InputFunctionTerm(TypedIOPort input, Parameter parameter) {
             _output = input;
             _factor = parameter;
@@ -186,7 +186,7 @@ public class Scale extends AtomicActor {
          * @exception IllegalActionException
          */
         public Object getValue() throws IllegalActionException {
-            
+
             Property outputProperty = (Property) getSolver().getProperty(_output);
             Property factorProperty = (Property) getSolver().getProperty(_factor);
 
@@ -197,7 +197,7 @@ public class Scale extends AtomicActor {
             Property unitless = _lattice.getElement("UNITLESS");
             Property unknown = _lattice.getElement("UNKNOWN");
             Property top = _lattice.getElement("TOP");
-            
+
             if (outputProperty == speed && factorProperty == time) {
                 return acceleration;
             }
@@ -209,7 +209,7 @@ public class Scale extends AtomicActor {
             if (outputProperty == unknown || factorProperty == unknown) {
                 return unknown;
             }
-            
+
             if (outputProperty == top || factorProperty == top) {
                 return top;
             }
@@ -217,7 +217,7 @@ public class Scale extends AtomicActor {
             if (factorProperty == outputProperty) {
                 return unitless;
             }
-                
+
             if (factorProperty == unitless) {
                 return outputProperty;
             }
@@ -225,7 +225,7 @@ public class Scale extends AtomicActor {
             if (outputProperty == unitless) {
                 return factorProperty;
             }
-            
+
             return top;
         }
 

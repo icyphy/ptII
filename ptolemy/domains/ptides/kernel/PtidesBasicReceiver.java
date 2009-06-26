@@ -83,7 +83,7 @@ public class PtidesBasicReceiver extends DEReceiver {
     /**
      * Return true if there are <i>numberOfTokens</i> tokens tokens available to
      * the get() method.
-     * 
+     *
      * @param numberOfTokens
      *            An int indicating how many tokens are needed.
      * @return True if there are numberOfTokens tokens available.
@@ -103,7 +103,7 @@ public class PtidesBasicReceiver extends DEReceiver {
      * correct timestamp and microstep and invoke the corresponding actor whose
      * input port contains this receiver. This receiver may contain more than
      * one events.
-     * 
+     *
      * @param token
      *            The token to be put.
      */
@@ -114,7 +114,7 @@ public class PtidesBasicReceiver extends DEReceiver {
             throw new InternalErrorException(null, ex, null);
         }
     }
-    
+
     /** Actually put the token into this receiver. This method should be called
      *  by the director when to token is ready to be processed by the actor
      *  where this receier resides.
@@ -123,7 +123,7 @@ public class PtidesBasicReceiver extends DEReceiver {
     public void putToReceiver(Token token) {
         _tokens.add(token);
     }
-    
+
     // /////////////////////////////////////////////////////////////////
     // // private methods ////
 
@@ -134,7 +134,7 @@ public class PtidesBasicReceiver extends DEReceiver {
      * Otherwise, it's the executive director of the container of its port.Note
      * that the director returned is guaranteed to be non-null. This method is
      * read synchronized on the workspace.
-     * 
+     *
      * @return An instance of DEDirector.
      * @exception IllegalActionException
      *                If there is no container port, or if the port has no
@@ -184,10 +184,10 @@ public class PtidesBasicReceiver extends DEReceiver {
         throw new IllegalActionException(getContainer(),
                 "Does not have a IOPort as the container of the receiver.");
     }
-    
+
     // /////////////////////////////////////////////////////////////////
     // // private variables ////
-    
+
     // The director where this DEReceiver should register for ptides events.
     private PtidesBasicDirector _director;
 

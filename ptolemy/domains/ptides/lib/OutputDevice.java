@@ -42,10 +42,10 @@ import ptolemy.kernel.util.NameDuplicationException;
  *  @version $ld$
  *  @since Ptolemy II 7.1
  *  @Pt.ProposedRating Yellow (jiazou)
- *  @Pt.AcceptedRating 
+ *  @Pt.AcceptedRating
  */
 public abstract class OutputDevice extends TypedAtomicActor {
-    
+
     /**
      * Constructs a OutputDevice object.
      * @param container The container.

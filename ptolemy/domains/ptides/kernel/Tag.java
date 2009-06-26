@@ -30,9 +30,9 @@ package ptolemy.domains.ptides.kernel;
 
 import ptolemy.actor.util.Time;
 
-/** 
+/**
  *  Tag is a pair of timestamp and microstep.
- *  
+ *
  *  @author Jia Zou
  *  @version $Id$
  *  @since Ptolemy II 7.1
@@ -42,7 +42,7 @@ import ptolemy.actor.util.Time;
  */
 public class Tag implements Comparable{
 
-    /** Construct a Tag. 
+    /** Construct a Tag.
      *  @param timestamp The timestamp.
      *  @param microstep The microstep.
      */
@@ -50,11 +50,11 @@ public class Tag implements Comparable{
         this.timestamp = timestamp;
         this.microstep = microstep;
     }
-    
+
     /** Compare a tag with another.
      *  @param other The object comparing to.
      *  @return The result of the comparison, which is a lexicographical order
-     *  with the timestamp as the first element and microstep as the second. 
+     *  with the timestamp as the first element and microstep as the second.
      */
     public int compareTo(Object other) {
         Tag tag2 = (Tag) other;
@@ -72,10 +72,10 @@ public class Tag implements Comparable{
             }
         }
     }
-    
+
     /** The timestamp. */
     public Time timestamp;
-    
+
     /** The microstep. */
     public int microstep;
 }

@@ -33,7 +33,7 @@ package ptolemy.kernel.util;
 
 /**
 A class that a decorated attribute. A decorated attribute
-has a decoratorName, which refers to the decorator and a  
+has a decoratorName, which refers to the decorator and a
 attribute, which is a decorated attribute.
 
 @author Bert Rodiers
@@ -63,11 +63,11 @@ public class DecoratedAttribute {
     // in that one class. The advantage is the we only need to create one class and have a very simple class
     // hierarchy. The disadvantage is that there is one level of indirection for the users of this class
     // and decorated attributes have to be treated in a special way.
-    
+
     /** Construct a DecoratedAttribute from the name of the decorator and an attribute
      * (the actual decorated attribute).
      * @param decorator The decorator.
-     * @param attribute The actual decorated attribute. 
+     * @param attribute The actual decorated attribute.
      */
     public DecoratedAttribute(Attribute attribute, Decorator decorator) {
         _decorator = decorator;
@@ -76,7 +76,7 @@ public class DecoratedAttribute {
     }
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     /** Return the decorated attribute.
      * @return The decorated attribute.
      */
@@ -90,13 +90,13 @@ public class DecoratedAttribute {
     public String getDecoratorName() {
         return _decorator.getDecoratorName();
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     /** The decorator name.*/
     private Attribute _attribute;
-    
+
     /** The decorater.*/
     private Decorator _decorator;
 }

@@ -59,24 +59,24 @@ public class CurrentTime extends AtomicActor {
             throws IllegalActionException {
 
         super(solver, actor, false);
-        
+
         _actor = actor;
     }
 
-    
-    public List<Inequality> constraintList() throws IllegalActionException {       
+
+    public List<Inequality> constraintList() throws IllegalActionException {
         setAtLeast(_actor.output, _lattice.getElement("TIME"));
         return super.constraintList();
     }
 
-    
+
     protected List<Attribute> _getPropertyableAttributes() {
         List<Attribute> result = super._getPropertyableAttributes();
         result.remove(_actor.trigger);
-        
+
         return result;
     }
-    
-    
+
+
     private ptolemy.actor.lib.CurrentTime _actor;
 }

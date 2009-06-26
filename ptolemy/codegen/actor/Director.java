@@ -472,7 +472,7 @@ public class Director extends CodeGeneratorHelper {
 
     /**
      * Return an unique label for the given port channel referenced
-     * by the given helper. By default, this delegates to the helper to 
+     * by the given helper. By default, this delegates to the helper to
      * generate the reference. Subclass may override this method
      * to generate the desire label according to the given parameters.
      * @param port The given port.
@@ -480,7 +480,7 @@ public class Director extends CodeGeneratorHelper {
      * @param forComposite Whether the given helper is associated with
      *  a CompositeActor
      * @param isWrite The type of the reference. True if this is
-     *  a write reference; otherwise, this is a read reference.  
+     *  a write reference; otherwise, this is a read reference.
      * @param helper The specified helper.
      * @return an unique reference label for the given port channel.
      * @throws IllegalActionException If the helper throws it while
@@ -494,7 +494,7 @@ public class Director extends CodeGeneratorHelper {
 
     /**
      * Return an unique label for the given attribute referenced
-     * by the given helper. By default, this delegates to the helper to 
+     * by the given helper. By default, this delegates to the helper to
      * generate the reference. Subclass may override this method
      * to generate the desire label according to the given parameters.
      * @param attribute The given attribute.
@@ -512,8 +512,8 @@ public class Director extends CodeGeneratorHelper {
 
     /**
      * Return the reference channels for the specified port channel.
-     * If the port channel is input or contained by an opaque CompositeActor, 
-     * then this will return a list containing the given port channel. 
+     * If the port channel is input or contained by an opaque CompositeActor,
+     * then this will return a list containing the given port channel.
      * Otherwise, it returns a list of the connected sink channels.
      * @param port The given port.
      * @param channelNumber The given channel.
@@ -746,23 +746,23 @@ public class Director extends CodeGeneratorHelper {
 
     /**
      * Determines the worst case execution time (WCET) seen by this
-     * director. 
+     * director.
      * @return The Worst Case Execution Time (WCET)
      * @exception IllegalActionException If there is a problem determining
      * the WCET.
-     */ 
-    public double _getWCET() throws IllegalActionException {              
+     */
+    public double _getWCET() throws IllegalActionException {
         // This probably isn't the best place for this, since
         // there are target dependent things here, however I'm not sure
         // where else to put it.  This should only be called by a Giotto
         // director.
         if (_debugging) {
             _debug("getWCET from Director in codegen Actor package called");
-         } 
+         }
         double wcet=0;
         double actorFrequency =0;
         double actorWCET = 0;
-        for (Actor actor : (List<Actor>) 
+        for (Actor actor : (List<Actor>)
                 ((TypedCompositeActor) this._director.getContainer()).deepEntityList()) {
             Attribute frequency = ((Entity)actor).getAttribute("frequency");
 //            ptolemy.actor.Director director = actor.getDirector();
@@ -770,7 +770,7 @@ public class Director extends CodeGeneratorHelper {
 //                // FIXME: This means that codegen depends on the targets.
 //                ptolemy.codegen.c.targets.openRTOS.domains.fsm.kernel.FSMDirector fsmDir = new ptolemy.codegen.c.targets.openRTOS.domains.fsm.kernel.FSMDirector((ptolemy.domains.fsm.kernel.FSMDirector)this._director);
 //                return fsmDir._getWCET();
-//                
+//
 //            }
 //            if (director.getClassName().contains("SDF")) {
 //                // FIXME: This means that codegen depends on the targets.
@@ -781,14 +781,14 @@ public class Director extends CodeGeneratorHelper {
 //                // FIXME: This means that codegen depends on the targets.
 //                ptolemy.codegen.c.targets.openRTOS.domains.giotto.kernel.GiottoDirector giottoDir = new ptolemy.codegen.c.targets.openRTOS.domains.giotto.kernel.GiottoDirector((ptolemy.domains.giotto.kernel.GiottoDirector)this._director);
 //                return giottoDir._getWCET();
-//                
+//
 //            }
             Attribute WCET = ((Entity)actor).getAttribute("WCET");
-            
+
             if (_debugging) {
                 _debug(actor.getFullName());
-             } 
-            
+             }
+
             if (frequency == null) {
                 actorFrequency = 1;
             } else {
@@ -799,14 +799,14 @@ public class Director extends CodeGeneratorHelper {
             } else {
                 actorWCET =  ((DoubleToken) ((Variable) WCET).getToken()).doubleValue();
             }
-           
+
             wcet+= actorFrequency *actorWCET;
         }
-        
+
         if (_debugging) {
             _debug("director "+this.getFullName()+" thinks the WCET is: "+wcet);
         }
-        
+
         return wcet;
     }
 }

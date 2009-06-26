@@ -56,11 +56,11 @@ relations in a composite actor.
 */
 
 public class RelationWidthInference {
-    
+
    ///////////////////////////////////////////////////////////////////
    ////                         public methods                    ////
 
-    
+
     /**
      * Create RelationWidthInference, the algorithm for width inference.
      * Also set the top level to the value given as argument.
@@ -69,7 +69,7 @@ public class RelationWidthInference {
      *   top level container. That is, its container is not null.
      */
      public RelationWidthInference(CompositeActor topLevel) {
-         
+
          if (topLevel == null) {
              throw new IllegalArgumentException(
                      "The toplevel should not be a null pointer.");
@@ -78,7 +78,7 @@ public class RelationWidthInference {
          _topLevel = topLevel;
      }
 
-     
+
     /** Determine whether widths are currently being inferred or not.
      *  @return True When widths are currently being inferred.
      */
@@ -260,7 +260,7 @@ public class RelationWidthInference {
                             workingRelationList.addAll(updatedRelations);
                         }
                     }
-                    
+
                     // Use the width constraints on ports to infer the widths.
                     if (!workingPortSet.isEmpty() && !unspecifiedSet.isEmpty()) {
                         continueInference = false;
@@ -287,8 +287,8 @@ public class RelationWidthInference {
                             workingRelationList.addAll(updatedRelations);
                         }
                     }
-                    
-                    
+
+
                     // If we can't infer any widths anymore (workingRelationList.isEmpty())
                     // we will look whether there are ports that have a default width.
                     if (!workingDefaultPortSet.isEmpty() && workingRelationList.isEmpty()) {
@@ -557,14 +557,14 @@ public class RelationWidthInference {
         }
         return constraintStillUseful;
     }
-    
-    
+
+
     /** Infer the width for the relations connected to the port (which should have a default width).
      *  If the width can be inferred, update the width and add the relations for which the width
      *  has been updated.
      *  @param port The port for whose connected relations the width should be inferred.
      *  @param updatedRelations The relations for which the width has been updated.
-     *  @return true When this constraint is still useful (can be used to extra more information). 
+     *  @return true When this constraint is still useful (can be used to extra more information).
      *  @exception IllegalActionException If the expression for the width cannot
      *   be parsed or cannot be evaluated, or if the result of evaluation
      *   violates type constraints, or if the result of evaluation is null
@@ -572,7 +572,7 @@ public class RelationWidthInference {
      */
     static private boolean _updateRelationsFromDefaultWidth(IOPort port, List<IORelation> updatedRelations) throws IllegalActionException {
         boolean constraintStillUseful = true;
-        
+
         Set<IORelation> outsideUnspecifiedWidths = _relationsWithUnspecifiedWidths(port.linkedRelationList());
                 //port.linkedRelationList() returns the outside relations
 

@@ -477,7 +477,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         List transitionList = _currentState.outgoingPort.linkedRelationList();
         chooseTransition(transitionList);
     }
-    
+
     /** Notify the refinements of the current state, if any,
      *  that a {@link Director#fireAt(Actor,Time)}
      *  request was skipped, and that current time has passed the

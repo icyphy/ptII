@@ -440,7 +440,7 @@ public class FixedPointDirector extends StaticSchedulingDirector
         // because prefire() can be invoked multiple times in an iteration
         // (particularly if this is inside another FixedPointDirector).
         _resetAllReceivers();
-        
+
         // In this base class, the superdense time index is the only advancement
         // of time, and it advances on every iteration. Derived classes must set
         // it to zero in their postfire method if they advance time.
@@ -457,8 +457,8 @@ public class FixedPointDirector extends StaticSchedulingDirector
 
         return super.postfire() && needMoreIterations;
     }
-    
-    /** Return true if the director is ready to fire. 
+
+    /** Return true if the director is ready to fire.
      *  If <i>synchronizeToRealTime</i> is true, then
      *  wait for real time elapse to match or exceed model time.
      *  The return whatever the base class returns.
@@ -609,7 +609,7 @@ public class FixedPointDirector extends StaticSchedulingDirector
             receiver.reset();
         }
     }
-    
+
     /** Synchronize to real time, if appropriate.
      *  @exception IllegalActionException If the <i>synchronizeToRealTime</i>
      *   parameter is ill formed.

@@ -45,7 +45,7 @@ import ptolemy.kernel.util.IllegalActionException;
  *
  */
 public class IOPort extends RTMaudeAdaptor implements PortCodeGenerator {
-    
+
     /** Construct the code generator helper associated
      *  with the given IOPort.
      *  @param component The associated component.
@@ -61,7 +61,7 @@ public class IOPort extends RTMaudeAdaptor implements PortCodeGenerator {
             return _generateBlockCode("multiBlock");
         else
             return _generateBlockCode(defaultTermBlock,
-                    (p.isInput() && p.isOutput() ? 
+                    (p.isInput() && p.isOutput() ?
                             "InOut" : (p.isInput() ? "In" : "Out")
                     ) + "Port"
         );
@@ -109,17 +109,17 @@ public class IOPort extends RTMaudeAdaptor implements PortCodeGenerator {
 
     public void setBufferSize(int channelNumber, int bufferSize) {
         // TODO Auto-generated method stub
-        
+
     }
 
     public void setReadOffset(int channelNumber, Object readOffset) {
         // TODO Auto-generated method stub
-        
+
     }
 
     public void setWriteOffset(int channelNumber, Object writeOffset) {
         // TODO Auto-generated method stub
-        
+
     }
 
     public String updateConnectedPortsOffset(int rate, Director director)
@@ -133,5 +133,5 @@ public class IOPort extends RTMaudeAdaptor implements PortCodeGenerator {
         // TODO Auto-generated method stub
         return null;
     }
-    
+
 }

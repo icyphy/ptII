@@ -293,7 +293,7 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
             // Include files like Foo/Foo.jar that include the model
             // and gifs for use in old-style applets.
             if (new File(jnlpUnsignedJarFileName).exists()) {
-                // Use this only in applets, we handle jnlp specially. 
+                // Use this only in applets, we handle jnlp specially.
                 jarFilesResults.append(_targetPath + _sanitizedModelName + ".jar");
             }
 
@@ -670,7 +670,7 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
                 }
                 results.put(className, "ptolemy/codegen/codegen.jar");
             } else {
-                results.put(object.getClass().getName(), 
+                results.put(object.getClass().getName(),
                         _getDomainJar(object.getClass().getPackage().getName()));
             }
         }
@@ -749,7 +749,7 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
                             + "ptolemy/backtrack/backtrack.jar");
                 }
                 results.put(className,
-                        "ptolemy/backtrack/backtrack.jar"); 
+                        "ptolemy/backtrack/backtrack.jar");
             } else if (className.contains("ptolemy.actor.lib.jai")) {
                 if (_debug) {
                     System.out.println("_allAtomicEntityJars JAI: "
@@ -757,7 +757,7 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
                             + "ptolemy/actor/lib/jai/jai.jar");
                 }
                 results.put(className,
-                        "ptolemy/actor/lib/jai/jai.jar"); 
+                        "ptolemy/actor/lib/jai/jai.jar");
             } else if (className.contains("ptolemy.actor.lib.jmf")) {
                 if (_debug) {
                     System.out.println("_allAtomicEntityJars JMF: "
@@ -765,7 +765,7 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
                             + "ptolemy/actor/lib/jmf/jmf.jar");
                 }
                 results.put(className,
-                        "ptolemy/actor/lib/jmf/jmf.jar"); 
+                        "ptolemy/actor/lib/jmf/jmf.jar");
 
             } else {
                 // Add in the entity
@@ -838,8 +838,8 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
         }
         if(jarFileName.contains("ptolemy/actor/lib/jmf/jmf.jar")) {
             result.append("<jar href=\"http://cvs588.gsfc.nasa.gov/WebStartiliads/dev/lib/jmf/JMF-2.1.1e/lib/customizer.jar\"/>\n    <jar href=\"http://cvs588.gsfc.nasa.gov/WebStartiliads/dev/lib/jmf/JMF-2.1.1e/lib/jmf.jar\"/>\n    <jar href=\"http://cvs588.gsfc.nasa.gov/WebStartiliads/dev/lib/jmf/JMF-2.1.1e/lib/mediaplayer.jar\"/>\n   <jar href=\"http://cvs588.gsfc.nasa.gov/WebStartiliads/dev/lib/jmf/JMF-2.1.1e/lib/multiplayer.jar\"/>\n");
-        } 
-        if (jarFileName.contains("ptolemy/domains/gr/gr.jar")) {  
+        }
+        if (jarFileName.contains("ptolemy/domains/gr/gr.jar")) {
             result.append("   <extension href=\"http://download.java.net/media/java3d/webstart/release/java3d-latest.jnlp\"/>\n");
         }
         return result.toString();
@@ -977,7 +977,7 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
         while (classNames.hasNext()) {
             Map.Entry entry = (Map.Entry) classNames.next();
             String className = (String) entry.getKey();
-            System.out.println("AppletWriter cjf: className: " + className + " jarFile: "  
+            System.out.println("AppletWriter cjf: className: " + className + " jarFile: "
                     + (String) entry.getValue());
             if (jarFilesThatHaveBeenRequired.contains(classMap.get(className))) {
                 // If we have already possibly copied the jar file, then skip
@@ -1221,7 +1221,7 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
         auxiliaryJarMap.put("ptolemy.actor.lib.colt.ColtVonMises", coltJar);
         auxiliaryJarMap.put("ptolemy.actor.lib.colt.ColtZeta", coltJar);
 
-        
+
         String gtJar = "ptolemy/actor/gt/gt.jar";
         auxiliaryJarMap.put("ptolemy.actor.gt.ModelGenerator", gtJar);
         auxiliaryJarMap.put("ptolemy.actor.gt.ModelExecutor", gtJar);
@@ -1320,7 +1320,7 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
         // them to auxliaryClassMap and copy them.
         Map auxiliaryClassMap = new HashMap();
 
-        
+
 //         System.out.println("About to print jarFileThatHaveBeenRequired");
 //         Iterator jarFiles = jarFilesThatHaveBeenRequired.iterator();
 //         while (jarFiles.hasNext()) {
@@ -1506,12 +1506,12 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
         String keystoreFileName = StringUtilities.getProperty("ptolemy.ptII.dir")
             + File.separator + "ptKeystore";
 
-        
+
         String storePassword = "this.is.the.storePassword,change.it";
         String keyPassword = "this.is.the.keyPassword,change.it";
         String alias = "claudius";
 
-        String keystorePropertiesFileName = StringUtilities.getProperty("ptolemy.ptII.dir") 
+        String keystorePropertiesFileName = StringUtilities.getProperty("ptolemy.ptII.dir")
             + File.separator + "ptKeystore.properties";
 
         Properties properties = new Properties();
@@ -1536,7 +1536,7 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
                     throw new IOException("Failed to create directories for \""
                             + signedJarFileName + "\"");
                 }
-            } 
+            }
         }
         JarSigner.sign(jarFileName, signedJarFileName,
                 keystoreFileName, alias, storePassword.toCharArray(), keyPassword.toCharArray());
@@ -1549,7 +1549,7 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
     private void _createJarFile(File jarFile, File optionalJarFile, String [] jarFileNames, File[] filesToBeJared)
         throws Exception {
 
-        System.out.println("AppletWriter: _createJarFile" + 
+        System.out.println("AppletWriter: _createJarFile" +
                 jarFile + " " + jarFile.exists() + " " + optionalJarFile + " " + optionalJarFile.exists());
         byte buffer[] = new byte[1024];
 
@@ -1563,7 +1563,7 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
         String outputJarFileName = jarFile.getCanonicalPath();
 
         try {
-  
+
             if (!jarFile.exists() && !optionalJarFile.exists()) {
                 outputStream = new FileOutputStream(jarFile);
                 jarOutputStream = new JarOutputStream(outputStream, new Manifest());
@@ -1708,9 +1708,9 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
             }
         }
     }
- 
+
     /** Update a jar file and ignore filenames that are in jarFileNames.
-     *  @param jarOutputStream The Jar output stream to be written.   
+     *  @param jarOutputStream The Jar output stream to be written.
      *  @param jarInputStream The Jar output stream to be read.
      *  @param jarFileNames  An array of file names that have been
      *  already added to the jar file.
@@ -1719,7 +1719,7 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
      */
     private String [] _updateJar(JarOutputStream jarOutputStream,
             JarInputStream jarInputStream,
-            String [] jarFileNames) throws IOException { 
+            String [] jarFileNames) throws IOException {
         JarEntry inputEntry;
         Set entriesAdded = new HashSet(Arrays.asList(jarFileNames));
         byte buffer[] = new byte[1024];
@@ -1744,7 +1744,7 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
     }
 
 
-    // Return a Map that maps user specified classes to jar files.  
+    // Return a Map that maps user specified classes to jar files.
     // The contents of _jnlpClassesToJars property is read, which,
     // if present, is expected to be an array of two element arrays,
     // where the first element is dot separated class name, and the
@@ -1793,7 +1793,7 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
     // The Ptolemy configuration to use.  Defaults to "-ptinyViewer",
     // which means that files from $PTII/ptolemy/configs/ptinyViewer/
     // are used.  Other values include "-fullViewer", which is selected
-    // if gt is used in the model. 
+    // if gt is used in the model.
     private String _configurationName = "-ptinyViewer";
 
     private boolean _debug = false;

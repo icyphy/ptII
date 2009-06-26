@@ -238,7 +238,7 @@ public class SRDirector extends FixedPointDirector {
     public void initialize() throws IllegalActionException {
         super.initialize();
         _nextFiringTime = getModelTime();
-        
+
         // In case we are embedded within a timed director, request a first
         // firing.
         Director executiveDirector = ((Actor)getContainer()).getExecutiveDirector();
@@ -286,7 +286,7 @@ public class SRDirector extends FixedPointDirector {
                     if (executiveDirector instanceof SuperdenseTimeDirector) {
                         int index = ((SuperdenseTimeDirector)executiveDirector).getIndex();
                         if (index == 0) {
-                            return super.prefire();                            
+                            return super.prefire();
                         }
                         // If the index is not zero, do not agree to fire, but request
                         // a refiring at the next multiple of the period.
@@ -313,7 +313,7 @@ public class SRDirector extends FixedPointDirector {
                         if (executiveDirector instanceof SuperdenseTimeDirector) {
                             int index = ((SuperdenseTimeDirector)executiveDirector).getIndex();
                             if (index == 0) {
-                                return super.prefire();                            
+                                return super.prefire();
                             }
                             // If the index is not zero, do not agree to fire, but request
                             // a refiring at the next multiple of the period.

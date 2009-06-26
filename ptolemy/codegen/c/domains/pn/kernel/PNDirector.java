@@ -188,7 +188,7 @@ public class PNDirector extends Director {
     /**
      * Generate the initialize code for the associated PN director.
      * @return The generated initialize code.
-     * @exception IllegalActionException If the helper associated 
+     * @exception IllegalActionException If the helper associated
      * with the director throws it while generating initialize code.
      */
     public String generateInitializeCode() throws IllegalActionException {
@@ -220,7 +220,7 @@ public class PNDirector extends Director {
     /**
      * Return the main loop code for the associated PN director.
      * @return The generated main loop code.
-     * @exception IllegalActionException If the helper associated 
+     * @exception IllegalActionException If the helper associated
      * with the director throws it while generating main loop code.
      */
     public String generateMainLoop() throws IllegalActionException {
@@ -233,7 +233,7 @@ public class PNDirector extends Director {
     }
 
     /**
-     * Return the generated header label for the specified port channel. 
+     * Return the generated header label for the specified port channel.
      * @param port The specified port.
      * @param i The specified channel number.
      * @return The generated header label for the specified port channel.
@@ -245,7 +245,7 @@ public class PNDirector extends Director {
     /**
      * Generate the postfire code for the associated PN director.
      * @return The generated postfire code.
-     * @exception IllegalActionException If the helper associated 
+     * @exception IllegalActionException If the helper associated
      * with the director throws it while generating postfire code.
      */
     public String generatePostfireCode() throws IllegalActionException {
@@ -262,38 +262,38 @@ public class PNDirector extends Director {
      */
     public String generatePreinitializeCode() throws IllegalActionException {
         StringBuffer bufferCode = new StringBuffer();
-    
+
         _buffers.clear();
-    
+
         List actorList = ((CompositeEntity) _director.getContainer())
         .deepEntityList();
-    
+
         Iterator actors = actorList.iterator();
         while (actors.hasNext()) {
             Entity actor = (Entity) actors.next();
             Iterator ports = actor.portList().iterator();
-    
+
             while (ports.hasNext()) {
                 IOPort port = (IOPort) ports.next();
                 bufferCode.append(_createDynamicOffsetVariables(port));
             }
         }
         StringBuffer code = new StringBuffer(super.generatePreinitializeCode());
-    
+
         List args = new LinkedList();
         args.add(generateDirectorHeader());
-    
+
         args.add(((CompositeActor) _director.getContainer()).deepEntityList()
                 .size());
-    
+
         args.add(_buffers.size());
         args.add(_generateActorNameFileForDebugging());
         code.append(_codeStream.getCodeBlock("preinitBlock", args));
-    
+
         code.append(bufferCode);
-    
+
         _generateThreadFunctionCode(code);
-    
+
         return code.toString();
     }
 
@@ -396,7 +396,7 @@ public class PNDirector extends Director {
 
     /**
      * Return the size of the generated buffer for the specified
-     * port channel. This returns the value of  
+     * port channel. This returns the value of
      * "initialQueueCapacity" parameter of the PNDirector
      * @param port The specified port.
      * @param channelNumber The specified channel number.
@@ -417,7 +417,7 @@ public class PNDirector extends Director {
     /**
      * Generate the shared code for the associated PN director.
      * @return The generated shared code.
-     * @exception IllegalActionException If the helper associated 
+     * @exception IllegalActionException If the helper associated
      * with the director throws it while generating shared code.
      */
     public Set getSharedCode() throws IllegalActionException {

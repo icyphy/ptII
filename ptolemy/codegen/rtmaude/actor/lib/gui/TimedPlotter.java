@@ -46,5 +46,5 @@ public class TimedPlotter extends Entity {
     public TimedPlotter(ptolemy.actor.lib.gui.TimedPlotter component) {
         super(component);
     }
-    
+
 }

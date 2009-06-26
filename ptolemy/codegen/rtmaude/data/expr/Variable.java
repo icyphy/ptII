@@ -47,5 +47,5 @@ public class Variable extends RTMaudeAdaptor {
     public Variable(ptolemy.data.expr.Variable component) {
         super(component);
     }
-    
+
 }

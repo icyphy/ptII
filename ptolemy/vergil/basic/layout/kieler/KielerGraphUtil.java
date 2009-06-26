@@ -56,8 +56,8 @@ import de.cau.cs.kieler.kiml.layout.util.KimlLayoutUtil;
 //////////////////////////////////////////////////////////////////////////
 ////KielerGraphUtil
 /**
- * Static helper class to work with KIELER graph datastructures. 
- * 
+ * Static helper class to work with KIELER graph datastructures.
+ *
  * @author Hauke Fuhrmann, <haf@informatik.uni-kiel.de>
  * @version $Id$
  * @since Ptolemy II 7.1
@@ -73,7 +73,7 @@ public class KielerGraphUtil {
      * Get the absolute layout of a Kieler KNode, i.e. a layout containing
      * an absolute position of the top left corner of the node instead
      * of something relative to only its parent node.
-     * 
+     *
      * @param node The KNode of which to retrieve the absolute layout.
      * @return A shape layout containing the original size of the node
      *          and its location in absolute coordinates (not relative
@@ -98,12 +98,12 @@ public class KielerGraphUtil {
         absoluteLayout.setYpos(klayout.getYpos() + offsetY);
         return absoluteLayout;
     }
-    
+
     /**
      * Get the absolute position of a point, i.e. the absolute position instead
      * of relative to the top left corner of the parent node.
      *
-     * @param relativeKPoint Point with coordinates relative to its parent node. 
+     * @param relativeKPoint Point with coordinates relative to its parent node.
      * @param parentNode Parent node of the point coordinates.
      * @return Kieler KPoint with the absolute coordinates.
      */
@@ -136,7 +136,7 @@ public class KielerGraphUtil {
             return source.getParent();
         return null;
     }
-    
+
     /**
      * Get the upper left corner of the real bounding box of the contents of
      * a given Kieler KNode. Calculate the minimal x and y coordinates of all
@@ -152,20 +152,20 @@ public class KielerGraphUtil {
             if(layout.getXpos() < x) x = layout.getXpos();
             if(layout.getYpos() < y) y = layout.getYpos();
         }
-        
+
         KPoint kPoint = KLayoutDataFactory.eINSTANCE.createKPoint();
         kPoint.setX(x);
         kPoint.setY(y);
         return kPoint;
     }
-    
+
     /**
-     * Reposition a small object in a big object according to a given direction (NORTH, 
-     * EAST, SOUTH, WEST). The small object will be aligned to the big object's 
+     * Reposition a small object in a big object according to a given direction (NORTH,
+     * EAST, SOUTH, WEST). The small object will be aligned to the big object's
      * direction side and centered on the other coordinate.
      * @param originalBounds Big object's bounds
      * @param shrunkBounds Small object's bounds
-     * @param direction Direction of the small object within the big object given 
+     * @param direction Direction of the small object within the big object given
      *          by a SwingConstants direction constant
      * @param offset Offset of the lower bound of the port
      * @return  New location of the small object.
@@ -200,7 +200,7 @@ public class KielerGraphUtil {
     /**
      * Debug output a KEdge to a String, i.e. will represent all bendpoints in
      * the String.
-     * 
+     *
      * @param edge The edge to be toStringed
      * @return A String representing the KEdge
      */
@@ -222,7 +222,7 @@ public class KielerGraphUtil {
      * Debug output a KNode to a String, i.e. will represent the
      * whole subgraph starting with this node recursively and
      * also present all outgoing edges of all nodes.
-     * 
+     *
      * @param knode The node to be toStringed
      * @return A String representing the KNode
      */
@@ -234,7 +234,7 @@ public class KielerGraphUtil {
      * Debug output a KNode to a String, i.e. will represent the
      * whole subgraph starting with this node recursively and
      * also present all outgoing edges of all nodes.
-     * 
+     *
      * @param knode The node to be toStringed
      * @param level Tree level of the currently processed element. Used for
      *          recursive operation.
@@ -267,7 +267,7 @@ public class KielerGraphUtil {
      * representation. Can be used for debugging (manually look at it) or
      * loading it elsewhere, e.g. a KIELER Graph viewer. The default filename
      * is kgraph.xmi and will be written to the current working directory.
-     * 
+     *
      * @param kgraph The Kieler Graph datastructure given by its root KNode.
      */
     protected static void _writeToFile(KNode kgraph) {

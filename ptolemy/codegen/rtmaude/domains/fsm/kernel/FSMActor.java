@@ -50,15 +50,15 @@ import ptolemy.kernel.util.IllegalActionException;
 *
 */
 public class FSMActor extends Entity {
-    
+
     public FSMActor(ptolemy.domains.fsm.kernel.FSMActor component) {
         super(component);
     }
-    
+
     @Override
     protected String _generateInfoCode(String name, List<String> parameters)
             throws IllegalActionException {
-        ptolemy.domains.fsm.kernel.FSMActor fa = 
+        ptolemy.domains.fsm.kernel.FSMActor fa =
             (ptolemy.domains.fsm.kernel.FSMActor) getComponent();
         if (name.equals("initState"))
             return fa.getInitialState().getName();
@@ -74,5 +74,5 @@ public class FSMActor extends Entity {
         }
         return super._generateInfoCode(name, parameters);
     }
-    
+
 }

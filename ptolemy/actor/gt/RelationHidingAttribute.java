@@ -60,11 +60,11 @@ public class RelationHidingAttribute extends Parameter implements GTAttribute {
     public RelationHidingAttribute(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        
+
         setTypeEquals(BaseType.BOOLEAN);
         setToken(BooleanToken.getInstance(!DEFAULT));
     }
-    
+
     /** If this variable is not lazy (the default) then evaluate
      *  the expression contained in this variable, and notify any
      *  value dependents. If those are not lazy, then they too will

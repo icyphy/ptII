@@ -745,7 +745,7 @@ public class ComponentPort extends Port {
             // Throw an exception if this port is not of an acceptable
             // class for the relation.
             relation._checkPort(this);
-            
+
             // Superclass assures that the container is not null.
             Nameable relationContainer = relation.getContainer();
 

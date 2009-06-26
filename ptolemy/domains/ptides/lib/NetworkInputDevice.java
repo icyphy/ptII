@@ -52,7 +52,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 //////////////////////////////////////////////////////////////////////////
 ////NetworkInputDevice
 
-/** 
+/**
  *  <p>
  *  Note this actor (or some other subclass of this class) should
  *  be directly connected to a network input port in a PtidesBasicDirector.
@@ -62,21 +62,21 @@ import ptolemy.kernel.util.NameDuplicationException;
  *  both simulation and code generation purposes.
  *  <\p>
  *  <p>
- *  This actor assumes the incoming token is a RecordToken, and includes a 
- *  token value as well as a timestamp associated with the token value. Thus 
+ *  This actor assumes the incoming token is a RecordToken, and includes a
+ *  token value as well as a timestamp associated with the token value. Thus
  *  this actor parses the RecordToken and sends the output token with the
- *  timestamp equal to the timestamp stored in the RecordToken. 
+ *  timestamp equal to the timestamp stored in the RecordToken.
  *  In other words, we assume the RecordToken has these three labels: timestamp,
  *  microstep, and payload.
- *   
+ *
  *  @author Jia Zou, Slobodan Matic
  *  @version $Id$
  *  @since Ptolemy II 7.1
  *  @Pt.ProposedRating Yellow (jiazou)
- *  @Pt.AcceptedRating 
+ *  @Pt.AcceptedRating
  */
 public class NetworkInputDevice extends InputDevice {
-    
+
     /**
      * Constructs a NetworkInputDevice object.
      *
@@ -91,7 +91,7 @@ public class NetworkInputDevice extends InputDevice {
         input = new TypedIOPort(this, "input", true, false);
         output = new TypedIOPort(this, "output", false, true);
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
@@ -105,20 +105,20 @@ public class NetworkInputDevice extends InputDevice {
      *  to be at least that of the input.
      */
     public TypedIOPort output;
-    
-    /** label of the timestamp that's transmitterd within the RecordToken.  
+
+    /** label of the timestamp that's transmitterd within the RecordToken.
      */
     private static final String timestamp = "timestamp";
-    
-    /** label of the microstep that's transmitterd within the RecordToken.  
+
+    /** label of the microstep that's transmitterd within the RecordToken.
      */
     private static final String microstep= "microstep";
-    
-    /** label of the payload that's transmitterd within the RecordToken.  
+
+    /** label of the payload that's transmitterd within the RecordToken.
      */
     private static final String payload = "payload";
-    
-    
+
+
     ///////////////////////////////////////////////////////////////////
     ////                         public  variables                 ////
     /** Parses the input RecordToken and produces an output token of a timestamp
@@ -136,7 +136,7 @@ public class NetworkInputDevice extends InputDevice {
         }
 
         PtidesBasicDirector ptidesDirector = (PtidesBasicDirector) director;
-        
+
         // consume input
         if (input.hasToken(0)) {
             RecordToken record = (RecordToken) input.get(0);
@@ -146,12 +146,12 @@ public class NetworkInputDevice extends InputDevice {
                         + "Here we assume the Record is of types: timestamp"
                         + " + microstep + token");
             }
-            
-            Time recordTimeStamp = new Time(getDirector(), 
+
+            Time recordTimeStamp = new Time(getDirector(),
                     ((DoubleToken)(record.get(timestamp))).doubleValue());
-            
-            int recordMicrostep = ((IntToken)(record.get(microstep))).intValue(); 
-            
+
+            int recordMicrostep = ((IntToken)(record.get(microstep))).intValue();
+
             // The NetworkInputDevice parses the incoming token from
             // the network, which is a 3 element RecordToken, and
             // produces an event of the token value equal to the payload,
@@ -163,7 +163,7 @@ public class NetworkInputDevice extends InputDevice {
             ptidesDirector.setTag(lastModelTime, lastMicrostep);
         }
     }
-    
+
     /** Return the type constraints of this actor. The type constraint is
      *  that the input RecordToken has two fields, a "timestamp" of type
      *  double and a "tokenValue" of type same as the output type.
@@ -184,7 +184,7 @@ public class NetworkInputDevice extends InputDevice {
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
-    
+
     // This is fashioned after RecordDisassembler.
     // See that class for an explanation (such as it is).
     private class PortFunction extends MonotonicFunction {

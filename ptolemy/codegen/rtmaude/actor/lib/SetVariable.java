@@ -45,7 +45,7 @@ import ptolemy.codegen.rtmaude.kernel.Entity;
 import ptolemy.kernel.util.IllegalActionException;
 
 public class SetVariable extends Entity {
-    
+
     public SetVariable(ptolemy.actor.lib.SetVariable component) {
         super(component);
     }

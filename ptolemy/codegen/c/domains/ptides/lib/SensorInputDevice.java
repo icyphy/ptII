@@ -12,7 +12,7 @@ public class SensorInputDevice extends InputDevice {
     /**
      * Construct a SensorInputDevice helper.
      * @param actor The associated actor.
-     * 
+     *
      */
     public SensorInputDevice(ptolemy.domains.ptides.lib.SensorInputDevice actor) {
         super(actor);

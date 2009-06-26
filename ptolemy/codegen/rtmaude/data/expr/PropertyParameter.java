@@ -55,12 +55,12 @@ public class PropertyParameter extends StringParameter {
     public String stringValue() throws IllegalActionException {
         String timesign;
         String ret = super.stringValue();
-        
+
         if (ret.matches(".*(with\\s+no\\s+time\\s+limit\\s*|in\\s+time\\s+(<|<=).*)"))
             timesign = "t";
         else
             timesign = "u";
-        
+
         return "mc {init} |=" + timesign + " " + ret.replace("\\", "\\\\");
     }
 

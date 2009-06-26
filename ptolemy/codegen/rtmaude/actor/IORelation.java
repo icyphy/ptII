@@ -58,9 +58,9 @@ public class IORelation extends RTMaudeAdaptor {
     public String generateTermCode() throws IllegalActionException {
         final ptolemy.actor.IORelation r = (ptolemy.actor.IORelation) getComponent();
         StringBuffer rec = new StringBuffer();
-        
+
         for (ptolemy.actor.IOPort pi : r.linkedSourcePortList()) {
-            if (rec.length() > 0) 
+            if (rec.length() > 0)
                 rec.append("\n");
             rec.append(_generateBlockCode(
                     this.defaultTermBlock,
@@ -74,13 +74,13 @@ public class IORelation extends RTMaudeAdaptor {
         }
         return rec.toString();
     }
-    
-    private String generateEPortId(NamedObj container, ptolemy.actor.IOPort port) 
+
+    private String generateEPortId(NamedObj container, ptolemy.actor.IOPort port)
         throws IllegalActionException {
-        return _generateBlockCode("scopeBlock", 
+        return _generateBlockCode("scopeBlock",
                 generateActorIdforPort(container, port), port.getName());
     }
-    
+
     private String generateActorIdforPort(NamedObj container, ptolemy.actor.IOPort port) {
         String actorId;
         if (container.equals(port.getContainer().getContainer()))
@@ -89,5 +89,5 @@ public class IORelation extends RTMaudeAdaptor {
             actorId = "parent";
         return actorId;
     }
-    
+
 }

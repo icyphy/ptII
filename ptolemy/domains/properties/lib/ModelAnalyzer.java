@@ -42,9 +42,9 @@ import ptolemy.kernel.util.Workspace;
 //// ModelAnalyzer
 
 /**
-This actor performs property analysis on input model. Upon firing, it 
-consumes an input ActorToken and outputs the same model with added 
-property annotations. 
+This actor performs property analysis on input model. Upon firing, it
+consumes an input ActorToken and outputs the same model with added
+property annotations.
 
 @author  Man-Kit Leung
 @version $Id$
@@ -86,7 +86,7 @@ public class ModelAnalyzer extends Transformer {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     /** Clone the object into the specified workspace. The new object is
      *  <i>not</i> added to the directory of that workspace (you must do this
      *  yourself if you want it there).
@@ -97,7 +97,7 @@ public class ModelAnalyzer extends Transformer {
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         ModelAnalyzer newObject = (ModelAnalyzer) super.clone(workspace);
-        if (newObject._analyzerWrapper != null) { 
+        if (newObject._analyzerWrapper != null) {
             // FIXME: Why is this necessary?
             newObject._analyzerWrapper = (AnalyzerAttribute)newObject._analyzerWrapper.getAttribute("_analyzerWrapper");
         }

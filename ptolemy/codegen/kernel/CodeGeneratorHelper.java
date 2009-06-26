@@ -347,13 +347,13 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
 
         return processCode(code.toString());
     }
-    
-    /** Generate The fire function code. This method is called when generating 
-     *  code for a Giotto director. Produce the fire code but do not transfer 
-     *  generate any type conversion code that sends this actors output to another 
-     *  actor's input. The typeConversion and moving from an output to an input 
+
+    /** Generate The fire function code. This method is called when generating
+     *  code for a Giotto director. Produce the fire code but do not transfer
+     *  generate any type conversion code that sends this actors output to another
+     *  actor's input. The typeConversion and moving from an output to an input
      *  should be taken care of in a driver method not the fire method.
-     *  This works under that assumption that _generateFireCode() also generates the code 
+     *  This works under that assumption that _generateFireCode() also generates the code
      *  for postfire.
      *  If later we generate postfire code in a different method please add that method
      *  call to this method
@@ -1282,9 +1282,9 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
      */
     public String processCode(String code) throws IllegalActionException {
         StringBuffer result = new StringBuffer();
-        
+
         boolean processAgain = false;
-        
+
         int currentPos = _getMacroStartIndex(code, 0);
 
         if (currentPos < 0) {
@@ -1343,8 +1343,8 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
                     processAgain = true;
                 }
                 result.append(replaceString);
-                
-                
+
+
             } catch (Throwable throwable) {
                 throw new IllegalActionException(this, throwable,
                         "Failed to replace the parameter \"" + name
@@ -1358,8 +1358,8 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
 
         if (processAgain) {
             return processCode(result.toString());
-        } 
-        
+        }
+
         return result.toString();
     }
 
@@ -1679,7 +1679,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
         String name = StringUtilities.sanitizeName(namedObj.getName());
         return name.replaceAll("\\$", "Dollar");
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
@@ -2331,9 +2331,9 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
             return expression;
         }
 
-        expression = "$convert_" + refType + "_" + castType 
+        expression = "$convert_" + refType + "_" + castType
         + "(" + expression + ")";
-        
+
         return processCode(expression);
     }
 
@@ -2650,38 +2650,38 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
             return getReference(parameter);
 
         } else if (macro.equals("targetType")) {
-            Typeable typeable = _getTypeable(parameter); 
+            Typeable typeable = _getTypeable(parameter);
             if (typeable != null) {
                 return targetType(typeable.getType());
             }
-            
+
             throw new IllegalActionException(parameter
                     + " is not a typeable object. The $targetType() " +
                                     "macro takes in a Typeable object.");
 
         } else if (macro.equals("elementType") || macro.equals("elementTargetType")) {
-            Typeable typeable = _getTypeable(parameter); 
+            Typeable typeable = _getTypeable(parameter);
             if (typeable != null && typeable.getType() instanceof ArrayType) {
 
                 if (macro.equals("elementType")) {
-                    return codeGenType(((ArrayType) 
+                    return codeGenType(((ArrayType)
                         typeable.getType()).getElementType());
                 } else {
-                    return targetType(((ArrayType) 
+                    return targetType(((ArrayType)
                             typeable.getType()).getElementType());
                 }
             }
             throw new IllegalActionException(parameter
                     + " is not of ArrayType. The $elementType() " +
                                     "macro takes in a ArrayType object.");
-            
+
         } else if (macro.equals("type") || macro.equals("cgType")) {
 
             String type = "";
             if (macro.equals("type")) {
                 type = "TYPE_";
             }
-            Typeable typeable = _getTypeable(parameter); 
+            Typeable typeable = _getTypeable(parameter);
             if (typeable != null) {
                 return type + codeGenType(typeable.getType());
             }
@@ -2989,7 +2989,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
     }
 
     /**
-     * Return 
+     * Return
      * @param objectName
      * @return
      */
@@ -3207,9 +3207,9 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
     static {
         _eol = StringUtilities.getProperty("line.separator");
     }
-    
+
     public double _getWCET( ) throws IllegalActionException{
-       return 500.0; 
+       return 500.0;
     }
-    
+
 }

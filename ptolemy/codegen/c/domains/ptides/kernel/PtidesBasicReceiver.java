@@ -30,7 +30,7 @@ public class PtidesBasicReceiver extends ptolemy.codegen.c.actor.Receiver {
     public String generateCodeForPut(String token) throws IllegalActionException{
         TypedIOPort sinkPort = (TypedIOPort)getReceiver().getContainer();
         Type sinkType = sinkPort.getType();
-        
+
         // Getting deadline.
         Parameter relativeDeadline = (Parameter)sinkPort.getAttribute("relativeDeadline");
         String deadlineSecsString = null;
@@ -45,7 +45,7 @@ public class PtidesBasicReceiver extends ptolemy.codegen.c.actor.Receiver {
             deadlineSecsString = new String("0");
             deadlineNsecsString = new String("0");
         }
-        
+
         // Getting offsetTime.
         Parameter offsetTime = (Parameter)sinkPort.getAttribute("minDelay");
         String offsetSecsString = null;
@@ -60,7 +60,7 @@ public class PtidesBasicReceiver extends ptolemy.codegen.c.actor.Receiver {
             offsetSecsString = new String("0");
             offsetNsecsString = new String("0");
         }
-        
+
         // FIXME: not sure whether we should check if we are putting into an input port or
         // output port.
         // Generate a new event.
@@ -68,7 +68,7 @@ public class PtidesBasicReceiver extends ptolemy.codegen.c.actor.Receiver {
         args.add(sinkType);
         args.add(token);
         args.add(generateName(sinkPort.getContainer()));
-        args.add("Event_Head_" + generateName(sinkPort) + "[" + 
+        args.add("Event_Head_" + generateName(sinkPort) + "[" +
                 sinkPort.getChannelForReceiver(getReceiver()) + "]");
         args.add("");//timestamp
         args.add("");//microstep

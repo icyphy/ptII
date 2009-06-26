@@ -128,13 +128,13 @@ public class PNProcessEvent {
 
     /** Return the cause of the finishing state.
      *  @return an integer representing the cause of the finishing state
-     */ 
+     */
     public int getFinishingCause() {
         return _cause;
     }
 
     /** Return the string value of this event.
-     *  @return The string value of this event.   
+     *  @return The string value of this event.
      */
     public String toString() {
         String result;

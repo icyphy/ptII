@@ -46,7 +46,7 @@ import ptolemy.kernel.util.Settable;
 //// RTMaudeCodeGenerator
 
 /**
-* RTMaude code generator. 
+* RTMaude code generator.
 *
 * @see ptolemy.codegen.kernel.CodeGenerator
 * @author Kyungmin Bae
@@ -57,15 +57,15 @@ import ptolemy.kernel.util.Settable;
 public class RTMaudeCodeGenerator extends CodeGenerator {
 
     String maudeCommand = "/usr/local/share/maude/maude.intelDarwin";
-    
+
     Parameter simulation_bound;
-    
+
     public RTMaudeCodeGenerator(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        
+
         simulation_bound = new Parameter(this, "Simulation bound");
-        
+
         allowDynamicMultiportReference.setVisibility(Settable.NONE);
         compile.setVisibility(Settable.NONE);
         compileTarget.setVisibility(Settable.NONE);
@@ -73,19 +73,19 @@ public class RTMaudeCodeGenerator extends CodeGenerator {
         generateEmbeddedCode.setVisibility(Settable.NONE);
         padBuffers.setVisibility(Settable.NONE);
         target.setVisibility(Settable.NONE);
-         
+
         compile.setExpression("false");
         generatorPackage.setExpression("ptolemy.codegen.rtmaude");
     }
-    
+
     @Override
     protected String _generateBodyCode() throws IllegalActionException {
         CompositeEntity model = (CompositeEntity) getContainer();
-        
+
         CodeGeneratorHelper compositeHelper = (CodeGeneratorHelper) _getHelper(model);
         return CodeStream.indent(1, compositeHelper.generateFireCode() + " ");
     }
-    
+
     @Override
     public String generateMainEntryCode() throws IllegalActionException {
         return super.generateMainEntryCode() +
@@ -94,7 +94,7 @@ public class RTMaudeCodeGenerator extends CodeGenerator {
 
     @Override
     public String generateMainExitCode() throws IllegalActionException {
-        return super.generateMainExitCode() + 
+        return super.generateMainExitCode() +
             ((RTMaudeAdaptor) _getHelper(getContainer())).generateExitCode();
     }
 
@@ -120,7 +120,7 @@ public class RTMaudeCodeGenerator extends CodeGenerator {
         List commands = new LinkedList();
 
         if (((BooleanToken) run.getToken()).booleanValue()) {
-            commands.add(maudeCommand + " " + _sanitizedModelName + ".rtmaude");            
+            commands.add(maudeCommand + " " + _sanitizedModelName + ".rtmaude");
         }
 
         if (commands.size() == 0) {

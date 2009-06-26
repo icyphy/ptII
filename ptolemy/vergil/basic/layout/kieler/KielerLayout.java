@@ -1,4 +1,4 @@
-/* Layout interface between the Ptolemy Diva editor and the KIELER 
+/* Layout interface between the Ptolemy Diva editor and the KIELER
  * layout library.*/
 /*
 @Copyright (c) 2009 The Regents of the University of California.
@@ -113,11 +113,11 @@ import diva.graph.modular.EdgeModel;
  * this layout gets applied to the Ptolemy model. Moving of nodes in Ptolemy is
  * done via adding or changing location attributes.
  * <p>
- * Setting bendpoints is not yet supported in Ptolemy. 
- * Ptolemy's built-in 
+ * Setting bendpoints is not yet supported in Ptolemy.
+ * Ptolemy's built-in
  * connection routing does not consider obstacle avoidance, hence overlappings
- * with other nodes and connections might appear. 
- * This class tries to gap that hole by the option to add new relations with 
+ * with other nodes and connections might appear.
+ * This class tries to gap that hole by the option to add new relations with
  * vertices into the Ptolemy model. The vertices are placed at the bend point
  * positions such that a certain routing is forced.
  * <p>
@@ -127,7 +127,7 @@ import diva.graph.modular.EdgeModel;
  * <p>
  * It uses location attributes of actors and attributes to place items and
  * corresponding for relation vertices.
- * 
+ *
  * @author Hauke Fuhrmann, <haf@informatik.uni-kiel.de>
  * @version $Id$
  * @since Ptolemy II 7.1
@@ -142,7 +142,7 @@ public class KielerLayout extends AbstractGlobalLayout {
      * AbstractGlobalLayout. The KielerLayout will need access to the top level
      * Ptolemy model, so either use corresponding constructor or call setModel()
      * prior to layout invocation.
-     * 
+     *
      * @param target The LayoutTarget on which layout will be performed
      */
     public KielerLayout(LayoutTarget target) {
@@ -153,9 +153,9 @@ public class KielerLayout extends AbstractGlobalLayout {
      * Construct an instance setting the LayoutTarget as requested by the
      * AbstractGlobalLayout and the containing Ptolemy model. Preferred
      * constructor.
-     * 
+     *
      * @param target The LayoutTarget on which layout will be performed
-     * @param ptolemyContainer The composite actor that contains all elements 
+     * @param ptolemyContainer The composite actor that contains all elements
      *                         to be layouted
      */
     public KielerLayout(LayoutTarget target, CompositeActor ptolemyContainer) {
@@ -181,7 +181,7 @@ public class KielerLayout extends AbstractGlobalLayout {
      * bendpoint information of KIELER is discarded, which may result in
      * suboptimal results as the Ptolemy connection router does not consider
      * obstacle avoidance.
-     * 
+     *
      * @param composite the container of the diagram in terms of an GraphModel.
      */
     @Override
@@ -203,14 +203,14 @@ public class KielerLayout extends AbstractGlobalLayout {
                 System.out.println("done in "
                         + (System.currentTimeMillis() - _time) + "ms");
             }
-        
+
         report = "Creating Kieler KGraph from Ptolemy model... ";
         _report(report);
         if(_debug){
             _time = System.currentTimeMillis();
             System.out.print(report);
         }
-        
+
         // create a Kieler Graph
         // create one node that will be used for the Hierarchical layout
         // algorithm. This will contain all items with connections
@@ -263,7 +263,7 @@ public class KielerLayout extends AbstractGlobalLayout {
             }
 
             report = "Applying layout to Ptolemy diagram... ";
-            
+
             // write to XML file for debugging layout
             // writing to file requires XMI resource factory
             if (_debug) {
@@ -306,16 +306,16 @@ public class KielerLayout extends AbstractGlobalLayout {
      * vertices which is a real manipulation of a model. Routing is only
      * supported for stahndard actor based frames with relations. Different
      * arrow styles like in Modal Models is not yet supported for routing.
-     * 
-     * @param flag True iff edge routing shall be applied by insertion of 
+     *
+     * @param flag True iff edge routing shall be applied by insertion of
      *             relation vertices.
      */
     public void setApplyEdgeLayout(boolean flag) {
         this._doApplyEdgeLayout = flag;
     }
-    
+
     /**
-     * Configure whether all unconnected nodes should also be placed by the 
+     * Configure whether all unconnected nodes should also be placed by the
      * layouter with a simple box layout heuristic. Either only connected
      * nodes (e.g. actors connected by relations) get placed or all nodes
      * including unconnected nodes get placed. The rationale behind not placing
@@ -323,8 +323,8 @@ public class KielerLayout extends AbstractGlobalLayout {
      * text annotations or parameters at some special locations, e.g. to
      * document specific parts of the model. In that case the bounding box of
      * all connected nodes will be located with its upper left corner at the
-     * same position as before. 
-     * 
+     * same position as before.
+     *
      * @param flag If true, apply layout to all nodes, including unconnected ones.
      *             Otherwise, apply layout only to connected nodes.
      */
@@ -337,14 +337,14 @@ public class KielerLayout extends AbstractGlobalLayout {
      * layouter will require access to the Ptolemy model because the lower level
      * Diva abstraction does not consider certain properties required by the
      * Kieler layouter such as port positions.
-     * 
+     *
      * @param model The parent composite actor which internal diagram shall be
      *              layouted.
      */
     public void setModel(CompositeActor model) {
         this._compositeActor = model;
     }
-    
+
     /**
      * Set the Top window to enable status reports on the status bar.
      * @param top The Top window
@@ -357,10 +357,10 @@ public class KielerLayout extends AbstractGlobalLayout {
      * Apply precomputed routing of edges to the Ptolemy model by insertion of
      * new relation vertices. Take a Kieler KEdge with layout information
      * (bend point positions) and create a new relation with a vertex for
-     * each bend point and interconnect them. 
+     * each bend point and interconnect them.
      * Then replace the original relation with the new
-     * relation set. Return the original relation if it is safe to delete it. 
-     * 
+     * relation set. Return the original relation if it is safe to delete it.
+     *
      * @param kEdge The Kieler KEdge that hold the precomupted layout information,
      *              i.e. bend point positions
      * @return The old Relation if it is safe to delete it.
@@ -379,20 +379,20 @@ public class KielerLayout extends AbstractGlobalLayout {
         for (KPoint relativeKPoint : bendPoints) {
             KPoint kpoint = KielerGraphUtil._getAbsoluteKPoint(relativeKPoint,
                     KielerGraphUtil._getParent(kEdge));
-            
+
             // create new relation
             String relationName = _ptolemyModelUtil._getUniqueString(_compositeActor, "relation");
             relationName = _ptolemyModelUtil._createRelationWithVertex(relationName, kpoint.getX(),
                     kpoint.getY());
-            
+
             // we process the first bendpoint
-            if (count == 0) { 
+            if (count == 0) {
                 KPort kSourcePort = kEdge.getSourcePort();
                 KNode kNode = kEdge.getSource();
 
                 _replaceRelation(kSourcePort, kNode, relationName, oldRelation);
             }
-            
+
             // process all other bendpoints
             else {
                 if (previousRelation != null)
@@ -402,7 +402,7 @@ public class KielerLayout extends AbstractGlobalLayout {
             previousRelation = relationName;
             count++;
         }
-        
+
         // last, process target
         if (previousRelation != null) {
             KPort kTargetPort = kEdge.getTargetPort();
@@ -422,16 +422,16 @@ public class KielerLayout extends AbstractGlobalLayout {
      * contained by it back to the Ptolemy model. Do most changes to the Ptolemy
      * model via MoMLChangeRequests. Set location attributes for all
      * visible Ptolemy nodes. So far Ptolemy does not support setting of
-     * connection bendpoints explicitly. 
+     * connection bendpoints explicitly.
      * The Ptolemy connection router does
      * not consider obstruction avoidance so there are likely to be connection
      * overlappings in the diagram.
      * <p>
      * Optionally route edges explicitly by inserting new relation vertices for
      * each bend point.
-     * 
+     *
      * @see #setApplyEdgeLayout(boolean)
-     * 
+     *
      * @param kgraph The Kieler graph object containing all layout information to
      *               apply to the Ptolemy model
      * @throws IllegalActionException Exception can be thrown if routing of edges
@@ -439,7 +439,7 @@ public class KielerLayout extends AbstractGlobalLayout {
      */
     private void _applyLayout(KNode kgraph) throws IllegalActionException {
         //long time = System.currentTimeMillis();
-        
+
         // init required classes
         GraphModel graph = this.getLayoutTarget().getGraphModel();
         if (graph instanceof ActorGraphModel) {
@@ -464,10 +464,10 @@ public class KielerLayout extends AbstractGlobalLayout {
                             .getXpos(), absoluteLayout.getYpos());
                 }
             }
-            
+
             //System.out.println("Nodes apply: "+(System.currentTimeMillis()-time));
             //time = System.currentTimeMillis();
-            
+
             // apply edge layout
             if (_doApplyEdgeLayout) {
                 Set<Relation> relationsToDelete = new HashSet<Relation>();
@@ -499,12 +499,12 @@ public class KielerLayout extends AbstractGlobalLayout {
      * lacks certain concepts that are relevant for a proper layout, as for
      * example exact port locations for considering port constraints in the
      * model, supported by Kieler.
-     * 
+     *
      * @param composite The GraphModel composite object to retrieve the model
      *                  information from
-     * @param boxLayoutNode Kieler subgraph to receive all unconnected model 
+     * @param boxLayoutNode Kieler subgraph to receive all unconnected model
      *                  elements
-     * @param hierarchicalLayoutNode Kieler subgraph to receive all connected 
+     * @param hierarchicalLayoutNode Kieler subgraph to receive all connected
      *                  model elements
      */
     private void _createGraph(Object composite, KNode hierarchicalLayoutNode,
@@ -584,7 +584,7 @@ public class KielerLayout extends AbstractGlobalLayout {
                     KNode kVertexNode = _createKNodeForVertex((Vertex) node);
                     // add it to the graph
                     kVertexNode.setParent(hierarchicalLayoutNode);
-                    
+
                     // get check bounds for global bounding box
                     KShapeLayout layout = KimlLayoutUtil
                             .getShapeLayout(kVertexNode);
@@ -592,7 +592,7 @@ public class KielerLayout extends AbstractGlobalLayout {
                         globalX = layout.getXpos();
                     if (layout.getYpos() < globalY)
                         globalY = layout.getYpos();
-                    
+
                     // store it in the maps
                     _ptolemy2KielerNodes.put(node, kVertexNode);
                     _kieler2ptolemyDivaNodes.put(kVertexNode, node);
@@ -607,7 +607,7 @@ public class KielerLayout extends AbstractGlobalLayout {
                     // setup Kieler ports for the KNode of the internal Ptolemy
                     // port
                     // _createKPort(kPortNode, (Port)semanticNode);
-                    
+
                  // get check bounds for global bounding box
                     KShapeLayout layout = KimlLayoutUtil
                             .getShapeLayout(kPortNode);
@@ -615,7 +615,7 @@ public class KielerLayout extends AbstractGlobalLayout {
                         globalX = layout.getXpos();
                     if (layout.getYpos() < globalY)
                         globalY = layout.getYpos();
-                    
+
                     // store it in the maps
                     _ptolemy2KielerNodes.put(node, kPortNode);
                     _kieler2ptolemyDivaNodes.put(kPortNode, node);
@@ -678,12 +678,12 @@ public class KielerLayout extends AbstractGlobalLayout {
      * a tree search beginning on both end points of the diva edge. Whenever
      * either of the endpoints is connected to a source port, this will be the
      * source of the KEdge and determine its direction.
-     * 
+     *
      * The newly created edge is stored with the corresponding diva edge in the
      * global maps _ptolemyDiva2KielerEdges, _kieler2PtolemyDivaEdges, such that
      * the {@link #_applyLayout(KNode)} method will be able to reapply the
      * layout.
-     * 
+     *
      * @param divaEdge The Ptolemy diva edge object for which to create a new KEdge.
      */
     private void _createKEdge(Object divaEdge) {
@@ -730,12 +730,12 @@ public class KielerLayout extends AbstractGlobalLayout {
     /**
      * Create a new Kieler KNode corresponding to a Ptolemy diva node and its
      * Ptolemy semantic object (e.g. an Actor).
-     * 
+     *
      * The newly created node is stored with the corresponding diva and ptolemy
      * nodes in the global maps _ptolemy2KielerNodes, _kieler2ptolemyDivaNodes,
      * _kieler2ptolemyEntityNodes, such that * the {@link #_applyLayout(KNode)}
      * method will be able to reapply the layout.
-     * 
+     *
      * @param node The Diva node object.
      * @param semanticNode The corresponding Ptolemy semantic object, e.g. an Actor or
      *                     TextAttribute
@@ -783,11 +783,11 @@ public class KielerLayout extends AbstractGlobalLayout {
      * this CompositeActor. It is represented by a node where the connection may
      * touch the node corresponding to its type (input, output, both) on the
      * right, left or top.
-     * 
+     *
      * For now this results a crude approximation of the node, because the
      * figure of the original Ptolemy port cannot be obtained by the layout
      * target. Hence we cannot ask the port for its original bounds.
-     * 
+     *
      * @param node The Ptolemy inner port.
      * @return A new Kieler KNode corresponding to the Ptolemy inner port.
      */
@@ -813,7 +813,7 @@ public class KielerLayout extends AbstractGlobalLayout {
      * constraints (as in usual graphs without ports), the corresponding KNode
      * will contain one input port and one output port. Size of the node and
      * positions of the ports are all set to zero.
-     * 
+     *
      * @param vertex The Ptolemy vertex for which to create a KNode
      * @return An initialized KNode with one input and one output port
      */
@@ -854,11 +854,11 @@ public class KielerLayout extends AbstractGlobalLayout {
      * Ptolemy, this gets emulated by creating multiple distinct ports with a
      * little offset each. Create only one node. For multiports call this method
      * multiple times with changed parameters.
-     * 
+     *
      * The newly created port is stored with the corresponding ptolemy port in
      * the global maps _kieler2PtolemyPorts, _ptolemy2KielerPorts, such that the
      * {@link #_applyLayout(KNode)} method will be able to reapply the layout.
-     * 
+     *
      * @param knode The parent KNode of the new port
      * @param portType The port Type, either input or output
      * @param port The corresponding Ptolemy port (might be a multiport)
@@ -989,12 +989,12 @@ public class KielerLayout extends AbstractGlobalLayout {
      * get initialized in terms of size and position from the Ptolemy
      * counterparts and attached to the corresponding KNode and registered in
      * the mapping fields of this object.
-     * 
+     *
      * For Ptolemy multiports with multiple connections, multiple Kieler KPorts
      * are created with slightly offsetted location. Hence the layouter can also
      * here consider the location for connection crossing minimization. Hence
      * one Ptolemy port may correspond to multiple Kieler KPorts.
-     * 
+     *
      * @param knode The KNode to create Kieler ports for.
      * @param ports The Ptolemy ports counterparts for which to create Kieler
      *            ports.
@@ -1021,20 +1021,20 @@ public class KielerLayout extends AbstractGlobalLayout {
         }
     }
 
-    
+
     /**
      * Get a Kieler KPort for a corresponding Ptolemy object, i.e. a Port or a
      * relation Vertex. If the input is a Vertex, it is determined which of the
      * two KPorts of the corresponding KNode is returned (as in Kieler a Vertex
      * is represented by one node with one input and one output port).
-     * 
+     *
      * If the input object is a Ptolemy Port, the KPort counterpart is searched
      * in the global maps. If additionally the Port is a multiport with multiple
      * connection, the given relation is used to determine which KPort
      * corresponds to the Port/Relation combination. In Kieler multiports are
      * represented by multiple KPorts with slightly offsetted locations.
-     * 
-     * @param ptolemyObject The corresponding Ptolemy object, either a Vertex 
+     *
+     * @param ptolemyObject The corresponding Ptolemy object, either a Vertex
      *                      or a Port
      * @param type The type of the port, incoming or outgoing
      * @param rel The relation that is connected to the Ptolemy multiport
@@ -1075,15 +1075,15 @@ public class KielerLayout extends AbstractGlobalLayout {
      * Transform a location from a Kieler node from Kieler coordinate system to
      * ptolemy coordinate system. That is Kieler gives locations to be the upper
      * left corner of an item and Ptolemy as the center point of the item.
-     * 
+     *
      * If the original location is not within the bounds of the referenceNode at
      * all, the location is not updated. (e.g. important distinction between
      * nodes and vertices).
-     * 
+     *
      * @param kshapeLayout Layout of KNode kieler graphical node that contains
-     *            bounds with location and size. This object will be altered to 
+     *            bounds with location and size. This object will be altered to
      *            fit the new location.
-     * @param referenceNode The parent reference node giving the bounds to 
+     * @param referenceNode The parent reference node giving the bounds to
      *            calculate with.
      */
     private void _kNode2Ptolemy(KShapeLayout kshapeLayout, KNode referenceNode) {
@@ -1092,11 +1092,11 @@ public class KielerLayout extends AbstractGlobalLayout {
         Object divaNode = _kieler2ptolemyDivaNodes.get(referenceNode);
 
         double[] location = PtolemyModelUtil._getLocation(namedObj);
-        
+
         if (namedObj != null && divaNode != null) {
             Rectangle2D divaBounds = this.getLayoutTarget().getBounds(divaNode);
             double offsetX = 0, offsetY = 0;
-                       
+
             // check if we got a valid location inside the diva bounds
             // if not we might have something that has no location attribute
             // (e.g. a relation vertex) where we don't need any offset
@@ -1115,7 +1115,7 @@ public class KielerLayout extends AbstractGlobalLayout {
      * Replace a relation connected to a port of a node with a new relation
      * by unlinking the old one and linking the new one. Properly handle the
      * index to what the new relation is inserted for multiports, i.e. the
-     * channel index of the new relation should be the same as before for the 
+     * channel index of the new relation should be the same as before for the
      * old relation.
      * @param kPort Kieler KPort the relation is connected to. Might be null or
      *              invalid if the port is an inner port within the composite
@@ -1164,7 +1164,7 @@ public class KielerLayout extends AbstractGlobalLayout {
                     _ptolemyModelUtil._linkPortInside(port.getName(_compositeActor), "relation", newRelationName, index);
                 }
             }
-            
+
         } else if (sourceRelation != null) {
             _ptolemyModelUtil._unlinkRelations(oldRelation.getName(_compositeActor), sourceRelation.getName(_compositeActor));
             _ptolemyModelUtil._link("relation1", sourceRelation.getName(),
@@ -1181,7 +1181,7 @@ public class KielerLayout extends AbstractGlobalLayout {
             _top.report(message);
         }
     }
-    
+
     /**
      * Determine the direction of dataflow of all edges and store it in the
      * local maps. Iterate all edges and try to deduce the type of each edge's
@@ -1208,17 +1208,17 @@ public class KielerLayout extends AbstractGlobalLayout {
             for (Iterator edgeIter = edges.iterator(); edgeIter.hasNext();) {
                 Object edge = edgeIter.next();
                 EdgeModel edgeModel = aGraph.getEdgeModel(edge);
-                
+
                 Object simpleEndpoint1 = edgeModel.getHead(edge);
                 Object simpleEndpoint2 = edgeModel.getTail(edge);
                 Object endpoint1 = aGraph.getSemanticObject(simpleEndpoint1);
                 Object endpoint2 = aGraph.getSemanticObject(simpleEndpoint2);
-                
+
                 // see if we have successfully looked at this edge before
                 if (_divaEdgeTarget.containsKey(edge)
                         && _divaEdgeSource.containsKey(edge))
                     continue;
-                
+
                 // check whether endpoints are source or target ports
                 if (endpoint1 instanceof Port) {
                     boolean isInput1 = PtolemyModelUtil._isInput((Port) endpoint1);
@@ -1296,7 +1296,7 @@ public class KielerLayout extends AbstractGlobalLayout {
      * The default width used by Kieler for inner ports.
      */
     private static final float DEFAULT_INNER_PORT_WIDTH = 30.0f;
-    
+
     /**
      * The default height used by Kieler for inner ports.
      */
@@ -1319,7 +1319,7 @@ public class KielerLayout extends AbstractGlobalLayout {
      * the distance between multiple single KPorts.
      */
     private static final float MULTIPORT_OFFSET = 5.0f;
-    
+
     /**
      * Offset between bottom of Multiport to the first Kieler KPort
      */
@@ -1359,7 +1359,7 @@ public class KielerLayout extends AbstractGlobalLayout {
      * of new relation vertices or not.
      */
     private boolean _doApplyEdgeLayout = false;
-    
+
     /**
      * Flag to indicate whether all nodes should be placed including unconnected
      * nodes such as attributes (e.g. director, text annotations,...).
@@ -1414,7 +1414,7 @@ public class KielerLayout extends AbstractGlobalLayout {
      * Variable to store time for statistics.
      */
     private long _time;
-    
+
     /**
      * Pointer to Top in order to report the current status.
      */

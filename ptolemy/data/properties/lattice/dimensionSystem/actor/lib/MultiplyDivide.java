@@ -66,7 +66,7 @@ public class MultiplyDivide extends AtomicActor {
 
     public List<Inequality> constraintList()
             throws IllegalActionException {
-        ptolemy.actor.lib.MultiplyDivide actor = 
+        ptolemy.actor.lib.MultiplyDivide actor =
             (ptolemy.actor.lib.MultiplyDivide) getComponent();
 
         if (actor.multiply.getWidth() != 1 || actor.divide.getWidth() != 1) {
@@ -75,11 +75,11 @@ public class MultiplyDivide extends AtomicActor {
                             "connection to the multiply port and 1 connection " +
                             "to the divide port.");
         }
-        
+
         setAtLeast(actor.output, new FunctionTerm(actor.multiply, actor.divide));
         setAtLeast(actor.multiply, new MultiplyFunctionTerm(actor.output, actor.divide));
         setAtLeast(actor.divide, new DivideFunctionTerm(actor.output, actor.multiply));
-        
+
         return super.constraintList();
     }
 
@@ -92,7 +92,7 @@ public class MultiplyDivide extends AtomicActor {
 
         TypedIOPort _multiply;
         TypedIOPort _divide;
-        
+
         public FunctionTerm(TypedIOPort multiply, TypedIOPort divide) {
             _multiply = multiply;
             _divide = divide;
@@ -106,7 +106,7 @@ public class MultiplyDivide extends AtomicActor {
          * @exception IllegalActionException
          */
         public Object getValue() throws IllegalActionException {
-            
+
             Property multiplyProperty = (Property) getSolver().getProperty(_multiply);
             Property divideProperty = (Property) getSolver().getProperty(_divide);
 
@@ -116,7 +116,7 @@ public class MultiplyDivide extends AtomicActor {
             Property acceleration = _lattice.getElement("ACCELERATION");
             Property unitless = _lattice.getElement("UNITLESS");
             Property unknown = _lattice.getElement("UNKNOWN");
-            
+
             if (multiplyProperty == speed && divideProperty == time) {
                 return acceleration;
             }
@@ -136,10 +136,10 @@ public class MultiplyDivide extends AtomicActor {
             if (divideProperty == unitless) {
                 return multiplyProperty;
             }
-          
+
             if (multiplyProperty == unknown || divideProperty == unknown) {
                 return unknown;
-            } 
+            }
             if (multiplyProperty == divideProperty) {
                 return unitless;
             }
@@ -160,8 +160,8 @@ public class MultiplyDivide extends AtomicActor {
             };
         }
     }
-    
-    
+
+
     // This class implements a monotonic function of the input port
     // type. The result of the function is the same as the input type
     // if is not Complex; otherwise, the result is Double.
@@ -169,7 +169,7 @@ public class MultiplyDivide extends AtomicActor {
 
         TypedIOPort _output;
         TypedIOPort _divide;
-        
+
         public MultiplyFunctionTerm(TypedIOPort output, TypedIOPort divide) {
             _output = output;
             _divide = divide;
@@ -183,7 +183,7 @@ public class MultiplyDivide extends AtomicActor {
          * @exception IllegalActionException
          */
         public Object getValue() throws IllegalActionException {
-            
+
             Property outputProperty = (Property) getSolver().getProperty(_output);
             Property divideProperty = (Property) getSolver().getProperty(_divide);
 
@@ -193,7 +193,7 @@ public class MultiplyDivide extends AtomicActor {
             Property acceleration = _lattice.getElement("ACCELERATION");
             Property unitless = _lattice.getElement("UNITLESS");
             Property unknown = _lattice.getElement("UNKNOWN");
-            
+
             if (outputProperty == acceleration && divideProperty == time) {
                 return speed;
             }
@@ -217,15 +217,15 @@ public class MultiplyDivide extends AtomicActor {
             if (outputProperty == unitless) {
                 return divideProperty;
             }
-            
+
             if (outputProperty == unknown || divideProperty == unknown) {
                 return unknown;
-            } 
-            
+            }
+
             if (outputProperty == divideProperty) {
                 return unitless;
             }
-            
+
             return _lattice.getElement("TOP");
         }
 
@@ -251,7 +251,7 @@ public class MultiplyDivide extends AtomicActor {
 
         TypedIOPort _output;
         TypedIOPort _multiply;
-        
+
         public DivideFunctionTerm(TypedIOPort output, TypedIOPort multiply) {
             _output = output;
             _multiply = multiply;
@@ -265,7 +265,7 @@ public class MultiplyDivide extends AtomicActor {
          * @exception IllegalActionException
          */
         public Object getValue() throws IllegalActionException {
-            
+
             Property outputProperty = (Property) getSolver().getProperty(_output);
             Property multiplyProperty = (Property) getSolver().getProperty(_multiply);
 
@@ -275,7 +275,7 @@ public class MultiplyDivide extends AtomicActor {
             Property acceleration = _lattice.getElement("ACCELERATION");
             Property unitless = _lattice.getElement("UNITLESS");
             Property unknown = _lattice.getElement("UNKNOWN");
-            
+
             if (outputProperty == acceleration && multiplyProperty == speed) {
                 return time;
             }
@@ -299,15 +299,15 @@ public class MultiplyDivide extends AtomicActor {
             if (outputProperty == unitless) {
                 return multiplyProperty;
             }
-            
+
             if (outputProperty == unknown || multiplyProperty == unknown) {
                 return unknown;
-            } 
-            
+            }
+
             if (outputProperty == multiplyProperty) {
                 return unitless;
             }
-            
+
             return _lattice.getElement("TOP");
         }
 

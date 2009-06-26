@@ -92,23 +92,23 @@ public class ASTPtProductNode extends PropertyConstraintASTNodeHelper {
         public Object getValue() throws IllegalActionException {
             // Updated by Charles Shelton 05/11/09:
             // Added support for binary division in addition to multiplication.
-            // We need a general algorithm to cover all product node cases. 
-            
-            ptolemy.data.expr.ASTPtProductNode node = 
+            // We need a general algorithm to cover all product node cases.
+
+            ptolemy.data.expr.ASTPtProductNode node =
                 (ptolemy.data.expr.ASTPtProductNode) _getNode();
 
             List tokenList = node.getLexicalTokenList();
 
             int numChildren = node.jjtGetNumChildren();
 
-            if (numChildren != 2 || tokenList.size() != 1 || 
-                    (((Token) tokenList.get(0)).kind != PtParserConstants.MULTIPLY && 
+            if (numChildren != 2 || tokenList.size() != 1 ||
+                    (((Token) tokenList.get(0)).kind != PtParserConstants.MULTIPLY &&
                      ((Token) tokenList.get(0)).kind != PtParserConstants.DIVIDE)) {
-                throw new IllegalActionException(ASTPtProductNode.this.getSolver(), 
+                throw new IllegalActionException(ASTPtProductNode.this.getSolver(),
                         "The property analysis " +
                 "currently supports only binary multiplication and division.");
             }
-            
+
             int operation = ((Token) tokenList.get(0)).kind;
 
             Property time = _lattice.getElement("TIME");
@@ -120,10 +120,10 @@ public class ASTPtProductNode extends PropertyConstraintASTNodeHelper {
 
             Property property1 = (Property) getSolver().getProperty(node.jjtGetChild(0));
             Property property2 = (Property) getSolver().getProperty(node.jjtGetChild(1));
-            
+
             if (operation == PtParserConstants.MULTIPLY) {
                 // Property rules for multiplication
-                
+
                 if ((property1 == speed && property2 == time) ||
                         (property2 == speed && property1 == time)) {
                     return position;
@@ -147,7 +147,7 @@ public class ASTPtProductNode extends PropertyConstraintASTNodeHelper {
                 }
             } else if (operation == PtParserConstants.DIVIDE) {
                 // Property rules for division
-                
+
                 if ((property1 == speed && property2 == time)) {
                     return acceleration;
                 }
@@ -155,7 +155,7 @@ public class ASTPtProductNode extends PropertyConstraintASTNodeHelper {
                 if ((property1 == position && property2 == time)) {
                     return speed;
                 }
-                
+
                 if (property1 == property2) {
                     return unitless;
                 }
@@ -170,9 +170,9 @@ public class ASTPtProductNode extends PropertyConstraintASTNodeHelper {
 
                 if (property1 == unknown || property2 == unknown) {
                     return unknown;
-                }                
+                }
             }
-            
+
             return _lattice.getElement("TOP");
         }
 

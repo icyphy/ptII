@@ -96,7 +96,7 @@ public class ChangeFixedWidth1ToAuto implements MoMLFilter {
 
             if (t != null) {
                 int width = t.intValue();
-            
+
                 if (width == 1) {
                     madeModification = true;
                     relation.width.setToken("Auto");
@@ -123,20 +123,20 @@ public class ChangeFixedWidth1ToAuto implements MoMLFilter {
             System.err.println(errorMessage);
             return;
         }
-        
+
         if (args.length == 1) {
             _updateFile(args[0]);
         }
-        
-        if (args.length == 2) {            
+
+        if (args.length == 2) {
             if (!args[0].equals("-all") && !args[0].equals("-demo")) {
                 System.err.println(errorMessage);
                 return;
             }
             _updateXMLFiles(new File(args[1]), args[0].equals("-demo") ? "demo" : null);
-        }        
+        }
     }
-    
+
     /** Return a string that describes what the filter does.
      *  @return A description of the filter (ending with a newline).
      */
@@ -151,8 +151,8 @@ public class ChangeFixedWidth1ToAuto implements MoMLFilter {
     /** Convert the models in the folder.
      * @param folder The folder in which models need to be converted.
      * @param filter If null, no filter will be applied. On models for which
-     * the path contains "/" + filter + "/" are converted. 
-     */    
+     * the path contains "/" + filter + "/" are converted.
+     */
     private static void _updateXMLFiles(File folder, String filter) {
         File[] files = folder.listFiles();
 
@@ -172,9 +172,9 @@ public class ChangeFixedWidth1ToAuto implements MoMLFilter {
             } else if (file.isDirectory()) {
                 _updateXMLFiles(file, filter);
             }
-        }       
+        }
     }
-    
+
     /** Convert the model with name fileName.
      * @param fileName The name (and path) of the model
      * @throws Exception If the model can't be converted
@@ -185,13 +185,13 @@ public class ChangeFixedWidth1ToAuto implements MoMLFilter {
         MoMLParser.addMoMLFilters(BackwardCompatibility.allFilters());
         ChangeFixedWidth1ToAuto filter = new ChangeFixedWidth1ToAuto();
         MoMLParser.addMoMLFilter(filter);
-        
+
         URL xmlFile = ChangeFixedWidth1ToAuto.class.getClassLoader().getResource(fileName);
-       
+
         if (xmlFile != null) {
             InputStream input = xmlFile.openStream();
             NamedObj model = parser.parse(null, fileName, input);
-            input.close();            
+            input.close();
             if (model != null && filter.madeModification) {
                 System.out.println("Start updating " + fileName);
                 FileWriter file = new FileWriter(fileName);
@@ -201,7 +201,7 @@ public class ChangeFixedWidth1ToAuto implements MoMLFilter {
             }
         }
     }
-     
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 

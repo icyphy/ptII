@@ -50,7 +50,7 @@ import ptolemy.kernel.util.IllegalActionException;
  @Pt.AcceptedRating Red (cxh)
  */
 public class Float extends LatticeProperty implements TypeProperty {
-        
+
     public Float(PropertyLattice lattice) {
         super(lattice);
     }
@@ -70,7 +70,7 @@ public class Float extends LatticeProperty implements TypeProperty {
     public boolean isInRange(Token token) throws IllegalActionException {
         if ((((ScalarToken)token).doubleValue() < ((ScalarToken)getMinValue()).doubleValue()) ||
             (((ScalarToken)token).doubleValue() > ((ScalarToken)getMaxValue()).doubleValue())) {
-            
+
             return false;
         } else {
             return true;

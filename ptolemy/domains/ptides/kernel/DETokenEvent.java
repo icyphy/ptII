@@ -43,7 +43,7 @@ import ptolemy.kernel.util.NamedObj;
  *  at, in addition to the information that is stored in the super class, such as
  *  the timestamp, etc. This class is used
  *  in the PTIDES domain, because events may arrive out of timestamp order.
- * 
+ *
  *  @author Lukito Muliadi, Edward A. Lee, Haiyang Zheng, Contributor: Christopher Brooks
  *  @version $Id$
  *  @since Ptolemy II 0.2
@@ -62,14 +62,14 @@ public class DETokenEvent extends DEEvent {
      *  @exception IllegalActionException If the actor has a priority parameter,
      *  but its value cannot be obtained, which should be an integer.
      */
-    public DETokenEvent(Actor actor, Time timeStamp, int microstep, int depth, 
+    public DETokenEvent(Actor actor, Time timeStamp, int microstep, int depth,
             Token token, Receiver receiver)
             throws IllegalActionException {
         super(actor, timeStamp, microstep, depth);
-        _token = token; 
+        _token = token;
         _receiver = receiver;
     }
-    
+
     /** Construct a trigger event with the specified destination IO port,
      *  timestamp, microstep, and depth.
      *  @param ioPort The destination IO port.
@@ -82,7 +82,7 @@ public class DETokenEvent extends DEEvent {
      *  @exception IllegalActionException If the actor has a priority parameter,
      *  but its value cannot be obtained, which should be an integer.
      */
-    public DETokenEvent(IOPort ioPort, int channel, Time timeStamp, int microstep, int depth, 
+    public DETokenEvent(IOPort ioPort, int channel, Time timeStamp, int microstep, int depth,
             Token token, Receiver receiver)
             throws IllegalActionException {
         super(ioPort, timeStamp, microstep, depth);
@@ -90,14 +90,14 @@ public class DETokenEvent extends DEEvent {
         _token = token;
         _receiver = receiver;
     }
-    
+
     /** Return the channel.
      *  @return The channel.
      */
     public final int channel() {
         return _channel;
     }
-    
+
     /** Indicate whether some the super class returns they are equal
      *  and their tokens are equal.
      *  @param object The object with which to compare.
@@ -113,21 +113,21 @@ public class DETokenEvent extends DEEvent {
             return false;
         }
     }
-    
+
     /** Return the receiver.
      *  @return The receiver.
      */
     public final Receiver receiver() {
         return _receiver;
     }
-    
+
     /** Return the token.
      *  @return The token.
      */
     public final Token token() {
         return _token;
     }
-    
+
     /** Return a description of the event, including the the tag, depth,
      *  the token, and destination information.
      *  @return The token as a string with the time stamp.
@@ -152,13 +152,13 @@ public class DETokenEvent extends DEEvent {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
-    
+
     /** The channel this event is destined to */
     private int _channel;
-    
+
     /** The token associated with this event. */
     private Token _token;
-    
+
     /** The receiver this token is destined at. */
     private Receiver _receiver;
 }

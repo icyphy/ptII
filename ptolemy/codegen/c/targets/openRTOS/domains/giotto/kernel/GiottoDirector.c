@@ -12,7 +12,7 @@ RIT128x96x4Init(1000000);
 /***declareTaskHandle($name)***/
  xTaskHandle $name_task;
  /**/
- 
+
  /***declareSemaphoreHandle($name)***/
  xSemaphoreHandle $name;
  /**/

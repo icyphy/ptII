@@ -46,7 +46,7 @@ import ptolemy.data.properties.lattice.TypeProperty;
  @Pt.AcceptedRating Red (cxh)
  */
 public class Conflict extends LatticeProperty implements TypeProperty {
-        
+
     public Conflict(PropertyLattice lattice) {
         super(lattice);
     }

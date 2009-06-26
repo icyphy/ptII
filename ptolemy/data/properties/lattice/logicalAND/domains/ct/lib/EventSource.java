@@ -66,8 +66,8 @@ public class EventSource extends AtomicActor {
      * Return the list of constraints that specifies the analysis
      * for the EventSource actor.
      * @return The list of constraints.
-     * @exception IllegalActionException Thrown if an error 
-     *  occurs when getting the elements from the lattice, 
+     * @exception IllegalActionException Thrown if an error
+     *  occurs when getting the elements from the lattice,
      *  reading the values from the values parameter of the EventSource
      *  actor, or the super class throws it.
      */

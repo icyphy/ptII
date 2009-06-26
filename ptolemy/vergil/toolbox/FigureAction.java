@@ -211,7 +211,7 @@ public class FigureAction extends AbstractAction {
                     // on the blue box, you correctly get a message
                     // that there is no refinement."
                     //
-                    // So, if the current figure is a BasicGrabHandle, we 
+                    // So, if the current figure is a BasicGrabHandle, we
                     // do not throw the exception
                     if (! (layer.getCurrentFigure() instanceof BasicGrabHandle)) {
                         throw new InternalErrorException(

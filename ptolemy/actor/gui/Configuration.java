@@ -179,7 +179,7 @@ public class Configuration extends CompositeEntity implements
      *  </pre>
      */
     public Parameter classesToRemove;
-    
+
     /** A Parameter that if set to true adds {@link
      * ptolemy.moml.filter.RemoveGraphicalClasses} to the list of
      * MoMLFilters.  Use this to run non-graphical classes.  Note that
@@ -222,7 +222,7 @@ public class Configuration extends CompositeEntity implements
                         removeClassesFilter = (RemoveClasses)filter;
                         break;
                     }
-                } 
+                }
             }
 
             // Get the token
@@ -243,10 +243,10 @@ public class Configuration extends CompositeEntity implements
                         .getElement(i)).stringValue();
                 removeClassesFilter.put(classNameToRemove, null);
             }
-        
+
             MoMLParser.setMoMLFilters(momlFilters);
         } else if (attribute == removeGraphicalClasses) {
-            // Find the RemoveGraphicalClasses element, if any 
+            // Find the RemoveGraphicalClasses element, if any
             RemoveGraphicalClasses removeGraphicalClassesFilter = null;
             List momlFilters = MoMLParser.getMoMLFilters();
             if (momlFilters == null) {
@@ -259,7 +259,7 @@ public class Configuration extends CompositeEntity implements
                         removeGraphicalClassesFilter = (RemoveGraphicalClasses)filter;
                         break;
                     }
-                } 
+                }
             }
             // Get the token
             BooleanToken removeGraphicalClassesToken = (BooleanToken)removeGraphicalClasses.getToken();

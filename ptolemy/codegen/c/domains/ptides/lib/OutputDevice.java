@@ -49,7 +49,7 @@ public abstract class OutputDevice extends CCodeGeneratorHelper {
     public String generateActuatorActuationFuncCode() throws IllegalActionException {
         return "";
     }
-    
+
     public String generateHardwareInitializationCode() throws IllegalActionException {
         return "";
     }

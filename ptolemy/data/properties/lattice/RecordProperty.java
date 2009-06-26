@@ -1,24 +1,24 @@
 /**
  * A class representing the property of a RecordToken.
- * 
+ *
  * Copyright (c) 2008-2009 The Regents of the University of California. All
  * rights reserved. Permission is hereby granted, without written agreement and
  * without license or royalty fees, to use, copy, modify, and distribute this
  * software and its documentation for any purpose, provided that the above
  * copyright notice and the following two paragraphs appear in all copies of
  * this software.
- * 
+ *
  * IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR
  * DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES ARISING OUT
  * OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF THE UNIVERSITY OF
  * CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
+ *
  * THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
  * INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
  * FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE PROVIDED HEREUNDER IS ON AN
  * "AS IS" BASIS, AND THE UNIVERSITY OF CALIFORNIA HAS NO OBLIGATION TO PROVIDE
  * MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
- * 
+ *
  * PT_COPYRIGHT_VERSION_2 COPYRIGHTENDKEY
  */
 package ptolemy.data.properties.lattice;
@@ -55,16 +55,16 @@ import ptolemy.kernel.util.InternalErrorException;
  * A consequence of this is that all record properties are subproperties of the
  * empty record property. Hence, to require that a propertyable object be a
  * record property without specifying what the fields are, use
- * 
+ *
  * <pre>
  * propertyable.setAtMost(new RecordProperty(new String[0], new Property[0]));
  * </pre>
- * 
+ *
  * Note, however, that by itself this property constraint will not be useful
  * because it does not, by itself, prevent the property from resolving to
  * unknown (the unknown property is at the bottom of the property lattice, and
  * hence satisfies this property constraint).
- * 
+ *
  * @author Yuhong Xiong, Elaine Cheong and Steve Neuendorffer; contributor: J.
  * S. Senecal
  * @version $Id: RecordProperty.java 49948 2008-06-24 20:46:43Z eal $
@@ -766,7 +766,7 @@ public class RecordProperty extends StructuredProperty implements Cloneable {
     /**
      * Compare this property with the specified property. The specified property
      * must be a RecordProperty, otherwise an exception will be thrown.
-     * 
+     *
      * This method returns one of ptolemy.graph.CPO.LOWER,
      * ptolemy.graph.CPO.SAME, ptolemy.graph.CPO.HIGHER,
      * ptolemy.graph.CPO.INCOMPARABLE, indicating this property is lower than,

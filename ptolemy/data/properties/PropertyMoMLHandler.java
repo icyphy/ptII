@@ -50,8 +50,8 @@ import ptolemy.moml.MoMLChangeRequest;
  This is an attribute used by the PropertySolver to issue MoML requests and
  make changes to the model. These changes include addition, update, or deletion
  of property annotations and display of the property results.
- This is designed to be contained by an instance of PropertySolver 
- or a subclass of PropertySolver. It contains parameters that allow 
+ This is designed to be contained by an instance of PropertySolver
+ or a subclass of PropertySolver. It contains parameters that allow
  users to configure the display of the property annotation results.
 
  @author Man-Kit Leung
@@ -81,7 +81,7 @@ public class PropertyMoMLHandler extends Attribute {
         highlight = new Parameter(this, "highlight");
         highlight.setTypeEquals(BaseType.BOOLEAN);
         highlight.setExpression("true");
-        
+
         // FIXME: we should check if the container is
         // a PropertySolver.
     }
@@ -104,7 +104,7 @@ public class PropertyMoMLHandler extends Attribute {
     ////                         public methods                    ////
 
     /**
-     * Clear every manual annotated constraints associated with the 
+     * Clear every manual annotated constraints associated with the
      * solver use-case. Each of these constraints is an
      * AnnotationAttribute in the model.
      * @exception IllegalActionException Thrown if an error occurs
@@ -284,7 +284,7 @@ public class PropertyMoMLHandler extends Attribute {
      * Wrap the given MoML request string with extra enclosing tags
      * according to the relation of the specified namedObj to the
      * toplevel context. This is used to issue a complete MoML request
-     * at the toplevel context. 
+     * at the toplevel context.
      * @param namedObj The specified namedObj.
      * @param request The given MoML request.
      */
@@ -311,9 +311,9 @@ public class PropertyMoMLHandler extends Attribute {
     /**
      * Return a MoML request string that create or update
      * the _highlightColor attribute of the given property-able
-     * object, according to the given property value. 
+     * object, according to the given property value.
      * If the given property is null, this would issue
-     * delete request to remove the _highlightColor attribute, 
+     * delete request to remove the _highlightColor attribute,
      * if there exists any.
      * @param propertyable The given property-able object.
      * @param property The given property.
@@ -338,7 +338,7 @@ public class PropertyMoMLHandler extends Attribute {
             property.getColor() + "\"/>";
             request = _completeHierarchyInMoML(propertyable, request);
             return request;
-        } 
+        }
 
 
         //Highlight Propertyable namedObj's.
@@ -361,7 +361,7 @@ public class PropertyMoMLHandler extends Attribute {
 
                         ColorAttribute highlightAttribute =
                             (ColorAttribute) propertyable.getAttribute("_highlightColor");
-                        
+
                         if (property == null && highlightAttribute != null) {
                             // Remove the _highlightColor attribute if we don't have
                             // any property to display.
@@ -384,9 +384,9 @@ public class PropertyMoMLHandler extends Attribute {
     /**
      * Return a MoML request string that create or update
      * the _showInfo attribute of the given property-able
-     * object, according to the given property value. 
+     * object, according to the given property value.
      * If the given property is null, this would issue
-     * delete request to remove the _showInfo attribute, 
+     * delete request to remove the _showInfo attribute,
      * if there exists any.
      * @param propertyable The given property-able object.
      * @param property The given property.

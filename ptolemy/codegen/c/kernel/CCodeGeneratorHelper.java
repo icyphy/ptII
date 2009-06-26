@@ -1,26 +1,26 @@
 /*
  * Base class for C code generator helper.
- * 
+ *
  * Copyright (c) 2005-2009 The Regents of the University of California. All
  * rights reserved. Permission is hereby granted, without written agreement and
  * without license or royalty fees, to use, copy, modify, and distribute this
  * software and its documentation for any purpose, provided that the above
  * copyright notice and the following two paragraphs appear in all copies of
  * this software.
- * 
+ *
  * IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR
  * DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES ARISING OUT
  * OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF THE UNIVERSITY OF
  * CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
+ *
  * THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
  * INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
  * FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE PROVIDED HEREUNDER IS ON AN
  * "AS IS" BASIS, AND THE UNIVERSITY OF CALIFORNIA HAS NO OBLIGATION TO PROVIDE
  * MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
- * 
+ *
  * PT_COPYRIGHT_VERSION_2 COPYRIGHTENDKEY
- * 
+ *
  */
 package ptolemy.codegen.c.kernel;
 
@@ -54,12 +54,12 @@ import ptolemy.util.StringUtilities;
 
 /**
  * Base class for C code generator helper.
- * 
+ *
  * <p>
  * Actor helpers extend this class and optionally define the generateFireCode(),
  * generateInitializeCode(), generatePrefireCode(), generatePostfireCode(),
  * generatePreinitializeCode(), and generateWrapupCode() methods.
- * 
+ *
  * <p>
  * In derived classes, these methods, if present, make actor specific changes to
  * the corresponding code. If these methods are not present, then the parent
@@ -67,14 +67,14 @@ import ptolemy.util.StringUtilities;
  * corresponding code block. For example, generateInitializeCode() reads the
  * <code>initBlock</code>, processes the macros and adds the resulting code
  * block to the output.
- * 
+ *
  * <p>
  * For a complete list of methods to define, see
  * {@link ptolemy.codegen.kernel.CodeGeneratorHelper}.
- * 
+ *
  * <p>
  * For further details, see <code>$PTII/ptolemy/codegen/README.html</code>
- * 
+ *
  * @author Christopher Brooks, Edward Lee, Man-Kit Leung, Gang Zhou, Ye Zhou
  * @version $Id$
  * @since Ptolemy II 6.0 o

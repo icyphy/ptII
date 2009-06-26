@@ -98,10 +98,10 @@ public class Sampler extends DETransformer {
         output.setMultiport(true);
         output.setTypeAtLeast(input);
         trigger = new TypedIOPort(this, "trigger", true, false);
-        
+
         // Width constraint. Not bidirectional to not break any existing models.
         output.setWidthEquals(input, false);
-        
+
 
         // Leave type undeclared.
         initialValue = new Parameter(this, "initialValue");
@@ -145,7 +145,7 @@ public class Sampler extends DETransformer {
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         Sampler newObject = (Sampler) super.clone(workspace);
         newObject.output.setTypeAtLeast(newObject.input);
-        
+
         // Width constraint. Not bidirectional to not break any existing models.
         newObject.output.setWidthEquals(newObject.input, false);
 

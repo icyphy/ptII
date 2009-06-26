@@ -81,9 +81,9 @@ public class CTPeriodicSampler extends Transformer implements CTEventGenerator {
         input.setMultiport(true);
         new Parameter(input, "signalType", new StringToken("CONTINUOUS"));
         output.setMultiport(true);
-        
+
         output.setWidthEquals(input, true);
-        
+
         new Parameter(output, "signalType", new StringToken("DISCRETE"));
         _samplePeriod = 0.1;
         samplePeriod = new Parameter(this, "samplePeriod", new DoubleToken(
@@ -127,7 +127,7 @@ public class CTPeriodicSampler extends Transformer implements CTEventGenerator {
             super.attributeChanged(attribute);
         }
     }
-    
+
     /** Clone this actor into the specified workspace. The new actor is
      *  <i>not</i> added to the directory of that workspace (you must do this
      *  yourself if you want it there).
@@ -146,7 +146,7 @@ public class CTPeriodicSampler extends Transformer implements CTEventGenerator {
         newObject.output.setWidthEquals(newObject.input, true);
 
         return newObject;
-    }    
+    }
 
     /** Generate a discrete event if the current time is one of the sampling
      *  times. The value of the event is the value of the input signal at the

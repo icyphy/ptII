@@ -50,24 +50,24 @@ import ptolemy.kernel.util.NameDuplicationException;
 //////////////////////////////////////////////////////////////////////////
 ////NetworkOutputDevice
 
-/** 
+/**
  *  Note this actor (or some other subclass of this class) should
  *  be directly connected to a network output port in a PtidesBasicDirector.
- *  
+ *
  *  Unlike ActuatorTransmitter for example, this actor is necessarily needed for
  *  both simulation and code generation purposes.
- *   
+ *
  *  This actor takes the input token, and creates a RecordToken, with two lables:
- *  timestamp, and payload. It then sends the output token to its output port. 
- *   
+ *  timestamp, and payload. It then sends the output token to its output port.
+ *
  *  @author Jia Zou, Slobodan Matic
  *  @version $ld$
  *  @since Ptolemy II 7.1
  *  @Pt.ProposedRating Yellow (jiazou)
- *  @Pt.AcceptedRating 
+ *  @Pt.AcceptedRating
 */
 public class NetworkOutputDevice extends OutputDevice {
-    
+
     /**
      * Constructs a NetworkOutputDevice object.
      * @param container The container.
@@ -81,7 +81,7 @@ public class NetworkOutputDevice extends OutputDevice {
         input = new TypedIOPort(this, "input", true, false);
         output = new TypedIOPort(this, "output", false, true);
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
@@ -95,24 +95,24 @@ public class NetworkOutputDevice extends OutputDevice {
      *  to be at least that of the input.
      */
     public TypedIOPort output;
-    
-    /** label of the timestamp that's transmitterd within the RecordToken.  
+
+    /** label of the timestamp that's transmitterd within the RecordToken.
      */
     private static final String timestamp = "timestamp";
-    
-    /** label of the microstep that's transmitterd within the RecordToken.  
+
+    /** label of the microstep that's transmitterd within the RecordToken.
      */
     private static final String microstep= "microstep";
-    
-    /** label of the payload that's transmitterd within the RecordToken.  
+
+    /** label of the payload that's transmitterd within the RecordToken.
      */
     private static final String payload = "payload";
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public  variables                 ////
-    /** Creates a RecordToken with two lables: timestamp, and payload. 
+    /** Creates a RecordToken with two lables: timestamp, and payload.
      *  The payload is the token consumed from the input.
-     *  It then sends the output token to its output port. 
+     *  It then sends the output token to its output port.
      *  @exception IllegalActionException If there is no director, or the
      *  input can not be read, or the output can not be sent.
      */
@@ -127,18 +127,18 @@ public class NetworkOutputDevice extends OutputDevice {
         PtidesBasicDirector ptidesDirector = (PtidesBasicDirector) director;
 
         if (input.hasToken(0)) {
-            
+
             String[] labels = new String[]{timestamp, microstep, payload};
             Token[] values = new Token[]{
                     new DoubleToken(ptidesDirector.getModelTime().getDoubleValue()),
                     new IntToken(ptidesDirector.getMicrostep()),
                     input.get(0)};
             RecordToken record = new RecordToken(labels, values);
-            
+
             output.send(0, record);
         }
     }
-    
+
     /** Return the type constraints of this actor. The type constraint is
      *  that the output RecordToken has two fields, a "timestamp" of type
      *  double and a "payload" of type same as the input type.

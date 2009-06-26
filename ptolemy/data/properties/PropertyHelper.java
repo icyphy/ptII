@@ -370,7 +370,7 @@ public abstract class PropertyHelper {
      */
     protected List<PropertyHelper> _getASTNodeHelpers() throws IllegalActionException {
         List<PropertyHelper> astHelpers = new ArrayList<PropertyHelper>();
-        ParseTreeASTNodeHelperCollector collector = 
+        ParseTreeASTNodeHelperCollector collector =
             new ParseTreeASTNodeHelperCollector();
 
         for (ASTPtRootNode root : _getAttributeParseTrees()) {
@@ -391,9 +391,9 @@ public abstract class PropertyHelper {
 
     /**
      * Return the list of parse trees for all settable Attributes
-     * of the component. 
+     * of the component.
      * @return The list of ASTPtRootNodes.
-     * @throws IllegalActionException 
+     * @throws IllegalActionException
      */
     protected List<ASTPtRootNode> _getAttributeParseTrees() throws IllegalActionException {
         List<ASTPtRootNode> result = new ArrayList<ASTPtRootNode>();

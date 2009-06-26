@@ -71,9 +71,9 @@ import ptolemy.util.MessageHandler;
 
  A panel for interacting with an executing Ptolemy II model.
  This panel can be customized by inserting
- 
+
  FIXME: more
- 
+
  @see Placeable
  @author Edward A. Lee
  @version $Id$

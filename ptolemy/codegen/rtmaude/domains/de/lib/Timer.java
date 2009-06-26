@@ -46,5 +46,5 @@ public class Timer extends Entity {
     public Timer(ptolemy.domains.de.lib.Timer component) {
         super(component);
     }
-    
+
 }

@@ -187,7 +187,7 @@ public class Configurer extends JPanel implements CloseListener {
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
                 // First check for changes.
-                
+
                 // FIXME Currently it is not possible to restore decorated attributes
                 //      since they don't show up in moml yet.
                 Set<Settable> parameters = _getVisibleSettables(_object, false);
@@ -244,8 +244,8 @@ public class Configurer extends JPanel implements CloseListener {
             public void run() {
                 // FIXME Currently it is not possible to restore decorated attributes
                 //      since they don't show up in moml yet.
-                
-                Set<Settable> parameters = _getVisibleSettables(_object, false); 
+
+                Set<Settable> parameters = _getVisibleSettables(_object, false);
                 StringBuffer buffer = new StringBuffer("<group>\n");
                 final List<Settable> parametersReset = new LinkedList<Settable>();
 
@@ -322,19 +322,19 @@ public class Configurer extends JPanel implements CloseListener {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
 
     /** Return the visible Settables of NamedObj object. When addDecoratedAttributes is true
      *  we will also return the decorated attributes.
      *  @param object The named object for which to show the visible
      *          Settables
-     *  @param object addDecoratedAttributes A flag that specifies whether 
+     *  @param object addDecoratedAttributes A flag that specifies whether
      *          decorated attributes should also be included.
      *  @return The visible attributes.
      */
     static private Set<Settable> _getVisibleSettables(final NamedObj object, boolean addDecoratedAttributes) {
         Set<Settable> attributes = new HashSet<Settable>();
-        Iterator<?> parameters = object.attributeList(Settable.class).iterator();                
+        Iterator<?> parameters = object.attributeList(Settable.class).iterator();
 
         while (parameters.hasNext()) {
             Settable parameter = (Settable) parameters.next();
@@ -343,15 +343,15 @@ public class Configurer extends JPanel implements CloseListener {
                 attributes.add(parameter);
             }
         }
-        
+
         if (addDecoratedAttributes) {
             // Get decorated attributes
             NamedObj toplevel = object.toplevel();
             List<?> decorators = toplevel.attributeList(Decorator.class);
-            
+
             for (Object decorator : decorators) {
                 List<DecoratedAttribute> decoratedAttributes = ((Decorator) decorator).getDecoratorAttributes(object);
-                
+
                 for (DecoratedAttribute decoratedAttribute : decoratedAttributes) {
                     Attribute attribute = decoratedAttribute.getAttribute();
                     if (attribute instanceof Settable) {
@@ -359,18 +359,18 @@ public class Configurer extends JPanel implements CloseListener {
                         if (isVisible(object, settable)) {
                             attributes.add(settable);
                         }
-                        
+
                     }
                 }
             }
         }
         return attributes;
     }
-    
+
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     // A list of panels in this configurer that implement CloseListener,
     // if there are any.
     private List<Component> _closeListeners = new LinkedList<Component>();

@@ -650,8 +650,8 @@ public class SharedParameter extends Parameter implements Initializable {
      */
     private static synchronized SharedParameterRegistry _getSharedParameterRegistry(
             Workspace workspace) {
-        
-        Iterator<SharedParameterRegistry> iterator = _REGISTRY.iterator();        
+
+        Iterator<SharedParameterRegistry> iterator = _REGISTRY.iterator();
         while (iterator.hasNext()) {
             SharedParameterRegistry registry = iterator.next();
             Workspace registerWorkspace = registry.workspace();
@@ -720,12 +720,12 @@ public class SharedParameter extends Parameter implements Initializable {
      *  shared parameters. It stores one collection of shared parameters
      *  for each name.
      */
-    private static class SharedParameterRegistry {        
-        
+    private static class SharedParameterRegistry {
+
         public SharedParameterRegistry(Workspace workspace) {
-            _workspace = new WeakReference<Workspace>(workspace);   
+            _workspace = new WeakReference<Workspace>(workspace);
         }
-                
+
         /** Return all shared parameters with the specified name.
          *  This returns a collection of weak references.
          */
@@ -763,9 +763,9 @@ public class SharedParameter extends Parameter implements Initializable {
         public Workspace workspace() {
             return _workspace.get();
         }
-        
+
         private HashMap<String, Collection<WeakReference<SharedParameter>>> _sharedParametersByName = new HashMap<String, Collection<WeakReference<SharedParameter>>>();
-        
+
         private WeakReference<Workspace> _workspace;
     }
 }

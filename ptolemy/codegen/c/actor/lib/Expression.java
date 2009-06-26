@@ -76,9 +76,9 @@ public class Expression extends CCodeGeneratorHelper {
      *  error in processing the specified code block(s).
      */
     protected String _generateFireCode() throws IllegalActionException {
-        CParseTreeCodeGenerator parseTreeCG = 
+        CParseTreeCodeGenerator parseTreeCG =
             (CParseTreeCodeGenerator) getParseTreeCodeGenerator();
-        
+
         StringBuffer code = new StringBuffer();
         code.append(super._generateFireCode());
 
@@ -97,7 +97,7 @@ public class Expression extends CCodeGeneratorHelper {
      * @return The processed code string.
      */
     public String generateInitializeCode() throws IllegalActionException {
-        CParseTreeCodeGenerator parseTreeCG = 
+        CParseTreeCodeGenerator parseTreeCG =
             (CParseTreeCodeGenerator) getParseTreeCodeGenerator();
 
         StringBuffer code = new StringBuffer();
@@ -119,7 +119,7 @@ public class Expression extends CCodeGeneratorHelper {
         StringBuffer code = new StringBuffer();
         code.append(super.generatePreinitializeCode());
 
-        CParseTreeCodeGenerator parseTreeCG = 
+        CParseTreeCodeGenerator parseTreeCG =
             (CParseTreeCodeGenerator) getParseTreeCodeGenerator();
 
         ptolemy.actor.lib.Expression actor = (ptolemy.actor.lib.Expression) getComponent();
@@ -156,7 +156,7 @@ public class Expression extends CCodeGeneratorHelper {
      */
     public Set getSharedCode() throws IllegalActionException {
 
-        CParseTreeCodeGenerator parseTreeCG = 
+        CParseTreeCodeGenerator parseTreeCG =
             (CParseTreeCodeGenerator) getParseTreeCodeGenerator();
 
         Set codeBlocks = super.getSharedCode();
@@ -176,7 +176,7 @@ public class Expression extends CCodeGeneratorHelper {
      *  error in processing the specified code block(s).
      */
     public String generateWrapupCode() throws IllegalActionException {
-        CParseTreeCodeGenerator parseTreeCG = 
+        CParseTreeCodeGenerator parseTreeCG =
             (CParseTreeCodeGenerator) getParseTreeCodeGenerator();
 
         StringBuffer code = new StringBuffer();

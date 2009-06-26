@@ -123,15 +123,15 @@ public class EditorPaneFactory extends Attribute {
     public static Component createEditorPane(NamedObj object,
             PtolemyQuery query) {
         List<Settable> parameters = new LinkedList<Settable>(object.attributeList(Settable.class));
-        
+
 
         // Get decorated attributes
         NamedObj toplevel = object.toplevel();
-    
+
         List<?> decorators = toplevel.attributeList(Decorator.class);
         for (Object decorator : decorators) {
             List<DecoratedAttribute> decoratedAttributes = ((Decorator) decorator).getDecoratorAttributes(object);
-            
+
             for (DecoratedAttribute decoratedAttribute : decoratedAttributes) {
                 Attribute attribute = decoratedAttribute.getAttribute();
                 if (attribute instanceof Settable) {
@@ -140,7 +140,7 @@ public class EditorPaneFactory extends Attribute {
                 }
             }
         }
-        
+
         boolean foundOne = false;
 
         for (Settable parameter : parameters) {

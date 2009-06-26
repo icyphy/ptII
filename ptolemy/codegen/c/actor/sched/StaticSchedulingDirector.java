@@ -85,7 +85,7 @@ public class StaticSchedulingDirector extends Director {
         StringBuffer code = new StringBuffer();
         code.append(_codeGenerator.comment(
                 "The firing of the StaticSchedulingDirector"));
-        
+
         boolean inline = ((BooleanToken) _codeGenerator.inline.getToken())
                 .booleanValue();
 

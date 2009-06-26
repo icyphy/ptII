@@ -196,20 +196,20 @@ public class WindowPropertiesAttribute extends Parameter implements
             // that produces four plots in the four corners of a multi-screen window.
             GraphicsEnvironment graphicsEnvironment = GraphicsEnvironment.getLocalGraphicsEnvironment();
             GraphicsDevice[] graphicsDevices = graphicsEnvironment.getScreenDevices();
-            
+
             int widths[] = new int[graphicsDevices.length];
             int heights[] = new int[graphicsDevices.length];
             boolean widthsEqual = true;
             boolean heightsEqual = true;
             int maxWidth = 0;
             int maxHeight = 0;
-            
-            for (int j = 0; j < graphicsDevices.length; j++) { 
+
+            for (int j = 0; j < graphicsDevices.length; j++) {
                     GraphicsDevice graphicsDevice = graphicsDevices[j];
                     widths[j] = graphicsDevice.getDisplayMode().getWidth();
                     heights[j] = graphicsDevice.getDisplayMode().getHeight();
             }
-            for (int j = 0; j < graphicsDevices.length-1; j++) { 
+            for (int j = 0; j < graphicsDevices.length-1; j++) {
                     if (widths[j] != widths[j+1]) {
                             widthsEqual = false;
                 }
@@ -246,10 +246,10 @@ public class WindowPropertiesAttribute extends Parameter implements
 
             width = width > maxWidth ? maxWidth : width;
             height = height > maxHeight ? maxHeight : height;
-            
+
             y = (y + height) > (maxHeight) ? (maxHeight-height) : y;
             x = (x + width) > (maxWidth) ? (maxWidth-width) : x;
-            
+
             frame.setBounds(x, y, width, height);
 
             if (maximizedToken != null) {

@@ -120,7 +120,7 @@ public class ResourcePool extends TypedAtomicActor {
         // Set type constraints.
         grant.setTypeAtLeast(ArrayType.elementType(initialPool));
         grant.setTypeAtLeast(release);
-        
+
         // Width default to 1
         grant.setDefaultWidth(1);
     }

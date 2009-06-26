@@ -475,7 +475,7 @@ public class HTMLViewer extends TableauFrame implements Printable,
                         + "}";
                 rule = "foo {thisisatest: bar}";
                 styleSheet.addRule(rule);
-                System.out.println("HTMLViewer: stylesheet: " 
+                System.out.println("HTMLViewer: stylesheet: "
                         + styleSheet + " shadow: " + shadow + "\n rule: " + rule);
                 _HTMLEditorKit.setStyleSheet(styleSheet);
             } catch (Exception ex) {

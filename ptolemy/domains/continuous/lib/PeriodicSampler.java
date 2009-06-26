@@ -167,7 +167,7 @@ public class PeriodicSampler extends Transformer {
             }
         }
     }
-    
+
     /** Notify this actor that a {@link Director#fireAt(Actor,Time)}
      *  request was skipped, and that current time has passed the
      *  requested time. A director calls this method when in a modal

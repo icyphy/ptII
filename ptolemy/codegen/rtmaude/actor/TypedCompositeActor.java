@@ -60,22 +60,22 @@ public class TypedCompositeActor extends ptolemy.codegen.rtmaude.kernel.Entity {
     public TypedCompositeActor(ptolemy.actor.TypedCompositeActor component) {
         super(component);
     }
-    
+
     @Override
     protected String _generateInfoCode(String name, List<String> parameters)
             throws IllegalActionException {
         ptolemy.actor.TypedCompositeActor c_actor = (ptolemy.actor.TypedCompositeActor) getComponent();
-        
-        // code for the actor, which is Maude term for the actor.                
+
+        // code for the actor, which is Maude term for the actor.
         // "entityList" method is used instead of "deepEntityList", because
-        // the hierarchy of actor structure do *not* need to be flattened in the Real-time Maude 
+        // the hierarchy of actor structure do *not* need to be flattened in the Real-time Maude
         if (name.equals("actors"))
             return new ListTerm<Actor>("none", _eol, c_actor.entityList(Actor.class)) {
                     public String item(Actor v) throws IllegalActionException {
                         return ((RTMaudeAdaptor) _getHelper(v)).generateFireCode();
                     }
                 }.generateCode();
-                
+
         if (name.equals("connections"))
             return new ListTerm<IORelation>("none", _eol, c_actor.relationList()) {
                     public String item(IORelation v) throws IllegalActionException {
@@ -84,28 +84,28 @@ public class TypedCompositeActor extends ptolemy.codegen.rtmaude.kernel.Entity {
                 }.generateCode();
         return super._generateInfoCode(name, parameters);
     }
-    
+
     @Override
-    public List<String> getBlockCodeList(String blockName, String ... args) 
+    public List<String> getBlockCodeList(String blockName, String ... args)
             throws IllegalActionException {
         Director directorHelper = (Director) _getHelper(((ptolemy.actor
                 .CompositeActor) getComponent()).getDirector());
-        
+
         List self = super.getBlockCodeList(blockName, args);
         self.addAll(directorHelper.getBlockCodeList(blockName, args));
-  
+
         return self;
     }
-    
+
     @Override
     public String generateFireFunctionCode() throws IllegalActionException {
         Director directorHelper = (Director) _getHelper(((ptolemy.actor
                 .CompositeActor) getComponent()).getDirector());
-                
-        return super.generateFireFunctionCode() + 
+
+        return super.generateFireFunctionCode() +
             _eol + directorHelper.generateFireFunctionCode();
     }
-    
+
     public Set getSharedCode() throws IllegalActionException {
 
         // Use LinkedHashSet to give order to the shared code.

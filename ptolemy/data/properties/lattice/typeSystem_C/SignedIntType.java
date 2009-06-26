@@ -49,7 +49,7 @@ import ptolemy.kernel.util.IllegalActionException;
  @Pt.AcceptedRating Red (cxh)
  */
 public abstract class SignedIntType extends LatticeProperty implements TypeProperty {
-        
+
     public SignedIntType(PropertyLattice lattice) {
         super(lattice);
     }
@@ -75,7 +75,7 @@ public abstract class SignedIntType extends LatticeProperty implements TypePrope
    public boolean isInRange(Token token) throws IllegalActionException {
        if ((((ScalarToken)token).longValue() < ((ScalarToken)getMinValue()).longValue()) ||
            (((ScalarToken)token).longValue() > ((ScalarToken)getMaxValue()).longValue())) {
-           
+
            return false;
        } else {
            return true;

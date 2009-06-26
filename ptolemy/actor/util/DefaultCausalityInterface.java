@@ -137,7 +137,7 @@ public class DefaultCausalityInterface implements CausalityInterface {
             _removeDependency(input, output);
         }
     }
-    
+
     /** Return a collection of the ports in this actor that depend on
      *  or are depended on by the specified port. A port X depends
      *  on a port Y if X is an output and Y is an input and
@@ -477,11 +477,11 @@ public class DefaultCausalityInterface implements CausalityInterface {
     /** A record of delay dependencies from input to output, if any. */
     protected Map<IOPort, Map<IOPort,Dependency>> _delayDependencies;
 
-    /** A record of removed dependencies from input to output, if any. 
+    /** A record of removed dependencies from input to output, if any.
      *  In this case, if the dependency between the ports are anything
      *  other than the oTimesIdentity, then the dependency is removed. */
     protected Map<IOPort, Set<IOPort>> _forwardPrunedDependencies;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 

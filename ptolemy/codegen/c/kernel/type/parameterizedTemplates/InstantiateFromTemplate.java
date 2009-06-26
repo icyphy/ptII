@@ -109,8 +109,8 @@ public class InstantiateFromTemplate {
         writer.close();
     }
 
-    /** 
-     * 
+    /**
+     *
      * NOTE: META SUBSTITUTION SYMBOLS
      * $Type: Int, Char, Array, etc.
      * $type_q: %d, %s, etc.

@@ -61,7 +61,7 @@ public class Const extends Source {
         _actor = actor;
     }
 
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -71,10 +71,10 @@ public class Const extends Source {
         return super.constraintList();
     }
 
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     private ptolemy.actor.lib.Const _actor;
 
     protected List<Attribute> _getPropertyableAttributes() {

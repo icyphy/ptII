@@ -960,7 +960,7 @@ public class DEDirector extends Director implements SuperdenseTimeDirector, Time
         _noMoreActorsToFire = false;
         _realStartTime = System.currentTimeMillis();
         _stopFireRequested = false;
-        
+
         _microstep = 0;
         // This could be getting re-initialized during execution
         // (e.g., if we are inside a modal model), in which case,
@@ -978,7 +978,7 @@ public class DEDirector extends Director implements SuperdenseTimeDirector, Time
                 }
             }
         }
-        
+
         super.initialize();
 
         // Register the stop time as an event such that the model is
@@ -1143,7 +1143,7 @@ public class DEDirector extends Director implements SuperdenseTimeDirector, Time
         }
 
         if (_debugging) {
-            _debug("Current time is: (" 
+            _debug("Current time is: ("
                     + getModelTime()
                     + ", "
                     + getIndex()
@@ -1183,7 +1183,7 @@ public class DEDirector extends Director implements SuperdenseTimeDirector, Time
                 || (modelTime.compareTo(nextEventTime) == 0 && getIndex() > nextEventIndex)) {
             DEEvent skippedEvent = _eventQueue.take();
             if (_debugging) {
-                _debug("Skipping event at time (" 
+                _debug("Skipping event at time ("
                         + nextEventTime
                         + ", "
                         + nextEventIndex
@@ -1962,7 +1962,7 @@ public class DEDirector extends Director implements SuperdenseTimeDirector, Time
      *  the actors are  never fired.
      */
     protected Set<Actor> _disabledActors;
-    
+
     /** The queue used for sorting events. */
     protected DEEventQueue _eventQueue;
 
@@ -1970,7 +1970,7 @@ public class DEDirector extends Director implements SuperdenseTimeDirector, Time
      *  initialization phase execution.
      */
     protected boolean _isInitializing = false;
-    
+
     /** The current microstep. */
     protected int _microstep = 0;
 
@@ -1979,7 +1979,7 @@ public class DEDirector extends Director implements SuperdenseTimeDirector, Time
 
     /** Flag that stopFire() has been called. */
     protected boolean _stopFireRequested = false;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 

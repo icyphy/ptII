@@ -50,7 +50,7 @@ public abstract class InputDevice extends CCodeGeneratorHelper {
     public String generateSensorSensingFuncCode() throws IllegalActionException {
         return "";
     }
-    
+
     public String generateHardwareInitializationCode() throws IllegalActionException {
         return "";
     }

@@ -279,7 +279,7 @@ public final class CrossRefList implements Serializable {
 //      *  @return A String representation of this object.
 //      */
 //     public String toString() {
-//         StringBuffer results = new StringBuffer("container: " + _container 
+//         StringBuffer results = new StringBuffer("container: " + _container
 //                 + " size: " + _size
 //                 + "\n _headNode: "
 //                 + (_headNode == null ? "null" : _headNode.description())
@@ -404,7 +404,7 @@ public final class CrossRefList implements Serializable {
 //          */
 //         public String description() {
 //             return toString()
-//                 + "\n\t_far: " + _far 
+//                 + "\n\t_far: " + _far
 //                 + "\n\t_next: " + _next
 //                 + "\n\t_previous: " + _previous
 //                 + "\n\t_nearContainer(): " + _nearContainer()

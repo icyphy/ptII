@@ -37,25 +37,25 @@ import ptolemy.kernel.util.NameDuplicationException;
 //////////////////////////////////////////////////////////////////////////
 ////ActuatorOutputDevice
 
-/** 
+/**
  *  Note this actor (or some other subclass of EnvironmentTransmitter) should
  *  be directly connected to a actuator output port for a PtidesBasicDirector.
  *  Though this actor does not do anything interesting, it is mainly used for
  *  code generation purposes.
- *  
- *  In other words, this actor is not necessarily needed if the user is only 
+ *
+ *  In other words, this actor is not necessarily needed if the user is only
  *  running simulation, but not doing codegen to PtidyOS.
- *  
+ *
  *  However the same argument does not hold for a NetworkTransmitter.
- *   
+ *
  *  @author Jia Zou, Slobodan Matic
  *  @version $ld$
  *  @since Ptolemy II 7.1
  *  @Pt.ProposedRating Yellow (jiazou)
- *  @Pt.AcceptedRating 
+ *  @Pt.AcceptedRating
  */
 public class ActuatorOutputDevice extends OutputDevice {
-    
+
     /** Create a new actor in the specified container with the specified
      *  name.  The name must be unique within the container or an exception
      *  is thrown. The container argument must not be null, or a
@@ -74,7 +74,7 @@ public class ActuatorOutputDevice extends OutputDevice {
         input = new TypedIOPort(this, "input", true, false);
         output = new TypedIOPort(this, "output", false, true);
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
@@ -88,7 +88,7 @@ public class ActuatorOutputDevice extends OutputDevice {
      *  to be at least that of the input.
      */
     public TypedIOPort output;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public  variables                 ////
     /** Read one token from the input. Send out an identical token.

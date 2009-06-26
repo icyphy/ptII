@@ -287,7 +287,7 @@ public class IOPort extends ComponentPort {
                     farReceivers[i][0].putToAll(token, farReceivers[i]);
                 }
             }
-        } finally { 
+        } finally {
             if (_hasPortEventListeners) {
                 _notifyPortEventListeners(new IOPortEvent(this, IOPortEvent.SEND_END,
                                                         IOPortEvent.ALLCHANNELS, true, token));
@@ -363,7 +363,7 @@ public class IOPort extends ComponentPort {
                             farReceivers[i]);
                 }
             }
-        } finally { 
+        } finally {
             if (_hasPortEventListeners) {
                 _notifyPortEventListeners(new IOPortEvent(this, IOPortEvent.SEND_END,
                                                         IOPortEvent.ALLCHANNELS, true,
@@ -817,7 +817,7 @@ public class IOPort extends ComponentPort {
     public Token get(int channelIndex) throws NoTokenException,
             IllegalActionException {
         Receiver[][] localReceivers;
-                
+
         if (_hasPortEventListeners) {
             _notifyPortEventListeners(
                 new IOPortEvent(this, IOPortEvent.GET_BEGIN,
@@ -1032,16 +1032,16 @@ public class IOPort extends ComponentPort {
             throws IllegalActionException {
         return getModelTime(channelIndex).getDoubleValue();
     }
-    
+
     /** Get the default width. In case there is no unique solution for a relation
      *  connected to this port the default width will be used.
      *  @return The default width.
      *  @see #setDefaultWidth(int)
-     */ 
+     */
     public int getDefaultWidth() {
-        return _defaultWidth; 
+        return _defaultWidth;
     }
-    
+
 
     /** Get a token from the specified inside channel of this port.
      *  This method is usually called on the output port of a
@@ -2626,12 +2626,12 @@ public class IOPort extends ComponentPort {
         if (_debugging) {
             _debug("send to channel " + channelIndex + ": " + token);
         }
-        
+
         if (_hasPortEventListeners) {
             _notifyPortEventListeners(new IOPortEvent(this, IOPortEvent.SEND_BEGIN,
                                                     channelIndex, true, token));
         }
-        
+
         try {
             try {
                 _workspace.getReadAccess();
@@ -2654,7 +2654,7 @@ public class IOPort extends ComponentPort {
                 farReceivers[channelIndex][0].putToAll(token,
                         farReceivers[channelIndex]);
             }
-        } finally { 
+        } finally {
             if (_hasPortEventListeners) {
                 _notifyPortEventListeners(new IOPortEvent(this, IOPortEvent.SEND_END,
                                                         channelIndex, true, token));
@@ -2878,7 +2878,7 @@ public class IOPort extends ComponentPort {
                 farReceivers[channelIndex][0].putToAll(token,
                         farReceivers[channelIndex]);
             }
-        } finally { 
+        } finally {
             if (_hasPortEventListeners) {
                 _notifyPortEventListeners(new IOPortEvent(this, IOPortEvent.SEND_END,
                                                         channelIndex, false, token));
@@ -2927,16 +2927,16 @@ public class IOPort extends ComponentPort {
 
         super.setContainer(container);
     }
-    
+
     /** Set the default width. In case there is no unique solution for a relation
      *  connected to this port the default width will be used.
      *  If the default width is not set, the value will be -1
      *  which corresponds to no default width.
      *  @param defaultWidth The default width.
      *  @see #getDefaultWidth()
-     */ 
+     */
     public void setDefaultWidth(int defaultWidth) {
-        _defaultWidth = defaultWidth; 
+        _defaultWidth = defaultWidth;
     }
 
     /** If the argument is true, make the port an input port.
@@ -4365,7 +4365,7 @@ public class IOPort extends ComponentPort {
             if (container instanceof CompositeActor) {
                 ((CompositeActor) container).notifyConnectivityChange();
             }
-            
+
             Director director = ((Actor) container).getDirector();
 
             if (director != null) {
@@ -4384,12 +4384,12 @@ public class IOPort extends ComponentPort {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     /** The default width. In case there is no unique solution for a relation
      *  connected to this port the default width will be used.
      */
     private int _defaultWidth = -1;
-    
+
     /** To avoid creating this repeatedly, we use a single version. */
     private static final Receiver[][] _EMPTY_RECEIVER_ARRAY = new Receiver[0][0];
 

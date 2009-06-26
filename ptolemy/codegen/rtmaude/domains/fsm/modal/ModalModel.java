@@ -52,11 +52,11 @@ public class ModalModel extends TypedCompositeActor {
     public ModalModel(ptolemy.domains.fsm.modal.ModalModel component) {
         super(component);
     }
-    
+
     @Override
     protected String _generateInfoCode(String name, List<String> parameters)
             throws IllegalActionException {
-        ptolemy.domains.fsm.modal.ModalModel mm = 
+        ptolemy.domains.fsm.modal.ModalModel mm =
             (ptolemy.domains.fsm.modal.ModalModel) getComponent();
         if (name.equals("controller"))
             return mm.getController().getName();
@@ -66,7 +66,7 @@ public class ModalModel extends TypedCompositeActor {
                     Actor[] rfs = s.getRefinement();
                     if (rfs != null) {
                         StringBuffer code = new StringBuffer();
-                        for (Actor a : rfs) 
+                        for (Actor a : rfs)
                             code.append(_generateBlockCode("refineStateBlock", s.getName(), a.getName()));
                         return code.toString();
                     }

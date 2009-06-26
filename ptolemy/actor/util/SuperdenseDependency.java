@@ -76,7 +76,7 @@ public class SuperdenseDependency implements Dependency {
      *  In the case where both dependencies have _time value equal to
      *  Double.POSITIVE_INFINITY, these two dependencies are equal, even
      *  though its indices may differ. This conforms with valueOf() method
-     *  @see #valueOf(double, int). 
+     *  @see #valueOf(double, int).
      *  @param dependency The dependency to compare against.
      *  @return The result of comparison.
      *  @exception ClassCastException If the argument is not an instance
@@ -95,7 +95,7 @@ public class SuperdenseDependency implements Dependency {
         }
         if (_time == ((SuperdenseDependency) dependency)._time
                 && _index < ((SuperdenseDependency) dependency)._index) {
-            return Dependency.LESS_THAN;            
+            return Dependency.LESS_THAN;
         }
         return Dependency.GREATER_THAN;
     }
@@ -131,7 +131,7 @@ public class SuperdenseDependency implements Dependency {
         long v = Double.doubleToLongBits(_time);
         return (int) (v ^ (v >>> 32));
     }
-    
+
     /** Return the index value of this dependency.
      *  @return The index part of the dependency.
      */
@@ -211,7 +211,7 @@ public class SuperdenseDependency implements Dependency {
     public String toString() {
         return "SuperdenseDependency(" + _time + ", " + _index + ")";
     }
-    
+
     /** Return an instance of SuperdenseDependency with the specified
      *  time and index value. This is preferable to use over the constructor
      *  because it uses the same instances for the most common
@@ -257,7 +257,7 @@ public class SuperdenseDependency implements Dependency {
 
     /** The superdense time index. */
     private int _index;
-    
+
     /** The real (time) value. */
     private double _time;
 

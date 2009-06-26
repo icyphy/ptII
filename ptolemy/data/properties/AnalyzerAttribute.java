@@ -116,7 +116,7 @@ public class AnalyzerAttribute extends Attribute {
     throws IllegalActionException {
         String errorString = "";
         String propertyValue = property.getExpression();
-    
+
         if (propertyValue.equals("Clear All")) {
             try {
                 PropertyRemover remover = new PropertyRemover(entity, "ModelAnalyzerClearAll");
@@ -125,12 +125,12 @@ public class AnalyzerAttribute extends Attribute {
                 assert false;
             }
         } else {
-    
+
             String actionValue = action.getExpression();
-    
+
             PropertySolver chosenSolver = null;
             try {
-    
+
                 URIAttribute attribute = (URIAttribute)
                 entity.getAttribute("_uri", URIAttribute.class);
                 if (attribute == null) {
@@ -140,20 +140,20 @@ public class AnalyzerAttribute extends Attribute {
                     URI uri = getModelURI(getName() + "_" + entity.getName());
                     attribute.setURI(uri);
                 }
-    
+
                 List solversInModel = entity.attributeList(PropertySolver.class);
                 if (solversInModel.size() > 0) {
                     try {
                         chosenSolver = ((PropertySolver) solversInModel.get(0)).findSolver(propertyValue);
                     } catch (PropertyResolutionException ex) {
-    
+
                     }
                 }
-    
+
                 if (chosenSolver == null) {
                     chosenSolver = instantiateSolver(entity, propertyValue);
                 }
-    
+
                 for (String solverName : chosenSolver.getDependentSolvers()) {
                     try {
                         chosenSolver.findSolver(solverName);
@@ -161,20 +161,20 @@ public class AnalyzerAttribute extends Attribute {
                         instantiateSolver(entity, solverName);
                     }
                 }
-    
+
                 if (chosenSolver instanceof PropertyConstraintSolver) {
                     ((PropertyConstraintSolver) chosenSolver)
                     .setLogMode(logMode.getToken() == BooleanToken.TRUE);
                 }
-    
+
                 String previousAction = chosenSolver.setAction(actionValue);
                 chosenSolver.invokeSolver(getContainer());
                 chosenSolver.setAction(previousAction);
-    
+
             } catch (PropertyFailedRegressionTestException ex) {
                 errorString = KernelException.generateMessage(
                         entity, null, ex, "****Failed: Property regression test failed.") + "\n\n";
-    
+
             } catch (KernelException ex) {
                 errorString = KernelException.generateMessage(
                         entity, null, ex, "****Failed: Property regression test failed.") + "\n\n";
@@ -213,7 +213,7 @@ public class AnalyzerAttribute extends Attribute {
      *  in the given path and below.  The list of solver classes is also updated.
      *  @param path The dot separated package name, such as
      *  "ptolemy.data.properties.configuredSolvers"
-     *  @return a List of packages that are found.  
+     *  @return a List of packages that are found.
      */
     public List<Class> getListOfSolverClass(String path) {
 
@@ -284,12 +284,12 @@ public class AnalyzerAttribute extends Attribute {
                             if (name.startsWith(jarEntryName)
                                     && name.endsWith(".class")
                                     && !entry.isDirectory() ) {
-                                String className = name.replace("/", ".").substring(0, name.length() - 6); 
+                                String className = name.replace("/", ".").substring(0, name.length() - 6);
                                 try {
                                     _solvers.add(Class.forName(className));
                                 } catch (ClassNotFoundException ex) {
                                     throw new InternalErrorException(this, ex,
-                                            "Can't find class " + className); 
+                                            "Can't find class " + className);
                                 }
                             }
                         }
@@ -336,7 +336,7 @@ public class AnalyzerAttribute extends Attribute {
 
     public void setContainer(NamedObj container) throws IllegalActionException, NameDuplicationException {
         super.setContainer(container);
-    
+
         _moveParameter(action);
         _moveParameter(property);
         _moveParameter(showProperty);
@@ -344,27 +344,27 @@ public class AnalyzerAttribute extends Attribute {
         _moveParameter(logMode);
         _moveParameter(overwriteConstraint);
         _moveParameter(overwriteDependentProperties);
-    
+
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                        private methods                    ////
 
     private void _addChoices() throws IllegalActionException {
-    
+
         List<Class> solvers =
             getListOfSolverClass("ptolemy.data.properties.configuredSolvers");
-    
+
         if (solvers.size() > 0) {
             property.setExpression(solvers.get(0).getSimpleName());
         }
-    
+
         for (Class solver : solvers) {
             property.addChoice(solver.getSimpleName());
         }
-    
+
         property.addChoice("Clear All");
-    
+
         PropertySolver._addActions(action);
     }
 

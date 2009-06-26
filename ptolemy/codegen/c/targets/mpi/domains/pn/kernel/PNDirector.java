@@ -127,20 +127,20 @@ public class PNDirector extends Director {
      *                exceptions.
      */
     public String generateFireCode() throws IllegalActionException {
-    
+
         this.analyzeModel();
-    
+
         StringBuffer code = new StringBuffer();
         CompositeActor compositeActor = (CompositeActor) _director
         .getContainer();
-    
+
         // code.append(_codeGenerator.comment("Create a thread for each actor."));
         // Added by Isaac liu for testing
         code.append(_codeStream.getCodeBlock("mpiInit"));
         if (_doMeasureTime()) {
             code.append(_codeStream.getCodeBlock("initTimer"));
         }
-    
+
         List actorList = compositeActor.deepEntityList();
         if (_doMeasureTime()) {
             for (Actor actor : (List<Actor>) actorList) {
@@ -150,17 +150,17 @@ public class PNDirector extends Director {
                         + _eol + "}" + _eol);
             }
         }
-    
+
         code.append(_codeGenerator.comment("I'm in mpi director."));
         // Removed since we don't use pthreads -iliu
         // code.append("pthread_attr_init(&pthread_custom_attr);" + _eol +
         // _eol);
-    
+
         code.append("while (true) {" + _eol);
         for (Actor actor : (List<Actor>) actorList) {
             int rankNumber = getRankNumber(actor);
             code.append("if (rank == " + rankNumber + ") {" + _eol);
-    
+
             code.append("if (" + _getActorRounds(actor) + " < "
                     + _getActorRoundsLimit(actor) + ") {" + _eol);
             if (_DEBUG) {
@@ -168,34 +168,34 @@ public class PNDirector extends Director {
                         + "[%d], rank[" + rankNumber + "].\\n\", "
                         + _getActorRounds(actor) + ");" + _eol);
             }
-    
+
             code.append(_getActorMpiLabel(actor) + "();" + _eol);
-    
+
             code.append("} else {" + _eol + _getActorTerminate(actor)
                     + " = true;" + _eol + "}" + _eol);
-    
+
             code.append("}" + _eol);
         }
-    
+
         // Check if we are ready to terminate
         int rank = 0;
         while (rank < _numProcessors) {
-    
+
             code.append("if (rank == " + rank + ") {" + _eol);
             code.append("if (true");
-    
+
             List actorOfThisRankList = (List) _rankActors.get(rank);
             for (Actor actor : (List<Actor>) actorOfThisRankList) {
                 code.append(" && " + _getActorTerminate(actor));
             }
             code.append(")" + _eol + "break;" + _eol);
             code.append("}" + _eol);
-    
+
             rank++;
         }
-    
+
         code.append("}" + _eol); // end of while (true)
-    
+
         // print out the timer values
         if (_doMeasureTime()) {
             code.append("stop_timer(&total_timer);" + _eol);
@@ -215,14 +215,14 @@ public class PNDirector extends Director {
                 rank++;
             }
         }
-    
+
         code.append("fflush(stdout);" + _eol);
-    
+
         return code.toString();
     }
 
     /**
-     * Return the generated free slots label for the specified port channel. 
+     * Return the generated free slots label for the specified port channel.
      * @param port The specified port.
      * @param channelNumber The specified channel number.
      * @return The generated free slots label for the specified port channel.
@@ -275,7 +275,7 @@ public class PNDirector extends Director {
 
     // //////////////////////////////////////////////////////////////////////
     // // protected methods ////
-    
+
     // private class Analyzer {
     // private Set mpiReceivePorts = new HashSet();
     // private Set mpiSendPorts = new HashSet();
@@ -373,19 +373,19 @@ public class PNDirector extends Director {
     // return null;
     // }
     // }
-    
+
     /**
-     * Return the MPI request label for the specified port channel. 
+     * Return the MPI request label for the specified port channel.
      * @param port The specified port.
      * @param channel The specified channel number.
-     * @return The MPI request label for the specified port channel. 
+     * @return The MPI request label for the specified port channel.
      */
     public static String generateMpiRequest(IOPort port, int channel) {
         return generatePortHeader(port, channel) + "_requests";
     }
 
     /**
-     * Return the generated header label for the specified port channel. 
+     * Return the generated header label for the specified port channel.
      * @param port The specified port.
      * @param channel The specified channel number.
      * @return The generated header label for the specified port channel.
@@ -408,37 +408,37 @@ public class PNDirector extends Director {
      */
     public String generatePreinitializeCode() throws IllegalActionException {
         StringBuffer bufferCode = new StringBuffer();
-    
+
         _buffers.clear();
-    
+
         List actorList = ((CompositeEntity) _director.getContainer())
         .deepEntityList();
-    
+
         StringBuffer code = new StringBuffer(super.generatePreinitializeCode());
-    
+
         Iterator actors = actorList.iterator();
         while (actors.hasNext()) {
             Entity actor = (Entity) actors.next();
             Iterator ports = actor.portList().iterator();
-    
+
             while (ports.hasNext()) {
                 IOPort port = (IOPort) ports.next();
-    
+
                 if (port.isOutsideConnected()) {
                     bufferCode.append(_createDynamicOffsetVariables(port));
                 }
-    
+
                 CodeGeneratorHelper helper = (CodeGeneratorHelper) _getHelper(actor);
-    
+
                 // Set offset objects.
                 for (int channel = 0; channel < port.getWidth(); channel++) {
                     for (Channel sink : getReferenceChannels(port, channel)) {
                         IOPort sinkPort = sink.port;
                         CodeGeneratorHelper sinkHelper = (CodeGeneratorHelper) _getHelper(sinkPort
                                 .getContainer());
-    
+
                         int sinkChannel = sink.channelNumber;
-    
+
                         if (isMpiReceiveBuffer(sinkPort, sinkChannel)) {
                             // "freeSlot[head.current]");
                             sinkHelper.setBufferSize(sinkPort, sinkChannel,
@@ -453,7 +453,7 @@ public class PNDirector extends Director {
                                     + "["
                                     + generatePortHeader(sinkPort,
                                             sinkChannel) + ".current]");
-    
+
                         } else if (isLocalBuffer(port, channel)) {
                             sinkHelper.setBufferSize(sinkPort, sinkChannel,
                                     getBufferSize(sinkPort, sinkChannel));
@@ -463,19 +463,19 @@ public class PNDirector extends Director {
                             sinkHelper.setWriteOffset(sinkPort, sinkChannel,
                                     generatePortHeader(sinkPort, sinkChannel)
                                     + ".writeOffset");
-    
+
                         }
                     }
                 }
             }
         }
-    
+
         //_codeStream.clear();
         //_codeStream.appendCodeBlock("preinitBlock");
         //code.append(_codeStream.toString());
-    
+
         _generateThreadFunctionCode(code);
-    
+
         return bufferCode.toString() + code.toString();
     }
 
@@ -494,21 +494,21 @@ public class PNDirector extends Director {
     throws IllegalActionException {
         code.append(_codeGenerator.comment("MPI PNDirector: "
                 + "Transfer tokens to the inside."));
-    
+
         int rate = DFUtilities.getTokenConsumptionRate(inputPort);
-    
+
         CompositeActor container = (CompositeActor) getComponent()
         .getContainer();
         ptolemy.codegen.c.actor.TypedCompositeActor compositeActorHelper = (ptolemy.codegen.c.actor.TypedCompositeActor) _getHelper(container);
-    
+
         for (int i = 0; i < inputPort.getWidth(); i++) {
             if (i < inputPort.getWidthInside()) {
                 String name = generateSimpleName(inputPort);
-    
+
                 if (inputPort.isMultiport()) {
                     name = name + '#' + i;
                 }
-    
+
                 for (int k = 0; k < rate; k++) {
                     code.append(CodeStream.indent(compositeActorHelper
                             .getReference("@" + name + "," + k)));
@@ -521,7 +521,7 @@ public class PNDirector extends Director {
         }
         // Generate the type conversion code before fire code.
         code.append(compositeActorHelper.generateTypeConvertFireCode(true));
-    
+
         // The offset of the input port itself is updated by outside director.
         _updateConnectedPortsOffset(inputPort, code, rate);
     }
@@ -567,7 +567,7 @@ public class PNDirector extends Director {
     }
 
     /**
-     * Return the generated label for the specified port channel. 
+     * Return the generated label for the specified port channel.
      * @param port The specified port.
      * @param channel The specified channel number.
      * @return The generated label for the specified port channel.
@@ -579,9 +579,9 @@ public class PNDirector extends Director {
     /**
      * Return the size of the generated buffer for the specified
      * port channel. If the specified port channel is generated
-     * to a MPI receive buffer, return the value of  
+     * to a MPI receive buffer, return the value of
      * "initialQueueCapacity" parameter of the PNDirector. Otherwise,
-     * return the value of the "_localBufferSize" parameter of the 
+     * return the value of the "_localBufferSize" parameter of the
      * director.
      * @param port The specified port.
      * @param channelNumber The specified channel number.
@@ -638,7 +638,7 @@ public class PNDirector extends Director {
 
     /**
      * Return the MPI receive buffer identifier for the given
-     * port channel. The buffer identifier is stored in an 
+     * port channel. The buffer identifier is stored in an
      * StringAttribute, named "_mpiBuffer", of the port. It is a
      * list of channel and id number pairs, like "ch[#]id[#]ch[#]id[#]...".
      * @param port The specified port.
@@ -681,10 +681,10 @@ public class PNDirector extends Director {
      * Return the number of MPI connection(s) that uses remote send/receive
      * operations. This number is obtained from previous analysis and annotated
      * as a Parameter, named "_numberOfMpiConnections", in the director. This
-     * read and return the value from the parameter. 
+     * read and return the value from the parameter.
      * @param promoteToPowerOfTwo If true, the return value is ceiled to
      * power of two. Otherwise, the return value is the actual number of
-     * connection.  
+     * connection.
      * @return The number of MPI connection(s).
      * @exception IllegalActionException Thrown if an error occurs when getting
      *  the value from the parameter.
@@ -694,9 +694,9 @@ public class PNDirector extends Director {
         int value = ((IntToken) ((Parameter) _director
                 .getAttribute("_numberOfMpiConnections")).getToken())
                 .intValue();
-    
+
         return (promoteToPowerOfTwo) ? _ceilToPowerOfTwo(value) : value;
-    
+
     }
 
     /**
@@ -706,7 +706,7 @@ public class PNDirector extends Director {
      * @param actor The specified actor.
      * @return The rank number.
      * @exception IllegalActionException Thrown if an error occurs when
-     *  getting the value from the parameter. 
+     *  getting the value from the parameter.
      */
     public static int getRankNumber(Actor actor) throws IllegalActionException {
         return ((IntToken) ((Parameter) ((Entity) actor)
@@ -714,7 +714,7 @@ public class PNDirector extends Director {
     }
 
     /**
-     * Return the generated receive tag label for the specified port channel. 
+     * Return the generated receive tag label for the specified port channel.
      * @param port The specified port.
      * @param channel The specified channel number.
      * @return The generated receive tag label for the specified port channel.
@@ -749,7 +749,7 @@ public class PNDirector extends Director {
     }
 
     /**
-     * Return the generated send tag label for the specified port channel. 
+     * Return the generated send tag label for the specified port channel.
      * @param port The specified port.
      * @param channel The specified channel number.
      * @return The generated send tag label for the specified port channel.
@@ -928,17 +928,17 @@ public class PNDirector extends Director {
         if (port.getWidth() <= 0) {
             return true;
         }
-    
+
         return !isMpiSendBuffer(port, channel)
         && !isMpiReceiveBuffer(port, channel);
     }
 
     /**
-     * Return true if the specified port channel maps to 
-     * a MPI receive buffer. Otherwise, return false. 
+     * Return true if the specified port channel maps to
+     * a MPI receive buffer. Otherwise, return false.
      * @param port The specified port.
      * @param channel The specified channel number.
-     * @return True if the specified port channel maps to 
+     * @return True if the specified port channel maps to
      * a MPI receive buffer, otherwise false.
      */
     public static boolean isMpiReceiveBuffer(IOPort port, int channel) {
@@ -946,30 +946,30 @@ public class PNDirector extends Director {
     }
 
     /**
-     * Return true if the specified port channel maps to 
-     * a MPI send buffer. 
+     * Return true if the specified port channel maps to
+     * a MPI send buffer.
      * @param port The specified port.
      * @param channel The specified channel number.
-     * @return True if the specified port channel maps to 
+     * @return True if the specified port channel maps to
      * a MPI send buffer, otherwise false.
      */
     public static boolean isMpiSendBuffer(IOPort port, int channel) {
         StringAttribute bufferAttribute = (StringAttribute) port
         .getAttribute("_mpiBuffer");
-    
+
         if (bufferAttribute != null) {
             String value = bufferAttribute.getExpression();
             if (value.startsWith("sender")) {
                 StringTokenizer tokenizer = new StringTokenizer(value, "[]",
                         false);
-    
+
                 while (tokenizer.hasMoreTokens()) {
                     // "ch".
                     tokenizer.nextToken();
-    
+
                     // "[#]"
                     String channelString = tokenizer.nextToken();
-    
+
                     if (channelString.equals("" + channel)) {
                         return true;
                     }
@@ -1530,24 +1530,24 @@ public class PNDirector extends Director {
     private static int _getLocalBufferId(IOPort port, int channel) {
         StringAttribute bufferAttribute = (StringAttribute) port
         .getAttribute("_localBuffer");
-    
+
         if (bufferAttribute != null) {
             String value = bufferAttribute.getExpression();
             StringTokenizer tokenizer = new StringTokenizer(value, "[]", false);
-    
+
             while (tokenizer.hasMoreTokens()) {
                 // "ch".
                 tokenizer.nextToken();
-    
+
                 // "[#]"
                 String channelString = tokenizer.nextToken();
-    
+
                 // "id"
                 tokenizer.nextToken();
-    
+
                 // "[#]"
                 String idString = tokenizer.nextToken();
-    
+
                 if (channelString.equals("" + channel)) {
                     return Integer.parseInt(idString);
                 }

@@ -47,5 +47,5 @@ public class DEDirector extends Director {
     public DEDirector(ptolemy.domains.de.kernel.DEDirector director) {
         super(director);
     }
-    
+
 }

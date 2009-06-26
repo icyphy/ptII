@@ -237,8 +237,8 @@ public class LocalZenoApplet extends PtolemyApplet {
         // Set up ports, relations and connections
         Relation clkRelation = toplevel.connect(_clock.output, _join1.input);
         _join2.input.link(clkRelation);
-                
-        _fixWidth(toplevel.connect(_join1.output, _fork1.input));        
+
+        _fixWidth(toplevel.connect(_join1.output, _fork1.input));
         _fixWidth(toplevel.connect(_fork1.output1, _rcvr1.input));
         toplevel.connect(_fork1.output2, _fBack1.input);
         toplevel.connect(_fBack1.output, _join1.input);
@@ -343,16 +343,16 @@ public class LocalZenoApplet extends PtolemyApplet {
             System.out.println(e);
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
     private void _fixWidth(ComponentRelation connect) throws IllegalActionException {
         if (connect instanceof IORelation) {
             ((IORelation) connect).setWidth(1);
-        }        
+        }
     }
-    
+
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////

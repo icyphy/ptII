@@ -50,19 +50,19 @@ import ptolemy.kernel.util.IllegalActionException;
  */
 public class ASTPtLeafNode extends ASTPtRootNode {
 
-    public ASTPtLeafNode(PropertyConstraintSolver solver, 
+    public ASTPtLeafNode(PropertyConstraintSolver solver,
             ptolemy.data.expr.ASTPtLeafNode node) throws IllegalActionException {
         super(solver, node, false);
     }
-    
+
    public List<Inequality> constraintList() throws IllegalActionException {
-       ptolemy.data.expr.ASTPtLeafNode node = 
+       ptolemy.data.expr.ASTPtLeafNode node =
            (ptolemy.data.expr.ASTPtLeafNode) getComponent();
 
        Lattice lattice = (Lattice) getSolver().getLattice();
 
        String name = node.getName();
-       
+
        if (name != null) {
            if (_doubleleafes.contains(name)) {
                setEquals(node, lattice.getElement("DOUBLE"));
@@ -70,25 +70,25 @@ public class ASTPtLeafNode extends ASTPtRootNode {
                setEquals(node, lattice.convertJavaToCtype(Constants.get(name).getType(), Constants.get(name)));
 //FIXME: Do we need to set up default constraints for inputs here?
 //           } else {
-//               _useDefaultConstraints = true;                                
+//               _useDefaultConstraints = true;
            }
        } else if (node.isConstant()) {
            setEquals(node, lattice.convertJavaToCtype(node.getToken().getType(), node.getToken()));
-//           setEquals(node, lattice.UNKNOWN);        
+//           setEquals(node, lattice.UNKNOWN);
        }
 
        return super.constraintList();
    }
 
-   private static List _doubleleafes = Arrays.asList( 
+   private static List _doubleleafes = Arrays.asList(
            new String[]{ "PI"
-   });        
-   
+   });
+
    public boolean isEffective() {
        return true;
    }
 
    public void setEffective(boolean isEffective) {
-       
+
    }
 }

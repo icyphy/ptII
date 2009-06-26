@@ -13,7 +13,7 @@ public class ActuatorOutputDevice extends OutputDevice {
     /**
      * Construct a ActuatorOutputDevice helper.
      * @param actor The associated actor.
-     * 
+     *
      */
     public ActuatorOutputDevice(ptolemy.domains.ptides.lib.ActuatorOutputDevice actor) {
         super(actor);

@@ -7,14 +7,14 @@ public class StaticResult implements PartialResult {
     }
 
     Object _result;
-    
+
     public Object getResult() {
         return _result;
     }
-    
+
     public boolean isStatic() {
         return true;
     }
 
-    
+
 }

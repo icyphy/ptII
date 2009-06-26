@@ -163,7 +163,7 @@ public class SetVariable extends TypedAtomicActor implements ChangeListener,
 
     ///////////////////////////////////////////////////////////////////
     ////                     public methods                        ////
-    
+
     /** Do nothing.
      *  @param change The change that executed.
      */

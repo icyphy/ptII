@@ -220,7 +220,7 @@ public class CompositeActor extends CompositeEntity implements Actor,
         }
         _initializables.add(initializable);
     }
-    
+
     /** Add the specified object to the list of objects whose action
      *  methods should be invoked upon invocation of the corresponding
      *  actions methods of this object.
@@ -265,7 +265,7 @@ public class CompositeActor extends CompositeEntity implements Actor,
         newObject._causalityInterfaceDirector = null;
         if (newObject.getContainer() instanceof CompositeActor) {
             newObject._relationWidthInference = null;
-        } else {            
+        } else {
             newObject._relationWidthInference = new RelationWidthInference(newObject);
         }
         return newObject;
@@ -631,7 +631,7 @@ public class CompositeActor extends CompositeEntity implements Actor,
         RelationWidthInference relationWidthInference = _getWidthInferenceAlgorithm();
         relationWidthInference.inferWidths();
     }
-    
+
     /** Initialize this actor.  If this actor is opaque, invoke the
      *  initialize() method of its local director. Otherwise, throw an
      *  exception.  This method is read-synchronized on the workspace,
@@ -932,7 +932,7 @@ public class CompositeActor extends CompositeEntity implements Actor,
             return Executable.COMPLETED;
         }
     }
-    
+
     /**
      *  Return whether the current widths of the relation in the model
      *  are no longer valid anymore and the widths need to be inferred again.
@@ -942,11 +942,11 @@ public class CompositeActor extends CompositeEntity implements Actor,
     public boolean needsWidthInference() throws KernelRuntimeException {
         return _getWidthInferenceAlgorithm().needsWidthInference();
     }
-    
+
 
     /** Notify the manager that the connectivity in the model changed
      *  (width of relation changed, relations added, linked to different ports, ...).
-     *  This will invalidate the current width inference. 
+     *  This will invalidate the current width inference.
      */
     public void notifyConnectivityChange() {
         try {
@@ -955,10 +955,10 @@ public class CompositeActor extends CompositeEntity implements Actor,
                 widthInferenceAlgorithm.notifyConnectivityChange();
             }
         } catch (KernelRuntimeException ex) {
-            // Exception is not relevant when reporting changes. 
+            // Exception is not relevant when reporting changes.
         }
     }
-    
+
 
     /** Return a new receiver of a type compatible with the local director.
      *  Derived classes may further specialize this to return a receiver
@@ -1380,13 +1380,13 @@ public class CompositeActor extends CompositeEntity implements Actor,
             oldDirector.invalidateSchedule();
             oldDirector.invalidateResolvedTypes();
         }
-        
+
         if (!(container instanceof CompositeActor)) {
             _relationWidthInference = new RelationWidthInference(this);
         } else {
             _relationWidthInference = null;
         }
-        
+
         super.setContainer(container);
 
         Director director = getDirector();
@@ -1423,7 +1423,7 @@ public class CompositeActor extends CompositeEntity implements Actor,
         if (director != null) {
             director.setContainer(this);
             // No need to call _setDirector in here since the
-            // director will do this directly.            
+            // director will do this directly.
         } else {
             _setDirector(null);
         }
@@ -1634,7 +1634,7 @@ public class CompositeActor extends CompositeEntity implements Actor,
                 for (Executable piggyback : _derivedPiggybacks) {
                     piggyback.wrapup();
                 }
-            }            
+            }
 
             if (!isOpaque()) {
                 throw new IllegalActionException(this, "Missing director.");
@@ -1679,7 +1679,7 @@ public class CompositeActor extends CompositeEntity implements Actor,
             int multiplicity) {
         _actorFiring(new FiringEvent(null, this, type, multiplicity));
     }
-     
+
     /** Add an actor to this container with minimal error checking.
      *  This overrides the base-class method to make sure the argument
      *  implements the Actor interface.
@@ -1815,10 +1815,10 @@ public class CompositeActor extends CompositeEntity implements Actor,
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-    
+
     /** Fill in the piggybacks in the containted transparent CompositeActors.
      *  If addPiggyBackAtThisLevel equals to True, the piggybacks directly in
-     *  this composite actor will also be included. 
+     *  this composite actor will also be included.
      *  @param piggybacks The piggybacks that will be filled it.
      *  @param addPiggyBackAtThisLevel True when the piggybacks directly in this composite
      *          actor should also be included.
@@ -1844,7 +1844,7 @@ public class CompositeActor extends CompositeEntity implements Actor,
     private RelationWidthInference _getWidthInferenceAlgorithm() {
         NamedObj container = getContainer();
         if (container instanceof CompositeActor) {
-            return ((CompositeActor) container)._getWidthInferenceAlgorithm();                
+            return ((CompositeActor) container)._getWidthInferenceAlgorithm();
         } else {
             // assert _relationWidthInference != null;
             // Removed the assert. When your cloning this object it is possible
@@ -1908,14 +1908,14 @@ public class CompositeActor extends CompositeEntity implements Actor,
 
     /** List piggybacked objects. */
     private transient List<Executable> _piggybacks;
-    
+
     /** Record of the workspace version the last time receivers were created. */
     private long _receiversVersion = -1;
-    
+
     /* A helper class that does the width inference.
      * _relationWidthInference is only stored at the top CompositeActor
      * for the complete model.
      */
     private RelationWidthInference _relationWidthInference;
-    
+
 }

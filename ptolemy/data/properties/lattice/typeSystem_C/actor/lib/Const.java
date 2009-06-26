@@ -50,7 +50,7 @@ public class Const extends AtomicActor {
      * Construct an Const helper.
      * @param actor the associated actor
      */
-    public Const(PropertyConstraintSolver solver, 
+    public Const(PropertyConstraintSolver solver,
             ptolemy.actor.lib.Const actor) throws IllegalActionException {
 
         super(solver, actor, false);
@@ -60,7 +60,7 @@ public class Const extends AtomicActor {
     public List<Inequality> constraintList() throws IllegalActionException {
 //        Lattice lattice = (Lattice) getSolver().getLattice();
 //      setEquals(actor.output, lattice.getEDCtype(actor.output.getType(), actor.value.getToken()));
-       setAtLeast(_actor.output, _actor.value);        
+       setAtLeast(_actor.output, _actor.value);
 
         return super.constraintList();
     }

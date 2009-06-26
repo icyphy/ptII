@@ -43,7 +43,7 @@ import ptolemy.data.properties.lattice.PropertyLattice;
  @Pt.AcceptedRating Red (cxh)
  */
 public class Char extends SignedIntType {
-        
+
     public Char(PropertyLattice lattice) {
         super(lattice);
     }

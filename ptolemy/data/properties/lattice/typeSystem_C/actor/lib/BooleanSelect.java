@@ -50,20 +50,20 @@ public class BooleanSelect extends AtomicActor {
     /**
      * Construct an BooleanSelect helper.
      * @param actor the associated actor
-     * @throws IllegalActionException 
+     * @throws IllegalActionException
      */
-    public BooleanSelect(PropertyConstraintSolver solver, 
+    public BooleanSelect(PropertyConstraintSolver solver,
             ptolemy.actor.lib.BooleanSelect actor) throws IllegalActionException {
 
         super(solver, actor, false);
         _lattice = (Lattice) getSolver().getLattice();
         _actor = actor;
-    }   
+    }
 
     public List<Inequality> constraintList() throws IllegalActionException {
-        setAtLeast(_actor.output, _actor.trueInput);        
-        setAtLeast(_actor.output, _actor.falseInput);                
-        setEquals(_actor.control, _lattice.getElement("BOOLEAN"));        
+        setAtLeast(_actor.output, _actor.trueInput);
+        setAtLeast(_actor.output, _actor.falseInput);
+        setEquals(_actor.control, _lattice.getElement("BOOLEAN"));
 
         return super.constraintList();
     }

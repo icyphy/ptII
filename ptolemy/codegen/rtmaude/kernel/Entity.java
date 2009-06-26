@@ -58,11 +58,11 @@ public class Entity extends RTMaudeAdaptor {
      * any entity of Ptolemy is translated to Object term
      *   < Name : ClassName | attr_1 : attr_value_1, ... , attr_n : attr_value_n >
      */
-    protected String _generateFireCode() throws IllegalActionException { 
-        
+    protected String _generateFireCode() throws IllegalActionException {
+
         return _generateBlockCode("fireBlock",
                 CodeStream.indent(1,
-                    new ListTerm<String>("", "," + _eol, 
+                    new ListTerm<String>("", "," + _eol,
                             _codeStream.getAllCodeBlockNames()) {
                         public String item(String v) throws IllegalActionException {
                             if (v.matches("attr_.*")) {
@@ -74,19 +74,19 @@ public class Entity extends RTMaudeAdaptor {
                     }.generateCode())
             );
     }
-    
+
     @Override
     protected String _generateInfoCode(String name, List<String> parameters)
             throws IllegalActionException {
         if (name.equals("ports"))
-            return new ListTerm<Port>("none", "", 
+            return new ListTerm<Port>("none", "",
                     ((ptolemy.kernel.Entity)getComponent()).portList()) {
                 public String item(Port v) throws IllegalActionException {
                     return ((RTMaudeAdaptor) _getHelper(v)).generateTermCode();
                 }
             }.generateCode();
         if (name.equals("parameters"))
-            return new ListTerm<Variable>("emptyMap", " ;" + _eol, 
+            return new ListTerm<Variable>("emptyMap", " ;" + _eol,
                     getComponent().attributeList(Variable.class)) {
                 public String item(Variable v) throws IllegalActionException {
                     return ((RTMaudeAdaptor) _getHelper(v)).generateTermCode();

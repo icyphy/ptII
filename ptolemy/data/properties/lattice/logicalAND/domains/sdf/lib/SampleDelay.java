@@ -69,9 +69,9 @@ public class SampleDelay extends AtomicActor {
          * interpret the use-case as const/nonconst. By adding partial
          * evaluation a less conservative behavior could be implemented.
          */
-        ptolemy.domains.sdf.lib.SampleDelay actor = 
+        ptolemy.domains.sdf.lib.SampleDelay actor =
             (ptolemy.domains.sdf.lib.SampleDelay) getComponent();
-        
+
         setAtLeast(actor.output, _lattice.getElement("FALSE"));
 
         return super.constraintList();

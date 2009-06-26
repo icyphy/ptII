@@ -361,7 +361,7 @@ public class NonStrictTest extends Sink {
                         + " tokens.";
                 if (((BooleanToken) requireAllCorrectValues.getToken()).booleanValue()) {
                     // FIXME: this produce a dialog for each failed test.
-                    throw new IllegalActionException(this, errorMessage); 
+                    throw new IllegalActionException(this, errorMessage);
                 }
                 System.err.println("Warning: '" + getFullName() + "' "
                         + errorMessage);

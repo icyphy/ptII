@@ -59,11 +59,11 @@ public class DiscreteClock extends PropertyConstraintHelper {
             throws IllegalActionException {
 
         super(solver, actor, false);
-        
+
         _actor = actor;
     }
 
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -73,20 +73,20 @@ public class DiscreteClock extends PropertyConstraintHelper {
 
         return super.constraintList();
     }
-    
-    
+
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
-    
+
     protected List<Attribute> _getPropertyableAttributes() {
         List<Attribute> result = super._getPropertyableAttributes();
         result.remove(_actor.trigger);
         result.remove(_actor.period);
-        
+
         return result;
     }
-    
-    
+
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 

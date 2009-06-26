@@ -73,7 +73,7 @@ public class SequenceToArray extends SDFTransformer {
         super(container, name);
 
         input_tokenConsumptionRate.setExpression("arrayLength");
-        
+
         /* Note that the output ports need not be multiports since all output
          * channels carry the same data. Using multiports this way is not
          * recommended, so please do not emulate this design in your own actors.

@@ -147,7 +147,7 @@ public class PtidesActorProperties {
                     + ((NamedObj) actor).getAttribute("_executionTime"));
         }
     }
-    
+
 
     /** Return the execution time of the port or the worst case
      *  execution time if no execution time is specified, or
@@ -241,7 +241,7 @@ public class PtidesActorProperties {
             return null;
         }
     }
-    
+
     /**
      * Returns the priority of the actor. The priority is an int value. The
      * default return value is 0.

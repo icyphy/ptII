@@ -175,7 +175,7 @@ public class DEReceiver extends AbstractReceiver {
 
     /** List for storing tokens.  Access with clear(), add(), and take(). */
     protected LinkedList _tokens = new LinkedList();
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 

@@ -403,7 +403,7 @@ public class TransitionController extends BasicEdgeController {
 
                 // If the target is not an instance of
                 // State or Transition, do nothing.
-               
+
                 TypedActor[] refinements = null;
 
                 if (target instanceof Transition) {

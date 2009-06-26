@@ -76,7 +76,7 @@ public class RequireVersion extends VersionAttribute {
      *  @return True if the specified version is the same as this one.
      */
     public boolean equals(Object object) {
-        // VersionAttribute.equals() has a bug where if we had a 
+        // VersionAttribute.equals() has a bug where if we had a
         // VersionAttribute and a RequireVersion and the RequireVersion
         // is deleted, then only the first VersionAttribute was deleted, so we
         // define equals() and hashCode().  For details, see
@@ -88,7 +88,7 @@ public class RequireVersion extends VersionAttribute {
         return false;
     }
 
-    /** Return a hash code value for attribute. This method returns 
+    /** Return a hash code value for attribute. This method returns
      *  the identity hash code for this attribute.  The hashCode()
      *  method of the super class is <b>not</b> called.
      *  @return A hash code value for this token.

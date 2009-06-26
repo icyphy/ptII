@@ -226,12 +226,12 @@ public class StringUtilities {
                         + "was called.  However, because the "
                         + "ptolemy.ptII.exitAfterWrapup property "
                         + "is set, we throw this exception instead.");
-            } 
+            }
         } catch (SecurityException ex) {
             System.out.println("Warning: failed to get property \""
                     + "ptolemy.ptII.exitAfterWrapup\". "
                     + "(-sandbox always causes this)");
-            
+
         }
 
         if (!inApplet()) {
@@ -480,7 +480,7 @@ public class StringUtilities {
     }
 
     /** Return true if we are in an applet.
-     *  @return True if we are running in an applet.   
+     *  @return True if we are running in an applet.
      */
     public static boolean inApplet() {
         boolean inApplet = false;

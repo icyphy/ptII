@@ -43,11 +43,11 @@ import ptolemy.data.properties.lattice.PropertyLattice;
  @Pt.AcceptedRating Red (cxh)
  */
 public class LongLong extends SignedIntType {
-        
+
     public LongLong(PropertyLattice lattice) {
         super(lattice);
     }
-    
+
     public short getNumberBits() {
         return 64;
     }

@@ -66,17 +66,17 @@ import ptolemy.verification.lib.BoundedBufferTimedDelay;
  * This is an utility for Ptolemy model conversion. It performs a systematic
  * traversal of the system and convert the Ptolemy model into communicating
  * timed automata (CTA) with the format acceptable by model checker RED
- * (Regional Encoding Diagram Verification Engine, v.7.0). The conversion 
- * mechanism roughly is based on the technical report UCB/EECS-2008-41 
+ * (Regional Encoding Diagram Verification Engine, v.7.0). The conversion
+ * mechanism roughly is based on the technical report UCB/EECS-2008-41
  * with some modifications. Basically, here the DE
  * domain can be viewed as a generalization of the SR domain, where each
- * "super dense" time tag in DE is now a tick in SR. The token would not 
- * be accumulated in the port of the FSMActor - therefore buffer overflow 
+ * "super dense" time tag in DE is now a tick in SR. The token would not
+ * be accumulated in the port of the FSMActor - therefore buffer overflow
  * property would no longer exist in this implementation; it
  * would only happen in the TimedDelay or NondeterministicTimedDelay actor.
  *
  * Note that for a successful conversion, we simply disallow a system to
- * have super dense time tag with the format (\tau, i), where i>0. 
+ * have super dense time tag with the format (\tau, i), where i>0.
  * In our context this only happens when there is a TimedDelay actor with its
  * parameter equals to zero. For systems with super dense time tag with the
  * format (\tau, i), where i>0, the system can still be converted. However,
@@ -89,15 +89,15 @@ import ptolemy.verification.lib.BoundedBufferTimedDelay;
  * as time advances. To avoid including any unnecessary behavior we add one
  * "invalid" transition, mentioning that the FSMActor will perform a "stable"
  * move, and at the same time the token will be bring to absent state.
- * 
+ *
  * For the tool RED, all time constants should be an integer. This is not a
  * problem because the unit is actually not specified by the timed automata.
  * Therefore, we expect users to use integer values to specify their delay
  * or period.
- * 
+ *
  * Limitations: Simply following the statement in the technical report, we
  * restate limitations of the conversion. The designer must understand the
- * boundary of variable domain for the model under conversion. Also, due to 
+ * boundary of variable domain for the model under conversion. Also, due to
  * the use of complementary edges, for verification complex guard conditions
  * is not supported. It will soon be added.
  *
@@ -627,7 +627,7 @@ public class REDUtility {
      * This private function is used to decide the set of global synchronizers
      * used in the entity. When we later return the set, the system would use
      * another set container to store the synchronizer to make sure that no
-     * duplication exists. 
+     * duplication exists.
      *
      * @param entity
      * @return
@@ -714,7 +714,7 @@ public class REDUtility {
                                     if (b == true) {
                                         String[] sigs = characterOfSubGuard[0]
                                                 .trim().split("_isPresent");
-                                        // When in a FSM, it has an edge showing XX_isPresent, we add up 
+                                        // When in a FSM, it has an edge showing XX_isPresent, we add up
                                         // two synchronizers XX and ND_XX. XX is the signal from
                                         // outside to the port, and ND_XX represents the forwarded signal without delay.
                                         if (returnVariableSet.contains(sigs[0]) == false) {
@@ -1286,7 +1286,7 @@ public class REDUtility {
      *                which is not useful. They are not connected to/from a
      *                valid actor where analysis is possible.
      * @return A set of transition descriptions packed in a list.
-     * @throws IllegalActionException 
+     * @throws IllegalActionException
      */
     private static ArrayList<REDTransitionBean> _generateTransition(
             FSMActor actor, State state, HashSet<String> variableSet,
@@ -1333,8 +1333,8 @@ public class REDUtility {
                         //
                         // A guard expression would need to be separated into
                         // separate sub-statements in order to estimate the
-                        // boundary of the variable. Note that we need to 
-                        // tackle cases where a>-1 and a<5 happen simultaneously. 
+                        // boundary of the variable. Note that we need to
+                        // tackle cases where a>-1 and a<5 happen simultaneously.
                         // Also we expect to constrain the way that an end user can do for writing
                         // codes. We do "not" expect him to write in the way
                         // like -1<a.
@@ -1685,7 +1685,7 @@ public class REDUtility {
                                         // If we expect to do this, it is necessary
                                         // to construct a parse tree and evaluate the value.
                                         // Currently let us assume that we are
-                                        // manipulating simple format a = a op constInt; 
+                                        // manipulating simple format a = a op constInt;
                                         // or a = constInt;
                                         rValue = characters[1].trim();
                                         if (Pattern.matches(".*\\*.*", rValue)) {
@@ -1758,7 +1758,7 @@ public class REDUtility {
                         while (it2.hasNext()) {
                             String signal = it2.next().getName();
                             if (usedSignalInTransition.contains(signal) == false) {
-                                // Generate the complementary edge with stationary move 
+                                // Generate the complementary edge with stationary move
                                 REDTransitionBean newBean = new REDTransitionBean();
                                 newBean._isComplementaryEdge = true;
                                 newBean._newState.append(actor.getName()
@@ -1812,16 +1812,16 @@ public class REDUtility {
             }
         }
 
-        // Last step: Finish the guard condition for each complemented edge. 
-        // Currently these edges are only with synchronizers. Conditions for 
-        // constraining is as follows. Pick the complemented edge, check the set of 
+        // Last step: Finish the guard condition for each complemented edge.
+        // Currently these edges are only with synchronizers. Conditions for
+        // constraining is as follows. Pick the complemented edge, check the set of
         // synchronizers. Find all original edges using the same synchronizer,
-        // and conjunct with the negated condition. 
+        // and conjunct with the negated condition.
 
         for (int i = 0; i < returnList.size(); i++) {
             if (returnList.get(i)._isComplementaryEdge == true) {
-                // Search for all edges, find all non-complementary edges, if their signal 
-                // is the same as the signal in the current edge, add the complementary 
+                // Search for all edges, find all non-complementary edges, if their signal
+                // is the same as the signal in the current edge, add the complementary
                 // guard conditions.
 
                 for (int j = 0; j < returnList.size(); j++) {
@@ -2712,9 +2712,9 @@ public class REDUtility {
         bean._nameInitialState = moduleNameInitialState;
 
         // Determine the number of ports required and specify their names.
-        // Note that some input signals might be useless; but if there exists 
-        // a transition which has the guard "true", then it should listen to 
-        // all input ports (when any input port receives a token, the transition 
+        // Note that some input signals might be useless; but if there exists
+        // a transition which has the guard "true", then it should listen to
+        // all input ports (when any input port receives a token, the transition
         // can be enabled).
         HashSet<String> guardSignalSet = _decideGuardSignalVariableSet(actor);
         Iterator<String> it = guardSignalSet.iterator();
@@ -2733,14 +2733,14 @@ public class REDUtility {
                     + "_Port_" + signalName.trim() + "_TokenEmpty"
                     + " ( true ) { \n");
             // All possible transitions in TokenEmpty are described as follows.
-            // (1) The token is received, and simultaneously it is consumed with the transition 
+            // (1) The token is received, and simultaneously it is consumed with the transition
             //     inside the FSM. In this way, it will remain empty status.
             // (2) The token is received, and it is not consumed by the transition. In this way,
             //     the system moves to the location "TokenOccupied".
             // signalName.trim(): Signal from outside sending
             // ND_signalName.trim(): Signal for the internal consumption of the FSMActor
             // Note that all guard signal should be renamed as ND_signalName
-            // ND stands for non-delayed signals    
+            // ND stands for non-delayed signals
 
             bean._moduleDescription.append("    when ?" + signalName.trim()
                     + " !ND_" + signalName.trim() + " (true) may ; \n");
@@ -2769,33 +2769,33 @@ public class REDUtility {
                     + "_TokenEmpty" + "; */\n");
 
             // Here an additional transition is added to replace the above
-            // transition commented. 
-            //        
-            // This transition is used to represent the case when a token 
+            // transition commented.
+            //
+            // This transition is used to represent the case when a token
             // is received in the port, but the FSMActor can not perform
-            // any action. In this way, in the semantics the system 
-            // should not do anything and let the time pass to the next 
-            // instant. When time passes, the token should simultaneously 
-            // disappear. 
-            //        
+            // any action. In this way, in the semantics the system
+            // should not do anything and let the time pass to the next
+            // instant. When time passes, the token should simultaneously
+            // disappear.
+            //
             // To have this feature, we have to enforce the FSMActor
             // to perform a "still move" if no possible actions can be taken.
             // We discuss all possible cases:
-            //        Case 1: when token is available, and the FSMActor can take the 
-            //                transition with the token, the port automata first moves 
-            //                itself to occupied location (with invariant 0), and 
+            //        Case 1: when token is available, and the FSMActor can take the
+            //                transition with the token, the port automata first moves
+            //                itself to occupied location (with invariant 0), and
             //                performs the consumption process.
-            //        Case 2: when token is available, but the FSMActor can not take 
-            //                any action, the port automata first moves itself to 
-            //                occupied location (with invariant 0), and performs the 
+            //        Case 2: when token is available, but the FSMActor can not take
+            //                any action, the port automata first moves itself to
+            //                occupied location (with invariant 0), and performs the
             //                consumption process accompanied by the "still move" transition.
-            //        
-            // Note that the still move transition should be designed such that 
+            //
+            // Note that the still move transition should be designed such that
             // the guard condition is the negation of "disjunction". For example,
-            // if we have two ports: Sec and Test. 
-            // If a transition is of the following format : 
+            // if we have two ports: Sec and Test.
+            // If a transition is of the following format :
             // "if (Sec_isPresent && count < 6) then ..."
-            // Then we add a still move using TokenTestConsume! synchronizer to the 
+            // Then we add a still move using TokenTestConsume! synchronizer to the
             // FSMActor: with the condition (TokenTestConsume! && count >= 6).
 
             bean._moduleDescription.append("    when ?Token"
@@ -2955,7 +2955,7 @@ public class REDUtility {
                         } else {
                             if (transition._preCondition.toString().trim()
                                     .equalsIgnoreCase("true")) {
-                                // When the precondition is true, then any arrival of tokens can trigger the transition. 
+                                // When the precondition is true, then any arrival of tokens can trigger the transition.
                                 Iterator<IOPort> it2 = actor.inputPortList()
                                         .iterator();
                                 while (it2.hasNext()) {
@@ -3444,7 +3444,7 @@ public class REDUtility {
      * @param outputSignalName
      *                The name of the output signal. This must be derived
      *                externally.
-     * @param bufferSize The defined buffer size used in verification               
+     * @param bufferSize The defined buffer size used in verification
      * @return description of the TimedDelayActor acceptable by model checker
      *         RED.
      * @exception IllegalActionException

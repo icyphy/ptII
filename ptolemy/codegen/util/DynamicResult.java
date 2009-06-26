@@ -7,14 +7,14 @@ public class DynamicResult implements PartialResult {
     }
 
     Object _result;
-    
+
     public Object getResult() {
         return _result;
     }
-    
+
     public boolean isStatic() {
         return false;
     }
 
-    
+
 }

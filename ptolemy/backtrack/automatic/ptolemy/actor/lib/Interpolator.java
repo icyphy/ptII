@@ -48,7 +48,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
-/** 
+/**
  * <p>Produce an interpolation based on the parameters.
  * This class uses the Interpolation class in the math package to compute
  * the interpolation.
@@ -96,25 +96,25 @@ public class Interpolator extends SequenceSource implements Rollbackable {
     // set values parameter
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
-    /**     
+    /**
      * The indexes at which the specified values will be produced.
      * This parameter is an array of integers, with default value {0, 1}.
      */
     public Parameter indexes;
 
-    /**     
+    /**
      * The order of interpolation for non-index iterations.
      * This parameter must contain an IntToken.
      */
     public Parameter order;
 
-    /**     
+    /**
      * The period of the reference values.
      * This parameter must contain an IntToken.
      */
     public Parameter period;
 
-    /**     
+    /**
      * The values that will be produced at the specified indexes.
      * This parameter is an array, with default value {1.0, 0.0}.
      */
@@ -135,7 +135,7 @@ public class Interpolator extends SequenceSource implements Rollbackable {
 
     private transient double[] _values;
 
-    /**     
+    /**
      * Construct an actor with the specified container and name.
      * @param container The container.
      * @param name The name of this actor.
@@ -165,7 +165,7 @@ public class Interpolator extends SequenceSource implements Rollbackable {
         output.setTypeEquals(BaseType.DOUBLE);
     }
 
-    /**     
+    /**
      * Check the validity of the parameter.
      * @param attribute The attribute that changed.
      * @exception IllegalActionException If the argument is the
@@ -207,7 +207,7 @@ public class Interpolator extends SequenceSource implements Rollbackable {
         }
     }
 
-    /**     
+    /**
      * Clone the actor into the specified workspace. This calls the
      * base class and then initializes private variables.
      * public members to the parameters of the new actor.
@@ -230,7 +230,7 @@ public class Interpolator extends SequenceSource implements Rollbackable {
         return newObject;
     }
 
-    /**     
+    /**
      * Output the value at the current iteration count. The output is
      * one of the reference values if the iteration count matches one
      * of the indexes, or is interpolated otherwise.
@@ -244,7 +244,7 @@ public class Interpolator extends SequenceSource implements Rollbackable {
         output.send(0, new DoubleToken(result));
     }
 
-    /**     
+    /**
      * Set the iteration count to zero.
      * @exception IllegalActionException If the super class throws it.
      */
@@ -253,7 +253,7 @@ public class Interpolator extends SequenceSource implements Rollbackable {
         $ASSIGN$_iterationCount(0);
     }
 
-    /**     
+    /**
      * Update the iteration counter, then call the super class method.
      * @return A boolean returned by the super class method.
      * @exception IllegalActionException If the super class throws it.

@@ -34,14 +34,14 @@ import java.util.List;
 //////////////////////////////////////////////////////////////////////////
 ////InterruptDevice
 
-/** 
- *  This interface defines whether the device uses an interrupt service routine. 
- *   
+/**
+ *  This interface defines whether the device uses an interrupt service routine.
+ *
  *  @author Jia Zou
  *  @version $ld$
  *  @since Ptolemy II 7.1
  *  @Pt.ProposedRating Red (jiazou)
- *  @Pt.AcceptedRating 
+ *  @Pt.AcceptedRating
  */
 public interface InterruptDevice {
 

@@ -39,16 +39,16 @@ import ptolemy.kernel.util.NameDuplicationException;
  * This is a class for GPIO pins on the Luminary Micro.
  * This actor will have no effect in model simulations, but
  * allows for code generators to generate the actors.
- * 
+ *
  * @author Jia Zou, Jeff C. Jensen
  * @version $ld$
  * @since Ptolemy II 7.1
  * @Pt.ProposedRating Yellow (jiazou)
- * @Pt.AcceptedRating 
+ * @Pt.AcceptedRating
  *
  */
 public class GPOutputDevice extends ActuatorOutputDevice {
-    
+
     /**
      * Constructs a GPOutputDevice object.
      *
@@ -74,9 +74,9 @@ public class GPOutputDevice extends ActuatorOutputDevice {
      * FIXME: Verify user has set value between 0 and 7
      */
     public Parameter pin;
-    
+
     /** Which pad (A-G) of GPIO to use.
      *  FIXME: Verify user has set value between A and H.
-     */ 
+     */
     public StringParameter pad;
 }

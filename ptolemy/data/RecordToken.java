@@ -694,7 +694,7 @@ public class RecordToken extends AbstractNotConvertibleToken {
 
         return new RecordToken(newLabels, newValues);
     }
-    
+
     /**
      * Subclasses of RecordToken may choose a different Map implementation
      * TreeMap is used in the base class to provide naturally-ordered labels
@@ -736,8 +736,8 @@ public class RecordToken extends AbstractNotConvertibleToken {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    /** The map of fields that has keys of type String and values of 
-     *  type token.   
+    /** The map of fields that has keys of type String and values of
+     *  type token.
      *  Subclasses can use alternative Map implementations (for ordering).
      */
     protected Map _fields = null;

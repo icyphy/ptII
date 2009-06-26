@@ -63,11 +63,11 @@ public class Property {
     public String getColor() {
         return _color;
     }
-    
+
     public void setColor(String color) {
         _color = color;
     }
-    
+
     /** Determine if this Type corresponds to an instantiable token
      *  class.
      *  @return True if this type corresponds to an instantiable

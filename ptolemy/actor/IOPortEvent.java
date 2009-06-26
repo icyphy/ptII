@@ -204,12 +204,12 @@ public class IOPortEvent implements DebugEvent {
 
     // FIXME change to typesafe enum.
 
-    /** An event corresponding with a token being sent. 
+    /** An event corresponding with a token being sent.
      *  @deprecated Use SEND_BEGIN or SEND_END instead.
      */
     public final static int SEND = 1;
 
-    /** An event corresponding with the beginning of a token being sent. */ 
+    /** An event corresponding with the beginning of a token being sent. */
     public final static int SEND_BEGIN = 1;
 
     /** An event corresponding with the beginning of a token being received. */
@@ -217,8 +217,8 @@ public class IOPortEvent implements DebugEvent {
 
     /** An event corresponding with the ending of a token being received. */
     public final static int GET_END = 3;
-    
-    /** An evernt correspoding with the ending of a token being sent. */ 
+
+    /** An evernt correspoding with the ending of a token being sent. */
     public final static int SEND_END = 4;
 
     /** The token was broadcast on all channels. */

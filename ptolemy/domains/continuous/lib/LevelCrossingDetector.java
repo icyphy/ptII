@@ -57,7 +57,7 @@ import ptolemy.kernel.util.Workspace;
  then the output, then the output is produced when the input is
  within <i>errorTolerance</i> of the level.
  The value of the output is always the same
- as the value of the <i>level</i> parameter. 
+ as the value of the <i>level</i> parameter.
  <p>
  This actor will not produce an event on its very first firing.
  If you need an output at time zero, then you need generate a
@@ -246,7 +246,7 @@ public class LevelCrossingDetector extends TypedAtomicActor implements
         if (_lastTrigger == Double.NEGATIVE_INFINITY) {
             return;
         }
-        
+
         boolean inputIsIncreasing = _thisTrigger > _lastTrigger;
 
         // If a crossing has occurred, and either the current step
@@ -255,7 +255,7 @@ public class LevelCrossingDetector extends TypedAtomicActor implements
         if (((_lastTrigger - _level) * (_thisTrigger - _level)) < 0.0
                 || _thisTrigger == _level) {
             // Crossing has occurred.
-            if (currentStepSize == 0.0 
+            if (currentStepSize == 0.0
                     || Math.abs(_thisTrigger - _level) < _errorTolerance) {
                 // The current time is close enough to when the event happens.
                 // If the direction is right, produce an output.
@@ -366,7 +366,7 @@ public class LevelCrossingDetector extends TypedAtomicActor implements
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     // Flag indicating whether this actor detects the level crossing
     // when the input value is rising.
     private boolean _detectRisingCrossing;

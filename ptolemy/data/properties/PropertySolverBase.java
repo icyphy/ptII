@@ -486,7 +486,7 @@ public abstract class PropertySolverBase extends Attribute {
             solver.reset();
         }
         getSharedUtilities().resetAll();
-        
+
         // Don't clear the lattices; otherwise, we'll have multiple
         // copies of a lattice element when we recreate a lattice.
         // This causes regression testing to fail.
@@ -634,9 +634,9 @@ public abstract class PropertySolverBase extends Attribute {
 
     ///////////////////////////////////////////////////////////////////
     ////             private methods                               ////
-    
+
     /**
-     * 
+     *
      */
     private void _compileHelperClasses() throws IllegalActionException {
 
@@ -652,7 +652,7 @@ public abstract class PropertySolverBase extends Attribute {
     }
 
     /**
-     * 
+     *
      * @param entity
      * @param userCode
      * @throws IllegalActionException
@@ -708,7 +708,7 @@ public abstract class PropertySolverBase extends Attribute {
             _executeCommands.setCommands(commands);
             _executeCommands.start();
             int status = _executeCommands.getLastSubprocessReturnCode();
-            
+
             //int status = com.sun.tools.javac.Main.compile(args);
 
             switch (status) {

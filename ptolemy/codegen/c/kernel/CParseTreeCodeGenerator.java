@@ -141,14 +141,14 @@ ParseTreeCodeGenerator {
         // need to restore it when we recursively evaluate
         // an expression.
         ParserScope previousScope = _scope;
-        
+
         _scope = scope;
 
         // Evaluate the value of the root node.
         node.visit(this);
 
         _scope = previousScope;
-        
+
         return _evaluatedChildToken;
     }
 
@@ -313,7 +313,7 @@ ParseTreeCodeGenerator {
         }
 
         if (elementType instanceof ArrayType || elementType instanceof MatrixType) {
-            // If elementType is a composite type. 
+            // If elementType is a composite type.
             _childCode = "$new(" + "Array(" + result + "))";
         } else {
             _childCode = "$new(" + _generator.codeGenType(elementType) + "Array(" + result + "))";
@@ -564,12 +564,12 @@ ParseTreeCodeGenerator {
 
             Type argumentType = ((ASTPtRootNode) node.jjtGetChild(i + 1)).getType();
             result += _specializeArgument(functionName, i, argumentType, _childCode);
-            
+
             argumentTypes.add(argumentType);
         }
-        
+
         functionName = _specializeFunctionCall(functionName, argumentTypes);
-        
+
         _childCode = functionName + "(" + result + ")";
     }
 
@@ -577,13 +577,13 @@ ParseTreeCodeGenerator {
             String functionName, List<Type> argumentTypes) {
         if (functionName.equals("sum")) {
             assert (argumentTypes.size() == 1);
-                
+
             return "$" + _generator.codeGenType(argumentTypes.get(0)) + "_sum";
-        } 
-        
+        }
+
         if (functionName.equals("repeat")) {
             assert (argumentTypes.size() == 2);
-            
+
             return "$" + _generator.codeGenType(argumentTypes.get(1)) + "Array_repeat";
         }
         return functionName;

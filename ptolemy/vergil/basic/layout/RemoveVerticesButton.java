@@ -44,7 +44,7 @@ import ptolemy.vergil.basic.layout.kieler.PtolemyModelUtil;
  * A button to remove unnecessary relation vertices. Unnecessary means they
  * have been introduced just for manual routing of edges and have only
  * 0,1 or 2 adjacent links.
- * 
+ *
  * @author Hauke Fuhrmann
  * @version $Id: LayoutButton.java 53203 2009-04-24 00:27:45Z haf $
  * @since Ptolemy II 7.1
@@ -60,7 +60,7 @@ public class RemoveVerticesButton extends Button {
          * workspace of the container for synchronization and version counts. If the
          * name argument is null, then the name is set to the empty string.
          * Increment the version of the workspace.
-         * 
+         *
          * @param container
          *            The container.
          * @param name
@@ -85,7 +85,7 @@ public class RemoveVerticesButton extends Button {
                 JFrame frame = _action.getFrame();
                 NamedObj model = _action.getModel();
                 // check for supported type of editor
-                if (frame instanceof ActorGraphFrame && model instanceof CompositeActor) 
+                if (frame instanceof ActorGraphFrame && model instanceof CompositeActor)
                         PtolemyModelUtil._removeUnnecessaryRelations((CompositeActor) model);
         }
 }

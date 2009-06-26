@@ -384,8 +384,8 @@ public class GeneratorAttribute extends SingletonAttribute implements
                         + "' was not a " + "writable directory, and "
                         + "mkdirs() failed.  targetPath should be specified "
                         + "as a relative path because targetPathFile is "
-                        + "created by combining ptIIUserDirectory (" 
-                        + ptIIUserDirectory  + ") and targetPath (" 
+                        + "created by combining ptIIUserDirectory ("
+                        + ptIIUserDirectory  + ") and targetPath ("
                         + targetPath + ")");
             }
         }

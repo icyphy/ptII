@@ -82,13 +82,13 @@ public class MapFileStorage extends DEActor {
         outputKey = new TypedIOPort(this, "outputKey", false, true);
         outputKey.setTypeEquals(BaseType.STRING);
         outputKey.setMultiport(true);
-        
+
         outputKey.setWidthEquals(numberOfOutputs);
 
         outputValue = new TypedIOPort(this, "outputValue", false, true);
         outputValue.setTypeEquals(BaseType.STRING);
         outputValue.setMultiport(true);
-        
+
         outputValue.setWidthEquals(numberOfOutputs);
 
         doneReceiving = new TypedIOPort(this, "doneReceiving", true, false);
@@ -177,7 +177,7 @@ public class MapFileStorage extends DEActor {
             super.attributeChanged(attribute);
         }
     }
-    
+
     /** Clone the actor into the specified workspace. This calls the
      *  base class and then sets the type constraints.
      *  @param workspace The workspace for the new object.
@@ -190,7 +190,7 @@ public class MapFileStorage extends DEActor {
         newObject.outputKey.setWidthEquals(newObject.numberOfOutputs);
         newObject.outputValue.setWidthEquals(newObject.numberOfOutputs);
         return newObject;
-    }    
+    }
 
     /** Output the data read in the preinitialize() or in the previous
      *  invocation of postfire(), if there is any.

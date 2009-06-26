@@ -49,5 +49,5 @@ public class Refinement extends TypedCompositeActor {
     public Refinement(ptolemy.domains.modal.modal.Refinement component) {
         super(component);
     }
-   
+
 }

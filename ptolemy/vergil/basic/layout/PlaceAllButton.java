@@ -48,7 +48,7 @@ import diva.graph.basic.BasicLayoutTarget;
 /**
  * A button to place all elements on the canvas, i.e. all connected and unconnected
  * objects. It does not do routing.
- * 
+ *
  * @author Hauke Fuhrmann
  * @version $Id: LayoutButton.java 53203 2009-04-24 00:27:45Z haf $
  * @since Ptolemy II 7.1
@@ -64,7 +64,7 @@ public class PlaceAllButton extends Button {
          * workspace of the container for synchronization and version counts. If the
          * name argument is null, then the name is set to the empty string.
          * Increment the version of the workspace.
-         * 
+         *
          * @param container
          *            The container.
          * @param name
@@ -96,14 +96,14 @@ public class PlaceAllButton extends Button {
                         GraphController graphController = graphFrame.getJGraph().getGraphPane().getGraphController();
                         GraphModel graphModel = graphFrame.getJGraph().getGraphPane().getGraphController().getGraphModel();
                         BasicLayoutTarget layoutTarget = new BasicLayoutTarget(graphController);
-                        
+
                         // create Kieler layouter for this layout target
                         KielerLayout layout = new KielerLayout(layoutTarget);
                         layout.setModel((CompositeActor)_action.getModel());
                         layout.setApplyEdgeLayout(false);
                         layout.setBoxLayout(true);
                         layout.setTop(graphFrame);
-                        
+
                         // perform layout
                         try{
                         layout.layout(graphModel.getRoot());
@@ -112,7 +112,7 @@ public class PlaceAllButton extends Button {
                                                 + exception.getMessage(), exception);
                         }
 
-                        
+
                 } else
                         MessageHandler
                                         .error("For now only actor oriented graphs with ports are supported by KIELER layout.");

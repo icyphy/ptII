@@ -145,7 +145,7 @@ public class RealDependency implements Dependency {
     public Dependency oTimesIdentity() {
         return OTIMES_IDENTITY;
     }
-    
+
     /** Return a string representation in the form
      *  "RealDependency(value)".
      *  @return A string representation.

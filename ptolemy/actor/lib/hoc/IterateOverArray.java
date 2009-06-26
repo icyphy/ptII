@@ -816,12 +816,12 @@ public class IterateOverArray extends MirrorComposite {
             if (_debugging) {
                 _debug("send inside to channel " + channelIndex + ": " + token);
             }
-            
+
             if (_hasPortEventListeners) {
                 _notifyPortEventListeners(new IOPortEvent(this, IOPortEvent.SEND,
                                                         channelIndex, true, token));
             }
-            
+
             try {
                 try {
                     _workspace.getReadAccess();

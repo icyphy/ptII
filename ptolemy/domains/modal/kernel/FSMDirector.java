@@ -416,7 +416,7 @@ public class FSMDirector extends Director implements
         setModelTime(time);
         return time;
     }
-    
+
     /** Notify the refinements of the current state, if any,
      *  that a {@link Director#fireAt(Actor,Time)}
      *  request was skipped, and that current time has passed the
@@ -873,7 +873,7 @@ public class FSMDirector extends Director implements
             container.setModelErrorHandler(this);
         }
     }
-    
+
     /** Set the superdense time index by delegating to the directors
      *  of the refinements of the current state, if any. This should only be
      *  called by an enclosing director.
@@ -1282,7 +1282,7 @@ public class FSMDirector extends Director implements
     // it is only used in the HSFSMDirector. Modify the fire() method.
     // Or this may not be necessary.
     protected List _enabledRefinements;
-    
+
     /** The _indexOffset is set by FSMActor during initialization of
      *  destination refinements upon committing to a reset transition
      *  in order to ensure that the destination refinement views its

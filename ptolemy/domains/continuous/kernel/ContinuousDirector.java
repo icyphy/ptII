@@ -385,7 +385,7 @@ public class ContinuousDirector extends FixedPointDirector implements
             _transferOutputsToEnvironment();
             return;
         }
-        
+
         // If there is a commit pending, then this firing should just
         // produce the outputs from the speculative execution.
         // The commit will occur in postfire.
@@ -397,7 +397,7 @@ public class ContinuousDirector extends FixedPointDirector implements
             _transferOutputsToEnvironment();
             return;
         }
-        
+
         _resetAllReceivers();
 
         // If there are external inputs and there is no enclosing continuous
@@ -410,7 +410,7 @@ public class ContinuousDirector extends FixedPointDirector implements
             _transferOutputsToEnvironment();
             return;
         }
-        
+
         // If we get to here, then we are either at the top level, or we
         // are enclosed within a director that is not a ContinuousDirector
         // and there are no external inputs and the step size is greater
@@ -433,13 +433,13 @@ public class ContinuousDirector extends FixedPointDirector implements
             int iterations = 0;
             while (!_ODESolver._isStepFinished() && iterations < _maxIterations
                     && !_stopRequested) {
-                
+
                 _resetAllReceivers();
                 // We only get here if we have no input events.
                 // The following call sets the receivers connected to the
                 // intputs to be "absent".
                 _transferInputsToInside();
-                
+
                 super.fire();
                 // Outputs should only be produced on the first iteration of
                 // the solver because after that we are computing values in
@@ -698,7 +698,7 @@ public class ContinuousDirector extends FixedPointDirector implements
         }
         // Set a breakpoint with index 0 for the stop time.
         _breakpoints.insert(new SuperdenseTime(_stopTime, 0));
-        
+
         // Record starting point of the real time (the computer system time)
         // in case the director is synchronized to the real time.
         _timeBase = System.currentTimeMillis();
@@ -795,7 +795,7 @@ public class ContinuousDirector extends FixedPointDirector implements
 
     /** Initialize the fixed-point iteration by setting all receivers to
      *  unknown, and return true if we have not passed the stop time.
-     *  
+     *
      *  Record the current model time as the beginning time of the current
      *  iteration, and if there is a pending invocation of postfire()
      *  from a previous integration step, invoke that now.
@@ -916,7 +916,7 @@ public class ContinuousDirector extends FixedPointDirector implements
         // the start of the integration step.
         _currentTime = _iterationBeginTime;
         _index = _iterationBeginIndex;
-        
+
         if (_debugging) {
             _debug("-- Roll back time to: " + _currentTime + " and index " + _index);
         }
@@ -1275,7 +1275,7 @@ public class ContinuousDirector extends FixedPointDirector implements
         // which will affect the next step size.
         // NOTE: This increments _index.
         _postfireReturns = super.postfire();
-        
+
         // Correct for the above incrementing of the index.
         _index--;
 
@@ -1392,7 +1392,7 @@ public class ContinuousDirector extends FixedPointDirector implements
         }
         return _enclosingContinuousDirector;
     }
-    
+
     /** Notify all actors being executed that the specified time has
      *  been skipped, in case they have called fireAt() and are expecting
      *  to be fired at that time. The actors are notified in schedule order.
@@ -1607,9 +1607,9 @@ public class ContinuousDirector extends FixedPointDirector implements
             // would have thrown an exception. Hence, current time must match
             // the environment time.
             if (!_commitIsPending) {
-                
+
                 // FIXME: Needed?
-                
+
                 // Request a refiring at the current time.
                 // The reason for this is that local time has not advanced,
                 // so we can't be sure of any interval of future time over which
@@ -1847,13 +1847,13 @@ public class ContinuousDirector extends FixedPointDirector implements
         // because it sets the local model time to match that of the
         // executive director.
         boolean result = super.prefire();
-        
+
         // If the enclosing director implements SuperdenseTimeDirector,
         // then get the current index from it.
         if (executiveDirector instanceof SuperdenseTimeDirector) {
             _index = ((SuperdenseTimeDirector)executiveDirector).getIndex();
         }
-        
+
         // Initialize everything for the fixedpoint iteration.
         _resetAllReceivers();
 
@@ -1996,7 +1996,7 @@ public class ContinuousDirector extends FixedPointDirector implements
 
     /** A cache of the value of initStepSize. */
     private double _initStepSize;
-    
+
     /** The index of the time at which the current integration step began. */
     private int _iterationBeginIndex;
 
@@ -2013,7 +2013,7 @@ public class ContinuousDirector extends FixedPointDirector implements
      *  the <i>ODESolver</i> parameter.
      */
     private ContinuousODESolver _ODESolver = null;
-    
+
     /** Flag indicating that all actors have returned false from postfire or
      *  the stop time has been reached.
      */

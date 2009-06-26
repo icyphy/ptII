@@ -60,7 +60,7 @@ public class AlphabetizeOperation {
             File directory = new File(FileUtilities.nameToURL(
                     "$CLASSPATH/ptolemy/codegen/c/kernel/type/polymorphic",
                     null, null).getFile());
-            
+
             // Iterate through every file in type/polymorphic/
             for (File file : directory.listFiles()) {
                 String filename = file.getPath();

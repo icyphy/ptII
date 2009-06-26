@@ -283,7 +283,7 @@ public class DEEvent implements Comparable {
             _depth = newDepth;
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
@@ -306,7 +306,7 @@ public class DEEvent implements Comparable {
 
     /** The timestamp of the event. */
     protected Time _timestamp;
-    
+
 
     ///////////////////////////////////////////////////////////////////
     ////                         package private   methods         ////

@@ -47,7 +47,7 @@ import ptolemy.domains.dde.kernel.NullToken;
  @Pt.AcceptedRating Red (cxh)
  */
 public class Void extends LatticeProperty implements TypeProperty {
-        
+
     public Void(PropertyLattice lattice) {
         super(lattice);
     }

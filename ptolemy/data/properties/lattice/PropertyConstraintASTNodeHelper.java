@@ -216,7 +216,7 @@ public class PropertyConstraintASTNodeHelper
         }
         return null;
     }
-    
+
     protected ASTPtRootNode _getNode() {
         return (ASTPtRootNode) getComponent();
     }

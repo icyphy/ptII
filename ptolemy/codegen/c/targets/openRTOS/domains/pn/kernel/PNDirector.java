@@ -55,8 +55,8 @@ import ptolemy.kernel.util.NamedObj;
  This helper generates OpenRTOS specific code. OpenRTOS is a real-time
  operating system for the Luminary Micro target. It features a small
  preemptive, priority-based kernel. For further documentation, one can
- refer to http://www.freertos.org/. 
- 
+ refer to http://www.freertos.org/.
+
  This director starts a task for each actor. Each task has a specified
  name, stack size, priority and function code to execute. User can introduce
  annotations in an actor to specify these values. In particular, this
@@ -64,12 +64,12 @@ import ptolemy.kernel.util.NamedObj;
  use their values to create the tasks. If these parameters are not specified,
  the code generator uses the default value 80 for stack size, and 0 for
  priority.
- 
- Each task executes a given function which consists of the actor initialization, 
- fire and wrapup code. The communication between tasks use the OpenRTOS queues. 
+
+ Each task executes a given function which consists of the actor initialization,
+ fire and wrapup code. The communication between tasks use the OpenRTOS queues.
  These queues provide synchronized access methods. This director helper generates
- a queue for each connection which is referenced by its referable port 
- channel. There is one referable port channel for each connection. 
+ a queue for each connection which is referenced by its referable port
+ channel. There is one referable port channel for each connection.
 
  @author Man-Kit Leung
  @version $Id$
@@ -79,7 +79,7 @@ import ptolemy.kernel.util.NamedObj;
  */
 public class PNDirector extends Director {
 
-    /** 
+    /**
      * Construct the code generator helper associated with the given
      * PNDirector.
      * @param pnDirector The associated
@@ -91,29 +91,29 @@ public class PNDirector extends Director {
 
     ////////////////////////////////////////////////////////////////////////
     ////                         public methods                         ////
-    
+
     /**
      * Generate code for getting data from the specified channel.
      * The generated code waits forever until the receipt of data.
-     * Upon return the data can be access through using the 
+     * Upon return the data can be access through using the
      * $ref(port#channalNumber) macro.
-     * 
+     *
      * @param port The specified port.
      * @param channelNumber The specified channel.
      * @return The code for getting data from specified channel.
-     * @throws IllegalActionException If the specified port channel has 
-     *  more than one referable queues. 
+     * @throws IllegalActionException If the specified port channel has
+     *  more than one referable queues.
      * @exception IllegalActionException If an error occurs when getting
      *  the helper for the actor containing the given port, or reading
      *  the width of the referenced port, or
-     * {@link #getReferenceChannels(IOPort, int)} or 
+     * {@link #getReferenceChannels(IOPort, int)} or
      * {@link #processCode(String)} throw it.
      */
-    public String generateCodeForGet(IOPort port, int channelNumber) 
+    public String generateCodeForGet(IOPort port, int channelNumber)
     throws IllegalActionException {
-    
+
         List<Channel> channels = getReferenceChannels(port, channelNumber);
-    
+
         if (channels.size() == 0) {
             return "";
         } if (channels.size() != 1) {
@@ -121,65 +121,65 @@ public class PNDirector extends Director {
                     "There are more than one channel to get data from. " +
                             "This is ambiguous.");
         }
-        
-        Channel referenceChannel = channels.get(0); 
+
+        Channel referenceChannel = channels.get(0);
         IOPort referencePort = referenceChannel.port;
-    
+
         if (referencePort.getWidth() <= 0) {
             return "";
         }
-        
-        CodeGeneratorHelper actorHelper = 
+
+        CodeGeneratorHelper actorHelper =
             (CodeGeneratorHelper) _getHelper(port.getContainer());
-        
+
         String dataVariable = "$ref(" + generateSimpleName(referencePort)
             + "#" + referenceChannel.channelNumber + ")";
         String queue = _generateQueueReference(referencePort, referenceChannel.channelNumber);
         String waitTime = _getMaxDelay(referenceChannel);
-        
+
         return actorHelper.processCode("while( pdTRUE != xQueueReceive(" + queue + ", &" + dataVariable
             + ", " + waitTime + ") );" + _eol);
     }
 
     /**
-     * Generate code for sending data to the specified channel. 
+     * Generate code for sending data to the specified channel.
      * The generated code waits forever until the data is successfully sent.
-     * 
+     *
      * @param port The specified port.
      * @param channelNumber The specified channel.
      * @param dataToken The specified expression for the data being send.
      * @return The code for sending data to the specified channel.
      * @exception IllegalActionException If an error occurs when getting
      *  the helper for the actor containing the given port, or
-     * {@link #getReferenceChannels(IOPort, int)} or 
+     * {@link #getReferenceChannels(IOPort, int)} or
      * {@link #processCode(String)} throw it.
      */
-    public String generateCodeForSend(IOPort port, int channelNumber, 
+    public String generateCodeForSend(IOPort port, int channelNumber,
             String dataToken) throws IllegalActionException {
-        
+
         StringBuffer result = new StringBuffer();
         List<Channel> channels = getReferenceChannels(port, channelNumber);
-        
+
         for (Channel referenceChannel : channels) {
             IOPort referencePort = referenceChannel.port;
-            
-            CodeGeneratorHelper actorHelper = 
+
+            CodeGeneratorHelper actorHelper =
                 (CodeGeneratorHelper) _getHelper(referencePort.getContainer());
 
 //            String dataVariable = "$ref(" + referencePort.getName()
 //                + "#" + referenceChannel.channelNumber + ")";
-            
+
             String queue = _generateQueueReference(referencePort, referenceChannel.channelNumber);
             String waitTime = _getMaxDelay(referenceChannel);
-        
-            result.append(actorHelper.processCode("while( pdTRUE != xQueueSend(" + 
+
+            result.append(actorHelper.processCode("while( pdTRUE != xQueueSend(" +
                     queue + ", &" + dataToken + ", " + waitTime + ") );" + _eol));
         }
         return result.toString();
     }
-    
-    /** 
-     * Generate the director fire code. 
+
+    /**
+     * Generate the director fire code.
      * The code creates a new task for each actor according to
      * their specified parameters (e.g. stack depth, priority,
      * and etc.). The code also initiates the task scheduler.
@@ -188,19 +188,19 @@ public class PNDirector extends Director {
      */
     public String generateFireCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
-        CompositeActor compositeActor = 
-            (CompositeActor) _director.getContainer();       
-    
+        CompositeActor compositeActor =
+            (CompositeActor) _director.getContainer();
+
         code.append(_codeGenerator.comment("Create a task for each actor."));
-    
+
         List<Actor> actorList = compositeActor.deepEntityList();
-    
+
         /* The xTaskCreate() function takes as parameters a task function
          * pointer, the task name, a stack size value, a pointer to
          * the task parameters, a value for task priority, and the task
          * handle which would be assigned upon the return of the function.
          * The vTaskStartScheduler() is generated after the xTaskCreate()
-         * calls. It starts the task scheduler once every task is created.  
+         * calls. It starts the task scheduler once every task is created.
          */
         for (Actor actor : actorList) {
             code.append("xTaskCreate(");
@@ -212,10 +212,10 @@ public class PNDirector extends Director {
             code.append(", task_" +                        // task handle.
                     _getActorTaskLabel(actor) + ");" + _eol);
         }
-    
+
         /* Start the scheduler. */
         code.append("vTaskStartScheduler();" + _eol);
-    
+
         return code.toString();
     }
 
@@ -242,8 +242,8 @@ public class PNDirector extends Director {
         List args = new LinkedList();
         args.add("");
         args.add("");
-        args.add("");        
-                
+        args.add("");
+
         // Initialize each queue variable.
         for (Channel buffer : _queues) {
             args.set(0, _generateQueueReference(buffer.port, buffer.channelNumber));
@@ -258,7 +258,7 @@ public class PNDirector extends Director {
     /**
      * Generate the main loop code.
      * It delegates to the helper of the container, and invokes
-     * its generateFireCode() method. 
+     * its generateFireCode() method.
      * @return The main loop code.
      * @exception IllegalActionException Thrown if an error occurs
      * when getting the helper or generating the fire code from it.
@@ -279,39 +279,39 @@ public class PNDirector extends Director {
      */
     public String generatePreinitializeCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
-        
+
         // We need this second StringBuffer in order to generate
         // the task handle declarations separate from the queue handle
         // declarations.
         StringBuffer bufferCode = new StringBuffer();
-    
+
         _queues.clear();
-    
-        List<Entity> actorList = 
+
+        List<Entity> actorList =
             ((CompositeEntity) _director.getContainer()).deepEntityList();
-    
+
         for (Entity actor : actorList) {
-    
+
             code.append("xTaskHandle *task_");
             code.append(_getActorTaskLabel((Actor) actor));
             code.append(";" + _eol);
-    
+
             for (TypedIOPort port : (List<TypedIOPort>) actor.portList()) {
                 bufferCode.append(_createDynamicOffsetVariables(port));
             }
         }
         code.append(super.generatePreinitializeCode());
-    
+
         code.append(bufferCode);
-    
+
         _generateTaskFunctionCode(code);
-    
+
         return code.toString();
     }
 
-    /** 
+    /**
      * Generate code for transferring tokens into a composite.
-     * 
+     *
 
      * @param inputPort The port to transfer tokens.
      * @param code The string buffer that the generated code is appended to.
@@ -329,7 +329,7 @@ public class PNDirector extends Director {
 
     /**
      * Generate code for transferring tokens outside of a composite.
-     * 
+     *
      * @param port The specified port.
      * @param code The given code buffer.
      *  @exception IllegalActionException Not thrown in this class.
@@ -344,10 +344,10 @@ public class PNDirector extends Director {
         return;
     }
 
-    /** 
+    /**
      * Generate variable initialization for the referenced parameters.
      * This overrides the super class method and returns an empty
-     * string. It avoids generating any offset variables. 
+     * string. It avoids generating any offset variables.
      * @return code The empty string.
      * @exception IllegalActionException Not thrown in this class.
      */
@@ -357,24 +357,24 @@ public class PNDirector extends Director {
     }
 
     /**
-     * Return the buffer size to generate the variable for the 
+     * Return the buffer size to generate the variable for the
      * specified port channel.
      * This number dictates the size of the array generated for a variable
      * associated with the port channel. This returns 1, since queuing
      * is done using a separate structure.
      * @param port The specified port
      * @param channelNumber The specified channel number.
-     * @return The buffer size to generate the variable for the 
+     * @return The buffer size to generate the variable for the
      *  specified port channel. In this case, it's 1.
      * @exception IllegalActionException Not thrown in this class.
      */
     public int getBufferSize(IOPort port, int channelNumber)
     throws IllegalActionException {
         // FIXME: Reference with offset larger than 1 will not work
-        // (e.g. $ref(port, 3)).        
+        // (e.g. $ref(port, 3)).
         return 1;
     }
-    
+
     /**
      * Get the files needed by the code generated from this helper class.
      * The header files required are "FreeRTOS.h", "task.h", "queue.h",
@@ -393,7 +393,7 @@ public class PNDirector extends Director {
         files.add("\"semphr.h\"");
         return files;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
@@ -401,7 +401,7 @@ public class PNDirector extends Director {
      *  Since built-in queue structure is used, it eliminates the
      *  need for offset variables. Instead, this method generates
      *  the declaration of the queues if the specified port has any
-     *  referable port channels. There is one referable port channel 
+     *  referable port channels. There is one referable port channel
      *  for each connection. All input port channels are considered
      *  referable.
      *  @param port The specified port.
@@ -426,7 +426,7 @@ public class PNDirector extends Director {
         if (width != 0) {
 
             List args = new LinkedList();
-            args.add("");  
+            args.add("");
 
             for (int i = 0; i < width; i++) {
                 args.set(0, _generateQueueReference(port, i));
@@ -443,7 +443,7 @@ public class PNDirector extends Director {
     ////                         private methods                   ////
 
     /**
-     * Generate the reference of the queue generated for the 
+     * Generate the reference of the queue generated for the
      * specified port and channel number. The specified port
      * channel is assumed to be referable.
      * @param port The specified port.
@@ -456,24 +456,24 @@ public class PNDirector extends Director {
         + "_" + channelNumber + "_queue";
     }
 
-    /** 
+    /**
      * Generate the task functions.
-     * A task function is generated for each actor that is visible to 
+     * A task function is generated for each actor that is visible to
      * this director helper. A task function consists of the
      * actor's initialize, fire and wrapup code. In particular,
      * a loop is generated to iterate the actor's fire code. If
      * the actor has a firing count limit, a finite for loop is
-     * generated. Otherwise, the fire code is wrapped inside an 
-     * infinite loop. 
+     * generated. Otherwise, the fire code is wrapped inside an
+     * infinite loop.
      * @param code The given code buffer.
      * @throws IllegalActionException If getting the helper or
      *  generating the actor initialize, fire, or wrapup code
      *  throws it.
      */
-    private void _generateTaskFunctionCode(StringBuffer code) 
+    private void _generateTaskFunctionCode(StringBuffer code)
     throws IllegalActionException {
 
-        List<Actor> actorList = 
+        List<Actor> actorList =
             ((CompositeActor) _director.getContainer()).deepEntityList();
         //boolean inline = ((BooleanToken) _codeGenerator.inline.getToken()).booleanValue();
 
@@ -481,24 +481,24 @@ public class PNDirector extends Director {
         for (Actor actor : actorList) {
             StringBuffer functionCode = new StringBuffer();
 
-            CodeGeneratorHelper helper = 
+            CodeGeneratorHelper helper =
                 (CodeGeneratorHelper) _getHelper((NamedObj) actor);
 
-            code.append(_eol + "static void " + 
+            code.append(_eol + "static void " +
                     _getActorTaskLabel(actor) + "(void* arg) {" + _eol);
-            
+
             String loopCountDeclare = "";
-            
-            // Check if the actor is an opague CompositeActor. 
+
+            // Check if the actor is an opague CompositeActor.
             // The actor is guaranteed to be opague from calling deepEntityList(),
             // so all we need to check whether or not it is a CompositeActor.
             if (actor instanceof CompositeActor) {
-                Director directorHelper = (Director) _getHelper(actor.getDirector()); 
+                Director directorHelper = (Director) _getHelper(actor.getDirector());
 
                 // If so, it should contain a different Director.
                 assert (directorHelper != this);
 
-                functionCode.append(directorHelper.generateMainLoop());            
+                functionCode.append(directorHelper.generateMainLoop());
 
             } else {
 
@@ -506,34 +506,34 @@ public class PNDirector extends Director {
                 if (actor instanceof LimitedFiringSource) {
                     int firingCount = ((IntToken) ((LimitedFiringSource) actor)
                             .firingCountLimit.getToken()).intValue();
-                    
+
                     loopCountDeclare = "int i = 0;" + _eol;
-                    functionCode.append("for (; i < " + firingCount 
+                    functionCode.append("for (; i < " + firingCount
                             + "; i++) {" + _eol);
 
                 } else {
-                    functionCode.append("while (true) {" + _eol);                
+                    functionCode.append("while (true) {" + _eol);
                 }
-                
+
                 functionCode.append(helper.generateFireCode());
                 functionCode.append(helper.generatePostfireCode());
 
                 functionCode.append(_eol + "}" + _eol);
-            }            
-            
+            }
+
             // wrapup
             functionCode.append(helper.generateWrapupCode());
-            
+
             // Make sure the task is running forever.
             functionCode.append("while(true);" + _eol);
             functionCode.append("}" + _eol);
-            
+
             // init
             // This needs to be called last because all references
             // need to be collected before generating their initialization.
             String variableInitializeCode = helper.generateVariableInitialization();
             String initializeCode = helper.generateInitializeCode();
-            
+
             code.append(loopCountDeclare);
             code.append(variableInitializeCode);
             code.append(initializeCode);
@@ -541,7 +541,7 @@ public class PNDirector extends Director {
         }
     }
 
-    /** 
+    /**
      * Generate the label of the task generated for the specified actor.
      * @param actor The specified actor.
      * @return The task label for the specified actor.
@@ -553,9 +553,9 @@ public class PNDirector extends Director {
 
     /**
      * Return the maximum wait time for getting and sending data
-     * on the specified port channel. The wait time specifies the 
-     * duration the queue access functions block before returning. 
-     * In this case, it is set to the maximum, portMAX_DELAY, 
+     * on the specified port channel. The wait time specifies the
+     * duration the queue access functions block before returning.
+     * In this case, it is set to the maximum, portMAX_DELAY,
      * which is a symbolic constant defined in the OpenRTOS header file.
      * @param channel The specified port channel.
      * @return The maximum wait time for getting and sending data.
@@ -563,7 +563,7 @@ public class PNDirector extends Director {
     private String _getMaxDelay(Channel channel) {
         return "portMAX_DELAY";
     }
-    
+
     /**
      * Return the task priority associated with the specified actor.
      * If the actor has a parameter named "_priority", its expression
@@ -581,24 +581,24 @@ public class PNDirector extends Director {
     }
 
     /**
-     * Return the size of the queue to be generated for 
+     * Return the size of the queue to be generated for
      * the specified port channel.
      * @param port The specified port.
      * @param channelNumber The specified channel number.
-     * @return The size of the queue to be generated for 
+     * @return The size of the queue to be generated for
      *  the given port channel.
-     * @throws IllegalActionException 
+     * @throws IllegalActionException
      */
     private int _getQueueSize(IOPort port, int channelNumber)
     throws IllegalActionException {
         // FIXME: we can get this info from static analysis.
-        IntToken sizeToken = (IntToken) 
+        IntToken sizeToken = (IntToken)
         ((ptolemy.domains.pn.kernel.PNDirector) _director)
         .initialQueueCapacity.getToken();
-            
+
         return sizeToken.intValue();
     }
-    
+
     /**
      * Return the expression of the stack size value for the
      * specified actor task. If the specified actor has a

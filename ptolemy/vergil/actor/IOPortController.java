@@ -259,7 +259,7 @@ public class IOPortController extends AttributeController {
             }
             return direction;
     }
-    
+
     /** Return one of {-270, -180, -90, 0, 90, 180, 270} specifying
      *  the orientation of a port. This depends on whether the port
      *  is an input, output, or both, whether the port has a parameter
@@ -297,7 +297,7 @@ public class IOPortController extends AttributeController {
     protected static int _getDirection(int portRotation) {
             return getDirection(portRotation);
     }
-    
+
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////

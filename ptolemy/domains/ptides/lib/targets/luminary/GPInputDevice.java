@@ -43,16 +43,16 @@ import ptolemy.kernel.util.NameDuplicationException;
  * This is an abstract class for GPIO pins on the Luminary Micro.
  * This actor will have no effect in model simulations, but
  * allows for code generators to generate the actors.
- * 
+ *
  * @author Jia Zou, Jeff C. Jensen
  * @version $ld$
  * @since Ptolemy II 7.1
  * @Pt.ProposedRating Yellow (jiazou)
- * @Pt.AcceptedRating 
+ * @Pt.AcceptedRating
  *
  */
 public class GPInputDevice extends SensorInputDevice implements InterruptDevice{
-    
+
     /**
      * Constructs a GPInputDevice object.
      *
@@ -62,7 +62,7 @@ public class GPInputDevice extends SensorInputDevice implements InterruptDevice{
      * @throws NameDuplicationException if the super constructor throws it.
      */
     public GPInputDevice(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {        
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
         pin = new Parameter(this, "pin");
         //FIXME: GPIO A7 is an easy-to-use output, but should it be default?
@@ -79,12 +79,12 @@ public class GPInputDevice extends SensorInputDevice implements InterruptDevice{
      *  FIXME: Verify user has set value between 0 and 7.
      */
     public Parameter pin;
-    
+
     /** Which pad (A-G) of GPIO to use.
      *  FIXME: Verify user has set value between A and H.
-     */ 
+     */
     public StringParameter pad;
-    
+
     /** An integer that keeps track of the number of supported configurations
      *  for this device.
      */

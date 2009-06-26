@@ -370,7 +370,7 @@ public class Director extends Attribute implements Executable {
      *  may not be active at the time of the requested firing.
      *  In this latter case, if the director becomes active after
      *  the requested time, it is required to detect that it missed
-     *  the requested firing, and call the method 
+     *  the requested firing, and call the method
      *  {@link Actor#fireAtSkipped(Time)} to notify the actor that
      *  the requested firing was skipped. It is required to do this
      *  before it again fires the actor.
@@ -448,7 +448,7 @@ public class Director extends Attribute implements Executable {
      */
     public void fireAtSkipped(Time time) throws IllegalActionException {
     }
-    
+
     /** Return a causality interface for the composite actor that
      *  contains this director. This base class returns an
      *  instance of {@link CausalityInterfaceForComposites}, but

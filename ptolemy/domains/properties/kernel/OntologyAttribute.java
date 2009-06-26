@@ -1,22 +1,22 @@
 /*
  * An attribute that contains a ontology model graph.
- * 
+ *
  * Below is the copyright agreement for the Ptolemy II system. Version: $Id:
  * OntologyAttribute.java 53505 2009-05-06 18:18:38Z bldmastr $
- * 
+ *
  * Copyright (c) 2009 The Regents of the University of California. All rights
  * reserved.
- * 
+ *
  * Permission is hereby granted, without written agreement and without license
  * or royalty fees, to use, copy, modify, and distribute this software and its
  * documentation for any purpose, provided that the above copyright notice and
  * the following two paragraphs appear in all copies of this software.
- * 
+ *
  * IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR
  * DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES ARISING OUT
  * OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF THE UNIVERSITY OF
  * CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
+ *
  * THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
  * INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
  * FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE PROVIDED HEREUNDER IS ON AN
@@ -37,7 +37,7 @@ import ptolemy.vergil.toolbox.TextEditorTableauFactory;
 
 /**
  * An attribute that contains a ontology model graph.
- * 
+ *
  * @author Man-Kit Leung
  * @version $Id$
  * @since Ptolemy II 7.1
@@ -146,7 +146,7 @@ public class OntologyAttribute extends ModelAttribute {
             }
 
             if (entity.getAttribute("_tableauFactory") == null) {
-                // FIXME: This class uses classes from vergil, which means the backend 
+                // FIXME: This class uses classes from vergil, which means the backend
                 // and the gui are too tighly intertwined.
                 TextEditorTableauFactory factory = new TextEditorTableauFactory(
                         entity, "_tableauFactory");

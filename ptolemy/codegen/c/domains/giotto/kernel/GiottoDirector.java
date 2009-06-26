@@ -167,7 +167,7 @@ public class GiottoDirector extends StaticSchedulingDirector {
         _intFlag = false;
         _doubleFlag = false;
         _booleanFlag = false;
-     
+
 
         return code.toString();
     }
@@ -1021,8 +1021,8 @@ public class GiottoDirector extends StaticSchedulingDirector {
 
         return newBufferSize;
     }
-    
-   
+
+
      /** Generate sanitized name for the given named object. Remove all
       *  underscores to avoid conflicts with systems functions.
       *  @param namedObj The named object for which the name is generated.
@@ -1037,15 +1037,15 @@ public class GiottoDirector extends StaticSchedulingDirector {
          //        NamedObj parent = namedObj.toplevel();
          //        if (namedObj.toplevel() == namedObj) {
          //            return "_toplevel_";
-         //        }        
+         //        }
          //        String name = StringUtilities.sanitizeName(namedObj.getName(parent));
          if (name.startsWith("_")) {
              name = name.substring(1, name.length());
          }
          return name.replaceAll("\\$", "Dollar")+"_driver";
-         
-         
-         
+
+
+
      }
 
     private int _portNumber = 0;

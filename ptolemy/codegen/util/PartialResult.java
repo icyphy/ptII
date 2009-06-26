@@ -4,5 +4,5 @@ public interface PartialResult {
     public boolean isStatic();
 
     public Object getResult();
-    
+
 }

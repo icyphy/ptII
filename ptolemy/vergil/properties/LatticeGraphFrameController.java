@@ -1,20 +1,20 @@
 /*
  * Below is the copyright agreement for the Ptolemy II system. Version: $Id:
  * LatticeGraphFrameController.java 53821 2009-05-18 15:49:29Z cxh $
- * 
+ *
  * Copyright (c) 2009 The Regents of the University of California. All rights
  * reserved.
- * 
+ *
  * Permission is hereby granted, without written agreement and without license
  * or royalty fees, to use, copy, modify, and distribute this software and its
  * documentation for any purpose, provided that the above copyright notice and
  * the following two paragraphs appear in all copies of this software.
- * 
+ *
  * IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR
  * DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES ARISING OUT
  * OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF THE UNIVERSITY OF
  * CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
+ *
  * THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
  * INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
  * FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE PROVIDED HEREUNDER IS ON AN
@@ -39,7 +39,7 @@ import diva.graph.JGraph;
  * A Graph Controller for lattice graphs. This controller allows lattice
  * elements to be dragged and dropped onto its graph. Arcs can be created by
  * control-clicking and dragging from one element to another.
- * 
+ *
  * @author Man-Kit Leung
  * @version $Id: LatticeGraphFrameController.java 53955 2009-05-27 20:49:38Z
  * cshelton $
@@ -61,7 +61,7 @@ public class LatticeGraphFrameController extends FSMGraphController {
 
     /**
      * Add hot keys to the actions in the given JGraph.
-     * 
+     *
      * @param jgraph The JGraph to which hot keys are to be added.
      */
     @Override

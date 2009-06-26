@@ -53,17 +53,17 @@ public class Transition extends RTMaudeAdaptor {
 
     @Override
     public String generateTermCode() throws IllegalActionException {
-        ptolemy.domains.fsm.kernel.Transition t = 
+        ptolemy.domains.fsm.kernel.Transition t =
             (ptolemy.domains.fsm.kernel.Transition) getComponent();
         ParseTreeCodeGenerator pcg = getParseTreeCodeGenerator();
-        
+
         ASTPtRootNode pt = (new PtParser()).generateParseTree(t.getGuardExpression());
         pcg.evaluateParseTree(pt, null);
         String guard = pcg.generateFireCode();
-        
+
         String set = ((RTMaudeAdaptor) _getHelper(t.setActions)).generateTermCode();
         String out = ((RTMaudeAdaptor) _getHelper(t.outputActions)).generateTermCode();
-        
+
         return _generateBlockCode(defaultTermBlock,
                 t.sourceState().getName(),
                 t.destinationState().getName(),

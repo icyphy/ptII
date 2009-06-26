@@ -155,16 +155,16 @@ public class SDFDirector extends StaticSchedulingDirector {
         _intFlag = false;
         _doubleFlag = false;
         _booleanFlag = false;
-  
+
         // Commented out the following code because
         // generateFireFunctionCode() should be called by
         // the CodeGenerator.
-        
+
         // if not inline do this.
         // if(!_isTopDirector())
         // code.append(generateFireFunctionCode());
-            
-        
+
+
 
         return code.toString();
     }
@@ -965,7 +965,7 @@ public class SDFDirector extends StaticSchedulingDirector {
     }
 
     ////////////////////////////////////////////////////////////////////////
-    ////                         private methods                        ////   
+    ////                         private methods                        ////
 
     /** Pad the buffer for the channel of the given port with the given
      *  channel number to a power of two.  Return the new buffer size.

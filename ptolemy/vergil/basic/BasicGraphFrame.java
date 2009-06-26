@@ -1664,7 +1664,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             _palettePane.setLayout(new BoxLayout(_palettePane, BoxLayout.Y_AXIS));
 
             _palettePane.add(_libraryScrollPane, BorderLayout.CENTER);
-            if (_graphPanner != null) { 
+            if (_graphPanner != null) {
                 _palettePane.add(_graphPanner, BorderLayout.SOUTH);
             }
 

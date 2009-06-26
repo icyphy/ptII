@@ -347,7 +347,7 @@ public class Event extends State implements Initializable {
             buffer.append(").");
         }
         _debug(new PteraDebugEvent(this, buffer.toString()));
-        
+
         actions.execute();
 
         return null;

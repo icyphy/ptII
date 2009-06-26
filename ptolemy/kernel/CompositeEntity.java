@@ -500,7 +500,7 @@ public class CompositeEntity extends ComponentEntity {
                     }
                 }
             }
-            
+
             // Finally, clone level-crossing links, if there are any.
             if (_levelCrossingLinks != null) {
                 for (LinkRecord record : _levelCrossingLinks) {
@@ -888,7 +888,7 @@ public class CompositeEntity extends ComponentEntity {
 
                 ComponentRelation relation = (ComponentRelation) relations
                         .next();
-                
+
                 // Skip the relation if it is not persistent.
                 if (relation != null && !relation.isPersistent()) {
                     continue;
@@ -958,7 +958,7 @@ public class CompositeEntity extends ComponentEntity {
 
         while (entities.hasNext()) {
             ComponentEntity entity = (ComponentEntity) entities.next();
-            
+
             // Skip the entity if it is not persistent.
             if (entity != null && !entity.isPersistent()) {
                 continue;
@@ -1090,7 +1090,7 @@ public class CompositeEntity extends ComponentEntity {
         while (relations.hasNext()) {
             ComponentRelation relation = (ComponentRelation) relations.next();
             visitedRelations.add(relation);
-            
+
             // Skip the relation if it is not persistent.
             if (relation != null && !relation.isPersistent()) {
                 continue;
@@ -1104,7 +1104,7 @@ public class CompositeEntity extends ComponentEntity {
 
                 if (portOrRelation instanceof Relation) {
                     Relation otherRelation = (Relation) portOrRelation;
-                    
+
                     // Skip the relation if it is not persistent.
                     if (otherRelation != null && !otherRelation.isPersistent()) {
                         continue;
@@ -1176,7 +1176,7 @@ public class CompositeEntity extends ComponentEntity {
 
         return result.toString();
     }
-    
+
     /** Override the base class to initialize a data structure that can
      *  capture and then export level-crossing links deeply contained
      *  structure within. Otherwise, this delegates to the base
@@ -2239,7 +2239,7 @@ public class CompositeEntity extends ComponentEntity {
         // That mechanism was far too fragile.
         // EAL 3/10/04
         output.write(exportLinks(depth, null));
-        
+
         // Export level crossing links, if there are any.
         if (_levelCrossingLinks != null) {
             for (LinkRecord record : _levelCrossingLinks) {
@@ -2249,12 +2249,12 @@ public class CompositeEntity extends ComponentEntity {
                     // relation that implies them.
                     if (!_commonImplier(record.relation1, depth + _depthInside(record.relation1),
                             record.port, depth + _depthInside(record.port))) {
-                        output.write(_getIndentPrefix(depth) 
+                        output.write(_getIndentPrefix(depth)
                                 + "<link port=\""
                                 + record.port.getName(this)
-                                + "\" insertAt=\"" 
+                                + "\" insertAt=\""
                                 + record.index
-                                + "\" relation=\"" 
+                                + "\" relation=\""
                                 + record.relation1.getName(this)
                                 + "\"/>\n");
                     }
@@ -2389,13 +2389,13 @@ public class CompositeEntity extends ComponentEntity {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
-    
+
     /** Level-crossing links within this composite for which this composite
      *  is responsible.  This data structure is populated when exportMoML()
      *  is called.
      */
     protected List<LinkRecord> _levelCrossingLinks;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
@@ -2413,7 +2413,7 @@ public class CompositeEntity extends ComponentEntity {
     private void _addIcon() {
         _attachText("_iconDescription", _defaultIcon);
     }
-    
+
     /** Find the least common container of the two objects.
      *  @param object1 The first object.
      *  @param object2 The second object.
@@ -2430,7 +2430,7 @@ public class CompositeEntity extends ComponentEntity {
         }
         return null;
     }
-    
+
     /** Return true if the two specified objects are both derived,
      *  it is the same container above them whose parent-child
      *  relationship makes them derived, or if one of the containers
@@ -2482,7 +2482,7 @@ public class CompositeEntity extends ComponentEntity {
         }
         return false;
     }
-    
+
     /** Return the depth of specified object inside this.
      *  That is, return 0 if the specified object is this, 1 if this
      *  contains it, 2 if this contains the container
@@ -2503,7 +2503,7 @@ public class CompositeEntity extends ComponentEntity {
         }
         return -1;
     }
-    
+
     /** Record a level-crossing link with the least common container if there
      *  is such a least common container and if that least common container is
      *  currently exporting MoML. Otherwise, do nothing.
@@ -2763,7 +2763,7 @@ public class CompositeEntity extends ComponentEntity {
             return result;
         }
     }
-    
+
     /** A data structure for level-crossing links. */
     private static class LinkRecord {
         public Port port;

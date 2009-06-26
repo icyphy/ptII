@@ -37,16 +37,16 @@ import ptolemy.kernel.util.NameDuplicationException;
  * This is an dummy wrapper for song class for GPIO pins on the Luminary Micro.
  * This actor will have no effect in model simulations, but
  * allows for code generators to generate the actors.
- * 
+ *
  * @author Jia Zou, Jeff C. Jensen
  * @version $ld$
  * @since Ptolemy II 7.1
  * @Pt.ProposedRating Yellow (jiazou)
- * @Pt.AcceptedRating 
+ * @Pt.AcceptedRating
  *
  */
 public class SongWrapper extends LimitedFiringSource {
-    
+
     /**
      * Constructs a SongWrapper object.
      *
@@ -56,8 +56,8 @@ public class SongWrapper extends LimitedFiringSource {
      * @throws NameDuplicationException if the super constructor throws it.
      */
     public SongWrapper(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {        
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
-    
+
 }

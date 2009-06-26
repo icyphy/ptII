@@ -176,7 +176,7 @@ public class Separator extends GUIProperty {
     }
 
     /** Initialize this separator.
-     * 
+     *
      *  @exception IllegalActionException If the parameter is not of an
      *   acceptable class for the container.
      *  @exception NameDuplicationException If the name coincides with

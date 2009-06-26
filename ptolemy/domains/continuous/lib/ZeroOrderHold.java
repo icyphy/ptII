@@ -136,7 +136,7 @@ public class ZeroOrderHold extends Transformer {
     public boolean isStrict() {
         return false;
     }
-    
+
     /** If there is an input, record it and request a refiring at the
      *  current time.
      *  @exception IllegalActionException If the refiring request fails.

@@ -66,7 +66,7 @@ public class Integrator extends PropertyConstraintHelper {
 
     public List<Inequality> constraintList()
             throws IllegalActionException {
-        ptolemy.domains.continuous.lib.Integrator actor = 
+        ptolemy.domains.continuous.lib.Integrator actor =
             (ptolemy.domains.continuous.lib.Integrator) getComponent();
 
         // TODO: write a monotonic function.
@@ -84,7 +84,7 @@ public class Integrator extends PropertyConstraintHelper {
     private class FunctionTerm extends MonotonicFunction {
 
         TypedIOPort _derivative;
-        
+
         public FunctionTerm(TypedIOPort derivative) {
             _derivative = derivative;
         }
@@ -97,7 +97,7 @@ public class Integrator extends PropertyConstraintHelper {
          * @exception IllegalActionException
          */
         public Object getValue() throws IllegalActionException {
-            
+
             Property inputProperty = (Property) getSolver().getProperty(_derivative);
 
             if (inputProperty == _lattice.getElement("SPEED")) {
@@ -113,7 +113,7 @@ public class Integrator extends PropertyConstraintHelper {
                 return _lattice.getElement("UNITLESS");
             }
 
-            if (inputProperty == null || 
+            if (inputProperty == null ||
                     inputProperty == _lattice.getElement("UNKNOWN")) {
                 return _lattice.getElement("UNKNOWN");
             } else {

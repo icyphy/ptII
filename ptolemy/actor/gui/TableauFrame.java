@@ -452,7 +452,7 @@ public class TableauFrame extends Top {
                     .getEntity("effigyFactory");
             boolean canCreateBlank = false;
             final ModelDirectory directory = getDirectory();
-            
+
 
             // If the configuration has a _disableFileNew parameter that
             // is set to true, then we do not populate the File->New menu.

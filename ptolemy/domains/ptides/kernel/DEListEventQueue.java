@@ -40,10 +40,10 @@ import ptolemy.kernel.util.DebugListener;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InvalidStateException;
 
-/** 
+/**
  *  Event queue that is a linked list. This provides a totally ordered sorted event
  *  queue. It also allows all events to be accessed in the order they are sorted.
- *  
+ *
  *  @author Jia Zou
  *  @version $Id$
  *  @since Ptolemy II 7.1
@@ -52,7 +52,7 @@ import ptolemy.kernel.util.InvalidStateException;
  *
  */
 public class DEListEventQueue implements DEEventQueue {
-    
+
     /** Construct an empty event queue.
      */
     public DEListEventQueue () {
@@ -60,7 +60,7 @@ public class DEListEventQueue implements DEEventQueue {
         // minBinCount is 2, binCountFactor is 2, and isAdaptive is true.
         _listQueue = new LinkedList();
     }
-    
+
     /** Clear the event queue.
      */
     public void clear() {
@@ -75,8 +75,8 @@ public class DEListEventQueue implements DEEventQueue {
         }
         return result;
     }
-    
-    /** Get the event from the event queue that is pointed by the index. 
+
+    /** Get the event from the event queue that is pointed by the index.
      *  @param index an int specifying the index.
      *  @return a DEEvent object pointed to by the index.
      *  @throws InvalidStateException if get() method of the queue throws it.
@@ -119,7 +119,7 @@ public class DEListEventQueue implements DEEventQueue {
      *  is called, the token associated with this event is transferred to the receiver.
      *  Also, the same event should not be taken out of the event queue and then put
      *  into the event queue multiple times.
-     *  
+     *
      *  @return The event associated with this index in the event queue.
      *  @throws InvalidStateException
      */
@@ -135,7 +135,7 @@ public class DEListEventQueue implements DEEventQueue {
         }
         return result;
     }
-    
+
     /** Take this event and remove it from the event queue.
      *  If the event is a DEEvent, then put the token of this event into the
      *  receiver.
@@ -145,7 +145,7 @@ public class DEListEventQueue implements DEEventQueue {
      *  is called, the token associated with this event is transferred to the receiver.
      *  Also, the same event should not be taken out of the event queue and then put
      *  into the event queue multiple times.
-     *  
+     *
      *  @param index The index of this event in the event queue.
      *  @return The event associated with this index in the event queue.
      *  @throws InvalidStateException
@@ -170,7 +170,7 @@ public class DEListEventQueue implements DEEventQueue {
         return _listQueue.toArray();
     }
 
-    /** Add a debugger listen for this event queue. 
+    /** Add a debugger listen for this event queue.
      *  @see #removeDebugListener
      */
     public void addDebugListener(DebugListener listener) {
@@ -203,8 +203,8 @@ public class DEListEventQueue implements DEEventQueue {
 
         return;
     }
-    
-    
+
+
     /** Send a debug message to all debug listeners that have registered.
      *  By convention, messages should not include a newline at the end.
      *  The newline will be added by the listener, if appropriate.
@@ -227,7 +227,7 @@ public class DEListEventQueue implements DEEventQueue {
 
     /** @serial A flag indicating whether there are debug listeners. */
     private boolean _debugging;
-    
+
     /** The queue as represented by a linked list. */
     private LinkedList _listQueue;
 

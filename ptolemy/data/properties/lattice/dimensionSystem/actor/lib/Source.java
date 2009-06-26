@@ -62,7 +62,7 @@ public class Source extends AtomicActor {
         super(solver, actor, false);
     }
 
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                            public methods                 ////
 
@@ -79,7 +79,7 @@ public class Source extends AtomicActor {
         return super.constraintList();
     }
 
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 

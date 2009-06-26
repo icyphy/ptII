@@ -45,11 +45,11 @@ import ptolemy.kernel.util.IllegalActionException;
  *
  */
 public class ParameterPort extends IOPort {
-    
+
     public ParameterPort(ptolemy.actor.parameters.ParameterPort component) {
         super(component);
     }
-    
+
     @Override
     protected String _generateInfoCode(String name, List<String> parameters)
             throws IllegalActionException {

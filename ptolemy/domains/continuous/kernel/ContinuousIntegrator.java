@@ -82,7 +82,7 @@ import ptolemy.kernel.util.StringAttribute;
 
  <P> An integrator also has an input port named <i>impulse</i>.  When
  present, a token at the <i>impulse</i> input port is interpreted as
- the weight of a Dirac delta function.  It cause an 
+ the weight of a Dirac delta function.  It cause an
  increment or decrement to the state one microstep after
  the arrival of the value.  If both <i>impulse</i> and
  <i>initialState</i> have data on the same microstep,
@@ -233,7 +233,7 @@ public class ContinuousIntegrator extends TypedAtomicActor implements
                         + currentState);
             }
         }
-                
+
         // The input from the initialState port overwrites the input from
         // the impulse port.
         if (_initialStatePending) {
@@ -528,16 +528,16 @@ public class ContinuousIntegrator extends TypedAtomicActor implements
 
     /** The custom causality interface. */
     private CausalityInterface _causalityInterface;
-    
+
     /** Indicator that an impulse input arrived in the previous microstep. */
     private boolean _impulsePending;
-    
+
     /** Value of the impulse from the previous microstep. */
     private double _impulseValue;
 
     /** Indicator that an initial state input arrived in the previous microstep. */
     private boolean _initialStatePending;
-    
+
     /** Value of the impulse from the previous microstep. */
     private double _initialStateValue;
 

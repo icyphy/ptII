@@ -68,19 +68,19 @@ public class Integrator extends AtomicActor {
     /**
      * Return the list of constraints that specifies the analysis
      * for the Integrator actor. This analysis is conservative. It
-     * always sets the output to FALSE, which is the top of the 
+     * always sets the output to FALSE, which is the top of the
      * logicalAND ontology lattice.
      * @return The list of constraints.
-     * @exception IllegalActionException Thrown if an error 
+     * @exception IllegalActionException Thrown if an error
      *  occurs when getting the FALSE element from the lattice
      *  or the super class throws it.
      */
     public List<Inequality> constraintList()
             throws IllegalActionException {
-        
-        ptolemy.domains.continuous.lib.Integrator actor = 
+
+        ptolemy.domains.continuous.lib.Integrator actor =
             (ptolemy.domains.continuous.lib.Integrator) getComponent();
-        
+
         setAtLeast(actor.state, _lattice.getElement("FALSE"));
 
         return super.constraintList();

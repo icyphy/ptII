@@ -24,7 +24,7 @@ typedef struct {
 
 typedef struct event {
     union {
-        int int_Value; 
+        int int_Value;
         double double_Value;
         long long_Value;
         char char_Value;
@@ -111,7 +111,7 @@ static Time ZERO_TIME = {0, 0};
 
 void addEvent(Event* newEvent) {
 // now add event to the deadline queue
-    
+
 
         Event *compare_deadline;
         Event *before_deadline;
@@ -129,9 +129,9 @@ void addEvent(Event* newEvent) {
         timeAdd(&(newEvent->tag.timestamp), &(newEvent->atPort->containingActor->deadline), &tempTime);
         timeSet(&(newEvent->deadline), &tempTime);
           */
-    
+
         // timeAdd(newEvent->tag.timestamp, newEvent->atPort->containingActor->deadline, &(newEvent->deadline));
-          
+
     while (1) {
         if (compare_deadline == NULL) {
                         //RIT128x96x4StringDraw("ce==null",   12,90,15);
@@ -145,13 +145,13 @@ void addEvent(Event* newEvent) {
                                 before_deadline = before_deadline->nextEvent;
                                 }
                         //RIT128x96x4StringDraw("lastelseaddedEvent",   12,90,15);
-                        
+
                         compare_deadline = compare_deadline->nextEvent;
                         //RIT128x96x4StringDraw("22lastelseaddedEvent",   12,90,15);
                 //        break;
         }
     }
-            
+
     newEvent->nextEvent = compare_deadline;
         //RIT128x96x4StringDraw("check1addedEvent",   12,90,15);
     if (compare_deadline == before_deadline) {
@@ -176,11 +176,11 @@ void addEvent(Event* newEvent) {
 Event* peekEvent(unsigned int peekingIndex) {
         int i;
         Event* deadline = DEADLINE_QUEUE_HEAD;
-        
+
         if (deadline == NULL) {
                 return NULL;
     } else {
-                for (i = 0; i < peekingIndex; i++) 
+                for (i = 0; i < peekingIndex; i++)
                 {
                         deadline = deadline->nextEvent;
                 }
@@ -202,20 +202,20 @@ void removeEvent(Event* thisEvent) {
             die("event not in queue.");
         }
         }
-        
+
     if (current == DEADLINE_QUEUE_HEAD) {
                 DEADLINE_QUEUE_HEAD = current->nextEvent;
         } else {
-                prevDeadline->nextEvent = current->nextEvent;                                
+                prevDeadline->nextEvent = current->nextEvent;
         }
-        
+
         freeEvent(thisEvent);
 }
 
 Event* newEvent(void) {
         // counter counts the number of times we loop around the memory.
         int counter = 0;
-        while (eventMemory[locationCounter].inUse != MAX_EVENTS + 1) {  
+        while (eventMemory[locationCounter].inUse != MAX_EVENTS + 1) {
            if (counter++ == MAX_EVENTS) {  // if you've run out of memory just stop
                         die("ran out of memory");
            }
@@ -250,7 +250,7 @@ int timeCompare(const Time time1, const Time time2) {
         } else if (time1.secs == time2.secs && time1.nsecs == time2.nsecs) {
                 return 0;
         }
-        return 1;        
+        return 1;
 }
 void timeSet(const Time refTime, Time* time) {
         time->secs = refTime.secs;
@@ -292,7 +292,7 @@ void processEvents() {
 
         // If event queue is not empty.
                 event = peekEvent(peekingIndex); //peakEventQueue(peakingPoint);
-        
+
                 if (higherPriority(event) == TRUE) {
                 safeToProcess(event, &processTime);
 
@@ -311,7 +311,7 @@ void processEvents() {
                 // Execute the event. During
                 // this process more events may
                 // be posted to the queue.
-                                
+
                 fireActor(event);
                 //removeDeadline(peekingIndex);//removeEvent();        // need to find the event in the event queue and remove it
                                  // not sure if I'm removing are the right place.. it's possible I should remove after firing theactor
@@ -356,28 +356,28 @@ void processEvents() {
         currentMicrostep = executingModelTag[numStackedModelTag].microstep;
         timeSet(executingModelTag[numStackedModelTag].timestamp, &currentModelTime);
     }
-        // This implies within the while loop, if all events cannot be processed, 
+        // This implies within the while loop, if all events cannot be processed,
         // we need to go through the entire event queue before another event can come in.
         enableInterrupts();
         // if all events are blocked because buffers are full
-        // if (numBufferBlocked != 0 && numBufferBlocked == peekingIndex) 
+        // if (numBufferBlocked != 0 && numBufferBlocked == peekingIndex)
         #ifdef LCD_DEBUG
         //debugMessage("ret PE()");
         #endif
-        
+
         restoreStack();
         while (TRUE) {
     }
 }
 
-/* 
+/*
  * fire_actor checks if static timing analysis is needed.
  * if it is, static timing analysis is called, and returns
  * if it's not, firing method of the actor specified by the event is called
  */
 void fireActor(Event* currentEvent) {
 
-        if (currentEvent->fireMethod != NULL) 
+        if (currentEvent->fireMethod != NULL)
         {
         propagateDataToken(currentEvent);
 
@@ -402,7 +402,7 @@ void fireActor(Event* currentEvent) {
 
 /* determines whether the event to fire this current actor is of higher priority than
  * whatever even that's currently being executed.
- */                                                                                                                                          
+ */
 unsigned int higherPriority(Event* event) {
     int i;
         if (numStackedDeadline == 0) {
@@ -411,7 +411,7 @@ unsigned int higherPriority(Event* event) {
         } else if (timeCompare(executingDeadlines[numStackedDeadline], event->deadline) == LESS) {
                 #ifdef LCD_DEBUG
         debugMessageNumber("exDe secs=", executingDeadlines[numStackedDeadline].secs);
-        debugMessageNumber("exDe nsecs=", executingDeadlines[numStackedDeadline].nsecs); 
+        debugMessageNumber("exDe nsecs=", executingDeadlines[numStackedDeadline].nsecs);
                 #endif
                 return FALSE;
         } else {
@@ -454,9 +454,9 @@ void propagateDataToken(Event* currentEvent){
     *(currentEvent->sinkEvent) = currentEvent;
 }
 
-/* 
- * Static timing analysis is called to set the timestamp of the event by a 
- * specific amount in order to fire the event at an instance that ensures 
+/*
+ * Static timing analysis is called to set the timestamp of the event by a
+ * specific amount in order to fire the event at an instance that ensures
  * all events are exectued in order.
  * In this analysis, the clock event can be executed when real time exceeds
  * tau - model_delay3
@@ -464,7 +464,7 @@ void propagateDataToken(Event* currentEvent){
 void safeToProcess(Event* thisEvent, Time* safeTimestamp) {
 
         //   safeTimestamp = physical time - offset;
-        
+
 //           unsigned int safeThroughPropagation = TRUE;
 
     //FIXME: we only check the first event in the event queue.
@@ -513,10 +513,10 @@ void initializeMemory() {
         int i;
         locationCounter = 0;
         secs = 0;
-                                                  
+
         for(i = 0; i < MAX_EVENTS; i++) {
             // event is "freed and can be returned by newEvent"
-                eventMemory[i].inUse = MAX_EVENTS + 1; 
+                eventMemory[i].inUse = MAX_EVENTS + 1;
         }
 }
 void initializePISystem() {

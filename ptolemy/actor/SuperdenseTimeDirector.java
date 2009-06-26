@@ -65,7 +65,7 @@ public interface SuperdenseTimeDirector {
      *  @see #setIndex(int)
      */
     public int getIndex();
-    
+
     /** Set the superdense time index. This should only be
      *  called by an enclosing director.
      *  @param index The index of the superdense time object.

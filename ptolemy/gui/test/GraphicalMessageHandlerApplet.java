@@ -1,4 +1,4 @@
-/* A Graphical Message Handler Applet 
+/* A Graphical Message Handler Applet
 
  Copyright (c) 2009 The Regents of the University of California.
  All rights reserved.

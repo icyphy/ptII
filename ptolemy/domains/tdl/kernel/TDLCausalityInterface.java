@@ -95,7 +95,7 @@ public class TDLCausalityInterface extends CausalityInterfaceForComposites {
         return _minimumDelays.get(port);
     }
 
-    /** Override the base class 
+    /** Override the base class
      * Clear local variables.
      */
     public void wrapup() {
@@ -104,7 +104,7 @@ public class TDLCausalityInterface extends CausalityInterfaceForComposites {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-    
+
     /**
      * Recursively compute the minimum delay. To avoid loops, remember visited ports.
      * @param port Port to compute minimum delay for.

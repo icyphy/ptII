@@ -1396,7 +1396,7 @@ public abstract class MatrixToken extends Token {
 
         return result;
     }
-    
+
     /** Return an ArrayToken containing the all the values of this
      *  matrix token.  The type of the tokens in the array is consistent
      *  with the type of this token.

@@ -51,7 +51,7 @@ public class BooleanSwitch extends CCodeGeneratorHelper {
     }
 
     /**
-     * Return the code generated for sending data to the true output port. 
+     * Return the code generated for sending data to the true output port.
      * Iterate through the connections to the true port
      * and append the "trueBlock" code block from the template.
      * @return The generated code.
@@ -77,7 +77,7 @@ public class BooleanSwitch extends CCodeGeneratorHelper {
     }
 
     /**
-     * Return the code generated for sending data to the false output port. 
+     * Return the code generated for sending data to the false output port.
      * Iterate through the connections to the false port
      * and append the "falseBlock" code block from the template.
      * @return The generated code.

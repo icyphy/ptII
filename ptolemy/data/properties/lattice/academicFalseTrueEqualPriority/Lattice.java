@@ -79,9 +79,9 @@ public class Lattice extends PropertyLattice {
     public Property CONFLICT = new Conflict(this);
 
     public Property TRUE = new True(this);
-    
+
     public Property FALSE = new False(this);
-    
+
     public Property UNKNOWN = new Unknown(this);
 
 }

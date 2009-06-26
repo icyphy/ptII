@@ -42,7 +42,7 @@ import ptolemy.codegen.rtmaude.kernel.Entity;
 *
 */
 public class TimedDelay extends Entity {
-    
+
     public TimedDelay(ptolemy.domains.de.lib.TimedDelay component) {
         super(component);
     }

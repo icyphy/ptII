@@ -120,7 +120,7 @@ public class MoMLApplication extends ConfigurationApplication {
     }
 
     /** Set the look and feel to the native look and feel.
-     *  This method is called by early in the constructor, 
+     *  This method is called by early in the constructor,
      *  so the object may not be completely constructed, so
      *  derived classes should not access fields from a
      *  parent class.
@@ -136,7 +136,7 @@ public class MoMLApplication extends ConfigurationApplication {
             // The exception is: Exception in thread "AWT-EventQueue-1" java.security.AccessControlException: access denied (java.io.FilePermission C:\WINDOWS\Fonts\TAHOMA.TTF read)
             // Unfortunately, it occurs well *after* the l&f is set.
             String javaVersion = StringUtilities.getProperty("java.version");
-            if (javaVersion.compareTo("1.6.0") > 0 
+            if (javaVersion.compareTo("1.6.0") > 0
                     && javaVersion.compareTo("1.6.0_14") < 0
                     && StringUtilities.inApplet()) {
                 System.out.println("Warning: skipping setting the look and "

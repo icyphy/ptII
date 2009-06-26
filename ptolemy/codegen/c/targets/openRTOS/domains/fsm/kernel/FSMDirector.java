@@ -69,12 +69,12 @@ public class FSMDirector extends ptolemy.codegen.c.domains.fsm.kernel.FSMDirecto
     }
 
     /*This method does nothing. Check to see if it can be deleted
-     * 
+     *
      * */
     public String generateActorCode()
     {
         StringBuffer code = new StringBuffer();
-        code.append("//generate actor code inside fsmDirector called");  
+        code.append("//generate actor code inside fsmDirector called");
         return code.toString();
     }
 
@@ -176,7 +176,7 @@ public class FSMDirector extends ptolemy.codegen.c.domains.fsm.kernel.FSMDirecto
                     }
                     else
                     {
-                        code.append(_eol+"//modal model contains giotto director"+_eol); 
+                        code.append(_eol+"//modal model contains giotto director"+_eol);
 
                     }
                 }

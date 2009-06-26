@@ -160,13 +160,13 @@ public class FSMActor extends CCodeGeneratorHelper {
             args.set(1, index++);
             code.append(_generateBlockCode("defineState", args));
         }
-        
+
         // FIXME: Having this code here breaks the test cases under
         // $PTII/codegen/c/domains/modal/test/. This code is probably
         // specific to a target (e.g. OpenRTOS or PRET), so it should
         // be moved into an subclass which overrides this method. The
         // subclass should be put under the target-specific packages.
-        
+
 //        code.append("//I should generate the methods for my internal actors here. My actors are:");
 //
 //        for (Actor actor : (List<Actor>)

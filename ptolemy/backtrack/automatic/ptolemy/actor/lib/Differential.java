@@ -42,7 +42,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-/** 
+/**
  * Output the current input minus the previous input, or if there
  * has been no previous input, the current input itself.
  * @author Edward A. Lee
@@ -61,7 +61,7 @@ public class Differential extends Transformer implements Rollbackable {
 
     private Token _lastInput;
 
-    /**     
+    /**
      * Construct an actor with the given container and name.
      * @param container The container.
      * @param name The name of this actor.
@@ -74,7 +74,7 @@ public class Differential extends Transformer implements Rollbackable {
         super(container, name);
     }
 
-    /**     
+    /**
      * Consume at most one token from the <i>input</i> port and output
      * its value minus the value of the input read in the previous
      * iteration.  If there has been no previous iteration, then
@@ -95,7 +95,7 @@ public class Differential extends Transformer implements Rollbackable {
         }
     }
 
-    /**     
+    /**
      * Reset to indicate that no input has yet been seen.
      * @exception IllegalActionException If the parent class throws it.
      */
@@ -104,7 +104,7 @@ public class Differential extends Transformer implements Rollbackable {
         $ASSIGN$_lastInput(null);
     }
 
-    /**     
+    /**
      * Record the most recent input as the latest input.
      * @exception IllegalActionException If the base class throws it.
      */

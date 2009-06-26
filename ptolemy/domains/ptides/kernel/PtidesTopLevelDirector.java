@@ -34,12 +34,12 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-/** 
+/**
  *  This director is a placeholder for code generation at the platform level.
  *  <p>
  *  It is exactly the same as DEDirector, only named differently.
  *  @see ptolemy.domains.de.kernel.DEDirector
- *  
+ *
  *  @author Jia Zou
  *  @version $Id$
  *  @since Ptolemy II 7.1

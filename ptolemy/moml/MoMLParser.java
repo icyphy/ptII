@@ -1561,7 +1561,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
 
         // Java's I/O is so lame that it can't find files in the current
         // working directory...
-        File file = new File(filename); 
+        File file = new File(filename);
         if ( !file.exists()) {
             file = new File(new File(cwd), filename);
         }
@@ -2943,7 +2943,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                     if (newClass == null) {
                         // No classname. Use the newRelation() method.
                         newRelation = container.newRelation(relationName);
-                        
+
                         // Mark the contents of the new entity as being derived objects.
                         // If we wouldn't do this the default attributes would be saved.
                         _markContentsDerived(newRelation, 0);
@@ -3933,7 +3933,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                     }
 
                     try {
-                        reference = _attemptToFindMoMLClass(className, source);  
+                        reference = _attemptToFindMoMLClass(className, source);
                     } catch (XmlException ex2) {
                         throw new Exception("-- " + errorMessage.toString()
                                 + className + ": XmlException:\n"
@@ -5593,7 +5593,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
         // container of the port is a derived object.
         int portContainerLevel = port.getContainer().getDerivedLevel();
         int portLevel = port.getDerivedLevel();
-        
+
         // The decision is slightly different if the port is immediately
         // contained by the context because in that case we presume
         // it is an inside link. Since an inside link can only occur
@@ -5685,7 +5685,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
         // but the link not be defined within the same class definition.
         int relation1Level = relation1.getDerivedLevel();
         int relation2Level = relation2.getDerivedLevel();
-        if ((relation1Level < Integer.MAX_VALUE) 
+        if ((relation1Level < Integer.MAX_VALUE)
                 && (relation2Level < Integer.MAX_VALUE)) {
             // Check that the container above at which these two objects
             // are implied is the same container.

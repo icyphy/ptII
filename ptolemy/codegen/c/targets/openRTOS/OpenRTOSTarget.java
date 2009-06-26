@@ -31,7 +31,7 @@ import ptolemy.codegen.c.kernel.CCodeGeneratorHelper;
 
 /**
  * Common code for the OpenRTOS.
- * 
+ *
  * @author Man-Kit Leung
  * @version $Id$
  * @since Ptolemy II 7.0

@@ -105,13 +105,13 @@ public class Button extends ActionGUIProperty {
                 button.setIcon(imageIcon);
             }
         }
-        
+
         if (attribute == tooltip){
             String tooltipString = tooltip.stringValue();
             JButton button = (JButton) getComponent();
             button.setToolTipText(tooltipString);
         }
-            
+
     }
 
     /** Create a new Java Swing component.
@@ -132,7 +132,7 @@ public class Button extends ActionGUIProperty {
     /** Icon for the button. Set an empty string to remove the icon.
      */
     public FileParameter icon;
-    
+
     /** Tooltip for the button.
      */
     public StringParameter tooltip;

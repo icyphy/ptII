@@ -148,7 +148,7 @@ public class IORelation extends ComponentRelation {
      *  to WIDTH_TO_INFER, which means that the width will be inferred.
      */
     public Parameter width;
-        
+
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -816,11 +816,11 @@ public class IORelation extends ComponentRelation {
 
     ///////////////////////////////////////////////////////////////////
     ////                        private parameters                 ////
-    
+
     /** A parameter to be able to set the width to Auto to automatically
      * infer widths. This is an integer that equals WIDTH_TO_INFER.
-     */    
-    private Parameter _auto = null;    
+     */
+    private Parameter _auto = null;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
@@ -892,7 +892,7 @@ public class IORelation extends ComponentRelation {
 
     /** Determine whether widths are currently being inferred or not.
      *  @return True When widths are currently being inferred.
-     *  @exception IllegalActionException If toplevel not a CompositeActor. 
+     *  @exception IllegalActionException If toplevel not a CompositeActor.
      */
     private boolean _inferringWidths() throws IllegalActionException {
         Nameable container = getContainer();
@@ -983,17 +983,17 @@ public class IORelation extends ComponentRelation {
     /** Create an initialize the width parameter. */
     private void _init() {
         try {
-            
+
             _auto = new Parameter(this, "Auto");
             _auto.setExpression(Integer.toString(WIDTH_TO_INFER));
             _auto.setTypeEquals(BaseType.INT);
             _auto.setVisibility(Settable.NONE);
             _auto.setPersistent(false);
-            
+
             width = new Parameter(this, "width");
             width.setExpression("Auto");
             width.setTypeEquals(BaseType.INT);
-                        
+
         } catch (KernelException ex) {
             throw new InternalErrorException(ex);
         }
@@ -1086,7 +1086,7 @@ public class IORelation extends ComponentRelation {
                     if (director != null) {
                         director.invalidateSchedule();
                         director.invalidateResolvedTypes();
-                        
+
                     }
                 }
 

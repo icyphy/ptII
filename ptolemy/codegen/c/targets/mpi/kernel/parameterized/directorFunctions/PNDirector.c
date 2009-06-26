@@ -7,7 +7,7 @@ boolean hasLocalInput(struct mpiLocalBufferHeader* header) {
 /*** isMpiBufferFull() ***/
 boolean isMpiBufferFull(struct mpiBufferHeader* header, int space) {
         if ((header->available - header->current) < space) {
-#ifdef _DEBUG        
+#ifdef _DEBUG
                 printf("mpiBuffer[%d] is full.\n", header->id);
 #endif
                 return true;
@@ -34,14 +34,14 @@ boolean isLocalBufferFull(struct mpiLocalBufferHeader* header) {
 /*** MPI_declareStruct() ***/
 // MPI buffer header definitions.
 struct mpiBufferHeader {
-        unsigned int current;            
-        unsigned int available;    
+        unsigned int current;
+        unsigned int available;
         int id;
-}; 
+};
 
-struct mpiLocalBufferHeader {    
+struct mpiLocalBufferHeader {
         int readOffset;             // Next index to read.
         int writeOffset;            // Next index to write.
         int id;
-}; 
+};
 /**/

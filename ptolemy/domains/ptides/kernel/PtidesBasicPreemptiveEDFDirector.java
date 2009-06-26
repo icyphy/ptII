@@ -39,7 +39,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-/** 
+/**
  *  This director implements preemptive PTIDES scheduling algorithm, and uses
  *  EDF as the foundation to determine whether we should preempt executing events.
  *  Notice this does not implement EDF because the event queue is ordered in timestamp
@@ -65,14 +65,14 @@ public class PtidesBasicPreemptiveEDFDirector extends PtidesBasicDirector {
     throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                     protected methods                     ////
-    
+
     /** Return whether we want to preempt the currently executing actor
      *  and instead execute the earliest event on the event queue.
      *  @return whether we want to preempt the executing event.
-     *  @throws IllegalActionException 
+     *  @throws IllegalActionException
      */
     protected boolean _preemptExecutingActor() throws IllegalActionException {
         IOPort port = _eventQueue.get().ioPort();
@@ -98,7 +98,7 @@ public class PtidesBasicPreemptiveEDFDirector extends PtidesBasicDirector {
         }
         if (_debugging) {
             _debug("We decided to preempt the current " +
-                            "executing event at actor: " + 
+                            "executing event at actor: " +
                             ((DEEvent)eventList.get(0)).actor() +
                             " with another event at actor: " + _eventQueue.get().actor() +
                             ". This preemption happened at physical time " +

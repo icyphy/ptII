@@ -233,7 +233,7 @@ public class AtomicActor extends ComponentEntity implements Actor,
             }
         }
     }
-    
+
     /** Set the dependency that the specified output port has
      *  on the specified input port to represent a time
      *  delay with the specified value. By default, each
@@ -254,13 +254,13 @@ public class AtomicActor extends ComponentEntity implements Actor,
      *  cannot be computed.
      *  @see #getCausalityInterface()
      */
-    public void declareDelayDependency(IOPort input, IOPort output, double timeDelay) 
+    public void declareDelayDependency(IOPort input, IOPort output, double timeDelay)
             throws IllegalActionException {
         CausalityInterface causality = getCausalityInterface();
         if (timeDelay == 0.0) {
             causality.declareDelayDependency(input, output, 0.0, 1);
         } else {
-            causality.declareDelayDependency(input, output, timeDelay, 0);            
+            causality.declareDelayDependency(input, output, timeDelay, 0);
         }
     }
 
@@ -274,7 +274,7 @@ public class AtomicActor extends ComponentEntity implements Actor,
             _debug("Called fire()");
         }
     }
-    
+
     /** Notify this actor that a {@link Director#fireAt(Actor,Time)}
      *  request was skipped, and that current time has passed the
      *  requested time. A director calls this method when in a modal
@@ -294,7 +294,7 @@ public class AtomicActor extends ComponentEntity implements Actor,
      *  if there is no director.
      *  This declares that all output ports of the actor depend on all input
      *  ports, unless the actor calls
-     *  {@link #removeDependency(IOPort, IOPort)} or 
+     *  {@link #removeDependency(IOPort, IOPort)} or
      *  {@link #declareDelayDependency(IOPort, IOPort, double)}.
      *  If this is called multiple times, the same object is returned each
      *  time unless the director has changed since the last call, in

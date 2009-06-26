@@ -62,12 +62,12 @@ import ptolemy.verification.lib.SMVLegacyCodeActor;
  * This is an utility function for Ptolemy II models. It performs a systematic
  * traversal of the system and generate NuSMV (or Cadence SMV) acceptable files
  * for model checking.
- * 
+ *
  * FIXME: A new version for users to specify the integer bound without using
- * abstraction of "LS" and "GT" should be implemented to support complicated 
+ * abstraction of "LS" and "GT" should be implemented to support complicated
  * update functions. Note that this has already been implemented in REDUtility.java
  * since the format of RED 7.0 does not support these features.
- * 
+ *
  * @author Chihhong Patrick Cheng, Contributor: Edward A. Lee, Christopher
  *         Brooks
  * @version $Id$
@@ -81,36 +81,36 @@ public class SMVUtility {
      * Return a StringBuffer that contains the converted .smv format of the
      * system. Note that in this version we use modular approach instead of
      * direct-dependency checking. Also the current algorithm enables us to deal with
-     * hierarchical systems. The up-to-date implementation also enables 
+     * hierarchical systems. The up-to-date implementation also enables
      * the recognition of Boolean tokens. Nevertheless, modular approach would generate a
      * bigger state space.
-     * 
-     * <p>For previous implementation, now matter what token is sent through the 
+     *
+     * <p>For previous implementation, now matter what token is sent through the
      * channel, the receiver only senses the existence of the token by the
      * guard expression XX_isPresent. We now support Boolean token recognition.
      * In order to introduce this mechanism,
-     * for each signal XX, two boolean variables would be introduced: 
+     * for each signal XX, two boolean variables would be introduced:
      * <br>1) <code>XX_isPresent</code>: indicating whether the signal is present or not.
-     * <br>2) <code>XX_value</code>: indicating the value of the signal. 
-     * 
-     * <p>Therefore, now in the guard expression, it may be possible to have 
+     * <br>2) <code>XX_value</code>: indicating the value of the signal.
+     *
+     * <p>Therefore, now in the guard expression, it may be possible to have
      * <br>1) <code>XX_isPresent</code> (in Ptolemy) ==>  <code>XX_isPresent</code> (in SMV)
      * <br>2) <code>XX == 0</code> (in Ptolemy) ==>  <code>XX_isPresent && XX_value == 0</code> (in SMV)
      * <br>3) <code>XX == 1</code> (in Ptolemy) ==>  <code>XX_isPresent && XX_value == 1</code> (in SMV)
-     * 
+     *
      * <p> If XX_isPresent is false, then the value of XX_value is not valid.
-     * 
-     * <p> In SMV, there is no distinguishing between boolean T, F and numerical 
+     *
+     * <p> In SMV, there is no distinguishing between boolean T, F and numerical
      * values 1, 0. So for the sender side, we only need to check if a sender
-     * sends a token whose value is not 0 or 1. 
-     * 
+     * sends a token whose value is not 0 or 1.
+     *
      * @param model The system under analysis.
      * @param pattern The temporal formula used to be attached in the .smv file.
      * @param choice The type of the formula. It may be either a CTL or LTL
-     *               formula. 
+     *               formula.
      * @param span A constant used to expand the size of the rough domain.
      * @return The converted .smv format of the system.
-     * @throws IllegalActionException 
+     * @throws IllegalActionException
      * @throws NameDuplicationException
      */
     public static StringBuffer generateSMVDescription(CompositeActor model,
@@ -327,13 +327,13 @@ public class SMVUtility {
      * This function tries to generate the reachability/risk specification of a
      * system by scanning through the subsystem, and extract states which have
      * special risk or reachability labels.
-     * 
+     *
      * @param model The system model under analysis.
      * @param specType The type of the graphical specification, it may be either
      *                "Risk" or "Reachability"
      * @return A string indicating the CTL formula for risk/reachability
-     *         analysis. 
-     * @throws IllegalActionException 
+     *         analysis.
+     * @throws IllegalActionException
      */
     public static String generateGraphicalSpecification(CompositeActor model,
             String specType) throws IllegalActionException {
@@ -362,7 +362,7 @@ public class SMVUtility {
      * This function decides if the director of the current actor is SR. If not,
      * return false. This is because our current analysis is only valid when the
      * director is SR.
-     * 
+     *
      * @param model Model used for testing.
      * @return a boolean value indicating if the director is SR.
      */
@@ -378,10 +378,10 @@ public class SMVUtility {
     /**
      * This private function first decides signals used in the guard expression
      * of an actor. Those signals should be of the format XX_isPresent. If it is
-     * of the format XX == const, we need to check if XX is in the initial 
+     * of the format XX == const, we need to check if XX is in the initial
      * parameter list. If yes, then it is a state variable; if not, then it is a
      * signal variable, then use "X_isPresent" or "X_value" to represent it.
-     * 
+     *
      * @param actor The actor under analysis.
      * @return The set of signals used in the guard expression of the actor.
      * @throws IllegalActionException
@@ -520,10 +520,10 @@ public class SMVUtility {
      * order to keep the signal "X" compatible with the appearance in the guard
      * expression "X_isPresent" shown in other actors, we need to attach
      * "_isPresent" with the signal.
-     * 
-     * <p>MODIFICATION 2008.07.21: We need to have "X_isPresent" and "X_value" 
+     *
+     * <p>MODIFICATION 2008.07.21: We need to have "X_isPresent" and "X_value"
      * to represent a variable for new features (supporting boolean tokens).
-     * 
+     *
      * @param actor The actor under analysis
      * @return A set containing names of the signal
      * @throws IllegalActionException
@@ -633,11 +633,11 @@ public class SMVUtility {
     }
 
     /**
-     * This private function first decides state variables (or called inner variables) 
-     * that would be used in the Kripke structure. It would first perform a system 
-     * prescan to have a rough domain for each variable. Then it tries to expand the 
+     * This private function first decides state variables (or called inner variables)
+     * that would be used in the Kripke structure. It would first perform a system
+     * prescan to have a rough domain for each variable. Then it tries to expand the
      * domain by using the constant span.
-     * 
+     *
      * @param actor The actor under analysis
      * @param numSpan The size to expand the original domain
      * @return
@@ -954,7 +954,7 @@ public class SMVUtility {
     /**
      * Perform an enumeration of the state in this FmvAutomaton and return a
      * HashSet of states.
-     * 
+     *
      * @param actor The actor under analysis
      * @return A HashSet of states of a particular FSMActor
      * @throws IllegalActionException
@@ -1011,7 +1011,7 @@ public class SMVUtility {
      * example, this method may generate (state=red)&&(count=1):{grn}. The
      * premise is "(state=red)&&(count=1)", and the action is "{grn}" This can
      * only be applied when the domain of variable is decided.
-     * 
+     *
      * @param actor The actor under analysis
      * @param variableSet The set of variables used
      * @throws IllegalActionException
@@ -1086,7 +1086,7 @@ public class SMVUtility {
                 // Retrieve the variable used in the Kripke structure.
                 // Also analyze the guard expression to understand the
                 // possible value domain for the value to execute.
-                // 
+                //
                 // A guard expression would need to be separated into
                 // separate sub-statements in order to estimate the boundary
                 // of the variable. Note that we need to tackle cases where
@@ -1094,7 +1094,7 @@ public class SMVUtility {
                 // constrain the way that an end user can do for writing
                 // codes. We do "not" expect him to write in the way like
                 // -1<a.
-                // 
+                //
                 // Also here we assume that every sub-guard expression is
                 // connected using && but not || operator. But it is easy to
                 // modify the code such that it supports ||.
@@ -2360,50 +2360,50 @@ public class SMVUtility {
      * structure acceptable by NuSMV from system model in Ptolemy II. Here
      * modular approach is applied to eliminate complexity of the conversion
      * process.
-     * 
+     *
      * @param span The size to expand the original domain
-     * 
+     *
      */
     private static ArrayList<StringBuffer> _generateSMVDescriptionModalModelWithRefinement(
             ModalModel modalmodel, String span, String upperStateName)
             throws IllegalActionException, NameDuplicationException {
         /* The sketch of the algorithm is roughly as follows:
-         * 
+         *
          * (Step 0) All signals has been detected prior to execute this function.
          * First scan from top, for each FSMActor generate the modular description.
          * If an actor is a ModalModel, we try to scan through each state.
          * In a ModalModel, the transition may consist of two different types:
-         * 
-         * (1)reset = true: This means that after this transition, the state of 
-         *         refinement machine the would be reset to initial state. 
+         *
+         * (1)reset = true: This means that after this transition, the state of
+         *         refinement machine the would be reset to initial state.
          *    Two views exist:
-         *    [i] In a global view, states in the destination-state refinement machine 
+         *    [i] In a global view, states in the destination-state refinement machine
          *        and those in the source-state refinement machine are exclusive,
-         *        To represent the state space, we may simply use the union of 
+         *        To represent the state space, we may simply use the union of
          *        each refinement state machine as the total state space.
-         *    [ii] The FSM goes back to initial state. Thus we view the whole 
-         *         ModalModel as the composition of state system where at any 
+         *    [ii] The FSM goes back to initial state. Thus we view the whole
+         *         ModalModel as the composition of state system where at any
          *         instant, there is one state existing in each refinement.
-         *         To represent the state space, we may simply use the product of 
+         *         To represent the state space, we may simply use the product of
          *         each refinement state machine as the total state space.
-         *     
-         *   (2)reset = false: This means that after this transition, state of 
-         *          refinement machine the would not be reset to initial state. 
-         *          To represent the state space, we may simply use the product of 
+         *
+         *   (2)reset = false: This means that after this transition, state of
+         *          refinement machine the would not be reset to initial state.
+         *          To represent the state space, we may simply use the product of
          *          each refinement state machine as the total state space.
          *          (similar to [ii])
-         *       
-         *   To sum up, for systems with "history transitions", the representation 
-         *   requires more state variables to encode.      
-         *   
-         *   
-         * Also for ModalModels, it may have two kinds of state refinements:  
+         *
+         *   To sum up, for systems with "history transitions", the representation
+         *   requires more state variables to encode.
+         *
+         *
+         * Also for ModalModels, it may have two kinds of state refinements:
          * (a)StateMachineRefinement: The inner refinement is a state machine.
          * (b)GeneralRefinement: This means that the inner refinement is another
-         *                       system. (it should also be SR, otherwise is 
+         *                       system. (it should also be SR, otherwise is
          *                       beyond our scope for implementation)
          * (c)No refinement
-         * 
+         *
          * Now we list out all possible combinations:
          * (1a): This can be done easily by a whole rewriting of the system into
          *       a bigger FSM consisting all sub-states and possible connections.
@@ -2414,27 +2414,27 @@ public class SMVUtility {
          * (2a*): This is contradictory; it is impossible to have a bigger FSM
          *        having two states existing simultaneously.
          * (2b): In this case we build up different submodules for each
-         *       refinement, and construct the another FSMcontroller to send 
+         *       refinement, and construct the another FSMcontroller to send
          *       signals accepted by ModalModel to it.
-         *       
-         * FIXME: We only implement cases where transition reset is false;      
-         * we are currently implementing the case for (2b) and (2a[ii])    
+         *
+         * FIXME: We only implement cases where transition reset is false;
+         * we are currently implementing the case for (2b) and (2a[ii])
          * We may extend the functionality later on.
-         *   
-         * When writing the description of a module, one challenging problem is  
-         * to understand the location of the signal. For a certain signal required 
+         *
+         * When writing the description of a module, one challenging problem is
+         * to understand the location of the signal. For a certain signal required
          * in the transition in the subsystem S'' in S, it may be passed from
          * another system S'. However, because the subsystem S'' is an instance
-         * of the system S, S'' can not access the signal of S'. 
-         * 
-         * Instead, we need to pass the signal from S' to S, then assign the signal 
+         * of the system S, S'' can not access the signal of S'.
+         *
+         * Instead, we need to pass the signal from S' to S, then assign the signal
          * to S'' during the instantiation process of S''.
-         * 
+         *
          * In the description of _globalSignalDistributionInfo and
          *  _globalSignalRetrivalInfo, it only tells you the signal needed for
          * this component, and the signal generated by this component. Thus
          * additional work must be done.
-         * 
+         *
          */
         ArrayList<StringBuffer> modularDescription = new ArrayList<StringBuffer>();
         FSMActor controller = modalmodel.getController();
@@ -2476,7 +2476,7 @@ public class SMVUtility {
             // This means that there is no refinement in this ModalModel
             // We simply take out the controller to perform the generation
             // process (the controller is an FSMActor).
-            // 
+            //
             modularDescription.add(_translateSingleFSMActor(controller, span,
                     false, upperStateName));
 
@@ -2572,10 +2572,10 @@ public class SMVUtility {
     /**
      * This private function tries to generate the system description of a
      * subsystem which has a ModalModel controller as its upper-layer.
-     * 
+     *
      * @param model The subsystem which is the refinement of a state.
      * @param span The size of span to expand the domain of variable.
-     * @param upperStateName The name of the upper level model name. This upper 
+     * @param upperStateName The name of the upper level model name. This upper
      *        state has the model as refinement.
      * @return The StringBuffer description of the subsystem acceptable by the
      *         model checker.
@@ -2641,7 +2641,7 @@ public class SMVUtility {
      * Perform a systematic pre-scan to obtain information regarding the
      * visibility of a signal. See the description in the source code for
      * technical details.
-     * 
+     *
      * @param model The whole system under analysis
      * @param span The number to expand the domain of a variable. Note that
      *                it is in fact irrelevant to the signal generation. It is
@@ -2664,7 +2664,7 @@ public class SMVUtility {
         // (2)HashMap<String, HashSet<String>> _globalSignalRetrivalInfo:
         // It tells you for a certain component, the set of signals emitted
         // from that component.
-        // 
+        //
         // (3) HashMap<String, HashSet<String>> _globalSignalNestedRetrivalInfo:
         // It tells you for a certain component, the set of signals emitted
         // from that component and from subsystems below that component in
@@ -3041,7 +3041,7 @@ public class SMVUtility {
      * function to generate all possible combinations. The function would try to
      * attach correct premise and update correct new value for the variable set
      * by the transition based on the original value.
-     * 
+     *
      * @param currentPremise
      *                Current precondition for the transition. It is not
      *                completed unless parameter index == maxIndex.
@@ -3068,7 +3068,7 @@ public class SMVUtility {
      *                rValue</i>. When operatingSign is S or N, it represents
      *                the rValue of the system.
      * @param operatingSign
-     * 
+     *
      */
     private static void _recursiveStepGeneratePremiseAndResultEachTransition(
             String currentPremise, int index, int maxIndex,
@@ -3721,7 +3721,7 @@ public class SMVUtility {
                                                 // Integer.parseInt(((VariableInfo)
                                                 // _variableInfo.get(lValue))._maxValue)
                                                 // < 0
-                                                //  
+                                                //
                                                 // Starting from the upper bound
                                                 // + 1,
                                                 // +2, +3, +4 ... calculate all
@@ -3729,7 +3729,7 @@ public class SMVUtility {
                                                 // values until the new
                                                 // set-value is
                                                 // greater than GT.
-                                                // 
+                                                //
                                                 // For example, if upper bound
                                                 // is -5,
                                                 // and if the offset is 2, then
@@ -3991,7 +3991,7 @@ public class SMVUtility {
                                                 // calculate all possible values
                                                 // until
                                                 // the value is less than LS.
-                                                // 
+                                                //
                                                 // For example, if upper bound =
                                                 // 1,
                                                 // lower bound = -7, and offset
@@ -4133,7 +4133,7 @@ public class SMVUtility {
                                                 // calculate all possible values
                                                 // until
                                                 // the value is less than GT.
-                                                // 
+                                                //
                                                 // For example, if upper bound =
                                                 // 7,
                                                 // lower bound = -1, and offset
@@ -4613,7 +4613,7 @@ public class SMVUtility {
      * A private function used as to generate variable initial values for the
      * initial variable set. The current approach is to retrieve from the
      * parameter specified in the actor.
-     * 
+     *
      * @param actor The actor under analysis
      * @param variableSet Set of variables that expect to find initial values.
      * @return A HashMap indicating the pair (variable name, initial value).
@@ -4667,7 +4667,7 @@ public class SMVUtility {
 
     /**
      * This function tries to translate an single FSMActor into the format
-     * acceptable by model checker. New functionalities for supporting 
+     * acceptable by model checker. New functionalities for supporting
      * boolean-token recognition are added.
      *
      * @param actor The FSMActor under analysis.
@@ -4688,7 +4688,7 @@ public class SMVUtility {
         // then in the description we need to instantiate each of the
         // sub-models (which is generated by state refinement) contained
         // within.
-        // 
+        //
         // (2) A single FSMActor can also be the a component of the subsystem
         // (state refinement with general model). In this way, we need to
         // add up information whether the current state in the upper
@@ -4698,7 +4698,7 @@ public class SMVUtility {
         // we need to be sure that the upper state must be in the state
         // "refinementStateName", otherwise, it is not allowed to perform
         // any transition.
-        // 
+        //
 
         String refinementStateActivePremise = "UpperState = "
                 + refinementStateName.trim();
@@ -5040,7 +5040,7 @@ public class SMVUtility {
      * should add up this signal. If a signal is visible by the controller, then
      * we know that this signal is only passed between modules of the
      * controller. We can list out the location of the signal.
-     * 
+     *
      * @param controller The controller which contains those modules
      * @return An ArrayList containing all submodule definitions
      * @throws IllegalActionException Undefined behavior happens.
@@ -5054,7 +5054,7 @@ public class SMVUtility {
         // thus if a subsystem really uses a signal from outside, we
         // need to add up the signal name (without the position) as an invoker
         // for example subModule (Sec_isPresent)
-        // 
+        //
 
         ArrayList<StringBuffer> returnList = new ArrayList<StringBuffer>();
         Iterator states = controller.entityList().iterator();

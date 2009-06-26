@@ -42,7 +42,7 @@ import ptolemy.vergil.basic.layout.kieler.PtolemyModelUtil;
 
 /**
  * Toggle between showing and hiding of unnecessary relation vertices.
- * 
+ *
  * @author Hauke Fuhrmann
  * @version $Id: LayoutButton.java 53203 2009-04-24 00:27:45Z haf $
  * @since Ptolemy II 7.1
@@ -58,7 +58,7 @@ public class HideVerticesButton extends Button {
      * workspace of the container for synchronization and version counts. If the
      * name argument is null, then the name is set to the empty string.
      * Increment the version of the workspace.
-     * 
+     *
      * @param container
      *            The container.
      * @param name

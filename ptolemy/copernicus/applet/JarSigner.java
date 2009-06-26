@@ -97,7 +97,7 @@ public class JarSigner {
      *  </pre>
      *  @param args An array of two arguments, the first element is the name of the jar file
      *  to be read in, the second is the name of the signed jar file to be created.
-     
+
      */
     public static void main(String args[]) {
         if (args.length != 2) {
@@ -478,7 +478,7 @@ public class JarSigner {
      * @exception IOException If there is a problem reading or writing
      * the jarEntry.
      */
-    protected static void _writeJarEntry(JarEntry jarEntry, JarFile jarFile, JarOutputStream jarOutputStream) 
+    protected static void _writeJarEntry(JarEntry jarEntry, JarFile jarFile, JarOutputStream jarOutputStream)
             throws IOException {
 
         jarOutputStream.putNextEntry(jarEntry);
@@ -612,7 +612,7 @@ public class JarSigner {
                             sfg.getJDKSignatureFileClass(),
                             PrivateKey.class,
                             /* Is this the only difference between 1.5 and 1.6?*/
-                            /* signatureAlgorithm */ String.class,    
+                            /* signatureAlgorithm */ String.class,
                             X509Certificate[].class,
                             Boolean.TYPE,
                             String.class,

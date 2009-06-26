@@ -70,7 +70,7 @@ public class SDFDirector extends ptolemy.codegen.c.domains.sdf.kernel.SDFDirecto
         double actorFrequency =0;
         double actorWCET = 0;
         int actorCount = 0;
-        for (Actor actor : (List<Actor>) 
+        for (Actor actor : (List<Actor>)
                 ((TypedCompositeActor) _director.getContainer()).deepEntityList()) {
             actorCount++;
             Attribute frequency = ((Entity)actor).getAttribute("frequency");

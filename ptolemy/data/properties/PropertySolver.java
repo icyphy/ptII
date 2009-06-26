@@ -106,18 +106,18 @@ public abstract class PropertySolver extends PropertySolverBase {
     ///////////////////////////////////////////////////////////////////
     ////                   ports and parameters                    ////
 
-    /** The action mode of the solver (e.g. ANNOTATE, TRAINING, 
+    /** The action mode of the solver (e.g. ANNOTATE, TRAINING,
      * CLEAR, and etc.). */
     public Parameter action;
 
-    /** A boolean parameter. If true and the solver is in training mode, 
-     * made all the intermediate results persistent in MoML. 
+    /** A boolean parameter. If true and the solver is in training mode,
+     * made all the intermediate results persistent in MoML.
      * Otherwise, only the results of the invoked solver is
-     * made persistent and the intermediate results are discarded. */    
+     * made persistent and the intermediate results are discarded. */
     public Parameter all;
 
     /** A boolean parameter. If true, the solver looks for the manual
-     * annotated constraints in the model. Otherwise, these constraints 
+     * annotated constraints in the model. Otherwise, these constraints
      * have no effects in the resolution.
      */
     public Parameter manualAnnotation;
@@ -145,7 +145,7 @@ public abstract class PropertySolver extends PropertySolverBase {
 
         // first, store errors to statistics
         _addErrorStatistics();
-        
+
         // FIXME: remove the errors as well.
 
         List errors = _sharedUtilities.removeErrors();
@@ -286,7 +286,7 @@ public abstract class PropertySolver extends PropertySolverBase {
     }
 
     /**
-     * Increment the given field in the given statistics map by a given number. 
+     * Increment the given field in the given statistics map by a given number.
      * This is used for incrementing integer type statistics. If the given
      * field does not exist, it starts the count of the field at zero.
      * @param map The statistics map.
@@ -442,7 +442,7 @@ public abstract class PropertySolver extends PropertySolverBase {
     }
 
     /**
-     * 
+     *
      */
     public void resolveProperties() throws KernelException {
         resolveProperties(_analyzer, false);
@@ -744,7 +744,7 @@ public abstract class PropertySolver extends PropertySolverBase {
      *  @param directoryPath The directory to be searched for subdirectories.
      *  @exception IllegalActionException If there is a problem reading the
      *  directory as a file or JAR URL.
-     */   
+     */
     protected void _addChoices(Parameter parameter, String directoryPath)
             throws IllegalActionException {
 
@@ -811,7 +811,7 @@ public abstract class PropertySolver extends PropertySolverBase {
                             //        + directoryName);
                             parameter.addChoice(directoryName);
                         }
-                    } 
+                    }
                 } catch (Throwable throwable2) {
                     System.err.println("Tried to look in jarURL");
                     throwable2.printStackTrace();
@@ -934,7 +934,7 @@ public abstract class PropertySolver extends PropertySolverBase {
         // The first check is for singleton elements, and the equals()
         // comparison is necessary for "equivalent" elements, such as
         // those in the SetLattice usecase.
-        if ((previousProperty == null && property != null) || 
+        if ((previousProperty == null && property != null) ||
             (previousProperty != null && !previousProperty.equals(property))) {
 
             addErrors(_eol + "Property \"" + getUseCaseName()
@@ -978,7 +978,7 @@ public abstract class PropertySolver extends PropertySolverBase {
     protected boolean _isInvoked;
 
     /**
-     * The system-specific end-of-line character. 
+     * The system-specific end-of-line character.
      */
     protected static final String _eol = StringUtilities
     .getProperty("line.separator");
@@ -1005,7 +1005,7 @@ public abstract class PropertySolver extends PropertySolverBase {
     ////                        private methods                    ////
 
     /**
-     * Record as an error for the given property-able object and 
+     * Record as an error for the given property-able object and
      * its resolved property. If the given property is null, it
      * does nothing. If the given property is unacceptable, an error
      * is recorded for the given property-able object and the property.
@@ -1056,8 +1056,8 @@ public abstract class PropertySolver extends PropertySolverBase {
 
     /**
      * The record of statistics for the resolution. It is a mapping
-     * between keys and values. To keep track of numerical data, 
-     * by inserting an Integer or Long as value (See 
+     * between keys and values. To keep track of numerical data,
+     * by inserting an Integer or Long as value (See
      * {@link #incrementStats(Object, long)}).
      */
     private Map<Object, Object> _stats = new LinkedHashMap<Object, Object>();
@@ -1066,7 +1066,7 @@ public abstract class PropertySolver extends PropertySolverBase {
      * The name of the trained exception attribute.
      */
     private static String _TRAINED_EXCEPTION_ATTRIBUTE_NAME = "PropertyResolutionExceptionMessage";
-  
+
   protected void _initializeStatistics() {
       _stats.put("has trained resolution errors", false);
       _stats.put("# of trained resolution errors", 0);
@@ -1118,5 +1118,5 @@ public abstract class PropertySolver extends PropertySolverBase {
             return true;
         }
     }
-  
+
 }

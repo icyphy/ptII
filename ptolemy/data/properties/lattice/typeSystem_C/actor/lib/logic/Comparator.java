@@ -51,7 +51,7 @@ public class Comparator extends AtomicActor {
      * Construct an Comparator helper.
      * @param actor the associated actor
      */
-    public Comparator(PropertyConstraintSolver solver, 
+    public Comparator(PropertyConstraintSolver solver,
             ptolemy.actor.lib.logic.Comparator actor) throws IllegalActionException {
 
         super(solver, actor, false);
@@ -60,7 +60,7 @@ public class Comparator extends AtomicActor {
     }
 
     public List<Inequality> constraintList() throws IllegalActionException {
-        setEquals(_actor.output, _lattice.getElement("BOOLEAN"));        
+        setEquals(_actor.output, _lattice.getElement("BOOLEAN"));
 
         return super.constraintList();
     }

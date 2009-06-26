@@ -90,7 +90,7 @@ public class AnalyzeModel extends GTEvent {
 
 
     /**
-     * 
+     *
      */
     private AnalyzerAttribute _analyzerWrapper;
 }

@@ -199,7 +199,7 @@ public class DatabaseManager extends TypedAtomicActor {
                 return "No database connection.";
             }
             connection.setAutoCommit(false);  //use transaction!
-            // FIXME: Findbugs: SQL A prepared statement is generated from a nonconstant String 
+            // FIXME: Findbugs: SQL A prepared statement is generated from a nonconstant String
             // It would be nice if we offered a statement that takes a prepared
             // statement as input.
             statement = connection.prepareStatement(sql);
@@ -294,7 +294,7 @@ public class DatabaseManager extends TypedAtomicActor {
             if (connection == null) {
                 return null;
             }
-            // FIXME: Findbugs: SQL A prepared statement is generated from a nonconstant String 
+            // FIXME: Findbugs: SQL A prepared statement is generated from a nonconstant String
             // It would be nice if we offered a statement that takes a prepared
             // statement as input.
             statement = connection.prepareStatement(sql);
@@ -362,7 +362,7 @@ public class DatabaseManager extends TypedAtomicActor {
                 return -1;
             }
             connection.setAutoCommit(false);  //use transaction!
-            // FIXME: Findbugs: SQL A prepared statement is generated from a nonconstant String 
+            // FIXME: Findbugs: SQL A prepared statement is generated from a nonconstant String
             // It would be nice if we offered a statement that takes a prepared
             // statement as input.
             statement = connection.prepareStatement(sql);

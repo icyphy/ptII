@@ -151,7 +151,7 @@ to something safe to in an XML file.
  &gt;property name="_applicationInitializer"
          class="ptolemy.data.expr.StringParameter"
          value="org.kepler.gui.KeplerInitializer"/&lt;
-</pre> 
+</pre>
 
  </dl>
 
@@ -163,14 +163,14 @@ to something safe to in an XML file.
  @see Configuration
  */
 public class ConfigurationApplication implements ExecutionListener {
-  
+
     /**
      * Empty constructor for subclasses to use
      */
     public ConfigurationApplication() {
-      
+
     }
-    
+
     /** Parse the specified command-line arguments, instanting classes
      *  and reading files that are specified.
      *  @param args The command-line arguments.
@@ -244,7 +244,7 @@ public class ConfigurationApplication implements ExecutionListener {
                     StringUtilities.exit(0);
                 }
             }
-            
+
             // Run if -run argument was specified.
             if (_run) {
                 if (_printPDF) {
@@ -285,7 +285,7 @@ public class ConfigurationApplication implements ExecutionListener {
                     _printPDF();
                 }
             }
-            
+
         } catch (Throwable ex) {
             // Make sure that we do not eat the exception if there are
             // problems parsing.  For example, "ptolemy -FOO bar bif.xml"
@@ -812,9 +812,9 @@ public class ConfigurationApplication implements ExecutionListener {
     }
 
     /** Perform any application specific initialization.
-     *  In this base class, do nothing.  Derived classes 
-     *  can perform initialization.  
-     *  This method is called by early in the constructor, 
+     *  In this base class, do nothing.  Derived classes
+     *  can perform initialization.
+     *  This method is called by early in the constructor,
      *  so the object may not be completely constructed, so
      *  derived classes should not access fields from a
      *  parent class.
@@ -1053,7 +1053,7 @@ public class ConfigurationApplication implements ExecutionListener {
                             if (toplevel instanceof Configuration) {
                                 _configuration = (Configuration) toplevel;
                             }*/
-                            
+
                             /*
                             If configuration is not set by the readConfiguration()
                             method, the _applicationInitializer is never called
@@ -1065,8 +1065,8 @@ public class ConfigurationApplication implements ExecutionListener {
                             */
                             System.out.println("reading configuration");
                             _configuration = readConfiguration(inURL);
-                            
-                            
+
+
                         } catch (Exception ex) {
                             // Unfortunately, java.util.zip.ZipException
                             // does not include the file name.

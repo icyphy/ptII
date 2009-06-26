@@ -233,7 +233,7 @@ public class FSMDirector extends Director {
     // $PTII/codegen/c/domains/fsm/test/. This code is probably
     // specific to a target (e.g. OpenRTOS or PRET), so it should
     // be moved into an subclass which overrides this method. The
-    // subclass should be put under the target-specific packages.    
+    // subclass should be put under the target-specific packages.
 //    public String _generateActorCode() throws IllegalActionException{
 //        StringBuffer code = new StringBuffer();
 //        ptolemy.domains.fsm.kernel.FSMDirector director = (ptolemy.domains.fsm.kernel.FSMDirector) getComponent();

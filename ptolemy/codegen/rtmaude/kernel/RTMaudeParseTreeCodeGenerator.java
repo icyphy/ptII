@@ -74,16 +74,16 @@ import ptolemy.util.StringUtilities;
 * @Pt.ProposedRating Red (kquine)
 *
 */
-public class RTMaudeParseTreeCodeGenerator extends AbstractParseTreeVisitor 
+public class RTMaudeParseTreeCodeGenerator extends AbstractParseTreeVisitor
     implements ParseTreeCodeGenerator {
-    
+
     public RTMaudeParseTreeCodeGenerator() {
         super();
     }
 
     public ptolemy.data.Token evaluateParseTree(ASTPtRootNode node,
             ParserScope scope) throws IllegalActionException {
-        
+
         idTable = new HashMap<String,Set<String>>();
         idTable.put("variable", new HashSet<String>());
         idTable.put("port", new HashSet<String>());
@@ -99,18 +99,18 @@ public class RTMaudeParseTreeCodeGenerator extends AbstractParseTreeVisitor
     public String generateFireCode() {
         return result;
     }
-    
+
     public Map<String,Set<String>> getIdTable() {
         return idTable;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
     public void visitLeafNode(ASTPtLeafNode node) throws IllegalActionException {
         if (node.isConstant() && node.isEvaluated()) {
             ptolemy.data.Token tok = node.getToken();
             String res = node.getToken().toString();
-            
+
             //FIXME: complex value (e.g. 0.0 + 3.2i)
             if ( tok instanceof StringToken ) {
                 _writer.print("# " + escapeForTargetLanguage(res));
@@ -122,37 +122,37 @@ public class RTMaudeParseTreeCodeGenerator extends AbstractParseTreeVisitor
             _writer.print(_transformLeaf(node.getName()));        // when variable identifier
         }
     }
-    
+
     public void visitArrayConstructNode(ASTPtArrayConstructNode node) throws IllegalActionException {
         _writer.print("{");
         _printChildrenSeparated(node, ", ");
         _writer.print("}");
     }
-     
+
     public void visitLogicalNode(ASTPtLogicalNode node) throws IllegalActionException {
         _writer.print("(");
         _printChildrenSeparated(node, node.getOperator().image);
         _writer.print(")");
     }
-    
+
     public void visitBitwiseNode(ASTPtBitwiseNode node) throws IllegalActionException {
         _writer.print("(");
         _printChildrenSeparated(node, node.getOperator().image);
         _writer.print(")");
     }
-    
+
     public void visitPowerNode(ASTPtPowerNode node) throws IllegalActionException {
         _writer.print("(");
         _printChildrenSeparated(node, "^");
         _writer.print(")");
     }
-    
+
     public void visitProductNode(ASTPtProductNode node) throws IllegalActionException {
         _writer.print("(");
         _printChildrenSeparated(node, node.getLexicalTokenList());
         _writer.print(")");
     }
-    
+
     public void visitRelationalNode(ASTPtRelationalNode node) throws IllegalActionException {
         _writer.print("(");
         _printChildrenSeparated(node, node.getOperator().image);
@@ -193,7 +193,7 @@ public class RTMaudeParseTreeCodeGenerator extends AbstractParseTreeVisitor
         _printChild(node, 2);
         _writer.print(")");
     }
-    
+
     public void visitFunctionApplicationNode(ASTPtFunctionApplicationNode node)
             throws IllegalActionException {
         _writer.print("(");
@@ -229,7 +229,7 @@ public class RTMaudeParseTreeCodeGenerator extends AbstractParseTreeVisitor
         int n = 0;
         int rowCount = node.getRowCount();
         int columnCount = node.getColumnCount();
-        
+
         _writer.print("[");
         for (int i = 0; i < rowCount; i++) {
             for (int j = 0; j < columnCount; j++) {
@@ -266,19 +266,19 @@ public class RTMaudeParseTreeCodeGenerator extends AbstractParseTreeVisitor
         _writer.print("{");
         for (int i = 0; i < node.jjtGetNumChildren(); i++) {
             if (i > 0) _writer.print(", ");
-            _writer.print("(" + "'" + names.next().toString());          // 
+            _writer.print("(" + "'" + names.next().toString());          //
             _writer.print(" <- ");      // <- instead =
             _printChild(node, i);
             _writer.print(")");
         }
         _writer.print("}");
     }
-    
+
     private void _printChild(ASTPtRootNode node, int index)
             throws IllegalActionException {
         ((ASTPtRootNode) node.jjtGetChild(index)).visit(this);
     }
-    
+
     private void _printChildrenSeparated(ASTPtRootNode node, List separatorList)
             throws IllegalActionException {
         Iterator separators = separatorList.iterator();
@@ -287,7 +287,7 @@ public class RTMaudeParseTreeCodeGenerator extends AbstractParseTreeVisitor
             _printChild(node, i);
         }
     }
-    
+
     private void _printChildrenSeparated(ASTPtRootNode node, String string)
             throws IllegalActionException {
         for (int i = 0; i < node.jjtGetNumChildren(); i++) {
@@ -295,18 +295,18 @@ public class RTMaudeParseTreeCodeGenerator extends AbstractParseTreeVisitor
             _printChild(node, i);
         }
     }
-    
+
     private static String _transformOp(String op) {
         if (op.equals("<")) return "lessThan";
         else if (op.equals(">")) return "greaterThan";
         else if (op.equals("==")) return "equals";
         else return op;
         // && ||
-        // & | # 
+        // & | #
         //<< >> >>>
     }
-    
-    private String _transformLeaf(String id) {        
+
+    private String _transformLeaf(String id) {
         Matcher m = Pattern.compile("(.*)_isPresent").matcher(id);
         if (m.matches()) {
             String pid = m.group(1);
@@ -329,7 +329,7 @@ public class RTMaudeParseTreeCodeGenerator extends AbstractParseTreeVisitor
         string = StringUtilities.substitute(string, "\n", "\\n");
         return string;
     }
-    
+
     protected PrintWriter _writer;
     private Map<String,Set<String>> idTable;
     private String result = null;

@@ -167,10 +167,10 @@ public class PropertyCombineSolver extends PropertySolver {
     public Boolean getUnconnectedPorts() {
         return (_unconnectedPorts.getExpression().equalsIgnoreCase("true")) ? true : false;
     }
-    
+
     public Property getResolvedProperty(Object object) {
         return getToken(object);
-    }    
+    }
 
     public void putToken(Object object, PropertyToken token) {
         _tokenMap.put(object, token);

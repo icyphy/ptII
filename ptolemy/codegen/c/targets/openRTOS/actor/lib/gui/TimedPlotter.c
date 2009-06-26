@@ -22,7 +22,7 @@ $actorSymbol(xvalue) = 0;
        RIT128x96x4StringDraw("_",   i,41,5);
      }
 }
- 
+
 /**/
 
 /***configureBlock($text)***/
@@ -75,7 +75,7 @@ char buff[50];
    //RIT128x96x4StringDraw(".",   myx,myy,20);
    sprintf(buff,"xv: %d yv: %d",x,y);
     RIT128x96x4StringDraw(buff,   0,50,20);
-   
+
 
 }
 
@@ -103,9 +103,9 @@ void PlotPoint1(int x,int y)
    sprintf(buff,"xv: %d yv: %d",x,y);
     RIT128x96x4StringDraw(buff,   0,60,20);
 }
-  
-  
-  
+
+
+
 void PlotPoint2(int x,int y)
 {
 
@@ -127,7 +127,7 @@ void PlotPoint2(int x,int y)
    // RIT128x96x4StringDraw(".",   myx,myy,20);
         sprintf(buff,"xv: %d yv: %d",x,y);
     RIT128x96x4StringDraw(buff,   0,70,20);
-   
+
 
 }
 /**/

@@ -44,7 +44,7 @@ import ptolemy.kernel.util.IllegalActionException;
  are added or subtracted, then common records
  (those with the same labels) will be added or subtracted,
  and the disjoint records will not appear in the result.
- 
+
  This implementation maintains the order of the entries as they were added
 
  @author Ben Leinfelder
@@ -53,7 +53,7 @@ import ptolemy.kernel.util.IllegalActionException;
  @Pt.AcceptedRating red (leinfelder)
  */
 public class OrderedRecordToken extends RecordToken {
-        
+
     /** Construct an OrderedRecordToke with now fields.
      * @see RecordToken
      */
@@ -97,7 +97,7 @@ public class OrderedRecordToken extends RecordToken {
     public OrderedRecordToken(String[] labels, Token[] values) throws IllegalActionException {
         super(labels, values);
     }
-        
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 

@@ -488,7 +488,7 @@ public class IOPort extends JavaCodeGeneratorHelper implements PortCodeGenerator
         boolean isPN = (((Actor) port.getContainer()).getDirector()
                 instanceof ptolemy.domains.pn.kernel.PNDirector);
 
-        return isPN && 
+        return isPN &&
         (getCodeGenerator().target.getExpression().equals("default") ||
          getCodeGenerator().target.getExpression().equals("posix"));
     }
