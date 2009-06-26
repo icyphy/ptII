@@ -71,9 +71,9 @@ import ptolemy.verification.lib.BoundedBufferTimedDelay;
  * with some modifications. Basically, here the DE
  * domain can be viewed as a generalization of the SR domain, where each
  * "super dense" time tag in DE is now a tick in SR. The token would not 
- * accumulate in the port of the FSMActor - therefore buffer overflow 
- * property would no longer exist in this implementation. Buffer overflow 
- * would only happens in the TimedDelay or NondeterministicTimedDelay actor.
+ * be accumulated in the port of the FSMActor - therefore buffer overflow 
+ * property would no longer exist in this implementation; it
+ * would only happen in the TimedDelay or NondeterministicTimedDelay actor.
  *
  * Note that for a successful conversion, we simply disallow a system to
  * have super dense time tag with the format (\tau, i), where i>0. 
@@ -2759,8 +2759,7 @@ public class REDUtility {
             // (3) When time elapses, it moves back to empty.
 
             bean._moduleDescription.append("    when !ND_" + signalName.trim()
-                    + " (true) may Token" + signalName.trim()
-                    + "Occupied = false; goto " + actor.getName().trim()
+                    + " (true) may ; goto " + actor.getName().trim()
                     + "_Port_" + signalName.trim() + "_TokenEmpty" + ";\n");
             bean._moduleDescription.append("    when  ?" + signalName.trim()
                     + " (true) may ; \n");
