@@ -57,6 +57,7 @@ JSIMPLE_TESTS = \
 	MultiportToSinglePort.tcl \
 	PropertyClassChanges.tcl \
 	RelationWidthChanges.tcl \
+	RemoveClasses.tcl \
 	RemoveGraphicalClasses.tcl
 	
 
