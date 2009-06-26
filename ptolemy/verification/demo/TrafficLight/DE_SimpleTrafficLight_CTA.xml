@@ -16,13 +16,13 @@
     </property>
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 0, 1032, 578}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1, 0, 1223, 801}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[817, 455]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1008, 668]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.7460067376295">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.9378370415914">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{496.582185782967, 269.83203125}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{374.5536754261364, 244.7743730878496}">
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
@@ -221,6 +221,7 @@
             <display name="Model Type"/>
         </property>
         <property name="Formula Type" class="ptolemy.data.expr.ChoiceParameter" value="TCTL">
+            <display name="Formula Type"/>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 185.0]">
         </property>
@@ -248,7 +249,7 @@
         </property>
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.0,1.0}">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Execution &amp; Results:&#10;For model checking, please download the model checker RED 7.0 from http://sourceforge.net/projects/redlib. &#10;Assume your converted file is TEST.d, and your generated specification is TEST.risk, with RED 7.0 installed, &#10;you may examine the result of verification by the following instruction: &quot;./red -Tr -C TEST.d TEST.risk&quot;&#10;Timed required for result generation may vary from 1 sec to 100 secs.&#10;&#10;Interestingly, since the rate of the clock is slower than the worst case transmission time of Pgo and Pstop, &#10;the model guarantees the behavior of safety (both lights will not be green simultaneously). If you change the &#10;timing parameters (e.g., clock = 4 [offsets = 2.0; if you don't set this, results from simulation and &#10;verification differ], timedDelay = 1, timedDelay = 5), a counter-example will be shown.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Execution &amp; Results:&#10;For model checking, please download the model checker RED 7.0 from http://sourceforge.net/projects/redlib. &#10;Assume your converted file is TEST.d, and your generated specification is TEST.risk, with RED 7.0 installed, &#10;you may examine the result of verification by the following instruction: &quot;./red -Tr -C TEST.d TEST.risk&quot;&#10;Timed required for result generation may vary from 1 sec to 10 secs.&#10;&#10;Interestingly, since the rate of the clock is slower than the worst case transmission time of Pgo and Pstop, &#10;the model guarantees the behavior of safety (both lights will not be green simultaneously). If you change the &#10;timing parameters (e.g., clock = 4 [offsets = 2.0; if you don't set this, results from simulation and &#10;verification differ], timedDelay = 1, timedDelay = 5), a counter-example will be shown.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{305.0, 355.0}">
         </property>
