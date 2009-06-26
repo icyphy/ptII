@@ -47,7 +47,9 @@ import ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapterStrategy.Cha
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.Type;
 import ptolemy.domains.fsm.modal.ModalController;
+import ptolemy.domains.ptides.lib.ActuationDevice;
 import ptolemy.domains.ptides.lib.InputDevice;
+import ptolemy.domains.ptides.lib.InterruptDevice;
 import ptolemy.domains.ptides.lib.OutputDevice;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
@@ -64,7 +66,7 @@ import ptolemy.kernel.util.NamedObj;
  @version $Id: PtidesBasicDirector.java 54211 2009-06-06 19:49:00Z jiazou $
  @since Ptolemy II 7.1
  @Pt.ProposedRating red (jiazou)
- @Pt.AcceptedRating
+ @Pt.AcceptedRating red (jiazou)
  */
 public class PtidesBasicDirector extends Director {
 
@@ -76,16 +78,6 @@ public class PtidesBasicDirector extends Director {
     public PtidesBasicDirector(ptolemy.domains.ptides.kernel.PtidesBasicDirector ptidesBasicDirector) {
         super(ptidesBasicDirector);
     }
-
-    ////////////////////////////////////////////////////////////////////////
-    ////                         static variables                       ////
-    /** Each output port has a fixed buffer size, which is set using this variable.
-     *  FIXME: this variable can possibly be inferred from the PTIDES model and
-     *  an event model.
-     *  FIXME: If the PTIDES scheduler were to adopt Park's algorithm, then this
-     *  size could be used as a "first guess".
-     */
-    static final int _outputPortBufferSize = 10;
 
     ////////////////////////////////////////////////////////////////////////
     ////                         public methods                         ////
@@ -121,7 +113,7 @@ public class PtidesBasicDirector extends Director {
      *  @exception IllegalActionException If getting the adapter fails,
      *   or if generating the preinitialize code for a adapter fails,
      *   or if there is a problem getting the buffer size of a port.
-     *   FIXME: fire code for each function, as well as the scheduler, should all go here
+     *   NOTE: fire code for each function, as well as the scheduler, should all go here
      *   Take care of platform independent code.
      */
     public String generatePreinitializeCode() throws IllegalActionException {
@@ -341,11 +333,12 @@ public class PtidesBasicDirector extends Director {
         int actuatorIndex = 0;
         int sensorIndex = 0;
         for (Actor actor : (List<Actor>)((CompositeActor) _director.getContainer()).deepEntityList()) {
-            if (actor instanceof OutputDevice) {
+            // FIXME: should I be using Interrupt/ActuationDevice or just Input/OutputDevice?
+            if (actor instanceof ActuationDevice) {
                 _actuators.put(actor, new Integer(actuatorIndex));
                 actuatorIndex++;
             }
-            if (actor instanceof InputDevice) {
+            if (actor instanceof InterruptDevice) {
                 _sensors.put(actor, new Integer(sensorIndex));
                 sensorIndex++;
             }
@@ -370,14 +363,14 @@ public class PtidesBasicDirector extends Director {
             
             ProgramCodeGeneratorAdapter adapter = (ProgramCodeGeneratorAdapter) getCodeGenerator().getAdapter((NamedObj)actor);
             
-            if (actor instanceof OutputDevice) {
+            if (actor instanceof ActuationDevice) {
                 code.append("void Actuation_" + ProgramCodeGeneratorAdapterStrategy.generateName((NamedObj) actor) + "() {" + _eol);
                 code.append(((ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.ptides.lib.OutputDevice)adapter)
                         .generateActuatorActuationFuncCode());
                 code.append("}" + _eol);
             }
             
-            if (actor instanceof InputDevice) {
+            if (actor instanceof InterruptDevice) {
                 code.append("void Sensing_" + ProgramCodeGeneratorAdapterStrategy.generateName((NamedObj) actor) + "() {" + _eol);
                 code.append(((ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.ptides.lib.InputDevice)adapter)
                         .generateSensorSensingFuncCode());
