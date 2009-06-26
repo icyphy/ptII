@@ -77,6 +77,10 @@
             </property>
             <property name="WCET" class="ptolemy.data.expr.Parameter" value="0.4">
             </property>
+            <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
+                </property>
+            </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="2.0">
@@ -103,6 +107,10 @@
             </property>
             <property name="WCET" class="ptolemy.data.expr.Parameter" value=".3">
             </property>
+            <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
+                </property>
+            </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="3.0">
@@ -119,6 +127,8 @@
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="minDelay" class="ptolemy.data.expr.Parameter" value="{Infinity}">
+                </property>
+                <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="3.0">
                 </property>
             </port>
         </entity>
