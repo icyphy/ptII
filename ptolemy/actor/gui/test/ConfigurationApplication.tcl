@@ -51,6 +51,6 @@ test ConfigurationApplication-1.0 {test reading MoML file} {
     set newFilterSize [[java::call ptolemy.moml.MoMLParser getMoMLFilters] size]
 
     puts "test 1.0: filterSize: $filterSize, newFilterSize: $newFilterSize"
-    # There should be one more filter.
-    list [expr {$filterSize == $newFilterSize -1}]
-} {1}
+    # There should be two more filters.
+    list [expr {$newFilterSize - $filterSize}]
+} {2}
