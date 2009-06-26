@@ -53,9 +53,12 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 
 JSRCS = \
     Const.java \
+    DiscreteClock.java \
     Expression.java \
     Limiter.java \
     Ramp.java \
+    RecordAssembler.java \
+    RecordDisassembler.java \
     Scale.java \
     Sequence.java \
     SetVariable.java \
@@ -72,7 +75,9 @@ MISC_FILES =    $(DIRS)
 OPTIONAL_FILES = \
 	doc \
 	'Limiter$$1.class' \
-	'Limiter$$FunctionTerm.class'
+	'Limiter$$FunctionTerm.class' \
+	'RecordDisassembler$$1.class' \
+	'RecordDisassembler$$PortFunction.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

@@ -82,7 +82,7 @@ OTHER_FILES_TO_BE_JARED = \
 	whatsNew7.0.htm \
 	whatsNew8.0.htm
 
-EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
+EXTRA_SRCS =	ClassesIllustrated.htm $(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.

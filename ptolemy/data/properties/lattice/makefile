@@ -90,6 +90,8 @@ JSRCS = \
 	PropertyTermFactory.java \
 	PropertyTermManager.java \
 	PropertyTermPartialEvaluator.java \
+	RecordProperty.java \
+	StructuredProperty.java \
 	TypeProperty.java \
 	TypePropertyBitAccurate.java
 
@@ -107,10 +109,11 @@ OPTIONAL_FILES = \
 	'InequalitySolver$$Info.class' \
 	'PropertyConstraintHelper$$Inequality.class' \
 	'PropertyConstraintSolver$$ConstraintType.class' \
-	'PropertyTermManager$$InequalityTerm.class'
+	'PropertyTermManager$$InequalityTerm.class' \
+	'RecordProperty$$1.class' \
+	'RecordProperty$$FieldProperty.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
-
 
 all: jclass
 install: jclass jars

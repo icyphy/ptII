@@ -60,7 +60,9 @@ PTCLASSALLJARS = \
 # Keep this list alphabetized.
 JSRCS =
 
-OTHER_FILES_TO_BE_JARED = 
+OTHER_FILES_TO_BE_JARED = \
+	ptolemy-base.maude \
+	ptolemy-exp.maude
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
@@ -70,7 +72,7 @@ MISC_FILES =    actor data domains kernel
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
-OPTIONAL_FILES =
+OPTIONAL_FILES = demo
 
 JCLASS = $(JSRCS:%.java=%.class)
 

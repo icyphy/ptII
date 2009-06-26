@@ -55,6 +55,7 @@ PTCLASSALLJARS = \
 JSRCS = \
 	Const.java \
 	CurrentTime.java \
+	DiscreteClock.java \
 	Expression.java \
 	MultiplyDivide.java \
 	Scale.java \

@@ -50,10 +50,11 @@ OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS) \
 	Gravitation.xml \
 	Gravitation.htm \
-	GravitationWithCollisionDetection.xml \
-	GravitationVergil.htm
+	GravitationWithCollisionDetection.xml
 
 EXTRA_SRCS = \
+	GravitationVergil.htm \
+	GravitationWithCollisionDetection.htm \
 	$(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't

@@ -93,9 +93,11 @@ MISC_FILES =    $(DIRS)
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	demo \
-    doc \
-    'PropertyHelper$$Channel.class' \
-    'PropertyRemover$$1.class'
+	doc \
+	'AnalyzerAttribute$$ClassFileOrDirectoryNameFilter.class' \
+	'PropertyHelper$$Channel.class' \
+	'PropertyRemover$$1.class' \
+	'PropertySolver$$DirectoryNameFilter.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

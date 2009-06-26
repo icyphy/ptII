@@ -49,6 +49,9 @@ JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS) \
+	irobotCreate.jpg \
+	luminary.jpg \
+	simulation.xml \
 	ControlRobot.xml
 
 EXTRA_SRCS = \

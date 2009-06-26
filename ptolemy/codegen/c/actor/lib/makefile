@@ -108,6 +108,7 @@ JSRCS = \
 	MonitorValue.java \
 	MovingAverage.java \
 	MultiplyDivide.java \
+	NonStrictTest.java \
 	OrderedMerge.java \
 	Publisher.java \
 	PublisherTest.java \
@@ -180,6 +181,7 @@ OTHER_FILES_TO_BE_JARED = \
 	MonitorValue.c \
 	MovingAverage.c \
 	MultiplyDivide.c \
+	NonStrictTest.c \
 	OrderedMerge.c \
 	Publisher.c \
 	PublisherTest.c \

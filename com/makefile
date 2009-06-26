@@ -50,6 +50,7 @@ install: subinstall
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to report an error on them.
 MISC_FILES = \
+	jgoodies \
 	JLex \
 	microstar 
 

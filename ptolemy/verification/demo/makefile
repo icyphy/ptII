@@ -70,7 +70,7 @@ EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 MISC_FILES = \
 	iRobotHillClimbing \
 	RailroadControl \
-	TrafficLight
+	SimpleTrafficLight
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES

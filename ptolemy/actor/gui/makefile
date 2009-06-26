@@ -186,6 +186,9 @@ OPTIONAL_FILES = \
 	'CompositeActorApplication$$StateReporter.class' \
 	'Configuration$$1.class' \
 	'Configuration$$2.class' \
+	'ConfigurationApplication$$1.class' \
+	'ConfigurationApplication$$ConfigurationFilenameFilter.class' \
+	'ConfigurationApplication$$IgnoreErrorHandler.class' \
 	'Configurer$$1.class' \
 	'Configurer$$2$$1.class' \
 	'Configurer$$2.class' \

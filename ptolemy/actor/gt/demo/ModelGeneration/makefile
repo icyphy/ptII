@@ -56,6 +56,7 @@ OTHER_FILES_TO_BE_JARED = \
 	ModelGeneration_DE.xml
 
 EXTRA_SRCS = \
+	ModelGeneration_DE.htm \
 	$(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
