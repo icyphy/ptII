@@ -713,6 +713,7 @@ JMF_JARS
 JODE_CLASSES
 JYTHON_DIR
 JXTA_DIR
+KIELER_JAR
 KVM_CLASSES
 KVM_DIR
 LEJOS_DIR
@@ -783,6 +784,7 @@ PTJOYSTICK_PACKAGES
 PTJYTHON_DIR
 PTJYTHON_PACKAGES
 PTJXTA_DIR
+PTKIELER_DIR
 PTKVM_DIR
 PTLEGO_DIR
 PTLEJOS_DIR
@@ -1446,6 +1448,8 @@ Optional Packages:
 			  is searched for jython
   --with-jxta=DIR       use jxta.jar from DIR,
                           defaults to \$PTII/vendors/sun/jxta
+  --with-kieler-jar=JARFILE       use JARFILE,
+                          defaults to \$PTII/lib/kieler.jar
   --with-rxtx=DIR       use Java Serial Port Interfacrxtx from DIR,
                           defaults to $RXTX_JAR_DEFAULT
   --with-lejos=DIR       use Java lejos from DIR,
@@ -3385,7 +3389,7 @@ ECLIPSE_EXCLUDING_SRC=""
 
 # Jar files to include in the Eclipse library
 #ECLIPSE_CLASSPATHENTRY_LIBS='<classpathentry kind="lib" path="lib/diva.jar"/>'
-ECLIPSE_CLASSPATHENTRY_LIBS='<classpathentry kind="lib" path="lib/kieler.jar"/>'
+ECLIPSE_CLASSPATHENTRY_LIBS=''
 
 case "`uname -s`" in
      Darwin)
@@ -7746,6 +7750,72 @@ else
     <classpathentry kind=\"lib\" path=\"$JXTA_DIR/jxtaptls.jar\"/>"
 fi
 
+
+#--------------------------------------------------------------------
+#	Classes used to layout entities and relations in Vergil that use the
+#       KIELER layout algorithm.
+#	http://www.informatik.uni-kiel.de/rtsys/kieler/
+#
+#--------------------------------------------------------------------
+
+# We only need to look for jxta if $PTII/ptolemy/vergil/basic/layout/kieler is present
+KIELER_USER_DIR="$PTII/ptolemy/vergil/basic/layout/kieler"
+# PTKIELER_DIR is set to kieler and used in
+# $PTII/ptolemy/vergil/basic/layout/makefile if kieler was found
+PTKIELER_DIR=
+
+# Directory that contains the jxta jar files
+KIELER_JAR='${PTII}/lib/kieler.jar'
+
+if test ! -d "$KIELER_USER_DIR"; then
+    if test "${PTVERBOSE:-none}" != "none"; then { echo "$as_me:$LINENO: result: $KIELER_USER_DIR is not present,
+    so we need not find KIELER." >&5
+echo "${ECHO_T}$KIELER_USER_DIR is not present,
+    so we need not find KIELER." >&6; }; fi
+else
+    { echo "$as_me:$LINENO: checking for kieler jar file used by layout " >&5
+echo $ECHO_N "checking for kieler jar file used by layout ... $ECHO_C" >&6; }
+
+# Check whether --with-jxta was given.
+if test "${with_jxta+set}" = set; then
+  withval=$with_jxta; KIELER_JAR=$withval
+else
+  KIELER_JAR=$PTII/lib/kieler.jar
+fi
+
+
+    if test -f "$KIELER_JAR"; then
+	if test "${PTVERBOSE:-none}" = "none"; then { echo "$as_me:$LINENO: result: ok" >&5
+echo "${ECHO_T}ok" >&6; }; else { echo "$as_me:$LINENO: result: $KIELER_JAR" >&5
+echo "${ECHO_T}$KIELER_JAR" >&6; }; fi
+	# Set to kieler and used in
+	# $PTII/ptolemy/vergil/basic/layout/makefile if kieler was found
+	PTKIELER_DIR=kieler
+    fi
+
+    if test "$PTKIELER_DIR" = ""; then
+        { echo "$as_me:$LINENO: WARNING: Failed to find $KIELER_JAR
+    perhaps KIELER is not installed?
+    You need not use KIELER unless you plan on using the KIELER layout
+    facility in $KIELER_USER_DIR
+    The KIELER jar is usually found at $PTII/lib/kieler.jar" >&5
+echo "$as_me: WARNING: Failed to find $KIELER_JAR
+    perhaps KIELER is not installed?
+    You need not use KIELER unless you plan on using the KIELER layout
+    facility in $KIELER_USER_DIR
+    The KIELER jar is usually found at $PTII/lib/kieler.jar" >&2;}
+	# Note that we don't substitute in the ${PTII} here
+	KIELER_JAR='${PTII}/lib/kieler.jar'
+    fi
+fi
+
+if test -z "$PTKIELER_DIR"; then
+   ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/vergil/basic/layout/kieler/"
+else
+   ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
+    <classpathentry kind=\"lib\" path=\"$KIELER_JAR\"/>"
+fi
+
 #--------------------------------------------------------------------
 #       RXTX is the Serial Port interface that replaces
 #       Sun's commapi.
@@ -10462,6 +10532,9 @@ fi
 # keytool command used to generate a certificate for testing actor.lib.security actors
 
 
+# The Kieler jar file, used to layout models
+
+
 # kvm/tools/classes.jar file used by the PalmOS KVM
 
 
@@ -10718,6 +10791,10 @@ fi
 
 # Set to jxta ans used in
 # $PTII/actor/lib/makefile if jxta.jar was found
+
+
+# Set to kieler and used in
+# $PTII/ptolemy/vergil/basic/layout/makefile if kieler was found
 
 
 # Set to kvm and used in
@@ -11670,6 +11747,7 @@ for ac_last_try in false false false false false :; do
   cat >conf$$subs.sed <<_ACEOF
 JYTHON_DIR!$JYTHON_DIR$ac_delim
 JXTA_DIR!$JXTA_DIR$ac_delim
+KIELER_JAR!$KIELER_JAR$ac_delim
 KVM_CLASSES!$KVM_CLASSES$ac_delim
 KVM_DIR!$KVM_DIR$ac_delim
 LEJOS_DIR!$LEJOS_DIR$ac_delim
@@ -11740,6 +11818,7 @@ PTJOYSTICK_PACKAGES!$PTJOYSTICK_PACKAGES$ac_delim
 PTJYTHON_DIR!$PTJYTHON_DIR$ac_delim
 PTJYTHON_PACKAGES!$PTJYTHON_PACKAGES$ac_delim
 PTJXTA_DIR!$PTJXTA_DIR$ac_delim
+PTKIELER_DIR!$PTKIELER_DIR$ac_delim
 PTKVM_DIR!$PTKVM_DIR$ac_delim
 PTLEGO_DIR!$PTLEGO_DIR$ac_delim
 PTLEJOS_DIR!$PTLEJOS_DIR$ac_delim
@@ -11763,8 +11842,6 @@ PTTINI_DIR!$PTTINI_DIR$ac_delim
 PTTINYOS_DIR!$PTTINYOS_DIR$ac_delim
 PTGIOTTO_DIR!$PTGIOTTO_DIR$ac_delim
 PTVR_DIR!$PTVR_DIR$ac_delim
-PTVR_JAR!$PTVR_JAR$ac_delim
-PTVR_PACKAGES!$PTVR_PACKAGES$ac_delim
 _ACEOF
 
   if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 97; then
@@ -11806,6 +11883,8 @@ _ACEOF
 ac_delim='%!_!# '
 for ac_last_try in false false false false false :; do
   cat >conf$$subs.sed <<_ACEOF
+PTVR_JAR!$PTVR_JAR$ac_delim
+PTVR_PACKAGES!$PTVR_PACKAGES$ac_delim
 PTWABA_DIR!$PTWABA_DIR$ac_delim
 PTX10_DIR!$PTX10_DIR$ac_delim
 PTX10_PACKAGES!$PTX10_PACKAGES$ac_delim
@@ -11830,7 +11909,7 @@ LIBOBJS!$LIBOBJS$ac_delim
 LTLIBOBJS!$LTLIBOBJS$ac_delim
 _ACEOF
 
-  if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 22; then
+  if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 24; then
     break
   elif $ac_last_try; then
     { { echo "$as_me:$LINENO: error: could not make $CONFIG_STATUS" >&5
