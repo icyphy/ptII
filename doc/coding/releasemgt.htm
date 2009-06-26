@@ -308,18 +308,14 @@ below are some things to be aware of
 </pre>
 
 <li> Tag the tree as the release tree and create a branch
-For more information about CVS, see the
-<a href="http://www.gigascale.org/softdevel/faq/1/" target="_top">Gigascale CVS Pages</a>
 
  <p>To make a branch for 8.0.beta, use the following command:
 <pre>
-cd $PTII
-cvs tag -b rel-7-0-beta-2
+svn copy svn+ssh://source.eecs.berkeley.edu/chess/ptII/trunk svn+ssh://source.eecs.berkeley.edu/chess/ptII/branches/rel-8-0-beta -m "Creating Ptolemy II 8.0.beta branch"
 </pre>
 Then check out the release branch  with
 <pre>
-cd ~/src
-svn co svn+ssh://source.eecs.berkeley.edu/chess/ptII/trunk ptII8.0.beta
+svn co svn+ssh://source.eecs.berkeley.edu/chess/ptII/branches/rel-8-0-beta ptII8.0.beta
 
 </pre>
 <I>Note that you should avoid dots in the tag name</I>
