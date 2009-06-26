@@ -66,8 +66,25 @@ else
     fi
 
 
+    SPELL=`which spell`
+    if [ -f "$SPELL" ]; then
+	SPELLCMD=$SPELL
+	SPELLARGS="+$LOCALFILE"
+    else
+	ASPELL=`which aspell`
+	if [ -f "$ASPELL" ]; then
+	    SPELLCMD=$ASPELL
+	    # First line of ptlocaldict must be
+	    # personal_ws-1.1 en 719
+	    SPELLARGS="list --personal=$LOCALFILE"
+	else
+	    echo "$0: could not find ispell, spell or aspell"
+	    exit 2
+	fi    
+    fi
+
     # The sed calls split up words with internal capitalization
-    spell +$LOCALFILE ${1+"$@"} | \
+    $SPELLCMD $SPELLARGS ${1+"$@"} | \
 	sed -e 's/\./ /g' \
 	    -e 's/&quot;/ /g' \
 	    -e 's/&amp;/ /g' \
@@ -80,8 +97,9 @@ else
 	    -e 's/lt;/ /g' \
 	    -e 's/gt;/ /g' \
 	    -e 's/quot;/ /g' \
-	    | spell +$LOCALFILE | \
-	sed -e 's/\([a-z]\)\([A-Z]\)/\1 \2/g' | spell +$LOCALFILE | \
+	    | $SPELLCMD $SPELLARGS | \
+	sed -e 's/\([a-z]\)\([A-Z]\)/\1 \2/g' |
+        $SPELLCMD $SPELLARGS | \
 	sed -e 's/^\([A-Z]*\)\([A-Z]\)/\1 \2/g' \
-        | spell +$LOCALFILE
+        | $SPELLCMD $SPELLARGS | sort | uniq
 fi
