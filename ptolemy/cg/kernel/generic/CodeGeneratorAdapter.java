@@ -64,7 +64,7 @@ import ptolemy.kernel.util.NamedObj;
 *
 * @author Bert Rodiers
 * @version $Id$
-* @since Ptolemy II 7.2
+* @since Ptolemy II 7.1
 * @Pt.ProposedRating Red (rodiers)
 * @Pt.AcceptedRating Red (rodiers)
 */

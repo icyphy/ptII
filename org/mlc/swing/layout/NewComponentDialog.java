@@ -63,6 +63,8 @@ import com.jgoodies.forms.factories.ButtonBarFactory;
  * window.
  *
  * @author Michael Connor
+@version $Id$
+@since Ptolemy II 7.1
  */
 @SuppressWarnings("serial")
 public class NewComponentDialog extends JPanel {

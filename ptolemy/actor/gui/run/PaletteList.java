@@ -82,7 +82,7 @@ customization is to require a PtolemyFormEditor constructor argument.
 
 @author Michael Connor and Edward A. Lee
 @version $Id$
-@since Ptolemy II 6.2
+@since Ptolemy II 7.1
 @Pt.ProposedRating Yellow (eal)
 @Pt.AcceptedRating Red (cxh)
 */

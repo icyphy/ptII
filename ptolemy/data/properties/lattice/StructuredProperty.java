@@ -44,7 +44,7 @@ import ptolemy.kernel.util.IllegalActionException;
  *
  * @author Man-Kit Leung
  * @version $Id: StructuredProperty.java 47513 2007-12-07 06:32:21Z cxh $
- * @since Ptolemy II 8.0
+ * @since Ptolemy II 7.1
  * @Pt.ProposedRating Red (mankit)
  * @Pt.AcceptedRating Red (mankit)
  */

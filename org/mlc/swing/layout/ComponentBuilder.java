@@ -38,6 +38,8 @@ import java.util.Map;
  * to be part of the builder must implement this interface
  *
  * @author Michael Connor
+@version $Id$
+@since Ptolemy II 7.1
  */
 public interface ComponentBuilder {
     /**

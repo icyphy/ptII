@@ -46,6 +46,8 @@ import java.util.prefs.Preferences;
  * This is a singleton container for handling user preferences. These include
  * window size and positions, debug frame visibility, etc.
  * @author Kevin Routley
+@version $Id$
+@since Ptolemy II 7.1
  */
 public class UserPrefs {
 

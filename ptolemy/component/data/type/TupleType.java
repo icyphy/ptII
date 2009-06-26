@@ -48,7 +48,7 @@ import ptolemy.kernel.util.InternalErrorException;
 
  @author Steve Neuendorffer
  @version $Id$
- @since Ptolemy II 3.0
+ @since Ptolemy II 7.1
  @Pt.ProposedRating Red (neuendor)
  @Pt.AcceptedRating Red (cxh)
  */

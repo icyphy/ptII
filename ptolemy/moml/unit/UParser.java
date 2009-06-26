@@ -40,7 +40,7 @@ JavaCC parser generator.
 
 @author Rowland R Johnson
 @version UParser.jj,v 1.9 2004/04/14 14:18:38 rowland Exp
-@since Ptolemy II 4.0
+@since Ptolemy II 7.1
 @Pt.ProposedRating Red (rowland)
 @Pt.AcceptedRating Red (rowland)
 */

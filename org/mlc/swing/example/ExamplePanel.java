@@ -38,6 +38,8 @@ import org.mlc.swing.layout.LayoutFrame;
 
 /**
  * @author Michael Connor
+@version $Id$
+@since Ptolemy II 7.1
  */
 public class ExamplePanel extends javax.swing.JPanel {
     JLabel nameLabel = new JLabel("Name");

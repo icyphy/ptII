@@ -59,7 +59,7 @@ import ptolemy.kernel.util.NamedObj;
 
  @author Gang Zhou
  @version $Id$
- @since Ptolemy II 6.0
+ @since Ptolemy II 7.1
  @Pt.ProposedRating Red (zgang)
  @Pt.AcceptedRating Red (zgang)
  */

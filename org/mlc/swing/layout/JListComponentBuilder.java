@@ -41,6 +41,8 @@ import javax.swing.JScrollPane;
  * This is the ComponentBuilder used to build JLists.
  *
  * @author Kevin Routley
+@version $Id$
+@since Ptolemy II 7.1
  */
 public class JListComponentBuilder implements ComponentBuilder {
     List<BeanProperty> properties = new ArrayList<BeanProperty>();

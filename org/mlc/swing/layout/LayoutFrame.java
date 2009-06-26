@@ -71,6 +71,8 @@ import com.jgoodies.forms.factories.Borders;
  * is the FormEditor panel.
  *
  * @author Michael Connor mlconnor&#064;yahoo.com
+@version $Id$
+@since Ptolemy II 7.1
  */
 @SuppressWarnings("serial")
 public class LayoutFrame extends JFrame implements MultiContainerFrame {

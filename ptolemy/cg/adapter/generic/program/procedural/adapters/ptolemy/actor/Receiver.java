@@ -35,6 +35,8 @@ import ptolemy.kernel.util.NamedObj;
 /** 
  * 
  *  @author Jia Zou, Man-Kit Leung, Isaac Liu
+@version $Id$
+@since Ptolemy II 7.1
  *
  */
 public abstract class Receiver extends ProgramCodeGeneratorAdapter {

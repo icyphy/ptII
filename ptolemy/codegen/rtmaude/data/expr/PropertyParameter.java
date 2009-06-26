@@ -40,6 +40,8 @@ import ptolemy.kernel.util.NamedObj;
 * The contents is translated to related RTMaude model checking command.
 *
 * @author Kyungmin Bae
+@version $Id$
+@since Ptolemy II 7.1
 * @version $Id$
 * @Pt.ProposedRating Red (kquine)
 *

@@ -65,7 +65,7 @@ import ptolemy.kernel.util.Workspace;
 
  @author Thomas Huining Feng
  @version $Id$
- @since Ptolemy II 8.0
+ @since Ptolemy II 7.1
  @see TimedPlotter
  @Pt.ProposedRating Red (tfeng)
  @Pt.AcceptedRating Red (tfeng)

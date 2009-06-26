@@ -47,6 +47,8 @@ import ptolemy.kernel.util.Workspace;
 /** An application for testing the component domain.
  //FIXME:
  @author  Yang Zhao
+@version $Id$
+@since Ptolemy II 7.1
  @version $Id$
  */
 public class MCApplication {

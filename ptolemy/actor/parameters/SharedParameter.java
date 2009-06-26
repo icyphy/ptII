@@ -91,7 +91,7 @@ import ptolemy.kernel.util.Workspace;
 
  @author Edward A. Lee, contributor: Christopher Brooks, Bert Rodiers
  @version $Id$
- @since Ptolemy II 4.1
+ @since Ptolemy II 7.1
  @Pt.ProposedRating Green (eal)
  @Pt.AcceptedRating Green (acataldo)
  */

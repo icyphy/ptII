@@ -108,7 +108,7 @@ import ptolemy.moml.MoMLChangeRequest;
  inconsistencies not apparent in the original instance.
  @author Rowland R Johnson
  @version $Id$
- @since Ptolemy II 4.0
+ @since Ptolemy II 7.1
  @Pt.ProposedRating Red (rowland)
  @Pt.AcceptedRating Red (rowland)
  */

@@ -48,6 +48,8 @@ import ptolemy.kernel.util.IllegalActionException;
  This implementation maintains the order of the entries as they were added
 
  @author Ben Leinfelder
+@version $Id$
+@since Ptolemy II 7.1
  @version $Id$
  @Pt.ProposedRating yellow (leinfelder)
  @Pt.AcceptedRating red (leinfelder)

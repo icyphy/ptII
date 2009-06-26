@@ -38,6 +38,8 @@ import ptolemy.codegen.rtmaude.actor.Director;
 *
 * @see ptolemy.domains.de.kernel.DEDirector
 * @author Kyungmin Bae
+@version $Id$
+@since Ptolemy II 7.1
 * @version $Id$
 * @Pt.ProposedRating Red (kquine)
 *

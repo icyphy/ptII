@@ -40,7 +40,7 @@ import ptolemy.kernel.util.IllegalActionException;
  *
  * @author Jia Zou
  * @version $Id$
- * @since Ptolemy II 6.0
+ * @since Ptolemy II 7.1
  * @Pt.ProposedRating Red (jiazou)
  * @Pt.AcceptedRating Red (jiazou)
  */

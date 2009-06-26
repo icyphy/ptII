@@ -53,7 +53,7 @@ import ptolemy.kernel.util.NamedObj;
 
  @author  Shanna-Shaye Forbes,Ben Lickly
  @version $Id$
- @since Ptolemy II 8.0
+ @since Ptolemy II 7.1
  @Pt.ProposedRating Red (sssf)
  @Pt.AcceptedRating Red (sssf)
  */

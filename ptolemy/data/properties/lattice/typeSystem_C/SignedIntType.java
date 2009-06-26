@@ -44,7 +44,7 @@ import ptolemy.kernel.util.IllegalActionException;
 
  @author Thomas Mandl
  @version $Id$
- @since Ptolemy II 0.4
+ @since Ptolemy II 7.1
  @Pt.ProposedRating Red (neuendor)
  @Pt.AcceptedRating Red (cxh)
  */

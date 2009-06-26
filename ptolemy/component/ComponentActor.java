@@ -60,7 +60,7 @@ import ptolemy.kernel.util.Workspace;
 
  @author Yang Zhao
  @version $Id$
- @since Ptolemy II 4.0
+ @since Ptolemy II 7.1
  @Pt.ProposedRating yellow (ellen_zh)
  @Pt.AcceptedRating red (cxh)
  */

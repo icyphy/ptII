@@ -54,7 +54,7 @@ import ptolemy.util.StringUtilities;
 *
 * @author Bert Rodiers
 * @version $Id$
-* @since Ptolemy II 7.2
+* @since Ptolemy II 7.1
 * @Pt.ProposedRating Yellow (rodiers)
 * @Pt.AcceptedRating Yellow (rodiers)
 */

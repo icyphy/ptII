@@ -39,6 +39,8 @@ import com.jgoodies.forms.factories.DefaultComponentFactory;
  * This is the component builder for the JGoodies Separator.
  *
  * @author Michael Connor
+@version $Id$
+@since Ptolemy II 7.1
  */
 public class SeparatorComponentBuilder implements ComponentBuilder {
     List<BeanProperty> properties = new ArrayList<BeanProperty>();

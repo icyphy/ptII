@@ -48,6 +48,8 @@ import ptolemy.kernel.util.NamedObj;
  *
  * @see ptolemy.actor.TypedCompositeActor
  * @author Kyungmin Bae
+@version $Id$
+@since Ptolemy II 7.1
  * @version $Id$
  * @Pt.ProposedRating Red (kquine)
  *

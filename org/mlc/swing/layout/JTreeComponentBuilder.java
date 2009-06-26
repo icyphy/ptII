@@ -40,6 +40,8 @@ import javax.swing.JTree;
  * This is the ComponentBuilder used to build JTrees!
  *
  * @author Michael Connor mlconnor&#064;yahoo.com
+@version $Id$
+@since Ptolemy II 7.1
  */
 public class JTreeComponentBuilder implements ComponentBuilder {
     List<BeanProperty> properties = new ArrayList<BeanProperty>();

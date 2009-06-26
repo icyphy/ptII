@@ -241,7 +241,7 @@ public class DebuggerParameter extends TableauParameter
 
      @author Thomas Huining Feng
      @version $Id$
-     @since Ptolemy II 8.0
+     @since Ptolemy II 7.1
      @Pt.ProposedRating Red (tfeng)
      @Pt.AcceptedRating Red (tfeng)
      */

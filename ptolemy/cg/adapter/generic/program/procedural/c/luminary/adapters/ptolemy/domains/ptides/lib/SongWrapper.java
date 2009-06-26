@@ -35,7 +35,7 @@ import ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapter;
  *
  * @author Jia Zou, Isaac Liu, Jeff C. Jensen
  * @version $Id: SongWrapper.java 53829 2009-05-18 17:45:18Z jiazou $
- * @since Ptolemy II 6.0
+ * @since Ptolemy II 7.1
  * @Pt.ProposedRating Green (jiazou)
  * @Pt.AcceptedRating Green (jiazou)
  */

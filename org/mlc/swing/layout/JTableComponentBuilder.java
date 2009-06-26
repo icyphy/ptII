@@ -43,6 +43,8 @@ import javax.swing.table.AbstractTableModel;
  * it might look like.
  *
  * @author Michael Connor
+@version $Id$
+@since Ptolemy II 7.1
  */
 public class JTableComponentBuilder implements ComponentBuilder {
     List<BeanProperty> properties = new ArrayList<BeanProperty>();

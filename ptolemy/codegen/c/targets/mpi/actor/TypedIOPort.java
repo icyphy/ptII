@@ -28,6 +28,18 @@
 package ptolemy.codegen.c.targets.mpi.actor;
 
 
+//////////////////////////////////////////////////////////////////////////
+//// IOPort
+
+/**
+ Message passing interface implementation for IOPort.
+
+ @author Man-kit (Jackie) Leung
+ @version $Id$
+ @since Ptolemy II 7.1
+ @Pt.ProposedRating Red (tfeng)
+ @Pt.AcceptedRating Red (tfeng)
+ */
 public class TypedIOPort extends IOPort {
 
     /** Construct the code generator helper associated

@@ -43,6 +43,15 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 
+/**
+ A parameter that determimes the transformation mode.
+
+ @author Thomas Huining Feng
+ @version $Id$
+ @since Ptolemy II 7.1
+ @Pt.ProposedRating Red (tfeng)
+ @Pt.AcceptedRating Red (tfeng)
+ */
 public class TransformationMode extends ChoiceParameter
 implements MatchCallback {
 

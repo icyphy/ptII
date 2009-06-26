@@ -12,7 +12,7 @@
 # by running diff between the old release and the new release
 
 oldVersion=7.0.1
-newVersion=7.2.devel
+newVersion=8.0.beta
 
 diffOutput=/tmp/fixsince.diffOutput.$$
 diffOutput=/tmp/pt.diffs

@@ -54,6 +54,8 @@ import com.jgoodies.forms.layout.FormLayout;
  * component elsewhere (like xml)
  *
  * @author Michael Connor
+@version $Id$
+@since Ptolemy II 7.1
  */
 public class ContainerLayout implements LayoutManager2 {
     java.util.List<String> rowSpecs = new ArrayList<String>();

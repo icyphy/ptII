@@ -70,6 +70,8 @@ import ptolemy.util.StringUtilities;
 * Generate RTMaude code for expressions
 *
 * @author Kyungmin Bae
+@version $Id$
+@since Ptolemy II 7.1
 * @version $Id$
 * @Pt.ProposedRating Red (kquine)
 *

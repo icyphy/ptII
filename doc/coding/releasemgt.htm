@@ -148,12 +148,12 @@ cat /tmp/j | xargs $PTII/adm/bin/addtrailingnl -n
 # Run addtrailingnl with adding the new lines:
 cat /tmp/j | xargs $PTII/adm/bin/addtrailingnl
 # Run with -n and then without:
-cat /tmp/f | egrep '*.[cjh]$' | xargs $PTII/adm/bin/addtrailingnl -n
+cat /tmp/f | egrep '*\.[cjh]$' | xargs $PTII/adm/bin/addtrailingnl -n
 cat /tmp/f | egrep makefile | xargs $PTII/adm/bin/addtrailingnl -n
 cat /tmp/f | egrep README | xargs $PTII/adm/bin/addtrailingnl -n
-cat /tmp/f | egrep '*.htm' | xargs $PTII/adm/bin/addtrailingnl -n
-cat /tmp/f | egrep '*.tcl' | xargs $PTII/adm/bin/addtrailingnl -n
-cat /tmp/f | egrep '*.xml' | xargs $PTII/adm/bin/addtrailingnl -n
+cat /tmp/f | egrep '*\.htm' | xargs $PTII/adm/bin/addtrailingnl -n
+cat /tmp/f | egrep '*\.tcl' | xargs $PTII/adm/bin/addtrailingnl -n
+cat /tmp/f | egrep '*\.xml' | xargs $PTII/adm/bin/addtrailingnl -n
 </pre>
 
 <li> Convert tabs with
@@ -165,7 +165,7 @@ cat /tmp/j | xargs $PTII/util/testsuite/rmtabs -n
 # Run rmtabs with adding the new lines:
 cat /tmp/j | xargs $PTII/util/testsuite/rmtabs 
 # Run with -n and then without:
-cat /tmp/f | egrep '*.[cjh]$' | xargs $PTII/util/testsuite/rmtabs -n
+cat /tmp/f | egrep '*\.[cjh]$' | xargs $PTII/util/testsuite/rmtabs -n
 </pre>
 
 <li> Remove trailing spaces with:

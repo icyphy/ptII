@@ -37,6 +37,8 @@ import java.util.List;
  * editors. It is simple though and works for now...
  *
  * @author Michael Connor mlconnor&#064;yahoo.com
+@version $Id$
+@since Ptolemy II 7.1
  */
 public class BeanProperty {
     String name;

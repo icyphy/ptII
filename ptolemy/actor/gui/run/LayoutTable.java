@@ -59,10 +59,19 @@ import org.mlc.swing.layout.TransferableWrapper;
 
 import com.jgoodies.forms.layout.CellConstraints;
 
+//////////////////////////////////////////////////////////////////////////
+//// LayoutTable
+
 /**
- * I'm creating a table subclass to make it easier to handle dragging and
- * dropping
- * http://www.hut.fi/~landerso/cccp/src/java/cccp/mappingtool/util/MTTable.java
+ A table subclass to make it easier to handle dragging and
+ dropping.
+ http://www.hut.fi/~landerso/cccp/src/java/cccp/mappingtool/util/MTTable.java
+
+ @author Unknown
+ @version $Id$
+ @since Ptolemy II 7.1
+ @Pt.ProposedRating Red (tfeng)
+ @Pt.AcceptedRating Red (tfeng)
  */
 @SuppressWarnings("serial")
 class LayoutTable extends JTable implements DragSourceListener,

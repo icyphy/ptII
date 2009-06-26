@@ -38,6 +38,8 @@ import ptolemy.kernel.util.IllegalActionException;
 * Generate a list RTMaude term (AU or ACU) for an iterable data structure.
 *
 * @author Kyungmin Bae
+@version $Id$
+@since Ptolemy II 7.1
 * @version $Id$
 * @Pt.ProposedRating Red (kquine)
 *

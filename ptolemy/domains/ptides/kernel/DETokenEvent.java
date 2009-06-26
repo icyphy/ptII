@@ -46,7 +46,7 @@ import ptolemy.kernel.util.NamedObj;
  *
  *  @author Lukito Muliadi, Edward A. Lee, Haiyang Zheng, Contributor: Christopher Brooks
  *  @version $Id$
- *  @since Ptolemy II 0.2
+ *  @since Ptolemy II 7.1
  *  @Pt.ProposedRating Green (hyzheng)
  *  @Pt.AcceptedRating Green (hyzheng)
  */

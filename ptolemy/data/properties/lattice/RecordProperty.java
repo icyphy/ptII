@@ -68,7 +68,7 @@ import ptolemy.kernel.util.InternalErrorException;
  * @author Yuhong Xiong, Elaine Cheong and Steve Neuendorffer; contributor: J.
  * S. Senecal
  * @version $Id: RecordProperty.java 49948 2008-06-24 20:46:43Z eal $
- * @since Ptolemy II 3.0
+ * @since Ptolemy II 7.1
  * @Pt.ProposedRating Red (neuendor)
  * @Pt.AcceptedRating Red (cxh)
  */

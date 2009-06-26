@@ -59,6 +59,8 @@ import com.jgoodies.forms.layout.FormLayout;
  * <code>#paintComponent</code> or <code>#updateUI</code>.
  *
  * @author  Karsten Lentzsch
+@version $Id$
+@since Ptolemy II 7.1
  */
 @SuppressWarnings("serial")
 public class FormDebugPanel extends JPanel {

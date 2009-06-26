@@ -59,7 +59,7 @@ import diva.graph.GraphController;
 
     @author Patricia Derler
     @version $Id$
-    @since Ptolemy II 8.0
+    @since Ptolemy II 7.1
     @Pt.ProposedRating Red (eal)
     @Pt.AcceptedRating Red (eal)
  */

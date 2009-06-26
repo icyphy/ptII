@@ -6,6 +6,8 @@ import ptolemy.kernel.util.IllegalActionException;
 /**
  *
  *  @author Jia Zou, Man-Kit Leung, Isaac Liu
+@version $Id$
+@since Ptolemy II 7.1
  *
  */
 public class Receiver extends CCodeGeneratorHelper {

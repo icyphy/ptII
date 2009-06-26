@@ -35,6 +35,8 @@ package ptolemy.codegen.rtmaude.actor.lib;
  *
  * @see ptolemy.actor.lib.SetVariable
  * @author Kyungmin Bae
+@version $Id$
+@since Ptolemy II 7.1
  * @version $Id$
  * @Pt.ProposedRating Red (kquine)
  *

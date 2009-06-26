@@ -38,7 +38,7 @@ A utility class for creating specialized Array types.
 
 @author Man-Kit Leung
 @version $Id$
-@since Ptolemy II 7.2
+@since Ptolemy II 7.1
 @Pt.ProposedRating Red (mankit)
 @Pt.AcceptedRating Red (mankit)
 */

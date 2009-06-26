@@ -60,6 +60,8 @@ why it is written in Java instead of using MoML.
 
 @author Jeff Tsay
 @version $Id$
+@since Ptolemy II 7.1
+@version $Id$
 @Pt.ProposedRating Red (ctsay)
 @Pt.AcceptedRating Red (ctsay)
 */

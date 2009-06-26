@@ -49,7 +49,7 @@ import ptolemy.kernel.util.IllegalActionException;
 
  @author Shanna-Shaye Forbes, Man-Kit Leung, Ben Lickly
  @version $Id$
- @since Ptolemy II 7.2
+ @since Ptolemy II 7.1
  @Pt.ProposedRating Red (sssf)
  @Pt.AcceptedRating Red (sssf)
  */

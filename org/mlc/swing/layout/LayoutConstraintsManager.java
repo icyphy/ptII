@@ -86,6 +86,8 @@ this.setLayout(layout);
  * software or files.]
  *
  * @author Michael Connor
+@version $Id$
+@since Ptolemy II 7.1
  */
 public class LayoutConstraintsManager {
     String defaultColumnSpecs = "right:max(30dlu;pref),3dlu,80dlu,10dlu,right:max(30dlu;pref),3dlu,80dlu,1dlu:grow";

@@ -34,7 +34,7 @@ import ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapter;
 
  @author Man-Kit Leung, Dai Bui
  @version $Id: DownSample.java 47513 2007-12-07 06:32:21Z cxh $
- @since Ptolemy II 6.1
+ @since Ptolemy II 7.1
  @Pt.ProposedRating Red (mankit)
  @Pt.AcceptedRating Red (mankit)
  */

@@ -44,6 +44,8 @@ import com.jgoodies.forms.factories.ButtonBarFactory;
  * ButtonBar.
  *
  * @author Michael Connor
+@version $Id$
+@since Ptolemy II 7.1
  */
 public class ButtonBarComponentBuilder implements ComponentBuilder {
     private static final String left = "left";

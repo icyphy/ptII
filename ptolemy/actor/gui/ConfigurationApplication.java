@@ -157,7 +157,7 @@ to something safe to in an XML file.
 
  @author Edward A. Lee and Steve Neuendorffer, Contributor: Christopher Hylands
  @version $Id$
- @since Ptolemy II 0.4
+ @since Ptolemy II 7.1
  @Pt.ProposedRating Yellow (eal)
  @Pt.AcceptedRating Red (eal)
  @see Configuration

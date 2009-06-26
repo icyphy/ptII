@@ -38,6 +38,8 @@ import ptolemy.kernel.util.IllegalActionException;
 *
 * @see ptolemy.data.expr.Variable
 * @author Kyungmin Bae
+@version $Id$
+@since Ptolemy II 7.1
 * @version $Id$
 * @Pt.ProposedRating Red (kquine)
 *

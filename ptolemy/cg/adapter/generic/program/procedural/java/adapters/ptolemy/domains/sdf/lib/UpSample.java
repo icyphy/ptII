@@ -39,7 +39,7 @@ import ptolemy.kernel.util.IllegalActionException;
 
  @author Man-Kit Leung, Dai Bui
  @version $Id: UpSample.java 53042 2009-04-10 20:31:21Z cxh $
- @since Ptolemy II 6.1
+ @since Ptolemy II 7.1
  @Pt.ProposedRating Red (mankit)
  @Pt.AcceptedRating Red (mankit)
  */

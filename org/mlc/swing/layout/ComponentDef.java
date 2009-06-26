@@ -60,6 +60,8 @@ import org.w3c.dom.NodeList;
  * Instances of this class make up the component palette and are
  * used when creating and editing component data.
  * @author Michael Connor
+@version $Id$
+@since Ptolemy II 7.1
  */
 public class ComponentDef implements Comparable<Object> {
     private static final long serialVersionUID = 1L;

@@ -41,6 +41,8 @@ import ptolemy.kernel.util.IllegalActionException;
 *
 * @see ptolemy.domains.fsm.kernel.Transition
 * @author Kyungmin Bae
+@version $Id$
+@since Ptolemy II 7.1
 * @version $Id$
 * @Pt.ProposedRating Red (kquine)
 *

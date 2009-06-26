@@ -41,6 +41,8 @@ import javax.swing.JToolBar;
  * This is the ComponentBuilder that is used to build JToolBars.
  *
  * @author Michael Connor mlconnor&#064;yahoo.com
+@version $Id$
+@since Ptolemy II 7.1
  */
 public class JToolBarComponentBuilder implements ComponentBuilder {
     List<BeanProperty> properties = new ArrayList<BeanProperty>();

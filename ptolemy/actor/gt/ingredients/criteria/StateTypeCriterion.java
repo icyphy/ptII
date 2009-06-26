@@ -34,6 +34,17 @@ import ptolemy.domains.modal.kernel.State;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
 
+//////////////////////////////////////////////////////////////////////////
+//// StateTypeCriterion
+
+/**
+
+ @author Thomas Huining Feng
+ @version $Id$
+ @since Ptolemy II 7.1
+ @Pt.ProposedRating Red (tfeng)
+ @Pt.AcceptedRating Red (tfeng)
+ */
 public class StateTypeCriterion extends Criterion {
 
     public StateTypeCriterion(GTIngredientList owner) {

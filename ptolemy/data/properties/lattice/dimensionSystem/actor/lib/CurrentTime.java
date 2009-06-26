@@ -42,7 +42,7 @@ import ptolemy.kernel.util.IllegalActionException;
 
  @author Charles Shelton
  @version $Id$
- @since Ptolemy II 7.2
+ @since Ptolemy II 7.1
  @Pt.ProposedRating Red (mankit)
  @Pt.AcceptedRating Red (mankit)
 */

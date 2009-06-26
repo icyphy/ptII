@@ -36,6 +36,17 @@ import ptolemy.actor.gt.ValidationException;
 import ptolemy.actor.gt.util.RegularExpressionString;
 import ptolemy.kernel.util.NamedObj;
 
+//////////////////////////////////////////////////////////////////////////
+//// NameCriterion
+
+/**
+
+ @author Thomas Huining Feng
+ @version $Id$
+ @since Ptolemy II 7.1
+ @Pt.ProposedRating Red (tfeng)
+ @Pt.AcceptedRating Red (tfeng)
+ */
 public class NameCriterion extends Criterion {
 
     public NameCriterion(GTIngredientList owner) {

@@ -95,6 +95,8 @@ import com.jgoodies.forms.layout.CellConstraints;
  * going on here. Better docs to come...
  *
  * @author Michael Connor mlconnor&#064;yahoo.com
+@version $Id$
+@since Ptolemy II 7.1
  */
 @SuppressWarnings("serial")
 public class FormEditor extends JPanel {

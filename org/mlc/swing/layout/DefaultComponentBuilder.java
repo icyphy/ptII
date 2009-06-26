@@ -49,6 +49,8 @@ import javax.swing.JPanel;
  * that has simplistic behavior.
  *
  * @author Michael Connor mlconnor&#064;yahoo.com
+@version $Id$
+@since Ptolemy II 7.1
  */
 public class DefaultComponentBuilder implements ComponentBuilder {
     Class clazz;
