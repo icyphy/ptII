@@ -8,7 +8,7 @@
 <body>
 <h1>Setting up Ptolemy II and Eclipse</h1>
 <p>
-These instructions assume you are using Eclipse Ganymede SR2 (based on 3.4.1) under 
+These instructions assume you are using Eclipse Galileo under 
 Windows or Mac OS X.
 Other ways of setting up and building Ptolemy II are described on the
 <a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/ptII/doc/install.htm">
@@ -36,8 +36,8 @@ Other local pages:
 <li>
 Download the latest version of Eclipse from
 <a href="http://www.eclipse.org" target="_top">http://www.eclipse.org</a>.
- <br>In April, 2009, we chose
- <B>Eclipse for RCP/Plug-in Developers</B>, which is 175Mb.
+ <br>In July, 2009, we chose
+ <B>Eclipse for RCP/Plug-in Developers</B>, which is 187Mb.
 The <B>Eclipse for RCP/Plug-in Developers</B> version includes the
 plug-in development environment (PDE), which is needed by the backtrack
 facility, which is an optional part of Ptolemy II that allows models to
@@ -83,7 +83,7 @@ so a few changes are necessary.
   
 <li>(<i>Windows</i>): 
   There is usually no need to set the memory size for Eclipse.  By default, it is set to 512 megabytes in the
-  <code>eclipse.ini<code> file.
+  <code>eclipse.ini</code> file.
 
 <p>In Windows,  create a shortcut to <code>eclipse.exe</code> by going to the 
 directory where Eclipse is installed, right clicking on eclipse.exe 
@@ -143,19 +143,36 @@ to format comments.  We hope to change this policy in the future.
   <li> In the "New Profile" window, enter "Ptolemy II" into
        the "Profile Name" entry.
 
-  <li> Under "Initialize settings with the following profile",
-       select "Java Conventions [built-in]"
-       (We use Java Conventions over the "Eclipse"
-       setting because the Eclipse style uses tabs.)
-  
-  <li> Click on "OK" to close the "New Profile" window
+  <li> If you are running Eclipse Ganymede, then
+  under "Initialize settings with the following profile",
+      select "Java Conventions [built-in]"
+      (We use Java Conventions over the "Eclipse"
+      setting because the Eclipse style uses tabs.)
+ <li> Click on "OK" to close the "New Profile" window
    
   <li> A "Profile 'Ptolemy II'" window will appear.
-       Under the "Indentation" tab, change the Tab policy to "Spaces only". 
+  <li> Under the "Code Organizing" tab,
+       select "Format Source code" and "Organize Imports"
+  <li> Under the "Code Style" tab,
+       select "Use blocks in if/while/for/do statements"
+       and keep the default to "Always"
+
+  <li> Click OK to close the Profile window and get back to the Preferences
+       window.
+  <li> Go to <code>Java</code> | <code>Formatter</code> and click
+       New
+  <li> In the "New Profile" Window, for the Profile name, enter "Ptolemy II"
+      Under "Initialize settings with the following profile",
+      select "Java Conventions [built-in]"
+      (We use Java Conventions over the "Eclipse"
+      setting because the Eclipse style uses tabs.)
+      Then hit OK
+   
+  <li> Under the "Indentation" tab, change the Tab policy to "Spaces only". 
   <li> Under the "New Lines" tab, select "at end of file"
   <li> Under the "Comments" tab,
        <br><b>unselect</b> "Enable Javadoc comment formatting" 
-       <br><b>unselect</b> "Disable block comment formatting", otherwise the block comments that have &lt;pre&gt; ... &lt;pre&gt; get changed.
+       <br><b>unselect</b> "Enable block comment formatting", otherwise the block comments that have &lt;pre&gt; ... &lt;pre&gt; get changed.
        <br><b>unselect</b> "Enable line comment formatting", otherwise the headers for public methods etc. get changed.
  <li> Click OK.
   <li> In the Preferences Window, click Apply.
@@ -210,12 +227,13 @@ if you are tightly managing serialization, we turn it off:
 requires <code>tools.jar</code>, which is only in the Java Development
 Kit (JDK), not the Java Runtime Environment (JRE).  So, be sure that a
 JDK is selected for building, not a JRE.
-<br>(<i>Mac OS X</i>):  select <code>JVM 1.5.0 (Mac OS X Default)</code>.
 <br>While still in the preferences window 
 <br> (<i>Windows</i>: <code>Window</code> | <code>Preferences</code>)
 <br> (<i>Mac OS X</i>: <code>Eclipse</code> | <code>Preferences</code>)
 <ol>
 <li> Select <code>Java</code> | <code>Installed JREs</code>
+<br>(<i>Mac OS X</i>):  select <code>JVM 1.5.0 (Mac OS X Default)</code>.
+
 <li> Verify that the checked line corresponds with a JDK, not
 a JRE.
 </ol>
@@ -337,30 +355,30 @@ Follow the <a href="http://www.eclipse.org/subversive/downloads.php" target="_to
 <ol>
 <li> To download Subversive, in Eclipse, follow these menus
 <br><i>Mac OS X</i>:
- <code>Help<code> | <code>Software Updates<code> | <code>Available
- Software</code> 
+<br>The first time software is to be added the menu will be:
+ <code>Help<code> | <code>Install New Software<code> 
+<br>After a package is added, the menu will be:
+ <code>Help<code> | <code>Software Updates<code> | <code>Available Software</code>.  
 <br><i>Windows</i>:
  <code>Help<code> | <code>Software Updates<code> | <code>Available Software</code>.  
-<li>Click on "Add Site" and enter
-<pre>
-http://download.eclipse.org/technology/subversive/0.7/update-site/
-</pre>
-Find
-<pre> 
-Subversive SVN Team Provider (Incubation)
-</pre>
-and click on the box next to it.
-  
-<li>Then click <code>Install</code> and click through the license agreement.  
+<li>In the "Work with" field, select "Galileo - http://download.eclipse.org/releases/galileo" from the drop down.
+<br>Expand the "Collaboration" tab and check the box next to
+  "Subversive SVN Team Provider (Incubation)"
+ 
+<li>Then click <code>Next</code>, <code>Next</code> again and click through the license agreement.  
 <li>When you are prompted to restart, click <code>No</code>, we will restart later
 
-<li>It is <b>required</b> that a second package, the <code>Subversive SVN Connectors plug-in</code> be installed.  To do this, go back to the "Software Updates and Add-ons" window and select <code>Available Software</code> | <code>Add Site</code> and enter
+<li>It is <b>required</b> that a second package, the <code>Subversive SVN Connectors plug-in</code> be installed.  To do this, go back to
+ <code>Help<code> | <code>Software Updates<code> | <code>Available Software</cod>
+  <code>Help</code> | <code>Install New Software</code>, Click on
+  "Add" and then in the "Add Site" window, enter the Name "Polarion" and the location
 <pre>
 http://www.polarion.org/projects/subversive/download/eclipse/2.0/ganymede-site/
 </pre>
-<li>
+Hit OK
+<li>In the Available Software window,
 <i>Mac OS X</i>: There is no need to install JavaHL, in fact JavaHL will likely cause problems
-<br>Select this package:
+<br>Under Subversive SVN Connectors, select these packages:
 <pre>
 Subversive SVN Connectors
 SVNKit 1.2.0 Implementation (Optional)
@@ -377,7 +395,7 @@ Native JavaHL 1.4 Implementation (Optional)
 Subversive SVN Connectors
 </pre>
 
-<li>Click on <code>Install</code> and click through the rest of the installation.
+<li>Click on <code>Next</code> and click through the rest of the installation.
 <li>When prompted to restart Eclipse, do so.
 </ol>
 
