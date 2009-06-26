@@ -358,10 +358,14 @@ public class PtidesBasicDirector extends Director {
         for (Actor actor : (List<Actor>) ((CompositeActor) _director
                 .getContainer()).deepEntityList()) {
             // FIXME: should I be using Interrupt/ActuationDevice or just Input/OutputDevice?
-            if (actor instanceof ActuationDevice) {
-                _actuators.put(actor, new Integer(actuatorIndex));
-                actuatorIndex++;
+            if (1==1) {
+                throw new RuntimeException("This code broke the build");
             }
+//             if (actor instanceof ActuationDevice) {
+//                 _actuators.put(actor, new Integer(actuatorIndex));
+//                 actuatorIndex++;
+//             }
+
             if (actor instanceof InterruptDevice) {
                 _sensors.put(actor, new Integer(sensorIndex));
                 sensorIndex++;
@@ -388,17 +392,20 @@ public class PtidesBasicDirector extends Director {
             ProgramCodeGeneratorAdapter adapter = (ProgramCodeGeneratorAdapter) getCodeGenerator()
                     .getAdapter(actor);
 
-            if (actor instanceof ActuationDevice) {
-                code
-                        .append("void Actuation_"
-                                + ProgramCodeGeneratorAdapterStrategy
-                                        .generateName((NamedObj) actor)
-                                + "() {" + _eol);
-                code
-                        .append(((ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.ptides.lib.OutputDevice) adapter)
-                                .generateActuatorActuationFuncCode());
-                code.append("}" + _eol);
+            if (1==1) {
+                throw new RuntimeException("This code broke the build");
             }
+//             if (actor instanceof ActuationDevice) {
+//                 code
+//                         .append("void Actuation_"
+//                                 + ProgramCodeGeneratorAdapterStrategy
+//                                         .generateName((NamedObj) actor)
+//                                 + "() {" + _eol);
+//                 code
+//                         .append(((ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.ptides.lib.OutputDevice) adapter)
+//                                 .generateActuatorActuationFuncCode());
+//                 code.append("}" + _eol);
+//             }
 
             if (actor instanceof InterruptDevice) {
                 code
