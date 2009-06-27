@@ -1,4 +1,4 @@
-/*
+/* An entity to be used to match a modal model or Ptera modal model.
 
  Copyright (c) 1997-2009 The Regents of the University of California.
  All rights reserved.
@@ -34,6 +34,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.vergil.gt.GTTableau;
 
 /**
+ An entity to be used to match a modal model or Ptera modal model.
 
  @author Thomas Huining Feng
  @version $Id$
@@ -43,11 +44,15 @@ import ptolemy.vergil.gt.GTTableau;
  */
 public class ModalModelMatcher extends CompositeActorMatcher {
 
-    /**
-     * @param container
-     * @param name
-     * @exception IllegalActionException
-     * @exception NameDuplicationException
+    /** Construct a modal model matcher to be either contained in the pattern
+     *  of a {@link TransformationRule} or in the replacement.
+     *
+     *  @param container The proposed container of this matcher.
+     *  @param name The name of this matcher.
+     *  @exception IllegalActionException If this actor cannot be contained by
+     *   the proposed container.
+     *  @exception NameDuplicationException If the name coincides with an entity
+     *   already in the container.
      */
     public ModalModelMatcher(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
@@ -57,6 +62,10 @@ public class ModalModelMatcher extends CompositeActorMatcher {
         new GTTableau.ModalTableauFactory(this, "_tableauFactory");
     }
 
+    /** Get the FSM controller within this modal model matcher.
+     *
+     *  @return The FSM controller (which is a matcher to match an FSM).
+     */
     public FSMMatcher getController() {
         return (FSMMatcher) getEntity("_Controller");
     }

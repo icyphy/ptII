@@ -1,4 +1,4 @@
-/*
+/* An actor to combine the input model tokens into one.
 
 @Copyright (c) 2008-2009 The Regents of the University of California.
 All rights reserved.
@@ -42,6 +42,7 @@ import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.util.StringUtilities;
 
 /**
+ An actor to combine the input model tokens into one.
 
  @author Thomas Huining Feng
  @version $Id$
@@ -51,11 +52,13 @@ import ptolemy.util.StringUtilities;
  */
 public class ModelCombine extends Transformer {
 
-    /**
-     * @param container
-     * @param name
-     * @exception IllegalActionException
-     * @exception NameDuplicationException
+    /** Construct an actor with the given container and name.
+     *  @param container The container.
+     *  @param name The name of this actor.
+     *  @exception IllegalActionException If the actor cannot be contained
+     *   by the proposed container.
+     *  @exception NameDuplicationException If the container already has an
+     *   actor with this name.
      */
     public ModelCombine(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
@@ -67,6 +70,12 @@ public class ModelCombine extends Transformer {
         output.setTypeEquals(ActorToken.TYPE);
     }
 
+    /** Read all available input tokens as models, and combine those models into
+     *  a larger model. Send the result model to the output.
+     *
+     *  @exception IllegalActionException If the input tokens cannot be read, or
+     *   the models cannot be combined.
+     */
     public void fire() throws IllegalActionException {
         Entity entity = ((ActorToken) input.get(0)).getEntity(new Workspace());
         for (int i = 1; i < input.getWidth(); i++) {
@@ -76,6 +85,12 @@ public class ModelCombine extends Transformer {
         output.send(0, new ActorToken(entity));
     }
 
+    /** Return true if there is any input token available.
+     *
+     *  @return true if there is any input token available.
+     *  @exception IllegalActionException If availability of the tokens cannot
+     *   be tested.
+     */
     public boolean prefire() throws IllegalActionException {
         boolean result = super.prefire();
         if (result) {
@@ -94,6 +109,12 @@ public class ModelCombine extends Transformer {
         return result;
     }
 
+    /** Merge the two entities with the first one being the primary and modify
+     *  the first entity to be the result.
+     *
+     *  @param entity1 The first entity.
+     *  @param entity2 The second entity.
+     */
     protected void _merge(Entity entity1, Entity entity2) {
         StringBuffer moml = new StringBuffer(entity2.exportMoMLPlain().trim());
         int eol = moml.indexOf("\n");

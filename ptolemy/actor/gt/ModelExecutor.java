@@ -1,4 +1,4 @@
-/*
+/* An actor to execute the input model.
 
 @Copyright (c) 2008-2009 The Regents of the University of California.
 All rights reserved.
@@ -65,6 +65,7 @@ import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.Workspace;
 
 /**
+ An actor to execute the input model.
 
  @author Thomas Huining Feng
  @version $Id$
@@ -74,11 +75,17 @@ import ptolemy.kernel.util.Workspace;
  */
 public class ModelExecutor extends TypedAtomicActor {
 
-    /**
-     * @param container
-     * @param name
-     * @exception NameDuplicationException
-     * @exception IllegalActionException
+    /** Create a new actor in the specified container with the specified
+     *  name.  The name must be unique within the container or an exception
+     *  is thrown. The container argument must not be null, or a
+     *  NullPointerException will be thrown.
+     *
+     *  @param container The container.
+     *  @param name The name of this actor within the container.
+     *  @exception IllegalActionException If this actor cannot be contained
+     *   by the proposed container (see the setContainer() method).
+     *  @exception NameDuplicationException If the name coincides with
+     *   an entity already in the container.
      */
     public ModelExecutor(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
@@ -90,6 +97,11 @@ public class ModelExecutor extends TypedAtomicActor {
         cardinal.setExpression("SOUTH");
     }
 
+    /** Read the input token as a model, and execute it to completion.
+     *
+     *  @exception IllegalActionException If the input token cannot be read, or
+     *   execution of the model throws an exception.
+     */
     public void fire() throws IllegalActionException {
         Workspace workspace = new Workspace();
         Entity actor = ((ActorToken) actorInput.get(0)).getEntity(workspace);
@@ -113,6 +125,11 @@ public class ModelExecutor extends TypedAtomicActor {
         }
     }
 
+    /** Initialize this actor and create an effigy for executing models.
+     *
+     *  @exception IllegalActionException If thrown when creating the effigy or
+     *   thrown by the superclass.
+     */
     public void initialize() throws IllegalActionException {
         super.initialize();
 
@@ -129,10 +146,21 @@ public class ModelExecutor extends TypedAtomicActor {
         }
     }
 
+    /** Return true if there is any input token available.
+     *
+     *  @return true if there is any input token available.
+     *  @exception IllegalActionException If availability of input tokens cannot
+     *   be tested.
+     */
     public boolean prefire() throws IllegalActionException {
         return super.prefire() && actorInput.hasToken(0);
     }
 
+    /** Wrap up this actor and delete the effigy for executing models.
+     *
+     *  @exception IllegalActionException If the superclass throws it, or if the
+     *   effigy cannot be deleted.
+     */
     public void wrapup() throws IllegalActionException {
         super.wrapup();
 
@@ -144,12 +172,34 @@ public class ModelExecutor extends TypedAtomicActor {
         _wrapperEffigy = null;
     }
 
+    /** The actorInput port.
+     */
     public TypedIOPort actorInput;
 
+    /** The effigy to execute models at run time.
+     */
     private PtolemyEffigy _wrapperEffigy;
 
+    //////////////////////////////////////////////////////////////////////////
+    //// Wrapper
+
+    /**
+     A wrapper composite actor in which input models are executed.
+
+     @author Thomas Huining Feng
+     @version $Id$
+     @since Ptolemy II 8.0
+     @Pt.ProposedRating Red (tfeng)
+     @Pt.AcceptedRating Red (tfeng)
+     */
     private class Wrapper extends TypedCompositeActor {
 
+        /** At the end of adding an entity (a model to be executed) in this
+         *  wrapper, create and link the ports of this wrapper to those of the
+         *  added entity.
+         *
+         *  @param entity The entity.
+         */
         protected void _finishedAddEntity(ComponentEntity entity) {
             try {
                 _workspace.getWriteAccess();
@@ -212,15 +262,57 @@ public class ModelExecutor extends TypedAtomicActor {
             }
         }
 
+        /** Construct a wrapper composite actor in the specified workspace with
+         *  no container and an empty string as a name. You can then change
+         *  the name with setName(). If the workspace argument is null, then
+         *  use the default workspace.  You should set the local director or
+         *  executive director before attempting to send data to the actor
+         *  or to execute it. Add the actor to the workspace directory.
+         *  Increment the version number of the workspace.
+         *
+         *  @param workspace The workspace that will list the actor.
+         *  @exception IllegalActionException If the name has a period in it, or
+         *   the director is not compatible with the specified container, or if
+         *   the time resolution parameter is malformed.
+         *  @exception NameDuplicationException If the container already contains
+         *   an entity with the specified name.
+         */
         Wrapper(Workspace workspace) throws IllegalActionException,
                 NameDuplicationException {
             super(workspace);
             new WrapperDirector(this, "_director");
         }
 
+        //////////////////////////////////////////////////////////////////////////
+        //// WrapperDirector
+
+        /**
+         The director to be used in the wrapper that handles requests from the
+         directors of the models to be executed.
+
+         @author Thomas Huining Feng
+         @version $Id$
+         @since Ptolemy II 8.0
+         @Pt.ProposedRating Red (tfeng)
+         @Pt.AcceptedRating Red (tfeng)
+         */
         private class WrapperDirector extends Director {
 
-            @SuppressWarnings("unchecked")
+            /** Construct a director in the given container with the given name.
+             *  The container argument must not be null, or a
+             *  NullPointerException will be thrown.
+             *  If the name argument is null, then the name is set to the
+             *  empty string. Increment the version number of the workspace.
+             *  Create the timeResolution parameter.
+             *
+             *  @param container The container.
+             *  @param name The name of this director.
+             *  @exception IllegalActionException If the name has a period in it, or
+             *   the director is not compatible with the specified container, or if
+             *   the time resolution parameter is malformed.
+             *  @exception NameDuplicationException If the container already contains
+             *   an entity with the specified name.
+             */
             public WrapperDirector(CompositeEntity container, String name)
                     throws IllegalActionException, NameDuplicationException {
                 super(container, name);
@@ -229,7 +321,14 @@ public class ModelExecutor extends TypedAtomicActor {
                         new TimedEvent.TimeComparator());
             }
 
-            @SuppressWarnings("unchecked")
+            /** Clone the object into the specified workspace. The new object is
+             *  <i>not</i> added to the directory of that workspace (you must do this
+             *  yourself if you want it there).
+             *  The result is an attribute with no container.
+             *  @param workspace The workspace for the cloned object.
+             *  @exception CloneNotSupportedException Not thrown in this base class
+             *  @return The new Attribute.
+             */
             public Object clone(Workspace workspace)
                     throws CloneNotSupportedException {
                 WrapperDirector director = (WrapperDirector) super
@@ -239,6 +338,13 @@ public class ModelExecutor extends TypedAtomicActor {
                 return director;
             }
 
+            /** Fire the contained actor if there is any token available or if
+             *  there is an request in the event queue. Transfer the outputs of
+             *  the actor to the output ports of this wrapper.
+             *
+             *  @exception IllegalActionException If thrown when the actor is
+             *   fired.
+             */
             public void fire() throws IllegalActionException {
                 if (!_hasToken() && !_eventQueue.isEmpty()) {
                     TimedEvent timedEvent = _eventQueue.poll();
@@ -286,6 +392,14 @@ public class ModelExecutor extends TypedAtomicActor {
                 }
             }
 
+            /** Handle a fireAt request from the contained actor by recording it
+             *  in the event queue.
+             *
+             *  @param actor The actor that requests to be fired.
+             *  @param time The time to fire the actor.
+             *  @return The time at which the actor will be fired.
+             *  @exception IllegalActionException Not thrown in this class.
+             */
             public Time fireAt(Actor actor, Time time)
                     throws IllegalActionException {
                 _eventQueue.add(new TimedEvent(time, actor));
