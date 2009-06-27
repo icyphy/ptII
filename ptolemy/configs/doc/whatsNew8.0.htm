@@ -607,7 +607,7 @@ the model execution, and to execute actors in the background.
 </ul>
 (Edward A. Lee)
 
-<h3>Lazy Opening of Composites
+<h3>Lazy Opening of Composites</h3>
 
 LazyTypedCompositeActor is a replacement for TypedCompositeActor that does lazy evaluation, which means that he contents of a LazyTypedCompositeActor are not evaluated at runtime, instead they are evaluated at start up time.  LazyTypedCompositeActor was developed to improve the opening time of very large models. One issue is that this changes the results slightly because different results will occur if the results depend on the order in which actors are created. Unforuntately, the scheme we have for setting seeds in the random number generator "deterministically" has this property.
 
