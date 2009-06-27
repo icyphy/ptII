@@ -47,6 +47,7 @@ set of demos that highlight the key features of Ptolemy II.
 
 <!--vergilDocs-->
 
+<li> <a href="#continuous">Continuous (Continuous Time)</a>
 <li> <a href="#ct">CT (Continuous Time)</a>
 <!--vergilDocs-->
 <li> <a href="#ddf">DDF (Dynamic Dataflow)</a>
@@ -64,8 +65,6 @@ set of demos that highlight the key features of Ptolemy II.
 <li> <a href="#pn">PN (Process Networks)</a>
 <!--vergilDocs-->
 
-<li> <a href="#ptera">Ptera (Ptolemy Event Relationship Actor)</a>
-
 <!--ptinyKeplerDocs-->
 
 <li> <a href="#sdf">SDF (Synchronous Dataflow)</a>
@@ -76,8 +75,24 @@ set of demos that highlight the key features of Ptolemy II.
 </ul>
 <!--vergilDocs-->
 <!--ptinyKeplerDocs-->
+
+<h3><a name="continuous">Continuous</a></h3>
+A work-in-progress implementation of Continuous Time semantics, for use with the <a href="#modal">modal</a> domain.
+<ul>
+<li><a href="../../domains/continuous/demo/CarTracking/CarTracking.xml">Car Tracking</a> (New in Ptolemy II 8.0)
+<li><a href="../../domains/continuous/demo/ContinuousInsideDE/ContinuousInsideDE.xml">Continuous Inside DE</a>
+<li><a href="../../domains/continuous/demo/LevelCrossingDetector/LevelCrossingDetector.xml">Level Crossing Detector</a>
+<li><a href="../../domains/continuous/demo/LevelCrossingDetector/LevelCrossingDetectorDetectingDirections.xml">Level Crossing Detector Detecting Directions</a>
+<a href="../../domains/continuous/demo/LevelCrossingDetectorDetectsGlitches/LevelCrossingDetectorDetectsGlitches.xml">LevelCrossingDetectorDetectsGlitches</a> (New in Ptolemy II 8.0)
+<li><a href="../../domains/continuous/demo/Lorenz/Lorenz.xml">Lorenz</a>
+<li><a href="../../domains/continuous/demo/NewtonsCradle/NewtonsCradle.xml">Newtons Cradle</a>
+<li><a href="../../domains/continuous/demo/NewtonsCradle/NewtonsCradleAnimated.xml">Newtons Cradle Animated</a>
+<li><a href="../../domains/continuous/demo/Sinusoid/Sinusoid.xml">Sinusoid</a>
+<li><a href="../../domains/continuous/demo/Switch/Switch.xml">Switch</a>
+</ul>
+
 <h3><a name="ct">Continuous Time (CT)</a></h3>
-An earlier implementation of Continuous Time semantics, for use with the <a href="#fsm">Finite State Machine</a>.
+An earlier implementation of Continuous Time semantics, for use with the <a href="#fsm">Finite State Machine</a> domain.
 <ul>
 <!-- Please keep the demos alphabetical -->
 <!-- Agilent -->
@@ -145,6 +160,7 @@ An earlier implementation of Continuous Time semantics, for use with the <a href
 <!--vergilDocs-->
 
 <h3><a name="fsm">Finite State Machine (FSM)</a></h3>
+An earlier implementation of Finite State Machine semantics, for use with the <a href="#ct">CT</a> domain.
 <ul>
 <li> <a href="../../domains/fsm/demo/ABP/ABP.xml">Alternating&nbsp;Bit</a>
 <li> <a href="../../domains/fsm/demo/ChainedTransitions/ChainedTransitions.xml">Chained Transitions</a>
@@ -161,6 +177,18 @@ FSM MultipleRuns has problems with dangling threads, so we comment it out.
 <!--vergilDocs-->
 <!-- Kepler does not include hdf-->
 <!--ptinyKeplerDocs-->
+<h3><a name="modal">Modal</a></h3>
+A work-in-progress implementation of Modal semantics, for use with the <a href="#continuous">continuous</a> domain.
+<ul>
+<li><a href="../../domains/modal/demo/ABP/ABP.xml">ABP</a> (New in Ptolemy II 8.0)
+<li><a href="../../domains/modal/demo/Blending/Blending.xml">Blending</a> (New in Ptolemy II 8.0)
+<li><a href="../../domains/modal/demo/Case/Case.xml">Case</a> (New in Ptolemy II 8.0)
+<li><a href="../../domains/modal/demo/ChainedTransitions/ChainedTransitions.xml">Chained Transitions</a> (New in Ptolemy II 8.0)
+<li><a href="../../domains/modal/demo/ModalBSC/ModalBSC.xml">ModalBSC</a> (New in Ptolemy II 8.0)
+<li><a href="../../domains/modal/demo/MultipleRuns/MultipleRuns.xml">MultipleRuns</a> (New in Ptolemy II 8.0)
+<li><a href="../../domains/modal/demo/StateTracker/StateTracker.xml">StateTracker</a> (New in Ptolemy II 8.0)
+<!-- SystemLevelType demos are below -->
+</ul>
 <!--vergilDocs-->
 
 <h3><a name="pn">Process Networks (PN)</a>
