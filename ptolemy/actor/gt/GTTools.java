@@ -346,6 +346,14 @@ public class GTTools {
         return collection;
     }
 
+    /** Get the unique string description containing the type and name of the\
+     *  object within the given container.
+     *
+     *  @param object The object.
+     *  @param topContainer The container used as the top level.
+     *  @return The description.
+     *  @see #getObjectFromCode(String, NamedObj)
+     */
     public static String getCodeFromObject(NamedObj object,
             NamedObj topContainer) {
         String replacementAbbrev = getObjectTypeAbbreviation(object);
@@ -354,9 +362,16 @@ public class GTTools {
         return replacementAbbrev + name;
     }
 
+    /** Get the pattern or replacement of a transformation rule that contains
+     *  the given object.
+     *
+     *  @param object The object.
+     *  @return The pattern (of type {@link Pattern}) or replacement (of type
+     *   {@link Replacement}.
+     */
     public static CompositeActorMatcher getContainingPatternOrReplacement(
-            NamedObj entity) {
-        Nameable parent = entity;
+            NamedObj object) {
+        Nameable parent = object;
         while (parent != null && !(parent instanceof Pattern)
                 && !(parent instanceof Replacement)) {
             parent = parent.getContainer();
@@ -364,6 +379,12 @@ public class GTTools {
         return (CompositeActorMatcher) parent;
     }
 
+    /** Given an object in the replacement, return the corresponding object in
+     *  the pattern if any, or null otherwise.
+     *
+     *  @param replacementObject The object in the replacement.
+     *  @return The object in the pattern, or null if not found.
+     */
     public static NamedObj getCorrespondingPatternObject(
             NamedObj replacementObject) {
         if (replacementObject instanceof Replacement) {
@@ -405,6 +426,12 @@ public class GTTools {
         }
     }
 
+    /** Return the change request to delete the given object.
+     *
+     *  @param originator The originator of the change request.
+     *  @param object The object to be deleted.
+     *  @return The change request.
+     */
     public static MoMLChangeRequest getDeletionChangeRequest(Object originator,
             NamedObj object) {
         String moml;
@@ -422,7 +449,16 @@ public class GTTools {
         return new MoMLChangeRequest(originator, object.getContainer(), moml);
     }
 
-    public static NamedObj getObjectFromCode(String code, NamedObj topContainer) {
+    /** Get the object within the given container whose type and name
+     *  correspond to the code.
+     *
+     *  @param code The code.
+     *  @param topContainer The container used as the top level.
+     *  @return The object, or null if not found.
+     *  @see #getCodeFromObject(NamedObj, NamedObj)
+     */
+    public static NamedObj getObjectFromCode(String code,
+            NamedObj topContainer) {
         String abbreviation = code.substring(0, 2);
         String name = code.substring(2);
         if (abbreviation.equals("A:")) {
@@ -440,6 +476,11 @@ public class GTTools {
         }
     }
 
+    /** Get the abbreviation of the object's type.
+     *
+     *  @param object The object.
+     *  @return The abbreviation.
+     */
     public static String getObjectTypeAbbreviation(NamedObj object) {
         if (object instanceof Attribute) {
             return "A:";
@@ -454,43 +495,96 @@ public class GTTools {
         }
     }
 
+    /** Get the {@link PatternObjectAttribute} associated with the object, and
+     *  if it is not found, either return null if createNew is false, or create
+     *  a new one and return it.
+     *
+     *  @param object The object.
+     *  @param createNew Whether a new attribute should be created if it is not
+     *   found.
+     *  @return The attribute.
+     *  @exception IllegalActionException If the attribute is not of an
+     *   acceptable class for the container, or if the name contains a period.
+     *  @exception NameDuplicationException If the name coincides with
+     *   an attribute already in the container.
+     */
     public static PatternObjectAttribute getPatternObjectAttribute(
             NamedObj object, boolean createNew) throws IllegalActionException,
             NameDuplicationException {
         Attribute attribute = object.getAttribute("patternObject");
         if (createNew
-                && (attribute == null || !(attribute instanceof PatternObjectAttribute))) {
+                && (attribute == null ||
+                        !(attribute instanceof PatternObjectAttribute))) {
             attribute = new PatternObjectAttribute(object, "patternObject");
         }
         return (PatternObjectAttribute) attribute;
     }
 
+    /** Return whether the object in the pattern is to be created.
+     *
+     *  @param object The object in the pattern.
+     *  @return true if it is to be created; false otherwise.
+     */
     public static boolean isCreated(Object object) {
         return findMatchingAttribute(object, CreationAttribute.class, true) != null;
     }
 
+    /** Return whether the object in the pattern is to be ignored.
+     *
+     *  @param object The object in the pattern.
+     *  @return true if it is to be ignored; false otherwise.
+     */
     public static boolean isIgnored(Object object) {
         return findMatchingAttribute(object, IgnoringAttribute.class, true) != null;
     }
 
-    public static boolean isInPattern(NamedObj entity) {
-        CompositeActorMatcher container = getContainingPatternOrReplacement(entity);
+    /** Return whether the object is in a pattern.
+     *
+     *  @param object The object.
+     *  @return true if the object is in a pattern; false otherwise.
+     *  @see #isInReplacement(NamedObj)
+     */
+    public static boolean isInPattern(NamedObj object) {
+        CompositeActorMatcher container =
+            getContainingPatternOrReplacement(object);
         return container != null && container instanceof Pattern;
     }
 
-    public static boolean isInReplacement(NamedObj entity) {
-        CompositeActorMatcher container = getContainingPatternOrReplacement(entity);
+    /** Return whether the object is in a replacement.
+     *
+     *  @param object The object.
+     *  @return true if the object is in a replacement; false otherwise.
+     *  @see #isInPattern(NamedObj)
+     */
+    public static boolean isInReplacement(NamedObj object) {
+        CompositeActorMatcher container =
+            getContainingPatternOrReplacement(object);
         return container != null && container instanceof Replacement;
     }
 
+    /** Return whether the object in the pattern is to be negated.
+     *
+     *  @param object The object in the pattern.
+     *  @return true if it is to be negated; false otherwise.
+     */
     public static boolean isNegated(Object object) {
         return findMatchingAttribute(object, NegationAttribute.class, true) != null;
     }
 
+    /** Return whether the object in the pattern is to be optional.
+     *
+     *  @param object The object in the pattern.
+     *  @return true if it is to be optional; false otherwise.
+     */
     public static boolean isOptional(Object object) {
         return findMatchingAttribute(object, OptionAttribute.class, false) != null;
     }
 
+    /** Return whether the object in the pattern is to be preserved.
+     *
+     *  @param object The object in the pattern.
+     *  @return true if it is to be preserved; false otherwise.
+     */
     public static boolean isPreserved(Object object) {
         return findMatchingAttribute(object, PreservationAttribute.class, true) != null;
     }

@@ -133,6 +133,7 @@ public abstract class GTIngredient {
      *
      *  @param index The index.
      *  @param value The value.
+     *  @see #getValue(int)
      */
     public abstract void setValue(int index, Object value);
 

@@ -125,6 +125,7 @@ public class GraphTransformer extends ChangeRequest {
     /** Add a TransformationListener to listen to the transformation.
      *
      *  @param listener The TransformationListener.
+     *  @see #removeTransformationListener(TransformationListener)
      */
     public void addTransformationListener(TransformationListener listener) {
         _listeners.add(listener);
@@ -158,6 +159,7 @@ public class GraphTransformer extends ChangeRequest {
      *  TransformationListener is not added yet.
      *
      *  @param listener The TransformationListener.
+     *  @see #addTransformationListener(TransformationListener)
      */
     public void removeTransformationListener(TransformationListener listener) {
         _listeners.remove(listener);

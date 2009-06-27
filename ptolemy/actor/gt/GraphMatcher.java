@@ -352,11 +352,13 @@ public class GraphMatcher extends GraphAnalyzer {
             NamedObj container = entity.getContainer();
             Token hierarchyFlatteningToken = _getAttribute(container,
                     HierarchyFlatteningAttribute.class, true, false, true);
-            boolean hierarchyFlattening = hierarchyFlatteningToken == null ? HierarchyFlatteningAttribute.DEFAULT
+            boolean hierarchyFlattening = hierarchyFlatteningToken == null
+                    ? HierarchyFlatteningAttribute.DEFAULT
                     : ((BooleanToken) hierarchyFlatteningToken).booleanValue();
             Token containerIgnoringToken = _getAttribute(container,
                     ContainerIgnoringAttribute.class, false, true, false);
-            boolean containerIgnoring = containerIgnoringToken == null ? ContainerIgnoringAttribute.DEFAULT
+            boolean containerIgnoring = containerIgnoringToken == null
+                    ? ContainerIgnoringAttribute.DEFAULT
                     : ((BooleanToken) containerIgnoringToken).booleanValue();
             return !hierarchyFlattening && !containerIgnoring;
         }
