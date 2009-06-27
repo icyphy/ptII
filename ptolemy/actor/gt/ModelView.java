@@ -1,5 +1,4 @@
-/* This actor opens a window to display the specified model and applies its
-inputs to the model.
+/* An actor to open a window to display the input models.
 
 @Copyright (c) 2007-2009 The Regents of the University of California.
 All rights reserved.
@@ -69,7 +68,7 @@ import ptolemy.vergil.gt.GTFrameTools;
 //// ModelView
 
 /**
- This actor opens a window to display the specified model.
+ An actor to open a window to display the input models.
  If inputs are provided, they are expected to be MoML strings
  that are to be applied to the model. This can be used, for
  example, to create animations.
@@ -258,6 +257,11 @@ public class ModelView extends TypedAtomicActor implements WindowListener {
         }
     }
 
+    /** Initialize this actor. Close the existing tableau if there is one opened
+     *  by the previous execution.
+     *
+     *  @exception IllegalActionException If thrown by the superclass.
+     */
     public void initialize() throws IllegalActionException {
         super.initialize();
 
@@ -274,9 +278,17 @@ public class ModelView extends TypedAtomicActor implements WindowListener {
         }
     }
 
+    /** Do nothing.
+     *
+     *  @param e The event.
+     */
     public void windowActivated(WindowEvent e) {
     }
 
+    /** React to closing of the tableau by marking it closed.
+     *
+     *  @param e The event.
+     */
     public synchronized void windowClosed(WindowEvent e) {
         Window window = (Window) e.getSource();
         if (_tableaus != null) {
@@ -292,32 +304,70 @@ public class ModelView extends TypedAtomicActor implements WindowListener {
         }
     }
 
+    /** Do nothing.
+     *
+     *  @param e The event.
+     */
     public void windowClosing(WindowEvent e) {
     }
 
+    /** Do nothing.
+     *
+     *  @param e The event.
+     */
     public void windowDeactivated(WindowEvent e) {
     }
 
+    /** Do nothing.
+     *
+     *  @param e The event.
+     */
     public void windowDeiconified(WindowEvent e) {
     }
 
+    /** Do nothing.
+     *
+     *  @param e The event.
+     */
     public void windowIconified(WindowEvent e) {
     }
 
+    /** Do nothing.
+     *
+     *  @param e The event.
+     */
     public void windowOpened(WindowEvent e) {
     }
 
+    /** The input port to receive models to be viewed.
+     */
     public TypedIOPort input;
 
+    /** The output port to send the input models unchanged.
+     */
     public TypedIOPort output;
 
+    /** Whether the window should be reopened each time a new model is received
+     *  in a token.
+     */
     public Parameter reopenWindow;
 
+    /** Location of the window, or [-1, -1] if the location is to be determined
+     *  automatically.
+     */
     public Parameter screenLocation;
 
+    /** Size of the window, or [-1, -1] if the size is to be determined
+     *  automatically.
+     */
     public Parameter screenSize;
 
+    /** Title of the window, or empty if the title is to be determined
+     *  automatically.
+     */
     public PortParameter title;
 
+    /** The opened tableaus.
+     */
     private Tableau[] _tableaus;
 }

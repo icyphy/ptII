@@ -65,6 +65,8 @@ import ptolemy.kernel.util.KernelRuntimeException;
 import ptolemy.kernel.util.Location;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.StringAttribute;
+import ptolemy.kernel.util.Workspace;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.moml.MoMLParser;
 import ptolemy.moml.Vertex;
@@ -1790,5 +1792,59 @@ public class GraphTransformer extends ChangeRequest {
         /** The list of created objects.
          */
         private List<NamedObj> _createdObjects;
+    }
+    
+    //////////////////////////////////////////////////////////////////////////
+    //// ReplacementObjectAttribute
+    
+    /**
+     A temporary attribute to record the corresponding object in the replacement
+     for any object in the pattern.
+    
+     @author Thomas Huining Feng
+     @version $Id$
+     @since Ptolemy II 8.0
+     @Pt.ProposedRating Red (tfeng)
+     @Pt.AcceptedRating Red (tfeng)
+     */
+    private class ReplacementObjectAttribute extends StringAttribute {
+
+        /** Construct an attribute in the default workspace with an empty string
+         *  as its name.
+         *  The object is added to the directory of the workspace.
+         *  Increment the version number of the workspace.
+         */
+        public ReplacementObjectAttribute() {
+        }
+
+        /** Construct an attribute with the given name contained by the specified
+         *  container. The container argument must not be null, or a
+         *  NullPointerException will be thrown.  This attribute will use the
+         *  workspace of the container for synchronization and version counts.
+         *  If the name argument is null, then the name is set to the empty
+         *  string. The object is added to the directory of the workspace
+         *  if the container is null.
+         *  Increment the version of the workspace.
+         *  @param container The container.
+         *  @param name The name of this attribute.
+         *  @exception IllegalActionException If the attribute is not of an
+         *   acceptable class for the container, or if the name contains a period.
+         *  @exception NameDuplicationException If the name coincides with
+         *   an attribute already in the container.
+         */
+        public ReplacementObjectAttribute(NamedObj container, String name)
+                throws IllegalActionException, NameDuplicationException {
+            super(container, name);
+        }
+
+        /** Construct an attribute in the specified workspace with an empty
+         *  string as a name.
+         *  The object is added to the directory of the workspace.
+         *  Increment the version number of the workspace.
+         *  @param workspace The workspace that will list the attribute.
+         */
+        public ReplacementObjectAttribute(Workspace workspace) {
+            super(workspace);
+        }
     }
 }

@@ -1,4 +1,5 @@
-/*
+/* An attribute to record the name of the object in the pattern that corresponds
+   to the container of the attribute in the replacement.
 
 @Copyright (c) 2007-2008 The Regents of the University of California.
 All rights reserved.
@@ -42,6 +43,10 @@ import ptolemy.kernel.util.ValueListener;
 import ptolemy.kernel.util.Workspace;
 
 /**
+ An attribute to record the name of the object in the pattern that corresponds
+ to the container of the attribute in the replacement. This attribute is usually
+ created by the visual editor for TransformationRules. It may also be edited
+ manually in a table in the editor.
 
  @author Thomas Huining Feng
  @version $Id$
@@ -52,18 +57,29 @@ import ptolemy.kernel.util.Workspace;
 public class PatternObjectAttribute extends StringAttribute implements
         ValueListener {
 
-    /**
-     *
+    /** Construct an attribute in the default workspace with an empty string
+     *  as its name.
+     *  The object is added to the directory of the workspace.
+     *  Increment the version number of the workspace.
      */
     public PatternObjectAttribute() {
         _init();
     }
 
-    /**
-     * @param container
-     * @param name
-     * @exception IllegalActionException
-     * @exception NameDuplicationException
+    /** Construct an attribute with the given name contained by the specified
+     *  container. The container argument must not be null, or a
+     *  NullPointerException will be thrown.  This attribute will use the
+     *  workspace of the container for synchronization and version counts.
+     *  If the name argument is null, then the name is set to the empty
+     *  string. The object is added to the directory of the workspace
+     *  if the container is null.
+     *  Increment the version of the workspace.
+     *  @param container The container.
+     *  @param name The name of this attribute.
+     *  @exception IllegalActionException If the attribute is not of an
+     *   acceptable class for the container, or if the name contains a period.
+     *  @exception NameDuplicationException If the name coincides with
+     *   an attribute already in the container.
      */
     public PatternObjectAttribute(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
@@ -71,14 +87,22 @@ public class PatternObjectAttribute extends StringAttribute implements
         _init();
     }
 
-    /**
-     * @param workspace
+    /** Construct an attribute in the specified workspace with an empty
+     *  string as a name.
+     *  The object is added to the directory of the workspace.
+     *  Increment the version number of the workspace.
+     *  @param workspace The workspace that will list the attribute.
      */
     public PatternObjectAttribute(Workspace workspace) {
         super(workspace);
         _init();
     }
 
+    /** Update the appearance of the container when the value of this attribute
+     *  is changed.
+     *
+     *  @param settable The changed attribute.
+     */
     public void valueChanged(Settable settable) {
         if (settable == this) {
             NamedObj container = getContainer();
@@ -125,10 +149,11 @@ public class PatternObjectAttribute extends StringAttribute implements
         }
     }
 
+    /** Initialize this attribute.
+     */
     private void _init() {
         setClassName("ptolemy.actor.gt.PatternObjectAttribute");
         setVisibility(EXPERT);
         addValueListener(this);
     }
-
 }
