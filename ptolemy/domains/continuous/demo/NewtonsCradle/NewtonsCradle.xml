@@ -183,7 +183,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 85.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 1030, 738}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={364, 84, 1030, 738}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[817, 628]">
     </property>
@@ -276,7 +276,7 @@
                 <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
                     <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">The transition from the init state to the run state initializes the positions and velocities of the
 balls. A transition is taken from the run state back to itself when a collision occurs.  A collision
-occurs when two adjascent balls make contact with velocity greater than zero. The collision is
+occurs when two adjacent balls make contact with velocity greater than zero. The collision is
 perfectly elastic, so since the two balls have the same mass, they simply exchange their velocities.
 
 In this example, the first collision happens when ball 1 reaches its equilibrium point. Although balls
@@ -285,24 +285,24 @@ be involved in the collision, so they exchange their velocities. After this coll
 elapsing, balls 2 and 3 collide and exchange their velocities. Thus, two simultaneous yet ordered
 transitions occur at the time of the collision.</text></svg></configure>
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[-5.0, -30.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[-10.0, 0.0]">
                 </property>
                 <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
                 </property>
                 <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
                 </property>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 125, 815, 518}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={260, 149, 920, 601}, maximized=false}">
             </property>
-            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[707, 490]">
             </property>
             <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
             </property>
-            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{353.5, 245.0}">
             </property>
             <port name="x_left" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[425.0, 370.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[415.0, 370.0]">
                 </property>
             </port>
             <port name="theta_left_dot" class="ptolemy.domains.modal.modal.RefinementPort">
@@ -312,42 +312,42 @@ transitions occur at the time of the collision.</text></svg></configure>
             </port>
             <port name="x_right" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[500.0, 320.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[530.0, 320.0]">
                 </property>
             </port>
             <port name="theta_right_dot" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[475.0, 370.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[530.0, 370.0]">
                 </property>
             </port>
             <port name="x" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
                 <property name="output"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[555.0, 375.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[645.0, 370.0]">
                 </property>
             </port>
             <port name="theta_dot" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
                 <property name="output"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[550.0, 320.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[645.0, 320.0]">
                 </property>
             </port>
             <entity name="state" class="ptolemy.domains.modal.kernel.State">
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="state">
                 </property>
-                <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">
+                <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
                 <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[261.2903198421386, 264.49999618530285]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{260.0, 265.0}">
                 </property>
             </entity>
             <entity name="init" class="ptolemy.domains.modal.kernel.State">
-                <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="state">
+                <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
                 </property>
-                <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="false">
+                <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
@@ -357,7 +357,7 @@ transitions occur at the time of the collision.</text></svg></configure>
                 </property>
             </entity>
             <relation name="relation" class="ptolemy.domains.modal.kernel.Transition">
-                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="x_right_isPresent &amp;&amp; theta_right_dot_isPresent &#10;&amp;&amp; ((x + diameter) &gt;= x_right) &#10;  &amp;&amp; (theta_dot &gt; theta_right_dot)">
+                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="x_right_isPresent &#10;  &amp;&amp; theta_right_dot_isPresent &#10;  &amp;&amp; ((x + diameter) &gt;= x_right) &#10;  &amp;&amp; (theta_dot &gt; theta_right_dot)">
                     <property name="style" class="ptolemy.actor.gui.style.TextStyle">
                         <property name="height" class="ptolemy.data.expr.Parameter" value="10">
                         </property>
@@ -365,7 +365,7 @@ transitions occur at the time of the collision.</text></svg></configure>
                         </property>
                     </property>
                 </property>
-                <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute" value="&#10;state.theta_dot_initial = theta_right_dot">
+                <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute" value="&#10;  state.theta_dot_initial = theta_right_dot">
                     <property name="style" class="ptolemy.actor.gui.style.TextStyle">
                         <property name="height" class="ptolemy.data.expr.Parameter" value="10">
                         </property>
@@ -384,32 +384,8 @@ transitions occur at the time of the collision.</text></svg></configure>
                 <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
             </relation>
-            <relation name="relation2" class="ptolemy.domains.modal.kernel.Transition">
-                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
-                </property>
-                <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute">
-                    <property name="style" class="ptolemy.actor.gui.style.LineStyle">
-                    </property>
-                </property>
-                <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute" value="&#10;state.theta_dot_initial = initialTheta_dot;&#10;state.theta_initial = initialTheta&#10;">
-                    <property name="style" class="ptolemy.actor.gui.style.TextStyle">
-                        <property name="height" class="ptolemy.data.expr.Parameter" value="10">
-                        </property>
-                        <property name="width" class="ptolemy.data.expr.Parameter" value="30">
-                        </property>
-                    </property>
-                </property>
-                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.622752043467985">
-                </property>
-                <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.5698846633996298">
-                </property>
-                <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
-                <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
-            </relation>
             <relation name="relation3" class="ptolemy.domains.modal.kernel.Transition">
-                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="x_left_isPresent &amp;&amp; theta_left_dot_isPresent &#10;&amp;&amp; ((x_left + diameter) &gt;= x) &#10;  &amp;&amp; (theta_left_dot &gt; theta_dot)">
+                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="x_left_isPresent&#10;  &amp;&amp; theta_left_dot_isPresent &#10;  &amp;&amp; ((x_left + diameter) &gt;= x) &#10;  &amp;&amp; (theta_left_dot &gt; theta_dot)">
                     <property name="style" class="ptolemy.actor.gui.style.TextStyle">
                         <property name="height" class="ptolemy.data.expr.Parameter" value="10">
                         </property>
@@ -417,7 +393,7 @@ transitions occur at the time of the collision.</text></svg></configure>
                         </property>
                     </property>
                 </property>
-                <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute" value="&#10;state.theta_dot_initial = theta_left_dot">
+                <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute" value="&#10;  state.theta_dot_initial = theta_left_dot">
                     <property name="style" class="ptolemy.actor.gui.style.TextStyle">
                         <property name="height" class="ptolemy.data.expr.Parameter" value="10">
                         </property>
@@ -436,15 +412,27 @@ transitions occur at the time of the collision.</text></svg></configure>
                 <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
             </relation>
+            <relation name="relation4" class="ptolemy.domains.modal.kernel.Transition">
+                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
+                </property>
+                <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="&#10;  theta_dot = initialTheta_dot;&#10;  x = length * sin(initialTheta) + x_offset">
+                </property>
+                <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute" value="&#10;  state.theta_dot_initial = initialTheta_dot;&#10;  state.theta_initial = initialTheta&#10;">
+                </property>
+                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6283185307179586">
+                </property>
+                <property name="gamma" class="ptolemy.data.expr.Parameter" value="1.3724043067691258">
+                </property>
+            </relation>
             <link port="state.incomingPort" relation="relation"/>
-            <link port="state.incomingPort" relation="relation2"/>
             <link port="state.incomingPort" relation="relation3"/>
+            <link port="state.incomingPort" relation="relation4"/>
             <link port="state.outgoingPort" relation="relation"/>
             <link port="state.outgoingPort" relation="relation3"/>
-            <link port="init.outgoingPort" relation="relation2"/>
+            <link port="init.outgoingPort" relation="relation4"/>
         </entity>
         <entity name="state" class="ptolemy.domains.modal.modal.Refinement">
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 125, 815, 518}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 125, 813, 510}, maximized=false}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
             </property>
@@ -527,15 +515,15 @@ transitions occur at the time of the collision.</text></svg></configure>
                 </property>
             </port>
             <entity name="Ball Dynamics" class="ptolemy.actor.TypedCompositeActor">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, 230.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[115.0, 230.0]">
                 </property>
-                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={91, 47, 815, 518}, maximized=false}">
+                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={91, 47, 881, 606}, maximized=false}">
                 </property>
-                <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+                <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[668, 496]">
                 </property>
                 <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
                 </property>
-                <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+                <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{334.0, 248.0}">
                 </property>
                 <property name="annotation" class="ptolemy.kernel.util.Attribute">
                     <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -634,64 +622,44 @@ transitions occur at the time of the collision.</text></svg></configure>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="{45.0, 115.0}">
                     </property>
                 </property>
-                <property name="initialTheta" class="ptolemy.actor.parameters.PortParameter" value="theta_initial">
+                <property name="initialTheta" class="ptolemy.data.expr.Parameter" value="theta_initial">
                     <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                     </property>
-                    <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-                        <configure>
-      <svg>
-	<polyline points="-15,-15, -3,-5, -16,5" style="stroke:black"></polyline>
-      </svg>
-    </configure>
-                    </property>
                     <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                        <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                        </property>
                     </property>
                     <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
                         <configure>
       <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:black" y="20">-P-</text>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
       </svg>
     </configure>
                     </property>
                     <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
                     </property>
-                    <property name="_location" class="ptolemy.kernel.util.Location" value="{260, 30}">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[210.0, 20.0]">
                     </property>
                 </property>
-                <property name="initialTheta_dot" class="ptolemy.actor.parameters.PortParameter" value="theta_dot_initial">
+                <property name="initialTheta_dot" class="ptolemy.data.expr.Parameter" value="theta_dot_initial">
                     <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                     </property>
-                    <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-                        <configure>
-      <svg>
-	<polyline points="-15,-15, -3,-5, -16,5" style="stroke:black"></polyline>
-      </svg>
-    </configure>
-                    </property>
                     <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                        <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                        </property>
                     </property>
                     <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
                         <configure>
       <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:black" y="20">-P-</text>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
       </svg>
     </configure>
                     </property>
                     <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
                     </property>
-                    <property name="_location" class="ptolemy.kernel.util.Location" value="[255.0, 75.0]">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[210.0, 50.0]">
                     </property>
                 </property>
-                <port name="initialTheta" class="ptolemy.actor.parameters.ParameterPort">
-                    <property name="input"/>
-                    <property name="_location" class="ptolemy.kernel.util.Location" value="{240.0, 25.0}">
-                    </property>
-                </port>
-                <port name="initialTheta_dot" class="ptolemy.actor.parameters.ParameterPort">
-                    <property name="input"/>
-                    <property name="_location" class="ptolemy.kernel.util.Location" value="{235.0, 70.0}">
-                    </property>
-                </port>
                 <port name="x" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[565.0, 160.0]">
@@ -711,7 +679,7 @@ transitions occur at the time of the collision.</text></svg></configure>
                 </port>
                 <port name="theta_dot" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
-                    <property name="_location" class="ptolemy.kernel.util.Location" value="[185.0, 300.0]">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[180.0, 320.0]">
                     </property>
                     <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                     </property>
@@ -936,7 +904,7 @@ transitions occur at the time of the collision.</text></svg></configure>
     <entity name="ball 3" class="ptolemy.domains.modal.modal.ModalModel">
         <property name="_tableauFactory" class="ptolemy.vergil.modal.modal.ModalTableauFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[510.0, 335.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[505.0, 335.0]">
         </property>
         <property name="initialTheta" class="ptolemy.data.expr.Parameter" value="initialTheta3">
         </property>
@@ -1007,29 +975,29 @@ be involved in the collision, so they exchange their velocities. After this coll
 elapsing, balls 2 and 3 collide and exchange their velocities. Thus, two simultaneous yet ordered
 transitions occur at the time of the collision.</text></svg></configure>
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[-5.0, -30.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[-15.0, 0.0]">
                 </property>
                 <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
                 </property>
                 <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
                 </property>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 125, 815, 518}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={253, 187, 933, 526}, maximized=false}">
             </property>
-            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[720, 415]">
             </property>
             <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
             </property>
-            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{360.0, 207.5}">
             </property>
             <port name="x_left" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[425.0, 370.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[405.0, 370.0]">
                 </property>
             </port>
             <port name="theta_left_dot" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[415.0, 320.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[405.0, 320.0]">
                 </property>
             </port>
             <port name="x_right" class="ptolemy.domains.modal.modal.RefinementPort">
@@ -1039,25 +1007,25 @@ transitions occur at the time of the collision.</text></svg></configure>
             </port>
             <port name="theta_right_dot" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[475.0, 370.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[500.0, 370.0]">
                 </property>
             </port>
             <port name="x" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
                 <property name="output"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[555.0, 375.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[605.0, 370.0]">
                 </property>
             </port>
             <port name="theta_dot" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
                 <property name="output"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[550.0, 320.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[605.0, 320.0]">
                 </property>
             </port>
             <entity name="state" class="ptolemy.domains.modal.kernel.State">
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="state">
                 </property>
-                <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">
+                <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
@@ -1067,9 +1035,9 @@ transitions occur at the time of the collision.</text></svg></configure>
                 </property>
             </entity>
             <entity name="init" class="ptolemy.domains.modal.kernel.State">
-                <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="state">
+                <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
                 </property>
-                <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="false">
+                <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
@@ -1106,30 +1074,6 @@ transitions occur at the time of the collision.</text></svg></configure>
                 <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
             </relation>
-            <relation name="relation2" class="ptolemy.domains.modal.kernel.Transition">
-                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
-                </property>
-                <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute">
-                    <property name="style" class="ptolemy.actor.gui.style.LineStyle">
-                    </property>
-                </property>
-                <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute" value="&#10;state.theta_dot_initial = initialTheta_dot;&#10;state.theta_initial = initialTheta&#10;">
-                    <property name="style" class="ptolemy.actor.gui.style.TextStyle">
-                        <property name="height" class="ptolemy.data.expr.Parameter" value="10">
-                        </property>
-                        <property name="width" class="ptolemy.data.expr.Parameter" value="30">
-                        </property>
-                    </property>
-                </property>
-                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.622752043467985">
-                </property>
-                <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.5698846633996298">
-                </property>
-                <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
-                <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
-            </relation>
             <relation name="relation3" class="ptolemy.domains.modal.kernel.Transition">
                 <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="x_left_isPresent &amp;&amp; theta_left_dot_isPresent &#10;&amp;&amp; ((x_left + diameter) &gt;= x) &#10;  &amp;&amp; (theta_left_dot &gt; theta_dot)">
                     <property name="style" class="ptolemy.actor.gui.style.TextStyle">
@@ -1158,15 +1102,27 @@ transitions occur at the time of the collision.</text></svg></configure>
                 <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
             </relation>
+            <relation name="relation4" class="ptolemy.domains.modal.kernel.Transition">
+                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
+                </property>
+                <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="&#10;  theta_dot = initialTheta_dot;&#10;  x = length * sin(initialTheta) + x_offset">
+                </property>
+                <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute" value="&#10;  state.theta_dot_initial = initialTheta_dot;&#10;  state.theta_initial = initialTheta">
+                </property>
+                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6283185307179586">
+                </property>
+                <property name="gamma" class="ptolemy.data.expr.Parameter" value="1.3628682681279694">
+                </property>
+            </relation>
             <link port="state.incomingPort" relation="relation"/>
-            <link port="state.incomingPort" relation="relation2"/>
             <link port="state.incomingPort" relation="relation3"/>
+            <link port="state.incomingPort" relation="relation4"/>
             <link port="state.outgoingPort" relation="relation"/>
             <link port="state.outgoingPort" relation="relation3"/>
-            <link port="init.outgoingPort" relation="relation2"/>
+            <link port="init.outgoingPort" relation="relation4"/>
         </entity>
         <entity name="state" class="ptolemy.domains.modal.modal.Refinement">
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 125, 815, 518}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 125, 813, 510}, maximized=false}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
             </property>
@@ -1251,13 +1207,13 @@ transitions occur at the time of the collision.</text></svg></configure>
             <entity name="Ball Dynamics" class="ptolemy.actor.TypedCompositeActor">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, 230.0]">
                 </property>
-                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={91, 47, 815, 518}, maximized=false}">
+                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={91, 47, 937, 661}, maximized=false}">
                 </property>
-                <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+                <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[724, 551]">
                 </property>
                 <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
                 </property>
-                <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+                <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{362.0, 275.5}">
                 </property>
                 <property name="annotation" class="ptolemy.kernel.util.Attribute">
                     <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -1356,64 +1312,44 @@ transitions occur at the time of the collision.</text></svg></configure>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="{45.0, 115.0}">
                     </property>
                 </property>
-                <property name="initialTheta" class="ptolemy.actor.parameters.PortParameter" value="theta_initial">
+                <property name="initialTheta" class="ptolemy.data.expr.Parameter" value="theta_initial">
                     <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                     </property>
-                    <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-                        <configure>
-      <svg>
-	<polyline points="-15,-15, -3,-5, -16,5" style="stroke:black"></polyline>
-      </svg>
-    </configure>
-                    </property>
                     <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                        <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                        </property>
                     </property>
                     <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
                         <configure>
       <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:black" y="20">-P-</text>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
       </svg>
     </configure>
                     </property>
                     <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
                     </property>
-                    <property name="_location" class="ptolemy.kernel.util.Location" value="{260, 30}">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[210.0, 20.0]">
                     </property>
                 </property>
-                <property name="initialTheta_dot" class="ptolemy.actor.parameters.PortParameter" value="theta_dot_initial">
+                <property name="initialTheta_dot" class="ptolemy.data.expr.Parameter" value="theta_dot_initial">
                     <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                     </property>
-                    <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-                        <configure>
-      <svg>
-	<polyline points="-15,-15, -3,-5, -16,5" style="stroke:black"></polyline>
-      </svg>
-    </configure>
-                    </property>
                     <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                        <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                        </property>
                     </property>
                     <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
                         <configure>
       <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:black" y="20">-P-</text>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
       </svg>
     </configure>
                     </property>
                     <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
                     </property>
-                    <property name="_location" class="ptolemy.kernel.util.Location" value="[255.0, 75.0]">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[210.0, 50.0]">
                     </property>
                 </property>
-                <port name="initialTheta" class="ptolemy.actor.parameters.ParameterPort">
-                    <property name="input"/>
-                    <property name="_location" class="ptolemy.kernel.util.Location" value="{240.0, 25.0}">
-                    </property>
-                </port>
-                <port name="initialTheta_dot" class="ptolemy.actor.parameters.ParameterPort">
-                    <property name="input"/>
-                    <property name="_location" class="ptolemy.kernel.util.Location" value="{235.0, 70.0}">
-                    </property>
-                </port>
                 <port name="x" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[565.0, 160.0]">
@@ -1729,24 +1665,24 @@ be involved in the collision, so they exchange their velocities. After this coll
 elapsing, balls 2 and 3 collide and exchange their velocities. Thus, two simultaneous yet ordered
 transitions occur at the time of the collision.</text></svg></configure>
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[-5.0, -30.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[-5.0, 0.0]">
                 </property>
                 <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
                 </property>
                 <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
                 </property>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 125, 815, 518}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={222, 166, 996, 568}, maximized=false}">
             </property>
-            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[783, 457]">
             </property>
             <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
             </property>
-            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{391.5, 228.5}">
             </property>
             <port name="x_left" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[425.0, 370.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[415.0, 370.0]">
                 </property>
             </port>
             <port name="theta_left_dot" class="ptolemy.domains.modal.modal.RefinementPort">
@@ -1761,19 +1697,19 @@ transitions occur at the time of the collision.</text></svg></configure>
             </port>
             <port name="theta_right_dot" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[475.0, 370.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[500.0, 370.0]">
                 </property>
             </port>
             <port name="x" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
                 <property name="output"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[555.0, 375.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[620.0, 370.0]">
                 </property>
             </port>
             <port name="theta_dot" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
                 <property name="output"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[550.0, 320.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[620.0, 320.0]">
                 </property>
             </port>
             <entity name="state" class="ptolemy.domains.modal.kernel.State">
@@ -1789,7 +1725,7 @@ transitions occur at the time of the collision.</text></svg></configure>
                 </property>
             </entity>
             <entity name="init" class="ptolemy.domains.modal.kernel.State">
-                <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="state">
+                <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
                 </property>
                 <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
@@ -1828,30 +1764,6 @@ transitions occur at the time of the collision.</text></svg></configure>
                 <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
             </relation>
-            <relation name="relation2" class="ptolemy.domains.modal.kernel.Transition">
-                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
-                </property>
-                <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute">
-                    <property name="style" class="ptolemy.actor.gui.style.LineStyle">
-                    </property>
-                </property>
-                <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute" value="&#10;state.theta_dot_initial = initialTheta_dot;&#10;state.theta_initial = initialTheta&#10;">
-                    <property name="style" class="ptolemy.actor.gui.style.TextStyle">
-                        <property name="height" class="ptolemy.data.expr.Parameter" value="10">
-                        </property>
-                        <property name="width" class="ptolemy.data.expr.Parameter" value="30">
-                        </property>
-                    </property>
-                </property>
-                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.622752043467985">
-                </property>
-                <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.5698846633996298">
-                </property>
-                <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
-                <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
-            </relation>
             <relation name="relation3" class="ptolemy.domains.modal.kernel.Transition">
                 <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="x_left_isPresent &amp;&amp; theta_left_dot_isPresent &#10;&amp;&amp; ((x_left + diameter) &gt;= x) &#10;  &amp;&amp; (theta_left_dot &gt; theta_dot)">
                     <property name="style" class="ptolemy.actor.gui.style.TextStyle">
@@ -1880,12 +1792,24 @@ transitions occur at the time of the collision.</text></svg></configure>
                 <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
             </relation>
+            <relation name="relation4" class="ptolemy.domains.modal.kernel.Transition">
+                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
+                </property>
+                <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="&#10;  theta_dot = initialTheta_dot;&#10;  x = length * sin(initialTheta) + x_offset">
+                </property>
+                <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute" value="&#10;  state.theta_dot_initial = initialTheta_dot;&#10;  state.theta_initial = initialTheta&#10;">
+                </property>
+                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6283185307179586">
+                </property>
+                <property name="gamma" class="ptolemy.data.expr.Parameter" value="1.3628682681279694">
+                </property>
+            </relation>
             <link port="state.incomingPort" relation="relation"/>
-            <link port="state.incomingPort" relation="relation2"/>
             <link port="state.incomingPort" relation="relation3"/>
+            <link port="state.incomingPort" relation="relation4"/>
             <link port="state.outgoingPort" relation="relation"/>
             <link port="state.outgoingPort" relation="relation3"/>
-            <link port="init.outgoingPort" relation="relation2"/>
+            <link port="init.outgoingPort" relation="relation4"/>
         </entity>
         <entity name="state" class="ptolemy.domains.modal.modal.Refinement">
             <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 125, 815, 518}, maximized=false}">
@@ -2078,64 +2002,44 @@ transitions occur at the time of the collision.</text></svg></configure>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="{45.0, 115.0}">
                     </property>
                 </property>
-                <property name="initialTheta" class="ptolemy.actor.parameters.PortParameter" value="theta_initial">
+                <property name="initialTheta" class="ptolemy.data.expr.Parameter" value="theta_initial">
                     <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                     </property>
-                    <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-                        <configure>
-      <svg>
-	<polyline points="-15,-15, -3,-5, -16,5" style="stroke:black"></polyline>
-      </svg>
-    </configure>
-                    </property>
                     <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                        <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                        </property>
                     </property>
                     <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
                         <configure>
       <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:black" y="20">-P-</text>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
       </svg>
     </configure>
                     </property>
                     <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
                     </property>
-                    <property name="_location" class="ptolemy.kernel.util.Location" value="{260, 30}">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[210.0, 20.0]">
                     </property>
                 </property>
-                <property name="initialTheta_dot" class="ptolemy.actor.parameters.PortParameter" value="theta_dot_initial">
+                <property name="initialTheta_dot" class="ptolemy.data.expr.Parameter" value="theta_dot_initial">
                     <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                     </property>
-                    <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-                        <configure>
-      <svg>
-	<polyline points="-15,-15, -3,-5, -16,5" style="stroke:black"></polyline>
-      </svg>
-    </configure>
-                    </property>
                     <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                        <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                        </property>
                     </property>
                     <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
                         <configure>
       <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:black" y="20">-P-</text>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
       </svg>
     </configure>
                     </property>
                     <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
                     </property>
-                    <property name="_location" class="ptolemy.kernel.util.Location" value="[255.0, 75.0]">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[210.0, 50.0]">
                     </property>
                 </property>
-                <port name="initialTheta" class="ptolemy.actor.parameters.ParameterPort">
-                    <property name="input"/>
-                    <property name="_location" class="ptolemy.kernel.util.Location" value="{240.0, 25.0}">
-                    </property>
-                </port>
-                <port name="initialTheta_dot" class="ptolemy.actor.parameters.ParameterPort">
-                    <property name="input"/>
-                    <property name="_location" class="ptolemy.kernel.util.Location" value="{235.0, 70.0}">
-                    </property>
-                </port>
                 <port name="x" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[565.0, 160.0]">
@@ -2380,7 +2284,7 @@ transitions occur at the time of the collision.</text></svg></configure>
     <entity name="Angular Velocities" class="ptolemy.actor.lib.gui.TimedPlotter">
         <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="v_1, v_2, v_3">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 382, 508, 355}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 382, 500, 344}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
         </property>
@@ -2401,7 +2305,7 @@ transitions occur at the time of the collision.</text></svg></configure>
     <entity name="Displacements" class="ptolemy.actor.lib.gui.TimedPlotter">
         <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="x_1, x_2, x_3">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={514, 382, 508, 355}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 37, 500, 344}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
         </property>
