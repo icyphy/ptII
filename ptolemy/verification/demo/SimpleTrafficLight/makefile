@@ -39,15 +39,14 @@ ROOT =		../../../..
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
-	
 CLASSPATH =	$(ROOT)
 
 # Used to build zip files
-PTPACKAGE = 	TrafficLight
+PTPACKAGE = 	SimpleTrafficLight
 PTCLASSJAR =	$(PTPACKAGE).jar
 
 JSRCS = 
-	
+
 OTHER_FILES_TO_BE_JARED = \
 	PedestrianLightNormal.xml \
 	SimpleTrafficLight.xml \
