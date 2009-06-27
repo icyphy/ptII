@@ -312,5 +312,5 @@
 /Users/cxh/ptII/ptolemy/moml/demo/Networked/Networked.xml
 /Users/cxh/ptII/ptolemy/vergil/kernel/attributes/demo/AnimateVergil/AnimateVergil.xml
 /Users/cxh/ptII/ptolemy/verification/demo/RailroadControl/RailroadSystem.xml
-/Users/cxh/ptII/ptolemy/verification/demo/TrafficLight/SimpleTrafficLight.xml
+/Users/cxh/ptII/ptolemy/verification/demo/SimpleTrafficLight/SimpleTrafficLight.xml
 /Users/cxh/ptII/ptolemy/verification/demo/iRobotHillClimbing/iRobotCreateVerification.xml
