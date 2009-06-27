@@ -1,4 +1,5 @@
-/*
+/* A matcher to match a state in an FSM controller or an event in a Ptera
+   controller.
 
 @Copyright (c) 2008-2009 The Regents of the University of California.
 All rights reserved.
@@ -63,6 +64,8 @@ import ptolemy.vergil.gt.GTIngredientsEditor;
 import ptolemy.vergil.gt.StateMatcherController;
 
 /**
+ A matcher to match a state in an FSM controller or an event in a Ptera
+ controller.
 
  @author Thomas Huining Feng
  @version $Id$
@@ -73,11 +76,20 @@ import ptolemy.vergil.gt.StateMatcherController;
 public class StateMatcher extends State implements GTEntity, TypedActor,
         ValueListener {
 
-    /**
-     * @param container
-     * @param name
-     * @exception IllegalActionException
-     * @exception NameDuplicationException
+    /** Construct a state with the given name contained by the specified
+     *  composite entity. The container argument must not be null, or a
+     *  NullPointerException will be thrown. This state will use the
+     *  workspace of the container for synchronization and version counts.
+     *  If the name argument is null, then the name is set to the empty
+     *  string.
+     *  Increment the version of the workspace.
+     *  This constructor write-synchronizes on the workspace.
+     *  @param container The container.
+     *  @param name The name of the state.
+     *  @exception IllegalActionException If the state cannot be contained
+     *   by the proposed container.
+     *  @exception NameDuplicationException If the name coincides with
+     *   that of an entity already in the container.
      */
     public StateMatcher(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
@@ -100,6 +112,11 @@ public class StateMatcher extends State implements GTEntity, TypedActor,
         editorFactory = new GTIngredientsEditor.Factory(this, "editorFactory");
     }
 
+    /** Do nothing because a state matcher is not supposed to contain any
+     *  initializable.
+     *
+     *  @param initializable The initializable.
+     */
     public void addInitializable(Initializable initializable) {
     }
 
@@ -126,6 +143,10 @@ public class StateMatcher extends State implements GTEntity, TypedActor,
     public void createReceivers() throws IllegalActionException {
     }
 
+    /** Do nothing.
+     *
+     *  @exception IllegalActionException Not thrown in this class.
+     */
     public void fire() throws IllegalActionException {
     }
 
@@ -178,18 +199,34 @@ public class StateMatcher extends State implements GTEntity, TypedActor,
         return criteria;
     }
 
+    /** Return null.
+     *
+     *  @return null.
+     */
     public String getDefaultIconDescription() {
         return null;
     }
 
+    /** Return null.
+     *
+     *  @return null.
+     */
     public Director getDirector() {
         return null;
     }
 
+    /** Return null.
+     *
+     *  @return null.
+     */
     public Director getExecutiveDirector() {
         return null;
     }
 
+    /** Return null.
+     *
+     *  @return null.
+     */
     public Manager getManager() {
         return null;
     }
@@ -213,21 +250,43 @@ public class StateMatcher extends State implements GTEntity, TypedActor,
         return patternObject;
     }
 
+    /** Do nothing.
+     *
+     *  @exception IllegalActionException Not thrown in this class.
+     */
     public void initialize() throws IllegalActionException {
     }
 
+    /** Return an empty list.
+     *
+     *  @return An empty list.
+     */
     public List<?> inputPortList() {
         return _EMPTY_LIST;
     }
 
+    /** Return true because prefire and fire do nothing.
+     *
+     *  @return true.
+     */
     public boolean isFireFunctional() {
-        return false;
+        return true;
     }
 
+    /** Return false.
+     *
+     *  @return false.
+     */
     public boolean isStrict() {
         return false;
     }
 
+    /** Do nothing and return 0.
+     *
+     *  @param count The number of iteration.
+     *  @return 0
+     *  @exception IllegalActionException Not thrown in this class.
+     */
     public int iterate(int count) throws IllegalActionException {
         return 0;
     }
@@ -257,34 +316,100 @@ public class StateMatcher extends State implements GTEntity, TypedActor,
         return _labelSet;
     }
 
+    /** Return true if the given object is an instance of State (either the one
+     *  in the deprecated FSM domain or the one in modal model since Ptolemy
+     *  8.0).
+     *
+     *  @param object The object to be tested.
+     *  @return true if the object is an instance of State.
+     */
     public boolean match(NamedObj object) {
         return object instanceof State
                 || object.getClass().getName().equals(
-                        "ptolemy.domains.modal.kernel.State");
+                        "ptolemy.domains.fsm.kernel.State");
     }
 
+    /** Return null.
+     *
+     *  @return null.
+     *  @exception IllegalActionException Not thrown in this class.
+     */
     public Receiver newReceiver() throws IllegalActionException {
         return null;
     }
 
+    /** Return an empty list.
+     *
+     *  @return An empty list.
+     */
     public List<?> outputPortList() {
         return _EMPTY_LIST;
     }
 
+    /** Do nothing and return false.
+     *
+     *  @return false
+     *  @exception IllegalActionException Not thrown in this class.
+     */
     public boolean postfire() throws IllegalActionException {
         return false;
     }
 
+    /** Do nothing and return false.
+     *
+     *  @return false
+     *  @exception IllegalActionException Not thrown in this class.
+     */
     public boolean prefire() throws IllegalActionException {
         return false;
     }
 
+    /** Do nothing.
+     *
+     *  @exception IllegalActionException Not thrown in this class.
+     */
     public void preinitialize() throws IllegalActionException {
     }
 
+    /** Do nothing.
+     *
+     *  @param initializable The initializable.
+     */
     public void removeInitializable(Initializable initializable) {
     }
 
+    /** Specify the container, adding the entity to the list
+     *  of entities in the container.  If the container already contains
+     *  an entity with the same name, then throw an exception and do not make
+     *  any changes.  Similarly, if the container is not in the same
+     *  workspace as this entity, throw an exception.  If this entity is
+     *  a class element and the proposed container does not match
+     *  the current container, then also throw an exception.
+     *  If the entity is already contained by the container, do nothing.
+     *  If this entity already has a container, remove it
+     *  from that container first.  Otherwise, remove it from
+     *  the directory of the workspace, if it is present.
+     *  If the argument is null, then unlink the ports of the entity
+     *  from any relations and remove it from its container.
+     *  It is not added to the workspace directory, so this could result in
+     *  this entity being garbage collected.
+     *  Derived classes may further constrain the container
+     *  to subclasses of CompositeEntity by overriding the protected
+     *  method _checkContainer(). This method validates all
+     *  deeply contained instances of Settable, since they may no longer
+     *  be valid in the new context.  This method is write-synchronized
+     *  to the workspace and increments its version number.
+     *  @param container The proposed container.
+     *  @exception IllegalActionException If the action would result in a
+     *   recursive containment structure, or if
+     *   this entity and container are not in the same workspace, or
+     *   if the protected method _checkContainer() throws it, or if
+     *   a contained Settable becomes invalid and the error handler
+     *   throws it.
+     *  @exception NameDuplicationException If the name of this entity
+     *   collides with a name already in the container.
+     *  @see #getContainer()
+     */
     public void setContainer(CompositeEntity container)
             throws IllegalActionException, NameDuplicationException {
         super.setContainer(container);
@@ -302,15 +427,26 @@ public class StateMatcher extends State implements GTEntity, TypedActor,
         }
     }
 
+    /** Do nothing.
+     */
     public void stop() {
     }
 
+    /** Do nothing.
+     */
     public void stopFire() {
     }
 
+    /** Do nothing.
+     */
     public void terminate() {
     }
 
+    /** Return an empty list.
+     *
+     *  @return An empty list.
+     *  @exception IllegalActionException Not thrown in this class.
+     */
     public Set<Inequality> typeConstraints() throws IllegalActionException {
         return _EMPTY_SET;
     }
@@ -333,6 +469,10 @@ public class StateMatcher extends State implements GTEntity, TypedActor,
         GTEntityUtils.valueChanged(this, settable);
     }
 
+    /** Do nothing.
+     *
+     *  @exception IllegalActionException Not thrown in this class.
+     */
     public void wrapup() throws IllegalActionException {
     }
 
@@ -355,8 +495,12 @@ public class StateMatcher extends State implements GTEntity, TypedActor,
      */
     public PatternObjectAttribute patternObject;
 
+    /** An empty list.
+     */
     private static final List<?> _EMPTY_LIST = new LinkedList<Object>();
 
+    /** An empty set.
+     */
     private static final Set<Inequality> _EMPTY_SET = new HashSet<Inequality>();
 
     /** The causality interface, if it has been created. */

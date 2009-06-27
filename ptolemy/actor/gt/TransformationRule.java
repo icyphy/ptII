@@ -1,4 +1,4 @@
-/*
+/* A transformation rule that contains a pattern and a replacement.
 
 @Copyright (c) 2007-2008 The Regents of the University of California.
 All rights reserved.
@@ -63,28 +63,61 @@ import ptolemy.kernel.util.Workspace;
 //// TransformationRule
 
 /**
+ A transformation rule that contains a pattern and a replacement. It has two
+ purposes. As an abstraction of a transformation rule, it groups the pattern and
+ the replacement and relate objects between them (with {@link
+ PatternObjectAttribute} associated to objects in the replacement). As an actor,
+ it has a port that accepts model tokens containing models to be transformed,
+ and it produces transformed models in new model tokens to another port.
 
-@author Thomas Huining Feng
-@version $Id$
-@since Ptolemy II 7.1
-@Pt.ProposedRating Red (tfeng)
-@Pt.AcceptedRating Red (tfeng)
-*/
+ @author Thomas Huining Feng
+ @version $Id$
+ @since Ptolemy II 7.1
+ @Pt.ProposedRating Red (tfeng)
+ @Pt.AcceptedRating Red (tfeng)
+ */
 public class TransformationRule extends MultiCompositeActor implements
         GTCompositeActor, ValueListener {
 
+    /** Construct a transformation rule with a name and a container.
+     *  The container argument must not be null, or a
+     *  NullPointerException will be thrown.
+     *  @param container The container.
+     *  @param name The name of this actor.
+     *  @exception IllegalActionException If the container is incompatible
+     *   with this actor.
+     *  @exception NameDuplicationException If the name coincides with
+     *   an actor already in the container.
+     */
     public TransformationRule(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         _init();
     }
 
+    /** Construct a transformation rule in the specified workspace with
+     *  no container and an empty string as a name. You can then change
+     *  the name with setName(). If the workspace argument is null, then
+     *  use the default workspace.
+     *  @param workspace The workspace that will list the actor.
+     *  @exception IllegalActionException If the name has a period in it, or
+     *   the director is not compatible with the specified container.
+     *  @exception NameDuplicationException If the container already contains
+     *   an entity with the specified name.
+     */
     public TransformationRule(Workspace workspace)
             throws IllegalActionException, NameDuplicationException {
         super(workspace);
         _init();
     }
 
+    /** React to a change in the mode parameter or the repeatUntilFixpoint
+     *  parameter, and update the appearance of this actor.
+     *
+     *  @param attribute The attribute changed.
+     *  @exception IllegalActionException If the change is not acceptable
+     *   to this container (not thrown in this base class).
+     */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == mode || attribute == repeatUntilFixpoint) {
@@ -107,6 +140,13 @@ public class TransformationRule extends MultiCompositeActor implements
         super.attributeChanged(attribute);
     }
 
+    /** Clone the object into the current workspace by calling the clone()
+     *  method that takes a Workspace argument.
+     *  This method read-synchronizes on the workspace.
+     *  @return A new NamedObj.
+     *  @exception CloneNotSupportedException If any of the attributes
+     *   cannot be cloned.
+     */
     public Object clone() throws CloneNotSupportedException {
         TransformationRule actor = (TransformationRule) super.clone();
         actor._lastModel = null;
@@ -114,6 +154,42 @@ public class TransformationRule extends MultiCompositeActor implements
         return actor;
     }
 
+    /** Fire this actor. Depending on the transformation mode, the action
+     *  performed on the input and output is different.
+     *  <ul>
+     *    <li>If the mode is match only, then the actor has only an input port
+     *        to receive input models and an output port to send out success
+     *        flags in Booleans. When fired, a model token is read from the
+     *        input port. Pattern matching is performed on it with a working
+     *        copy of the encapsulated transformation rule. A true or false
+     *        token is produced to the output port depending on the result of
+     *        the pattern matching.</li>
+     *    <li>If the mode is one if replace first, replace last, replace any and
+     *        replace all, the actor has one more output port to send out the
+     *        transformed models in model tokens. The transformation action is
+     *        performed according to the transformation modes specified in
+     *        {@link TransformationMode.Mode}.</li>
+     *    <li>If the mode is full control, then the actor has a total of 6
+     *        ports. A modelInput port receives input models. A modelOutput port
+     *        sends out result models. A matchInput port receives matches to be
+     *        used for the transformation. A matchOutput port to produce
+     *        matches. A trigger port to trigger pattern matching. A remaining
+     *        port to output integer numbers representing the numbers of
+     *        remaining matches. In each firing, if the modelInput port has a
+     *        token present, the token is read and pattern matching is performed
+     *        on the contained model. All the matches are collected in a list.
+     *        It matchInput port has a token present, the match is read from
+     *        that port and is used to transform the model, with the output
+     *        being sent to the modelOutput port. If the trigger port has a
+     *        token present, the token is consumed and the next match in the
+     *        collected list is sent to the matchOutput port. Finally, in all
+     *        cases, the number of remaining matches in the list is sent to the
+     *        remaining port.</li>
+     *  </ul>
+     *
+     *  @exception IllegalActionException If error occurs in reading the input,
+     *   in sending the output, or in the transformation.
+     */
     public void fire() throws IllegalActionException {
         // Obtain updated value for any PortParameter before each firing.
         try {
@@ -231,20 +307,38 @@ public class TransformationRule extends MultiCompositeActor implements
         remaining.send(0, new IntToken(_lastResults.size()));
     }
 
+    /** Get the pattern of this transformation rule.
+     *
+     *  @return The pattern.
+     */
     public Pattern getPattern() {
         return (Pattern) getEntity("Pattern");
     }
 
+    /** Get the replacement of this transformation rule.
+     *
+     *  @return The replacement.
+     */
     public Replacement getReplacement() {
         return (Replacement) getEntity("Replacement");
     }
 
+    /** Initialize this actor.
+     *
+     *  @exception IllegalActionException If the superclass throws it.
+     */
     public void initialize() throws IllegalActionException {
         super.initialize();
         _lastModel = null;
         _lastResults.clear();
     }
 
+    /** If a trigger has been received in fire and the next match has been
+     *  produced to the matchOutput port, remove the first match in the list.
+     *
+     *  @return The result from postfire of the superclass.
+     *  @exception IllegalActionException If thrown by the superclass.
+     */
     public boolean postfire() throws IllegalActionException {
         if (_removeFirst) {
             _lastResults.remove(0);
@@ -252,6 +346,13 @@ public class TransformationRule extends MultiCompositeActor implements
         return super.postfire();
     }
 
+    /** Test whether this actor can be fired, depending on the mode.
+     *
+     *  @return true if this actor can be fired.
+     *  @exception IllegalActionException If thrown by the superclass or if the
+     *   mode cannot be retrieved.
+     *  @see #fire()
+     */
     public boolean prefire() throws IllegalActionException {
         if (super.prefire()) {
             _removeFirst = false;
@@ -273,10 +374,19 @@ public class TransformationRule extends MultiCompositeActor implements
         }
     }
 
+    /** Return an empty list.
+     *
+     *  @return An empty list.
+     *  @exception IllegalActionException Not thrown in this class.
+     */
     public Set<Inequality> typeConstraints() throws IllegalActionException {
         return _EMPTY_SET;
     }
 
+    /** React to the change of mode and change the ports of this actor.
+     *
+     *  @param settable The attribute changed.
+     */
     public void valueChanged(Settable settable) {
         // Create or remove ports depending on the mode.
         if (settable == mode) {
@@ -378,33 +488,85 @@ public class TransformationRule extends MultiCompositeActor implements
         }
     }
 
+    /** Wrap up the actor after an execution.
+     *
+     *  @exception IllegalActionException If thrown by the superclass.
+     */
     public void wrapup() throws IllegalActionException {
         super.wrapup();
         _lastResults.clear();
     }
 
+    /** The matchInput port.
+     */
     public TypedIOPort matchInput;
 
+    /** The matchOutput port.
+     */
     public TypedIOPort matchOutput;
 
+    /** The matched port.
+     */
     public TypedIOPort matched;
 
+    /** The mode.
+     */
     public TransformationMode mode;
 
+    /** The modelInput port.
+     */
     public TypedIOPort modelInput;
 
+    /** The modelOutput port.
+     */
     public TypedIOPort modelOutput;
 
+    /** The remaining port.
+     */
     public TypedIOPort remaining;
 
+    /** The count of repeated transformation in one firing.
+     */
     public Parameter repeatCount;
 
+    /** Whether the transformation in one firing should continue until a
+     *  fixpoint is reached.
+     */
     public Parameter repeatUntilFixpoint;
 
+    /** The trigger port.
+     */
     public TypedIOPort trigger;
 
+    //////////////////////////////////////////////////////////////////////////
+    //// TransformationDirector
+
+    /**
+     A director to be associated with this actor, which does nothing.
+
+     @author Thomas Huining Feng
+     @version $Id$
+     @since Ptolemy II 8.0
+     @Pt.ProposedRating Red (tfeng)
+     @Pt.AcceptedRating Red (tfeng)
+     */
     public static class TransformationDirector extends Director {
 
+        /** Construct a director in the given container with the given name.
+         *  The container argument must not be null, or a
+         *  NullPointerException will be thrown.
+         *  If the name argument is null, then the name is set to the
+         *  empty string. Increment the version number of the workspace.
+         *  Create the timeResolution parameter.
+         *
+         *  @param container The container.
+         *  @param name The name of this director.
+         *  @exception IllegalActionException If the name has a period in it, or
+         *   the director is not compatible with the specified container, or if
+         *   the time resolution parameter is malformed.
+         *  @exception NameDuplicationException If the container already contains
+         *   an entity with the specified name.
+         */
         public TransformationDirector(CompositeEntity container, String name)
                 throws IllegalActionException, NameDuplicationException {
             super(container, name);
@@ -413,17 +575,37 @@ public class TransformationRule extends MultiCompositeActor implements
                     + "$TransformationDirector");
         }
 
+        /** Do nothing.
+         *
+         *  @exception IllegalActionException Not thrown in this class.
+         */
         public void initialize() throws IllegalActionException {
         }
 
+        /** Set stop requested to be false and do nothing else.
+         *
+         *  @exception IllegalActionException Not thrown in this class.
+         */
         public void preinitialize() throws IllegalActionException {
             _stopRequested = false;
         }
 
+        /** Do nothing.
+         *
+         *  @exception IllegalActionException Not thrown in this class.
+         */
         public void wrapup() throws IllegalActionException {
         }
     }
 
+    /** Initialize the pattern, the replacement and the parameters of this
+     *  transformation rule.
+     *
+     *  @exception IllegalActionException If some objects cannot be contained by
+     *   the proposed container.
+     *  @exception NameDuplicationException If the name of an object coincides
+     *   with a name already in the container.
+     */
     protected void _init() throws IllegalActionException,
             NameDuplicationException {
         setClassName("ptolemy.actor.gt.TransformationRule");
@@ -448,14 +630,24 @@ public class TransformationRule extends MultiCompositeActor implements
         new TransformationDirector(this, "GTDirector");
     }
 
+    /** An empty list.
+     */
     private static final Set<Inequality> _EMPTY_SET = new HashSet<Inequality>();
 
+    /** The full control mode.
+     */
     private static final String _FULL_CONTROL = "full control";
 
+    /** The last received model.
+     */
     private CompositeEntity _lastModel;
 
+    /** The list of match results collected in the most recent pattern matching.
+     */
     private List<MatchResult> _lastResults = new LinkedList<MatchResult>();
 
+    /** Whether the first match result should be removed in postfire.
+     */
     private boolean _removeFirst;
 
 }

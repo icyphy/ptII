@@ -1,4 +1,5 @@
-/*
+/* A matcher to match any transition in an FSM controller or scheduling relation
+   in a Ptera controller.
 
  Copyright (c) 1997-2009 The Regents of the University of California.
  All rights reserved.
@@ -43,6 +44,8 @@ import ptolemy.kernel.util.ValueListener;
 import ptolemy.vergil.gt.GTIngredientsEditor;
 
 /**
+ A matcher to match any transition in an FSM controller or scheduling relation
+ in a Ptera controller.
 
  @author Thomas Huining Feng
  @version $Id$
@@ -53,11 +56,17 @@ import ptolemy.vergil.gt.GTIngredientsEditor;
 public class TransitionMatcher extends Transition implements GTEntity,
         ValueListener {
 
-    /**
-     * @param container
-     * @param name
-     * @exception IllegalActionException
-     * @exception NameDuplicationException
+    /** Construct a transition matcher with the given name contained by the
+     *  specified entity. The container argument must not be null, or a
+     *  NullPointerException will be thrown. This transition will use the
+     *  workspace of the container for synchronization and version counts.
+     *  If the name argument is null, then the name is set to the empty string.
+     *  @param container The container.
+     *  @param name The name of the transition.
+     *  @exception IllegalActionException If the container is incompatible
+     *   with this transition.
+     *  @exception NameDuplicationException If the name coincides with
+     *   any relation already in the container.
      */
     public TransitionMatcher(FSMActor container, String name)
             throws IllegalActionException, NameDuplicationException {
@@ -80,10 +89,18 @@ public class TransitionMatcher extends Transition implements GTEntity,
         editorFactory = new GTIngredientsEditor.Factory(this, "editorFactory");
     }
 
+    /** Return the attribute that stores all the criteria for this matcher.
+     *
+     *  @return The attribute that stores all the criteria.
+     */
     public GTIngredientsAttribute getCriteriaAttribute() {
         return criteria;
     }
 
+    /** Return null.
+     *
+     *  @return null
+     */
     public String getDefaultIconDescription() {
         return null;
     }
@@ -132,16 +149,32 @@ public class TransitionMatcher extends Transition implements GTEntity,
         return _labelSet;
     }
 
+    /** Return true if the given object matches any transition in an FSM
+     *  controller or the modal model controller.
+     *
+     *  @param object The object to match.
+     *  @return true if the object matches a transition.
+     */
     public boolean match(NamedObj object) {
         return object instanceof Transition
                 || object.getClass().getName().equals(
-                        "ptolemy.domains.modal.kernel.Transition");
+                        "ptolemy.domains.fsm.kernel.Transition");
     }
 
+    /** Update appearance of this entity.
+     *
+     *  @param attribute The attribute containing ingredients of this entity.
+     *  @see GTEntityUtils#updateAppearance(GTEntity, GTIngredientsAttribute)
+     */
     public void updateAppearance(GTIngredientsAttribute attribute) {
         // GTEntityUtils.updateAppearance(this, attribute);
     }
 
+    /** React to the fact that the specified Settable has changed.
+     *
+     *  @param settable The object that has changed value.
+     *  @see GTEntityUtils#valueChanged(GTEntity, Settable)
+     */
     public void valueChanged(Settable settable) {
         GTEntityUtils.valueChanged(this, settable);
     }

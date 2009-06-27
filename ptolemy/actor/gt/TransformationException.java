@@ -1,4 +1,4 @@
-/*
+/* An exception to be thrown in model transformation.
 
 @Copyright (c) 2007-2008 The Regents of the University of California.
 All rights reserved.
@@ -35,46 +35,69 @@ import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.Nameable;
 
 /**
+ An exception to be thrown in model transformation.
 
  @author Thomas Huining Feng
  @version $Id$
  @since Ptolemy II 6.1
  @Pt.ProposedRating Red (tfeng)
  @Pt.AcceptedRating Red (tfeng)
+ @see GraphTransformer
  */
 public class TransformationException extends KernelException {
 
-    /**
-     *
+    /** Construct an exception with a no specific detail message.
      */
     public TransformationException() {
     }
 
-    /**
-     * @param object1
-     * @param object2
-     * @param detail
+    /** Construct an exception with a detail message that includes the
+     *  names of the first two arguments plus the third argument
+     *  string.  If one or more of the parameters are null, then the
+     *  message of the exception is adjusted accordingly.
+     *
+     *  @param object1 The first object.
+     *  @param object2 The second object.
+     *  @param detail The message.
      */
     public TransformationException(Nameable object1, Nameable object2,
             String detail) {
         super(object1, object2, detail);
     }
 
-    /**
-     * @param object1
-     * @param object2
-     * @param cause
-     * @param detail
+    /** Construct an exception with a detail message that includes the
+     *  names of the first two arguments plus the third argument
+     *  string.  If the cause argument is non-null, then the message
+     *  of this exception will include the message of the cause
+     *  argument.  The stack trace of the cause argument is used when
+     *  we print the stack trace of this exception.  If one or more of
+     *  the parameters are null, then the message of the exception is
+     *  adjusted accordingly.
+     *
+     *  @param object1 The first object.
+     *  @param object2 The second object.
+     *  @param cause The cause of this exception.
+     *  @param detail The message.
      */
     public TransformationException(Nameable object1, Nameable object2,
             Throwable cause, String detail) {
         super(object1, object2, cause, detail);
     }
 
+    /** Construct an exception with a detail message.
+     *
+     *  @param detail The message.
+     */
     public TransformationException(String detail) {
         this(null, null, detail);
     }
 
+    /** Construct an exception with a detail message.  The stack trace of the
+     *  cause argument is used when we print the stack trace of this exception.
+     *
+     *  @param detail The message.
+     *  @param cause The cause of this exception.
+     */
     public TransformationException(String detail, Throwable cause) {
         this(null, null, cause, detail);
     }

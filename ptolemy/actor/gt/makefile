@@ -109,7 +109,6 @@ JSRCS = \
 	RelationHidingAttribute.java \
 	Replacement.java \
 	StateMatcher.java \
-	SubgraphMatchingException.java \
 	TransformationException.java \
 	TransformationListener.java \
 	TransformationMode.java \
