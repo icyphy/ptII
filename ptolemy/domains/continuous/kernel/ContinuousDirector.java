@@ -432,54 +432,65 @@ public class ContinuousDirector extends FixedPointDirector implements
             // Iterate until the solver is done with the integration step
             // or the maximum number of iterations is reached.
             int iterations = 0;
-            while (!_ODESolver._isStepFinished() && iterations < _maxIterations
-                    && !_stopRequested) {
-
-                _resetAllReceivers();
-                // We only get here if we have no input events.
-                // The following call sets the receivers connected to the
-                // intputs to be "absent".
-                _transferInputsToInside();
-
-                super.fire();
-                // Outputs should only be produced on the first iteration of
-                // the solver because after that we are computing values in
-                // the future. We should not produce more outputs if we
-                // reduce the step size and try again because that could
-                // result in multiple output events where there should only
-                // be one.
-                if (!outputsProduced) {
-                    // Outputs need to be produced now, since the
-                    // values at the output ports are now the correct
-                    // values at the _iterationBeginTime, which on
-                    // the first pass through, will match the
-                    // current environment time.
-                    _transferOutputsToEnvironment();
-                    outputsProduced = true;
+            try {
+                _isIntermediateStep = true;
+                while (!_ODESolver._isStepFinished() && iterations < _maxIterations
+                        && !_stopRequested) {
+    
+                    _resetAllReceivers();
+                    // We only get here if we have no input events.
+                    // The following call sets the receivers connected to the
+                    // inputs to be "absent".
+                    _transferInputsToInside();
+    
+                    super.fire();
+                    // Outputs should only be produced on the first iteration of
+                    // the solver because after that we are computing values in
+                    // the future. We should not produce more outputs if we
+                    // reduce the step size and try again because that could
+                    // result in multiple output events where there should only
+                    // be one.
+                    if (!outputsProduced) {
+                        // Outputs need to be produced now, since the
+                        // values at the output ports are now the correct
+                        // values at the _iterationBeginTime, which on
+                        // the first pass through, will match the
+                        // current environment time.
+                        _transferOutputsToEnvironment();
+                        outputsProduced = true;
+                    }
+    
+                    // Advance the local view of time such that
+                    // the inputs to the integrators
+                    // can be calculated by firing all the actors.
+                    // Note that this doesn't change global model time.
+                    // It only changes the local view of time.
+                    double timeIncrement = _ODESolver._getRoundTimeIncrement();
+                    // This will return 1.0 when there is one or zero more
+                    // steps for the solver. Hence, the next step will not
+                    // be an intermediate step.
+                    if (timeIncrement == 1.0) {
+                        _isIntermediateStep = false;
+                    }
+                    _currentTime = _iterationBeginTime.add(_currentStepSize
+                            * timeIncrement);
+                    _index = 0;
+                    if (_debugging) {
+                        _debug("-- Setting current time for the next ODE solver round: "
+                                + _currentTime + " and index to 0.");
+                    }
+    
+                    _ODESolver._setRound(_ODESolver._getRound() + 1);
+    
+                    if (_debugging) {
+                        _debug("ODE solver solves the round #"
+                                + _ODESolver._getRound());
+                    }
+                    // Increase the iteration count.
+                    iterations++;
                 }
-
-                // Advance the local view of time such that
-                // the inputs to the integrators
-                // can be calculated by firing all the actors.
-                // Note that this doesn't change global model time.
-                // It only changes the local view of time.
-                double timeIncrement = _ODESolver._getRoundTimeIncrement();
-                _currentTime = _iterationBeginTime.add(_currentStepSize
-                        * timeIncrement);
-                _index = 0;
-                if (_debugging) {
-                    _debug("-- Setting current time for the next ODE solver round: "
-                            + _currentTime + " and index to 0.");
-                }
-
-                _ODESolver._setRound(_ODESolver._getRound() + 1);
-
-                if (_debugging) {
-                    _debug("ODE solver solves the round #"
-                            + _ODESolver._getRound());
-                }
-                // Increase the iteration count.
-                iterations++;
+            } finally {
+                _isIntermediateStep = false;
             }
             // If the step size is accurate and we did not reach the
             // maximum number of iterations then we are done.
@@ -1242,6 +1253,21 @@ public class ContinuousDirector extends FixedPointDirector implements
      */
     protected final boolean _isDebugging() {
         return _debugging;
+    }
+    
+    /** Return true if the solver is at the first or intermediate steps
+     *  of a multi-step solver. If there is an enclosing continuous
+     *  director, this method delegates to that director. Otherwise,
+     *  it checks the current step of the solver.
+     *  @return True if either the solver is not doing a multi-step
+     *   solution or it is at the last step of the multi-step solution.
+     */
+    protected boolean _isIntermediateStep() {
+        ContinuousDirector enclosingDirector = _enclosingContinuousDirector();
+        if (enclosingDirector != null) {
+            return enclosingDirector._isIntermediateStep();
+        }
+        return _isIntermediateStep;
     }
 
     /** Expose the debug method to the package.
@@ -2007,6 +2033,11 @@ public class ContinuousDirector extends FixedPointDirector implements
 
     /** A cache of the value of initStepSize. */
     private double _initStepSize;
+    
+    /** Flag indicating that the solver is iterating through the first or
+     *  intermediate steps in a multi-step solver.
+     */
+    private boolean _isIntermediateStep = false;
 
     /** The index of the time at which the current integration step began. */
     private int _iterationBeginIndex;
