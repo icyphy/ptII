@@ -61,6 +61,9 @@
     <input source="ptolemy/configs/fsmTableauFactory.xml"/>
     <input source="ptolemy/configs/caseTableauFactory.xml"/>
     <input source="ptolemy/configs/graphTableauFactory.xml"/>
+    <property name="Interface Window"
+            class="ptolemy.actor.gui.run.InterfaceTableau$Factory"/>
+
     <!-- Add the code generator to the full configuration. -->
     <!-- property name="factory2" class="ptolemy.actor.gui.PtolemyTableauFactory" -->
        <!--property name="Code Generator"
