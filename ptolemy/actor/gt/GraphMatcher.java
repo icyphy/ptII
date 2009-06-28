@@ -396,7 +396,7 @@ public class GraphMatcher extends GraphAnalyzer {
         FastLinkedList<LookbackEntry>.Entry entry = _lookbackList.getTail();
         LookbackEntry lists = null;
         while (entry != null) {
-            lists = entry.getValue();
+            lists = entry.getElement();
             if (!_negation && !lists.isFinished() || _negation
                     && !lists.isNegated()) {
                 break;
@@ -950,7 +950,7 @@ public class GraphMatcher extends GraphAnalyzer {
             int size = hostList.size();
             for (; i < size; i++) {
                 markedList.clear();
-                hostEntity = (CompositeEntity) entry.getValue();
+                hostEntity = (CompositeEntity) entry.getElement();
 
                 NamedObj nextChild = findFirstChild(hostEntity, markedList,
                         _matchResult.keySet());
@@ -995,7 +995,7 @@ public class GraphMatcher extends GraphAnalyzer {
         ObjectList.Entry patternEntry = patternList.getHead();
         Object patternObject = null;
         while (patternEntry != null) {
-            patternObject = patternEntry.getValue();
+            patternObject = patternEntry.getElement();
             if (_negation == _isNegated(patternObject)
                     && !_isIgnored(patternObject)) {
                 break;
@@ -1027,7 +1027,7 @@ public class GraphMatcher extends GraphAnalyzer {
             ObjectList.Entry hostEntry = hostList.getHead();
             while (hostEntry != null) {
                 hostEntry.remove();
-                Object hostObject = hostEntry.getValue();
+                Object hostObject = hostEntry.getElement();
                 if (_matchObject(patternObject, hostObject)) {
                     success = true;
                 }
