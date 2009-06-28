@@ -1,4 +1,4 @@
-/*
+/* An event to execute the model in the model parameter.
 
  Copyright (c) 2008-2009 The Regents of the University of California.
  All rights reserved.
@@ -49,7 +49,7 @@ import ptolemy.kernel.util.Workspace;
 //// Execute
 
 /**
-
+ An event to execute the model in the model parameter.
 
  @author Thomas Huining Feng
  @version $Id$
@@ -59,17 +59,36 @@ import ptolemy.kernel.util.Workspace;
  */
 public class Execute extends GTEvent {
 
-    /**
-     *  @param container
-     *  @param name
-     *  @exception IllegalActionException
-     *  @exception NameDuplicationException
+    /** Construct an event with the given name contained by the specified
+     *  composite entity. The container argument must not be null, or a
+     *  NullPointerException will be thrown. This event will use the
+     *  workspace of the container for synchronization and version counts.
+     *  If the name argument is null, then the name is set to the empty
+     *  string.
+     *  Increment the version of the workspace.
+     *  This constructor write-synchronizes on the workspace.
+     *
+     *  @param container The container.
+     *  @param name The name of the state.
+     *  @exception IllegalActionException If the state cannot be contained
+     *   by the proposed container.
+     *  @exception NameDuplicationException If the name coincides with
+     *   that of an entity already in the container.
      */
     public Execute(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
+    /** Clone the event into the specified workspace. This calls the
+     *  base class and then sets the attribute and port public members
+     *  to refer to the attributes and ports of the new state.
+     *
+     *  @param workspace The workspace for the new event.
+     *  @return A new event.
+     *  @exception CloneNotSupportedException If a derived class contains
+     *   an attribute that cannot be cloned.
+     */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         Execute newObject = (Execute) super.clone(workspace);
         newObject._effigy = null;
@@ -77,6 +96,17 @@ public class Execute extends GTEvent {
         return newObject;
     }
 
+    /** Process this event and execute the model in the model parameter to
+     *  completion.
+     *
+     *  @param arguments The arguments used to process this event, which must be
+     *   either an ArrayToken or a RecordToken.
+     *  @return A refiring data structure that contains a non-negative double
+     *   number if refire() should be called after that amount of model time, or
+     *   null if refire() need not be called.
+     *  @exception IllegalActionException If the model cannot be executed, or if
+     *   thrown by the superclass.
+     */
     public RefiringData fire(Token arguments) throws IllegalActionException {
         RefiringData data = super.fire(arguments);
 
@@ -139,6 +169,9 @@ public class Execute extends GTEvent {
         return data;
     }
 
+    /** Stop the execution of this event, which causes the model being executed
+     *  to be stopped, if any.
+     */
     public void stop() {
         synchronized (_managers) {
             for (Manager manager : _managers) {
@@ -147,7 +180,11 @@ public class Execute extends GTEvent {
         }
     }
 
+    /** The effigy for the executed model.
+     */
     private PtolemyEffigy _effigy;
 
+    /** The manager to execute the model.
+     */
     private List<Manager> _managers = new LinkedList<Manager>();
 }

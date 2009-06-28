@@ -1,4 +1,4 @@
-/*
+/* An attribute encapsulating a model transformation with the Ptera controller.
 
  Copyright (c) 2008-2009 The Regents of the University of California.
  All rights reserved.
@@ -64,7 +64,10 @@ import ptolemy.vergil.gt.TransformationAttributeIcon;
 //// TransformationAttribute
 
 /**
-
+ An attribute encapsulating a model transformation with the Ptera controller.
+ The transformation can be applied to the container of this attribute either
+ manually by the model user, or automatically by invoking the {@link
+ #executeTransformation()} method.
 
  @author Thomas Huining Feng
  @version $Id$
@@ -75,6 +78,19 @@ import ptolemy.vergil.gt.TransformationAttributeIcon;
 public class TransformationAttribute extends Attribute implements Configurable,
         GTAttribute {
 
+    /** Construct an attribute with the given name contained by the specified
+     *  entity. The container argument must not be null, or a
+     *  NullPointerException will be thrown.  This attribute will use the
+     *  workspace of the container for synchronization and version counts.
+     *  If the name argument is null, then the name is set to the empty string.
+     *  Increment the version of the workspace.
+     *  @param container The container.
+     *  @param name The name of this attribute.
+     *  @exception IllegalActionException If the attribute is not of an
+     *   acceptable class for the container, or if the name contains a period.
+     *  @exception NameDuplicationException If the name coincides with
+     *   an attribute already in the container.
+     */
     public TransformationAttribute(NamedObj container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
@@ -82,6 +98,14 @@ public class TransformationAttribute extends Attribute implements Configurable,
         _init();
     }
 
+    /** Construct an attribute in the specified workspace with an empty
+     *  string as a name. You can then change the name with setName().
+     *  If the workspace argument
+     *  is null, then use the default workspace.
+     *  The object is added to the directory of the workspace.
+     *  Increment the version number of the workspace.
+     *  @param workspace The workspace that will list the attribute.
+     */
     public TransformationAttribute(Workspace workspace) {
         super(workspace);
 
@@ -92,21 +116,24 @@ public class TransformationAttribute extends Attribute implements Configurable,
         }
     }
 
-    public TransformationAttribute(Workspace workspace, String name) {
-        super(workspace);
-
-        try {
-            setName(name);
-            _init();
-        } catch (KernelException e) {
-            throw new InternalErrorException(e);
-        }
-    }
-
+    /** Add an execution listener to the list of execution listeners, which are
+     *  invoked at specific points when the transformation is executed.
+     *
+     *  @param listener The listener.
+     *  @see #removeExecutionListener(ExecutionListener)
+     */
     public void addExecutionListener(ExecutionListener listener) {
         _executionListeners.add(listener);
     }
 
+    /** Clone the object into the specified workspace. The new object is
+     *  <i>not</i> added to the directory of that workspace (you must do this
+     *  yourself if you want it there).
+     *  The result is an attribute with no container.
+     *  @param workspace The workspace for the cloned object.
+     *  @exception CloneNotSupportedException Not thrown in this base class
+     *  @return The new Attribute.
+     */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         TransformationAttribute newObject = (TransformationAttribute) super
                 .clone(workspace);
@@ -126,6 +153,24 @@ public class TransformationAttribute extends Attribute implements Configurable,
         return newObject;
     }
 
+    /** Configure the object with data from the specified input source
+     *  (a URL) and/or textual data.  The object should interpret the
+     *  source first, if it is specified, followed by the literal text,
+     *  if that is specified.  The new configuration should usually
+     *  override any old configuration wherever possible, in order to
+     *  ensure that the current state can be successfully retrieved.
+     *  <p>
+     *  This method is defined to throw a very general exception to allow
+     *  classes that implement the interface to use whatever exceptions
+     *  are appropriate.
+     *  @param base The base relative to which references within the input
+     *   are found, or null if this is not known, or there is none.
+     *  @param source The input source, which specifies a URL, or null
+     *   if none.
+     *  @param text Configuration information given as text, or null if
+     *   none.
+     *  @exception Exception If something goes wrong.
+     */
     public void configure(URL base, String source, String text)
             throws Exception {
         _configureSource = source;
@@ -166,10 +211,22 @@ public class TransformationAttribute extends Attribute implements Configurable,
         }
     }
 
+    /** Execute the transformation with the container of this attribute as the
+     *  model to be transformed.
+     *
+     *  @exception Exception If error occurs in the transformation.
+     *  @see #executeTransformation(CompositeEntity)
+     */
     public void executeTransformation() throws Exception {
         executeTransformation((CompositeEntity) getContainer());
     }
 
+    /** Execute the transformation with the given model as the model to be
+     *  transformed.
+     *
+     *  @param model The model to be transformed.
+     *  @exception Exception If error occurs in the transformation.
+     */
     public void executeTransformation(CompositeEntity model) throws Exception {
         Manager manager = getModelUpdater().getManager();
         manager.addExecutionListener(new TransformationListener(manager,
@@ -202,26 +259,69 @@ public class TransformationAttribute extends Attribute implements Configurable,
         }
     }
 
+    /** Return the input source that was specified the last time the configure
+     *  method was called.
+     *  @return The string representation of the input URL, or null if the
+     *  no source has been used to configure this object, or null if no
+     *  external source need be used to configure this object.
+     */
     public String getConfigureSource() {
         return _configureSource;
     }
 
+    /** Return the text string that represents the current configuration of
+     *  this object.  Note that any configuration that was previously
+     *  specified using the source attribute need not be represented here
+     *  as well.
+     *  @return A configuration string, or null if no configuration
+     *  has been used to configure this object, or null if no
+     *  configuration string need be used to configure this object.
+     */
     public String getConfigureText() {
         return null;
     }
 
+    /** Get the model updater encapsulated in this attribute.
+     *
+     *  @return The model updater.
+     */
     public PteraModalModel getModelUpdater() {
         return _modelUpdater;
     }
 
+    /** Remove an execution listener from the list of execution listeners, which\
+     *  are invoked at specific points when the transformation is executed.
+     *
+     *  @param listener The listener to be removed.
+     *  @see #addExecutionListener(ExecutionListener)
+     */
     public void removeExecutionListener(ExecutionListener listener) {
         _executionListeners.remove(listener);
     }
 
+    /** The condition under which this attribute is applicable. It must evaluate
+     *  to a BooleanToken. If its value is false, execution of the
+     *  transformation causes no effect.
+     */
     public Parameter condition;
 
+    /** The editor factory for the contents in this attribute (the model
+     *  updater).
+     */
     public TransformationAttributeEditorFactory editorFactory;
 
+    /** Write a MoML description of the contents of this object, which
+     *  in this base class is the attributes.  This method is called
+     *  by _exportMoML().  If there are attributes, then
+     *  each attribute description is indented according to the specified
+     *  depth and terminated with a newline character.
+     *  Callers of this method should hold read access before
+     *  calling this method.  Note that exportMoML() does this for us.
+     *
+     *  @param output The output stream to write to.
+     *  @param depth The depth in the hierarchy, to determine indenting.
+     *  @exception IOException If an I/O error occurs.
+     */
     protected void _exportMoMLContents(Writer output, int depth)
             throws IOException {
         super._exportMoMLContents(output, depth);
@@ -238,15 +338,33 @@ public class TransformationAttribute extends Attribute implements Configurable,
         output.write(_getIndentPrefix(depth) + "</configure>\n");
     }
 
+    /** Clear the URI attribute of the given object.
+     *
+     *  @param object The object.
+     *  @exception IllegalActionException If the URI attribute of the object
+     *   cannot be removed.
+     */
     private static void _clearURI(NamedObj object)
-            throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException {
         URIAttribute attribute = (URIAttribute) object.getAttribute("_uri",
                 URIAttribute.class);
         if (attribute != null) {
-            attribute.setContainer(null);
+            try {
+                attribute.setContainer(null);
+            } catch (NameDuplicationException e) {
+                throw new IllegalActionException(attribute, e,
+                        "Unexpected exception.");
+            }
         }
     }
 
+    /** Create the parameters and private fields of this attribute.
+     *
+     *  @exception IllegalActionException If thrown when creating the
+     *   parameters.
+     *  @exception NameDuplicationException If thrown when creating the
+     *   parameters.
+     */
     private void _init() throws IllegalActionException,
             NameDuplicationException {
         condition = new Parameter(this, "condition");
@@ -278,17 +396,54 @@ public class TransformationAttribute extends Attribute implements Configurable,
                 "editorFactory");
     }
 
+    /** The configure source.
+     */
     private String _configureSource;
 
+    /** The configurer containing the model updater.
+     */
     private Configurer _configurer;
 
-    private List<ExecutionListener> _executionListeners = new LinkedList<ExecutionListener>();
+    /** The list of execution listeners.
+     */
+    private List<ExecutionListener> _executionListeners =
+        new LinkedList<ExecutionListener>();
 
+    /** The model updater.
+     */
     private PteraModalModel _modelUpdater;
 
+    //////////////////////////////////////////////////////////////////////////
+    //// TransformationListener
+
+    /**
+     An execution listener that sets the model parameter to contain the
+     container of the transformation attribute at the beginning of the
+     transformation.
+
+     @author Thomas Huining Feng
+     @version $Id$
+     @since Ptolemy II 8.0
+     @Pt.ProposedRating Red (tfeng)
+     @Pt.AcceptedRating Red (tfeng)
+     */
     private class TransformationListener extends Attribute implements
             ExecutionListener {
 
+        /** Construct an attribute with the given name contained by the specified
+         *  entity. The container argument must not be null, or a
+         *  NullPointerException will be thrown.  This attribute will use the
+         *  workspace of the container for synchronization and version counts.
+         *  If the name argument is null, then the name is set to the empty string.
+         *  Increment the version of the workspace.
+         *  @param manager The container of this listener.
+         *  @param name The name of this attribute.
+         *  @param model The model to be transformed.
+         *  @exception IllegalActionException If the attribute is not of an
+         *   acceptable class for the container, or if the name contains a period.
+         *  @exception NameDuplicationException If the name coincides with
+         *   an attribute already in the container.
+         */
         public TransformationListener(Manager manager, String name,
                 CompositeEntity model) throws IllegalActionException,
                 NameDuplicationException {
@@ -296,12 +451,28 @@ public class TransformationAttribute extends Attribute implements Configurable,
             _model = model;
         }
 
+        /** Do nothing.
+         *
+         *  @param manager The manager controlling the execution.
+         *  @param throwable The throwable to report.
+         */
         public void executionError(Manager manager, Throwable throwable) {
         }
 
+        /** Do nothing.
+         *
+         *  @param manager The manager controlling the execution.
+         */
         public void executionFinished(Manager manager) {
         }
 
+        /** If the manager's state becomes {@link Manager#INITIALIZING}, set the
+         *  model parameter in the model updater of the transformation attribute
+         *  to contain the container of the transformation attribute. Do nothing
+         *  otherwise.
+         *
+         *  @param manager The manager controlling the execution.
+         */
         public void managerStateChanged(Manager manager) {
             if (manager.getState() == Manager.INITIALIZING) {
                 ModelParameter modelAttribute = (ModelParameter) _modelUpdater
@@ -310,6 +481,8 @@ public class TransformationAttribute extends Attribute implements Configurable,
             }
         }
 
+        /** The model to be transformed.
+         */
         private CompositeEntity _model;
     }
 }

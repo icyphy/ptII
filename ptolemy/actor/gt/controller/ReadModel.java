@@ -1,4 +1,4 @@
-/*
+/* An event to read the model in a file into the model parameter.
 
  Copyright (c) 2008-2009 The Regents of the University of California.
  All rights reserved.
@@ -40,24 +40,35 @@ import ptolemy.kernel.util.Workspace;
 import ptolemy.moml.MoMLParser;
 
 //////////////////////////////////////////////////////////////////////////
-//// ReadMoML
+//// ReadModel
 
 /**
-
+ An event to read the model in a file into the model parameter.
 
  @author Thomas Huining Feng
  @version $Id$
  @since Ptolemy II 7.1
  @Pt.ProposedRating Red (tfeng)
  @Pt.AcceptedRating Red (tfeng)
+ @see WriteModel
  */
 public class ReadModel extends GTEvent {
 
-    /**
-     * @param container
-     * @param name
-     * @exception IllegalActionException
-     * @exception NameDuplicationException
+    /** Construct an event with the given name contained by the specified
+     *  composite entity. The container argument must not be null, or a
+     *  NullPointerException will be thrown. This event will use the
+     *  workspace of the container for synchronization and version counts.
+     *  If the name argument is null, then the name is set to the empty
+     *  string.
+     *  Increment the version of the workspace.
+     *  This constructor write-synchronizes on the workspace.
+     *
+     *  @param container The container.
+     *  @param name The name of the state.
+     *  @exception IllegalActionException If the state cannot be contained
+     *   by the proposed container.
+     *  @exception NameDuplicationException If the name coincides with
+     *   that of an entity already in the container.
      */
     public ReadModel(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
@@ -66,12 +77,31 @@ public class ReadModel extends GTEvent {
         modelFile = new FileParameter(this, "modelFile");
     }
 
+    /** Clone the event into the specified workspace. This calls the
+     *  base class and then sets the attribute and port public members
+     *  to refer to the attributes and ports of the new state.
+     *
+     *  @param workspace The workspace for the new event.
+     *  @return A new event.
+     *  @exception CloneNotSupportedException If a derived class contains
+     *   an attribute that cannot be cloned.
+     */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         ReadModel newObject = (ReadModel) super.clone(workspace);
         newObject._parser = null;
         return newObject;
     }
 
+    /** Process this event and read the model in file into the model parameter.
+     *
+     *  @param arguments The arguments used to process this event, which must be
+     *   either an ArrayToken or a RecordToken.
+     *  @return A refiring data structure that contains a non-negative double
+     *   number if refire() should be called after that amount of model time, or
+     *   null if refire() need not be called.
+     *  @exception IllegalActionException If the file cannot be read, or if
+     *   thrown by the superclass.
+     */
     public RefiringData fire(Token arguments) throws IllegalActionException {
         RefiringData data = super.fire(arguments);
 
@@ -99,7 +129,11 @@ public class ReadModel extends GTEvent {
         return data;
     }
 
+    /** The model file.
+     */
     public FileParameter modelFile;
 
+    /** The moml parser to parse the file.
+     */
     private MoMLParser _parser;
 }
