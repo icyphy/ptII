@@ -9,8 +9,9 @@
 <h1>Ptolemy II Domains</h1>
 <ul>
 <li> <a href="#ci">CI (Component Interaction, or push/pull)</a>
+<li> <a href="#continuous">Continuous (Continuous Time)</a>
 <li> <a href="#csp">CSP (Communicating Sequential Processes)</a>
-<li> <a href="#ct">CT (Continuous Time)</a>
+<li> <a href="#ct">CT (Continuous Time for use with the FSM domain)</a>
 <li> <a href="#de">DE (Discrete Events)</a>
 <li> <a href="#dde">DDE (Distributed Discrete Events)</a>
 <li> <a href="#ddf">DDF (Dynamic Dataflow)</a>
@@ -19,8 +20,11 @@
 <li> <a href="#giotto">Giotto (Synchronous Periodic Systems)</a>
 <li> <a href="#gr">GR (Three-D Graphics)</a>
 <li> <a href="#hdf">HDF (Heterochronous Dataflow)</a>
+<li> <a href="#modal">Modal (Modal, for use with the Continuous domain)</a>
 <li> <a href="#pn">PN (Process Networks)</a>
 <li> <a href="#psdf">PSDF (Parameterized Synchronous Dataflow)</a>
+<li> <a href="#ptera">Ptera (Ptolemy Event Relationship Actor)</a>
+<li> <a href="#ptinyos">Ptinyos</a>
 <li> <a href="#rendezvous">Rendezvous</a>
 <li> <a href="#sdf">SDF (Synchronous Dataflow)</a>
 <li> <a href="#sr">SR (Synchronous/Reactive)</a>
@@ -52,6 +56,36 @@ on the embedded processor. CI models can be used to simulate and study
 how the embedded software handles the asynchronous events, such as
 external interrupts and asynchronous I/O.
 <p> The CI domain is experimental and is shipped only with the full Ptolemy II release.
+
+<h2><a name="continuous">Continuous</a></h2>
+The Continuous Domain is a redesign of the Continuous Time (CT) domain with
+a rigorous semantics documented in the following papers:
+
+<ul>
+<li> Edward A. Lee, Haiyang Zheng, "<a href="http://ptolemy.eecs.berkeley.edu/publications/papers/07/unifying/index.htm#in_browse" target="_top">Leveraging Synchronous Language Principles for Heterogeneous Modeling and Design of Embedded Systems</a>," EMSOFT,  September 30 - October 2, 2007, Salzburg, Austria.
+
+<li> Haiyang Zheng, "<a href="http://www.eecs.berkeley.edu/Pubs/TechRpts/2007/EECS-2007-68.html#in_browser" target="_top">Operational Semantics of Hybrid Systems</a>," Ph.D. Dissertation, EECS Department, University of California, Berkeley, Technical Report No. UCB/EECS-2007-68, May 18, 2007.
+
+<li> Edward A. Lee and Haiyang Zheng, "<a href="http://ptolemy.eecs.berkeley.edu/publications/papers/05/OperationalSemantics" target="_top">Operational Semantics of Hybrid Systems</a>," Invited paper in <i>Proceedings of Hybrid Systems:  Computation and Control</i> (HSCC) LNCS 3414, Zurich, Switzerland, March 9-11, 2005, pp.25-53.
+</ul>
+
+The domain models systems with continuous dynamics, including
+for example analog circuits and mechanical systems, but also
+cleanly supports discrete events, modal behaviors, and signals that
+mix continuous-time behaviors with discrete events.
+Models for continuous dynamics are equivalent to linear or nonlinear
+integral equations. A sophisticated numerical solver for these equations
+is integrated with the director.
+The clean semantics of the Continuous domain enables its integration
+in hierarchical heterogeneous models that use the Synchronous/Reactive (SR)
+and Discrete Event (DE) domains. Arbitrary hierarchical mixtures of these
+domains are supported, although if SR is at the top level, then the
+<i>period</i> parameter of the director must be used so that time advances.
+Domain interactions are documented in the following paper:
+
+<ul>
+<li> A. Goderis, C. Brooks, I. Altintas, E. A. Lee, and C. Goble, "<a href="http://www.eecs.berkeley.edu/Pubs/TechRpts/2007/EECS-2007-139.html#in_browser" target="_top">Heterogeneous Composition of Models of Computation</a>," EECS Department, University of California, Berkeley, Tech. Rep. UCB/EECS-2007-139, Nov. 2007.
+</ul>
 
 <h2><a name="csp">CSP</a></h2>
 
@@ -308,6 +342,33 @@ model behaves like an SDF model.
 <p> The HDF domain is experimental and is shipped only with the full Ptolemy II release.
 
 
+<h2><a name="modal">Modal</a></h2>
+<p>Ptolemy II 8.0 includes a substantial rework of modal models and
+the underlying finite state machine infrastructure to make them work
+predictably and consistently across domains.</p>
+
+<p>Ptolemy II 8.0 includes a new implementation of continuous-time models
+based on the semantics given in "<a href="#LeeZheng:07:Leveraging">Synchronous Language Principles for Heterogeneous Modeling
+and Design of Embedded Systems</a>." In particular, the Continuous domain cleanly supports
+continuous-time models (using an ODE solver), discrete-event models,
+and arbitrary mixtures of the two, including signals that combine
+continuous-time segments with discrete events. It also interoperates
+cleanly with most other domains (pretty much all except PN and
+Rendezvous, for which there does not appear to be reasonable semantic
+model of such an interaction). Modal models are also cleanly supported
+with the Continuous domain, enabling hybrid system modeling with a
+rigorous semantics. The Continuous domain is expected to eventually
+replace CT.</p> 
+<ul>
+<li><a name="LeeZheng:07:Leveraging">Edward A. Lee, Haiyang Zheng</a>. <a
+href="http://chess.eecs.berkeley.edu/pubs/430.html#in_browser" target="_top">Leveraging
+Synchronous Language Principles for Heterogeneous Modeling
+and Design of Embedded Systems</a>, Proceedings of the
+7th ACM & IEEE international conference on Embedded
+software, Christoph M. Kirsch,  Reinhard Wilhelm (eds.),
+ACM, 114-123, 2007.
+</ul>
+
 <h2><a name="pn">PN</a></h2>
 <p>
 
@@ -381,6 +442,55 @@ interoperation with timed domains much more practical.
    would be ruled out by the SDF checks are allowed.
 
 <p> The PSDF domain is experimental and is shipped only with the full Ptolemy II release.
+
+<h2><a name="ptera">Ptera</a></h2>
+
+   <p>The Ptera (Ptolemy Event Relationship Actor) domain is a discrete-event model of computation. A model in Ptera is represented with a graph of nodes and edges, where nodes represent events and directed edges between events represent scheduling relation. One or more events can be selected as initial events, which are scheduled
+at model time 0.0. When an event is fired, it possibly performs certain actions, and if there are outgoing edges from that event, the events at the end points of those edges are scheduled after non-negative delays. One or more events can also be selected as final events. The firing of final events causes the event
+queue to be emptied after their actions are performed, and therefore no more events can be processed.
+
+<p>The Ptera domain supports a different kind of modal models called PteraModalModels, compared to modal models using FSMs (Finite State Machines) as the control. A PteraModalModel uses Ptera at the top level, and each event is refined into a sub-model. The refinements can use Ptera and any other Ptolemy models of computation.
+
+<p>A Ptera model is timed. Although it should work in many domains, the DE (Discrete-Event) domain or Ptera domain itself are recommended. When embedded in those domains, the scheduling of the Ptera model is delegated to the container by calling the fireAt() function of its director.
+
+<p>There are many useful additional features for Ptera, such as canceling edges and parameters. A canceling edge, denoted by a dotted line, cancels a previously scheduled event instead of scheduling a new one. If the pointed to event has multiple instances in the event queue, then the first instance is cancelled.
+Events may also have parameters, and the actual values for those parameters are specified by the expressions on the edges that schedule them. Those expressions are evaluated at run-time. The events may refer to the values of those parameters in their actions by parameter names.
+
+<h4>References</h4>
+<ul>
+<li>Thomas Huining Feng, "<a href="http://www.eecs.berkeley.edu/Pubs/TechRpts/2009/EECS-2009-77.html#in_browser" target="_top">Model Transformation with Hierarchical Discrete-Event Control</a>," Ph.D. Dissertation, EECS Department, University of California, Berkeley. UCB/EECS-2009-77. May 2009.
+<li>Lee W. Schruben, "<a href="http://doi.acm.org/10.1145/182.358460#in_browser">Simulation Modeling with Event Graphs</a>," Communications of the ACM (CACM), 26(11): 957-963, 1983.
+</ul>
+
+<h2><a name="ptinyos">Ptinyos</a></h2>
+<p>Viptos is an integration of a collection of Ptolemy II domains and
+<a href="http://www.tinyos.net/" target="_top">TinyOS</a>.  The main
+domain behind Viptos is the PtinyOS domain, which supports the
+construction and simulation of programs in <a
+href="http://nescc.sourceforge.net#in_browser"
+target="_top">nesC</a>.
+
+The nesC web page at <a href="http://nescc.sourceforge.net#in_browser"
+target="_top">http://nescc.sourceforge.net</a> describes nesC as
+<blockquote>
+&quot;an extension to the C programming
+language designed to embody the structuring concepts and execution
+model of TinyOS. TinyOS is an event-driven operating system designed
+for sensor network nodes that have very limited resources (e.g., 8K
+bytes of program memory, 512 bytes of RAM).&quot;
+</blockquote>
+
+<p>The PtinyOS domain leverages existing nesC libraries, using a tool
+called nc2moml to create the Ptolemy II libraries of components that
+are used to assemble models. Models are converted into nesC code by
+the PtinyOSDirector. TinyOS provides a rich library of nesC
+components. If you install TinyOS 1.x in $PTII/vendors/ptinyos, then
+the Ptolemy II configure script will find it and automatically make
+the TinyOS libraries available.</p>
+
+<p>In order to leverage another existing library of nesC components,
+you have to run nc2moml on that library.</p>
+
 
 <h2><a name="rendezvous">Rendezvous</a></h2>
 
