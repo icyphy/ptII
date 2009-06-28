@@ -33,16 +33,36 @@ package ptolemy.actor.gt.data;
 import java.util.Collection;
 import java.util.LinkedList;
 
+//////////////////////////////////////////////////////////////////////////
+//// Tuple
+
+/**
+ Generic tuple data structure.
+
+ @param <E> Type of the elements in this tuple.
+ @author Thomas Huining Feng
+ @version $Id$
+ @since Ptolemy II 8.0
+ @Pt.ProposedRating Red (tfeng)
+ @Pt.AcceptedRating Red (tfeng)
+ */
 public class Tuple<E> extends LinkedList<E> {
 
+    /** Construct a tuple containing all the elements of the given collection.
+     *
+     *  @param collection The collection.
+     */
     public Tuple(Collection<E> collection) {
         super(collection);
     }
 
+    /** Construct a tuple with all the given elements.
+     *
+     *  @param elements The elements.
+     */
     public Tuple(E... elements) {
         for (E element : elements) {
             add(element);
         }
     }
-
 }

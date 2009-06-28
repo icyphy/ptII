@@ -1,4 +1,5 @@
-/*
+/* A two-way hash map data structure to store matches found in a pattern
+   matching.
 
 @Copyright (c) 2007-2008 The Regents of the University of California.
 All rights reserved.
@@ -39,17 +40,41 @@ import ptolemy.actor.gt.ValueIterator;
 import ptolemy.data.Token;
 import ptolemy.kernel.util.NamedObj;
 
+//////////////////////////////////////////////////////////////////////////
+//// MatchResult
+
+/**
+ A two-way hash map data structure to store matches found in a pattern matching.
+
+ @author Thomas Huining Feng
+ @version $Id$
+ @since Ptolemy II 8.0
+ @Pt.ProposedRating Red (tfeng)
+ @Pt.AcceptedRating Red (tfeng)
+ */
 public class MatchResult extends SequentialTwoWayHashMap<Object, Object> {
 
+    /** Construct an empty match result.
+     */
     public MatchResult() {
     }
 
+    /** Construct an empty match result and tag it to be obtained by a specific
+     *  assignment to the parameters.
+     *
+     *  @param parameterValues The two-way hash map specifying the assignment to
+     *   the parameters. In this case, values may be the same for some keys
+     *   because the reverse hash map is never used.
+     */
     public MatchResult(
             SequentialTwoWayHashMap<ValueIterator, Token> parameterValues) {
         _parameterValues = parameterValues;
     }
 
-    @SuppressWarnings("unchecked")
+    /** Clone this match result and return the clone.
+    *
+    *  @return The clone.
+    */
     public Object clone() {
         MatchResult result = (MatchResult) super.clone();
         result._parameterValues = (SequentialTwoWayHashMap) _parameterValues
@@ -57,14 +82,31 @@ public class MatchResult extends SequentialTwoWayHashMap<Object, Object> {
         return result;
     }
 
+    /** Get the parameter assignment.
+     *
+     *  @return The two-way hash map for the assignment.
+     */
     public SequentialTwoWayHashMap<ValueIterator, Token> getParameterValues() {
         return _parameterValues;
     }
 
+    /** Generate a string describing this match result, ignoring the matches
+     *  between objects that are not instances of {@link NamedObj}.
+     *
+     *  @return The string.
+     */
     public String toString() {
         return toString(false);
     }
 
+    /** Generate a string describing this match result. If allMatches is false,
+     *  the matches between objects that are not instances of {@link NamedObj}
+     *  are ignored. Otherwise, those matches are also included in the string.
+     *
+     *  @param allMatches Whether the matches between objects that are not
+     *   instances of {@link NamedObj} are included.
+     *  @return The string.
+     */
     public String toString(boolean allMatches) {
         Comparator<Object> keyComparator = new Comparator<Object>() {
             public int compare(Object key1, Object key2) {
@@ -92,6 +134,7 @@ public class MatchResult extends SequentialTwoWayHashMap<Object, Object> {
         return buffer.toString();
     }
 
+    /** The assignment of values to the parameters.
+     */
     private SequentialTwoWayHashMap<ValueIterator, Token> _parameterValues;
-
 }

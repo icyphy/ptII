@@ -1,4 +1,4 @@
-/*
+/* A collection that is the combination of one or more collections.
 
 @Copyright (c) 2007-2009 The Regents of the University of California.
 All rights reserved.
@@ -29,37 +29,60 @@ ENHANCEMENTS, OR MODIFICATIONS.
  */
 package ptolemy.actor.gt.data;
 
+import java.lang.reflect.Array;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import ptolemy.kernel.util.KernelRuntimeException;
 
 //////////////////////////////////////////////////////////////////////////
-////GTRuleGraphFrame
+//// CombinedCollection
 
 /**
+  A collection that is the combination of one or more collections. This is a
+  more efficient implementation that copying all the elements of those
+  collections into a new collection and using that collection. No copying is
+  necessary because the component collections are maintained locally and their
+  elements are retrieved only when they are used.
 
+  @param <E> The type of elements in the collection.
   @author Thomas Huining Feng
   @version $Id$
-  @since Ptolemy II 6.1
+  @since Ptolemy II 8.0
   @see ptolemy.vergil.actor.ActorGraphFrame
   @Pt.ProposedRating Red (tfeng)
   @Pt.AcceptedRating Red (tfeng)
 */
 public class CombinedCollection<E> implements Collection<E> {
 
+    /** Construct a combined collection with no collection as its component.
+     */
     public CombinedCollection() {
     }
 
+    /** Construct a combined collection with one or more collections as its
+     *  components. The order of those components coincides with the order of
+     *  the elements of this combined collection.
+     *
+     *  @param collections The collections.
+     */
     public CombinedCollection(Collection<? extends E>... collections) {
         for (Collection<? extends E> collection : collections) {
             _collectionList.add(collection);
         }
     }
 
-    @SuppressWarnings("unchecked")
-    public boolean add(E o) {
+    /** Add an element to the end of this collection. Component collections are
+     *  not modified because an extra collection is added to the end that allows
+     *  to add elements to.
+     *
+     *  @param element The new element.
+     *  @return Always true.
+     */
+    public boolean add(E element) {
         Collection collection;
         if (_isLastListModifiable) {
             collection = _collectionList.get(_collectionList.size() - 1);
@@ -68,31 +91,51 @@ public class CombinedCollection<E> implements Collection<E> {
             _collectionList.add(collection);
             _isLastListModifiable = true;
         }
-        collection.add(o);
+        collection.add(element);
         return true;
     }
 
-    public boolean addAll(Collection<? extends E> c) {
-        _collectionList.add(c);
+    /** Add all elements of the provided collection to this collection. The
+     *  given collection is added as a component of this collection and no
+     *  copying is involved.
+     *
+     *  @param collection The collection to be added.
+     *  @return Always true.
+     */
+    public boolean addAll(Collection<? extends E> collection) {
+        _collectionList.add(collection);
         _isLastListModifiable = false;
         return true;
     }
 
+    /** Clear this collection by removing all its components.
+     */
     public void clear() {
         _collectionList.clear();
     }
 
-    public boolean contains(Object o) {
+    /** Test whether this collection contains the given element.
+     *
+     *  @param element The element.
+     *  @return true if the element is contained in this collection.
+     */
+    public boolean contains(Object element) {
         for (Collection<? extends E> collection : _collectionList) {
-            if (collection.contains(o)) {
+            if (collection.contains(element)) {
                 return true;
             }
         }
         return false;
     }
 
-    public boolean containsAll(Collection<?> c) {
-        for (Object object : c) {
+    /** Test whether this collection contains all the elements of the given
+     *  collection.
+     *
+     *  @param collection The collection.
+     *  @return true if all the elements are contained in this collection.
+     */
+    public boolean containsAll(Collection<?> collection) {
+        for (Object object : collection) {
             if (!contains(object)) {
                 return false;
             }
@@ -100,6 +143,10 @@ public class CombinedCollection<E> implements Collection<E> {
         return true;
     }
 
+    /** Test whether this collection is empty.
+     *
+     *  @return true if it is empty.
+     */
     public boolean isEmpty() {
         for (Collection<? extends E> collection : _collectionList) {
             if (!collection.isEmpty()) {
@@ -109,22 +156,45 @@ public class CombinedCollection<E> implements Collection<E> {
         return true;
     }
 
+    /** Return an iterator to iterate all the elements in this collection.
+     *
+     *  @return The iterator.
+     */
     public java.util.Iterator<E> iterator() {
         return new Iterator();
     }
 
-    public boolean remove(Object o) {
+    /** Throw a runtime exception because removal is not supported.
+     *
+     *  @param element The element to be removed.
+     *  @return None.
+     */
+    public boolean remove(Object element) {
         throw new KernelRuntimeException("Not implemented.");
     }
 
-    public boolean removeAll(Collection<?> c) {
+    /** Throw a runtime exception because removal is not supported.
+     *
+     *  @param collection The collection whose elements are to be removed.
+     *  @return None.
+     */
+    public boolean removeAll(Collection<?> collection) {
         throw new KernelRuntimeException("Not implemented.");
     }
 
-    public boolean retainAll(Collection<?> c) {
+    /** Throw a runtime exception because removal is not supported.
+     *
+     *  @param collection The collection whose elements are to be retained.
+     *  @return None.
+     */
+    public boolean retainAll(Collection<?> collection) {
         throw new KernelRuntimeException("Not implemented.");
     }
 
+    /** Return size of this collection.
+     *
+     *  @return The size.
+     */
     public int size() {
         int size = 0;
         for (Collection<? extends E> collection : _collectionList) {
@@ -133,16 +203,28 @@ public class CombinedCollection<E> implements Collection<E> {
         return size;
     }
 
+    /** Return an array that contains all the elements in this collection.
+     *
+     *  @return The array.
+     */
     public Object[] toArray() {
         return toArray(new Object[size()]);
     }
 
-    @SuppressWarnings("unchecked")
+    /** Store all the elements in this collection into the given array if its
+     *  size is enough for the storage, or create a new array of the same type
+     *  as the given array for the storage and return it.
+     *
+     *  @param <T> The element type of the array.
+     *  @param array The array.
+     *  @return The given array, or a new array if the given array is not big
+     *   enough.
+     */
     public <T> T[] toArray(T[] array) {
         int size = size();
         if (array.length < size) {
-            array = (T[]) java.lang.reflect.Array.newInstance(array.getClass()
-                    .getComponentType(), size);
+            array = (T[]) Array.newInstance(array.getClass().getComponentType(),
+                    size);
         }
 
         int i = 0;
@@ -160,52 +242,95 @@ public class CombinedCollection<E> implements Collection<E> {
         return array;
     }
 
+    /** Get the list containing all the component collections. This list cannot
+     *  be modified.
+     *
+     *  @return The list containing all the component collections.
+     */
     protected List<Collection<? extends E>> _getCollectionList() {
-        return _collectionList;
+        return Collections.unmodifiableList(_collectionList);
     }
 
-    private List<Collection<? extends E>> _collectionList = new LinkedList<Collection<? extends E>>();
+    /** The list containing all the component collections.
+     */
+    private List<Collection<? extends E>> _collectionList =
+        new LinkedList<Collection<? extends E>>();
 
+    /** Whether the last component collection in the list can be modified (i.e.,
+     *  it is not given by the user but is created for storing new elements.
+     */
     private boolean _isLastListModifiable = false;
 
+    //////////////////////////////////////////////////////////////////////////
+    //// Iterator
+
+    /**
+     The iterator for iterating elements in this collection.
+
+     @author Thomas Huining Feng
+     @version $Id$
+     @since Ptolemy II 8.0
+     @Pt.ProposedRating Red (tfeng)
+     @Pt.AcceptedRating Red (tfeng)
+     */
     private class Iterator implements java.util.Iterator<E> {
 
+        /** Test whether there is a next element.
+         *
+         *  @return true if there is a next element.
+         */
         public boolean hasNext() {
-            return _objectIterator != null;
+            return _elementIterator != null;
         }
 
+        /** Return the next element, if any, or throw a {@link
+         *  NoSuchElementException} if the end of the collection has already
+         *  been reached.
+         *
+         *  @return The next element.
+         */
         public E next() {
-            E next = _objectIterator.next();
+            E next = _elementIterator.next();
             _ensureNext();
             return next;
         }
 
+        /** Throw a runtime exception because removal is not supported.
+         */
         public void remove() {
             throw new KernelRuntimeException("Not implemented.");
         }
 
+        /** Construct an iterator.
+         */
         Iterator() {
             _collectionIterator = _collectionList.iterator();
             _ensureNext();
         }
 
+        /** Move the pointer to the next element in the collection.
+         */
         private void _ensureNext() {
-            if (_objectIterator == null || !_objectIterator.hasNext()) {
-                _objectIterator = null;
+            if (_elementIterator == null || !_elementIterator.hasNext()) {
+                _elementIterator = null;
                 while (_collectionIterator.hasNext()) {
                     Collection<? extends E> collection = _collectionIterator
                             .next();
                     if (!collection.isEmpty()) {
-                        _objectIterator = collection.iterator();
+                        _elementIterator = collection.iterator();
                         break;
                     }
                 }
             }
         }
 
+        /** The iterator to iterate the component collections.
+         */
         private java.util.Iterator<Collection<? extends E>> _collectionIterator;
 
-        private java.util.Iterator<? extends E> _objectIterator;
+        /** The iterator to iterate the elements of the chosen component
+         *  collection.
+         */
+        private java.util.Iterator<? extends E> _elementIterator;
     }
-
 }
