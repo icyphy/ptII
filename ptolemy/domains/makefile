@@ -74,14 +74,12 @@ PTCLASSJAR =
 
 PTAUXALLJARS = \
 		ci/ci.jar \
-		continuous/continuous.jar \
 		csp/csp.jar \
 		curriculum/curriculum.jar \
 		dde/dde.jar \
 	        dt/dt.jar \
 		giotto/giotto.jar \
 		$(PTGRDOMAIN_JAR) \
-		modal/modal.jar \
 		petrinet/petrinet.jar \
 		properties/properties.jar \
 		ptera/ptera.jar \
@@ -103,10 +101,12 @@ PTAUXALLJAR =	experimentalDomains.jar
 # If you change this, change DIRS above
 PTCLASSALLJARS = \
 		ct/ct.jar \
+		continuous/continuous.jar \
 		de/de.jar \
 		ddf/ddf.jar \
 		fsm/fsm.jar \
 		hdf/hdf.jar \
+		modal/modal.jar \
 		pn/pn.jar \
 		rendezvous/rendezvous.jar \
 		sdf/sdf.jar \
