@@ -264,7 +264,7 @@ public class Event extends State implements Initializable {
         }
     }
 
-    /** Clone the state into the specified workspace. This calls the
+    /** Clone the event into the specified workspace. This calls the
      *  base class and then sets the attribute and port public members
      *  to refer to the attributes and ports of the new state.
      *
