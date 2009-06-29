@@ -1,5 +1,5 @@
-/*  This actor opens a window to display the specified model and
-applies its inputs to the model.
+/*  An actor to open a window to display the specified model and applie its
+    inputs to the model.
 
 @Copyright (c) 2007-2009 The Regents of the University of California.
 All rights reserved.
@@ -54,7 +54,8 @@ import ptolemy.moml.MoMLParser;
 //// ModelGenerator
 
 /**
-This actor opens a window to display the specified model.
+An actor to open a window to display the specified model and applie its inputs
+to the model.
 If inputs are provided for the moml input port, they are expected to be
 MoML strings that are to be applied to the model. This can be used, for
 example, to create animations. If inputs are not provided for the moml input
@@ -70,6 +71,15 @@ PortParameter.
 */
 public class ModelGenerator extends Source {
 
+    /** Construct an actor with the given container and name.
+     *  The output and trigger ports are also constructed.
+     *  @param container The container.
+     *  @param name The name of this actor.
+     *  @exception IllegalActionException If the entity cannot be contained
+     *   by the proposed container.
+     *  @exception NameDuplicationException If the container already has an
+     *   actor with this name.
+     */
     public ModelGenerator(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
@@ -99,6 +109,15 @@ public class ModelGenerator extends Source {
         return newObject;
     }
 
+    /** Read the input at the input ports. If the moml port has a token, read it
+     *  in as a string and parse the string into a model. If not, create an
+     *  empty model. If the modelName is not an empty string, set the name of
+     *  the model with the value of modelName. Produce the model to the output
+     *  port.
+     *
+     *  @exception IllegalActionException If the ports cannot be read, or if the
+     *   model cannot be produced.
+     */
     public void fire() throws IllegalActionException {
         super.fire();
 
@@ -158,6 +177,15 @@ public class ModelGenerator extends Source {
         }
     }
 
+    /** Return true if the moml port is connected and has a token, or the
+     *  modelName port is connected and has a token, or neither the modelName
+     *  port nor the moml port is connected (in which case this actor serves as
+     *  a source).
+     *
+     *  @return true if the actor is ready to fire; false otherwise.
+     *  @exception IllegalActionException If connectivity of the input ports
+     *   cannot be determined, or availability of the tokens cannot be tested.
+     */
     public boolean prefire() throws IllegalActionException {
         ParameterPort modelNamePort = modelName.getPort();
         return super.prefire()
@@ -168,10 +196,21 @@ public class ModelGenerator extends Source {
                         && !modelNamePort.isOutsideConnected());
     }
 
+    /** The port parameter for the model name.
+     */
     public PortParameter modelName;
 
+    /** The port to receive moml strings of the models.
+     */
     public TypedIOPort moml;
 
+    /** Given a model name, generate a URI for the model to be created with that
+     *  name.
+     *
+     *  @param modelName The model name.
+     *  @return The URI.
+     *  @exception URISyntaxException If the URI cannot be determined.
+     */
     private URI _getModelURI(String modelName) throws URISyntaxException {
         URI uri = URIAttribute.getModelURI(this);
         if (uri == null) {
@@ -197,7 +236,11 @@ public class ModelGenerator extends Source {
         }
     }
 
+    /** The empty model.
+     */
     private Entity _emptyModel;
 
+    /** The parser used to parse the moml strings.
+     */
     private MoMLParser _parser = new MoMLParser();
 }

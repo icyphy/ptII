@@ -33,7 +33,6 @@ import java.util.List;
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
-import ptolemy.actor.IOPort;
 import ptolemy.actor.util.Time;
 import ptolemy.data.expr.ParseTreeEvaluator;
 import ptolemy.domains.modal.kernel.FSMActor;
@@ -58,6 +57,11 @@ import ptolemy.kernel.util.Workspace;
  system model. It extends ModalDirector by implementing the ContinuousStatefulComponent
  and ContinuousStepSizeController interfaces by delegating the function of those
  interfaces to the currently active state refinement.
+ <p>
+ Note that when a multi-step solver is used, the guards on the transitions are
+ only evaluated when either the step size is zero or the multi-step solver has
+ just completed its last step. The guards are not evaluated during intermediate
+ steps.
  <p>
  This director is based on HSFSMDirector by Xiaojun Liu and Haiyang Zheng.
 
@@ -103,10 +107,47 @@ public class HybridModalDirector extends FSMDirector implements
                 .clone(workspace);
         newObject._enclosingContinuousDirector = null;
         newObject._enclosingContinuousDirectorVersion = -1;
-        /* FIXME
-        newObject._receivers = new LinkedList();
-        */
         return newObject;
+    }
+
+    /** Fire the model model for one iteration. Override the base class
+     *  to avoid firing the controller during intermediate stages of a
+     *  multi-step solver.
+     *  @exception IllegalActionException If there is more than one
+     *   transition enabled and nondeterminism is not permitted,
+     *   or there is no controller, or it is thrown by any
+     *   choice action.
+     */
+    public void fire() throws IllegalActionException {
+        ContinuousDirector enclosingDirector = _enclosingContinuousDirector();
+        if (enclosingDirector != null && enclosingDirector._isIntermediateStep()) {
+            FSMActor controller = getController();
+            State currentState = controller.currentState();
+            if (_debugging) {
+                _debug("*** Firing during intermediate stage of solver "
+                        + getFullName(), " at time " + getModelTime());
+                _debug("Current state is:", currentState.getName());
+            }
+            Actor[] stateRefinements = currentState.getRefinement();
+
+            if (stateRefinements != null) {
+                for (int i = 0; i < stateRefinements.length; ++i) {
+                    if (_stopRequested) {
+                        break;
+                    }
+                    if (stateRefinements[i].prefire()) {
+                        if (_debugging) {
+                            _debug("Fire state refinement:",  stateRefinements[i].getName());
+                        }
+                        stateRefinements[i].fire();
+                        _stateRefinementsToPostfire.add(stateRefinements[i]);
+                    }
+                }
+            }
+            controller.readOutputsFromRefinement();
+        } else {
+            super.fire();
+        }
     }
 
     /** Return error tolerance used for detecting enabled transitions.
@@ -137,11 +178,10 @@ public class HybridModalDirector extends FSMDirector implements
     }
 
     /** Return true if all actors that were fired in the current iteration
-     *  report that the step size is accurate.
+     *  report that the step size is accurate and if no transition is enabled.
      *  @return True if the current step is accurate.
      */
     public boolean isStepSizeAccurate() {
-        boolean result = true;
         _lastDistanceToBoundary = 0.0;
         _distanceToBoundary = 0.0;
 
@@ -176,7 +216,7 @@ public class HybridModalDirector extends FSMDirector implements
         // ContinuousDirector.
         ContinuousDirector enclosingDirector = _enclosingContinuousDirector();
         if (enclosingDirector == null) {
-            return result;
+            return true;
         }
         try {
             // Check whether there is any preemptive transition enabled.
@@ -227,7 +267,7 @@ public class HybridModalDirector extends FSMDirector implements
                     && (nonPreemptiveTrWithEvent == null)) {
                 _lastDistanceToBoundary = 0.0;
                 _distanceToBoundary = 0.0;
-                return result;
+                return true;
             } else {
                 Transition enabledTransition = null;
 
@@ -323,7 +363,7 @@ public class HybridModalDirector extends FSMDirector implements
                 if (_distanceToBoundary < errorTolerance) {
                     _distanceToBoundary = 0.0;
                     _lastDistanceToBoundary = 0.0;
-                    return result;
+                    return true;
                 } else {
                     return false;
                 }
@@ -335,7 +375,7 @@ public class HybridModalDirector extends FSMDirector implements
     }
 
     /** Override the base class so that if there is no enabled transition
-     *  then we record for each relation (comparison operation) in each
+     *  then we record for each comparison operation in each
      *  guard expression the distance between the current value of the
      *  variable being compared and the threshold.
      *  @exception IllegalActionException If thrown by any commit action
@@ -346,8 +386,9 @@ public class HybridModalDirector extends FSMDirector implements
         State currentState = controller.currentState();
         Transition lastChosenTransition = controller.getLastChosenTransition();
         if (lastChosenTransition == null) {
-            // Only commit the current states of the relationlists
-            // of all the transitions during these execution phases.
+            // No transition was chosen.
+            // Record the current values on either side of each
+            // comparison operation (called a relation) in each guard.
             Iterator iterator = currentState.nonpreemptiveTransitionList()
                     .listIterator();
             while (iterator.hasNext()) {
@@ -392,17 +433,6 @@ public class HybridModalDirector extends FSMDirector implements
                         .getRelationList();
                 relationList.resetRelationList();
             }
-            // The superclass only calls fireAtCurrentTime() if there is an enabled
-            // transition in the new state. We want to always call it after taking
-            // a transition to get the effect of superdense time. That is, we will
-            // fire again at the current time in the new state so that outputs from
-            // the new state.
-            NamedObj container = getContainer();
-            if (container instanceof Actor) {
-                Director executiveDirector = ((Actor) container)
-                        .getExecutiveDirector();
-                executiveDirector.fireAtCurrentTime((Actor) container);
-            }
         }
         return super.postfire();
     }
@@ -421,9 +451,7 @@ public class HybridModalDirector extends FSMDirector implements
         if (_debugging) {
             _debug("HybridModalDirector: Called prefire().");
         }
-        /* FIXME
-        _resetAllReceivers();
-        */
+        // Set model time to match the enclosing director.
         Nameable container = getContainer();
         if (container instanceof Actor) {
             Director executiveDirector = ((Actor) container)
@@ -439,7 +467,7 @@ public class HybridModalDirector extends FSMDirector implements
         }
 
         boolean result = true;
-        // if any actor is not ready to fire, stop prefiring the
+        // If any refinement is not ready to fire, stop prefiring the
         // remaining actors, call super.prefire(), and return false;
         State st = getController().currentState();
         Actor[] actors = st.getRefinement();
@@ -584,41 +612,6 @@ public class HybridModalDirector extends FSMDirector implements
         return result;
     }
 
-    /** Transfer data from the specified input port of the
-     *  container to the ports it is connected to on the inside.
-     *  If there is no data on the specified input port, then
-     *  set the ports on the inside to absent by calling sendClearInside().
-     *  This method delegates the data transfer
-     *  operation to the transferInputs method of the super class.
-     *
-     *  @exception IllegalActionException If the port is not an opaque
-     *   input port.
-     *  @param port The port to transfer tokens from.
-     *  @return True if at least one token is transferred.
-     */
-    public boolean transferInputs(IOPort port) throws IllegalActionException {
-        boolean result = false;
-        // A special case: if the input port is not connected from outside,
-        // meaning the !port.isConnected(), then we send clear all the (input)
-        // ports awaiting inputs from this input port.
-        // Also note that it is guaranteed that there exists only one relation
-        // from the input port since only single port is supported for modal
-        // model, we can call sendClearInside() with an argument 0.
-        if (!port.isOutsideConnected()) {
-            port.sendClearInside(0);
-        }
-        for (int i = 0; i < port.getWidth(); i++) {
-            if (port.isKnown(i)) {
-                if (port.hasToken(i)) {
-                    result = super.transferInputs(port) || result;
-                } else {
-                    port.sendClearInside(i);
-                }
-            }
-        }
-        return result;
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////                       protected methods                   ////
 
@@ -650,21 +643,6 @@ public class HybridModalDirector extends FSMDirector implements
         }
         return _enclosingContinuousDirector;
     }
-
-    /** Reset all receivers to unknown status.
-     */
-    /* FIXME
-    protected void _resetAllReceivers() {
-        if (_debugging) {
-            _debug("    HybridModalDirector is resetting all receivers");
-        }
-
-        Iterator receiverIterator = _receivers.iterator();
-        while (receiverIterator.hasNext()) {
-            ((FixedPointReceiver) receiverIterator.next()).reset();
-        }
-    }
-    */
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
@@ -703,12 +681,7 @@ public class HybridModalDirector extends FSMDirector implements
 
     /** Local variable to indicate the last committed distance to boundary. */
     private double _lastDistanceToBoundary = 0.0;
-
-    /** List of all receivers this director has created. */
-    /* FIXME
-    private List _receivers = new LinkedList();
-    */
-
+    
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
 

@@ -1,4 +1,5 @@
-/*
+/* An event to clone the model in the model parameter and store the clone back
+   into it.
 
  Copyright (c) 2008-2009 The Regents of the University of California.
  All rights reserved.
@@ -40,7 +41,8 @@ import ptolemy.moml.MoMLParser;
 //// Clone
 
 /**
-
+ An event to clone the model in the model parameter and store the clone back
+ into it.
 
  @author Thomas Huining Feng
  @version $Id$
@@ -50,11 +52,21 @@ import ptolemy.moml.MoMLParser;
  */
 public class Clone extends GTEvent {
 
-    /**
-     *  @param container
-     *  @param name
-     *  @exception IllegalActionException
-     *  @exception NameDuplicationException
+    /** Construct an event with the given name contained by the specified
+     *  composite entity. The container argument must not be null, or a
+     *  NullPointerException will be thrown. This event will use the
+     *  workspace of the container for synchronization and version counts.
+     *  If the name argument is null, then the name is set to the empty
+     *  string.
+     *  Increment the version of the workspace.
+     *  This constructor write-synchronizes on the workspace.
+     *
+     *  @param container The container.
+     *  @param name The name of the state.
+     *  @exception IllegalActionException If the state cannot be contained
+     *   by the proposed container.
+     *  @exception NameDuplicationException If the name coincides with
+     *   that of an entity already in the container.
      */
     public Clone(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
@@ -65,6 +77,20 @@ public class Clone extends GTEvent {
         useMoml.setToken(BooleanToken.FALSE);
     }
 
+    /** Process this event and clone the model in the model parameter. If the
+     *  useMoML parameter is true, the current model is exported into moml and
+     *  the moml is parsed to retrieve a new model. Otherwise, the clone()
+     *  method is used to clone the current model. The new model is stored back
+     *  into the model parameter.
+     *
+     *  @param arguments The arguments used to process this event, which must be
+     *   either an ArrayToken or a RecordToken.
+     *  @return A refiring data structure that contains a non-negative double
+     *   number if refire() should be called after that amount of model time, or
+     *   null if refire() need not be called.
+     *  @exception IllegalActionException If the model cannot be cloned, or if
+     *   thrown by the superclass.
+     */
     public RefiringData fire(Token arguments) throws IllegalActionException {
         RefiringData data = super.fire(arguments);
 
@@ -95,5 +121,7 @@ public class Clone extends GTEvent {
         return data;
     }
 
+    /** Whether the cloning should use moml exported from the model.
+     */
     public Parameter useMoml;
 }

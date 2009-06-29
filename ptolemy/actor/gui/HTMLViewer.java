@@ -423,32 +423,32 @@ public class HTMLViewer extends TableauFrame implements Printable,
         while (rules.hasMoreElements()) {
             String name = (String) rules.nextElement();
             Style rule = styleSheet.getStyle(name);
-            System.out.println("    ruleSS1: " + name + " " + rule.getName()
-                    + ": " + rule.toString());
+            //System.out.println("    ruleSS1: " + name + " " + rule.getName()
+            //        + ": " + rule.toString());
             Enumeration attributeNames = rule.getAttributeNames();
             while (attributeNames.hasMoreElements()) {
                 Object attributeName = attributeNames.nextElement();
-                System.out.println("      attrname: " + attributeName + " "
-                        + attributeName.getClass() + " getAttribute(): "
-                        + rule.getAttribute(attributeName) + " class: "
-                        + rule.getAttribute(attributeName).getClass());
+                //System.out.println("      attrname: " + attributeName + " "
+                //        + attributeName.getClass() + " getAttribute(): "
+                //        + rule.getAttribute(attributeName) + " class: "
+                //        + rule.getAttribute(attributeName).getClass());
 
             }
         }
 
         StyleSheet styleSheets[] = styleSheet.getStyleSheets();
         for (int i = 0; i < styleSheets.length; i++) {
-            System.out.println("  stylesSheet " + i + " " + styleSheets[i]);
+            //System.out.println("  stylesSheet " + i + " " + styleSheets[i]);
             rules = styleSheets[i].getStyleNames();
             while (rules.hasMoreElements()) {
                 String name = (String) rules.nextElement();
                 Style rule = styleSheets[i].getStyle(name);
-                System.out.println("    rule: " + rule.getName() + ": "
-                        + rule.toString());
+                //System.out.println("    rule: " + rule.getName() + ": "
+                //        + rule.toString());
                 Enumeration attributeNames = rule.getAttributeNames();
                 while (attributeNames.hasMoreElements()) {
-                    System.out.println("      attrname: "
-                            + attributeNames.nextElement());
+                    //System.out.println("      attrname: "
+                    //        + attributeNames.nextElement());
                 }
             }
         }
@@ -471,10 +471,10 @@ public class HTMLViewer extends TableauFrame implements Printable,
                 String rgb = Integer.toHexString(shadow.getRGB());
                 String rule = "body {background: #"
                         + rgb.substring(2, rgb.length()) + "}";
-                rule = "foo {thisisatest: bar}";
+                //rule = "foo {thisisatest: bar}";
                 styleSheet.addRule(rule);
-                System.out.println("HTMLViewer: stylesheet: " + styleSheet
-                        + " shadow: " + shadow + "\n rule: " + rule);
+                //System.out.println("HTMLViewer: stylesheet: " + styleSheet
+                //        + " shadow: " + shadow + "\n rule: " + rule);
                 _HTMLEditorKit.setStyleSheet(styleSheet);
             } catch (Exception ex) {
                 System.err.println("Problem setting background color");

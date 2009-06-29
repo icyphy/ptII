@@ -1,5 +1,5 @@
 /* An attribute to specify that all composite actors within its container should
-   be considered as transparent, unless that have directors.
+   be considered as transparent, except the ones with directors.
 
  Copyright (c) 2008-2009 The Regents of the University of California.
  All rights reserved.
@@ -44,13 +44,14 @@ import ptolemy.vergil.toolbox.VisibleParameterEditorFactory;
 
 /**
  An attribute to specify that all composite actors within its container should
- be considered as transparent, unless that have directors.
+ be considered as transparent, except the ones with directors.
 
  @author Thomas Huining Feng
  @version $Id$
  @since Ptolemy II 7.1
  @Pt.ProposedRating Red (tfeng)
  @Pt.AcceptedRating Red (tfeng)
+ @see HierarchyFlatteningAttribute
  */
 public class ContainerIgnoringAttribute extends Parameter implements
         GTAttribute {

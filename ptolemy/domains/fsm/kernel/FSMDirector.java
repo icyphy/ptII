@@ -242,23 +242,23 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
     public void fire() throws IllegalActionException {
         _stateRefinementsToPostfire.clear();
         _transitionRefinementsToPostfire.clear();
-        FSMActor ctrl = getController();
-        ctrl.readInputs();
-        State st = ctrl.currentState();
+        FSMActor controller = getController();
+        controller.readInputs();
+        State currentState = controller.currentState();
         if (_debugging) {
             _debug("*** Firing " + getFullName(), " at time " + getModelTime());
-            _debug("Current state is:", st.getName());
+            _debug("Current state is:", currentState.getName());
         }
 
-        Transition tr = ctrl.chooseTransition(st.preemptiveTransitionList());
-        _enabledTransition = tr;
+        Transition chosenTransition = controller.chooseTransition(currentState.preemptiveTransitionList());
+        _enabledTransition = chosenTransition;
 
-        if (tr != null) {
+        if (chosenTransition != null) {
             if (_debugging) {
-                _debug("Preemptive transition enabled:", tr.getName());
+                _debug("Preemptive transition enabled:",  chosenTransition.getName());
             }
             // First execute the refinements of the transition.
-            Actor[] actors = tr.getRefinement();
+            Actor[] actors = chosenTransition.getRefinement();
 
             if (actors != null) {
                 for (int i = 0; i < actors.length; ++i) {
@@ -276,11 +276,11 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
                 }
             }
 
-            ctrl.readOutputsFromRefinement();
+            controller.readOutputsFromRefinement();
             return;
         }
 
-        Actor[] actors = st.getRefinement();
+        Actor[] actors = currentState.getRefinement();
 
         if (actors != null) {
             for (int i = 0; i < actors.length; ++i) {
@@ -296,16 +296,16 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
                 }
             }
         }
-        st.setVisited(true);
-        ctrl.readOutputsFromRefinement();
+        currentState.setVisited(true);
+        controller.readOutputsFromRefinement();
 
-        tr = ctrl.chooseTransition(st.nonpreemptiveTransitionList());
-        _enabledTransition = tr;
-        if (tr != null) {
+        chosenTransition = controller.chooseTransition(currentState.nonpreemptiveTransitionList());
+        _enabledTransition = chosenTransition;
+        if (chosenTransition != null) {
             if (_debugging) {
-                _debug("Nonpreemptive transition enabled:", tr.getName());
+                _debug("Nonpreemptive transition enabled:",  chosenTransition.getName());
             }
-            actors = tr.getRefinement();
+            actors = chosenTransition.getRefinement();
             if (actors != null) {
                 for (int i = 0; i < actors.length; ++i) {
                     if (_stopRequested) {
@@ -320,7 +320,7 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
                         _transitionRefinementsToPostfire.add(actors[i]);
                     }
                 }
-                ctrl.readOutputsFromRefinement();
+                controller.readOutputsFromRefinement();
             }
         }
     }

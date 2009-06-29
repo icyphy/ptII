@@ -1,4 +1,5 @@
-/*
+/* An attribute that specifies the location of a design pattern and populates
+   the container with that design pattern automatically.
 
  Copyright (c) 2008-2009 The Regents of the University of California.
  All rights reserved.
@@ -56,17 +57,36 @@ import ptolemy.moml.MoMLParser;
 //// DesignPatternImporter
 
 /**
+ An attribute that specifies the location of a design pattern and populates the
+ container with that design pattern automatically. This attribute has the same
+ effect of importing a design pattern into the current model with the menu item
+ in the File menu of the Ptolemy environment, but it automatically imports the
+ specified design pattern and does not require the model user to manually import
+ it.
 
 
  @author Thomas Huining Feng
  @version $Id$
- @since Ptolemy II 7.1
+ @since Ptolemy II 8.0
  @Pt.ProposedRating Red (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
 public class DesignPatternImporter extends Attribute implements GTAttribute,
         ValueListener {
 
+    /** Construct an attribute with the given name contained by the specified
+     *  entity. The container argument must not be null, or a
+     *  NullPointerException will be thrown.  This attribute will use the
+     *  workspace of the container for synchronization and version counts.
+     *  If the name argument is null, then the name is set to the empty string.
+     *  Increment the version of the workspace.
+     *  @param container The container.
+     *  @param name The name of this attribute.
+     *  @exception IllegalActionException If the attribute is not of an
+     *   acceptable class for the container, or if the name contains a period.
+     *  @exception NameDuplicationException If the name coincides with
+     *   an attribute already in the container.
+     */
     public DesignPatternImporter(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
@@ -75,10 +95,21 @@ public class DesignPatternImporter extends Attribute implements GTAttribute,
         designPatternFile.addValueListener(this);
     }
 
+    /** Update the design pattern.
+     *
+     *  @param settable The attribute changed.
+     */
     public void attributeChanged(Settable settable) {
         update();
     }
 
+    /** Set the container of this importer, and update the new container if it
+     *  is not null.
+     *
+     *  @param container The new container.
+     *  @exception IllegalActionException If thrown by the superclass.
+     *  @throws NameDuplicationException If thrown by the superclass.
+     */
     public void setContainer(NamedObj container) throws IllegalActionException,
             NameDuplicationException {
         NamedObj oldContainer = getContainer();
@@ -98,6 +129,10 @@ public class DesignPatternImporter extends Attribute implements GTAttribute,
         }
     }
 
+    /** Update the container of this importer with the design pattern. If a
+     *  design pattern is previously added to the container, the importer first
+     *  tries to undo the importation before importing the new design pattern.
+     */
     public void update() {
         List<Parameter> parameters = attributeList(Parameter.class);
         HashMap<String, Token> table = new HashMap<String, Token>();
@@ -230,23 +265,66 @@ public class DesignPatternImporter extends Attribute implements GTAttribute,
         }
     }
 
+    /** React to change of an attribute and update the container of this
+     *  importer.
+     *
+     *  @param settable The attribute changed.
+     */
     public void valueChanged(Settable settable) {
         update();
     }
 
+    /** The design pattern file.
+     */
     public FileParameter designPatternFile;
 
+    /** The last undo stack.
+     */
     private UndoStackAttribute _lastUndoStack;
 
+    /** The last values of the parameters to this importer, used to test whether
+     *  attributes are changed and whether the container needs to be updated.
+     */
     private HashMap<String, Token> _lastValues = new HashMap<String, Token>();
 
+    //////////////////////////////////////////////////////////////////////////
+    //// MoMLContentFilter
+
+    /**
+     A moml filter that sets each created object to be non-persistent.
+
+     @author Thomas Huining Feng
+     @version $Id$
+     @since Ptolemy II 8.0
+     @Pt.ProposedRating Red (tfeng)
+     @Pt.AcceptedRating Red (tfeng)
+     */
     private class MoMLContentFilter implements MoMLFilter {
 
+        /** Return the value of the attribute.
+         *
+         *  @param container  The container for XML element.
+         *  @param element The XML element name.
+         *  @param attributeName The name of the attribute.
+         *  @param attributeValue The value of the attribute.
+         *  @param xmlFile The file currently being parsed.
+         *  @return The value of the attribute.
+         */
         public String filterAttributeValue(NamedObj container, String element,
                 String attributeName, String attributeValue, String xmlFile) {
             return attributeValue;
         }
 
+        /** Set the created element to be non-persistent.
+         *
+         *  @param container The object defined by the element that this
+         *   is the end of.
+         *  @param elementName The element name.
+         *  @param currentCharData The character data, which appears
+         *   only in the doc and configure elements
+         *  @param xmlFile The file currently being parsed.
+         *  @exception Exception Not thrown in this class.
+         */
         public void filterEndElement(NamedObj container, String elementName,
                 StringBuffer currentCharData, String xmlFile) throws Exception {
             if (container != null && !"group".equals(elementName)) {

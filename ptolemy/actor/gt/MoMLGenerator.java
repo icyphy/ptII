@@ -1,4 +1,4 @@
-/*
+/* An actor to generate MoML strings from the input models.
 
 @Copyright (c) 2008-2009 The Regents of the University of California.
 All rights reserved.
@@ -41,6 +41,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
 /**
+ An actor to generate MoML strings from the input models.
 
  @author Thomas Huining Feng
  @version $Id$
@@ -50,11 +51,13 @@ import ptolemy.kernel.util.Workspace;
  */
 public class MoMLGenerator extends Transformer {
 
-    /**
-     * @param container
-     * @param name
-     * @exception NameDuplicationException
-     * @exception IllegalActionException
+    /** Construct an actor with the given container and name.
+     *  @param container The container.
+     *  @param name The name of this actor.
+     *  @exception IllegalActionException If the actor cannot be contained
+     *   by the proposed container.
+     *  @exception NameDuplicationException If the container already has an
+     *   actor with this name.
      */
     public MoMLGenerator(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
@@ -63,12 +66,24 @@ public class MoMLGenerator extends Transformer {
         output.setTypeEquals(BaseType.STRING);
     }
 
+    /** Read the model presented at the input port, and output its moml to the
+     *  output port.
+     *
+     *  @exception IllegalActionException If the model cannot be read or the
+     *   moml cannot be produced.
+     */
     public void fire() throws IllegalActionException {
         ActorToken token = (ActorToken) input.get(0);
         output.send(0, new StringToken(token.getEntity(new Workspace())
                 .exportMoML()));
     }
 
+    /** Return true if there is a model at the input port, or false otherwise.
+     *
+     *  @return true if there is a model at the input port, or false otherwise.
+     *  @exception IllegalActionException If availability of input tokens cannot
+     *   be tested.
+     */
     public boolean prefire() throws IllegalActionException {
         return super.prefire() && input.hasToken(0);
     }

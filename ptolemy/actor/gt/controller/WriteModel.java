@@ -1,4 +1,4 @@
-/*
+/* An event to output the model in the model parameter into a file.
 
  Copyright (c) 2008-2009 The Regents of the University of California.
  All rights reserved.
@@ -32,7 +32,6 @@ import java.io.Writer;
 
 import ptolemy.data.Token;
 import ptolemy.data.expr.FileParameter;
-import ptolemy.data.expr.StringParameter;
 import ptolemy.domains.ptera.kernel.PteraDebugEvent;
 import ptolemy.domains.ptera.kernel.PteraErrorEvent;
 import ptolemy.kernel.CompositeEntity;
@@ -40,24 +39,35 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
 //////////////////////////////////////////////////////////////////////////
-//// ExportMoML
+//// WriteModel
 
 /**
-
+ An event to output the model in the model parameter into a file.
 
  @author Thomas Huining Feng
  @version $Id$
  @since Ptolemy II 7.1
  @Pt.ProposedRating Red (tfeng)
  @Pt.AcceptedRating Red (tfeng)
+ @see ReadModel
  */
 public class WriteModel extends GTEvent {
 
-    /**
-     * @param container
-     * @param name
-     * @exception IllegalActionException
-     * @exception NameDuplicationException
+    /** Construct an event with the given name contained by the specified
+     *  composite entity. The container argument must not be null, or a
+     *  NullPointerException will be thrown. This event will use the
+     *  workspace of the container for synchronization and version counts.
+     *  If the name argument is null, then the name is set to the empty
+     *  string.
+     *  Increment the version of the workspace.
+     *  This constructor write-synchronizes on the workspace.
+     *
+     *  @param container The container.
+     *  @param name The name of the state.
+     *  @exception IllegalActionException If the state cannot be contained
+     *   by the proposed container.
+     *  @exception NameDuplicationException If the name coincides with
+     *   that of an entity already in the container.
      */
     public WriteModel(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
@@ -66,6 +76,17 @@ public class WriteModel extends GTEvent {
         modelFile = new FileParameter(this, "modelFile");
     }
 
+    /** Process this event and stores the model in the model parameter into the
+     *  file.
+     *
+     *  @param arguments The arguments used to process this event, which must be
+     *   either an ArrayToken or a RecordToken.
+     *  @return A refiring data structure that contains a non-negative double
+     *   number if refire() should be called after that amount of model time, or
+     *   null if refire() need not be called.
+     *  @exception IllegalActionException If the file cannot be saved, or if
+     *   thrown by the superclass.
+     */
     public RefiringData fire(Token arguments) throws IllegalActionException {
         RefiringData data = super.fire(arguments);
 
@@ -93,7 +114,7 @@ public class WriteModel extends GTEvent {
         return data;
     }
 
+    /** The file to store the model.
+     */
     public FileParameter modelFile;
-
-    public StringParameter moml;
 }

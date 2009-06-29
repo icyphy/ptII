@@ -242,7 +242,7 @@ public abstract class GraphAnalyzer {
         } else {
             IndexedLists.Entry entry = indexedLists.getTail();
             while (entry != null) {
-                IndexedList indexedList = entry.getValue();
+                IndexedList indexedList = entry.getElement();
                 List<?> objectList = indexedList.getFirst();
                 for (int index = indexedList.getSecond() + 1; index < objectList
                         .size(); index++) {
@@ -291,7 +291,7 @@ public abstract class GraphAnalyzer {
             Set<Port> visitedPorts) {
         Path.Entry entry = path.getTail();
         while (entry != null) {
-            IndexedList markedEntityList = entry.getValue();
+            IndexedList markedEntityList = entry.getElement();
             List<?> entityList = markedEntityList.getFirst();
             for (int index = markedEntityList.getSecond() + 1; index < entityList
                     .size(); index++) {
@@ -463,7 +463,7 @@ public abstract class GraphAnalyzer {
             Path path = new Path(_startPort);
             Entry entry = getHead();
             while (entry != null) {
-                path.add((IndexedList) entry.getValue().clone());
+                path.add((IndexedList) entry.getElement().clone());
                 entry = entry.getNext();
             }
             return path;
@@ -489,7 +489,7 @@ public abstract class GraphAnalyzer {
          *  @return The end port.
          */
         public Port getEndPort() {
-            IndexedList list = getTail().getValue();
+            IndexedList list = getTail().getElement();
             return (Port) ((List<?>) list.getFirst()).get(list.getSecond());
         }
 
@@ -523,7 +523,7 @@ public abstract class GraphAnalyzer {
             Entry entry = getHead();
             int i = 0;
             while (entry != null) {
-                IndexedList markedList = entry.getValue();
+                IndexedList markedList = entry.getElement();
                 List<?> list = markedList.getFirst();
                 NamedObj object = (NamedObj) list.get(markedList.getSecond());
                 if (i++ > 0) {

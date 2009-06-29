@@ -1,4 +1,4 @@
-/*
+/* A listener interface for changes caused in a model transformation.
 
  Copyright (c) 2008-2009 The Regents of the University of California.
  All rights reserved.
@@ -33,7 +33,7 @@ import ptolemy.kernel.util.NamedObj;
 //// TransformationListener
 
 /**
-
+ A listener interface for changes caused in a model transformation.
 
  @author Thomas Huining Feng
  @version $Id$
@@ -43,5 +43,9 @@ import ptolemy.kernel.util.NamedObj;
  */
 public interface TransformationListener {
 
+    /** Invoked when the specified object is added to a container.
+     *
+     *  @param object The added object.
+     */
     public void addObject(NamedObj object);
 }

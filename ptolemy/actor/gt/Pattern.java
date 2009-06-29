@@ -1,4 +1,4 @@
-/*
+/* The pattern of a transformation rule.
 
 @Copyright (c) 2007-2008 The Regents of the University of California.
 All rights reserved.
@@ -36,6 +36,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
 /**
+ The pattern of a transformation rule.
 
  @author Thomas Huining Feng
  @version $Id$
@@ -45,6 +46,16 @@ import ptolemy.kernel.util.NameDuplicationException;
  */
 public class Pattern extends CompositeActorMatcher {
 
+    /** Construct an atomic actor matcher to be either contained in the pattern
+     *  of a {@link TransformationRule} or in the replacement.
+     *
+     *  @param container The proposed container of this matcher.
+     *  @param name The name of this matcher.
+     *  @exception IllegalActionException If this actor cannot be contained by
+     *   the proposed container.
+     *  @exception NameDuplicationException If the name coincides with an entity
+     *   already in the container.
+     */
     public Pattern(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);

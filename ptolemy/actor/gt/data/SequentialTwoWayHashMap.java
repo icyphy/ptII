@@ -1,4 +1,4 @@
-/*
+/* A two-way hash map where the keys are sorted.
 
  Copyright (c) 2008 The Regents of the University of California.
  All rights reserved.
@@ -36,22 +36,30 @@ import java.util.ListIterator;
 //// SequentialTwoWayHashMap
 
 /**
+ A two-way hash map where the keys are sorted. The keys are sorted in the order
+ in which they are added to this two-way hash map.
 
-
+ @param <K> The key type.
+ @param <V> The value type.
  @author Thomas Huining Feng
  @version $Id$
- @since Ptolemy II 7.1
+ @since Ptolemy II 8.0
  @Pt.ProposedRating Red (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
 public class SequentialTwoWayHashMap<K, V> extends TwoWayHashMap<K, V> {
 
+    /** Clear this two-way hash map.
+     */
     public void clear() {
         super.clear();
         _keySequence.clear();
     }
 
-    @SuppressWarnings("unchecked")
+    /** Clone this two-way hash map and return the clone.
+     *
+     *  @return The clone.
+     */
     public Object clone() {
         SequentialTwoWayHashMap result = (SequentialTwoWayHashMap) super
                 .clone();
@@ -59,10 +67,21 @@ public class SequentialTwoWayHashMap<K, V> extends TwoWayHashMap<K, V> {
         return result;
     }
 
+    /** Return a sorted list of keys.
+     *
+     *  @return The list of keys.
+     */
     public List<K> keys() {
         return Collections.unmodifiableList(_keySequence);
     }
 
+    /** Put a value into this two-way hash map and associate it with a key.
+     *
+     *  @param key The key.
+     *  @param value The value.
+     *  @return The value previously associated with the key in this two-way
+     *   hash map.
+     */
     public V put(K key, V value) {
         if (value != null && !super.containsKey(key)) {
             _keySequence.add(key);
@@ -70,6 +89,11 @@ public class SequentialTwoWayHashMap<K, V> extends TwoWayHashMap<K, V> {
         return super.put(key, value);
     }
 
+    /** Remove the value associated with the given key.
+     *
+     *  @param key The key.
+     *  @return The removed value, or null if not found.
+     */
     public V remove(Object key) {
         V oldValue = super.remove(key);
         if (oldValue != null) {
@@ -78,6 +102,8 @@ public class SequentialTwoWayHashMap<K, V> extends TwoWayHashMap<K, V> {
         return oldValue;
     }
 
+    /** Remove the value associated with the last key.
+     */
     public void removeLast() {
         int size = _keySequence.size();
         ListIterator<K> iterator = _keySequence.listIterator(size);
@@ -86,6 +112,11 @@ public class SequentialTwoWayHashMap<K, V> extends TwoWayHashMap<K, V> {
         super.remove(key);
     }
 
+    /** Retain only the first count keys and their values, and remove the other
+     *  keys and values.
+     *
+     *  @param count The number of key-value pairs to be retained.
+     */
     public void retain(int count) {
         int size = _keySequence.size();
         if (size > count) {
@@ -98,5 +129,8 @@ public class SequentialTwoWayHashMap<K, V> extends TwoWayHashMap<K, V> {
         }
     }
 
+    /** The sequence of the keys, sorted in the order in which they are added to
+     *  this two-way hash map.
+     */
     private List<K> _keySequence = new LinkedList<K>();
 }

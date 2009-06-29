@@ -1,4 +1,5 @@
-/*
+/* An event to initialize the model parameter with the model that contains the
+   Ptera model that this event is in.
 
  Copyright (c) 2008-2009 The Regents of the University of California.
  All rights reserved.
@@ -37,7 +38,8 @@ import ptolemy.kernel.util.NameDuplicationException;
 //// InitModelWithContainer
 
 /**
-
+ An event to initialize the model parameter with the model that contains the
+ Ptera model that this event is in.
 
  @author Thomas Huining Feng
  @version $Id$
@@ -47,11 +49,34 @@ import ptolemy.kernel.util.NameDuplicationException;
  */
 public class InitModelWithContainer extends InitModel {
 
+    /** Construct an event with the given name contained by the specified
+     *  composite entity. The container argument must not be null, or a
+     *  NullPointerException will be thrown. This event will use the
+     *  workspace of the container for synchronization and version counts.
+     *  If the name argument is null, then the name is set to the empty
+     *  string.
+     *  Increment the version of the workspace.
+     *  This constructor write-synchronizes on the workspace.
+     *
+     *  @param container The container.
+     *  @param name The name of the state.
+     *  @exception IllegalActionException If the state cannot be contained
+     *   by the proposed container.
+     *  @exception NameDuplicationException If the name coincides with
+     *   that of an entity already in the container.
+     */
     public InitModelWithContainer(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
+    /** Get the initial model, which is the container or the Ptera modal model
+     *  that contains this event.
+     *
+     *  @return The initial model.
+     *  @exception IllegalActionException If the initial model cannot be
+     *   obtained.
+     */
     protected CompositeEntity _getInitialModel() throws IllegalActionException {
         PteraController controller = (PteraController) getContainer();
         PteraModalModel modalModel = (PteraModalModel) controller

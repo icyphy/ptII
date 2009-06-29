@@ -1,4 +1,4 @@
-/*
+/* A type of tokens for x-y locations.
 
 @Copyright (c) 2008 The Regents of the University of California.
 All rights reserved.
@@ -36,19 +36,21 @@ import ptolemy.data.type.RecordType;
 import ptolemy.data.type.Type;
 
 /**
+ A type of tokens for x-y locations.
 
  @author Thomas Huining Feng
  @version $Id$
- @since Ptolemy II 6.1
+ @since Ptolemy II 8.0
  @Pt.ProposedRating Red (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
 public class LocationType extends RecordType {
 
+    /** Construct a location type as a record type with x and y fields, which
+     *  are both integers.
+     */
     public LocationType() {
         super(new String[] { "x", "y" }, new Type[] { BaseType.INT,
                 BaseType.INT });
     }
-
-    public static final LocationType LOCATION = new LocationType();
 }

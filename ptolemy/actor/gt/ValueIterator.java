@@ -49,6 +49,7 @@ public interface ValueIterator extends Settable {
 
     /** Get the current value of the parameter that implements this interface.
      *
+     *  @return The current value.
      *  @exception IllegalActionException Throws if the current value cannot be
      *  obtained.
      */

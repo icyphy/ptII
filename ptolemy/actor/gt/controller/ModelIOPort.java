@@ -1,4 +1,4 @@
-/*
+/* The typed IO port to send and receive model tokens.
 
  Copyright (c) 2008 The Regents of the University of California.
  All rights reserved.
@@ -38,7 +38,7 @@ import ptolemy.kernel.util.Workspace;
 //// ModelIOPort
 
 /**
-
+ The typed IO port to send and receive model tokens.
 
  @author Thomas Huining Feng
  @version $Id$
@@ -48,12 +48,27 @@ import ptolemy.kernel.util.Workspace;
  */
 public class ModelIOPort extends RefinementPort {
 
+    /** Construct a port with a containing actor and a name
+     *  that is neither an input nor an output.  The specified container
+     *  must implement the TypedActor interface, or an exception will be
+     *  thrown.
+     *  @param container The container actor.
+     *  @param name The name of the port.
+     *  @exception IllegalActionException If the port is not of an acceptable
+     *   class for the container, or if the container does not implement the
+     *   TypedActor interface.
+     *  @exception NameDuplicationException If the name coincides with
+     *   a port already in the container.
+     */
     public ModelIOPort(ComponentEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         setTypeEquals(ActorToken.TYPE);
     }
 
+    /** Construct a port in the given workspace.
+     *  @param workspace The workspace.
+     */
     public ModelIOPort(Workspace workspace) {
         super(workspace);
         setTypeEquals(ActorToken.TYPE);

@@ -1,4 +1,4 @@
-/*
+/* The replacement of a transformation rule.
 
 @Copyright (c) 2007-2008 The Regents of the University of California.
 All rights reserved.
@@ -39,6 +39,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 
 /**
+ The replacement of a transformation rule.
 
  @author Thomas Huining Feng
  @version $Id$
@@ -48,11 +49,15 @@ import ptolemy.kernel.util.NamedObj;
  */
 public class Replacement extends CompositeActorMatcher {
 
-    /**
-     * @param container
-     * @param name
-     * @exception NameDuplicationException
-     * @exception IllegalActionException
+    /** Construct an atomic actor matcher to be either contained in the pattern
+     *  of a {@link TransformationRule} or in the replacement.
+     *
+     *  @param container The proposed container of this matcher.
+     *  @param name The name of this matcher.
+     *  @exception IllegalActionException If this actor cannot be contained by
+     *   the proposed container.
+     *  @exception NameDuplicationException If the name coincides with an entity
+     *   already in the container.
      */
     public Replacement(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
@@ -61,6 +66,18 @@ public class Replacement extends CompositeActorMatcher {
         setClassName("ptolemy.actor.gt.Replacement");
     }
 
+    /** Set the container of this replacement, which should be a {@link
+     *  TransformationRule}. Update patternParameter to contain an {@link
+     *  ObjectToken} encapsulating the pattern with name "pattern" (so that the
+     *  name "pattern" can be used in any expression in this replacement).
+     *
+     *  @param container The new container, or null.
+     *  @exception IllegalActionException If the action would result in a
+     *   recursive containment structure, or if
+     *   this entity and container are not in the same workspace.
+     *  @exception NameDuplicationException If the container already has
+     *   an entity with the name of this entity.
+     */
     public void setContainer(CompositeEntity container)
             throws IllegalActionException, NameDuplicationException {
         super.setContainer(container);
@@ -79,12 +96,32 @@ public class Replacement extends CompositeActorMatcher {
         }
     }
 
+    /** The parameter containing an {@link ObjectToken} encapsulating the
+     *  pattern with name "pattern"
+     */
     public Parameter patternParameter;
 
+    /** Update the appearance of the entities within this replacement for the
+     *  change of the given attribute, so that the entities with correspondence
+     *  in the pattern appears to be the same as the changed objects in the
+     *  pattern.
+     *
+     *  @param attribute The attribute of any object in the pattern that was
+     *   changed.
+     */
     protected void updateEntitiesAppearance(GTIngredientsAttribute attribute) {
         _updateEntitiesAppearance(this, attribute);
     }
 
+    /** Update the appearance of the entities within the given container for the
+     *  change of the given attribute, so that the entities with correspondence
+     *  in the pattern appears to be the same as the changed objects in the
+     *  pattern.
+     *
+     *  @param container The container to be updated.
+     *  @param attribute The attribute of any object in the pattern that was
+     *   changed.
+     */
     private static void _updateEntitiesAppearance(CompositeEntity container,
             GTIngredientsAttribute attribute) {
         try {

@@ -347,6 +347,12 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         // transitions. That check must be done before returning.
         if (_lastChosenTransition != null) {
             // Guard against non-monotonic behavior.
+            // NOTE: This check means that it is essential that if a guard
+            // evaluates to true at one firing, it must evaluate to true at
+            // all subsequent firings in the same iteration. This creates
+            // a complication for Continuous, where time advances between
+            // steps, so guards may become false again. We have fixed this
+            // by evaluating guards only at the last stage of iteration.
             if (!enabledTransitions.contains(_lastChosenTransition)) {
                 throw new IllegalActionException(this, _lastChosenTransition,
                         "Transition was enabled in an earlier firing of this "

@@ -322,20 +322,19 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
                         .getName());
             }
             // First execute the refinements of the transition.
-            Actor[] actors = chosenTransition.getRefinement();
+            Actor[] transitionRefinements = chosenTransition.getRefinement();
 
-            if (actors != null) {
-                for (int i = 0; i < actors.length; ++i) {
-                    if (_stopRequested || _disabledActors.contains(actors[i])) {
+            if (transitionRefinements != null) {
+                for (int i = 0; i < transitionRefinements.length; ++i) {
+                    if (_stopRequested || _disabledActors.contains(transitionRefinements[i])) {
                         break;
                     }
                     if (_debugging) {
-                        _debug("Fire transition refinement:", actors[i]
-                                .getName());
+                        _debug("Fire transition refinement:",  transitionRefinements[i].getName());
                     }
-                    if (actors[i].prefire()) {
-                        actors[i].fire();
-                        _transitionRefinementsToPostfire.add(actors[i]);
+                    if (transitionRefinements[i].prefire()) {
+                        transitionRefinements[i].fire();
+                        _transitionRefinementsToPostfire.add(transitionRefinements[i]);
                     }
                 }
             }
@@ -344,19 +343,19 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
             return;
         }
 
-        Actor[] actors = currentState.getRefinement();
+        Actor[] stateRefinements = currentState.getRefinement();
 
-        if (actors != null) {
-            for (int i = 0; i < actors.length; ++i) {
-                if (_stopRequested || _disabledActors.contains(actors[i])) {
+        if (stateRefinements != null) {
+            for (int i = 0; i < stateRefinements.length; ++i) {
+                if (_stopRequested || _disabledActors.contains(stateRefinements[i])) {
                     break;
                 }
-                if (actors[i].prefire()) {
+                if (stateRefinements[i].prefire()) {
                     if (_debugging) {
-                        _debug("Fire state refinement:", actors[i].getName());
+                        _debug("Fire state refinement:",  stateRefinements[i].getName());
                     }
-                    actors[i].fire();
-                    _stateRefinementsToPostfire.add(actors[i]);
+                    stateRefinements[i].fire();
+                    _stateRefinementsToPostfire.add(stateRefinements[i]);
                 }
             }
         }
@@ -369,19 +368,18 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
                 _debug("Nonpreemptive transition enabled:", chosenTransition
                         .getName());
             }
-            actors = chosenTransition.getRefinement();
-            if (actors != null) {
-                for (int i = 0; i < actors.length; ++i) {
-                    if (_stopRequested || _disabledActors.contains(actors[i])) {
+            stateRefinements = chosenTransition.getRefinement();
+            if (stateRefinements != null) {
+                for (int i = 0; i < stateRefinements.length; ++i) {
+                    if (_stopRequested || _disabledActors.contains(stateRefinements[i])) {
                         break;
                     }
-                    if (actors[i].prefire()) {
+                    if (stateRefinements[i].prefire()) {
                         if (_debugging) {
-                            _debug("Fire transition refinement:", actors[i]
-                                    .getName());
+                            _debug("Fire transition refinement:",  stateRefinements[i].getName());
                         }
-                        actors[i].fire();
-                        _transitionRefinementsToPostfire.add(actors[i]);
+                        stateRefinements[i].fire();
+                        _transitionRefinementsToPostfire.add(stateRefinements[i]);
                     }
                 }
                 controller.readOutputsFromRefinement();
@@ -806,7 +804,8 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
      *  If any transition was taken in this iteration, and if there
      *  is an executive director, and if there is a transition from the
      *  new state that is currently enabled, then this method calls
-     *  fireAtCurrentTime(Actor) on that executive director. If
+     *  fireAtCurrentTime(Actor) on that executive director (this call
+     *  occurs indirectly in the FSMActor controller). If
      *  there is an enabled transition, then the current
      *  state is transient, and we will want to spend zero time in it.
      *  @return True if the mode controller wishes to be scheduled for
@@ -948,7 +947,7 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
         }
 
         boolean transferredToken = false;
-        // NOTE: This class does quite a song and dance with the "local
+        // NOTE: The following method does quite a song and dance with the "local
         // receivers map" to avoid putting the input data into all
         // refinements. Is this worth it? A much simpler design would
         // just make the input data available to all refinements, whether
@@ -982,6 +981,11 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
                         if ((insideReceivers != null)
                                 && (insideReceivers[i] != null)) {
                             for (int j = 0; j < insideReceivers[i].length; j++) {
+                                if (_debugging) {
+                                    _debug(getFullName(),
+                                            "input port has no token. Clearing "
+                                            + (insideReceivers[i][j]).getContainer().getFullName());
+                                }
                                 insideReceivers[i][j].clear();
                             }
                         }
@@ -992,6 +996,11 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
                             && (insideReceivers[i] != null)) {
                         for (int j = 0; j < insideReceivers[i].length; j++) {
                             insideReceivers[i][j].reset();
+                            if (_debugging) {
+                                _debug(getFullName(),
+                                        "input port status is not known. Resetting "
+                                        + (insideReceivers[i][j]).getContainer().getFullName());
+                            }
                         }
                     }
                 }

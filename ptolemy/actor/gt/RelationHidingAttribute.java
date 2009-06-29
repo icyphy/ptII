@@ -1,4 +1,5 @@
-/*
+/* An attribute to specify that multiple connected relations in the resulting
+   model may be simplified as one.
 
 @Copyright (c) 2007-2009 The Regents of the University of California.
 All rights reserved.
@@ -42,6 +43,11 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 
 /**
+ An attribute to specify that multiple connected relations in the resulting
+ model may be simplified as one. Unlike {@link RelationCollapsingAttribute},
+ this attribute must be placed in the replacement of a transformation rule,
+ instead of the pattern, because it corresponds to an operation to simplify
+ multiple connected relations.
 
  @author Thomas Huining Feng
  @version $Id$
@@ -51,11 +57,18 @@ import ptolemy.kernel.util.NamedObj;
  */
 public class RelationHidingAttribute extends Parameter implements GTAttribute {
 
-    /**
-     * @param container
-     * @param name
-     * @exception NameDuplicationException
-     * @exception IllegalActionException
+    /** Construct an attribute with the given name contained by the specified
+     *  entity. The container argument must not be null, or a
+     *  NullPointerException will be thrown.  This attribute will use the
+     *  workspace of the container for synchronization and version counts.
+     *  If the name argument is null, then the name is set to the empty string.
+     *  Increment the version of the workspace.
+     *  @param container The container.
+     *  @param name The name of this attribute.
+     *  @exception IllegalActionException If the attribute is not of an
+     *   acceptable class for the container, or if the name contains a period.
+     *  @exception NameDuplicationException If the name coincides with
+     *   an attribute already in the container.
      */
     public RelationHidingAttribute(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
@@ -63,6 +76,45 @@ public class RelationHidingAttribute extends Parameter implements GTAttribute {
 
         setTypeEquals(BaseType.BOOLEAN);
         setToken(BooleanToken.getInstance(!DEFAULT));
+    }
+
+    /** Specify the container NamedObj, adding this attribute to the
+     *  list of attributes in the container.  If the container already
+     *  contains an attribute with the same name, then throw an exception
+     *  and do not make any changes.  Similarly, if the container is
+     *  not in the same workspace as this attribute, throw an exception.
+     *  If this attribute is already contained by the NamedObj, do nothing.
+     *  If the attribute already has a container, remove
+     *  this attribute from its attribute list first.  Otherwise, remove
+     *  it from the directory of the workspace, if it is there.
+     *  If the argument is null, then remove it from its container.
+     *  It is not added to the workspace directory, so this could result in
+     *  this object being garbage collected.
+     *  Note that since an Attribute is a NamedObj, it can itself have
+     *  attributes.  However, recursive containment is not allowed, where
+     *  an attribute is an attribute of itself, or indirectly of any attribute
+     *  it contains.  This method is write-synchronized on the
+     *  workspace and increments its version number.
+     *  <p>
+     *  Subclasses may constrain the type of container by overriding
+     *  {@link #setContainer(NamedObj)}.
+     *  @param container The container to attach this attribute to..
+     *  @exception IllegalActionException If this attribute is not of the
+     *   expected class for the container, or it has no name,
+     *   or the attribute and container are not in the same workspace, or
+     *   the proposed container would result in recursive containment.
+     *  @exception NameDuplicationException If the container already has
+     *   an attribute with the name of this attribute.
+     *  @see #getContainer()
+     */
+    public void setContainer(NamedObj container) throws IllegalActionException,
+            NameDuplicationException {
+        super.setContainer(container);
+        if (container != null) {
+            GTTools.checkContainerClass(this, container, Replacement.class,
+                    true);
+            GTTools.checkUniqueness(this, container);
+        }
     }
 
     /** If this variable is not lazy (the default) then evaluate
@@ -103,18 +155,12 @@ public class RelationHidingAttribute extends Parameter implements GTAttribute {
         return collection;
     }
 
-    public void setContainer(NamedObj container) throws IllegalActionException,
-            NameDuplicationException {
-        super.setContainer(container);
-        if (container != null) {
-            GTTools.checkContainerClass(this, container, Replacement.class,
-                    true);
-            GTTools.checkUniqueness(this, container);
-        }
-    }
-
+    /** The default value of this attribute.
+     */
     public static final boolean DEFAULT = true;
 
+    /** The icon used when hiding is set to true.
+     */
     private static final String _HIDING_ICON = "<svg>"
             + "<rect x=\"0\" y=\"0\" width=\"94\" height=\"32\""
             + "  style=\"fill:#00FFFF\"/>"
@@ -140,6 +186,8 @@ public class RelationHidingAttribute extends Parameter implements GTAttribute {
             + "<line x1=\"74\" y1=\"25\" x2=\"86\" y2=\"25\""
             + "  style=\"stroke:#000000\"/>" + "</svg>";
 
+    /** The icon used when hiding is set to false.
+     */
     private static final String _NOT_HIDING_RELATION = "<svg>"
             + "<rect x=\"0\" y=\"0\" width=\"94\" height=\"32\""
             + "  style=\"fill:#00FFFF\"/>"

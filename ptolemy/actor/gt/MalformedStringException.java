@@ -1,4 +1,4 @@
-/*
+/* An exception to report a string being malformed.
 
 @Copyright (c) 2007-2008 The Regents of the University of California.
 All rights reserved.
@@ -35,15 +35,20 @@ import ptolemy.kernel.util.KernelException;
 //// MalformedStringException
 
 /**
+ An exception to report a string being malformed.
 
-@author Thomas Huining Feng
-@version $Id$
-@since Ptolemy II 6.1
-@Pt.ProposedRating Red (tfeng)
-@Pt.AcceptedRating Red (tfeng)
+ @author Thomas Huining Feng
+ @version $Id$
+ @since Ptolemy II 8.0
+ @Pt.ProposedRating Red (tfeng)
+ @Pt.AcceptedRating Red (tfeng)
 */
 public class MalformedStringException extends KernelException {
 
+    /** Construct an exception with an expression to be parsed into a rule list.
+     *
+     *  @param expression The expression that is malformed.
+     */
     public MalformedStringException(String expression) {
         super(null, null, null, "Rule list string \"" + expression
                 + "\" is malformed.");

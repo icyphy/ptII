@@ -1,4 +1,5 @@
-/*
+/* An exception to be thrown when the string representation of GT ingredients
+   cannot be validated.
 
 @Copyright (c) 2007-2008 The Regents of the University of California.
 All rights reserved.
@@ -31,21 +32,40 @@ ENHANCEMENTS, OR MODIFICATIONS.
 package ptolemy.actor.gt;
 
 import ptolemy.kernel.util.KernelException;
-import ptolemy.kernel.util.Nameable;
 
+//////////////////////////////////////////////////////////////////////////
+//// ValidationException
+
+/**
+ An exception to be thrown when the string representation of GT ingredients
+ cannot be validated.
+
+ @author Thomas Huining Feng
+ @version $Id$
+ @since Ptolemy II 8.0
+ @Pt.ProposedRating Red (tfeng)
+ @Pt.AcceptedRating Red (tfeng)
+ */
 public class ValidationException extends KernelException {
 
+    /** Construct an exception with a detail message.
+     *
+     *  @param message The message.
+     */
     public ValidationException(String message) {
         super(null, null, message);
     }
 
+    /** Construct an exception with a detail message.  If the cause argument is
+     *  non-null, then the message
+     *  of this exception will include the message of the cause
+     *  argument.  The stack trace of the cause argument is used when
+     *  we print the stack trace of this exception.
+     *
+     *  @param message The message.
+     *  @param cause The cause of this exception.
+     */
     public ValidationException(String message, Throwable cause) {
         super(null, null, cause, message);
     }
-
-    public static String generateMessage(Nameable object1, Nameable object2,
-            Throwable cause, String detail) {
-        return detail;
-    }
-
 }

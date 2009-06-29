@@ -1,4 +1,4 @@
-/*
+/* Common superclass of special attributes in pattern matching.
 
  Copyright (c) 2008-2009 The Regents of the University of California.
  All rights reserved.
@@ -37,7 +37,7 @@ import ptolemy.kernel.util.Workspace;
 //// MatchingAttribute
 
 /**
-
+ Common superclass of special attributes in pattern matching.
 
  @author Thomas Huining Feng
  @version $Id$

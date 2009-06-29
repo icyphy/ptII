@@ -30,31 +30,69 @@ ENHANCEMENTS, OR MODIFICATIONS.
  */
 package ptolemy.actor.gt.data;
 
+//////////////////////////////////////////////////////////////////////////
+//// Pair
+
+/**
+ Generic pair data structure.
+
+ @param <E1> Type of the first element.
+ @param <E2> Type of the second element.
+ @author Thomas Huining Feng
+ @version $Id$
+ @since Ptolemy II 8.0
+ @Pt.ProposedRating Red (tfeng)
+ @Pt.AcceptedRating Red (tfeng)
+ */
 public class Pair<E1, E2> extends Tuple<Object> {
 
+    /** Construct a pair with two elements.
+     *
+     *  @param first The first element.
+     *  @param second The second element.
+     */
     public Pair(E1 first, E2 second) {
         super(first, second);
     }
 
-    @SuppressWarnings("unchecked")
+    /** Get the first element.
+     *
+     *  @return The first element.
+     */
     public E1 getFirst() {
         return (E1) get(0);
     }
 
-    @SuppressWarnings("unchecked")
+    /** Get the second element.
+     *
+     *  @return The second element.
+     */
     public E2 getSecond() {
         return (E2) get(1);
     }
 
+    /** Set the two elements in this pair.
+     *
+     *  @param first The first element.
+     *  @param second The second element.
+     */
     public void set(E1 first, E2 second) {
         set(0, first);
         set(1, second);
     }
 
+    /** Set the first element in this pair.
+     *
+     *  @param first The first element.
+     */
     public void setFirst(E1 first) {
         set(0, first);
     }
 
+    /** Set the second element in this pair.
+     *
+     *  @param second The first element.
+     */
     public void setSecond(E2 second) {
         set(1, second);
     }

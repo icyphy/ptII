@@ -1,4 +1,4 @@
-/*
+/* An event to initialize the model parameter to contain an empty model.
 
  Copyright (c) 2008 The Regents of the University of California.
  All rights reserved.
@@ -43,7 +43,7 @@ import ptolemy.kernel.util.Workspace;
 //// InitModel
 
 /**
-
+ An event to initialize the model parameter to contain an empty model.
 
  @author Thomas Huining Feng
  @version $Id$
@@ -53,6 +53,22 @@ import ptolemy.kernel.util.Workspace;
  */
 public class InitModel extends GTEvent {
 
+    /** Construct an event with the given name contained by the specified
+     *  composite entity. The container argument must not be null, or a
+     *  NullPointerException will be thrown. This event will use the
+     *  workspace of the container for synchronization and version counts.
+     *  If the name argument is null, then the name is set to the empty
+     *  string.
+     *  Increment the version of the workspace.
+     *  This constructor write-synchronizes on the workspace.
+     *
+     *  @param container The container.
+     *  @param name The name of the state.
+     *  @exception IllegalActionException If the state cannot be contained
+     *   by the proposed container.
+     *  @exception NameDuplicationException If the name coincides with
+     *   that of an entity already in the container.
+     */
     public InitModel(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
@@ -62,6 +78,14 @@ public class InitModel extends GTEvent {
         modelName = new StringParameter(this, "modelName");
     }
 
+    /** React to a change in an attribute. If the changed attribute is
+     *  the <code>modelName</code> attribute, create a new empty model with that
+     *  name.
+     *
+     *  @param attribute The attribute that changed.
+     *  @exception IllegalActionException If thrown by the superclass
+     *   attributeChanged() method, or the new model cannot be created.
+     */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == modelName) {
@@ -76,6 +100,17 @@ public class InitModel extends GTEvent {
         }
     }
 
+    /** Process this event and set the model parameter to contain an empty
+     *  model, if it has not been set yet.
+     *
+     *  @param arguments The arguments used to process this event, which must be
+     *   either an ArrayToken or a RecordToken.
+     *  @return A refiring data structure that contains a non-negative double
+     *   number if refire() should be called after that amount of model time, or
+     *   null if refire() need not be called.
+     *  @exception IllegalActionException If thrown by the superclass, or if the
+     *   model parameter cannot be found.
+     */
     public RefiringData fire(Token arguments) throws IllegalActionException {
         RefiringData data = super.fire(arguments);
 
@@ -89,8 +124,16 @@ public class InitModel extends GTEvent {
         return data;
     }
 
+    /** The name of the empty model.
+     */
     public StringParameter modelName;
 
+    /** Get the initial model in a new workspace.
+     *
+     *  @return The initial model.
+     *  @exception IllegalActionException If the initial model cannot be
+     *   obtained.
+     */
     protected CompositeEntity _getInitialModel() throws IllegalActionException {
         try {
             return (CompositeEntity) _emptyModel.clone(new Workspace());
@@ -99,5 +142,7 @@ public class InitModel extends GTEvent {
         }
     }
 
+    /** An empty model.
+     */
     private CompositeEntity _emptyModel;
 }

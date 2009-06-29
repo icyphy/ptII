@@ -1,4 +1,4 @@
-/*
+/* An event to view the model in the model parameter in a separate window.
 
  Copyright (c) 2008-2009 The Regents of the University of California.
  All rights reserved.
@@ -63,7 +63,10 @@ import ptolemy.vergil.gt.GTFrameTools;
 //// View
 
 /**
-
+ An event to view the model in the model parameter in a separate window. If the
+ tableau parameter is ignored as the default, a new window is opened for each
+ such event. If the {@link #referredTableau} parameter is specified with the
+ name of a tableau, then the specified tableau will be used to view the model.
 
  @author Thomas Huining Feng
  @version $Id$
@@ -73,6 +76,22 @@ import ptolemy.vergil.gt.GTFrameTools;
  */
 public class View extends GTEvent {
 
+    /** Construct an event with the given name contained by the specified
+     *  composite entity. The container argument must not be null, or a
+     *  NullPointerException will be thrown. This event will use the
+     *  workspace of the container for synchronization and version counts.
+     *  If the name argument is null, then the name is set to the empty
+     *  string.
+     *  Increment the version of the workspace.
+     *  This constructor write-synchronizes on the workspace.
+     *
+     *  @param container The container.
+     *  @param name The name of the state.
+     *  @exception IllegalActionException If the state cannot be contained
+     *   by the proposed container.
+     *  @exception NameDuplicationException If the name coincides with
+     *   that of an entity already in the container.
+     */
     public View(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
@@ -102,12 +121,32 @@ public class View extends GTEvent {
         _init();
     }
 
+    /** Clone the event into the specified workspace. This calls the
+     *  base class and then sets the attribute and port public members
+     *  to refer to the attributes and ports of the new state.
+     *
+     *  @param workspace The workspace for the new event.
+     *  @return A new event.
+     *  @exception CloneNotSupportedException If a derived class contains
+     *   an attribute that cannot be cloned.
+     */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         View newObject = (View) super.clone(workspace);
         newObject._init();
         return newObject;
     }
 
+    /** Process this event and show the model in the model parameter in the
+     *  designated tableau.
+     *
+     *  @param arguments The arguments used to process this event, which must be
+     *   either an ArrayToken or a RecordToken.
+     *  @return A refiring data structure that contains a non-negative double
+     *   number if refire() should be called after that amount of model time, or
+     *   null if refire() need not be called.
+     *  @exception IllegalActionException If the tableau cannot be used, or if
+     *   thrown by the superclass.
+     */
     public RefiringData fire(Token arguments) throws IllegalActionException {
         RefiringData data = super.fire(arguments);
 
@@ -232,29 +271,53 @@ public class View extends GTEvent {
         return data;
     }
 
+    /** Initialize this event.
+     *
+     *  @exception IllegalActionException If thrown by the superclass.
+     */
     public void initialize() throws IllegalActionException {
         super.initialize();
         _workspace.removeAll();
     }
 
+    /** Name of the tableau referred to, or an empty string if the default
+     *  tableau is to be used.
+     */
     public StringParameter referredTableau;
 
+    /** Whether the window should be closed and reopened on each update.
+     */
     public Parameter reopenWindow;
 
+    /** Location of the new window, or [-1, -1] if the default location is to be
+     *  used.
+     */
     public Parameter screenLocation;
 
+    /** Size of the new window, or [-1, -1] if the default size is to be used.
+     */
     public Parameter screenSize;
 
+    /** The default tableau.
+     */
     public TableauParameter tableau;
 
+    /** Title of the window.
+     */
     public Parameter title;
 
+    /** Create a parser for parsing models.
+     */
     private void _init() {
         _workspace = new Workspace();
         _parser = new MoMLParser(_workspace);
     }
 
+    /** The parser.
+     */
     private MoMLParser _parser;
 
+    /** The workspace for the parser.
+     */
     private Workspace _workspace;
 }
