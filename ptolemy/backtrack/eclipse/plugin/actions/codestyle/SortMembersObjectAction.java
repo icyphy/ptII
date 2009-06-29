@@ -1,6 +1,5 @@
-/*
+/* Sort members object action.
 Below is the copyright agreement for the Ptolemy II system.
-Version: $Id$
 
 Copyright (c) 2006-2009 The Regents of the University of California.
 All rights reserved.
@@ -41,6 +40,18 @@ import org.eclipse.ui.texteditor.ITextEditor;
 
 import ptolemy.backtrack.eclipse.plugin.console.OutputConsole;
 
+//////////////////////////////////////////////////////////////////////////
+//// SortMembersObjectAction
+
+/**
+ * Sort members object action.
+ *
+ * @author Thomas Huining Feng
+ * @version $Id$
+ * @since Ptolemy II 6.0
+ * @Pt.ProposedRating Red (tfeng)
+ * @Pt.AcceptedRating Red (tfeng)
+ */
 public class SortMembersObjectAction implements IObjectActionDelegate {
 
     public void run(IAction action) {

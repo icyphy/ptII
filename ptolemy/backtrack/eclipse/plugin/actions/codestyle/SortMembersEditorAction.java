@@ -1,6 +1,5 @@
-/*
+/* Sort members editor action.
 Below is the copyright agreement for the Ptolemy II system.
-Version: $Id$
 
 Copyright (c) 2006-2009 The Regents of the University of California.
 All rights reserved.
@@ -37,6 +36,18 @@ import org.eclipse.ui.IWorkbenchWindowActionDelegate;
 
 import ptolemy.backtrack.eclipse.plugin.editor.MultiPageCompilationUnitEditor;
 
+//////////////////////////////////////////////////////////////////////////
+//// SortMembersEditorAction
+
+/**
+ * Sort members editor action.
+ *
+ * @author Thomas Huining Feng
+ * @version $Id$
+ * @since Ptolemy II 6.0
+ * @Pt.ProposedRating Red (tfeng)
+ * @Pt.AcceptedRating Red (tfeng)
+ */
 public class SortMembersEditorAction implements IWorkbenchWindowActionDelegate {
 
     public void dispose() {

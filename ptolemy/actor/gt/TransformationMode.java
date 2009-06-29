@@ -1,7 +1,6 @@
 /* A parameter that determines the transformation mode.
 
 Below is the copyright agreement for the Ptolemy II system.
-Version: $Id$
 
 Copyright (c) 2008-2009 The Regents of the University of California.
 All rights reserved.

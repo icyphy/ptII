@@ -1,6 +1,5 @@
 /*
 Below is the copyright agreement for the Ptolemy II system.
-Version: $Id$
 
 Copyright (c) 2008-2009 The Regents of the University of California.
 All rights reserved.
@@ -54,8 +53,8 @@ import ptolemy.kernel.util.Workspace;
  * A TDL module forms a unit that consists of sensors, actuators, and modes.
  *
  * @author Patricia Derler
-@version $Id$
-@since Ptolemy II 7.1
+ * @version $Id$
+ * @since Ptolemy II 7.1
  */
 public class TDLModule extends ModalModel {
 

@@ -1,6 +1,4 @@
-/*
-Below is the copyright agreement for the Ptolemy II system.
-Version: $Id$
+/* Utilities for sorting members.
 
 Copyright (c) 2006-2009 The Regents of the University of California.
 All rights reserved.
@@ -71,6 +69,18 @@ import org.eclipse.ui.PlatformUI;
 
 import ptolemy.backtrack.eclipse.plugin.console.OutputConsole;
 
+//////////////////////////////////////////////////////////////////////////
+//// SortMembersUtility
+
+/**
+ * Utilities for sorting members.
+ *
+ * @author Thomas Huining Feng
+ * @version $Id$
+ * @since Ptolemy II 6.0
+ * @Pt.ProposedRating Red (tfeng)
+ * @Pt.AcceptedRating Red (tfeng)
+ */
 public class SortMembersUtility {
 
     public static void sortICompilationUnit(ICompilationUnit compilationUnit,
