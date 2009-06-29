@@ -1,6 +1,6 @@
-/*
+/* Standardize tab spaces utilities.
+
 Below is the copyright agreement for the Ptolemy II system.
-Version: $Id$
 
 Copyright (c) 2007-2009 The Regents of the University of California.
 All rights reserved.
@@ -33,6 +33,18 @@ import org.eclipse.ui.IEditorPart;
 
 import ptolemy.backtrack.eclipse.plugin.console.OutputConsole;
 
+//////////////////////////////////////////////////////////////////////////
+//// StandardizeTabSpacesUtility
+
+/**
+ * Standardize tab spaces utilities.
+ *
+ * @author Thomas Huining Feng
+ * @version $Id$
+ * @since Ptolemy II 6.0
+ * @Pt.ProposedRating Red (tfeng)
+ * @Pt.AcceptedRating Red (tfeng)
+ */
 public class StandardizeTabsSpacesUtility {
 
     public static void standardize(IEditorPart editor) {

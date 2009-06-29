@@ -1,6 +1,5 @@
-/*
+/* Standardize tab spaces editor action.
 Below is the copyright agreement for the Ptolemy II system.
-Version: $Id$
 
 Copyright (c) 2007-2009 The Regents of the University of California.
 All rights reserved.
@@ -34,6 +33,18 @@ import org.eclipse.ui.IWorkbenchWindowActionDelegate;
 
 import ptolemy.backtrack.eclipse.plugin.editor.MultiPageCompilationUnitEditor;
 
+//////////////////////////////////////////////////////////////////////////
+//// StandardizeTabSpacesEditorAction
+
+/**
+ * Standardize tab spaces editor action.
+ *
+ * @author Thomas Huining Feng
+ * @version $Id$
+ * @since Ptolemy II 6.0
+ * @Pt.ProposedRating Red (tfeng)
+ * @Pt.AcceptedRating Red (tfeng)
+ */
 public class StandardizeTabsSpacesEditorAction implements
         IWorkbenchWindowActionDelegate {
 

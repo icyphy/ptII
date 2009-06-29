@@ -1,5 +1,4 @@
 /*    A bounded buffer with a timed delay.
-Version: $Id$
 
 Copyright (c) 2008-2009 The Regents of the University of California.
 All rights reserved.

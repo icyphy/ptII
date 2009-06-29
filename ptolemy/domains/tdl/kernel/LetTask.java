@@ -1,6 +1,5 @@
 /*
 Below is the copyright agreement for the Ptolemy II system.
-Version: $Id$
 
 Copyright (c) 2008-2009 The Regents of the University of California.
 All rights reserved.
@@ -28,13 +27,16 @@ package ptolemy.domains.tdl.kernel;
 
 import ptolemy.actor.Actor;
 
+//////////////////////////////////////////////////////////////////////////
+//// LetTask
+
 /**
  * A TTTask (time triggered task) is an actor with an invocationPeriod and a
  * logical execution time.
  *
  * @author Patricia Derler
-@version $Id$
-@since Ptolemy II 7.1
+ * @version $Id$
+ * @since Ptolemy II 7.1
  */
 public class LetTask {
 

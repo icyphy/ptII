@@ -1,6 +1,5 @@
-/*
+/* Return the car, or the first item of a list.
 Below is the copyright agreement for the Ptolemy II system.
-Version: $Id$
 
 Copyright (c) 2008-2009 The Regents of the University of California.
 All rights reserved.
@@ -31,6 +30,19 @@ import java.util.List;
 import ptolemy.codegen.kernel.CodeGeneratorHelper;
 import ptolemy.kernel.util.IllegalActionException;
 
+
+//////////////////////////////////////////////////////////////////////////
+//// car
+
+/**
+ * Return the car, or the first item of a list.
+ *
+ * @author Man-Kit Leung
+ * @version $Id$
+ * @since Ptolemy II 7.1
+ * @Pt.ProposedRating Red (kbae4)
+ * @Pt.AcceptedRating Red (kbae4)
+ */
 public class car {
 
     public static String handleMacro(List<String> arguments)
