@@ -1,6 +1,5 @@
 /*
 Below is the copyright agreement for the Ptolemy II system.
-Version: $Id$
 
 Copyright (c) 2009 The Regents of the University of California.
 All rights reserved.
@@ -26,6 +25,18 @@ ENHANCEMENTS, OR MODIFICATIONS.
 */
 package ptolemy.verification.kernel.maude;
 
+//////////////////////////////////////////////////////////////////////////
+//// RTMFragment
+
+/**
+ * A Real-Time Maude fragment.
+ *
+ * @author Thomas Huining Feng
+ * @version $Id$
+ * @since Ptolemy II 7.1
+ * @Pt.ProposedRating Red (tfeng)
+ * @Pt.AcceptedRating Red (tfeng)
+ */
 public class RTMFragment extends RTMTerm {
 
     protected String frag;

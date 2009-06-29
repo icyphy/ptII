@@ -1,6 +1,5 @@
 /*
 Below is the copyright agreement for the Ptolemy II system.
-Version: $Id$
 
 Copyright (c) 2009 The Regents of the University of California.
 All rights reserved.
@@ -31,6 +30,18 @@ import java.util.LinkedList;
 
 import ptolemy.kernel.util.IllegalActionException;
 
+//////////////////////////////////////////////////////////////////////////
+//// RTMList
+
+/**
+ * A list of Real-Time Maude terms.
+ *
+ * @author Thomas Huining Feng
+ * @version $Id$
+ * @since Ptolemy II 7.1
+ * @Pt.ProposedRating Red (tfeng)
+ * @Pt.AcceptedRating Red (tfeng)
+ */
 public class RTMList extends RTMTerm {
 
     private String saperator;

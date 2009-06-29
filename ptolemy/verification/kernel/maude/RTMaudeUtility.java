@@ -54,8 +54,8 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.verification.lib.BoundedBufferNondeterministicDelay;
 
-// ////////////////////////////////////////////////////////////////////////
-// //RTMaudeUtility
+//////////////////////////////////////////////////////////////////////////
+////RTMaudeUtility
 
 /**
  * This is an utility function for Ptolemy II models. It performs a systematic

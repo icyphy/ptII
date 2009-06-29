@@ -1,6 +1,5 @@
 /*
 Below is the copyright agreement for the Ptolemy II system.
-Version: $Id$
 
 Copyright (c) 2009 The Regents of the University of California.
 All rights reserved.
@@ -31,6 +30,18 @@ import java.util.Iterator;
 
 import ptolemy.kernel.util.IllegalActionException;
 
+//////////////////////////////////////////////////////////////////////////
+//// RTMObject
+
+/**
+ * A Real-Time Maude object.
+ *
+ * @author Thomas Huining Feng
+ * @version $Id$
+ * @since Ptolemy II 7.1
+ * @Pt.ProposedRating Red (tfeng)
+ * @Pt.AcceptedRating Red (tfeng)
+ */
 public class RTMObject extends RTMTerm {
 
     private String name;

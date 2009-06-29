@@ -1,6 +1,5 @@
 /*
 Below is the copyright agreement for the Ptolemy II system.
-Version: $Id$
 
 Copyright (c) 2009 The Regents of the University of California.
 All rights reserved.
@@ -29,6 +28,18 @@ package ptolemy.verification.kernel.maude;
 import ptolemy.data.expr.ASTPtRootNode;
 import ptolemy.kernel.util.IllegalActionException;
 
+//////////////////////////////////////////////////////////////////////////
+//// RTMPtTerm
+
+/**
+ * A Real-Time Maude ptolemy term.
+ *
+ * @author Thomas Huining Feng
+ * @version $Id$
+ * @since Ptolemy II 7.1
+ * @Pt.ProposedRating Red (tfeng)
+ * @Pt.AcceptedRating Red (tfeng)
+ */
 public class RTMPtExp extends RTMFragment {
 
     public RTMPtExp(String exp) throws IllegalActionException {

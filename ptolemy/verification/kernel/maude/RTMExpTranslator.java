@@ -1,6 +1,5 @@
 /*
 Below is the copyright agreement for the Ptolemy II system.
-Version: $Id$
 
 Copyright (c) 2009 The Regents of the University of California.
 All rights reserved.
@@ -55,6 +54,19 @@ import ptolemy.data.expr.PtParser;
 import ptolemy.data.expr.Token;
 import ptolemy.kernel.util.IllegalActionException;
 
+
+//////////////////////////////////////////////////////////////////////////
+//// RTMLExpTranslator
+
+/**
+ * A Real-Time Maude Expression Translator.
+ *
+ * @author Thomas Huining Feng
+ * @version $Id$
+ * @since Ptolemy II 7.1
+ * @Pt.ProposedRating Red (tfeng)
+ * @Pt.AcceptedRating Red (tfeng)
+ */
 public class RTMExpTranslator extends AbstractParseTreeVisitor {
 
     public RTMExpTranslator(boolean time) {
