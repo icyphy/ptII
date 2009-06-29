@@ -32,7 +32,6 @@ import java.util.Set;
 import ptolemy.data.RecordToken;
 import ptolemy.data.properties.Property;
 import ptolemy.graph.CPO;
-import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 
@@ -260,7 +259,6 @@ public class RecordProperty extends StructuredProperty implements Cloneable {
      * Return the PropertyTerm representing the property of the specified label.
      * @param label The specified label.
      * @return An PropertyTerm.
-     * @see ptolemy.graph.PropertyTerm
      */
     public PropertyTerm getPropertyTerm(String label) {
         return (PropertyTerm) _fields.get(label);
@@ -270,7 +268,6 @@ public class RecordProperty extends StructuredProperty implements Cloneable {
      * Return a static instance of RecordProperty.
      * @return a RecordProperty.
      */
-    @Override
     public StructuredProperty getRepresentative() {
         Object key = _lattice.getName();
         if (!_representativeMap.containsKey(key)) {
@@ -450,9 +447,7 @@ public class RecordProperty extends StructuredProperty implements Cloneable {
      * substitution instance of the corresponding field in this property.
      * @param property A Property.
      * @return True if the argument is a substitution instance of this property.
-     * @see Property#isSubstitutionInstance
      */
-    @Override
     public boolean isSubstitutionInstance(Property property) {
         if (!(property instanceof RecordProperty)) {
             return false;
@@ -549,7 +544,6 @@ public class RecordProperty extends StructuredProperty implements Cloneable {
      * @exception IllegalActionException If the specified property is not a
      * RecordProperty or it does not have the same structure as this one.
      */
-    @Override
     public void updateProperty(StructuredProperty newProperty)
             throws IllegalActionException {
         super.updateProperty(newProperty);
@@ -612,14 +606,18 @@ public class RecordProperty extends StructuredProperty implements Cloneable {
             return RecordProperty.this;
         }
 
-        /*
-         * (non-Javadoc)
-         * @see ptolemy.data.properties.lattice.PropertyTerm#getConstants()
+        /**
+         * Return this FieldProperty in an array if it represents a property
+         * constant. Otherwise, return an array of size zero.
+         * @return An array of PropertyTerm.
          */
-        // @Override
-        public InequalityTerm[] getConstants() {
-            // TODO Auto-generated method stub
-            return null;
+        public PropertyTerm[] getConstants() {
+            if (!isSettable()) {
+                PropertyTerm[] variable = new PropertyTerm[1];
+                variable[0] = this;
+                return variable;
+            }
+            return new PropertyTerm[0];
         }
 
         /**
@@ -674,11 +672,10 @@ public class RecordProperty extends StructuredProperty implements Cloneable {
             }
         }
 
-        /*
-         * (non-Javadoc)
-         * @see ptolemy.data.properties.lattice.PropertyTerm#isEffective()
+        /**
+         * Return true.
+         * @return True.
          */
-        // @Override
         public boolean isEffective() {
             return true;
         }
@@ -700,14 +697,11 @@ public class RecordProperty extends StructuredProperty implements Cloneable {
             return _resolvedProperty.isInstantiable();
         }
 
-        /*
-         * (non-Javadoc)
-         * @see ptolemy.data.properties.lattice.PropertyTerm#setEffective(boolean)
+        /**
+         * Do nothing by default.
+         * @param isEffective Not used.
          */
-        // @Override
         public void setEffective(boolean isEffective) {
-            // TODO Auto-generated method stub
-
         }
 
         /**
@@ -752,7 +746,6 @@ public class RecordProperty extends StructuredProperty implements Cloneable {
          * Return a string representation of this term.
          * @return A String.
          */
-        @Override
         public String toString() {
             return "(RecordFieldProperty, " + getValue() + ")";
         }
@@ -867,7 +860,6 @@ public class RecordProperty extends StructuredProperty implements Cloneable {
      * @exception IllegalArgumentException If the specified property is not a
      * RecordProperty.
      */
-    @Override
     protected StructuredProperty _leastUpperBound(StructuredProperty property) {
         // FIXME: we should consider the case where the two RecordProperty
         // are incomparable.
