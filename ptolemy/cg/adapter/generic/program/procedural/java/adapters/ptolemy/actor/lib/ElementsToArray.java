@@ -74,10 +74,9 @@ public class ElementsToArray extends ProgramCodeGeneratorAdapter {
 
         for (int i = 0; i < actor.input.getWidth(); i++) {
             args.set(0, Integer.valueOf(i).toString());
-            codeStream.append(getStrategy()
-                    .generateBlockCode("fillArray", args));
+            codeStream.appendCodeBlock("fillArray", args);
         }
-        codeStream.append(getStrategy().generateBlockCode("sendOutput"));
+        codeStream.appendCodeBlock("sendOutput");
 
         return processCode(codeStream.toString());
     }
