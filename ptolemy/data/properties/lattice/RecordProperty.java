@@ -1,24 +1,24 @@
 /**
- * A class representing the property of a RecordToken.
- *
+ * A class representing the record property.
+ * 
  * Copyright (c) 2008-2009 The Regents of the University of California. All
  * rights reserved. Permission is hereby granted, without written agreement and
  * without license or royalty fees, to use, copy, modify, and distribute this
  * software and its documentation for any purpose, provided that the above
  * copyright notice and the following two paragraphs appear in all copies of
  * this software.
- *
+ * 
  * IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR
  * DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES ARISING OUT
  * OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF THE UNIVERSITY OF
  * CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- *
+ * 
  * THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
  * INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
  * FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE PROVIDED HEREUNDER IS ON AN
  * "AS IS" BASIS, AND THE UNIVERSITY OF CALIFORNIA HAS NO OBLIGATION TO PROVIDE
  * MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
- *
+ * 
  * PT_COPYRIGHT_VERSION_2 COPYRIGHTENDKEY
  */
 package ptolemy.data.properties.lattice;
@@ -55,27 +55,27 @@ import ptolemy.kernel.util.InternalErrorException;
  * A consequence of this is that all record properties are subproperties of the
  * empty record property. Hence, to require that a propertyable object be a
  * record property without specifying what the fields are, use
- *
+ * 
  * <pre>
  * propertyable.setAtMost(new RecordProperty(new String[0], new Property[0]));
  * </pre>
- *
+ * 
  * Note, however, that by itself this property constraint will not be useful
  * because it does not, by itself, prevent the property from resolving to
  * unknown (the unknown property is at the bottom of the property lattice, and
  * hence satisfies this property constraint).
- *
- * @author Yuhong Xiong, Elaine Cheong and Steve Neuendorffer; contributor: J.
- * S. Senecal
+ * 
+ * @author Man-Kit Leung
  * @version $Id: RecordProperty.java 49948 2008-06-24 20:46:43Z eal $
  * @since Ptolemy II 7.1
- * @Pt.ProposedRating Red (neuendor)
- * @Pt.AcceptedRating Red (cxh)
+ * @Pt.ProposedRating Red (mankit)
+ * @Pt.AcceptedRating Red (mankit)
  */
 public class RecordProperty extends StructuredProperty implements Cloneable {
     /**
      * Construct a RecordProperty with the labels and values specified by a
      * given Map object. The object cannot contain any null keys or values.
+     * @param lattice The specified lattice where this property resides.
      * @param fieldMap A Map that has keys of property String and values of
      * property Token.
      * @exception IllegalActionException If the map contains null keys or
@@ -112,6 +112,7 @@ public class RecordProperty extends StructuredProperty implements Cloneable {
      * array is the property for the i'th label in the labels array. To
      * construct the empty record property, set the length of the argument
      * arrays to 0.
+     * @param lattice The specified lattice where this property resides.
      * @param labels An array of String.
      * @param properties An array of Property.
      * @exception IllegalArgumentException If the two arrays do not have the
@@ -134,186 +135,6 @@ public class RecordProperty extends StructuredProperty implements Cloneable {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         inner class                       ////
-    // A class that encapsulates the declared and resolved properties of a
-    // field and implements the PropertyTerm interface.
-    private class FieldProperty implements PropertyTerm {
-        // Construct an instance of FieldProperty.
-        private FieldProperty(LatticeProperty declaredProperty) {
-            try {
-                _declaredProperty = (LatticeProperty) declaredProperty.clone();
-                _resolvedProperty = _declaredProperty;
-            } catch (CloneNotSupportedException cnse) {
-                throw new InternalErrorException(
-                        "RecordProperty.FieldProperty: "
-                                + "The specified property cannot be cloned.");
-            }
-        }
-
-        ///////////////////////////////////////////////////////////////
-        ////                   public inner methods                ////
-
-        /**
-         * Return this RecordProperty.
-         * @return a RecordProperty.
-         */
-        public Object getAssociatedObject() {
-            return RecordProperty.this;
-        }
-
-        /*
-         * (non-Javadoc)
-         * @see ptolemy.data.properties.lattice.PropertyTerm#getConstants()
-         */
-        // @Override
-        public InequalityTerm[] getConstants() {
-            // TODO Auto-generated method stub
-            return null;
-        }
-
-        /**
-         * Return the resolved property.
-         * @return a Property.
-         */
-        public Object getValue() {
-            return _resolvedProperty;
-        }
-
-        /**
-         * Return this FieldProperty in an array if it represents a property
-         * variable. Otherwise, return an array of size zero.
-         * @return An array of PropertyTerm.
-         */
-        public PropertyTerm[] getVariables() {
-            if (isSettable()) {
-                PropertyTerm[] variable = new PropertyTerm[1];
-                variable[0] = this;
-                return variable;
-            }
-
-            return new PropertyTerm[0];
-        }
-
-        /**
-         * Reset the variable part of the element property to the specified
-         * property.
-         * @parameter e A Property.
-         * @exception IllegalActionException If this property is not settable,
-         * or the argument is not a Property.
-         */
-        public void initialize(Object e) throws IllegalActionException {
-            if (!isSettable()) {
-                throw new IllegalActionException(
-                        "RecordProperty$FieldProperty."
-                                + "initialize: The property is not settable.");
-            }
-
-            if (!(e instanceof Property)) {
-                throw new IllegalActionException("FieldProperty.initialize: "
-                        + "The argument is not a Property.");
-            }
-
-            // if (_declaredProperty == BaseProperty.UNKNOWN) {
-            if (_declaredProperty == _lattice.bottom()) {
-                _resolvedProperty = (LatticeProperty) e;
-            } else {
-                // this field property is a structured property.
-                ((StructuredProperty) _resolvedProperty)
-                        .initialize((Property) e);
-            }
-        }
-
-        /*
-         * (non-Javadoc)
-         * @see ptolemy.data.properties.lattice.PropertyTerm#isEffective()
-         */
-        // @Override
-        public boolean isEffective() {
-            return true;
-        }
-
-        /**
-         * Test if this field property is a property variable.
-         * @return True if this field property is a property variable.
-         */
-        public boolean isSettable() {
-            return !_declaredProperty.isConstant();
-        }
-
-        /**
-         * Check whether the current element property is acceptable. The element
-         * property is acceptable if it represents an instantiable object.
-         * @return True if the element property is acceptable.
-         */
-        public boolean isValueAcceptable() {
-            return _resolvedProperty.isInstantiable();
-        }
-
-        /*
-         * (non-Javadoc)
-         * @see ptolemy.data.properties.lattice.PropertyTerm#setEffective(boolean)
-         */
-        // @Override
-        public void setEffective(boolean isEffective) {
-            // TODO Auto-generated method stub
-
-        }
-
-        /**
-         * Set the element property to the specified property.
-         * @param e a Property.
-         * @exception IllegalActionException If the specified property violates
-         * the declared field property.
-         */
-        public void setValue(Object e) throws IllegalActionException {
-            if (!isSettable()) {
-                throw new IllegalActionException(
-                        "RecordProperty$FieldProperty.setValue: The property is not "
-                                + "settable.");
-            }
-
-            if (!_declaredProperty.isSubstitutionInstance((Property) e)) {
-                throw new IllegalActionException(
-                        "FieldProperty.setValue: "
-                                + "Cannot update the field property of this RecordProperty "
-                                + "to the new property." + " Field property: "
-                                + _declaredProperty.toString()
-                                + ", New property: " + e.toString());
-            }
-
-            //if (_declaredProperty == BaseProperty.UNKNOWN) {
-            if (_declaredProperty == _lattice.bottom()) {
-                try {
-                    _resolvedProperty = (LatticeProperty) ((LatticeProperty) e)
-                            .clone();
-                } catch (CloneNotSupportedException cnse) {
-                    throw new InternalErrorException(
-                            "RecordProperty$FieldProperty.setValue: "
-                                    + "The specified property cannot be cloned.");
-                }
-            } else {
-                ((StructuredProperty) _resolvedProperty)
-                        .updateProperty((StructuredProperty) e);
-            }
-        }
-
-        /**
-         * Return a string representation of this term.
-         * @return A String.
-         */
-        @Override
-        public String toString() {
-            return "(RecordFieldProperty, " + getValue() + ")";
-        }
-
-        ///////////////////////////////////////////////////////////////
-        ////                  private inner variables              ////
-        private LatticeProperty _declaredProperty = null;
-
-        private LatticeProperty _resolvedProperty = null;
-    }
 
     /**
      * Return a deep copy of this RecordProperty if it is a variable, or itself
@@ -763,10 +584,193 @@ public class RecordProperty extends StructuredProperty implements Cloneable {
         }
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         inner class                       ////
+    // A class that encapsulates the declared and resolved properties of a
+    // field and implements the PropertyTerm interface.
+    private class FieldProperty implements PropertyTerm {
+        // Construct an instance of FieldProperty.
+        private FieldProperty(LatticeProperty declaredProperty) {
+            try {
+                _declaredProperty = (LatticeProperty) declaredProperty.clone();
+                _resolvedProperty = _declaredProperty;
+            } catch (CloneNotSupportedException cnse) {
+                throw new InternalErrorException(
+                        "RecordProperty.FieldProperty: "
+                                + "The specified property cannot be cloned.");
+            }
+        }
+
+        ///////////////////////////////////////////////////////////////
+        ////                   public inner methods                ////
+
+        /**
+         * Return this RecordProperty.
+         * @return a RecordProperty.
+         */
+        public Object getAssociatedObject() {
+            return RecordProperty.this;
+        }
+
+        /*
+         * (non-Javadoc)
+         * @see ptolemy.data.properties.lattice.PropertyTerm#getConstants()
+         */
+        // @Override
+        public InequalityTerm[] getConstants() {
+            // TODO Auto-generated method stub
+            return null;
+        }
+
+        /**
+         * Return the resolved property.
+         * @return a Property.
+         */
+        public Object getValue() {
+            return _resolvedProperty;
+        }
+
+        /**
+         * Return this FieldProperty in an array if it represents a property
+         * variable. Otherwise, return an array of size zero.
+         * @return An array of PropertyTerm.
+         */
+        public PropertyTerm[] getVariables() {
+            if (isSettable()) {
+                PropertyTerm[] variable = new PropertyTerm[1];
+                variable[0] = this;
+                return variable;
+            }
+
+            return new PropertyTerm[0];
+        }
+
+        /**
+         * Reset the variable part of the element property to the specified
+         * property.
+         * @parameter property A Property.
+         * @exception IllegalActionException If this property is not settable,
+         * or the argument is not a Property.
+         */
+        public void initialize(Object property) throws IllegalActionException {
+            if (!isSettable()) {
+                throw new IllegalActionException(
+                        "RecordProperty$FieldProperty."
+                                + "initialize: The property is not settable.");
+            }
+
+            if (!(property instanceof Property)) {
+                throw new IllegalActionException("FieldProperty.initialize: "
+                        + "The argument is not a Property.");
+            }
+
+            // if (_declaredProperty == BaseProperty.UNKNOWN) {
+            if (_declaredProperty == _lattice.bottom()) {
+                _resolvedProperty = (LatticeProperty) property;
+            } else {
+                // this field property is a structured property.
+                ((StructuredProperty) _resolvedProperty)
+                        .initialize((Property) property);
+            }
+        }
+
+        /*
+         * (non-Javadoc)
+         * @see ptolemy.data.properties.lattice.PropertyTerm#isEffective()
+         */
+        // @Override
+        public boolean isEffective() {
+            return true;
+        }
+
+        /**
+         * Test if this field property is a property variable.
+         * @return True if this field property is a property variable.
+         */
+        public boolean isSettable() {
+            return !_declaredProperty.isConstant();
+        }
+
+        /**
+         * Check whether the current element property is acceptable. The element
+         * property is acceptable if it represents an instantiable object.
+         * @return True if the element property is acceptable.
+         */
+        public boolean isValueAcceptable() {
+            return _resolvedProperty.isInstantiable();
+        }
+
+        /*
+         * (non-Javadoc)
+         * @see ptolemy.data.properties.lattice.PropertyTerm#setEffective(boolean)
+         */
+        // @Override
+        public void setEffective(boolean isEffective) {
+            // TODO Auto-generated method stub
+
+        }
+
+        /**
+         * Set the element property to the specified property.
+         * @param e a Property.
+         * @exception IllegalActionException If the specified property violates
+         * the declared field property.
+         */
+        public void setValue(Object e) throws IllegalActionException {
+            if (!isSettable()) {
+                throw new IllegalActionException(
+                        "RecordProperty$FieldProperty.setValue: The property is not "
+                                + "settable.");
+            }
+
+            if (!_declaredProperty.isSubstitutionInstance((Property) e)) {
+                throw new IllegalActionException(
+                        "FieldProperty.setValue: "
+                                + "Cannot update the field property of this RecordProperty "
+                                + "to the new property." + " Field property: "
+                                + _declaredProperty.toString()
+                                + ", New property: " + e.toString());
+            }
+
+            //if (_declaredProperty == BaseProperty.UNKNOWN) {
+            if (_declaredProperty == _lattice.bottom()) {
+                try {
+                    _resolvedProperty = (LatticeProperty) ((LatticeProperty) e)
+                            .clone();
+                } catch (CloneNotSupportedException cnse) {
+                    throw new InternalErrorException(
+                            "RecordProperty$FieldProperty.setValue: "
+                                    + "The specified property cannot be cloned.");
+                }
+            } else {
+                ((StructuredProperty) _resolvedProperty)
+                        .updateProperty((StructuredProperty) e);
+            }
+        }
+
+        /**
+         * Return a string representation of this term.
+         * @return A String.
+         */
+        @Override
+        public String toString() {
+            return "(RecordFieldProperty, " + getValue() + ")";
+        }
+
+        ///////////////////////////////////////////////////////////////
+        ////                  private inner variables              ////
+        private LatticeProperty _declaredProperty = null;
+
+        private LatticeProperty _resolvedProperty = null;
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                      protected methods                    ////    
+
     /**
      * Compare this property with the specified property. The specified property
      * must be a RecordProperty, otherwise an exception will be thrown.
-     *
+     * 
      * This method returns one of ptolemy.graph.CPO.LOWER,
      * ptolemy.graph.CPO.SAME, ptolemy.graph.CPO.HIGHER,
      * ptolemy.graph.CPO.INCOMPARABLE, indicating this property is lower than,
@@ -904,6 +908,7 @@ public class RecordProperty extends StructuredProperty implements Cloneable {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
+
     // Test if the first RecordProperty is less than or equal to the second
     private boolean _isLessThanOrEqualTo(RecordProperty t1, RecordProperty t2) {
         Set labelSet1 = t1._fields.keySet();
@@ -932,10 +937,11 @@ public class RecordProperty extends StructuredProperty implements Cloneable {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    // Mapping from label to field information.
+
+    /** Mapping from label to field information. */
     private final Map _fields = new HashMap();
 
-    /** An empty record. */
-    public static HashMap<Object, RecordProperty> _representativeMap = new HashMap<Object, RecordProperty>();
+    /** Mapping the representative record to lattice. */
+    private static Map<Object, RecordProperty> _representativeMap = new HashMap<Object, RecordProperty>();
 
 }
