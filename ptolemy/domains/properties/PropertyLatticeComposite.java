@@ -1,20 +1,20 @@
 /*
  * Below is the copyright agreement for the Ptolemy II system. Version: $Id:
  * PropertyLatticeComposite.java 54158 2009-06-04 03:04:33Z cshelton $
- *
+ * 
  * Copyright (c) 2009 The Regents of the University of California. All rights
  * reserved.
- *
+ * 
  * Permission is hereby granted, without written agreement and without license
  * or royalty fees, to use, copy, modify, and distribute this software and its
  * documentation for any purpose, provided that the above copyright notice and
  * the following two paragraphs appear in all copies of this software.
- *
+ * 
  * IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR
  * DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES ARISING OUT
  * OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF THE UNIVERSITY OF
  * CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- *
+ * 
  * THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
  * INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
  * FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE PROVIDED HEREUNDER IS ON AN
@@ -41,7 +41,7 @@ import ptolemy.util.MessageHandler;
 /**
  * A PropertyLatticeComposite contains a set of lattice elements and their
  * connections.
- *
+ * 
  * @author Man-Kit Leung
  * @version $Id$
  * @since Ptolemy II 7.1
@@ -57,8 +57,8 @@ public class PropertyLatticeComposite extends FSMActor {
      * NullPointerException will be thrown.
      * @param container The specified container.
      * @param name The specified name.
-     * @exception IllegalActionException If the entity cannot be contained by the
-     * proposed container.
+     * @exception IllegalActionException If the entity cannot be contained by
+     * the proposed container.
      * @exception NameDuplicationException If the name coincides with an entity
      * already in the container.
      */
@@ -205,8 +205,9 @@ public class PropertyLatticeComposite extends FSMActor {
          * Return a LatticeProperty that is labeled with the specified name.
          * @param name The specified name.
          * @return A LatticeProperty.
+         * @throws IllegalActionException If no element with the specified name
+         * is found.
          */
-        @Override
         public LatticeProperty getElement(String name)
                 throws IllegalActionException {
             for (LatticeProperty property : _properties) {
@@ -214,7 +215,8 @@ public class PropertyLatticeComposite extends FSMActor {
                     return property;
                 }
             }
-            return null;
+            throw new IllegalActionException("No such element named: \"" + name
+                    + "\" in the lattice.");
         }
 
         /**
