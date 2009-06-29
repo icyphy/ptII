@@ -1,6 +1,6 @@
 /***declareBlock***/
 // java/kernel/type/Array.j
-private class array {
+public class array {
     public int size;
     public Token [] elements;
 }
