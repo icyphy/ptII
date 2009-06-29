@@ -1,4 +1,4 @@
-/* Preemptive EDF Ptides director that allows preemption, and uses EDF to determine whether premeption should occur.
+/* Basic Preemptive EDF Ptides director that allows preemption, and uses EDF to determine whether preemption should occur.
 
 @Copyright (c) 2008-2009 The Regents of the University of California.
 All rights reserved.

@@ -601,7 +601,7 @@ public class PtidesBasicDirector extends DEDirector {
      *  the platform (actuators). For each input port in between, annotate it with
      *  a minDelay parameter. This parameter is an array of doubles, where each double
      *  corresponds to the minimum delay offset for a particular channel of that port.
-     *  This mimimum delay offset is used for the safe to process analysis.
+     *  This minimum delay offset is used for the safe to process analysis.
      *  </p>
      *  FIXME: currently this algorithm does not support transparent composite actors,
      *  but it should.
@@ -1507,6 +1507,7 @@ public class PtidesBasicDirector extends DEDirector {
 
         } else {
             // event does not have a destination port, must be a pure event.
+            // FIXME: in general this is not true.
             return true;
         }
     }
@@ -2052,20 +2053,10 @@ public class PtidesBasicDirector extends DEDirector {
         }
 
         /** The port. */
-        private IOPort port;
+        public IOPort port;
 
         /** The dependency. */
-        private Dependency dependency;
-
-        /** Get method for the dependency. */
-        public Dependency getDependency() {
-            return dependency;
-        }
-
-        /** Get method for the port. */
-        public IOPort getPort() {
-            return port;
-        }
+        public Dependency dependency;
 
         /** Compares this PortDependency with another. Compares the dependencies
          *  of these two objects.
