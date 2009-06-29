@@ -1,9 +1,48 @@
+/* Preemptive EDF Ptides director that allows preemption, and uses EDF to determine whether preemption should occur.
+
+@Copyright (c) 2008-2009 The Regents of the University of California.
+All rights reserved.
+
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the
+above copyright notice and the following two paragraphs appear in all
+copies of this software.
+
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
+
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
+
+                                                PT_COPYRIGHT_VERSION_2
+                                                COPYRIGHTENDKEY
+
+
+ */
+
 package ptolemy.domains.ptides.kernel;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.PriorityQueue;
+import java.util.Set;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.IOPort;
+import ptolemy.actor.TypedCompositeActor;
+import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.util.SuperdenseDependency;
 import ptolemy.actor.util.Time;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.DoubleToken;
@@ -17,7 +56,7 @@ import ptolemy.kernel.util.NamedObj;
 /**
  *  This director implements preemptive PTIDES scheduling algorithm, and uses
  *  EDF as the foundation to determine whether we should preempt executing events.
- *  This director is different from its super class because PtidesBasicPreemptiveDDFDirector
+ *  This director is different from PtidesBasicPreemptiveDDFDirector because that director
  *  only takes the first event and analyze it for safe to process, however this director
  *  looks at all events in the event queue, takes the one that is safe to process and has
  *  the smallest deadline. Here, deadline is calculated by summing timestamp with the
@@ -35,7 +74,7 @@ import ptolemy.kernel.util.NamedObj;
  *  @Pt.AcceptedRating Red (jiazou)
  *
  */
-public class PtidesPreemptiveEDFDirector extends PtidesNoPhysicalTimeDirector {
+public class PtidesPreemptiveEDFDirector extends PtidesBasicDirector {
     /** Construct a director with the specified container and name.
      *  @param container The container
      *  @param name The name
@@ -59,12 +98,135 @@ public class PtidesPreemptiveEDFDirector extends PtidesNoPhysicalTimeDirector {
         super.preinitialize();
 
         _eventToProcess = null;
+        _calculateDeadline();
 
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                     protected methods                     ////
 
+    /** Calculates the deadline for each channel in each input port within the 
+     *  composite actor governed by this Ptides director. Deadlines are calculated 
+     *  with only model time delays, not worst-case-execution-times (WCET).
+     */
+    protected void _calculateDeadline() throws IllegalActionException {
+        // The algorithm used is exactly the same as the one in _calculateMinDelay. The only
+        // difference is that we are starting from the input ports of actuators and traversing
+        // backwards.
+
+        // FIXME: If there are composite actors within the top level composite actor,
+        // does this algorithm work?
+        // initialize all port model delays to infinity.
+        HashMap portDeadlines = new HashMap<IOPort, SuperdenseDependency>();
+        for (Actor actor : (List<Actor>)(((TypedCompositeActor)getContainer()).deepEntityList())) {
+            for (TypedIOPort inputPort : (List<TypedIOPort>)(actor.inputPortList())) {
+                portDeadlines.put(inputPort, SuperdenseDependency.OPLUS_IDENTITY);
+            }
+            for (TypedIOPort outputPort : (List<TypedIOPort>)(actor.outputPortList())) {
+                portDeadlines.put(outputPort, SuperdenseDependency.OPLUS_IDENTITY);
+            }
+        }
+
+        for (TypedIOPort outputPort : (List<TypedIOPort>)(((Actor)getContainer()).outputPortList())) {
+            SuperdenseDependency startDelay = SuperdenseDependency.OTIMES_IDENTITY;
+            portDeadlines.put(outputPort, startDelay);
+        }
+        // Now start from each sensor (input port at the top level), traverse through all
+        // ports.
+        for (TypedIOPort startPort : (List<TypedIOPort>)(((TypedCompositeActor)getContainer()).outputPortList())) {
+            // Setup a local priority queue to store all reached ports
+            HashMap localPortDeadlines = new HashMap<IOPort, SuperdenseDependency>(portDeadlines);
+
+            PriorityQueue distQueue = new PriorityQueue<PortDependency>();
+            distQueue.add(new PortDependency(startPort, (SuperdenseDependency)localPortDeadlines.get(startPort)));
+
+            // Dijkstra's algorithm to find all shortest time delays.
+            while (!distQueue.isEmpty()) {
+                PortDependency portDependency = (PortDependency)distQueue.remove();
+                IOPort port = (IOPort)portDependency.port;
+                SuperdenseDependency prevDependency = (SuperdenseDependency)portDependency.dependency;
+                Actor actor = (Actor)port.getContainer();
+                if (port.isInput() && port.isOutput()) {
+                    throw new IllegalActionException("the causality analysis cannot deal with" +
+                    "port that are both input and output");
+                }
+                // we do not want to traverse to the outside of the platform.
+                if (actor != getContainer()) {
+                    if (port.isOutput()) {
+                        Collection<IOPort> inputs = _finiteDependentPorts(port);
+                        for (IOPort inputPort : inputs) {
+                            SuperdenseDependency minimumDelay = (SuperdenseDependency)_getDependency(inputPort, port);
+                            // FIXME: what do we do with the microstep portion of the dependency?
+                            // need to make sure we did not visit this port before.
+                            SuperdenseDependency modelTime = (SuperdenseDependency) prevDependency.oTimes(minimumDelay);
+                            if (((SuperdenseDependency)localPortDeadlines.get(inputPort)).compareTo(modelTime) > 0) {
+                                localPortDeadlines.put(inputPort, modelTime);
+                                distQueue.add(new PortDependency(inputPort, modelTime));
+                            }
+                        }
+                    } else { // port is an input port
+                        // For each receiving port channel pair, add the dependency in inputModelTimeDelays.
+                        // We do not need to check whether there already exists a dependency because if
+                        // a dependency already exists for that pair, that dependency must have a greater
+                        // value, meaning it should be replaced. This is because the output port that
+                        // led to that pair would not be in distQueue if it the dependency was smaller.
+                        
+                        for (IOPort sourcePort : (List<IOPort>)port.sourcePortList()) {
+                            // Assume output ports only have width of 1.
+                            // we do not want to traverse to the outside of the platform.
+                            if (sourcePort.getContainer() != getContainer()) {
+                                // for this port channel pair, add the dependency.
+                                // After updating dependencies, we need to decide whether we should keep traversing
+                                // the graph.
+                                if (((SuperdenseDependency)localPortDeadlines.get(sourcePort)).compareTo(prevDependency) > 0) {
+                                    localPortDeadlines.put(sourcePort, prevDependency);
+                                    distQueue.add(new PortDependency(sourcePort, prevDependency));
+                                }
+                            }
+                        }
+                    }
+                } else if (port == startPort) {
+                    // The (almost) same code (except for getting receivers) is used if the
+                    // port is a startPort or an input port.
+                    // This does not support input/output port, should it?
+                    for (IOPort sourcePort : (List<IOPort>)port.deepInsidePortList()) {
+                        // Assume output ports only have width of 1.
+                        // we do not want to traverse to the outside of the platform.
+                        if (sourcePort.getContainer() != getContainer()) {
+                            // for this port channel pair, add the dependency.
+                            // After updating dependencies, we need to decide whether we should keep traversing
+                            // the graph.
+                            if (((SuperdenseDependency)localPortDeadlines.get(sourcePort)).compareTo(prevDependency) > 0) {
+                                localPortDeadlines.put(sourcePort, prevDependency);
+                                distQueue.add(new PortDependency(sourcePort, prevDependency));
+                            }
+                        }
+                    }
+                }
+            }
+            portDeadlines = localPortDeadlines;
+        }
+
+        // inputModelTimeDelays is the delays as calculated through shortest path algorithm. Now we
+        // need to use these delays to calculate the minDelay, which is calculated as follows:
+        // For each port, get all finite equivalent ports except itself. Now for a particular port
+        // channel pair, Find the smallest model time delay among all of the channels on all these
+        // ports, if they exist. that smallest delay is  the minDelay for that port channel pair.
+        // If this smallest value does not exist, then the event arriving at this port channel pair
+        // is always safe to process, thus minDelay does not change (it was by default set to
+        // double.POSITIVE_INFINITY.
+        for (IOPort port : (Set<IOPort>)(portDeadlines.keySet())) {
+            if (port.isInput()) {
+                SuperdenseDependency dependency = (SuperdenseDependency)(portDeadlines.get(port));
+                _setDeadline(port, dependency);
+            }
+        }
+    }
+    
+    protected void _clearDeadlines() {
+        
+    }
+    
     /** Return all the events in the event queue that are of the same tag as the event
      *  passed in.
      *  <p>
@@ -75,14 +237,29 @@ public class PtidesPreemptiveEDFDirector extends PtidesNoPhysicalTimeDirector {
      */
     protected List<DEEvent> _getAllSameTagEventsFromQueue(DEEvent event)
             throws IllegalActionException {
-        List<DEEvent> eventList = super._getAllSameTagEventsFromQueue(event);
+        if (event != ((DEListEventQueue)_eventQueue).get(_peekingIndex)) {
+            throw new IllegalActionException("The event to get is not the event pointed " +
+                        "to by peeking index.");
+        }
+        List<DEEvent> eventList = new ArrayList<DEEvent>();
+        eventList.add(event);
+        for (int i = _peekingIndex; (i + 1) < _eventQueue.size(); i++) {
+            DEEvent nextEvent = ((DEListEventQueue)_eventQueue).get(i+1);
+            // FIXME: when causality interface for RealDependency works, replace this actor
+            // by the same equivalence class.
+            if (nextEvent.hasTheSameTagAs(event) && (nextEvent.actor() == event.actor())) {
+                eventList.add(nextEvent);
+            } else {
+                break;
+            }
+        }
         for (int i = _peekingIndex; (i - 1) >= 0; i--) {
             DEEvent nextEvent = ((DEListEventQueue) _eventQueue)
-                    .get(_peekingIndex - 1);
+            	    .get(_peekingIndex-1);
             // FIXME: when causality interface for RealDependency works, replace this actor
             // by the same equivalence class.
             if (nextEvent.hasTheSameTagAs(event)
-                    && (nextEvent.actor() == event.actor())) {
+            	    && (nextEvent.actor() == event.actor())) {
                 eventList.add(nextEvent);
                 _peekingIndex--;
             } else {
@@ -268,19 +445,13 @@ public class PtidesPreemptiveEDFDirector extends PtidesNoPhysicalTimeDirector {
         }
     }
 
-    /** This method first uses the super of _safeToProcess, which only tests if all
-     *  ports at the same actor
-     *  contain an event of larger timestamp. If they do, then the super method
-     *  returns true, otherwise it returns false. If the super method (check against
-     *  model times) returned true, then the event is safe to process, otherwise,
-     *  we check against physical time, and see if the event is safe to process. If
+    /** This method analyzes whether an event is safe to process by
+     *  checking against physical time, and see if the event is safe to process. If
      *  this is true, the event is safe to process, otherwise it is not.
      *
-     *  FIXME: Currently the check in super method is commented out...
      */
     protected boolean _safeToProcess(DEEvent event)
-            throws IllegalActionException {
-        //        boolean result = super._safeToProcess(event);
+    	    throws IllegalActionException {
         boolean result = false;
         if (result == true) {
             return result;
@@ -311,10 +482,33 @@ public class PtidesPreemptiveEDFDirector extends PtidesNoPhysicalTimeDirector {
             }
         }
     }
+    
+    /** Sets the relativeDeadline parameter for an input port
+     * @param inputPort The port to set the parameter.
+     * @param dependency The value of the relativeDeadline to be set.
+     * @throws IllegalActionException If unsuccessful in getting the attribute.
+     */
+    protected void _setDeadline(IOPort inputPort, SuperdenseDependency dependency) 
+            throws IllegalActionException {
+        Parameter parameter = (Parameter)(inputPort).getAttribute("relativeDeadline");
+        if (parameter == null) {
+            try {
+                parameter = new Parameter(inputPort, "relativeDeadline");
+            } catch (NameDuplicationException e) {
+                throw new IllegalActionException("A relativeDeadline parameter already exists");
+            }
+        }
+        parameter.setToken(new DoubleToken(dependency.timeValue()));
+
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                     protected variables                   ////
 
     /** The event to be processed next. */
     protected DEEvent _eventToProcess;
+    
+    /** The index of the event we are peeking in the event queue. */
+    protected int _peekingIndex;
+
 }
