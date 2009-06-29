@@ -31,6 +31,8 @@ package ptolemy.cg.lib;
 import java.io.File;
 import java.io.IOException;
 import java.io.Writer;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.net.URI;
@@ -49,6 +51,7 @@ import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.PtolemyEffigy;
 import ptolemy.actor.parameters.ParameterPort;
 import ptolemy.actor.util.DFUtilities;
+import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
@@ -56,6 +59,7 @@ import ptolemy.data.Token;
 import ptolemy.data.expr.FileParameter;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
+import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.Type;
 import ptolemy.kernel.CompositeEntity;
@@ -76,7 +80,7 @@ import ptolemy.util.StringUtilities;
  A composite actor that can be optionally code generated and then
  invoked via reflection.
 
- @author Gang Zhou, contributors: Christopher Brooks, Edward A. Lee, Bert Rodiers
+ @author Gang Zhou, contributors: Christopher Brooks, Edward A. Lee, Bert Rodiers, Dai Bui
  @version $Id$
  @since Ptolemy II 7.1
  @Pt.ProposedRating red (zgang)
@@ -979,6 +983,67 @@ public class CompiledCompositeActor extends TypedCompositeActor {
                 }
             }
 
+        } else if(type instanceof ArrayType) {
+
+            for (int i = 0; i < port.getWidthInside(); i++) {
+                for (int k = 0; k < rate; k++) {
+                    type = ((ArrayType)type).getElementType();
+                    try {
+                        Object[][] tmpOutputTokens = (Object[][])outputTokens;
+                        Class<?> tokenClass = tmpOutputTokens[i][k].getClass();
+                        
+                        Method getPayload;
+                        getPayload = tokenClass.getMethod("getPayload", (Class[]) null);
+                        
+                        Object payload = null;
+                        payload = (Object) getPayload.invoke(tmpOutputTokens[i][k], (Object[])null);
+                        
+                        Field objSize = (Field) (payload.getClass().getField("size"));
+                        int size = objSize.getInt(payload);
+                        
+                        Field elementsField = (Field) (payload.getClass().getField("elements"));
+                        Object[] elements = (Object[])elementsField.get(payload);
+                        
+                        Token[] convertedTokens = new Token[size];
+                        
+                        for(int j = 0; j < size; j++) {
+                            Object element =  (Object)getPayload.invoke(elements[j], (Object[])null);
+                            if(type == BaseType.INT) {
+                                convertedTokens[j] = new IntToken(Integer.parseInt(element.toString())); 
+                            } else if (type == BaseType.DOUBLE) {
+                                convertedTokens[j] = new DoubleToken(Double.parseDouble(element.toString()));
+                            } else if (type == BaseType.BOOLEAN) {
+                                convertedTokens[j] = new BooleanToken(Boolean.parseBoolean(element.toString()));
+                            } else {
+                                //FIXME: need to deal with other types
+                            }
+                        }
+                        
+                        Token token = new ArrayToken(type, convertedTokens);
+                        port.send(i, token);
+                        
+                    } catch (SecurityException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    } catch (NoSuchMethodException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    } catch (IllegalArgumentException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    } catch (IllegalAccessException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    } catch (InvocationTargetException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                        
+                    } catch (NoSuchFieldException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    } 
+                }
+            }
         } else {
             // FIXME: need to deal with other types
         }
