@@ -29,7 +29,7 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =            ptolemy/verification/demo/TrafficLight
+ME =            ptolemy/verification/demo/SimpleTrafficLight
 
 # Root of the ptII directory
 ROOT =		../../../..
