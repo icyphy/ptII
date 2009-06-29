@@ -1,4 +1,5 @@
-/*
+/* An action that can be configured with a Ptera-based model transformation to
+   be applied to the current model.
 
  Copyright (c) 2008 The Regents of the University of California.
  All rights reserved.
@@ -51,7 +52,8 @@ import ptolemy.vergil.gt.TransformationAttributeEditorFactory.TransformationList
 //// GTGUIAction
 
 /**
-
+ An action that can be configured with a Ptera-based model transformation to be
+ applied to the current model.
 
  @author Thomas Huining Feng
  @version $Id$
@@ -104,7 +106,6 @@ public class GTGUIAction extends GUIAction {
      *
      *  @param parse Whether the configure text should be parsed before applying
      *   to the current model.
-     *  @exception Exception If error occurs in performing the action.
      */
     public void perform(boolean parse) {
         if (_momlText != null) {
@@ -166,6 +167,16 @@ public class GTGUIAction extends GUIAction {
         }
     }
 
+    /** Mark the unselected objects in the given model to be ignored or not
+     *  ignored.
+     *
+     *  @param model The model that contains the selected or unselected objects.
+     *  @param ignore Whether the objects should be ignored.
+     *  @throws NameDuplicationException If instances of IgnoringAttribute
+     *   cannot be created for the objects.
+     *  @throws IllegalActionException If IgnoringAttribute exists and have the
+     *   same names.
+     */
     protected void _processUnselectedObjects(NamedObj model, boolean ignore)
             throws NameDuplicationException, IllegalActionException {
         BasicGraphFrame frame = (BasicGraphFrame) getFrame();
