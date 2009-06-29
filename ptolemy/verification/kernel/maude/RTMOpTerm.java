@@ -1,6 +1,5 @@
 /*
 Below is the copyright agreement for the Ptolemy II system.
-Version: $Id$
 
 Copyright (c) 2009 The Regents of the University of California.
 All rights reserved.
@@ -26,6 +25,18 @@ ENHANCEMENTS, OR MODIFICATIONS.
 */
 package ptolemy.verification.kernel.maude;
 
+//////////////////////////////////////////////////////////////////////////
+//// RTMOpTerm
+
+/**
+ * A Real-Time Maude operation term.
+ *
+ * @author Thomas Huining Feng
+ * @version $Id$
+ * @since Ptolemy II 7.1
+ * @Pt.ProposedRating Red (tfeng)
+ * @Pt.AcceptedRating Red (tfeng)
+ */
 public class RTMOpTerm extends RTMTerm {
 
     // args1 frag1 arg2 frag2 ...
