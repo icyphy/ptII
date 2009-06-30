@@ -1,4 +1,4 @@
-/*
+/* A wrapper for a string containing a regular expression.
 
 @Copyright (c) 2007-2009 The Regents of the University of California.
 All rights reserved.
@@ -33,20 +33,49 @@ package ptolemy.actor.gt.util;
 
 import java.util.regex.Pattern;
 
+//////////////////////////////////////////////////////////////////////////
+//// RegularExpressionString
+
+/**
+ A wrapper for a string containing a regular expression.
+
+ @author Thomas Huining Feng
+ @version $Id$
+ @since Ptolemy II 8.0
+ @Pt.ProposedRating Red (tfeng)
+ @Pt.AcceptedRating Red (tfeng)
+ */
 public class RegularExpressionString {
 
+    /** Construct a Ptolemy expression string.
+     */
     public RegularExpressionString() {
         this("");
     }
 
+
+    /** Construct a Ptolemy expression string with the given value as its
+     *  initial value.
+     *
+     *  @param value The initial value.
+     */
     public RegularExpressionString(String value) {
         set(value);
     }
 
+    /** Get the current value.
+     *
+     *  @return The value.
+     *  @see #set(String)
+     */
     public String get() {
         return _value;
     }
 
+    /** Get the pattern for the regular expression.
+     *
+     *  @return The pattern.
+     */
     public Pattern getPattern() {
         if (_needReparse) {
             _pattern = Pattern.compile(_value);
@@ -55,18 +84,33 @@ public class RegularExpressionString {
         return _pattern;
     }
 
+    /** Set the value.
+     *
+     *  @param value The value.
+     *  @see #get()
+     */
     public void set(String value) {
         _value = value;
         _needReparse = true;
     }
 
+    /** Return the regular expression in a string.
+     *
+     *  @return The regular expression.
+     */
     public String toString() {
         return get();
     }
 
+    /** Whether the regular expression needs to be reparsed.
+     */
     private boolean _needReparse;
 
+    /** The pattern for the regular expression.
+     */
     private Pattern _pattern;
 
+    /** The regular expression.
+     */
     private String _value;
 }

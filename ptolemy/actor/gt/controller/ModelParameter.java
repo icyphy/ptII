@@ -142,6 +142,7 @@ public class ModelParameter extends Parameter implements Initializable {
     /** Return an empty string.
      *
      *  @return An empty string.
+     *  @see #setExpression(String)
      */
     public String getExpression() {
         return "";
@@ -150,6 +151,7 @@ public class ModelParameter extends Parameter implements Initializable {
     /** Get the model stored in this parameter.
      *
      *  @return The model.
+     *  @see #setModel(CompositeEntity)
      */
     public CompositeEntity getModel() {
         return _model;
@@ -160,6 +162,7 @@ public class ModelParameter extends Parameter implements Initializable {
      *
      *  @return The token.
      *  @exception IllegalActionException If the ActorToken cannot be created.
+     *  @see #setToken(Token)
      */
     public Token getToken() throws IllegalActionException {
         CompositeEntity model = getModel();
@@ -263,6 +266,7 @@ public class ModelParameter extends Parameter implements Initializable {
     /** Do nothing.
      *
      *  @param expression The new expression.
+     *  @see #getExpression()
      */
     public void setExpression(String expression) {
     }
@@ -270,6 +274,7 @@ public class ModelParameter extends Parameter implements Initializable {
     /** Set the model in this parameter.
      *
      *  @param model The new model.
+     *  @see #getModel()
      */
     public void setModel(CompositeEntity model) {
         if (_model != null) {
@@ -290,6 +295,7 @@ public class ModelParameter extends Parameter implements Initializable {
      *
      *  @param token The ActorToken.
      *  @exception IllegalActionException If the token is not an ActorToken.
+     *  @see #getToken()
      */
     public void setToken(Token token) throws IllegalActionException {
         ActorToken actorToken = (ActorToken) ActorToken.TYPE.convert(token);

@@ -1,4 +1,4 @@
-/*
+/* A Boolean element for an operation.
 
 @Copyright (c) 2008 The Regents of the University of California.
 All rights reserved.
@@ -31,22 +31,26 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.actor.gt.ingredients.operations;
 
+//////////////////////////////////////////////////////////////////////////
+//// BooleanOperationElement
+
 /**
+ A Boolean element for an operation.
 
  @author Thomas Huining Feng
  @version $Id$
- @since Ptolemy II 7.1
+ @since Ptolemy II 8.0
  @Pt.ProposedRating Red (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
 public class BooleanOperationElement extends OperationElement {
 
-    /**
-     * @param name
-     * @param canDisable
+    /** Construct a Boolean element for an operation.
+     *
+     *  @param name The name of the element.
+     *  @param canDisable Whether the element can be disabled.
      */
     public BooleanOperationElement(String name, boolean canDisable) {
         super(name, canDisable);
     }
-
 }

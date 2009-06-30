@@ -51,7 +51,8 @@ public interface ValueIterator extends Settable {
      *
      *  @return The current value.
      *  @exception IllegalActionException Throws if the current value cannot be
-     *  obtained.
+     *   obtained.
+     *  @see #setToken(Token)
      */
     public Token getToken() throws IllegalActionException;
 
@@ -83,6 +84,7 @@ public interface ValueIterator extends Settable {
      *
      *  @param token The value to be set.
      *  @exception IllegalActionException Thrown when trying to set the value.
+     *  @see #getToken()
      */
     public void setToken(Token token) throws IllegalActionException;
 

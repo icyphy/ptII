@@ -1,4 +1,4 @@
-/*
+/* A string element for a criterion.
 
  Copyright (c) 2003-2007 The Regents of the University of California.
  All rights reserved.
@@ -26,12 +26,36 @@
  */
 package ptolemy.actor.gt.ingredients.criteria;
 
+//////////////////////////////////////////////////////////////////////////
+//// StringCriterionElement
+
+/**
+ A string element for a criterion.
+
+ @author Thomas Huining Feng
+ @version $Id$
+ @since Ptolemy II 8.0
+ @Pt.ProposedRating Red (tfeng)
+ @Pt.AcceptedRating Red (tfeng)
+ */
 public class StringCriterionElement extends CriterionElement {
 
+    /** Construct a string element for a criterion.
+     *
+     *  @param name The name of the element.
+     *  @param canDisable Whether the element can be disabled.
+     */
     public StringCriterionElement(String name, boolean canDisable) {
         this(name, canDisable, false, false);
     }
 
+    /** Construct a Boolean element for a criterion.
+     *
+     *  @param name The name of the element.
+     *  @param canDisable Whether the element can be disabled.
+     *  @param acceptRegularExpression Whether regular expression is accepted.
+     *  @param acceptPtolemyExpression Whether Ptolemy expression is accepted.
+     */
     public StringCriterionElement(String name, boolean canDisable,
             boolean acceptRegularExpression, boolean acceptPtolemyExpression) {
         super(name, canDisable);
@@ -39,15 +63,27 @@ public class StringCriterionElement extends CriterionElement {
         _acceptPtolemyExpression = acceptPtolemyExpression;
     }
 
+    /** Return whether Ptolemy expression is accepted.
+     *
+     *  @return true if Ptolemy expression is accepted.
+     */
     public boolean acceptPtolemyExpression() {
         return _acceptPtolemyExpression;
     }
 
+    /** Return whether regular expression is accepted.
+     *
+     *  @return true if regular expression is accepted.
+     */
     public boolean acceptRegularExpression() {
         return _acceptRegularExpression;
     }
 
+    /** Whether Ptolemy expression is accepted.
+     */
     private boolean _acceptPtolemyExpression;
 
+    /** Whether regular expression is accepted.
+     */
     private boolean _acceptRegularExpression;
 }

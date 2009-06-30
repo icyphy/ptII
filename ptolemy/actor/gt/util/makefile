@@ -51,7 +51,6 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 # Keep this list alphabetized.
 JSRCS = \
 	PtolemyExpressionString.java \
-	RecursiveFileFilter.java \
 	RegularExpressionString.java
 
 EXTRA_SRCS =	$(JSRCS)

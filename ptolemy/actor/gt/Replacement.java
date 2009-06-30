@@ -97,7 +97,7 @@ public class Replacement extends CompositeActorMatcher {
     }
 
     /** The parameter containing an {@link ObjectToken} encapsulating the
-     *  pattern with name "pattern"
+     *  pattern with name "pattern".
      */
     public Parameter patternParameter;
 

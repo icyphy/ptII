@@ -58,6 +58,7 @@ public class Pair<E1, E2> extends Tuple<Object> {
     /** Get the first element.
      *
      *  @return The first element.
+     *  @see #setFirst(Object)
      */
     public E1 getFirst() {
         return (E1) get(0);
@@ -66,6 +67,7 @@ public class Pair<E1, E2> extends Tuple<Object> {
     /** Get the second element.
      *
      *  @return The second element.
+     *  @see #setSecond(Object)
      */
     public E2 getSecond() {
         return (E2) get(1);
@@ -84,6 +86,7 @@ public class Pair<E1, E2> extends Tuple<Object> {
     /** Set the first element in this pair.
      *
      *  @param first The first element.
+     *  @see #getFirst()
      */
     public void setFirst(E1 first) {
         set(0, first);
@@ -92,6 +95,7 @@ public class Pair<E1, E2> extends Tuple<Object> {
     /** Set the second element in this pair.
      *
      *  @param second The first element.
+     *  @see #getSecond()
      */
     public void setSecond(E2 second) {
         set(1, second);

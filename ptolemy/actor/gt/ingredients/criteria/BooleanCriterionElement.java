@@ -1,4 +1,4 @@
-/*
+/* A Boolean element for a criterion.
 
  Copyright (c) 1997-2007 The Regents of the University of California.
  All rights reserved.
@@ -28,16 +28,25 @@
 
 package ptolemy.actor.gt.ingredients.criteria;
 
+//////////////////////////////////////////////////////////////////////////
+//// BooleanCriterionElement
+
 /**
+ A Boolean element for a criterion.
 
  @author Thomas Huining Feng
  @version $Id$
- @since Ptolemy II 6.1
+ @since Ptolemy II 8.0
  @Pt.ProposedRating Red (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
 public class BooleanCriterionElement extends CriterionElement {
 
+    /** Construct a Boolean element for a criterion.
+     *
+     *  @param name The name of the element.
+     *  @param canDisable Whether the element can be disabled.
+     */
     public BooleanCriterionElement(String name, boolean canDisable) {
         super(name, canDisable);
     }
