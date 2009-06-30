@@ -1,4 +1,4 @@
-/*
+/* A parameter to encapsulate a tableau.
 
  Copyright (c) 2008 The Regents of the University of California.
  All rights reserved.
@@ -42,13 +42,16 @@ import ptolemy.kernel.util.Workspace;
 //// TableauParameter
 
 /**
-
+ A parameter to encapsulate a tableau. The tableau can be used by different
+ events for user interaction.
 
  @author Thomas Huining Feng
  @version $Id$
  @since Ptolemy II 7.1
- @Pt.ProposedRating Red (tfeng)
+ @Pt.ProposedRating Yellow (tfeng)
  @Pt.AcceptedRating Red (tfeng)
+ @see Report
+ @see SetTableau
  */
 public class TableauParameter extends Parameter implements Initializable {
 
@@ -75,12 +78,26 @@ public class TableauParameter extends Parameter implements Initializable {
         setToken(new ObjectToken(null, Tableau.class));
     }
 
+    /** Not implemented. Do nothing.
+     *
+     *  @param initializable The initializable.
+     */
     public void addInitializable(Initializable initializable) {
-        throw new InternalErrorException("The addInitializable() method is "
-                + "not implemented in TableauParameter, and should not be "
-                + "invoked.");
     }
 
+    /** Clone the variable.  This creates a new variable containing the
+     *  same token (if the value was set with setToken()) or the same
+     *  (unevaluated) expression, if the expression was set with
+     *  setExpression().  The list of variables added to the scope
+     *  is not cloned; i.e., the clone has an empty scope.
+     *  The clone has the same static type constraints (those given by
+     *  setTypeEquals() and setTypeAtMost()), but none of the dynamic
+     *  type constraints (those relative to other variables).
+     *  @param workspace The workspace in which to place the cloned variable.
+     *  @exception CloneNotSupportedException Not thrown in this base class.
+     *  @see java.lang.Object#clone()
+     *  @return The cloned variable.
+     */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         TableauParameter newObject = (TableauParameter) super.clone(workspace);
         try {
@@ -91,10 +108,20 @@ public class TableauParameter extends Parameter implements Initializable {
         return newObject;
     }
 
+    /** Return an empty string because a tableau cannot be specified with an
+     *  expression.
+     *
+     *  @return An empty string.
+     */
     public String getExpression() {
         return "";
     }
 
+    /** Initialize the tableau with null and close any existing tableau.
+     *
+     *  @exception IllegalActionException If the existing tableau cannot be
+     *   retrieved.
+     */
     public void initialize() throws IllegalActionException {
         final Tableau tableau = (Tableau) ((ObjectToken) getToken()).getValue();
         if (tableau != null) {
@@ -103,12 +130,47 @@ public class TableauParameter extends Parameter implements Initializable {
         }
     }
 
+    /** Do nothing.
+     *
+     *  @exception IllegalActionException Not thrown in this class.
+     */
     public void preinitialize() throws IllegalActionException {
     }
 
+    /** Not implemented. Do nothing.
+     *
+     *  @param initializable The initializable.
+     */
     public void removeInitializable(Initializable initializable) {
     }
 
+    /** Specify the container, and add this variable to the list
+     *  of attributes in the container. If this variable already has a
+     *  container, remove this variable from the attribute list of the
+     *  current container first. Otherwise, remove it from the directory
+     *  of the workspace, if it is there. If the specified container is
+     *  null, remove this variable from the list of attributes of the
+     *  current container. If the specified container already contains
+     *  an attribute with the same name, then throw an exception and do
+     *  not make any changes. Similarly, if the container is not in the
+     *  same workspace as this variable, throw an exception. If this
+     *  variable is already contained by the specified container, do
+     *  nothing.
+     *  <p>
+     *  If this method results in a change of container (which it usually
+     *  does), then remove this variable from the scope of any
+     *  scope dependent of this variable.
+     *  <p>
+     *  This method is write-synchronized on the workspace and increments
+     *  its version number.
+     *  @param container The proposed container of this variable.
+     *  @exception IllegalActionException If the container will not accept
+     *   a variable as its attribute, or this variable and the container
+     *   are not in the same workspace, or the proposed container would
+     *   result in recursive containment.
+     *  @exception NameDuplicationException If the container already has
+     *   an attribute with the name of this variable.
+     */
     public void setContainer(NamedObj container) throws IllegalActionException,
             NameDuplicationException {
         NamedObj oldContainer = getContainer();
@@ -123,9 +185,17 @@ public class TableauParameter extends Parameter implements Initializable {
         }
     }
 
+    /** Do nothing because a tableau cannot be specified with an exception.
+     *
+     *  @param expression The expression.
+     */
     public void setExpression(String expression) {
     }
 
+    /** Do nothing.
+     *
+     *  @exception IllegalActionException Not thrown in this class.
+     */
     public void wrapup() throws IllegalActionException {
     }
 }

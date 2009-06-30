@@ -63,7 +63,7 @@ import ptolemy.util.StringUtilities;
  @author Thomas Huining Feng
  @version $Id$
  @since Ptolemy II 7.1
- @Pt.ProposedRating Red (tfeng)
+ @Pt.ProposedRating Yellow (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
 public class ListDirectory extends Event {
@@ -242,7 +242,7 @@ public class ListDirectory extends Event {
      @author Thomas Huining Feng
      @version $Id$
      @since Ptolemy II 8.0
-     @Pt.ProposedRating Red (tfeng)
+     @Pt.ProposedRating Yellow (tfeng)
      @Pt.AcceptedRating Red (tfeng)
      */
     public static class RecursiveFileFilter implements FilenameFilter {
@@ -376,7 +376,7 @@ public class ListDirectory extends Event {
          @author Thomas Huining Feng
          @version $Id$
          @since Ptolemy II 8.0
-         @Pt.ProposedRating Red (tfeng)
+         @Pt.ProposedRating Yellow (tfeng)
          @Pt.AcceptedRating Red (tfeng)
          */
         private static class FileComparator implements Comparator<File>,

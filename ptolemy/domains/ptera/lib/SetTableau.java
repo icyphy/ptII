@@ -1,4 +1,4 @@
-/*
+/* An event to set the state of a tableau.
 
  Copyright (c) 2008-2009 The Regents of the University of California.
  All rights reserved.
@@ -50,21 +50,31 @@ import ptolemy.kernel.util.NameDuplicationException;
 //// SetTableau
 
 /**
-
+ An event to set the state of a tableau.
 
  @author Thomas Huining Feng
  @version $Id$
- @since Ptolemy II 7.1
- @Pt.ProposedRating Red (tfeng)
+ @since Ptolemy II 8.0
+ @Pt.ProposedRating Yellow (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
 public class SetTableau extends Event {
 
-    /**
-     *  @param container
-     *  @param name
-     *  @exception IllegalActionException
-     *  @exception NameDuplicationException
+    /** Construct an event with the given name contained by the specified
+     *  composite entity. The container argument must not be null, or a
+     *  NullPointerException will be thrown. This event will use the
+     *  workspace of the container for synchronization and version counts.
+     *  If the name argument is null, then the name is set to the empty
+     *  string.
+     *  Increment the version of the workspace.
+     *  This constructor write-synchronizes on the workspace.
+     *
+     *  @param container The container.
+     *  @param name The name of the state.
+     *  @exception IllegalActionException If the state cannot be contained
+     *   by the proposed container.
+     *  @exception NameDuplicationException If the name coincides with
+     *   that of an entity already in the container.
      */
     public SetTableau(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
@@ -106,6 +116,16 @@ public class SetTableau extends Event {
         visible.setToken(BooleanToken.TRUE);
     }
 
+    /** Process this event and set the state of the referred tableau.
+     *
+     *  @param arguments The arguments used to process this event, which must be
+     *   either an ArrayToken or a RecordToken.
+     *  @return A refiring data structure that contains a non-negative double
+     *   number if refire() should be called after that amount of model time, or
+     *   null if refire() need not be called.
+     *  @exception IllegalActionException If state of the tableau cannot be set,
+     *   or if thrown by the superclass.
+     */
     public RefiringData fire(Token arguments) throws IllegalActionException {
         RefiringData data = super.fire(arguments);
 
@@ -195,37 +215,75 @@ public class SetTableau extends Event {
         return data;
     }
 
+    /** Whether the tableau should be always on top.
+     */
     public Parameter alwaysOnTop;
 
+    /** Whether controls in the tableau is enabled.
+     */
     public Parameter enabled;
 
+    /** Whether the tableau has the input focus.
+     */
     public Parameter focused;
 
+    /** The tableau to be set. This must not be an empty string.
+     */
     public StringParameter referredTableau;
 
+    /** Whether the tableau is resizable.
+     */
     public Parameter resizable;
 
+    /** Location of the tableau, or [-1, -1] if not changed.
+     */
     public Parameter screenLocation;
 
+    /** Size of the tableau, or [-1, -1] if not changed.
+     */
     public Parameter screenSize;
 
+    /** The iconified, maximized or normal state of the tableau.
+     */
     public ChoiceParameter state;
 
+    /** The title of the tableau, or an empty string if not changed.
+     */
     public StringParameter title;
 
+    /** Whether the tableau is visible.
+     */
     public Parameter visible;
 
+    //////////////////////////////////////////////////////////////////////////
+    //// TableauState
+
+    /**
+     The iconified, maximized or normal state of the tableau.
+
+     @author Thomas Huining Feng
+     @version $Id$
+     @since Ptolemy II 8.0
+     @Pt.ProposedRating Yellow (tfeng)
+     @Pt.AcceptedRating Red (tfeng)
+     */
     public enum TableauState {
+        /** Iconified.
+         */
         ICONIFIED {
             public String toString() {
                 return "iconified";
             }
         },
+        /** Maximized.
+         */
         MAXIMIZED {
             public String toString() {
                 return "mazimized";
             }
         },
+        /** Normal.
+         */
         NORMAL {
             public String toString() {
                 return "normal";

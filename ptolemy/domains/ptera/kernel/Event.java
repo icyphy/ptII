@@ -108,7 +108,7 @@ import ptolemy.kernel.util.Workspace;
  @author Thomas Huining Feng
  @version $Id$
  @since Ptolemy II 7.1
- @Pt.ProposedRating Red (tfeng)
+ @Pt.ProposedRating Yellow (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
 public class Event extends State implements Initializable {
@@ -694,7 +694,7 @@ public class Event extends State implements Initializable {
      @author Thomas Huining Feng
      @version $Id$
      @since Ptolemy II 7.1
-     @Pt.ProposedRating Red (tfeng)
+     @Pt.ProposedRating Yellow (tfeng)
      @Pt.AcceptedRating Red (tfeng)
      */
     public static class EventParameter extends Parameter {
@@ -730,7 +730,7 @@ public class Event extends State implements Initializable {
      @author Thomas Huining Feng
      @version $Id$
      @since Ptolemy II 7.1
-     @Pt.ProposedRating Red (tfeng)
+     @Pt.ProposedRating Yellow (tfeng)
      @Pt.AcceptedRating Red (tfeng)
      */
     public static class RefiringData {

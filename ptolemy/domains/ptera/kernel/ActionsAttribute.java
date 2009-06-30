@@ -77,7 +77,7 @@ import ptolemy.kernel.util.Workspace;
  @version $Id$
  @since Ptolemy II 7.1
  @see CommitActionsAttribute
- @Pt.ProposedRating Red (tfeng)
+ @Pt.ProposedRating Yellow (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
 public class ActionsAttribute extends AbstractActionsAttribute {
