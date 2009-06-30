@@ -55,7 +55,7 @@ import ptolemy.vergil.gt.IterativeParameterIcon;
  @author Thomas Huining Feng
  @version $Id$
  @since Ptolemy II 7.1
- @Pt.ProposedRating Red (tfeng)
+ @Pt.ProposedRating Yellow (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
 public class IterativeParameter extends Parameter implements MatchCallback,
@@ -244,7 +244,7 @@ public class IterativeParameter extends Parameter implements MatchCallback,
      @author Thomas Huining Feng
      @version $Id$
      @since Ptolemy II 8.0
-     @Pt.ProposedRating Red (tfeng)
+     @Pt.ProposedRating Yellow (tfeng)
      @Pt.AcceptedRating Red (tfeng)
      */
     public class ConstraintViolationException extends IllegalActionException {
@@ -266,7 +266,7 @@ public class IterativeParameter extends Parameter implements MatchCallback,
      @author Thomas Huining Feng
      @version $Id$
      @since Ptolemy II 8.0
-     @Pt.ProposedRating Red (tfeng)
+     @Pt.ProposedRating Yellow (tfeng)
      @Pt.AcceptedRating Red (tfeng)
      */
     public enum Mode {

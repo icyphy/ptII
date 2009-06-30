@@ -70,7 +70,7 @@ import ptolemy.vergil.gt.StateMatcherController;
  @author Thomas Huining Feng
  @version $Id$
  @since Ptolemy II 6.1
- @Pt.ProposedRating Red (tfeng)
+ @Pt.ProposedRating Yellow (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
 public class StateMatcher extends State implements GTEntity, TypedActor,

@@ -70,7 +70,7 @@ import ptolemy.vergil.gt.TransformEventController.Factory;
  @author Thomas Huining Feng
  @version $Id$
  @since Ptolemy II 7.1
- @Pt.ProposedRating Red (tfeng)
+ @Pt.ProposedRating Yellow (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
 public class Transform extends GTEvent implements ConfigurableEntity,
@@ -312,7 +312,7 @@ public class Transform extends GTEvent implements ConfigurableEntity,
      @author Thomas Huining Feng
      @version $Id$
      @since Ptolemy II 8.0
-     @Pt.ProposedRating Red (tfeng)
+     @Pt.ProposedRating Yellow (tfeng)
      @Pt.AcceptedRating Red (tfeng)
      */
     public static class EmbeddedConfigurer extends Configurer {

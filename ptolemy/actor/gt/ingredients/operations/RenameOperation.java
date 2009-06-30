@@ -55,7 +55,7 @@ import ptolemy.moml.MoMLChangeRequest;
  @author Thomas Huining Feng
  @version $Id$
  @since Ptolemy II 8.0
- @Pt.ProposedRating Red (tfeng)
+ @Pt.ProposedRating Yellow (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
 public class RenameOperation extends Operation {

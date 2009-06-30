@@ -66,7 +66,7 @@ import ptolemy.vergil.icon.EditorIcon;
  @author Thomas Huining Feng
  @version $Id$
  @since Ptolemy II 7.1
- @Pt.ProposedRating Red (tfeng)
+ @Pt.ProposedRating Yellow (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
 public class GTEntityUtils {
@@ -331,7 +331,7 @@ public class GTEntityUtils {
      @author Thomas Huining Feng
      @version $Id$
      @since Ptolemy II 7.1
-     @Pt.ProposedRating Red (tfeng)
+     @Pt.ProposedRating Yellow (tfeng)
      @Pt.AcceptedRating Red (tfeng)
      */
     private static class LoadActorIconChangeRequest extends ChangeRequest {
@@ -416,7 +416,7 @@ public class GTEntityUtils {
      @author Thomas Huining Feng
      @version $Id$
      @since Ptolemy II 7.1
-     @Pt.ProposedRating Red (tfeng)
+     @Pt.ProposedRating Yellow (tfeng)
      @Pt.AcceptedRating Red (tfeng)
      */
     private static class RestoreAppearanceChangeRequest extends ChangeRequest {

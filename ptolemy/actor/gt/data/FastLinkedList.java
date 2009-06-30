@@ -46,7 +46,7 @@ import ptolemy.kernel.util.KernelRuntimeException;
  @author Thomas Huining Feng
  @version $Id$
  @since Ptolemy II 8.0
- @Pt.ProposedRating Red (tfeng)
+ @Pt.ProposedRating Yellow (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
 public class FastLinkedList<E> implements Collection<E> {
@@ -412,7 +412,7 @@ public class FastLinkedList<E> implements Collection<E> {
      @author Thomas Huining Feng
      @version $Id$
      @since Ptolemy II 8.0
-     @Pt.ProposedRating Red (tfeng)
+     @Pt.ProposedRating Yellow (tfeng)
      @Pt.AcceptedRating Red (tfeng)
      */
     public class Entry {

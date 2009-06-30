@@ -85,7 +85,7 @@ import ptolemy.vergil.kernel.attributes.VisibleAttribute;
  @author Thomas Huining Feng
  @version $Id$
  @since Ptolemy II 7.1
- @Pt.ProposedRating Red (tfeng)
+ @Pt.ProposedRating Yellow (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
 public class GraphTransformer extends ChangeRequest {
@@ -1726,7 +1726,7 @@ public class GraphTransformer extends ChangeRequest {
      @author Thomas Huining Feng
      @version $Id$
      @since Ptolemy II 7.1
-     @Pt.ProposedRating Red (tfeng)
+     @Pt.ProposedRating Yellow (tfeng)
      @Pt.AcceptedRating Red (tfeng)
      */
     private class CreateObjectChangeRequest extends MoMLChangeRequest {
@@ -1804,7 +1804,7 @@ public class GraphTransformer extends ChangeRequest {
      @author Thomas Huining Feng
      @version $Id$
      @since Ptolemy II 8.0
-     @Pt.ProposedRating Red (tfeng)
+     @Pt.ProposedRating Yellow (tfeng)
      @Pt.AcceptedRating Red (tfeng)
      */
     private class ReplacementObjectAttribute extends StringAttribute {

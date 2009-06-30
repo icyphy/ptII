@@ -47,7 +47,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  @author Thomas Huining Feng
  @version $Id$
  @since Ptolemy II 7.1
- @Pt.ProposedRating Red (tfeng)
+ @Pt.ProposedRating Yellow (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  @see ReadModel
  */
