@@ -41,7 +41,6 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.Enumeration;
 
 import javax.swing.BoxLayout;
 import javax.swing.JEditorPane;
@@ -50,7 +49,6 @@ import javax.swing.UIManager;
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
 import javax.swing.text.AttributeSet;
-import javax.swing.text.Style;
 import javax.swing.text.html.HTMLDocument;
 import javax.swing.text.html.HTMLEditorKit;
 import javax.swing.text.html.HTMLFrameHyperlinkEvent;
@@ -419,6 +417,7 @@ public class HTMLViewer extends TableauFrame implements Printable,
         StyleSheet styleSheet = doc.getStyleSheet();
 
         // Debugging code, useful for seeing what properties are set.
+        /*
         Enumeration rules = styleSheet.getStyleNames();
         while (rules.hasMoreElements()) {
             String name = (String) rules.nextElement();
@@ -452,6 +451,7 @@ public class HTMLViewer extends TableauFrame implements Printable,
                 }
             }
         }
+        */
 
         try {
             // Get the background color of the HTML widget.
