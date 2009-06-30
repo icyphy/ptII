@@ -1807,7 +1807,7 @@ public class GraphTransformer extends ChangeRequest {
      @Pt.ProposedRating Yellow (tfeng)
      @Pt.AcceptedRating Red (tfeng)
      */
-    private class ReplacementObjectAttribute extends StringAttribute {
+    public static class ReplacementObjectAttribute extends StringAttribute {
 
         /** Construct an attribute in the default workspace with an empty string
          *  as its name.
