@@ -8,8 +8,6 @@
             class="ptolemy.vergil.actor.ActorGraphTableau$Factory"/>
   <property name="Run Window"
             class="ptolemy.actor.gui.RunTableau$Factory"/>
-  <property name="Interface Window"
-            class="ptolemy.actor.gui.run.InterfaceTableau$Factory"/>
   <property name="Tree View"
             class="ptolemy.vergil.tree.TreeTableau$Factory"/>
   <property name="XML View"
