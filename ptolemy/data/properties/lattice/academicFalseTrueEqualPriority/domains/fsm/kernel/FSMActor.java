@@ -48,7 +48,7 @@ public class FSMActor extends PropertyConstraintFSMHelper {
      * actor constraints are set for this helper.
      * @param solver The specified property solver.
      * @param actor The specified FSMActor.
-     * @exception IllegalActionException
+     * @exception IllegalActionException Thrown if super class throws it.
      */
     public FSMActor(PropertyConstraintSolver solver,
             ptolemy.domains.fsm.kernel.FSMActor actor)
