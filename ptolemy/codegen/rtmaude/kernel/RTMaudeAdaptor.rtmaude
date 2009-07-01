@@ -1,29 +1,20 @@
-/***moduleName***/
-ACTOR-BASE/**/
-
-/***checkModuleName***/
-MODELCHECK-BASE/**/
-
-/***sharedBlock***/
-/**/
-
 /***funcModuleName***/
 $actorSymbol(MODULE)/**/
 
 /***fireFuncBlock($modelop, $fire)***/
 (tomod $block(funcModuleName) is
-    including $block(moduleName) .
+    including $info(semanticsModule) .
     op #model : Oid -> Configuration .
     eq $modelop = 
 $fire .
 endtom)
 /**/
 
-/***mainEntry($includes)***/
+/***mainEntry($semantics_includes)***/
 (tomod INIT is
     including DE-DYNAMICS .
     including
-$includes .
+$semantics_includes .
 
     *** an event messages should be already generated for each clock 
     *** during the translation
@@ -38,13 +29,13 @@ $includes .
        initAll(
        /**/
 
-/***mainExit($includes, $commands)***/
+/***mainExit($formal_includes, $commands)***/
        ) .
 endtom)
 
 (tomod PTOLEMY-MODELCHECK is
     including
-$includes .
+$formal_includes .
 endtom)
 
 $commands

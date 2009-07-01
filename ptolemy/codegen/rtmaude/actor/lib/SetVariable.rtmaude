@@ -1,13 +1,7 @@
-/***moduleName***/
-SET-VARIABLE/**/
-
-/***className***/
-SetVariable/**/
-
 /***attr_SetVariable***/
 variableName : '$info(variableName)/**/
 
-/***sharedBlock***/
+/***semantics_SetVariable***/
 (tomod SET-VARIABLE is 
   inc COMPOSITE-ACTOR .    --- assuming composite actor
 

@@ -1,13 +1,7 @@
-/***moduleName***/
-CURRENT-TIME/**/
-
-/***className***/
-CurrentTime/**/
-
 /***attr_CurrentTime***/
 current-time : 0/**/
 
-/***sharedBlock***/
+/***semantics_CurrentTime***/
 (tomod CURRENT-TIME is
   inc ACTOR .
   inc OBJECT-WITH-TIMER .

@@ -1,10 +1,4 @@
-/***moduleName***/
-TIMER/**/
-
-/***className***/
-Timer/**/
-
-/***sharedBlock***/
+/***semantics_Timer***/
 (tomod TIMER is
   inc ACTOR .
 
@@ -45,7 +39,7 @@ Timer/**/
       store : 'value |-> V ; MEM,
       ports : < 'input : InPort | status : present, value : TV > PORTS
     >)
-  = evt(event(O ! 'output, V), getTime(TV))
+  = evt(event(O ! 'output, V), toTime(TV))
     postfire(^ Timer, < O : Timer | >) .
 endtom)
 /**/

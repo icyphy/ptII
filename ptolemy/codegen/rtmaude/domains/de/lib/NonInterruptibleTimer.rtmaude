@@ -1,14 +1,8 @@
-/***moduleName***/
-NONINTERRUPTIBLE-TIMER/**/
-
-/***className***/
-NonInterruptibleTimer/**/
-
 /***attr_NonInterruptibleTimer***/
 processing : false,
 wait-queue : emptyList/**/
 
-/***sharedBlock***/
+/***semantics_NonInterruptibleTimer***/
 (tomod NONINTERRUPTIBLE-TIMER  is
   inc ACTOR .
 

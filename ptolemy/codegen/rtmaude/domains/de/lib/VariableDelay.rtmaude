@@ -1,10 +1,4 @@
-/***moduleName***/
-VARIABLE-DELAY-ACTOR/**/
-
-/***className***/
-VariableDelay/**/
-
-/***sharedBlock***/
+/***semantics_VariableDelay***/
 (tomod VARIABLE-DELAY-ACTOR  is 
   inc ACTOR .
 

@@ -1,12 +1,3 @@
-/***moduleName***/
-MODAL-MODEL/**/
-
-/***className***/
-ModalModel/**/
-
-/***checkModuleName***/
-CHECK-MODALMODEL-ACTOR/**/
-
 /***attr_ModalModel***/
 controller : '$info(controller),
 refinement : $info(refinement)/**/
@@ -14,7 +5,7 @@ refinement : $info(refinement)/**/
 /***refineStateBlock($state, $actor)***/
 refine-state('$state,'$actor)/**/
 
-/***sharedBlock***/
+/***semantics_ModalModel***/
 (tomod MODAL-MODEL is 
   inc COMPOSITE-ACTOR .
   pr FSM-ACTOR .
@@ -90,7 +81,9 @@ refine-state('$state,'$actor)/**/
   ---FIXME: 'controller ==> parent' connection should overwrite 
   
 endtom)
+/**/
 
+/***formal_ModalModel***/
 (tomod CHECK-MODALMODEL-ACTOR is
   pr CHECK-FSM-ACTOR .
   pr MODAL-MODEL .
