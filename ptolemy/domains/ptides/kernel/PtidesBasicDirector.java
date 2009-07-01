@@ -475,6 +475,8 @@ public class PtidesBasicDirector extends DEDirector {
         // Initialize an event queue.
         _eventQueue = new DEListEventQueue();
         _calculateMinDelayOffsets();
+        // In Ptides, we should never stop when queue is empty...
+        stopWhenQueueIsEmpty.setExpression("false");
     }
 
     /** Return false if there are no more actors to be fired or the stop()
