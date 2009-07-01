@@ -29,9 +29,15 @@ package ptolemy.codegen.rtmaude.kernel;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import ptolemy.actor.CompositeActor;
 import ptolemy.codegen.kernel.CodeGeneratorHelper;
@@ -53,162 +59,205 @@ import ptolemy.kernel.util.NamedObj;
 *
 * @see ptolemy.codegen.kernel.CodeGeneratorHelper
 * @author Kyungmin Bae
-@version $Id$
-@since Ptolemy II 7.1
 * @version $Id$
 * @Pt.ProposedRating Red (kquine)
 *
 */
 public class RTMaudeAdaptor extends CodeGeneratorHelper {
-
+    
     protected String defaultTermBlock = "termBlock";
-
+        
     public RTMaudeAdaptor(NamedObj component) {
         super(component);
         _parseTreeCodeGenerator = getParseTreeCodeGenerator();
     }
-
-    public List<String> getBlockCodeList(String blockName, String... args)
+    
+    public List<String> getBlockCodeList(String blockName, String ... args) 
             throws IllegalActionException {
         List<String> rl = new LinkedList();
-        rl.add(_generateBlockCode(blockName, args));
+        String bcode = _generateBlockCode(blockName,args);
+        rl.add(bcode);
+        
         return rl;
     }
-
+    
     /**
      * @param blockName
      * @param args
      * @return The block code
-     * @exception IllegalActionException
+     * @throws IllegalActionException
      */
-    protected String _generateBlockCode(String blockName, String... args)
+    protected String _generateBlockCode(String blockName, String ... args)
             throws IllegalActionException {
         return super._generateBlockCode(blockName, Arrays.asList(args));
     }
-
+    
     @Override
     protected String _generateTypeConvertMethod(String ref, String castType,
             String refType) throws IllegalActionException {
-
+        
         //FIXME: too specific.
-        if (refType != null && refType.equals("String")) {
+        if (refType != null && refType.equals("String"))
             return "# " + ref;
-        }
         if (castType != null && castType.equals("time")) {
             return "toTime(" + ref + ")";
-        } else {
-            return super._generateTypeConvertMethod(ref, castType, refType);
         }
+        else
+            return super._generateTypeConvertMethod(ref, castType, refType);
     }
 
-    protected String _generateInfoCode(String name, List<String> parameters)
+    @Override
+    public String generateFireCode() throws IllegalActionException {
+        String comment = _codeGenerator.comment("Fire " +
+                ((getComponent() instanceof CompositeActor) ? "Composite Actor: " : "") +
+                generateName(getComponent()));
+
+        if (_codeGenerator.inline.getToken() == BooleanToken.TRUE)
+            return processCode(comment + 
+                    _generateFireCode() + generateTypeConvertFireCode());
+        else
+            return processCode(comment + generateTermCode());        
+    }
+    
+    @Override
+    public String generateFireFunctionCode() throws IllegalActionException {
+        String fireModName = _generateBlockCode("funcModuleName");
+        
+        return _generateBlockCode("fireFuncBlock",
+                fireModName,
+                generateTermCode(),
+                CodeStream.indent(1,_generateFireCode() + generateTypeConvertFireCode())
+                );
+    }
+
+    /**
+     * Generate a Real-time Maude term representation of given component.
+     * 
+     * @return the term representation of a component
+     * @throws IllegalActionException 
+     */
+    public String generateTermCode() throws IllegalActionException {
+        return _generateBlockCode(defaultTermBlock);    // term block
+    }
+    
+    @Override
+    public Set getSharedCode() throws IllegalActionException {
+        // Use LinkedHashSet to give order to the shared code.
+        Set sharedCode = new LinkedHashSet();
+        semanticsIncludes = getModuleCode("semantics");
+        formalIncludes = getModuleCode("formal");
+        
+        for (String m : semanticsIncludes)
+            sharedCode.add(getRTMmodule().get(m));
+        for (String m : formalIncludes)
+            sharedCode.add(getRTMmodule().get(m));
+        
+        return sharedCode;
+    }
+    
+    public List<String> getModuleCode(String header) 
             throws IllegalActionException {
-        if (name.equals("name")) {
-            return getComponent().getName();
+        Set<String> blocks = new HashSet(_codeStream.getAllCodeBlockNames());
+        LinkedList<String> modNames = new LinkedList();
+        
+        if (RTMmodule == null) RTMmodule = new HashMap();
+        
+        for (Class c = getComponent().getClass(); 
+             !c.getName().equals("ptolemy.kernel.util.NamedObj");
+             c = c.getSuperclass()) {
+            
+            String blockName = header + "_" + c.getSimpleName();
+            if (blocks.contains(blockName)) {
+                String module = _generateBlockCode(blockName);
+                Matcher nameMat = Pattern.compile("tomod\\s+(\\S+)").matcher(module);
+                if (!nameMat.find())
+                    throw new IllegalActionException("Invalid " + header + " module block: No name");
+                else {
+                    String name = nameMat.group(1);
+                    RTMmodule.put(name, module);
+                    modNames.addFirst(name);
+                }
+            }
+        }
+        return modNames;
+    }
+
+    public String generateEntryCode() throws IllegalActionException {
+        LinkedHashSet<String> incs ;
+                
+        if (_codeGenerator.inline.getToken() == BooleanToken.TRUE)
+            incs = new LinkedHashSet(semanticsIncludes);
+        else
+            incs = new LinkedHashSet(getBlockCodeList("funcModuleName"));
+            
+        return _generateBlockCode("mainEntry",
+                CodeStream.indent(2, 
+                        new ListTerm<String>("ACTOR-BASE", " +" + _eol, incs).generateCode())
+            );
+    }
+    
+    public String generateExitCode() throws IllegalActionException {
+        LinkedHashSet<String> check_inc_set = new LinkedHashSet<String>();
+        StringBuffer commands = new StringBuffer();
+        ptolemy.data.Token bound = ((RTMaudeCodeGenerator)_codeGenerator).
+                            simulation_bound.getToken();
+        
+        check_inc_set.add("INIT");
+        if (formalIncludes != null)
+            check_inc_set.addAll(formalIncludes);
+        else
+            throw new IllegalActionException("getSharedCode() has not been invoked");
+        
+        if ( bound != null ) {
+            if (bound.toString().equals("Infinity"))
+                commands.append("(rew {init} .)");
+            else
+                commands.append("(trew {init} in time <= " + 
+                        IntToken.convert(bound).toString() + " .)");
         }
 
+        for (PropertyParameter p : (List<PropertyParameter>)
+                _codeGenerator.attributeList(PropertyParameter.class)) {
+            commands.append("(" + p.stringValue() + " .)" + _eol);
+        }
+        
+        return _generateBlockCode("mainExit", 
+                CodeStream.indent(2, 
+                        new ListTerm<String>("MODELCHECK-BASE", " +" + _eol, check_inc_set).generateCode()),
+                commands.toString()
+        );
+    }
+    
+    protected String getInfo(String name, List<String> parameters)
+            throws IllegalActionException {
+        if (name.equals("name"))
+            return getComponent().getName();
         throw new IllegalActionException("Unknown RTMaudeObj Information");
     }
-
+    
     @Override
     protected String _replaceMacro(String macro, String parameter)
             throws IllegalActionException {
         if (macro.equals("info") || macro.equals("block")) {
             String[] args = parameter.split("(?<!\\\\),");
-            for (int i = 1; i < args.length; i++) {
-                if (args[i].contains("$")) {
+            for (int i = 1 ; i < args.length ; i++)
+                if (args[i].contains("$"))
                     args[i] = processCode(args[i]);
-                }
-            }
-
-            ArrayList<String> largs = new ArrayList(Arrays.asList(args));
+            
+            ArrayList<String> largs = new ArrayList(Arrays.asList(args)); 
             String aName = largs.remove(0);
-
-            if (macro.equals("info")) {
-                return _generateInfoCode(aName, largs);
-            } else {
+            
+            if (macro.equals("info"))
+                return getInfo(aName, largs);
+            else
                 return _generateBlockCode(aName, largs);
-            }
         }
         if (macro.equals("indent")) {
             return _eol + CodeStream.indent(1, processCode(parameter));
         }
         return super._replaceMacro(macro, parameter);
     }
-
-    @Override
-    public String generateFireCode() throws IllegalActionException {
-        String comment = _codeGenerator
-                .comment("Fire "
-                        + ((getComponent() instanceof CompositeActor) ? "Composite Actor: "
-                                : "") + generateName(getComponent()));
-
-        if (_codeGenerator.inline.getToken() == BooleanToken.TRUE) {
-            return processCode(comment + _generateFireCode()
-                    + generateTypeConvertFireCode());
-        } else {
-            return processCode(comment + generateTermCode());
-        }
-    }
-
-    @Override
-    public String generateFireFunctionCode() throws IllegalActionException {
-        return _generateBlockCode("fireFuncBlock", generateTermCode(),
-                CodeStream.indent(1, _generateFireCode()
-                        + generateTypeConvertFireCode()));
-    }
-
-    /**
-     * Generate a Real-time Maude term representation of given component.
-     *
-     * @return the term representation of a component
-     * @exception IllegalActionException
-     */
-    public String generateTermCode() throws IllegalActionException {
-        return _generateBlockCode(defaultTermBlock); // term block
-    }
-
-    public String generateEntryCode() throws IllegalActionException {
-        HashSet<String> inc_set;
-        if (_codeGenerator.inline.getToken() == BooleanToken.TRUE) {
-            inc_set = new HashSet(getBlockCodeList("moduleName"));
-        } else {
-            inc_set = new HashSet(getBlockCodeList("funcModuleName"));
-        }
-
-        return _generateBlockCode("mainEntry", CodeStream.indent(2,
-                new ListTerm<String>("ACTOR-BASE", " +" + _eol, inc_set)
-                        .generateCode()));
-    }
-
-    public String generateExitCode() throws IllegalActionException {
-        HashSet<String> check_inc_set = new HashSet<String>();
-        StringBuffer commands = new StringBuffer();
-        ptolemy.data.Token bound = ((RTMaudeCodeGenerator) _codeGenerator).simulation_bound
-                .getToken();
-
-        check_inc_set.add("INIT");
-        check_inc_set.addAll(getBlockCodeList("checkModuleName"));
-
-        if (bound != null) {
-            if (bound.toString().equals("Infinity")) {
-                commands.append("(rew {init} .)");
-            } else {
-                commands.append("(trew {init} in time <= "
-                        + IntToken.convert(bound).toString() + " .)");
-            }
-        }
-
-        for (PropertyParameter p : (List<PropertyParameter>) _codeGenerator
-                .attributeList(PropertyParameter.class)) {
-            commands.append("(" + p.stringValue() + " .)" + _eol);
-        }
-
-        return _generateBlockCode("mainExit", CodeStream.indent(2,
-                new ListTerm<String>("MODELCHECK-BASE", " +" + _eol,
-                        check_inc_set).generateCode()), commands.toString());
-    }
-
+    
     /** Return a new parse tree code generator to use with expressions.
      *  @return the parse tree code generator to use with expressions.
      */
@@ -216,4 +265,12 @@ public class RTMaudeAdaptor extends CodeGeneratorHelper {
         _parseTreeCodeGenerator = new RTMaudeParseTreeCodeGenerator(); //FIXME: _codeGenerator
         return _parseTreeCodeGenerator;
     }
+    
+    public Map<String,String> getRTMmodule() {
+        return RTMmodule;
+    }
+    
+    Map<String,String> RTMmodule;
+    List<String> semanticsIncludes;
+    List<String> formalIncludes;
 }
