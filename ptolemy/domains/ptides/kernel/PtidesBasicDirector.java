@@ -108,6 +108,10 @@ public class PtidesBasicDirector extends DEDirector {
         animateExecution = new Parameter(this, "animateExecution");
         animateExecution.setExpression("false");
         animateExecution.setTypeEquals(BaseType.BOOLEAN);
+        
+        actorsReceiveEventsInTimestampOrder = new Parameter(this, "actorsReceiveEventsInTimestampOrder");
+        actorsReceiveEventsInTimestampOrder.setExpression("false");
+        actorsReceiveEventsInTimestampOrder.setTypeEquals(BaseType.BOOLEAN);
 
         _zero = new Time(this);
     }
@@ -119,6 +123,11 @@ public class PtidesBasicDirector extends DEDirector {
      *  the state of execution. This is a boolean that defaults to false.
      */
     public Parameter animateExecution;
+    
+    /** If true, then it can be assumed that actors receive events in timestamp
+     *  order. This simplifies the safe to process analysis.
+     */
+    public Parameter actorsReceiveEventsInTimestampOrder;
 
     ///////////////////////////////////////////////////////////////////
     ////                     public methods                        ////
@@ -1819,7 +1828,7 @@ public class PtidesBasicDirector extends DEDirector {
                 result = true;
             } else if (compare < 0) {
                 // FIXME: we should probably do something else here.
-                throw new IllegalArgumentException(
+                throw new IllegalActionException(tokenEvent.port,
                         "missed deadline at the actuator. Deadline = "
                                 + tokenEvent.deliveryTime
                                 + ", and current physical time = "
@@ -1900,23 +1909,33 @@ public class PtidesBasicDirector extends DEDirector {
      *  @return The min delay associated with this port channel pair.
      *  @exception IllegalActionException
      */
-    private static double _getMinDelayForPortChannel(IOPort inputPort,
+    private double _getMinDelayForPortChannel(IOPort inputPort,
             Integer channel,
             Map<IOPort, Map<Integer, SuperdenseDependency>> inputModelTimeDelays)
             throws IllegalActionException {
         SuperdenseDependency smallestDependency = SuperdenseDependency.OPLUS_IDENTITY;
         // for each port that's in the same equivalence class as the input port,
         for (IOPort port : (Collection<IOPort>) _finiteEquivalentPorts(inputPort)) {
-            Map<Integer, SuperdenseDependency> channelDependency = (Map<Integer, SuperdenseDependency>) inputModelTimeDelays
-                    .get(port);
+            Map<Integer, SuperdenseDependency> channelDependency = 
+                (Map<Integer, SuperdenseDependency>) inputModelTimeDelays.get(port);
             if (channelDependency != null) {
                 for (Integer integer : channelDependency.keySet()) {
-                    if (!(port == inputPort && integer == channel)) {
-                        SuperdenseDependency candidate = channelDependency
+                    if (((BooleanToken) actorsReceiveEventsInTimestampOrder.getToken()).booleanValue()) {
+                        if (!(port == inputPort && integer == channel)) {
+                            SuperdenseDependency candidate = channelDependency
                                 .get(integer);
+                            if (smallestDependency.compareTo(candidate) > 0) {
+                                smallestDependency = candidate;
+                            }
+                        }
+                    } else {
+                        // cannot assume events arrive in timestamp order.
+                        SuperdenseDependency candidate = channelDependency
+                            .get(integer);
                         if (smallestDependency.compareTo(candidate) > 0) {
                             smallestDependency = candidate;
                         }
+
                     }
                 }
             }
