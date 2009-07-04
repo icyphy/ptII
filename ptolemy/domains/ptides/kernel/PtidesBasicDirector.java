@@ -1581,7 +1581,8 @@ public class PtidesBasicDirector extends DEDirector {
             throws IllegalActionException {
         NamedObj obj = event.ioPort();
         if (obj == null) {
-            obj = (NamedObj) event.actor();
+            return;
+//            obj = (NamedObj) event.actor();
         }
 
         // FIXME: this is sort of a hack. We have this because the network inteface may receive
@@ -1597,11 +1598,9 @@ public class PtidesBasicDirector extends DEDirector {
         if (prevTag != null) {
             if (tag.compareTo(prevTag) <= 0) {
                 if (obj instanceof Actor) {
-                    throw new IllegalActionException(
-                            "Safe to process return the wrong "
-                                    + "answer earlier. At Actor: "
-                                    + obj.getName()
-                                    + ", the tag of the previous processed event is: timestamp = "
+                    throw new IllegalActionException(obj,
+                            "Event processed out of timestamp order. "
+                                    + "The tag of the previous processed event is: timestamp = "
                                     + prevTag.timestamp
                                     + ", microstep = "
                                     + prevTag.microstep
@@ -1609,19 +1608,22 @@ public class PtidesBasicDirector extends DEDirector {
                                     + tag.timestamp + ", microstep = "
                                     + tag.microstep + ". ");
                 } else {
-                    throw new IllegalActionException(
-                            "Safe to process return the wrong "
-                                    + "answer earlier. At Actor: "
-                                    + ((IOPort) obj).getContainer().getName()
-                                    + ", Port "
-                                    + obj.getName()
-                                    + ", the tag of the previous processed event is: timestamp = "
-                                    + prevTag.timestamp
-                                    + ", microstep = "
-                                    + prevTag.microstep
-                                    + ". The tag of the current event is: timestamp = "
-                                    + tag.timestamp + ", microstep = "
-                                    + tag.microstep + ". ");
+                    // if the event is destined to an actuation port, it doesn't have to
+                    // be delivered to the port in timestamp order.
+                    // Safe to process analysis is only defined for events destined for
+                    // actors within the director, but not for events destined to the
+                    // outside of this director.
+                    if (obj.getContainer() != getContainer()) {
+                        throw new IllegalActionException(obj.getContainer(), obj,
+                                "Event processed out of timestamp order. "
+                                + "The tag of the previous processed event is: timestamp = "
+                                + prevTag.timestamp
+                                + ", microstep = "
+                                + prevTag.microstep
+                                + ". The tag of the current event is: timestamp = "
+                                + tag.timestamp + ", microstep = "
+                                + tag.microstep + ". ");
+                    }
                 }
             }
         }
