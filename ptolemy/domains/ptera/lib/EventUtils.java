@@ -121,6 +121,7 @@ public class EventUtils {
      *  @param defaultTableau The default TableauParameter to be used.
      *  @return The tableau.
      *  @exception IllegalActionException If the tableau cannot be retrieved.
+     *  @see #setTableau(Event, StringParameter, TableauParameter, Tableau)
      */
     public static Tableau getTableau(Event event,
             StringParameter referredTableau, TableauParameter defaultTableau)
@@ -175,6 +176,7 @@ public class EventUtils {
      *  @param tableau The tableau to be set in the TableauParameter.
      *  @exception IllegalActionException If the TableauParameter cannot be
      *   found.
+     *  @see #getTableau(Event, StringParameter, TableauParameter)
      */
     public static void setTableau(Event event, StringParameter referredTableau,
             TableauParameter defaultTableau, Tableau tableau)

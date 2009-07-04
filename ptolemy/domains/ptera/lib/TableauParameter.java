@@ -112,6 +112,7 @@ public class TableauParameter extends Parameter implements Initializable {
      *  expression.
      *
      *  @return An empty string.
+     *  @see #setExpression(String)
      */
     public String getExpression() {
         return "";
@@ -188,6 +189,7 @@ public class TableauParameter extends Parameter implements Initializable {
     /** Do nothing because a tableau cannot be specified with an exception.
      *
      *  @param expression The expression.
+     *  @see #getExpression()
      */
     public void setExpression(String expression) {
     }
