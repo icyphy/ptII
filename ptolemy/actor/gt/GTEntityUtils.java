@@ -71,10 +71,9 @@ import ptolemy.vergil.icon.EditorIcon;
  */
 public class GTEntityUtils {
 
-    /** For each port of the given entity, if the port is not persistent, such
-     *  as one automatically created in an AtomicActorMatcher with a
-     *  PortCriterion, store the persistent attributes of the port in a "port"
-     *  XML element.
+    /** For each port of the given entity, if the port's derived level is
+     *  greater than 0 (i.e., it is created automatically by the entity), store
+     *  the persistent attributes of the port in a "port" XML element.
      *
      *  @param entity The entity whose ports are looked at.
      *  @param output The output writer.
@@ -87,7 +86,7 @@ public class GTEntityUtils {
             Entity ptEntity = (Entity) entity;
             for (Object portObject : ptEntity.portList()) {
                 Port port = (Port) portObject;
-                if (port.isPersistent()) {
+                if (port.getDerivedLevel() == 0) {
                     continue;
                 }
                 boolean outputStarted = false;
@@ -166,13 +165,13 @@ public class GTEntityUtils {
                             port = new PortMatcher(criterion,
                                     (ComponentEntity) entity, portID, isInput,
                                     isOutput);
-                            port.setPersistent(false);
+                            port.setDerivedLevel(1);
                         }
                     } else {
                         port = new PortMatcher(criterion,
                                 (ComponentEntity) entity, portID, isInput,
                                 isOutput);
-                        port.setPersistent(false);
+                        port.setDerivedLevel(1);
                     }
                     port.setMultiport(isMultiport);
                 } else if (ingredient instanceof SubclassCriterion
