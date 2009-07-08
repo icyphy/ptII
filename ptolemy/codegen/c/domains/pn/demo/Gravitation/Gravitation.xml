@@ -4,7 +4,7 @@
 <entity name="Gravitation" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={6, 255, 978, 483}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={6, 255, 980, 491}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[765, 373]">
     </property>
@@ -986,9 +986,4 @@
     <link port="ElementsToArray.input" relation="relation"/>
     <link port="ElementsToArray.output" relation="relation2"/>
     <link port="Test.input" relation="relation8"/>
-    <link port="BodyModels_1.positions" relation="relation8"/>
-    <link port="BodyModels_2.positions" relation="relation8"/>
-    <link port="BodyModels_3.positions" relation="relation8"/>
-    <link port="BodyModels_4.positions" relation="relation8"/>
-    <link port="BodyModels_5.positions" relation="relation8"/>
 </entity>
