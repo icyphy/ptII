@@ -53,8 +53,7 @@ import diva.gui.GUIUtilities;
  * for an lattice element.
  *
  * @author Man-Kit Leung
- * @version $Id: LatticeElementController.java 53955 2009-05-27 20:49:38Z
- * cshelton $
+ * @version $Id: LatticeElementController.java 53955 2009-05-27 20:49:38Z$
  * @since Ptolemy II 7.1
  * @Pt.ProposedRating Red (mankit)
  * @Pt.AcceptedRating Red (mankit)
