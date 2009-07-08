@@ -48,7 +48,7 @@ PTCONTINUOUS_DIR = continuous
 DOMAINS =	ci $(PTCONTINUOUS_DIR) csp ct curriculum \
 	        dde ddf de fsm hdf modal pn sdf dt \
 	        giotto petrinet rendezvous properties \
-		$(PTPSDF_DIR) ptera ptides ptinyos $(PTSPACE_DIR) \
+		$(PTPSDF_DIR) ptera ptinyos $(PTSPACE_DIR) \
 		sr tdl tm $(PTJAVA3D_DIR) wireless
 
 DIRS =		$(DOMAINS) $(EXPERIMENTAL_DOMAINS)
@@ -83,12 +83,12 @@ PTAUXALLJARS = \
 		petrinet/petrinet.jar \
 		properties/properties.jar \
 		ptera/ptera.jar \
-		ptides/ptides.jar \
 		$(PTSPACEDOMAIN_JAR) \
 		tm/tm.jar \
 		wireless/wireless.jar
 
 # Are we shipping these domains?
+#		ptides/ptides.jar
 #		ptinyos/ptinyos.jar 
 #		pbo/pbo.jar
 #		petrinet/petrinet.jar
