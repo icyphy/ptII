@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="MapReduce" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="Infinity">
@@ -10,7 +10,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 45.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={219, 115, 817, 697}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={219, 115, 1030, 701}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[817, 591]">
     </property>
@@ -56,6 +56,28 @@
                                         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
                                             <configure><svg><rect x="0" y="0" width="60" height="40"  style="fill:#C0C0C0"/><rect x="5" y="17" width="16" height="10"  style="fill:#FFFFFF; stroke:#B00000"/><rect x="39" y="25" width="16" height="10"  style="fill:#FFFFFF; stroke:#B00000"/><line x1="25" y1="22" x2="30" y2="22"  style="stroke:#404040"/><line x1="30" y1="22" x2="30" y2="30"  style="stroke:#404040"/><line x1="30" y1="30" x2="35" y2="30"  style="stroke:#404040"/><text x="17" y="13"  style="font-size:12; fill:#E00000; font-family:SansSerif">  match</text></svg></configure>
                                         </property>
+                                        <port name="doneReading" class="ptolemy.actor.gt.PortMatcher">
+                                            <property name="input"/>
+                                            <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="SOUTH">
+                                            </property>
+                                        </port>
+                                        <port name="outputKeys" class="ptolemy.actor.gt.PortMatcher">
+                                            <property name="output"/>
+                                            <property name="multiport"/>
+                                            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                                            </property>
+                                        </port>
+                                        <port name="outputValues" class="ptolemy.actor.gt.PortMatcher">
+                                            <property name="output"/>
+                                            <property name="multiport"/>
+                                            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                                            </property>
+                                        </port>
+                                        <port name="doneEmitting" class="ptolemy.actor.gt.PortMatcher">
+                                            <property name="output"/>
+                                            <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="SOUTH">
+                                            </property>
+                                        </port>
                                         <port name="doneReading">
                                             <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="SOUTH">
                                             </property>
@@ -81,6 +103,23 @@
                                         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
                                             <configure><svg><rect x="0" y="0" width="60" height="40"  style="fill:#C0C0C0"/><rect x="5" y="17" width="16" height="10"  style="fill:#FFFFFF; stroke:#B00000"/><rect x="39" y="25" width="16" height="10"  style="fill:#FFFFFF; stroke:#B00000"/><line x1="25" y1="22" x2="30" y2="22"  style="stroke:#404040"/><line x1="30" y1="22" x2="30" y2="30"  style="stroke:#404040"/><line x1="30" y1="30" x2="35" y2="30"  style="stroke:#404040"/><text x="17" y="13"  style="font-size:12; fill:#E00000; font-family:SansSerif">  match</text></svg></configure>
                                         </property>
+                                        <port name="inputKeys" class="ptolemy.actor.gt.PortMatcher">
+                                            <property name="input"/>
+                                            <property name="multiport"/>
+                                            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                                            </property>
+                                        </port>
+                                        <port name="inputValues" class="ptolemy.actor.gt.PortMatcher">
+                                            <property name="input"/>
+                                            <property name="multiport"/>
+                                            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                                            </property>
+                                        </port>
+                                        <port name="doneReceiving" class="ptolemy.actor.gt.PortMatcher">
+                                            <property name="input"/>
+                                            <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="SOUTH">
+                                            </property>
+                                        </port>
                                         <port name="inputKeys">
                                             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                                             </property>
@@ -95,10 +134,14 @@
                                         </port>
                                     </entity>
                                     <relation name="relation" class="ptolemy.actor.TypedIORelation">
+                                        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                                        </property>
                                         <property name="NegationAttribute" class="ptolemy.actor.gt.NegationAttribute">
                                         </property>
                                     </relation>
                                     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+                                        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                                        </property>
                                         <property name="NegationAttribute" class="ptolemy.actor.gt.NegationAttribute">
                                         </property>
                                     </relation>
@@ -116,6 +159,28 @@
                                         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
                                             <configure><svg><rect x="0" y="0" width="60" height="40"  style="fill:#C0C0C0"/><rect x="5" y="17" width="16" height="10"  style="fill:#FFFFFF; stroke:#B00000"/><rect x="39" y="25" width="16" height="10"  style="fill:#FFFFFF; stroke:#B00000"/><line x1="25" y1="22" x2="30" y2="22"  style="stroke:#404040"/><line x1="30" y1="22" x2="30" y2="30"  style="stroke:#404040"/><line x1="30" y1="30" x2="35" y2="30"  style="stroke:#404040"/><text x="17" y="13"  style="font-size:12; fill:#E00000; font-family:SansSerif">  match</text></svg></configure>
                                         </property>
+                                        <port name="doneReading" class="ptolemy.actor.gt.PortMatcher">
+                                            <property name="input"/>
+                                            <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="SOUTH">
+                                            </property>
+                                        </port>
+                                        <port name="outputKeys" class="ptolemy.actor.gt.PortMatcher">
+                                            <property name="output"/>
+                                            <property name="multiport"/>
+                                            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                                            </property>
+                                        </port>
+                                        <port name="outputValues" class="ptolemy.actor.gt.PortMatcher">
+                                            <property name="output"/>
+                                            <property name="multiport"/>
+                                            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                                            </property>
+                                        </port>
+                                        <port name="doneEmitting" class="ptolemy.actor.gt.PortMatcher">
+                                            <property name="output"/>
+                                            <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="SOUTH">
+                                            </property>
+                                        </port>
                                         <port name="doneReading">
                                             <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="SOUTH">
                                             </property>
@@ -141,6 +206,23 @@
                                         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
                                             <configure><svg><rect x="0" y="0" width="60" height="40"  style="fill:#C0C0C0"/><rect x="5" y="17" width="16" height="10"  style="fill:#FFFFFF; stroke:#B00000"/><rect x="39" y="25" width="16" height="10"  style="fill:#FFFFFF; stroke:#B00000"/><line x1="25" y1="22" x2="30" y2="22"  style="stroke:#404040"/><line x1="30" y1="22" x2="30" y2="30"  style="stroke:#404040"/><line x1="30" y1="30" x2="35" y2="30"  style="stroke:#404040"/><text x="17" y="13"  style="font-size:12; fill:#E00000; font-family:SansSerif">  match</text></svg></configure>
                                         </property>
+                                        <port name="inputKeys" class="ptolemy.actor.gt.PortMatcher">
+                                            <property name="input"/>
+                                            <property name="multiport"/>
+                                            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                                            </property>
+                                        </port>
+                                        <port name="inputValues" class="ptolemy.actor.gt.PortMatcher">
+                                            <property name="input"/>
+                                            <property name="multiport"/>
+                                            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                                            </property>
+                                        </port>
+                                        <port name="doneReceiving" class="ptolemy.actor.gt.PortMatcher">
+                                            <property name="input"/>
+                                            <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="SOUTH">
+                                            </property>
+                                        </port>
                                         <port name="inputKeys">
                                             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                                             </property>
@@ -155,8 +237,12 @@
                                         </port>
                                     </entity>
                                     <relation name="relation" class="ptolemy.actor.TypedIORelation">
+                                        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                                        </property>
                                     </relation>
                                     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+                                        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                                        </property>
                                     </relation>
                                     <link port="Map.outputKeys" relation="relation"/>
                                     <link port="Map.outputValues" relation="relation2"/>
@@ -411,6 +497,16 @@
                                         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
                                             <configure><svg><rect x="0" y="0" width="60" height="40"  style="fill:#C0C0C0"/><rect x="5" y="17" width="16" height="10"  style="fill:#FFFFFF; stroke:#B00000"/><rect x="39" y="25" width="16" height="10"  style="fill:#FFFFFF; stroke:#B00000"/><line x1="25" y1="22" x2="30" y2="22"  style="stroke:#404040"/><line x1="30" y1="22" x2="30" y2="30"  style="stroke:#404040"/><line x1="30" y1="30" x2="35" y2="30"  style="stroke:#404040"/><text x="17" y="13"  style="font-size:12; fill:#E00000; font-family:SansSerif">  match</text></svg></configure>
                                         </property>
+                                        <port name="doneReading" class="ptolemy.actor.gt.PortMatcher">
+                                            <property name="input"/>
+                                            <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="SOUTH">
+                                            </property>
+                                        </port>
+                                        <port name="doneEmitting" class="ptolemy.actor.gt.PortMatcher">
+                                            <property name="output"/>
+                                            <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="SOUTH">
+                                            </property>
+                                        </port>
                                         <port name="doneReading">
                                             <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="SOUTH">
                                             </property>
@@ -421,16 +517,26 @@
                                         </port>
                                     </entity>
                                     <relation name="relation" class="ptolemy.actor.TypedIORelation">
+                                        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                                        </property>
                                         <vertex name="vertex1" value="[290.0, 185.0]">
                                         </vertex>
                                     </relation>
                                     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+                                        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                                        </property>
                                     </relation>
                                     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+                                        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                                        </property>
                                     </relation>
                                     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+                                        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                                        </property>
                                     </relation>
                                     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+                                        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                                        </property>
                                     </relation>
                                     <link port="LineReader.output" relation="relation3"/>
                                     <link port="LineReader.endOfFile" relation="relation"/>
@@ -444,7 +550,7 @@
                                     <link port="Map.doneEmitting" relation="relation5"/>
                                 </entity>
                                 <entity name="Replacement" class="ptolemy.actor.gt.Replacement">
-                                    <property name="RelationHiding" class="ptolemy.actor.gt.RelationHidingAttribute">
+                                    <property name="RelationHiding" class="ptolemy.actor.gt.RelationHidingAttribute" value="false">
                                         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
                                             <configure><svg><rect x="0" y="0" width="94" height="32" style="fill:#00FFFF"></rect><line x1="8" y1="7" x2="20" y2="7" style="stroke:#000000"></line><line x1="20" y1="7" x2="20" y2="25" style="stroke:#000000"></line><line x1="20" y1="25" x2="32" y2="25" style="stroke:#000000"></line><polygon points="20,10 14,16 20,22 26,16" style="fill:#000000"></polygon><line x1="39" y1="14" x2="52" y2="14" style="stroke:#303030; stroke-width:2"></line><line x1="39" y1="18" x2="52" y2="18" style="stroke:#303030; stroke-width:2"></line><line x1="50" y1="11" x2="55" y2="16" style="stroke:#303030; stroke-width:2"></line><line x1="50" y1="21" x2="55" y2="16" style="stroke:#303030; stroke-width:2"></line><line x1="62" y1="7" x2="74" y2="7" style="stroke:#000000"></line><line x1="74" y1="7" x2="74" y2="25" style="stroke:#000000"></line><line x1="74" y1="25" x2="86" y2="25" style="stroke:#000000"></line><line x1="41" y1="9" x2="49" y2="23" style="stroke:#C00000; stroke-width:3"></line></svg></configure>
                                         </property>
@@ -494,6 +600,16 @@
                                         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
                                             <configure><svg><rect x="0" y="0" width="60" height="40"  style="fill:#C0C0C0"/><rect x="5" y="17" width="16" height="10"  style="fill:#FFFFFF; stroke:#B00000"/><rect x="39" y="25" width="16" height="10"  style="fill:#FFFFFF; stroke:#B00000"/><line x1="25" y1="22" x2="30" y2="22"  style="stroke:#404040"/><line x1="30" y1="22" x2="30" y2="30"  style="stroke:#404040"/><line x1="30" y1="30" x2="35" y2="30"  style="stroke:#404040"/><text x="17" y="13"  style="font-size:12; fill:#E00000; font-family:SansSerif">  match</text></svg></configure>
                                         </property>
+                                        <port name="doneReading" class="ptolemy.actor.gt.PortMatcher">
+                                            <property name="input"/>
+                                            <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="SOUTH">
+                                            </property>
+                                        </port>
+                                        <port name="doneEmitting" class="ptolemy.actor.gt.PortMatcher">
+                                            <property name="output"/>
+                                            <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="SOUTH">
+                                            </property>
+                                        </port>
                                         <port name="doneReading">
                                             <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="SOUTH">
                                             </property>
@@ -530,7 +646,7 @@
                                             <property name="multiport"/>
                                             <property name="_location" class="ptolemy.kernel.util.Location" value="{540.0, 175.0}">
                                             </property>
-                                            <property name="width" class="ptolemy.data.expr.Parameter" value="0">
+                                            <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
                                             </property>
                                         </port>
                                         <port name="outputValues" class="ptolemy.actor.TypedIOPort">
@@ -561,28 +677,44 @@
                                             </property>
                                         </entity>
                                         <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+                                            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                                            </property>
                                         </relation>
                                         <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+                                            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                                            </property>
                                         </relation>
                                         <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+                                            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                                            </property>
                                         </relation>
                                         <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+                                            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                                            </property>
                                         </relation>
                                         <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+                                            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                                            </property>
                                             <vertex name="vertex1" value="[375.0, 175.0]">
                                             </vertex>
                                             <property name="setReduceCount" class="ptolemy.data.expr.Parameter" value="true">
                                             </property>
                                         </relation>
                                         <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+                                            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                                            </property>
                                             <vertex name="vertex1" value="[480.0, 230.0]">
                                             </vertex>
                                             <property name="setReduceCount" class="ptolemy.data.expr.Parameter" value="true">
                                             </property>
                                         </relation>
                                         <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+                                            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                                            </property>
                                         </relation>
                                         <relation name="relation" class="ptolemy.actor.TypedIORelation">
+                                            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                                            </property>
                                         </relation>
                                         <link port="inputKeys" relation="relation3"/>
                                         <link port="inputValues" relation="relation4"/>
@@ -602,32 +734,48 @@
                                         <link port="storage.doneEmitting" relation="relation6"/>
                                     </entity>
                                     <relation name="relation" class="ptolemy.actor.TypedIORelation">
+                                        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                                        </property>
                                         <vertex name="vertex1" value="[290.0, 185.0]">
                                         </vertex>
                                         <property name="patternObject" class="ptolemy.actor.gt.PatternObjectAttribute" value="relation">
                                         </property>
                                     </relation>
                                     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+                                        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                                        </property>
                                         <property name="patternObject" class="ptolemy.actor.gt.PatternObjectAttribute" value="relation3">
                                         </property>
                                     </relation>
                                     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+                                        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                                        </property>
                                         <property name="patternObject" class="ptolemy.actor.gt.PatternObjectAttribute" value="relation2">
                                         </property>
                                     </relation>
                                     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+                                        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                                        </property>
                                         <property name="patternObject" class="ptolemy.actor.gt.PatternObjectAttribute" value="relation4">
                                         </property>
                                     </relation>
                                     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+                                        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                                        </property>
                                         <property name="patternObject" class="ptolemy.actor.gt.PatternObjectAttribute" value="relation5">
                                         </property>
                                     </relation>
                                     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+                                        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                                        </property>
                                     </relation>
                                     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+                                        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                                        </property>
                                     </relation>
                                     <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+                                        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                                        </property>
                                     </relation>
                                     <link port="LineReader.output" relation="relation2"/>
                                     <link port="LineReader.endOfFile" relation="relation"/>
@@ -801,6 +949,11 @@
                                         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
                                             <configure><svg><rect x="0" y="0" width="60" height="40"  style="fill:#C0C0C0"/><rect x="5" y="17" width="16" height="10"  style="fill:#FFFFFF; stroke:#B00000"/><rect x="39" y="25" width="16" height="10"  style="fill:#FFFFFF; stroke:#B00000"/><line x1="25" y1="22" x2="30" y2="22"  style="stroke:#404040"/><line x1="30" y1="22" x2="30" y2="30"  style="stroke:#404040"/><line x1="30" y1="30" x2="35" y2="30"  style="stroke:#404040"/><text x="17" y="13"  style="font-size:12; fill:#E00000; font-family:SansSerif">  match</text></svg></configure>
                                         </property>
+                                        <port name="doneReceiving" class="ptolemy.actor.gt.PortMatcher">
+                                            <property name="input"/>
+                                            <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="SOUTH">
+                                            </property>
+                                        </port>
                                         <port name="doneReceiving">
                                             <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="SOUTH">
                                             </property>
@@ -818,10 +971,14 @@
                                         </property>
                                     </entity>
                                     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+                                        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                                        </property>
                                         <vertex name="vertex1" value="[285.0, 205.0]">
                                         </vertex>
                                     </relation>
                                     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+                                        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                                        </property>
                                     </relation>
                                     <link port="Reduce.doneReceiving" relation="relation3"/>
                                     <link port="Reduce.output" relation="relation4"/>
@@ -829,7 +986,7 @@
                                     <link port="merge.input" relation="relation4"/>
                                 </entity>
                                 <entity name="Replacement" class="ptolemy.actor.gt.Replacement">
-                                    <property name="RelationHiding" class="ptolemy.actor.gt.RelationHidingAttribute">
+                                    <property name="RelationHiding" class="ptolemy.actor.gt.RelationHidingAttribute" value="false">
                                         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
                                             <configure><svg><rect x="0" y="0" width="94" height="32" style="fill:#00FFFF"></rect><line x1="8" y1="7" x2="20" y2="7" style="stroke:#000000"></line><line x1="20" y1="7" x2="20" y2="25" style="stroke:#000000"></line><line x1="20" y1="25" x2="32" y2="25" style="stroke:#000000"></line><polygon points="20,10 14,16 20,22 26,16" style="fill:#000000"></polygon><line x1="39" y1="14" x2="52" y2="14" style="stroke:#303030; stroke-width:2"></line><line x1="39" y1="18" x2="52" y2="18" style="stroke:#303030; stroke-width:2"></line><line x1="50" y1="11" x2="55" y2="16" style="stroke:#303030; stroke-width:2"></line><line x1="50" y1="21" x2="55" y2="16" style="stroke:#303030; stroke-width:2"></line><line x1="62" y1="7" x2="74" y2="7" style="stroke:#000000"></line><line x1="74" y1="7" x2="74" y2="25" style="stroke:#000000"></line><line x1="74" y1="25" x2="86" y2="25" style="stroke:#000000"></line><line x1="41" y1="9" x2="49" y2="23" style="stroke:#C00000; stroke-width:3"></line></svg></configure>
                                         </property>
@@ -852,6 +1009,11 @@
                                         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
                                             <configure><svg><rect x="0" y="0" width="60" height="40"  style="fill:#C0C0C0"/><rect x="5" y="17" width="16" height="10"  style="fill:#FFFFFF; stroke:#B00000"/><rect x="39" y="25" width="16" height="10"  style="fill:#FFFFFF; stroke:#B00000"/><line x1="25" y1="22" x2="30" y2="22"  style="stroke:#404040"/><line x1="30" y1="22" x2="30" y2="30"  style="stroke:#404040"/><line x1="30" y1="30" x2="35" y2="30"  style="stroke:#404040"/><text x="17" y="13"  style="font-size:12; fill:#E00000; font-family:SansSerif">  match</text></svg></configure>
                                         </property>
+                                        <port name="doneReceiving" class="ptolemy.actor.gt.PortMatcher">
+                                            <property name="input"/>
+                                            <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="SOUTH">
+                                            </property>
+                                        </port>
                                         <port name="doneReceiving">
                                             <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="SOUTH">
                                             </property>
@@ -912,20 +1074,32 @@
                                             </property>
                                         </entity>
                                         <relation name="relation" class="ptolemy.actor.TypedIORelation">
+                                            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                                            </property>
                                         </relation>
                                         <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+                                            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                                            </property>
                                         </relation>
                                         <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+                                            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                                            </property>
                                         </relation>
                                         <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+                                            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                                            </property>
                                         </relation>
                                         <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+                                            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                                            </property>
                                             <vertex name="vertex1" value="[175.0, 145.0]">
                                             </vertex>
                                             <property name="setMapCount" class="ptolemy.data.expr.Parameter" value="true">
                                             </property>
                                         </relation>
                                         <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+                                            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                                            </property>
                                             <vertex name="vertex1" value="[140.0, 205.0]">
                                             </vertex>
                                             <property name="setMapCount" class="ptolemy.data.expr.Parameter" value="true">
@@ -945,16 +1119,22 @@
                                         <link port="converter.output" relation="relation4"/>
                                     </entity>
                                     <relation name="relation" class="ptolemy.actor.TypedIORelation">
+                                        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                                        </property>
                                         <vertex name="vertex1" value="[285.0, 205.0]">
                                         </vertex>
                                         <property name="patternObject" class="ptolemy.actor.gt.PatternObjectAttribute" value="relation3">
                                         </property>
                                     </relation>
                                     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+                                        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                                        </property>
                                         <property name="patternObject" class="ptolemy.actor.gt.PatternObjectAttribute" value="relation4">
                                         </property>
                                     </relation>
                                     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+                                        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                                        </property>
                                     </relation>
                                     <link port="Reduce.doneReceiving" relation="relation"/>
                                     <link port="Reduce.output" relation="relation2"/>
@@ -1096,6 +1276,8 @@
                                 </property>
                                 <entity name="Pattern" class="ptolemy.actor.gt.Pattern">
                                     <relation name="relation" class="ptolemy.actor.TypedIORelation">
+                                        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                                        </property>
                                         <vertex name="vertex1" value="[250.0, 130.0]">
                                         </vertex>
                                         <property name="criteria" class="ptolemy.actor.gt.GTIngredientsAttribute" value="(ptolemy.actor.gt.ingredients.criteria.AttributeCriterion/false/&quot;setMapCount&quot;/false//true/&quot;true&quot;)">
@@ -1119,6 +1301,8 @@
                                         </property>
                                     </property>
                                     <relation name="relation" class="ptolemy.actor.TypedIORelation">
+                                        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                                        </property>
                                         <vertex name="vertex1" value="[250.0, 130.0]">
                                         </vertex>
                                         <property name="patternObject" class="ptolemy.actor.gt.PatternObjectAttribute" value="relation">
@@ -1151,6 +1335,8 @@
                                 </property>
                                 <entity name="Pattern" class="ptolemy.actor.gt.Pattern">
                                     <relation name="relation" class="ptolemy.actor.TypedIORelation">
+                                        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                                        </property>
                                         <vertex name="vertex1" value="[250.0, 130.0]">
                                         </vertex>
                                         <property name="criteria" class="ptolemy.actor.gt.GTIngredientsAttribute" value="(ptolemy.actor.gt.ingredients.criteria.AttributeCriterion/false/&quot;setReduceCount&quot;/false//true/&quot;true&quot;)">
@@ -1174,6 +1360,8 @@
                                         </property>
                                     </property>
                                     <relation name="relation" class="ptolemy.actor.TypedIORelation">
+                                        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                                        </property>
                                         <vertex name="vertex1" value="[250.0, 130.0]">
                                         </vertex>
                                         <property name="patternObject" class="ptolemy.actor.gt.PatternObjectAttribute" value="relation">
@@ -1445,6 +1633,8 @@
                                         </property>
                                     </property>
                                     <relation name="relation" class="ptolemy.actor.TypedIORelation">
+                                        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                                        </property>
                                         <vertex name="vertex1" value="[215.0, 95.0]">
                                         </vertex>
                                     </relation>
@@ -1560,6 +1750,8 @@
                                 </property>
                                 <entity name="Pattern" class="ptolemy.actor.gt.Pattern">
                                     <relation name="relation" class="ptolemy.actor.TypedIORelation">
+                                        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                                        </property>
                                         <vertex name="vertex1" value="[250.0, 130.0]">
                                         </vertex>
                                         <property name="criteria" class="ptolemy.actor.gt.GTIngredientsAttribute" value="(ptolemy.actor.gt.ingredients.criteria.AttributeCriterion/false/&quot;setMapCount&quot;/false//true/&quot;true&quot;)">
@@ -1583,6 +1775,8 @@
                                         </property>
                                     </property>
                                     <relation name="relation" class="ptolemy.actor.TypedIORelation">
+                                        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                                        </property>
                                         <vertex name="vertex1" value="[250.0, 130.0]">
                                         </vertex>
                                         <property name="patternObject" class="ptolemy.actor.gt.PatternObjectAttribute" value="relation">
@@ -1615,6 +1809,8 @@
                                 </property>
                                 <entity name="Pattern" class="ptolemy.actor.gt.Pattern">
                                     <relation name="relation" class="ptolemy.actor.TypedIORelation">
+                                        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                                        </property>
                                         <vertex name="vertex1" value="[250.0, 130.0]">
                                         </vertex>
                                         <property name="criteria" class="ptolemy.actor.gt.GTIngredientsAttribute" value="(ptolemy.actor.gt.ingredients.criteria.AttributeCriterion/false/&quot;setReduceCount&quot;/false//true/&quot;true&quot;)">
@@ -1638,6 +1834,8 @@
                                         </property>
                                     </property>
                                     <relation name="relation" class="ptolemy.actor.TypedIORelation">
+                                        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                                        </property>
                                         <vertex name="vertex1" value="[250.0, 130.0]">
                                         </vertex>
                                         <property name="patternObject" class="ptolemy.actor.gt.PatternObjectAttribute" value="relation">
@@ -1835,6 +2033,8 @@
                                         </property>
                                     </entity>
                                     <relation name="relation" class="ptolemy.actor.TypedIORelation">
+                                        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                                        </property>
                                         <vertex name="vertex1" value="[170.0, 130.0]">
                                         </vertex>
                                         <property name="NegationAttribute" class="ptolemy.actor.gt.NegationAttribute">
@@ -2085,6 +2285,12 @@
                                         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
                                             <configure><svg><rect x="0" y="0" width="60" height="40"  style="fill:#C0C0C0"/><rect x="5" y="17" width="16" height="10"  style="fill:#FFFFFF; stroke:#B00000"/><rect x="39" y="25" width="16" height="10"  style="fill:#FFFFFF; stroke:#B00000"/><line x1="25" y1="22" x2="30" y2="22"  style="stroke:#404040"/><line x1="30" y1="22" x2="30" y2="30"  style="stroke:#404040"/><line x1="30" y1="30" x2="35" y2="30"  style="stroke:#404040"/><text x="17" y="13"  style="font-size:12; fill:#E00000; font-family:SansSerif">  match</text></svg></configure>
                                         </property>
+                                        <port name="outputKeys" class="ptolemy.actor.gt.PortMatcher">
+                                            <property name="output"/>
+                                            <property name="multiport"/>
+                                            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                                            </property>
+                                        </port>
                                         <port name="outputKeys">
                                             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                                             </property>
@@ -2100,12 +2306,20 @@
                                         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
                                             <configure><svg><rect x="0" y="0" width="60" height="40"  style="fill:#C0C0C0"/><rect x="5" y="17" width="16" height="10"  style="fill:#FFFFFF; stroke:#B00000"/><rect x="39" y="25" width="16" height="10"  style="fill:#FFFFFF; stroke:#B00000"/><line x1="25" y1="22" x2="30" y2="22"  style="stroke:#404040"/><line x1="30" y1="22" x2="30" y2="30"  style="stroke:#404040"/><line x1="30" y1="30" x2="35" y2="30"  style="stroke:#404040"/><text x="17" y="13"  style="font-size:12; fill:#E00000; font-family:SansSerif">  match</text></svg></configure>
                                         </property>
+                                        <port name="inputKeys" class="ptolemy.actor.gt.PortMatcher">
+                                            <property name="input"/>
+                                            <property name="multiport"/>
+                                            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                                            </property>
+                                        </port>
                                         <port name="inputKeys">
                                             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                                             </property>
                                         </port>
                                     </entity>
                                     <relation name="relation" class="ptolemy.actor.TypedIORelation">
+                                        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                                        </property>
                                         <property name="NegationAttribute" class="ptolemy.actor.gt.NegationAttribute">
                                         </property>
                                     </relation>
@@ -2143,6 +2357,12 @@
                                         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
                                             <configure><svg><rect x="0" y="0" width="60" height="40"  style="fill:#C0C0C0"/><rect x="5" y="17" width="16" height="10"  style="fill:#FFFFFF; stroke:#B00000"/><rect x="39" y="25" width="16" height="10"  style="fill:#FFFFFF; stroke:#B00000"/><line x1="25" y1="22" x2="30" y2="22"  style="stroke:#404040"/><line x1="30" y1="22" x2="30" y2="30"  style="stroke:#404040"/><line x1="30" y1="30" x2="35" y2="30"  style="stroke:#404040"/><text x="17" y="13"  style="font-size:12; fill:#E00000; font-family:SansSerif">  match</text></svg></configure>
                                         </property>
+                                        <port name="outputValues" class="ptolemy.actor.gt.PortMatcher">
+                                            <property name="output"/>
+                                            <property name="multiport"/>
+                                            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                                            </property>
+                                        </port>
                                         <port name="outputValues">
                                             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                                             </property>
@@ -2158,12 +2378,20 @@
                                         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
                                             <configure><svg><rect x="0" y="0" width="60" height="40"  style="fill:#C0C0C0"/><rect x="5" y="17" width="16" height="10"  style="fill:#FFFFFF; stroke:#B00000"/><rect x="39" y="25" width="16" height="10"  style="fill:#FFFFFF; stroke:#B00000"/><line x1="25" y1="22" x2="30" y2="22"  style="stroke:#404040"/><line x1="30" y1="22" x2="30" y2="30"  style="stroke:#404040"/><line x1="30" y1="30" x2="35" y2="30"  style="stroke:#404040"/><text x="17" y="13"  style="font-size:12; fill:#E00000; font-family:SansSerif">  match</text></svg></configure>
                                         </property>
+                                        <port name="inputValues" class="ptolemy.actor.gt.PortMatcher">
+                                            <property name="input"/>
+                                            <property name="multiport"/>
+                                            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                                            </property>
+                                        </port>
                                         <port name="inputValues">
                                             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                                             </property>
                                         </port>
                                     </entity>
                                     <relation name="relation" class="ptolemy.actor.TypedIORelation">
+                                        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                                        </property>
                                         <property name="NegationAttribute" class="ptolemy.actor.gt.NegationAttribute">
                                         </property>
                                     </relation>
