@@ -239,8 +239,6 @@ CODEGENPACKAGES = \
 	ptolemy.codegen.c.domains.modal.kernel \
 	ptolemy.codegen.c.domains.modal.modal \
 	ptolemy.codegen.c.domains.pn.kernel \
-	ptolemy.codegen.c.domains.ptides.kernel \
-	ptolemy.codegen.c.domains.ptides.lib \
 	ptolemy.codegen.c.domains.sdf.kernel \
 	ptolemy.codegen.c.domains.sdf.lib \
 	ptolemy.codegen.c.domains.sr.kernel \
@@ -479,10 +477,11 @@ HYVISUAL_DOCS = \
 #			ptolemy.domains.fsm.lib
 
 # PTIDES packages
-PTIDES_PACKAGES = \
-	ptolemy.domains.ptides.kernel \
-	ptolemy.domains.ptides.lib \
-	ptolemy.domains.ptides.lib.targets.luminary
+PTIDES_PACKAGES =
+#PTIDES_PACKAGES = \
+#	ptolemy.domains.ptides.kernel \
+#	ptolemy.domains.ptides.lib \
+#	ptolemy.domains.ptides.lib.targets.luminary
 
 # Packages used by Ptiny.  
 PTINYPACKAGES = \
@@ -897,8 +896,6 @@ codeDoc/tree.html:	../ptolemy/plot/*.java \
 			../ptolemy/domains/petrinet/kernel/*.java \
 			../ptolemy/domains/rendezvous/kernel/*.java \
 			../ptolemy/domains/rendezvous/lib/*.java \
-			../ptolemy/domains/ptides/kernel/*.java \
-			../ptolemy/domains/ptides/lib/*.java \
 			../ptolemy/domains/sdf/kernel/*.java \
 			../ptolemy/domains/sdf/lib/*.java \
 			../ptolemy/domains/sdf/lib/vq/*.java \
