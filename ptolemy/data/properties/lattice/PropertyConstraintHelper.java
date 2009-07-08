@@ -1,7 +1,7 @@
 /**
- * A base class representing a property constraint helper.
+ * The base class for a property constraint helper.
  * 
- * Copyright (c) 1997-2009 The Regents of the University of California. All
+ * Copyright (c) 2007-2009 The Regents of the University of California. All
  * rights reserved. Permission is hereby granted, without written agreement and
  * without license or royalty fees, to use, copy, modify, and distribute this
  * software and its documentation for any purpose, provided that the above
@@ -52,7 +52,7 @@ import ptolemy.kernel.util.IllegalActionException;
 //// PropertyConstraintHelper
 
 /**
- * A base class representing a property constraint helper.
+ * The base class for a property constraint helper.
  * 
  * @author Man-Kit Leung, Thomas Mandl, Edward A. Lee
  * @version $Id$
@@ -64,8 +64,9 @@ public class PropertyConstraintHelper extends PropertyHelper {
 
     /**
      * Construct the property constraint helper associated with the given
-     * component.
-     * @param solver TODO
+     * component and solver. The constructed helper implicitly uses the default
+     * constraints set by the solver.
+     * @param solver The specified property solver.
      * @param component The associated component.
      * @exception IllegalActionException Thrown if
      * PropertyConstraintHelper(NamedObj, PropertyLattice, boolean) throws it.
@@ -95,24 +96,8 @@ public class PropertyConstraintHelper extends PropertyHelper {
         _lattice = solver.getLattice();
     }
 
-    //    /**
-    //     * Return the helper of the container. If the container is
-    //     * null (which means this is the toplevel), returns this.
-    //     * @return The helper of the container. If the container is
-    //     * null (which means this is the toplevel), returns this.
-    //     * @exception IllegalActionException Thrown if an error occurs
-    //     * when getting the helper.
-    //     */
-    //    private PropertyConstraintHelper _getContainerHelper()
-    //            throws IllegalActionException {
-    //        PropertyConstraintHelper containerHelper = this;
-    //
-    //        NamedObj container = ((Actor) getComponent()).getContainer();
-    //        if (container != null) {
-    //            containerHelper = (PropertyConstraintHelper)getSolver().getHelper(container);
-    //        }
-    //        return containerHelper;
-    //    }
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /**
      * Return the constraints of this component. The constraints is a list of
@@ -157,10 +142,19 @@ public class PropertyConstraintHelper extends PropertyHelper {
         return list;
     }
 
+    /**
+     * 
+     * @param object
+     * @return
+     */
     public PropertyTerm getPropertyTerm(Object object) {
         return getSolver().getPropertyTerm(object);
     }
 
+    /**
+     * Return the associated property solver.
+     * @return The associated property solver.
+     */
     public PropertyConstraintSolver getSolver() {
         return (PropertyConstraintSolver) _solver;
     }
@@ -175,6 +169,13 @@ public class PropertyConstraintHelper extends PropertyHelper {
         return constraintSource;
     }
 
+    /**
+     * Set an inequality constraint between the two specified objects, such that
+     * the property value of object1 is at least as great as the property value
+     * of object2.
+     * @param object1 The first object.
+     * @param object2 The second object.
+     */
     public void setAtLeast(Object object1, Object object2) {
         _setAtLeast(getPropertyTerm(object1), getPropertyTerm(object2), true);
     }
@@ -202,6 +203,12 @@ public class PropertyConstraintHelper extends PropertyHelper {
         }
     }
 
+    /**
+     * Set an inequality constraint between the two specified objects, such that
+     * the property value of object1 is at most the property value of object2.
+     * @param object1 The first object.
+     * @param object2 The second object.
+     */
     public void setAtMost(Object object1, Object object2) {
         _setAtLeast(getPropertyTerm(object2), getPropertyTerm(object1), true);
     }
@@ -241,6 +248,17 @@ public class PropertyConstraintHelper extends PropertyHelper {
             _solver.incrementStats("# of manual annotations", 2);
         }
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                           public variable                 ////
+
+    /**
+     * 
+     */
+    public ConstraintType interconnectConstraintType;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                        public inner class                 ////
 
     public class Inequality extends ptolemy.graph.Inequality {
 
@@ -306,6 +324,9 @@ public class PropertyConstraintHelper extends PropertyHelper {
         private final PropertyHelper _helper;
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+
     /**
      * 
      * @param actorConstraintType
@@ -355,7 +376,6 @@ public class PropertyConstraintHelper extends PropertyHelper {
         }
     }
 
-    @Override
     protected ParseTreeAnnotationEvaluator _annotationEvaluator() {
         return new ParseTreeConstraintAnnotationEvaluator();
     }
@@ -441,9 +461,6 @@ public class PropertyConstraintHelper extends PropertyHelper {
                 objectList));
     }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected variables               ////
-
     /**
      * Return the list of constrained ports given the flag whether source or
      * sink ports should be constrainted. If source ports are constrained, it
@@ -457,6 +474,21 @@ public class PropertyConstraintHelper extends PropertyHelper {
         Actor actor = (Actor) getComponent();
         return constraintSource ? actor.outputPortList() : actor
                 .inputPortList();
+    }
+
+    /**
+     * Return the list of constraining ports on a given port, given whether
+     * source or sink ports should be constrainted.
+     * @param constraintSource The flag that indicates whether source or sink
+     * ports are constrainted.
+     * @param port The given port.
+     * @return The list of constrainting ports.
+     */
+    protected static List _getConstraintingPorts(boolean constraintSource,
+            TypedIOPort port) {
+
+        return constraintSource ? _getSinkPortList(port)
+                : _getSourcePortList(port);
     }
 
     /**
@@ -498,11 +530,6 @@ public class PropertyConstraintHelper extends PropertyHelper {
         }
     }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected methods                 ////
     /**
      * 
      * @param constraintType
@@ -568,21 +595,16 @@ public class PropertyConstraintHelper extends PropertyHelper {
 
     }
 
+    /** The list of permanent property constraints. */
+    protected List<Inequality> _subHelperConstraints = new LinkedList<Inequality>();
+
     /**
-     * Return the list of constraining ports on a given port, given whether
-     * source or sink ports should be constrainted.
-     * @param constraintSource The flag that indicates whether source or sink
-     * ports are constrainted.
-     * @param port The given port.
-     * @return The list of constrainting ports.
+     * Return the union of the two specified lists of inequality constraints by
+     * appending the second list to the end of the first list.
+     * @param list1 The first list.
+     * @param list2 The second list.
+     * @return The union of the two lists.
      */
-    protected static List _getConstraintingPorts(boolean constraintSource,
-            TypedIOPort port) {
-
-        return constraintSource ? _getSinkPortList(port)
-                : _getSourcePortList(port);
-    }
-
     protected static List<Inequality> _union(List<Inequality> list1,
             List<Inequality> list2) {
 
@@ -592,11 +614,8 @@ public class PropertyConstraintHelper extends PropertyHelper {
         return result;
     }
 
-    /** The list of permanent property constraints. */
-    protected List<Inequality> _subHelperConstraints = new LinkedList<Inequality>();
-
     ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
+    ////                       protected variables                 ////
 
     protected List<Inequality> _ownConstraints = new LinkedList<Inequality>();
 
@@ -606,8 +625,4 @@ public class PropertyConstraintHelper extends PropertyHelper {
     /** Indicate whether this helper uses the default actor constraints. */
     protected boolean _useDefaultConstraints;
 
-    /**
-     * 
-     */
-    public ConstraintType interconnectConstraintType;
 }

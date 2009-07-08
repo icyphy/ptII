@@ -1,29 +1,27 @@
 /*
-Below is the copyright agreement for the Ptolemy II system.
-Version: $Id$
-
-Copyright (c) 2008-2009 The Regents of the University of California.
-All rights reserved.
-
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
-
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
-
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
-*/
+ * A property helper that is used by the PropertyTokenSolver.
+ * 
+ * Below is the copyright agreement for the Ptolemy II system.
+ * 
+ * Copyright (c) 2008-2009 The Regents of the University of California. All
+ * rights reserved.
+ * 
+ * Permission is hereby granted, without written agreement and without license
+ * or royalty fees, to use, copy, modify, and distribute this software and its
+ * documentation for any purpose, provided that the above copyright notice and
+ * the following two paragraphs appear in all copies of this software.
+ * 
+ * IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR
+ * DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES ARISING OUT
+ * OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF THE UNIVERSITY OF
+ * CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ * 
+ * THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ * INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
+ * FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE PROVIDED HEREUNDER IS ON AN
+ * "AS IS" BASIS, AND THE UNIVERSITY OF CALIFORNIA HAS NO OBLIGATION TO PROVIDE
+ * MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+ */
 package ptolemy.data.properties.token;
 
 import java.util.ArrayList;
@@ -43,6 +41,15 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InvalidStateException;
 import ptolemy.kernel.util.KernelException;
 
+/**
+ * A property helper that is used by the PropertyTokenSolver.
+ * 
+ * @author Man-Kit Leung
+ * @version $Id$
+ * @since Ptolemy II 7.1
+ * @Pt.ProposedRating Red (mankit)
+ * @Pt.AcceptedRating Red (mankit)
+ */
 public class PropertyTokenHelper extends PropertyHelper {
 
     public PropertyTokenHelper(PropertyTokenSolver solver, Object component) {
@@ -63,12 +70,12 @@ public class PropertyTokenHelper extends PropertyHelper {
 
             if (propertyable instanceof IOPort) {
                 IOPort port = (IOPort) propertyable;
-                if (listenOutputs && (port.isOutput())) {
+                if (listenOutputs && port.isOutput()) {
 
                     port.addIOPortEventListener(getSolver().getSentListener());
                 }
 
-                if (listenInputs && (port.isInput())) {
+                if (listenInputs && port.isInput()) {
 
                     port.addIOPortEventListener(getSolver().getGotListener());
                 }
@@ -85,12 +92,12 @@ public class PropertyTokenHelper extends PropertyHelper {
             if (propertyable instanceof IOPort) {
                 IOPort port = (IOPort) propertyable;
 
-                if (listenOutputs && (port.isOutput())) {
+                if (listenOutputs && port.isOutput()) {
                     port.removeIOPortEventListener(getSolver()
                             .getSentListener());
                 }
 
-                if (listenInputs && (port.isInput())) {
+                if (listenInputs && port.isInput()) {
                     port
                             .removeIOPortEventListener(getSolver()
                                     .getGotListener());
@@ -120,8 +127,8 @@ public class PropertyTokenHelper extends PropertyHelper {
                     outputPortList.add(port);
                 }
                 //            } else if ((propertyable instanceof Attribute) && (!((propertyable instanceof StringAttribute)))) {
-            } else if ((propertyable instanceof Attribute)
-                    || (propertyable instanceof PortParameter)) {
+            } else if (propertyable instanceof Attribute
+                    || propertyable instanceof PortParameter) {
                 attributeList.add((Attribute) propertyable);
             } else {
                 //FIXME: throw exception?
@@ -176,9 +183,8 @@ public class PropertyTokenHelper extends PropertyHelper {
     private boolean useChannel = false;
 
     /**
-     * Return a list of property-able NamedObj contained by
-     * the component. All ports and parameters are considered
-     * property-able.
+     * Return a list of property-able NamedObj contained by the component. All
+     * ports and parameters are considered property-able.
      * @return The list of property-able named object.
      * @exception IllegalActionException
      */
@@ -228,7 +234,7 @@ public class PropertyTokenHelper extends PropertyHelper {
         while (iterator.hasNext()) {
             IOPort connectedPort = (IOPort) iterator.next();
             boolean isInput = connectedPort.isInput();
-            boolean isCompositeInput = (connectedPort.getContainer() instanceof CompositeEntity)
+            boolean isCompositeInput = connectedPort.getContainer() instanceof CompositeEntity
                     && isInput
                     && port.depthInHierarchy() > connectedPort
                             .depthInHierarchy();
@@ -251,7 +257,7 @@ public class PropertyTokenHelper extends PropertyHelper {
             IOPort connectedPort = (IOPort) iterator.next();
 
             boolean isInput = connectedPort.isInput();
-            boolean isCompositeOutput = (connectedPort.getContainer() instanceof CompositeEntity)
+            boolean isCompositeOutput = connectedPort.getContainer() instanceof CompositeEntity
                     && isInput
                     && port.depthInHierarchy() > connectedPort
                             .depthInHierarchy();
@@ -277,11 +283,11 @@ public class PropertyTokenHelper extends PropertyHelper {
 
         Receiver[][] receivers = port.deepGetReceivers();
 
-        for (int i = 0; i < receivers.length; i++) {
-            for (int j = 0; j < receivers[i].length; j++) {
-                IOPort sinkPort = receivers[i][j].getContainer();
-                result.add(new Channel(sinkPort, _getChannelNumber(
-                        receivers[i][j], sinkPort)));
+        for (Receiver[] element : receivers) {
+            for (Receiver element2 : element) {
+                IOPort sinkPort = element2.getContainer();
+                result.add(new Channel(sinkPort, _getChannelNumber(element2,
+                        sinkPort)));
             }
         }
 
@@ -304,11 +310,11 @@ public class PropertyTokenHelper extends PropertyHelper {
 
         Receiver[][] receivers = port.getReceivers();
 
-        for (int i = 0; i < receivers.length; i++) {
-            for (int j = 0; j < receivers[i].length; j++) {
-                IOPort sinkPort = receivers[i][j].getContainer();
-                result.add(new Channel(sinkPort, _getChannelNumber(
-                        receivers[i][j], sinkPort)));
+        for (Receiver[] element : receivers) {
+            for (Receiver element2 : element) {
+                IOPort sinkPort = element2.getContainer();
+                result.add(new Channel(sinkPort, _getChannelNumber(element2,
+                        sinkPort)));
             }
         }
         return result;
@@ -325,7 +331,7 @@ public class PropertyTokenHelper extends PropertyHelper {
             IOPort connectedPort = (IOPort) iterator.next();
 
             boolean isInput = connectedPort.isInput();
-            boolean isCompositeOutput = (connectedPort.getContainer() instanceof CompositeEntity)
+            boolean isCompositeOutput = connectedPort.getContainer() instanceof CompositeEntity
                     && !isInput
                     && port.depthInHierarchy() > connectedPort
                             .depthInHierarchy();
@@ -345,7 +351,7 @@ public class PropertyTokenHelper extends PropertyHelper {
         while (iterator.hasNext()) {
             IOPort connectedPort = (IOPort) iterator.next();
             boolean isInput = connectedPort.isInput();
-            boolean isCompositeInput = (connectedPort.getContainer() instanceof CompositeEntity)
+            boolean isCompositeInput = connectedPort.getContainer() instanceof CompositeEntity
                     && isInput
                     && port.depthInHierarchy() > connectedPort
                             .depthInHierarchy();

@@ -1,29 +1,27 @@
 /*
-Below is the copyright agreement for the Ptolemy II system.
-Version: $Id$
-
-Copyright (c) Mode-2009 The Regents of the University of California.
-All rights reserved.
-
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
-
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
-
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
-*/
+ * 
+ * 
+ * Below is the copyright agreement for the Ptolemy II system.
+ * 
+ * Copyright (c) Mode-2009 The Regents of the University of California. All
+ * rights reserved.
+ * 
+ * Permission is hereby granted, without written agreement and without license
+ * or royalty fees, to use, copy, modify, and distribute this software and its
+ * documentation for any purpose, provided that the above copyright notice and
+ * the following two paragraphs appear in all copies of this software.
+ * 
+ * IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR
+ * DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES ARISING OUT
+ * OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF THE UNIVERSITY OF
+ * CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ * 
+ * THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ * INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
+ * FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE PROVIDED HEREUNDER IS ON AN
+ * "AS IS" BASIS, AND THE UNIVERSITY OF CALIFORNIA HAS NO OBLIGATION TO PROVIDE
+ * MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+ */
 package ptolemy.data.properties;
 
 import java.io.File;
@@ -55,8 +53,25 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.util.FileUtilities;
 
+/**
+ * 
+ * @author Man-Kit Leung
+ * @version $Id$
+ * @since Ptolemy II 7.1
+ * @Pt.ProposedRating Red (mankit)
+ * @Pt.AcceptedRating Red (mankit)
+ */
 public class AnalyzerAttribute extends Attribute {
 
+    /**
+     * Construct an AnalyzerAttribute with the specified container and name.
+     * @param container The specified container.
+     * @param name The specified name.
+     * @exception IllegalActionException If the attribute is not of an
+     * acceptable class for the container, or if the name contains a period.
+     * @exception NameDuplicationException If the name coincides with an
+     * attribute already in the container.
+     */
     public AnalyzerAttribute(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
@@ -100,11 +115,13 @@ public class AnalyzerAttribute extends Attribute {
 
     public Parameter overwriteDependentProperties;
 
-    /** The property to analyze.
+    /**
+     * The property to analyze.
      */
     public Parameter property;
 
-    /** Whether to display the annotated property or not.
+    /**
+     * Whether to display the annotated property or not.
      */
     public Parameter showProperty;
 
@@ -212,11 +229,12 @@ public class AnalyzerAttribute extends Attribute {
                 .getPort(), path, uri.getQuery(), uri.getFragment());
     }
 
-    /** Given a dot separated packagename, return a list of all the packages
-     *  in the given path and below.  The list of solver classes is also updated.
-     *  @param path The dot separated package name, such as
-     *  "ptolemy.data.properties.configuredSolvers"
-     *  @return a List of packages that are found.
+    /**
+     * Given a dot separated packagename, return a list of all the packages in
+     * the given path and below. The list of solver classes is also updated.
+     * @param path The dot separated package name, such as
+     * "ptolemy.data.properties.configuredSolvers"
+     * @return a List of packages that are found.
      */
     public List<Class> getListOfSolverClass(String path) {
 
@@ -243,10 +261,10 @@ public class AnalyzerAttribute extends Attribute {
                             "Failed to find directories in \"" + directoryPath
                                     + "\"");
                 } else {
-                    for (int i = 0; i < classFiles.length; i++) {
-                        String className = classFiles[i].getName();
+                    for (File element : classFiles) {
+                        String className = element.getName();
 
-                        if (classFiles[i].isDirectory()) {
+                        if (element.isDirectory()) {
                             if (!className.equals("CVS")
                                     && !className.equals(".svn")) {
                                 // Search sub-folder.
@@ -275,8 +293,8 @@ public class AnalyzerAttribute extends Attribute {
                     } else {
                         new LinkedList<String>();
                         URL jarURL = directoryURI.toURL();
-                        JarURLConnection connection = (JarURLConnection) (jarURL
-                                .openConnection());
+                        JarURLConnection connection = (JarURLConnection) jarURL
+                                .openConnection();
                         String jarEntryName = connection.getEntryName();
                         if (!jarEntryName.endsWith("/")) {
                             jarEntryName = jarEntryName + "/";
@@ -385,24 +403,26 @@ public class AnalyzerAttribute extends Attribute {
     ///////////////////////////////////////////////////////////////////
     ////                      private variables                    ////
 
-    private List<Class> _solvers = new LinkedList<Class>();
+    private final List<Class> _solvers = new LinkedList<Class>();
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
 
-    /** Look for directories that do are not CVS or .svn.
+    /**
+     * Look for directories that do are not CVS or .svn.
      */
     static class ClassFileOrDirectoryNameFilter implements FilenameFilter {
         // FindBugs suggests making this class static so as to decrease
         // the size of instances and avoid dangling references.
 
-        /** Return true if the specified file names a directory
-         *  that is not named "CVS" or ".svn".
-         *  @param directory the directory in which the potential
-         *  directory was found.
-         *  @param name the name of the directory or file.
-         *  @return true if the file is a directory that
-         *  contains a file called configuration.xml
+        /**
+         * Return true if the specified file names a directory that is not named
+         * "CVS" or ".svn".
+         * @param directory the directory in which the potential directory was
+         * found.
+         * @param name the name of the directory or file.
+         * @return true if the file is a directory that contains a file called
+         * configuration.xml
          */
         public boolean accept(File directory, String name) {
             try {
