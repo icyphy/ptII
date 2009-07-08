@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- JNLP is the Java Network Launching Protocol
+     This file is derived from a *jnlp.in file by running
+     sed on the *.jnlp.in file and substituting 
+     file:/Users/cxh/ptII/
+-->
+<!-- href is needed so that web start can cache the app and
+     it will appear in the desktop icon
+-->
+<!-- jnlp codebase="file:/Users/cxh/ptII/"
+     codebase="file:./../../../../../"
+      href="file:/Users/cxh/ptII/ptolemy/domains/sdf/demo/Gravitation/GravitationWithCollisionDetection.jnlp" --> 
+<jnlp
+      codebase="file:./../../../../.." 
+      href="ptolemy/domains/sdf/demo/Gravitation/GravitationWithCollisionDetection.jnlp">
+  <information>
+	  <title>GravitationWithCollisionDetection</title>
+	  <vendor>Ptolemy Project, UC Berkeley</vendor>
+	  <description kind="tooltip">GravitationWithCollisionDetection</description>
+	  <icon href="doc/img/PtolemyIISmall.gif"/>
+	  <homepage href="file:/Users/cxh/ptII/"/>
+	  <offline-allowed/>
+  </information>
+  <security> 
+        <all-permissions/>
+  </security> 
+
+  <resources>
+        <!-- Bump maximum heap size to 500Mb, use JVM Props. to confirm -->
+  	<j2se version="1.5+" max-heap-size="500m" />
+	<!-- Start Jars -->
+        <jar href="ptolemy/domains/sdf/demo/Gravitation/signed_GravitationWithCollisionDetection.jar"
+             size="0"
+             main="true"/>
+        <jar href="signed/ptolemy/ptsupport.jar"
+             size="3338702"
+             download="eager"/>
+        <jar href="signed/ptolemy/domains/domains.jar"
+             size="614538"
+             download="eager"/>
+        <jar href="signed/ptolemy/domains/sdf/sdf.jar"
+             size="130064"
+             download="eager"/>
+        <jar href="signed/lib/diva.jar"
+             size="509831"
+             download="eager"/>
+
+	<!-- End Jars -->
+  </resources>
+  <!--application-desc main-class="ptolemy.copernicus.applet.JNLPApplication">
+	<argument>-ptinyViewer</argument>
+	<argument>GravitationWithCollisionDetection.xml</argument>
+  </application-desc -->
+  <applet-desc 
+         name="GravitationWithCollisionDetection Applet"
+         main-class="ptolemy.vergil.VergilApplet"
+         width="600"
+         height="1250">
+   </applet-desc>
+
+
+</jnlp>
