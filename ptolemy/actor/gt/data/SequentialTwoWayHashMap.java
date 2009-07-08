@@ -44,7 +44,7 @@ import java.util.ListIterator;
  @author Thomas Huining Feng
  @version $Id$
  @since Ptolemy II 8.0
- @Pt.ProposedRating Red (tfeng)
+ @Pt.ProposedRating Yellow (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
 public class SequentialTwoWayHashMap<K, V> extends TwoWayHashMap<K, V> {

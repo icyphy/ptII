@@ -62,7 +62,7 @@ import ptolemy.kernel.util.NamedObj;
  @author Thomas Huining Feng
  @version $Id$
  @since Ptolemy II 7.1
- @Pt.ProposedRating Red (tfeng)
+ @Pt.ProposedRating Yellow (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
 public class GTParameter extends Parameter {
@@ -102,7 +102,7 @@ public class GTParameter extends Parameter {
      @author Thomas Huining Feng
      @version $Id$
      @since Ptolemy II 7.1
-     @Pt.ProposedRating Red (tfeng)
+     @Pt.ProposedRating Yellow (tfeng)
      @Pt.AcceptedRating Red (tfeng)
      */
     public static class Evaluator extends ParseTreeEvaluator {
@@ -207,7 +207,7 @@ public class GTParameter extends Parameter {
      @author Thomas Huining Feng
      @version $Id$
      @since Ptolemy II 7.1
-     @Pt.ProposedRating Red (tfeng)
+     @Pt.ProposedRating Yellow (tfeng)
      @Pt.AcceptedRating Red (tfeng)
      */
     public static class Scope implements ParserScope {
@@ -356,7 +356,7 @@ public class GTParameter extends Parameter {
      @author Thomas Huining Feng
      @version $Id$
      @since Ptolemy II 7.1
-     @Pt.ProposedRating Red (tfeng)
+     @Pt.ProposedRating Yellow (tfeng)
      @Pt.AcceptedRating Red (tfeng)
      */
     public static class TypeInference extends ParseTreeTypeInference {

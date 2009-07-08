@@ -44,7 +44,7 @@ import ptolemy.kernel.util.NamedObj;
  @author Thomas Huining Feng
  @version $Id$
  @since Ptolemy II 6.1
- @Pt.ProposedRating Red (tfeng)
+ @Pt.ProposedRating Yellow (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
 public class Replacement extends CompositeActorMatcher {
@@ -97,7 +97,7 @@ public class Replacement extends CompositeActorMatcher {
     }
 
     /** The parameter containing an {@link ObjectToken} encapsulating the
-     *  pattern with name "pattern"
+     *  pattern with name "pattern".
      */
     public Parameter patternParameter;
 

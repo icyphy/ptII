@@ -46,7 +46,7 @@ import java.util.Set;
  @author Thomas Huining Feng
  @version $Id$
  @since Ptolemy II 6.1
- @Pt.ProposedRating Red (tfeng)
+ @Pt.ProposedRating Yellow (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
 public class TwoWayHashMap<K, V> extends HashMap<K, V> {

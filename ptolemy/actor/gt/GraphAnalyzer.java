@@ -57,7 +57,7 @@ import ptolemy.kernel.util.NamedObj;
  @author Thomas Huining Feng
  @version $Id$
  @since Ptolemy II 7.1
- @Pt.ProposedRating Red (tfeng)
+ @Pt.ProposedRating Yellow (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
 public abstract class GraphAnalyzer {
@@ -379,7 +379,7 @@ public abstract class GraphAnalyzer {
      @author Thomas Huining Feng
      @version $Id$
      @since Ptolemy II 7.1
-     @Pt.ProposedRating Red (tfeng)
+     @Pt.ProposedRating Yellow (tfeng)
      @Pt.AcceptedRating Red (tfeng)
      */
     public static class IndexedList extends Pair<List<?>, Integer> {
@@ -431,7 +431,7 @@ public abstract class GraphAnalyzer {
      @author Thomas Huining Feng
      @version $Id$
      @since Ptolemy II 7.1
-     @Pt.ProposedRating Red (tfeng)
+     @Pt.ProposedRating Yellow (tfeng)
      @Pt.AcceptedRating Red (tfeng)
      */
     public static class IndexedLists extends FastLinkedList<IndexedList> {
@@ -446,7 +446,7 @@ public abstract class GraphAnalyzer {
      @author Thomas Huining Feng
      @version $Id$
      @since Ptolemy II 7.1
-     @Pt.ProposedRating Red (tfeng)
+     @Pt.ProposedRating Yellow (tfeng)
      @Pt.AcceptedRating Red (tfeng)
      */
     public static class Path extends IndexedLists implements Cloneable {

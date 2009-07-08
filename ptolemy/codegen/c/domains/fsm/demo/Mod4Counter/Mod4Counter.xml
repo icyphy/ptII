@@ -2,15 +2,15 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="Mod4Counter" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.2.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-4, -4, 1032, 745}, maximized=true}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 0, 1032, 740}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[817, 633]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.9040110650069">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{445.1159722222222, 282.9987689393939}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{449.5000000000001, 331.2100673194614}">
     </property>
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="4">
@@ -19,15 +19,41 @@
         </property>
     </property>
     <property name="CCodeGenerator" class="ptolemy.codegen.c.kernel.CCodeGenerator">
-        <property name="generateJNI" class="ptolemy.data.expr.Parameter" value="false">
+        <property name="generateEmbeddedCode" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="inline" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{540, 90}">
         </property>
     </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This is a two bit counter example. ">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[90.0, 325.0]">
+        </property>
+    </property>
+    <property name="annotation" class="ptolemy.kernel.util.Attribute">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:darkgray">Author: Hiren D. Patel</text></svg></configure>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 355.0]">
+        </property>
+    </property>
     <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={440, 422, 350, 237}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={440, 422, 350, 232}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[342, 184]">
         </property>
@@ -42,10 +68,10 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 205.0]">
         </property>
     </entity>
-    <entity name="ModalModel" class="ptolemy.domains.fsm.modal.ModalModel">
+    <entity name="2-bit Counter" class="ptolemy.domains.fsm.modal.ModalModel">
         <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalTableauFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[295.0, 205.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{295.0, 205.0}">
         </property>
         <port name="input" class="ptolemy.domains.fsm.modal.ModalPort">
             <property name="input"/>
@@ -67,15 +93,9 @@
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
                 <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-                    <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">Create a state machine here (and ports, if needed) and
-create refinements for the states.  Create transitions
-by holding the control key and dragging from one state
-to another.  Right click to configure the properties 
-of this model, including setting the final state(s).
-Then delete this annotation.</text>
-</svg></configure>
+                    <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">This is the state machine that implements the two bit counter. </text></svg></configure>
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[175.0, -30.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[-40.0, -40.0]">
                 </property>
                 <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
                 </property>
@@ -87,7 +107,7 @@ Then delete this annotation.</text>
         <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.fsm.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory"></property></entity></entity>
       </configure>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 127, 815, 514}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 129, 826, 566}, maximized=false}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
             </property>
@@ -351,11 +371,11 @@ Then delete this annotation.</text>
             </property>
         </port>
     </entity>
-    <entity name="BooleanToAnything" class="ptolemy.actor.lib.conversions.BooleanToAnything">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[395.0, 175.0]">
+    <entity name="BooleanToInt" class="ptolemy.actor.lib.conversions.BooleanToAnything">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{395.0, 175.0}">
         </property>
     </entity>
-    <entity name="BooleanToAnything2" class="ptolemy.actor.lib.conversions.BooleanToAnything">
+    <entity name="BooleanToInt2" class="ptolemy.actor.lib.conversions.BooleanToAnything">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[400.0, 255.0]">
         </property>
     </entity>
@@ -395,15 +415,15 @@ Then delete this annotation.</text>
     </relation>
     <link port="Display.input" relation="relation7"/>
     <link port="Sequence.output" relation="relation"/>
-    <link port="ModalModel.input" relation="relation"/>
-    <link port="ModalModel.q0" relation="relation5"/>
-    <link port="ModalModel.q1" relation="relation6"/>
+    <link port="2-bit Counter.input" relation="relation"/>
+    <link port="2-bit Counter.q0" relation="relation5"/>
+    <link port="2-bit Counter.q1" relation="relation6"/>
     <link port="Expression.output" relation="relation7"/>
     <link port="Expression.q0" relation="relation4"/>
     <link port="Expression.q1" relation="relation2"/>
-    <link port="BooleanToAnything.input" relation="relation5"/>
-    <link port="BooleanToAnything.output" relation="relation4"/>
-    <link port="BooleanToAnything2.input" relation="relation6"/>
-    <link port="BooleanToAnything2.output" relation="relation2"/>
+    <link port="BooleanToInt.input" relation="relation5"/>
+    <link port="BooleanToInt.output" relation="relation4"/>
+    <link port="BooleanToInt2.input" relation="relation6"/>
+    <link port="BooleanToInt2.output" relation="relation2"/>
     <link port="Test.input" relation="relation7"/>
 </entity>

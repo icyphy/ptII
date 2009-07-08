@@ -53,12 +53,12 @@ public class SetVariable extends Entity {
     }
 
     @Override
-    protected String _generateInfoCode(String name, List<String> parameters)
+    protected String getInfo(String name, List<String> parameters)
             throws IllegalActionException {
         if (name.equals("variableName")) {
             return ((ptolemy.actor.lib.SetVariable) getComponent()).variableName
                     .getExpression();
         }
-        return super._generateInfoCode(name, parameters);
+        return super.getInfo(name, parameters);
     }
 }

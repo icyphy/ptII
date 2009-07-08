@@ -1,29 +1,27 @@
 /*
-Below is the copyright agreement for the Ptolemy II system.
-Version: $Id$
-
-Copyright (c) 2008-2009 The Regents of the University of California.
-All rights reserved.
-
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
-
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
-
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
-*/
+ * A property solver that annotates the model with data tokens.
+ * 
+ * Below is the copyright agreement for the Ptolemy II system.
+ * 
+ * Copyright (c) 2008-2009 The Regents of the University of California. All
+ * rights reserved.
+ * 
+ * Permission is hereby granted, without written agreement and without license
+ * or royalty fees, to use, copy, modify, and distribute this software and its
+ * documentation for any purpose, provided that the above copyright notice and
+ * the following two paragraphs appear in all copies of this software.
+ * 
+ * IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR
+ * DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES ARISING OUT
+ * OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF THE UNIVERSITY OF
+ * CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ * 
+ * THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ * INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
+ * FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE PROVIDED HEREUNDER IS ON AN
+ * "AS IS" BASIS, AND THE UNIVERSITY OF CALIFORNIA HAS NO OBLIGATION TO PROVIDE
+ * MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+ */
 package ptolemy.data.properties.token;
 
 import java.util.HashMap;
@@ -49,6 +47,15 @@ import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 
+/**
+ * A property solver that annotates the model with data tokens.
+ * 
+ * @author Man-Kit Leung
+ * @version $Id$
+ * @since Ptolemy II 7.1
+ * @Pt.ProposedRating Red (mankit)
+ * @Pt.AcceptedRating Red (mankit)
+ */
 public class PropertyTokenSolver extends PropertySolver {
 
     public PropertyTokenSolver(NamedObj container, String name)
@@ -79,8 +86,8 @@ public class PropertyTokenSolver extends PropertySolver {
     ////                         public methods                    ////
 
     /**
-     * Returns the helper that contains property information for
-     * the given object.
+     * Returns the helper that contains property information for the given
+     * object.
      * @param object The given object.
      * @return The associated property constraint helper.
      */
@@ -98,7 +105,7 @@ public class PropertyTokenSolver extends PropertySolver {
         result = super.getProperty(object);
         //        }
 
-        return (result == null) ? new PropertyToken(Token.NIL) : result;
+        return result == null ? new PropertyToken(Token.NIL) : result;
     }
 
     public String getUseCaseName() {
@@ -129,8 +136,8 @@ public class PropertyTokenSolver extends PropertySolver {
             } else if (toplevel instanceof FSMActor) {
 
                 TypedCompositeActor compositeActor = new TypedCompositeActor(
-                        this.workspace());
-                FSMDirector fsmDirector = new FSMDirector(this.workspace());
+                        workspace());
+                FSMDirector fsmDirector = new FSMDirector(workspace());
 
                 compositeActor.setDirector(fsmDirector);
                 ((FSMActor) toplevel).setContainer(compositeActor);
@@ -146,9 +153,8 @@ public class PropertyTokenSolver extends PropertySolver {
 
             manager.preinitializeAndResolveTypes();
             ((Actor) toplevel).initialize();
-            ((Actor) toplevel)
-                    .iterate(((IntToken) (numberIterations.getToken()))
-                            .intValue());
+            ((Actor) toplevel).iterate(((IntToken) numberIterations.getToken())
+                    .intValue());
             ((Actor) toplevel).wrapup();
             //FIXME: stoping the manager conflicts with extendedFirstListener. No iterations can be done there.
             //            ((Actor) topLevel).stop();
@@ -179,9 +185,10 @@ public class PropertyTokenSolver extends PropertySolver {
     public StringParameter listeningMethod;
     public Parameter numberIterations;
 
-    /** Add choices to the parameters.
-     *  @exception IllegalActionException If there is a problem
-     *  accessing files or parameters.
+    /**
+     * Add choices to the parameters.
+     * @exception IllegalActionException If there is a problem accessing files
+     * or parameters.
      */
     private void _addChoices() throws IllegalActionException {
         // Add all the subdirectories in token/ directory as
@@ -225,9 +232,10 @@ public class PropertyTokenSolver extends PropertySolver {
         _tokenMap.clear();
     }
 
-    private FirstTokenSentListener _sentListener = new FirstTokenSentListener(
+    private final FirstTokenSentListener _sentListener = new FirstTokenSentListener(
             this);
-    private FirstTokenGotListener _gotListener = new FirstTokenGotListener(this);
+    private final FirstTokenGotListener _gotListener = new FirstTokenGotListener(
+            this);
 
-    private Map<Object, Token> _tokenMap = new HashMap<Object, Token>();
+    private final Map<Object, Token> _tokenMap = new HashMap<Object, Token>();
 }

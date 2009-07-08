@@ -56,7 +56,7 @@ public class ModalModel extends TypedCompositeActor {
     }
 
     @Override
-    protected String _generateInfoCode(String name, List<String> parameters)
+    protected String getInfo(String name, List<String> parameters)
             throws IllegalActionException {
         ptolemy.domains.fsm.modal.ModalModel mm = (ptolemy.domains.fsm.modal.ModalModel) getComponent();
         if (name.equals("controller")) {
@@ -80,6 +80,6 @@ public class ModalModel extends TypedCompositeActor {
                 }
             }.generateCode();
         }
-        return super._generateInfoCode(name, parameters);
+        return super.getInfo(name, parameters);
     }
 }

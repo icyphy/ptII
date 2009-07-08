@@ -1,14 +1,8 @@
-/***moduleName***/
-TIMED-PLOTTER-ACTOR/**/
-
-/***className***/
-TimedPlotter/**/
-
 /***attr_TimedPlotter***/
 current-time : 0,
 event-history : emptyHistory/**/
 
-/***sharedBlock***/
+/***semantics_TimedPlotter***/
 (tomod TIMED-PLOTTER-ACTOR is
   inc ACTOR .
   inc OBJECT-WITH-TIMER .

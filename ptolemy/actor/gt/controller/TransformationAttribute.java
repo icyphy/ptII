@@ -72,7 +72,7 @@ import ptolemy.vergil.gt.TransformationAttributeIcon;
  @author Thomas Huining Feng
  @version $Id$
  @since Ptolemy II 7.1
- @Pt.ProposedRating Red (tfeng)
+ @Pt.ProposedRating Yellow (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
 public class TransformationAttribute extends Attribute implements Configurable,
@@ -424,7 +424,7 @@ public class TransformationAttribute extends Attribute implements Configurable,
      @author Thomas Huining Feng
      @version $Id$
      @since Ptolemy II 8.0
-     @Pt.ProposedRating Red (tfeng)
+     @Pt.ProposedRating Yellow (tfeng)
      @Pt.AcceptedRating Red (tfeng)
      */
     private class TransformationListener extends Attribute implements

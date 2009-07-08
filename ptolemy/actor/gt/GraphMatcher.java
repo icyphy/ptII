@@ -78,7 +78,7 @@ import ptolemy.moml.MoMLParser;
  @author Thomas Huining Feng
  @version $Id$
  @since Ptolemy II 7.1
- @Pt.ProposedRating Red (tfeng)
+ @Pt.ProposedRating Yellow (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
 public class GraphMatcher extends GraphAnalyzer {
@@ -1693,7 +1693,7 @@ public class GraphMatcher extends GraphAnalyzer {
      @author Thomas Huining Feng
      @version $Id$
      @since Ptolemy II 7.1
-     @Pt.ProposedRating Red (tfeng)
+     @Pt.ProposedRating Yellow (tfeng)
      @Pt.AcceptedRating Red (tfeng)
      */
     private static class LookbackList extends FastLinkedList<LookbackEntry> {
@@ -1708,7 +1708,7 @@ public class GraphMatcher extends GraphAnalyzer {
      @author Thomas Huining Feng
      @version $Id$
      @since Ptolemy II 7.1
-     @Pt.ProposedRating Red (tfeng)
+     @Pt.ProposedRating Yellow (tfeng)
      @Pt.AcceptedRating Red (tfeng)
      */
     private static class NameComparator implements Comparator<Object> {
@@ -1734,7 +1734,7 @@ public class GraphMatcher extends GraphAnalyzer {
      @author Thomas Huining Feng
      @version $Id$
      @since Ptolemy II 7.1
-     @Pt.ProposedRating Red (tfeng)
+     @Pt.ProposedRating Yellow (tfeng)
      @Pt.AcceptedRating Red (tfeng)
      */
     private static class ObjectList extends FastLinkedList<Object> {
@@ -1751,7 +1751,7 @@ public class GraphMatcher extends GraphAnalyzer {
      @author Thomas Huining Feng
      @version $Id$
      @since Ptolemy II 7.1
-     @Pt.ProposedRating Red (tfeng)
+     @Pt.ProposedRating Yellow (tfeng)
      @Pt.AcceptedRating Red (tfeng)
      */
     private class ParameterIterator extends GraphAnalyzer {

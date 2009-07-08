@@ -1,14 +1,8 @@
-/***moduleName***/
-RAMP/**/
-
-/***className***/
-Ramp/**/
-
 /***attr_Ramp***/
 count : 0,
 output-value : # 0/**/
 
-/***sharedBlock***/
+/***semantics_Ramp***/
 (tomod RAMP is 
   inc ACTOR .
 

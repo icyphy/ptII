@@ -1,10 +1,4 @@
-/***moduleName***/
-DELAY-ACTOR/**/
-
-/***className***/
-Delay/**/
-
-/***sharedBlock***/
+/***semantics_TimedDelay***/
 (tomod DELAY-ACTOR  is 
   inc ACTOR .
 

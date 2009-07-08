@@ -1,18 +1,9 @@
-/***moduleName***/
-FSM-ACTOR/**/
-
-/***className***/
-FSM-Actor/**/
-
-/***checkModuleName***/
-CHECK-FSM-ACTOR/**/
-
 /***attr_FSMActor***/
 currState : '$info(initState),
 initState : '$info(initState),
 transitions : ($indent( $info(transitions) ))/**/
 
-/***sharedBlock***/
+/***semantics_FSMActor***/
 (tomod FSM-ACTOR is 
   inc ACTOR .
   pr PORTS .
@@ -169,10 +160,12 @@ transitions : ($indent( $info(transitions) ))/**/
   eq updateState(STATE, @next(STATE') ; MEM) = STATE' .
   eq updateState(STATE, MEM) = STATE [owise] .
 endtom)
+/**/
 
+/***formal_FSMActor***/
 (tomod CHECK-FSM-ACTOR is
-  pr CHECK-COMPOSITE-ACTOR .
   pr FSM-ACTOR .
+  pr CHECK-ACTOR .
 
   var CF : Configuration .  var O : Oid .   var L : Location . 
 

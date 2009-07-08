@@ -70,7 +70,7 @@ import ptolemy.kernel.util.Workspace;
  @author Thomas Huining Feng
  @version $Id$
  @since Ptolemy II 7.1
- @Pt.ProposedRating Red (tfeng)
+ @Pt.ProposedRating Yellow (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
 public class ModelExecutor extends TypedAtomicActor {
@@ -189,7 +189,7 @@ public class ModelExecutor extends TypedAtomicActor {
      @author Thomas Huining Feng
      @version $Id$
      @since Ptolemy II 8.0
-     @Pt.ProposedRating Red (tfeng)
+     @Pt.ProposedRating Yellow (tfeng)
      @Pt.AcceptedRating Red (tfeng)
      */
     private class Wrapper extends TypedCompositeActor {
@@ -293,7 +293,7 @@ public class ModelExecutor extends TypedAtomicActor {
          @author Thomas Huining Feng
          @version $Id$
          @since Ptolemy II 8.0
-         @Pt.ProposedRating Red (tfeng)
+         @Pt.ProposedRating Yellow (tfeng)
          @Pt.AcceptedRating Red (tfeng)
          */
         private class WrapperDirector extends Director {
@@ -515,7 +515,7 @@ public class ModelExecutor extends TypedAtomicActor {
      @author Thomas Huining Feng
      @version $Id$
      @since Ptolemy II 8.0
-     @Pt.ProposedRating Red (tfeng)
+     @Pt.ProposedRating Yellow (tfeng)
      @Pt.AcceptedRating Red (tfeng)
      */
     private class WrapperPort extends TypedIOPort {

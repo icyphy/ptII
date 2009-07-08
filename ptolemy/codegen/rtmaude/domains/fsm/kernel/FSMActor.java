@@ -58,7 +58,7 @@ public class FSMActor extends Entity {
     }
 
     @Override
-    protected String _generateInfoCode(String name, List<String> parameters)
+    protected String getInfo(String name, List<String> parameters)
             throws IllegalActionException {
         ptolemy.domains.fsm.kernel.FSMActor fa = (ptolemy.domains.fsm.kernel.FSMActor) getComponent();
         if (name.equals("initState")) {
@@ -76,7 +76,7 @@ public class FSMActor extends Entity {
                 }
             }.generateCode();
         }
-        return super._generateInfoCode(name, parameters);
+        return super.getInfo(name, parameters);
     }
 
 }

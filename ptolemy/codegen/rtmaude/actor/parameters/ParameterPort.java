@@ -53,12 +53,12 @@ public class ParameterPort extends IOPort {
     }
 
     @Override
-    protected String _generateInfoCode(String name, List<String> parameters)
+    protected String getInfo(String name, List<String> parameters)
             throws IllegalActionException {
         if (name.equals("param")) {
             return ((ptolemy.actor.parameters.ParameterPort) getComponent())
                     .getParameter().getName();
         }
-        return super._generateInfoCode(name, parameters);
+        return super.getInfo(name, parameters);
     }
 }

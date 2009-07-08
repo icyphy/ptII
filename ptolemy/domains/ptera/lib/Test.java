@@ -1,4 +1,5 @@
-/*
+/* An event that usually does not perform any action but merely has outgoing
+   scheduling relations to test conditions.
 
  Copyright (c) 2008 The Regents of the University of California.
  All rights reserved.
@@ -37,16 +38,33 @@ import ptolemy.kernel.util.Settable;
 //// Test
 
 /**
-
+ An event that usually does not perform any action but merely has outgoing
+ scheduling relations to test conditions.
 
  @author Thomas Huining Feng
  @version $Id$
- @since Ptolemy II 7.1
- @Pt.ProposedRating Red (tfeng)
+ @since Ptolemy II 8.0
+ @Pt.ProposedRating Yellow (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
 public class Test extends Event {
 
+    /** Construct an event with the given name contained by the specified
+     *  composite entity. The container argument must not be null, or a
+     *  NullPointerException will be thrown. This event will use the
+     *  workspace of the container for synchronization and version counts.
+     *  If the name argument is null, then the name is set to the empty
+     *  string.
+     *  Increment the version of the workspace.
+     *  This constructor write-synchronizes on the workspace.
+     *
+     *  @param container The container.
+     *  @param name The name of the state.
+     *  @exception IllegalActionException If the state cannot be contained
+     *   by the proposed container.
+     *  @exception NameDuplicationException If the name coincides with
+     *   that of an entity already in the container.
+     */
     public Test(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);

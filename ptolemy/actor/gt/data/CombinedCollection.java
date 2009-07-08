@@ -53,7 +53,7 @@ import ptolemy.kernel.util.KernelRuntimeException;
   @version $Id$
   @since Ptolemy II 8.0
   @see ptolemy.vergil.actor.ActorGraphFrame
-  @Pt.ProposedRating Red (tfeng)
+  @Pt.ProposedRating Yellow (tfeng)
   @Pt.AcceptedRating Red (tfeng)
 */
 public class CombinedCollection<E> implements Collection<E> {
@@ -270,7 +270,7 @@ public class CombinedCollection<E> implements Collection<E> {
      @author Thomas Huining Feng
      @version $Id$
      @since Ptolemy II 8.0
-     @Pt.ProposedRating Red (tfeng)
+     @Pt.ProposedRating Yellow (tfeng)
      @Pt.AcceptedRating Red (tfeng)
      */
     private class Iterator implements java.util.Iterator<E> {

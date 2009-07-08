@@ -1,13 +1,7 @@
-/***moduleName***/
-CLOCK/**/
-
-/***className***/
-Clock/**/
-
 /***attr_Clock***/
 index : 0/**/
 
-/***sharedBlock***/
+/***semantics_Clock***/
 (tomod CLOCK is 
   inc ACTOR .
 

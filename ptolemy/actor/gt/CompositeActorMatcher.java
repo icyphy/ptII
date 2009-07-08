@@ -64,7 +64,7 @@ import ptolemy.vergil.gt.GTIngredientsEditor;
  @version $Id$
  @since Ptolemy II 7.1
  @see AtomicActorMatcher
- @Pt.ProposedRating Red (tfeng)
+ @Pt.ProposedRating Yellow (tfeng)
  @Pt.AcceptedRating Red (tfeng)
 */
 public class CompositeActorMatcher extends TypedCompositeActor implements

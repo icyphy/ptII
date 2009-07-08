@@ -73,7 +73,7 @@ import ptolemy.kernel.util.Workspace;
  @author Thomas Huining Feng
  @version $Id$
  @since Ptolemy II 7.1
- @Pt.ProposedRating Red (tfeng)
+ @Pt.ProposedRating Yellow (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
 public class TransformationRule extends MultiCompositeActor implements
@@ -547,7 +547,7 @@ public class TransformationRule extends MultiCompositeActor implements
      @author Thomas Huining Feng
      @version $Id$
      @since Ptolemy II 8.0
-     @Pt.ProposedRating Red (tfeng)
+     @Pt.ProposedRating Yellow (tfeng)
      @Pt.AcceptedRating Red (tfeng)
      */
     public static class TransformationDirector extends Director {

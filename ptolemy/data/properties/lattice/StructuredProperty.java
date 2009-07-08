@@ -1,27 +1,27 @@
 /**
  * Base class for structured property.
- *
+ * 
  * Copyright (c) 2008-2009 The Regents of the University of California. All
  * rights reserved. Permission is hereby granted, without written agreement and
  * without license or royalty fees, to use, copy, modify, and distribute this
  * software and its documentation for any purpose, provided that the above
  * copyright notice and the following two paragraphs appear in all copies of
  * this software.
- *
+ * 
  * IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR
  * DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES ARISING OUT
  * OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF THE UNIVERSITY OF
  * CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- *
+ * 
  * THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
  * INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
  * FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE PROVIDED HEREUNDER IS ON AN
  * "AS IS" BASIS, AND THE UNIVERSITY OF CALIFORNIA HAS NO OBLIGATION TO PROVIDE
  * MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
- *
+ * 
  * PT_COPYRIGHT_VERSION_2 COPYRIGHTENDKEY
- *
- *
+ * 
+ * 
  */
 package ptolemy.data.properties.lattice;
 
@@ -41,7 +41,7 @@ import ptolemy.kernel.util.IllegalActionException;
  * operations.
  * <p>
  * Subclasses should override clone() to do a deep cloning.
- *
+ * 
  * @author Man-Kit Leung
  * @version $Id: StructuredProperty.java 47513 2007-12-07 06:32:21Z cxh $
  * @since Ptolemy II 7.1
@@ -54,7 +54,8 @@ public abstract class StructuredProperty extends LatticeProperty {
     ////                         public methods                    ////
 
     /**
-     * @param lattice
+     * Construct a structured property associated with the specified lattice.
+     * @param lattice The specified lattice.
      */
     public StructuredProperty(PropertyLattice lattice) {
         super(lattice);
@@ -62,11 +63,9 @@ public abstract class StructuredProperty extends LatticeProperty {
 
     /**
      * Return a deep copy of this StructuredProperty.
-     *
      * @return A StructuredProperty.
      * @exception CloneNotSupportedException Not thrown in this base class.
      */
-    @Override
     abstract public Object clone() throws CloneNotSupportedException;
 
     /**
@@ -74,7 +73,7 @@ public abstract class StructuredProperty extends LatticeProperty {
      * property is the number of times a structured property contains other
      * structured properties. For example, an array of arrays has depth 2, and
      * an array of arrays of records has depth 3.
-     *
+     * 
      * @return the depth of a structured property.
      */
     public int depth() {
@@ -84,7 +83,7 @@ public abstract class StructuredProperty extends LatticeProperty {
     /**
      * Return a static instance of this structured property. The return value is
      * used by PropertyLattice to represent this property.
-     *
+     * 
      * @return a StructuredProperty.
      */
     public abstract StructuredProperty getRepresentative();
@@ -92,7 +91,7 @@ public abstract class StructuredProperty extends LatticeProperty {
     /**
      * Set the elements that have declared property BaseProperty.UNKNOWN to the
      * specified property.
-     *
+     * 
      * @param property A Property.
      */
     public abstract void initialize(Property property);
@@ -118,7 +117,7 @@ public abstract class StructuredProperty extends LatticeProperty {
      * the same structure as this property. This method will only update the
      * component property that is BaseProperty.UNKNOWN, and leave the constant
      * part of this property intact.
-     *
+     * 
      * @param newProperty A StructuredProperty.
      * @exception IllegalActionException If the specified property has a
      * different structure.
@@ -145,7 +144,7 @@ public abstract class StructuredProperty extends LatticeProperty {
      * ptolemy.graph.CPO.INCOMPARABLE, indicating this property is lower than,
      * equal to, higher than, or incomparable with the specified property in the
      * property hierarchy, respectively.
-     *
+     * 
      * @param property a StructuredProperty.
      * @return An integer.
      * @exception IllegalArgumentException If the specified property is not the
@@ -157,7 +156,7 @@ public abstract class StructuredProperty extends LatticeProperty {
      * Return the greatest lower bound of this property with the specified
      * property. The specified property must be of the same structured property,
      * otherwise an exception will be thrown.
-     *
+     * 
      * @param property a StructuredProperty.
      * @return a StructuredProperty.
      * @exception IllegalArgumentException If the specified property is not the
@@ -170,7 +169,7 @@ public abstract class StructuredProperty extends LatticeProperty {
      * Return the least upper bound of this property with the specified
      * property. The specified property must be of the same structured property,
      * otherwise an exception will be thrown.
-     *
+     * 
      * @param property a StructuredProperty.
      * @return a StructuredProperty.
      * @exception IllegalArgumentException If the specified property is not the

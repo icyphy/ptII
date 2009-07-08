@@ -1,10 +1,4 @@
-/***moduleName***/
-SINGLE-EVENT/**/
-
-/***className***/
-SingleEvent/**/
-
-/***sharedBlock***/
+/***semantics_SingleEvent***/
 (tomod SINGLE-EVENT is 
   inc ACTOR .
 

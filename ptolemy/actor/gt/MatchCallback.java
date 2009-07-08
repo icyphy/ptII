@@ -42,7 +42,7 @@ import ptolemy.actor.gt.data.MatchResult;
  @version $Id$
  @since Ptolemy II 6.1
  @see GraphMatcher#setMatchCallback(MatchCallback)
- @Pt.ProposedRating Red (tfeng)
+ @Pt.ProposedRating Yellow (tfeng)
  @Pt.AcceptedRating Red (tfeng)
 */
 public interface MatchCallback {

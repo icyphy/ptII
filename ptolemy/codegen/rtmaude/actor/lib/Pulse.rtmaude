@@ -1,16 +1,10 @@
-/***moduleName***/
-PULSE/**/
-
-/***className***/
-Pulse/**/
-
 /***attr_Pulse***/
 current-index : 0/**/
 
 /***mapName($index, $value)***/
 $index |-> $value/**/
 
-/***sharedBlock***/
+/***semantics_Pulse***/
 (tomod PULSE is
   inc ACTOR .
 
