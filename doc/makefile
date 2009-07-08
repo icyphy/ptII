@@ -628,6 +628,8 @@ ALLPACKAGES = \
 	ptolemy.domains.ptera.lib \
 	ptolemy.domains.rendezvous.kernel \
 	ptolemy.domains.rendezvous.lib \
+	ptolemy.domains.sequence.kernel \
+	ptolemy.domains.sequence.lib \
 	ptolemy.domains.sr.kernel \
 	ptolemy.domains.sr.lib \
 	ptolemy.domains.sr.lib.gui \
