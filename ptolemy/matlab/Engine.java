@@ -282,7 +282,12 @@ public class Engine {
                         + ") : can't find Matlab engine. Try starting "
                         + "Matlab by hand as an application to verify that "
                         + "Matlab is set up properly and the license is "
-                        + "correct.");
+                        + "correct. "
+                        + "Under Windows, try running \"matlab /regserver\", "
+                        + "the Matlab C API communicates with Matlab via COM, "
+                        + "and apparently the COM interface is not "
+                        + "automatically registered when Matlab is "
+                        + "installed.");
             }
 
             if (needOutput) {
