@@ -501,7 +501,12 @@ public class StringUtilities {
      */
     public static void mergePropertiesFile() throws IOException {
         Properties systemProperties = System.getProperties();
-        Properties newProperties = new Properties();
+        // Fix for
+        // "ptolemy.util.StringUtilities.mergePropertiesFile() deletes
+        // properties" http://bugzilla.ecoinformatics.org/show_bug.cgi?id=3874
+        // It turns out that the problem seems to be that 
+        // newProperties.putAll(systemProperties) does not work in Kepler.
+        Properties newProperties = new Properties(systemProperties);
         String propertyFileName = "$CLASSPATH/lib/ptII.properties";
 
         // FIXME: xxxxxxCLASSPATHxxxxxx is an ugly hack
@@ -514,11 +519,7 @@ public class StringUtilities {
 
         newProperties.load(propertyFileURL.openStream());
 
-        // systemProperties is a HashSet, so we merge in the new properties.
-        newProperties.putAll(systemProperties);
         System.setProperties(newProperties);
-        // FIXME: This should be logged, not printed.
-        //System.out.println("Loaded " + propertyFileURL);
     }
 
     /** Return a string representing the name of the file expected to
