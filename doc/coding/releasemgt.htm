@@ -409,7 +409,10 @@ Look for missing jar files in the output.
 cd $PTII/adm/gen-8.0
 make USER=cxh PTIIHOME=/cygdrive/c/cxh/ptII8.0.beta COMPRESS=gzip TAR=tar clean all src.jar 
 </pre>
-
+Below is the command to compare the old tree and the new tree:
+<pre>
+diff -r -I '$Id:' -x alljtests.tcl -x allsimplejtests.tcl -x '*.jar' -x codeDoc -x .svn ~/ptII ~/src/ptII8.0.beta >& /tmp/pt.diffs
+</pre>
 
 <li> Under Windows, build the installer.
 <pre>
