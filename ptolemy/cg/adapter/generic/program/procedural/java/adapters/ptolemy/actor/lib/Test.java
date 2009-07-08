@@ -32,7 +32,7 @@ import java.util.ArrayList;
 import ptolemy.cg.kernel.generic.program.CodeStream;
 import ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapter;
 import ptolemy.cg.kernel.generic.program.procedural.java.JavaCodeGenerator;
-import ptolemy.cg.kernel.generic.program.procedural.java.JavaCodeGeneratorAdapterStrategy;
+import ptolemy.cg.kernel.generic.program.procedural.java.JavaTemplateParser;
 import ptolemy.kernel.util.IllegalActionException;
 
 //////////////////////////////////////////////////////////////////////////
@@ -94,10 +94,10 @@ public class Test extends ProgramCodeGeneratorAdapter {
                 inputType = "Token";
                 ((JavaCodeGenerator) getCodeGenerator()).markFunctionCalled(
                         "equals_Token_Token",
-                        (JavaCodeGeneratorAdapterStrategy) getStrategy());
+                        (JavaTemplateParser) getStrategy().getTemplateParser());
                 ((JavaCodeGenerator) getCodeGenerator()).markFunctionCalled(
                         "isCloseTo_Token_Token",
-                        (JavaCodeGeneratorAdapterStrategy) getStrategy());
+                        (JavaTemplateParser) getStrategy().getTemplateParser());
             }
 
             codeStream

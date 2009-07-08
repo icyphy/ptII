@@ -161,8 +161,8 @@ public class IOPort extends ProgramCodeGeneratorAdapter implements
                     .getType();
             Type sinkType = ((ptolemy.actor.TypedIOPort) remoteReceivers[channelIndex][i]
                     .getReceiver().getContainer()).getType();
-            dataToken = "$convert_" + getStrategy().codeGenType(sourceType)
-                    + "_" + getStrategy().codeGenType(sinkType) + "("
+            dataToken = "$convert_" + getCodeGenerator().codeGenType(sourceType)
+                    + "_" + getCodeGenerator().codeGenType(sinkType) + "("
                     + dataToken + ")";
             code.append(remoteReceivers[channelIndex][i]
                     .generatePutCode(dataToken));

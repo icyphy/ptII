@@ -504,10 +504,10 @@ public class SDFDirector extends StaticSchedulingDirector {
                     .getElementType();
 
             result.insert(0, "Array_get(");
-            if (getStrategy().isPrimitive(elementType)) {
+            if (getCodeGenerator().isPrimitive(elementType)) {
                 // Generate type specific Array_get(). e.g. IntArray_get().
                 result.insert(0, "/*CGH77*/"
-                        + getStrategy().codeGenType(elementType));
+                        + getCodeGenerator().codeGenType(elementType));
             }
             result.insert(0, "/*CGH77*/");
 
@@ -613,8 +613,8 @@ public class SDFDirector extends StaticSchedulingDirector {
                             width = sourcePort.getWidth();
                         }
                         for (int j = 0; j < width; j++) {
-                            Iterator<?> channels = ProgramCodeGeneratorAdapterStrategy
-                                    .getSinkChannels(sourcePort, j).iterator();
+                            Iterator<?> channels =
+                                getSinkChannels(sourcePort, j).iterator();
                             while (channels.hasNext()) {
                                 Channel channel = (Channel) channels.next();
                                 if (channel.port == outputPort
@@ -688,8 +688,8 @@ public class SDFDirector extends StaticSchedulingDirector {
                                 width = sourcePort.getWidth();
                             }
                             for (int j = 0; j < width; j++) {
-                                Iterator<?> channels = ProgramCodeGeneratorAdapterStrategy
-                                        .getSinkChannels(sourcePort, j)
+                                Iterator<?> channels = 
+                                        getSinkChannels(sourcePort, j)
                                         .iterator();
                                 while (channels.hasNext()) {
                                     Channel channel = (Channel) channels.next();

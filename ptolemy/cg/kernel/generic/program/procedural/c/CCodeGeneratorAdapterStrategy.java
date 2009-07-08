@@ -1,6 +1,6 @@
-/* Base class for C code generator adapter.
+/* The CCodeGeneratorAdapterStrategy.
 
- Copyright (c) 2005-2009 The Regents of the University of California.
+ Copyright (c) 2009 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -35,8 +35,7 @@ import java.util.Set;
 
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.TypedIOPort;
-import ptolemy.cg.kernel.generic.ParseTreeCodeGenerator;
-import ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapterStrategy;
+import ptolemy.cg.kernel.generic.program.procedural.ProceduralCodeGeneratorAdapterStrategy;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.Type;
 import ptolemy.domains.fsm.modal.ModalController;
@@ -47,76 +46,32 @@ import ptolemy.util.StreamExec;
 import ptolemy.util.StringUtilities;
 
 //////////////////////////////////////////////////////////////////////////
-//// CCodeGeneratorAdapter
-
+////CCodeGeneratorAdapterStrategy
 /**
- Base class for C code generator adapter.
 
- <p>Actor adapters extend this class and optionally define the
- generateFireCode(),
- generateInitializeCode(), generatePrefireCode(),
- generatePostfireCode(), generatePreinitializeCode(), and
- generateWrapupCode() methods.
+The strategy that determines how code should be generated for a certain CCodeGeneratorAdapter.
 
- <p> In derived classes, these methods,
- if present, make actor specific changes to the corresponding code.
- If these methods are not present, then the parent class will automatically
- read the corresponding .c file and substitute in the corresponding code
- block.  For example, generateInitializeCode() reads the
- <code>initBlock</code>, processes the macros and adds the resulting
- code block to the output.
-
- <p>For a complete list of methods to define, see
- {@link ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapterStrategy}.
-
- <p>For further details, see <code>$PTII/ptolemy/cg/README.html</code>
-
- @author Christopher Brooks, Edward Lee, Man-Kit Leung, Gang Zhou, Ye Zhou
- @version $Id$
- @since Ptolemy II 7.1
- @Pt.ProposedRating Yellow (cxh)
- @Pt.AcceptedRating Red (cxh)
- */
-public class CCodeGeneratorAdapterStrategy extends
-        ProgramCodeGeneratorAdapterStrategy {
+@author Bert Rodiers
+@version $Id$
+@since Ptolemy II 8.0
+@Pt.ProposedRating Red (rodiers)
+@Pt.AcceptedRating Red (rodiers)
+*/
+public class CCodeGeneratorAdapterStrategy extends ProceduralCodeGeneratorAdapterStrategy {
     /**
      * Create a new instance of the C code generator adapter.
      */
-    public CCodeGeneratorAdapterStrategy() {
-        _parseTreeCodeGenerator = getParseTreeCodeGenerator();
+    public CCodeGeneratorAdapterStrategy() {        
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
-    /** Return a new parse tree code generator to use with expressions.
-     *  @return the parse tree code generator to use with expressions.
-     */
-    public ParseTreeCodeGenerator getParseTreeCodeGenerator() {
-        // FIXME: We need to create new ParseTreeCodeGenerator each time
-        // here or else we get lots of test failures.  It would be better
-        // if we could use the same CParseTreeCodeGenerator over and over.
-        _parseTreeCodeGenerator = new CParseTreeCodeGenerator(_codeGenerator);
-        return _parseTreeCodeGenerator;
-    }
 
     /** Get the code generator associated with this adapter class.
      *  @return The code generator associated with this adapter class.
      */
     public CCodeGenerator getCodeGenerator() {
         return (CCodeGenerator) _codeGenerator;
-    }
-
-    /** Get the files needed by the code generated from this adapter class.
-     *  This base class returns an empty set.
-     *  @return A set of strings that are header files needed by the code
-     *  generated from this adapter class.
-     *  @exception IllegalActionException Not Thrown in this base class.
-     */
-    public Set<String> getHeaderFiles() throws IllegalActionException {
-        Set<String> files = super.getHeaderFiles();
-        files.addAll(_includeFiles);
-        return files;
     }
 
     /** Get the header files needed to compile with the jvm library.
@@ -291,6 +246,12 @@ public class CCodeGeneratorAdapterStrategy extends
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
+    /** Create the template parser.
+     */
+    protected void _createParser() { 
+        _templateParser = new CTemplateParser(getComponent(), _adapter);
+    }
+    
     /**
      * Generate the type conversion statement for the particular offset of
      * the two given channels. This assumes that the offset is the same for
@@ -352,8 +313,8 @@ public class CCodeGeneratorAdapterStrategy extends
 
         String result = sourceRef;
 
-        String sourceCodeGenType = codeGenType(sourceType);
-        String sinkCodeGenType = codeGenType(sinkType);
+        String sourceCodeGenType = _codeGenerator.codeGenType(sourceType);
+        String sinkCodeGenType = _codeGenerator.codeGenType(sinkType);
 
         if (!sinkCodeGenType.equals(sourceCodeGenType)) {
             result = "$convert_" + sourceCodeGenType + "_" + sinkCodeGenType
@@ -370,46 +331,8 @@ public class CCodeGeneratorAdapterStrategy extends
         return "(void)";
     }
 
-    protected String _replaceMacro(String macro, String parameter)
-            throws IllegalActionException {
-        String result = super._replaceMacro(macro, parameter);
-
-        if (result != null) {
-            return result;
-        }
-
-        if (macro.equals("include")) {
-            _includeFiles.add(parameter);
-            return "";
-        } else if (macro.equals("refinePrimitiveType")) {
-            TypedIOPort port = getPort(parameter);
-
-            if (port == null) {
-                throw new IllegalActionException(
-                        parameter
-                                + " is not a port. $refinePrimitiveType macro takes in a port.");
-            }
-            if (isPrimitive(port.getType())) {
-                return ".payload." + codeGenType(port.getType());
-            } else {
-                return "";
-            }
-        }
-
-        // We will assume that it is a call to a polymorphic
-        // functions.
-        //String[] call = macro.split("_");
-        getCodeGenerator().markFunctionCalled(macro, this);
-        result = macro + "(" + parameter + ")";
-
-        return result;
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////                         private fields                    ////
-
-    /** The set of header files that needed to be included. */
-    private Set<String> _includeFiles = new HashSet<String>();
 
     /** True if we have printed the JVM warning. */
     private boolean _printedJVMWarning;

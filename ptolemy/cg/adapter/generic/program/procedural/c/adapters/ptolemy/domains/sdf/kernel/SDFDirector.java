@@ -659,17 +659,16 @@ public class SDFDirector
             ProgramCodeGeneratorAdapter target) throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
-        Iterator<?> channels = target.getStrategy().getTypeConvertChannels()
+        Iterator<?> channels = target.getTypeConvertChannels()
                 .iterator();
         while (channels.hasNext()) {
             Channel channel = (Channel) channels.next();
             Type portType = ((TypedIOPort) channel.port).getType();
 
-            if (getStrategy().isPrimitive(portType)) {
+            if (getCodeGenerator().isPrimitive(portType)) {
 
                 code.append("static ");
                 code.append(targetType(portType));
-                getStrategy();
                 code.append(" "
                         + ProgramCodeGeneratorAdapterStrategy
                                 .getTypeConvertReference(channel));

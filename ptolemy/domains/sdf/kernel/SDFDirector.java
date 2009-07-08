@@ -799,7 +799,7 @@ public class SDFDirector extends StaticSchedulingDirector {
         if (!port.isOutput() || !port.isOpaque()) {
             throw new IllegalActionException(this, port,
                     "Attempted to transferOutputs on a port that "
-                            + "is not an opaque input port.");
+                            + "is not an opaque output port.");
         }
 
         int rate = DFUtilities.getTokenProductionRate(port);

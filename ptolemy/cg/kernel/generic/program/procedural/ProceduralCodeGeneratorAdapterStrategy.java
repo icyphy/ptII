@@ -1,6 +1,6 @@
-/* The JavaCodeGeneratorAdapterStrategy.
+/* The ProceduralCodeGeneratorAdapterStrategy.
 
- Copyright (c) 2009 The Regents of the University of California.
+ Copyright (c) 2008-2009 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -25,53 +25,42 @@
  COPYRIGHTENDKEY
 
  */
-package ptolemy.cg.kernel.generic.program.procedural.java;
+package ptolemy.cg.kernel.generic.program.procedural;
 
-import ptolemy.cg.kernel.generic.program.procedural.ProceduralCodeGeneratorAdapterStrategy;
+import ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapterStrategy;
 
 //////////////////////////////////////////////////////////////////////////
-//// JavaCodeGeneratorAdapterStrategy
+//// ProceduralCodeGeneratorAdapterStrategy
+
 /**
-
-The strategy that determines how code should be generated for a certain ProceduralCodeGeneratorAdapter.
-
-@author Bert Rodiers
-@version $Id$
-@since Ptolemy II 8.0
-@Pt.ProposedRating Red (rodiers)
-@Pt.AcceptedRating Red (rodiers)
-*/
-public class JavaCodeGeneratorAdapterStrategy extends
-        ProceduralCodeGeneratorAdapterStrategy {
+ 
+ The strategy that determines how code should be generated for a certain ProceduralCodeGeneratorAdapter.
+ 
+ @author Bert Rodiers
+ @version $Id$
+ @since Ptolemy II 8.0
+ @Pt.ProposedRating Red (rodiers)
+ @Pt.AcceptedRating Red (rodiers)
+ */
+public class ProceduralCodeGeneratorAdapterStrategy extends
+        ProgramCodeGeneratorAdapterStrategy {
     /**
-     * Create a new instance of the JavaCodeGeneratorAdapterStrategy.
+     * Create a new instance of the ProceduralCodeGeneratorAdapterStrategy.
      */
-    public JavaCodeGeneratorAdapterStrategy() {        
+    public ProceduralCodeGeneratorAdapterStrategy() {        
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Get the code generator associated with this adapter class.
-     *  @return The code generator associated with this adapter class.
-     */
-    public JavaCodeGenerator getCodeGenerator() {
-        return (JavaCodeGenerator) _codeGenerator;
-    }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         protected methods               ////
+    ////                         protected variables               ////
 
-    /** Create the template parser.
-     */
-    protected void _createParser() { 
-        _templateParser = new JavaTemplateParser(getComponent(), _adapter);
-    }
-    
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                  ////
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private fields                    ////
+    ////                         private members                    ////
     
 }

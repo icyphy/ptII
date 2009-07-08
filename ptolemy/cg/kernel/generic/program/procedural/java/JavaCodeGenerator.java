@@ -252,16 +252,6 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
                             + _sanitizedModelName + "();" + _eol
                             + "model.run();" + _eol + "}" + _eol
                             + "public void run() throws Exception {" + _eol);
-
-            /* FIXME rodiers
-            String targetValue = target.getExpression();
-            if (!targetValue.equals(_DEFAULT_TARGET)) {
-                mainEntryCode.append("//FIXME: JavaCodeGenerator hack" + _eol
-                        + "init();" + _eol);
-            }
-            End FIXME rodiers
-            */
-
         } else {
             mainEntryCode.append(_eol + _eol + "public Object[] " + _eol
                     + "fire (" + _eol);
@@ -704,6 +694,49 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
     public String generateWrapupProcedureName() throws IllegalActionException {
 
         return INDENT1 + "wrapup();" + _eol;
+    }
+    
+
+    /** Add called functions to the set of overloaded functions for
+     *  later use.
+     *  If the function starts with "Array_", add everything after the
+     *  "Array_" is added to the set of token functions used.
+     *  @param name The name of the function, for example "Double_equals"
+     *  @param javaTemplateParser The corresponding parser that contains the
+     *  codeBlock.
+     *  @exception IllegalActionException If there is a problem adding
+     *  a function to the set of overloaded functions.
+     */
+    final public void markFunctionCalled(String name,
+            JavaTemplateParser javaTemplateParser)
+            throws IllegalActionException {
+
+        try {
+            String functionCode = _overloadedFunctions.getCodeBlock(name);
+
+            if (!_overloadedFunctionSet.contains(name)) {
+                _overloadedFunctionSet.add(name);
+
+                String code = (javaTemplateParser == null) ? processCode(functionCode)
+                        : javaTemplateParser.processCode(functionCode);
+
+                _overloadedFunctions.append(code);
+
+            }
+            if (name.startsWith("Array_")) {
+                // Array_xxx might need to have xxx added.
+                // See c/actor/lib/test/auto/MultiplyDivide5.xml
+
+                // FIXME: this will add any function, which means that
+                // if the user has Array_foo, foo is added.  Is this right?
+                _tokenFuncUsed.add(name.substring(6));
+            }
+        } catch (Exception ex) {
+            throw new IllegalActionException(this, ex,
+                    "Failed to mark function called for \"" + name + "\" in \""
+                            + getComponent().getFullName() + "\"");
+        }
+
     }
 
     /** Split a long function body into multiple functions.
@@ -1331,48 +1364,6 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
             buffer.append(iterator.next());
         }
         return buffer.toString();
-    }
-
-    /** Add called functions to the set of overloaded functions for
-     *  later use.
-     *  If the function starts with "Array_", add everything after the
-     *  "Array_" is added to the set of token functions used.
-     *  @param name The name of the function, for example "Double_equals"
-     *  @param strategy The corresponding adapter that contains the
-     *  codeBlock.
-     *  @exception IllegalActionException If there is a problem adding
-     *  a function to the set of overloaded functions.
-     */
-    final public void markFunctionCalled(String name,
-            JavaCodeGeneratorAdapterStrategy strategy)
-            throws IllegalActionException {
-
-        try {
-            String functionCode = _overloadedFunctions.getCodeBlock(name);
-
-            if (!_overloadedFunctionSet.contains(name)) {
-                _overloadedFunctionSet.add(name);
-
-                String code = (strategy == null) ? processCode(functionCode)
-                        : strategy.processCode(functionCode);
-
-                _overloadedFunctions.append(code);
-
-            }
-            if (name.startsWith("Array_")) {
-                // Array_xxx might need to have xxx added.
-                // See c/actor/lib/test/auto/MultiplyDivide5.xml
-
-                // FIXME: this will add any function, which means that
-                // if the user has Array_foo, foo is added.  Is this right?
-                _tokenFuncUsed.add(name.substring(6));
-            }
-        } catch (Exception ex) {
-            throw new IllegalActionException(this, ex,
-                    "Failed to mark function called for \"" + name + "\" in \""
-                            + getComponent().getFullName() + "\"");
-        }
-
     }
 
     private CodeStream _overloadedFunctions;

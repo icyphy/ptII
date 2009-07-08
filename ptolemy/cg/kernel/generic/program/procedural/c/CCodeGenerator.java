@@ -1352,13 +1352,13 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
      *  If the function starts with "Array_", add everything after the
      *  "Array_" is added to the set of token functions used.
      *  @param name The name of the function, for example "Double_equals"
-     *  @param adapter The corresponding adapter that contains the
+     *  @param templateParser The corresponding templateParser that contains the
      *  codeBlock.
      *  @exception IllegalActionException If there is a problem adding
      *  a function to the set of overloaded functions.
      */
     final public void markFunctionCalled(String name,
-            CCodeGeneratorAdapterStrategy adapter)
+            CTemplateParser templateParser)
             throws IllegalActionException {
 
         try {
@@ -1366,8 +1366,8 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
 
             if (!_overloadedFunctionSet.contains(name)) {
 
-                String code = adapter == null ? processCode(functionCode)
-                        : adapter.processCode(functionCode);
+                String code = templateParser == null ? processCode(functionCode)
+                        : templateParser.processCode(functionCode);
 
                 _overloadedFunctions.append(code);
 

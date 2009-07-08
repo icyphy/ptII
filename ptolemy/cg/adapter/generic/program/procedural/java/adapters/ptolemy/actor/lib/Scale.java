@@ -64,7 +64,7 @@ public class Scale extends ProgramCodeGeneratorAdapter {
         ptolemy.actor.lib.Scale actor = (ptolemy.actor.lib.Scale) getComponent();
         ProgramCodeGeneratorAdapterStrategy strategy = getStrategy();
 
-        String type = strategy.isPrimitive(actor.input.getType()) ? ""
+        String type = getCodeGenerator().isPrimitive(actor.input.getType()) ? ""
                 : "Token";
 
         strategy.getCodeStream().appendCodeBlock(type + "FireBlock", false);

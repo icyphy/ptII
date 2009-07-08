@@ -68,8 +68,8 @@ public class Display extends ProgramCodeGeneratorAdapter {
 
         ProgramCodeGeneratorAdapterStrategy strategy = getStrategy();
 
-        String type = strategy.codeGenType(actor.input.getType());
-        if (!strategy.isPrimitive(type)) {
+        String type = getCodeGenerator().codeGenType(actor.input.getType());
+        if (!getCodeGenerator().isPrimitive(type)) {
             type = "Token";
         }
 

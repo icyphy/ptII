@@ -38,6 +38,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
+import ptolemy.cg.kernel.generic.CodeGeneratorAdapter;
 import ptolemy.cg.kernel.generic.program.procedural.c.CCodeGenerator;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.Token;
@@ -101,7 +102,7 @@ public class CodeStream {
      * @param adapter The actor adapter associated with this code stream,
      * which is currently ignored.
      */
-    public CodeStream(ProgramCodeGeneratorAdapter adapter) {
+    public CodeStream(CodeGeneratorAdapter adapter) {
         _adapter = adapter;
         this._codeGenerator = _adapter.getCodeGenerator();
     }
@@ -116,7 +117,7 @@ public class CodeStream {
      * which is currently ignored.
      */
     public CodeStream(List<String> templateArguments,
-            ProgramCodeGeneratorAdapter adapter) {
+            CodeGeneratorAdapter adapter) {
         this(adapter);
         _templateArguments = templateArguments;
     }
@@ -283,7 +284,7 @@ public class CodeStream {
             // That means this is a request by the user. This check prevents
             // user from appending duplicate code blocks that are already
             // appended by the code generator by default.
-            String[] blocks = ProgramCodeGeneratorAdapterStrategy
+            String[] blocks = ProgramCodeGeneratorAdapter
                     .getDefaultBlocks();
 
             for (int i = 0; i < blocks.length; i++) {
@@ -1161,9 +1162,9 @@ public class CodeStream {
         }
 
         // Keep parsing for extra parameters.
-        for (int commaIndex = ProgramCodeGeneratorAdapterStrategy.indexOf(",",
+        for (int commaIndex = TemplateParser.indexOf(",",
                 codeInFile.toString(), startIndex); commaIndex != -1
-                && commaIndex <= endIndex; commaIndex = ProgramCodeGeneratorAdapterStrategy
+                && commaIndex <= endIndex; commaIndex = TemplateParser
                 .indexOf(",", codeInFile.toString(), commaIndex + 1)) {
 
             String newParameter = codeInFile.substring(startIndex, commaIndex);
@@ -1449,7 +1450,7 @@ public class CodeStream {
 
                     int dotIndex = codeBlock.indexOf(".", macroIndex);
                     int openIndex = codeBlock.indexOf("(", macroIndex);
-                    int closeParen = ProgramCodeGeneratorAdapterStrategy
+                    int closeParen = TemplateParser
                             ._findClosedParen(codeBlock.toString(), openIndex);
 
                     boolean isImplicit = dotIndex < 0 || dotIndex > openIndex;
@@ -1729,7 +1730,7 @@ public class CodeStream {
     /**
      * The adapter associated with this code stream.
      */
-    private ProgramCodeGeneratorAdapter _adapter = null;
+    private CodeGeneratorAdapter _adapter = null;
 
     /** Original value of _filePath, used for error messages. */
     private String _originalFilePath = null;

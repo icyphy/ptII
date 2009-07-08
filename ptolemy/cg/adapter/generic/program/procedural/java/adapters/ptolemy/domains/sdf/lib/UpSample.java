@@ -71,11 +71,11 @@ public class UpSample extends ProgramCodeGeneratorAdapter {
         ArrayList args = new ArrayList();
 
         Type type = actor.input.getType();
-        if (!getStrategy().isPrimitive(type)) {
+        if (!getCodeGenerator().isPrimitive(type)) {
             if (type == BaseType.GENERAL) {
                 args.add("$typeFunc($ref(input).type::zero())");
             } else {
-                args.add(getStrategy().codeGenType(type) + "_zero()");
+                args.add(getCodeGenerator().codeGenType(type) + "_zero()");
             }
         } else {
             args.add("0");

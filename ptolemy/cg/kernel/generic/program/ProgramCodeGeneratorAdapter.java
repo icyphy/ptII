@@ -27,15 +27,31 @@
  */
 package ptolemy.cg.kernel.generic.program;
 
+import java.io.File;
+import java.io.IOException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.Hashtable;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Set;
 
+import ptolemy.actor.Actor;
+import ptolemy.actor.CompositeActor;
+import ptolemy.actor.IOPort;
+import ptolemy.actor.Receiver;
+import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.util.DFUtilities;
 import ptolemy.cg.kernel.generic.CodeGeneratorAdapter;
 import ptolemy.cg.kernel.generic.GenericCodeGenerator;
 import ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapterStrategy.Channel;
+import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.Type;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.util.FileUtilities;
 import ptolemy.util.StringUtilities;
 
 ///////////////////////////////////////////////////////////////////////
@@ -88,7 +104,169 @@ public class ProgramCodeGeneratorAdapter extends CodeGeneratorAdapter {
      * @exception IllegalActionException Not thrown in this base class.
      */
     public void analyzeTypeConvert() throws IllegalActionException {
-        _strategy.analyzeTypeConvert();
+        // reset the previous type convert info.
+        _portConversions.clear();
+
+        Actor actor = (Actor) _component;
+
+        ArrayList<TypedIOPort> sourcePorts = new ArrayList<TypedIOPort>();
+        sourcePorts.addAll(actor.outputPortList());
+
+        if (actor instanceof CompositeActor) {
+            sourcePorts.addAll(actor.inputPortList());
+        }
+
+        Iterator<TypedIOPort> ports = sourcePorts.iterator();
+
+        // for each output port.
+        for (int i = 0; ports.hasNext(); i++) {
+            TypedIOPort sourcePort = ports.next();
+
+            // for each channel.
+            for (int j = 0; j < sourcePort.getWidth(); j++) {
+                Iterator<Channel> sinks = getSinkChannels(sourcePort, j)
+                        .iterator();
+
+                // for each sink channel connected.
+                while (sinks.hasNext()) {
+                    Channel sink = sinks.next();
+                    TypedIOPort sinkPort = (TypedIOPort) sink.port;
+                    if (!sourcePort.getType().equals(sinkPort.getType())) {
+                        _markTypeConvert(new Channel(sourcePort, j), sink);
+                    }
+                }
+            }
+        }
+    }
+
+    /** Copy files to the code directory.  The optional
+     *  <code>fileDependencies</code> codeBlock consists of one or
+     *  more lines where each line names a file that should be copied
+     *  to the directory named by the <i>codeDirectory</i> parameter
+     *  of the code generator. The file is only copied if a file by
+     *  that name does not exist in <i>codeDirectory</i> or if the
+     *  source file was more recently modified than the destination
+     *  file.
+     *  <p>Using the <code>fileDependencies</code> code block allows
+     *  actor writers to refer to code defined in other files.
+     *
+     *  @param namedObj If this argument is an instance of
+     *  ptolemy.actor.lib.jni.EmbeddedCActor, then the code blocks
+     *  from EmbeddedCActor's <i>embeddedCCode</i> parameter are used.
+     *  @param codeGenerator The code generator from which the
+     *  <i>codeDirectory</i> parameter is read.
+     *  @return The modification time of the most recent file.
+     *  @exception IOException If there is a problem reading the
+     *  <i>codeDirectory</i> parameter.
+     *  @exception IllegalActionException If there is a problem reading the
+     *  <i>codeDirectory</i> parameter.
+     */
+    public static long copyFilesToCodeDirectory(NamedObj namedObj,
+            ProgramCodeGenerator codeGenerator) throws IOException,
+            IllegalActionException {
+
+        // This is static so that ptolemy.actor.lib.jni.CompiledCompositeActor
+        // will not depend on ptolemy.codegen.
+
+        long lastModified = 0;
+
+        CodeStream codeStream = null;
+
+        codeStream = TemplateParser._getActualCodeStream(namedObj, codeGenerator);
+
+        // Read in the optional fileDependencies code block.
+        codeStream.appendCodeBlock("fileDependencies", true);
+        String fileDependencies = codeStream.toString();
+
+        if (fileDependencies.length() > 0) {
+            LinkedList<String> fileDependenciesList = StringUtilities
+                    .readLines(fileDependencies);
+            File codeDirectoryFile = codeGenerator._codeDirectoryAsFile();
+            String necessaryFileName = null;
+            Iterator<String> iterator = fileDependenciesList.iterator();
+            while (iterator.hasNext()) {
+                necessaryFileName = iterator.next();
+
+                // Look up the file as a resource.  We do this so we can possibly
+                // get it from a jar file in the release.
+                URL necessaryURL = null;
+                try {
+                    necessaryURL = FileUtilities.nameToURL(necessaryFileName,
+                            null, null);
+                } catch (IOException ex) {
+                    // If the filename has no slashes, try prepending file:./
+                    if (necessaryFileName.indexOf("/") == -1
+                            || necessaryFileName.indexOf("\\") == -1) {
+                        try {
+                            necessaryURL = FileUtilities.nameToURL("file:./"
+                                    + necessaryFileName, null, null);
+                        } catch (IOException ex2) {
+                            // Throw the original exception
+                            throw ex;
+                        }
+                    } else {
+                        // Throw the original exception
+                        throw ex;
+                    }
+                }
+                // Get the base filename (text after last /)
+                String necessaryFileShortName = necessaryURL.getPath();
+                if (necessaryURL.getPath().lastIndexOf("/") > -1) {
+                    necessaryFileShortName = necessaryFileShortName
+                            .substring(necessaryFileShortName.lastIndexOf("/"));
+                }
+
+                File necessaryFileDestination = new File(codeDirectoryFile,
+                        necessaryFileShortName);
+                File necessaryFileSource = new File(necessaryFileName);
+                if (!necessaryFileDestination.exists()
+                        || (necessaryFileSource.exists() && necessaryFileSource
+                                .lastModified() > necessaryFileDestination
+                                .lastModified())) {
+                    // If the dest file does not exist or is older than the
+                    // source file, we do the copy
+                    System.out.println("Copying " + necessaryFileSource
+                            + " to " + necessaryFileDestination);
+
+                    try {
+                        FileUtilities.binaryCopyURLToFile(necessaryURL,
+                                necessaryFileDestination);
+                    } catch (IOException ex) {
+                        String directory = "unknown";
+                        if (!StringUtilities.getProperty("user.dir").equals("")) {
+                            directory = "\""
+                                    + StringUtilities.getProperty("user.dir")
+                                    + "\"";
+                        }
+                        throw new IllegalActionException(namedObj, ex,
+                                "Failed to copy \"" + necessaryURL + "\" to \""
+                                        + necessaryFileDestination
+                                        + "\". Current directory is "
+                                        + directory);
+                    }
+                }
+                // Reopen the destination file and get its time for
+                // comparison
+                File necessaryFileDestination2 = new File(codeDirectoryFile,
+                        necessaryFileShortName);
+                if (necessaryFileDestination2.lastModified() > lastModified) {
+                    lastModified = necessaryFileDestination2.lastModified();
+                }
+            }
+        }
+        return lastModified;
+    }
+
+    /**
+     * Return an array of strings that are regular expressions of all the
+     * code blocks that are appended automatically by default. Since the
+     * content of the array are regex, users should use matches() instead
+     * of equals() to compare their strings.
+     * @return Array of string regular expressions of names of code blocks
+     * that are appended by default.
+     */
+    public static String[] getDefaultBlocks() {
+        return _defaultBlocks;
     }
 
     /**
@@ -102,7 +280,34 @@ public class ProgramCodeGeneratorAdapter extends CodeGeneratorAdapter {
      * @exception IllegalActionException Not thrown in this base class.
      */
     public String generateFireCode() throws IllegalActionException {
-        return _strategy.generateFireCode();
+        StringBuffer code = new StringBuffer();
+
+        String composite = (getComponent() instanceof CompositeActor) ? "Composite Actor: "
+                : "";
+
+        code.append(_eol
+                + getCodeGenerator().comment("Fire " + composite
+                        + ProgramCodeGeneratorAdapterStrategy.generateName(getComponent())));
+
+        if (getCodeGenerator().inline.getToken() == BooleanToken.TRUE) {
+            code.append(_generateFireCode());
+            code.append(generateTypeConvertFireCode());
+        } else if (getCodeGenerator().getContainer().getContainer() != null) {
+            // Here we test whether the codegenerator is embedded in another actor or whether it
+            // is at the toplevel. In it is embedded we don't need to generateTypeConvertFireCode.
+            // Needed for jni and embeddedJava.
+            code.append(_generateFireCode());
+        } else {
+            code.append(_generateFireInvocation(getComponent()) + ";" + _eol);
+        }
+
+        try {
+            copyFilesToCodeDirectory(getComponent(), getCodeGenerator());
+        } catch (IOException ex) {
+            throw new IllegalActionException(this, ex,
+                    "Problem copying files from the necessaryFiles parameter.");
+        }
+        return processCode(code.toString());
     }
 
     /** Generate The fire function code. This method is called when the firing
@@ -113,9 +318,26 @@ public class ProgramCodeGeneratorAdapter extends CodeGeneratorAdapter {
      *  @exception IllegalActionException If thrown while generating fire code.
      */
     public String generateFireFunctionCode() throws IllegalActionException {
-        return _strategy.generateFireFunctionCode();
+        StringBuffer code = new StringBuffer();
+        code.append(_eol + "void " + ProgramCodeGeneratorAdapterStrategy.generateName(getComponent())
+                + getStrategy()._getFireFunctionArguments() + " {" + _eol);
+        code.append(_generateFireCode());
+        code.append(generateTypeConvertFireCode());
+        code.append("}" + _eol);
+        return processCode(code.toString());
     }
-
+    
+    /**
+     * Generate the type conversion fire code. This method is called by the
+     * Director to append necessary fire code to handle type conversion.
+     * @return The generated code.
+     * @exception IllegalActionException Not thrown in this base class.
+     */
+    public String generateTypeConvertFireCode()
+            throws IllegalActionException {
+        return generateTypeConvertFireCode(false);
+    }
+    
     /**
      * Generate the initialize code. In this base class, return empty
      * string. Subclasses may extend this method to generate initialize
@@ -126,7 +348,7 @@ public class ProgramCodeGeneratorAdapter extends CodeGeneratorAdapter {
      * the block or processing the macros.
      */
     public String generateInitializeCode() throws IllegalActionException {
-        return _strategy.generateInitializeCode();
+        return _generateBlockByName(_defaultBlocks[1]);
     }
 
     /** Generate mode transition code. The mode transition code
@@ -138,7 +360,6 @@ public class ProgramCodeGeneratorAdapter extends CodeGeneratorAdapter {
      */
     public void generateModeTransitionCode(StringBuffer code)
             throws IllegalActionException {
-        _strategy.generateModeTransitionCode(code);
     }
 
     /**
@@ -151,7 +372,15 @@ public class ProgramCodeGeneratorAdapter extends CodeGeneratorAdapter {
      * the block or processing the macros.
      */
     public String generatePostfireCode() throws IllegalActionException {
-        return _strategy.generatePostfireCode();
+        StringBuffer code = new StringBuffer();
+        code.append(_generateBlockByName(_defaultBlocks[3]));
+
+        //        Actor actor = (Actor) getComponent();
+        //        for (IOPort port : (List<IOPort>) actor.outputPortList()) {
+        //            ProgramCodeGeneratorAdapter portAdapter = getCodeGenerator().getAdapter(port);
+        //            code.append(portAdapter.generatePostfireCode());
+        //        }
+        return processCode(code.toString());
     }
 
     /** Generate the prefire code of the associated composite actor.
@@ -160,7 +389,13 @@ public class ProgramCodeGeneratorAdapter extends CodeGeneratorAdapter {
     */
     public String generatePrefireCode() throws IllegalActionException {
         // FIXME: This is to be used in future re-structuring.
-        return _strategy.generatePrefireCode();
+        StringBuffer code = new StringBuffer();
+        //Actor actor = (Actor) getComponent();
+        //for (IOPort port : (List<IOPort>) actor.inputPortList()) {
+        //    ProgramCodeGeneratorAdapter portAdapter = getCodeGenerator().getAdapter(port);
+        //    code.append(portAdapter.generatePrefireCode());
+        //}
+        return processCode(code.toString());
     }
 
     /**
@@ -172,7 +407,7 @@ public class ProgramCodeGeneratorAdapter extends CodeGeneratorAdapter {
      * @exception IllegalActionException Not thrown in this base class.
      */
     public String generatePreinitializeCode() throws IllegalActionException {
-        return _strategy.generatePreinitializeCode();
+        return _generateBlockByName(_defaultBlocks[0]);
     }
 
     /**
@@ -184,7 +419,26 @@ public class ProgramCodeGeneratorAdapter extends CodeGeneratorAdapter {
      */
     public String generateTypeConvertFireCode(boolean forComposite)
             throws IllegalActionException {
-        return _strategy.generateTypeConvertFireCode(forComposite);
+        StringBuffer code = new StringBuffer();
+
+        // Type conversion code for inter-actor port conversion.
+        Iterator<Channel> channels = getTypeConvertChannels().iterator();
+        while (channels.hasNext()) {
+            Channel source = channels.next();
+
+            if (!forComposite && source.port.isOutput() || forComposite
+                    && source.port.isInput()) {
+
+                Iterator<Channel> sinkChannels = getTypeConvertSinkChannels(
+                        source).iterator();
+
+                while (sinkChannels.hasNext()) {
+                    Channel sink = sinkChannels.next();
+                    code.append(_generateTypeConvertStatements(source, sink));
+                }
+            }
+        }
+        return code.toString();
     }
 
     /** Generate variable declarations for inputs and outputs and parameters.
@@ -217,7 +471,7 @@ public class ProgramCodeGeneratorAdapter extends CodeGeneratorAdapter {
      * the block or processing the macros.
      */
     public String generateWrapupCode() throws IllegalActionException {
-        return _strategy.generateWrapupCode();
+        return _generateBlockByName(_defaultBlocks[4]);
     }
 
     /** Get the code generator adapter associated with the given component.
@@ -237,6 +491,13 @@ public class ProgramCodeGeneratorAdapter extends CodeGeneratorAdapter {
      */
     public ProgramCodeGenerator getCodeGenerator() {
         return _strategy.getCodeGenerator();
+    }
+
+    /** Get the component associated with this adapter.
+     *  @return The associated component.
+     */
+    public NamedObj getComponent() {
+        return _strategy.getComponent();
     }
 
     /** Get the files needed by the code generated from this adapter class.
@@ -310,7 +571,7 @@ public class ProgramCodeGeneratorAdapter extends CodeGeneratorAdapter {
      */
     final public String getParameterValue(String name, NamedObj container)
             throws IllegalActionException {
-        return _strategy.getParameterValue(name, container);
+        return _strategy.getTemplateParser().getParameterValue(name, container);
     }
 
     /** Return the reference to the specified parameter or port of the
@@ -362,6 +623,75 @@ public class ProgramCodeGeneratorAdapter extends CodeGeneratorAdapter {
     public Set<String> getSharedCode() throws IllegalActionException {
         return _strategy.getSharedCode();
     }
+    
+
+    /** Return a list of channel objects that are the sink input ports given
+     *  a port and channel. Note the returned channels are newly
+     *  created objects and therefore not associated with the adapter class.
+     *  @param port The given output port.
+     *  @param channelNumber The given channel number.
+     *  @return The list of channel objects that are the sink channels
+     *   of the given output channel.
+     * @exception IllegalActionException
+     */
+    public static List<Channel> getSinkChannels(IOPort port, int channelNumber)
+            throws IllegalActionException {
+        List<Channel> sinkChannels = new LinkedList<Channel>();
+        Receiver[][] remoteReceivers;
+
+        // due to reason stated in getReference(String),
+        // we cannot do: if (port.isInput())...
+        if (port.isOutput()) {
+            remoteReceivers = port.getRemoteReceivers();
+        } else {
+            remoteReceivers = port.deepGetReceivers();
+        }
+
+        if (remoteReceivers.length <= channelNumber || channelNumber < 0) {
+            // This is an escape method. This class will not call this
+            // method if the output port does not have a remote receiver.
+            return sinkChannels;
+        }
+
+        if (remoteReceivers[channelNumber] == null) {
+            /*
+             // FIXME: Is this an important warning? The reference to
+             // printedNullPortWarnings prevents us from making this
+             // a static method.
+            if (!printedNullPortWarnings) {
+                printedNullPortWarnings = true;
+                System.out.println("Warning: Channel " + channelNumber
+                        + " of Port \"" + port
+                        + "\" was null! Total number of channels: "
+                        + remoteReceivers.length);
+            }
+             */
+            return sinkChannels;
+        }
+
+        for (int i = 0; i < remoteReceivers[channelNumber].length; i++) {
+            IOPort sinkPort = remoteReceivers[channelNumber][i].getContainer();
+            Receiver[][] portReceivers;
+
+            if (sinkPort.isInput()) {
+                portReceivers = sinkPort.getReceivers();
+            } else {
+                portReceivers = sinkPort.getInsideReceivers();
+            }
+
+            for (int j = 0; j < portReceivers.length; j++) {
+                for (int k = 0; k < portReceivers[j].length; k++) {
+                    if (remoteReceivers[channelNumber][i] == portReceivers[j][k]) {
+                        Channel sinkChannel = new Channel(sinkPort, j);
+                        sinkChannels.add(sinkChannel);
+                        break;
+                    }
+                }
+            }
+        }
+
+        return sinkChannels;
+    }
 
     /** Get the strategy associated with this adapter.
      *  @return The associated strategy.
@@ -372,11 +702,26 @@ public class ProgramCodeGeneratorAdapter extends CodeGeneratorAdapter {
         return _strategy;
     }
 
-    /** Get the component associated with this adapter.
-     *  @return The associated component.
+    /**
+     * Get the set of channels that need to be type converted.
+     * @return Set of channels that need to be type converted.
      */
-    public NamedObj getComponent() {
-        return _strategy.getComponent();
+    public Set<Channel> getTypeConvertChannels() {
+        return _portConversions.keySet();
+    }
+
+    /**
+     * Get the list of sink channels that the given source channel needs to
+     * be type converted to.
+     * @param source The given source channel.
+     * @return List of sink channels that the given source channel needs to
+     * be type converted to.
+     */
+    public List<Channel> getTypeConvertSinkChannels(Channel source) {
+        if (_portConversions.containsKey(source)) {
+            return _portConversions.get(source);
+        }
+        return new ArrayList<Channel>();
     }
 
     /** Process the specified code, replacing macros with their values.
@@ -414,7 +759,7 @@ public class ProgramCodeGeneratorAdapter extends CodeGeneratorAdapter {
      * FIXME rodiers: This is C specific
      */
     final public String targetType(Type ptType) {
-        return _strategy.targetType(ptType);
+        return getCodeGenerator().targetType(ptType);
     }
 
     public String toString() {
@@ -425,15 +770,25 @@ public class ProgramCodeGeneratorAdapter extends CodeGeneratorAdapter {
     ////                         protected methods                    ////
 
     /**
-     * Generate the fire code. This method is intended to be
-     * overwritten by sub-classes to generate actor-specific code. 
+     * Generate the fire code. In this base class, add the name of the
+     * associated component in the comment. It checks the inline parameter
+     * of the code generator. If the value is true, it generates the actor
+     * fire code and the necessary type conversion code. Otherwise, it
+     * generate an invocation to the actor function that is generated by
+     * generateFireFunctionCode.
      * @return The generated code.
      * @exception IllegalActionException Not thrown in this base class.
      */
     protected String _generateFireCode() throws IllegalActionException {
-        return _strategy._generateFireCode();
-    }
+        CodeStream codeStream = getStrategy().getCodeStream();
+        codeStream.clear();
 
+        // If the component name starts with a $, then convert "$" to "Dollar" and avoid problems
+        // with macro substitution.  See codegen/c/actor/lib/test/auto/RampDollarNames.xml.
+        codeStream.appendCodeBlock(_defaultBlocks[2], true); // fireBlock
+        return codeStream.toString();
+    }
+    
     /**
      * Generate the type conversion statement for the particular offset of
      * the two given channels. This assumes that the offset is the same for
@@ -453,8 +808,97 @@ public class ProgramCodeGeneratorAdapter extends CodeGeneratorAdapter {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         protected variables                 ////
+    ////                         private methods                    ////
 
+    /**
+     * Generate the invocation of the fire function of
+     * the given component.
+     * @param component The given component.
+     * @return The generated code.
+     */
+    private static String _generateFireInvocation(NamedObj component) {
+        return ProgramCodeGeneratorAdapterStrategy.generateName(component) + "()";
+    }
+
+    /** Generate code for a given block.  The comment includes
+     *  the portion of the blockName parameter up until the string
+     *  "Block".
+     *  @param blockName The name of the block, which usually ends
+     *  with the string "Block".
+     *  @return The generated wrapup code.
+     *  @exception IllegalActionException If thrown while appending to the
+     *  the block or processing the macros.
+     */
+    private String _generateBlockByName(String blockName)
+            throws IllegalActionException {
+        CodeStream codeStream = getStrategy().getCodeStream();
+        codeStream.clear();
+        codeStream.appendCodeBlock(blockName, true);
+        // There is no need to generate comment for empty code block.
+        if (!codeStream.isEmpty()) {
+            // Don't die if the blockName ends not in "Block".
+            String shortBlockName = null;
+            int index = blockName.lastIndexOf("Block");
+            if (index != -1) {
+                shortBlockName = blockName.substring(0, index);
+            } else {
+                shortBlockName = blockName;
+            }
+
+            codeStream.insert(0, _eol
+                    + getCodeGenerator().comment(shortBlockName
+                            + getComponent().getName()));
+        }
+        return processCode(codeStream.toString());
+
+    }
+
+    /**
+     * Generate the type conversion statements for the two given channels.
+     * @param source The given source channel.
+     * @param sink The given sink channel.
+     * @return The type convert statement for assigning the converted source
+     *  variable to the sink variable.
+     * @exception IllegalActionException If there is a problem getting the
+     * adapters for the ports or if the conversion cannot be handled.
+     * FIXME: SDF specific
+     */
+    private String _generateTypeConvertStatements(Channel source, Channel sink)
+            throws IllegalActionException {
+
+        StringBuffer statements = new StringBuffer();
+
+        int rate = Math.max(DFUtilities.getTokenProductionRate(source.port),
+                DFUtilities.getTokenConsumptionRate(source.port));
+
+        for (int offset = 0; offset < rate || (offset == 0 && rate == 0); offset++) {
+            statements.append(_generateTypeConvertStatement(source,
+                    sink, offset));
+        }
+        return processCode(statements.toString());
+    }
+
+    /**
+     * Mark the given connection between the source and the sink channels
+     * as type conversion required.
+     * @param source The given source channel.
+     * @param sink The given input channel.
+     */
+    private void _markTypeConvert(Channel source, Channel sink) {
+        List<Channel> sinks;
+        if (_portConversions.containsKey(source)) {
+            sinks = _portConversions.get(source);
+        } else {
+            sinks = new ArrayList<Channel>();
+            _portConversions.put(source, sinks);
+        }
+        sinks.add(sink);
+    }
+    
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected variables                 ////
+    
     /** End of line character.  Under Unix: "\n", under Windows: "\n\r".
      *  We use a end of line character so that the files we generate
      *  have the proper end of line character for use by other native tools.
@@ -470,9 +914,24 @@ public class ProgramCodeGeneratorAdapter extends CodeGeneratorAdapter {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
+    /** The associated component. */
+    private NamedObj _component;
+
+    /**
+     * The code block table that stores the code block body (StringBuffer)
+     * with the code block name (String) as key.
+     */
+    private static final String[] _defaultBlocks = { "preinitBlock",
+            "initBlock", "fireBlock", "postfireBlock", "wrapupBlock" };
+
+    /** A HashMap that contains mapping for ports and their conversion method.
+     *  Ports that does not need to be converted do NOT have record in this
+     *  map. The codegen kernel record this mapping during the first pass over
+     *  the model. This map is used later in the code generation phase.
+     */
+    private Hashtable<Channel, List<Channel>> _portConversions = new Hashtable<Channel, List<Channel>>();
+
     /** The strategy for generating code for this adapter.*/
     private ProgramCodeGeneratorAdapterStrategy _strategy;
 
-    /** The associated component. */
-    private NamedObj _component;
 }

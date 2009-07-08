@@ -417,17 +417,17 @@ public class SDFDirector
 
             //result.append("[" + channelAndOffset[1] + "]");
             result.insert(0, "("
-                    + getStrategy().codeGenType(elementType).replace("Array",
+                    + getCodeGenerator().codeGenType(elementType).replace("Array",
                             "Token").replace("Matrix", "Token")
                     + ")(/*JCGH44*/Array_get(");
-            if (getStrategy().isPrimitive(elementType)) {
+            if (getCodeGenerator().isPrimitive(elementType)) {
                 result.insert(0, "(");
             }
 
             result.append(" ," + channelAndOffset[1] + ")");
 
-            if (getStrategy().isPrimitive(elementType)) {
-                String cgType = getStrategy().codeGenType(elementType)
+            if (getCodeGenerator().isPrimitive(elementType)) {
+                String cgType = getCodeGenerator().codeGenType(elementType)
                         .toLowerCase();
                 if (cgType.equals("integer")) {
                     cgType = "int";
@@ -574,13 +574,13 @@ public class SDFDirector
             ProgramCodeGeneratorAdapter target) throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
-        Iterator<?> channels = target.getStrategy().getTypeConvertChannels()
+        Iterator<?> channels = target.getTypeConvertChannels()
                 .iterator();
         while (channels.hasNext()) {
             Channel channel = (Channel) channels.next();
             Type portType = ((TypedIOPort) channel.port).getType();
 
-            if (getStrategy().isPrimitive(portType)) {
+            if (getCodeGenerator().isPrimitive(portType)) {
 
                 code.append("static ");
                 code.append(targetType(portType));

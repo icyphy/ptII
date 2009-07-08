@@ -48,6 +48,7 @@ import ptolemy.cg.kernel.generic.GenericCodeGenerator;
 import ptolemy.cg.kernel.generic.program.CodeStream;
 import ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapter;
 import ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapterStrategy;
+import ptolemy.cg.kernel.generic.program.TemplateParser;
 import ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapterStrategy.Channel;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
@@ -336,7 +337,7 @@ public class StaticSchedulingDirector extends Director {
             refName = refName.substring(1);
         }
 
-        TypedIOPort port = target.getStrategy().getPort(refName);
+        TypedIOPort port = target.getStrategy().getTemplateParser().getPort(refName);
         if (port != null) {
 
             if (port instanceof ParameterPort && port.numLinks() <= 0) {
@@ -346,7 +347,7 @@ public class StaticSchedulingDirector extends Director {
                 String result = getReference(port, channelAndOffset,
                         forComposite, isWrite, target);
 
-                String refType = getStrategy().codeGenType(port.getType());
+                String refType = getCodeGenerator().codeGenType(port.getType());
 
                 return getStrategy().generateTypeConvertMethod(result,
                         castType, refType);
@@ -449,11 +450,9 @@ public class StaticSchedulingDirector extends Director {
 
             Channel sourceChannel = new Channel(port, channelNumber);
 
-            List<Channel> typeConvertSinks = target.getStrategy()
-                    .getTypeConvertSinkChannels(sourceChannel);
+            List<Channel> typeConvertSinks = target.getTypeConvertSinkChannels(sourceChannel);
 
-            List<Channel> sinkChannels = ProgramCodeGeneratorAdapterStrategy
-                    .getSinkChannels(port, channelNumber);
+            List<Channel> sinkChannels = getSinkChannels(port, channelNumber);
 
             boolean hasTypeConvertReference = false;
 
@@ -464,7 +463,7 @@ public class StaticSchedulingDirector extends Director {
 
                 // Type convert.
                 if (typeConvertSinks.contains(channel)
-                        && getStrategy().isPrimitive(
+                        && getCodeGenerator().isPrimitive(
                                 ((TypedIOPort) sourceChannel.port).getType())) {
 
                     if (!hasTypeConvertReference) {
@@ -722,9 +721,9 @@ public class StaticSchedulingDirector extends Director {
         //     "port, offset", or
         //     "port#channel, offset".
 
-        int poundIndex = ProgramCodeGeneratorAdapterStrategy.indexOf("#", name,
+        int poundIndex = TemplateParser.indexOf("#", name,
                 0);
-        int commaIndex = ProgramCodeGeneratorAdapterStrategy.indexOf(",", name,
+        int commaIndex = TemplateParser.indexOf(",", name,
                 0);
 
         if (commaIndex < 0) {
@@ -773,7 +772,7 @@ public class StaticSchedulingDirector extends Director {
 
     private String _getRefType(Attribute attribute) {
         if (attribute instanceof Parameter) {
-            return getStrategy().codeGenType(((Parameter) attribute).getType());
+            return getCodeGenerator().codeGenType(((Parameter) attribute).getType());
         }
         return null;
     }
@@ -1040,8 +1039,7 @@ public class StaticSchedulingDirector extends Director {
             }
 
             for (int j = 0; j < length; j++) {
-                List<Channel> sinkChannels = ProgramCodeGeneratorAdapterStrategy
-                        .getSinkChannels(_port, j);
+                List<Channel> sinkChannels = getSinkChannels(_port, j);
 
                 for (int k = 0; k < sinkChannels.size(); k++) {
                     Channel channel = (Channel) sinkChannels.get(k);

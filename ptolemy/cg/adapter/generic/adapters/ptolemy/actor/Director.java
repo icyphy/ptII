@@ -495,8 +495,8 @@ public class Director extends ProgramCodeGeneratorAdapter {
         if ((port.isOutput() && !forComposite)
                 || (port.isInput() && forComposite)) {
 
-            List<Channel> sinkChannels = ProgramCodeGeneratorAdapterStrategy
-                    .getSinkChannels(port, channelNumber);
+            List<Channel> sinkChannels = 
+                    getSinkChannels(port, channelNumber);
 
             return sinkChannels;
         }

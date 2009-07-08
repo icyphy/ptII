@@ -339,8 +339,8 @@ public class PtidesBasicDirector extends Director {
 
         String result = sourceRef;
 
-        String sourceCodeGenType = getStrategy().codeGenType(sourceType);
-        String sinkCodeGenType = getStrategy().codeGenType(sinkType);
+        String sourceCodeGenType = getCodeGenerator().codeGenType(sourceType);
+        String sinkCodeGenType = getCodeGenerator().codeGenType(sinkType);
 
         if (!sinkCodeGenType.equals(sourceCodeGenType)) {
             result = "$convert_" + sourceCodeGenType + "_" + sinkCodeGenType
