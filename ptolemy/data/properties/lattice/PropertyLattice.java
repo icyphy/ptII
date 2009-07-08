@@ -1,26 +1,26 @@
 /*
- * Property hierarchy.
- *
- * Copyright (c) 1997-2009 The Regents of the University of California. All
+ * The base class of a property lattice.
+ * 
+ * Copyright (c) 2007-2009 The Regents of the University of California. All
  * rights reserved. Permission is hereby granted, without written agreement and
  * without license or royalty fees, to use, copy, modify, and distribute this
  * software and its documentation for any purpose, provided that the above
  * copyright notice and the following two paragraphs appear in all copies of
  * this software.
- *
+ * 
  * IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR
  * DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES ARISING OUT
  * OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF THE UNIVERSITY OF
  * CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- *
+ * 
  * THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
  * INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
  * FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE PROVIDED HEREUNDER IS ON AN
  * "AS IS" BASIS, AND THE UNIVERSITY OF CALIFORNIA HAS NO OBLIGATION TO PROVIDE
  * MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
- *
+ * 
  * PT_COPYRIGHT_VERSION_2 COPYRIGHTENDKEY
- *
+ * 
  */
 package ptolemy.data.properties.lattice;
 
@@ -35,15 +35,10 @@ import ptolemy.kernel.util.IllegalActionException;
 ////PropertyLattice
 
 /**
- * Property hierarchy base class. Note that all public methods are synchronized.
- * There are more than one instances of a property lattice. Although the
- * property lattice is constructed once and then typically does not change
- * during execution, the methods need to be synchronized because there are
- * various data structures used to cache results that are expensive to compute.
- * These data structures do change during execution. Multiple threads may be
- * accessing the property lattice simultaneously and modifying these data
- * structures. To ensure thread safety, the methods need to be synchronized.
- *
+ * The property lattice base class. There are more than one instances of a
+ * property lattice. The property lattice is constructed once and then typically
+ * does not change during execution.
+ * 
  * @author Thomas Mandl, Man-Kit Leung, Edward A. Lee
  * @version $Id$
  * @since Ptolemy II 7.1
@@ -62,11 +57,41 @@ public class PropertyLattice extends DirectedAcyclicGraph {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    @Override
+    /**
+     * Add the specified element to this lattice. The element is assumed to be a
+     * LatticeProperty. Otherwise, a runtime exception would occur.
+     * @param weight The element.
+     * @return The constructed graph node in the lattice.
+     */
     public Node addNodeWeight(Object weight) {
         _propertyMap.put(weight.toString().toUpperCase(),
                 (LatticeProperty) weight);
         return super.addNodeWeight(weight);
+    }
+
+    /**
+     * Add structured properties. The parameter flag is a bit-wise OR union of
+     * the structured properties desired to add. The class provides a set of
+     * symbolic constants for these structured property types. For example,
+     * invoke addStructuredProperties(RECORD) to add the RecordProperty. This
+     * method should be called after all base elements have been added.
+     * @param structuredPropertiesToAdd The bit-wise OR union of the structured
+     * properties desired to add.
+     */
+    public void addStructuredProperties(int structuredPropertiesToAdd) {
+
+        if ((structuredPropertiesToAdd & RECORD) != 0) {
+            Property record = new RecordProperty(this, new String[0],
+                    new LatticeProperty[0]).getRepresentative();
+
+            addNodeWeight(record);
+            addEdge(bottom(), record);
+            addEdge(record, top());
+        }
+
+        if ((structuredPropertiesToAdd & ARRAY) != 0) {
+            // FIXME: add Array structure.
+        }
     }
 
     /**
@@ -82,7 +107,6 @@ public class PropertyLattice extends DirectedAcyclicGraph {
      * @exception IllegalArgumentException If one or both arguments are not
      * instances of Property.
      */
-    @Override
     public int compare(Object t1, Object t2) {
         synchronized (PropertyLattice.class) {
             if (!(t1 instanceof Property) || !(t2 instanceof Property)) {
@@ -108,24 +132,35 @@ public class PropertyLattice extends DirectedAcyclicGraph {
      * it.
      * @exception UnsupportedOperationException Always thrown.
      */
-    @Override
+
     public Object[] downSet(Object e) {
         throw new UnsupportedOperationException(
                 "PropertyLattice.downSet(): operation not supported for "
                         + "the property lattice.");
     }
 
-    public LatticeProperty getElement(String fieldName)
+    /**
+     * Return the element associated with the specified name.
+     * @param elementName The specified name.
+     * @return The element.
+     * @throws IllegalActionException Thrown if this lattice does not contain
+     * the element with the specified name.
+     */
+    public LatticeProperty getElement(String elementName)
             throws IllegalActionException {
 
-        LatticeProperty property = _propertyMap.get(fieldName.toUpperCase());
+        LatticeProperty property = _propertyMap.get(elementName.toUpperCase());
         if (property == null) {
             throw new IllegalActionException("No lattice element named \""
-                    + fieldName + "\".");
+                    + elementName + "\".");
         }
         return property;
     }
 
+    /**
+     * Return the name of this lattice.
+     * @return The name of this lattice.
+     */
     public String getName() {
         return toString();
     }
@@ -136,7 +171,7 @@ public class PropertyLattice extends DirectedAcyclicGraph {
      * @param subset an array of properties.
      * @return A Property or null.
      */
-    @Override
+
     public Object greatestElement(Object[] subset) {
         synchronized (PropertyLattice.class) {
             // Compare each element with all of the other elements to search
@@ -172,7 +207,7 @@ public class PropertyLattice extends DirectedAcyclicGraph {
      * @exception IllegalArgumentException If one or both of the specified
      * arguments are not instances of Property.
      */
-    @Override
+
     public Object greatestLowerBound(Object t1, Object t2) {
         synchronized (PropertyLattice.class) {
             if (t1 == null || t2 == null) {
@@ -220,7 +255,7 @@ public class PropertyLattice extends DirectedAcyclicGraph {
      * @param subset an array of properties.
      * @return an instance of Property.
      */
-    @Override
+
     public Object greatestLowerBound(Object[] subset) {
         throw new UnsupportedOperationException(
                 "PropertyLattice.greatestUpperBound(Object[]) :"
@@ -242,7 +277,6 @@ public class PropertyLattice extends DirectedAcyclicGraph {
      * Return true.
      * @return true.
      */
-    @Override
     public boolean isLattice() {
         return true;
     }
@@ -253,7 +287,6 @@ public class PropertyLattice extends DirectedAcyclicGraph {
      * @param subset an array of properties.
      * @return A Property or null.
      */
-    @Override
     public Object leastElement(Object[] subset) {
         synchronized (PropertyLattice.class) {
             // Compare each element with all of the other elements to search
@@ -287,7 +320,6 @@ public class PropertyLattice extends DirectedAcyclicGraph {
      * @param t2 an instance of Property.
      * @return an instance of Property.
      */
-    @Override
     public Object leastUpperBound(Object t1, Object t2) {
         synchronized (PropertyLattice.class) {
             if (t1 == null) {
@@ -334,7 +366,6 @@ public class PropertyLattice extends DirectedAcyclicGraph {
      * @param subset an array of properties.
      * @return an instance of Property.
      */
-    @Override
     public Object leastUpperBound(Object[] subset) {
         throw new UnsupportedOperationException(
                 "PropertyLattice.leastUpperBound(Object[]) :"
@@ -353,7 +384,6 @@ public class PropertyLattice extends DirectedAcyclicGraph {
                 (Object) property2);
     }
 
-    @Override
     public String toString() {
         String name = getClass().getPackage().getName();
         return name.substring(name.lastIndexOf('.') + 1);
@@ -364,7 +394,6 @@ public class PropertyLattice extends DirectedAcyclicGraph {
      * lattice is infinite, this operation is not supported.
      * @exception UnsupportedOperationException Always thrown.
      */
-    @Override
     public Object[] upSet(Object e) {
         throw new UnsupportedOperationException(
                 "PropertyLattice.upSet(): operation not supported for "
@@ -415,24 +444,38 @@ public class PropertyLattice extends DirectedAcyclicGraph {
     }
 
     /**
-     * Globally reset all solvers in the model.
+     * Globally reset all lattices in the model. After calling this method,
+     * future calls to {@link #getPropertyLattice(String)} would have no memory
+     * of previously created lattices, and thus instantiate new instances.
      */
     public static void resetAll() {
         _lattices.clear();
     }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                        private methods                    ////
-
+    /**
+     * Store the specified lattice with the specified name.
+     * {@link #getPropertyLattice(String)} first searches from the set of stored
+     * lattices before instantiating a new instant.
+     */
     public static void storeLattice(PropertyLattice lattice, String name) {
         _lattices.put(name, lattice);
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private fields                    ////
+    ////                          public fields                    ////
+
+    /**
+     * Public symbolic constant value for the RecordProperty.
+     */
+    public final int RECORD = 0x1;
+
+    /**
+     * Public symbolic constant value for the ArrayProperty.
+     */
+    public final int ARRAY = 0x10;
 
     ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
+    ////                        private methods                    ////
 
     // If the argument is a structured type, return its representative;
     // otherwise, return the argument. In the latter case, the argument
@@ -446,6 +489,9 @@ public class PropertyLattice extends DirectedAcyclicGraph {
         }
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         private fields                    ////
+
     private final HashMap<String, LatticeProperty> _propertyMap = new HashMap<String, LatticeProperty>();
 
     /**
@@ -453,4 +499,5 @@ public class PropertyLattice extends DirectedAcyclicGraph {
      * as keys.
      */
     private static HashMap<String, PropertyLattice> _lattices = new HashMap<String, PropertyLattice>();
+
 }
