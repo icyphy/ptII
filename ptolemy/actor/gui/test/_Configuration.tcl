@@ -201,7 +201,7 @@ test Configuration-9.0 {testConfiguration.xml has classesToRemove set to include
 
 test Configuration-9.1 {set _classesToRemove to something new} {
     set classesToRemove [java::field $configuration classesToRemove]
-    $classesToRemove setExpression "{\"foo.bar\", \"bif.baz\"}"
+    $classesToRemove setExpression "{\"foo.bar\", \"bif.baz\", \"ptolemy.codegen.kernel.StaticSchedulingCodeGenerator\"}"
     
     # Make sure that Configuration.attributeChanged() is called
     
@@ -217,13 +217,9 @@ test Configuration-9.1 {set _classesToRemove to something new} {
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="removeClassesMoML" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
     <property name="MyParameter" class="ptolemy.data.expr.Parameter">
-    </property>
-    <property name="StaticSchedulingCodeGenerator" class="ptolemy.codegen.kernel.StaticSchedulingCodeGenerator">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[220.0, 40.0]">
-        </property>
     </property>
 </entity>
 }}
