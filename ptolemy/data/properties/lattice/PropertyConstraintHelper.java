@@ -1,30 +1,27 @@
-/** A base class representing a property constraint helper.
-
- Copyright (c) 1997-2009 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
-
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
-
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
-
- PT_COPYRIGHT_VERSION_2
- COPYRIGHTENDKEY
-
-
+/**
+ * A base class representing a property constraint helper.
+ * 
+ * Copyright (c) 1997-2009 The Regents of the University of California. All
+ * rights reserved. Permission is hereby granted, without written agreement and
+ * without license or royalty fees, to use, copy, modify, and distribute this
+ * software and its documentation for any purpose, provided that the above
+ * copyright notice and the following two paragraphs appear in all copies of
+ * this software.
+ * 
+ * IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR
+ * DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES ARISING OUT
+ * OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF THE UNIVERSITY OF
+ * CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ * 
+ * THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ * INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
+ * FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE PROVIDED HEREUNDER IS ON AN
+ * "AS IS" BASIS, AND THE UNIVERSITY OF CALIFORNIA HAS NO OBLIGATION TO PROVIDE
+ * MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+ * 
+ * PT_COPYRIGHT_VERSION_2 COPYRIGHTENDKEY
+ * 
+ * 
  */
 package ptolemy.data.properties.lattice;
 
@@ -55,24 +52,23 @@ import ptolemy.kernel.util.IllegalActionException;
 //// PropertyConstraintHelper
 
 /**
- A base class representing a property constraint helper.
-
- @author Man-Kit Leung, Thomas Mandl, Edward A. Lee
- @version $Id$
- @since Ptolemy II 7.1
- @Pt.ProposedRating Red (mankit)
- @Pt.AcceptedRating Red (mankit)
+ * A base class representing a property constraint helper.
+ * 
+ * @author Man-Kit Leung, Thomas Mandl, Edward A. Lee
+ * @version $Id$
+ * @since Ptolemy II 7.1
+ * @Pt.ProposedRating Red (mankit)
+ * @Pt.AcceptedRating Red (mankit)
  */
 public class PropertyConstraintHelper extends PropertyHelper {
 
     /**
-     * Construct the property constraint helper associated
-     * with the given component.
+     * Construct the property constraint helper associated with the given
+     * component.
      * @param solver TODO
      * @param component The associated component.
      * @exception IllegalActionException Thrown if
-     *  PropertyConstraintHelper(NamedObj, PropertyLattice, boolean)
-     *  throws it.
+     * PropertyConstraintHelper(NamedObj, PropertyLattice, boolean) throws it.
      */
     public PropertyConstraintHelper(PropertyConstraintSolver solver,
             Object component) throws IllegalActionException {
@@ -80,14 +76,14 @@ public class PropertyConstraintHelper extends PropertyHelper {
     }
 
     /**
-     * Construct the property constraint helper for the given
-     * component and property lattice.
+     * Construct the property constraint helper for the given component and
+     * property lattice.
      * @param solver The given property lattice.
      * @param component The given component.
-     * @param useDefaultConstraints Indicate whether this helper
-     *  uses the default actor constraints.
-     * @exception IllegalActionException Thrown if the helper cannot
-     *  be initialized.
+     * @param useDefaultConstraints Indicate whether this helper uses the
+     * default actor constraints.
+     * @exception IllegalActionException Thrown if the helper cannot be
+     * initialized.
      */
     public PropertyConstraintHelper(PropertyConstraintSolver solver,
             Object component, boolean useDefaultConstraints)
@@ -118,10 +114,11 @@ public class PropertyConstraintHelper extends PropertyHelper {
     //        return containerHelper;
     //    }
 
-    /** Return the constraints of this component.  The constraints is
-     *  a list of inequalities. This base class returns a empty list.
-     *  @return A list of Inequality.
-     *  @exception IllegalActionException Not thrown in this base class.
+    /**
+     * Return the constraints of this component. The constraints is a list of
+     * inequalities. This base class returns a empty list.
+     * @return A list of Inequality.
+     * @exception IllegalActionException Not thrown in this base class.
      */
     public List<Inequality> constraintList() throws IllegalActionException {
         _setEffectiveTerms();
@@ -134,9 +131,8 @@ public class PropertyConstraintHelper extends PropertyHelper {
     }
 
     /**
-     * Return the list of constraining terms for a given object.
-     * It delegates to the constraint manager of the solver
-     * linked with this helper.
+     * Return the list of constraining terms for a given object. It delegates to
+     * the constraint manager of the solver linked with this helper.
      * @param object The given object.
      * @return The list of constrainting terms.
      */
@@ -145,9 +141,8 @@ public class PropertyConstraintHelper extends PropertyHelper {
     }
 
     /**
-     * Return a list of property-able NamedObj contained by
-     * the component. All ports and parameters are considered
-     * property-able.
+     * Return a list of property-able NamedObj contained by the component. All
+     * ports and parameters are considered property-able.
      * @return The list of property-able named object.
      */
     public List<Object> getPropertyables() {
@@ -175,8 +170,8 @@ public class PropertyConstraintHelper extends PropertyHelper {
     }
 
     public boolean isConstraintSource() {
-        boolean constraintSource = (interconnectConstraintType == ConstraintType.SRC_EQUALS_MEET)
-                || (interconnectConstraintType == ConstraintType.SRC_EQUALS_GREATER);
+        boolean constraintSource = interconnectConstraintType == ConstraintType.SRC_EQUALS_MEET
+                || interconnectConstraintType == ConstraintType.SRC_EQUALS_GREATER;
         return constraintSource;
     }
 
@@ -216,10 +211,10 @@ public class PropertyConstraintHelper extends PropertyHelper {
     }
 
     /**
-     * Create constraints that set the property of the given objects
-     * same as each other. It creates two inequalities that constraint
-     * the first object to be at least the second, and then constraint
-     * the second to be at least the first.
+     * Create constraints that set the property of the given objects same as
+     * each other. It creates two inequalities that constraint the first object
+     * to be at least the second, and then constraint the second to be at least
+     * the first.
      * @param object1 The given port.
      * @param object2 The given function term.
      */
@@ -269,13 +264,13 @@ public class PropertyConstraintHelper extends PropertyHelper {
             return _isBase;
         }
 
-        /** Test if this inequality is satisfied with the current value
-         *  of variables.
-         *  @param cpo A CPO over which this inequality is defined.
-         *  @return True if this inequality is satisfied;
-         *  false otherwise.
-         *  @exception IllegalActionException If thrown while getting
-         *  the value of the terms.
+        /**
+         * Test if this inequality is satisfied with the current value of
+         * variables.
+         * @param cpo A CPO over which this inequality is defined.
+         * @return True if this inequality is satisfied; false otherwise.
+         * @exception IllegalActionException If thrown while getting the value
+         * of the terms.
          */
         public boolean isSatisfied(CPO cpo) throws IllegalActionException {
             PropertyTerm lesserTerm = (PropertyTerm) getLesserTerm();
@@ -294,7 +289,7 @@ public class PropertyConstraintHelper extends PropertyHelper {
         }
 
         /**
-         *  @return A string describing the inequality.
+         * @return A string describing the inequality.
          */
         public String toString() {
             PropertyTerm lesserTerm = (PropertyTerm) getLesserTerm();
@@ -306,13 +301,13 @@ public class PropertyConstraintHelper extends PropertyHelper {
             return "";
         }
 
-        private boolean _isBase;
+        private final boolean _isBase;
 
-        private PropertyHelper _helper;
+        private final PropertyHelper _helper;
     }
 
     /**
-     *
+     * 
      * @param actorConstraintType
      * @exception IllegalActionException
      */
@@ -323,14 +318,14 @@ public class PropertyConstraintHelper extends PropertyHelper {
             return;
         }
 
-        boolean constraintSource = (actorConstraintType == ConstraintType.SRC_EQUALS_MEET)
-                || (actorConstraintType == ConstraintType.SRC_EQUALS_GREATER);
+        boolean constraintSource = actorConstraintType == ConstraintType.SRC_EQUALS_MEET
+                || actorConstraintType == ConstraintType.SRC_EQUALS_GREATER;
 
-        List<Object> portList1 = (constraintSource) ? ((AtomicActor) getComponent())
+        List<Object> portList1 = constraintSource ? ((AtomicActor) getComponent())
                 .inputPortList()
                 : ((AtomicActor) getComponent()).outputPortList();
 
-        List<Object> portList2 = (constraintSource) ? ((AtomicActor) getComponent())
+        List<Object> portList2 = constraintSource ? ((AtomicActor) getComponent())
                 .outputPortList()
                 : ((AtomicActor) getComponent()).inputPortList();
 
@@ -343,14 +338,12 @@ public class PropertyConstraintHelper extends PropertyHelper {
     }
 
     /**
-     * Iterate through the list of sub helpers and gather
-     * the constraints for each one. Note that the helper stores
-     * a new set of constraints each time this is invoked. Therefore,
-     * multiple invocations will generate excessive constraints and
-     * result in inefficiency during resolution.
-     * @exception IllegalActionException Thrown if there is any errors
-     *  in getting the sub helpers and gathering the constraints for
-     *  each one.
+     * Iterate through the list of sub helpers and gather the constraints for
+     * each one. Note that the helper stores a new set of constraints each time
+     * this is invoked. Therefore, multiple invocations will generate excessive
+     * constraints and result in inefficiency during resolution.
+     * @exception IllegalActionException Thrown if there is any errors in
+     * getting the sub helpers and gathering the constraints for each one.
      */
     protected void _addSubHelperConstraints() throws IllegalActionException {
         Iterator helpers = _getSubHelpers().iterator();
@@ -402,15 +395,14 @@ public class PropertyConstraintHelper extends PropertyHelper {
      * @exception IllegalActionException
      */
     protected void _constraintObject(ConstraintType constraintType,
-            Object object, List<Object> objectList)
-            throws IllegalActionException {
+            Object object, List objectList) throws IllegalActionException {
 
-        boolean isEquals = (constraintType == ConstraintType.EQUALS)
-                || (constraintType == ConstraintType.SINK_EQUALS_MEET)
-                || (constraintType == ConstraintType.SRC_EQUALS_MEET);
+        boolean isEquals = constraintType == ConstraintType.EQUALS
+                || constraintType == ConstraintType.SINK_EQUALS_MEET
+                || constraintType == ConstraintType.SRC_EQUALS_MEET;
 
-        boolean useMeetFunction = (constraintType == ConstraintType.SRC_EQUALS_MEET)
-                || (constraintType == ConstraintType.SINK_EQUALS_MEET);
+        boolean useMeetFunction = constraintType == ConstraintType.SRC_EQUALS_MEET
+                || constraintType == ConstraintType.SINK_EQUALS_MEET;
 
         if (constraintType != ConstraintType.NONE) {
             if (!useMeetFunction) {
@@ -453,13 +445,12 @@ public class PropertyConstraintHelper extends PropertyHelper {
     ////                         protected variables               ////
 
     /**
-     * Return the list of constrained ports given the flag
-     * whether source or sink ports should be constrainted.
-     * If source ports are constrained, it returns the list
-     * of input ports of the assoicated actor; otherwise, it
+     * Return the list of constrained ports given the flag whether source or
+     * sink ports should be constrainted. If source ports are constrained, it
+     * returns the list of input ports of the assoicated actor; otherwise, it
      * returns the list of output ports.
-     * @param constraintSource The flag that indicates whether
-     *  source or sink ports are constrainted.
+     * @param constraintSource The flag that indicates whether source or sink
+     * ports are constrainted.
      * @return The list of constrainted ports.
      */
     protected List _getConstraintedPorts(boolean constraintSource) {
@@ -469,9 +460,9 @@ public class PropertyConstraintHelper extends PropertyHelper {
     }
 
     /**
-     * Return the list of sub-helpers. By default, this
-     * returns the list of ASTNode helpers that are associated
-     * with the expressions of the propertyable attributes.
+     * Return the list of sub-helpers. By default, this returns the list of
+     * ASTNode helpers that are associated with the expressions of the
+     * propertyable attributes.
      * @return The list of sub-helpers.
      * @exception IllegalActionException Not thrown in this base class.
      */
@@ -486,8 +477,8 @@ public class PropertyConstraintHelper extends PropertyHelper {
     }
 
     /**
-     * Create a constraint that set the
-     * first term to be at least the second term.
+     * Create a constraint that set the first term to be at least the second
+     * term.
      * @param term1 The greater term.
      * @param term2 The lesser term.
      */
@@ -513,7 +504,7 @@ public class PropertyConstraintHelper extends PropertyHelper {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
     /**
-     *
+     * 
      * @param constraintType
      * @exception IllegalActionException
      */
@@ -553,40 +544,35 @@ public class PropertyConstraintHelper extends PropertyHelper {
     }
 
     /*
-    private void _removeConstraints() {
-        Set<Inequality> removeConstraints = new HashSet<Inequality>();
-
-        Iterator inequalities = _constraints.iterator();
-        while (inequalities.hasNext()) {
-            Inequality inequality = (Inequality) inequalities.next();
-            List<InequalityTerm> variables =
-                _deepGetVariables(inequality.getGreaterTerm().getVariables());
-
-            variables.addAll(
-                    _deepGetVariables(inequality.getLesserTerm().getVariables()));
-
-            Iterator iterator = variables.iterator();
-
-            while (iterator.hasNext()) {
-                InequalityTerm term = (InequalityTerm) iterator.next();
-                if (nonConstraintings.contains(term.getAssociatedObject())) {
-                    removeConstraints.add(inequality);
-                }
-            }
-        }
-        _constraints.removeAll(removeConstraints);
-    }
-    */
+     * private void _removeConstraints() { Set<Inequality> removeConstraints =
+     * new HashSet<Inequality>();
+     * 
+     * Iterator inequalities = _constraints.iterator(); while
+     * (inequalities.hasNext()) { Inequality inequality = (Inequality)
+     * inequalities.next(); List<InequalityTerm> variables =
+     * _deepGetVariables(inequality.getGreaterTerm().getVariables());
+     * 
+     * variables.addAll(
+     * _deepGetVariables(inequality.getLesserTerm().getVariables()));
+     * 
+     * Iterator iterator = variables.iterator();
+     * 
+     * while (iterator.hasNext()) { InequalityTerm term = (InequalityTerm)
+     * iterator.next(); if
+     * (nonConstraintings.contains(term.getAssociatedObject())) {
+     * removeConstraints.add(inequality); } } }
+     * _constraints.removeAll(removeConstraints); }
+     */
     protected void _setEffectiveTerms() {
         // do nothing in here, overwrite use-case specific!
 
     }
 
     /**
-     * Return the list of constraining ports on a given port,
-     * given whether source or sink ports should be constrainted.
-     * @param constraintSource The flag that indicates whether
-     *  source or sink ports are constrainted.
+     * Return the list of constraining ports on a given port, given whether
+     * source or sink ports should be constrainted.
+     * @param constraintSource The flag that indicates whether source or sink
+     * ports are constrainted.
      * @param port The given port.
      * @return The list of constrainting ports.
      */
@@ -614,14 +600,14 @@ public class PropertyConstraintHelper extends PropertyHelper {
 
     protected List<Inequality> _ownConstraints = new LinkedList<Inequality>();
 
-    /** The property lattice **/
+    /** The property lattice * */
     protected PropertyLattice _lattice;
 
     /** Indicate whether this helper uses the default actor constraints. */
     protected boolean _useDefaultConstraints;
 
     /**
-     *
+     * 
      */
     public ConstraintType interconnectConstraintType;
 }

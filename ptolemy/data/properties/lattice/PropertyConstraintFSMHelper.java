@@ -53,7 +53,8 @@ import ptolemy.kernel.util.NamedObj;
  * A helper class for ptolemy.domains.fsm.kernel.FSMActor.
  * 
  * @author Man-Kit Leung, Thomas Mandl
- * @version $Id$
+ * @version $Id: PropertyConstraintFSMHelper.java 54803 2009-06-29 22:33:45Z
+ * mankit $
  * @since Ptolemy II 7.1
  * @Pt.ProposedRating Red (mankit)
  * @Pt.AcceptedRating Red (mankit)
@@ -80,38 +81,31 @@ public class PropertyConstraintFSMHelper extends
     ////                         public methods                    ////
 
     /**
-     * Return the list of property constraints.
+     * Return the list of property constraints. Return the constraints for the
+     * setAction and outputAction expressions associated with transitions of
+     * each contained states. For example, if there is a setAction for assigning
+     * the value of the variable V, this creates constraints between the
+     * properties of V and the assigned expression.
      * @return The list of property constraints.
-     * @exception IllegalActionException If
-     * {@link #_constraintObject(ConstraintType, Object, List)} throws it.
+     * @exception IllegalActionException Thrown if any error occurs when
+     * creating the constraints.
      */
     public List<Inequality> constraintList() throws IllegalActionException {
         // FIMXE: cannot call super here, because PropertyConstraintCompositeHelper
         // recursively call constraintList() of its children.
         //super.constraintList();
 
+        ptolemy.domains.fsm.kernel.FSMActor actor = (ptolemy.domains.fsm.kernel.FSMActor) getComponent();
         HashMap<NamedObj, List<ASTPtRootNode>> outputActionMap = new HashMap<NamedObj, List<ASTPtRootNode>>();
-
         HashMap<NamedObj, List<ASTPtRootNode>> setActionMap = new HashMap<NamedObj, List<ASTPtRootNode>>();
 
-        ptolemy.domains.fsm.kernel.FSMActor actor = (ptolemy.domains.fsm.kernel.FSMActor) getComponent();
+        for (State state : (List<State>) actor.entityList(State.class)) {
+            List<Transition> transitions = state.outgoingPort
+                    .linkedRelationList();
 
-        List propertyableList = getPropertyables();
+            for (Transition transition : transitions) {
+                for (Object propertyable : getPropertyables()) {
 
-        Iterator states = actor.entityList(State.class).iterator();
-
-        while (states.hasNext()) {
-            State state = (State) states.next();
-            Iterator transitions = state.outgoingPort.linkedRelationList()
-                    .iterator();
-
-            while (transitions.hasNext()) {
-                Transition transition = (Transition) transitions.next();
-
-                Iterator propertyables = propertyableList.iterator();
-
-                while (propertyables.hasNext()) {
-                    Object propertyable = propertyables.next();
                     if (propertyable instanceof NamedObj) {
 
                         NamedObj namedObj = (NamedObj) propertyable;
@@ -151,17 +145,15 @@ public class PropertyConstraintFSMHelper extends
         boolean constraintSource = interconnectConstraintType == ConstraintType.SRC_EQUALS_MEET
                 || interconnectConstraintType == ConstraintType.SRC_EQUALS_GREATER;
 
-        Iterator outputActions = outputActionMap.entrySet().iterator();
-        while (outputActions.hasNext()) {
-            Entry entry = (Entry) outputActions.next();
+        for (Entry entry : outputActionMap.entrySet()) {
             Object destination = entry.getKey();
-            List<Object> expressions = (List<Object>) entry.getValue();
+
+            List<ASTPtRootNode> expressions = (List<ASTPtRootNode>) entry
+                    .getValue();
 
             if (constraintSource) {
-                Iterator roots = expressions.iterator();
 
-                while (roots.hasNext()) {
-                    ASTPtRootNode root = (ASTPtRootNode) roots.next();
+                for (ASTPtRootNode root : expressions) {
                     List<Object> sinkAsList = new ArrayList<Object>();
                     sinkAsList.add(destination);
 
@@ -174,17 +166,14 @@ public class PropertyConstraintFSMHelper extends
             }
         }
 
-        Iterator setActions = setActionMap.entrySet().iterator();
-        while (setActions.hasNext()) {
-            Entry entry = (Entry) setActions.next();
+        for (Entry entry : setActionMap.entrySet()) {
             Object destination = entry.getKey();
-            List<Object> expressions = (List<Object>) entry.getValue();
+            List<ASTPtRootNode> expressions = (List<ASTPtRootNode>) entry
+                    .getValue();
 
             if (constraintSource) {
-                Iterator roots = expressions.iterator();
 
-                while (roots.hasNext()) {
-                    ASTPtRootNode root = (ASTPtRootNode) roots.next();
+                for (ASTPtRootNode root : expressions) {
                     List<Object> sinkAsList = new ArrayList<Object>();
                     sinkAsList.add(destination);
 
