@@ -265,14 +265,14 @@ PTINY_ONLY_JNLP_JARS = \
 	$(HYBRID_SYSTEMS_DEMO_AND_DOC_JARS) \
 	ptolemy/data/type/demo/demo.jar \
 	ptolemy/data/unit/demo/demo.jar \
+	ptolemy/domains/continuous/demo/demo.jar \
+	ptolemy/domains/continuous/doc/doc.jar \
 	ptolemy/domains/ddf/demo/demo.jar \
 	ptolemy/domains/ddf/doc/doc.jar \
 	ptolemy/domains/de/demo/demo.jar \
 	ptolemy/domains/de/doc/doc.jar \
 	ptolemy/domains/hdf/demo/demo.jar \
 	ptolemy/domains/hdf/doc/doc.jar \
-	ptolemy/domains/modal/doc/doc.jar \
-	ptolemy/domains/modal/demo/demo.jar \
 	ptolemy/domains/pn/demo/demo.jar \
 	ptolemy/domains/pn/doc/doc.jar \
 	ptolemy/domains/rendezvous/demo/demo.jar \
@@ -379,8 +379,6 @@ FULL_ONLY_JNLP_JARS = \
 	ptolemy/domains/experimentalDomains.jar \
 	ptolemy/domains/ci/demo/demo.jar \
 	ptolemy/domains/ci/doc/doc.jar \
-	ptolemy/domains/continuous/demo/demo.jar \
-	ptolemy/domains/continuous/doc/doc.jar \
 	ptolemy/domains/csp/demo/demo.jar \
 	ptolemy/domains/csp/doc/doc.jar \
 	ptolemy/domains/curriculum/curriculum.jar \
@@ -393,6 +391,8 @@ FULL_ONLY_JNLP_JARS = \
 	ptolemy/domains/gr/demo/demo.jar \
 	ptolemy/domains/gr/doc/doc.jar \
 	ptolemy/domains/gr/lib/quicktime/quicktime.jar \
+	ptolemy/domains/modal/doc/doc.jar \
+	ptolemy/domains/modal/demo/demo.jar \
 	ptolemy/domains/psdf/psdf.jar \
 	ptolemy/domains/psdf/demo/demo.jar \
 	ptolemy/domains/psdf/doc/doc.jar \
