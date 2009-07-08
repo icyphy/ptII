@@ -108,9 +108,7 @@ JSRCS = \
 	RelationCollapsingAttribute.java \
 	RelationHidingAttribute.java \
 	Replacement.java \
-	ReplacementObjectAttribute.java \
 	StateMatcher.java \
-	SubgraphMatchingException.java \
 	TransformationException.java \
 	TransformationListener.java \
 	TransformationMode.java \
@@ -160,6 +158,7 @@ OPTIONAL_FILES = \
 	'GraphMatcher$$ObjectList.class' \
 	'GraphMatcher$$ParameterIterator.class' \
 	'GraphTransformer$$CreateObjectChangeRequest.class' \
+	'GraphTransformer$$ReplacementObjectAttribute.class' \
 	'IterativeParameter$$1.class' \
 	'IterativeParameter$$ConstraintViolationException.class' \
 	'IterativeParameter$$Mode$$1.class' \
