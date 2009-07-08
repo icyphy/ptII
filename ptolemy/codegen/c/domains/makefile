@@ -61,7 +61,6 @@ PTCLASSALLJARS = \
 	giotto/giotto.jar \
 	sdf/sdf.jar \
 	sr/sr.jar \
-	ptides/ptides.jar \
 	de/de.jar
 
 # Keep this list alphabetized.
