@@ -1,9 +1,7 @@
 /*
- * 
- * 
  * Below is the copyright agreement for the Ptolemy II system.
  * 
- * Copyright (c) Mode-2009 The Regents of the University of California. All
+ * Copyright (c) 2009 The Regents of the University of California. All
  * rights reserved.
  * 
  * Permission is hereby granted, without written agreement and without license
