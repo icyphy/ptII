@@ -336,7 +336,7 @@ public abstract class PtolemyFrame extends TableauFrame {
         }
 
         // If the user saves a file without an extension, we force .xml.
-        return super._saveAs(".xml");
+        return _saveAs(".xml");
     }
 
     /** Create and return a file dialog for the "Save As" command.
