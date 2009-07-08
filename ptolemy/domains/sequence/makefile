@@ -1,8 +1,7 @@
-# Makefile for sequence domain actors library
-#
-# @Authors: Christopher Brooks (makefile only)
+# Makefile for PtolemyII Sequence domain
 #
 # @Version: $Id$
+# @Author: Christopher Brooks (makefile only)
 #
 # @Copyright (c) 2009 The Regents of the University of California.
 # All rights reserved.
@@ -29,46 +28,39 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/domains/sequence/lib
+ME =		ptolemy/domains/sequence
 
-DIRS = 		
+DIRS =		kernel lib
 
-# Root of the Java directory
-ROOT =		../../../..
-
-CLASSPATH =	$(ROOT)
+# Root of Ptolemy II directory
+ROOT =		../../..
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
+
 # Used to build jar files
-PTPACKAGE = 	lib
-PTCLASSJAR =    $(PTPACKAGE).jar
+PTPACKAGE = 	sequence
+PTCLASSJAR =
 
-JSRCS = \
-	Break.java \
-	ControlActor.java \
-	IfThen.java \
-	IfThenElse.java
+# Include the .class files from these jars in PTCLASSALLJAR
+PTCLASSALLJARS = \
+		kernel/kernel.jar \
+		lib/lib.jar
 
-OTHER_FILES_TO_BE_JARED = \
-	BreakIcon.xml \
-	IfThenElseIcon.xml \
-	IfThenIcon.xml
+PTCLASSALLJAR = $(PTPACKAGE).jar
 
-EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
-
-# Sources that may or may not be present, but if they are present, we don't
-# want make checkjunk to barf on them.
-MISC_FILES = 	$(DIRS)
+# Files or directories that are present, but that 'make checkjunk'
+# should not complain about
+# Don't include demo or DIRS here, or else 'make sources' will run 'make demo'
+MISC_FILES =	kernel lib #doc test
 
 # make checkjunk will not report OPTIONAL_FILES as trash
-# make realclean removes OPTIONAL_FILES
+# make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
+	demo \
 	doc
-
-JCLASS = $(JSRCS:%.java=%.class)
 
 all: jclass
 install: jclass jars
