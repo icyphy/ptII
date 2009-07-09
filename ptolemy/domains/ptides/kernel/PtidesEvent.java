@@ -37,22 +37,22 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
 
 //////////////////////////////////////////////////////////////////////////
-//// DETokenEvent
+//// PtidesEvent
 
-/** A DE event that saves the token, as well as the receiver this token is destined
+/** A Ptides event that saves the token, as well as the receiver this token is destined
  *  at, in addition to the information that is stored in the super class, such as
  *  the timestamp, etc. This class is used
  *  in the PTIDES domain, because events may arrive out of timestamp order.
  *
- *  @author Lukito Muliadi, Edward A. Lee, Haiyang Zheng, Contributor: Christopher Brooks
+ *  @author Jia Zou, Slobodan Matic
  *  @version $Id$
  *  @since Ptolemy II 7.1
- *  @Pt.ProposedRating Green (hyzheng)
- *  @Pt.AcceptedRating Green (hyzheng)
+ *  @Pt.ProposedRating Yellow (jiazou)
+ *  @Pt.AcceptedRating Red (jiazou)
  */
-public class DETokenEvent extends DEEvent {
+public class PtidesEvent extends DEEvent {
     /** Construct a pure event with the specified destination actor,
-     *  timestamp, microstep, and depth.
+     *  timestamp, microstep, depth, and minDelay offset.
      *  @param actor The destination actor
      *  @param timeStamp The time when the event occurs.
      *  @param microstep The phase of execution within a fixed time.
@@ -62,11 +62,10 @@ public class DETokenEvent extends DEEvent {
      *  @exception IllegalActionException If the actor has a priority parameter,
      *  but its value cannot be obtained, which should be an integer.
      */
-    public DETokenEvent(Actor actor, Time timeStamp, int microstep, int depth,
-            Token token, Receiver receiver) throws IllegalActionException {
+    public PtidesEvent(Actor actor, Time timeStamp, int microstep, int depth,
+            double minDelay) throws IllegalActionException {
         super(actor, timeStamp, microstep, depth);
-        _token = token;
-        _receiver = receiver;
+        _minDelay = minDelay;
     }
 
     /** Construct a trigger event with the specified destination IO port,
@@ -81,7 +80,7 @@ public class DETokenEvent extends DEEvent {
      *  @exception IllegalActionException If the actor has a priority parameter,
      *  but its value cannot be obtained, which should be an integer.
      */
-    public DETokenEvent(IOPort ioPort, int channel, Time timeStamp,
+    public PtidesEvent(IOPort ioPort, int channel, Time timeStamp,
             int microstep, int depth, Token token, Receiver receiver)
             throws IllegalActionException {
         super(ioPort, timeStamp, microstep, depth);
@@ -106,11 +105,18 @@ public class DETokenEvent extends DEEvent {
      */
     public boolean equals(Object object) {
         boolean result = super.equals(object);
-        if (result == true && ((DETokenEvent) object).token() == _token) {
+        if (result == true && ((PtidesEvent) object).token() == _token) {
             return true;
         } else {
             return false;
         }
+    }
+    
+    /** Return the receiver.
+     *  @return The receiver.
+     */
+    public final double minDelay() {
+        return _minDelay;
     }
 
     /** Return the receiver.
@@ -144,7 +150,8 @@ public class DETokenEvent extends DEEvent {
         } else {
             return "DEEvent(time = " + _timestamp + ", microstep = "
                     + _microstep + ", depth = " + _depth + ", token = "
-                    + _token + ", dest = " + name + ")" + " -- A PURE EVENT.";
+                    + _token + ", dest = " + name + ", minDelay = "
+                    + _minDelay + ")" + " -- A PURE EVENT.";
         }
     }
 
@@ -159,4 +166,7 @@ public class DETokenEvent extends DEEvent {
 
     /** The receiver this token is destined at. */
     private Receiver _receiver;
+    
+    /** The minDelay offset associated with this event. */
+    private double _minDelay;
 }

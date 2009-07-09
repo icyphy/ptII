@@ -461,7 +461,7 @@ public class PtidesPreemptiveEDFDirector extends PtidesBasicDirector {
                         .getAttribute("minDelay");
                 if (parameter != null) {
                     DoubleToken token = ((DoubleToken) ((ArrayToken) parameter
-                            .getToken()).arrayValue()[((DETokenEvent) event)
+                            .getToken()).arrayValue()[((PtidesEvent) event)
                             .channel()]);
                     Time waitUntilPhysicalTime = event.timeStamp().subtract(
                             token.doubleValue());

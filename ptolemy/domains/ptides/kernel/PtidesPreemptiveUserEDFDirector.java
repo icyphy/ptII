@@ -249,6 +249,7 @@ public class PtidesPreemptiveUserEDFDirector extends
                     if (earlierPort == null) {
                         // pure event.
                         Actor actor = earlierEvent.actor();
+                        // FIXME: HACK.
                         if (actor instanceof TimedDelay) {
                             TimedDelay timedDelay = (TimedDelay) actor;
                             delay = ((DoubleToken)(timedDelay.delay).getToken()).doubleValue();

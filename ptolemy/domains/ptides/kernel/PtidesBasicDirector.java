@@ -431,6 +431,57 @@ public class PtidesBasicDirector extends DEDirector {
             _debug("PtidesBasicDirector fired!");
         }
     }
+    
+    /** This fireAt() is specific to the PTIDES director. While adding a pure
+     *  event into the event queue, this method also adds an source input, which
+     *  is the input port that resulted in this fireAt. This information is
+     *  later used to determine when is it safe to process this pure event.
+     *  note In PTIDES, we never delegate to the executive director, so that part
+     *  is omitted from this fireAt() method.
+     * 
+     *  FIXME: PtidesPreemptiveUserEDFDirector does not work with any actor that
+     *  uses this fireAt() method.
+     */
+    public Time fireAt(Actor actor, Time time, IOPort sourceInput) 
+            throws IllegalActionException {
+        if (_eventQueue == null) {
+            throw new IllegalActionException(this,
+                    "Calling fireAt() before preinitialize().");
+        }
+        if (_debugging) {
+            _debug("DEDirector: Actor " + actor.getFullName()
+                    + " requests refiring at " + time);
+        }
+        Time result = time;
+        synchronized (_eventQueue) {
+            // If we have not made a request to the executive director,
+            // then we can modify time here. If we have, then we can't,
+            // but if the time of that request is now in the past,
+            // we will throw an exception with an attempt to post
+            // an event in the past.
+            if (result.compareTo(getModelTime()) < 0) {
+                // NOTE: There is no assurance in a multithreaded situation
+                // that time will not advance prior to the posting of
+                // this returned time on the local event queue, so
+                // an exception can still occur reporting an attempt
+                // to post an event in the past.
+                result = getModelTime();
+            }
+            _enqueueEvent(actor, result, sourceInput);
+
+            // Findbugs: Multithreaded correctness,
+            // [M M MWN] Mismatched notify() [MWN_MISMATCHED_NOTIFY]
+            //    This method calls Object.notify() or Object.notifyAll()
+            //    without obviously holding a lock on the object.
+            //    Calling notify() or notifyAll() without a lock
+            //    held will result in an IllegalMonitorStateException
+            //    being thrown.
+            // Actually, this seems to be Find Bugs error since the
+            // statement is within a synchronized (_eventQueue) block.
+            _eventQueue.notifyAll();
+        }
+        return result;
+    }
 
     /** Initialize the actors and request a refiring at the current
      *  time of the executive director. This overrides the base class to
@@ -795,7 +846,7 @@ public class PtidesBasicDirector extends DEDirector {
             //            Map<Integer, SuperdenseDependency> minDelays = new HashMap<Integer, SuperdenseDependency>();
             double[] minDelays = new double[channelDependency.size()];
             for (Integer portChannelMinDelay : channelDependency.keySet()) {
-                minDelays[portChannelMinDelay.intValue()] = _getMinDelayForPortChannel(
+                minDelays[portChannelMinDelay.intValue()] = _calculateMinDelayForPortChannel(
                         inputPort, portChannelMinDelay, inputModelTimeDelays);
             }
             _setMinDelay(inputPort, minDelays);
@@ -846,6 +897,68 @@ public class PtidesBasicDirector extends DEDirector {
             }
         }
     }
+    
+    /** Put a pure event into the event queue to schedule the given actor to
+     *  fire at the specified timestamp.
+     *  <p>
+     *  The default microstep for the queued event is equal to zero,
+     *  unless the time is equal to the current time, where the microstep
+     *  will be the current microstep plus one.
+     *  </p><p>
+     *  The depth for the queued event is the minimum of the depths of
+     *  all the ports of the destination actor.
+     *  </p><p>
+     *  If there is no event queue or the given actor is disabled, then
+     *  this method does nothing.</p>
+     *
+     *  @param actor The actor to be fired.
+     *  @param time The timestamp of the event.
+     *  @exception IllegalActionException If the time argument is less than
+     *  the current model time, or the depth of the actor has not be calculated,
+     *  or the new event can not be enqueued.
+     */
+    protected void _enqueueEvent(Actor actor, Time time, IOPort sourceInput)
+            throws IllegalActionException {
+        if ((_eventQueue == null)
+                || ((_disabledActors != null) && _disabledActors
+                        .contains(actor))) {
+            return;
+        }
+
+        // Adjust the microstep.
+        int microstep = 0;
+
+        if (time.compareTo(getModelTime()) == 0) {
+            // If during initialization, do not increase the microstep.
+            // This is based on the assumption that an actor only requests
+            // one firing during initialization. In fact, if an actor requests
+            // several firings at the same time,
+            // only the first request will be granted.
+            if (_isInitializing) {
+                microstep = _microstep;
+            } else {
+                microstep = _microstep + 1;
+            }
+        } else if (time.compareTo(getModelTime()) < 0) {
+            throw new IllegalActionException(actor,
+                    "Attempt to queue an event in the past:"
+                            + " Current time is " + getModelTime()
+                            + " while event time is " + time);
+        }
+
+        int depth = _getDepthOfActor(actor);
+
+        if (_debugging) {
+            _debug("enqueue a pure event: ", ((NamedObj) actor).getName(),
+                    "time = " + time + " microstep = " + microstep
+                            + " depth = " + depth);
+        }
+        
+        double minDelay = _getMinDelay(sourceInput);
+
+        DEEvent newEvent = new PtidesEvent(actor, time, microstep, depth, minDelay);
+        _eventQueue.put(newEvent);
+    }
 
     /** Put a trigger event into the event queue.
      *  <p>
@@ -885,7 +998,7 @@ public class PtidesBasicDirector extends DEDirector {
         }
 
         // Register this trigger event.
-        DEEvent newEvent = new DETokenEvent(ioPort, ioPort
+        DEEvent newEvent = new PtidesEvent(ioPort, ioPort
                 .getChannelForReceiver(receiver), getModelTime(), _microstep,
                 depth, token, receiver);
         _eventQueue.put(newEvent);
@@ -1099,6 +1212,38 @@ public class PtidesBasicDirector extends DEDirector {
                 + "    <property name=\"height\" value=\"30\"/>"
                 + "    <property name=\"fillColor\" value=\"{0.0, 1.0, 0.0, 1.0}\"/>"
                 + "  </property>";
+    }
+    
+    /** For all ports within the same equivalence class as the source input, find the
+     *  minDelay parameter. Return the minimum among all minDelay parameter.
+     *  @param sourceInput
+     *  @return minDelay
+     *  @throws IllegalActionException if _finiteEquivalentPorts throws it.
+     *  
+     */
+    protected double _getMinDelay(IOPort sourceInput) throws IllegalActionException {
+        double result = Double.POSITIVE_INFINITY;
+        for (IOPort port : _finiteEquivalentPorts(sourceInput)) {
+            Parameter parameter = (Parameter) ((NamedObj) port)
+                    .getAttribute("minDelay");
+            if (parameter != null) {
+                Token[] tokens = ((ArrayToken) parameter
+                        .getToken()).arrayValue();
+                for (int channel = 0; channel < port.getWidth(); channel++) {
+                    double minDelay = ((DoubleToken)tokens[channel]).doubleValue();
+                    if (minDelay < result) {
+                        result = minDelay;
+                    }
+                }
+            }
+        }
+        if (result == Double.POSITIVE_INFINITY) {
+            throw new IllegalActionException("If the actorsReceiveEventsInTimestampOrder " +
+            		"parameter is checked, then this director cannot fire any actor " +
+            		"that uses fireAt(Actor Time, IOPort) method. e.g. variableDelayCounter " +
+            		"is not allowed.");
+        }
+        return result;
     }
 
     /** Returns the minDelay parameter.
@@ -1490,12 +1635,14 @@ public class PtidesBasicDirector extends DEDirector {
      *  @return True if the event is safe to process, otherwise return false.
      *  @exception IllegalActionException
      *  @see #_setTimedInterrupt(Time)
+     *  
+     *  FIXME: CHANGE ALL DEEVENT TO PTIDESEVENT.
      */
     protected boolean _safeToProcess(DEEvent event)
             throws IllegalActionException {
         IOPort port = event.ioPort();
         if (port != null) {
-            int channel = ((DETokenEvent) event).channel();
+            int channel = ((PtidesEvent) event).channel();
             Parameter parameter = (Parameter) ((NamedObj) port)
                     .getAttribute("minDelay");
             if (parameter != null) {
@@ -1517,9 +1664,25 @@ public class PtidesBasicDirector extends DEDirector {
             }
 
         } else {
-            // event does not have a destination port, must be a pure event.
-            // FIXME: in general this is not true.
-            return true;
+            // FIXME: HACK.
+            if (event instanceof PtidesEvent) {
+                // If the event is a pure event, it must be carrying a minDelay value with it.
+                // Use this value to check if the event is safe to process.
+                Time waitUntilPhysicalTime = event.timeStamp().subtract(
+                        ((PtidesEvent)event).minDelay());
+                if (_getPhysicalTime().subtract(waitUntilPhysicalTime)
+                        .compareTo(_zero) >= 0) {
+                    return true;
+                } else {
+                    _setTimedInterrupt(waitUntilPhysicalTime);
+                    return false;
+                }
+            } else {
+                // Since the actor that produced this pure event did not use the
+                // fireAt(Actor, Time, IOPort) method, we assume this event is
+                // always safe to process.
+                return true;
+            }
         }
     }
 
@@ -1894,16 +2057,7 @@ public class PtidesBasicDirector extends DEDirector {
 
     ///////////////////////////////////////////////////////////////////
     ////                     private methods                       ////
-
-    /** Return the actor associated with the events in the list. All events
-     *  within the list should be destined for the same actor.
-     *  @param currentEventList A list of events.
-     *  @return Actor associated with events in the list.
-     */
-    private Actor _getActorFromEventList(List<DEEvent> currentEventList) {
-        return currentEventList.get(0).actor();
-    }
-
+    
     /** For a particular input port channel pair, find the min delay.
      *  @param inputPort The input port to find min delay for.
      *  @param channel The channel at this input port.
@@ -1911,7 +2065,7 @@ public class PtidesBasicDirector extends DEDirector {
      *  @return The min delay associated with this port channel pair.
      *  @exception IllegalActionException
      */
-    private double _getMinDelayForPortChannel(IOPort inputPort,
+    private double _calculateMinDelayForPortChannel(IOPort inputPort,
             Integer channel,
             Map<IOPort, Map<Integer, SuperdenseDependency>> inputModelTimeDelays)
             throws IllegalActionException {
@@ -1943,6 +2097,15 @@ public class PtidesBasicDirector extends DEDirector {
             }
         }
         return smallestDependency.timeValue();
+    }
+
+    /** Return the actor associated with the events in the list. All events
+     *  within the list should be destined for the same actor.
+     *  @param currentEventList A list of events.
+     *  @return Actor associated with events in the list.
+     */
+    private Actor _getActorFromEventList(List<DEEvent> currentEventList) {
+        return currentEventList.get(0).actor();
     }
 
     /** Returns the relativeDeadline parameter.

@@ -126,9 +126,12 @@ public class DEListEventQueue implements DEEventQueue {
     public DEEvent take() throws InvalidStateException {
         DEEvent result = (DEEvent) _listQueue.remove();
         // put the token of this event into the destined receiver.
-        if (result instanceof DETokenEvent) {
-            ((PtidesBasicReceiver) ((DETokenEvent) result).receiver())
-                    .putToReceiver(((DETokenEvent) result).token());
+        if (result instanceof PtidesEvent) {
+            PtidesEvent ptidesEvent = (PtidesEvent) result;
+            if (ptidesEvent.receiver() != null) {
+                ((PtidesBasicReceiver) (ptidesEvent).receiver())
+                        .putToReceiver((ptidesEvent).token());
+            }
         }
         if (_debugging) {
             _debug("--- taking from queue: " + result);
@@ -153,9 +156,9 @@ public class DEListEventQueue implements DEEventQueue {
     public DEEvent take(int index) throws InvalidStateException {
         DEEvent result = (DEEvent) _listQueue.remove(index);
         // put the token of this event into the destined receiver.
-        if (result instanceof DETokenEvent) {
-            ((PtidesBasicReceiver) ((DETokenEvent) result).receiver())
-                    .putToReceiver(((DETokenEvent) result).token());
+        if (result instanceof PtidesEvent) {
+            ((PtidesBasicReceiver) ((PtidesEvent) result).receiver())
+                    .putToReceiver(((PtidesEvent) result).token());
         }
         if (_debugging) {
             _debug("--- taking " + index + "th element from queue: " + result);
