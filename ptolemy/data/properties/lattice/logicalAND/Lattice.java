@@ -26,6 +26,7 @@ package ptolemy.data.properties.lattice.logicalAND;
 
 import ptolemy.data.properties.Property;
 import ptolemy.data.properties.lattice.PropertyLattice;
+import ptolemy.kernel.util.IllegalActionException;
 
 //////////////////////////////////////////////////////////////////////////
 //// Lattice
@@ -44,8 +45,11 @@ import ptolemy.data.properties.lattice.PropertyLattice;
  */
 public class Lattice extends PropertyLattice {
 
-    /** Construct a new ontology lattice. */
-    public Lattice() {
+    /**
+     * Construct a new ontology lattice.
+     * @throws IllegalActionException
+     */
+    public Lattice() throws IllegalActionException {
         super();
 
         addNodeWeight(TRUE);
@@ -57,9 +61,9 @@ public class Lattice extends PropertyLattice {
 
         addStructuredProperties(RECORD);
 
-        if (!isLattice()) {
-            throw new AssertionError("This ontology is not a lattice.");
-        }
+        //if (!isLattice()) {
+        //    throw new IllegalActionException("This ontology is not a lattice.");
+        //}
     }
 
     ///////////////////////////////////////////////////////////////////

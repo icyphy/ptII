@@ -74,18 +74,30 @@ public class PropertyLattice extends DirectedAcyclicGraph {
      * the structured properties desired to add. The class provides a set of
      * symbolic constants for these structured property types. For example,
      * invoke addStructuredProperties(RECORD) to add the RecordProperty. This
-     * method should be called after all base elements have been added.
+     * method should be called after all base elements have been added. The user
+     * is responsible for ensuring a lattice structure before calling this
+     * method. The lattice structure should be preserved after calling this
+     * method, so there is no need to do another check.
      * @param structuredPropertiesToAdd The bit-wise OR union of the structured
      * properties desired to add.
+     * @throws IllegalActionException
      */
-    public void addStructuredProperties(int structuredPropertiesToAdd) {
+    public void addStructuredProperties(int structuredPropertiesToAdd)
+            throws IllegalActionException {
 
         if ((structuredPropertiesToAdd & RECORD) != 0) {
             Property record = new RecordProperty(this, new String[0],
                     new LatticeProperty[0]).getRepresentative();
 
+            if (!isLattice()) {
+                throw new IllegalActionException(
+                        "This ontology needs to be a lattice "
+                                + "before adding structured types.");
+            }
+
+            Object bottom = bottom();
             addNodeWeight(record);
-            addEdge(bottom(), record);
+            addEdge(bottom, record);
             addEdge(record, top());
         }
 
