@@ -58,7 +58,12 @@ DERIVED_FILES =
 OTHER_FILES_TO_BE_JARED = \
 	$(DERIVED_FILES) \
 	configuration.xml \
+	fsmLibraryPtiny.xml \
+	fsmTableauFactoryPtiny.xml \
+	graphTableauFactoryPtiny.xml \
 	intro.htm \
+	modalLibraryPtiny.xml \
+	modalTableauFactoryPtiny.xml \
 	welcomeWindow.xml
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
