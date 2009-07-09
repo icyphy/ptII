@@ -52,10 +52,10 @@ public class CGException {
 
     /** Construct an exception with a detail message that includes the
      *  name of the first argument.
-     *  @param object The object.
+     *  @param component The component.
      *  @param cause The cause of this exception, or null if the cause
      *  is not known or nonexistent.
-     *  @param detail The message.
+     *  @param string The message.
      */
     public static IllegalActionException throwException(Object component, Throwable cause,
             String detail) throws IllegalActionException {
@@ -68,15 +68,15 @@ public class CGException {
     
     /** Construct an exception with a detail message that includes the
      *  name of the first argument.
-     *  @param object The object.
-     *  @param detail The message.
+     *  @param component The component.
+     *  @param string The message.
      */
     public static void throwException(Object component, String string) throws IllegalActionException {
         throwException(component, null, string);
     }
 
     /** Construct an exception with a detail message.
-     *  @param detail The message.
+     *  @param string The message.
      */
     public static void throwException(String string) throws IllegalActionException {
         throwException(null, null, string);

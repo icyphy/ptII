@@ -75,7 +75,7 @@ public class CompiledCompositeActor extends TypedCompositeActor {
      *  <i>codeDirectory</i> parameter.
      *  @exception IllegalActionException If there is a problem reading the
      *  <i>codeDirectory</i> parameter.
-     *  @see ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapterStrategy#copyFilesToCodeDirectory(NamedObj, ProgramCodeGenerator)
+     *  @see #copyFilesToCodeDirectory(NamedObj, ProgramCodeGenerator)
      */
     public static long copyFilesToCodeDirectory(
             ptolemy.actor.TypedCompositeActor compositeActor)
