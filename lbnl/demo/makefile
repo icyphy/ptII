@@ -28,7 +28,7 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/lbnl/demo
+ME =		lbnl/demo
 
 # Keep these alphabetical please.
 # Names should be well-formed java identifiers:

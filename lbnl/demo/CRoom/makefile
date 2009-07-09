@@ -53,6 +53,8 @@ MODELS= \
 C_FILES = \
 	cclient.c
 
+CCLIENT = cclient
+
 #H_FILES = $(C_FILES:%.c=%.h)
 
 OTHER_FILES_TO_BE_JARED = \
@@ -70,16 +72,16 @@ MISC_FILES =
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make realclean removes OPTIONAL_FILES
-OPTIONAL_FILES =
+OPTIONAL_FILES = $(CCLIENT)
 
 JCLASS = $(JSRCS:%.java=%.class)
 
 # KRUFT is used by make clean
-KRUFT = *.o *.obj *.dll *.so simulation.log socket.cfg utilSocket.log cclient
+KRUFT = *.o *.obj *.dll *.so simulation.log socket.cfg utilSocket.log $(CCLIENT)
 
 # Don't include all or install rules here, we want the user
 # to run 'make demos' to run the tests.
-all: cclient
+all: $(CCLIENT)
 	@echo "To run all the demos, run 'make demo'"
 
 install: all jars
@@ -98,7 +100,7 @@ demo_vergil:
 # See also ptolemy/matlab/makefile
 SHARED_LIBRARY = $(PTJNI_SHAREDLIBRARY_PREFIX)$(SHAREDBASE).$(PTJNI_SHAREDLIBRARY_SUFFIX)
 
-cclient: cclient.c
+$(CCLIENT): cclient.c
 	$(PTCC) -o $@ -I../../lib -I../../lib/util $^ -L../../lib/util -lbcvtb
 
 

@@ -41,7 +41,8 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 MISC_FILES = \
-	defines.h
+	defines.h \
+	util
 
 all: suball
 install: subinstall

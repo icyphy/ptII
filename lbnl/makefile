@@ -31,7 +31,8 @@
 
 ME =		lbnl
 
-DIRS = 		util actor demo lib
+# Run in lib first to make libraries
+DIRS = 		lib util actor demo 
 
 # Root of Ptolemy II directory
 ROOT =		..
@@ -41,23 +42,23 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	ptolemy
+PTPACKAGE = 	lbnl
 PTCLASSJAR =
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
-	lib/lib.jar \
+	actor/actor.jar \
 	util/util.jar
 
 EXTRA_SRCS =
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES = util lib
+MISC_FILES = actor lib util
 
-OPTIONAL_FILES =
+OPTIONAL_FILES = demo
 
 all: suball $(EXTRA_SRCS)
 install: subinstall jars
