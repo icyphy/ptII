@@ -49,11 +49,11 @@ PTCLASSJAR =	$(PTPACKAGE).jar
 
 JSRCS = \
 	DEListEventQueue.java \
-	DETokenEvent.java \
 	PtidesActorProperties.java \
 	PtidesBasicDirector.java \
 	PtidesBasicPreemptiveEDFDirector.java \
 	PtidesBasicReceiver.java \
+	PtidesEvent.java \
 	PtidesNoPhysicalTimeDirector.java \
 	PtidesPreemptiveEDFDirector.java \
 	PtidesTopLevelDirector.java \

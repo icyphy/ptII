@@ -57,8 +57,7 @@ public class PtidesEvent extends DEEvent {
      *  @param timeStamp The time when the event occurs.
      *  @param microstep The phase of execution within a fixed time.
      *  @param depth The topological depth of the destination actor.
-     *  @param token The token associated with the event.
-     *  @param receiver The Receiver the event is destined to.
+     *  @param minDelay The minDelay associated with this event.
      *  @exception IllegalActionException If the actor has a priority parameter,
      *  but its value cannot be obtained, which should be an integer.
      */
