@@ -8,7 +8,7 @@
   <!-- Specify the about file to open. -->
   <property name="_about"
             class="ptolemy.data.expr.FileParameter"
-            value="$CLASSPATH/ptolemy/configs/ptiny/intro.htm"/>
+            value="$CLASSPATH/ptolemy/configs/bcvtb/intro.htm"/>
 
   <!-- Specify the help file to open. -->
   <property name="_help"
@@ -49,7 +49,8 @@
   </entity>
     <input source="ptolemy/configs/modalEffigyFactories.xml"/>
     <!-- input source="ptolemy/configs/fsmEffigyFactories.xml"/ -->
-    <!-- input source="ptolemy/configs/extendedEffigyFactories.xml"/-->
+    <!-- Need extendedEffigyFactories so that we can open html -->
+    <input source="ptolemy/configs/extendedEffigyFactories.xml"/>
   </entity>
 
   <!-- The list of tableau factories, which defines the visual   -->
@@ -58,10 +59,10 @@
   <!-- is willing to open the model. Each editor contains a list -->
   <!-- of other editors that appear in the View menu.            -->
   <property name="tableauFactory" class="ptolemy.actor.gui.TableauFactory">
-    <input source="ptolemy/configs/modalTableauFactory.xml"/>
-    <!-- input source="ptolemy/configs/fsmTableauFactory.xml"/ -->
-    <input source="ptolemy/configs/graphTableauFactoryPtiny.xml"/>
-    <!-- input source="ptolemy/configs/extendedTableauFactories.xml"/-->
+    <input source="ptolemy/configs/ptiny/modalTableauFactoryPtiny.xml"/>
+    <!-- input source="ptolemy/configs/ptiny/fsmTableauFactoryPtiny.xml"/ -->
+    <input source="ptolemy/configs/ptiny/graphTableauFactoryPtiny.xml"/>
+    <input source="ptolemy/configs/extendedTableauFactories.xml"/>
   </property>
 
   <!-- BCVTB library. -->

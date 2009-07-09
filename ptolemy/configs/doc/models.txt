@@ -311,6 +311,6 @@ $CLASSPATH/ptolemy/matlab/demo/MatlabCT/MatlabCT.xml
 $CLASSPATH/ptolemy/matlab/demo/MatlabExpression/MatlabExpression.xml
 $CLASSPATH/ptolemy/moml/demo/Networked/Networked.xml
 $CLASSPATH/ptolemy/vergil/kernel/attributes/demo/AnimateVergil/AnimateVergil.xml
-$CLASSPATH/ptolemy/verification/demo/RailroadControl/RailroadSystem.xml
+$CLASSPATH/ptolemy/verification/demo/RailroadControl/RailroadControl.xml
 $CLASSPATH/ptolemy/verification/demo/SimpleTrafficLight/SimpleTrafficLight.xml
 $CLASSPATH/ptolemy/verification/demo/iRobotHillClimbing/iRobotCreateVerification.xml
