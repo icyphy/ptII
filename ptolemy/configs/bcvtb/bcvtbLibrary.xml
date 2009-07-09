@@ -19,6 +19,7 @@
       <?moml
         <group>
 	   <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector"/>
+	   <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector"/>
 	   <property name="FSM Director" class="ptolemy.domains.modal.kernel.FSMDirector"/>
         </group>
       ?>
