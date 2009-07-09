@@ -477,7 +477,7 @@ public class Director extends ProgramCodeGeneratorAdapter {
      * @param port The given port.
      * @param channelNumber The given channel.
      * @return The list of reference channels.
-     * @throws IllegalActionException If {@link ProgramCodeGeneratorAdapterStrategy#getSinkChannels(IOPort, int)}
+     * @throws IllegalActionException If {@link #getSinkChannels(IOPort, int)}
      *  throws it.
      */
     // FIXME rodiers: Method only used for PN (in IOPort). Move to PNDirector?
