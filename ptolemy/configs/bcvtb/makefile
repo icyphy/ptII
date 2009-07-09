@@ -57,7 +57,7 @@ DERIVED_FILES =
 
 OTHER_FILES_TO_BE_JARED = \
 	$(DERIVED_FILES) \
-	authors.htm
+	authors.htm \
 	bcvtbLibrary.xml \
 	configuration.xml \
 	icon-blue.jpg \
