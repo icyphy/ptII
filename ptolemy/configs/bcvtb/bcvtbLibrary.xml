@@ -30,6 +30,7 @@
     <configure>
       <?moml
         <group>
+	<input source="lbnl/actor/lib/simulator.xml"/>
 	<input source="ptolemy/actor/lib/sources.xml"/>
 	<input source="ptolemy/actor/lib/sinks.xml"/>
 	<input source="ptolemy/actor/lib/array.xml"/>

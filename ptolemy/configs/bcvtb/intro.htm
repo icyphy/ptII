@@ -23,9 +23,14 @@
 -->
 
 <ul>
-<li><a href="https://gaia.lbl.gov/bcvtb#in_browser">Building Controls Virtual Test Bed (BCVTB) Home Page</a>
-<li><a href="../../../doc/mainVergilPtiny.htm" target="_blank">Overview</a></li>
-<li><a href="../../../doc/authors.htm" target="_blank">Authors</a></li>
+<!-- FIXME: There is a problem with https://gaia.lbl.gov/bcvtb,
+     we can't display it within Ptolemy:
+     1) The Certificate Authority (CA) is not valid
+     2) The site does not return a content type.
+     So, we link to an interim site -->
+<li><a href="http://chess.eecs.berkeley.edu/bcvtb/#in_browser">Building Controls Virtual Test Bed (BCVTB) Web Site</a>
+<li><a href="overview.htm" target="_blank">Overview</a></li>
+<li><a href="authors.htm" target="_blank">Authors</a></li>
  <!-- We don't include What's new
 "../../doc/whatsnewVergil.htm" target="_blank" What's new
    -->
@@ -42,5 +47,10 @@
 </tr>
 </table>
 The Building Controls Virtual Test Bed (BCVTB) is a software environment that allows expert users to couple different simulation programs for distributed simulation. For example, the BCVTB allows to simulate a building and HVAC system in EnergyPlus and the control logic in MATLAB/Simulink, while exchanging data between the software as they simulate. The BCVTB is based on the Ptolemy II software environment. The BCVTB is still under development and aimed at expert users of simulation. Due to the different programs that may be involved in distributed simulation, familiarity with compiling and configuring programs is essential.
+
+<h2>Demonstrations</h2>
+<ul>
+  <li> <a href="../../../lbnl/demo/CRoom/CRoom.xml">C Room</a> - a simple interface to a small C program. 
+</ul>
 </body>
 </html>
