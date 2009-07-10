@@ -475,6 +475,11 @@ HYVISUAL_DOCS = \
 	codeDocHyVisual/doc/codeDoc/ptolemy/actor/lib/Ramp.xml \
 	codeDocHyVisual/doc/codeDoc/ptolemy/actor/lib/RampIdx.xml
 
+LBNL_PACKAGES = \
+	lbnl.actor.lib \
+	lbnl.actor.lib.net \
+	lbnl.util
+
 # Currently, there are no .java files in fsm.lib
 #			ptolemy.domains.fsm.lib
 
@@ -563,6 +568,7 @@ ALLPACKAGES = \
 	$(DIVAPACKAGES) \
 	$(EXPERIMENTALPACKAGES) \
 	$(GRAPHTRANSFORMATIONPACKAGES) \
+	$(LBNL_PACKAGES) \ 
 	$(PTBACKTRACK_PACKAGES) \
 	$(PTBSH_PACKAGES) \
 	$(PTDATABASE_PACKAGES) \

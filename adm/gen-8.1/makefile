@@ -1404,6 +1404,7 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/verification \
 	$(REMOTE1PTIIDIST)/jni \
 	$(REMOTE1PTIIDIST)/jni/gui \
+	$(REMOTE1PTIIDIST)/lbnl \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/ci/demo \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/csp/demo \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/ct/demo \
