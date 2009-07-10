@@ -172,7 +172,7 @@ test FileUtilities-2.7 {nameToFile: use $CLASSPATH on a path that does not exist
     set url1 [$file1 toURL]
     set url2 [[[java::new java.io.File $PTII/ThisDoesNotExist.java] getCanonicalFile] toURL]
     list [$url1 sameFile $url2]
-} {{1{
+} {1}
 
 ######################################################################
 ####
