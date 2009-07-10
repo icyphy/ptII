@@ -34,6 +34,7 @@ import ptolemy.data.BooleanToken;
 import ptolemy.data.Token;
 import ptolemy.data.type.Type;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.util.StringUtilities;
 
 //////////////////////////////////////////////////////////////////////////
 //// PointerToken
@@ -59,6 +60,7 @@ public class PointerToken extends Token {
      */
     public PointerToken() {
         super();
+	_check32Bit();
     }
 
     /** Construct a token with the specified memory location.
@@ -69,6 +71,7 @@ public class PointerToken extends Token {
      */
     public PointerToken(int pointer) throws IllegalActionException {
         _value = pointer;
+	_check32Bit();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -306,7 +309,51 @@ public class PointerToken extends Token {
     public static final Type POINTER = new PointerType();
 
     ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+    private static void _check32Bit() {
+	if (!_checked32Bit) {
+	    // Check only once if we are on a 32 bit platform.
+	    _checked32Bit = true;
+	    _is32Bit = _is32Bit();
+	}
+	if (!_is32Bit) {
+	    throw new RuntimeException("PointerTokens do not work "
+				       + "under 64bit JVMs, see "
+				       + "https://chess.eecs.berkeley.edu/bugzilla/show_bug.cgi?id=285");
+	}
+    }
+
+    /** Return true if this is a 32bit JVM.
+     *  @return true if this is a 32bit JVM.
+     */
+    static boolean _is32Bit() {
+	String dataModelProperty = StringUtilities.getProperty("sun.arch.data.model");
+	// FIXME: it is difficult to detect if we are under a
+	// 64bit JVM.  See
+	// http://forums.sun.com/thread.jspa?threadID=5306174
+
+	boolean result = true;
+	if (dataModelProperty.indexOf("64") != -1) {
+	    return false;
+	} else {
+	    String javaVmNameProperty = StringUtilities.getProperty("java.vm.name");
+	    if (javaVmNameProperty.indexOf("64") != -1) {
+		return false;
+	    }
+	} 
+	return true;
+    }
+
+
+    ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
+
+    /** True if we have checked that we are on a 32 Bit platform. */
+    private static boolean _checked32Bit;
+
+    /** True if we are on a 32Bit platform. */ 
+    private static boolean _is32Bit;
 
     // FIXME: This will not work on a 64-bit machine, see
     // https://chess.eecs.berkeley.edu/bugzilla/show_bug.cgi?id=285
@@ -316,5 +363,4 @@ public class PointerToken extends Token {
     /** The memory address of the pointer.
      */
     private int _value;
-
 }
