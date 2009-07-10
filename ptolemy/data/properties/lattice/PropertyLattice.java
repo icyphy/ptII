@@ -96,9 +96,11 @@ public class PropertyLattice extends DirectedAcyclicGraph {
             }
 
             Object bottom = bottom();
+            Object top = top();
+
             addNodeWeight(record);
             addEdge(bottom, record);
-            addEdge(record, top());
+            addEdge(record, top);
         }
 
         if ((structuredPropertiesToAdd & ARRAY) != 0) {
