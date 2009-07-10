@@ -67,7 +67,7 @@ public class Scale extends ProgramCodeGeneratorAdapter {
         String type = getCodeGenerator().isPrimitive(actor.input.getType()) ? ""
                 : "Token";
 
-        strategy.getCodeStream().appendCodeBlock(type + "FireBlock", false);
-        return processCode(strategy.getCodeStream().toString());
+        strategy.getTemplateParser().getCodeStream().appendCodeBlock(type + "FireBlock", false);
+        return processCode(strategy.getTemplateParser().getCodeStream().toString());
     }
 }

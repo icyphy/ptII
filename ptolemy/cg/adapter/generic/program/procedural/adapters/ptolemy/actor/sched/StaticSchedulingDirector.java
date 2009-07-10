@@ -189,7 +189,7 @@ public class StaticSchedulingDirector extends Director {
                             + _eol);
                 }
 
-                code.append(ProgramCodeGeneratorAdapterStrategy
+                code.append(ProgramCodeGeneratorAdapter
                         .generateName((NamedObj) actor)
                         + "();" + _eol);
 
@@ -349,7 +349,7 @@ public class StaticSchedulingDirector extends Director {
 
                 String refType = getCodeGenerator().codeGenType(port.getType());
 
-                return getStrategy().generateTypeConvertMethod(result,
+                return getStrategy().getTemplateParser().generateTypeConvertMethod(result,
                         castType, refType);
             }
         }
@@ -362,7 +362,7 @@ public class StaticSchedulingDirector extends Director {
 
             String result = _getReference(target, attribute, channelAndOffset);
 
-            return getStrategy().generateTypeConvertMethod(result, castType,
+            return getStrategy().getTemplateParser().generateTypeConvertMethod(result, castType,
                     refType);
         }
 
@@ -418,8 +418,7 @@ public class StaticSchedulingDirector extends Director {
                                 + " for output ports");
             } else {
 
-                return ProgramCodeGeneratorAdapterStrategy
-                        .generatePortReference(port, channelAndOffset, isWrite);
+                return _generatePortReference(port, channelAndOffset, isWrite);
             }
         }
 
@@ -429,7 +428,7 @@ public class StaticSchedulingDirector extends Director {
         // an output port of a modal controller will receive the tokens sent
         // from the same port.  During commit action, an output port of a modal
         // controller will NOT receive the tokens sent from the same port.
-        if (ProgramCodeGeneratorAdapterStrategy.checkRemote(forComposite, port)) {
+        if (_checkRemote(forComposite, port)) {
             Receiver[][] remoteReceivers;
 
             // For the same reason as above, we cannot do: if (port.isInput())...
@@ -441,7 +440,7 @@ public class StaticSchedulingDirector extends Director {
 
             if (remoteReceivers.length == 0) {
                 // The channel of this output port doesn't have any sink.
-                result.append(ProgramCodeGeneratorAdapterStrategy
+                result.append(ProgramCodeGeneratorAdapter
                         .generateName(target.getComponent()));
                 result.append("_");
                 result.append(port.getName());
@@ -470,8 +469,7 @@ public class StaticSchedulingDirector extends Director {
                         if (i != 0) {
                             result.append(" = ");
                         }
-                        result.append(ProgramCodeGeneratorAdapterStrategy
-                                .getTypeConvertReference(sourceChannel));
+                        result.append(getTypeConvertReference(sourceChannel));
 
                         if (dynamicReferencesAllowed && port.isInput()) {
                             if (channelAndOffset[1].trim().length() > 0) {
@@ -479,8 +477,7 @@ public class StaticSchedulingDirector extends Director {
                                         + "]");
                             } else {
                                 result.append("["
-                                        + ProgramCodeGeneratorAdapterStrategy
-                                                .generateChannelOffset(port,
+                                        + _generateChannelOffset(port,
                                                         isWrite,
                                                         channelAndOffset[0])
                                         + "]");
@@ -507,7 +504,7 @@ public class StaticSchedulingDirector extends Director {
                     if (i != 0) {
                         result.append(" = ");
                     }
-                    result.append(ProgramCodeGeneratorAdapterStrategy
+                    result.append(ProgramCodeGeneratorAdapter
                             .generateName(sinkPort));
 
                     if (sinkPort.isMultiport()) {
@@ -530,9 +527,9 @@ public class StaticSchedulingDirector extends Director {
         // codegen/c/actor/lib/string/test/auto/StringCompare3.xml
         // tests this.
 
-        if (ProgramCodeGeneratorAdapterStrategy.checkLocal(forComposite, port)) {
+        if (_checkLocal(forComposite, port)) {
 
-            result.append(ProgramCodeGeneratorAdapterStrategy
+            result.append(ProgramCodeGeneratorAdapter
                     .generateName(port));
 
             //if (!channelAndOffset[0].equals("")) {
@@ -653,6 +650,63 @@ public class StaticSchedulingDirector extends Director {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
+
+    static private boolean _checkLocal(boolean forComposite, IOPort port)
+            throws IllegalActionException {
+        return (port.isInput() && !forComposite && port.isOutsideConnected())
+                || (port.isOutput() && forComposite);
+    }
+    
+    static private boolean _checkRemote(boolean forComposite, IOPort port) {
+        return (port.isOutput() && !forComposite)
+                || (port.isInput() && forComposite);
+    }
+
+    /**
+     * Generate a string that represents the offset for a dynamically determined
+     *  channel of a multiport.
+     * @param port The referenced port.
+     * @param isWrite Whether to generate the write or read offset.
+     * @param channelString The string that will determine the channel.
+     * @return The expression that represents the offset for a channel determined
+     *  dynamically in the generated code.
+     */
+    private static String _generateChannelOffset(IOPort port, boolean isWrite,
+            String channelString) {
+        // By default, return the channel offset for the first channel.
+        if (channelString.equals("")) {
+            channelString = "0";
+        }
+    
+        String channelOffset = generateName(port);
+        channelOffset += (isWrite) ? "_writeOffset" : "_readOffset";
+        channelOffset += "[" + channelString + "]";
+    
+        return channelOffset;
+    }
+    
+
+    private static String _generatePortReference(IOPort port,
+            String[] channelAndOffset, boolean isWrite) {
+    
+        StringBuffer result = new StringBuffer();
+        String channelOffset;
+        if (channelAndOffset[1].equals("")) {
+            channelOffset = _generateChannelOffset(port, isWrite, channelAndOffset[0]);
+        } else {
+            channelOffset = channelAndOffset[1];
+        }
+    
+        result.append(generateName(port));
+    
+        if (port.isMultiport()) {
+            result.append("[" + channelAndOffset[0] + "]");
+        }
+        result.append("[" + channelOffset + "]");
+    
+        return result.toString();
+    }
+
 
     /**
      * Generate the code that updates the input/output port offset.
@@ -1021,7 +1075,7 @@ public class StaticSchedulingDirector extends Director {
             code.append(getCodeGenerator().comment(
                     _eol
                             + "....Begin updateConnectedPortsOffset...."
-                            + ProgramCodeGeneratorAdapterStrategy
+                            + ProgramCodeGeneratorAdapter
                                     .generateName(_port)));
 
             if (rate == 0) {
@@ -1104,7 +1158,7 @@ public class StaticSchedulingDirector extends Director {
             code.append(getCodeGenerator().comment(
                     _eol
                             + "....End updateConnectedPortsOffset...."
-                            + ProgramCodeGeneratorAdapterStrategy
+                            + ProgramCodeGeneratorAdapter
                                     .generateName(_port)));
             return code.toString();
         }
@@ -1123,7 +1177,7 @@ public class StaticSchedulingDirector extends Director {
             String code = getCodeGenerator().comment(
                     _eol
                             + "....Begin updateOffset...."
-                            + ProgramCodeGeneratorAdapterStrategy
+                            + ProgramCodeGeneratorAdapter
                                     .generateName(_port));
 
             //        int width = 0;
@@ -1160,7 +1214,7 @@ public class StaticSchedulingDirector extends Director {
                     code += getCodeGenerator().comment(
                             _eol
                                     + "\n....End updateOffset...."
-                                    + ProgramCodeGeneratorAdapterStrategy
+                                    + ProgramCodeGeneratorAdapter
                                             .generateName(_port));
                 }
             }

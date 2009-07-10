@@ -42,7 +42,6 @@ import ptolemy.actor.TypedIOPort;
 import ptolemy.cg.adapter.generic.adapters.ptolemy.actor.Director;
 import ptolemy.cg.kernel.generic.program.CodeStream;
 import ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapter;
-import ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapterStrategy;
 import ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapterStrategy.Channel;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.Type;
@@ -102,7 +101,7 @@ public class PtidesBasicDirector extends Director {
         StringBuffer code = new StringBuffer();
         code.append(super.generateInitializeCode());
 
-        code.append(getStrategy().getCodeStream().getCodeBlock("initPIBlock"));
+        code.append(getStrategy().getTemplateParser().getCodeStream().getCodeBlock("initPIBlock"));
         return code.toString();
     }
 
@@ -129,7 +128,7 @@ public class PtidesBasicDirector extends Director {
         args.add(((CompositeActor) _director.getContainer()).deepEntityList()
                 .size());
 
-        CodeStream codestream = getStrategy().getCodeStream();
+        CodeStream codestream = getStrategy().getTemplateParser().getCodeStream();
 
         codestream.clear();
         code.append(codestream.getCodeBlock("preinitPIBlock", args));
@@ -173,27 +172,27 @@ public class PtidesBasicDirector extends Director {
         _modelStaticAnalysis();
 
         Set sharedCode = new HashSet();
-        getStrategy().getCodeStream().clear();
+        getStrategy().getTemplateParser().getCodeStream().clear();
 
         // define the number of actuators in the system as a macro.
-        getStrategy().getCodeStream().append(
+        getStrategy().getTemplateParser().getCodeStream().append(
                 "#define numActuators " + _actuators.size() + _eol);
 
-        getStrategy().getCodeStream().appendCodeBlocks("StructDefBlock");
-        getStrategy().getCodeStream().appendCodeBlocks("FuncProtoBlock");
+        getStrategy().getTemplateParser().getCodeStream().appendCodeBlocks("StructDefBlock");
+        getStrategy().getTemplateParser().getCodeStream().appendCodeBlocks("FuncProtoBlock");
 
         // prototypes for actor functions
-        getStrategy().getCodeStream().append(_generateActorFuncProtoCode());
+        getStrategy().getTemplateParser().getCodeStream().append(_generateActorFuncProtoCode());
 
         // prototypes for actuator functions.
-        getStrategy().getCodeStream().append(
+        getStrategy().getTemplateParser().getCodeStream().append(
                 _generateActuatorActuationFuncArrayCode());
 
-        getStrategy().getCodeStream().appendCodeBlocks("FuncBlock");
+        getStrategy().getTemplateParser().getCodeStream().appendCodeBlocks("FuncBlock");
 
-        if (!getStrategy().getCodeStream().isEmpty()) {
+        if (!getStrategy().getTemplateParser().getCodeStream().isEmpty()) {
             sharedCode
-                    .add(processCode(getStrategy().getCodeStream().toString()));
+                    .add(processCode(getStrategy().getTemplateParser().getCodeStream().toString()));
         }
 
         return sharedCode;
@@ -212,12 +211,12 @@ public class PtidesBasicDirector extends Director {
             Iterator it = _actuators.keySet().iterator();
             Actor actor = (Actor) it.next();
             code.append("Actuation_"
-                    + ProgramCodeGeneratorAdapterStrategy
+                    + ProgramCodeGeneratorAdapter
                             .generateName((NamedObj) actor));
             while (it.hasNext()) {
                 actor = (Actor) it.next();
                 code.append(", Actuation_"
-                        + ProgramCodeGeneratorAdapterStrategy
+                        + ProgramCodeGeneratorAdapter
                                 .generateName((NamedObj) actor));
             }
             code.append("};" + _eol);
@@ -234,7 +233,7 @@ public class PtidesBasicDirector extends Director {
                 .getContainer()).deepEntityList()) {
             if (actor instanceof OutputDevice) {
                 code.append("void Actuation_"
-                        + ProgramCodeGeneratorAdapterStrategy
+                        + ProgramCodeGeneratorAdapter
                                 .generateName((NamedObj) actor) + "(void);"
                         + _eol);
             }
@@ -253,7 +252,7 @@ public class PtidesBasicDirector extends Director {
         for (Actor actor : (List<Actor>) ((CompositeActor) _director
                 .getContainer()).deepEntityList()) {
             code.append("void "
-                    + ProgramCodeGeneratorAdapterStrategy
+                    + ProgramCodeGeneratorAdapter
                             .generateName((NamedObj) actor) + "(void);" + _eol);
         }
 
@@ -269,7 +268,7 @@ public class PtidesBasicDirector extends Director {
      *   reading parameters throws it.
      */
     protected String _generateDirectorHeader() {
-        return ProgramCodeGeneratorAdapterStrategy.generateName(_director)
+        return ProgramCodeGeneratorAdapter.generateName(_director)
                 + "_controlBlock";
     }
 
@@ -302,14 +301,14 @@ public class PtidesBasicDirector extends Director {
 
         // The references are associated with their own adapter, so we need
         // to find the associated adapter.
-        String sourcePortChannel = ProgramCodeGeneratorAdapterStrategy
+        String sourcePortChannel = ProgramCodeGeneratorAdapter
                 .generateName(source.port)
                 + "#" + source.channelNumber + ", " + offset;
         String sourceRef = ((ProgramCodeGeneratorAdapter) (getCodeGenerator()
                 .getAdapter(source.port.getContainer())))
                 .getReference(sourcePortChannel);
 
-        String sinkPortChannel = ProgramCodeGeneratorAdapterStrategy
+        String sinkPortChannel = ProgramCodeGeneratorAdapter
                 .generateName(sink.port)
                 + "#" + sink.channelNumber + ", " + offset;
 
@@ -330,7 +329,7 @@ public class PtidesBasicDirector extends Director {
         // treat it as output port and this is not correct.
         // FIXME: what about offset?
         if (sink.port.getContainer() instanceof ModalController) {
-            sinkRef = ProgramCodeGeneratorAdapterStrategy
+            sinkRef = ProgramCodeGeneratorAdapter
                     .generateName(sink.port);
             if (sink.port.isMultiport()) {
                 sinkRef = sinkRef + "[" + sink.channelNumber + "]";
@@ -410,7 +409,7 @@ public class PtidesBasicDirector extends Director {
             if (actor instanceof InterruptDevice) {
                 code
                         .append("void Sensing_"
-                                + ProgramCodeGeneratorAdapterStrategy
+                                + ProgramCodeGeneratorAdapter
                                         .generateName((NamedObj) actor)
                                 + "() {" + _eol);
                 code
@@ -419,7 +418,7 @@ public class PtidesBasicDirector extends Director {
                 code.append("}" + _eol);
             }
             code.append("void "
-                    + ProgramCodeGeneratorAdapterStrategy
+                    + ProgramCodeGeneratorAdapter
                             .generateName((NamedObj) actor) + "() " + "{"
                     + _eol);
             code.append(adapter.generateFireCode());
@@ -449,7 +448,7 @@ public class PtidesBasicDirector extends Director {
         for (IOPort inputPort : (List<IOPort>) actor.inputPortList()) {
             for (int channel = 0; channel < inputPort.getWidth(); channel++) {
                 code.append("Event_Head_"
-                        + ProgramCodeGeneratorAdapterStrategy
+                        + ProgramCodeGeneratorAdapter
                                 .generateName(inputPort) + "[" + channel
                         + "] = NULL;" + _eol);
             }
@@ -466,7 +465,7 @@ public class PtidesBasicDirector extends Director {
                 for (IOPort inputPort : (List<IOPort>) actor.inputPortList()) {
                     if (inputPort.getWidth() > 0) {
                         code.append("Event* Event_Head_"
-                                + ProgramCodeGeneratorAdapterStrategy
+                                + ProgramCodeGeneratorAdapter
                                         .generateName(inputPort) + "["
                                 + inputPort.getWidth() + "] = {NULL");
                         for (int channel = 1; channel < inputPort.getWidth(); channel++) {

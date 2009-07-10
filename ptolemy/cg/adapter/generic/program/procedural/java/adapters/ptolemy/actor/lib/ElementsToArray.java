@@ -64,7 +64,7 @@ public class ElementsToArray extends ProgramCodeGeneratorAdapter {
     protected String _generateFireCode() throws IllegalActionException {
         super._generateFireCode();
 
-        CodeStream codeStream = getStrategy().getCodeStream();
+        CodeStream codeStream = getStrategy().getTemplateParser().getCodeStream();
 
         codeStream.append(super._generateFireCode());
         ptolemy.actor.lib.ElementsToArray actor = (ptolemy.actor.lib.ElementsToArray) getComponent();

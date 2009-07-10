@@ -28,21 +28,17 @@
 package ptolemy.cg.kernel.generic.program;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Set;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.IOPort;
-import ptolemy.actor.Receiver;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.parameters.ParameterPort;
 import ptolemy.actor.util.ExplicitChangeContext;
-import ptolemy.cg.adapter.generic.adapters.ptolemy.actor.Director;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
@@ -84,65 +80,6 @@ public class ProgramCodeGeneratorAdapterStrategy extends NamedObj {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-
-    // FIXME rodiers: this only used by the PNDirector
-    static public boolean checkLocal(boolean forComposite, IOPort port)
-            throws IllegalActionException {
-        return (port.isInput() && !forComposite && port.isOutsideConnected())
-                || (port.isOutput() && forComposite);
-    }
-
-    // FIXME rodiers: this only used by the PNDirector
-    static public boolean checkRemote(boolean forComposite, IOPort port) {
-        return (port.isOutput() && !forComposite)
-                || (port.isInput() && forComposite);
-    }
-
-    /** Return the code stream.
-     * @return The code stream.
-     */
-    // TODO rodiers: do we want to have this public?
-    // BTW is this really necessary? (the code stream is used to set
-    // correct in the adapter embedded code actor. However
-    final public CodeStream getCodeStream() {
-        return _templateParser.getCodeStream();
-    }
-
-    /** Generate sanitized name for the given named object. Remove all
-     *  underscores to avoid conflicts with systems functions.
-     *  @param namedObj The named object for which the name is generated.
-     *  @return The sanitized name.
-     */
-    final public static String generateSimpleName(NamedObj namedObj) {
-        String name = StringUtilities.sanitizeName(namedObj.getName());
-        return name.replaceAll("\\$", "Dollar");
-    }
-    
-    /**
-     * Generate expression that evaluates to a result of equivalent
-     * value with the cast type.
-     * @param expression The given variable expression.
-     * @param castType The given cast type.
-     * @param refType The given type of the variable.
-     * @return The variable expression that evaluates to a result of
-     *  equivalent value with the cast type.
-     * @exception IllegalActionException
-     */
-    public String generateTypeConvertMethod(String expression, String castType,
-            String refType) throws IllegalActionException {
-        return _templateParser.generateTypeConvertMethod(expression, castType, refType);
-    }
-
-
-    /** Generate a variable name for the NamedObj.
-     *  @param namedObj The NamedObj to generate variable name for.
-     *  @see ProgramCodeGenerator#generateVariableName(NamedObj)
-     *  @return The variable name for the NamedObj.
-     */
-    public String generateVariableName(NamedObj namedObj) {
-        return _codeGenerator.generateVariableName(namedObj);
-    }
-
     /** Get the code generator associated with this adapter class.
      *  @return The code generator associated with this adapter class.
      *  @see #setCodeGenerator(ProgramCodeGenerator)
@@ -157,16 +94,6 @@ public class ProgramCodeGeneratorAdapterStrategy extends NamedObj {
      */
     public NamedObj getComponent() {
         return (NamedObj) _object;
-    }
-
-    /** Get the files needed by the code generated from this adapter class.
-     *  This base class returns an empty set.
-     *  @return A set of strings that are header files needed by the code
-     *  generated from this adapter class.
-     *  @exception IllegalActionException Not Thrown in this base class.
-     */
-    public Set<String> getHeaderFiles() throws IllegalActionException {
-        return _templateParser.getHeaderFiles();
     }
 
     /** Return a set of directories to include for the generated code.
@@ -194,32 +121,6 @@ public class ProgramCodeGeneratorAdapterStrategy extends NamedObj {
         }
 
         return includeDirectories;
-    }
-
-    /** Return a set of libraries to link in the generated code.
-     *  @return A Set containing the libraries in the actor's
-     *   "libraries" block in its template.
-     *  @exception IllegalActionException If thrown when getting or reading
-     *   the CodeStream.
-     */
-    public Set<String> getLibraries() throws IllegalActionException {
-        Set<String> libraries = new HashSet<String>();
-        CodeStream codeStream = getTemplateParser()._getActualCodeStream();
-        codeStream.appendCodeBlock("libraries", true);
-        String librariesString = codeStream.toString();
-
-        if (librariesString.length() > 0) {
-            LinkedList<String> librariesList = null;
-            try {
-                librariesList = StringUtilities.readLines(librariesString);
-            } catch (IOException e) {
-                throw new IllegalActionException(
-                        "Unable to read libraries for " + getName());
-            }
-            libraries.addAll(librariesList);
-        }
-
-        return libraries;
     }
 
     /** Return a set of directories to find libraries in.
@@ -283,241 +184,11 @@ public class ProgramCodeGeneratorAdapterStrategy extends NamedObj {
         return (NamedObj) _object;
     }
 
-    /** Return the reference to the specified parameter or port of the
-     *  associated actor. For a parameter, the returned string is in
-     *  the form "fullName_parameterName". For a port, the returned string
-     *  is in the form "fullName_portName[channelNumber][offset]", if
-     *  any channel number or offset is given.
-     *
-     *  FIXME: need documentation on the input string format.
-     *
-     *  @param name The name of the parameter or port
-     *  @return The reference to that parameter or port (a variable name,
-     *   for example).
-     *  @exception IllegalActionException If the parameter or port does not
-     *   exist or does not have a value.
-     */
-    final public String getReference(String name) throws IllegalActionException {
-        boolean isWrite = false;
-        return _adapter.getReference(name, isWrite);
-    }
-
-    /** Return the reference to the specified parameter or port of the
-     *  associated actor. For a parameter, the returned string is in
-     *  the form "fullName_parameterName". For a port, the returned string
-     *  is in the form "fullName_portName[channelNumber][offset]", if
-     *  any channel number or offset is given.
-     *
-     *  FIXME: need documentation on the input string format.
-     *
-     *  @param name The name of the parameter or port
-     *  @param isWrite Whether to generate the write or read offset.
-     *  @return The reference to that parameter or port (a variable name,
-     *   for example).
-     *  @exception IllegalActionException If the parameter or port does not
-     *   exist or does not have a value.
-     */
-    public String getReference(String name, boolean isWrite)
-            throws IllegalActionException {
-        ptolemy.actor.Director director = ((Actor) _object).getDirector();
-        Director directorAdapter = (Director) _getAdapter(director);
-        return directorAdapter.getReference(name, isWrite, _adapter);
-    }
-
-    /**
-     * Generate the shared code. This is the first generate method invoked out
-     * of all, so any initialization of variables of this adapter should be done
-     * in this method. In this base class, return an empty set. Subclasses may
-     * generate code for variable declaration, defining constants, etc.
-     * @return An empty set in this base class.
-     * @exception IllegalActionException Not thrown in this base class.
-     */
-    public Set<String> getSharedCode() throws IllegalActionException {
-        Set<String> sharedCode = new HashSet<String>();
-        CodeStream codestream = _templateParser.getCodeStream();
-        codestream.clear();
-        codestream.appendCodeBlocks(".*shared.*");
-        if (!codestream.isEmpty()) {
-            sharedCode.add(processCode(codestream.toString()));
-        }
-        return sharedCode;
-    }
-
-    /** Given a block name, generate code for that block.
-     *  This method is called by actors adapters that have simple blocks
-     *  that do not take parameters or have widths.
-     *  @param blockName The name of the block.
-     *  @return The code for the given block.
-     *  @exception IllegalActionException If illegal macro names are
-     *  found, or if there is a problem parsing the code block from
-     *  the adapter .c file.
-     */
-    public String generateBlockCode(String blockName)
-            throws IllegalActionException {
-        // We use this method to reduce code duplication for simple blocks.
-        return generateBlockCode(blockName, new ArrayList<String>());
-    }
-
-    /** Given a block name, generate code for that block.
-     *  This method is called by actors adapters that have simple blocks
-     *  that do not take parameters or have widths.
-     *  @param blockName The name of the block.
-     *  @param args The arguments for the block.
-     *  @return The code for the given block.
-     *  @exception IllegalActionException If illegal macro names are
-     *  found, or if there is a problem parsing the code block from
-     *  the adapter .c file.
-     */
-    public String generateBlockCode(String blockName, List<String> args)
-            throws IllegalActionException {
-        // We use this method to reduce code duplication for simple blocks.
-        CodeStream codeStream = _templateParser.getCodeStream();
-        codeStream.clear();
-        codeStream.appendCodeBlock(blockName, args);
-        return processCode(codeStream.toString());
-    }
-
-    /**
-     * Generate a string that represents the offset for a dynamically determined
-     *  channel of a multiport.
-     * @param port The referenced port.
-     * @param isWrite Whether to generate the write or read offset.
-     * @param channelString The string that will determine the channel.
-     * @return The expression that represents the offset for a channel determined
-     *  dynamically in the generated code.
-     */
-    public static String generateChannelOffset(IOPort port, boolean isWrite,
-            String channelString) {
-        // By default, return the channel offset for the first channel.
-        if (channelString.equals("")) {
-            channelString = "0";
-        }
-
-        String channelOffset = ProgramCodeGeneratorAdapterStrategy
-                .generateName(port);
-        channelOffset += (isWrite) ? "_writeOffset" : "_readOffset";
-        channelOffset += "[" + channelString + "]";
-
-        return channelOffset;
-    }
-
-
-    /** Generate sanitized name for the given named object. Remove all
-     *  underscores to avoid conflicts with systems functions.
-     *  @param namedObj The named object for which the name is generated.
-     *  @return The sanitized name.
-     */
-    public static String generateName(NamedObj namedObj) {
-        String name = StringUtilities.sanitizeName(namedObj.getFullName());
-
-        // FIXME: Assume that all objects share the same top level. In this case,
-        // having the top level in the generated name does not help to
-        // expand the name space but merely lengthen the name string.
-        //        NamedObj parent = namedObj.toplevel();
-        //        if (namedObj.toplevel() == namedObj) {
-        //            return "_toplevel_";
-        //        }
-        //        String name = StringUtilities.sanitizeName(namedObj.getName(parent));
-        if (name.startsWith("_")) {
-            name = name.substring(1, name.length());
-        }
-        return name.replaceAll("\\$", "Dollar");
-    }
-
-    public static String generatePortReference(IOPort port,
-            String[] channelAndOffset, boolean isWrite) {
-
-        StringBuffer result = new StringBuffer();
-        String channelOffset;
-        if (channelAndOffset[1].equals("")) {
-            channelOffset = ProgramCodeGeneratorAdapterStrategy
-                    .generateChannelOffset(port, isWrite, channelAndOffset[0]);
-        } else {
-            channelOffset = channelAndOffset[1];
-        }
-
-        result.append(generateName(port));
-
-        if (port.isMultiport()) {
-            result.append("[" + channelAndOffset[0] + "]");
-        }
-        result.append("[" + channelOffset + "]");
-
-        return result.toString();
-    }
-
-    /** Given a port and channel number, create a Channel that sends
-     *  data to the specified port and channel number.
-     *  @param port The port.
-     *  @param channelNumber The channel number of the port.
-     *  @return the source channel.
-     *  @exception IllegalActionException If there is a problem getting
-     *  information about the receivers or constructing the new Channel.
-     */
-    public static Channel getSourceChannel(IOPort port, int channelNumber)
-            throws IllegalActionException {
-        Receiver[][] receivers = null;
-
-        if (port.isInput()) {
-            receivers = port.getReceivers();
-        } else if (port.isOutput()) {
-            if (port.getContainer() instanceof CompositeActor) {
-                receivers = port.getInsideReceivers();
-            } else {
-                // This port is the source port, so we only
-                // need to make a new Channel. We assume that
-                // the given channelNumber is valid.
-                return new Channel(port, channelNumber);
-            }
-        } else {
-            assert false;
-        }
-
-        List<IOPort> sourcePorts = port.sourcePortList();
-        sourcePorts.addAll(port.insideSourcePortList());
-
-        for (IOPort sourcePort : sourcePorts) {
-            try {
-                Channel source = new Channel(sourcePort, sourcePort
-                        .getChannelForReceiver(receivers[channelNumber][0]));
-
-                if (source != null) {
-                    return source;
-                }
-            } catch (IllegalActionException ex) {
-
-            }
-        }
-        return null;
-    }
-    
     /** Get the template parser associated with this strategy.
      *  @return The associated template parser.
      */
     final public TemplateParser getTemplateParser() {
         return _templateParser;
-    }
-
-    /**
-     * Generate a variable reference for the given channel. This varaible
-     * reference is needed for type conversion. The source adapter get this
-     * reference instead of using the sink reference directly.
-     * This method assumes the given channel is a source (output) channel.
-     * @param channel The given source channel.
-     * @return The variable reference for the given channel.
-     */
-    static public String getTypeConvertReference(Channel channel) {
-        return generateName(channel.port) + "_" + channel.channelNumber;
-    }
-
-
-    /** Process the specified code, replacing macros with their values.
-     * @param code The code to process.
-     * @return The processed code.
-     * @exception IllegalActionException If illegal macro names are found.
-     */
-    final public String processCode(String code) throws IllegalActionException {
-        return _templateParser.processCode(code);
     }
 
     /** Set the adapter.
@@ -540,7 +211,7 @@ public class ProgramCodeGeneratorAdapterStrategy extends NamedObj {
     }
 
     public String toString() {
-        return getComponent().toString() + "'s Adapter";
+        return getComponent().toString() + "'s Adapter Strategy";
     }
 
 
@@ -606,7 +277,7 @@ public class ProgramCodeGeneratorAdapterStrategy extends NamedObj {
         // treat it as output port and this is not correct.
         // FIXME: what about offset?
         if (sink.port.getContainer() instanceof ModalController) {
-            sinkRef = generateName(sink.port);
+            sinkRef = ProgramCodeGeneratorAdapter.generateName(sink.port);
             if (sink.port.isMultiport()) {
                 sinkRef = sinkRef + "[" + sink.channelNumber + "]";
             }

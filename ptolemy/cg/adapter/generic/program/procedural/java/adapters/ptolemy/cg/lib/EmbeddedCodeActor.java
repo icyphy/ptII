@@ -95,8 +95,8 @@ public class EmbeddedCodeActor extends CompiledCompositeActor {
         public Set<String> getSharedCode() throws IllegalActionException {
             // FIXME: One can do optimization here so that reset
             // happens only when the embedded Java code is modified.
-            getStrategy().getCodeStream().reset();
-            getStrategy().getCodeStream().setCodeBlocks(
+            getStrategy().getTemplateParser().getCodeStream().reset();
+            getStrategy().getTemplateParser().getCodeStream().setCodeBlocks(
                     ((ptolemy.cg.lib.EmbeddedCodeActor) getComponent()
                             .getContainer()).embeddedCode.getExpression());
             return super.getSharedCode();

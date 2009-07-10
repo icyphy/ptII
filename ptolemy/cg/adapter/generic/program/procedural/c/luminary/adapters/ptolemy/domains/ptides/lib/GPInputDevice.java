@@ -33,7 +33,7 @@ import java.util.List;
 
 import ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.ptides.lib.InputDevice;
 import ptolemy.cg.kernel.generic.program.CodeStream;
-import ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapterStrategy;
+import ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapter;
 import ptolemy.data.IntToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
@@ -86,9 +86,9 @@ public class GPInputDevice extends InputDevice {
 
     public String generateSensorSensingFuncCode() throws IllegalActionException {
         List args = new LinkedList();
-        CodeStream _codeStream = getStrategy().getCodeStream();
+        CodeStream _codeStream = getStrategy().getTemplateParser().getCodeStream();
 
-        args.add(ProgramCodeGeneratorAdapterStrategy
+        args.add(ProgramCodeGeneratorAdapter
                 .generateName(getComponent()));
         args.add(_padID);
         args.add(_pinID);
@@ -105,7 +105,7 @@ public class GPInputDevice extends InputDevice {
         List args = new ArrayList();
         args.add(_padID);
         args.add(_pinID);
-        code.append(processCode(getStrategy().getCodeStream().getCodeBlock(
+        code.append(processCode(getStrategy().getTemplateParser().getCodeStream().getCodeBlock(
                 "initializeGPInput", args)));
         return code.toString();
     }

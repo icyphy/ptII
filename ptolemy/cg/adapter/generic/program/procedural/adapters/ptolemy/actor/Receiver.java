@@ -46,7 +46,7 @@ public abstract class Receiver extends ProgramCodeGeneratorAdapter {
 
         IOPort port = getReceiver().getContainer();
         int channel = port.getChannelForReceiver(getReceiver());
-        _name = getStrategy().generateVariableName(port) + "_" + channel;
+        _name = getCodeGenerator().generateVariableName(port) + "_" + channel;
     }
 
     abstract public String generateGetCode() throws IllegalActionException;

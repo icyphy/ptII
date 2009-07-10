@@ -78,7 +78,7 @@ public class Test extends ProgramCodeGeneratorAdapter {
         String multiChannel = "";
         String inputType = "";
 
-        CodeStream codeStream = getStrategy().getCodeStream();
+        CodeStream codeStream = getStrategy().getTemplateParser().getCodeStream();
 
         if (actor.input.getWidth() > 1) {
             // If we have multiple inputs, use different blocks
@@ -113,7 +113,7 @@ public class Test extends ProgramCodeGeneratorAdapter {
     public String generateInitializeCode() throws IllegalActionException {
         super.generateInitializeCode();
 
-        CodeStream codeStream = getStrategy().getCodeStream();
+        CodeStream codeStream = getStrategy().getTemplateParser().getCodeStream();
 
         ptolemy.actor.lib.Test actor = (ptolemy.actor.lib.Test) getComponent();
         for (int i = 0; i < actor.input.getWidth(); i++) {
@@ -140,7 +140,7 @@ public class Test extends ProgramCodeGeneratorAdapter {
 
         ptolemy.actor.lib.Test actor = (ptolemy.actor.lib.Test) getComponent();
 
-        CodeStream codeStream = getStrategy().getCodeStream();
+        CodeStream codeStream = getStrategy().getTemplateParser().getCodeStream();
 
         if (actor.input.getWidth() > 1) {
             ArrayList<String> args = new ArrayList<String>();

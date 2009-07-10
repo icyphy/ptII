@@ -84,7 +84,7 @@ public class AddSubtract extends ProgramCodeGeneratorAdapter {
             initArgs.add(plusType);
             initArgs.add(outputType);
         }
-        CodeStream codeStream = getStrategy().getCodeStream();
+        CodeStream codeStream = getStrategy().getTemplateParser().getCodeStream();
         codeStream.appendCodeBlock(minusOnly ? "minusOnlyInitSum" : "initSum",
                 initArgs);
 
@@ -132,7 +132,7 @@ public class AddSubtract extends ProgramCodeGeneratorAdapter {
         Type type = actor.output.getType();
         args.add(targetType(type));
 
-        CodeStream codeStream = getStrategy().getCodeStream();
+        CodeStream codeStream = getStrategy().getTemplateParser().getCodeStream();
 
         if (codeStream.isEmpty()) {
             codeStream.append(_eol

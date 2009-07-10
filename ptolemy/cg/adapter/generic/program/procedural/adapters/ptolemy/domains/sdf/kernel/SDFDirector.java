@@ -41,7 +41,6 @@ import ptolemy.cg.kernel.generic.GenericCodeGenerator;
 import ptolemy.cg.kernel.generic.program.CodeStream;
 import ptolemy.cg.kernel.generic.program.ProgramCodeGenerator;
 import ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapter;
-import ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapterStrategy;
 import ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapterStrategy.Channel;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
@@ -272,7 +271,7 @@ public class SDFDirector extends StaticSchedulingDirector {
 
         if (width != 0) {
             // Declare the read offset variable.
-            String channelReadOffset = ProgramCodeGeneratorAdapterStrategy
+            String channelReadOffset = ProgramCodeGeneratorAdapter
                     .generateName(port);
             channelReadOffset += "_readOffset";
 
@@ -286,7 +285,7 @@ public class SDFDirector extends StaticSchedulingDirector {
             code.append("static int " + channelReadOffset + ";\n");
 
             // Declare the write offset variable.
-            String channelWriteOffset = ProgramCodeGeneratorAdapterStrategy
+            String channelWriteOffset = ProgramCodeGeneratorAdapter
                     .generateName(port);
 
             channelWriteOffset += "_writeOffset";
@@ -387,7 +386,7 @@ public class SDFDirector extends StaticSchedulingDirector {
 
                 // Declare the read offset variable.
                 StringBuffer channelReadOffset = new StringBuffer();
-                channelReadOffset.append(ProgramCodeGeneratorAdapterStrategy
+                channelReadOffset.append(ProgramCodeGeneratorAdapter
                         .generateName(port));
                 if (width > 1) {
                     channelReadOffset.append("_" + channelNumber);
@@ -406,7 +405,7 @@ public class SDFDirector extends StaticSchedulingDirector {
 
                 // Declare the write offset variable.
                 StringBuffer channelWriteOffset = new StringBuffer();
-                channelWriteOffset.append(ProgramCodeGeneratorAdapterStrategy
+                channelWriteOffset.append(ProgramCodeGeneratorAdapter
                         .generateName(port));
                 if (width > 1) {
                     channelWriteOffset.append("_" + channelNumber);

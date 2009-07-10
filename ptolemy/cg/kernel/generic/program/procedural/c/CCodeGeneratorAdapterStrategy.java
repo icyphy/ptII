@@ -35,6 +35,7 @@ import java.util.Set;
 
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.TypedIOPort;
+import ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapter;
 import ptolemy.cg.kernel.generic.program.procedural.ProceduralCodeGeneratorAdapterStrategy;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.Type;
@@ -305,7 +306,7 @@ public class CCodeGeneratorAdapterStrategy extends ProceduralCodeGeneratorAdapte
         // treat it as output port and this is not correct.
         // FIXME: what about offset?
         if (sink.port.getContainer() instanceof ModalController) {
-            sinkRef = generateName(sink.port);
+            sinkRef = ProgramCodeGeneratorAdapter.generateName(sink.port);
             if (sink.port.isMultiport()) {
                 sinkRef = sinkRef + "[" + sink.channelNumber + "]";
             }

@@ -37,7 +37,7 @@ import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.TypedIOPort;
-import ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapterStrategy;
+import ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapter;
 import ptolemy.domains.ptides.lib.InterruptDevice;
 import ptolemy.domains.ptides.lib.targets.luminary.GPInputDevice;
 import ptolemy.kernel.util.IllegalActionException;
@@ -100,7 +100,7 @@ public class PtidesBasicDirector
             // If the input is a sensor device, then we need to use interrupts to trigger it.
             if (actor instanceof InterruptDevice) {
                 devices.put(actor, new String("Sensing_"
-                        + ProgramCodeGeneratorAdapterStrategy
+                        + ProgramCodeGeneratorAdapter
                                 .generateName((NamedObj) actor)));
             }
         }
@@ -149,7 +149,7 @@ public class PtidesBasicDirector
         }
 
         // In the future if we add more devices, then it should be a derivation of the above code.
-        code.append(getStrategy().getCodeStream().getCodeBlock(
+        code.append(getStrategy().getTemplateParser().getCodeStream().getCodeBlock(
                 "assemblyFileBlock", args));
 
         return code;
@@ -205,7 +205,7 @@ public class PtidesBasicDirector
         code.append(getCodeGenerator().comment(
                 "Initialization code of the PtidesDirector."));
 
-        code.append(getStrategy().getCodeStream().getCodeBlock("initPDBlock"));
+        code.append(getStrategy().getTemplateParser().getCodeStream().getCodeBlock("initPDBlock"));
         code.append(super.generateInitializeCode());
 
         return code.toString();
@@ -220,7 +220,7 @@ public class PtidesBasicDirector
     public String generateMainLoop() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
-        code.append(ProgramCodeGeneratorAdapterStrategy.generateName(_director
+        code.append(ProgramCodeGeneratorAdapter.generateName(_director
                 .getContainer())
                 + "();" + _eol);
 
@@ -244,10 +244,10 @@ public class PtidesBasicDirector
 
         code.append(super.generatePreinitializeCode());
 
-        code.append(getStrategy().getCodeStream().getCodeBlock(
+        code.append(getStrategy().getTemplateParser().getCodeStream().getCodeBlock(
                 "preinitPDBlock", args));
 
-        code.append(getStrategy().getCodeStream().getCodeBlock(
+        code.append(getStrategy().getTemplateParser().getCodeStream().getCodeBlock(
                 "initPDCodeBlock"));
 
         code.append(_generateInitializeHardwareCode());

@@ -418,7 +418,7 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
      *  @return The generated variable name.
      */
     public String generateVariableName(NamedObj attribute) {
-        return ProgramCodeGeneratorAdapterStrategy.generateName(attribute)
+        return ProgramCodeGeneratorAdapter.generateName(attribute)
                 + "_";
     }
 
@@ -789,7 +789,7 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
 
         _reset();
 
-        _sanitizedModelName = ProgramCodeGeneratorAdapterStrategy
+        _sanitizedModelName = ProgramCodeGeneratorAdapter
                 .generateName(_model);
 
         // Each time a .dll file is generated, we must use a different name
@@ -1092,7 +1092,7 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
         String[] results = null;
         try {
             results = splitLongBody(_LINES_PER_METHOD, prefix
-                    + ProgramCodeGeneratorAdapterStrategy
+                    + ProgramCodeGeneratorAdapter
                             .generateName(getContainer()), code);
         } catch (IOException ex) {
             // Ignore

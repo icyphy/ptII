@@ -511,7 +511,26 @@ public class TemplateParser {
 
         return result.toString();
     }
-
+ 
+    /** Given a block name, generate code for that block.
+     *  This method is called by actors adapters that have simple blocks
+     *  that do not take parameters or have widths.
+     *  @param blockName The name of the block.
+     *  @param args The arguments for the block.
+     *  @return The code for the given block.
+     *  @exception IllegalActionException If illegal macro names are
+     *  found, or if there is a problem parsing the code block from
+     *  the adapter .c file.
+     */
+    public String generateBlockCode(String blockName, List<String> args)
+            throws IllegalActionException {
+        // We use this method to reduce code duplication for simple blocks.
+        CodeStream codeStream = getCodeStream();
+        codeStream.clear();
+        codeStream.appendCodeBlock(blockName, args);
+        return processCode(codeStream.toString());
+    }
+    
     /** Return the translated token instance function invocation string.
      *  @param functionString The string within the $tokenFunc() macro.
      *  @param isStatic True if the method is static.

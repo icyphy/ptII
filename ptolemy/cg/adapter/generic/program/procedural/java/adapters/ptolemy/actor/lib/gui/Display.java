@@ -79,14 +79,14 @@ public class Display extends ProgramCodeGeneratorAdapter {
         if (title.trim().length() > 0) {
             args.add(title);
         } else {
-            args.add(ProgramCodeGeneratorAdapterStrategy
+            args.add(ProgramCodeGeneratorAdapter
                     .generateSimpleName(actor));
         }
 
         args.add(Integer.valueOf(0));
         for (int i = 0; i < actor.input.getWidth(); i++) {
             args.set(1, Integer.toString(i));
-            code.append(strategy.generateBlockCode(type + "PrintBlock", args));
+            code.append(strategy.getTemplateParser().generateBlockCode(type + "PrintBlock", args));
         }
 
         return code.toString();

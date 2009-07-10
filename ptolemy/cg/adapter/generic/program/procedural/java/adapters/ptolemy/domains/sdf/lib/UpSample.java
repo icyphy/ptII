@@ -64,7 +64,7 @@ public class UpSample extends ProgramCodeGeneratorAdapter {
     @Override
     protected String _generateFireCode() throws IllegalActionException {
         super._generateFireCode();
-        CodeStream codeStream = getStrategy().getCodeStream();
+        CodeStream codeStream = getStrategy().getTemplateParser().getCodeStream();
 
         ptolemy.domains.sdf.lib.UpSample actor = (ptolemy.domains.sdf.lib.UpSample) getComponent();
 
@@ -81,7 +81,7 @@ public class UpSample extends ProgramCodeGeneratorAdapter {
             args.add("0");
         }
 
-        codeStream.append(getStrategy().generateBlockCode("fireBlock", args));
+        codeStream.append(getStrategy().getTemplateParser().generateBlockCode("fireBlock", args));
         return codeStream.toString();
     }
 
@@ -105,7 +105,7 @@ public class UpSample extends ProgramCodeGeneratorAdapter {
         Type type = actor.input.getType();
         args.add(targetType(type));
 
-        CodeStream codeStream = getStrategy().getCodeStream();
+        CodeStream codeStream = getStrategy().getTemplateParser().getCodeStream();
 
         if (codeStream.isEmpty()) {
             codeStream.append(_eol

@@ -40,7 +40,6 @@ import ptolemy.cg.kernel.generic.GenericCodeGenerator;
 import ptolemy.cg.kernel.generic.program.CodeStream;
 import ptolemy.cg.kernel.generic.program.ProgramCodeGenerator;
 import ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapter;
-import ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapterStrategy;
 import ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapterStrategy.Channel;
 import ptolemy.cg.kernel.generic.program.procedural.java.JavaCodeGenerator;
 import ptolemy.cg.lib.CompiledCompositeActor;
@@ -337,7 +336,7 @@ public class SDFDirector
 
         ProgramCodeGenerator codeGenerator = getCodeGenerator();
 
-        String name = ProgramCodeGeneratorAdapterStrategy.generateName(target
+        String name = ProgramCodeGeneratorAdapter.generateName(target
                 .getComponent());
         // Generate variable declarations for referenced parameters.
         String referencedParameterDeclaration = _generateReferencedParameterDeclaration(target);
@@ -452,7 +451,7 @@ public class SDFDirector
             throws IllegalActionException {
 
         code.append("static " + targetType(port.getType()) + " "
-                + ProgramCodeGeneratorAdapterStrategy.generateName(port));
+                + ProgramCodeGeneratorAdapter.generateName(port));
 
         int bufferSize = _ports.getBufferSize(port);
 
@@ -555,7 +554,7 @@ public class SDFDirector
                         parameter)) {
                     code.append("static " + targetType(parameter.getType())
                             + " "
-                            + getStrategy().generateVariableName(parameter)
+                            + getCodeGenerator().generateVariableName(parameter)
                             + ";" + _eol);
                 }
             }
@@ -586,8 +585,7 @@ public class SDFDirector
                 code.append(targetType(portType));
                 //getStrategy();
                 code.append(" "
-                        + ProgramCodeGeneratorAdapterStrategy
-                                .getTypeConvertReference(channel));
+                        + getTypeConvertReference(channel));
 
                 //int bufferSize = getBufferSize(channel.port);
                 int bufferSize = Math.max(DFUtilities
