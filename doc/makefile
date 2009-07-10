@@ -344,6 +344,7 @@ DATAPROPERTIESPACKAGES = \
 	ptolemy.data.properties.lattice.exampleSetLattice.actor.lib \
 	ptolemy.data.properties.lattice.exampleSetLattice.data.expr \
 	ptolemy.data.properties.lattice.exampleSetLattice.kernel \
+	ptolemy.data.properties.lattice.generic.actor.lib \
 	ptolemy.data.properties.lattice.imageOntology \
 	ptolemy.data.properties.lattice.imageOntology.actor \
 	ptolemy.data.properties.lattice.imageOntology.actor.lib.image \
