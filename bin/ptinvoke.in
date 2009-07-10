@@ -185,6 +185,10 @@ if [ "$PTBACKTRACK_ECLIPSE_DIR" = "eclipse" ]; then
     BACKTRACK_JARS="${PTBACKTRACK_ECLIPSE_JARS}"
 fi
 
+#### LBNL Simulator (ptII/lbnl)
+# Set BCVTB_HOME to run the LBNL Matlab Simulator
+export BCVTB_HOME="${PTII}/lbnl"
+
 #### Cal 
 # Set to cal and used in $PTII/ptolemy/makefile if Cal was found.
 PTCALTROP_DIR=@PTCALTROP_DIR@
@@ -1145,6 +1149,21 @@ if [ "$CLASSPATH" != "" ]; then
     CLASSPATH="$PTII_DIR${CLASSPATHSEPARATOR}$jarfile${CLASSPATHSEPARATOR}`echo "${CLASSPATH}" | sed 's/"/\\\\"/g'`"
 else
     CLASSPATH="$PTII_DIR${CLASSPATHSEPARATOR}$jarfile"
+fi
+
+if [ "$windows" = "yes" ]; then
+    export PATH="${PTII_CYGDRIVE}/bin;$PATH"
+else
+    if [ "$LD_LIBRARY_PATH" != "" ]; then
+        export LD_LIBRARY_PATH="${PTII}/lib:${LD_LIBRARY_PATH}"
+    else
+        export LD_LIBRARY_PATH="${PTII}/lib"
+    fi
+    if [ "$DYLD_LIBRARY_PATH" != "" ]; then
+        export DYLD_LIBRARY_PATH="${PTII}/lib:${DYLD_LIBRARY_PATH}"
+    else
+        export DYLD_LIBRARY_PATH="${PTII}/lib"
+    fi
 fi
 
 if [ "$error" = "none" ]; then
