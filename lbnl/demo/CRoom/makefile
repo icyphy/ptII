@@ -91,8 +91,8 @@ demo: demo_vergil
 
 demo_vergil:
 	CLASSPATH=.; \
-	PATH="`pwd`:$(PATH)"; export PATH; \
-	LD_LIBRARY_PATH="`pwd`:$(LD_LIBRARY_PATH)"; export LD_LIBRARY_PATH; \
+	PATH="`pwd`:$(PTII)/lbnl/lib/util:$(PTII)/lib:$(PATH)"; export PATH; \
+	LD_LIBRARY_PATH="`pwd`:$(PTII)lbnl/lib/util:$(PTII)/lib:$(LD_LIBRARY_PATH)"; export LD_LIBRARY_PATH; \
 	"$(PTII)/bin/vergil" \
 		$(MODELS)
 

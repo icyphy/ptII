@@ -94,9 +94,10 @@ jclass: $(PTLIB)
 # MAJOR_OS_NAME is set by configure to the major name of the OS
 # Under all versions of Windows, MAJOR_OS_NAME = Windows
 PTPACKAGE_NATIVE_JAR =	$(PTPACKAGE)$(MAJOR_OS_NAME).jar
-install: jclass jars $(PTPACKAGE).jar $(PTPACKAGE_NATIVE_JAR)
+install: $(PTLIB) jclass jars $(PTPACKAGE).jar $(PTPACKAGE_NATIVE_JAR)
 	@echo "'$(PTPACKAGE).jar' requires gcc, so we install it in \$$PTII/lib"
 	@echo "for hosts that might not have gcc installed and for Web Start."
+	cp $(PTLIB) $(ROOT)/lib
 	cp $(PTPACKAGE).jar $(PTPACKAGE_NATIVE_JAR) $(ROOT)/lib
 
 clean: ptmatlab_clean

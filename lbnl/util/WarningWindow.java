@@ -1,48 +1,11 @@
-package lbnl.util;
-
-import javax.swing.JOptionPane;
-
-/**
- * Class to create a warning window in a new thread.
- *
- * Creating the warning window in a new thread allows to
- * continue the simulation. If Ptolemy is run as a console
- * application, this dialog will be destroyed when Ptolemy
- * reaches the final time. However, if Ptolemy is run from vergil,
- * then the dialog box remains diplayed until it is closed by
- * the user.
- *
- * @author Michael Wetter
- * @version 1.0
- * @since BCVTB 0.3
- *
- */
-public class WarningWindow implements Runnable{
-
-    /** Construct an instance and set the message to be displayed in the window.
-     *
-     *@param message The message to be displayed.
-     */
-    public WarningWindow(String message){
-	msg = message;
-    }
-
-    /** Display the message dialog. */
-    public void run(){
-	JOptionPane.showMessageDialog(null, msg, "Warning",
-				      JOptionPane.WARNING_MESSAGE);
-    }
-
-    /** The warning message. */
-    protected String msg;
-}
+// Class to create a warning window in a new thread.
 
 /*
 ********************************************************************
 Copyright Notice
 ----------------
 
-Building Controls Virtual Test Bed (BCVTB) Copyright (c) 2008, The
+Building Controls Virtual Test Bed (BCVTB) Copyright (c) 2008-2009, The
 Regents of the University of California, through Lawrence Berkeley
 National Laboratory (subject to receipt of any required approvals from
 the U.S. Dept. of Energy). All rights reserved.
@@ -68,7 +31,7 @@ and to permit others to do so.
 Modified BSD License agreement
 ------------------------------
 
-Building Controls Virtual Test Bed (BCVTB) Copyright (c) 2008, The
+Building Controls Virtual Test Bed (BCVTB) Copyright (c) 2008-2009, The
 Regents of the University of California, through Lawrence Berkeley
 National Laboratory (subject to receipt of any required approvals from
 the U.S. Dept. of Energy).  All rights reserved.
@@ -112,3 +75,42 @@ derivative works thereof, in binary and source code form.
 
 ********************************************************************
 */
+
+package lbnl.util;
+
+import javax.swing.JOptionPane;
+
+/**
+ * Class to create a warning window in a new thread.
+ *
+ * Creating the warning window in a new thread allows to
+ * continue the simulation. If Ptolemy is run as a console
+ * application, this dialog will be destroyed when Ptolemy
+ * reaches the final time. However, if Ptolemy is run from vergil,
+ * then the dialog box remains diplayed until it is closed by
+ * the user.
+ *
+ * @author Michael Wetter
+ * @version $Id$
+ * @since BCVTB 0.3
+ *
+ */
+public class WarningWindow implements Runnable{
+
+    /** Construct an instance and set the message to be displayed in the window.
+     *
+     *@param message The message to be displayed.
+     */
+    public WarningWindow(String message){
+	msg = message;
+    }
+
+    /** Display the message dialog. */
+    public void run(){
+	JOptionPane.showMessageDialog(null, msg, "Warning",
+				      JOptionPane.WARNING_MESSAGE);
+    }
+
+    /** The warning message. */
+    protected String msg;
+}
