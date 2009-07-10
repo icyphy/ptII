@@ -37,8 +37,7 @@
 <property name="Ellipse" class="ptolemy.vergil.kernel.attributes.EllipseAttribute"/>
 <property name="Image" class="ptolemy.vergil.kernel.attributes.ImageAttribute"/>
 <property name="NameIcon" class="ptolemy.vergil.icon.NameIcon"/>
-<!-- Uncomment the following line when configure supports finding the jar file. /-->
-<!-- property name="PDF" class="ptolemy.vergil.kernel.attributes.PDFAttribute"/-->
+<property name="PDF" class="ptolemy.vergil.kernel.attributes.PDFAttribute"/>
       </group>
     ?>
   </configure>
