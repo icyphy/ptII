@@ -31,7 +31,8 @@
 # $(ME) is used in ptdir.mk
 ME =		lbnl/lib
 
-DIRS = 		util
+# PTLIBXML2_DIR is set to util by configure if libxml2 is found
+DIRS = 		$(PTLIBXML2_DIR)
 
 # Root of Ptolemy II directory
 ROOT =		../..

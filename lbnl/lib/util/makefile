@@ -104,9 +104,7 @@ clean: ptmatlab_clean
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
 
-# FIXME: set up configure to find these
-LIBXML2_INCLUDE_DIR = /usr/include/libxml2
-LIBXML2_LD_ARGS = -L/usr/lib -lxml2
+LIBXML2_LD_ARGS = -L$(LIBXML2_LIB_DIR) -lxml2
 $(PTLIB): $(CSRCS) $(HSRCS)
 	"$(PTCC)" -shared $(PTJNI_GCC_SHARED_FLAG) \
 		-o $@ \

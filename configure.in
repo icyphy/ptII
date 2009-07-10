@@ -1109,6 +1109,7 @@ else
 	    PTCODEGEN_OPTIONAL_PACKAGES="$PTCODEGEN_OPTIONAL_PACKAGES $package"
         fi
     done
+    PT_MSG_RESULT(ok)
 fi 
 
 
@@ -1545,7 +1546,6 @@ if test -z "$PTBACKTRACK_ECLIPSE_DIR"; then
 fi 
 
 #--------------------------------------------------------------------
-
 #       Garbage Collector (GC)
 #       The C code generator can use the Boehm Garbage Collector
 #       See http://www.hpl.hp.com/personal/Hans_Boehm/gc/
@@ -2543,9 +2543,9 @@ else
 	for jar in $JINI_JARS
 	do 
 	    if test "${PTVERBOSE:-none}" = "none"; then
-	        echo $ECHO_N "."
+	        $PT_ECHO $ECHO_N "."
 	    else
-                echo $ECHO_N "$jar "
+                $PT_ECHO $ECHO_N "$jar "
             fi
 	    jarpath=`$FIND "$JINI_DIR" -name $jar | head -1`
    	    if test -f "$jarpath"; then
@@ -3926,6 +3926,84 @@ else
     <classpathentry kind=\"lib\" path=\"$X10_CLASSES\"/>"
 fi 
 
+#--------------------------------------------------------------------
+#       libxml2 is used by the lbnl simulation interface in ptII/lbnl
+#--------------------------------------------------------------------
+
+# The include and lib dirs for libxml2
+LIBXML2_INCLUDE_DIR=
+LIBXML2_LIB_DIR=
+
+# PTLIBXML2_DIR is set util if LIBXML2_INCLUDE_DIR and LIBXML2_LIB_DIR are set
+PTLIBXML2_DIR=
+
+LIBXML2_USER_DIR=$PTII/lbnl/lib/util
+if test ! -d "$LIBXML2_USER_DIR"; then
+    PT_MSG_STATUS([$LIBXML2_USER_DIR is not present,
+    so we need not find libxml2.])
+else
+    AC_PATH_PROG(PTCC, gcc)
+    if test "${PTCC:-none}" = "none"; then
+        AC_MSG_WARN([Failed to find gcc])
+        AC_PATH_PROG(PTCC, cc)
+        if test "${PTCC:-none}" != "none"; then
+            PT_MSG_RESULT([$PTCC])
+        else    
+            AC_MSG_WARN([Failed to find gcc or cc, so we will
+    not be able use LIBXML2 in $LIBXML2_USER_DIR]);
+        fi
+    fi
+
+    if test "${PTCC:-none}" != "none"; then
+       AC_MSG_CHECKING([for libxml2])
+       # FIXME: This will not work if $PTII has spaces
+       dirs="$PTII/vendors/libxml2 /usr/local/lib /usr/lib"
+       for dir in $dirs
+       do
+           if test -f "$dir/libxml2.${PTJNI_SHAREDLIBRARY_SUFFIX}"; then
+               PT_MSG_RESULT([$dir/libxml2.${PTJNI_SHAREDLIBRARY_SUFFIX}])
+	       LIBXML2_LIB_DIR=$dir
+	       break;
+           fi
+       done
+       if test ! -d "$LIBXML2_LIB_DIR"; then
+           AC_MSG_WARN([Failed to find libxml2.${PTJNI_SHAREDLIBRARY_SUFFIX}
+    The LBNL Simulation facility in \$PTII/lbnl/lib/util requires libxml2.
+    However, Ptolemy will run without this facility.])
+       fi
+    fi
+    AC_MSG_CHECKING([for libxml/xpath.h])
+    AC_ARG_WITH(xml2-include, [  --with-xml2-include=DIR       use libxml/xpath.h from DIR
+                          defaults to \$PTII/vendors/gc/gc/include],
+	LIBXML2_INCLUDE_DIR=$withval,
+	LIBXML2_INCLUDE_DIR=/usr/include/libxml2)
+
+    if test -f "$LIBXML2_INCLUDE_DIR/libxml/xpath.h"; then
+       PT_MSG_RESULT([$LIBXML2_INCLUDE_DIR/libxml/xpath.h])
+    else 
+       # FIXME: This will not work if $PTII has spaces
+       dirs="$PTII/vendors/libxml2 /usr/local/include /usr/include"
+       for dir in $dirs
+       do
+           if test -f "$dir/libxml/xpath.h"; then
+               LIBXML2_INCLUDE_DIR=$dir
+	       PT_MSG_RESULT([$LIBXML2_INCLUDE_DIR/libxml/xpath.h])
+           fi
+       done
+       if test ! -f "$LIBXML2_INCLUDE_DIR/libxml/xpath.h"; then
+           AC_MSG_WARN([Failed to find libxml/xpath.h
+    Checked the following directories:
+    $dirs
+    The LBNL Simulation facility in \$PTII/lbnl/lib/util requires libxml2.
+    However, Ptolemy will run without this facility.])
+       fi
+   fi
+fi
+
+if test -f "$LIBXML2_INCLUDE_DIR/libxml/xpath.h" -a -f "$LIBXML2_LIB_DIR/libxml2.${PTJNI_SHAREDLIBRARY_SUFFIX}"; then
+   # Used in $PTII/lbnl/lib/util/makefile
+   PTLIBXML2_DIR=util
+fi
 
 # Keep these substitutions alphabetical, with a description
 
@@ -4083,6 +4161,12 @@ AC_SUBST(KVM_DIR)
 # Set to the location of the lejos installation, usually in
 # $PTII/vendors/lejos
 AC_SUBST(LEJOS_DIR)
+
+# Set to the directory that contains libxml/xpath.h and used in $PTII/lbnl/lib/util
+AC_SUBST(LIBXML2_INCLUDE_DIR)
+
+# Set to the directory that contains libxml  and used in $PTII/lbnl/lib/util
+AC_SUBST(LIBXML2_LIB_DIR)
 
 # The major type of OS we are running under.
 # Under all forms Windows, this should be Windows; ynder Linux: Linux, etc.
@@ -4348,6 +4432,9 @@ AC_SUBST(PTLEGO_DIR)
 # $PTII/ptolemy/apps/makefile if the Java Communications API was found
 # and Legos was found
 AC_SUBST(PTLEJOS_DIR)
+
+# Set to util and used in $PTII/lbnl/lib/util/makefile if libxml2 was found
+AC_SUBST(PTLIBXML2_DIR)
 
 # Set to gcc or cl and used in
 # $PTII/ptolemy/matlab/makefile if the Matlab was found.

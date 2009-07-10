@@ -140,6 +140,12 @@ WABA_DIR = @WABA_DIR@
 # http://lejos.sourceforge.net
 LEJOS_DIR = @LEJOS_DIR@
 
+# Set to the directory that contains libxml/xpath.h and used in $PTII/lbnl/lib/util
+LIBXML2_INCLUDE_DIR = @LIBXML2_INCLUDE_DIR@
+
+# Set to the directory that contains libxml  and used in $PTII/lbnl/lib/util
+LIBXML2_LIB_DIR = @LIBXML2_LIB_DIR@
+
 ########## You should not have to change anything below this line ######
 
 # Set to backtrack if Java 1.5 or later is present used in ptolemy/makefile
@@ -570,6 +576,9 @@ PTLEGO_DIR =	@PTLEGO_DIR@
 # Set to lejos and used in $PTII/ptolemy/apps/makefile if
 # the Java Communications API and Lejos was found
 PTLEJOS_DIR =	@PTLEJOS_DIR@
+
+# Set to util and used in $PTII/lbnl/lib/util/makefile if libxml2 was found
+PTLIBXML2_DIR =	@PTLIBXML2_DIR@ 
 
 # Set to gcc or cl and used in
 # $PTII/ptolemy/matlab/makefile if the Matlab was found.
