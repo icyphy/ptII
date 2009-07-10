@@ -89,6 +89,9 @@ all: all_bins
 all_bins:
 	(cd ../demo/CRoom; $(MAKE))
 
+install:
+	@echo "Nothing to be done for install in $(ME)"
+
 # PtolemyII-wide test definitions.
 KERNEL_TESTDEFS = $(ROOT)/util/testsuite/testDefs.tcl
 
