@@ -55,7 +55,7 @@ public class CGException {
      *  @param component The component.
      *  @param cause The cause of this exception, or null if the cause
      *  is not known or nonexistent.
-     *  @param string The message.
+     *  @param detail The message.
      */
     public static IllegalActionException throwException(Object component, Throwable cause,
             String detail) throws IllegalActionException {

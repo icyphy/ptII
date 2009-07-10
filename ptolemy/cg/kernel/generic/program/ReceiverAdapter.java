@@ -56,7 +56,7 @@ public abstract class ReceiverAdapter extends CodeGeneratorAdapter {
 
     /** Get the code generator associated with this adapter class.
      *  @return The code generator associated with this adapter class.
-     *  @see #setCodeGenerator(ProgramCodeGenerator)
+     *  @see #setCodeGenerator(GenericCodeGenerator)
      */
     public ProgramCodeGenerator getCodeGenerator() {
         return _codeGenerator;
