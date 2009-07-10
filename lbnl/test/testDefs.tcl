@@ -1,9 +1,10 @@
-# Makefile for Java classes used to Building Controls Virtual Test Bed
+# Load test bed definitions
+#
+# @Author: Christopher Hylands
 #
 # @Version: $Id$
-# @Author: Christopher Brooks (makefile only)
 #
-# @Copyright (c) 2009 The Regents of the University of California.
+# @Copyright (c) 1997-2005 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -27,41 +28,29 @@
 #
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
-##########################################################################
+#######################################################################
 
-ME =		lbnl
+# Ptolemy II test bed, see $PTII/doc/coding/testing.html for more information.
 
-# Run in lib first to make libraries
-DIRS = 		lib util actor demo test
+if [info exist env(PTOLEMY)] {
+    set PTII $env(PTOLEMY)/tycho/java
+}
 
-# Root of Ptolemy II directory
-ROOT =		..
+if [info exist env(TYCHO)] {
+    set PTII $env(TYCHO)/java
+}
 
-# Get configuration info
-CONFIG =	$(ROOT)/mk/ptII.mk
-include $(CONFIG)
+if [info exist env(PTII)] {
+    set PTII $env(PTII)
+}
 
-# Used to build jar files
-PTPACKAGE = 	lbnl
-PTCLASSJAR =
+if {![info exist PTII]} {
+    # If we are here, then we are probably running jacl and we can't
+    # read environment variables
+    set PTII [file join [pwd] .. .. ]
+}
 
-PTCLASSALLJAR = $(PTPACKAGE).jar
-
-# Include the .class files from these jars in PTCLASSALLJAR
-PTCLASSALLJARS = \
-	actor/actor.jar \
-	util/util.jar
-
-EXTRA_SRCS =
-
-# Sources that may or may not be present, but if they are present, we don't
-# want make checkjunk to barf on them.
-MISC_FILES = actor lib util test
-
-OPTIONAL_FILES = demo
-
-all: suball $(EXTRA_SRCS)
-install: subinstall jars
-
-# Include rules for directories that contain only subdirectories.
-include $(ROOT)/mk/ptcommon.mk
+# Load up the test definitions.
+if {[string compare test [info procs test]] == 1} then {
+    source [file join $PTII util testsuite testDefs.tcl]
+}

@@ -47,7 +47,7 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	util
+PTPACKAGE = 	lbnlutil
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
@@ -74,6 +74,7 @@ MISC_FILES = \
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
+	lbnlutilMacOSX.jar \
 	$(PTLIB)
 
 JCLASS = $(JSRCS:%.java=%.class)
