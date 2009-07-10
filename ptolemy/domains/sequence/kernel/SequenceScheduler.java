@@ -736,17 +736,19 @@ public class SequenceScheduler extends Scheduler {
 
 
 
-    /** From original SequenceDirector
-     *  Added:  Create a hash table of actors to directed graphs of upstream actors
+    /**
      * Process the actor graph to find out cycles and create a subGraphList of 
      * subGraphs containing SequencedActor with directed upstream actors. 
      * @param subGraphList
-     * @param removableNodes
      * @param sequencedActorGraphNodes
      * @throws IllegalActionException
      */
-
     public void processGraph(List<Object[]> subGraphList, List<Node> sequencedActorGraphNodes) throws IllegalActionException {
+
+	 // From original SequenceDirector 
+
+	 // Added: Create a hash table
+	 //  of actors to directed graphs of upstream actors
 
         DirectedAcyclicGraph subGraph;
 

@@ -181,14 +181,13 @@ public abstract class SequencedModelDirector extends Director{
         return newObject;
     }
     
-    /** Copied from StaticSchedulingDirector
-     * 
+    /** 
      *  Return the scheduler that is responsible for scheduling the
      *  directed actors.  This method is read-synchronized on the
      *  workspace.
      *
      *  @return The contained scheduler.
-     *  @see #setScheduler(Scheduler)
+     *  @see #setScheduler(SequenceScheduler)
      */
     public SequenceScheduler getScheduler() {
         try {
@@ -406,7 +405,6 @@ public abstract class SequencedModelDirector extends Director{
      *  on control actors, and remove them from the _independentList. 
      * 
      * @param compositeActor
-     * @param containedActorList
      * @throws IllegalActionException
      */
     public void getContainedEntities(CompositeActor compositeActor) throws IllegalActionException {
@@ -511,8 +509,9 @@ public abstract class SequencedModelDirector extends Director{
         }
     }
 
-    /** Check for SequenceAttribute or ProcessAttribute for multiple or wrong occurrence in the model
-     * @param actorEntity
+    /** Check for SequenceAttribute or ProcessAttribute for multiple
+     * or wrong occurrence in the model.
+     * @param actor
      * @param sequenceAttributes
      * @param processAttributes
      * @throws IllegalActionException

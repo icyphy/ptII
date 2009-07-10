@@ -1,3 +1,29 @@
+/* An AtomicActor that handles some sort of control flow.
+
+ Copyright (c) 2009 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
+
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
+
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
+
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
+*/
 package ptolemy.domains.sequence.lib;
 
 import java.util.ArrayList;
@@ -15,7 +41,7 @@ import ptolemy.kernel.util.Workspace;
 ////ControlActor
 
 /**
-A ControlActor is an AtomicActor that handles some sort of control flow.
+An AtomicActor that handles some sort of control flow.
 Examples of ControlActors include IfThen, IfThenElse, and Break.
 
 Control Actors are responsible for setting the list of output ports
@@ -112,12 +138,10 @@ public class ControlActor extends TypedAtomicActor {
      *  
      *  If unsuccessful, the list of output ports is cleared.
      *  
-     *  @arg List of output ports
+     *  @param ports List of output ports
      *  @return True if operation was successful; false otherwise 
      */
-    
-    protected boolean setEnabledOutports(List<TypedIOPort> ports)
-    {
+    protected boolean setEnabledOutports(List<TypedIOPort> ports) {
         // Clear the enabledOutports list
         _enabledOutports.clear();
         
@@ -161,12 +185,10 @@ public class ControlActor extends TypedAtomicActor {
      *  
      *  If unsuccessful, the list of output ports is unchanged.
      *  
-     *  @arg Output port
+     *  @param port Output port
      *  @return True if operation was successful; false otherwise 
      */
-    
-    protected boolean addEnabledOutport(TypedIOPort port)
-    {
+    protected boolean addEnabledOutport(TypedIOPort port) {
         if (port != null && port.isOutput())
         {
             _enabledOutports.add(port);
@@ -182,8 +204,7 @@ public class ControlActor extends TypedAtomicActor {
      *  Used by subclasses.
      */
     
-    protected void clearEnabledOutports()
-    {
+    protected void clearEnabledOutports() {
         _enabledOutports.clear();
     }
     
