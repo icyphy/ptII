@@ -41,6 +41,9 @@ if {[string compare test [info procs test]] == 1} then {
 # Uncomment this to get a full report, or set in your Tcl shell window.
 # set VERBOSE 1
 
+# Set the timeOut to two hours
+set timeOutSeconds 12000
+
 test allDemos-1.0 {} {
     set file [open $PTII/ptolemy/configs/doc/models.txt]
     set modelsFileContents [read $file]
