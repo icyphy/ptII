@@ -31,6 +31,7 @@
 //// BooleanSelect
 package ptolemy.backtrack.automatic.ptolemy.actor.lib;
 
+import java.lang.Object;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.backtrack.Checkpoint;
@@ -48,7 +49,7 @@ import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.Workspace;
 
-/**
+/** 
  * Conditionally merge the streams at two input ports
  * depending on the value of the boolean control input.
  * In the first firing, this actor consumes a token from the
@@ -96,41 +97,41 @@ public class BooleanSelect extends TypedAtomicActor implements Rollbackable {
     // consumption rate values.
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
-    /**
+    /**     
      * Input for tokens on the true path.  The type can be anything.
      */
     public TypedIOPort trueInput;
 
-    /**
+    /**     
      * Input for tokens on the false path.  The type can be anything.
      */
     public TypedIOPort falseInput;
 
-    /**
+    /**     
      * Input that selects one of the other input ports.  The type is
      * BooleanToken.
      */
     public TypedIOPort control;
 
-    /**
+    /**     
      * The output port.  The type is at least the type of
      * <i>trueInput</i> and <i>falseInput</i>
      */
     public TypedIOPort output;
 
-    /**
+    /**     
      * This parameter provides token consumption rate for <i>trueInput</i>.
      * The type is int.
      */
     public Parameter trueInput_tokenConsumptionRate;
 
-    /**
+    /**     
      * This parameter provides token consumption rate for <i>falseInput</i>.
      * The type is int.
      */
     public Parameter falseInput_tokenConsumptionRate;
 
-    /**
+    /**     
      * This parameter provides token consumption rate for <i>control</i>.
      * The type is int.
      */
@@ -141,27 +142,27 @@ public class BooleanSelect extends TypedAtomicActor implements Rollbackable {
     // If on this iteration the control token was used, set it to null.
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    /**
-     * The most recently read control token.
+    /**     
+     * The most recently read control token. 
      */
     private BooleanToken _control = null;
 
-    /**
-     * Indicator that the control token was used in the fire method.
+    /**     
+     * Indicator that the control token was used in the fire method. 
      */
     private boolean _controlUsed = false;
 
-    /**
-     * A final static IntToken with value 0.
+    /**     
+     * A final static IntToken with value 0. 
      */
     private final static IntToken _zero = new IntToken(0);
 
-    /**
-     * A final static IntToken with value 1.
+    /**     
+     * A final static IntToken with value 1. 
      */
     private final static IntToken _one = new IntToken(1);
 
-    /**
+    /**     
      * Construct an actor in the specified container with the specified
      * name.
      * @param container The container.
@@ -171,8 +172,7 @@ public class BooleanSelect extends TypedAtomicActor implements Rollbackable {
      * @exception NameDuplicationException If the name coincides with
      * an actor already in the container.
      */
-    public BooleanSelect(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+    public BooleanSelect(CompositeEntity container, String name) throws IllegalActionException, NameDuplicationException  {
         super(container, name);
         trueInput = new TypedIOPort(this, "trueInput", true, false);
         trueInput.setMultiport(true);
@@ -186,32 +186,21 @@ public class BooleanSelect extends TypedAtomicActor implements Rollbackable {
         output.setMultiport(true);
         output.setWidthEquals(trueInput, true);
         output.setWidthEquals(falseInput, true);
-        StringAttribute controlCardinal = new StringAttribute(control,
-                "_cardinal");
+        StringAttribute controlCardinal = new StringAttribute(control, "_cardinal");
         controlCardinal.setExpression("SOUTH");
-        trueInput_tokenConsumptionRate = new Parameter(trueInput,
-                "tokenConsumptionRate");
+        trueInput_tokenConsumptionRate = new Parameter(trueInput, "tokenConsumptionRate");
         trueInput_tokenConsumptionRate.setVisibility(Settable.NOT_EDITABLE);
         trueInput_tokenConsumptionRate.setTypeEquals(BaseType.INT);
-        falseInput_tokenConsumptionRate = new Parameter(falseInput,
-                "tokenConsumptionRate");
+        falseInput_tokenConsumptionRate = new Parameter(falseInput, "tokenConsumptionRate");
         falseInput_tokenConsumptionRate.setVisibility(Settable.NOT_EDITABLE);
         falseInput_tokenConsumptionRate.setTypeEquals(BaseType.INT);
-        control_tokenConsumptionRate = new Parameter(control,
-                "tokenConsumptionRate");
+        control_tokenConsumptionRate = new Parameter(control, "tokenConsumptionRate");
         control_tokenConsumptionRate.setVisibility(Settable.NOT_EDITABLE);
         control_tokenConsumptionRate.setTypeEquals(BaseType.INT);
-        _attachText("_iconDescription", "<svg>\n"
-                + "<rect x=\"-20\" y=\"-20\" " + "width=\"40\" height=\"40\" "
-                + "style=\"fill:white\"/>\n" + "<text x=\"-17\" y=\"-3\" "
-                + "style=\"font-size:14\">\n" + "T \n" + "</text>\n"
-                + "<text x=\"-17\" y=\"15\" " + "style=\"font-size:14\">\n"
-                + "F \n" + "</text>\n" + "<text x=\"-5\" y=\"16\" "
-                + "style=\"font-size:14\">\n" + "C \n" + "</text>\n"
-                + "</svg>\n");
+        _attachText("_iconDescription", "<svg>\n" + "<rect x=\"-20\" y=\"-20\" "+"width=\"40\" height=\"40\" "+"style=\"fill:white\"/>\n"+"<text x=\"-17\" y=\"-3\" "+"style=\"font-size:14\">\n"+"T \n"+"</text>\n"+"<text x=\"-17\" y=\"15\" "+"style=\"font-size:14\">\n"+"F \n"+"</text>\n"+"<text x=\"-5\" y=\"16\" "+"style=\"font-size:14\">\n"+"C \n"+"</text>\n"+"</svg>\n");
     }
 
-    /**
+    /**     
      * Clone this actor into the specified workspace. The new actor is
      * <i>not</i> added to the directory of that workspace (you must do this
      * yourself if you want it there).
@@ -224,8 +213,8 @@ public class BooleanSelect extends TypedAtomicActor implements Rollbackable {
      * if one of the attributes cannot be cloned.
      * @return A new ComponentEntity.
      */
-    public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        BooleanSelect newObject = (BooleanSelect) super.clone(workspace);
+    public Object clone(Workspace workspace) throws CloneNotSupportedException  {
+        BooleanSelect newObject = (BooleanSelect)super.clone(workspace);
         newObject.$ASSIGN$_control(null);
         newObject.$ASSIGN$_controlUsed(false);
         newObject.output.setTypeAtLeast(newObject.trueInput);
@@ -235,17 +224,17 @@ public class BooleanSelect extends TypedAtomicActor implements Rollbackable {
         return newObject;
     }
 
-    /**
+    /**     
      * Read a token from each input port.  If the token from the
      * <i>control</i> input is true, then output the token consumed from the
      * <i>trueInput</i> port, otherwise output the token from the
      * <i>falseInput</i> port.
      * @exception IllegalActionException If there is no director.
      */
-    public void fire() throws IllegalActionException {
+    public void fire() throws IllegalActionException  {
         super.fire();
         if (_control == null) {
-            $ASSIGN$_control(((BooleanToken) control.get(0)));
+            $ASSIGN$_control(((BooleanToken)control.get(0)));
             $ASSIGN$_controlUsed(false);
         } else {
             if (_control.booleanValue()) {
@@ -265,12 +254,12 @@ public class BooleanSelect extends TypedAtomicActor implements Rollbackable {
         }
     }
 
-    /**
+    /**     
      * Initialize this actor so that the <i>falseInput</i> is read
      * from until a token arrives on the <i>control</i> input.
      * @exception IllegalActionException If the parent class throws it.
      */
-    public void initialize() throws IllegalActionException {
+    public void initialize() throws IllegalActionException  {
         super.initialize();
         $ASSIGN$_control(null);
         $ASSIGN$_controlUsed(false);
@@ -279,13 +268,13 @@ public class BooleanSelect extends TypedAtomicActor implements Rollbackable {
         control_tokenConsumptionRate.setToken(_one);
     }
 
-    /**
+    /**     
      * Return true, unless stop() has been called, in which case,
      * return false.
      * @return True if execution can continue into the next iteration.
      * @exception IllegalActionException If the base class throws it.
      */
-    public boolean postfire() throws IllegalActionException {
+    public boolean postfire() throws IllegalActionException  {
         if (_controlUsed) {
             $ASSIGN$_control(null);
             trueInput_tokenConsumptionRate.setToken(_zero);
@@ -293,7 +282,7 @@ public class BooleanSelect extends TypedAtomicActor implements Rollbackable {
             control_tokenConsumptionRate.setToken(_one);
         } else {
             if (_control == null) {
-                $ASSIGN$_control(((BooleanToken) control.get(0)));
+                $ASSIGN$_control(((BooleanToken)control.get(0)));
             }
             if (_control.booleanValue()) {
                 trueInput_tokenConsumptionRate.setToken(_one);
@@ -308,7 +297,7 @@ public class BooleanSelect extends TypedAtomicActor implements Rollbackable {
         return super.postfire();
     }
 
-    /**
+    /**     
      * If the mode is to read a control token, then return true
      * if the <i>control</i> input has a token. Otherwise, return
      * true if every channel of the input port specified by the most
@@ -316,7 +305,7 @@ public class BooleanSelect extends TypedAtomicActor implements Rollbackable {
      * @return False if there are not enough tokens to fire.
      * @exception IllegalActionException If there is no director.
      */
-    public boolean prefire() throws IllegalActionException {
+    public boolean prefire() throws IllegalActionException  {
         boolean result = super.prefire();
         if (_control == null) {
             return result && control.hasToken(0);
@@ -347,26 +336,21 @@ public class BooleanSelect extends TypedAtomicActor implements Rollbackable {
 
     private final boolean $ASSIGN$_controlUsed(boolean newValue) {
         if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-            $RECORD$_controlUsed.add(null, _controlUsed, $CHECKPOINT
-                    .getTimestamp());
+            $RECORD$_controlUsed.add(null, _controlUsed, $CHECKPOINT.getTimestamp());
         }
         return _controlUsed = newValue;
     }
 
     public void $COMMIT(long timestamp) {
-        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
-                .getTopTimestamp());
+        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
         $RECORD$$CHECKPOINT.commit(timestamp);
     }
 
     public void $RESTORE(long timestamp, boolean trim) {
-        _control = (BooleanToken) $RECORD$_control.restore(_control, timestamp,
-                trim);
-        _controlUsed = $RECORD$_controlUsed.restore(_controlUsed, timestamp,
-                trim);
+        _control = (BooleanToken)$RECORD$_control.restore(_control, timestamp, trim);
+        _controlUsed = $RECORD$_controlUsed.restore(_controlUsed, timestamp, trim);
         if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
-            $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this,
-                    timestamp, trim);
+            $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this, timestamp, trim);
             FieldRecord.popState($RECORDS);
             $RESTORE(timestamp, trim);
         }
@@ -397,6 +381,9 @@ public class BooleanSelect extends TypedAtomicActor implements Rollbackable {
     private transient FieldRecord $RECORD$_controlUsed = new FieldRecord(0);
 
     private transient FieldRecord[] $RECORDS = new FieldRecord[] {
-            $RECORD$_control, $RECORD$_controlUsed };
+            $RECORD$_control,
+            $RECORD$_controlUsed
+        };
 
 }
+

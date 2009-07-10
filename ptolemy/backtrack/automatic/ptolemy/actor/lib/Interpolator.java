@@ -29,6 +29,7 @@
 //// Interpolator
 package ptolemy.backtrack.automatic.ptolemy.actor.lib;
 
+import java.lang.Object;
 import ptolemy.actor.lib.SequenceSource;
 import ptolemy.backtrack.Checkpoint;
 import ptolemy.backtrack.Rollbackable;
@@ -47,7 +48,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
-/**
+/** 
  * <p>Produce an interpolation based on the parameters.
  * This class uses the Interpolation class in the math package to compute
  * the interpolation.
@@ -95,25 +96,25 @@ public class Interpolator extends SequenceSource implements Rollbackable {
     // set values parameter
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
-    /**
+    /**     
      * The indexes at which the specified values will be produced.
      * This parameter is an array of integers, with default value {0, 1}.
      */
     public Parameter indexes;
 
-    /**
+    /**     
      * The order of interpolation for non-index iterations.
      * This parameter must contain an IntToken.
      */
     public Parameter order;
 
-    /**
+    /**     
      * The period of the reference values.
      * This parameter must contain an IntToken.
      */
     public Parameter period;
 
-    /**
+    /**     
      * The values that will be produced at the specified indexes.
      * This parameter is an array, with default value {1.0, 0.0}.
      */
@@ -134,7 +135,7 @@ public class Interpolator extends SequenceSource implements Rollbackable {
 
     private transient double[] _values;
 
-    /**
+    /**     
      * Construct an actor with the specified container and name.
      * @param container The container.
      * @param name The name of this actor.
@@ -143,8 +144,7 @@ public class Interpolator extends SequenceSource implements Rollbackable {
      * @exception NameDuplicationException If the container already has an
      * actor with this name.
      */
-    public Interpolator(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+    public Interpolator(CompositeEntity container, String name) throws NameDuplicationException, IllegalActionException  {
         super(container, name);
         $ASSIGN$_interpolation(new Interpolation());
         indexes = new Parameter(this, "indexes");
@@ -165,7 +165,7 @@ public class Interpolator extends SequenceSource implements Rollbackable {
         output.setTypeEquals(BaseType.DOUBLE);
     }
 
-    /**
+    /**     
      * Check the validity of the parameter.
      * @param attribute The attribute that changed.
      * @exception IllegalActionException If the argument is the
@@ -176,43 +176,38 @@ public class Interpolator extends SequenceSource implements Rollbackable {
      * negative; or the argument is the <i>order</i> parameter and the order
      * is not supported by the Interpolation class.
      */
-    public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+    public void attributeChanged(Attribute attribute) throws IllegalActionException  {
         if (attribute == values) {
-            ArrayToken valuesValue = (ArrayToken) values.getToken();
+            ArrayToken valuesValue = (ArrayToken)values.getToken();
             $ASSIGN$_values(new double[valuesValue.length()]);
             for (int i = 0; i < valuesValue.length(); i++) {
-                $ASSIGN$_values(i, ((DoubleToken) valuesValue.getElement(i))
-                        .doubleValue());
+                $ASSIGN$_values(i, ((DoubleToken)valuesValue.getElement(i)).doubleValue());
             }
             _interpolation.setValues($BACKUP$_values());
         } else if (attribute == indexes) {
-            ArrayToken indexesValue = (ArrayToken) indexes.getToken();
+            ArrayToken indexesValue = (ArrayToken)indexes.getToken();
             $ASSIGN$_indexes(new int[indexesValue.length()]);
             int previous = 0;
             for (int i = 0; i < indexesValue.length(); i++) {
-                $ASSIGN$_indexes(i, ((IntToken) indexesValue.getElement(i))
-                        .intValue());
+                $ASSIGN$_indexes(i, ((IntToken)indexesValue.getElement(i)).intValue());
                 if (_indexes[i] < previous) {
-                    throw new IllegalActionException(this,
-                            "Value of indexes is not nondecreasing "
-                                    + "and nonnegative.");
+                    throw new IllegalActionException(this, "Value of indexes is not nondecreasing " + "and nonnegative.");
                 }
                 previous = _indexes[i];
             }
             _interpolation.setIndexes($BACKUP$_indexes());
         } else if (attribute == period) {
-            int newPeriod = ((IntToken) period.getToken()).intValue();
+            int newPeriod = ((IntToken)period.getToken()).intValue();
             _interpolation.setPeriod(newPeriod);
         } else if (attribute == order) {
-            int newOrder = ((IntToken) order.getToken()).intValue();
+            int newOrder = ((IntToken)order.getToken()).intValue();
             _interpolation.setOrder(newOrder);
         } else {
             super.attributeChanged(attribute);
         }
     }
 
-    /**
+    /**     
      * Clone the actor into the specified workspace. This calls the
      * base class and then initializes private variables.
      * public members to the parameters of the new actor.
@@ -221,23 +216,21 @@ public class Interpolator extends SequenceSource implements Rollbackable {
      * @exception CloneNotSupportedException If a derived class contains
      * an attribute that cannot be cloned.
      */
-    public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        Interpolator newObject = (Interpolator) super.clone(workspace);
+    public Object clone(Workspace workspace) throws CloneNotSupportedException  {
+        Interpolator newObject = (Interpolator)super.clone(workspace);
         newObject.$ASSIGN$_indexes(new int[_indexes.length]);
-        System.arraycopy($BACKUP$_indexes(), 0, newObject.$BACKUP$_indexes(),
-                0, _indexes.length);
+        System.arraycopy($BACKUP$_indexes(), 0, newObject.$BACKUP$_indexes(), 0, _indexes.length);
         newObject.$ASSIGN$_interpolation(new Interpolation());
         if (_values == null) {
             newObject.$ASSIGN$_values(null);
         } else {
             newObject.$ASSIGN$_values(new double[_values.length]);
-            System.arraycopy($BACKUP$_values(), 0, newObject.$BACKUP$_values(),
-                    0, _values.length);
+            System.arraycopy($BACKUP$_values(), 0, newObject.$BACKUP$_values(), 0, _values.length);
         }
         return newObject;
     }
 
-    /**
+    /**     
      * Output the value at the current iteration count. The output is
      * one of the reference values if the iteration count matches one
      * of the indexes, or is interpolated otherwise.
@@ -245,27 +238,27 @@ public class Interpolator extends SequenceSource implements Rollbackable {
      * <i>indexes</i> parameters do not contain arrays of the same length,
      * or the period is not 0 and not greater than the largest index.
      */
-    public void fire() throws IllegalActionException {
+    public void fire() throws IllegalActionException  {
         super.fire();
         double result = _interpolation.interpolate(_iterationCount);
         output.send(0, new DoubleToken(result));
     }
 
-    /**
+    /**     
      * Set the iteration count to zero.
      * @exception IllegalActionException If the super class throws it.
      */
-    public void initialize() throws IllegalActionException {
+    public void initialize() throws IllegalActionException  {
         super.initialize();
         $ASSIGN$_iterationCount(0);
     }
 
-    /**
+    /**     
      * Update the iteration counter, then call the super class method.
      * @return A boolean returned by the super class method.
      * @exception IllegalActionException If the super class throws it.
      */
-    public boolean postfire() throws IllegalActionException {
+    public boolean postfire() throws IllegalActionException  {
         $ASSIGN$SPECIAL$_iterationCount(13, _iterationCount);
         return super.postfire();
     }
@@ -279,8 +272,9 @@ public class Interpolator extends SequenceSource implements Rollbackable {
 
     private final int $ASSIGN$_indexes(int index0, int newValue) {
         if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-            $RECORD$_indexes.add(new int[] { index0 }, _indexes[index0],
-                    $CHECKPOINT.getTimestamp());
+            $RECORD$_indexes.add(new int[] {
+                    index0
+                }, _indexes[index0], $CHECKPOINT.getTimestamp());
         }
         return _indexes[index0] = newValue;
     }
@@ -292,58 +286,54 @@ public class Interpolator extends SequenceSource implements Rollbackable {
 
     private final int $ASSIGN$_iterationCount(int newValue) {
         if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-            $RECORD$_iterationCount.add(null, _iterationCount, $CHECKPOINT
-                    .getTimestamp());
+            $RECORD$_iterationCount.add(null, _iterationCount, $CHECKPOINT.getTimestamp());
         }
         return _iterationCount = newValue;
     }
 
-    private final int $ASSIGN$SPECIAL$_iterationCount(int operator,
-            long newValue) {
+    private final int $ASSIGN$SPECIAL$_iterationCount(int operator, long newValue) {
         if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-            $RECORD$_iterationCount.add(null, _iterationCount, $CHECKPOINT
-                    .getTimestamp());
+            $RECORD$_iterationCount.add(null, _iterationCount, $CHECKPOINT.getTimestamp());
         }
         switch (operator) {
-        case 0:
-            return _iterationCount += newValue;
-        case 1:
-            return _iterationCount -= newValue;
-        case 2:
-            return _iterationCount *= newValue;
-        case 3:
-            return _iterationCount /= newValue;
-        case 4:
-            return _iterationCount &= newValue;
-        case 5:
-            return _iterationCount |= newValue;
-        case 6:
-            return _iterationCount ^= newValue;
-        case 7:
-            return _iterationCount %= newValue;
-        case 8:
-            return _iterationCount <<= newValue;
-        case 9:
-            return _iterationCount >>= newValue;
-        case 10:
-            return _iterationCount >>>= newValue;
-        case 11:
-            return _iterationCount++;
-        case 12:
-            return _iterationCount--;
-        case 13:
-            return ++_iterationCount;
-        case 14:
-            return --_iterationCount;
-        default:
-            return _iterationCount;
+            case 0:
+                return _iterationCount += newValue;
+            case 1:
+                return _iterationCount -= newValue;
+            case 2:
+                return _iterationCount *= newValue;
+            case 3:
+                return _iterationCount /= newValue;
+            case 4:
+                return _iterationCount &= newValue;
+            case 5:
+                return _iterationCount |= newValue;
+            case 6:
+                return _iterationCount ^= newValue;
+            case 7:
+                return _iterationCount %= newValue;
+            case 8:
+                return _iterationCount <<= newValue;
+            case 9:
+                return _iterationCount >>= newValue;
+            case 10:
+                return _iterationCount >>>= newValue;
+            case 11:
+                return _iterationCount++;
+            case 12:
+                return _iterationCount--;
+            case 13:
+                return ++_iterationCount;
+            case 14:
+                return --_iterationCount;
+            default:
+                return _iterationCount;
         }
     }
 
     private final Interpolation $ASSIGN$_interpolation(Interpolation newValue) {
         if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-            $RECORD$_interpolation.add(null, _interpolation, $CHECKPOINT
-                    .getTimestamp());
+            $RECORD$_interpolation.add(null, _interpolation, $CHECKPOINT.getTimestamp());
         }
         if (newValue != null && $CHECKPOINT != newValue.$GET$CHECKPOINT()) {
             newValue.$SET$CHECKPOINT($CHECKPOINT);
@@ -360,8 +350,9 @@ public class Interpolator extends SequenceSource implements Rollbackable {
 
     private final double $ASSIGN$_values(int index0, double newValue) {
         if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-            $RECORD$_values.add(new int[] { index0 }, _values[index0],
-                    $CHECKPOINT.getTimestamp());
+            $RECORD$_values.add(new int[] {
+                    index0
+                }, _values[index0], $CHECKPOINT.getTimestamp());
         }
         return _values[index0] = newValue;
     }
@@ -372,21 +363,17 @@ public class Interpolator extends SequenceSource implements Rollbackable {
     }
 
     public void $COMMIT(long timestamp) {
-        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
-                .getTopTimestamp());
+        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
         $RECORD$$CHECKPOINT.commit(timestamp);
     }
 
     public void $RESTORE(long timestamp, boolean trim) {
-        _indexes = (int[]) $RECORD$_indexes.restore(_indexes, timestamp, trim);
-        _iterationCount = $RECORD$_iterationCount.restore(_iterationCount,
-                timestamp, trim);
-        _interpolation = (Interpolation) $RECORD$_interpolation.restore(
-                _interpolation, timestamp, trim);
-        _values = (double[]) $RECORD$_values.restore(_values, timestamp, trim);
+        _indexes = (int[])$RECORD$_indexes.restore(_indexes, timestamp, trim);
+        _iterationCount = $RECORD$_iterationCount.restore(_iterationCount, timestamp, trim);
+        _interpolation = (Interpolation)$RECORD$_interpolation.restore(_interpolation, timestamp, trim);
+        _values = (double[])$RECORD$_values.restore(_values, timestamp, trim);
         if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
-            $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this,
-                    timestamp, trim);
+            $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this, timestamp, trim);
             FieldRecord.popState($RECORDS);
             $RESTORE(timestamp, trim);
         }
@@ -421,7 +408,11 @@ public class Interpolator extends SequenceSource implements Rollbackable {
     private transient FieldRecord $RECORD$_values = new FieldRecord(1);
 
     private transient FieldRecord[] $RECORDS = new FieldRecord[] {
-            $RECORD$_indexes, $RECORD$_iterationCount, $RECORD$_interpolation,
-            $RECORD$_values };
+            $RECORD$_indexes,
+            $RECORD$_iterationCount,
+            $RECORD$_interpolation,
+            $RECORD$_values
+        };
 
 }
+
