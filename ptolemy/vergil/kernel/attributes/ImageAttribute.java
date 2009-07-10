@@ -39,7 +39,6 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.vergil.icon.ImageIcon;
 
@@ -89,9 +88,9 @@ public class ImageAttribute extends VisibleAttribute {
         scale.setTypeEquals(BaseType.DOUBLE);
         scale.setExpression("100.0");
 
-        // FIXME: The scale attribute doesn't actually work, regrettably.
-        // Hide it.
-        scale.setVisibility(Settable.EXPERT);
+        // This used to be hidden because it didn't work. It
+        // seems to work now.
+        // scale.setVisibility(Settable.EXPERT);
 
         // Create a custom controller.
         // NOTE: This doesn't actually work with the scale parameter.
@@ -152,7 +151,8 @@ public class ImageAttribute extends VisibleAttribute {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private members                   ////
-    // The image icon.
-    private ImageIcon _icon;
+    ////                       protected members                   ////
+    
+    /** The image icon. */
+    protected ImageIcon _icon;
 }
