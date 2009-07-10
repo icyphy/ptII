@@ -82,6 +82,25 @@ test FileParameter-3.1 {asFile on $PTII} {
 ######################################################################
 ####
 # 
+test FileParameter-3.2 {asFile on $CLASSPATH} {
+    set e3_2 [java::new {ptolemy.kernel.Entity String} entity3_2]
+    set fileParam3_2 [java::new ptolemy.data.expr.FileParameter $e3_2 \
+			  myFileParam3_2]
+    $fileParam3_2 setExpression {$CLASSPATH/ptolemy/data/expr/FileParameter.java}
+    set file3_2 [$fileParam3_2 asFile]
+    set uri3_2 [[$file3_2 getCanonicalFile] toURI]
+
+    # Compare against $PTII
+    set ptIIFile [java::new java.io.File $PTII/ptolemy/data/expr/FileParameter.java]
+    set ptIIURI [[$ptIIFile getCanonicalFile] toURI]
+
+    list [$uri3_2 compareTo $ptIIURI] \
+	[java::isnull [$fileParam3_2 getBaseDirectory]]
+} {0 1}
+
+######################################################################
+####
+# 
 test FileParameter-4.0 {asURL} {
     set e [java::new {ptolemy.kernel.Entity String} entity]
     set fileParam4 [java::new ptolemy.data.expr.FileParameter $e myFileParam4]

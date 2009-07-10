@@ -198,6 +198,14 @@ public class FileParameter extends StringParameter implements FileOrURLAccessor 
      *      // The following will overwrite an existing file.
      *      Writer writer = new PrintWriter(fileParameter.openForWriting());
      *  </pre>
+     *  <p>If the name begins with "$CLASSPATH",
+     *  then search for the file relative to the classpath.
+     *  If the name begins with $CLASSPATH and a file is not found
+     *  in the CLASSPATH, then the value of $PTII is substituted
+     *  in a returned.  If this is not done, then the File that is
+     *  created would have $CLASSPATH or xxxxxxCLASSPATHxxxxxx in
+     *  the file pathname, which is unlikely to be useful.
+     *   
      *  @return A File, or null if no file name has been specified.
      *  @see #getBaseDirectory()
      *  @exception IllegalActionException If a parse error occurs

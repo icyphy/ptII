@@ -179,6 +179,17 @@ public class FileUtilities {
      *  returns the relative File object.  See the java.io.File
      *  documentation for a details about relative and absolute pathnames.
      *
+     *  <p>If the name begins with
+     *  "xxxxxxCLASSPATHxxxxxx" or "$CLASSPATH" then search for the
+     *  file relative to the classpath.
+     *
+     *  <p>Note that "xxxxxxCLASSPATHxxxxxx" is the value of the
+     *  globally defined constant $CLASSPATH available in the Ptolemy
+     *  II expression language.
+     *  
+     *  <p>If the name begins with $CLASSPATH or "xxxxxxCLASSPATHxxxxxx"
+     *  but that name cannot be found in the classpath, the value
+     *  of the ptolemy.ptII.dir property is substituted in. 
      *  <p>
      *  The file need not exist for this method to succeed.  Thus,
      *  this method can be used to determine whether a file with a given
@@ -199,6 +210,23 @@ public class FileUtilities {
     public static File nameToFile(String name, URI base) {
         if ((name == null) || name.trim().equals("")) {
             return null;
+        }
+
+        if (name.startsWith(_CLASSPATH_VALUE) || name.startsWith("$CLASSPATH")) {        
+            URL result = null;
+            try {
+                result = _searchClassPath(name, null);
+            } catch (IOException ex) {
+                // Ignore.  In nameToFile(), it is ok if we don't find the variable
+            }
+            if (result != null) {
+                return new File(result.getPath());
+            } else {
+                String ptII = StringUtilities.getProperty("ptolemy.ptII.dir");
+                if (ptII != null && ptII.length() > 0) {
+                    return new File(ptII, _trimClassPath(name));
+                }
+            }
         }
 
         File file = new File(name);
@@ -228,6 +256,7 @@ public class FileUtilities {
      *  <p>Note that "xxxxxxCLASSPATHxxxxxx" is the value of the
      *  globally defined constant $CLASSPATH available in the Ptolemy
      *  II expression language.
+     *  II expression language.
      *
      *  <p>If no file is found, then throw an exception.
      *
@@ -254,47 +283,11 @@ public class FileUtilities {
             return null;
         }
 
-        // If the name begins with "$CLASSPATH", or
-        // "xxxxxxCLASSPATHxxxxxx",then attempt to open the file
-        // relative to the classpath.
-        // NOTE: Use the dummy variable constant set up in the constructor.
-        if (name.startsWith(_CLASSPATH_VALUE) || name.startsWith("$CLASSPATH")) {
-            // Try relative to classpath.
-            String classpathKey;
-
-            if (name.startsWith(_CLASSPATH_VALUE)) {
-                classpathKey = _CLASSPATH_VALUE;
-            } else {
-                classpathKey = "$CLASSPATH";
-            }
-
-            String trimmedName = name.substring(classpathKey.length() + 1);
-
-            if (classLoader == null) {
-                String referenceClassName = "ptolemy.util.FileUtilities";
-
-                try {
-                    // WebStart: We might be in the Swing Event thread, so
-                    // Thread.currentThread().getContextClassLoader()
-                    // .getResource(entry) probably will not work so we
-                    // use a marker class.
-                    Class referenceClass = Class.forName(referenceClassName);
-                    classLoader = referenceClass.getClassLoader();
-                } catch (Exception ex) {
-                    // IOException constructor does not take a cause
-                    IOException ioException = new IOException(
-                            "Cannot look up class \"" + referenceClassName
-                                    + "\" or get its ClassLoader.");
-                    ioException.initCause(ex);
-                    throw ioException;
-                }
-            }
-
-            // Use Thread.currentThread()... for Web Start.
-            URL result = classLoader.getResource(trimmedName);
-
+        if (name.startsWith(_CLASSPATH_VALUE) || name.startsWith("$CLASSPATH")) {        
+            URL result = _searchClassPath(name, classLoader);
             if (result == null) {
-                throw new IOException("Cannot find file '" + trimmedName
+                throw new IOException("Cannot find file '"
+                        + _trimClassPath(name)
                         + "' in classpath");
             }
 
@@ -643,6 +636,67 @@ public class FileUtilities {
                 }
             }
         }
+    }
+
+    /** Search the classpath.
+     *  @param name The name to be searched
+     *  @param classLoader The class loader to use to locate system
+     *   resources, or null to use the system class loader that was used
+     *   to load this class.
+     *  @return null if name does not start with "$CLASSPATH"
+     *  or _CLASSPATH_VALUE or if name cannot be found.
+     */
+    private static URL _searchClassPath(String name, ClassLoader classLoader)
+            throws IOException {
+
+        URL result = null;
+
+        // If the name begins with "$CLASSPATH", or
+        // "xxxxxxCLASSPATHxxxxxx",then attempt to open the file
+        // relative to the classpath.
+        // NOTE: Use the dummy variable constant set up in the constructor.
+        if (name.startsWith(_CLASSPATH_VALUE) || name.startsWith("$CLASSPATH")) {
+            // Try relative to classpath.
+            String trimmedName = _trimClassPath(name);
+
+            if (classLoader == null) {
+                String referenceClassName = "ptolemy.util.FileUtilities";
+
+                try {
+                    // WebStart: We might be in the Swing Event thread, so
+                    // Thread.currentThread().getContextClassLoader()
+                    // .getResource(entry) probably will not work so we
+                    // use a marker class.
+                    Class referenceClass = Class.forName(referenceClassName);
+                    classLoader = referenceClass.getClassLoader();
+                } catch (Exception ex) {
+                    // IOException constructor does not take a cause
+                    IOException ioException = new IOException(
+                            "Cannot look up class \"" + referenceClassName
+                                    + "\" or get its ClassLoader.");
+                    ioException.initCause(ex);
+                    throw ioException;
+                }
+            }
+
+            // Use Thread.currentThread()... for Web Start.
+            result = classLoader.getResource(trimmedName);
+        }
+        return result;
+    }
+
+    /** Remove the value of _CLASSPATH_VALUE or "$CLASSPATH".
+     */
+    private static String _trimClassPath(String name) {
+        String classpathKey;
+
+        if (name.startsWith(_CLASSPATH_VALUE)) {
+            classpathKey = _CLASSPATH_VALUE;
+        } else {
+            classpathKey = "$CLASSPATH";
+        }
+
+        return name.substring(classpathKey.length() + 1);
     }
 
     ///////////////////////////////////////////////////////////////////
