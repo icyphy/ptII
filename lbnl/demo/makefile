@@ -36,7 +36,7 @@ ME =		lbnl/demo
 # - CamelCase
 # - No dashes
 # - Underbars are not preferred
-DIRS = 		CRoom
+DIRS = 		CRoom MatlabRoom
 
 
 # Root of Ptolemy II directory
@@ -52,7 +52,8 @@ PTCLASSJAR =
 
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
-	CRoom/CRoom.jar
+	CRoom/CRoom.jar \
+	MatlabRoom/MatlabRoom.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 

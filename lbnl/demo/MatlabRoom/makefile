@@ -1,4 +1,4 @@
-# Makefile for Building Controls Virtual Test Bed C language Room demo 
+# Makefile for Building Controls Virtual Test Bed Matlab Room demo 
 #
 # @Authors: Christopher Hylands (makefile only)
 #
@@ -29,7 +29,7 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		lbnl/demo/CRoom
+ME =		lbnl/demo/MatlabRoom
 
 # Root of the Java directory
 ROOT =		../../..
@@ -41,25 +41,28 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	CRoom
+PTPACKAGE = 	MatlabRoom
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
 
 # Have meaning of life last so that make demo shows it on top.
 MODELS= \
-	CRoom.xml
+	MatlabRoom.xml
 
 C_FILES = \
 	cclient.c
 
-CCLIENT = cclient
+M_FILES = \
+	simulateAndExit.m
+
+#CCLIENT = cclient
 
 #H_FILES = $(C_FILES:%.c=%.h)
 
 OTHER_FILES_TO_BE_JARED = \
 	$(MODELS) \
-	$(C_FILES) \
+	$(M_FILES) \
 
 EXTRA_SRCS = \
 	$(JSRCS) \
@@ -77,7 +80,7 @@ OPTIONAL_FILES = $(CCLIENT)
 JCLASS = $(JSRCS:%.java=%.class)
 
 # KRUFT is used by make clean
-KRUFT = *.o *.obj *.dll *.so simulation.log socket.cfg utilSocket.log $(CCLIENT)
+KRUFT = *.o *.obj *.dll *.so simulation.log socket.cfg utilSocket.log matlab.log $(CCLIENT)
 
 # Don't include all or install rules here, we want the user
 # to run 'make demos' to run the tests.
@@ -90,19 +93,10 @@ install: all jars
 demo: demo_vergil
 
 demo_vergil:
-	CLASSPATH=.; \
+	BCVTB_HOME="$(PTII)/lbnl"; export BCVTB_HOME \
 	PATH="`pwd`:$(PTII)/lbnl/lib/util:$(PTII)/lib:$(PATH)"; export PATH; \
 	LD_LIBRARY_PATH="`pwd`:$(PTII)lbnl/lib/util:$(PTII)/lib:$(LD_LIBRARY_PATH)"; export LD_LIBRARY_PATH; \
-	DYLD_LIBRARY_PATH="`pwd`:$(PTII)lbnl/lib/util:$(PTII)/lib:$(DYLD_LIBRARY_PATH)"; export DYLD_LIBRARY_PATH; \
 	"$(PTII)/bin/vergil" \
 		$(MODELS)
-
-# PTCC is set in $PTII/mk/ptII.mk
-# See also ptolemy/matlab/makefile
-SHARED_LIBRARY = $(PTJNI_SHAREDLIBRARY_PREFIX)$(SHAREDBASE).$(PTJNI_SHAREDLIBRARY_SUFFIX)
-
-$(CCLIENT): cclient.c
-	$(PTCC) -o $@ -I../../lib -I../../lib/util $^ -L../../lib/util -lbcvtb
-
 
 include $(ROOT)/mk/ptcommon.mk

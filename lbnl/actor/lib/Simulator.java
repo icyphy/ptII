@@ -384,7 +384,16 @@ public class Simulator extends SDFTransformer {
 	//////////////////////////////////////////////////////////////	
 	// start the simulation process
         // Get the command as a File in case it has $CLASSPATH in it.
-	final String comArg = cutQuotationMarks(command.asFile().toString());
+        File commandFile = command.asFile();
+	final String comArg;
+        if (commandFile.exists()) {
+            // Maybe the user specified $CLASSPATH/lbnl/demo/CRoom/client
+            comArg = commandFile.toString();
+        } else {
+            // Maybe the user specfied "matlab"
+            comArg = command.getExpression();
+        }
+
 	final String argLin  = cutQuotationMarks(arguments.getExpression());
 	List<String> com = new ArrayList<String>();
 	StringTokenizer st = new StringTokenizer(comArg);

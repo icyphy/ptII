@@ -31,8 +31,9 @@
 # $(ME) is used in ptdir.mk
 ME =		lbnl/lib
 
-# PTLIBXML2_DIR is set to util by configure if libxml2 is found
-DIRS = 		$(PTLIBXML2_DIR)
+# PTLIBXML2_DIR is set to util by configure if libxml2 was found
+# PTMATLAB_DIR is set to matlab by configure if matlab was found
+DIRS = 		$(PTLIBXML2_DIR) $(PTMATLAB_DIR)
 
 # Root of Ptolemy II directory
 ROOT =		../..
@@ -43,6 +44,7 @@ include $(CONFIG)
 
 MISC_FILES = \
 	defines.h \
+	matlab \
 	util
 
 all: suball

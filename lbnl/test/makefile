@@ -80,7 +80,7 @@ JCLASS = $(JSRCS:%.java=%.class)
 
 KRUFT = *.dll *.dyllib socket.cfg utilSocket.log auto/simulation.log
 
-tests:: $(EXTRA_SRCS) jclass all_bins test_auto #test_jsimple
+tests:: $(EXTRA_SRCS) jclass all_bins test_auto_path #test_jsimple
 
 test_java: jclass
 
@@ -96,8 +96,14 @@ install:
 KERNEL_TESTDEFS = $(ROOT)/util/testsuite/testDefs.tcl
 
 # These tests do not require a graphics terminal, but do use Jacl and Java
-test_jsimple: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljtests.tcl test_auto
+test_jsimple: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljtests.tcl test_auto_path
 	$(JTCLSH) alljtests.tcl
 
+# Set PATH, LD_LIBRARY_PATH and DYLD_LIBRARY_PATH
+test_auto_path:
+	PATH="`pwd`:$(PTII)/lbnl/lib/util:$(PTII)/lib:$(PATH)"; export PATH; \
+	LD_LIBRARY_PATH="`pwd`:$(PTII)lbnl/lib/util:$(PTII)/lib:$(LD_LIBRARY_PATH)"; export LD_LIBRARY_PATH; \
+	DYLD_LIBRARY_PATH="`pwd`:$(PTII)lbnl/lib/util:$(PTII)/lib:$(DYLD_LIBRARY_PATH)"; export DYLD_LIBRARY_PATH; \
+	$(JTCLSH) $(ROOT)/util/testsuite/auto.tcl
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

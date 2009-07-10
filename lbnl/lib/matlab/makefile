@@ -1,7 +1,7 @@
-# Makefile for Building Controls Virtual Test Bed
+# Makefile for Building Controls Virtual Test Bed Matlab Files
 #
 # @Version: $Id$
-# @Author: Christopher Brooks (makefile only), based on file by Zoltan Kemenczy
+# @Author: Christopher Brooks (makefile only) based on file by Zoltan Kemenczy
 #
 # @Copyright (c) 2009 The Regents of the University of California
 # All rights reserved.
@@ -32,7 +32,7 @@
 # 						COPYRIGHTENDKEY
 ##########################################################################
 
-ME =		lbnl/lib/util
+ME =		lbnl/lib/matlab
 
 DIRS =
 
@@ -46,7 +46,7 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	lbnlutil
+PTPACKAGE = 	matlab
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
@@ -54,14 +54,33 @@ JSRCS =
 
 OTHER_FILES_TO_BE_JARED =
 
-
-EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
-
 CSRCS = \
-	utilSocket.c \
-	utilXml.c \
+	simulinkSocket.c
 
-HSRCS = $(CSRCS:%.c=%.h)
+HSRCS = $(CSRCS:%.c=%.h) \
+	matlabSocket.h
+
+MSRCS = \
+	bcvtb.m \
+	closeIPC.m \
+	compile.m \
+	establishClientSocket.m \
+	exchangeDoublesWithSocket.m \
+	getBCVTBLibName.m \
+	sendClientError.m \
+	slblocks.m
+
+MEXMACISRCS = \
+	closeBSDSocket.mexmaci \
+	establishBSDSocket.mexmaci \
+	exchangeDoublesWithBSDSocket.mexmaci
+
+MDLSRCS = \
+	BCVTB.mdl \
+	BSDSocket.mdl
+
+EXTRA_SRCS =	$(JSRCS) $(CSRCS) $(HSRCS) $(MSRCS) $(MEXMACISRCS) \
+		$(MDLSRCS) $(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
@@ -72,60 +91,17 @@ MISC_FILES = \
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
-OPTIONAL_FILES = \
-	lbnlutilMacOSX.jar \
-	$(PTLIB)
+OPTIONAL_FILES = 
 
 JCLASS = $(JSRCS:%.java=%.class)
 
-# 'make fast' also build PTLIB, so be sure that PTLIB is set to
-# the name of the library
-PTLIB=$(PTJNI_SHAREDLIBRARY_PREFIX)bcvtb.$(PTJNI_SHAREDLIBRARY_SUFFIX)
-
 # Files to remove with 'make clean'
-KRUFT = \
-	*.jar
+KRUFT =
 
 all: jclass
 
 jclass: $(PTLIB)
-
-
-# MAJOR_OS_NAME is set by configure to the major name of the OS
-# Under all versions of Windows, MAJOR_OS_NAME = Windows
-PTPACKAGE_NATIVE_JAR =	$(PTPACKAGE)$(MAJOR_OS_NAME).jar
-install: $(PTLIB) jclass jars $(PTPACKAGE).jar $(PTPACKAGE_NATIVE_JAR)
-	@echo "'$(PTPACKAGE).jar' requires gcc, so we install it in \$$PTII/lib"
-	@echo "for hosts that might not have gcc installed and for Web Start."
-	cp $(PTLIB) $(ROOT)/lib
-	cp $(PTPACKAGE).jar $(PTPACKAGE_NATIVE_JAR) $(ROOT)/lib
-
-clean: ptmatlab_clean
+install: $(PTLIB) jclass jars
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
-
-LIBXML2_LD_ARGS = -L$(LIBXML2_LIB_DIR) -lxml2
-$(PTLIB): $(CSRCS) $(HSRCS)
-	"$(PTCC)" -shared $(PTJNI_GCC_SHARED_FLAG) \
-		-o $@ \
-		-I.. -I$(LIBXML2_INCLUDE_DIR) \
-		$(CSRCS) $(LIBXML2_LD_ARGS)
-
-$(PTPACKAGE_NATIVE_JAR): $(PTLIB)
-	rm -rf $(PTJAR_TMPDIR) $@
-	mkdir $(PTJAR_TMPDIR)
-	-cp $< $(PTJAR_TMPDIR)
-	@echo "Creating $@"
-	(cd $(PTJAR_TMPDIR); "$(JAR)" -cvf tmp.jar .)
-	mv $(PTJAR_TMPDIR)/tmp.jar $@
-	rm -rf $(PTJAR_TMPDIR)
-
-
-ptmatlab_clean:
-	rm -f ptmatlab.h *.o $(PTLIB)
-
-# Note: -fno-exceptions was added to remove the exception handling frames,
-# which for gcc 3.2-3 (prerelease) was introducing an unresolved
-# gcc_personality_v0 external, nowhere to be found within the cygwin libraries
-# and object files...
