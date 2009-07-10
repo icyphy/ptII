@@ -1533,12 +1533,14 @@ remote1distjsrestore:
 	for x do \
 	    if [ -w $$x ] ; then \
 		( cd $$x ; \
-		echo running jsrestore in $$x ; \
+		echo running jsrestore in `pwd` ; \
+		ls jsoriginal; \
 		jsrestore *.java; \
 		if [ -d jsoriginal ]; then \
 			rm -f jsoriginal/README; \
 			rmdir jsoriginal; \
 		fi; \
+		grep "import COM.sun.suntest.javascope.database.CoverageUnit" *.java ; \
 		rm -f *.class; \
 		);  \
 	    fi ; \
