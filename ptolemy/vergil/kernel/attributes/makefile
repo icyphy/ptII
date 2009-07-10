@@ -57,6 +57,7 @@ JSRCS = \
 	IDAttribute.java \
 	ImageAttribute.java \
 	LineAttribute.java \
+	PDFAttribute.java \
 	RectangleAttribute.java \
 	ResizablePolygonAttribute.java \
 	TextAttribute.java \
@@ -68,7 +69,8 @@ JSRCS = \
 OTHER_FILES_TO_BE_JARED = \
 	decorative.xml \
 	iconEditorLibrary.xml \
-	ptIIplanetIcon.gif
+	ptIIplanetIcon.gif \
+	sample.pdf
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
