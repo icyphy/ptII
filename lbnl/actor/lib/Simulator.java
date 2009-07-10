@@ -1,3 +1,5 @@
+// See the copyright at the bottom. */
+
 package lbnl.actor.lib;
 
 import lbnl.actor.lib.net.Server;
@@ -8,6 +10,7 @@ import lbnl.util.ClientProcess;
 import java.io.UnsupportedEncodingException;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.net.URI;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
@@ -303,7 +306,8 @@ public class Simulator extends SDFTransformer {
 	final String worDir  = cutQuotationMarks(workingDirectory.getExpression());
 	//////////////////////////////////////////////////////////////	
 	// start the simulation process
-	final String comArg = cutQuotationMarks(command.getExpression());
+        // Get the command as a File in case it has $CLASSPATH in it.
+	final String comArg = cutQuotationMarks(command.asFile().toString());
 	final String argLin  = cutQuotationMarks(arguments.getExpression());
 	List<String> com = new ArrayList<String>();
 	StringTokenizer st = new StringTokenizer(comArg);

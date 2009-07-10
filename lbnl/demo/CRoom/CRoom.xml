@@ -1,8 +1,8 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="system" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.0.1">
+<entity name="CRoom" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="(finalTime-startTime)/timeStep+1">
@@ -137,7 +137,7 @@ This is for illustration purposes only and not needed by the above model.</text>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{25.0, 435.0}">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={180, 199, 1044, 741}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={180, 159, 1040, 734}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[827, 624]">
     </property>
@@ -150,7 +150,7 @@ This is for illustration purposes only and not needed by the above model.</text>
         </property>
         <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="TRoo1,  TRoo2, 10*y1, 10*y2">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1016, 382, 568, 444}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={872, 382, 558, 435}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[558, 391]">
         </property>
@@ -300,7 +300,8 @@ is delayed by one time step.</text></svg></configure>
             </property>
         </entity>
         <entity name="gain" class="ptolemy.actor.lib.Expression">
-<display name="Gain"/>            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="Kp*input">
+            <display name="Gain"/>
+            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="Kp*input">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                 <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
@@ -366,7 +367,7 @@ is delayed by one time step.</text></svg></configure>
         </property>
     </entity>
     <entity name="Room" class="lbnl.actor.lib.Simulator">
-        <property name="programName" class="ptolemy.data.expr.FileParameter" value="./cclient">
+        <property name="programName" class="ptolemy.data.expr.FileParameter" value="$PTII/lbnl/demo/CRoom/cclient">
         </property>
         <property name="programArguments" class="ptolemy.data.expr.Parameter" value="60">
         </property>
