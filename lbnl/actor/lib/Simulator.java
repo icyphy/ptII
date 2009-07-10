@@ -112,6 +112,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Settable;
+import ptolemy.kernel.util.Workspace;
 import ptolemy.domains.sdf.lib.SDFTransformer;
 
 /**
@@ -186,6 +187,29 @@ public class Simulator extends SDFTransformer {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+
+    /** Clone the actor into the specified workspace. This calls the
+     *  base class and then sets the <code>init</code> and <code>step</code>
+     *  public members to the parameters of the new actor.
+     *  @param workspace The workspace for the new object.
+     *  @return A new actor.
+     *  @exception CloneNotSupportedException If a derived class contains
+     *   an attribute that cannot be cloned.
+     */
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        Simulator newObject = (Simulator) super.clone(workspace);
+
+	newObject.arguments = (Parameter)newObject.getAttribute("programArguments");
+	newObject.command = (FileParameter)newObject.getAttribute("programName");
+	newObject.portNumber = (Parameter)newObject.getAttribute("socketPortNumber (used if non-negative)");
+	newObject.simLogFil = (FileParameter)newObject.getAttribute("simulationLogFile");
+	newObject.socConFil = (FileParameter)newObject.getAttribute("socketConfigurationFile");
+	newObject.timOut = (Parameter)newObject.getAttribute("socketTimeout [milliseconds]");
+	newObject.workingDirectory = (FileParameter)newObject.getAttribute("workingDirectory");
+
+	return newObject;
+    }
 
     /** Send the input token to the client program and send the
      * output from the client program to the output port.
@@ -510,6 +534,10 @@ public class Simulator extends SDFTransformer {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected members                   ////
+
+    // FIXME: Ports and Parameters are usually public and the
+    // names of the variable should match the assigned name, otherwise
+    // there are problems with cloning.
 
     /** List of arguments */
     protected Parameter arguments;
