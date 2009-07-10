@@ -43,11 +43,12 @@ import ptolemy.actor.CompositeActor;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.parameters.ParameterPort;
 import ptolemy.actor.util.DFUtilities;
+import ptolemy.actor.util.ExplicitChangeContext;
 import ptolemy.cg.adapter.generic.adapters.ptolemy.actor.Director;
 import ptolemy.cg.kernel.generic.CodeGeneratorAdapter;
 import ptolemy.cg.kernel.generic.GenericCodeGenerator;
-import ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapterStrategy.Channel;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.Type;
@@ -126,15 +127,15 @@ public class ProgramCodeGeneratorAdapter extends CodeGeneratorAdapter {
 
             // for each channel.
             for (int j = 0; j < sourcePort.getWidth(); j++) {
-                Iterator<Channel> sinks = getSinkChannels(sourcePort, j)
+                Iterator<ProgramCodeGeneratorAdapter.Channel> sinks = getSinkChannels(sourcePort, j)
                         .iterator();
 
                 // for each sink channel connected.
                 while (sinks.hasNext()) {
-                    Channel sink = sinks.next();
+                    ProgramCodeGeneratorAdapter.Channel sink = sinks.next();
                     TypedIOPort sinkPort = (TypedIOPort) sink.port;
                     if (!sourcePort.getType().equals(sinkPort.getType())) {
-                        _markTypeConvert(new Channel(sourcePort, j), sink);
+                        _markTypeConvert(new ProgramCodeGeneratorAdapter.Channel(sourcePort, j), sink);
                     }
                 }
             }
@@ -456,18 +457,18 @@ public class ProgramCodeGeneratorAdapter extends CodeGeneratorAdapter {
         StringBuffer code = new StringBuffer();
 
         // Type conversion code for inter-actor port conversion.
-        Iterator<Channel> channels = getTypeConvertChannels().iterator();
+        Iterator<ProgramCodeGeneratorAdapter.Channel> channels = getTypeConvertChannels().iterator();
         while (channels.hasNext()) {
-            Channel source = channels.next();
+            ProgramCodeGeneratorAdapter.Channel source = channels.next();
 
             if (!forComposite && source.port.isOutput() || forComposite
                     && source.port.isInput()) {
 
-                Iterator<Channel> sinkChannels = getTypeConvertSinkChannels(
+                Iterator<ProgramCodeGeneratorAdapter.Channel> sinkChannels = getTypeConvertSinkChannels(
                         source).iterator();
 
                 while (sinkChannels.hasNext()) {
-                    Channel sink = sinkChannels.next();
+                    ProgramCodeGeneratorAdapter.Channel sink = sinkChannels.next();
                     code.append(_generateTypeConvertStatements(source, sink));
                 }
             }
@@ -551,7 +552,24 @@ public class ProgramCodeGeneratorAdapter extends CodeGeneratorAdapter {
      *   the CodeStream.
      */
     public Set<String> getIncludeDirectories() throws IllegalActionException {
-        return _strategy.getIncludeDirectories();
+        Set<String> includeDirectories = new HashSet<String>();
+        CodeStream codeStream = getStrategy().getTemplateParser()._getActualCodeStream();
+        codeStream.appendCodeBlock("includeDirectories", true);
+        String includeDirectoriesString = codeStream.toString();
+
+        if (includeDirectoriesString.length() > 0) {
+            LinkedList<String> includeDirectoriesList = null;
+            try {
+                includeDirectoriesList = StringUtilities
+                        .readLines(includeDirectoriesString);
+            } catch (IOException e) {
+                throw new IllegalActionException(
+                        "Unable to read include directories for " + getName());
+            }
+            includeDirectories.addAll(includeDirectoriesList);
+        }
+
+        return includeDirectories;
     }
 
     /** Return a set of libraries to link in the generated code.
@@ -587,7 +605,24 @@ public class ProgramCodeGeneratorAdapter extends CodeGeneratorAdapter {
      *   the CodeStream.
      */
     public Set<String> getLibraryDirectories() throws IllegalActionException {
-        return _strategy.getLibraryDirectories();
+        Set<String> libraryDirectories = new HashSet<String>();
+        CodeStream codeStream = getStrategy().getTemplateParser()._getActualCodeStream();
+        codeStream.appendCodeBlock("libraryDirectories", true);
+        String libraryDirectoriesString = codeStream.toString();
+
+        if (libraryDirectoriesString.length() > 0) {
+            LinkedList<String> libraryDirectoryList = null;
+            try {
+                libraryDirectoryList = StringUtilities
+                        .readLines(libraryDirectoriesString);
+            } catch (IOException e) {
+                throw new IllegalActionException(
+                        "Unable to read library directories for " + getName());
+            }
+            libraryDirectories.addAll(libraryDirectoryList);
+        }
+
+        return libraryDirectories;
     }
 
     /** Return a set of parameters that will be modified during the execution
@@ -599,8 +634,22 @@ public class ProgramCodeGeneratorAdapter extends CodeGeneratorAdapter {
      *   modified variables.
      */
     public Set<Parameter> getModifiedVariables() throws IllegalActionException {
-        return _strategy.getModifiedVariables();
+        Set<Parameter> set = new HashSet<Parameter>();
+        if (_component instanceof ExplicitChangeContext) {
+            set
+                    .addAll(((ExplicitChangeContext) _component)
+                            .getModifiedVariables());
+        }
 
+        Iterator<?> inputPorts = ((Actor) _component).inputPortList().iterator();
+        while (inputPorts.hasNext()) {
+            IOPort inputPort = (IOPort) inputPorts.next();
+            if (inputPort instanceof ParameterPort
+                    && inputPort.isOutsideConnected()) {
+                set.add(((ParameterPort) inputPort).getParameter());
+            }
+        }
+        return set;
     }
 
     /** Return the value or an expression in the target language for
@@ -695,9 +744,9 @@ public class ProgramCodeGeneratorAdapter extends CodeGeneratorAdapter {
      *   of the given output channel.
      * @exception IllegalActionException
      */
-    public static List<Channel> getSinkChannels(IOPort port, int channelNumber)
+    public static List<ProgramCodeGeneratorAdapter.Channel> getSinkChannels(IOPort port, int channelNumber)
             throws IllegalActionException {
-        List<Channel> sinkChannels = new LinkedList<Channel>();
+        List<ProgramCodeGeneratorAdapter.Channel> sinkChannels = new LinkedList<ProgramCodeGeneratorAdapter.Channel>();
         Receiver[][] remoteReceivers;
 
         // due to reason stated in getReference(String),
@@ -743,7 +792,7 @@ public class ProgramCodeGeneratorAdapter extends CodeGeneratorAdapter {
             for (int j = 0; j < portReceivers.length; j++) {
                 for (int k = 0; k < portReceivers[j].length; k++) {
                     if (remoteReceivers[channelNumber][i] == portReceivers[j][k]) {
-                        Channel sinkChannel = new Channel(sinkPort, j);
+                        ProgramCodeGeneratorAdapter.Channel sinkChannel = new ProgramCodeGeneratorAdapter.Channel(sinkPort, j);
                         sinkChannels.add(sinkChannel);
                         break;
                     }
@@ -767,7 +816,7 @@ public class ProgramCodeGeneratorAdapter extends CodeGeneratorAdapter {
      * Get the set of channels that need to be type converted.
      * @return Set of channels that need to be type converted.
      */
-    public Set<Channel> getTypeConvertChannels() {
+    public Set<ProgramCodeGeneratorAdapter.Channel> getTypeConvertChannels() {
         return _portConversions.keySet();
     }
     
@@ -779,7 +828,7 @@ public class ProgramCodeGeneratorAdapter extends CodeGeneratorAdapter {
      * @param channel The given source channel.
      * @return The variable reference for the given channel.
      */
-    static public String getTypeConvertReference(Channel channel) {
+    static public String getTypeConvertReference(ProgramCodeGeneratorAdapter.Channel channel) {
         return generateName(channel.port) + "_" + channel.channelNumber;
     }
     
@@ -790,11 +839,11 @@ public class ProgramCodeGeneratorAdapter extends CodeGeneratorAdapter {
      * @return List of sink channels that the given source channel needs to
      * be type converted to.
      */
-    public List<Channel> getTypeConvertSinkChannels(Channel source) {
+    public List<ProgramCodeGeneratorAdapter.Channel> getTypeConvertSinkChannels(ProgramCodeGeneratorAdapter.Channel source) {
         if (_portConversions.containsKey(source)) {
             return _portConversions.get(source);
         }
-        return new ArrayList<Channel>();
+        return new ArrayList<ProgramCodeGeneratorAdapter.Channel>();
     }
 
     /** Process the specified code, replacing macros with their values.
@@ -875,11 +924,68 @@ public class ProgramCodeGeneratorAdapter extends CodeGeneratorAdapter {
      * @exception IllegalActionException If there is a problem getting the
      * adapters for the ports or if the conversion cannot be handled.
      */
-    protected String _generateTypeConvertStatement(Channel source,
-            Channel sink, int offset) throws IllegalActionException {
+    protected String _generateTypeConvertStatement(ProgramCodeGeneratorAdapter.Channel source,
+            ProgramCodeGeneratorAdapter.Channel sink, int offset) throws IllegalActionException {
         return _strategy._generateTypeConvertStatement(source, sink, offset);
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         inner classes                     ////
+
+    /** A class that defines a channel object. A channel object is
+     *  specified by its port and its channel index in that port.
+     */
+    public static class Channel {
+        // FindBugs suggests making this class static so as to decrease
+        // the size of instances and avoid dangling references.
+    
+        /** Construct the channel with the given port and channel number.
+         * @param portObject The given port.
+         * @param channel The channel number of this object in the given port.
+         */
+        public Channel(IOPort portObject, int channel) {
+            port = portObject;
+            channelNumber = channel;
+        }
+    
+        /**
+         * Whether this channel is the same as the given object.
+         * @param object The given object.
+         * @return True if this channel is the same reference as the given
+         *  object, otherwise false;
+         */
+        public boolean equals(Object object) {
+            return object instanceof Channel
+                    && port.equals(((Channel) object).port)
+                    && channelNumber == ((Channel) object).channelNumber;
+        }
+    
+        /**
+         * Return the hash code for this channel. Implementing this method
+         * is required for comparing the equality of channels.
+         * @return Hash code for this channel.
+         */
+        public int hashCode() {
+            return port.hashCode() + channelNumber;
+        }
+    
+        /**
+         * Return the string representation of this channel.
+         * @return The string representation of this channel.
+         */
+        public String toString() {
+            return port.getName() + "_" + channelNumber;
+        }
+    
+        /** The port that contains this channel.
+         */
+        public IOPort port;
+    
+        /** The channel number of this channel.
+         */
+        public int channelNumber;
+    }
+    
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                    ////
 
@@ -936,7 +1042,7 @@ public class ProgramCodeGeneratorAdapter extends CodeGeneratorAdapter {
      * adapters for the ports or if the conversion cannot be handled.
      * FIXME: SDF specific
      */
-    private String _generateTypeConvertStatements(Channel source, Channel sink)
+    private String _generateTypeConvertStatements(ProgramCodeGeneratorAdapter.Channel source, ProgramCodeGeneratorAdapter.Channel sink)
             throws IllegalActionException {
 
         StringBuffer statements = new StringBuffer();
@@ -960,7 +1066,7 @@ public class ProgramCodeGeneratorAdapter extends CodeGeneratorAdapter {
      *  information about the receivers or constructing the new Channel.
      *  FIXME: ONLY USED BY PN 
      */
-    private static ProgramCodeGeneratorAdapterStrategy.Channel _getSourceChannel(IOPort port, int channelNumber)
+    private static ProgramCodeGeneratorAdapter.Channel _getSourceChannel(IOPort port, int channelNumber)
             throws IllegalActionException {
         Receiver[][] receivers = null;
     
@@ -973,7 +1079,7 @@ public class ProgramCodeGeneratorAdapter extends CodeGeneratorAdapter {
                 // This port is the source port, so we only
                 // need to make a new Channel. We assume that
                 // the given channelNumber is valid.
-                return new ProgramCodeGeneratorAdapterStrategy.Channel(port, channelNumber);
+                return new ProgramCodeGeneratorAdapter.Channel(port, channelNumber);
             }
         } else {
             assert false;
@@ -984,7 +1090,7 @@ public class ProgramCodeGeneratorAdapter extends CodeGeneratorAdapter {
     
         for (IOPort sourcePort : sourcePorts) {
             try {
-                ProgramCodeGeneratorAdapterStrategy.Channel source = new ProgramCodeGeneratorAdapterStrategy.Channel(sourcePort, sourcePort
+                ProgramCodeGeneratorAdapter.Channel source = new ProgramCodeGeneratorAdapter.Channel(sourcePort, sourcePort
                         .getChannelForReceiver(receivers[channelNumber][0]));
     
                 if (source != null) {
@@ -1003,12 +1109,12 @@ public class ProgramCodeGeneratorAdapter extends CodeGeneratorAdapter {
      * @param source The given source channel.
      * @param sink The given input channel.
      */
-    private void _markTypeConvert(Channel source, Channel sink) {
-        List<Channel> sinks;
+    private void _markTypeConvert(ProgramCodeGeneratorAdapter.Channel source, ProgramCodeGeneratorAdapter.Channel sink) {
+        List<ProgramCodeGeneratorAdapter.Channel> sinks;
         if (_portConversions.containsKey(source)) {
             sinks = _portConversions.get(source);
         } else {
-            sinks = new ArrayList<Channel>();
+            sinks = new ArrayList<ProgramCodeGeneratorAdapter.Channel>();
             _portConversions.put(source, sinks);
         }
         sinks.add(sink);
@@ -1048,7 +1154,7 @@ public class ProgramCodeGeneratorAdapter extends CodeGeneratorAdapter {
      *  map. The codegen kernel record this mapping during the first pass over
      *  the model. This map is used later in the code generation phase.
      */
-    private Hashtable<Channel, List<Channel>> _portConversions = new Hashtable<Channel, List<Channel>>();
+    private Hashtable<ProgramCodeGeneratorAdapter.Channel, List<ProgramCodeGeneratorAdapter.Channel>> _portConversions = new Hashtable<ProgramCodeGeneratorAdapter.Channel, List<ProgramCodeGeneratorAdapter.Channel>>();
 
     /** The strategy for generating code for this adapter.*/
     private ProgramCodeGeneratorAdapterStrategy _strategy;

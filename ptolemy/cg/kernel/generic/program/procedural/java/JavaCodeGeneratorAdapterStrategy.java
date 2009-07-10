@@ -52,13 +52,6 @@ public class JavaCodeGeneratorAdapterStrategy extends
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Get the code generator associated with this adapter class.
-     *  @return The code generator associated with this adapter class.
-     */
-    public JavaCodeGenerator getCodeGenerator() {
-        return (JavaCodeGenerator) _codeGenerator;
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods               ////
 

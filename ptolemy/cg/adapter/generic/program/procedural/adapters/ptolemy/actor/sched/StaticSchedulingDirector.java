@@ -47,9 +47,8 @@ import ptolemy.cg.adapter.generic.adapters.ptolemy.actor.Director;
 import ptolemy.cg.kernel.generic.GenericCodeGenerator;
 import ptolemy.cg.kernel.generic.program.CodeStream;
 import ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapter;
-import ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapterStrategy;
 import ptolemy.cg.kernel.generic.program.TemplateParser;
-import ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapterStrategy.Channel;
+import ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapter.Channel;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
@@ -447,16 +446,16 @@ public class StaticSchedulingDirector extends Director {
                 return result.toString();
             }
 
-            Channel sourceChannel = new Channel(port, channelNumber);
+            ProgramCodeGeneratorAdapter.Channel sourceChannel = new ProgramCodeGeneratorAdapter.Channel(port, channelNumber);
 
-            List<Channel> typeConvertSinks = target.getTypeConvertSinkChannels(sourceChannel);
+            List<ProgramCodeGeneratorAdapter.Channel> typeConvertSinks = target.getTypeConvertSinkChannels(sourceChannel);
 
-            List<Channel> sinkChannels = getSinkChannels(port, channelNumber);
+            List<ProgramCodeGeneratorAdapter.Channel> sinkChannels = getSinkChannels(port, channelNumber);
 
             boolean hasTypeConvertReference = false;
 
             for (int i = 0; i < sinkChannels.size(); i++) {
-                Channel channel = sinkChannels.get(i);
+                ProgramCodeGeneratorAdapter.Channel channel = sinkChannels.get(i);
                 IOPort sinkPort = channel.port;
                 int sinkChannelNumber = channel.channelNumber;
 
@@ -851,7 +850,7 @@ public class StaticSchedulingDirector extends Director {
          */
         public int getBufferSize(int channelNumber)
                 throws IllegalActionException {
-            ProgramCodeGeneratorAdapterStrategy.Channel channel = _getChannel(channelNumber);
+            ProgramCodeGeneratorAdapter.Channel channel = _getChannel(channelNumber);
 
             if (_bufferSizes.get(channel) == null) {
                 // This should be a special case for doing
@@ -980,7 +979,7 @@ public class StaticSchedulingDirector extends Director {
          */
         public Object getReadOffset(int channelNumber)
                 throws IllegalActionException {
-            ProgramCodeGeneratorAdapterStrategy.Channel channel = _getChannel(channelNumber);
+            ProgramCodeGeneratorAdapter.Channel channel = _getChannel(channelNumber);
             return _readOffsets.get(channel);
 
         }
@@ -993,7 +992,7 @@ public class StaticSchedulingDirector extends Director {
          */
         public Object getWriteOffset(int channelNumber)
                 throws IllegalActionException {
-            ProgramCodeGeneratorAdapterStrategy.Channel channel = _getChannel(channelNumber);
+            ProgramCodeGeneratorAdapter.Channel channel = _getChannel(channelNumber);
             return _writeOffsets.get(channel);
 
         }
@@ -1035,7 +1034,7 @@ public class StaticSchedulingDirector extends Director {
          *  @see #getBufferSize(int)
          */
         public void setBufferSize(int channelNumber, int bufferSize) {
-            ProgramCodeGeneratorAdapterStrategy.Channel channel = _getChannel(channelNumber);
+            ProgramCodeGeneratorAdapter.Channel channel = _getChannel(channelNumber);
             _bufferSizes.put(channel, bufferSize);
         }
 
@@ -1045,7 +1044,7 @@ public class StaticSchedulingDirector extends Director {
          *  @see #getReadOffset(int)
          */
         public void setReadOffset(int channelNumber, Object readOffset) {
-            ProgramCodeGeneratorAdapterStrategy.Channel channel = _getChannel(channelNumber);
+            ProgramCodeGeneratorAdapter.Channel channel = _getChannel(channelNumber);
             _readOffsets.put(channel, readOffset);
         }
 
@@ -1055,7 +1054,7 @@ public class StaticSchedulingDirector extends Director {
          *  @see #getWriteOffset(int)
          */
         public void setWriteOffset(int channelNumber, Object writeOffset) {
-            ProgramCodeGeneratorAdapterStrategy.Channel channel = _getChannel(channelNumber);
+            ProgramCodeGeneratorAdapter.Channel channel = _getChannel(channelNumber);
             _writeOffsets.put(channel, writeOffset);
         }
 
@@ -1093,10 +1092,10 @@ public class StaticSchedulingDirector extends Director {
             }
 
             for (int j = 0; j < length; j++) {
-                List<Channel> sinkChannels = getSinkChannels(_port, j);
+                List<ProgramCodeGeneratorAdapter.Channel> sinkChannels = getSinkChannels(_port, j);
 
                 for (int k = 0; k < sinkChannels.size(); k++) {
-                    Channel channel = (Channel) sinkChannels.get(k);
+                    ProgramCodeGeneratorAdapter.Channel channel = (ProgramCodeGeneratorAdapter.Channel) sinkChannels.get(k);
                     ptolemy.actor.IOPort sinkPort = channel.port;
                     int sinkChannelNumber = channel.channelNumber;
 
@@ -1221,9 +1220,9 @@ public class StaticSchedulingDirector extends Director {
             return code;
         }
 
-        private ProgramCodeGeneratorAdapterStrategy.Channel _getChannel(
+        private ProgramCodeGeneratorAdapter.Channel _getChannel(
                 int channelNumber) {
-            return new ProgramCodeGeneratorAdapterStrategy.Channel(
+            return new ProgramCodeGeneratorAdapter.Channel(
                     (ptolemy.actor.IOPort) _port, channelNumber);
         }
 
@@ -1425,7 +1424,7 @@ public class StaticSchedulingDirector extends Director {
         /** A HashMap that keeps track of the bufferSizes of each channel
          *  of the actor.
          */
-        private HashMap<ProgramCodeGeneratorAdapterStrategy.Channel, Integer> _bufferSizes = new HashMap<ProgramCodeGeneratorAdapterStrategy.Channel, Integer>();
+        private HashMap<ProgramCodeGeneratorAdapter.Channel, Integer> _bufferSizes = new HashMap<ProgramCodeGeneratorAdapter.Channel, Integer>();
 
         /** The port for which we are doing extra bookkeeping to generate code.
          */
@@ -1434,12 +1433,12 @@ public class StaticSchedulingDirector extends Director {
         /** A HashMap that keeps track of the read offsets of each input channel of
          *  the actor.
          */
-        private HashMap<ProgramCodeGeneratorAdapterStrategy.Channel, Object> _readOffsets = new HashMap<ProgramCodeGeneratorAdapterStrategy.Channel, Object>();
+        private HashMap<ProgramCodeGeneratorAdapter.Channel, Object> _readOffsets = new HashMap<ProgramCodeGeneratorAdapter.Channel, Object>();
 
         /** A HashMap that keeps track of the write offsets of each input channel of
          *  the actor.
          */
-        private HashMap<ProgramCodeGeneratorAdapterStrategy.Channel, Object> _writeOffsets = new HashMap<ProgramCodeGeneratorAdapterStrategy.Channel, Object>();
+        private HashMap<ProgramCodeGeneratorAdapter.Channel, Object> _writeOffsets = new HashMap<ProgramCodeGeneratorAdapter.Channel, Object>();
 
     }
 

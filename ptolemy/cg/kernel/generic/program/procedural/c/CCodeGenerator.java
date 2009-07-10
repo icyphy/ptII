@@ -29,8 +29,10 @@ package ptolemy.cg.kernel.generic.program.procedural.c;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileFilter;
 import java.io.IOException;
 import java.io.StringReader;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
@@ -58,7 +60,10 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.util.ExecuteCommands;
+import ptolemy.util.FileUtilities;
 import ptolemy.util.MessageHandler;
+import ptolemy.util.StreamExec;
 import ptolemy.util.StringUtilities;
 
 //////////////////////////////////////////////////////////////////////////
@@ -1040,8 +1045,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
             includingFiles.add("\"" + _sanitizedModelName + ".h\"");
 
             includingFiles
-                    .addAll(((CCodeGeneratorAdapterStrategy) compositeActorAdapter
-                            .getStrategy()).getJVMHeaderFiles());
+                    .addAll(_getJVMHeaderFiles());
         }
 
         includingFiles.add("<stdarg.h>");
@@ -1347,6 +1351,175 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         return buffer.toString();
     }
 
+
+    /** Get the header files needed to compile with the jvm library.
+      *  @return A set of strings that are names of the header files
+      *   needed by the code generated for jvm library
+      *  @exception IllegalActionException Not Thrown in this subclass.
+      */
+    private Set<String> _getJVMHeaderFiles() throws IllegalActionException {
+        String javaHome = StringUtilities.getProperty("java.home");
+
+        ExecuteCommands executeCommands = getExecuteCommands();
+        if (executeCommands == null) {
+            executeCommands = new StreamExec();
+        }
+
+        if (!_printedJVMWarning) {
+            // We only print this once.
+            _printedJVMWarning = true;
+
+            executeCommands.stdout(_eol + _eol
+                    + "WARNING: This model uses an actor that "
+                    + "links with the jvm library." + _eol
+                    + "  To properly run the executable, you must have jvm.dll"
+                    + " in your path." + _eol
+                    + "  If you do not, then when you run the executable, "
+                    + "it will immediately exit" + _eol + "  with no message!"
+                    + _eol + "  For example, place " + javaHome
+                    + "\\bin\\client" + _eol
+                    + "  in your path.  If you are running Vergil from the "
+                    + "command line as " + _eol + "  $PTII/bin/ptinvoke, "
+                    + "then this has been handled for you." + _eol
+                    + "  If you are running via Eclipse, then you must update "
+                    + "your path by hand." + _eol + _eol + _eol);
+        }
+
+        String jreBinClientPath = javaHome + File.separator + "bin"
+                + File.separator + "client";
+        executeCommands
+                .stdout(_eol + _eol
+                        + "CCodeGeneratorAdapter: appended to path "
+                        + jreBinClientPath);
+
+        executeCommands.appendToPath(jreBinClientPath);
+
+        javaHome = javaHome.replace('\\', '/');
+        if (javaHome.endsWith("/jre")) {
+            javaHome = javaHome.substring(0, javaHome.length() - 4);
+        }
+
+        if (!(new File(javaHome + "/include").isDirectory())) {
+            // It could be that we are running under WebStart
+            // or otherwise in a JRE, so we should look for the JDK.
+            File potentialJavaHomeParentFile = new File(javaHome)
+                    .getParentFile();
+            // Loop through twice, once with the parent, once with
+            // C:/Program Files/Java.  This is lame, but easy
+            for (int loop = 2; loop > 0; loop--) {
+                // Get all the directories that have include/jni.h under them.
+                File[] jdkFiles = potentialJavaHomeParentFile
+                        .listFiles(new FileFilter() {
+                            public boolean accept(File pathname) {
+                                return new File(pathname, "/include/jni.h")
+                                        .canRead();
+                            }
+                        });
+                if (jdkFiles != null && jdkFiles.length >= 1) {
+                    // Sort and get the last directory, which should
+                    // be the most recent JDK.
+                    java.util.Arrays.sort(jdkFiles);
+                    javaHome = jdkFiles[jdkFiles.length - 1].toString();
+                    break;
+                } else {
+                    // Not found, please try again.
+                    potentialJavaHomeParentFile = new File(
+                            "C:\\Program Files\\Java");
+                }
+            }
+        }
+
+        addInclude("-I\"" + javaHome + "/include\"");
+
+        String osName = StringUtilities.getProperty("os.name");
+        String platform = "win32";
+        if (osName.startsWith("Linux")) {
+            platform = "linux";
+        } else if (osName.startsWith("SunOS")) {
+            platform = "solaris";
+        } else if (osName.startsWith("Mac OS X")) {
+            platform = "Mac OS X";
+        }
+        String jvmLoaderDirective = "-ljvm";
+        String libjvmAbsoluteDirectory = "";
+        if (platform.equals("win32")) {
+            addInclude(
+                    "-I\"" + javaHome + "/include/" + platform + "\"");
+
+            // The directive we use to find jvm.dll, which is usually in
+            // something like c:/Program Files/Java/jre1.6.0_04/bin/client/jvm.dll
+            jvmLoaderDirective = "-ljvm";
+
+            String ptIIDir = StringUtilities.getProperty("ptolemy.ptII.dir")
+                    .replace('\\', '/');
+            String libjvmRelativeDirectory = "ptolemy/codegen/c/lib/win";
+            libjvmAbsoluteDirectory = ptIIDir + "/" + libjvmRelativeDirectory;
+            String libjvmFileName = "libjvm.dll.a";
+            String libjvmPath = libjvmAbsoluteDirectory + "/" + libjvmFileName;
+
+            if (!(new File(libjvmPath).canRead())) {
+                // If we are under WebStart or running from jar files, we
+                // will need to copy libjvm.dll.a from the jar file
+                // that gcc can find it.
+                URL libjvmURL = Thread.currentThread().getContextClassLoader()
+                        .getResource(
+                                libjvmRelativeDirectory + "/" + libjvmFileName);
+                if (libjvmURL != null) {
+                    String libjvmAbsolutePath = null;
+                    try {
+                        // Look for libjvm.dll.a in the codegen directory
+                        File libjvmFileCopy = new File(
+                                codeDirectory.asFile(),
+                                "libjvm.dll.a");
+
+                        if (!libjvmFileCopy.canRead()) {
+                            // Create libjvm.dll.a in the codegen directory
+                            FileUtilities.binaryCopyURLToFile(libjvmURL,
+                                    libjvmFileCopy);
+                        }
+
+                        libjvmAbsolutePath = libjvmFileCopy.getAbsolutePath();
+                        if (libjvmFileCopy.canRead()) {
+                            libjvmAbsolutePath = libjvmAbsolutePath.replace(
+                                    '\\', '/');
+                            libjvmAbsoluteDirectory = libjvmAbsolutePath
+                                    .substring(0, libjvmAbsolutePath
+                                            .lastIndexOf("/"));
+
+                            // Get rid of everything before the last /lib
+                            // and the .dll.a
+                            jvmLoaderDirective = "-l"
+                                    + libjvmAbsolutePath.substring(
+                                            libjvmAbsolutePath
+                                                    .lastIndexOf("/lib") + 4,
+                                            libjvmAbsolutePath.length() - 6);
+
+                        }
+                    } catch (Exception ex) {
+                        throw new IllegalActionException(getComponent(), ex,
+                                "Could not copy \"" + libjvmURL
+                                        + "\" to the file system, path was: \""
+                                        + libjvmAbsolutePath + "\"");
+                    }
+                }
+            }
+        } else if (platform.equals("Mac OS X")) {
+            if (javaHome != null) {
+                libjvmAbsoluteDirectory = javaHome + "/../Libraries";
+            }
+        } else {
+            // Solaris, Linux etc.
+            addInclude(
+                    "-I\"" + javaHome + "/include/" + platform + "\"");
+        }
+        addLibrary("-L\"" + libjvmAbsoluteDirectory + "\"");
+        addLibrary(jvmLoaderDirective);
+
+        Set<String> files = new HashSet<String>();
+        files.add("<jni.h>");
+        return files;
+    }
+    
     /** Add called functions to the set of overloaded functions for
      *  later use.
      *  If the function starts with "Array_", add everything after the
@@ -1392,8 +1565,11 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
     private CodeStream _overloadedFunctions;
 
     /** An ordered set of function code */
-    LinkedHashSet<String> _overloadedFunctionSet;
-
+    private LinkedHashSet<String> _overloadedFunctionSet;
+    
+    /** True if we have printed the JVM warning. */
+    private boolean _printedJVMWarning = true;
+    
     /** Set of type/function combinations that are not supported.
      *  We use one method so as to reduce code size.
      */

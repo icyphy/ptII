@@ -40,7 +40,7 @@ import ptolemy.cg.kernel.generic.GenericCodeGenerator;
 import ptolemy.cg.kernel.generic.program.CodeStream;
 import ptolemy.cg.kernel.generic.program.ProgramCodeGenerator;
 import ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapter;
-import ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapterStrategy.Channel;
+import ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapter.Channel;
 import ptolemy.cg.kernel.generic.program.procedural.java.JavaCodeGenerator;
 import ptolemy.cg.lib.CompiledCompositeActor;
 import ptolemy.data.BooleanToken;
@@ -576,7 +576,7 @@ public class SDFDirector
         Iterator<?> channels = target.getTypeConvertChannels()
                 .iterator();
         while (channels.hasNext()) {
-            Channel channel = (Channel) channels.next();
+            ProgramCodeGeneratorAdapter.Channel channel = (ProgramCodeGeneratorAdapter.Channel) channels.next();
             Type portType = ((TypedIOPort) channel.port).getType();
 
             if (getCodeGenerator().isPrimitive(portType)) {

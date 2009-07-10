@@ -41,7 +41,7 @@ import ptolemy.cg.kernel.generic.GenericCodeGenerator;
 import ptolemy.cg.kernel.generic.program.CodeStream;
 import ptolemy.cg.kernel.generic.program.ProgramCodeGenerator;
 import ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapter;
-import ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapterStrategy.Channel;
+import ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapter.Channel;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.expr.Parameter;
@@ -615,7 +615,7 @@ public class SDFDirector extends StaticSchedulingDirector {
                             Iterator<?> channels =
                                 getSinkChannels(sourcePort, j).iterator();
                             while (channels.hasNext()) {
-                                Channel channel = (Channel) channels.next();
+                                ProgramCodeGeneratorAdapter.Channel channel = (ProgramCodeGeneratorAdapter.Channel) channels.next();
                                 if (channel.port == outputPort
                                         && channel.channelNumber == i) {
                                     writeTokens = DFUtilities
@@ -691,7 +691,7 @@ public class SDFDirector extends StaticSchedulingDirector {
                                         getSinkChannels(sourcePort, j)
                                         .iterator();
                                 while (channels.hasNext()) {
-                                    Channel channel = (Channel) channels.next();
+                                    ProgramCodeGeneratorAdapter.Channel channel = (ProgramCodeGeneratorAdapter.Channel) channels.next();
                                     if (channel.port == inputPort
                                             && channel.channelNumber == i) {
                                         writeTokens = DFUtilities

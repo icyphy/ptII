@@ -41,7 +41,7 @@ import ptolemy.cg.kernel.generic.GenericCodeGenerator;
 import ptolemy.cg.kernel.generic.program.CodeStream;
 import ptolemy.cg.kernel.generic.program.ProgramCodeGenerator;
 import ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapter;
-import ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapterStrategy.Channel;
+import ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapter.Channel;
 import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
@@ -480,7 +480,7 @@ public class Director extends ProgramCodeGeneratorAdapter {
      *  throws it.
      */
     // FIXME rodiers: Method only used for PN (in IOPort). Move to PNDirector?
-    public static List<Channel> getReferenceChannels(IOPort port,
+    public static List<ProgramCodeGeneratorAdapter.Channel> getReferenceChannels(IOPort port,
             int channelNumber) throws IllegalActionException {
 
         boolean forComposite = false;
@@ -494,18 +494,18 @@ public class Director extends ProgramCodeGeneratorAdapter {
         if ((port.isOutput() && !forComposite)
                 || (port.isInput() && forComposite)) {
 
-            List<Channel> sinkChannels = 
+            List<ProgramCodeGeneratorAdapter.Channel> sinkChannels = 
                     getSinkChannels(port, channelNumber);
 
             return sinkChannels;
         }
 
-        List<Channel> result = new LinkedList<Channel>();
+        List<ProgramCodeGeneratorAdapter.Channel> result = new LinkedList<ProgramCodeGeneratorAdapter.Channel>();
 
         if ((port.isInput() && !forComposite && port.isOutsideConnected())
                 || (port.isOutput() && forComposite)) {
 
-            result.add(new Channel(port, channelNumber));
+            result.add(new ProgramCodeGeneratorAdapter.Channel(port, channelNumber));
         }
         return result;
     }

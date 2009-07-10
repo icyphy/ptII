@@ -35,7 +35,6 @@ import java.util.Set;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
-import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.parameters.ParameterPort;
 import ptolemy.actor.util.ExplicitChangeContext;
@@ -96,94 +95,6 @@ public class ProgramCodeGeneratorAdapterStrategy extends NamedObj {
         return (NamedObj) _object;
     }
 
-    /** Return a set of directories to include for the generated code.
-     *  @return A Set containing the contents of the actor's
-     *   "includeDirectories" block in its template.
-     *  @exception IllegalActionException If thrown when getting or reading
-     *   the CodeStream.
-     */
-    public Set<String> getIncludeDirectories() throws IllegalActionException {
-        Set<String> includeDirectories = new HashSet<String>();
-        CodeStream codeStream = getTemplateParser()._getActualCodeStream();
-        codeStream.appendCodeBlock("includeDirectories", true);
-        String includeDirectoriesString = codeStream.toString();
-
-        if (includeDirectoriesString.length() > 0) {
-            LinkedList<String> includeDirectoriesList = null;
-            try {
-                includeDirectoriesList = StringUtilities
-                        .readLines(includeDirectoriesString);
-            } catch (IOException e) {
-                throw new IllegalActionException(
-                        "Unable to read include directories for " + getName());
-            }
-            includeDirectories.addAll(includeDirectoriesList);
-        }
-
-        return includeDirectories;
-    }
-
-    /** Return a set of directories to find libraries in.
-     *  @return A Set containing the directories in the actor's
-     *   "libraryDirectories" block in its template.
-     *  @exception IllegalActionException If thrown when getting or reading
-     *   the CodeStream.
-     */
-    public Set<String> getLibraryDirectories() throws IllegalActionException {
-        Set<String> libraryDirectories = new HashSet<String>();
-        CodeStream codeStream = getTemplateParser()._getActualCodeStream();
-        codeStream.appendCodeBlock("libraryDirectories", true);
-        String libraryDirectoriesString = codeStream.toString();
-
-        if (libraryDirectoriesString.length() > 0) {
-            LinkedList<String> libraryDirectoryList = null;
-            try {
-                libraryDirectoryList = StringUtilities
-                        .readLines(libraryDirectoriesString);
-            } catch (IOException e) {
-                throw new IllegalActionException(
-                        "Unable to read library directories for " + getName());
-            }
-            libraryDirectories.addAll(libraryDirectoryList);
-        }
-
-        return libraryDirectories;
-    }
-
-    /** Return a set of parameters that will be modified during the execution
-     *  of the model. The actor gets those variables if it implements
-     *  ExplicitChangeContext interface or it contains PortParameters.
-     *
-     *  @return a set of parameters that will be modified.
-     *  @exception IllegalActionException If an actor throws it while getting
-     *   modified variables.
-     */
-    public Set<Parameter> getModifiedVariables() throws IllegalActionException {
-        Set<Parameter> set = new HashSet<Parameter>();
-        if (_object instanceof ExplicitChangeContext) {
-            set
-                    .addAll(((ExplicitChangeContext) _object)
-                            .getModifiedVariables());
-        }
-
-        Iterator<?> inputPorts = ((Actor) _object).inputPortList().iterator();
-        while (inputPorts.hasNext()) {
-            IOPort inputPort = (IOPort) inputPorts.next();
-            if (inputPort instanceof ParameterPort
-                    && inputPort.isOutsideConnected()) {
-                set.add(((ParameterPort) inputPort).getParameter());
-            }
-        }
-        return set;
-    }
-
-    /** Get the object associated with this adapter.
-     *  @return The associated object.
-     */
-    public NamedObj getObject() {
-        return (NamedObj) _object;
-    }
-
     /** Get the template parser associated with this strategy.
      *  @return The associated template parser.
      */
@@ -237,8 +148,8 @@ public class ProgramCodeGeneratorAdapterStrategy extends NamedObj {
      * @exception IllegalActionException If there is a problem getting the
      * adapters for the ports or if the conversion cannot be handled.
      */
-    protected String _generateTypeConvertStatement(Channel source,
-            Channel sink, int offset) throws IllegalActionException {
+    protected String _generateTypeConvertStatement(ProgramCodeGeneratorAdapter.Channel source,
+            ProgramCodeGeneratorAdapter.Channel sink, int offset) throws IllegalActionException {
 
         Type sourceType = ((TypedIOPort) source.port).getType();
         Type sinkType = ((TypedIOPort) sink.port).getType();
@@ -351,15 +262,6 @@ public class ProgramCodeGeneratorAdapterStrategy extends NamedObj {
                 .getAdapter(component);
     }
 
-    /** Return a number of spaces that is proportional to the argument.
-     *  If the argument is negative or zero, return an empty string.
-     *  @param level The level of indenting represented by the spaces.
-     *  @return A string with zero or more spaces.
-     */
-    protected static String _getIndentPrefix(int level) {
-        return StringUtilities.getIndentPrefix(level);
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
@@ -382,16 +284,6 @@ public class ProgramCodeGeneratorAdapterStrategy extends NamedObj {
         _eol = StringUtilities.getProperty("line.separator");
     }
 
-    /** Indent string for indent level 1.
-     *  @see ptolemy.util.StringUtilities#getIndentPrefix(int)
-     */
-    protected final static String _INDENT1 = StringUtilities.getIndentPrefix(1);
-
-    /** Indent string for indent level 2.
-     *  @see ptolemy.util.StringUtilities#getIndentPrefix(int)
-     */
-    protected final static String _INDENT2 = StringUtilities.getIndentPrefix(2);
-
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
@@ -400,62 +292,4 @@ public class ProgramCodeGeneratorAdapterStrategy extends NamedObj {
 
     /** The associated object. */
     private Object _object;
-
-
-    /////////////////////////////////////////////////////////////////////
-    ////                      inner classes                   ////
-
-    /** A class that defines a channel object. A channel object is
-     *  specified by its port and its channel index in that port.
-     */
-    public static class Channel {
-        // FindBugs suggests making this class static so as to decrease
-        // the size of instances and avoid dangling references.
-
-        /** Construct the channel with the given port and channel number.
-         * @param portObject The given port.
-         * @param channel The channel number of this object in the given port.
-         */
-        public Channel(IOPort portObject, int channel) {
-            port = portObject;
-            channelNumber = channel;
-        }
-
-        /**
-         * Whether this channel is the same as the given object.
-         * @param object The given object.
-         * @return True if this channel is the same reference as the given
-         *  object, otherwise false;
-         */
-        public boolean equals(Object object) {
-            return object instanceof Channel
-                    && port.equals(((Channel) object).port)
-                    && channelNumber == ((Channel) object).channelNumber;
-        }
-
-        /**
-         * Return the hash code for this channel. Implementing this method
-         * is required for comparing the equality of channels.
-         * @return Hash code for this channel.
-         */
-        public int hashCode() {
-            return port.hashCode() + channelNumber;
-        }
-
-        /**
-         * Return the string representation of this channel.
-         * @return The string representation of this channel.
-         */
-        public String toString() {
-            return port.getName() + "_" + channelNumber;
-        }
-
-        /** The port that contains this channel.
-         */
-        public IOPort port;
-
-        /** The channel number of this channel.
-         */
-        public int channelNumber;
-    }
 }
