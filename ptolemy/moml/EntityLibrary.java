@@ -164,6 +164,7 @@ public class EntityLibrary extends CompositeEntity implements LazyComposite {
         } catch (KernelException ex) {
             throw new InternalErrorException(null, ex, null);
         }
+        _populated = false;
     }
 
     /** Construct a library in the specified workspace with
@@ -185,6 +186,7 @@ public class EntityLibrary extends CompositeEntity implements LazyComposite {
         } catch (KernelException ex) {
             throw new InternalErrorException(ex.toString());
         }
+        _populated = false;
     }
 
     /** Construct a library with the given container and name.
@@ -204,6 +206,7 @@ public class EntityLibrary extends CompositeEntity implements LazyComposite {
         // triggers populate() on the library, defeating deferred
         // evaluation.
         new Attribute(this, "_libraryMarker");
+        _populated = false;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -271,6 +274,11 @@ public class EntityLibrary extends CompositeEntity implements LazyComposite {
      *   none.
      */
     public void configure(URL base, String source, String text) {
+        // NOTE: This may be called more than once, in which case we need
+        // to accumulate the changes that are specified.
+        if (_configureText != null) {
+            populate();
+        }
         _base = base;
         _configureSource = source;
         _configureText = text;
@@ -398,6 +406,21 @@ public class EntityLibrary extends CompositeEntity implements LazyComposite {
      *  configuration string need be used to configure this object.
      */
     public String getConfigureText() {
+        // This method gets called by MoMLParser upon encountering
+        // </configure> as a protection against exceptions.
+        // In particular, it is possible for propagation to fail
+        // (albeit unlikely), so MoMLParser makes a backup copy
+        // of the previous configure text to restore the value
+        // if an exception occurs.  However, calling this method
+        // used to trigger populate(), which defeats the purpose of lazy
+        // evaluation.  Hence, as an optimization, we check here
+        // for the situation where configure() has not been called
+        // and no attributes or entities have been manually added.
+        // In that situation, we return an empty string, and avoid
+        // calling populate().
+        if (!_populated) {
+            return _configureText;
+        }
         try {
             StringWriter stringWriter = new StringWriter();
             stringWriter.write("<group>\n");
@@ -420,6 +443,20 @@ public class EntityLibrary extends CompositeEntity implements LazyComposite {
             return stringWriter.toString();
         } catch (IOException ex) {
             return "";
+        }
+    }
+
+    /** Override the base class to prevent populating.
+     *  @return An iterator over instances of NamedObj contained by this
+     *   object.
+     */
+    public Iterator lazyContainedObjectsIterator() {
+        boolean previous = _populating;
+        try {
+            _populating = true;
+            return containedObjectsIterator();
+        } finally {
+            _populating = previous;
         }
     }
 
@@ -446,11 +483,10 @@ public class EntityLibrary extends CompositeEntity implements LazyComposite {
      *   an exception is thrown parsing its MoML data.
      */
     public void populate() throws InvalidStateException {
+        if (_populating) {
+            return;
+        }
         try {
-            if (_populating) {
-                return;
-            }
-
             // Avoid populating during cloning.
             if (_cloning) {
                 return;
@@ -503,6 +539,8 @@ public class EntityLibrary extends CompositeEntity implements LazyComposite {
                     }
                 }
             }
+            // Set this if everything succeeds.
+            _populated = true;
         } catch (Exception ex) {
             MessageHandler.error("Failed to populate library.", ex);
 
@@ -524,6 +562,21 @@ public class EntityLibrary extends CompositeEntity implements LazyComposite {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
+    /** Override the base class to prevent triggering a populate() call
+     *  when this occurs.
+     *  @param name The name of the attribute.
+     *  @param text The text with which to configure the attribute.
+     */
+    protected void _attachText(String name, String text) {
+        boolean previous = _populating;
+        try {
+            _populating = true;
+            super._attachText(name, text);
+        } finally {
+            _populating = previous;
+        }
+    }
+
     /** Write a MoML description of the contents of this object, wrapped
      *  in a configure element.  This is done by first populating the model,
      *  and then exporting its contents into a configure element. This method
@@ -542,25 +595,6 @@ public class EntityLibrary extends CompositeEntity implements LazyComposite {
         output.write(_getIndentPrefix(depth) + "</configure>\n");
     }
 
-    //     /** Propagate the value of this object to the
-    //      *  specified object. The specified object is required
-    //      *  to be an instance of the same class as this one, or
-    //      *  a ClassCastException will be thrown.
-    //      *  @param destination Object to which to propagate the
-    //      *   value.
-    //      *  @exception IllegalActionException If the value cannot
-    //      *   be propagated.
-    //      */
-    //     protected void _propagateValue(NamedObj destination)
-    //             throws IllegalActionException {
-    //         try {
-    //             ((Configurable) destination).configure(_base, _configureSource,
-    //                     _configureText);
-    //         } catch (Exception ex) {
-    //             throw new IllegalActionException(this, ex, "Propagation failed.");
-    //         }
-    //     }
-
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
@@ -573,12 +607,18 @@ public class EntityLibrary extends CompositeEntity implements LazyComposite {
     /** Indicate whether data given by configure() has been processed. */
     private boolean _configureDone = false;
 
-    /** Indicator that we are in the midst of populating. */
-    private boolean _populating = false;
-
     /** URL specified to the configure() method. */
     private String _configureSource;
 
     /** Text specified to the configure() method. */
     private String _configureText;
+    
+    /** Flag indicating populate() has been called, and hence
+     *  the configuration should be obtained from the current contents
+     *  (in case they have changed) rather than from the _configureText.
+     */
+    private boolean _populated = false;
+
+    /** Indicator that we are in the midst of populating. */
+    private boolean _populating = false;
 }
