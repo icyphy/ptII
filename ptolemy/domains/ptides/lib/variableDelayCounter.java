@@ -176,6 +176,11 @@ public class variableDelayCounter extends VariableDelay {
      *  and throw an exception if the director does not agree to
      *  do it at the requested time. This is a convenience method
      *  provided because many actors need it.
+     *  <p>
+     *  If the executive director is a Ptides director, use 
+     *  fireAt(Actor, Time, IOPort) method because the pure event this
+     *  actor generates is always safe to process.
+     *  </p>
      *  @param time The requested time.
      *  @exception IllegalActionException If the director does not
      *   agree to fire the actor at the specified time, or if there
@@ -186,10 +191,12 @@ public class variableDelayCounter extends VariableDelay {
         if (director == null) {
             throw new IllegalActionException(this, "No director.");
         }
-        if (!(director instanceof PtidesBasicDirector)) {
-            throw new IllegalActionException(this, "Director is not a PtidesBasicDirector");
+        Time result = null;
+        if (director instanceof PtidesBasicDirector) {
+            result = ((PtidesBasicDirector)director).fireAt(this, time, input);
+        } else {
+            result = director.fireAt(this, time);
         }
-        Time result = ((PtidesBasicDirector)director).fireAt(this, time, input);
         if (!result.equals(time)) {
             throw new IllegalActionException(this,
                     "Director is unable to fire the actor at the requested time: "
@@ -197,5 +204,4 @@ public class variableDelayCounter extends VariableDelay {
                             + result);
         }
     }
-
 }
