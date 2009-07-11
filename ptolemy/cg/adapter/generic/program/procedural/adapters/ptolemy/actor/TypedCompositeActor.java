@@ -117,8 +117,6 @@ public class TypedCompositeActor extends
         code.append(getCodeGenerator().comment(2,
                 "Fire Composite " + getComponent().getName()));
 
-        code.append(super._generateFireCode());
-
         Director directorAdapter = (Director) getCodeGenerator().getAdapter(
                 ((ptolemy.actor.CompositeActor) getComponent()).getDirector());
 
