@@ -40,7 +40,7 @@ ME =		.
 #   if $PTII/mescal was found
 PTTHALES_DIR = thales
 
-DIRS = util com diva org ptolemy $(PTJNI_DIR) $(PTMESCAL_DIR) $(PTTHALES_DIR) \
+DIRS = util com diva org ptolemy $(PTJNI_DIR) lbnl $(PTMESCAL_DIR) $(PTTHALES_DIR) \
 	contrib bin doc
 
 # Root of Ptolemy II directory
