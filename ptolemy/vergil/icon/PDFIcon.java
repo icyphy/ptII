@@ -28,8 +28,11 @@
 package ptolemy.vergil.icon;
 
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.Rectangle;
+import java.awt.Toolkit;
 import java.awt.geom.Rectangle2D;
+import java.net.URL;
 
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -132,6 +135,9 @@ public class PDFIcon extends DynamicEditorIcon {
     private class PDFPaintedObject implements PaintedObject {
 
         public Rectangle2D getBounds() {
+            if (_page == null) {
+                return new Rectangle2D.Double(0.0, 0.0, 40.0, 40.0);
+            }
             Rectangle2D boundingBox = _page.getBBox();
             return new Rectangle2D.Double(boundingBox.getX(),
                     boundingBox.getY(),
@@ -140,6 +146,16 @@ public class PDFIcon extends DynamicEditorIcon {
         }
 
         public void paint(Graphics2D graphics) {
+            if (_page == null) {
+                // No page. Paint an error image.
+                URL url = getClass().getResource(
+                        "/diva/canvas/toolbox/errorImage.gif");
+                Toolkit tk = Toolkit.getDefaultToolkit();
+                Image image = tk.getImage(url);
+                graphics.drawImage(image, null, null);
+
+                return;
+            }
             Rectangle2D boundingBox = _page.getBBox();
             PDFRenderer renderer = new PDFRenderer(_page, graphics, 
                     new Rectangle(0, 0,
@@ -151,7 +167,7 @@ public class PDFIcon extends DynamicEditorIcon {
             try {
                 _page.waitForFinish();
             } catch (InterruptedException e) {
-                // FIXME Auto-generated catch block
+                // What can we do here?
                 e.printStackTrace();
             }
             renderer.run();            
