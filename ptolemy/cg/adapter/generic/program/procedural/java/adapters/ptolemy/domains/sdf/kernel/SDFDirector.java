@@ -40,7 +40,6 @@ import ptolemy.cg.kernel.generic.GenericCodeGenerator;
 import ptolemy.cg.kernel.generic.program.CodeStream;
 import ptolemy.cg.kernel.generic.program.ProgramCodeGenerator;
 import ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapter;
-import ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapter.Channel;
 import ptolemy.cg.kernel.generic.program.procedural.java.JavaCodeGenerator;
 import ptolemy.cg.lib.CompiledCompositeActor;
 import ptolemy.data.BooleanToken;

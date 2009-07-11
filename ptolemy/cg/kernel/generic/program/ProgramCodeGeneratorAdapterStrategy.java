@@ -27,18 +27,8 @@
  */
 package ptolemy.cg.kernel.generic.program;
 
-import java.io.IOException;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.Set;
-
-import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.TypedIOPort;
-import ptolemy.actor.parameters.ParameterPort;
-import ptolemy.actor.util.ExplicitChangeContext;
-import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.Type;
@@ -58,8 +48,7 @@ import ptolemy.util.StringUtilities;
  * @Pt.ProposedRating Red (rodiers)
  * @Pt.AcceptedRating Red (rodiers)
  */
-// FIXME: Why extend NamedObj? Extend Attribute and store in the actor being adapted?
-public class ProgramCodeGeneratorAdapterStrategy extends NamedObj {
+public class ProgramCodeGeneratorAdapterStrategy {
 
     /** Construct the code generator adapter strategy.
      */
@@ -120,11 +109,6 @@ public class ProgramCodeGeneratorAdapterStrategy extends NamedObj {
             _templateParser.setCodeGenerator(codeGenerator);
         }
     }
-
-    public String toString() {
-        return getComponent().toString() + "'s Adapter Strategy";
-    }
-
 
     ///////////////////////////////////////////////////////////////////
     ////                     protected methods.                    ////

@@ -27,12 +27,6 @@
  */
 package ptolemy.cg.kernel.generic.program.procedural.c;
 
-import java.io.File;
-import java.io.FileFilter;
-import java.net.URL;
-import java.util.HashSet;
-import java.util.Set;
-
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapter;
@@ -41,10 +35,6 @@ import ptolemy.data.type.BaseType;
 import ptolemy.data.type.Type;
 import ptolemy.domains.fsm.modal.ModalController;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.util.ExecuteCommands;
-import ptolemy.util.FileUtilities;
-import ptolemy.util.StreamExec;
-import ptolemy.util.StringUtilities;
 
 //////////////////////////////////////////////////////////////////////////
 ////CCodeGeneratorAdapterStrategy
