@@ -36,7 +36,8 @@ DIRS =		demo test
 # Root of the Java directory
 ROOT =		../../../..
 
-CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(DIVA_JAR)
+PDFRENDERER_JAR=$(PTII)/lib/PDFRenderer.jar
+CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(DIVA_JAR)$(CLASSPATHSEPARATOR)$(PDFRENDERER_JAR)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
