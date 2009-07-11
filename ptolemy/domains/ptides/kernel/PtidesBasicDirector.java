@@ -917,6 +917,68 @@ public class PtidesBasicDirector extends DEDirector {
      *  the current model time, or the depth of the actor has not be calculated,
      *  or the new event can not be enqueued.
      */
+    protected void _enqueueEvent(Actor actor, Time time)
+            throws IllegalActionException {
+        if ((_eventQueue == null)
+                || ((_disabledActors != null) && _disabledActors
+                        .contains(actor))) {
+            return;
+        }
+
+        // Adjust the microstep.
+        int microstep = 0;
+
+        if (time.compareTo(getModelTime()) == 0) {
+            // If during initialization, do not increase the microstep.
+            // This is based on the assumption that an actor only requests
+            // one firing during initialization. In fact, if an actor requests
+            // several firings at the same time,
+            // only the first request will be granted.
+            if (_isInitializing) {
+                microstep = _microstep;
+            } else {
+                microstep = _microstep + 1;
+            }
+        } else if (time.compareTo(getModelTime()) < 0) {
+            throw new IllegalActionException(actor,
+                    "Attempt to queue an event in the past:"
+                            + " Current time is " + getModelTime()
+                            + " while event time is " + time);
+        }
+
+        int depth = _getDepthOfActor(actor);
+
+        if (_debugging) {
+            _debug("enqueue a pure event: ", ((NamedObj) actor).getName(),
+                    "time = " + time + " microstep = " + microstep
+                            + " depth = " + depth);
+        }
+        
+        double minDelay = _getMinDelay((NamedObj)actor);
+
+        DEEvent newEvent = new PtidesEvent(actor, time, microstep, depth, minDelay);
+        _eventQueue.put(newEvent);
+    }
+    
+    /** Put a pure event into the event queue to schedule the given actor to
+     *  fire at the specified timestamp.
+     *  <p>
+     *  The default microstep for the queued event is equal to zero,
+     *  unless the time is equal to the current time, where the microstep
+     *  will be the current microstep plus one.
+     *  </p><p>
+     *  The depth for the queued event is the minimum of the depths of
+     *  all the ports of the destination actor.
+     *  </p><p>
+     *  If there is no event queue or the given actor is disabled, then
+     *  this method does nothing.</p>
+     *
+     *  @param actor The actor to be fired.
+     *  @param time The timestamp of the event.
+     *  @exception IllegalActionException If the time argument is less than
+     *  the current model time, or the depth of the actor has not be calculated,
+     *  or the new event can not be enqueued.
+     */
     protected void _enqueueEvent(Actor actor, Time time, IOPort sourceInput)
             throws IllegalActionException {
         if ((_eventQueue == null)
@@ -1214,18 +1276,31 @@ public class PtidesBasicDirector extends DEDirector {
                 + "  </property>";
     }
     
-    /** For all ports within the same equivalence class as the source input, find the
+    /** If the source is null, then it is assumed this event is safe to process,
+     *  thsu minDelay = PositiveInfinity.
+     *  If the source is an actor, find minimum minDelay among all its inputs. If
+     *  the source is a source input port,   
+     *  For all ports within the same equivalence class as the source input, find the
      *  minDelay parameter. Return the minimum among all minDelay parameter.
-     *  @param sourceInput
+     *  @param source
      *  @return minDelay
      *  @throws IllegalActionException if _finiteEquivalentPorts throws it.
      *  
      */
-    protected double _getMinDelay(IOPort sourceInput) throws IllegalActionException {
+    protected double _getMinDelay(NamedObj source) throws IllegalActionException {
         double result = Double.POSITIVE_INFINITY;
-        for (IOPort port : _finiteEquivalentPorts(sourceInput)) {
+        Iterator iter = null;
+        if (source == null) {
+            return Double.POSITIVE_INFINITY;
+        } else if (source instanceof Actor) {
+            iter = ((Actor) source).inputPortList().iterator();
+        } else if (source instanceof IOPort) {
+            iter = _finiteEquivalentPorts((IOPort)source).iterator();
+        }
+        while (iter.hasNext()) {
+            IOPort port = (IOPort)iter.next();
             Parameter parameter = (Parameter) ((NamedObj) port)
-                    .getAttribute("minDelay");
+            .getAttribute("minDelay");
             if (parameter != null) {
                 Token[] tokens = ((ArrayToken) parameter
                         .getToken()).arrayValue();

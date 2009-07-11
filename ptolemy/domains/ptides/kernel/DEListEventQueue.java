@@ -157,8 +157,11 @@ public class DEListEventQueue implements DEEventQueue {
         DEEvent result = (DEEvent) _listQueue.remove(index);
         // put the token of this event into the destined receiver.
         if (result instanceof PtidesEvent) {
-            ((PtidesBasicReceiver) ((PtidesEvent) result).receiver())
-                    .putToReceiver(((PtidesEvent) result).token());
+            PtidesEvent ptidesEvent = (PtidesEvent) result;
+            if (ptidesEvent.receiver() != null) {
+                ((PtidesBasicReceiver) (ptidesEvent).receiver())
+                .putToReceiver((ptidesEvent).token());
+            }
         }
         if (_debugging) {
             _debug("--- taking " + index + "th element from queue: " + result);
