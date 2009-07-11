@@ -112,7 +112,7 @@ public class VariableDelay extends TimedDelay {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       protected method                    ////
+    ////                         protected methods                 ////
 
     /** Override the method of the super class to initialize the
      *  parameter values.
