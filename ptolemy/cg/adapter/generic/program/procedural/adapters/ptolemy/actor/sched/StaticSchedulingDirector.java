@@ -48,7 +48,6 @@ import ptolemy.cg.kernel.generic.GenericCodeGenerator;
 import ptolemy.cg.kernel.generic.program.CodeStream;
 import ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapter;
 import ptolemy.cg.kernel.generic.program.TemplateParser;
-import ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapter.Channel;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
@@ -587,6 +586,32 @@ public class StaticSchedulingDirector extends Director {
 
     ////////////////////////////////////////////////////////////////////////
     ////                         protected methods                      ////
+    
+    /**
+     * Generate the code that updates the input/output port offset.
+     * @param code The given code buffer.
+     * @param actor The given actor.
+     * @exception IllegalActionException Thrown if
+     *  _updatePortOffset(IOPort, StringBuffer, int) or getRate(IOPort)
+     *  throw it.
+     */
+    protected void _generateUpdatePortOffsetCode(StringBuffer code, Actor actor)
+            throws IllegalActionException {
+        // update buffer offset after firing each actor once
+        Iterator<?> inputPorts = actor.inputPortList().iterator();
+        while (inputPorts.hasNext()) {
+            IOPort port = (IOPort) inputPorts.next();
+            int rate = DFUtilities.getRate(port);
+            _updatePortOffset(port, code, rate);
+        }
+
+        Iterator<?> outputPorts = actor.outputPortList().iterator();
+        while (outputPorts.hasNext()) {
+            IOPort port = (IOPort) outputPorts.next();
+            int rate = DFUtilities.getRate(port);
+            _updateConnectedPortsOffset(port, code, rate);
+        }
+    }
 
     /**
      * Return an unique label for the given attribute referenced
@@ -707,32 +732,7 @@ public class StaticSchedulingDirector extends Director {
     }
 
 
-    /**
-     * Generate the code that updates the input/output port offset.
-     * @param code The given code buffer.
-     * @param actor The given actor.
-     * @exception IllegalActionException Thrown if
-     *  _updatePortOffset(IOPort, StringBuffer, int) or getRate(IOPort)
-     *  throw it.
-     */
-    private void _generateUpdatePortOffsetCode(StringBuffer code, Actor actor)
-            throws IllegalActionException {
-        // update buffer offset after firing each actor once
-        Iterator<?> inputPorts = actor.inputPortList().iterator();
-        while (inputPorts.hasNext()) {
-            IOPort port = (IOPort) inputPorts.next();
-            int rate = DFUtilities.getRate(port);
-            _updatePortOffset(port, code, rate);
-        }
-
-        Iterator<?> outputPorts = actor.outputPortList().iterator();
-        while (outputPorts.hasNext()) {
-            IOPort port = (IOPort) outputPorts.next();
-            int rate = DFUtilities.getRate(port);
-            _updateConnectedPortsOffset(port, code, rate);
-        }
-    }
-
+    
     private String _getCastType(String name) throws IllegalActionException {
         StringTokenizer tokenizer = new StringTokenizer(name, "#,", true);
 
