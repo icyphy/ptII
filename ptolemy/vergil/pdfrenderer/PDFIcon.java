@@ -25,7 +25,7 @@
  COPYRIGHTENDKEY
 
  */
-package ptolemy.vergil.pdf;
+package ptolemy.vergil.pdfrenderer;
 
 import java.awt.Graphics2D;
 import java.awt.Image;

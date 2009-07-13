@@ -675,6 +675,7 @@ ALLPACKAGES = \
 	ptolemy.vergil.modal.ia \
 	ptolemy.vergil.kernel \
 	ptolemy.vergil.kernel.attributes \
+	ptolemy.vergil.pdfrenderer \
 	ptolemy.vergil.properties \
 	ptolemy.vergil.ptera \
 	ptolemy.vergil.tdl \

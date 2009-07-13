@@ -5,7 +5,7 @@
   <configure>
     <?moml
       <group>
-         <property name="PDF" class="ptolemy.vergil.pdf.PDFAttribute"/>
+         <property name="PDF" class="ptolemy.vergil.pdfrenderer.PDFAttribute"/>
       </group>
     ?>
   </configure>

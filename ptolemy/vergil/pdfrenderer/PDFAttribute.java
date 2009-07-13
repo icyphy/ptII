@@ -25,7 +25,7 @@
  COPYRIGHTENDKEY
 
  */
-package ptolemy.vergil.pdf;
+package ptolemy.vergil.pdfrenderer;
 
 import java.io.File;
 import java.io.IOException;
@@ -94,7 +94,7 @@ public class PDFAttribute extends VisibleAttribute {
 
         source = new FileParameter(this, "source");
         // Put the sample PDF in the local directory so that it stays with this actor.
-        source.setExpression("$PTII/ptolemy/vergil/pdf/sample.pdf");
+        source.setExpression("$PTII/ptolemy/vergil/pdfrenderer/sample.pdf");
         
         scale = new Parameter(this, "scale");
         scale.setTypeEquals(BaseType.DOUBLE);
@@ -110,7 +110,7 @@ public class PDFAttribute extends VisibleAttribute {
     public Parameter scale;
 
     /** The source image file. This is a file name or URL, where the default
-     *  is "$CLASSPATH/ptolemy/vergil/pdf/sample.pdf".
+     *  is "$CLASSPATH/ptolemy/vergil/pdfrenderer/sample.pdf".
      */
     public FileParameter source;
 
