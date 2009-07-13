@@ -172,6 +172,28 @@ DSP_JNLP_JARS =	\
 	$(DOC_CODEDOC_JAR)
 
 
+#######
+# Building Controls Virtual Test Bed (https://gaia.lbl.gov/bcvtb)
+#
+BCVTB_ONLY_JNLP_JARS = \
+	doc/design/usingVergil/usingVergil.jar 
+
+BCVTB_MAIN_JAR = \
+	ptolemy/actor/gui/jnlp/BCVTBApplication.jar
+
+BCVTB_JNLP_JARS =	\
+	doc/docConfig.jar \
+	lib/diva.jar \
+	lib/kieler.jar \
+	ptolemy/ptsupport.jar \
+	ptolemy/vergil/vergil.jar \
+	ptolemy/domains/sdf.jar \
+	ptolemy/domains/modal.jar \
+	ptolemy/actor/parameters/demo/demo.jar \
+	$(MATLAB_JARS) \
+	ptolemy/ptsupport.jar \
+	$(DOC_CODEDOC_JAR)
+
 
 #######
 # HyVisual - HybridSystenms
@@ -322,8 +344,12 @@ BACKTRACK_JARS =
 EXEC_JARS = 	ptolemy/actor/gui/exec/exec.jar
 
 
+PDFRENDERER_JARS = ptolemy/vergil/pdfrender/pdfrenderer.jar \
+		ptolemy/vergil/pdfrenderer/PDFRenderer.jar
+
 PTJACL_JARS =	ptolemy/actor/gui/ptjacl/ptjacl.jar \
 		lib/ptjacl.jar
+
 # Do not include PTJACL for size reasons
 PTJACL_JARS =
 
@@ -406,6 +432,7 @@ FULL_ONLY_JNLP_JARS = \
 	ptolemy/domains/ptera/ptera.jar \
 	ptolemy/domains/ptera/demo/demo.jar \
 	ptolemy/domains/ptera/doc/doc.jar \
+	$(PDFRENDERER_JARS) \
 	ptolemy/vergil/ptera/ptera.jar \
 	ptolemy/vergil/fsm/fmv/fmv.jar \
 	ptolemy/vergil/gt/gt.jar \
