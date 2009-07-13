@@ -27,7 +27,6 @@
  */
 package ptolemy.actor.lib;
 
-import ptolemy.actor.Director;
 import ptolemy.actor.util.CalendarQueue;
 import ptolemy.actor.util.Time;
 import ptolemy.actor.util.TimedEvent;
@@ -35,7 +34,6 @@ import ptolemy.data.DoubleToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
-import ptolemy.domains.ptides.kernel.PtidesBasicDirector;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -280,55 +278,4 @@ public class TimeDelay extends Transformer {
 
     /** A local event queue to store the delayed output tokens. */
     protected CalendarQueue _delayedOutputTokens;
-    
-    /** Request a firing of this actor at the specified time
-     *  and throw an exception if the director does not agree to
-     *  do it at the requested time. This is a convenience method
-     *  provided because many actors need it.
-     *  <p>
-     *  If the executive director is a Ptides director, use 
-     *  fireAt(Actor, Time, IOPort) method because the pure event this
-     *  actor generates is always safe to process.
-     *  </p>
-     *  @param time The requested time.
-     *  @exception IllegalActionException If the director does not
-     *   agree to fire the actor at the specified time, or if there
-     *   is no director.
-     */
-    
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected methods                 ////
-
-    /** Request a firing of this actor at the specified time
-     *  and throw an exception if the director does not agree to
-     *  do it at the requested time. This is a convenience method
-     *  provided because many actors need it.
-     *  <p>
-     *  If the executive director is a Ptides director, use 
-     *  fireAt(Actor, Time, IOPort) method because the pure event this
-     *  actor generates is always safe to process.
-     *  </p>
-     *  @param time The requested time.
-     *  @exception IllegalActionException If the director does not
-     *   agree to fire the actor at the specified time, or if there
-     *   is no director.
-     */
-    protected void _fireAt(Time time) throws IllegalActionException {
-        Director director = getDirector();
-        if (director == null) {
-            throw new IllegalActionException(this, "No director.");
-        }
-        Time result = null;
-        if (director instanceof PtidesBasicDirector) {
-            result = ((PtidesBasicDirector)director).fireAt(this, time, null);
-        } else {
-            result = director.fireAt(this, time);
-        }
-        if (!result.equals(time)) {
-            throw new IllegalActionException(this,
-                    "Director is unable to fire the actor at the requested time: "
-                            + time + ". It responds it will fire it at: "
-                            + result);
-        }
-    }
 }
