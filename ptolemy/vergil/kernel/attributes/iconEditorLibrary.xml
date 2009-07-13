@@ -39,4 +39,5 @@
     <property name="attributeName" value=""/>
     <property name="displayWidth" value="6"/>
   </property>
+  <property name="PDF" class="ptolemy.vergil.kernel.attributes.PDFAttribute"/>
 </entity>
