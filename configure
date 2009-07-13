@@ -795,6 +795,8 @@ PTMATLAB_CC_FLAGS
 PTMATLAB_DIR
 PTMATLAB_LD_ARGS
 PTMESCAL_DIR
+PTPDFRENDERER_DIR
+PTPDFRENDERER_JAR
 PTPSDF_DIR
 PTSVG_DIR
 PTSVG_JAR
@@ -1479,6 +1481,8 @@ Optional Packages:
                           defaults to \$PTII/ptolemy/actor/lib/database/$MYSQL_TARGET_JAR
   --with-ojdbc=/path/to/ojdbcN.jar  path to ojdbc.jar
                           defaults to \$PTII/ptolemy/actor/lib/database/ojdbc6.jar or ojdbc5.jar $OJDBC_TARGET_JAR
+  --with-pdfrenderer=PDFRENDERER_JAR     use PDFRenderer PDFRENDERER_JAR
+                          defaults to $PDFRENDERER_USER_DIR/PDFRenderer.jar
   --with-batikjar=BATIK_JAR     use Batik jar BATIK_JAR,
                           defaults to \$KEPLER/lib/jar/batik-all-1.6.jar
   --with-tini=DIR       use TINI from DIR,
@@ -9818,6 +9822,61 @@ else
 fi
 
 #--------------------------------------------------------------------
+#       PDFRenderer used to display PDF in vergil.
+#	Source may be found at https://pdf-renderer.dev.java.net/
+#--------------------------------------------------------------------
+
+# PTPDFRENDERER_DIR is set to pdf and used in
+# $PTII/ptolemy/vergil/makefile if PDFRenderer is found
+PTPDFRENDERER_DIR=
+
+# Jar file used by ptolemy/vergil/pdfrenderer
+PTPDFRENDERER_JAR=
+
+PDFRENDERER_USER_DIR=$PTII/ptolemy/vergil/pdfrenderer
+# We only need to look for PDFRender.jar if the directory that uses it exists.
+if test ! -d "$PDFRENDERER_USER_DIR"; then
+    if test "${PTVERBOSE:-none}" != "none"; then { echo "$as_me:$LINENO: result: $PTII/$PDFRENDERER_USER_DIR is not present,
+    so we need not find PDFRenderer." >&5
+echo "${ECHO_T}$PTII/$PDFRENDERER_USER_DIR is not present,
+    so we need not find PDFRenderer." >&6; }; fi
+else
+    { echo "$as_me:$LINENO: checking for PDFRenderer" >&5
+echo $ECHO_N "checking for PDFRenderer... $ECHO_C" >&6; }
+
+# Check whether --with-pdfrendererjar was given.
+if test "${with_pdfrendererjar+set}" = set; then
+  withval=$with_pdfrendererjar; PTPDFRENDERER_JAR=$withval
+else
+  PTPDFRENDERER_JAR=$PDFRENDERER_USER_DIR/PDFRenderer.jar
+fi
+
+
+    if test -f "$PTPDFRENDERER_JAR"; then
+	if test "${PTVERBOSE:-none}" = "none"; then { echo "$as_me:$LINENO: result: ok" >&5
+echo "${ECHO_T}ok" >&6; }; else { echo "$as_me:$LINENO: result: $PTPDFRENDERER_JAR" >&5
+echo "${ECHO_T}$PTPDFRENDERER_JAR" >&6; }; fi
+	PTPDFRENDERER_DIR=pdfrender
+        ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
+        <classpathentry kind=\"lib\" path=\"$PTPDFRENDERER_JAR\"/>"
+    fi
+    if test "$PTPDFRENDERER_DIR" = ""; then
+        { echo "$as_me:$LINENO: WARNING: Failed to find the PDFRenderer Jar file
+    You need only have PDFRenderer if you want to render PDF files in Vergil.
+    PDFRenderer may be downloaded from https://pdf-renderer.dev.java.net/" >&5
+echo "$as_me: WARNING: Failed to find the PDFRenderer Jar file
+    You need only have PDFRenderer if you want to render PDF files in Vergil.
+    PDFRenderer may be downloaded from https://pdf-renderer.dev.java.net/" >&2;}
+	PTPDFRENDERER_JAR=
+    fi
+fi
+
+if test -z "$PTPDFRENDERER_DIR"; then
+   ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|$PDFRENDERER_USER_DIR"
+fi
+
+
+#--------------------------------------------------------------------
 #       The Batik SVG toolkit is used by Kepler so we include Batik
 #	support in Diva.  See
 #	http://xmlgraphics.apache.org/batik/
@@ -11029,6 +11088,13 @@ fi
 # if $PTII/mescal was found
 
 
+# Set to pdf and used in ptolemy/vergil/makefile if
+# PDFRenderer.jar is found.
+
+
+# Jar file used in ptolemy/vergil/pdf
+
+
 # Set to psdf and used in $PTII/ptolemy/domains/makefile if
 # $PTII/lib/mapss.jar was found
 
@@ -12028,6 +12094,8 @@ PTMATLAB_CC_FLAGS!$PTMATLAB_CC_FLAGS$ac_delim
 PTMATLAB_DIR!$PTMATLAB_DIR$ac_delim
 PTMATLAB_LD_ARGS!$PTMATLAB_LD_ARGS$ac_delim
 PTMESCAL_DIR!$PTMESCAL_DIR$ac_delim
+PTPDFRENDERER_DIR!$PTPDFRENDERER_DIR$ac_delim
+PTPDFRENDERER_JAR!$PTPDFRENDERER_JAR$ac_delim
 PTPSDF_DIR!$PTPSDF_DIR$ac_delim
 PTSVG_DIR!$PTSVG_DIR$ac_delim
 PTSVG_JAR!$PTSVG_JAR$ac_delim
@@ -12039,8 +12107,6 @@ PTQUICKTIME_PACKAGES!$PTQUICKTIME_PACKAGES$ac_delim
 PTRXTX_PACKAGES!$PTRXTX_PACKAGES$ac_delim
 PTSPACE_DIR!$PTSPACE_DIR$ac_delim
 PTSPACEDOMAIN_JAR!$PTSPACEDOMAIN_JAR$ac_delim
-PTSPACEDOMAIN_PACKAGES!$PTSPACEDOMAIN_PACKAGES$ac_delim
-PTTINI_DIR!$PTTINI_DIR$ac_delim
 _ACEOF
 
   if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 97; then
@@ -12082,6 +12148,8 @@ _ACEOF
 ac_delim='%!_!# '
 for ac_last_try in false false false false false :; do
   cat >conf$$subs.sed <<_ACEOF
+PTSPACEDOMAIN_PACKAGES!$PTSPACEDOMAIN_PACKAGES$ac_delim
+PTTINI_DIR!$PTTINI_DIR$ac_delim
 PTTINYOS_DIR!$PTTINYOS_DIR$ac_delim
 PTGIOTTO_DIR!$PTGIOTTO_DIR$ac_delim
 PTVR_DIR!$PTVR_DIR$ac_delim
@@ -12111,7 +12179,7 @@ LIBOBJS!$LIBOBJS$ac_delim
 LTLIBOBJS!$LTLIBOBJS$ac_delim
 _ACEOF
 
-  if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 27; then
+  if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 29; then
     break
   elif $ac_last_try; then
     { { echo "$as_me:$LINENO: error: could not make $CONFIG_STATUS" >&5
