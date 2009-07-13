@@ -600,6 +600,13 @@ PTMATLAB_LD_ARGS = @PTMATLAB_LD_ARGS@
 # if $PTII/mescal was found
 PTMESCAL_DIR=	@PTMESCAL_DIR@
 
+# Set to pdf and used in ptolemy/vergil/makefile if
+# PDFRenderer.jar is found.
+PTPDFRENDERER_DIR = @PTPDFRENDERER_DIR@
+
+# Jar file used in ptolemy/vergil/pdf
+PTPDFRENDERER_JAR = @PTPDFRENDERER_JAR@
+
 # Set to psdf and used in $PTII/ptolemy/domains/makefile if
 # $PTII/lib/mapss.jar was found
 PTPSDF_DIR =	@PTPSDF_DIR@

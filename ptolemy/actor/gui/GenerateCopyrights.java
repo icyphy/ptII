@@ -173,6 +173,9 @@ public class GenerateCopyrights {
         _addIfPresent(copyrightsMap, "ptolemy.matlab.Expression",
                 "ptolemy/matlab/copyright.htm");
 
+        _addIfPresent(copyrightsMap, "ptolemy.vergil.pdf.PDFAttribute",
+                "ptolemy/vergil/pdf/PDFRenderer-copyright.htm");
+
         _addIfPresent(copyrightsMap, "vendors.vr.Volume",
                 "ptolemy/domains/gr/lib/vr/vr-copyright.htm");
 

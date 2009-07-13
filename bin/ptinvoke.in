@@ -437,7 +437,7 @@ if [ "$PTKIELER_DIR" = "kieler" ]; then
 fi
 
 #### PDFRenderer
-PDFRENDERER_JAR="${PTII}/lib/PDFRenderer.jar"
+PDFRENDERER_JAR="@PTPDFRENDERER_JAR@"
 PDFRENDERER_JARS="${CLASSPATHSEPARATOR}${PDFRENDERER_JAR}"
 
 #### PSDF is Parameterized Synchronous Data Flow

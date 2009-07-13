@@ -1,10 +1,10 @@
-# Makefile for the ptolemy/vergil/kernel/attributes package
+# Makefile for the Vergil PDF Renderer interface
 #
-# @Authors: Edward A. Lee
+# @Authors: Christopher Brooks, based on a file by Thomas M. Parks
 #
-# @Version: makefile,v 1.6 2004/01/08 22:53:56 eal Exp
+# @Version: $Id$
 #
-# @Copyright (c) 2001-2007 The Regents of the University of California.
+# @Copyright (c) 2009 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -29,67 +29,51 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/vergil/kernel/attributes
 
-DIRS =		demo test
+ME =		ptolemy/vergil/pdf
+
+DIRS =
 
 # Root of the Java directory
-ROOT =		../../../..
+ROOT =		../../..
 
-CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(DIVA_JAR)
+# PTPDFRENDER_JAR is set to ptolemy/vergil/pdfrenderer/PDFRenderer.jar
+# by configure
+CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(DIVA_JAR)$(CLASSPATHSEPARATOR)$(PTPDFRENDERER_JAR)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	attributes
+PTPACKAGE = 	pdf
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
-	AbstractTextAttribute.java \
-	ArrowAttribute.java \
-	AttributeExpressionAttribute.java \
-	AttributeValueAttribute.java \
-	DocumentationAttribute.java \
-	EllipseAttribute.java \
-	FilledShapeAttribute.java \
-	IDAttribute.java \
-	ImageAttribute.java \
-	LineAttribute.java \
-	RectangleAttribute.java \
-	ResizablePolygonAttribute.java \
-	TextAttribute.java \
-	ShapeAttribute.java \
-	VisibleAttribute.java \
-	UpdateAnnotations.java
+	PDFAttribute.java \
+	PDFIcon.java
 
 
 OTHER_FILES_TO_BE_JARED = \
-	decorative.xml \
-	iconEditorLibrary.xml \
-	ptIIplanetIcon.gif \
+	PDFRenderer-copyright.htm \
+	pdfattribute.pdf \
 	sample.pdf
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-# Don't include demo or DIRS here, or else 'make sources' will run 'make demo'
-MISC_FILES = \
-	test
+MISC_FILES =	$(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	demo \
-	$(PTCLASSJAR) \
-	'AttributeValueAttribute$$1.class' \
-	'DocumentationAttribute$$DocumentationAttributeFactory.class'
+	$(PTCLASSJAR)
 
 JCLASS = $(JSRCS:%.java=%.class)
 
-all: jclass
+all: \
+	jclass
 install: jclass $(PTCLASSJAR)
 
 # Get the rest of the rules

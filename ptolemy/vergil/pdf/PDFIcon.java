@@ -1,6 +1,6 @@
 /* An icon that displays a specified java.awt.Image.
 
- Copyright (c) 2003-2006 The Regents of the University of California.
+ Copyright (c) 2009 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -25,7 +25,7 @@
  COPYRIGHTENDKEY
 
  */
-package ptolemy.vergil.icon;
+package ptolemy.vergil.pdf;
 
 import java.awt.Graphics2D;
 import java.awt.Image;
@@ -38,6 +38,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
+import ptolemy.vergil.icon.DynamicEditorIcon;
 
 import com.sun.pdfview.PDFPage;
 import com.sun.pdfview.PDFRenderer;

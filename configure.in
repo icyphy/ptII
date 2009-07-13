@@ -3495,6 +3495,49 @@ else
 fi 
 
 #--------------------------------------------------------------------
+#       PDFRenderer used to display PDF in vergil.
+#	Source may be found at https://pdf-renderer.dev.java.net/
+#--------------------------------------------------------------------
+
+# PTPDFRENDERER_DIR is set to pdf and used in
+# $PTII/ptolemy/vergil/makefile if PDFRenderer is found
+PTPDFRENDERER_DIR=
+
+# Jar file used by ptolemy/vergil/pdfrenderer
+PTPDFRENDERER_JAR=
+
+PDFRENDERER_USER_DIR=$PTII/ptolemy/vergil/pdf
+# We only need to look for Batik if $PTII/diva/util/java2d/svg exists
+if test ! -d "$PDFRENDERER_USER_DIR"; then
+    PT_MSG_STATUS([$PTII/$PDFRENDERER_USER_DIR is not present,
+    so we need not find PDFRenderer.])
+else
+    AC_MSG_CHECKING([for PDFRenderer])
+    AC_ARG_WITH(batikjar, [  --with-pdfrenderer=PDFRENDERER_JAR     use PDFRenderer PDFRENDERER_JAR
+                          defaults to $PDFRENDERER_USER_DIR/PDFRenderer.jar],
+	PTPDFRENDERER_JAR=$withval,
+	PTPDFRENDERER_JAR=$PDFRENDERER_USER_DIR/PDFRenderer.jar)
+
+    if test -f "$PTPDFRENDERER_JAR"; then
+	PT_MSG_RESULT([$PTPDFRENDERER_JAR])
+	PTPDFRENDERER_DIR=pdfrender
+        ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
+        <classpathentry kind=\"lib\" path=\"$PTPDFRENDERER_JAR\"/>"
+    fi	
+    if test "$PTPDFRENDERER_DIR" = ""; then
+        AC_MSG_WARN([Failed to find the PDFRenderer Jar file
+    You need only have PDFRenderer if you want to render PDF files in Vergil.
+    PDFRenderer may be downloaded from https://pdf-renderer.dev.java.net/])
+	PTPDFRENDERER_JAR=
+    fi
+fi
+
+if test -z "$PTPDFRENDERER_DIR"; then
+   ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|$PDFRENDERER_USER_DIR"
+fi 
+
+
+#--------------------------------------------------------------------
 #       The Batik SVG toolkit is used by Kepler so we include Batik
 #	support in Diva.  See
 #	http://xmlgraphics.apache.org/batik/
@@ -4455,6 +4498,13 @@ AC_SUBST(PTMATLAB_LD_ARGS)
 # Set to mescal and used in $PTII/makefile 
 # if $PTII/mescal was found
 AC_SUBST(PTMESCAL_DIR)
+
+# Set to pdf and used in ptolemy/vergil/makefile if
+# PDFRenderer.jar is found.
+AC_SUBST(PTPDFRENDERER_DIR)
+
+# Jar file used in ptolemy/vergil/pdf
+AC_SUBST(PTPDFRENDERER_JAR)
 
 # Set to psdf and used in $PTII/ptolemy/domains/makefile if
 # $PTII/lib/mapss.jar was found

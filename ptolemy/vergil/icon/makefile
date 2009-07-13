@@ -37,8 +37,7 @@ DIRS =
 # Root of the Java directory
 ROOT =		../../..
 
-PDFRENDERER_JAR=$(PTII)/lib/PDFRenderer.jar
-CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(DIVA_JAR)$(CLASSPATHSEPARATOR)$(PDFRENDERER_JAR)
+CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(DIVA_JAR)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
@@ -62,7 +61,6 @@ JSRCS = \
 	EditorIcon.java \
 	ImageIcon.java \
 	NameIcon.java \
-	PDFIcon.java \
 	ResizableAttributeControllerFactory.java \
 	ShapeIcon.java \
 	SVGIcon.java \

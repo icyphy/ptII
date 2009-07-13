@@ -1,6 +1,6 @@
 /* An attribute with a reference to an image.
 
- Copyright (c) 2003-2007 The Regents of the University of California.
+ Copyright (c) 2009 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -25,7 +25,7 @@
  COPYRIGHTENDKEY
 
  */
-package ptolemy.vergil.kernel.attributes;
+package ptolemy.vergil.pdf;
 
 import java.io.File;
 import java.io.IOException;
@@ -41,7 +41,7 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.vergil.icon.PDFIcon;
+import ptolemy.vergil.kernel.attributes.VisibleAttribute;
 
 import com.sun.pdfview.PDFFile;
 import com.sun.pdfview.PDFPage;
@@ -57,12 +57,12 @@ import com.sun.pdfview.PDFPage;
  </p>
  <p>
  This class uses pdf-renderer, obtainable from
- <a href="https://pdf-renderer.dev.java.net/">https://pdf-renderer.dev.java.net/</a>.
+ <a href="https://pdf-renderer.dev.java.net/#in_browser">https://pdf-renderer.dev.java.net/</a>.
  This is an "an open source, all Java library which renders PDF documents
  to the screen using Java2D." This attribute can be put into a
  Vergil diagram and its visual appearance will be be defined
  by a PDF file.  Using this icon requires that
- PDFRenderer.jar be in $PTII/lib.
+ PDFRenderer.jar be in $PTII/ptolemy/vergil/pdfrenderer
  </p>
  
  @author Edward A. Lee
@@ -94,7 +94,7 @@ public class PDFAttribute extends VisibleAttribute {
 
         source = new FileParameter(this, "source");
         // Put the sample PDF in the local directory so that it stays with this actor.
-        source.setExpression("$PTII/ptolemy/vergil/kernel/attributes/sample.pdf");
+        source.setExpression("$PTII/ptolemy/vergil/pdf/sample.pdf");
         
         scale = new Parameter(this, "scale");
         scale.setTypeEquals(BaseType.DOUBLE);
@@ -110,7 +110,7 @@ public class PDFAttribute extends VisibleAttribute {
     public Parameter scale;
 
     /** The source image file. This is a file name or URL, where the default
-     *  is "$CLASSPATH/ptolemy/vergil/kernel/attributes/sample.pdf".
+     *  is "$CLASSPATH/ptolemy/vergil/pdf/sample.pdf".
      */
     public FileParameter source;
 

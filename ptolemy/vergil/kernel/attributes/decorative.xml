@@ -37,7 +37,6 @@
 <property name="Ellipse" class="ptolemy.vergil.kernel.attributes.EllipseAttribute"/>
 <property name="Image" class="ptolemy.vergil.kernel.attributes.ImageAttribute"/>
 <property name="NameIcon" class="ptolemy.vergil.icon.NameIcon"/>
-<property name="PDF" class="ptolemy.vergil.kernel.attributes.PDFAttribute"/>
       </group>
     ?>
   </configure>
