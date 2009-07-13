@@ -212,7 +212,6 @@ public class PropertyTokenHelper extends PropertyHelper {
         return list;
     }
 
-    @Override
     protected ParseTreeAnnotationEvaluator _annotationEvaluator() {
         return new ParseTreeTokenAnnotationEvaluator();
     }

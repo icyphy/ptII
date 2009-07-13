@@ -56,7 +56,6 @@ public class PropertyConstraintAttribute extends PropertyAttribute {
      * @see ptolemy.kernel.util.Settable#setExpression(java.lang.String)
      */
 
-    @Override
     public void setExpression(String expression) throws IllegalActionException {
         super.setExpression(expression);
 

@@ -164,7 +164,6 @@ public class PropertyConstraintSolver extends PropertySolver {
      * @exception IllegalActionException If the change is not acceptable to this
      * container (not thrown in this class).
      */
-    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == propertyLattice) {
@@ -188,7 +187,6 @@ public class PropertyConstraintSolver extends PropertySolver {
         return _constraintManager;
     }
 
-    @Override
     public String getExtendedUseCaseName() {
         return "lattice::" + getUseCaseName();
     }
@@ -221,7 +219,6 @@ public class PropertyConstraintSolver extends PropertySolver {
      * Return the property constraint helper associated with the given object.
      * @param object The given object.
      */
-    @Override
     public PropertyHelper getHelper(Object object)
             throws IllegalActionException {
 
@@ -266,7 +263,6 @@ public class PropertyConstraintSolver extends PropertySolver {
      * @param object The specified object.
      * @return The property of the specified object.
      */
-    @Override
     public Property getProperty(Object object) {
         try {
             return (Property) getPropertyTerm(object).getValue();
@@ -292,7 +288,6 @@ public class PropertyConstraintSolver extends PropertySolver {
         return _propertyTermManager;
     }
 
-    @Override
     public String getUseCaseName() {
         return getLattice().getName();
     }
@@ -332,7 +327,6 @@ public class PropertyConstraintSolver extends PropertySolver {
      * @return True if the solver is in initialization mode; otherwise, return
      * the result of the super method (default).
      */
-    @Override
     public boolean isResolve() {
         return isCollectConstraints() || isInitializeSolver()
                 || super.isResolve();
@@ -341,7 +335,6 @@ public class PropertyConstraintSolver extends PropertySolver {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    @Override
     public void reset() {
         super.reset();
         _propertyTermManager = null;
@@ -356,7 +349,6 @@ public class PropertyConstraintSolver extends PropertySolver {
     /**
      * Prepare for automatic testing.
      */
-    @Override
     public void setOptions(Map options) {
         super.setOptions(options);
 
@@ -377,7 +369,6 @@ public class PropertyConstraintSolver extends PropertySolver {
      * Update the property.
      * @exception IllegalActionException
      */
-    @Override
     public void updateProperties() throws IllegalActionException {
         super.updateProperties();
 
@@ -412,7 +403,6 @@ public class PropertyConstraintSolver extends PropertySolver {
         }
     }
 
-    @Override
     protected PropertyHelper _getHelper(Object component)
             throws IllegalActionException {
         PropertyHelper helper = null;
@@ -455,7 +445,6 @@ public class PropertyConstraintSolver extends PropertySolver {
         return new PropertyTermManager(this);
     }
 
-    @Override
     protected void _initializeStatistics() {
         super._initializeStatistics();
         getStats().put("# of default constraints", 0);
@@ -471,7 +460,6 @@ public class PropertyConstraintSolver extends PropertySolver {
      * solver, given the model analyzer that invokes this.
      * @param analyzer The given model analyzer.
      */
-    @Override
     protected void _resolveProperties(NamedObj analyzer) throws KernelException {
         super._resolveProperties(analyzer);
 

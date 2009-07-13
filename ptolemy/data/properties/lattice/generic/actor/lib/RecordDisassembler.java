@@ -68,7 +68,6 @@ public class RecordDisassembler extends AtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                            public methods                 ////
 
-    @Override
     public List<Inequality> constraintList() throws IllegalActionException {
         ptolemy.actor.lib.RecordDisassembler actor = (ptolemy.actor.lib.RecordDisassembler) getComponent();
         // add default constraints if no constraints specified in actor helper

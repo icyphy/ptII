@@ -50,12 +50,10 @@ public class Unknown extends LatticeProperty {
         super(lattice);
     }
 
-    @Override
     public boolean isAcceptableSolution() {
         return true;
     }
 
-    @Override
     public boolean isConstant() {
         return false;
     }
