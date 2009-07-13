@@ -17,10 +17,10 @@ Token Scale_scaleOnLeft(Token input, double factor) {
     Token result = new Token();
 
     if (input.type == TYPE_Array) {
-            result = $new(Array(((array)(input.payload)).size, 0));
+            result = $new(Array(((Array)(input.payload)).size, 0));
 
-        for (i = 0; i < ((array)(input.payload)).size; i++) {
-            ((array)(result.payload)).elements[i] = Scale_scaleOnLeft(Array_get(input, i), factor);
+        for (i = 0; i < ((Array)(input.payload)).size; i++) {
+            ((Array)(result.payload)).elements[i] = Scale_scaleOnLeft(Array_get(input, i), factor);
         }
 
         return result;
@@ -36,10 +36,10 @@ Token Scale_scaleOnRight(Token input, double factor) {
     Token result = new Token();
 
     if (input.type == TYPE_Array) {
-            result = $new(Array(((array)(input.payload)).size, 0));
+            result = $new(Array(((Array)(input.payload)).size, 0));
 
-        for (i = 0; i < ((array)(input.payload)).size; i++) {
-            ((array)(result.payload)).elements[i] = Scale_scaleOnRight(Array_get(input, i), factor);
+        for (i = 0; i < ((Array)(input.payload)).size; i++) {
+            ((Array)(result.payload)).elements[i] = Scale_scaleOnRight(Array_get(input, i), factor);
         }
 
         return result;
