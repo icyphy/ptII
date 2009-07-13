@@ -124,12 +124,12 @@ public class PropertyConstraintSolver extends PropertySolver {
         // Set to path of the model.
         logDirectory = new FileParameter(this, "Log directory");
         // In Windows, this should map to C:\temp\, /home/tmp/ in Linux.
-        logDirectory.setExpression("$HOME\\temp\\ConstraintFiles");
+        logDirectory.setExpression("$HOME/temp/ConstraintFiles");
 
         trainedConstraintDirectory = new FileParameter(this,
                 "Trained constraint directory");
         trainedConstraintDirectory
-                .setExpression("$CLASSPATH\\trainedConstraints");
+                .setExpression("$CLASSPATH/trainedConstraints");
 
         _addChoices();
 
@@ -703,27 +703,13 @@ public class PropertyConstraintSolver extends PropertySolver {
      *  @exception IllegalActionException If there is a problem
      *  accessing files or parameters.
      */
-    private void _addChoices() {
+    private void _addChoices() throws IllegalActionException {
         File file = null;
 
-        try {
-            file = new File(FileUtilities.nameToURL(
-                    "$CLASSPATH/ptolemy/data/properties/lattice", null, null)
-                    .toURI());
-        } catch (URISyntaxException e) {
-            throw new RuntimeException(e);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
-        File[] lattices = file.listFiles();
-        for (File element : lattices) {
-            String latticeName = element.getName();
-            if (element.isDirectory() && !latticeName.equals("CVS")
-                    && !latticeName.equals(".svn")) {
-                propertyLattice.addChoice(latticeName);
-            }
-        }
+        // Add all the subdirectories in lattice/ directory as
+        // choices.  Directories named "CVS" and ".svn" are skipped.
+        _addChoices(propertyLattice,
+                "$CLASSPATH/ptolemy/data/properties/lattice");
 
         solvingFixedPoint.addChoice("least");
         solvingFixedPoint.addChoice("greatest");
