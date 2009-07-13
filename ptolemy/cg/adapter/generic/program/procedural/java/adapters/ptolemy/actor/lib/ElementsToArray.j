@@ -7,7 +7,7 @@ $actorSymbol(valueArray) = $new(Array($size(input), 0));
 /**/
 
 /*** fillArray($channel) ***/
-((array)($actorSymbol(valueArray).payload)).elements[$channel] = $ref((Token) input#$channel);
+((Array)($actorSymbol(valueArray).payload)).elements[$channel] = $ref((Token) input#$channel);
 /**/
 
 /*** sendOutput ***/
