@@ -342,9 +342,8 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
         // Include the constantsBlock at the top so that sharedBlocks from
         // actors can use true and false etc.  StringMatches needs this.
 
-        // FIXME rodiers: fix path
         CodeStream sharedStream = new CodeStream(
-                "$CLASSPATH/ptolemy/codegen/java/kernel/SharedCode.j", this);
+                "$CLASSPATH/ptolemy/cg/kernel/generic/program/procedural/java/SharedCode.j", this);
         sharedStream.appendCodeBlock("constantsBlock");
         code.append(sharedStream.toString());
 
@@ -361,9 +360,8 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
         for (int i = 0; i < typesArray.length; i++) {
             // Open the .j file for each type.
 
-            // FIXME rodiers: fix path
             typeStreams[i] = new CodeStream(
-                    "$CLASSPATH/ptolemy/codegen/java/kernel/type/"
+                    "$CLASSPATH/ptolemy/cg/kernel/generic/program/procedural/java/type/"
                             + typesArray[i] + ".j", this);
 
             code.append("#define PTCG_TYPE_" + typesArray[i] + " " + i + _eol);
@@ -888,7 +886,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
         super._analyzeTypeConversions();
 
         // FIXME: Refer to cg instead.
-        String cCodegenPath = "$CLASSPATH/ptolemy/codegen/java/kernel/";
+        String cCodegenPath = "$CLASSPATH/ptolemy/cg/kernel/generic/program/procedural/java/";
         String typeDir = cCodegenPath + "type/";
         String functionDir = typeDir + "polymorphic/";
 
