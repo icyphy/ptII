@@ -1,6 +1,5 @@
 /*
- * Below is the copyright agreement for the Ptolemy II system. Version: $Id:
- * PropertyLatticeComposite.java 54158 2009-06-04 03:04:33Z cshelton $
+ * Below is the copyright agreement for the Ptolemy II system.
  * 
  * Copyright (c) 2009 The Regents of the University of California. All rights
  * reserved.
