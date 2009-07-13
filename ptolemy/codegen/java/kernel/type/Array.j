@@ -1,6 +1,6 @@
 /***declareBlock***/
 // java/kernel/type/Array.j
-public class Array {
+public class array {
     public int size;
     public Token [] elements;
 }
@@ -18,13 +18,13 @@ public class Array {
 // Array_get: get an element of an array.
 Token Array_get(Token array, int i) {
     //return array.payload.Array->elements[i];
-    return ((Array)(array.payload)).elements[i];
+    return ((array)(array.payload)).elements[i];
 }
 
 // Array_set: set an element of an array.
 void Array_set(Token array, int i, Token element) {
     //array.payload.Array->elements[i] = element;
-    ((Array)(array.payload)).elements[i] = element;
+    ((array)(array.payload)).elements[i] = element;
 }
 
 // Array_resize: Change the size of an array,
@@ -43,7 +43,7 @@ void Array_insert(Token array, Token token) {
 }
 
 int Array_length(Token array) {
-    return ((Array)(array.payload)).size;
+    return ((array)(array.payload)).size;
 }
 
 /**/
@@ -64,7 +64,7 @@ Token Array_new(int size, int given, Object... elements) {
     Token result = new Token();
     int elementType;
 
-    Array array = new Array();
+    array array = new array();
     array.size = size;
     array.elements = new Token[size];
 
@@ -122,7 +122,7 @@ Token Array_delete(Token token, Object... elements) {
     Token element;
 
     // Delete each elements.
-    for (i = 0; i < ((Array)(token.payload)).size; i++) {
+    for (i = 0; i < ((array)(token.payload)).size; i++) {
             element = Array_get(token, i);
                 System.out.println("Array_delete: convert needs work");
         //functionTable[(int)element.type][FUNC_delete](element);
@@ -143,10 +143,10 @@ Token Array_delete(Token token, Object... elements) {
 boolean Array_equals(Token thisToken, Token... tokens) {
     int i;
     Token otherToken = tokens[0];
-    if (((Array)(thisToken.payload)).size != ((Array)(otherToken.payload)).size) {
+    if (((array)(thisToken.payload)).size != ((array)(otherToken.payload)).size) {
         return false;
     }
-    for (i = 0; i < ((Array)(thisToken.payload)).size; i++) {
+    for (i = 0; i < ((array)(thisToken.payload)).size; i++) {
         if (!equals_Token_Token(Array_get(thisToken, i), Array_get(otherToken, i))) {
             return false;
         }
@@ -164,14 +164,14 @@ Token Array_isCloseTo(Token thisToken, Token... elements) {
     Token otherToken = elements[0];
     Token tolerance = elements[1];
 
-    if ( ((Array)(thisToken.payload)).size != ((Array)(otherToken.payload)).size) {
-        //System.out.println("Array_isCloseTo sizes different:" + ((Array)(thisToken.payload)).size + " "
-        //                   + ((Array)(otherToken.payload)).size);
+    if ( ((array)(thisToken.payload)).size != ((array)(otherToken.payload)).size) {
+        //System.out.println("Array_isCloseTo sizes different:" + ((array)(thisToken.payload)).size + " "
+        //                   + ((array)(otherToken.payload)).size);
         //print_Token3(thisToken);
         //print_Token3(otherToken);
         return Boolean_new(false);
     }
-    for (i = 0; i < ((Array)(thisToken.payload)).size; i++) {
+    for (i = 0; i < ((array)(thisToken.payload)).size; i++) {
         //System.out.println("Array_isCloseTo " + i);
         //print_Token3(Array_get(thisToken, i));
         //print_Token3(Array_get(otherToken, i));
@@ -193,23 +193,23 @@ Token Array_print(Token thisToken, Token... tokens) {
     // free(string.payload.String);
 
     StringBuffer results = new StringBuffer("{");
-    for (int i = 0; i < ((Array)(thisToken.payload)).size; i++) {
+    for (int i = 0; i < ((array)(thisToken.payload)).size; i++) {
         if (i != 0) {
             results.append(", ");
         }
         // Arrays elements could have different types?
-        if (((Array)(thisToken.payload)).elements == null) {
+        if (((array)(thisToken.payload)).elements == null) {
             results.append("elements == null");
-        } else if (((Array)(thisToken.payload)).elements[i] == null) {
+        } else if (((array)(thisToken.payload)).elements[i] == null) {
             results.append("elements[" + i + "] == null");
         } else {
-            short elementType = ((Array)(thisToken.payload)).elements[i].type;
+            short elementType = ((array)(thisToken.payload)).elements[i].type;
                switch(elementType) {
                 case TYPE_Array:
-                      results.append($Array_toString(((Array)(thisToken.payload)).elements[i]).payload);
+                      results.append($Array_toString(((array)(thisToken.payload)).elements[i]).payload);
                     break;
                   default:
-                    results.append(((Array)(thisToken.payload)).elements[i].payload.toString());
+                    results.append(((array)(thisToken.payload)).elements[i].payload.toString());
                     break;
             }
         }
@@ -227,27 +227,27 @@ Token Array_print(Token thisToken, Token... tokens) {
 // of the specified array.
 Token Array_toString(Token thisToken, Token... ignored) {
     StringBuffer result = new StringBuffer("{");
-    for (int i = 0; i < ((Array)(thisToken.payload)).size; i++) {
+    for (int i = 0; i < ((array)(thisToken.payload)).size; i++) {
         if (i != 0) {
             result.append(", ");
         }
         // Arrays elements could have different types?
-        if (((Array)(thisToken.payload)).elements == null) {
+        if (((array)(thisToken.payload)).elements == null) {
             result.append("elements == null");
-        } else if (((Array)(thisToken.payload)).elements[i] == null) {
+        } else if (((array)(thisToken.payload)).elements[i] == null) {
             result.append("elements[" + i + "] == null");
             throw new RuntimeException("elements[] is null");
         } else {
-            short elementType = ((Array)(thisToken.payload)).elements[i].type;
+            short elementType = ((array)(thisToken.payload)).elements[i].type;
                switch(elementType) {
                 case TYPE_Array:
-                      result.append(Array_toString(((Array)(thisToken.payload)).elements[i]).payload);
+                      result.append(Array_toString(((array)(thisToken.payload)).elements[i]).payload);
                     break;
                 case TYPE_String:
-                    result.append("\"" + ((Array)(thisToken.payload)).elements[i].payload.toString() + "\"");
+                    result.append("\"" + ((array)(thisToken.payload)).elements[i].payload.toString() + "\"");
                     break;
                   default:
-                    result.append(((Array)(thisToken.payload)).elements[i].payload.toString());
+                    result.append(((array)(thisToken.payload)).elements[i].payload.toString());
                     break;
             }
         }
@@ -273,8 +273,8 @@ Token Array_add(Token thisToken, Token... tokens) {
 
     otherToken = tokens[0];
 
-    size1 = ((Array)(thisToken.payload)).size;
-    size2 = ((Array)(otherToken.payload)).size;
+    size1 = ((array)(thisToken.payload)).size;
+    size2 = ((array)(otherToken.payload)).size;
     resultSize = (size1 > size2) ? size1 : size2;
 
     result = Array_new(resultSize, 0);
@@ -315,8 +315,8 @@ Token Array_subtract(Token thisToken, Token... tokens) {
 
     otherToken = tokens[0];
 
-    size1 = ((Array)(thisToken.payload)).size;
-    size2 = ((Array)(otherToken.payload)).size;
+    size1 = ((array)(thisToken.payload)).size;
+    size2 = ((array)(otherToken.payload)).size;
     resultSize = (size1 > size2) ? size1 : size2;
 
     result = Array_new(resultSize, 0);
@@ -355,8 +355,8 @@ Token Array_multiply(Token thisToken, Token... elements) {
 
     otherToken = elements[0];
 
-    size1 = ((Array)(thisToken.payload)).size;
-    size2 = ((Array)(otherToken.payload)).size;
+    size1 = ((array)(thisToken.payload)).size;
+    size2 = ((array)(otherToken.payload)).size;
     resultSize = (size1 > size2) ? size1 : size2;
 
     result = Array_new(resultSize, 0);
@@ -391,8 +391,8 @@ Token Array_divide(Token thisToken, Token... elements) {
     Token otherToken;
 
     otherToken = elements[0];
-    size1 = ((Array)(thisToken.payload)).size;
-    size2 = ((Array)(otherToken.payload)).size;
+    size1 = ((array)(thisToken.payload)).size;
+    size2 = ((array)(otherToken.payload)).size;
     resultSize = (size1 > size2) ? size1 : size2;
 
     result = Array_new(resultSize, 0);
@@ -419,9 +419,9 @@ Token Array_negate(Token thisToken, Token... tokens) {
     int i;
     Token result;
 
-    result = Array_new(((Array)(thisToken.payload)).size, 0);
+    result = Array_new(((array)(thisToken.payload)).size, 0);
 
-    for (i = 0; i < ((Array)(thisToken.payload)).size; i++) {
+    for (i = 0; i < ((array)(thisToken.payload)).size; i++) {
         Array_set(result, i, $tokenFunc(Array_get(thisToken, i)::negate()));
     }
     return result;
@@ -437,15 +437,15 @@ Token Array_zero(Token token, Token... tokens) {
     Token element;
     int i;
 
-    result = Array_new(((Array)(thisToken.payload)).size, 0);
+    result = Array_new(((array)(thisToken.payload)).size, 0);
 
-    for (i = 0; i < ((Array)(thisToken.payload)).size; i++) {
+    for (i = 0; i < ((array)(thisToken.payload)).size; i++) {
         element = Array_get(token, i);
         System.out.println("Array_zero(): handle func table");
 
         //result.payload.Array->elements[i]
         //                = functionTable[(int)element.type][FUNC_zero](element);
-        //((Array)(result.payload)).elements[i] = element;
+        //((array)(result.payload)).elements[i] = element;
     }
     return result;
 }
@@ -460,8 +460,8 @@ Token Array_one(Token token, Token... tokens) {
     Token element;
     int i;
 
-    result = Array_new(((Array)(thisToken.payload)).size, 0);
-    for (i = 0; i < ((Array)(thisToken.payload)).size; i++) {
+    result = Array_new(((array)(thisToken.payload)).size, 0);
+    for (i = 0; i < ((array)(thisToken.payload)).size; i++) {
         System.out.println("Array_one(): handle func table");
         //element = Array_get(token, i);
         //result.payload.Array->elements[i]
@@ -480,8 +480,8 @@ Token Array_clone(Token token, Token... tokens) {
     Token element;
     int i;
 
-    result = Array_new(((Array)(thisToken.payload)).size, 0);
-    for (i = 0; i < ((Array)(thisToken.payload)).size; i++) {
+    result = Array_new(((array)(thisToken.payload)).size, 0);
+    for (i = 0; i < ((array)(thisToken.payload)).size; i++) {
         System.out.println("Array_clone(): handle func table");
         //element = Array_get(token, i);
         //result.payload.Array->elements[i] = functionTable[(int)element.type][FUNC_clone](element);
@@ -495,13 +495,13 @@ Token Array_clone(Token token, Token... tokens) {
 Token arraySum(Token token) {
         Token result;
         int i;
-        if (((Array)(thisToken.payload)).size <= 0) {
+        if (((array)(thisToken.payload)).size <= 0) {
                 return token;
         } else {
                 result = Array_get(token, 0);
         }
 
-    for (i = 0; i < ((Array)(thisToken.payload)).size; i++) {
+    for (i = 0; i < ((array)(thisToken.payload)).size; i++) {
         result = $add_Token_Token(result, Array_get(token, i));
     }
     return result;
@@ -536,9 +536,9 @@ Token Array_convert(Token token, Short... targetTypes) {
     Short targetType;
 
     targetType = targetTypes[0];
-    result = Array_new(((Array)token.payload).size, 0);
+    result = Array_new(((array)token.payload).size, 0);
 
-    for (i = 0; i < ((Array)token.payload).size; i++) {
+    for (i = 0; i < ((array)token.payload).size; i++) {
         element = Array_get(token, i);
         if (targetType != element.type) {
             //result.payload.Array->elements[i] = functionTable[(int)targetType][FUNC_convert](element);
@@ -565,9 +565,9 @@ Token Array_convert(Token token, Short... targetTypes) {
            default:
                throw new RuntimeException("Array_convert(): Conversion from an unsupported type: " + targetType);
             }
-            ((Array)(result.payload)).elements[i] = element;
+            ((array)(result.payload)).elements[i] = element;
         } else {
-            ((Array)(result.payload)).elements[i] = element;
+            ((array)(result.payload)).elements[i] = element;
         }
     }
 
