@@ -95,20 +95,20 @@ import javax.swing.JOptionPane;
  * @since BCVTB 0.3
  *
  */
-public class WarningWindow implements Runnable{
+public class WarningWindow implements Runnable {
 
     /** Construct an instance and set the message to be displayed in the window.
      *
      *@param message The message to be displayed.
      */
-    public WarningWindow(String message){
-	msg = message;
+    public WarningWindow(String message) {
+        msg = message;
     }
 
     /** Display the message dialog. */
-    public void run(){
-	JOptionPane.showMessageDialog(null, msg, "Warning",
-				      JOptionPane.WARNING_MESSAGE);
+    public void run() {
+        JOptionPane.showMessageDialog(null, msg, "Warning",
+                JOptionPane.WARNING_MESSAGE);
     }
 
     /** The warning message. */

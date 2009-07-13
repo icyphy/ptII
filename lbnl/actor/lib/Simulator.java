@@ -76,44 +76,29 @@ derivative works thereof, in binary and source code form.
 ********************************************************************
 */
 
-
 package lbnl.actor.lib;
 
-import lbnl.actor.lib.net.Server;
-import lbnl.util.XMLWriter;
-import lbnl.util.WarningWindow;
-import lbnl.util.ClientProcess;
-
-import java.io.UnsupportedEncodingException;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.net.URI;
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.StringTokenizer;
 
-import javax.swing.*;
-import java.awt.event.*;
-
-import ptolemy.data.expr.FileParameter;
+import lbnl.actor.lib.net.Server;
+import lbnl.util.ClientProcess;
+import lbnl.util.WarningWindow;
+import lbnl.util.XMLWriter;
 import ptolemy.data.BooleanToken;
-import ptolemy.actor.TypedAtomicActor;
-import ptolemy.actor.TypedIOPort;
-import ptolemy.data.ArrayToken;
-import ptolemy.data.DoubleToken;
-import ptolemy.data.ScalarToken;
-import ptolemy.data.MatrixToken;
 import ptolemy.data.DoubleMatrixToken;
-import ptolemy.data.Token;
+import ptolemy.data.DoubleToken;
+import ptolemy.data.expr.FileParameter;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
-import ptolemy.data.type.ArrayType;
+import ptolemy.domains.sdf.lib.SDFTransformer;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
-import ptolemy.domains.sdf.lib.SDFTransformer;
 
 /**
  * Actor that calls a simulation program of a dynamic system 
@@ -138,56 +123,54 @@ public class Simulator extends SDFTransformer {
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
-	input.setTypeEquals(BaseType.DOUBLE_MATRIX);
-	input.setMultiport(false);
-	output.setTypeEquals(BaseType.DOUBLE_MATRIX);
-	output.setMultiport(false);
+        input.setTypeEquals(BaseType.DOUBLE_MATRIX);
+        input.setMultiport(false);
+        output.setTypeEquals(BaseType.DOUBLE_MATRIX);
+        output.setMultiport(false);
 
-	command = new FileParameter(this, "programName");
-	new Parameter(command, "allowFiles",       BooleanToken.TRUE);
-	new Parameter(command, "allowDirectories", BooleanToken.FALSE);
+        command = new FileParameter(this, "programName");
+        new Parameter(command, "allowFiles", BooleanToken.TRUE);
+        new Parameter(command, "allowDirectories", BooleanToken.FALSE);
 
+        arguments = new Parameter(this, "programArguments");
+        arguments.setTypeEquals(BaseType.STRING);
+        arguments.setExpression("");
 
-	arguments = new Parameter(this, "programArguments");
-	arguments.setTypeEquals(BaseType.STRING);
-	arguments.setExpression("");
-
-	workingDirectory = new FileParameter(this, "workingDirectory");
-	new Parameter(workingDirectory, "allowFiles", BooleanToken.FALSE);
-	new Parameter(workingDirectory, "allowDirectories", BooleanToken.TRUE);
-	workingDirectory.setExpression(".");
+        workingDirectory = new FileParameter(this, "workingDirectory");
+        new Parameter(workingDirectory, "allowFiles", BooleanToken.FALSE);
+        new Parameter(workingDirectory, "allowDirectories", BooleanToken.TRUE);
+        workingDirectory.setExpression(".");
 
         simLogFil = new FileParameter(this, "simulationLogFile");
-	simLogFil.setTypeEquals(BaseType.STRING);
-	simLogFil.setExpression("simulation.log");
-	new Parameter(simLogFil, "allowFiles",       BooleanToken.TRUE);
-	new Parameter(simLogFil, "allowDirectories", BooleanToken.FALSE);
+        simLogFil.setTypeEquals(BaseType.STRING);
+        simLogFil.setExpression("simulation.log");
+        new Parameter(simLogFil, "allowFiles", BooleanToken.TRUE);
+        new Parameter(simLogFil, "allowDirectories", BooleanToken.FALSE);
 
-	timOut = new Parameter(this, "socketTimeout [milliseconds]");
-	timOut.setExpression("5000");
-	timOut.setTypeEquals(BaseType.INT);
+        timOut = new Parameter(this, "socketTimeout [milliseconds]");
+        timOut.setExpression("5000");
+        timOut.setTypeEquals(BaseType.INT);
 
-	// expert settings
-	portNumber = new Parameter(this, "socketPortNumber (used if non-negative)");
-	portNumber.setExpression("-1");
-	portNumber.setTypeEquals(BaseType.INT);
-	portNumber.setVisibility(Settable.EXPERT);
+        // expert settings
+        portNumber = new Parameter(this,
+                "socketPortNumber (used if non-negative)");
+        portNumber.setExpression("-1");
+        portNumber.setTypeEquals(BaseType.INT);
+        portNumber.setVisibility(Settable.EXPERT);
 
         socConFil = new FileParameter(this, "socketConfigurationFile");
-	socConFil.setTypeEquals(BaseType.STRING);
-	socConFil.setExpression("socket.cfg");
-	new Parameter(socConFil, "allowFiles",       BooleanToken.TRUE);
-	new Parameter(socConFil, "allowDirectories", BooleanToken.FALSE);
-	socConFil.setVisibility(Settable.EXPERT);
+        socConFil.setTypeEquals(BaseType.STRING);
+        socConFil.setExpression("socket.cfg");
+        new Parameter(socConFil, "allowFiles", BooleanToken.TRUE);
+        new Parameter(socConFil, "allowDirectories", BooleanToken.FALSE);
+        socConFil.setVisibility(Settable.EXPERT);
 
-
-	// we produce one (DOUBLE_MATRIX) token as the initial output
-	output_tokenInitProduction.setExpression("1");
+        // we produce one (DOUBLE_MATRIX) token as the initial output
+        output_tokenInitProduction.setExpression("1");
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
 
     /** Clone the actor into the specified workspace. This calls the
      *  base class and then sets the <code>init</code> and <code>step</code>
@@ -200,15 +183,22 @@ public class Simulator extends SDFTransformer {
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         Simulator newObject = (Simulator) super.clone(workspace);
 
-	newObject.arguments = (Parameter)newObject.getAttribute("programArguments");
-	newObject.command = (FileParameter)newObject.getAttribute("programName");
-	newObject.portNumber = (Parameter)newObject.getAttribute("socketPortNumber (used if non-negative)");
-	newObject.simLogFil = (FileParameter)newObject.getAttribute("simulationLogFile");
-	newObject.socConFil = (FileParameter)newObject.getAttribute("socketConfigurationFile");
-	newObject.timOut = (Parameter)newObject.getAttribute("socketTimeout [milliseconds]");
-	newObject.workingDirectory = (FileParameter)newObject.getAttribute("workingDirectory");
+        newObject.arguments = (Parameter) newObject
+                .getAttribute("programArguments");
+        newObject.command = (FileParameter) newObject
+                .getAttribute("programName");
+        newObject.portNumber = (Parameter) newObject
+                .getAttribute("socketPortNumber (used if non-negative)");
+        newObject.simLogFil = (FileParameter) newObject
+                .getAttribute("simulationLogFile");
+        newObject.socConFil = (FileParameter) newObject
+                .getAttribute("socketConfigurationFile");
+        newObject.timOut = (Parameter) newObject
+                .getAttribute("socketTimeout [milliseconds]");
+        newObject.workingDirectory = (FileParameter) newObject
+                .getAttribute("workingDirectory");
 
-	return newObject;
+        return newObject;
     }
 
     /** Send the input token to the client program and send the
@@ -219,39 +209,39 @@ public class Simulator extends SDFTransformer {
      */
     public void fire() throws IllegalActionException {
         super.fire();
-	// Check the input port for a token.
-	if (input.hasToken(0)) {
-	    if ( !firstFire && server.getClientFlag() == 0){
-		// If clientflag is non-zero, do not read anymore
-		_writeToServer();
-		// before the read happens, the client program will advance one time step
-		_readFromServer();
-		if ( server.getClientFlag() == 0){
-		    // make sure that time is synchronized.
-		    final double simTimRea = server.getSimulationTimeReadFromClient();
-		    final double simTim = getDirector().getModelTime().getDoubleValue();
-		    
-		    if ( Math.abs(simTim-simTimRea) > 0.0001 ){
-			final String em = "Simulation time of " +
-			    this.getFullName()
-			    + " is not synchronized." + LS +
-			    "Time in Ptolemy = " + simTim + LS +
-			    "Time in client  = " + simTimRea;
-			throw new IllegalActionException(em);
-		    }
-		    
-		    double[] dblRea = server.getDoubleArray();
-		    outTok = new DoubleMatrixToken(dblRea, dblRea.length, 1);
-		}
-	    }
-	    else{ // Either client is down or this is the first time step. Consume token
-		input.get(0);
-		firstFire = false;
-	    }
-	}
-	//////////////////////////////////////////////////////
-	// send output token
-	output.send(0, outTok);
+        // Check the input port for a token.
+        if (input.hasToken(0)) {
+            if (!firstFire && server.getClientFlag() == 0) {
+                // If clientflag is non-zero, do not read anymore
+                _writeToServer();
+                // before the read happens, the client program will advance one time step
+                _readFromServer();
+                if (server.getClientFlag() == 0) {
+                    // make sure that time is synchronized.
+                    final double simTimRea = server
+                            .getSimulationTimeReadFromClient();
+                    final double simTim = getDirector().getModelTime()
+                            .getDoubleValue();
+
+                    if (Math.abs(simTim - simTimRea) > 0.0001) {
+                        final String em = "Simulation time of "
+                                + this.getFullName() + " is not synchronized."
+                                + LS + "Time in Ptolemy = " + simTim + LS
+                                + "Time in client  = " + simTimRea;
+                        throw new IllegalActionException(em);
+                    }
+
+                    double[] dblRea = server.getDoubleArray();
+                    outTok = new DoubleMatrixToken(dblRea, dblRea.length, 1);
+                }
+            } else { // Either client is down or this is the first time step. Consume token
+                input.get(0);
+                firstFire = false;
+            }
+        }
+        //////////////////////////////////////////////////////
+        // send output token
+        output.send(0, outTok);
     }
 
     /** Write the data to the server instance, which will send it to the client program.
@@ -259,23 +249,21 @@ public class Simulator extends SDFTransformer {
      * @exception IllegalActionException If there was an error when writing to the server.
      */
     private void _writeToServer() throws IllegalActionException {
-	//////////////////////////////////////////////////////
-	// Write data to server
-	dblWri = _getDoubleArray( input.get(0) );
-	try{
-	    //	    	   		Thread.sleep(1000); // in milliseconds
-	    server.write(0, tokTim, dblWri);
-	}
-	catch(java.io.IOException e){
-	    String em = "Error while writing to server: " + LS
-		+ e.getMessage();
-	    throw new IllegalActionException(this,  em);
-	}
-	// get tokens' time stamp. This time will be written to the 
-	// client in the next time step, this time step read from the client
-	// the output which will be sent to clients in the next time step
-	// as inputs
-	tokTim = getDirector().getModelTime().getDoubleValue();
+        //////////////////////////////////////////////////////
+        // Write data to server
+        dblWri = _getDoubleArray(input.get(0));
+        try {
+            //	    	   		Thread.sleep(1000); // in milliseconds
+            server.write(0, tokTim, dblWri);
+        } catch (java.io.IOException e) {
+            String em = "Error while writing to server: " + LS + e.getMessage();
+            throw new IllegalActionException(this, em);
+        }
+        // get tokens' time stamp. This time will be written to the 
+        // client in the next time step, this time step read from the client
+        // the output which will be sent to clients in the next time step
+        // as inputs
+        tokTim = getDirector().getModelTime().getDoubleValue();
     }
 
     /** Read the data from the server instance, which will read it from the client program.
@@ -283,44 +271,58 @@ public class Simulator extends SDFTransformer {
      * @exception IllegalActionException If there was an error when reading from the server.
      */
     private void _readFromServer() throws IllegalActionException {
-	//////////////////////////////////////////////////////
-	// Read data from server
-	try{
-	    //		Thread.sleep(100); // in milliseconds
-	    server.read();
-	    int fla = server.getClientFlag();
-	    if (fla < 0){
-		final String em = "Error: Client " + this.getFullName() +
-		    " terminated communication by sending flag = " + fla +
-		    " at time " + getDirector().getModelTime().getDoubleValue() + ".";
-		throw new IllegalActionException(em);
-	    }
-	    if (fla > 0){
-		final String msg = "Warning: " + this.getFullName()
-		    + " terminated communication by sending flag = " + fla 
-		    + " at time " + getDirector().getModelTime().getDoubleValue() + "." + LS 
-		    + "Simulation will continue withouth updated values from client program.";
-		// Start a new thread for the warning window so that the simulation can continue.
-		new Thread(new WarningWindow(msg)).start();
-		System.err.println("*** " + msg);
-	    }
-	}
-	catch(java.net.SocketTimeoutException e){
-	    String em = "SocketTimeoutException while reading from server in " +
-		this.getFullName() + ": " + LS 
-		+ e.getMessage() + "." + LS + 
-		"Try to increase the value of the parameter 'socketTimeout'";
-	    try{ server.close(); }
-	    catch(java.io.IOException e2){}; // do nothing here
-	    throw new IllegalActionException( em );
-	}
-	catch(java.io.IOException e){
-	    String em = "IOException while reading from server: " + LS 
-		+ e.getMessage();
-	    try{ server.close(); }
-	    catch(java.io.IOException e2){}; // do nothing here
-	    throw new IllegalActionException( em );
-	}
+        //////////////////////////////////////////////////////
+        // Read data from server
+        try {
+            //		Thread.sleep(100); // in milliseconds
+            server.read();
+            int fla = server.getClientFlag();
+            if (fla < 0) {
+                final String em = "Error: Client " + this.getFullName()
+                        + " terminated communication by sending flag = " + fla
+                        + " at time "
+                        + getDirector().getModelTime().getDoubleValue() + ".";
+                throw new IllegalActionException(em);
+            }
+            if (fla > 0) {
+                final String msg = "Warning: "
+                        + this.getFullName()
+                        + " terminated communication by sending flag = "
+                        + fla
+                        + " at time "
+                        + getDirector().getModelTime().getDoubleValue()
+                        + "."
+                        + LS
+                        + "Simulation will continue withouth updated values from client program.";
+                // Start a new thread for the warning window so that the simulation can continue.
+                new Thread(new WarningWindow(msg)).start();
+                System.err.println("*** " + msg);
+            }
+        } catch (java.net.SocketTimeoutException e) {
+            String em = "SocketTimeoutException while reading from server in "
+                    + this.getFullName()
+                    + ": "
+                    + LS
+                    + e.getMessage()
+                    + "."
+                    + LS
+                    + "Try to increase the value of the parameter 'socketTimeout'";
+            try {
+                server.close();
+            } catch (java.io.IOException e2) {
+            }
+            ; // do nothing here
+            throw new IllegalActionException(em);
+        } catch (java.io.IOException e) {
+            String em = "IOException while reading from server: " + LS
+                    + e.getMessage();
+            try {
+                server.close();
+            } catch (java.io.IOException e2) {
+            }
+            ; // do nothing here
+            throw new IllegalActionException(em);
+        }
     }
 
     /** Initializes the data members and checks if the parameters of the actor are valid.
@@ -331,66 +333,66 @@ public class Simulator extends SDFTransformer {
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
 
-	// Working directory
-	String worDir  = cutQuotationMarks(workingDirectory.getExpression());
-	// If directory is not set, set it to current directory.
-	if (worDir.length() == 0)
-	    worDir = ".";
-	// Verify that directory exist
-	if ( ! new File(worDir).isDirectory()) {
-	    String em = "Error: Working directory does not exist." + LS 
-		+ "Working directory is set to: '" + worDir + "'" + LS
-		+ "Check configuration of '" + this.getFullName() + "'.";
-	    throw new IllegalActionException(em);
-	}
+        // Working directory
+        String worDir = cutQuotationMarks(workingDirectory.getExpression());
+        // If directory is not set, set it to current directory.
+        if (worDir.length() == 0) {
+            worDir = ".";
+        }
+        // Verify that directory exist
+        if (!new File(worDir).isDirectory()) {
+            String em = "Error: Working directory does not exist." + LS
+                    + "Working directory is set to: '" + worDir + "'" + LS
+                    + "Check configuration of '" + this.getFullName() + "'.";
+            throw new IllegalActionException(em);
+        }
 
-	// Command that starts the simulation
-	final String simCon  = socConFil.stringValue();
-	// Assign BSD port number
-	porNo = Integer.valueOf(portNumber.getExpression());
-	//////////////////////////////////////////////////////////////	
-	// Instantiate server for IPC
-	try{
-	    // time out in milliseconds
-	    final int timOutMilSec = Integer.valueOf(timOut.getExpression());
-	    if ( timOutMilSec <= 0){
-		final String em = "Parameter for socket time out must be positive." 
-		    + LS + "Received " + timOutMilSec + " milliseconds";
-		throw new IllegalActionException(em);
-	    }
-	    if ( porNo < 0 )
-		server = new Server(timOutMilSec); // server uses any free port number
-	    else
-		server = new Server(porNo, timOutMilSec);
-	    // get port number
-	    porNo = server.getLocalPort();
-	}
-	catch(java.io.IOException e){
-	    // try to close server unless it is still a null pointer
-	    if ( server != null){
-		try{
-		    server.close();
-		}
-		catch(java.io.IOException e2){}
-	    }
-	    // throw original exception
-	    throw new IllegalActionException(e.getMessage());
-	}
-	////////////////////////////////////////////////////////////// 
-	// Write xml file for client
-	XMLWriter xmlWri = new XMLWriter(worDir, simCon, porNo);
-	try{
-	    xmlWri.write();
-	}
-	//catch(InterruptedException e){}
-	catch(java.io.FileNotFoundException e){
-	    String em = "FileNotFoundException when trying to write '" +
-		new File(worDir, simCon).getAbsolutePath() + "'.";
-	    throw new IllegalActionException(em);
-	}
-	catch(java.io.IOException e){
-	    throw new IllegalActionException(e.toString());
-	}
+        // Command that starts the simulation
+        final String simCon = socConFil.stringValue();
+        // Assign BSD port number
+        porNo = Integer.valueOf(portNumber.getExpression());
+        //////////////////////////////////////////////////////////////	
+        // Instantiate server for IPC
+        try {
+            // time out in milliseconds
+            final int timOutMilSec = Integer.valueOf(timOut.getExpression());
+            if (timOutMilSec <= 0) {
+                final String em = "Parameter for socket time out must be positive."
+                        + LS + "Received " + timOutMilSec + " milliseconds";
+                throw new IllegalActionException(em);
+            }
+            if (porNo < 0) {
+                server = new Server(timOutMilSec); // server uses any free port number
+            } else {
+                server = new Server(porNo, timOutMilSec);
+            }
+            // get port number
+            porNo = server.getLocalPort();
+        } catch (java.io.IOException e) {
+            // try to close server unless it is still a null pointer
+            if (server != null) {
+                try {
+                    server.close();
+                } catch (java.io.IOException e2) {
+                }
+            }
+            // throw original exception
+            throw new IllegalActionException(e.getMessage());
+        }
+        ////////////////////////////////////////////////////////////// 
+        // Write xml file for client
+        XMLWriter xmlWri = new XMLWriter(worDir, simCon, porNo);
+        try {
+            xmlWri.write();
+        }
+        //catch(InterruptedException e){}
+        catch (java.io.FileNotFoundException e) {
+            String em = "FileNotFoundException when trying to write '"
+                    + new File(worDir, simCon).getAbsolutePath() + "'.";
+            throw new IllegalActionException(em);
+        } catch (java.io.IOException e) {
+            throw new IllegalActionException(e.toString());
+        }
     }
 
     /** Start the simulation program.
@@ -398,18 +400,18 @@ public class Simulator extends SDFTransformer {
      *  @exception IllegalActionException If the simulation process arguments
      *                           are invalid.
      */
-    private void _startSimulation()
-	throws IllegalActionException {
-	//////////////////////////////////////////////////////////////	
-	// If porNo > 0, write client configuration file.
-	// Else we assume there is already such a file provided by the user
-	// Working directory
-	final String worDir  = cutQuotationMarks(workingDirectory.getExpression());
-	//////////////////////////////////////////////////////////////	
-	// start the simulation process
+    private void _startSimulation() throws IllegalActionException {
+        //////////////////////////////////////////////////////////////	
+        // If porNo > 0, write client configuration file.
+        // Else we assume there is already such a file provided by the user
+        // Working directory
+        final String worDir = cutQuotationMarks(workingDirectory
+                .getExpression());
+        //////////////////////////////////////////////////////////////	
+        // start the simulation process
         // Get the command as a File in case it has $CLASSPATH in it.
         File commandFile = command.asFile();
-	final String comArg;
+        final String comArg;
         if (commandFile.exists()) {
             // Maybe the user specified $CLASSPATH/lbnl/demo/CRoom/client
             comArg = commandFile.toString();
@@ -418,42 +420,46 @@ public class Simulator extends SDFTransformer {
             comArg = command.getExpression();
         }
 
-	final String argLin  = cutQuotationMarks(arguments.getExpression());
-	List<String> com = new ArrayList<String>();
-	StringTokenizer st = new StringTokenizer(comArg);
-	while (st.hasMoreTokens())
-	    com.add(st.nextToken());
-	st = new StringTokenizer(argLin);
-	while (st.hasMoreTokens()) 
-	    com.add(st.nextToken());
-	cliPro = new ClientProcess();
-	cliPro.setProcessArguments(com, worDir);
-	File slf = simLogFil.asFile();
-	try{
-	    if ( slf.exists() ) // try to delete file if it exists
-		if ( ! slf.delete() )
-		    throw new Exception("Cannot delete file.");
-	    slf.createNewFile(); // make sure we can write new file
-	    if( ! slf.canWrite() ){
-		throw new Exception("Cannot write to file.");
-	    }
-	}
-	catch(Exception e){
-	    String em = "Error: Cannot write to simulation log file." + LS 
-		+ "Simulation log file is '" + slf.getAbsolutePath() + "'" + LS
-		+ "Check configuration of '" + this.getFullName() + "'.";
-	    throw new IllegalActionException(em);
-	}
-	cliPro.setSimulationLogFile(slf);
-	cliPro.run();
-	if (!cliPro.processStarted() ){
-	    String em = "Error: Simulation process did not start." + LS 
-		+ cliPro.getErrorMessage() + LS
-		+ "Check configuration of '" + this.getFullName() + "'.";
-	    throw new IllegalActionException(em);
-	}
+        final String argLin = cutQuotationMarks(arguments.getExpression());
+        List<String> com = new ArrayList<String>();
+        StringTokenizer st = new StringTokenizer(comArg);
+        while (st.hasMoreTokens()) {
+            com.add(st.nextToken());
+        }
+        st = new StringTokenizer(argLin);
+        while (st.hasMoreTokens()) {
+            com.add(st.nextToken());
+        }
+        cliPro = new ClientProcess();
+        cliPro.setProcessArguments(com, worDir);
+        File slf = simLogFil.asFile();
+        try {
+            if (slf.exists()) {
+                if (!slf.delete()) {
+                    throw new Exception("Cannot delete file.");
+                }
+            }
+            slf.createNewFile(); // make sure we can write new file
+            if (!slf.canWrite()) {
+                throw new Exception("Cannot write to file.");
+            }
+        } catch (Exception e) {
+            String em = "Error: Cannot write to simulation log file." + LS
+                    + "Simulation log file is '" + slf.getAbsolutePath() + "'"
+                    + LS + "Check configuration of '" + this.getFullName()
+                    + "'.";
+            throw new IllegalActionException(em);
+        }
+        cliPro.setSimulationLogFile(slf);
+        cliPro.run();
+        if (!cliPro.processStarted()) {
+            String em = "Error: Simulation process did not start." + LS
+                    + cliPro.getErrorMessage() + LS
+                    + "Check configuration of '" + this.getFullName() + "'.";
+            throw new IllegalActionException(em);
+        }
     }
-    
+
     /** Initialize state variables.
      *
      *  @exception IllegalActionException If the parent class throws it or
@@ -462,17 +468,17 @@ public class Simulator extends SDFTransformer {
     public void initialize() throws IllegalActionException {
         super.initialize();
 
-	tokTim = getDirector().getModelTime().getDoubleValue();
-	firstFire = true;
+        tokTim = getDirector().getModelTime().getDoubleValue();
+        firstFire = true;
 
-	_startSimulation();
-	//////////////////////////////////////////////////////////////	
-	// New code since 2008-01-05
-	// Send initial output token. See also domains/sdf/lib/SampleDelay.java
-	_readFromServer();
-	double[] dblRea = server.getDoubleArray();
-	outTok = new DoubleMatrixToken(dblRea, dblRea.length, 1);
-	output.send(0, outTok);
+        _startSimulation();
+        //////////////////////////////////////////////////////////////	
+        // New code since 2008-01-05
+        // Send initial output token. See also domains/sdf/lib/SampleDelay.java
+        _readFromServer();
+        double[] dblRea = server.getDoubleArray();
+        outTok = new DoubleMatrixToken(dblRea, dblRea.length, 1);
+        output.send(0, outTok);
     }
 
     /** Closes sockets and shuts down the simulator.
@@ -480,31 +486,30 @@ public class Simulator extends SDFTransformer {
      *  @exception IllegalActionException if the base class throws it or
      *        if an I/O error occurs when closing the socket.
      */
-    public void wrapup() throws IllegalActionException{
-	super.wrapup();
-	try{
-	    // Send signal to the client, indicating that we are done with the time stepping.
-	    // This allows the client to terminate gracefully.
-	    server.write(1, tokTim, dblWri);
-	    // Close the server.
-	    server.close();
-	}
-	catch(java.io.IOException e){
-	    throw new IllegalActionException(e.getMessage());
-	}
+    public void wrapup() throws IllegalActionException {
+        super.wrapup();
+        try {
+            // Send signal to the client, indicating that we are done with the time stepping.
+            // This allows the client to terminate gracefully.
+            server.write(1, tokTim, dblWri);
+            // Close the server.
+            server.close();
+        } catch (java.io.IOException e) {
+            throw new IllegalActionException(e.getMessage());
+        }
     }
-
 
     /** Cut the leading and terminating quotation marks if present.
      *
      *@param str The string.
      *@return The string with leading and terminating quotation marks removed if present
      */
-    public static String cutQuotationMarks(String str){
-	if ( str.startsWith("\"") && str.endsWith("\"") )
-	    return str.substring(1, str.length() - 1);
-	else
-	    return str;
+    public static String cutQuotationMarks(String str) {
+        if (str.startsWith("\"") && str.endsWith("\"")) {
+            return str.substring(1, str.length() - 1);
+        } else {
+            return str;
+        }
     }
 
     /** Get a double array from the Token.
@@ -514,22 +519,22 @@ public class Simulator extends SDFTransformer {
      * @exception IllegalActionException If the base class throws it.
      */
     private double[] _getDoubleArray(ptolemy.data.Token t)
-	throws IllegalActionException
-    {
-	final DoubleMatrixToken arrTok = (DoubleMatrixToken)t;
-	final int n = arrTok.getRowCount();
-	double[] ret = new double[n];
-	for(int i = 0; i < n; i++){
-	    final DoubleToken scaTok = (DoubleToken)arrTok.getElementAsToken(i, 0);
-	    ret[i] = scaTok.doubleValue();
-	    if (Double.isNaN(ret[i])){
-		final String em = "Actor " + this.getFullName() + ": " + LS 
-		    + "Token number " + i + " is NaN at time " + 
-		    getDirector().getModelTime().getDoubleValue();
-		throw new IllegalActionException(em);
-	    }
-	}
-	return ret;
+            throws IllegalActionException {
+        final DoubleMatrixToken arrTok = (DoubleMatrixToken) t;
+        final int n = arrTok.getRowCount();
+        double[] ret = new double[n];
+        for (int i = 0; i < n; i++) {
+            final DoubleToken scaTok = (DoubleToken) arrTok.getElementAsToken(
+                    i, 0);
+            ret[i] = scaTok.doubleValue();
+            if (Double.isNaN(ret[i])) {
+                final String em = "Actor " + this.getFullName() + ": " + LS
+                        + "Token number " + i + " is NaN at time "
+                        + getDirector().getModelTime().getDoubleValue();
+                throw new IllegalActionException(em);
+            }
+        }
+        return ret;
     }
 
     ///////////////////////////////////////////////////////////////////

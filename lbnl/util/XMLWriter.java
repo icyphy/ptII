@@ -78,12 +78,12 @@ derivative works thereof, in binary and source code form.
 
 package lbnl.util;
 
-import java.io.IOException;
-import java.io.FileNotFoundException;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.net.InetAddress;
+import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.InetAddress;
 
 /** Class for writing xml documents.
  *
@@ -91,7 +91,7 @@ import java.io.PrintWriter;
  * @version $Id$
  * @since BCVTB 0.1
  */
-public class XMLWriter{
+public class XMLWriter {
 
     /** Construct an instance and assign all data members.
      *
@@ -99,11 +99,10 @@ public class XMLWriter{
      * @param fileName The system-dependent filename.
      * @param portNo The port number for BSD socket.
      */
-    public XMLWriter(String fileDirectory, String fileName,
-		     int portNo){
-	filDir = fileDirectory;
-	filNam = fileName;
-	porNo = portNo;
+    public XMLWriter(String fileDirectory, String fileName, int portNo) {
+        filDir = fileDirectory;
+        filNam = fileName;
+        porNo = portNo;
     }
 
     /** Write the xml file.
@@ -112,27 +111,24 @@ public class XMLWriter{
      *              than a regular file, does not exist but cannot be created, 
      *              or cannot be opened for any other reason.
      * @exception IOException if an I/O error occurs.
-     */    
-    public synchronized void write()
-	throws FileNotFoundException, IOException{
-	// Prepare string
-	final InetAddress localHost = InetAddress.getLocalHost();
-	final String hosNam = localHost.getCanonicalHostName();
-	final String s = "<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>" + LS
-            + "<BCVTB-client>" + LS
-            + "  <ipc>" + LS
-            + "    <socket port=\"" + porNo + "\" hostname=\"" + hosNam + "\"/>" + LS
-            + "  </ipc>" + LS
-            + "</BCVTB-client>" + LS;
-	
-	// Write string
-	final File fil = new File(filDir, filNam);
-	final FileOutputStream fos = new FileOutputStream(fil);
-	final PrintWriter priWri = new PrintWriter(fos, true);
-	priWri.println(s);
-	priWri.close();
+     */
+    public synchronized void write() throws FileNotFoundException, IOException {
+        // Prepare string
+        final InetAddress localHost = InetAddress.getLocalHost();
+        final String hosNam = localHost.getCanonicalHostName();
+        final String s = "<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>" + LS
+                + "<BCVTB-client>" + LS + "  <ipc>" + LS
+                + "    <socket port=\"" + porNo + "\" hostname=\"" + hosNam
+                + "\"/>" + LS + "  </ipc>" + LS + "</BCVTB-client>" + LS;
+
+        // Write string
+        final File fil = new File(filDir, filNam);
+        final FileOutputStream fos = new FileOutputStream(fil);
+        final PrintWriter priWri = new PrintWriter(fos, true);
+        priWri.println(s);
+        priWri.close();
     }
-    
+
     /** Integer port number for BSD socket. */
     protected int porNo;
 
@@ -147,21 +143,19 @@ public class XMLWriter{
 
     /** Main method that can be used for testing
      */
-    public static void main(String[] arg){
-        String fileDirectory=".";
+    public static void main(String[] arg) {
+        String fileDirectory = ".";
         int portNo = 1;
-        int n=Integer.valueOf(arg[0]);
-        for(int i = 0; i < n; i++){
-            XMLWriter w = 
-                new XMLWriter(fileDirectory, "test-" + i + ".txt", portNo);
-            try{
+        int n = Integer.valueOf(arg[0]);
+        for (int i = 0; i < n; i++) {
+            XMLWriter w = new XMLWriter(fileDirectory, "test-" + i + ".txt",
+                    portNo);
+            try {
                 w.write();
-            }
-            catch(Exception e){
+            } catch (Exception e) {
                 System.err.println("Exception: " + e.getMessage());
             }
         }
 
     }
 }
-

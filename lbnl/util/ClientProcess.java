@@ -76,19 +76,17 @@ derivative works thereof, in binary and source code form.
 ********************************************************************
 */
 
-
 package lbnl.util;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.PrintWriter;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.lang.ProcessBuilder;
-import java.util.List;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.List;
 
 import ptolemy.kernel.util.IllegalActionException;
 
@@ -103,101 +101,98 @@ import ptolemy.kernel.util.IllegalActionException;
 public class ClientProcess extends Thread {
 
     private final static String LS = System.getProperty("line.separator");
-   
+
     /** Constructor */
-    public ClientProcess(){
-      super();
-      proSta = false;
-      errMes = null;
+    public ClientProcess() {
+        super();
+        proSta = false;
+        errMes = null;
     }
 
     /** Sets the simulation log file */
-    public void setSimulationLogFile(File simLogFil){
-	logFil = new File(simLogFil.getAbsolutePath());
-	logToSysOut = true;
-	// Delete log file if it exists
-	logFil.delete();
+    public void setSimulationLogFile(File simLogFil) {
+        logFil = new File(simLogFil.getAbsolutePath());
+        logToSysOut = true;
+        // Delete log file if it exists
+        logFil.delete();
     }
 
     /** Runs the process. */
     public void run() {
-	ProcessBuilder pb = new ProcessBuilder(cmdArr);
-	try{
-	    proSta = false;
-	    pb.directory(worDir);
-	    pb.redirectErrorStream(true);
-	    simPro = pb.start();
-	    proSta = true;
-	    new PrintOutput().start();
-	}
-	catch (SecurityException exc){
-	    proSta = false;
-	    errMes = "Error when starting external process." + LS
-		+ "You may not have the permission to execute this command." + LS
-                + "Error message           : " + exc.getMessage() + LS
-		+ "Current directory       : " + worDir + LS
-		+ "ProcessBuilder arguments: " + pb.command().toString();
-	}
-	catch (java.io.IOException exc){
-	    proSta = false;
-	    errMes = "Error when starting external process." + LS
-                + "Error message           : " + exc.getMessage() + LS
-		+ "Current directory       : " + worDir + LS
-		+ "ProcessBuilder arguments: " + pb.command().toString();
-	}
+        ProcessBuilder pb = new ProcessBuilder(cmdArr);
+        try {
+            proSta = false;
+            pb.directory(worDir);
+            pb.redirectErrorStream(true);
+            simPro = pb.start();
+            proSta = true;
+            new PrintOutput().start();
+        } catch (SecurityException exc) {
+            proSta = false;
+            errMes = "Error when starting external process."
+                    + LS
+                    + "You may not have the permission to execute this command."
+                    + LS + "Error message           : " + exc.getMessage() + LS
+                    + "Current directory       : " + worDir + LS
+                    + "ProcessBuilder arguments: " + pb.command().toString();
+        } catch (java.io.IOException exc) {
+            proSta = false;
+            errMes = "Error when starting external process." + LS
+                    + "Error message           : " + exc.getMessage() + LS
+                    + "Current directory       : " + worDir + LS
+                    + "ProcessBuilder arguments: " + pb.command().toString();
+        }
     }
-    
+
     /** Returns <code>true</code> if the process started without throwing an exception */
-    public boolean processStarted(){
+    public boolean processStarted() {
         return proSta;
     }
-    
+
     /** Returns the error message if <code>proSta=true</code> or a null pointer otherwise
      * @return the error message if <code>proSta=true</code> or a null pointer otherwise
      */
-    public String getErrorMessage(){
-	return errMes;
+    public String getErrorMessage() {
+        return errMes;
     }
 
-    
     /** Inner class to print any output of the process to the console */
-    private class PrintOutput 
-	extends Thread
-    {
-	public PrintOutput() {}
+    private class PrintOutput extends Thread {
+        public PrintOutput() {
+        }
 
-	/** Runs the process. */
-	public void run() {
-	    if (simPro == null) 
-		return;
-	    InputStream is = simPro.getInputStream();
-	    InputStreamReader isr = new InputStreamReader(is);
-	    BufferedReader br = new BufferedReader(isr);
-	    PrintWriter pwLogFil;
-	    PrintWriter pwSysOut = new PrintWriter(System.out);
-	    try{
-		 pwLogFil = new PrintWriter(new BufferedWriter(new FileWriter(logFil)));
-	    }
-	    catch(java.io.IOException e){
-		e.printStackTrace();
-		pwLogFil = new PrintWriter(System.err);
-	    }
-	    
-	    String line;
-	    try{
-		while ((line = br.readLine()) != null) {
-		    if (logToSysOut){
-			pwSysOut.println(line);
-			pwSysOut.flush();
-		    }
-		    pwLogFil.println(line);
-		    pwLogFil.flush();
-		}
-	    }
-	    catch(java.io.IOException e){
-		e.printStackTrace();
-	    }
-	}	
+        /** Runs the process. */
+        public void run() {
+            if (simPro == null) {
+                return;
+            }
+            InputStream is = simPro.getInputStream();
+            InputStreamReader isr = new InputStreamReader(is);
+            BufferedReader br = new BufferedReader(isr);
+            PrintWriter pwLogFil;
+            PrintWriter pwSysOut = new PrintWriter(System.out);
+            try {
+                pwLogFil = new PrintWriter(new BufferedWriter(new FileWriter(
+                        logFil)));
+            } catch (java.io.IOException e) {
+                e.printStackTrace();
+                pwLogFil = new PrintWriter(System.err);
+            }
+
+            String line;
+            try {
+                while ((line = br.readLine()) != null) {
+                    if (logToSysOut) {
+                        pwSysOut.println(line);
+                        pwSysOut.flush();
+                    }
+                    pwLogFil.println(line);
+                    pwLogFil.flush();
+                }
+            } catch (java.io.IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     /** Set the process arguments.
@@ -206,43 +201,44 @@ public class ClientProcess extends Thread {
      *@exception IllegalActionException if the canonical path name of the program file
      *                                  cannot be obtained.
      */
-    public void setProcessArguments(List<String> cmdarray,
-				    String dir)
-	throws IllegalActionException{
-	cmdArr = new ArrayList<String>();
-	for (int i=0; i < cmdarray.size(); i++){
-	    if ( i == 0 ){
-		// The first item is the command. If it points to a file
-		// then we get the absolute file name. Otherwise, invoking a command
-		// like ../cclient will not work.
-		String s = cmdarray.get(i);
-		File f = new File(s);
-		if (f.exists()){
-		    try{
-			s = f.getCanonicalPath();
-		    }
-		    catch(java.io.IOException exc){
-			String em = "Error: Could not get canonical path for '" + s + "'.";
-			throw new IllegalActionException(em);
-		    }
-		}
-		cmdArr.add(s);
-	    }
-	    else
-		cmdArr.add(cmdarray.get(i));
-	}
+    public void setProcessArguments(List<String> cmdarray, String dir)
+            throws IllegalActionException {
+        cmdArr = new ArrayList<String>();
+        for (int i = 0; i < cmdarray.size(); i++) {
+            if (i == 0) {
+                // The first item is the command. If it points to a file
+                // then we get the absolute file name. Otherwise, invoking a command
+                // like ../cclient will not work.
+                String s = cmdarray.get(i);
+                File f = new File(s);
+                if (f.exists()) {
+                    try {
+                        s = f.getCanonicalPath();
+                    } catch (java.io.IOException exc) {
+                        String em = "Error: Could not get canonical path for '"
+                                + s + "'.";
+                        throw new IllegalActionException(em);
+                    }
+                }
+                cmdArr.add(s);
+            } else {
+                cmdArr.add(cmdarray.get(i));
+            }
+        }
 
-	if (dir.equalsIgnoreCase(".")) 
-	    worDir = new File(System.getProperty("user.dir"));
-	else if (dir.startsWith("./"))
-	    worDir = new File(System.getProperty("user.dir") + dir.substring(1));
-	else{
-	    worDir = new File(dir);
-	    if ( !worDir.isAbsolute() )
-		worDir = new File(System.getProperty("user.dir") + File.separator + dir);
-	}
+        if (dir.equalsIgnoreCase(".")) {
+            worDir = new File(System.getProperty("user.dir"));
+        } else if (dir.startsWith("./")) {
+            worDir = new File(System.getProperty("user.dir") + dir.substring(1));
+        } else {
+            worDir = new File(dir);
+            if (!worDir.isAbsolute()) {
+                worDir = new File(System.getProperty("user.dir")
+                        + File.separator + dir);
+            }
+        }
     }
-    
+
     /** Array containing the command to call and its arguments */
     List<String> cmdArr;
 
@@ -265,13 +261,13 @@ public class ClientProcess extends Thread {
     String errMes;
 
     /** Main method for testing */
-    public static void main(String args[]) 
-	throws IllegalActionException{
-	ClientProcess c = new ClientProcess();
-	List<String> com = new ArrayList<String>();
-	for (int i = 0; i < args.length; i++)
-	    com.add(args[i]);
+    public static void main(String args[]) throws IllegalActionException {
+        ClientProcess c = new ClientProcess();
+        List<String> com = new ArrayList<String>();
+        for (int i = 0; i < args.length; i++) {
+            com.add(args[i]);
+        }
         c.setProcessArguments(com, ".");
-	c.run();
+        c.run();
     }
 }

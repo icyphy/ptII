@@ -1651,8 +1651,6 @@ public class GiottoDirector extends
                     code.append("[" + bufferSize + "]");
                 }
                 code.append(";" + _eol);
-            } else {
-                //System.out.println("didn't match if");
             }
 
             // return "should define port here from CCodeGEneratorHelper";

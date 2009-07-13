@@ -76,14 +76,13 @@ derivative works thereof, in binary and source code form.
 ********************************************************************
 */
 
-
 package lbnl.actor.lib.net;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
-import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
@@ -95,15 +94,13 @@ import java.net.Socket;
  */
 public class Server {
 
-
     /** Construct a server on any available port.
      *
      * @param timOut Socket time out in milliseconds.
      * @exception IOException If the server socket cannot be opened.
      */
-    public Server(int timOut)
-	throws IOException{
-	this(0, timOut);
+    public Server(int timOut) throws IOException {
+        this(0, timOut);
     }
 
     /** Construct a server on the port specified by <tt>portNo</tt>.
@@ -112,23 +109,22 @@ public class Server {
      * @param timOut Socket time out in milliseconds.
      * @exception IOException If the server socket cannot be opened.
      */
-    public Server(int portNo, int timOut) 
-	throws IOException{
-	serSoc = new ServerSocket(portNo);
-	 flaFroCli = 0;
-	 if (!serSoc.isBound()){
-	     String em = "Server socket failed to bind to an address.";
-	     throw new IOException(em);
-	 }
-	 serSoc.setSoTimeout(timOut);
+    public Server(int portNo, int timOut) throws IOException {
+        serSoc = new ServerSocket(portNo);
+        flaFroCli = 0;
+        if (!serSoc.isBound()) {
+            String em = "Server socket failed to bind to an address.";
+            throw new IOException(em);
+        }
+        serSoc.setSoTimeout(timOut);
     }
 
     /** Get the port number.
      *
      *@return The port number.
     */
-    public int getLocalPort(){
-	return serSoc.getLocalPort();
+    public int getLocalPort() {
+        return serSoc.getLocalPort();
     }
 
     /** Write data to the socket.
@@ -138,37 +134,36 @@ public class Server {
      * @param dblVal The array with double values.
      * @exception IOException If a communication problems occur.
      */
-    public void write(int flagToClient,
-		      double curTim, 
-		      double[] dblVal) throws IOException {
-	simTimWri = curTim;
-	////////////////////////////////////////////////////
-	// Set up string
-	// add zeros for number of integers and booleans
-	final int nDbl = (dblVal != null) ? dblVal.length : 0;
-	StringBuffer strBuf = new StringBuffer(Integer.toString(verNo));
-	strBuf.append(" " + Integer.toString(flagToClient)); // the communication flag
-	strBuf.append(" " + Integer.toString(nDbl));         // then number of doubles
-	strBuf.append(" 0 0 "); // the number of integers and booleans
-	strBuf.append(curTim);  // the current simulation time
-	strBuf.append(" ");
-	for(int i = 0; i < nDbl; i++){
-	    strBuf.append(String.valueOf(dblVal[i]));
-	    strBuf.append(" ");
-	}
-	// add line termination for parsing in client
-	strBuf.append("\n");
-	_write(strBuf);
+    public void write(int flagToClient, double curTim, double[] dblVal)
+            throws IOException {
+        simTimWri = curTim;
+        ////////////////////////////////////////////////////
+        // Set up string
+        // add zeros for number of integers and booleans
+        final int nDbl = (dblVal != null) ? dblVal.length : 0;
+        StringBuffer strBuf = new StringBuffer(Integer.toString(verNo));
+        strBuf.append(" " + Integer.toString(flagToClient)); // the communication flag
+        strBuf.append(" " + Integer.toString(nDbl)); // then number of doubles
+        strBuf.append(" 0 0 "); // the number of integers and booleans
+        strBuf.append(curTim); // the current simulation time
+        strBuf.append(" ");
+        for (int i = 0; i < nDbl; i++) {
+            strBuf.append(String.valueOf(dblVal[i]));
+            strBuf.append(" ");
+        }
+        // add line termination for parsing in client
+        strBuf.append("\n");
+        _write(strBuf);
     }
 
     /** Write the data to the socket.
      *
      * @param strBuf The string buffer to be sent to the socket.
      * @exception IOException If communication problems occur.
-     */     
+     */
     private void _write(StringBuffer strBuf) throws IOException {
-	BufferedWriter wr = 
-	    new BufferedWriter(new OutputStreamWriter(cliSoc.getOutputStream()));
+        BufferedWriter wr = new BufferedWriter(new OutputStreamWriter(cliSoc
+                .getOutputStream()));
         wr.write(new String(strBuf));
         wr.flush();
     }
@@ -177,110 +172,109 @@ public class Server {
      *
      * @return The communication flag.
     */
-    public int getClientFlag(){
-	return flaFroCli;
+    public int getClientFlag() {
+        return flaFroCli;
     }
-    
 
     /** Return the last double array read from the socket.
      *
      * @return dblVal The array with double values.
      */
-    public double[] getDoubleArray(){
-	return dblVal;
+    public double[] getDoubleArray() {
+        return dblVal;
     }
 
     /** Return the last simulation time written to the client.
      *
      * @return The last simulation time written to the client.
      */
-    public double getSimulationTimeWrittenToClient(){
-	return simTimWri;
+    public double getSimulationTimeWrittenToClient() {
+        return simTimWri;
     }
 
     /** Return the last simulation time read from the client.
      *
      * @return The last simulation time read from the client.
      */
-    public double getSimulationTimeReadFromClient(){
-	return simTimRea;
+    public double getSimulationTimeReadFromClient() {
+        return simTimRea;
     }
-    
+
     /** Read data from the socket.
      *
      * @exception IOException If communication problems occur.
      * @expression SocketTimeoutException If the socket does not respond.
     */
-    public void read()
-	throws IOException, java.net.SocketTimeoutException {
-	if (cliSoc == null ){ // first call
-	    cliSoc = serSoc.accept(); // accept calls from client
-	}
-	
-	////////////////////////////////////////////////////////
-	final InputStreamReader inpStrRea = 
-	    new InputStreamReader(cliSoc.getInputStream());
-	final BufferedReader d = new BufferedReader(inpStrRea);	
-	final String line = d.readLine();
-	////////////////////////////////////////////////////
-	// get elements from the line
-	String[] ele = line.split(" ");
-	int ver =  Integer.parseInt(ele[0]);    // the version number
-	flaFroCli = Integer.parseInt(ele[1]);   // the communication flag
-	if ( flaFroCli == 0 ){ // read further if flag is nonzero
-	    final int nDbl = Integer.parseInt(ele[2]);
-	    final int nInt = Integer.parseInt(ele[3]);
-	    final int nBoo = Integer.parseInt(ele[4]);
-	    simTimRea = Double.parseDouble(ele[5]);
-	    dblVal = new double[nDbl];
-	    // check sufficient array lenght
-	    if ( nDbl != dblVal.length){
-		throw new IOException("Received " + nDbl + 
-				      " doubles, but expected " + 
-				      dblVal.length + " elements.");
-	    }
-	    for(int i = 0; i < nDbl; i++)
-		dblVal[i] = Double.parseDouble(ele[6+i]);
-	}
+    public void read() throws IOException, java.net.SocketTimeoutException {
+        if (cliSoc == null) { // first call
+            cliSoc = serSoc.accept(); // accept calls from client
+        }
+
+        ////////////////////////////////////////////////////////
+        final InputStreamReader inpStrRea = new InputStreamReader(cliSoc
+                .getInputStream());
+        final BufferedReader d = new BufferedReader(inpStrRea);
+        final String line = d.readLine();
+        ////////////////////////////////////////////////////
+        // get elements from the line
+        String[] ele = line.split(" ");
+        Integer.parseInt(ele[0]);
+        flaFroCli = Integer.parseInt(ele[1]); // the communication flag
+        if (flaFroCli == 0) { // read further if flag is nonzero
+            final int nDbl = Integer.parseInt(ele[2]);
+            Integer.parseInt(ele[3]);
+            Integer.parseInt(ele[4]);
+            simTimRea = Double.parseDouble(ele[5]);
+            dblVal = new double[nDbl];
+            // check sufficient array lenght
+            if (nDbl != dblVal.length) {
+                throw new IOException("Received " + nDbl
+                        + " doubles, but expected " + dblVal.length
+                        + " elements.");
+            }
+            for (int i = 0; i < nDbl; i++) {
+                dblVal[i] = Double.parseDouble(ele[6 + i]);
+            }
+        }
     }
 
     /** Close the socket.
      *
      * @exception IOException If an I/O error occurs when closing the socket.
      */
-    public void close()
-	throws IOException{
-	if ( cliSoc != null ){
-	    cliSoc.close();
-	}
-	if ( serSoc != null )
-	    serSoc.close();
+    public void close() throws IOException {
+        if (cliSoc != null) {
+            cliSoc.close();
+        }
+        if (serSoc != null) {
+            serSoc.close();
+        }
     }
 
     /** Main method that can be used for testing 
      */
-    public static void main(String[] args) throws Exception{
-	 int timOut = 10000; // time out in milliseconds
-	Server[] ser = new Server[2];
-	ser[0] = new Server(Integer.valueOf(args[0]), timOut);
-	ser[1] = new Server(Integer.valueOf(args[0])+1, timOut);
-	double[] dbl = new double[1];
-	for(int i = 0; i < dbl.length; i++){
-	    dbl[i] = i;
-	}
-	int iLoo = 0;
-	while(true){
-	    for(int iSer=0; iSer < 2; iSer++){
-		Thread.sleep(10); // in milliseconds
-		ser[iSer].read();
-		//		Thread.sleep(10);
-		ser[iSer].write(0, new Double(iLoo).doubleValue(), dbl);
-		System.out.println("Loop number: " + iLoo);
-	    }
-	    iLoo++;
-	}
+    public static void main(String[] args) throws Exception {
+        int timOut = 10000; // time out in milliseconds
+        Server[] ser = new Server[2];
+        ser[0] = new Server(Integer.valueOf(args[0]), timOut);
+        ser[1] = new Server(Integer.valueOf(args[0]) + 1, timOut);
+        double[] dbl = new double[1];
+        for (int i = 0; i < dbl.length; i++) {
+            dbl[i] = i;
+        }
+        int iLoo = 0;
+        while (true) {
+            for (int iSer = 0; iSer < 2; iSer++) {
+                Thread.sleep(10); // in milliseconds
+                ser[iSer].read();
+                //		Thread.sleep(10);
+                ser[iSer].write(0, new Double(iLoo).doubleValue(), dbl);
+                System.out.println("Loop number: " + iLoo);
+            }
+            iLoo++;
+        }
     }
-    
+
     /** The client socket */
     Socket cliSoc;
 

@@ -599,17 +599,17 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
 
         // Read in the templates and generate new files.
         try {
-            if (1 == 0) {
-                // If we are generating only jnlp files to update the demos,
-                // then we might want to skip generating applets.
-                CodeGeneratorUtilities.substitute(_templateDirectory
-                        + "model.htm.in", _substituteMap, _outputDirectory
-                        + "/" + _sanitizedModelName + ".htm");
-                CodeGeneratorUtilities.substitute(_templateDirectory
-                        + "modelVergil.htm.in", _substituteMap,
-                        _outputDirectory + "/" + _sanitizedModelName
-                                + "Vergil.htm");
-            }
+//            if (1 == 0) {
+//                // If we are generating only jnlp files to update the demos,
+//                // then we might want to skip generating applets.
+//                CodeGeneratorUtilities.substitute(_templateDirectory
+//                        + "model.htm.in", _substituteMap, _outputDirectory
+//                        + "/" + _sanitizedModelName + ".htm");
+//                CodeGeneratorUtilities.substitute(_templateDirectory
+//                        + "modelVergil.htm.in", _substituteMap,
+//                        _outputDirectory + "/" + _sanitizedModelName
+//                                + "Vergil.htm");
+//            }
             if (!(new File(_outputDirectory + File.separator
                     + _sanitizedModelName + ".htm").exists())) {
                 CodeGeneratorUtilities.substitute(_templateDirectory
