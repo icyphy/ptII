@@ -56,7 +56,6 @@ public class IORelation extends RTMaudeAdaptor {
         super(component);
     }
 
-    @Override
     public String generateTermCode() throws IllegalActionException {
         final ptolemy.actor.IORelation r = (ptolemy.actor.IORelation) getComponent();
         StringBuffer rec = new StringBuffer();

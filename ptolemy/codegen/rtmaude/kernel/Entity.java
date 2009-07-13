@@ -72,7 +72,6 @@ public class Entity extends RTMaudeAdaptor {
             );
     }
     
-    @Override
     protected String getInfo(String name, List<String> parameters)
             throws IllegalActionException {
         if (name.equals("class"))

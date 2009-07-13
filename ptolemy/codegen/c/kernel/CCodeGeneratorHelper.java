@@ -97,7 +97,6 @@ public class CCodeGeneratorHelper extends CodeGeneratorHelper {
      * Return a new parse tree code generator to use with expressions.
      * @return the parse tree code generator to use with expressions.
      */
-    @Override
     public ParseTreeCodeGenerator getParseTreeCodeGenerator() {
         // FIXME: We need to create new ParseTreeCodeGenerator each time
         // here or else we get lots of test failures.  It would be better
@@ -116,7 +115,6 @@ public class CCodeGeneratorHelper extends CodeGeneratorHelper {
      * @exception IllegalActionException If the helper class for the model
      * director cannot be found.
      */
-    @Override
     public String generateVariableDeclaration() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
@@ -165,7 +163,6 @@ public class CCodeGeneratorHelper extends CodeGeneratorHelper {
      * @return The code generator associated with this helper class.
      * @see #setCodeGenerator(CodeGenerator)
      */
-    @Override
     public CCodeGenerator getCodeGenerator() {
         return (CCodeGenerator) _codeGenerator;
     }
@@ -177,7 +174,6 @@ public class CCodeGeneratorHelper extends CodeGeneratorHelper {
      * generated from this helper class.
      * @exception IllegalActionException Not Thrown in this base class.
      */
-    @Override
     public Set getHeaderFiles() throws IllegalActionException {
         Set files = super.getHeaderFiles();
         files.addAll(_includeFiles);
@@ -479,7 +475,6 @@ public class CCodeGeneratorHelper extends CodeGeneratorHelper {
      * @exception IllegalActionException If there is a problem getting the
      * helpers for the ports or if the conversion cannot be handled.
      */
-    @Override
     protected String _generateTypeConvertStatement(Channel source,
             Channel sink, int offset) throws IllegalActionException {
 
@@ -573,12 +568,10 @@ public class CCodeGeneratorHelper extends CodeGeneratorHelper {
      * @return The string"(void)" so as to avoid the avr-gcc 3.4.6 warning:
      * "function declaration isn't a prototype"
      */
-    @Override
     protected String _getFireFunctionArguments() {
         return "(void)";
     }
 
-    @Override
     protected String _replaceMacro(String macro, String parameter)
             throws IllegalActionException {
         String result = super._replaceMacro(macro, parameter);

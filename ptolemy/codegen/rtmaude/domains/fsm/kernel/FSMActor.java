@@ -57,7 +57,6 @@ public class FSMActor extends Entity {
         super(component);
     }
 
-    @Override
     protected String getInfo(String name, List<String> parameters)
             throws IllegalActionException {
         ptolemy.domains.fsm.kernel.FSMActor fa = (ptolemy.domains.fsm.kernel.FSMActor) getComponent();

@@ -81,7 +81,6 @@ public class RTMaudeCodeGenerator extends CodeGenerator {
         generatorPackage.setExpression("ptolemy.codegen.rtmaude");
     }
 
-    @Override
     protected String _generateBodyCode() throws IllegalActionException {
         CompositeEntity model = (CompositeEntity) getContainer();
 
@@ -89,38 +88,32 @@ public class RTMaudeCodeGenerator extends CodeGenerator {
         return CodeStream.indent(1, compositeHelper.generateFireCode() + " ");
     }
 
-    @Override
     public String generateMainEntryCode() throws IllegalActionException {
         return super.generateMainEntryCode()
                 + ((RTMaudeAdaptor) _getHelper(getContainer()))
                         .generateEntryCode();
     }
 
-    @Override
     public String generateMainExitCode() throws IllegalActionException {
         return super.generateMainExitCode()
                 + ((RTMaudeAdaptor) _getHelper(getContainer()))
                         .generateExitCode();
     }
 
-    @Override
     protected String _generateIncludeFiles() throws IllegalActionException {
         return "load ptolemy-base.maude";
     }
 
-    @Override
     protected StringBuffer _finalPassOverCode(StringBuffer code)
             throws IllegalActionException {
         // TODO Auto-generated method stub
         return code;
     }
 
-    @Override
     public String formatComment(String comment) {
         return "***( " + comment + " )***" + _eol;
     }
 
-    @Override
     protected int _executeCommands() throws IllegalActionException {
         List commands = new LinkedList();
 

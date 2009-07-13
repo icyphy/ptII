@@ -53,7 +53,6 @@ public class PropertyParameter extends StringParameter {
         super(container, name);
     }
 
-    @Override
     public String stringValue() throws IllegalActionException {
         String timesign;
         String ret = super.stringValue();
