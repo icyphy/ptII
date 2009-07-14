@@ -150,7 +150,9 @@ T_{k+1}. The control action is computed in Ptolemy II.</text></svg></configure>
         </property>
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="For this demo to work, the libbcvtb share library&#10;must be present and in the &#10;PATH (Windows),  LD_LIBRARY_PATH (Linux)&#10;or DYLD_LIBRARY_PATH (Mac OS X). &#10;Usually, libbcvtb is found in&#10;ptII/lbnl/lib/util or ptII/lib.&#10;&#10;In addition, BCVTB_HOME must be set to &#10;$PTII/lbnl&#10;&#10;One way to do this is to run:&#10; cd $PTII/lbnl/demo/CRoom&#10; make demo">
+        <property name="bold" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="For this demo to work, the libbcvtb share library&#10;must be present and in the &#10;PATH (Windows),  LD_LIBRARY_PATH (Linux)&#10;or DYLD_LIBRARY_PATH (Mac OS X). &#10;Usually, libbcvtb is found in&#10;ptII/lbnl/lib/util or ptII/lib.&#10;&#10;In addition, BCVTB_HOME must be set to &#10;$PTII/lbnl&#10;&#10;MATLABPATH must be set to&#10;$PTII/lbnl/lib/matlab&#10;&#10;One way to do this is to run:&#10; cd $PTII/lbnl/demo/CRoom&#10; make demo">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 85.0]">
         </property>
@@ -194,7 +196,7 @@ T_{k+1}. The control action is computed in Ptolemy II.</text></svg></configure>
                 </property>
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[415.0, 310.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[415.0, 360.0]">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -266,7 +268,7 @@ T_{k+1}. The control action is computed in Ptolemy II.</text></svg></configure>
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[558, 391]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{710.0, 230.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[715.0, 290.0]">
         </property>
         <property name="_expertMode" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
@@ -292,11 +294,11 @@ T_{k+1}. The control action is computed in Ptolemy II.</text></svg></configure>
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{75.0, 300.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 350.0]">
         </property>
     </entity>
     <entity name="Controller" class="ptolemy.domains.ct.kernel.CTCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{270.0, 310.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 360.0]">
         </property>
         <property name="Kp" class="ptolemy.data.expr.Parameter" value="[1, 0; 0, 7.5]">
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -457,7 +459,7 @@ is delayed by one time step.</text></svg></configure>
         <link port="gain.input" relation="relation"/>
     </entity>
     <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{170.0, 310.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 360.0]">
         </property>
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
@@ -469,11 +471,11 @@ is delayed by one time step.</text></svg></configure>
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{415.0, 225.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[420.0, 285.0]">
         </property>
     </entity>
     <entity name="VectorDisassembler" class="ptolemy.actor.lib.VectorDisassembler">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{520.0, 205.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[525.0, 265.0]">
         </property>
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
@@ -509,7 +511,7 @@ is delayed by one time step.</text></svg></configure>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <vertex name="vertex1" value="{345.0, 310.0}">
+        <vertex name="vertex1" value="[345.0, 360.0]">
         </vertex>
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">

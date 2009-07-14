@@ -5,6 +5,7 @@
 <!-- parameters, and other items that might appear in any model. -->
 <!-- Note that this library is included in modal models as part  -->
 <!-- of its custom library.  -->
+
 <group>
 <property name="DocViewerAttribute" class="ptolemy.kernel.util.SingletonAttribute">
   <property name="DocAttribute" class="ptolemy.vergil.basic.DocAttribute">
