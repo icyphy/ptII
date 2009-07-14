@@ -1506,6 +1506,8 @@ jsalldirs_check:
 # of the backtrack directories do not have makefiles.
 JSCLEANUPDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/copernicus/applet \
+	$(REMOTE1PTIIDIST)/ptolemy/backtrack/automatic/ \
+	$(REMOTE1PTIIDIST)/ptolemy/backtrack/automatic/ptolemy \
 	$(REMOTE1PTIIDIST)/ptolemy/backtrack/automatic/ptolemy/actor/lib \
 	$(REMOTE1PTIIDIST)/ptolemy/backtrack/automatic/ptolemy/math \
 	$(REMOTE1PTIIDIST)/ptolemy/backtrack/automatic/ptolemy/domains/sdf/lib
@@ -1545,6 +1547,8 @@ remote1distjsrestore:
 		);  \
 	    fi ; \
 	done ; \
+	# Try to get rid of JavaScope files
+	(cd $(REMOTE1PTIIDIST)/ptolemy/backtrack; rm -rf automatic; svn update)
 
 # Build the docs
 remote1doc:
