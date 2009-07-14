@@ -68,8 +68,7 @@ JSRCS = \
 OTHER_FILES_TO_BE_JARED = \
 	decorative.xml \
 	iconEditorLibrary.xml \
-	ptIIplanetIcon.gif \
-	sample.pdf
+	ptIIplanetIcon.gif
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
