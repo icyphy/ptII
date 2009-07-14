@@ -74,6 +74,7 @@ public class RTMaudeCodeGenerator extends CodeGenerator {
         generateCpp.setVisibility(Settable.NONE);
         generateEmbeddedCode.setVisibility(Settable.NONE);
         padBuffers.setVisibility(Settable.NONE);
+        measureTime.setVisibility(Settable.NONE);
         sourceLineBinding.setVisibility(Settable.NONE);
         target.setVisibility(Settable.NONE);
 

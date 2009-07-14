@@ -18,7 +18,6 @@ variableName : '$info(variableName)/**/
   var VAL : AssignMap . var VM : ValueMap .
   vars PI PI' : PortId . 
   var PS : PortStatus . var DPS : DetPortStatus .
-  var UPDATED : Bool .
 
 ---------------------------------------------------------------------
 --- Message
@@ -40,14 +39,14 @@ variableName : '$info(variableName)/**/
 
   --- The output port returns the same value to the input port
   --- Assume that there are EXACTLY two ports.
-  eq portFixPoints(UPDATED,
+  eq portFixPoints(
      < O : SetVariable | 
        status : enabled,
        ports : 
          < PI : InPort | status : DPS, value : V > 
          < PI' : OutPort | status : unknown > 
      > REST)
-   = portFixPoints(true,
+   = portFixPoints(
      < O : SetVariable |
        ports : 
          < PI : InPort | >

@@ -23,7 +23,6 @@ event-history : emptyHistory/**/
   var T : Time . var V : Value .
   vars PORTS : Configuration . vars PI : PortId .
   var EPI : EPortId . var CHS : ChannelSet .
-  var UPDATED : Bool .
 
 ---------------------------------------------------------------------
 --- Semantics Steps

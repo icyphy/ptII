@@ -117,12 +117,8 @@ public class RTMaudeAdaptor extends CodeGeneratorHelper {
             return processCode(comment + generateTermCode());        
     }
     
-    public String generateFireFunctionCode() throws IllegalActionException {
-        String fireModName = _generateBlockCode("funcModuleName");
-        
+    public String generateFireFunctionCode() throws IllegalActionException {        
         return _generateBlockCode("fireFuncBlock",
-                fireModName,
-                generateTermCode(),
                 CodeStream.indent(1,_generateFireCode() + generateTypeConvertFireCode())
                 );
     }
@@ -248,7 +244,7 @@ public class RTMaudeAdaptor extends CodeGeneratorHelper {
                 return _generateBlockCode(aName, largs);
         }
         if (macro.equals("indent")) {
-            return _eol + CodeStream.indent(1, processCode(parameter));
+            return CodeStream.indent(1, processCode(parameter));
         }
         return super._replaceMacro(macro, parameter);
     }

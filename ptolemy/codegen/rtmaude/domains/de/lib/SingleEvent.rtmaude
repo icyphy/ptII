@@ -16,7 +16,7 @@
       parameters : ('time |-> ET ; 'value |-> EV ; AM)
     >)
    = init(^ SingleEvent, < O : SingleEvent | >)
-    evt(event(O ! 'output, EV), toTime(ET)) .
+     schedule-evt(event(O ! 'output, EV), toTime(ET), 0) .
     
 endtom)
 /**/

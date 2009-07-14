@@ -13,7 +13,7 @@ index : 0/**/
   var O : Oid . var REST : ObjectConfiguration .
   var AM : AssignMap . var MEM : Memory .
   var VP VO VV : Value . var EP EO EV : Exp .
-  var UPDATED : Bool . var NI : Nat .
+  var NI : Nat .
 
 ---------------------------------------------------------------------
 --- Semantics Steps
@@ -24,7 +24,7 @@ index : 0/**/
       parameters : ('offsets |-> EO ; 'values |-> EV ; AM)
     >)
    = init(^ Clock, < O : Clock | >)
-    evt(event(O ! 'output, EV(# 0)), toTime(EO(# 0))) .
+     schedule-evt(event(O ! 'output, EV(# 0)), toTime(EO(# 0)), 0) .
 
   --- set each status of ports to 'unknown'
   eq prefire(Clock, 
@@ -38,12 +38,12 @@ index : 0/**/
 
   --- Note: Clock actors generate events "later" and hence
   --- do not generate output WHEN their ports are in unknown state
-  eq portFixPoints(UPDATED,
+  eq portFixPoints(
      < O : Clock | 
       status : enabled,
       ports : < PI : OutPort | status : unknown > PORTS 
      > REST)
-   = portFixPoints(true,
+   = portFixPoints(
      < O : Clock | 
       ports : < PI : OutPort | status : absent > PORTS > REST) .
 
@@ -59,7 +59,8 @@ index : 0/**/
       store : ('offsets |-> VO ; 'values |-> VV ; MEM),
       index : NI
     >) 
-  = evt(event(O ! PI, VV(#(s NI))), toTime((VO(#(s NI))) - (VO(# NI))))
+  = relative-evt(event(O ! PI, VV(#(s NI))), 
+                 toTime((VO(#(s NI))) - (VO(# NI))))
     postfire(^ Clock, < O : Clock | index : s(NI) >)
    if ((# NI + # 1) lessThan (VO .. 'length(()) )) == # true .
 
@@ -69,9 +70,10 @@ index : 0/**/
       store : ('period |-> VP ; 'offsets |-> VO ; 'values |-> VV ; MEM),
       index : NI
     >) 
-  = evt(event(O ! PI, VV(# 0)), toTime((VP - (VO(# NI))) + (VO(# 0))))
+  = relative-evt(event(O ! PI, VV(# 0)), 
+                 toTime((VP - (VO(# NI))) + (VO(# 0))))
     postfire(^ Clock, < O : Clock | index : 0 >)
-   if ((# NI + # 1) equals (VO .. 'length(()) )) == # true 
-    /\ (VP lessThan Infinity) == # true .
+   if ((# NI + # 1) equals (VO .. 'length(()) )) == # true /\ 
+      (VP lessThan Infinity) == # true .
 endtom)
 /**/

@@ -43,7 +43,6 @@ transitions : ($indent( $info(transitions) ))/**/
   var VA : ValueAssignment .  var BODY : TransBody .
   var VI : VarId . vars V : Value .  var VM : ValueMap .
   var TRANSSET : TransitionSet .  vars E TG : Exp .
-  var UPDATED : Bool .
 
 ---------------------------------------------------------------------
 --- Semantics Steps
@@ -67,7 +66,7 @@ transitions : ($indent( $info(transitions) ))/**/
   eq evalGuards(STATE, 
         (TI : STATE --> STATE' {guard: TG output: OL set: AL}) ; TRANSSET)
    = @guard(TI) |-> k(TG) ; evalGuards(STATE, TRANSSET) .
-  eq evalGuards(STATE, emptyTransitionSet) = emptyMap .
+  eq evalGuards(STATE, TRANSSET) = emptyMap [owise] .
 
 --- During fix-computation of FSM-actor, several informations,
 --- such as guard and next state, will be stored to the memory
@@ -81,9 +80,7 @@ transitions : ($indent( $info(transitions) ))/**/
   ---FIXME: Order conflict
   ---        Down & Up of CompositeActor should be computed first
   ---FIXME: only one transition should be possible
-  ---FIXME: if every guard expression is not reduced to value,
-  ---       it is ERROR and should be treated. (zero-time Delay)
-  eq portFixPoints(UPDATED,
+  eq portFixPoints(
     < O : FSM-Actor | 
       status : enabled,
       ports : < PI : InPort | status : present > PORTS,       
@@ -91,10 +88,16 @@ transitions : ($indent( $info(transitions) ))/**/
       transitions : (
         (TI : STATE --> STATE' {guard: TG output: OL set: AL}) ; TRANSSET)
     > REST) 
-  =  portFixPoints(true,
-    < O : FSM-Actor | 
+  =  portFixPoints(
+    < O : FSM-Actor |
+      ports : < PI : InPort | > PORTS, --- setOutPortsAbsent(PORTS),       
       store : @next(STATE') ; evalOut(OL) ; evalSet(AL) ; clearGuards(MEM)
     > REST) .
+
+  op setOutPortsAbsent : Configuration -> Configuration .
+  eq setOutPortsAbsent(< PI : OutPort | status : PS > PORTS)
+   = < PI : OutPort | status : absent > setOutPortsAbsent(PORTS) .
+  eq setOutPortsAbsent(PORTS) = PORTS [owise] .
 
   op clearGuards : Memory -> Memory .
   eq clearGuards(@guard(TI) |-> KR:KResult ; MEM) = clearGuards(MEM) .
@@ -109,29 +112,21 @@ transitions : ($indent( $info(transitions) ))/**/
   eq evalSet(emptyMap) = emptyMap .
 
   --- write output result of transition to ports
-  eq portFixPoints(UPDATED,
+  eq portFixPoints(
     < O : FSM-Actor |
       status : enabled,    
       ports : 
-        < PI' : InPort | status : present > PORTS,    
+        < PI' : InPort | status : present > 
+        < PI : OutPort | > PORTS,    
       store : @out(PI) |-> V ; MEM
     > REST)
-   = portFixPoints(true,
+   = portFixPoints(
     < O : FSM-Actor |
       ports : 
-        < PI' : InPort | > updateOutPorts(PORTS, @out(PI) |-> V ; MEM),
-      store : clearOutputs(MEM)
+        < PI' : InPort | > 
+        < PI : OutPort | status : present, value : V > PORTS,        
+      store : MEM
     > REST) .
-
-  op updateOutPorts : Configuration Memory -> Configuration .
-  eq updateOutPorts(< PI : OutPort | > PORTS, @out(PI) |-> V ; MEM)
-   = < PI : OutPort | status : present, value : V >  ---NOTE: overwritten 
-     updateOutPorts(PORTS, MEM) .
-  eq updateOutPorts(PORTS, MEM) = PORTS [owise] .    --- others should be absent
-
-  op clearOutputs : Memory -> Memory .
-  eq clearOutputs(@out(PI) |-> V ; MEM) = clearOutputs(MEM) .
-  eq clearOutputs(MEM) = MEM [owise] .
 
   *** FSM-Actor does NOT generate events in our first version, only changes
   *** the internal state/valuation as a result of applying one transition ...

@@ -37,7 +37,6 @@ parameters : ($indent(
   vars PI PI' : PortId . var EPIS : EPortIdSet .
   var PS : PortStatus .  var DPS : DetPortStatus .
   var CHS : ChannelSet .
-  var UPDATED : Bool .
   var K : K .  var VIL : VarIdList . var VL : ValueList .
 
 ---------------------------------------------------------------------
@@ -72,24 +71,24 @@ parameters : ($indent(
  **** variable ****
 
   --- when variable is already computed, the value is used.
-  eq portFixPoints(UPDATED,
+  eq portFixPoints(
     < O : Actor | 
     status : enabled,
         store : MI |->  k(VI -> K) ; VI |-> V ; MEM
     > REST)
-   = portFixPoints(true,
+   = portFixPoints(
     < O : Actor | 
         store : MI |-> k(V -> K) ; VI |-> V ; MEM
     > REST) .
 
   --- if the variable is not yet computed, it will computed
-  ceq portFixPoints(UPDATED,
+  ceq portFixPoints(
     < O : Actor | 
     status : enabled,
     parameters : VI |-> E ; VAL,
     store : MI |-> k(VI -> K) ; MEM
     > REST)
-   = portFixPoints(true,
+   = portFixPoints(
     < O : Actor | 
     store : VI |-> k(E) ; MI |-> k(VI -> K) ; MEM
     > REST) 
@@ -102,13 +101,13 @@ parameters : ($indent(
 
   ops isPresent : PortId -> ProperExp [ctor] .
 
-  eq portFixPoints(UPDATED,
+  eq portFixPoints(
     < O : Actor | 
     status : enabled,
     ports : < PI : Port | status : DPS > PORTS,
     store : MI |-> k(isPresent(PI) -> K) ; MEM
     > REST)
-   = portFixPoints(true,
+   = portFixPoints(
     < O : Actor | 
     store : MI |-> k(# (DPS == present) -> K) ; MEM
     > REST) .
@@ -122,23 +121,23 @@ parameters : ($indent(
   ---FIXME: free variable in E should be computed first?!
   ---    Since a clousre can be dilivered to other actors, the problem is 
   ---    much more complicated
-  eq portFixPoints(UPDATED,
+  eq portFixPoints(
     < O : Actor | 
     status : enabled,
     store : MI |-> k((function(VIL) E)(VL) -> K) ; MEM
     > REST)
-   = portFixPoints(true,
+   = portFixPoints(
     < O : Actor | 
     store : MI |-> k(E -> restore(MEM) -> K) ; (VIL |-> VL) <+ MEM
     > REST) .
 
   --- after computing a function, environments should be restored.
-  eq portFixPoints(UPDATED,
+  eq portFixPoints(
     < O : Actor | 
     status : enabled,
     store : MI |-> k(restore(VM') -> K) ; MEM
     > REST)
-   = portFixPoints(true,
+   = portFixPoints(
     < O : Actor | 
     store : MI |-> k(K) ; VM' <+ MEM
     > REST) .
@@ -146,7 +145,7 @@ parameters : ($indent(
  **** port ****
 
   --- deliver a value of ports to connected ports with the status 'unknown'
-  eq portFixPoints(UPDATED,
+  eq portFixPoints(
     < O : Actor | 
     status : enabled,
     ports :  < PI : OutPort | status : DPS, value : V > PORTS 
@@ -157,7 +156,7 @@ parameters : ($indent(
     ports : < PI' : InPort | status : unknown > PORTS' 
     > 
     REST)
-   = portFixPoints(true, 
+   = portFixPoints(
     < O : Actor | > 
     ((O ! PI) ==> ((O' ! PI') ; EPIS)) 
     < O' : Actor | 
@@ -167,7 +166,7 @@ parameters : ($indent(
 
  **** multi port ****
 
-  ceq portFixPoints(UPDATED,
+  ceq portFixPoints(
     < O : Actor | 
     status : enabled,
     ports :  < PI : OutPort | > PORTS 
@@ -181,7 +180,7 @@ parameters : ($indent(
         > PORTS'
     > 
     REST)
-   = portFixPoints(true, 
+   = portFixPoints(
     < O : Actor | > 
     ((O ! PI) ==> ((O' ! PI') ; EPIS)) 
     < O' : Actor | 
@@ -193,7 +192,7 @@ parameters : ($indent(
     REST)  
    if not (O ! PI) in CHS .
 
-  eq portFixPoints(UPDATED,
+  eq portFixPoints(
     < O : Actor | 
     status : enabled,
     ports :  < PI : OutPort | status : DPS, value : V > PORTS 
@@ -207,7 +206,7 @@ parameters : ($indent(
         > PORTS'
     > 
     REST)
-   = portFixPoints(true, 
+   = portFixPoints(
     < O : Actor | > 
     ((O ! PI) ==> ((O' ! PI') ; EPIS)) 
     < O' : Actor | 

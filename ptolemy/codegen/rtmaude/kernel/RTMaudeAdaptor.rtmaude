@@ -1,11 +1,11 @@
 /***funcModuleName***/
 $actorSymbol(MODULE)/**/
 
-/***fireFuncBlock($modelop, $fire)***/
+/***fireFuncBlock($fire)***/
 (tomod $block(funcModuleName) is
-    including $info(semanticsModule) .
-    op #model : Oid -> Configuration .
-    eq $modelop = 
+  including $info(semanticsModule) .
+  op #model : Oid -> Configuration .
+  eq $block(termBlock) = 
 $fire .
 endtom)
 /**/
