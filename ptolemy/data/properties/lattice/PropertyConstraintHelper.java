@@ -143,9 +143,9 @@ public class PropertyConstraintHelper extends PropertyHelper {
     }
 
     /**
-     * 
+     * Return the associated PropertyTerm.
      * @param object
-     * @return
+     * @return The PropertyTerm.
      */
     public PropertyTerm getPropertyTerm(Object object) {
         return getSolver().getPropertyTerm(object);
