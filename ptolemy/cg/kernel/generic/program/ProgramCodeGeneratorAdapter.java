@@ -709,9 +709,16 @@ public class ProgramCodeGeneratorAdapter extends CodeGeneratorAdapter {
      */
     public String getReference(String name, boolean isWrite)
             throws IllegalActionException {
-        ptolemy.actor.Director director = ((Actor) _component).getDirector();
-        Director directorAdapter = (Director) getAdapter(director);
-        return directorAdapter.getReference(name, isWrite, this);
+        try {
+            ptolemy.actor.Director director = ((Actor) _component).getDirector();
+            Director directorAdapter = (Director) getAdapter(director);
+            return directorAdapter.getReference(name, isWrite, this);
+        } catch (Exception ex) {
+            //If we can't find it with the local director, try the executive one. 
+            ptolemy.actor.Director director = ((Actor) _component).getExecutiveDirector();
+            Director directorAdapter = (Director) getAdapter(director);
+            return directorAdapter.getReference(name, isWrite, this);            
+        }
     }
 
     /**
