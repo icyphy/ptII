@@ -323,7 +323,7 @@ public class ProgramCodeGeneratorAdapter extends CodeGeneratorAdapter {
     public String generateFireFunctionCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
         code.append(_eol + "void " + ProgramCodeGeneratorAdapter.generateName(getComponent())
-                + getStrategy()._getFireFunctionArguments() + " {" + _eol);
+                + getCodeGenerator()._getFireFunctionArguments() + " {" + _eol);
         code.append(_generateFireCode());
         code.append(generateTypeConvertFireCode());
         code.append("}" + _eol);

@@ -1018,7 +1018,16 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
     protected String _printExecutionTime() {
         return comment("Print execution time.");
     }
-
+    
+    /** Return the prototype for fire functions.
+     *  @return In this base class, return "()".
+     *  Derived classes, such as the C code generator adapter
+     *  might return "(void)".
+     */
+    protected String _getFireFunctionArguments() {
+        return "()";
+    }
+    
     /** Generate the code for recording the current time.
      *  This base class only generates a comment.
      *  @return Return the code for recording the current time.

@@ -226,15 +226,6 @@ public class ProgramCodeGeneratorAdapterStrategy {
         return sinkRef + " = " + result + ";" + _eol;
     }
 
-    /** Return the prototype for fire functions.
-     *  @return In this base class, return "()".
-     *  Derived classes, such as the C code generator adapter
-     *  might return "(void)".
-     */
-    protected String _getFireFunctionArguments() {
-        return "()";
-    }
-
     /** Get the code generator adapter associated with the given component.
      *  @param component The given component.
      *  @return The code generator adapter.
