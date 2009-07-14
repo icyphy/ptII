@@ -203,7 +203,7 @@ public class Server {
     /** Read data from the socket.
      *
      * @exception IOException If communication problems occur.
-     * @expression SocketTimeoutException If the socket does not respond.
+     * @exception SocketTimeoutException If the socket does not respond.
     */
     public void read() throws IOException, java.net.SocketTimeoutException {
         if (cliSoc == null) { // first call
