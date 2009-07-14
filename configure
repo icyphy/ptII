@@ -7352,9 +7352,13 @@ echo "${ECHO_T}$JMF_JARS_DIR" >&6; }; fi
 	       # Here, we should not be adding JMF_JAR to Eclipse
 	       # if jmf.jar was in the jre
 	       ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
-	           <classpathentry kind=\"lib\" path=\"$JMF_JAR\"/> \
-	           <classpathentry kind=\"lib\" path=\"$JMF_JARS_DIR/sound.jar\"/>"
-	       JMF_JARS="$JMF_JAR$CLASSPATHSEPARATOR$JMF_JARS_DIR/sound.jar"
+	           <classpathentry kind=\"lib\" path=\"$JMF_JAR\"/>"\
+	       JMF_JARS="$JMF_JAR"
+	       if test -f "$JMF_JARS_DIR/sound.jar" ; then
+	           ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
+	       	       <classpathentry kind=\"lib\" path=\"$JMF_JARS_DIR/sound.jar\"/>"
+                   JMF_JARS="$JMF_JARS$CLASSPATHSEPARATOR$JMF_JARS_DIR/sound.jar"
+               fi
 	    else
        	       { echo "$as_me:$LINENO: WARNING: Either we could not find
     javax.media.CaptureDeviceInfo or else it was already in the JRE.
