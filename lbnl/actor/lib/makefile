@@ -62,6 +62,7 @@ JSRCS = \
 	Simulator.java
 
 OTHER_FILES_TO_BE_JARED = \
+	matlab.xml \
 	simulator.xml
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)

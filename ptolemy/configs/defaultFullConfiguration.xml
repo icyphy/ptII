@@ -145,6 +145,7 @@
 
 	    <!-- matlab depends on Matlab being present -->
             <input source="ptolemy/matlab/matlab.xml"/>
+	    <input source="lbnl/actor/lib/matlab.xml"/>
 	    <!--ptalon not shipped with 6.0 -->
             <!--input source="ptolemy/actor/ptalon/ptalon.xml"/-->
         <!-- Properties library -->
