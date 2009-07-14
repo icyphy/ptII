@@ -541,66 +541,12 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
                     // supported by all types.
                 }
             }
-            code.append(processCode(typeStreams[i].toString()));
+            code.append(_processCode(typeStreams[i].toString()));
         }
 
         code.append(_overloadedFunctions.toString());
 
         return code.toString();
-    }
-
-    /** Process the specified code for the adapter associated with the
-     *  container.  Replace macros with their values.
-     *  @param code The code to process.
-     *  @return The processed code.
-     *  @exception IllegalActionException If illegal macro names are found.
-     */
-    private String processCode(String code) throws IllegalActionException {
-        ProgramCodeGeneratorAdapter adapter = ((ProgramCodeGeneratorAdapter) getAdapter(getContainer()));
-        return adapter.processCode(code);
-    }
-
-    /**
-     * @return
-     */
-    private HashSet<String> _getReferencedFunctions() {
-        // Determine the total number of referenced polymorphic functions.
-        HashSet<String> functions = new HashSet<String>();
-        functions.add("new");
-        functions.add("delete");
-        //functions.add("toString");    // for debugging.
-        functions.add("convert");
-        functions.add("isCloseTo");
-        functions.addAll(_typeFuncUsed);
-        functions.addAll(_tokenFuncUsed);
-
-        return functions;
-    }
-
-    /**
-     * @param functions
-     * @return
-     */
-    private HashSet<String> _getReferencedTypes(HashSet<String> functions) {
-        // Determine the total number of referenced types.
-        HashSet<String> types = new HashSet<String>();
-        if (functions.contains("equals") || functions.contains("isCloseTo")) {
-            types.add("Boolean");
-        }
-
-        if (functions.contains("toString")) {
-            types.add("String");
-        }
-
-        if (functions.contains("isCloseTo")
-                && _newTypesUsed.contains("Integer")
-                && !_newTypesUsed.contains("Double")) {
-            // FIXME: we should not need Double for Int_isCloseTo()
-            types.add("Double");
-        }
-
-        types.addAll(_newTypesUsed);
-        return types;
     }
 
     /** Generate variable declarations for inputs and outputs and parameters.
@@ -713,7 +659,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
             if (!_overloadedFunctionSet.contains(name)) {
                 _overloadedFunctionSet.add(name);
 
-                String code = (javaTemplateParser == null) ? processCode(functionCode)
+                String code = (javaTemplateParser == null) ? _processCode(functionCode)
                         : javaTemplateParser.processCode(functionCode);
 
                 _overloadedFunctions.append(code);
@@ -1360,7 +1306,64 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
             buffer.append(iterator.next());
         }
         return buffer.toString();
+    }    
+
+    /**
+     * @return
+     */
+    private HashSet<String> _getReferencedFunctions() {
+        // Determine the total number of referenced polymorphic functions.
+        HashSet<String> functions = new HashSet<String>();
+        functions.add("new");
+        functions.add("delete");
+        //functions.add("toString");    // for debugging.
+        functions.add("convert");
+        functions.add("isCloseTo");
+        functions.addAll(_typeFuncUsed);
+        functions.addAll(_tokenFuncUsed);
+
+        return functions;
     }
+
+    /**
+     * @param functions
+     * @return
+     */
+    private HashSet<String> _getReferencedTypes(HashSet<String> functions) {
+        // Determine the total number of referenced types.
+        HashSet<String> types = new HashSet<String>();
+        if (functions.contains("equals") || functions.contains("isCloseTo")) {
+            types.add("Boolean");
+        }
+
+        if (functions.contains("toString")) {
+            types.add("String");
+        }
+
+        if (functions.contains("isCloseTo")
+                && _newTypesUsed.contains("Integer")
+                && !_newTypesUsed.contains("Double")) {
+            // FIXME: we should not need Double for Int_isCloseTo()
+            types.add("Double");
+        }
+
+        types.addAll(_newTypesUsed);
+        return types;
+    }
+
+    /** Process the specified code for the adapter associated with the
+     *  container.  Replace macros with their values.
+     *  @param code The code to process.
+     *  @return The processed code.
+     *  @exception IllegalActionException If illegal macro names are found.
+     */
+    private String _processCode(String code) throws IllegalActionException {
+        ProgramCodeGeneratorAdapter adapter = ((ProgramCodeGeneratorAdapter) getAdapter(getContainer()));
+        return adapter.processCode(code);
+    }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         private members                   ////
 
     private CodeStream _overloadedFunctions;
 
