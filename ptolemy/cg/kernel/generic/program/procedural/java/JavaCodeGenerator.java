@@ -400,13 +400,11 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
             typeStreams[i].appendCodeBlock("declareBlock");
             code.append(typeStreams[i].toString());
         }
-
-        ArrayList<String> args = new ArrayList<String>();
+        
         // Token declareBlock.
         if (typeMembers.length() != 0) {
-            args.add(typeMembers.toString());
             sharedStream.clear();
-            sharedStream.appendCodeBlock("tokenDeclareBlock", args);
+            sharedStream.appendCodeBlock("tokenDeclareBlock");
 
             if (defineEmptyToken) {
                 sharedStream.append("Token emptyToken; "
@@ -446,7 +444,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
                     if (!foundEquals) {
                         // Boolean_isCloseTo and String_isCloseTo
                         // use Boolean_equals and String_equals.
-                        args.clear();
+                        ArrayList<String> args = new ArrayList<String>();
                         args.add(typesArray[i] + "_equals");
                         sharedStream.appendCodeBlock("funcHeaderBlock", args);
                     }
@@ -454,7 +452,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
                 if (!_scalarDeleteTypes.contains(typesArray[i])
                         || !functionsArray[j].equals("delete")) {
                     // Skip Boolean_delete etc.
-                    args.clear();
+                    ArrayList<String> args = new ArrayList<String>();
                     args.add(typeFunctionName);
                     sharedStream.appendCodeBlock("funcHeaderBlock", args);
                 }

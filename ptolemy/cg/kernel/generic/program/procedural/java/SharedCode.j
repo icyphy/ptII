@@ -7,7 +7,7 @@
 // Token $function (Token thisToken, Token... tokens);  From codegen/java/kernel/SharedCode.j
 /**/
 
-/***tokenDeclareBlock ($types)***/
+/***tokenDeclareBlock***/
 
 public class Token {
     private Short type;
@@ -19,8 +19,6 @@ public class Token {
 	public Object getPayload() {
 		return payload;
 	}
-    /* $types
-     */
 }
 /**/
 
