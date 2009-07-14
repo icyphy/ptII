@@ -108,7 +108,7 @@ public class PDFIcon extends DynamicEditorIcon {
     }
 
     /** Specify an PDF page to display.
-     *  @param image The PDF page to display.
+     *  @param page The PDF page to display.
      */
     public void setPage(PDFPage page) {
         _page = page;
