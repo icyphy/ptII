@@ -3518,9 +3518,9 @@ if test ! -d "$PDFRENDERER_USER_DIR"; then
 else
     AC_MSG_CHECKING([for PDFRenderer])
     AC_ARG_WITH(pdfrendererjar, [  --with-pdfrenderer=PDFRENDERER_JAR     use PDFRenderer PDFRENDERER_JAR
-                          defaults to $PDFRENDERER_USER_DIR/PDFRenderer.jar],
+                          defaults to \$PTII/lib/PDFRenderer.jar],
 	PTPDFRENDERER_JAR=$withval,
-	PTPDFRENDERER_JAR=$PDFRENDERER_USER_DIR/PDFRenderer.jar)
+	PTPDFRENDERER_JAR=$PTII/lib/PDFRenderer.jar)
 
     if test -f "$PTPDFRENDERER_JAR"; then
 	PT_MSG_RESULT([$PTPDFRENDERER_JAR])
