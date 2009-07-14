@@ -1482,7 +1482,7 @@ Optional Packages:
   --with-ojdbc=/path/to/ojdbcN.jar  path to ojdbc.jar
                           defaults to \$PTII/ptolemy/actor/lib/database/ojdbc6.jar or ojdbc5.jar $OJDBC_TARGET_JAR
   --with-pdfrenderer=PDFRENDERER_JAR     use PDFRenderer PDFRENDERER_JAR
-                          defaults to $PDFRENDERER_USER_DIR/PDFRenderer.jar
+                          defaults to \$PTII/lib/PDFRenderer.jar
   --with-batikjar=BATIK_JAR     use Batik jar BATIK_JAR,
                           defaults to \$KEPLER/lib/jar/batik-all-1.6.jar
   --with-tini=DIR       use TINI from DIR,
@@ -9852,7 +9852,7 @@ echo $ECHO_N "checking for PDFRenderer... $ECHO_C" >&6; }
 if test "${with_pdfrendererjar+set}" = set; then
   withval=$with_pdfrendererjar; PTPDFRENDERER_JAR=$withval
 else
-  PTPDFRENDERER_JAR=$PDFRENDERER_USER_DIR/PDFRenderer.jar
+  PTPDFRENDERER_JAR=$PTII/lib/PDFRenderer.jar
 fi
 
 
