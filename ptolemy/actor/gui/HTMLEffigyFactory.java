@@ -96,14 +96,12 @@ public class HTMLEffigyFactory extends EffigyFactory {
      */
     public Effigy createEffigy(CompositeEntity container, URL base, URL in)
             throws Exception {
-        System.out.println("HTMLEffigyFactory " + base + " " + in);
         if (in == null) {
             return null;
         }
 
         String extension = getExtension(in);
 
-        System.out.println("HTMLEffigyFactory extension: " + extension);
         // Here, if it has an "http" protocol, we agree to
         // open it.  The reason is that many main HTML pages are
         // referenced by a string like "http://ptolemy.eecs.berkeley.edu".
@@ -127,9 +125,7 @@ public class HTMLEffigyFactory extends EffigyFactory {
                         "Failed to open " + base + " " + in, ex);
             }
 
-            System.out.println("HTMLEffigyFactory contentType: " + contentType);
             if (contentType == null) {
-                contentType = connection.getContentType();
                 return null;
             }
 
