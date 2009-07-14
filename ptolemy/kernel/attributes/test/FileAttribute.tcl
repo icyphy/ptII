@@ -95,7 +95,6 @@ test FileAttribute-3.2 {asURL: $CLASSPATH} {
     set r1 [$f3 asFile]
     $f3 setExpression {$CLASSPATH/makefile}
     set url [$f3 asURL]
-    puts "FileAttribute-3.2: [$url toString]"
     set r2 [[$url -noconvert toString] endsWith makefile]
     $f3 setExpression {$CLASSPATH/DoesNotExist}
     catch {$f3 asURL} r3

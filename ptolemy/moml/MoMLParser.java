@@ -2645,7 +2645,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                 //// input
             } else if (elementName.equals("input")) {
                 String source = (String) _attributes.get("source");
-                System.out.println("MoMLParser: input " + source);
+                _checkForNull(source, "No source for element \"input\"");
 
                 boolean skip = false;
 

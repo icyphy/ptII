@@ -193,16 +193,7 @@ public class BrowserEffigy extends Effigy {
             String contentType = connection.getContentType();
 
             if (contentType == null) {
-                if (in.toString().startsWith("https://")) {
-                    // BCTVP website at https://gaia.lbl.gov/bcvtb
-                    // needs this because getContentType returns null.
-                    System.out.println("BrowserEffigy: about to call newBrowserEffigy " + base + " " + in); 
-                    Effigy effigy = newBrowserEffigy(container, base, in);
-                    System.out.println("BrowserEffigy: Returning " + effigy);
-                    return effigy;
-                } else {
-                    return null;
-                }
+                return null;
             }
 
             if (contentType.startsWith("text/html")

@@ -799,7 +799,7 @@ public class Configuration extends CompositeEntity implements
             if (effigy == null) {
                 MessageHandler
                         .error("Unsupported file type or connection not available: "
-                                + in.toExternalForm() + " " + factory);
+                                + in.toExternalForm());
                 return null;
             }
 
