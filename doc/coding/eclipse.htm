@@ -45,7 +45,10 @@ restore their old state.  If the version of Eclipse that you install
 does not have the PDE, then there will be build errors, which can be fixed by
 excluding <CODE>ptolemy/backtrack/</CODE> from the build.
 <li> (<i>Mac OS X</i>):
-Untar the download file in <code>/Applications</code>, which will create <code>/Applications/eclipse/Eclipse.app</code>.
+See <a href="http://blog.zvikico.com/2009/06/eclipse-galileo-for-mac-cocoa-or-carbon.html"><code>http://blog.zvikico.com/2009/06/eclipse-galileo-for-mac-cocoa-or-carbon.html</a></code> about choosing between "Mac OS X (Carbon)", "Mac OS X (Cocao)" and "Mac OS X 64 bit (Cocao)".
+  
+<br>Most Mac users will download "Mac OS X (Cacao)" in to <code>/Applications</code>, which will create <code>/Applications/eclipse/Eclipse.app</code>.
+
 <br> (<i>Windows</i>): 
 Unzip the download file into an appropriate place, such as <code>C:\Program Files</code>, which will create <code>C:\Program Files\eclipse\eclipse.exe</code>.
 <br>If <code>eclipse\eclipse.exe</code> is not created, then it could
@@ -137,8 +140,10 @@ to format comments.  We hope to change this policy in the future.
 
 <br>We handle these changes together:
  <ol>
-  <li> While still in the preferences window (<code>Window</code> | <code>Preferences</code>),
- <li> Go to <code>Java</code> | <code>Formatter</code> and click
+  <li> While still in the preferences window
+   <br> (<i>Mac OS X</i>: <code>Eclipse</code> | <code>Preferences</code>)
+   <br> (<i>Windows</i>: <code>Window</code> | <code>Preferences</code>)
+<li> Go to <code>Java</code> | <code>Code Style</code> | <code>Formatter</code> and click
        New
   <li> In the "New Profile" Window, for the Profile name, enter "Ptolemy II"
       Under "Initialize settings with the following profile",
@@ -163,8 +168,10 @@ In particular, <CODE>ptolemy/actor/ptalon</CODE> uses generics,
 which require Java 5.0 or later.
 <br>Set Eclipse to use Java 5.0 or later source code compliance.
 <ol>
- <li> While still in the preferences window (<code>Window</code> | <code>Preferences</code>),
-      expand <code>Java</code> | <code>Compiler</code>
+ <li> While still in the preferences window
+  <br> (<i>Mac OS X</i>: <code>Eclipse</code> | <code>Preferences</code>)
+  <br> (<i>Windows</i>: <code>Window</code> | <code>Preferences</code>)
+  <br> expand <code>Java</code> | <code>Compiler</code>
  <li> Make sure that Set "Compiler compliance level" is "1.5", "5.0"
  or later.
 <i>Note that Java 1.5 is the same as Java 5.0</i>.  What we don't want
@@ -183,16 +190,18 @@ under Mac OS X:
   Java 1.6.0_13.
 <li>Eclipse 3.4.0 Java Projects that include Eclipse Plug-ins don't work
   under either Java 1.5.0_13 or Java 1.6.0_05 on the Mac
+  For details, see <a href="http://chess.eecs.berkeley.edu/ptexternal/wiki/Main/Mac"><code>http://chess.eecs.berkeley.edu/ptexternal/wiki/Main/Mac</code></a>.
 </menu>
-For details, see <a href="http://chess.eecs.berkeley.edu/ptexternal/wiki/Main/Mac"><code>http://chess.eecs.berkeley.edu/ptexternal/wiki/Main/Mac</code></a>.
 
 <li> Eclipse has very good compiler error/warning.  One of the
 warnings complains if a Serializable class does not have
 serialVersionUID declared.  Since this warning is only useful
 if you are tightly managing serialization, we turn it off:
  <ol>
-  <li> While still in the preferences window (<code>Window</code> | <code>Preferences</code>),
-    Expand <code>Java</code> | <code>Compiler</code> | <code>Errors/Warning</code>
+  <li> While still in the preferences window
+   <br> (<i>Mac OS X</i>: <code>Eclipse</code> | <code>Preferences</code>)
+   <br> (<i>Windows</i>: <code>Window</code> | <code>Preferences</code>)
+   <br>  Expand <code>Java</code> | <code>Compiler</code> | <code>Errors/Warning</code>
   <li> Under "Potential programming problems", change
   "Serializable class without serialVersionUID" to "Ignore"
   <li> Under "Generic Types", change
@@ -207,8 +216,8 @@ requires <code>tools.jar</code>, which is only in the Java Development
 Kit (JDK), not the Java Runtime Environment (JRE).  So, be sure that a
 JDK is selected for building, not a JRE.
 <br>While still in the preferences window 
-<br> (<i>Windows</i>: <code>Window</code> | <code>Preferences</code>)
 <br> (<i>Mac OS X</i>: <code>Eclipse</code> | <code>Preferences</code>)
+<br> (<i>Windows</i>: <code>Window</code> | <code>Preferences</code>)
 <ol>
 <li> Select <code>Java</code> | <code>Installed JREs</code>
 <br>(<i>Mac OS X</i>):  select <code>JVM 1.5.0 (Mac OS X Default)</code>.
@@ -352,15 +361,16 @@ Follow the <a href="http://www.eclipse.org/subversive/downloads.php" target="_to
   <code>Help</code> | <code>Install New Software</code>, Click on
   "Add" and then in the "Add Site" window, enter the Name "Polarion" and the location
 <pre>
-http://www.polarion.org/projects/subversive/download/eclipse/2.0/ganymede-site/
+http://community.polarion.com/projects/subversive/download/eclipse/2.0/galileo-site/
 </pre>
 Hit OK
 <li>In the Available Software window,
 <i>Mac OS X</i>: There is no need to install JavaHL, in fact JavaHL will likely cause problems
-<br>Under Subversive SVN Connectors, select these packages:
+<br>Under Subversive SVN Connectors, select this package:
 <pre>
 Subversive SVN Connectors
-SVNKit 1.2.0 Implementation (Optional)
+SVNKit 1.3.0 Implementation (Optional)
+
 </pre>
 <p><i>Windows</i>: <b>Note: select only one <code>JavaHL</code> Win32 binary</b>.  If both
 JavaHL 1.4.5 and JavaHL 1.5.0 are installed, then Eclipse will have
