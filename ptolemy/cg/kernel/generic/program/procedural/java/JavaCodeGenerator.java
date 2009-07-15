@@ -402,7 +402,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
             StringBuffer declareBlock = new StringBuffer();
             declareBlock.append(typeStreams[i].getCodeBlock("declareBlock"));
             if (declareBlock.length() > 0) {
-                _writeCodeFileName(declareBlock, typesArray[i]+".java", false);
+                _writeCodeFileName(declareBlock, typesArray[i]+".java", false, true);
             }
         }
 
@@ -419,7 +419,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
                         + comment("Used by *_delete() and others.") + _eol);
             }
             
-            _writeCodeFileName(declareTokenBlock, "Token.java", false);
+            _writeCodeFileName(declareTokenBlock, "Token.java", false, true);
         }
 
         

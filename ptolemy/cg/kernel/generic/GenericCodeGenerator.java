@@ -644,7 +644,7 @@ public abstract class GenericCodeGenerator extends Attribute implements
                 + codeDirectory.getBaseDirectory() + " (" + code.length()
                 + " characters)");
         
-        return _writeCodeFileName(code, codeFileName, overwriteFile);
+        return _writeCodeFileName(code, codeFileName, overwriteFile, false);
     }
 
     /** Write the code to a directory named by the codeDirectory
@@ -654,12 +654,13 @@ public abstract class GenericCodeGenerator extends Attribute implements
      *  @param code The StringBuffer containing the code.
      *  @param codeFileName The name of the output file.
      *  @param overwriteFile The overwrite flag.
+     *  @param dontShowDialog When true the confirmation dialog won't be shown.
      *  @return The name of the file that was written.
      *  @exception IllegalActionException  If there is a problem reading
      *  a parameter, if there is a problem creating the codeDirectory directory
      *  or if there is a problem writing the code to a file.
      */
-    protected String _writeCodeFileName(StringBuffer code, String codeFileName, boolean overwriteFile)
+    protected String _writeCodeFileName(StringBuffer code, String codeFileName, boolean overwriteFile, boolean dontShowDialog)
             throws IllegalActionException {
 
 
@@ -672,7 +673,7 @@ public abstract class GenericCodeGenerator extends Attribute implements
                 // like this, since it makes it impossible to call
                 // this method from a script.  If the question is
                 // asked, the build will hang.
-                if (!MessageHandler.yesNoQuestion(codeDirectory.asFile()
+                if (!dontShowDialog && !MessageHandler.yesNoQuestion(codeDirectory.asFile()
                         + " exists. OK to overwrite?")) {
                     /*
                     throw new IllegalActionException(this,
