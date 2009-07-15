@@ -48,13 +48,12 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.vergil.actor.ActorEditorGraphController;
 import ptolemy.vergil.actor.ActorGraphFrame;
 import ptolemy.vergil.actor.ActorGraphModel;
-import ptolemy.vergil.actor.ActorGraphFrame.ActorGraphPane;
 import ptolemy.vergil.basic.BasicGraphFrame;
+import ptolemy.vergil.basic.BasicGraphPane;
 import ptolemy.vergil.basic.RunnableGraphController;
 import ptolemy.vergil.modal.FSMGraphController;
 import ptolemy.vergil.modal.FSMGraphFrame;
 import ptolemy.vergil.modal.FSMGraphModel;
-import ptolemy.vergil.modal.FSMGraphFrame.FSMGraphPane;
 import diva.graph.GraphModel;
 import diva.graph.GraphPane;
 
@@ -107,13 +106,13 @@ public class GTFrameTools {
                             .getJGraph().getGraphPane().getGraphController();
                     ActorGraphModel graphModel = new ActorGraphModel(model);
                     frame.getJGraph().setGraphPane(
-                            new ActorGraphPane(controller, graphModel, model));
+                            new BasicGraphPane(controller, graphModel, model));
                 } else if (frame instanceof FSMGraphFrame) {
                     FSMGraphController controller = (FSMGraphController) frame
                             .getJGraph().getGraphPane().getGraphController();
                     FSMGraphModel graphModel = new FSMGraphModel(model);
                     frame.getJGraph().setGraphPane(
-                            new FSMGraphPane(controller, graphModel, model));
+                            new BasicGraphPane(controller, graphModel, model));
                 } else if (frame instanceof GTFrame) {
                     RunnableGraphController controller = (RunnableGraphController) frame
                             .getJGraph().getGraphPane().getGraphController();

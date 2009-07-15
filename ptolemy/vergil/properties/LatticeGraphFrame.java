@@ -39,6 +39,7 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.LibraryAttribute;
 import ptolemy.util.CancelException;
 import ptolemy.util.MessageHandler;
+import ptolemy.vergil.basic.BasicGraphPane;
 import ptolemy.vergil.modal.FSMGraphFrame;
 import ptolemy.vergil.modal.FSMGraphModel;
 import diva.graph.GraphPane;
@@ -103,7 +104,7 @@ public class LatticeGraphFrame extends FSMGraphFrame implements ActionListener {
         // only CompositeEntity.
         final FSMGraphModel graphModel = new FSMGraphModel(
                 (CompositeEntity) entity);
-        return new FSMGraphPane(_controller, graphModel, entity);
+        return new BasicGraphPane(_controller, graphModel, entity);
     }
 
     @Override
