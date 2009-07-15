@@ -390,28 +390,40 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
             }
         }
 
-        //code.append("typedef struct token Token;" + _eol);
 
+        
+        
         // Generate type and function definitions.
         for (int i = 0; i < typesArray.length; i++) {
             // The "declareBlock" contains all necessary declarations for the
             // type; thus, it is always read into the code stream when
             // accessing this particular type.
-            typeStreams[i].appendCodeBlock("declareBlock");
-            code.append(typeStreams[i].toString());
+            
+            StringBuffer declareBlock = new StringBuffer();
+            declareBlock.append(typeStreams[i].getCodeBlock("declareBlock"));
+            if (declareBlock.length() > 0) {
+                _writeCodeFileName(declareBlock, typesArray[i]+".java", false);
+            }
         }
+
         
         // Token declareBlock.
         if (typeMembers.length() != 0) {
+            
             sharedStream.clear();
-            sharedStream.appendCodeBlock("tokenDeclareBlock");
-
+            StringBuffer declareTokenBlock = new StringBuffer();
+            declareTokenBlock.append(sharedStream.getCodeBlock("tokenDeclareBlock"));
+            
             if (defineEmptyToken) {
                 sharedStream.append("Token emptyToken; "
                         + comment("Used by *_delete() and others.") + _eol);
             }
+            
+            _writeCodeFileName(declareTokenBlock, "Token.java", false);
         }
 
+        
+        
         // Set to true if we need the unsupportedFunction() method.
         boolean defineUnsupportedTypeFunctionMethod = false;
 
@@ -548,6 +560,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
 
         return code.toString();
     }
+
 
     /** Generate variable declarations for inputs and outputs and parameters.
      *  Append the declarations to the given string buffer.
@@ -985,23 +998,6 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
         ProgramCodeGeneratorAdapter compositeActorAdapter = (ProgramCodeGeneratorAdapter) getAdapter(getContainer());
         Set<String> includingFiles = compositeActorAdapter.getHeaderFiles();
 
-        //includingFiles.add("<stdlib.h>"); // Sun requires stdlib.h for malloc
-
-        //if (isTopLevel()
-        //        && ((BooleanToken) measureTime.getToken()).booleanValue()) {
-        //    includingFiles.add("<sys/time.h>");
-        //}
-
-        //if (!isTopLevel()) {
-        //    includingFiles.add("\"" + _sanitizedModelName + ".h\"");
-        //
-        //    includingFiles.addAll(((JavaCodeGeneratorAdapter)compositeActorAdapter).getJVMHeaderFiles());
-        //}
-
-        //includingFiles.add("<stdarg.h>");
-        //includingFiles.add("<stdio.h>");
-        //includingFiles.add("<string.h>");
-
         for (String file : (Set<String>) includingFiles) {
             if (!file.equals("<math.h>") && !file.equals("<stdio.h>")) {
                 code.append("import " + file + _eol);
@@ -1029,6 +1025,17 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
                         + "Math.round((((double) freeMemory) / ((double) totalMemory)) * 100.0)"
                         + " + \"%\");\n");
         return endCode.toString();
+    }
+    
+    /** Process the specified code for the adapter associated with the
+     *  container.  Replace macros with their values.
+     *  @param code The code to process.
+     *  @return The processed code.
+     *  @exception IllegalActionException If illegal macro names are found.
+     */
+    protected String _processCode(String code) throws IllegalActionException {
+        ProgramCodeGeneratorAdapter adapter = ((ProgramCodeGeneratorAdapter) getAdapter(getContainer()));
+        return adapter.processCode(code);
     }
 
     /** Generate the code for recording the current time.
@@ -1351,17 +1358,6 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
         return types;
     }
 
-    /** Process the specified code for the adapter associated with the
-     *  container.  Replace macros with their values.
-     *  @param code The code to process.
-     *  @return The processed code.
-     *  @exception IllegalActionException If illegal macro names are found.
-     */
-    private String _processCode(String code) throws IllegalActionException {
-        ProgramCodeGeneratorAdapter adapter = ((ProgramCodeGeneratorAdapter) getAdapter(getContainer()));
-        return adapter.processCode(code);
-    }
-    
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
 
