@@ -180,34 +180,7 @@ COMPACKAGES = \
 	com.microstar.xml
 
 # CG Codegen packages
-# cd $PTII/ptolemy/cg; find . -name "*.java" | xargs -n 1 dirname | sort | uniq | awk '{dir=substr($0, 2, length($0)-1) ; print "ptolemy/cg" dir}' | sed 's@/@.@g'
-CGPACKAGES = \
-	ptolemy.cg.adapter.generic.adapters.ptolemy.actor \
-	ptolemy.cg.adapter.generic.html.adapters.ptolemy.actor \
-	ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor \
-	ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib \
-	ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.sched \
-	ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.sdf.kernel \
-	ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.cg.lib \
-	ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.sdf.kernel \
-	ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.ptides.kernel \
-	ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.ptides.lib \
-	ptolemy.cg.adapter.generic.program.procedural.c.luminary.adapters.ptolemy.domains.ptides.kernel \
-	ptolemy.cg.adapter.generic.program.procedural.c.luminary.adapters.ptolemy.domains.ptides.lib \
-	ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.actor.lib \
-	ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.actor.lib.gui \
-	ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.cg.lib \
-	ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.domains.sdf.kernel \
-	ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.domains.sdf.lib \
-	ptolemy.cg.gui \
-	ptolemy.cg.kernel.generic \
-	ptolemy.cg.kernel.generic.html \
-	ptolemy.cg.kernel.generic.program \
-	ptolemy.cg.kernel.generic.program.procedural \
-	ptolemy.cg.kernel.generic.program.procedural.c \
-	ptolemy.cg.kernel.generic.program.procedural.c.ptidyos \
-	ptolemy.cg.kernel.generic.program.procedural.java \
-	ptolemy.cg.lib
+CGPACKAGES = 
 
 # Codegen packages.  Use this command to update:
 # cd $PTII/ptolemy/codegen; find . -name "*.java" | xargs -n 1 dirname | sort | uniq | awk '{dir=substr($0, 2, length($0)-1) ; print "ptolemy/codegen" dir}' | sed 's@/@.@g'
@@ -260,7 +233,6 @@ CODEGENPACKAGES = \
 	ptolemy.codegen.c.targets.posix \
 	ptolemy.codegen.c.targets.posix.actor.lib.io \
 	ptolemy.codegen.c.vergil.actor.lib \
-	ptolemy.codegen.chaco.kernel \
 	ptolemy.codegen.gui \
 	ptolemy.codegen.java.actor \
 	ptolemy.codegen.java.actor.lib \
@@ -294,14 +266,7 @@ CODEGENPACKAGES = \
 	ptolemy.codegen.rtmaude.domains.sr.kernel \
 	ptolemy.codegen.rtmaude.kernel \
 	ptolemy.codegen.rtmaude.kernel.util \
-	ptolemy.codegen.util \
-	ptolemy.codegen.vhdl.actor \
-	ptolemy.codegen.vhdl.actor.lib \
-	ptolemy.codegen.vhdl.actor.lib.gui \
-	ptolemy.codegen.vhdl.actor.lib.vhdl \
-	ptolemy.codegen.vhdl.domains.sdf.kernel \
-	ptolemy.codegen.vhdl.domains.sr.kernel \
-	ptolemy.codegen.vhdl.kernel \
+	ptolemy.codegen.util
 
 # Java packages for copernicus
 COPERNICUSPACKAGES = \
