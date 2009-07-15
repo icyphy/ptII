@@ -152,7 +152,7 @@ T_{k+1}. The control action is computed in Ptolemy II.</text></svg></configure>
         </property>
         <property name="bold" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="For this demo to work, the libbcvtb share library&#10;must be present and in the &#10;PATH (Windows),  LD_LIBRARY_PATH (Linux)&#10;or DYLD_LIBRARY_PATH (Mac OS X). &#10;Usually, libbcvtb is found in&#10;ptII/lbnl/lib/util or ptII/lib.&#10;&#10;In addition, BCVTB_HOME must be set to &#10;$PTII/lbnl&#10;&#10;MATLABPATH must be set to&#10;$PTII/lbnl/lib/matlab&#10;&#10;One way to do this is to run:&#10; cd $PTII/lbnl/demo/CRoom&#10; make demo">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="For this demo to work, the libbcvtb share library&#10;must be present and in the &#10;PATH (Windows),  LD_LIBRARY_PATH (Linux)&#10;or DYLD_LIBRARY_PATH (Mac OS X). &#10;Usually, libbcvtb is found in&#10;ptII/lbnl/lib/util or ptII/lib.&#10;&#10;In addition, BCVTB_HOME must be set to &#10;$PTII/lbnl&#10;&#10;MATLABPATH must be set to&#10;$PTII/lbnl/lib/matlab&#10;&#10;One way to do this is to run:&#10; cd $PTII/lbnl/demo/MatlabRoom&#10; make demo">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 85.0]">
         </property>
@@ -164,7 +164,8 @@ T_{k+1}. The control action is computed in Ptolemy II.</text></svg></configure>
         </property>
         <property name="workingDirectory" class="ptolemy.data.expr.FileParameter" value=".">
         </property>
-        <property name="socketTimeout [milliseconds]" class="ptolemy.data.expr.Parameter" value="30000">
+        <property name="socketTimeout" class="ptolemy.data.expr.Parameter" value="10000">
+            <display name="socketTimeout [milliseconds]"/>
         </property>
         <property name="SimulatorIcon" class="ptolemy.vergil.icon.EditorIcon">
             <property name="rectangle" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
@@ -264,7 +265,7 @@ T_{k+1}. The control action is computed in Ptolemy II.</text></svg></configure>
         </property>
         <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="TRoo1,  TRoo2, 10*y1, 10*y2">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1016, 382, 568, 444}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={872, 382, 558, 435}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[558, 391]">
         </property>
