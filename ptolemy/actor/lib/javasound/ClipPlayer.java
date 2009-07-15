@@ -84,7 +84,9 @@ public class ClipPlayer extends TypedAtomicActor implements LineListener {
         trigger = new TypedIOPort(this, "trigger", true, false);
 
         fileOrURL = new FileParameter(this, "fileOrURL");
-        fileOrURL.setExpression("$PTII/ptolemy/actor/lib/javasound/voice.wav");
+        // Use $CLASSPATH instead of $PTII so that this actor can find its
+        // audio file under Web Start.
+        fileOrURL.setExpression("$CLASSPATH/ptolemy/actor/lib/javasound/voice.wav");
 
         overlay = new Parameter(this, "overlay");
         overlay.setTypeEquals(BaseType.BOOLEAN);
