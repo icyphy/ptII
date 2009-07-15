@@ -102,7 +102,12 @@ import ptolemy.kernel.util.Workspace;
 
 /**
  * Actor that calls a simulation program of a dynamic system 
- * that is coupled to Ptolemy II.
+ * that is coupled to Ptolemy II. At the start of the simulation,
+ * this actor fires a system command that is defined by the parameter
+ * <code>programName</code> with arguments <code>programArguments</code>.
+ * It then initiates a socket connection and uses the socket to
+ * exchange data with the external simulation program each time
+ * the actor is fired.
  *
  * @author Michael Wetter
  * @version $Id$
@@ -128,42 +133,43 @@ public class Simulator extends SDFTransformer {
         output.setTypeEquals(BaseType.DOUBLE_MATRIX);
         output.setMultiport(false);
 
-        command = new FileParameter(this, "programName");
-        new Parameter(command, "allowFiles", BooleanToken.TRUE);
-        new Parameter(command, "allowDirectories", BooleanToken.FALSE);
+        programName = new FileParameter(this, "programName");
+        new Parameter(programName, "allowFiles", BooleanToken.TRUE);
+        new Parameter(programName, "allowDirectories", BooleanToken.FALSE);
 
-        arguments = new Parameter(this, "programArguments");
-        arguments.setTypeEquals(BaseType.STRING);
-        arguments.setExpression("");
+        programArguments = new Parameter(this, "programArguments");
+        programArguments.setTypeEquals(BaseType.STRING);
+        programArguments.setExpression("");
 
         workingDirectory = new FileParameter(this, "workingDirectory");
         new Parameter(workingDirectory, "allowFiles", BooleanToken.FALSE);
         new Parameter(workingDirectory, "allowDirectories", BooleanToken.TRUE);
         workingDirectory.setExpression(".");
 
-        simLogFil = new FileParameter(this, "simulationLogFile");
-        simLogFil.setTypeEquals(BaseType.STRING);
-        simLogFil.setExpression("simulation.log");
-        new Parameter(simLogFil, "allowFiles", BooleanToken.TRUE);
-        new Parameter(simLogFil, "allowDirectories", BooleanToken.FALSE);
+        simulationLogFile = new FileParameter(this, "simulationLogFile");
+        simulationLogFile.setTypeEquals(BaseType.STRING);
+        simulationLogFile.setExpression("simulation.log");
+        new Parameter(simulationLogFile, "allowFiles", BooleanToken.TRUE);
+        new Parameter(simulationLogFile, "allowDirectories", BooleanToken.FALSE);
 
-        timOut = new Parameter(this, "socketTimeout [milliseconds]");
-        timOut.setExpression("5000");
-        timOut.setTypeEquals(BaseType.INT);
+        socketTimeout = new Parameter(this, "socketTimeout");
+        socketTimeout.setDisplayName("socketTimeout [milliseconds]");
+        socketTimeout.setExpression("5000");
+        socketTimeout.setTypeEquals(BaseType.INT);
 
         // expert settings
-        portNumber = new Parameter(this,
-                "socketPortNumber (used if non-negative)");
-        portNumber.setExpression("-1");
-        portNumber.setTypeEquals(BaseType.INT);
-        portNumber.setVisibility(Settable.EXPERT);
+        socketPortNumber = new Parameter(this, "socketPortNumber");
+        socketPortNumber.setDisplayName("socketPortNumber (used if non-negative)");
+        socketPortNumber.setExpression("-1");
+        socketPortNumber.setTypeEquals(BaseType.INT);
+        socketPortNumber.setVisibility(Settable.EXPERT);
 
-        socConFil = new FileParameter(this, "socketConfigurationFile");
-        socConFil.setTypeEquals(BaseType.STRING);
-        socConFil.setExpression("socket.cfg");
-        new Parameter(socConFil, "allowFiles", BooleanToken.TRUE);
-        new Parameter(socConFil, "allowDirectories", BooleanToken.FALSE);
-        socConFil.setVisibility(Settable.EXPERT);
+        socketConfigurationFile = new FileParameter(this, "socketConfigurationFile");
+        socketConfigurationFile.setTypeEquals(BaseType.STRING);
+        socketConfigurationFile.setExpression("socket.cfg");
+        new Parameter(socketConfigurationFile, "allowFiles", BooleanToken.TRUE);
+        new Parameter(socketConfigurationFile, "allowDirectories", BooleanToken.FALSE);
+        socketConfigurationFile.setVisibility(Settable.EXPERT);
 
         // we produce one (DOUBLE_MATRIX) token as the initial output
         output_tokenInitProduction.setExpression("1");
@@ -183,18 +189,18 @@ public class Simulator extends SDFTransformer {
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         Simulator newObject = (Simulator) super.clone(workspace);
 
-        newObject.arguments = (Parameter) newObject
+        newObject.programArguments = (Parameter) newObject
                 .getAttribute("programArguments");
-        newObject.command = (FileParameter) newObject
+        newObject.programName = (FileParameter) newObject
                 .getAttribute("programName");
-        newObject.portNumber = (Parameter) newObject
-                .getAttribute("socketPortNumber (used if non-negative)");
-        newObject.simLogFil = (FileParameter) newObject
+        newObject.socketPortNumber = (Parameter) newObject
+                .getAttribute("socketPortNumber");
+        newObject.simulationLogFile = (FileParameter) newObject
                 .getAttribute("simulationLogFile");
-        newObject.socConFil = (FileParameter) newObject
+        newObject.socketConfigurationFile = (FileParameter) newObject
                 .getAttribute("socketConfigurationFile");
-        newObject.timOut = (Parameter) newObject
-                .getAttribute("socketTimeout [milliseconds]");
+        newObject.socketTimeout = (Parameter) newObject
+                .getAttribute("socketTimeout");
         newObject.workingDirectory = (FileParameter) newObject
                 .getAttribute("workingDirectory");
 
@@ -348,14 +354,14 @@ public class Simulator extends SDFTransformer {
         }
 
         // Command that starts the simulation
-        final String simCon = socConFil.stringValue();
+        final String simCon = socketConfigurationFile.stringValue();
         // Assign BSD port number
-        porNo = Integer.valueOf(portNumber.getExpression());
+        porNo = Integer.valueOf(socketPortNumber.getExpression());
         //////////////////////////////////////////////////////////////	
         // Instantiate server for IPC
         try {
             // time out in milliseconds
-            final int timOutMilSec = Integer.valueOf(timOut.getExpression());
+            final int timOutMilSec = Integer.valueOf(socketTimeout.getExpression());
             if (timOutMilSec <= 0) {
                 final String em = "Parameter for socket time out must be positive."
                         + LS + "Received " + timOutMilSec + " milliseconds";
@@ -410,17 +416,17 @@ public class Simulator extends SDFTransformer {
         //////////////////////////////////////////////////////////////	
         // start the simulation process
         // Get the command as a File in case it has $CLASSPATH in it.
-        File commandFile = command.asFile();
+        File commandFile = programName.asFile();
         final String comArg;
         if (commandFile.exists()) {
             // Maybe the user specified $CLASSPATH/lbnl/demo/CRoom/client
             comArg = commandFile.toString();
         } else {
             // Maybe the user specfied "matlab"
-            comArg = command.getExpression();
+            comArg = programName.getExpression();
         }
 
-        final String argLin = cutQuotationMarks(arguments.getExpression());
+        final String argLin = cutQuotationMarks(programArguments.getExpression());
         List<String> com = new ArrayList<String>();
         StringTokenizer st = new StringTokenizer(comArg);
         while (st.hasMoreTokens()) {
@@ -432,7 +438,7 @@ public class Simulator extends SDFTransformer {
         }
         cliPro = new ClientProcess();
         cliPro.setProcessArguments(com, worDir);
-        File slf = simLogFil.asFile();
+        File slf = simulationLogFile.asFile();
         try {
             if (slf.exists()) {
                 if (!slf.delete()) {
@@ -544,11 +550,11 @@ public class Simulator extends SDFTransformer {
     // names of the variable should match the assigned name, otherwise
     // there are problems with cloning.
 
-    /** List of arguments */
-    protected Parameter arguments;
+    /** Arguments of program that starts the simulation */
+    protected Parameter programArguments;
 
-    /** Command line to start the simulation */
-    protected FileParameter command;
+    /** Name of program that starts the simulation */
+    protected FileParameter programName;
 
     /** Double values that were written to the socket */
     protected double[] dblWri;
@@ -556,26 +562,26 @@ public class Simulator extends SDFTransformer {
     /** Thread that runs the simulation */
     protected ClientProcess cliPro;
 
-    /** Port number for BSD socket */
-    protected Parameter portNumber;
+    /** Port number for BSD socket (used if non-negative) */
+    protected Parameter socketPortNumber;
 
-    /** Port number used BSD socket */
+    /** Port number that is actually used for BSD socket */
     protected int porNo;
 
     /** Server used for data exchange */
     protected Server server;
 
-    /** File name for the simulation log file */
-    protected FileParameter simLogFil;
+    /** File name to which this actor writes the simulation log */
+    protected FileParameter simulationLogFile;
 
     /** Process that runs the simulation */
     protected Process simProJav;
 
-    /** File name for the simulation configuration file */
-    protected FileParameter socConFil;
+    /** File name to which this actor writes the socket configuration */
+    protected FileParameter socketConfigurationFile;
 
     /** Socket time out in milliseconds */
-    protected Parameter timOut;
+    protected Parameter socketTimeout;
 
     /** Working directory of the simulation */
     protected FileParameter workingDirectory;
