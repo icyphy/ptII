@@ -34,7 +34,7 @@
  is also associated with a code generator.
 
  @author Dai Bui, Bert Rodiers
- @version 
+ @version $id$
  @since Ptolemy II 8.0
  @Pt.ProposedRating Red 
  @Pt.AcceptedRating Red 
