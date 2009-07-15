@@ -637,16 +637,37 @@ public abstract class GenericCodeGenerator extends Attribute implements
 
         String codeFileName = _getOutputFilename();
 
+        // Check if needs to overwrite.
+        boolean overwriteFile = ((BooleanToken) overwriteFiles.getToken()).booleanValue();
+        
+        _executeCommands.stdout("Writing " + codeFileName + " in "
+                + codeDirectory.getBaseDirectory() + " (" + code.length()
+                + " characters)");
+        
+        return _writeCodeFileName(code, codeFileName, overwriteFile);
+    }
+
+    /** Write the code to a directory named by the codeDirectory
+     *  parameter, with a file name that is a sanitized version of the
+     *  model name, and an extension that is the last package of
+     *  the generatorPackage.
+     *  @param code The StringBuffer containing the code.
+     *  @param codeFileName The name of the output file.
+     *  @param overwriteFile The overwrite flag.
+     *  @return The name of the file that was written.
+     *  @exception IllegalActionException  If there is a problem reading
+     *  a parameter, if there is a problem creating the codeDirectory directory
+     *  or if there is a problem writing the code to a file.
+     */
+    protected String _writeCodeFileName(StringBuffer code, String codeFileName, boolean overwriteFile)
+            throws IllegalActionException {
+
+
         // Write the code to a file with the same name as the model into
         // the directory named by the codeDirectory parameter.
         try {
-            _executeCommands.stdout("Writing " + codeFileName + " in "
-                    + codeDirectory.getBaseDirectory() + " (" + code.length()
-                    + " characters)");
 
-            // Check if needs to overwrite.
-            if (!((BooleanToken) overwriteFiles.getToken()).booleanValue()
-                    && codeDirectory.asFile().exists()) {
+            if (!overwriteFile && codeDirectory.asFile().exists()) {
                 // FIXME: It is totally bogus to ask a yes/no question
                 // like this, since it makes it impossible to call
                 // this method from a script.  If the question is
@@ -681,7 +702,7 @@ public abstract class GenericCodeGenerator extends Attribute implements
                     + codeDirectory.getBaseDirectory());
         }
     }
-
+    
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
