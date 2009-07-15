@@ -10,7 +10,7 @@
 /***tokenDeclareBlock***/
 
 public class Token {
-    private Short type;
+    public Short type;
     Object payload;
 	public Token() {};
 	public Short getType() {
