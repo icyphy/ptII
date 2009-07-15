@@ -1548,7 +1548,7 @@ remote1distjsrestore:
 	    fi ; \
 	done ; \
 	# Try to get rid of JavaScope files
-	(cd $(REMOTE1PTIIDIST)/ptolemy/backtrack; rm -rf automatic; svn update)
+	(cd $(REMOTE1PTIIDIST)/ptolemy/backtrack; rm -rf automatic util; svn update)
 
 # Build the docs
 remote1doc:
