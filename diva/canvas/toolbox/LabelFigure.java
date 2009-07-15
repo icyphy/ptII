@@ -510,6 +510,12 @@ public class LabelFigure extends AbstractFigure {
                 }
             }
 
+            if (_shape == null) {
+                // There was nothing in the text, so create a glyph
+                // for a single blank space.
+                GlyphVector gv = _font.createGlyphVector(frc, " ");
+                _shape = gv.getOutline();
+            }
             _bounds = _shape.getBounds2D();
         }
 
