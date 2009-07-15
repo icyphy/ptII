@@ -48,9 +48,9 @@ import ptolemy.kernel.util.NamedObj;
 /** Class for modular code generator.
 *
 *  @author Dai Bui, Bert Rodiers
-*  @version 
+*  @version $id$
 *  @since Ptolemy II 8.0
-*  @Pt.ProposedRating red 
+*  @Pt.ProposedRating red (rodiers)
 *  @Pt.AcceptedRating red (daib)
 */
 
@@ -64,11 +64,11 @@ public class ModularCodeGenerator extends JavaCodeGenerator {
      *  @exception NameDuplicationException If the super class throws the
      *   exception or an error occurs when setting the file path.
      */
-    
     public ModularCodeGenerator(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        // TODO Auto-generated constructor stub
+        
+        generatorPackageList.setExpression("generic.program.procedural.java.modular");
     }
     
     ///////////////////////////////////////////////////////////////////
