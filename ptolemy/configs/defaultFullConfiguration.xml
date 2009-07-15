@@ -94,7 +94,6 @@
   <!-- NOTE: This is identical to the default, so it need not be specified. -->
   <!-- We specify it here as a guide to those writing custom configurations. -->
   <input source="ptolemy/vergil/kernel/attributes/iconEditorLibrary.xml"/>
-
   <!-- Modifications to the library. -->
   <entity name="actor library" class="ptolemy.kernel.CompositeEntity">
     <!-- First, additional directors. -->
@@ -127,6 +126,11 @@
             <input source="ptolemy/actor/lib/io/comm/comm.xml"/>
 	    <!-- Corba actors are not being shipped in 4.0 -->
             <!--input source="ptolemy/actor/corba/corba.xml"/-->
+
+	    <!-- matlab depends on Matlab being present -->
+            <input source="ptolemy/matlab/matlab.xml"/>
+	    <input source="lbnl/actor/lib/simulator.xml"/>
+
             <input source="ptolemy/actor/lib/database/database.xml"/>
             <input source="ptolemy/actor/designs/designPatterns.xml"/>
             <input source="ptolemy/actor/lib/esoteric.xml"/>
@@ -143,9 +147,6 @@
 	    <!-- jxta is not shipping in 4.0 -->
             <!-- input source="ptolemy/actor/lib/jxta/jxta.xml"-->
 
-	    <!-- matlab depends on Matlab being present -->
-            <input source="ptolemy/matlab/matlab.xml"/>
-	    <input source="lbnl/actor/lib/matlab.xml"/>
 	    <!--ptalon not shipped with 6.0 -->
             <!--input source="ptolemy/actor/ptalon/ptalon.xml"/-->
         <!-- Properties library -->
