@@ -3524,7 +3524,7 @@ else
 
     if test -f "$PTPDFRENDERER_JAR"; then
 	PT_MSG_RESULT([$PTPDFRENDERER_JAR])
-	PTPDFRENDERER_DIR=pdfrender
+	PTPDFRENDERER_DIR=pdfrenderer
         ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
         <classpathentry kind=\"lib\" path=\"$PTPDFRENDERER_JAR\"/>"
     fi	
