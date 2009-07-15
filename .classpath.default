@@ -23,6 +23,6 @@
     <classpathentry kind="lib" path="ptolemy/domains/ptinyos/lib/jdom.jar"/>
     <classpathentry kind="lib" path="ptolemy/domains/ptinyos/lib/nesc.jar"/>
     <classpathentry kind="lib" path="ptolemy/actor/ptalon/antlr/antlr.jar"/>
-    <classpathentry kind="lib" path="ptolemy/vergil/pdfrenderer/PDFRenderer.jar"/>
+    <classpathentry kind="lib" path="ptolemy/lib/PDFRenderer.jar"/>
     <classpathentry kind="output" path=""/>
 </classpath>
