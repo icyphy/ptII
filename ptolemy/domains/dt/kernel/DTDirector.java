@@ -572,7 +572,7 @@ public class DTDirector extends SDFDirector implements TimedDirector {
         }
 
         // When an actor's postfire_ returns false, whole model should stop.
-        return _postfireReturns && !_stopRequested;
+        return _postfireReturns && !_stopRequested && !_finishRequested;
     }
 
     /** Check the input ports of the container composite actor (if there

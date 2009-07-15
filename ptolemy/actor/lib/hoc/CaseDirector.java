@@ -257,6 +257,6 @@ public class CaseDirector extends Director {
             _debug("Calling postfire()");
         }
         Case container = (Case) getContainer();
-        return container._current.postfire();
+        return container._current.postfire() && !_finishRequested;
     }
 }

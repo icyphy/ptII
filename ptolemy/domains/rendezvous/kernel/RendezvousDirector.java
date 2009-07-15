@@ -124,9 +124,9 @@ public class RendezvousDirector extends CompositeProcessDirector {
         List ports = ((CompositeActor) getContainer()).inputPortList();
 
         if (ports.iterator().hasNext()) {
-            return !_stopRequested;
+            return !_stopRequested && !_finishRequested;
         }
-        return _notDone && !_stopRequested;
+        return _notDone && !_stopRequested && !_finishRequested;
     }
 
     /** Return an array of suggested directors to be used with ModalModel.

@@ -849,7 +849,7 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
         // FIXME: Check derived classes. This may only make sense for FSMReceiver.
         _resetOutputReceivers();
 
-        return result && !_stopRequested;
+        return result && !_stopRequested && !_finishRequested;
     }
 
     /** Return true if the mode controller is ready to fire.

@@ -549,7 +549,7 @@ public class PtidesBasicDirector extends DEDirector {
         // Do not call super.postfire() because that requests a
         // refiring at the next event time on the event queue.
 
-        Boolean result = !_stopRequested;
+        Boolean result = !_stopRequested && !_finishRequested;
         if (getModelTime().compareTo(getModelStopTime()) >= 0) {
             // If there is a still event on the event queue with time stamp
             // equal to the stop time, we want to process that event before

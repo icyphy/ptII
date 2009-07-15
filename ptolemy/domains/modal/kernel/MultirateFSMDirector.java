@@ -421,7 +421,7 @@ public class MultirateFSMDirector extends FSMDirector {
      */
     public boolean postfire() throws IllegalActionException {
         boolean controllerPostfire = makeStateTransition();
-        return _refinementPostfire && controllerPostfire;
+        return _refinementPostfire && controllerPostfire && !_finishRequested;
     }
 
     /** Preinitialize all actors deeply contained by the container

@@ -170,6 +170,17 @@ public class ProcessDirector extends Director {
         return newObject;
     }
 
+    /** Request that the current iteration finishes and postfire() returns
+     *  false, indicating to the environment that no more iterations should
+     *  be invoked. To support domains where actor firings do not necessarily
+     *  terminate, such as PN, you may wish to call stopFire() as well to request
+     *  that those actors complete their firings.
+     */
+    public void finish() {
+        super.finish();
+        stop();
+    }
+
     /** Wait until a deadlock is detected. Then deal with the deadlock
      *  by calling the protected method _resolveDeadlock() and return.
      *  This method is synchronized on the director.
@@ -364,7 +375,7 @@ public class ProcessDirector extends Director {
             _debug("_stopFireRequested = " + _stopFireRequested);
         }
 
-        _notDone = _notDone && !_stopRequested;
+        _notDone = _notDone && !_stopRequested && !_finishRequested;
 
         if (_debugging) {
             _debug("Returning from postfire(): " + _notDone);

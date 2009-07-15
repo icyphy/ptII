@@ -748,7 +748,7 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
                 executiveDirector.fireAtCurrentTime(container);
             }
         }
-        return result && !_stopRequested;
+        return result && !_stopRequested && !_finishRequested;
     }
 
     /** Return true if the mode controller is ready to fire.

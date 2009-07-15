@@ -755,7 +755,7 @@ public class TMDirector extends Director implements TimedDirector {
             }
         }
 
-        return true;
+        return !_stopRequested && !_finishRequested;
     }
 
     /** Remove a schedule listener from this director.  If the listener is

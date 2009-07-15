@@ -264,6 +264,16 @@ public class Director extends Attribute implements Executable {
             return BooleanDependency.OTIMES_IDENTITY;
         }
     }
+    
+    /** Request that after the current iteration finishes postfire() returns
+     *  false, indicating to the environment that no more iterations should
+     *  be invoked. To support domains where actor firings do not necessarily
+     *  terminate, such as PN, you may wish to call stopFire() as well to request
+     *  that those actors complete their firings.
+     */
+    public void finish() {
+        _finishRequested = true;
+    }
 
     /** Iterate all the deeply contained actors of the
      *  container of this director exactly once. This method is not functional,
@@ -878,7 +888,7 @@ public class Director extends Attribute implements Executable {
         if (_debugging) {
             _debug("Director: Called postfire().");
         }
-        return !_stopRequested;
+        return !_stopRequested && !_finishRequested;
     }
 
     /** Return true if the director is ready to fire. This method is
@@ -959,6 +969,7 @@ public class Director extends Attribute implements Executable {
         // preinitialize protected variables.
         _currentTime = getModelStartTime();
         _stopRequested = false;
+        _finishRequested = false;
         // preinitialize all the contained actors.
         Nameable container = getContainer();
         if (container instanceof CompositeActor) {
@@ -1564,6 +1575,9 @@ public class Director extends Attribute implements Executable {
 
     /** The current time of the model. */
     protected Time _currentTime;
+    
+    /** Indicator that finish() has been called. */
+    protected boolean _finishRequested;
 
     /** List of objects whose (pre)initialize() and wrapup() methods
      *  should be slaved to these.

@@ -306,7 +306,7 @@ public class ModalDirector extends FSMDirector {
             }
         }
 
-        return postfireResult && !_stopRequested;
+        return postfireResult && !_stopRequested && !_finishRequested;
     }
 
     /** Override the prefire() method of the super class to clear

@@ -206,7 +206,7 @@ public class HDFFSMDirector extends MultirateFSMDirector {
             container.requestChange(request);
         }
 
-        return _refinementPostfire;
+        return _refinementPostfire && !_stopRequested && !_finishRequested;
     }
 
     /** Preinitialize the modal model. Set the _sendRequest flag to be true

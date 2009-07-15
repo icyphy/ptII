@@ -278,7 +278,7 @@ public class CIDirector extends Director {
                 && (_actorsToFire.size() == 0)) {
             return false;
         } else {
-            return true;
+            return !_finishRequested;
         }
     }
 

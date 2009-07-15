@@ -481,7 +481,7 @@ public class GiottoDirector extends StaticSchedulingDirector implements
         }
 
         if (!_readyToFire) {
-            return true;
+            return !_stopRequested && !_finishRequested;
         }
 
         int numberOfIterations = ((IntToken) (iterations.getToken()))
@@ -492,7 +492,7 @@ public class GiottoDirector extends StaticSchedulingDirector implements
             _iterationCount = 0;
 
             if (_isEmbedded()) {
-                return true;
+                return !_stopRequested && !_finishRequested;
             } else {
                 return false;
             }
@@ -505,7 +505,7 @@ public class GiottoDirector extends StaticSchedulingDirector implements
             }
         }
 
-        return true;
+        return !_stopRequested && !_finishRequested;
     }
 
     /** This method always return true.

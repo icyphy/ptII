@@ -131,9 +131,13 @@ public abstract class SequencedModelDirector extends Director{
      *  The default value is an IntToken with the value zero.
      */
     public Parameter iterations;
+    
     public Parameter userDefinedOutputInitialValue;
+    
     public Parameter userDefinedDefaultOutputInitialValue;
+    
     public Parameter defaultOutputInitialValue;
+    
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
