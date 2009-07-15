@@ -164,7 +164,7 @@ T_{k+1}. The control action is computed in Ptolemy II.</text></svg></configure>
         </property>
         <property name="workingDirectory" class="ptolemy.data.expr.FileParameter" value=".">
         </property>
-        <property name="socketTimeout" class="ptolemy.data.expr.Parameter" value="10000">
+        <property name="socketTimeout" class="ptolemy.data.expr.Parameter" value="30000">
             <display name="socketTimeout [milliseconds]"/>
         </property>
         <property name="SimulatorIcon" class="ptolemy.vergil.icon.EditorIcon">
