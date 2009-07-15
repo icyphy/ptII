@@ -1206,6 +1206,10 @@ remote1distjavadocs:
 # * auto tests should be run after actor/gui so that MoMLSimpleApplication
 #   is present
 
+# To update JSALLDIRS, run:
+# make USER=cxh PTIIHOME=/Users/cxh/src/ptII jsalldirs_check
+# and check the output
+
 # Don't run
 #	$(REMOTE1PTIIDIST)/ptolemy/domains/sdf/lib/huffman
 # it hangs
@@ -1222,6 +1226,7 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/data/expr \
 	$(REMOTE1PTIIDIST)/ptolemy/data/type \
 	$(REMOTE1PTIIDIST)/ptolemy/actor \
+	$(REMOTE1PTIIDIST)/ptolemy/actor/gt \
 	$(REMOTE1PTIIDIST)/ptolemy/actor/gui \
 	$(REMOTE1PTIIDIST)/ptolemy/data/unit \
 	$(REMOTE1PTIIDIST)/ptolemy/moml/unit \
@@ -1234,6 +1239,7 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/continuous/kernel \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/continuous/kernel/solver \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/continuous/lib \
+	$(REMOTE1PTIIDIST)/ptolemy/domains/csp/kernel \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/csp/lib \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/ct/kernel \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/ct/kernel/solver \
@@ -1276,6 +1282,10 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/wireless/lib \
 	$(REMOTE1PTIIDIST)/ptolemy/graph \
 	$(REMOTE1PTIIDIST)/ptolemy/graph/analysis \
+	$(REMOTE1PTIIDIST)/ptolemy/graph/analysis/analyzer \
+	$(REMOTE1PTIIDIST)/ptolemy/graph/analysis/strategy \
+	$(REMOTE1PTIIDIST)/ptolemy/graph/mapping \
+	$(REMOTE1PTIIDIST)/ptolemy/graph/sched \
 	$(REMOTE1PTIIDIST)/ptolemy/media \
 	$(REMOTE1PTIIDIST)/ptolemy/media/javasound \
 	$(REMOTE1PTIIDIST)/ptolemy/moml \
@@ -1319,6 +1329,7 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/backtrack/eclipse/ast \
 	$(REMOTE1PTIIDIST)/ptolemy/backtrack \
 	$(REMOTE1PTIIDIST)/ptolemy/codegen/kernel \
+	$(REMOTE1PTIIDIST)/ptolemy/codegen/actor \
 	$(REMOTE1PTIIDIST)/ptolemy/codegen/c \
 	$(REMOTE1PTIIDIST)/ptolemy/codegen/c/kernel \
 	$(REMOTE1PTIIDIST)/ptolemy/codegen/c/actor \
@@ -1330,7 +1341,9 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/codegen/c/domains/modal/modal \
 	$(REMOTE1PTIIDIST)/ptolemy/codegen/c/domains/sdf/kernel \
 	$(REMOTE1PTIIDIST)/ptolemy/codegen/c/domains/sdf/lib \
+	$(REMOTE1PTIIDIST)/ptolemy/codegen/c/domains/sr/lib \
 	$(REMOTE1PTIIDIST)/ptolemy/codegen/c/domains/pn/kernel \
+	$(REMOTE1PTIIDIST)/ptolemy/codegen/c/actor/lib/colt \
 	$(REMOTE1PTIIDIST)/ptolemy/codegen/c/actor/lib/comm \
 	$(REMOTE1PTIIDIST)/ptolemy/codegen/c/actor/lib/conversions \
 	$(REMOTE1PTIIDIST)/ptolemy/codegen/c/actor/lib/hoc \
@@ -1354,6 +1367,7 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/codegen/java/domains/sdf/lib \
 	$(REMOTE1PTIIDIST)/ptolemy/codegen/java/actor/lib/colt \
 	$(REMOTE1PTIIDIST)/ptolemy/codegen/java/actor/lib/conversions \
+	$(REMOTE1PTIIDIST)/ptolemy/codegen/java/actor/lib/embeddedJava \
 	$(REMOTE1PTIIDIST)/ptolemy/codegen/java/actor/lib/hoc \
 	$(REMOTE1PTIIDIST)/ptolemy/codegen/java/actor/lib/logic \
 	$(REMOTE1PTIIDIST)/ptolemy/codegen/java/actor/lib/string \
@@ -1388,10 +1402,11 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/caltrop/ddi \
 	$(REMOTE1PTIIDIST)/ptolemy/caltrop \
 	$(REMOTE1PTIIDIST)/ptolemy/caltrop/util \
-	$(REMOTE1PTIIDIST)/ptolemy/data/properties/ \
+	$(REMOTE1PTIIDIST)/ptolemy/data/properties \
 	$(REMOTE1PTIIDIST)/ptolemy/data/properties/lattice/exampleSetLattice \
 	$(REMOTE1PTIIDIST)/ptolemy/data/properties/lattice/logicalAND \
 	$(REMOTE1PTIIDIST)/ptolemy/data/properties/lattice/logicalOrBackward \
+	$(REMOTE1PTIIDIST)/ptolemy/data/properties/lattice/typeSystem_C \
 	$(REMOTE1PTIIDIST)/ptolemy/data/properties/token/firstValueToken \
 	$(REMOTE1PTIIDIST)/ptolemy/distributed/actor/lib \
 	$(REMOTE1PTIIDIST)/ptolemy/distributed/domains/sdf/kernel \
