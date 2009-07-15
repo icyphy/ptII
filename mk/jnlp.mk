@@ -345,7 +345,7 @@ EXEC_JARS = 	ptolemy/actor/gui/exec/exec.jar
 
 
 PDFRENDERER_JARS = ptolemy/vergil/pdfrender/pdfrenderer.jar \
-		ptolemy/vergil/pdfrenderer/PDFRenderer.jar
+		lib/PDFRenderer.jar
 
 PTJACL_JARS =	ptolemy/actor/gui/ptjacl/ptjacl.jar \
 		lib/ptjacl.jar
