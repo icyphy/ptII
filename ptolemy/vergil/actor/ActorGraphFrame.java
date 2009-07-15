@@ -49,7 +49,6 @@ import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.DebugListenerTableau;
 import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.PtolemyEffigy;
-import ptolemy.actor.gui.PtolemyPreferences;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.actor.gui.TextEffigy;
 import ptolemy.actor.gui.UserActorLibrary;
@@ -57,7 +56,6 @@ import ptolemy.gui.ComponentDialog;
 import ptolemy.gui.Query;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
-import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.KernelRuntimeException;
 import ptolemy.kernel.util.NamedObj;
@@ -67,8 +65,8 @@ import ptolemy.util.CancelException;
 import ptolemy.util.MessageHandler;
 import ptolemy.util.StringUtilities;
 import ptolemy.vergil.basic.AbstractBasicGraphModel;
+import ptolemy.vergil.basic.BasicGraphPane;
 import ptolemy.vergil.basic.ExtendedGraphFrame;
-import diva.canvas.DamageRegion;
 import diva.graph.GraphController;
 import diva.graph.GraphPane;
 import diva.gui.GUIUtilities;
@@ -310,7 +308,7 @@ public class ActorGraphFrame extends ExtendedGraphFrame implements
         // The cast is safe because the constructor only accepts
         // CompositeEntity.
         final ActorGraphModel graphModel = new ActorGraphModel(entity);
-        return new ActorGraphPane(_controller, graphModel, entity);
+        return new BasicGraphPane(_controller, graphModel, entity);
     }
 
     /////////////////////////////////////////////////////////////////
@@ -360,75 +358,6 @@ public class ActorGraphFrame extends ExtendedGraphFrame implements
 
     ///////////////////////////////////////////////////////////////////
     ////                   public inner classes                    ////
-
-    ///////////////////////////////////////////////////////////////////
-    //// ActorGraphPane
-
-    /**
-     * Subclass that updates the background color on each repaint if there is a
-     * preferences attribute.
-     */
-    public static class ActorGraphPane extends GraphPane {
-        /**
-         * Create a pan that updates the background color on each repaint
-         * if there is a preference attribute.
-         *
-         * @param controller an ActorEditorGraphController object
-         * @param model an ActorGraphModel object
-         * @param entity a NamedObj object
-         */
-        public ActorGraphPane(ActorEditorGraphController controller,
-                ActorGraphModel model, NamedObj entity) {
-            super(controller, model);
-            _entity = entity;
-        }
-
-        public void repaint() {
-            _setBackground();
-            super.repaint();
-        }
-
-        public void repaint(DamageRegion damage) {
-            _setBackground();
-            super.repaint(damage);
-        }
-
-        private void _setBackground() {
-            // FIXME: It seems kind of expensive to call this each time on repaint.
-            // Maybe we should get the background color and cache it?
-            if (_entity != null) {
-                Effigy effigy = Configuration.findEffigy(_entity.toplevel());
-                if (effigy == null) {
-                    return;
-                }
-                Configuration configuration = (Configuration) effigy.toplevel();
-                try {
-                    PtolemyPreferences preferences = PtolemyPreferences
-                            .getPtolemyPreferencesWithinConfiguration(configuration);
-                    if (preferences != null) {
-                        getCanvas().setBackground(
-                                preferences.backgroundColor.asColor());
-                    } else {
-                        if (_backgroundWarningCount < 1) {
-                            _backgroundWarningCount++;
-                            if (configuration.getEntity("actor library") != null) {
-                                System.out
-                                        .println("Failed to get PtolemyPreferences?  This can happen when there is no left hand library.");
-                            }
-                        }
-                    }
-                } catch (IllegalActionException ex) {
-                    System.err
-                            .println("Warning, failed to find Ptolemy Preferences "
-                                    + "or set the background, using default.");
-                    ex.printStackTrace();
-                }
-            }
-        }
-
-        private static int _backgroundWarningCount = 0;
-        private NamedObj _entity;
-    }
 
     // NOTE: The following class is very similar to the inner class
     // in FSMGraphFrame. Is there some way to merge these?

@@ -34,6 +34,7 @@ import ptolemy.domains.ptera.kernel.Event;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.LibraryAttribute;
+import ptolemy.vergil.basic.BasicGraphPane;
 import ptolemy.vergil.modal.FSMGraphFrame;
 import ptolemy.vergil.modal.FSMGraphModel;
 import diva.graph.GraphPane;
@@ -75,7 +76,7 @@ public class PteraGraphFrame extends FSMGraphFrame {
         // only CompositeEntity.
         final FSMGraphModel graphModel = new FSMGraphModel(
                 (CompositeEntity) entity);
-        return new FSMGraphPane(_controller, graphModel, entity);
+        return new BasicGraphPane(_controller, graphModel, entity);
     }
 
     /** Return the text to be used in the animation menu item. In this class,

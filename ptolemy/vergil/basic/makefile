@@ -57,6 +57,7 @@ JSRCS = \
 	AbstractBasicGraphModel.java \
 	BasicGraphController.java \
 	BasicGraphFrame.java \
+	BasicGraphPane.java \
 	ContextMenuFactoryCreator.java \
 	CustomizeDocumentationAction.java \
 	DependencyHighlighter.java \

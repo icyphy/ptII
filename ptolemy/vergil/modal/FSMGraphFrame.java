@@ -47,7 +47,6 @@ import javax.swing.KeyStroke;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.gui.DebugListenerTableau;
 import ptolemy.actor.gui.Effigy;
-import ptolemy.actor.gui.PtolemyPreferences;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.actor.gui.TextEffigy;
 import ptolemy.data.BooleanToken;
@@ -65,8 +64,8 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.LibraryAttribute;
 import ptolemy.util.CancelException;
 import ptolemy.util.MessageHandler;
+import ptolemy.vergil.basic.BasicGraphPane;
 import ptolemy.vergil.basic.ExtendedGraphFrame;
-import diva.canvas.DamageRegion;
 import diva.graph.GraphPane;
 import diva.gui.GUIUtilities;
 
@@ -169,134 +168,6 @@ public class FSMGraphFrame extends ExtendedGraphFrame implements ActionListener 
         }
     }
 
-    /** Listener for debug menu commands. */
-    public class DebugMenuListener implements ActionListener {
-        /** React to a menu command. */
-        public void actionPerformed(ActionEvent e) {
-            JMenuItem target = (JMenuItem) e.getSource();
-            String actionCommand = target.getActionCommand();
-
-            try {
-                if (actionCommand.equals("Listen to Director")) {
-                    Effigy effigy = (Effigy) getTableau().getContainer();
-
-                    // Create a new text effigy inside this one.
-                    Effigy textEffigy = new TextEffigy(effigy, effigy
-                            .uniqueName("debug listener"));
-                    DebugListenerTableau tableau = new DebugListenerTableau(
-                            textEffigy, textEffigy.uniqueName("debugListener"));
-                    tableau
-                            .setDebuggable(((FSMActor) getModel())
-                                    .getDirector());
-                } else if (actionCommand.equals("Listen to State Machine")) {
-                    Effigy effigy = (Effigy) getTableau().getContainer();
-
-                    // Create a new text effigy inside this one.
-                    Effigy textEffigy = new TextEffigy(effigy, effigy
-                            .uniqueName("debug listener"));
-                    DebugListenerTableau tableau = new DebugListenerTableau(
-                            textEffigy, textEffigy.uniqueName("debugListener"));
-                    tableau.setDebuggable(getModel());
-                } else if (actionCommand.equals(getAnimationMenuText())) {
-                    // Dialog to ask for a delay time.
-                    Query query = new Query();
-                    query.addLine("delay", "Time (in ms) to hold highlight",
-                            Long.toString(_lastDelayTime));
-
-                    ComponentDialog dialog = new ComponentDialog(
-                            FSMGraphFrame.this, "Delay for Animation", query);
-
-                    if (dialog.buttonPressed().equals("OK")) {
-                        try {
-                            _lastDelayTime = Long.parseLong(query
-                                    .getStringValue("delay"));
-                            _controller.setAnimationDelay(_lastDelayTime);
-
-                            NamedObj model = getModel();
-
-                            if ((model != null) && (_listeningTo != model)) {
-                                if (_listeningTo != null) {
-                                    _listeningTo
-                                            .removeDebugListener(_controller);
-                                }
-
-                                _listeningTo = model;
-                                _listeningTo.addDebugListener(_controller);
-                            }
-                        } catch (NumberFormatException ex) {
-                            MessageHandler.error(
-                                    "Invalid time, which is required "
-                                            + "to be an integer: ", ex);
-                        }
-                    }
-                } else if (actionCommand.equals("Stop Animating")
-                        && (_listeningTo != null)) {
-                    _listeningTo.removeDebugListener(_controller);
-                    _controller.clearAnimation();
-                    _listeningTo = null;
-                }
-            } catch (KernelException ex) {
-                try {
-                    MessageHandler.warning("Failed to create debug listener: "
-                            + ex);
-                } catch (CancelException exception) {
-                }
-            }
-        }
-
-        private NamedObj _listeningTo;
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    //// FSMGraphPane
-
-    /** Subclass that updates the background color on each repaint if
-     *  there is a preferences attribute.
-     */
-    public static class FSMGraphPane extends GraphPane {
-
-        /** Construct a pane that updates the background color on each
-         *  repait if there is a preference attribute.
-         * @param controller The graph controller
-         * @param model The model
-         * @param entity The entity
-         */
-        public FSMGraphPane(FSMGraphController controller, FSMGraphModel model,
-                NamedObj entity) {
-            super(controller, model);
-            _entity = entity;
-        }
-
-        /** If the entity has a PtolemyPreference, set the background color.
-         */
-        public void repaint() {
-            _setBackground();
-            super.repaint();
-        }
-
-        /** If the entity has a PtolemyPreference, set the background color.
-         */
-        public void repaint(DamageRegion damage) {
-            _setBackground();
-            super.repaint(damage);
-        }
-
-        private void _setBackground() {
-            if (_entity != null) {
-                List list = _entity.attributeList(PtolemyPreferences.class);
-                if (list.size() > 0) {
-                    // Use the last preferences.
-                    PtolemyPreferences preferences = (PtolemyPreferences) list
-                            .get(list.size() - 1);
-                    getCanvas().setBackground(
-                            preferences.backgroundColor.asColor());
-                }
-            }
-        }
-
-        private NamedObj _entity;
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
@@ -353,7 +224,7 @@ public class FSMGraphFrame extends ExtendedGraphFrame implements ActionListener 
         JMenuItem[] debugMenuItems = {
                 new JMenuItem("Listen to Director", KeyEvent.VK_D),
                 new JMenuItem("Listen to State Machine", KeyEvent.VK_L),
-                new JMenuItem(getAnimationMenuText(), KeyEvent.VK_A),
+                new JMenuItem(_getAnimationMenuText(), KeyEvent.VK_A),
                 new JMenuItem("Stop Animating", KeyEvent.VK_S), };
         return debugMenuItems;
     }
@@ -413,7 +284,7 @@ public class FSMGraphFrame extends ExtendedGraphFrame implements ActionListener 
         // only CompositeEntity.
         final FSMGraphModel graphModel = new FSMGraphModel(
                 (CompositeEntity) entity);
-        return new FSMGraphPane(_controller, graphModel, entity);
+        return new BasicGraphPane(_controller, graphModel, entity);
     }
 
     /** Export the model into the writer with the given name. If
@@ -480,7 +351,7 @@ public class FSMGraphFrame extends ExtendedGraphFrame implements ActionListener 
      *
      *  @return The text for the menu item.
      */
-    protected String getAnimationMenuText() {
+    protected String _getAnimationMenuText() {
         return "Animate States";
     }
 
@@ -546,7 +417,85 @@ public class FSMGraphFrame extends ExtendedGraphFrame implements ActionListener 
     private List<IOPort> _modifiedPorts = new LinkedList<IOPort>();
 
     ///////////////////////////////////////////////////////////////////
-    ////                       private inner classes               ////
+    ////                        inner classes                      ////
+
+    /** Listener for debug menu commands. */
+    public class DebugMenuListener implements ActionListener {
+        /** React to a menu command. */
+        public void actionPerformed(ActionEvent e) {
+            JMenuItem target = (JMenuItem) e.getSource();
+            String actionCommand = target.getActionCommand();
+
+            try {
+                if (actionCommand.equals("Listen to Director")) {
+                    Effigy effigy = (Effigy) getTableau().getContainer();
+
+                    // Create a new text effigy inside this one.
+                    Effigy textEffigy = new TextEffigy(effigy, effigy
+                            .uniqueName("debug listener"));
+                    DebugListenerTableau tableau = new DebugListenerTableau(
+                            textEffigy, textEffigy.uniqueName("debugListener"));
+                    tableau
+                            .setDebuggable(((FSMActor) getModel())
+                                    .getDirector());
+                } else if (actionCommand.equals("Listen to State Machine")) {
+                    Effigy effigy = (Effigy) getTableau().getContainer();
+
+                    // Create a new text effigy inside this one.
+                    Effigy textEffigy = new TextEffigy(effigy, effigy
+                            .uniqueName("debug listener"));
+                    DebugListenerTableau tableau = new DebugListenerTableau(
+                            textEffigy, textEffigy.uniqueName("debugListener"));
+                    tableau.setDebuggable(getModel());
+                } else if (actionCommand.equals(_getAnimationMenuText())) {
+                    // Dialog to ask for a delay time.
+                    Query query = new Query();
+                    query.addLine("delay", "Time (in ms) to hold highlight",
+                            Long.toString(_lastDelayTime));
+
+                    ComponentDialog dialog = new ComponentDialog(
+                            FSMGraphFrame.this, "Delay for Animation", query);
+
+                    if (dialog.buttonPressed().equals("OK")) {
+                        try {
+                            _lastDelayTime = Long.parseLong(query
+                                    .getStringValue("delay"));
+                            _controller.setAnimationDelay(_lastDelayTime);
+
+                            NamedObj model = getModel();
+
+                            if ((model != null) && (_listeningTo != model)) {
+                                if (_listeningTo != null) {
+                                    _listeningTo
+                                            .removeDebugListener(_controller);
+                                }
+
+                                _listeningTo = model;
+                                _listeningTo.addDebugListener(_controller);
+                            }
+                        } catch (NumberFormatException ex) {
+                            MessageHandler.error(
+                                    "Invalid time, which is required "
+                                            + "to be an integer: ", ex);
+                        }
+                    }
+                } else if (actionCommand.equals("Stop Animating")
+                        && (_listeningTo != null)) {
+                    _listeningTo.removeDebugListener(_controller);
+                    _controller.clearAnimation();
+                    _listeningTo = null;
+                }
+            } catch (KernelException ex) {
+                try {
+                    MessageHandler.warning("Failed to create debug listener: "
+                            + ex);
+                } catch (CancelException exception) {
+                }
+            }
+        }
+
+        private NamedObj _listeningTo;
+    }
 
     ///////////////////////////////////////////////////////////////////
     //// LayoutAction
