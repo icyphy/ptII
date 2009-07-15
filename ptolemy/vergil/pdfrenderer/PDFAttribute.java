@@ -61,8 +61,9 @@ import com.sun.pdfview.PDFPage;
  This is an "an open source, all Java library which renders PDF documents
  to the screen using Java2D." This attribute can be put into a
  Vergil diagram and its visual appearance will be be defined
- by a PDF file.  Using this icon requires that
- PDFRenderer.jar be in $PTII/ptolemy/vergil/pdfrenderer
+ by a PDF file.  Using this attribute requires that
+ PDFRenderer.jar in the classpath, it is usually
+ found in $PTII/lib/PDFRenderer.jar.
  </p>
  
  @author Edward A. Lee

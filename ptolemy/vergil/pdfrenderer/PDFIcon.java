@@ -51,14 +51,15 @@ import diva.util.java2d.PaintedObject;
 //// PDFIcon
 
 /**
- An icon that displays a specified PDF page.
- <p>
- This class uses pdf-renderer, obtainable from
- <a href="https://pdf-renderer.dev.java.net/">https://pdf-renderer.dev.java.net/</a>.
- This is an "an open source, all Java library which renders PDF documents
- to the screen using Java2D." By using this icon, an actor or attribute
- in Vergil can be defined by a PDF file.  Using this icon requires that
- PDFRenderer.jar be in $PTII/lib.
+ An icon that displays a specified PDF page.  
+
+ <p> This class uses pdf-renderer, obtainable from <a
+ href="https://pdf-renderer.dev.java.net/">https://pdf-renderer.dev.java.net/</a>.
+ This is an "an open source, all Java library which renders PDF
+ documents to the screen using Java2D." By using this icon, an actor
+ or attribute in Vergil can be defined by a PDF file.  Using this icon
+ requires that PDFRenderer.jar in the classpath, it is usually found
+ in $PTII/lib/PDFRenderer.jar.</p>
 
  @author Edward A. Lee
  @version $Id$
