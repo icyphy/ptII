@@ -1,6 +1,6 @@
 # Makefile for Ptolemy Classic style Codegen using Java
 #
-# @Version: $Id: makefile 53091 2009-04-12 18:28:37Z cxh $
+# @Version: $Id$
 # @Author: Christopher Brooks
 #
 # @Copyright (c) 2005-2009 The Regents of the University of California
