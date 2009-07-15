@@ -34,10 +34,10 @@
  is also associated with a code generator.
 
  @author Dai Bui, Bert Rodiers
- @version $id$
+ @version $Id$
  @since Ptolemy II 8.0
- @Pt.ProposedRating Red 
- @Pt.AcceptedRating Red 
+ @Pt.ProposedRating Red (rodiers)
+ @Pt.AcceptedRating Red (rodiers)
  */
 
 package ptolemy.cg.adapter.generic.program.procedural.java.modular.adapters.ptolemy.domains.sdf.kernel;

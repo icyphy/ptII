@@ -37,9 +37,9 @@ import ptolemy.kernel.util.IllegalActionException;
 Code generator adapter for typed composite actor.
 
 @author Dai Bui, Bert Rodiers
-@version 
+@version $Id$
 @since Ptolemy II 8.0
-@Pt.ProposedRating Red 
+@Pt.ProposedRating Red (rodiers)
 @Pt.AcceptedRating Red (daib)
 */
 
