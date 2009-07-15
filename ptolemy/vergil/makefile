@@ -33,7 +33,7 @@ ME =		ptolemy/vergil
 
 # PTPDFRENDERER_DIR is set to pdfrenderer by configure
 DIRS = 		toolbox basic actor kernel fsm gt debugger \
-		icon lib modal $(PTPDFRENDERER) properties ptera tree tdl \
+		icon lib modal $(PTPDFRENDERER_DIR) properties ptera tree tdl \
 		unit test
 
 # Root of the Java directory
