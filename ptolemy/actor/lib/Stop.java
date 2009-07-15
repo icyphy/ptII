@@ -42,8 +42,11 @@ import ptolemy.kernel.util.Settable;
 
  <p>An actor that stops execution of a model when it receives a true
  token on any input channel. This is accomplished by calling
- finish() on the manager, which requests that the current iteration
- be completed and then the model execution be halted. If the input
+ finish() on the director, which requests that the current iteration
+ be completed and then the execution be halted. This actor will
+ also call stopFire() which requests that any actors that are
+ firing concurrently in separate threads conclude their firings.
+ This is necessary to support threaded domains like PN. If the input
  is not connected to anything, then this actor requests a stop
  whenever it fires.
 
@@ -154,7 +157,15 @@ public class Stop extends Sink {
             // not the right thing to do. In particular, this could be
             // used inside a RunCompositeActor, and it should only
             // stop the inside execution, not the outside one.
-            getDirector().stop();
+            // It's also not correct to call stop() on the director,
+            // because stop() requests immediate stopping. To give
+            // determinate stopping, this actor needs to complete
+            // the current iteration.
+            getDirector().finish();
+            
+            // To support multithreaded domains, also have to call
+            // stopFire() to request that all actors conclude ongoing firings.
+            getDirector().stopFire();
             /*
             Nameable container = getContainer();
 
