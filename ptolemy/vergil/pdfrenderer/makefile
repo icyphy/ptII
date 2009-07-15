@@ -56,7 +56,7 @@ JSRCS = \
 
 OTHER_FILES_TO_BE_JARED = \
 	PDFRenderer-copyright.htm \
-	pdfattribute.pdf \
+	pdfattribute.xml \
 	sample.pdf
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
