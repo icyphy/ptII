@@ -351,6 +351,66 @@ public class PortCriterion extends Criterion {
         return true;
     }
 
+    /** Enable or disable the input.
+     *  <p>Used as part of the test harness.   
+     *  @param enabled true if the element is set to be enabled; false if it
+     *   is disabled.
+     *  @see ptolemy.actor.gt.GTIngredients#setEnabled(int, boolean)
+     */
+    public void setInputEnabled(boolean enabled) {
+        setEnabled(2, enabled);
+    }
+
+    /** Enable or disable the matcher name.
+     *  <p>Used as part of the test harness.   
+     *  @param enabled true if the element is set to be enabled; false if it
+     *   is disabled.
+     *  @see ptolemy.actor.gt.GTIngredients#setEnabled(int, boolean)
+     */
+    public void setMatcherNameEnabled(boolean enabled) {
+        setEnabled(5, enabled);
+    }
+
+    /** Enable or disable the multiport.
+     *  <p>Used as part of the test harness.   
+     *  @param enabled true if the element is set to be enabled; false if it
+     *   is disabled.
+     *  @see ptolemy.actor.gt.GTIngredients#setEnabled(int, boolean)
+     */
+    public void setMultiportEnabled(boolean enabled) {
+        setEnabled(4, enabled);
+    }
+
+    /** Enable or disable the output.
+     *  <p>Used as part of the test harness.   
+     *  @param enabled true if the element is set to be enabled; false if it
+     *   is disabled.
+     *  @see ptolemy.actor.gt.GTIngredients#setEnabled(int, boolean)
+     */
+    public void setOutputEnabled(boolean enabled) {
+        setEnabled(3, enabled);
+    }
+    
+    /** Enable or disable the port name.
+     *  <p>Used as part of the test harness.   
+     *  @param enabled true if the element is set to be enabled; false if it
+     *   is disabled.
+     *  @see ptolemy.actor.gt.GTIngredients#setEnabled(int, boolean)
+     */
+    public void setPortNameEnabled(boolean enabled) {
+        setEnabled(0, enabled);
+    }
+
+    /** Enable or disable the port type.
+     *  <p>Used as part of the test harness.   
+     *  @param enabled true if the element is set to be enabled; false if it
+     *   is disabled.
+     *  @see ptolemy.actor.gt.GTIngredients#setEnabled(int, boolean)
+     */
+    public void setPortTypeEnabled(boolean enabled) {
+        setEnabled(1, enabled);
+    }
+
     /** Set the value of the index-th element.
      *
      *  @param index The index.
