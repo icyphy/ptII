@@ -131,6 +131,36 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
         //return ptolemyType.replace("Int", "Integer").replace("Integerger", "Integer").replace("Array", "Token");
     }
 
+    static public Short codeGenTypeValue(String type) throws IllegalActionException {
+        Short typeReturn = -2;
+        if (type.equals("Token")) {
+            typeReturn = -1;
+        } else if (type.equals("String")) {
+            typeReturn = 0;
+        } else if (type.equals("Array")) {
+            typeReturn = 1;
+        } else if (type.equals("Integer")) {
+            typeReturn = 2;
+        } else if (type.equals("Long")) {
+            typeReturn = 3;
+        } else if (type.equals("Double")) {
+            typeReturn = 4;
+        } else if (type.equals("Boolean")) {
+            typeReturn = 5;
+        } else if (type.equals("UnsignedByte")) {
+            typeReturn = 6;
+        } else if (type.equals("Pointer")) {
+            typeReturn = 7;
+        } else if (type.equals("Matrix")) {
+            typeReturn = 8;
+        } else {
+            throw new IllegalActionException("Unsuported type");
+        }
+        
+        
+        return typeReturn;
+    }
+    
     /** Generate the function table.  In this base class return
      *  the empty string.
      *  @param types An array of types.
@@ -364,8 +394,12 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
                     "$CLASSPATH/ptolemy/cg/kernel/generic/program/procedural/java/type/"
                             + typesArray[i] + ".j", this);
 
-            code.append("#define PTCG_TYPE_" + typesArray[i] + " " + i + _eol);
-            code.append("private final short TYPE_" + typesArray[i] + " = " + i
+            //FIXME: temporarily statically assign types, is there any better way to do that?
+//            code.append("#define PTCG_TYPE_" + typesArray[i] + " " + i + _eol);
+            code.append("#define PTCG_TYPE_" + typesArray[i] + " " + codeGenTypeValue(typesArray[i].toString()) + _eol);
+
+//            code.append("private final short TYPE_" + typesArray[i] + " = " + i
+            code.append("private final short TYPE_" + typesArray[i] + " = " + codeGenTypeValue(typesArray[i].toString())
                     + ";" + _eol);
 
             // Dynamically generate all the types within the union.
