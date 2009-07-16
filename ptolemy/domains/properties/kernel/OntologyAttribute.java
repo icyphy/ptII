@@ -82,7 +82,6 @@ public class OntologyAttribute extends ModelAttribute {
      * "ptolemy.domains.properties.kernel.OntologyAttribute$OntologyComposite".
      * @return the class name of the contained model top-level.
      */
-    @Override
     protected String _getContainedModelClassName() {
         return getClass().getName() + "$OntologyComposite";
     }
@@ -135,7 +134,6 @@ public class OntologyAttribute extends ModelAttribute {
          * @exception NameDuplicationException If the name collides with a name
          * already on the actor contents list.
          */
-        @Override
         protected void _addEntity(ComponentEntity entity)
                 throws IllegalActionException, NameDuplicationException {
 

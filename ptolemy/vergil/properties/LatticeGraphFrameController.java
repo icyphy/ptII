@@ -63,14 +63,12 @@ public class LatticeGraphFrameController extends FSMGraphController {
      * 
      * @param jgraph The JGraph to which hot keys are to be added.
      */
-    @Override
     protected void _addHotKeys(JGraph jgraph) {
         super._addHotKeys(jgraph);
 
         _stateController.addHotKeys(jgraph);
     }
 
-    @Override
     protected void _createControllers() {
         _attributeController = new AttributeController(this,
                 AttributeController.FULL);
@@ -97,7 +95,6 @@ public class LatticeGraphFrameController extends FSMGraphController {
             super("Check Lattice Graph");
         }
 
-        @Override
         public void actionPerformed(ActionEvent e) {
             super.actionPerformed(e);
 

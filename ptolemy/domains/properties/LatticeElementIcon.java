@@ -73,7 +73,6 @@ public class LatticeElementIcon extends StateIcon {
      * white by default.
      * @return The fill color.
      */
-    @Override
     protected Paint _getFill() {
         NamedObj container = getContainer();
 
@@ -101,7 +100,6 @@ public class LatticeElementIcon extends StateIcon {
      * solution, this returns a thicker width.
      * @return The line width.
      */
-    @Override
     protected float _getLineWidth() {
         NamedObj container = getContainer();
 
