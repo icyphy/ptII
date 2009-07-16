@@ -36,7 +36,7 @@ ME =		ptolemy/configs
 DIRS =		codegen doc dsp full fullViewer hyvisual jni jxta \
 		layout luminary properties pn ptiny ptinyKepler \
 		ptinyViewer \
-		space vhdl viptos visualsense test
+		space viptos visualsense test
 
 # Root of the Java directory
 ROOT =		../..
@@ -133,7 +133,6 @@ PTCLASSALLJARS = \
 		ptinyKepler/ptinyKepler.jar \
 		ptinyViewer/ptinyViewer.jar \
 		space/space.jar \
-		vhdl/vhdl.jar \
 		viptos/viptos.jar \
 		visualsense/visualsense.jar
 
