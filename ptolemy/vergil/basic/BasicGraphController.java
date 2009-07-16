@@ -429,6 +429,12 @@ public abstract class BasicGraphController extends AbstractGraphController
      *  involves the canvas.
      */
     protected void initializeInteraction() {
+        // Remove the existing menu if it has already been created by an earlier
+        // call of this method, because we may invoke this method multiple times
+        // but we don't want the same items to show up multiple times.
+        // -- tfeng (07/16/2009)
+        _menuFactory = null;
+
         GraphPane pane = getGraphPane();
         // Start Kepler code.
         List configsList = Configuration.configurations();
