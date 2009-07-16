@@ -8,6 +8,7 @@ $PTII/adm/bin/ptIIfiles | egrep -v '\.#' |egrep -v '\.au$' \
 	| egrep -v '\.class' |egrep -v '\.dat' |egrep -v '\.data' \
 	| egrep -v '\.dll' |egrep -v '\.doc' \
 	| egrep -v '\.dsp' |egrep -v '\.dsw' \
+        | egrep -v '\.dylib' \
 	| egrep -v '\.fm'  |egrep -v '\.fig' \
         | egrep -v '\.ec3' \
 	| egrep -v '\.eps' |egrep -v '\.exe' \
