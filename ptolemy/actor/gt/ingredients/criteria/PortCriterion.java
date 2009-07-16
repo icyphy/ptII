@@ -355,7 +355,7 @@ public class PortCriterion extends Criterion {
      *  <p>Used as part of the test harness.   
      *  @param enabled true if the element is set to be enabled; false if it
      *   is disabled.
-     *  @see ptolemy.actor.gt.GTIngredients#setEnabled(int, boolean)
+     *  @see ptolemy.actor.gt.GTIngredient#setEnabled(int, boolean)
      */
     public void setInputEnabled(boolean enabled) {
         setEnabled(2, enabled);
@@ -365,7 +365,7 @@ public class PortCriterion extends Criterion {
      *  <p>Used as part of the test harness.   
      *  @param enabled true if the element is set to be enabled; false if it
      *   is disabled.
-     *  @see ptolemy.actor.gt.GTIngredients#setEnabled(int, boolean)
+     *  @see ptolemy.actor.gt.GTIngredient#setEnabled(int, boolean)
      */
     public void setMatcherNameEnabled(boolean enabled) {
         setEnabled(5, enabled);
@@ -375,7 +375,7 @@ public class PortCriterion extends Criterion {
      *  <p>Used as part of the test harness.   
      *  @param enabled true if the element is set to be enabled; false if it
      *   is disabled.
-     *  @see ptolemy.actor.gt.GTIngredients#setEnabled(int, boolean)
+     *  @see ptolemy.actor.gt.GTIngredient#setEnabled(int, boolean)
      */
     public void setMultiportEnabled(boolean enabled) {
         setEnabled(4, enabled);
@@ -385,7 +385,7 @@ public class PortCriterion extends Criterion {
      *  <p>Used as part of the test harness.   
      *  @param enabled true if the element is set to be enabled; false if it
      *   is disabled.
-     *  @see ptolemy.actor.gt.GTIngredients#setEnabled(int, boolean)
+     *  @see ptolemy.actor.gt.GTIngredient#setEnabled(int, boolean)
      */
     public void setOutputEnabled(boolean enabled) {
         setEnabled(3, enabled);
@@ -395,7 +395,7 @@ public class PortCriterion extends Criterion {
      *  <p>Used as part of the test harness.   
      *  @param enabled true if the element is set to be enabled; false if it
      *   is disabled.
-     *  @see ptolemy.actor.gt.GTIngredients#setEnabled(int, boolean)
+     *  @see ptolemy.actor.gt.GTIngredient#setEnabled(int, boolean)
      */
     public void setPortNameEnabled(boolean enabled) {
         setEnabled(0, enabled);
@@ -405,7 +405,7 @@ public class PortCriterion extends Criterion {
      *  <p>Used as part of the test harness.   
      *  @param enabled true if the element is set to be enabled; false if it
      *   is disabled.
-     *  @see ptolemy.actor.gt.GTIngredients#setEnabled(int, boolean)
+     *  @see ptolemy.actor.gt.GTIngredient#setEnabled(int, boolean)
      */
     public void setPortTypeEnabled(boolean enabled) {
         setEnabled(1, enabled);
