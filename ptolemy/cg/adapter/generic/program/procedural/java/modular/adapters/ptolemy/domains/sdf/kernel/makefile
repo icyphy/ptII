@@ -3,7 +3,7 @@
 # @Version: $Id: makefile 53091 2009-04-12 18:28:37Z cxh $
 # @Author: Christopher Brooks
 #
-# @Copyright (c) 2005-2009 The Regents of the University of California
+# @Copyright (c) 2009 The Regents of the University of California
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -46,10 +46,9 @@ include $(CONFIG)
 
 # Used to build jar files
 PTPACKAGE = 	kernel
-PTCLASSJAR = \
-	SDFDirector.java
+PTCLASSJAR = 	$(PTPACKAGE).jar
 
-PTCLASSALLJAR = $(PTPACKAGE).jar
+PTCLASSALLJAR = 
 
 # Include the .class files from these jars in PTCLASSALLJAR
 # If you change this, change DIRS above
