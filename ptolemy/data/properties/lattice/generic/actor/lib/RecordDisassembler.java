@@ -43,7 +43,7 @@ import ptolemy.kernel.util.IllegalActionException;
  * A helper class for ptolemy.actor.lib.RecordDisassembler.
  * 
  * @author Man-Kit Leung
- * @version $Id: RecordDisassembler.java 54721 2009-06-26 22:32:23Z cxh $
+ * @version $Id$
  * @since Ptolemy II 7.1
  * @Pt.ProposedRating Red (mankit)
  * @Pt.AcceptedRating Red (mankit)

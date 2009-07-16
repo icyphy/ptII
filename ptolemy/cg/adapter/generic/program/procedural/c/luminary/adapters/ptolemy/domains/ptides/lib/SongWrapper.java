@@ -34,7 +34,7 @@ import ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapter;
  * A helper class for ptolemy.domains.ptides.lib.targets.luminary.SongWrapper.
  *
  * @author Jia Zou, Isaac Liu, Jeff C. Jensen
- * @version $Id: SongWrapper.java 53829 2009-05-18 17:45:18Z jiazou $
+ * @version $Id$
  * @since Ptolemy II 7.1
  * @Pt.ProposedRating Green (jiazou)
  * @Pt.AcceptedRating Green (jiazou)

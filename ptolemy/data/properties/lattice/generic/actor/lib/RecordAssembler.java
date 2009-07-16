@@ -41,7 +41,7 @@ import ptolemy.kernel.util.IllegalActionException;
  * A helper class for ptolemy.actor.lib.RecordAssembler.
  * 
  * @author Man-Kit Leung
- * @version $Id: RecordAssembler.java 54708 2009-06-26 18:35:41Z cxh $
+ * @version $Id$
  * @since Ptolemy II 7.1
  * @Pt.ProposedRating Red (mankit)
  * @Pt.AcceptedRating Red (mankit)

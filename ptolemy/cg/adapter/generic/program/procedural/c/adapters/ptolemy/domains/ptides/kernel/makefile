@@ -1,6 +1,6 @@
 # Makefile for Ptolemy Classic style Codegen sdf kernel
 #
-# @Version: $Id: makefile 53944 2009-05-27 15:08:58Z bldmastr $
+# @Version: $Id$
 # @Author: Christopher Brooks
 #
 # @Copyright (c) 2005-2009 The Regents of the University of California

@@ -60,7 +60,7 @@ import ptolemy.kernel.util.NamedObj;
  Also unlike the Ptolemy implementation, the execution does not depend on the WCET
  of actor.
  @author Jia Zou, Isaac Liu, Jeff C. Jensen
- @version $Id: PtidesBasicDirector.java 54211 2009-06-06 19:49:00Z jiazou $
+ @version $Id$
  @since Ptolemy II 7.1
  @Pt.ProposedRating red (jiazou)
  @Pt.AcceptedRating red (jiazou)

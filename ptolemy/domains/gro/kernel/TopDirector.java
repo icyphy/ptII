@@ -59,7 +59,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  @see GROActor
 
  @author C. Fong, Steve Neuendorffer, Contributor: Christopher Hylands
- @version $Id: GRDirector.java 52048 2009-01-12 21:06:16Z eal $
+ @version $Id$
  @since Ptolemy II 1.0
  @Pt.ProposedRating yellow (chf)
  @Pt.AcceptedRating yellow (vogel)

@@ -3,7 +3,7 @@ package ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains
 /**
  * A code generation helper class for ptolemy.domains.ptides.lib.ActuatorOutputDevice
  * @author Jia Zou, Isaac Liu
- * @version $Id: ActuatorOutputDevice.java 53821 2009-05-18 15:49:29Z cxh $
+ * @version $Id$
  * @since Ptolemy II 7.1
  * @Pt.ProposedRating Red (jiazou)
  * @Pt.AcceptedRating Red (jiazou)

@@ -42,7 +42,7 @@ import ptolemy.kernel.util.IllegalActionException;
  correct platform, and the platforms can distinguish from which actor should fire
  these events
  @author Jia Zou, Jeff C. Jensen
- @version $Id: PtidesTopLevelDirector.java 54044 2009-05-30 23:03:41Z jiazou $
+ @version $Id$
  @since Ptolemy II 7.1
  @Pt.ProposedRating red (jiazou)
  @Pt.AcceptedRating

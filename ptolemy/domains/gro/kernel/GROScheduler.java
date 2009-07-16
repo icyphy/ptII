@@ -62,7 +62,7 @@ import ptolemy.kernel.util.Workspace;
  @see ptolemy.actor.sched.Scheduler
 
  @author Man-Kit Leung, Yasemin Demir
- @version $Id: GROScheduler.java 41477 2006-03-29 00:03:58Z cxh $
+ @version $Id$
  @since Ptolemy II 1.0
  @Pt.ProposedRating yellow (chf)
  @Pt.AcceptedRating yellow (vogel)

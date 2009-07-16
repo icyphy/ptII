@@ -37,7 +37,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 /**
  * A code generation helper class for ptolemy.domains.ptides.lib.targets.luminary.SpeakerOutputDevice.
  * @author Jia Zou, Isaac Liu, Jeff C. Jensen
- * @version $Id: SpeakerOutputDevice.java 53907 2009-05-22 20:24:43Z jiazou $
+ * @version $Id$
  * @since Ptolemy II 7.1
  * @Pt.ProposedRating Yellow (jiazou)
  * @Pt.AcceptedRating Red (jiazou)

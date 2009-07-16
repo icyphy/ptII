@@ -68,7 +68,7 @@ import ptolemy.kernel.util.NamedObj;
 /** Class for modular code generator.
 *
 *  @author Dai Bui, Bert Rodiers
-*  @version $Id: $
+*  @version $Id$
 *  @since Ptolemy II 8.0
 *  @Pt.ProposedRating red (rodiers)
 *  @Pt.AcceptedRating red (daib)

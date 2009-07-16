@@ -43,7 +43,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 /**
  * A code generation helper class for ptolemy.domains.ptides.lib.targets.luminary.GPInputDevice.
  * @author Jia Zou, Isaac Liu, Jeff C. Jensen
- * @version $Id: GPInputDevice.java 53905 2009-05-21 22:55:24Z jiazou $
+ * @version $Id$
  * @since Ptolemy II 7.1
  * @Pt.ProposedRating Yellow (jiazou)
  * @Pt.AcceptedRating Red (jiazou)
