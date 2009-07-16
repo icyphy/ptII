@@ -62,6 +62,18 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NamedObj;
 
+//////////////////////////////////////////////////////////////////////////
+////SDFDirector
+
+/** Class for modular code generator.
+*
+*  @author Dai Bui, Bert Rodiers
+*  @version $Id: $
+*  @since Ptolemy II 8.0
+*  @Pt.ProposedRating red (rodiers)
+*  @Pt.AcceptedRating red (daib)
+*/
+
 public class SDFDirector
         extends
         ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.domains.sdf.kernel.SDFDirector {
@@ -145,7 +157,7 @@ public class SDFDirector
                     
                     addComma = true;
                 }
-        
+        /*
                 Iterator<?> outputPorts = actor.outputPortList()
                 .iterator();
                 while (outputPorts.hasNext()) {
@@ -160,8 +172,22 @@ public class SDFDirector
                     
                     addComma = true;
                 }
+                */
                 
                 code.append(");"+ _eol);
+                
+                //transfer to external ports
+                Iterator<?> outputPorts = actor.outputPortList()
+                .iterator();
+                while (outputPorts.hasNext()) {
+                    TypedIOPort outputPort = (TypedIOPort) outputPorts.next();
+                    
+                    for (int i = 0; i < outputPort.getWidth(); i++) {
+                        code.append(codegeneratorAdaptor.getReference( outputPort.getName() + "#" + i) + 
+                                " = " + actorName + "." + codegeneratorAdaptor.getReference( "@" + outputPort.getName() + "#" + i) + ";" + _eol);
+                    }
+                }
+                
             } else {
                 if (inline) {
                     for (int i = 0; i < firing.getIterationCount(); i++) {
@@ -258,75 +284,6 @@ public class SDFDirector
      */
     public void generateTransferOutputsCode(IOPort outputPort, StringBuffer code)
             throws IllegalActionException {
-        code.append(CodeStream.indent(getCodeGenerator().comment(
-                "SDFDirector: " + "Transfer tokens to the outside.")));
-
-        int rate = DFUtilities.getTokenProductionRate(outputPort);
-
-        CompositeActor container = (CompositeActor) getComponent()
-                .getContainer();
-        TypedCompositeActor compositeActorAdapter = (TypedCompositeActor) getCodeGenerator()
-                .getAdapter(container);
-
-
-        String portName = outputPort.getName();
-
-        // FindBugs wants this instanceof check.
-        if (!(outputPort instanceof TypedIOPort)) {
-            throw new InternalErrorException(outputPort, null,
-                    " is not an instance of TypedIOPort.");
-        }
-
-        String type = getCodeGenerator().codeGenType(((TypedIOPort)outputPort).getType());
-//        boolean needConversion = (!type.equals("Token") && !getCodeGenerator().isPrimitive(type));
-        if (!type.equals("Token") && !getCodeGenerator().isPrimitive(type)) {
-            type = "Token";
-        }
-        
-        for (int i = 0; i < outputPort.getWidthInside(); i++) {
-            String portNameWithChannelNumber = portName;
-            if (outputPort.isMultiport()) {
-                portNameWithChannelNumber = portName + '#' + i;
-            }
-
-            if (rate > 1) {
-                /*
-                if (needConversion) {
-                    for (int k = 0; k < rate; k++) {
-                        String portReference = compositeActorAdapter
-                                .getReference("@" + portNameWithChannelNumber + "," + k);
-                        code.append(portName + "_" + i + "[" + k + "] = (" + type + ")"
-                                + portReference + ".payload;" + _eol);
-                    }
-                } else {
-                */
-                    for (int k = 0; k < rate; k++) {
-                        String portReference = compositeActorAdapter
-                                .getReference("@" + portNameWithChannelNumber + "," + k);
-                        code.append(portName + "_" + i + "[" + k + "] = "
-                                + portReference + ";" + _eol);
-                    }
-//                }
-            } else {
-                /*
-                if (needConversion) {
-                    String portReference = compositeActorAdapter
-                    .getReference("@" + portNameWithChannelNumber);
-                        code.append(portName + "_" + i + " = (" + type + ")"
-                                + portReference + ".payload;" + _eol);
-                } else {
-                */
-                    String portReference = compositeActorAdapter
-                    .getReference("@" + portNameWithChannelNumber);
-                        code.append(portName + "_" + i + " = "
-                                + portReference + ";" + _eol);
-//                }
-            }
-        }
-
-        // The offset of the ports connected to the output port is
-        // updated by outside director.
-        _updatePortOffset(outputPort, code, rate);
     }
     
     /** Generate variable declarations for inputs and outputs and parameters.
