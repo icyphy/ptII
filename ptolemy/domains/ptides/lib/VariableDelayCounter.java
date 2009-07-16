@@ -57,7 +57,7 @@ the delay port (a parameter port).
 @Pt.AcceptedRating Red (jiazou)
 */
 
-public class variableDelayCounter extends VariableDelay {
+public class VariableDelayCounter extends VariableDelay {
     /** Construct an actor with the specified container and name.
      *  @param container The composite entity to contain this one.
      *  @param name The name of this actor.
@@ -66,7 +66,7 @@ public class variableDelayCounter extends VariableDelay {
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public variableDelayCounter(CompositeEntity container, String name)
+    public VariableDelayCounter(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
     }

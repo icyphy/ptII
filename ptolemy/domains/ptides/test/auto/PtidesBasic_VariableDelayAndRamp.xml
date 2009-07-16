@@ -4,7 +4,7 @@
 <entity name="PtidesBasic_VariableDelayAndRamp" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={124, 180, 848, 457}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1653, 176, 848, 457}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[633, 350]">
     </property>
@@ -21,7 +21,7 @@
     <entity name="CompositeActor2" class="ptolemy.actor.TypedCompositeActor">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[250.0, 210.0]">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={61, 141, 815, 507}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={53, 13, 815, 507}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
         </property>
@@ -120,16 +120,6 @@
                 </property>
             </port>
         </entity>
-        <entity name="IsPresent" class="ptolemy.actor.lib.logic.IsPresent">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 255.0]">
-            </property>
-            <port name="input" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="multiport"/>
-                <property name="minDelay" class="ptolemy.data.expr.Parameter" value="{0.0}">
-                </property>
-            </port>
-        </entity>
         <entity name="VariableDelay" class="ptolemy.domains.de.lib.VariableDelay">
             <property name="_location" class="ptolemy.kernel.util.Location" value="[290.0, 185.0]">
             </property>
@@ -155,6 +145,25 @@
                 </property>
             </port>
         </entity>
+        <entity name="Const" class="ptolemy.actor.lib.Const">
+            <property name="value" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <doc>Create a constant sequence.</doc>
+            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[90.0, 255.0]">
+            </property>
+            <port name="trigger" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="multiport"/>
+                <property name="minDelay" class="ptolemy.data.expr.Parameter" value="{0.0}">
+                </property>
+            </port>
+        </entity>
         <relation name="relation8" class="ptolemy.actor.TypedIORelation">
             <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
             </property>
@@ -165,15 +174,15 @@
             <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
             </property>
         </relation>
-        <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-        </relation>
-        <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-        </relation>
         <relation name="relation" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="relation3" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation5" class="ptolemy.actor.TypedIORelation">
         </relation>
         <link port="port" relation="relation8"/>
         <link port="port2" relation="relation3"/>
@@ -184,13 +193,13 @@
         <link port="CurrentTime.trigger" relation="relation8"/>
         <link port="Sequence.enable" relation="relation4"/>
         <link port="Sequence.output" relation="relation"/>
-        <link port="IsPresent.input" relation="relation5"/>
-        <link port="IsPresent.output" relation="relation4"/>
         <link port="VariableDelay.input" relation="relation6"/>
         <link port="VariableDelay.output" relation="relation8"/>
         <link port="VariableDelay.delay" relation="relation"/>
         <link port="Ramp.output" relation="relation6"/>
         <link port="Ramp.trigger" relation="relation3"/>
+        <link port="Const.output" relation="relation4"/>
+        <link port="Const.trigger" relation="relation5"/>
     </entity>
     <entity name="Clock" class="ptolemy.actor.lib.Clock">
         <property name="period" class="ptolemy.actor.parameters.PortParameter" value="1.0">
@@ -235,26 +244,6 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[355.0, 295.0]">
         </property>
     </entity>
-    <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={258, 210, 508, 348}, maximized=false}">
-        </property>
-        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{390, 110}">
-        </property>
-        <configure>
-<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
-"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
-<plot>
-<title>TimedPlotter</title>
-<xLabel></xLabel>
-<yLabel></yLabel>
-<xRange min="1.4000000000000001" max="9.5"/>
-<yRange min="0.0" max="9.0"/>
-<default marks="dots"/>
-</plot>?>
-        </configure>
-    </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
@@ -284,5 +273,4 @@
     <link port="Test2.input" relation="relation3"/>
     <link port="CurrentTime.output" relation="relation3"/>
     <link port="CurrentTime.trigger" relation="relation5"/>
-    <link port="TimedPlotter.input" relation="relation5"/>
 </entity>

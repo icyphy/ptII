@@ -54,13 +54,15 @@ PTCLASSALLJARS = \
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
 JSRCS = \
+	AbsoluteDelay.java \
 	ActuatorOutputDevice.java \
 	InputDevice.java \
 	InterruptDevice.java \
 	NetworkInputDevice.java \
 	NetworkOutputDevice.java \
 	OutputDevice.java \
-	SensorInputDevice.java
+	SensorInputDevice.java \
+	VariableDelayCounter.java
 
 OTHER_FILES_TO_BE_JARED = \
 	ptidesentities.xml

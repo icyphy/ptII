@@ -436,7 +436,11 @@ public class PtidesBasicDirector extends DEDirector {
      *  event into the event queue, this method also adds an source input, which
      *  is the input port that resulted in this fireAt. This information is
      *  later used to determine when is it safe to process this pure event.
-     *  note In PTIDES, we never delegate to the executive director, so that part
+     *  <p>
+     *  If the source input is null, then the pure event that is a result of this
+     *  fireAt() is always safe to process.
+     *  </p><p>
+     *  Note In PTIDES, we never delegate to the executive director, so that part
      *  is omitted from this fireAt() method.
      * 
      *  FIXME: PtidesPreemptiveUserEDFDirector does not work with any actor that
@@ -963,6 +967,9 @@ public class PtidesBasicDirector extends DEDirector {
     /** Put a pure event into the event queue to schedule the given actor to
      *  fire at the specified timestamp.
      *  <p>
+     *  If the source input is null, then the pure event that is enqueued
+     *  through this method is always safe to process.
+     *  </p><p>
      *  The default microstep for the queued event is equal to zero,
      *  unless the time is equal to the current time, where the microstep
      *  will be the current microstep plus one.
