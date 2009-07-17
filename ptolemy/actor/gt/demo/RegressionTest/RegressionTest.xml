@@ -22,7 +22,7 @@
     </property>
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={136, 98, 887, 586}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={136, 98, 897, 590}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[674, 476]">
     </property>
@@ -266,6 +266,11 @@
                                         </property>
                                         <property name="operations" class="ptolemy.actor.gt.GTIngredientsAttribute" value="(ptolemy.actor.gt.ingredients.operations.AttributeOperation/false/&quot;variableName&quot;/false//false/&quot;Log&quot;)">
                                         </property>
+                                        <port name="output" class="ptolemy.actor.TypedIOPort">
+                                            <property name="output"/>
+                                            <property name="_type" class="ptolemy.actor.TypeAttribute" value="arrayType(int)">
+                                            </property>
+                                        </port>
                                     </entity>
                                     <relation name="relation" class="ptolemy.actor.TypedIORelation">
                                         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
