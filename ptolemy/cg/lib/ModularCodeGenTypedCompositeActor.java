@@ -219,9 +219,9 @@ public class ModularCodeGenTypedCompositeActor extends LazyTypedCompositeActor {
             _fireMethod.invoke(
                     _objectWrapper, (Object[]) null /* TODO*/);
         } catch (Throwable throwable) {
-            throw new IllegalActionException(this, throwable,
-                    "Failed to invoke the fire method on "
-                            + "the wrapper class.");
+            // If we can't use the compiled code we directly
+            // use the model.
+            super.fire();
         }
 
     }
