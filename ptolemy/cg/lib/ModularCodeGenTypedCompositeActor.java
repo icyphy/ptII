@@ -35,7 +35,6 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
-import ptolemy.actor.IOPort;
 import ptolemy.actor.LazyTypedCompositeActor;
 import ptolemy.actor.NoTokenException;
 import ptolemy.actor.TypedIOPort;
@@ -45,7 +44,6 @@ import ptolemy.cg.kernel.generic.program.procedural.java.modular.ModularCodeGene
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
-import ptolemy.data.ScalarToken;
 import ptolemy.data.Token;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.Type;
@@ -267,11 +265,7 @@ public class ModularCodeGenTypedCompositeActor extends LazyTypedCompositeActor {
                 _debug("ModularCodeGenerator: Calling fire method for generated code.");
             }
 
-//            int numArg = inputPortList().size();
-            
-//            Object arg[] = new Object[1];
-
-            List<Object> argList = new LinkedList();
+            List<Object> argList = new LinkedList<Object>();
             
             Iterator<?> inputPorts = inputPortList()
                 .iterator();
@@ -309,16 +303,17 @@ public class ModularCodeGenTypedCompositeActor extends LazyTypedCompositeActor {
                                 }
 
                                 if (type == BaseType.INT) {
-
-                                    int[] intTokens = new int[rate];
-                                    for (int k = 0; k < rate; k++) {
-                                        intTokens[k] = ((IntToken) tokens[k])
-                                                .intValue();
+                                    if (rate > 1) {
+                                        int[] intTokens = new int[rate];
+                                        for (int k = 0; k < rate; k++) {
+                                            intTokens[k] = ((IntToken) tokens[k])
+                                                    .intValue();
+                                        }
+                                        tokenHolder = intTokens;
+                                    } else {
+                                        tokenHolder = ((IntToken) tokens[0]).intValue();
                                     }
-                                    tokenHolder = intTokens;
-
                                 } else if (type == BaseType.DOUBLE) {
-
                                     if (rate > 1) {
                                         for (int k = 0; k < rate; k++) {
                                             Double[] doubleTokens = new Double[rate];
@@ -329,8 +324,6 @@ public class ModularCodeGenTypedCompositeActor extends LazyTypedCompositeActor {
                                     } else {
                                         tokenHolder = ((DoubleToken) tokens[0]).doubleValue();
                                     }
-                                    
-
                                 } else if (type == BaseType.BOOLEAN) {
 
                                     boolean[] booleanTokens = new boolean[rate];
