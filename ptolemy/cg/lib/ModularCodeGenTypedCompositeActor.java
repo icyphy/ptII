@@ -248,11 +248,26 @@ public class ModularCodeGenTypedCompositeActor extends LazyTypedCompositeActor {
     public void fire() throws IllegalActionException {
         try {
             // Invoke the native fire method
+            if (_debugging) {
+                _debug("ModularCodeGenerator: Calling fire method for generated code.");
+            }
+
             _fireMethod.invoke(
                     _objectWrapper, (Object[]) null /* TODO*/);
+            if (_debugging) {
+                _debug("ModularCodeGenerator: Done calling fire method for generated code.");
+            }
+            
         } catch (Throwable throwable) {
             // If we can't use the compiled code we directly
             // use the model.
+            
+            if (_debugging) {
+                _debug("ModularCodeGenerator: Calling fire method for generated code failed.\n\t" +
+                                "Reason: " + throwable.getMessage() + 
+                		"\n\tCalling fire method in ptolemy.");
+            }
+            
             super.fire();
         }
 
