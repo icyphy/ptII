@@ -173,7 +173,7 @@ public class ModularCodeGenerator extends JavaCodeGenerator {
                 
                 addComma = true;
             }
-
+/*
             Iterator<?> outputPorts = ((Actor) getContainer()).outputPortList()
             .iterator();
             while (outputPorts.hasNext()) {
@@ -197,6 +197,7 @@ public class ModularCodeGenerator extends JavaCodeGenerator {
                 }
                 addComma = true;
             }
+            */
 
             mainEntryCode.append(") {" + _eol);
 
