@@ -148,7 +148,7 @@ public class ModularCodeGenerator extends JavaCodeGenerator {
                             + "model.run();" + _eol + "}" + _eol
                             + "public void run() throws Exception {" + _eol);
         } else {
-            mainEntryCode.append(_eol + _eol + "public void fire (" + _eol);
+            mainEntryCode.append(_eol + _eol + "public Object[] fire (" + _eol);
 
             Iterator<?> inputPorts = ((Actor) getContainer()).inputPortList()
                     .iterator();
@@ -216,8 +216,9 @@ public class ModularCodeGenerator extends JavaCodeGenerator {
         if (_isTopLevel()) {
             return INDENT1 + "System.exit(0);" + _eol + "}" + _eol + "}" + _eol;
         } else {
-            return INDENT1 + _eol + "}"
+            return INDENT1 + "return tokensToAllOutputPorts;" + _eol + "}"
                     + _eol + "}" + _eol;
+
         }
     }
 }

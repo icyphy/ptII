@@ -52,7 +52,7 @@ import ptolemy.kernel.util.IllegalActionException;
 /**
  Code generator adapter for typed composite actor.
 
- @author Gang Zhou, Contributors: Teale Fristoe
+ @author Gang Zhou, Contributors: Teale Fristoe, Bert Rodiers
  @version $Id$
  @since Ptolemy II 7.1
  @Pt.ProposedRating Yellow (cxh)
@@ -169,7 +169,6 @@ public class TypedCompositeActor extends
         while (outputPorts.hasNext()) {
             IOPort outputPort = (IOPort) outputPorts.next();
             directorAdapter.generateTransferOutputsCode(outputPort, code);
-            //generateTransferOutputsCode(outputPort, code);
         }
         return processCode(code.toString());
     }
@@ -317,18 +316,6 @@ public class TypedCompositeActor extends
         return processCode(code.toString());
     }
 
-    /** Return an int array of firings per global iteration. For each
-     *  internal configuration of this composite actor, the array
-     *  contains a corresponding element representing the number of
-     *  firings of this composite actor per global iteration.
-     *
-     *  @return An int array of firings per global iteration.
-     *  @see #setFiringsPerGlobalIteration(int[])
-     */
-    public int[] getFiringsPerGlobalIteration() {
-        return _firingsPerGlobalIteration;
-    }
-
     /** Get the header files needed by the code generated from this adapter
      *  class. It returns the result of calling getHeaderFiles() method of
      *  the adapters of all contained actors.
@@ -437,20 +424,6 @@ public class TypedCompositeActor extends
         return set;
     }
 
-    /** Return a two-dimensional int array of rates of this actor. For
-     *  each internal configuration of this composite actor, the array
-     *  contains a corresponding one-dimensional int array
-     *  representing the rates of all ports of this composite
-     *  actor. It returns null when there is only one internal
-     *  configuration, e.g., when the internal model is an SDF model.
-     *
-     *  @return A two-dimensional int array of rates of this actor or null.
-     *  @see #setRates(int[][])
-     */
-    public int[][] getRates() {
-        return _rates;
-    }
-
     /** Generate a set of shared code fragments of the associated
      *  composite actor.  It returns the result of calling
      *  getSharedCode() method of the adapters of all contained actors.
@@ -484,42 +457,9 @@ public class TypedCompositeActor extends
         return sharedCode;
     }
 
-    /** Set the int array of firings per global iteration. For each
-     *  internal configuration of this composite actor, the array
-     *  contains a corresponding element representing the number of
-     *  firings of this composite actor per global iteration.
-     *
-     *  @param firingsPerGlobalIteration An int array of firings per
-     *   global iteration
-     *  @see #getFiringsPerGlobalIteration()
-     */
-    public void setFiringsPerGlobalIteration(int[] firingsPerGlobalIteration) {
-        _firingsPerGlobalIteration = firingsPerGlobalIteration;
-    }
-
-    /** Set the two-dimensional int array of rates of this actor. For
-     *  each internal configuration of this composite actor, the array
-     *  contains a corresponding one-dimensional int array
-     *  representing the rates of all ports of this composite actor.
-     *
-     *  @param rates A two-dimensional int array of rates of this actor.
-     *  @see #getRates()
-     */
-    public void setRates(int[][] rates) {
-        _rates = rates;
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////                     protected methods.                    ////
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
-    /** An int array of firings per global iteration.
-     */
-    private int[] _firingsPerGlobalIteration;
-
-    /** A two-dimensional int array of rates of this actor.
-     */
-    private int[][] _rates;
 }
