@@ -476,16 +476,49 @@ public class ModularCodeGenTypedCompositeActor extends LazyTypedCompositeActor {
         }
 
         Method[] methods = classInstance.getMethods();
+        Method intializeMethod = null;
+        
         for (int i = 0; i < methods.length; i++) {
             String name = methods[i].getName();
             if (name.equals("fire")) {
                 _fireMethod = methods[i];
+            }
+            
+            if (name.equals("initialize")) {
+                intializeMethod = methods[i];
             }
         }
         if (_fireMethod == null) {
             throw new IllegalActionException(this,
                     "Cannot find fire "
                             + "method in the wrapper class.");
+        }
+        
+        if (intializeMethod == null) {
+            throw new IllegalActionException(this,
+                    "Cannot find intialize "
+                            + "method in the wrapper class.");
+        }
+        
+        //initialize the generated object
+        try {
+            
+            intializeMethod.invoke(
+                _objectWrapper, (Object[]) null);
+            if (_debugging) {
+                _debug("ModularCodeGenerator: Done calling fire method for generated code.");
+            }
+        
+        } catch (Throwable throwable) {
+            // If we can't use the compiled code we directly
+            //  use the model.
+        
+            if (_debugging) {
+                _debug("ModularCodeGenerator: Calling intialize method for generated code failed.\n\t" +
+                                "Reason: " + throwable.getMessage() + 
+                        "\n\tCalling fire method in ptolemy.");
+            }
+        
         }
         _modelChanged = false;
     }
