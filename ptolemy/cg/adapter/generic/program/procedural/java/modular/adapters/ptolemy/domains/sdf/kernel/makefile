@@ -55,7 +55,8 @@ PTCLASSALLJAR =
 PTCLASSALLJARS = 
 
 # Keep this list alphabetized.
-JSRCS = 
+JSRCS = \
+	SDFDirector.java
 
 OTHER_FILES_TO_BE_JARED = 
 
