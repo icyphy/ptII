@@ -36,6 +36,8 @@ import ptolemy.actor.LazyTypedCompositeActor;
 import ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapter;
 import ptolemy.cg.kernel.generic.program.procedural.java.modular.ModularCodeGenerator;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.Port;
+import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -189,12 +191,42 @@ public class ModularCodeGenTypedCompositeActor extends LazyTypedCompositeActor {
         // here to be ModularCodeGenTypedCompositeActor.
         setClassName("ptolemy.actor.ModularCodeGenTypedCompositeActor");
     }
+
+    /** React to a change in an attribute.  This method is called by
+     *  a contained attribute when its value changes.  This overrides
+     *  the base class so that if the attribute is an instance of
+     *  TypeAttribute, then it sets the type of the port.
+     *  @param attribute The attribute that changed.
+     *  @exception IllegalActionException If the change is not acceptable
+     *   to this container.
+     */
+    public void attributeChanged(Attribute attribute) throws IllegalActionException {
+        super.attributeChanged(attribute);
+        if (!_populating) { //TODO rodiers: This test is not enough.
+            _modelChanged = true;
+        }
+    }
+    
     /** Generate actor name from its class name
      * @param className  The class name of the actor
      * @return a String that declares the actor name
      */
     static public String classToActorName(String className) {
         return className + "_obj";
+    }
+    
+    /** Invalidate the schedule and type resolution and create
+     *  new receivers if the specified port is an opaque
+     *  output port.  Also, notify the containers of any ports
+     *  deeply connected on the inside by calling their connectionsChanged()
+     *  methods, since their width may have changed.
+     *  @param port The port that has connection changes.
+     */
+    public void connectionsChanged(Port port) {
+        super.connectionsChanged(port);
+        if (!_populating) { //TODO rodiers: This test is not enough.
+            _modelChanged = true;
+        }
     }
 
     /** If this actor is opaque, transfer any data from the input ports
@@ -253,12 +285,15 @@ public class ModularCodeGenTypedCompositeActor extends LazyTypedCompositeActor {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-        try {
-            generateCode();
-        } catch (KernelException e) {
-            throw new IllegalActionException(this, e, "Can't generate code for " + getName());
+        
+        if (_modelChanged) {
+            try {
+                generateCode();
+            } catch (KernelException e) {
+                throw new IllegalActionException(this, e, "Can't generate code for " + getName());
+            }
         }
-        String className = ProgramCodeGeneratorAdapter.generateName(this);
+        String className = ProgramCodeGeneratorAdapter.generateName(this);        
         Class<?> classInstance = null;
         URL url = null;
         try {
@@ -322,18 +357,18 @@ public class ModularCodeGenTypedCompositeActor extends LazyTypedCompositeActor {
                     "Cannot find fire "
                             + "method in the wrapper class.");
         }
-
-
+        _modelChanged = false;
     }
-    ModularCodeGenerator _codeGenerator = null;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    private ModularCodeGenerator _codeGenerator = null;
     
     private transient Method _fireMethod;
     
     private Object _objectWrapper;
-    
-    
-    
-    //TODO
+       
     private boolean _modelChanged = false;
     
 }
