@@ -1,6 +1,6 @@
 # Makefile for Ptolemy Classic style Codegen
 #
-# @Version: $Id: makefile 53091 2009-04-12 18:28:37Z cxh $
+# @Version: $Id$
 # @Author: Christopher Brooks
 #
 # @Copyright (c) 2005-2009 The Regents of the University of California
@@ -31,12 +31,12 @@
 # 						COPYRIGHTENDKEY
 ##########################################################################
 
-ME =		ptolemy/cg/adapter/generic/program/procedural/java/modular/adapter/ptolemy/cg
+ME =		ptolemy/cg/adapter/generic/program/procedural/java/modular/adapter/ptolemy/cg/lib
 
-DIRS =	lib
+DIRS =		
 
 # Root of the Java directory
-ROOT =		../../../../../../../../../../..
+ROOT =		../../../../../../../../../../../..
 
 CLASSPATH =	$(ROOT)
 
@@ -45,18 +45,17 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	cg
+PTPACKAGE = 	lib
 PTCLASSJAR =
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
 # Include the .class files from these jars in PTCLASSALLJAR
 # If you change this, change DIRS above
-PTCLASSALLJARS = \
-	lib/lib.jar
+PTCLASSALLJARS = 
 
 # Keep this list alphabetized.
-JSRCS =  
+JSRCS =  ModularCodeGenTypedCompositeActor.java
 
 OTHER_FILES_TO_BE_JARED = 
 

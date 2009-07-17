@@ -26,12 +26,12 @@
 
  */
 
-package ptolemy.cg.adapter.generic.program.procedural.java.modular.adapters.ptolemy.actor;
+package ptolemy.cg.adapter.generic.program.procedural.java.modular.adapters.ptolemy.cg.lib;
 
 import ptolemy.kernel.util.IllegalActionException;
 
 //////////////////////////////////////////////////////////////////////////
-////TypedCompositeActor
+////ModularCodeGenTypedCompositeActor
 
 /**
 Code generator adapter for typed composite actor.
@@ -43,7 +43,7 @@ Code generator adapter for typed composite actor.
 @Pt.AcceptedRating Red (daib)
 */
 
-public class TypedCompositeActor
+public class ModularCodeGenTypedCompositeActor
         extends
         ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.TypedCompositeActor {
 
@@ -52,9 +52,8 @@ public class TypedCompositeActor
      *  @param component The associated component.
      */
     
-    public TypedCompositeActor(ptolemy.actor.TypedCompositeActor component) {
+    public ModularCodeGenTypedCompositeActor(ptolemy.cg.lib.ModularCodeGenTypedCompositeActor component) {
         super(component);
-        // TODO Auto-generated constructor stub
     }
 
     ////////////////////////////////////////////////////////////////////////
