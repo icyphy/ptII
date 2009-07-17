@@ -43,7 +43,6 @@
 package ptolemy.cg.adapter.generic.program.procedural.java.modular.adapters.ptolemy.domains.sdf.kernel;
 
 import java.util.Iterator;
-import java.util.List;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
@@ -55,7 +54,7 @@ import ptolemy.actor.util.DFUtilities;
 import ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.TypedCompositeActor;
 import ptolemy.cg.kernel.generic.program.CodeStream;
 import ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapter;
-import ptolemy.cg.kernel.generic.program.procedural.java.modular.ModularCodeGenerator;
+import ptolemy.cg.lib.ModularCodeGenTypedCompositeActor;
 import ptolemy.data.BooleanToken;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
@@ -121,22 +120,16 @@ public class SDFDirector
             ProgramCodeGeneratorAdapter adapter = (ProgramCodeGeneratorAdapter) getCodeGenerator()
                     .getAdapter((NamedObj) actor);
 
-            if (actor instanceof CompositeActor) {
-                //call the internal generated code of the composite actor
-                List<ModularCodeGenerator> codegenerators = ((CompositeActor) actor).attributeList(ModularCodeGenerator.class);
-                if (!codegenerators.isEmpty()) {
-                    try {
-                        codegenerators.get(0).generateCode();
-                    } catch (KernelException e) {
-                        // TODO Auto-generated catch block
-                        throw new IllegalActionException(actor, e, "Can't generate code for " + actor.getName());
-                    }
-                } else {
-                    throw new IllegalActionException(actor, "Can't generate code for " + actor.getName() + ".\nNo modular codegenerator available.");
+            if (actor instanceof ModularCodeGenTypedCompositeActor) {
+                //call the internal code generator of the composite actor
+                try {
+                    ((ModularCodeGenTypedCompositeActor) actor).generateCode();
+                } catch (KernelException e) {
+                    throw new IllegalActionException(actor, e, "Can't generate code for " + actor.getName());
                 }
                 
                 String className = ProgramCodeGeneratorAdapter.generateName((NamedObj) actor);
-                String actorName = _classToActorName(className);
+                String actorName = ModularCodeGenTypedCompositeActor.classToActorName(className);
                 
                 code.append(actorName + ".fire(");
                 
@@ -306,15 +299,9 @@ public class SDFDirector
             Firing firing = (Firing) actorsToFire.next();
             Actor actor = firing.getActor();
             
-            if (actor instanceof CompositeActor) {
-                //call the internal generated code of the composite actor
-                List<ModularCodeGenerator> codegenerators = ((CompositeActor) actor).attributeList(ModularCodeGenerator.class);
-                if (codegenerators.isEmpty()) {
-                    throw new IllegalActionException(actor, "Can't generate declaration code for " + actor.getName() + ".\nNo modular codegenerator available.");
-                }
-                
+            if (actor instanceof ModularCodeGenTypedCompositeActor) {
                 String className = ProgramCodeGeneratorAdapter.generateName((NamedObj) actor);
-                String actorName = _classToActorName(className);
+                String actorName = ModularCodeGenTypedCompositeActor.classToActorName(className);
                 
                 code.append(className + " " + actorName + ";" + _eol);
             }
@@ -341,15 +328,11 @@ public class SDFDirector
             Firing firing = (Firing) actorsToFire.next();
             Actor actor = firing.getActor();
             
-            if (actor instanceof CompositeActor) {
+            if (actor instanceof ModularCodeGenTypedCompositeActor) {
                 //call the internal generated code of the composite actor
-                List<ModularCodeGenerator> codegenerators = ((CompositeActor) actor).attributeList(ModularCodeGenerator.class);
-                if (codegenerators.isEmpty()) {
-                    throw new IllegalActionException(actor, "Can't generate initialization code for " + actor.getName() + ".\nNo modular codegenerator available.");
-                }
                 
                 String className = ProgramCodeGeneratorAdapter.generateName((NamedObj) actor);
-                String actorName = _classToActorName(className);
+                String actorName = ModularCodeGenTypedCompositeActor.classToActorName(className);
                 
                 code.append(actorName + " = new " + className + "();" + _eol);
                 
@@ -362,11 +345,5 @@ public class SDFDirector
     
     //////////////////////////////////////////////////////////////////////
     ////                         private methods                      ////
-    /** Generate actor name from its class name
-     * @param className  The class name of the actor
-     * @return a String that declares the actor name
-     */
-    static private String _classToActorName(String className) {
-        return className + "_obj";
-    }
+
 }

@@ -27,9 +27,17 @@
  */
 package ptolemy.cg.lib;
 
+import java.lang.reflect.Method;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLClassLoader;
+
 import ptolemy.actor.LazyTypedCompositeActor;
+import ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapter;
+import ptolemy.cg.kernel.generic.program.procedural.java.modular.ModularCodeGenerator;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
@@ -116,7 +124,7 @@ you could do that anyway.  An attempt to make such references
 will simply result in the expression failing to evaluate.
 
 
- @author Bert Rodiers
+ @author Bert Rodiers, Dai Bui
  @version $Id$
  @since Ptolemy II 8.1
  @Pt.ProposedRating Red (rodiers)
@@ -181,5 +189,151 @@ public class ModularCodeGenTypedCompositeActor extends LazyTypedCompositeActor {
         // here to be ModularCodeGenTypedCompositeActor.
         setClassName("ptolemy.actor.ModularCodeGenTypedCompositeActor");
     }
+    /** Generate actor name from its class name
+     * @param className  The class name of the actor
+     * @return a String that declares the actor name
+     */
+    static public String classToActorName(String className) {
+        return className + "_obj";
+    }
 
+    /** If this actor is opaque, transfer any data from the input ports
+     *  of this composite to the ports connected on the inside, and then
+     *  invoke the fire() method of its local director.
+     *  The transfer is accomplished by calling the transferInputs() method
+     *  of the local director (the exact behavior of which depends on the
+     *  domain).  If the actor is not opaque, throw an exception.
+     *  This method is read-synchronized on the workspace, so the
+     *  fire() method of the director need not be (assuming it is only
+     *  called from here).  After the fire() method of the director returns,
+     *  send any output data created by calling the local director's
+     *  transferOutputs method.
+     *
+     *  @exception IllegalActionException If there is no director, or if
+     *   the director's fire() method throws it, or if the actor is not
+     *   opaque.
+     */
+    public void fire() throws IllegalActionException {
+        try {
+            // Invoke the native fire method
+            _fireMethod.invoke(
+                    _objectWrapper, (Object[]) null /* TODO*/);
+        } catch (Throwable throwable) {
+            throw new IllegalActionException(this, throwable,
+                    "Failed to invoke the fire method on "
+                            + "the wrapper class.");
+        }
+
+    }
+    
+    //TODO rodiers
+    public void generateCode() throws KernelException {
+        if (_codeGenerator == null) {
+            _codeGenerator = new ModularCodeGenerator(this, "ModularCodeGenerator");
+            _codeGenerator.setPersistent(false);
+            // TODO hide
+        }
+        // TODO: Test whether we need to generate code. 
+        _codeGenerator.generateCode();
+    }
+
+    /** Create receivers and invoke the
+     *  preinitialize() method of the local director. If this actor is
+     *  not opaque, throw an exception.  This method also resets
+     *  the protected variable _stopRequested
+     *  to false, so if a derived class overrides this method, then it
+     *  should also do that.  This method is
+     *  read-synchronized on the workspace, so the preinitialize()
+     *  method of the director need not be, assuming it is only called
+     *  from here.
+     *
+     *  @exception IllegalActionException If there is no director, or if
+     *   the director's preinitialize() method throws it, or if this actor
+     *   is not opaque.
+     */
+    public void initialize() throws IllegalActionException {
+        super.initialize();
+        try {
+            generateCode();
+        } catch (KernelException e) {
+            throw new IllegalActionException(this, e, "Can't generate code for " + getName());
+        }
+        String className = ProgramCodeGeneratorAdapter.generateName(this);
+        Class<?> classInstance = null;
+        URL url = null;
+        try {
+            url = _codeGenerator.codeDirectory.asFile().toURI().toURL();
+            URL[] urls = new URL[] { url };
+
+            ClassLoader classLoader = new URLClassLoader(urls);
+            classInstance = classLoader.loadClass(className);
+
+        } catch (MalformedURLException ex) {
+            throw new IllegalActionException(this, ex,
+                    "The class URL \"" + url + "\" for \""
+                            + className + "\" is malformed");
+        } catch (UnsupportedClassVersionError ex) {
+            // This can occur if we have two different
+            // machines sharing ~/codegen.
+            throw new IllegalActionException(
+                    this,
+                    ex,
+                    "Unsupported class version in the class \""
+                            + className
+                            + "\" from \""
+                            + url
+                            + "\".  Try deleting the \""
+                            + className
+                            + "\" class in \""
+                            + url
+                            + "\".\nThis problem can also occur "
+                            + "if the version of java that is "
+                            + "running Ptolemy and the version "
+                            + "of javac used to compile the file "
+                            + "to load into Ptolemy are different "
+                            + "and java is of a later version."
+                            + "\nTo see information about the "
+                            + "version of Java used to run "
+                            + "Ptolemy, use View -> JVM Properties."
+                            + "  To see what version of javac "
+                            + "was used, run \"java -version\".");
+        } catch (Throwable ex) {
+            throw new IllegalActionException(this, ex,
+                    "Cannot load the class \"" + className
+                            + "\" from \"" + url + "\"");
+        }
+
+        try {
+            _objectWrapper = classInstance.newInstance();
+        } catch (Throwable throwable) {
+            throw new IllegalActionException(this, throwable,
+                    "Cannot instantiate the wrapper object.");
+        }
+
+        Method[] methods = classInstance.getMethods();
+        for (int i = 0; i < methods.length; i++) {
+            String name = methods[i].getName();
+            if (name.equals("fire")) {
+                _fireMethod = methods[i];
+            }
+        }
+        if (_fireMethod == null) {
+            throw new IllegalActionException(this,
+                    "Cannot find fire "
+                            + "method in the wrapper class.");
+        }
+
+
+    }
+    ModularCodeGenerator _codeGenerator = null;
+    
+    private transient Method _fireMethod;
+    
+    private Object _objectWrapper;
+    
+    
+    
+    //TODO
+    private boolean _modelChanged = false;
+    
 }
