@@ -1962,7 +1962,7 @@ public class PtidesBasicDirector extends DEDirector {
 
             } else {
                 // FIXME: we should probably do something else here.
-                throw new IllegalArgumentException(
+                throw new IllegalActionException(realTimeEvent.port,
                         "missed transferring at the sensor. "
                                 + "Should transfer input at time = "
                                 + realTimeEvent.deliveryTime
@@ -2106,10 +2106,9 @@ public class PtidesBasicDirector extends DEDirector {
             for (int i = 0; i < port.getWidthInside(); i++) {
                 if (port.hasTokenInside(i)) {
                     // FIXME: we should probably do something else here.
-                    throw new IllegalArgumentException(
-                            "missed deadline at the actuator at port: "
-                                    + port.getName() + ". Deadline = "
-                                    + _currentTime
+                    throw new IllegalActionException(port,
+                            "missed deadline at the actuator."
+                                    + "Deadline = " + _currentTime
                                     + ", and current physical time = "
                                     + physicalTime);
                 }
