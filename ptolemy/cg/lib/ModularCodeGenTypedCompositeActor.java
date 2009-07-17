@@ -367,8 +367,8 @@ public class ModularCodeGenTypedCompositeActor extends LazyTypedCompositeActor {
     
     private transient Method _fireMethod;
     
-    private Object _objectWrapper;
-       
     private boolean _modelChanged = false;
+    
+    private Object _objectWrapper;
     
 }
