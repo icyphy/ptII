@@ -316,7 +316,7 @@ public class ModularCodeGenTypedCompositeActor extends LazyTypedCompositeActor {
                                 } else if (type == BaseType.DOUBLE) {
                                     if (rate > 1) {
                                         for (int k = 0; k < rate; k++) {
-                                            Double[] doubleTokens = new Double[rate];
+                                            double[] doubleTokens = new double[rate];
                                             doubleTokens[k] = ((DoubleToken) tokens[k])
                                                     .doubleValue();
                                             tokenHolder = doubleTokens;
@@ -325,13 +325,16 @@ public class ModularCodeGenTypedCompositeActor extends LazyTypedCompositeActor {
                                         tokenHolder = ((DoubleToken) tokens[0]).doubleValue();
                                     }
                                 } else if (type == BaseType.BOOLEAN) {
-
-                                    boolean[] booleanTokens = new boolean[rate];
-                                    for (int k = 0; k < rate; k++) {
-                                        booleanTokens[k] = ((BooleanToken) tokens[k])
-                                                .booleanValue();
+                                    if (rate > 1) {
+                                        boolean[] booleanTokens = new boolean[rate];
+                                        for (int k = 0; k < rate; k++) {
+                                            booleanTokens[k] = ((BooleanToken) tokens[k])
+                                                    .booleanValue();
+                                        }
+                                        tokenHolder = booleanTokens;
+                                    } else {
+                                        tokenHolder = ((BooleanToken) tokens[0]).booleanValue();
                                     }
-                                    tokenHolder = booleanTokens;
 
                                 } else {
                                     // FIXME: need to deal with other types
@@ -364,9 +367,8 @@ public class ModularCodeGenTypedCompositeActor extends LazyTypedCompositeActor {
                 }
             }
 
-            Object[] arg = argList.toArray();
             _fireMethod.invoke(
-                    _objectWrapper, arg);
+                    _objectWrapper, argList.toArray());
             if (_debugging) {
                 _debug("ModularCodeGenerator: Done calling fire method for generated code.");
             }
