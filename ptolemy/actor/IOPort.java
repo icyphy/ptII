@@ -3811,7 +3811,7 @@ public class IOPort extends ComponentPort {
             return result;
         } else {
             int result = 0;
-            Iterator relations = insideRelationList().iterator();
+            Iterator<?> relations = insideRelationList().iterator();
 
             while (relations.hasNext()) {
                 IORelation relation = (IORelation) relations.next();
@@ -3868,7 +3868,7 @@ public class IOPort extends ComponentPort {
             return result;
         } else {
             int result = 0;
-            Iterator relations = linkedRelationList().iterator();
+            Iterator<?> relations = linkedRelationList().iterator();
 
             while (relations.hasNext()) {
                 IORelation relation = (IORelation) relations.next();
@@ -4213,7 +4213,7 @@ public class IOPort extends ComponentPort {
                      + "to a single port.");
                      }
                      */
-                    Iterator relations = linkedRelationList().iterator();
+                    Iterator<?> relations = linkedRelationList().iterator();
 
                     while (relations.hasNext()) {
                         IORelation theRelation = (IORelation) relations.next();
