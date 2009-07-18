@@ -52,6 +52,11 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[570.0, 150.0]">
             </property>
         </port>
+        <port name="port4" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{580.0, 200.0}">
+            </property>
+        </port>
         <configure>
             <group>
                 <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
@@ -62,14 +67,19 @@
                 </relation>
                 <relation name="relation2" class="ptolemy.actor.TypedIORelation">
                 </relation>
-                <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+                <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+                    <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+                    </property>
+                    <vertex name="vertex1" value="{450.0, 150.0}">
+                    </vertex>
                 </relation>
                 <link port="port" relation="relation"/>
                 <link port="port2" relation="relation2"/>
-                <link port="port3" relation="relation3"/>
+                <link port="port3" relation="relation4"/>
+                <link port="port4" relation="relation4"/>
                 <link port="AddSubtract.plus" relation="relation"/>
                 <link port="AddSubtract.plus" relation="relation2"/>
-                <link port="AddSubtract.output" relation="relation3"/>
+                <link port="AddSubtract.output" relation="relation4"/>
             </group>
         </configure>
     </entity>
@@ -100,9 +110,13 @@
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
     <link port="ModularCodeGenTypedCompositeActor.port" relation="relation2"/>
     <link port="ModularCodeGenTypedCompositeActor.port2" relation="relation2"/>
     <link port="ModularCodeGenTypedCompositeActor.port3" relation="relation"/>
+    <link port="ModularCodeGenTypedCompositeActor.port4" relation="relation3"/>
     <link port="Const.output" relation="relation2"/>
     <link port="Display.input" relation="relation"/>
+    <link port="Display.input" relation="relation3"/>
 </entity>

@@ -27,6 +27,8 @@
  */
 package ptolemy.cg.lib;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -35,16 +37,19 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
+import ptolemy.actor.IOPort;
 import ptolemy.actor.LazyTypedCompositeActor;
 import ptolemy.actor.NoTokenException;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.util.DFUtilities;
 import ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapter;
 import ptolemy.cg.kernel.generic.program.procedural.java.modular.ModularCodeGenerator;
+import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.Token;
+import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.Type;
 import ptolemy.kernel.CompositeEntity;
@@ -367,8 +372,15 @@ public class ModularCodeGenTypedCompositeActor extends LazyTypedCompositeActor {
                 }
             }
 
-            _fireMethod.invoke(
+            Object[]  tokensToAllOutputPorts = (Object[]) _fireMethod.invoke(
                     _objectWrapper, argList.toArray());
+            
+            int portNumber = 0;
+            for (Object port : outputPortList()) {
+                    IOPort iOPort = (IOPort) port;
+                    _transferOutputs(iOPort, tokensToAllOutputPorts[portNumber++]);
+            }
+    
             if (_debugging) {
                 _debug("ModularCodeGenerator: Done calling fire method for generated code.");
             }
@@ -523,6 +535,119 @@ public class ModularCodeGenTypedCompositeActor extends LazyTypedCompositeActor {
         _modelChanged = false;
     }
 
+
+    private void _transferOutputs(IOPort port, Object outputTokens)
+            throws IllegalActionException {
+
+        int rate = DFUtilities.getTokenProductionRate(port);
+        Type type = ((TypedIOPort) port).getType();
+        if (type == BaseType.INT) {
+
+            int[][] tokens = (int[][]) outputTokens;
+            for (int i = 0; i < port.getWidthInside(); i++) {
+                for (int k = 0; k < rate; k++) {
+                    Token token = new IntToken(tokens[i][k]);
+                    port.send(i, token);
+                }
+            }
+
+        } else if (type == BaseType.DOUBLE) {
+
+            double[][] tokens = (double[][]) outputTokens;
+            for (int i = 0; i < port.getWidthInside(); i++) {
+                for (int k = 0; k < rate; k++) {
+                    Token token = new DoubleToken(tokens[i][k]);
+                    port.send(i, token);
+                }
+            }
+
+            /*} else if (type == PointerToken.POINTER) {
+
+                int[][] tokens = (int[][]) outputTokens;
+                for (int i = 0; i < port.getWidthInside(); i++) {
+                    for (int k = 0; k < rate; k++) {
+                        Token token = new PointerToken(tokens[i][k]);
+                        port.send(i, token);
+                    }
+                }
+            */
+        } else if (type == BaseType.BOOLEAN) {
+
+            boolean[][] tokens = (boolean[][]) outputTokens;
+            for (int i = 0; i < port.getWidthInside(); i++) {
+                for (int k = 0; k < rate; k++) {
+                    Token token = new BooleanToken(tokens[i][k]);
+                    port.send(i, token);
+                }
+            }
+
+        } else if(type instanceof ArrayType) {
+
+            for (int i = 0; i < port.getWidthInside(); i++) {
+                for (int k = 0; k < rate; k++) {
+                    type = ((ArrayType)type).getElementType();
+                    try {
+                        Object[][] tmpOutputTokens = (Object[][])outputTokens;
+                        Class<?> tokenClass = tmpOutputTokens[i][k].getClass();
+                        
+                        Method getPayload;
+                        getPayload = tokenClass.getMethod("getPayload", (Class[]) null);
+                        
+                        Object payload = null;
+                        payload = (Object) getPayload.invoke(tmpOutputTokens[i][k], (Object[])null);
+                        
+                        Field objSize = (Field) (payload.getClass().getField("size"));
+                        int size = objSize.getInt(payload);
+                        
+                        Field elementsField = (Field) (payload.getClass().getField("elements"));
+                        Object[] elements = (Object[])elementsField.get(payload);
+                        
+                        Token[] convertedTokens = new Token[size];
+                        
+                        for(int j = 0; j < size; j++) {
+                            Object element =  (Object)getPayload.invoke(elements[j], (Object[])null);
+                            if(type == BaseType.INT) {
+                                convertedTokens[j] = new IntToken(Integer.parseInt(element.toString())); 
+                            } else if (type == BaseType.DOUBLE) {
+                                convertedTokens[j] = new DoubleToken(Double.parseDouble(element.toString()));
+                            } else if (type == BaseType.BOOLEAN) {
+                                convertedTokens[j] = new BooleanToken(Boolean.parseBoolean(element.toString()));
+                            } else {
+                                //FIXME: need to deal with other types
+                            }
+                        }
+                        
+                        Token token = new ArrayToken(type, convertedTokens);
+                        port.send(i, token);
+                        
+                    } catch (SecurityException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    } catch (NoSuchMethodException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    } catch (IllegalArgumentException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    } catch (IllegalAccessException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    } catch (InvocationTargetException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                        
+                    } catch (NoSuchFieldException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    } 
+                }
+            }
+        } else {
+            // FIXME: need to deal with other types
+        }
+    }
+
+    
     private ModularCodeGenerator _codeGenerator = null;
     
     private transient Method _fireMethod;

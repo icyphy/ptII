@@ -56,6 +56,8 @@ import ptolemy.cg.kernel.generic.program.CodeStream;
 import ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapter;
 import ptolemy.cg.lib.ModularCodeGenTypedCompositeActor;
 import ptolemy.data.BooleanToken;
+import ptolemy.data.type.BaseType;
+import ptolemy.data.type.Type;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
@@ -277,6 +279,79 @@ public class SDFDirector
      */
     public void generateTransferOutputsCode(IOPort outputPort, StringBuffer code)
             throws IllegalActionException {
+        CompositeActor container = (CompositeActor) getComponent()
+                                        .getContainer();
+        TypedCompositeActor compositeActorAdapter = (TypedCompositeActor) getCodeGenerator()
+                                    .getAdapter(container);
+
+        int rate = DFUtilities.getTokenProductionRate(outputPort);
+        
+        if (_portNumber == 0) {
+            int numberOfOutputPorts = container.outputPortList().size();
+
+            code.append("Object[] tokensToAllOutputPorts = "
+                    + " new Object[" + String.valueOf(numberOfOutputPorts)
+                    + "];" + _eol);
+        }
+
+        String portName = outputPort.getName();
+        String tokensToThisPort = "tokensTo" + portName;
+
+        // FindBugs wants this instanceof check.
+        if (!(outputPort instanceof TypedIOPort)) {
+            throw new InternalErrorException(outputPort, null,
+                    " is not an instance of TypedIOPort.");
+        }
+
+        Type type = ((TypedIOPort) outputPort).getType();
+
+        int numberOfChannels = outputPort.getWidthInside();
+
+        // Find construct correct array type.
+        if (type == BaseType.INT) {
+            code.append("int[][] " + tokensToThisPort + " =" + " new int[ "
+                    + String.valueOf(numberOfChannels) + "][" + rate + "];"
+                    + _eol);
+
+        } else if (type == BaseType.DOUBLE) {
+            code.append("double[][] " + tokensToThisPort + " ="
+                    + " new double[ " + String.valueOf(numberOfChannels)
+                    + "][" + rate + "];" + _eol);
+        } else if (type == BaseType.BOOLEAN) {
+            code.append("boolean[][] " + tokensToThisPort + " ="
+                    + " new boolean[ " + String.valueOf(numberOfChannels)
+                    + "][" + rate + "];" + _eol);
+
+        } else {
+            // FIXME: need to deal with other types
+        }
+
+        for (int i = 0; i < outputPort.getWidthInside(); i++) {
+            String portNameWithChannelNumber = portName;
+            if (outputPort.isMultiport()) {
+                portNameWithChannelNumber = portName + '#' + i;
+            }
+
+            for (int k = 0; k < rate; k++) {
+                String portReference = compositeActorAdapter
+                        .getReference("@" + portNameWithChannelNumber + ","
+                                + k);
+                /*if (type == PointerToken.POINTER) {
+                    code.append(tokensToOneChannel + "[" + k
+                            + "] = " + "(int) " + portReference + ";"
+                            + _eol);
+                } else {*/
+                code.append(tokensToThisPort + "[" + i + "][" + k + "] = "
+                        + portReference + ";" + _eol);
+                //}
+            }
+        }
+        code.append("tokensToAllOutputPorts ["
+                + String.valueOf(_portNumber) + "] = " + tokensToThisPort
+                + ";" + _eol);
+
+        _portNumber++;
+        
     }
     
     /** Generate variable declarations for inputs and outputs and parameters.
@@ -343,7 +418,7 @@ public class SDFDirector
         return code.toString();
     }
     
-    //////////////////////////////////////////////////////////////////////
-    ////                         private methods                      ////
-
+    ////////////////////////////////////////////////////////////////////////
+    ////                         private members                        ////
+    
 }

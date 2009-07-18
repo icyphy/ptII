@@ -603,8 +603,8 @@ public class SDFDirector
     }
 
     ////////////////////////////////////////////////////////////////////////
-    ////                         private members                        ////
+    ////                         protected members                        ////
 
-    private int _portNumber = 0;
+    protected int _portNumber = 0;
 
 }
