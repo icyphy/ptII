@@ -27,13 +27,14 @@
 package ptolemy.data;
 
 import java.io.IOException;
-import java.io.Serializable;
 import java.io.Writer;
 
+import ptolemy.data.type.ActorType;
 import ptolemy.data.type.Type;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.Workspace;
+import ptolemy.util.StringUtilities;
 
 //////////////////////////////////////////////////////////////////////////
 //// ActorToken
@@ -134,196 +135,19 @@ public class ActorToken extends Token implements Cloneable {
 
     /** Return the value of this token as a string that can be parsed
      *  by the expression language to recover a token with the same value.
-     *  This method should be overridden by derived classes.
-     *  In this base class, return the String "present" to indicate
-     *  that an event is present.
-     *  @return The String "present".
+     *  This method returns a string of the form `parseMoML("<i>text</i>")',
+     *  where <i>text</i> is a MoML description of this actor with quotation
+     *  marks and backslashes escaped.
+     *  @return A MoML description of this actor.
      */
     public String toString() {
-        return "ActorToken(" + _entity + ")";
+        return "parseMoML(\""
+                + StringUtilities.escapeString(_entity.exportMoMLPlain())
+                + "\")";
     }
 
     /** Singleton reference to this type. */
     public static final Type TYPE = new ActorType();
-
-    /** The type of the ActorToken. */
-    public static class ActorType implements Type, Serializable, Cloneable {
-        ///////////////////////////////////////////////////////////////////
-        ////                         public methods                    ////
-
-        /** Return a new type which represents the type that results from
-         *  adding a token of this type and a token of the given argument
-         *  type.
-         *  @param rightArgumentType The type to add to this type.
-         *  @return A new type, or BaseType.GENERAL, if the operation does
-         *  not make sense for the given types.
-         */
-        public Type add(Type rightArgumentType) {
-            return this;
-        }
-
-        /** Return this, that is, return the reference to this object.
-         *  @return A BaseType.
-         */
-        public Object clone() {
-            return this;
-        }
-
-        /** Convert the specified token to a token having the type
-         *  represented by this object.
-         *  @param token A token.
-         *  @return A token.
-         *  @exception IllegalActionException If lossless conversion cannot
-         *   be done.
-         */
-        public Token convert(Token token) throws IllegalActionException {
-            if (token instanceof ActorToken) {
-                return token;
-            } else {
-                throw new IllegalActionException("Attempt to convert token "
-                        + token + " into a test token, which is not possible.");
-            }
-        }
-
-        /** Return a new type which represents the type that results from
-         *  dividing a token of this type and a token of the given
-         *  argument type.
-         *  @param rightArgumentType The type to add to this type.
-         *  @return A new type, or BaseType.GENERAL, if the operation does
-         *  not make sense for the given types.
-         */
-        public Type divide(Type rightArgumentType) {
-            return this;
-        }
-
-        /** Determine if the argument represents the same BaseType as this
-         *  object.
-         *  @param t A Type.
-         *  @return True if the argument represents the same BaseType as
-         *   this object; false otherwise.
-         */
-        public boolean equals(Type t) {
-            return this == t;
-        }
-
-        /** Return the class for tokens that this basetype represents.
-         *  @return the class for tokens that this basetype represents.
-         */
-        public Class getTokenClass() {
-            return ActorToken.class;
-        }
-
-        /** Return this type's node index in the (constant) type lattice.
-         * @return this type's node index in the (constant) type lattice.
-         */
-        public int getTypeHash() {
-            return Type.HASH_INVALID;
-        }
-
-        /** Return true if this type does not correspond to a single token
-         *  class.  This occurs if the type is not instantiable, or it
-         *  represents either an abstract base class or an interface.
-         *  @return Always return false, this token is instantiable.
-         */
-        public boolean isAbstract() {
-            return false;
-        }
-
-        /** Model if the argument type is compatible with this type.
-         *  The method returns true if this type is UNKNOWN, since any type
-         *  is a substitution instance of it. If this type is not UNKNOWN,
-         *  this method returns true if the argument type is less than or
-         *  equal to this type in the type lattice, and false otherwise.
-         *  @param type An instance of Type.
-         *  @return True if the argument type is compatible with this type.
-         */
-        public boolean isCompatible(Type type) {
-            return type == this;
-        }
-
-        /** Model if this Type is UNKNOWN.
-         *  @return True if this Type is not UNKNOWN; false otherwise.
-         */
-        public boolean isConstant() {
-            return true;
-        }
-
-        /** Determine if this type corresponds to an instantiable token
-         *  classes. A BaseType is instantiable if it does not correspond
-         *  to an abstract token class, or an interface, or UNKNOWN.
-         *  @return True if this type is instantiable.
-         */
-        public boolean isInstantiable() {
-            return true;
-        }
-
-        /** Return true if the argument is a
-         *  substitution instance of this type.
-         *  @param type A Type.
-         *  @return True if this type is UNKNOWN; false otherwise.
-         */
-        public boolean isSubstitutionInstance(Type type) {
-            return this == type;
-        }
-
-        /** Return a new type which represents the type that results from
-         *  moduloing a token of this type and a token of the given
-         *  argument type.
-         *  @param rightArgumentType The type to add to this type.
-         *  @return A new type, or BaseType.GENERAL, if the operation does
-         *  not make sense for the given types.
-         */
-        public Type modulo(Type rightArgumentType) {
-            return this;
-        }
-
-        /** Return a new type which represents the type that results from
-         *  multiplying a token of this type and a token of the given
-         *  argument type.
-         *  @param rightArgumentType The type to add to this type.
-         *  @return A new type, or BaseType.GENERAL, if the operation does
-         *  not make sense for the given types.
-         */
-        public Type multiply(Type rightArgumentType) {
-            return this;
-        }
-
-        /** Return the type of the multiplicative identity for elements of
-         *  this type.
-         *  @return A new type, or BaseType.GENERAL, if the operation does
-         *  not make sense for the given types.
-         */
-        public Type one() {
-            return this;
-        }
-
-        /** Return a new type which represents the type that results from
-         *  subtracting a token of this type and a token of the given
-         *  argument type.
-         *  @param rightArgumentType The type to add to this type.
-         *  @return A new type, or BaseType.GENERAL, if the operation does
-         *  not make sense for the given types.
-         */
-        public Type subtract(Type rightArgumentType) {
-            return this;
-        }
-
-        /** Return the string representation of this type.
-         *  @return A String.
-         */
-        public String toString() {
-            return "Actor";
-        }
-
-        /** Return the type of the additive identity for elements of
-         *  this type.
-         *  @return A new type, or BaseType.GENERAL, if the operation does
-         *  not make sense for the given types.
-         */
-        public Type zero() {
-            return this;
-        }
-    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////

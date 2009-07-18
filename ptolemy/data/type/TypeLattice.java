@@ -787,6 +787,7 @@ public class TypeLattice {
                 // NOTE: Removed NUMERICAL from the type lattice, EAL 7/22/06.
                 // _basicLattice.addNodeWeight(BaseType.NUMERICAL);
                 _basicLattice.addNodeWeight(BaseType.OBJECT);
+                _basicLattice.addNodeWeight(BaseType.ACTOR);
                 _basicLattice.addNodeWeight(BaseType.XMLTOKEN);
                 _basicLattice.addNodeWeight(BaseType.SCALAR);
                 _basicLattice.addNodeWeight(BaseType.SHORT);
@@ -805,6 +806,8 @@ public class TypeLattice {
                 _basicLattice.addEdge(BaseType.UNKNOWN, BaseType.XMLTOKEN);
                 _basicLattice.addEdge(BaseType.OBJECT, BaseType.GENERAL);
                 _basicLattice.addEdge(BaseType.UNKNOWN, BaseType.OBJECT);
+                _basicLattice.addEdge(BaseType.ACTOR, BaseType.GENERAL);
+                _basicLattice.addEdge(BaseType.UNKNOWN, BaseType.ACTOR);
                 _basicLattice.addEdge(BaseType.STRING, BaseType.GENERAL);
                 _basicLattice.addEdge(BaseType.MATRIX, BaseType.STRING);
                 _basicLattice.addEdge(BaseType.BOOLEAN_MATRIX, BaseType.MATRIX);

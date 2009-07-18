@@ -32,6 +32,7 @@ import java.lang.reflect.Modifier;
 import java.util.HashMap;
 import java.util.Map;
 
+import ptolemy.data.ActorToken;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.ComplexToken;
 import ptolemy.data.DoubleToken;
@@ -118,7 +119,7 @@ public abstract class BaseType implements Type, Serializable {
         return this == object;
     }
 
-    /** Return an instance of this class that corresponds to tokens
+    /** Return an instance of Type of that corresponds to tokens
      *  of a class with the given name, or null if none exists.
      *  @param className The name of the class.
      *  @return An instance of BaseType.
@@ -552,6 +553,9 @@ public abstract class BaseType implements Type, Serializable {
 
     /** The object data type. */
     public static final ObjectType OBJECT = new ObjectType();
+
+    /** The actor data type. */
+    public static final Type ACTOR = ActorToken.TYPE;
 
     /** The XmlToken data type. */
     public static class XmlTokenType extends BaseType {

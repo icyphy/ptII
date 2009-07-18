@@ -377,6 +377,7 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants,
             registerFunctionClass("java.lang.Long");
             registerFunctionClass("java.lang.String");
             registerFunctionClass("ptolemy.data.MatrixToken");
+            registerFunctionClass("ptolemy.data.ObjectToken");
             registerFunctionClass("ptolemy.data.RecordToken");
             registerFunctionClass("ptolemy.data.expr.UtilityFunctions");
             registerFunctionClass("ptolemy.data.expr.FixPointFunctions");
@@ -392,7 +393,7 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants,
             registerFunctionClass("ptolemy.math.LongArrayMath");
             registerFunctionClass("ptolemy.math.SignalProcessing");
             registerFunctionClass("ptolemy.math.FixPoint");
-            registerFunctionClass("ptolemy.data.ObjectToken");
+            registerFunctionClass("ptolemy.moml.ParseMoML");
         }
     }
 
