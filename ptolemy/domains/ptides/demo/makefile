@@ -50,7 +50,7 @@ PTPACKAGE = 	demo
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
 	PtidesBasicMixedSimulator/PtidesBasicMixedSimulator.jar \
-	PtidesBasicMultiPlatformTDMA/PtidesBasicMultiPlatformTDMA.jar \  
+	PtidesBasicMultiPlatformTDMA/PtidesBasicMultiPlatformTDMA.jar \
 	PtidesBasicOnePlatform/PtidesBasicOnePlatform.jar \
 	PtidesBasicTwoPlatformsNetworkSensorEvents/PtidesBasicTwoPlatformsNetworkSensorEvents.jar \
 	PtidesPreemptEDFOnePlatformThreePathsRealDelay/PtidesPreemptEDFOnePlatformThreePathsRealDelay.jar \

@@ -2,9 +2,9 @@
 #
 # @Authors: Christopher Hylands (makefile only)
 #
-# @Version: 
+# @Version: $Id$ 
 #
-# @Copyright (c) 2000-2008 The Regents of the University of California.
+# @Copyright (c) 2008 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -41,7 +41,7 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	PtidesBasicMultiPlatformTDMA 
+PTPACKAGE = 	PtidesBasicMultiPlatformTDMA
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS =
@@ -70,7 +70,7 @@ all: jclass $(PTCLASSJAR)
 	@echo "To run all the demos, run 'make demo'"
 
 
-install: all
+install: all jars
 
 demo: demo_applet demo_ptolemy demo_vergil
 demo_applet: $(PTCLASSJAR)
