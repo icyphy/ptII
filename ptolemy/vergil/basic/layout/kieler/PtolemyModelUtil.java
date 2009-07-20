@@ -208,7 +208,7 @@ public class PtolemyModelUtil {
 
     /**
      * Create a MoMLChangeRequest to remove a set of relations in a Ptolemy
-     * model object
+     * model object.
      *
      * @param relationSet Set of relation to be removed from the Ptolemy model
      */

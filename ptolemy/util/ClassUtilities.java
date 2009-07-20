@@ -69,6 +69,8 @@ public class ClassUtilities {
      *  in the jar file directory bif/baz will be returned.
      *  @param jarURL The Jar URL for which we are to look for directories.
      *  @return An list of Strings that name the directories
+     *  @exception IOException If opening the connection fails or if
+     *  getting the jar file from the connection fails
      */
     public static List jarURLDirectories(URL jarURL) throws IOException {
         List directories = new LinkedList();
