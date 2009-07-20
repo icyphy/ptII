@@ -159,7 +159,7 @@ to something safe to in an XML file.
 public class ConfigurationApplication implements ExecutionListener {
 
     /**
-     * Empty constructor for subclasses to use
+     * Empty constructor for subclasses to use.
      */
     public ConfigurationApplication() {
 
