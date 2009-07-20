@@ -1,4 +1,4 @@
-/* Code generator adapter for IOPort.
+/* Code generator adapter for Receiver.
 
  Copyright (c) 2005-2009 The Regents of the University of California.
  All rights reserved.
@@ -31,15 +31,21 @@ import ptolemy.actor.IOPort;
 import ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapter;
 import ptolemy.kernel.util.IllegalActionException;
 
-/** 
- * 
+///////////////////////////////////////////////////////////////////////
+////Receiver
+
+/** The base class adapter for recevier.
  *  @author Jia Zou, Man-Kit Leung, Isaac Liu
-@version $Id$
-@since Ptolemy II 7.1
+ *  @version $Id$
+ *  @since Ptolemy II 7.1
+ *  @Pt.ProposedRating Red (jiazou)
+ *  @Pt.AcceptedRating Red (jiazou)
  *
  */
 public abstract class Receiver extends ProgramCodeGeneratorAdapter {
 
+    /** Construct the receiver.
+     */
     public Receiver(ptolemy.actor.Receiver receiver)
             throws IllegalActionException {
         super(null);
@@ -49,10 +55,22 @@ public abstract class Receiver extends ProgramCodeGeneratorAdapter {
         _name = getCodeGenerator().generateVariableName(port) + "_" + channel;
     }
 
+    /** Abstract class to generate code for getting tokens from the receiver.
+     *  @return generate get code.
+     *  @throws IllegalActionException
+     */
     abstract public String generateGetCode() throws IllegalActionException;
 
+    /** Abstract class to generate code to check if the receiver has token.
+     *  @return generate hasToken code.
+     *  @throws IllegalActionException
+     */
     abstract public String generateHasTokenCode() throws IllegalActionException;
 
+    /** Abstract class to generate code for putting tokens from the receiver.
+     *  @return generate put code.
+     *  @throws IllegalActionException
+     */
     abstract public String generatePutCode(String token)
             throws IllegalActionException;
 
@@ -60,11 +78,38 @@ public abstract class Receiver extends ProgramCodeGeneratorAdapter {
         return _receiver;
     }
 
+    /** Return the name of this receiver
+     */
     public String getName() {
         return _name;
     }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+
+    /**
+     * Generate the type conversion statement for the particular offset of
+     * the two given channels. This assumes that the offset is the same for
+     * both channel. Advancing the offset of one has to advance the offset of
+     * the other.
+     * @param source The given source channel.
+     * @param offset The given offset.
+     * @return The type convert statement for assigning the converted source
+     *  variable to the sink variable with the given offset.
+     * @exception IllegalActionException If there is a problem getting the
+     * adapters for the ports or if the conversion cannot be handled.
+     */
+    abstract protected String _generateTypeConvertStatement(ProgramCodeGeneratorAdapter.Channel source)
+            throws IllegalActionException;
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected variables               ////
+
+    protected String _name;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     private ptolemy.actor.Receiver _receiver;
 
-    protected String _name;
 }
