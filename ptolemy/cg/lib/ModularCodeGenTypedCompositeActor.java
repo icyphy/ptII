@@ -30,7 +30,6 @@ package ptolemy.cg.lib;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.Iterator;
@@ -427,112 +426,58 @@ public class ModularCodeGenTypedCompositeActor extends LazyTypedCompositeActor {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-        
-        if (_modelChanged) {
-            try {
-                generateCode();
-            } catch (KernelException e) {
-                throw new IllegalActionException(this, e, "Can't generate code for " + getName());
-            }
-        }
-        String className = NamedProgramCodeGeneratorAdapter.generateName(this);        
-        Class<?> classInstance = null;
-        URL url = null;
         try {
+            if (_modelChanged) {
+                    generateCode();
+            }
+            String className = NamedProgramCodeGeneratorAdapter.generateName(this);        
+            Class<?> classInstance = null;
+            URL url = null;
             url = _codeGenerator.codeDirectory.asFile().toURI().toURL();
             URL[] urls = new URL[] { url };
 
             ClassLoader classLoader = new URLClassLoader(urls);
             classInstance = classLoader.loadClass(className);
 
-        } catch (MalformedURLException ex) {
-            throw new IllegalActionException(this, ex,
-                    "The class URL \"" + url + "\" for \""
-                            + className + "\" is malformed");
-        } catch (UnsupportedClassVersionError ex) {
-            // This can occur if we have two different
-            // machines sharing ~/codegen.
-            throw new IllegalActionException(
-                    this,
-                    ex,
-                    "Unsupported class version in the class \""
-                            + className
-                            + "\" from \""
-                            + url
-                            + "\".  Try deleting the \""
-                            + className
-                            + "\" class in \""
-                            + url
-                            + "\".\nThis problem can also occur "
-                            + "if the version of java that is "
-                            + "running Ptolemy and the version "
-                            + "of javac used to compile the file "
-                            + "to load into Ptolemy are different "
-                            + "and java is of a later version."
-                            + "\nTo see information about the "
-                            + "version of Java used to run "
-                            + "Ptolemy, use View -> JVM Properties."
-                            + "  To see what version of javac "
-                            + "was used, run \"java -version\".");
-        } catch (Throwable ex) {
-            throw new IllegalActionException(this, ex,
-                    "Cannot load the class \"" + className
-                            + "\" from \"" + url + "\"");
-        }
 
-        try {
             _objectWrapper = classInstance.newInstance();
-        } catch (Throwable throwable) {
-            throw new IllegalActionException(this, throwable,
-                    "Cannot instantiate the wrapper object.");
-        }
 
-        Method[] methods = classInstance.getMethods();
-        Method intializeMethod = null;
-        
-        for (int i = 0; i < methods.length; i++) {
-            String name = methods[i].getName();
-            if (name.equals("fire")) {
-                _fireMethod = methods[i];
+            Method[] methods = classInstance.getMethods();
+            Method intializeMethod = null;
+            
+            for (int i = 0; i < methods.length; i++) {
+                String name = methods[i].getName();
+                if (name.equals("fire")) {
+                    _fireMethod = methods[i];
+                }
+                
+                if (name.equals("initialize")) {
+                    intializeMethod = methods[i];
+                }
+            }
+            if (_fireMethod == null) {
+                throw new IllegalActionException(this,
+                        "Cannot find fire "
+                                + "method in the wrapper class.");
             }
             
-            if (name.equals("initialize")) {
-                intializeMethod = methods[i];
+            if (intializeMethod == null) {
+                throw new IllegalActionException(this,
+                        "Cannot find intialize "
+                                + "method in the wrapper class.");
             }
-        }
-        if (_fireMethod == null) {
-            throw new IllegalActionException(this,
-                    "Cannot find fire "
-                            + "method in the wrapper class.");
-        }
         
-        if (intializeMethod == null) {
-            throw new IllegalActionException(this,
-                    "Cannot find intialize "
-                            + "method in the wrapper class.");
-        }
-        
-        //initialize the generated object
-        try {
-            
+            //initialize the generated object
             intializeMethod.invoke(
                 _objectWrapper, (Object[]) null);
             if (_debugging) {
-                _debug("ModularCodeGenerator: Done calling fire method for generated code.");
+                _debug("ModularCodeGenerator: Done calling initilize method for generated code.");
             }
-        
+            _modelChanged = false;
         } catch (Throwable throwable) {
-            // If we can't use the compiled code we directly
-            //  use the model.
-        
-            if (_debugging) {
-                _debug("ModularCodeGenerator: Calling intialize method for generated code failed.\n\t" +
-                                "Reason: " + throwable.getMessage() + 
-                        "\n\tCalling fire method in ptolemy.");
-            }
-        
+            _objectWrapper = null;
+            _fireMethod = null;
         }
-        _modelChanged = false;
     }
 
 
