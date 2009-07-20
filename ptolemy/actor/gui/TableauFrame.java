@@ -1081,8 +1081,9 @@ public class TableauFrame extends Top {
             }
         }
 
-        // FIXME: Is this right? Presumably the user hit cancel...
-        return true;
+        // The user hit cancel or there was an error, so we did not
+        // successfully save.
+        return false;
     }
 
     /** Write the model to the specified file.  This method delegates
