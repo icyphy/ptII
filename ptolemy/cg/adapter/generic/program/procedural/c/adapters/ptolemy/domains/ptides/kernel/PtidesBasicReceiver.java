@@ -52,13 +52,13 @@ import ptolemy.kernel.util.IllegalActionException;
  *  @Pt.AcceptedRating Red (jiazou)
  */
 
-// TODO Jeff: Change parent, this uses the old codegen framework
-public class PtidesBasicReceiver extends ptolemy.codegen.c.actor.Receiver {
+public class PtidesBasicReceiver extends ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.Receiver {
 
     /** Construct a ptides basic receiver.
+     *  @throws IllegalActionException 
      */
-    public PtidesBasicReceiver(
-            ptolemy.domains.ptides.kernel.PtidesBasicReceiver receiver) {
+    public PtidesBasicReceiver (
+            ptolemy.domains.ptides.kernel.PtidesBasicReceiver receiver) throws IllegalActionException {
         super(receiver);
     }
 
@@ -66,9 +66,9 @@ public class PtidesBasicReceiver extends ptolemy.codegen.c.actor.Receiver {
      *  @return generate get code.
      *  @throws IllegalActionException
      */
-    public String generateCodeForGet(int channel) throws IllegalActionException {
-        TypedIOPort port = (TypedIOPort) getReceiver().getContainer();
-        return "Event_Head_" + generateName(port) + "[" + channel + "]->Val."
+    public String generateGetCode(int channel) throws IllegalActionException {
+        TypedIOPort port = (TypedIOPort) getComponent().getContainer();
+        return "Event_Head_" + getAdapter(port).getName() + "[" + channel + "]->Val."
                 + port.getType().toString() + "_Value";
     }
 
@@ -76,19 +76,19 @@ public class PtidesBasicReceiver extends ptolemy.codegen.c.actor.Receiver {
      *  @return generate hasToken code.
      *  @throws IllegalActionException
      */
-    public String generateCodeForHasToken(int channel)
+    public String generateHasTokenCode(int channel)
             throws IllegalActionException {
-        IOPort port = getReceiver().getContainer();
-        return "Event_Head_" + generateName(port) + "[" + channel + "] != NULL";
+        IOPort port = getComponent().getContainer();
+        return "Event_Head_" + getAdapter(port).getName() + "[" + channel + "] != NULL";
     }
 
     /** Generates code for putting tokens from the receiver.
      *  @return generate put code.
      *  @throws IllegalActionException
      */
-    public String generateCodeForPut(String token)
+    public String generatePutCode(String token)
             throws IllegalActionException {
-        TypedIOPort sinkPort = (TypedIOPort) getReceiver().getContainer();
+        TypedIOPort sinkPort = (TypedIOPort) getComponent().getContainer();
         Type sinkType = sinkPort.getType();
         Actor actor = (Actor) sinkPort.getContainer();
         Director director = actor.getDirector();
@@ -133,15 +133,20 @@ public class PtidesBasicReceiver extends ptolemy.codegen.c.actor.Receiver {
         List args = new ArrayList();
         args.add(sinkType);
         args.add(token);
-        args.add(generateName(sinkPort.getContainer()));
-        args.add("Event_Head_" + generateName(sinkPort) + "["
-                + sinkPort.getChannelForReceiver(getReceiver()) + "]");
+        args.add((sinkPort.getContainer().getName()));
+        args.add("Event_Head_" + sinkPort.getName() + "["
+                + sinkPort.getChannelForReceiver(getComponent()) + "]");
         args.add(depth);//depth
         args.add(deadlineSecsString);//deadline
         args.add(deadlineNsecsString);
         args.add(offsetSecsString);//offsetTime
         args.add(offsetNsecsString);
-        return _generateBlockCode("createEvent", args);
+        return getStrategy().getTemplateParser().generateBlockCode("createEvent", args);
     }
 
+    protected String _generateTypeConvertStatement(Channel source)
+            throws IllegalActionException {
+        // TODO Auto-generated method stub
+        return null;
+    }
 }

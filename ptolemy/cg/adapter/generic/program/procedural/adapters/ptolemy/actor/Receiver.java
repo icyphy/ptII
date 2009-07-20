@@ -50,8 +50,8 @@ public abstract class Receiver extends ProgramCodeGeneratorAdapter {
             throws IllegalActionException {
         super(null);
 
-        IOPort port = getReceiver().getContainer();
-        int channel = port.getChannelForReceiver(getReceiver());
+        IOPort port = getComponent().getContainer();
+        int channel = port.getChannelForReceiver(getComponent());
         _name = getCodeGenerator().generateVariableName(port) + "_" + channel;
     }
 
@@ -87,8 +87,9 @@ public abstract class Receiver extends ProgramCodeGeneratorAdapter {
     abstract public String generatePutCode(String token)
             throws IllegalActionException;
 
-    public ptolemy.actor.Receiver getReceiver() {
-        return _receiver;
+    /** Get the corresponding component */
+    public ptolemy.actor.Receiver getComponent() {
+        return (ptolemy.actor.Receiver) _component;
     }
 
     /** Return the name of this receiver
@@ -119,10 +120,5 @@ public abstract class Receiver extends ProgramCodeGeneratorAdapter {
     ////                         protected variables               ////
 
     protected String _name;
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
-
-    private ptolemy.actor.Receiver _receiver;
 
 }
