@@ -1,6 +1,6 @@
 /* Top-level window for Ptolemy models with a menubar and status bar.
 
- Copyright (c) 1998-2006 The Regents of the University of California.
+ Copyright (c) 1998-2009 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -336,7 +336,7 @@ public abstract class PtolemyFrame extends TableauFrame {
         }
 
         // If the user saves a file without an extension, we force .xml.
-        return super._saveAs(".xml");
+        return _saveAs(".xml");
     }
 
     /** Create and return a file dialog for the "Save As" command.
