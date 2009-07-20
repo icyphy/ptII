@@ -49,6 +49,7 @@ import java.util.Set;
 import java.util.StringTokenizer;
 import java.util.Vector;
 
+import ptolemy.data.ActorToken;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.ComplexMatrixToken;
@@ -1227,6 +1228,16 @@ public class UtilityFunctions {
     public static ObjectToken model(String classname)
             throws IllegalActionException {
         return new ObjectToken(classname);
+    }
+
+    /** Parse the string provided and return the result wrapped in a token.
+     *  @param moml The MoML string.
+     *  @return The result of parsing the MoML.
+     *  @throws Exception If the MoML is invalid or the results is not an
+     *   instance of Entity.
+     */
+    public static ActorToken parseMoML(String moml) throws Exception {
+        return MoMLUtilities.parseMoML(moml);
     }
 
     /** Get the specified property from the environment. An empty string
