@@ -171,7 +171,7 @@ public class PtidesPreemptiveUserEDFDirector extends
             }
         }
         
-        // Given the initialized input pair dependencies, use Floyd–Warshall algorithm to calculate
+        // Given the initialized input pair dependencies, use Floyd-Warshall algorithm to calculate
         // the dependency between all pairs of input ports in the composite actor governed by this
         // director.
         IOPort[] allInputs= (IOPort[])(startInputs.toArray(new IOPort[startInputs.size()]));
