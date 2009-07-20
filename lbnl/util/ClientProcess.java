@@ -102,14 +102,16 @@ public class ClientProcess extends Thread {
 
     private final static String LS = System.getProperty("line.separator");
 
-    /** Constructor */
+    /** Create a ClientProcess. */
     public ClientProcess() {
         super();
         proSta = false;
         errMes = null;
     }
 
-    /** Sets the simulation log file */
+    /** Sets the simulation log file.
+     *  @param simLogFil The log file.
+     */
     public void setSimulationLogFile(File simLogFil) {
         logFil = new File(simLogFil.getAbsolutePath());
         logToSysOut = true;
@@ -144,19 +146,21 @@ public class ClientProcess extends Thread {
         }
     }
 
-    /** Returns <code>true</code> if the process started without throwing an exception */
+    /** Return true if the process started without throwing an exception.
+     *  @return true if the process started without throwing an exception.
+     */
     public boolean processStarted() {
         return proSta;
     }
 
-    /** Returns the error message if <code>proSta=true</code> or a null pointer otherwise
-     * @return the error message if <code>proSta=true</code> or a null pointer otherwise
+    /** Return the error message if <code>proSta=true</code> or a null pointer otherwise.
+     * @return the error message if <code>proSta=true</code> or a null pointer otherwise.
      */
     public String getErrorMessage() {
         return errMes;
     }
 
-    /** Inner class to print any output of the process to the console */
+    /** Inner class to print any output of the process to the console. */
     private class PrintOutput extends Thread {
         public PrintOutput() {
         }
@@ -196,9 +200,9 @@ public class ClientProcess extends Thread {
     }
 
     /** Set the process arguments.
-     *@param cmdarray array containing the command to call and its arguments.
-     *@param dir the working directory of the subprocess.
-     *@exception IllegalActionException if the canonical path name of the program file
+     * @param cmdarray array containing the command to call and its arguments.
+     * @param dir the working directory of the subprocess.
+     * @exception IllegalActionException if the canonical path name of the program file
      *                                  cannot be obtained.
      */
     public void setProcessArguments(List<String> cmdarray, String dir)
@@ -260,7 +264,11 @@ public class ClientProcess extends Thread {
     /** Error message if <code>proSta=true</code> or null pointer otherwise */
     String errMes;
 
-    /** Main method for testing */
+    /** Main method for testing.
+     *  @param args  Commands to pass to the client process.
+     *  @exception IllegalActionException if the canonical path name
+     *  of the program file cannot be obtained.
+     */
     public static void main(String args[]) throws IllegalActionException {
         ClientProcess c = new ClientProcess();
         List<String> com = new ArrayList<String>();

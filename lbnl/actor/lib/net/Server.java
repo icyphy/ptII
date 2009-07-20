@@ -85,6 +85,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.SocketTimeoutException;
 
 /** Server that opens a BSD socket for communication with simulation engine.
  *
@@ -205,7 +206,7 @@ public class Server {
      * @exception IOException If communication problems occur.
      * @exception SocketTimeoutException If the socket does not respond.
     */
-    public void read() throws IOException, java.net.SocketTimeoutException {
+    public void read() throws IOException, SocketTimeoutException {
         if (cliSoc == null) { // first call
             cliSoc = serSoc.accept(); // accept calls from client
         }
@@ -251,7 +252,10 @@ public class Server {
         }
     }
 
-    /** Main method that can be used for testing 
+    /** Main method that can be used for testing.
+     *  @param args An array of length 1 that names the port
+     *  to be used
+     *  @exception Exception If anything goes wrong.
      */
     public static void main(String[] args) throws Exception {
         int timOut = 10000; // time out in milliseconds
@@ -275,24 +279,24 @@ public class Server {
         }
     }
 
-    /** The client socket */
+    /** The client socket. */
     Socket cliSoc;
 
-    /** The array that contains the last double values read from the socket */
+    /** The array that contains the last double values read from the socket .*/
     protected double[] dblVal;
 
-    /** The communication flag read during the socket read command */
+    /** The communication flag read during the socket read command. */
     protected int flaFroCli;
 
-    /** The server socket */
+    /** The server socket. */
     protected ServerSocket serSoc;
 
-    /** The current simulation time as received from the client */
+    /** The current simulation time as received from the client. */
     protected double simTimRea;
 
-    /** The simulation time last written to the client */
+    /** The simulation time last written to the client. */
     protected double simTimWri;
 
-    /** The version number of the socket implementation */
+    /** The version number of the socket implementation. */
     protected int verNo = 1;
 }

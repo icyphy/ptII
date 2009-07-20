@@ -550,43 +550,43 @@ public class Simulator extends SDFTransformer {
     // names of the variable should match the assigned name, otherwise
     // there are problems with cloning.
 
-    /** Arguments of program that starts the simulation */
+    /** Arguments of program that starts the simulation. */
     protected Parameter programArguments;
 
-    /** Name of program that starts the simulation */
+    /** Name of program that starts the simulation. */
     protected FileParameter programName;
 
-    /** Double values that were written to the socket */
+    /** Double values that were written to the socket. */
     protected double[] dblWri;
 
-    /** Thread that runs the simulation */
+    /** Thread that runs the simulation. */
     protected ClientProcess cliPro;
 
-    /** Port number for BSD socket (used if non-negative) */
+    /** Port number for BSD socket (used if non-negative). */
     protected Parameter socketPortNumber;
 
-    /** Port number that is actually used for BSD socket */
+    /** Port number that is actually used for BSD socket. */
     protected int porNo;
 
-    /** Server used for data exchange */
+    /** Server used for data exchange. */
     protected Server server;
 
-    /** File name to which this actor writes the simulation log */
+    /** File name to which this actor writes the simulation log. */
     protected FileParameter simulationLogFile;
 
-    /** Process that runs the simulation */
+    /** Process that runs the simulation. */
     protected Process simProJav;
 
-    /** File name to which this actor writes the socket configuration */
+    /** File name to which this actor writes the socket configuration. */
     protected FileParameter socketConfigurationFile;
 
-    /** Socket time out in milliseconds */
+    /** Socket time out in milliseconds. */
     protected Parameter socketTimeout;
 
-    /** Working directory of the simulation */
+    /** Working directory of the simulation. */
     protected FileParameter workingDirectory;
 
-    /** Output tokens */
+    /** Output tokens. */
     protected DoubleMatrixToken outTok;
 
     ///////////////////////////////////////////////////////////////////
