@@ -1,6 +1,5 @@
-/*
+/* JNI Example for gcc.
 Below is the copyright agreement for the Ptolemy II system.
-Version: $Id$
 
 Copyright (c) 2003-2009 The Regents of the University of California.
 All rights reserved.
@@ -24,7 +23,16 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 */
-// JNI Example for gcc from http://www.inonit.com/cygwin/jni/helloWorld/java.html
+/**
+ * JNI Example for gcc.
+ * 
+ *  @author From <a href="http://www.inonit.com/cygwin/jni/helloWorld/java.html">http://www.inonit.com/cygwin/jni/helloWorld/java.html"</a>.
+ *  @version $Id$
+ *  @since Ptolemy II 4.x
+ *  @Pt.ProposedRating Red (cxh)
+ *  @Pt.AcceptedRating Red (cxh)
+ */
+
 package jni.demo.HelloWorld;
 
 public class HelloWorld {

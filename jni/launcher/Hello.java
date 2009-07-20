@@ -1,6 +1,5 @@
-/*
+/* Hello World, used for testing JNI.
 Below is the copyright agreement for the Ptolemy II system.
-Version: $Id$
 
 Copyright (c) 2006-2009 The Regents of the University of California.
 All rights reserved.
@@ -26,7 +25,14 @@ ENHANCEMENTS, OR MODIFICATIONS.
 */
 package jni.launcher;
 
-/** $Id$ */
+/** Hello World.
+ *  Used for testing JNI
+ *  @author Christopher Brooks
+ *  @version $Id$
+ *  @since Ptolemy II 4.x
+ *  @Pt.ProposedRating Red (cxh)
+ *  @Pt.AcceptedRating Red (cxh)
+ */
 public class Hello {
     public static void main(String[] args) {
         System.out.println("Hello, Java");
