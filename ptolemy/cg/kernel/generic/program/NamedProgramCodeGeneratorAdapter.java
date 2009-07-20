@@ -258,6 +258,13 @@ public class NamedProgramCodeGeneratorAdapter extends ProgramCodeGeneratorAdapte
         return lastModified;
     }
 
+    /** Get the component associated with this adapter.
+     *  @return The associated component.
+     */
+    public NamedObj getComponent() {
+        return _strategy.getComponent();
+    }
+
     /**
      * Return an array of strings that are regular expressions of all the
      * code blocks that are appended automatically by default. Since the
@@ -268,13 +275,6 @@ public class NamedProgramCodeGeneratorAdapter extends ProgramCodeGeneratorAdapte
      */
     public static String[] getDefaultBlocks() {
         return _defaultBlocks;
-    }
-    
-    /** Get the component associated with this adapter.
-     *  @return The associated component.
-     */
-    public NamedObj getComponent() {
-        return _strategy.getComponent();
     }
     
     /**
