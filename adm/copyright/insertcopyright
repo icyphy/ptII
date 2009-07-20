@@ -48,14 +48,14 @@ fi
 
 # Produce a shell style comment block containing the copyright
 SHNOTICE=/tmp/shnotice.$$
-awk '{printf("# %s\n",$0)}' $NOTICE | sed -e 's/[ 	]*$//g' > $SHNOTICE
+awk '{printf("# %s\n",$0)}' $NOTICE | grep -v '\$Id' | sed -e 's/[ 	]*$//g' > $SHNOTICE
 
 # Produce a C style comment block containing the copyright
 CNOTICE=/tmp/cnotice.$$
 awk 'BEGIN {print "/*"}
 	{print $0}
 	END {print "*/"}
-	' $NOTICE > $CNOTICE
+	' $NOTICE | grep -v ' $Id' > $CNOTICE
 
 # Temporary file
 TMPF=/tmp/insertcopyright.$$
