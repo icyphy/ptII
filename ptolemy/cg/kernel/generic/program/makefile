@@ -58,6 +58,7 @@ PTCLASSALLJARS = \
 # Keep this list alphabetized.
 JSRCS = \
 	CodeStream.java \
+	NamedProgramCodeGeneratorAdapter.java \
 	ProgramCodeGenerator.java \
 	ProgramCodeGeneratorAdapter.java \
 	ProgramCodeGeneratorAdapterStrategy.java
