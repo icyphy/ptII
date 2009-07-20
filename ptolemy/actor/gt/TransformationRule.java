@@ -402,7 +402,7 @@ public class TransformationRule extends MultiCompositeActor implements
                     modelInput = new TypedIOPort(this, "modelInput", true,
                             false);
                     modelInput.setTypeEquals(ActorToken.TYPE);
-                    modelInput.setPersistent(false);
+                    modelInput.setDerivedLevel(1);
                 }
 
                 if (showFullControlPorts) {
@@ -410,24 +410,24 @@ public class TransformationRule extends MultiCompositeActor implements
                         matchInput = new TypedIOPort(this, "matchInput", true,
                                 false);
                         matchInput.setTypeEquals(BaseType.OBJECT);
-                        matchInput.setPersistent(false);
+                        matchInput.setDerivedLevel(1);
                     }
                     if (matchOutput == null) {
                         matchOutput = new TypedIOPort(this, "matchOutput",
                                 false, true);
                         matchOutput.setTypeEquals(BaseType.OBJECT);
-                        matchOutput.setPersistent(false);
+                        matchOutput.setDerivedLevel(1);
                     }
                     if (modelOutput == null) {
                         modelOutput = new TypedIOPort(this, "modelOutput",
                                 false, true);
                         modelOutput.setTypeEquals(ActorToken.TYPE);
-                        modelOutput.setPersistent(false);
+                        modelOutput.setDerivedLevel(1);
                     }
                     if (trigger == null) {
                         trigger = new TypedIOPort(this, "trigger", true, false);
                         trigger.setTypeEquals(BaseType.BOOLEAN);
-                        trigger.setPersistent(false);
+                        trigger.setDerivedLevel(1);
                         new StringAttribute(trigger, "_cardinal")
                                 .setExpression("SOUTH");
                     }
@@ -435,7 +435,7 @@ public class TransformationRule extends MultiCompositeActor implements
                         remaining = new TypedIOPort(this, "remaining", false,
                                 true);
                         remaining.setTypeEquals(BaseType.INT);
-                        remaining.setPersistent(false);
+                        remaining.setDerivedLevel(1);
                         new StringAttribute(remaining, "_cardinal")
                                 .setExpression("SOUTH");
                     }
@@ -470,13 +470,13 @@ public class TransformationRule extends MultiCompositeActor implements
                             modelOutput = new TypedIOPort(this, "modelOutput",
                                     false, true);
                             modelOutput.setTypeEquals(ActorToken.TYPE);
-                            modelOutput.setPersistent(false);
+                            modelOutput.setDerivedLevel(1);
                         }
                     }
                     if (matched == null) {
                         matched = new TypedIOPort(this, "matched", false, true);
                         matched.setTypeEquals(BaseType.BOOLEAN);
-                        matched.setPersistent(false);
+                        matched.setDerivedLevel(1);
                         new StringAttribute(matched, "_cardinal")
                                 .setExpression("SOUTH");
                     }
