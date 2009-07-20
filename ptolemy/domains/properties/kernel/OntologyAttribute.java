@@ -1,7 +1,6 @@
 /*
  * An attribute that contains a ontology model graph.
  *
- * Below is the copyright agreement for the Ptolemy II system. Version: $Id:
  * OntologyAttribute.java 53505 2009-05-06 18:18:38Z bldmastr $
  *
  * Copyright (c) 2009 The Regents of the University of California. All rights

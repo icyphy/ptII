@@ -1,5 +1,4 @@
 /*
- * Below is the copyright agreement for the Ptolemy II system. Version: $Id:
  * LatticeGraphFrameController.java 53821 2009-05-18 15:49:29Z cxh $
  *
  * Copyright (c) 2009 The Regents of the University of California. All rights

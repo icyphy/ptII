@@ -1,5 +1,4 @@
 /*
- * Below is the copyright agreement for the Ptolemy II system. Version: $Id:
  * PropertyConstraintAttribute.java 53044 2009-04-10 21:47:49Z cxh $
  *
  * Copyright (c) 2007-2009 The Regents of the University of California. All

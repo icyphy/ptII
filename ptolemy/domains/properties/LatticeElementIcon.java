@@ -1,7 +1,6 @@
 /*
  * An icon that displays a LatticeElement.
  *
- * Below is the copyright agreement for the Ptolemy II system. Version: $Id:
  * LatticeElementIcon.java 53044 2009-04-10 21:47:49Z cxh $
  *
  * Copyright (c) 2009 The Regents of the University of California. All rights

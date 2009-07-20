@@ -1,7 +1,6 @@
 /*
  * A lattice element that represents a property value.
  *
- * Below is the copyright agreement for the Ptolemy II system. Version: $Id:
  * LatticeElement.java 53700 2009-05-14 18:25:22Z mankit $
  *
  * Copyright (c) 2009 The Regents of the University of California. All rights
