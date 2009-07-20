@@ -20,9 +20,9 @@
         <property name="_renderFirst" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
     </property>
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={136, 98, 674, 582}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={136, 98, 897, 590}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[674, 476]">
     </property>
@@ -266,10 +266,19 @@
                                         </property>
                                         <property name="operations" class="ptolemy.actor.gt.GTIngredientsAttribute" value="(ptolemy.actor.gt.ingredients.operations.AttributeOperation/false/&quot;variableName&quot;/false//false/&quot;Log&quot;)">
                                         </property>
+                                        <port name="output" class="ptolemy.actor.TypedIOPort">
+                                            <property name="output"/>
+                                            <property name="_type" class="ptolemy.actor.TypeAttribute" value="arrayType(int)">
+                                            </property>
+                                        </port>
                                     </entity>
                                     <relation name="relation" class="ptolemy.actor.TypedIORelation">
+                                        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                                        </property>
                                     </relation>
                                     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+                                        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                                        </property>
                                     </relation>
                                     <link port="_ElementsToArray.output" relation="relation"/>
                                     <link port="_SequenceToArray.input" relation="relation"/>
@@ -387,6 +396,8 @@
                                         </property>
                                     </entity>
                                     <relation name="relation" class="ptolemy.actor.TypedIORelation">
+                                        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                                        </property>
                                         <vertex name="vertex1" value="[220.0, 95.0]">
                                         </vertex>
                                     </relation>
@@ -422,6 +433,8 @@
                                         </property>
                                     </entity>
                                     <relation name="relation" class="ptolemy.actor.TypedIORelation">
+                                        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                                        </property>
                                         <vertex name="vertex1" value="[220.0, 95.0]">
                                         </vertex>
                                         <property name="patternObject" class="ptolemy.actor.gt.PatternObjectAttribute" value="relation">
@@ -725,6 +738,8 @@
                                         </property>
                                     </entity>
                                     <relation name="relation" class="ptolemy.actor.TypedIORelation">
+                                        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                                        </property>
                                     </relation>
                                     <link port="_Test.output" relation="relation"/>
                                     <link port="_ThrowException.input" relation="relation"/>
@@ -840,6 +855,8 @@
                                         </property>
                                     </entity>
                                     <relation name="relation" class="ptolemy.actor.TypedIORelation">
+                                        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                                        </property>
                                         <vertex name="vertex1" value="[215.0, 95.0]">
                                         </vertex>
                                     </relation>
@@ -875,6 +892,8 @@
                                         </property>
                                     </entity>
                                     <relation name="relation" class="ptolemy.actor.TypedIORelation">
+                                        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                                        </property>
                                         <vertex name="vertex1" value="[215.0, 95.0]">
                                         </vertex>
                                         <property name="patternObject" class="ptolemy.actor.gt.PatternObjectAttribute" value="relation">
