@@ -1,6 +1,5 @@
 /*
 Below is the copyright agreement for the Ptolemy II system.
-Version: $Id$
 
 Copyright (c) 2002-2009 The Regents of the University of California.
 All rights reserved.
@@ -49,16 +48,18 @@ import javax.servlet.http.*;
  * Takes the parameters file, w, h and returs and jpeg image with the
  * ptplot graph generated from the PlotML file.
  *
- * the file mustbe located in the same directory or a subdirectory of the
+ * The file must be located in the same directory or a subdirectory of the
  * servlet.
  *
- * Use in your html as:
+ * <p>Use in your html as:
+ * <pre>
  * &lt;img src="/servlet/ptolemy/plot/servlet/PlotServlet?file=Bin.xml&w=500&h=500"/&gt;
  * &lt;img src="/servlet/ptolemy/plot/servlet/PlotServlet?file=HighLowSmall.xml&w=500&h=500"/&gt;
+ * </pre>
  *
  * No waranties given in any respect! Have fun.
  * @author A. Gobbi
- * @version 1.0
+ * @version $Id$
  */
 public class PlotServlet extends HttpServlet {
     public void doGet(HttpServletRequest request, HttpServletResponse response)

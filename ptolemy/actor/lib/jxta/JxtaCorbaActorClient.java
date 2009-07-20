@@ -1,6 +1,5 @@
-/*
+/* Use a timer task for peer discovery and actor query.
 Below is the copyright agreement for the Ptolemy II system.
-Version: $Id$
 
 Copyright (c) 2002-2009 The Regents of the University of California.
 All rights reserved.
@@ -79,16 +78,10 @@ import ptolemy.kernel.util.InvalidStateException;
 import ptolemy.kernel.util.NameDuplicationException;
 
 /**
- * @author liuxj, Yang
-@version $Id$
-@since Ptolemy II 7.1
- *
- * To change this generated comment edit the template variable "typecomment":
- * Window>Preferences>Java>Templates.
- * To enable and disable the creation of type comments go to
- * Window>Preferences>Java>Code Generation.
- *
- * Use a timer task for peer discovery, and actor query.
+ * Use a timer task for peer discovery and actor query.
+ * @author Xiaojun Liu, Yang Zhao
+ * @version $Id$
+ * @since Ptolemy II 7.1
  */
 public class JxtaCorbaActorClient extends TypedAtomicActor implements
         QueryHandler {

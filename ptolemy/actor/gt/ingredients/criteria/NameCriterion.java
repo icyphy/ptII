@@ -1,7 +1,6 @@
 /* A criterion to constrain the name of an object in the host model.
 
 Below is the copyright agreement for the Ptolemy II system.
-Version: $Id$
 
 Copyright (c) 2008-2009 The Regents of the University of California.
 All rights reserved.

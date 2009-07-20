@@ -1,8 +1,5 @@
 /* A point in a plot.
 
- @Author: Edward A. Lee
- @Version: $Id$
-
  @Copyright (c) 1997-2005 The Regents of the University of California.
  All rights reserved.
 

@@ -1,6 +1,5 @@
-/*
+/* Test driver for ptalon.
 Below is the copyright agreement for the Ptolemy II system.
-Version: $Id$
 
 Copyright (c) 2006-2009 The Regents of the University of California.
 All rights reserved.
@@ -28,10 +27,15 @@ package ptolemy.actor.ptalon;
 
 import java.util.LinkedList;
 
+/** Test driver for ptalon.
+ * @author Adam Cataldo
+ * @version $Id$
+ * @since Ptolemy II 6.1
+ */
 public class Tester {
 
     public static void main(String args[]) {
-        String in = "ptalonActor:a(x := <1/>, y := <2/>)(z := ptalonActor:b(y := <2/>, z := <2/>))";
+         String in = "ptalonActor:a(x := <1/>, y := <2/>)(z := ptalonActor:b(y := <2/>, z := <2/>))";
         String[] out = _parseActorExpression(in);
         for (int i = 0; i < out.length; i++) {
             System.out.println(out[i]);

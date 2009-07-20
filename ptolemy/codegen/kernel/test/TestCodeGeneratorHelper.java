@@ -1,6 +1,5 @@
-/*
+/* Test stub class for the CodeGeneratorHelper class.
 Below is the copyright agreement for the Ptolemy II system.
-Version: $Id$
 
 Copyright (c) 2006-2009 The Regents of the University of California.
 All rights reserved.
@@ -24,8 +23,13 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 */
-/** Test CodeGeneratorHelper */
-
+/** Test stub class for the CodeGeneratorHelper class.
+ * @author Christopher Brooks
+ * @version $Id$
+ * @since Ptolemy II 6.0
+ * @Pt.ProposedRating Red (cxh)
+ * @Pt.AcceptedRating Red (cxh)
+ */
 package ptolemy.codegen.kernel.test;
 
 import ptolemy.codegen.kernel.CodeGeneratorHelper;
