@@ -59,7 +59,7 @@ public class ProgramCodeGeneratorAdapterStrategy {
      *  @param object The associated component.
      *  @see #getComponent
      */
-    public void setComponent(NamedObj object) {
+    public void setComponent(Object object) {
         // FIXME: Why is this a namedObj when the analyzeActor()
         // method requires an Actor?
         _object = object;
@@ -150,7 +150,7 @@ public class ProgramCodeGeneratorAdapterStrategy {
         // to find the associated adapter.
         String sourcePortChannel = source.port.getName() + "#"
                 + source.channelNumber + ", " + offset;
-        String sourceRef = ((ProgramCodeGeneratorAdapter) _getAdapter(source.port
+        String sourceRef = ((NamedProgramCodeGeneratorAdapter) _getAdapter(source.port
                 .getContainer())).getReference(sourcePortChannel);
 
         String sinkPortChannel = sink.port.getName() + "#" + sink.channelNumber
@@ -163,7 +163,7 @@ public class ProgramCodeGeneratorAdapterStrategy {
                 && sink.port.isOutput()) {
             sinkPortChannel = "@" + sinkPortChannel;
         }
-        String sinkRef = ((ProgramCodeGeneratorAdapter) _getAdapter(sink.port
+        String sinkRef = ((NamedProgramCodeGeneratorAdapter) _getAdapter(sink.port
                 .getContainer())).getReference(sinkPortChannel, true);
 
         // When the sink port is contained by a modal controller, it is
@@ -172,7 +172,7 @@ public class ProgramCodeGeneratorAdapterStrategy {
         // treat it as output port and this is not correct.
         // FIXME: what about offset?
         if (sink.port.getContainer() instanceof ModalController) {
-            sinkRef = ProgramCodeGeneratorAdapter.generateName(sink.port);
+            sinkRef = NamedProgramCodeGeneratorAdapter.generateName(sink.port);
             if (sink.port.isMultiport()) {
                 sinkRef = sinkRef + "[" + sink.channelNumber + "]";
             }
@@ -231,9 +231,9 @@ public class ProgramCodeGeneratorAdapterStrategy {
      *  @return The code generator adapter.
      *  @exception IllegalActionException If the adapter class cannot be found.
      */
-    protected ProgramCodeGeneratorAdapter _getAdapter(NamedObj component)
+    protected NamedProgramCodeGeneratorAdapter _getAdapter(NamedObj component)
             throws IllegalActionException {
-        return (ProgramCodeGeneratorAdapter) _codeGenerator
+        return (NamedProgramCodeGeneratorAdapter) _codeGenerator
                 .getAdapter(component);
     }
 

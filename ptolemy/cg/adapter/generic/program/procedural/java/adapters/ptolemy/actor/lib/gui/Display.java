@@ -29,7 +29,7 @@ package ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.acto
 
 import java.util.ArrayList;
 
-import ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapter;
+import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
 import ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapterStrategy;
 import ptolemy.kernel.util.IllegalActionException;
 
@@ -42,7 +42,7 @@ import ptolemy.kernel.util.IllegalActionException;
  * @Pt.ProposedRating Red (rodiers)
  * @Pt.AcceptedRating Red (rodiers)
  */
-public class Display extends ProgramCodeGeneratorAdapter {
+public class Display extends NamedProgramCodeGeneratorAdapter {
     /**
      * Construct a Display adapter.
      * @param actor The associated actor.
@@ -79,7 +79,7 @@ public class Display extends ProgramCodeGeneratorAdapter {
         if (title.trim().length() > 0) {
             args.add(title);
         } else {
-            args.add(ProgramCodeGeneratorAdapter
+            args.add(NamedProgramCodeGeneratorAdapter
                     .generateSimpleName(actor));
         }
 

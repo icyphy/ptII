@@ -26,7 +26,7 @@
  */
 package ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.domains.sdf.lib;
 
-import ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapter;
+import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
 
 /**
  A code generation helper class for ptolemy.domains.sdf.lib.DownSample.
@@ -37,7 +37,7 @@ import ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapter;
  @Pt.ProposedRating Red (mankit)
  @Pt.AcceptedRating Red (mankit)
  */
-public class DownSample extends ProgramCodeGeneratorAdapter {
+public class DownSample extends NamedProgramCodeGeneratorAdapter {
 
     /**
      * Construct a DownSample helper.

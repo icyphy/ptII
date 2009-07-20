@@ -29,7 +29,7 @@ package ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.doma
 import java.util.ArrayList;
 
 import ptolemy.cg.kernel.generic.program.CodeStream;
-import ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapter;
+import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.Type;
 import ptolemy.kernel.util.IllegalActionException;
@@ -43,7 +43,7 @@ import ptolemy.kernel.util.IllegalActionException;
  @Pt.ProposedRating Red (mankit)
  @Pt.AcceptedRating Red (mankit)
  */
-public class UpSample extends ProgramCodeGeneratorAdapter {
+public class UpSample extends NamedProgramCodeGeneratorAdapter {
 
     /**
      * Construct a UpSample helper.

@@ -284,7 +284,7 @@ public class CodeStream {
             // That means this is a request by the user. This check prevents
             // user from appending duplicate code blocks that are already
             // appended by the code generator by default.
-            String[] blocks = ProgramCodeGeneratorAdapter
+            String[] blocks = NamedProgramCodeGeneratorAdapter
                     .getDefaultBlocks();
 
             for (int i = 0; i < blocks.length; i++) {

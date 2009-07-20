@@ -28,7 +28,7 @@
  */
 package ptolemy.cg.adapter.generic.program.procedural.c.luminary.adapters.ptolemy.domains.ptides.lib;
 
-import ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapter;
+import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
 
 /**
  * A helper class for ptolemy.domains.ptides.lib.targets.luminary.SongWrapper.
@@ -39,7 +39,7 @@ import ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapter;
  * @Pt.ProposedRating Green (jiazou)
  * @Pt.AcceptedRating Green (jiazou)
  */
-public class SongWrapper extends ProgramCodeGeneratorAdapter {
+public class SongWrapper extends NamedProgramCodeGeneratorAdapter {
     /**
      * Constructor method for the Const helper.
      * @param actor the associated actor

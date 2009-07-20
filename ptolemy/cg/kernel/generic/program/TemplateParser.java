@@ -704,7 +704,7 @@ public class TemplateParser {
                             // TODO: This is a workaround and should be removed.
                             // Probably we should remove the $size feature, or at least,
                             // not support it on ports, but instead on tokens.
-                            return ((ProgramCodeGeneratorAdapter) _codeGenerator.getAdapter(_component)).getReference(name) + ".payload."
+                            return ((NamedProgramCodeGeneratorAdapter) _codeGenerator.getAdapter(_component)).getReference(name) + ".payload."
                                     + _getCodeGenerator().codeGenType(type) + "->size";
                         }
                     }
@@ -765,7 +765,7 @@ public class TemplateParser {
         } else if (macro.equals("ref")) {
             // TODO: This is a workaround and should be removed.
             // Probably we should remove the $ref feature.         
-            return ((ProgramCodeGeneratorAdapter) _codeGenerator.getAdapter(_component)).getReference(parameter);
+            return ((NamedProgramCodeGeneratorAdapter) _codeGenerator.getAdapter(_component)).getReference(parameter);
         } else if (macro.equals("targetType")) {
 
             TypedIOPort port = getPort(parameter);

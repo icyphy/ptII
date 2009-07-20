@@ -242,7 +242,7 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
      */
     public String generateFireFunctionCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
-        ProgramCodeGeneratorAdapter adapter = (ProgramCodeGeneratorAdapter) getAdapter(getContainer());
+        NamedProgramCodeGeneratorAdapter adapter = (NamedProgramCodeGeneratorAdapter) getAdapter(getContainer());
         code.append(adapter.generateFireFunctionCode());
         return code.toString();
     }
@@ -272,7 +272,7 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
         StringBuffer code = new StringBuffer();
         //code.append(comment("Initialize " + getContainer().getFullName()));
 
-        ProgramCodeGeneratorAdapter adapter = (ProgramCodeGeneratorAdapter) getAdapter(getContainer());
+        NamedProgramCodeGeneratorAdapter adapter = (NamedProgramCodeGeneratorAdapter) getAdapter(getContainer());
         code.append(adapter.generateInitializeCode());
         return code.toString();
     }
@@ -341,7 +341,7 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
      */
     public String generatePostfireCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
-        ProgramCodeGeneratorAdapter adapter = (ProgramCodeGeneratorAdapter) getAdapter(getContainer());
+        NamedProgramCodeGeneratorAdapter adapter = (NamedProgramCodeGeneratorAdapter) getAdapter(getContainer());
         code.append(adapter.generatePostfireCode());
         return code.toString();
     }
@@ -389,7 +389,7 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
      *   director cannot be found.
      */
     public String generateVariableDeclaration() throws IllegalActionException {
-        ProgramCodeGeneratorAdapter adapter = (ProgramCodeGeneratorAdapter) getAdapter(getContainer());
+        NamedProgramCodeGeneratorAdapter adapter = (NamedProgramCodeGeneratorAdapter) getAdapter(getContainer());
         return adapter.generateVariableDeclaration();
     }
 
@@ -405,7 +405,7 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
         //code.append(comment(1, "Variable initialization "
         //       + getContainer().getFullName()));
 
-        ProgramCodeGeneratorAdapter adapter = (ProgramCodeGeneratorAdapter) getAdapter(getContainer());
+        NamedProgramCodeGeneratorAdapter adapter = (NamedProgramCodeGeneratorAdapter) getAdapter(getContainer());
 
         code.append(adapter.generateVariableInitialization());
         return code.toString();
@@ -418,7 +418,7 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
      *  @return The generated variable name.
      */
     public String generateVariableName(NamedObj attribute) {
-        return ProgramCodeGeneratorAdapter.generateName(attribute)
+        return NamedProgramCodeGeneratorAdapter.generateName(attribute)
                 + "_";
     }
 
@@ -434,7 +434,7 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
         StringBuffer code = new StringBuffer();
         //code.append(comment(1, "Wrapup " + getContainer().getFullName()));
 
-        ProgramCodeGeneratorAdapter adapter = (ProgramCodeGeneratorAdapter) getAdapter(getContainer());
+        NamedProgramCodeGeneratorAdapter adapter = (NamedProgramCodeGeneratorAdapter) getAdapter(getContainer());
         code.append(adapter.generateWrapupCode());
         return code.toString();
     }
@@ -593,7 +593,7 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
      *   top composite actor is unavailable.
      */
     protected void _analyzeTypeConversions() throws IllegalActionException {
-        ((ProgramCodeGeneratorAdapter) getAdapter(getContainer()))
+        ((NamedProgramCodeGeneratorAdapter) getAdapter(getContainer()))
                 .analyzeTypeConvert();
     }
 
@@ -706,7 +706,7 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
 
         } else {
             // Generate embedded code.
-            ProgramCodeGeneratorAdapter compositeAdapter = (ProgramCodeGeneratorAdapter) getAdapter(model);
+            NamedProgramCodeGeneratorAdapter compositeAdapter = (NamedProgramCodeGeneratorAdapter) getAdapter(model);
             code += compositeAdapter.generateFireCode();
         }
 
@@ -745,7 +745,7 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
     protected String _generateSharedCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
-        ProgramCodeGeneratorAdapter adapter = (ProgramCodeGeneratorAdapter) getAdapter(getContainer());
+        NamedProgramCodeGeneratorAdapter adapter = (NamedProgramCodeGeneratorAdapter) getAdapter(getContainer());
         Set<String> sharedCodeBlocks = adapter.getSharedCode();
         Iterator<String> blocks = sharedCodeBlocks.iterator();
         while (blocks.hasNext()) {
@@ -789,7 +789,7 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
 
         _reset();
 
-        _sanitizedModelName = ProgramCodeGeneratorAdapter
+        _sanitizedModelName = NamedProgramCodeGeneratorAdapter
                 .generateName(_model);
 
         // Each time a .dll file is generated, we must use a different name
@@ -993,7 +993,7 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
      */
     protected String _generatePreinitializeCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
-        ProgramCodeGeneratorAdapter adapter = (ProgramCodeGeneratorAdapter) getAdapter(getContainer());
+        NamedProgramCodeGeneratorAdapter adapter = (NamedProgramCodeGeneratorAdapter) getAdapter(getContainer());
 
         try {
             // Determine which variables in the model can change
@@ -1101,7 +1101,7 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
         String[] results = null;
         try {
             results = splitLongBody(_LINES_PER_METHOD, prefix
-                    + ProgramCodeGeneratorAdapter
+                    + NamedProgramCodeGeneratorAdapter
                             .generateName(getContainer()), code);
         } catch (IOException ex) {
             // Ignore

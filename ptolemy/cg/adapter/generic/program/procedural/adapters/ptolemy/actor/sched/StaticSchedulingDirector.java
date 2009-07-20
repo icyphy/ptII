@@ -46,6 +46,7 @@ import ptolemy.actor.util.DFUtilities;
 import ptolemy.cg.adapter.generic.adapters.ptolemy.actor.Director;
 import ptolemy.cg.kernel.generic.GenericCodeGenerator;
 import ptolemy.cg.kernel.generic.program.CodeStream;
+import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
 import ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapter;
 import ptolemy.cg.kernel.generic.program.TemplateParser;
 import ptolemy.data.BooleanToken;
@@ -168,7 +169,7 @@ public class StaticSchedulingDirector extends Director {
             // FIXME: Before looking for a adapter class, we should check to
             // see whether the actor contains a code generator attribute.
             // If it does, we should use that as the adapter.
-            ProgramCodeGeneratorAdapter adapter = (ProgramCodeGeneratorAdapter) getCodeGenerator()
+            NamedProgramCodeGeneratorAdapter adapter = (NamedProgramCodeGeneratorAdapter) getCodeGenerator()
                     .getAdapter((NamedObj) actor);
 
             if (inline) {
@@ -187,7 +188,7 @@ public class StaticSchedulingDirector extends Director {
                             + _eol);
                 }
 
-                code.append(ProgramCodeGeneratorAdapter
+                code.append(NamedProgramCodeGeneratorAdapter
                         .generateName((NamedObj) actor)
                         + "();" + _eol);
 
@@ -243,7 +244,7 @@ public class StaticSchedulingDirector extends Director {
 
         // The code generated in generateModeTransitionCode() is executed
         // after one global iteration, e.g., in HDF model.
-        ProgramCodeGeneratorAdapter modelAdapter = (ProgramCodeGeneratorAdapter) getCodeGenerator()
+        NamedProgramCodeGeneratorAdapter modelAdapter = (NamedProgramCodeGeneratorAdapter) getCodeGenerator()
                 .getAdapter(_director.getContainer());
         modelAdapter.generateModeTransitionCode(code);
 
@@ -310,7 +311,7 @@ public class StaticSchedulingDirector extends Director {
      *   exist or does not have a value.
      */
     public String getReference(String name, boolean isWrite,
-            ProgramCodeGeneratorAdapter target) throws IllegalActionException {
+            NamedProgramCodeGeneratorAdapter target) throws IllegalActionException {
 
         name = processCode(name);
         String castType = _getCastType(name);
@@ -386,7 +387,7 @@ public class StaticSchedulingDirector extends Director {
      */
     public String getReference(TypedIOPort port, String[] channelAndOffset,
             boolean forComposite, boolean isWrite,
-            ProgramCodeGeneratorAdapter target) throws IllegalActionException {
+            NamedProgramCodeGeneratorAdapter target) throws IllegalActionException {
 
         StringBuffer result = new StringBuffer();
         boolean dynamicReferencesAllowed = allowDynamicMultiportReference();
@@ -438,7 +439,7 @@ public class StaticSchedulingDirector extends Director {
 
             if (remoteReceivers.length == 0) {
                 // The channel of this output port doesn't have any sink.
-                result.append(ProgramCodeGeneratorAdapter
+                result.append(NamedProgramCodeGeneratorAdapter
                         .generateName(target.getComponent()));
                 result.append("_");
                 result.append(port.getName());
@@ -502,7 +503,7 @@ public class StaticSchedulingDirector extends Director {
                     if (i != 0) {
                         result.append(" = ");
                     }
-                    result.append(ProgramCodeGeneratorAdapter
+                    result.append(NamedProgramCodeGeneratorAdapter
                             .generateName(sinkPort));
 
                     if (sinkPort.isMultiport()) {
@@ -527,7 +528,7 @@ public class StaticSchedulingDirector extends Director {
 
         if (_checkLocal(forComposite, port)) {
 
-            result.append(ProgramCodeGeneratorAdapter
+            result.append(NamedProgramCodeGeneratorAdapter
                     .generateName(port));
 
             //if (!channelAndOffset[0].equals("")) {
@@ -624,7 +625,7 @@ public class StaticSchedulingDirector extends Director {
      * @throws IllegalActionException If the helper throws it while
      *  generating the label.
      */
-    protected String _getReference(ProgramCodeGeneratorAdapter target,
+    protected String _getReference(NamedProgramCodeGeneratorAdapter target,
             Attribute attribute, String[] channelAndOffset)
             throws IllegalActionException {
         return "";
@@ -906,7 +907,7 @@ public class StaticSchedulingDirector extends Director {
                     .deepEntityList().iterator();
             while (actors.hasNext()) {
                 Actor actor = (Actor) actors.next();
-                ProgramCodeGeneratorAdapter adapterObject = (ProgramCodeGeneratorAdapter) getCodeGenerator()
+                NamedProgramCodeGeneratorAdapter adapterObject = (NamedProgramCodeGeneratorAdapter) getCodeGenerator()
                         .getAdapter((NamedObj) actor);
                 // Initialize code for the actor.
                 code.append(adapterObject.generateInitializeCode());
@@ -921,7 +922,7 @@ public class StaticSchedulingDirector extends Director {
 
                 for (IOPort port : (List<IOPort>) ((Entity) actor).portList()) {
                     if (port.isOutsideConnected()) {
-                        ProgramCodeGeneratorAdapter portAdapter = (ProgramCodeGeneratorAdapter) getCodeGenerator()
+                        NamedProgramCodeGeneratorAdapter portAdapter = (NamedProgramCodeGeneratorAdapter) getCodeGenerator()
                                 .getAdapter(port);
                         code.append(portAdapter.generateInitializeCode());
                     }
@@ -1074,7 +1075,7 @@ public class StaticSchedulingDirector extends Director {
             code.append(getCodeGenerator().comment(
                     _eol
                             + "....Begin updateConnectedPortsOffset...."
-                            + ProgramCodeGeneratorAdapter
+                            + NamedProgramCodeGeneratorAdapter
                                     .generateName(_port)));
 
             if (rate == 0) {
@@ -1157,7 +1158,7 @@ public class StaticSchedulingDirector extends Director {
             code.append(getCodeGenerator().comment(
                     _eol
                             + "....End updateConnectedPortsOffset...."
-                            + ProgramCodeGeneratorAdapter
+                            + NamedProgramCodeGeneratorAdapter
                                     .generateName(_port)));
             return code.toString();
         }
@@ -1176,7 +1177,7 @@ public class StaticSchedulingDirector extends Director {
             String code = getCodeGenerator().comment(
                     _eol
                             + "....Begin updateOffset...."
-                            + ProgramCodeGeneratorAdapter
+                            + NamedProgramCodeGeneratorAdapter
                                     .generateName(_port));
 
             //        int width = 0;
@@ -1213,7 +1214,7 @@ public class StaticSchedulingDirector extends Director {
                     code += getCodeGenerator().comment(
                             _eol
                                     + "\n....End updateOffset...."
-                                    + ProgramCodeGeneratorAdapter
+                                    + NamedProgramCodeGeneratorAdapter
                                             .generateName(_port));
                 }
             }

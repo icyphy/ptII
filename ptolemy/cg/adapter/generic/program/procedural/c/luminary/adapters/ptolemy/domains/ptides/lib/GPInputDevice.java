@@ -33,7 +33,7 @@ import java.util.List;
 
 import ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.ptides.lib.InputDevice;
 import ptolemy.cg.kernel.generic.program.CodeStream;
-import ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapter;
+import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
 import ptolemy.data.IntToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
@@ -88,7 +88,7 @@ public class GPInputDevice extends InputDevice {
         List args = new LinkedList();
         CodeStream _codeStream = getStrategy().getTemplateParser().getCodeStream();
 
-        args.add(ProgramCodeGeneratorAdapter
+        args.add(NamedProgramCodeGeneratorAdapter
                 .generateName(getComponent()));
         args.add(_padID);
         args.add(_pinID);

@@ -30,7 +30,7 @@ package ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.acto
 import java.util.ArrayList;
 
 import ptolemy.cg.kernel.generic.program.CodeStream;
-import ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapter;
+import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
 import ptolemy.kernel.util.IllegalActionException;
 
 /**
@@ -42,7 +42,7 @@ import ptolemy.kernel.util.IllegalActionException;
  * @Pt.ProposedRating Green (mankit)
  * @Pt.AcceptedRating Green (cxh)
  */
-public class ElementsToArray extends ProgramCodeGeneratorAdapter {
+public class ElementsToArray extends NamedProgramCodeGeneratorAdapter {
     /**
      * Constructor the ElementsToArray helper.
      * @param actor The associated actor.

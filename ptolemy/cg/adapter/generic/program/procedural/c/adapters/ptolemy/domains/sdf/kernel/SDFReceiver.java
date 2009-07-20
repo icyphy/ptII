@@ -44,6 +44,14 @@ public class SDFReceiver extends Receiver {
                 + " = " + token + ";" + _eol;
     }
 
+    @Override
+    protected String _generateTypeConvertStatement(Channel source)
+            throws IllegalActionException {
+        // TODO Auto-generated method stub
+        // TODO JIA.
+        return null;
+    }
+
     //$send(port#channel) ==> port_channel[writeOffset]
     //$get(port#channel) ==> port_channel[readOffset]
 }

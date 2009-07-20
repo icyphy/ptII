@@ -42,7 +42,7 @@ import ptolemy.actor.LazyTypedCompositeActor;
 import ptolemy.actor.NoTokenException;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.util.DFUtilities;
-import ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapter;
+import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
 import ptolemy.cg.kernel.generic.program.procedural.java.modular.ModularCodeGenerator;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
@@ -435,7 +435,7 @@ public class ModularCodeGenTypedCompositeActor extends LazyTypedCompositeActor {
                 throw new IllegalActionException(this, e, "Can't generate code for " + getName());
             }
         }
-        String className = ProgramCodeGeneratorAdapter.generateName(this);        
+        String className = NamedProgramCodeGeneratorAdapter.generateName(this);        
         Class<?> classInstance = null;
         URL url = null;
         try {

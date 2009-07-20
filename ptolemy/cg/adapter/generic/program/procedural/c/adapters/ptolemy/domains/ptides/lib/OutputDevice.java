@@ -26,7 +26,7 @@
  */
 package ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.ptides.lib;
 
-import ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapter;
+import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
 import ptolemy.kernel.util.IllegalActionException;
 
 /**
@@ -36,7 +36,7 @@ import ptolemy.kernel.util.IllegalActionException;
  @version $Id$
  @since Ptolemy II 7.1
  */
-public abstract class OutputDevice extends ProgramCodeGeneratorAdapter {
+public abstract class OutputDevice extends NamedProgramCodeGeneratorAdapter {
 
     /**
      * Construct an OutputDevice helper.

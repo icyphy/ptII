@@ -27,7 +27,7 @@
  */
 package ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.actor.lib;
 
-import ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapter;
+import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
 import ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapterStrategy;
 import ptolemy.kernel.util.IllegalActionException;
 
@@ -43,7 +43,7 @@ import ptolemy.kernel.util.IllegalActionException;
  @Pt.ProposedRating Red (rodiers)
  @Pt.AcceptedRating Red (rodiers)
  */
-public class Scale extends ProgramCodeGeneratorAdapter {
+public class Scale extends NamedProgramCodeGeneratorAdapter {
     /**
      *  Construct a Scale adapter.
      *  @param actor The given ptolemy.actor.lib.Scale actor.

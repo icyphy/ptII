@@ -35,7 +35,7 @@ import ptolemy.kernel.util.IllegalActionException;
 ////Receiver
 
 /** The base class adapter for recevier.
- *  @author Jia Zou, Man-Kit Leung, Isaac Liu
+ *  @author Jia Zou, Man-Kit Leung, Isaac Liu, Bert Rodiers
  *  @version $Id$
  *  @since Ptolemy II 7.1
  *  @Pt.ProposedRating Red (jiazou)
@@ -66,7 +66,20 @@ public abstract class Receiver extends ProgramCodeGeneratorAdapter {
      *  @throws IllegalActionException
      */
     abstract public String generateHasTokenCode() throws IllegalActionException;
-
+    
+    /**
+     * Generate the initialize code. In this base class, return empty
+     * string. Subclasses may extend this method to generate initialize
+     * code of the associated component and append the code to the
+     * given string buffer.
+     * @return The initialize code of the containing composite actor.
+     * @exception IllegalActionException If thrown while appending to the
+     * the block or processing the macros.
+     */
+    public String generateInitializeCode() throws IllegalActionException {
+        return _generateBlockByName(_defaultBlocks[1]);
+    }
+    
     /** Abstract class to generate code for putting tokens from the receiver.
      *  @return generate put code.
      *  @throws IllegalActionException

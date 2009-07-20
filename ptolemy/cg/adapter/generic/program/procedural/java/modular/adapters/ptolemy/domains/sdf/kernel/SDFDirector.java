@@ -53,7 +53,7 @@ import ptolemy.actor.sched.Schedule;
 import ptolemy.actor.util.DFUtilities;
 import ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.TypedCompositeActor;
 import ptolemy.cg.kernel.generic.program.CodeStream;
-import ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapter;
+import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
 import ptolemy.cg.lib.ModularCodeGenTypedCompositeActor;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.type.BaseType;
@@ -119,7 +119,7 @@ public class SDFDirector
             // FIXME: Before looking for a adapter class, we should check to
             // see whether the actor contains a code generator attribute.
             // If it does, we should use that as the adapter.
-            ProgramCodeGeneratorAdapter adapter = (ProgramCodeGeneratorAdapter) getCodeGenerator()
+            NamedProgramCodeGeneratorAdapter adapter = (NamedProgramCodeGeneratorAdapter) getCodeGenerator()
                     .getAdapter((NamedObj) actor);
 
             if (actor instanceof ModularCodeGenTypedCompositeActor) {
@@ -130,12 +130,12 @@ public class SDFDirector
                     throw new IllegalActionException(actor, e, "Can't generate code for " + actor.getName());
                 }
                 
-                String className = ProgramCodeGeneratorAdapter.generateName((NamedObj) actor);
+                String className = NamedProgramCodeGeneratorAdapter.generateName((NamedObj) actor);
                 String actorName = ModularCodeGenTypedCompositeActor.classToActorName(className);
                 
                 code.append(actorName + ".fire(");
                 
-                ProgramCodeGeneratorAdapter codegeneratorAdaptor = getAdapter((NamedObj)actor);
+                NamedProgramCodeGeneratorAdapter codegeneratorAdaptor = (NamedProgramCodeGeneratorAdapter) getAdapter((NamedObj)actor);
                 
                 Iterator<?> inputPorts = actor.inputPortList()
                 .iterator();
@@ -375,7 +375,7 @@ public class SDFDirector
             Actor actor = firing.getActor();
             
             if (actor instanceof ModularCodeGenTypedCompositeActor) {
-                String className = ProgramCodeGeneratorAdapter.generateName((NamedObj) actor);
+                String className = NamedProgramCodeGeneratorAdapter.generateName((NamedObj) actor);
                 String actorName = ModularCodeGenTypedCompositeActor.classToActorName(className);
                 
                 code.append(className + " " + actorName + ";" + _eol);
@@ -406,7 +406,7 @@ public class SDFDirector
             if (actor instanceof ModularCodeGenTypedCompositeActor) {
                 //call the internal generated code of the composite actor
                 
-                String className = ProgramCodeGeneratorAdapter.generateName((NamedObj) actor);
+                String className = NamedProgramCodeGeneratorAdapter.generateName((NamedObj) actor);
                 String actorName = ModularCodeGenTypedCompositeActor.classToActorName(className);
                 
                 code.append(actorName + " = new " + className + "();" + _eol);

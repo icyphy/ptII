@@ -28,7 +28,7 @@
  */
 package ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib;
 
-import ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapter;
+import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
 
 /**
  * A adapter class for ptolemy.actor.lib.Const.
@@ -40,7 +40,7 @@ import ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapter;
  * @Pt.AcceptedRating Red (rodiers)
  */
 
-public class Const extends ProgramCodeGeneratorAdapter {
+public class Const extends NamedProgramCodeGeneratorAdapter {
     /**
      * Constructor method for the Const adapter.
      * @param actor the associated actor

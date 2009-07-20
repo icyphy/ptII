@@ -37,7 +37,7 @@ import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.TypedIOPort;
-import ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapter;
+import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
 import ptolemy.domains.ptides.lib.InterruptDevice;
 import ptolemy.domains.ptides.lib.targets.luminary.GPInputDevice;
 import ptolemy.kernel.util.IllegalActionException;
@@ -100,7 +100,7 @@ public class PtidesBasicDirector
             // If the input is a sensor device, then we need to use interrupts to trigger it.
             if (actor instanceof InterruptDevice) {
                 devices.put(actor, new String("Sensing_"
-                        + ProgramCodeGeneratorAdapter
+                        + NamedProgramCodeGeneratorAdapter
                                 .generateName((NamedObj) actor)));
             }
         }
@@ -220,7 +220,7 @@ public class PtidesBasicDirector
     public String generateMainLoop() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
-        code.append(ProgramCodeGeneratorAdapter.generateName(_director
+        code.append(NamedProgramCodeGeneratorAdapter.generateName(_director
                 .getContainer())
                 + "();" + _eol);
 

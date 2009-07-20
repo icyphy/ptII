@@ -39,7 +39,7 @@ import ptolemy.actor.parameters.ParameterPort;
 import ptolemy.actor.parameters.PortParameter;
 import ptolemy.cg.adapter.generic.adapters.ptolemy.actor.Director;
 import ptolemy.cg.kernel.generic.program.CodeStream;
-import ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapter;
+import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
 import ptolemy.cg.kernel.generic.program.procedural.ProceduralCodeGenerator;
 import ptolemy.cg.lib.CompiledCompositeActor;
 import ptolemy.data.BooleanToken;
@@ -74,7 +74,7 @@ public class TypedCompositeActor extends
      * need type conversion.
      * @exception IllegalActionException If any of the adapters of the
      * inside actors is unavailable.
-     * @see ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapter#analyzeTypeConvert
+     * @see ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter#analyzeTypeConvert
      */
     @Override
     public void analyzeTypeConvert() throws IllegalActionException {
@@ -85,7 +85,7 @@ public class TypedCompositeActor extends
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
             try {
-                ProgramCodeGeneratorAdapter adapterObject = (ProgramCodeGeneratorAdapter) getCodeGenerator()
+                NamedProgramCodeGeneratorAdapter adapterObject = (NamedProgramCodeGeneratorAdapter) getCodeGenerator()
                         .getAdapter(actor);
                 adapterObject.analyzeTypeConvert();
             } catch (Throwable throwable) {
@@ -334,7 +334,7 @@ public class TypedCompositeActor extends
 
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
-            ProgramCodeGeneratorAdapter adapterObject = (ProgramCodeGeneratorAdapter) getCodeGenerator()
+            NamedProgramCodeGeneratorAdapter adapterObject = (NamedProgramCodeGeneratorAdapter) getCodeGenerator()
                     .getAdapter(actor);
             files.addAll(adapterObject.getHeaderFiles());
         }
@@ -363,7 +363,7 @@ public class TypedCompositeActor extends
 
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
-            ProgramCodeGeneratorAdapter adapterObject = (ProgramCodeGeneratorAdapter) getCodeGenerator()
+            NamedProgramCodeGeneratorAdapter adapterObject = (NamedProgramCodeGeneratorAdapter) getCodeGenerator()
                     .getAdapter(actor);
             includeDirectories.addAll(adapterObject.getIncludeDirectories());
         }
@@ -391,7 +391,7 @@ public class TypedCompositeActor extends
 
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
-            ProgramCodeGeneratorAdapter adapterObject = (ProgramCodeGeneratorAdapter) getCodeGenerator()
+            NamedProgramCodeGeneratorAdapter adapterObject = (NamedProgramCodeGeneratorAdapter) getCodeGenerator()
                     .getAdapter(actor);
             libraries.addAll(adapterObject.getLibraries());
         }
@@ -444,7 +444,7 @@ public class TypedCompositeActor extends
 
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
-            ProgramCodeGeneratorAdapter adapterObject = (ProgramCodeGeneratorAdapter) getCodeGenerator()
+            NamedProgramCodeGeneratorAdapter adapterObject = (NamedProgramCodeGeneratorAdapter) getCodeGenerator()
                     .getAdapter(actor);
             sharedCode.addAll(adapterObject.getSharedCode());
         }

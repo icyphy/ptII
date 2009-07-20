@@ -40,6 +40,7 @@ import ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.sche
 import ptolemy.cg.kernel.generic.GenericCodeGenerator;
 import ptolemy.cg.kernel.generic.program.CodeStream;
 import ptolemy.cg.kernel.generic.program.ProgramCodeGenerator;
+import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
 import ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapter;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
@@ -91,7 +92,7 @@ public class SDFDirector extends StaticSchedulingDirector {
 
         ptolemy.actor.CompositeActor container = (ptolemy.actor.CompositeActor) getComponent()
                 .getContainer();
-        ProgramCodeGeneratorAdapter containerAdapter = (ProgramCodeGeneratorAdapter) getCodeGenerator()
+        NamedProgramCodeGeneratorAdapter containerAdapter = (NamedProgramCodeGeneratorAdapter) getCodeGenerator()
                 .getAdapter(container);
 
         // Reset the offset for all of the contained actors' input ports.
@@ -270,7 +271,7 @@ public class SDFDirector extends StaticSchedulingDirector {
 
         if (width != 0) {
             // Declare the read offset variable.
-            String channelReadOffset = ProgramCodeGeneratorAdapter
+            String channelReadOffset = NamedProgramCodeGeneratorAdapter
                     .generateName(port);
             channelReadOffset += "_readOffset";
 
@@ -284,7 +285,7 @@ public class SDFDirector extends StaticSchedulingDirector {
             code.append("static int " + channelReadOffset + ";\n");
 
             // Declare the write offset variable.
-            String channelWriteOffset = ProgramCodeGeneratorAdapter
+            String channelWriteOffset = NamedProgramCodeGeneratorAdapter
                     .generateName(port);
 
             channelWriteOffset += "_writeOffset";
@@ -385,7 +386,7 @@ public class SDFDirector extends StaticSchedulingDirector {
 
                 // Declare the read offset variable.
                 StringBuffer channelReadOffset = new StringBuffer();
-                channelReadOffset.append(ProgramCodeGeneratorAdapter
+                channelReadOffset.append(NamedProgramCodeGeneratorAdapter
                         .generateName(port));
                 if (width > 1) {
                     channelReadOffset.append("_" + channelNumber);
@@ -404,7 +405,7 @@ public class SDFDirector extends StaticSchedulingDirector {
 
                 // Declare the write offset variable.
                 StringBuffer channelWriteOffset = new StringBuffer();
-                channelWriteOffset.append(ProgramCodeGeneratorAdapter
+                channelWriteOffset.append(NamedProgramCodeGeneratorAdapter
                         .generateName(port));
                 if (width > 1) {
                     channelWriteOffset.append("_" + channelNumber);
@@ -428,7 +429,7 @@ public class SDFDirector extends StaticSchedulingDirector {
      *   director cannot be found.
      */
     protected String _generateVariableInitialization(
-            ProgramCodeGeneratorAdapter target) throws IllegalActionException {
+            NamedProgramCodeGeneratorAdapter target) throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
         ProgramCodeGenerator codeGenerator = getCodeGenerator();
@@ -473,7 +474,7 @@ public class SDFDirector extends StaticSchedulingDirector {
      *  generating the label.
      */
     @Override
-    protected String _getReference(ProgramCodeGeneratorAdapter target,
+    protected String _getReference(NamedProgramCodeGeneratorAdapter target,
             Attribute attribute, String[] channelAndOffset)
             throws IllegalActionException {
         StringBuffer result = new StringBuffer();
@@ -811,6 +812,6 @@ public class SDFDirector extends StaticSchedulingDirector {
     /** A hashmap that keeps track of parameters that are referenced for
      *  the associated actor.
      */
-    protected HashMap<ProgramCodeGeneratorAdapter, HashSet<Parameter>> _referencedParameters = new HashMap<ProgramCodeGeneratorAdapter, HashSet<Parameter>>();
+    protected HashMap<NamedProgramCodeGeneratorAdapter, HashSet<Parameter>> _referencedParameters = new HashMap<NamedProgramCodeGeneratorAdapter, HashSet<Parameter>>();
 
 }

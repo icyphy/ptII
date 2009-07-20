@@ -39,6 +39,7 @@ import ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.Type
 import ptolemy.cg.kernel.generic.GenericCodeGenerator;
 import ptolemy.cg.kernel.generic.program.CodeStream;
 import ptolemy.cg.kernel.generic.program.ProgramCodeGenerator;
+import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
 import ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapter;
 import ptolemy.cg.kernel.generic.program.procedural.java.JavaCodeGenerator;
 import ptolemy.cg.lib.CompiledCompositeActor;
@@ -330,12 +331,12 @@ public class SDFDirector
      */
     @Override
     protected String _generateVariableDeclaration(
-            ProgramCodeGeneratorAdapter target) throws IllegalActionException {
+            NamedProgramCodeGeneratorAdapter target) throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
         ProgramCodeGenerator codeGenerator = getCodeGenerator();
 
-        String name = ProgramCodeGeneratorAdapter.generateName(target
+        String name = NamedProgramCodeGeneratorAdapter.generateName(target
                 .getComponent());
         // Generate variable declarations for referenced parameters.
         String referencedParameterDeclaration = _generateReferencedParameterDeclaration(target);
@@ -387,7 +388,7 @@ public class SDFDirector
      *  generating the label.
      */
     @Override
-    protected String _getReference(ProgramCodeGeneratorAdapter target,
+    protected String _getReference(NamedProgramCodeGeneratorAdapter target,
             Attribute attribute, String[] channelAndOffset)
             throws IllegalActionException {
         StringBuffer result = new StringBuffer();
@@ -450,7 +451,7 @@ public class SDFDirector
             throws IllegalActionException {
 
         code.append("static " + targetType(port.getType()) + " "
-                + ProgramCodeGeneratorAdapter.generateName(port));
+                + NamedProgramCodeGeneratorAdapter.generateName(port));
 
         int bufferSize = _ports.getBufferSize(port);
 
@@ -569,7 +570,7 @@ public class SDFDirector
      *  getting port information.
      */
     private String _generateTypeConvertVariableDeclaration(
-            ProgramCodeGeneratorAdapter target) throws IllegalActionException {
+            NamedProgramCodeGeneratorAdapter target) throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
         Iterator<?> channels = target.getTypeConvertChannels()

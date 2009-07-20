@@ -38,6 +38,7 @@ import ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.Type
 import ptolemy.cg.kernel.generic.GenericCodeGenerator;
 import ptolemy.cg.kernel.generic.program.CodeStream;
 import ptolemy.cg.kernel.generic.program.ProgramCodeGenerator;
+import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
 import ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapter;
 import ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapter.Channel;
 import ptolemy.cg.kernel.generic.program.procedural.c.CCodeGenerator;
@@ -513,12 +514,12 @@ public class SDFDirector
      */
     @Override
     protected String _generateVariableDeclaration(
-            ProgramCodeGeneratorAdapter target) throws IllegalActionException {
+            NamedProgramCodeGeneratorAdapter target) throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
         ProgramCodeGenerator codeGenerator = getCodeGenerator();
 
-        String name = ProgramCodeGeneratorAdapter
+        String name = NamedProgramCodeGeneratorAdapter
                 .generateName(getComponent());
         // Generate variable declarations for referenced parameters.
         String referencedParameterDeclaration = _generateReferencedParameterDeclaration(target);
@@ -586,7 +587,7 @@ public class SDFDirector
             code.append("static "
                     + targetType(inputPort.getType())
                     + " "
-                    + ProgramCodeGeneratorAdapter
+                    + NamedProgramCodeGeneratorAdapter
                             .generateName(inputPort));
 
             int bufferSize = _ports.getBufferSize(inputPort);
@@ -629,7 +630,7 @@ public class SDFDirector
                 code.append("static "
                         + targetType(outputPort.getType())
                         + " "
-                        + ProgramCodeGeneratorAdapter
+                        + NamedProgramCodeGeneratorAdapter
                                 .generateName(outputPort));
 
                 if (outputPort.isMultiport()) {
@@ -655,7 +656,7 @@ public class SDFDirector
      *  getting port information.
      */
     private String _generateTypeConvertVariableDeclaration(
-            ProgramCodeGeneratorAdapter target) throws IllegalActionException {
+            NamedProgramCodeGeneratorAdapter target) throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
         Iterator<?> channels = target.getTypeConvertChannels()

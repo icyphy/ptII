@@ -47,6 +47,7 @@ import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.lib.jni.PointerToken;
 import ptolemy.cg.kernel.generic.CodeGeneratorUtilities;
 import ptolemy.cg.kernel.generic.program.CodeStream;
+import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
 import ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapter;
 import ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapterStrategy;
 import ptolemy.cg.kernel.generic.program.procedural.ProceduralCodeGenerator;
@@ -616,7 +617,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
                 // SetVariable needs this to be a Variable, not a Parameter.
                 Variable variable = (Variable) modifiedVariables.next();
 
-                ProgramCodeGeneratorAdapter adapter = (ProgramCodeGeneratorAdapter) getAdapter(variable
+                NamedProgramCodeGeneratorAdapter adapter = (NamedProgramCodeGeneratorAdapter) getAdapter(variable
                         .getContainer());
                 code.append("static " + adapter.targetType(variable.getType())
                         + " " + generateVariableName(variable) + ";" + _eol);
@@ -646,7 +647,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
                 Variable variable = (Variable) modifiedVariables.next();
 
                 NamedObj container = variable.getContainer();
-                ProgramCodeGeneratorAdapter containerAdapter = (ProgramCodeGeneratorAdapter) getAdapter(container);
+                NamedProgramCodeGeneratorAdapter containerAdapter = (NamedProgramCodeGeneratorAdapter) getAdapter(container);
                 code.append(INDENT1
                         + generateVariableName(variable)
                         + " = "
@@ -1029,7 +1030,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
     protected String _generateIncludeFiles() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
-        ProgramCodeGeneratorAdapter compositeActorAdapter = (ProgramCodeGeneratorAdapter) getAdapter(getContainer());
+        NamedProgramCodeGeneratorAdapter compositeActorAdapter = (NamedProgramCodeGeneratorAdapter) getAdapter(getContainer());
         Set<String> includingFiles = compositeActorAdapter.getHeaderFiles();
 
         for (String file : (Set<String>) includingFiles) {

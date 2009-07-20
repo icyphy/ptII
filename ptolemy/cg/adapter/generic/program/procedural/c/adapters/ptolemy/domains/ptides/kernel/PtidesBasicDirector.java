@@ -41,6 +41,7 @@ import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.cg.adapter.generic.adapters.ptolemy.actor.Director;
 import ptolemy.cg.kernel.generic.program.CodeStream;
+import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
 import ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapter;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.Type;
@@ -210,12 +211,12 @@ public class PtidesBasicDirector extends Director {
             Iterator it = _actuators.keySet().iterator();
             Actor actor = (Actor) it.next();
             code.append("Actuation_"
-                    + ProgramCodeGeneratorAdapter
+                    + NamedProgramCodeGeneratorAdapter
                             .generateName((NamedObj) actor));
             while (it.hasNext()) {
                 actor = (Actor) it.next();
                 code.append(", Actuation_"
-                        + ProgramCodeGeneratorAdapter
+                        + NamedProgramCodeGeneratorAdapter
                                 .generateName((NamedObj) actor));
             }
             code.append("};" + _eol);
@@ -232,7 +233,7 @@ public class PtidesBasicDirector extends Director {
                 .getContainer()).deepEntityList()) {
             if (actor instanceof OutputDevice) {
                 code.append("void Actuation_"
-                        + ProgramCodeGeneratorAdapter
+                        + NamedProgramCodeGeneratorAdapter
                                 .generateName((NamedObj) actor) + "(void);"
                         + _eol);
             }
@@ -251,7 +252,7 @@ public class PtidesBasicDirector extends Director {
         for (Actor actor : (List<Actor>) ((CompositeActor) _director
                 .getContainer()).deepEntityList()) {
             code.append("void "
-                    + ProgramCodeGeneratorAdapter
+                    + NamedProgramCodeGeneratorAdapter
                             .generateName((NamedObj) actor) + "(void);" + _eol);
         }
 
@@ -267,7 +268,7 @@ public class PtidesBasicDirector extends Director {
      *   reading parameters throws it.
      */
     protected String _generateDirectorHeader() {
-        return ProgramCodeGeneratorAdapter.generateName(_director)
+        return NamedProgramCodeGeneratorAdapter.generateName(_director)
                 + "_controlBlock";
     }
 
@@ -300,14 +301,14 @@ public class PtidesBasicDirector extends Director {
 
         // The references are associated with their own adapter, so we need
         // to find the associated adapter.
-        String sourcePortChannel = ProgramCodeGeneratorAdapter
+        String sourcePortChannel = NamedProgramCodeGeneratorAdapter
                 .generateName(source.port)
                 + "#" + source.channelNumber + ", " + offset;
-        String sourceRef = ((ProgramCodeGeneratorAdapter) (getCodeGenerator()
+        String sourceRef = ((NamedProgramCodeGeneratorAdapter) (getCodeGenerator()
                 .getAdapter(source.port.getContainer())))
                 .getReference(sourcePortChannel);
 
-        String sinkPortChannel = ProgramCodeGeneratorAdapter
+        String sinkPortChannel = NamedProgramCodeGeneratorAdapter
                 .generateName(sink.port)
                 + "#" + sink.channelNumber + ", " + offset;
 
@@ -318,7 +319,7 @@ public class PtidesBasicDirector extends Director {
                 && sink.port.isOutput()) {
             sinkPortChannel = "@" + sinkPortChannel;
         }
-        String sinkRef = ((ProgramCodeGeneratorAdapter) (getCodeGenerator()
+        String sinkRef = ((NamedProgramCodeGeneratorAdapter) (getCodeGenerator()
                 .getAdapter(sink.port.getContainer()))).getReference(
                 sinkPortChannel, true);
 
@@ -328,7 +329,7 @@ public class PtidesBasicDirector extends Director {
         // treat it as output port and this is not correct.
         // FIXME: what about offset?
         if (sink.port.getContainer() instanceof ModalController) {
-            sinkRef = ProgramCodeGeneratorAdapter
+            sinkRef = NamedProgramCodeGeneratorAdapter
                     .generateName(sink.port);
             if (sink.port.isMultiport()) {
                 sinkRef = sinkRef + "[" + sink.channelNumber + "]";
@@ -387,7 +388,7 @@ public class PtidesBasicDirector extends Director {
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
 
-            ProgramCodeGeneratorAdapter adapter = (ProgramCodeGeneratorAdapter) getCodeGenerator()
+            NamedProgramCodeGeneratorAdapter adapter = (NamedProgramCodeGeneratorAdapter) getCodeGenerator()
                     .getAdapter(actor);
 
             if (1==1) {
@@ -408,7 +409,7 @@ public class PtidesBasicDirector extends Director {
             if (actor instanceof InterruptDevice) {
                 code
                         .append("void Sensing_"
-                                + ProgramCodeGeneratorAdapter
+                                + NamedProgramCodeGeneratorAdapter
                                         .generateName((NamedObj) actor)
                                 + "() {" + _eol);
                 code
@@ -417,7 +418,7 @@ public class PtidesBasicDirector extends Director {
                 code.append("}" + _eol);
             }
             code.append("void "
-                    + ProgramCodeGeneratorAdapter
+                    + NamedProgramCodeGeneratorAdapter
                             .generateName((NamedObj) actor) + "() " + "{"
                     + _eol);
             code.append(adapter.generateFireCode());
@@ -447,7 +448,7 @@ public class PtidesBasicDirector extends Director {
         for (IOPort inputPort : (List<IOPort>) actor.inputPortList()) {
             for (int channel = 0; channel < inputPort.getWidth(); channel++) {
                 code.append("Event_Head_"
-                        + ProgramCodeGeneratorAdapter
+                        + NamedProgramCodeGeneratorAdapter
                                 .generateName(inputPort) + "[" + channel
                         + "] = NULL;" + _eol);
             }
@@ -464,7 +465,7 @@ public class PtidesBasicDirector extends Director {
                 for (IOPort inputPort : (List<IOPort>) actor.inputPortList()) {
                     if (inputPort.getWidth() > 0) {
                         code.append("Event* Event_Head_"
-                                + ProgramCodeGeneratorAdapter
+                                + NamedProgramCodeGeneratorAdapter
                                         .generateName(inputPort) + "["
                                 + inputPort.getWidth() + "] = {NULL");
                         for (int channel = 1; channel < inputPort.getWidth(); channel++) {

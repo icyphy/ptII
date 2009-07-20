@@ -32,7 +32,7 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 
 import ptolemy.actor.Actor;
-import ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapter;
+import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
 import ptolemy.kernel.util.IllegalActionException;
 
 //////////////////////////////////////////////////////////////////////////
@@ -47,7 +47,7 @@ import ptolemy.kernel.util.IllegalActionException;
  @Pt.ProposedRating Yellow (cxh)
  @Pt.AcceptedRating Red (zgang)
  */
-public class TypedCompositeActor extends ProgramCodeGeneratorAdapter {
+public class TypedCompositeActor extends NamedProgramCodeGeneratorAdapter {
     /** Construct the code generator adapter associated
      *  with the given TypedCompositeActor.
      *  @param component The associated component.
@@ -60,7 +60,7 @@ public class TypedCompositeActor extends ProgramCodeGeneratorAdapter {
     protected String _generateFireCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
-        ProgramCodeGeneratorAdapter directorAdapter = (ProgramCodeGeneratorAdapter) getCodeGenerator()
+        NamedProgramCodeGeneratorAdapter directorAdapter = (NamedProgramCodeGeneratorAdapter) getCodeGenerator()
                 .getAdapter(
                         ((ptolemy.actor.CompositeActor) getComponent())
                                 .getDirector());
@@ -85,7 +85,7 @@ public class TypedCompositeActor extends ProgramCodeGeneratorAdapter {
         StringBuffer code = new StringBuffer();
         code.append(super.generatePreinitializeCode());
 
-        ProgramCodeGeneratorAdapter directorAdapter = (ProgramCodeGeneratorAdapter) getCodeGenerator()
+        NamedProgramCodeGeneratorAdapter directorAdapter = (NamedProgramCodeGeneratorAdapter) getCodeGenerator()
                 .getAdapter(
                         ((ptolemy.actor.CompositeActor) getComponent())
                                 .getDirector());
@@ -105,7 +105,7 @@ public class TypedCompositeActor extends ProgramCodeGeneratorAdapter {
     public String generateInitializeCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
-        ProgramCodeGeneratorAdapter directorAdapter = (ProgramCodeGeneratorAdapter) getCodeGenerator()
+        NamedProgramCodeGeneratorAdapter directorAdapter = (NamedProgramCodeGeneratorAdapter) getCodeGenerator()
                 .getAdapter(
                         ((ptolemy.actor.CompositeActor) getComponent())
                                 .getDirector());
@@ -119,7 +119,7 @@ public class TypedCompositeActor extends ProgramCodeGeneratorAdapter {
     public String generateWrapupCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
-        ProgramCodeGeneratorAdapter directorAdapter = (ProgramCodeGeneratorAdapter) getCodeGenerator()
+        NamedProgramCodeGeneratorAdapter directorAdapter = (NamedProgramCodeGeneratorAdapter) getCodeGenerator()
                 .getAdapter(
                         ((ptolemy.actor.CompositeActor) getComponent())
                                 .getDirector());
@@ -141,13 +141,13 @@ public class TypedCompositeActor extends ProgramCodeGeneratorAdapter {
 
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
-            ProgramCodeGeneratorAdapter adapterObject = (ProgramCodeGeneratorAdapter) getCodeGenerator()
+            NamedProgramCodeGeneratorAdapter adapterObject = (NamedProgramCodeGeneratorAdapter) getCodeGenerator()
                     .getAdapter(actor);
             sharedCode.addAll(adapterObject.getSharedCode());
         }
 
         // Get shared code used by the director adapter.
-        ProgramCodeGeneratorAdapter directorAdapter = (ProgramCodeGeneratorAdapter) getCodeGenerator()
+        NamedProgramCodeGeneratorAdapter directorAdapter = (NamedProgramCodeGeneratorAdapter) getCodeGenerator()
                 .getAdapter(
                         ((ptolemy.actor.CompositeActor) getComponent())
                                 .getDirector());
