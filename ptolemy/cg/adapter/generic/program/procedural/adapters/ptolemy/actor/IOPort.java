@@ -160,7 +160,7 @@ public class IOPort extends NamedProgramCodeGeneratorAdapter implements
             Type sourceType = ((ptolemy.actor.TypedIOPort) getComponent())
                     .getType();
             Type sinkType = ((ptolemy.actor.TypedIOPort) remoteReceivers[channelIndex][i]
-                    .getReceiver().getContainer()).getType();
+                    .getComponent().getContainer()).getType();
             dataToken = "$convert_" + getCodeGenerator().codeGenType(sourceType)
                     + "_" + getCodeGenerator().codeGenType(sinkType) + "("
                     + dataToken + ")";
