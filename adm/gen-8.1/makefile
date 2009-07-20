@@ -123,6 +123,7 @@ PTII_TOPDIR=	.cshrc \
 		doc \
 		jni \
 		lib \
+		lbnl \
 		makefile \
 		mk \
 		org \
@@ -1414,13 +1415,14 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/pn/demo \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/sdf/demo \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/wireless/demo \
-	$(REMOTE1PTIIDIST)/ptolemy/vergil \
-	$(REMOTE1PTIIDIST)/ptolemy/configs
+	$(REMOTE1PTIIDIST)/ptolemy/vergil
 
 # Directories we run make in before running make in the NONJSALLDIRS
 NONJSALLCOREDIRS = \
 	ptolemy/copernicus/kernel \
-	ptolemy/copernicus/gui
+	ptolemy/copernicus/gui \
+	ptolemy/configs
+
 
 # Directories to run tests in outside of JavaScope
 NONJSALLDIRS = \
