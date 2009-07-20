@@ -141,7 +141,9 @@ public class XMLWriter {
     /** System dependent line separator. */
     private final static String LS = System.getProperty("line.separator");
 
-    /** Main method that can be used for testing
+    /** Main method that can be used for testing.
+     *  @param An array of Strings, the first argument being a integer
+     *  that names a file called test-XXX.txt.
      */
     public static void main(String[] arg) {
         String fileDirectory = ".";
