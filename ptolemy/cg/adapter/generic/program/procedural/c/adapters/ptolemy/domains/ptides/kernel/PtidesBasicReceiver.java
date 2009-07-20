@@ -66,8 +66,9 @@ public class PtidesBasicReceiver extends ptolemy.cg.adapter.generic.program.proc
      *  @return generate get code.
      *  @throws IllegalActionException
      */
-    public String generateGetCode(int channel) throws IllegalActionException {
+    public String generateGetCode() throws IllegalActionException {
         TypedIOPort port = (TypedIOPort) getComponent().getContainer();
+        int channel = port.getChannelForReceiver(getComponent());
         return "Event_Head_" + getAdapter(port).getName() + "[" + channel + "]->Val."
                 + port.getType().toString() + "_Value";
     }
@@ -76,9 +77,10 @@ public class PtidesBasicReceiver extends ptolemy.cg.adapter.generic.program.proc
      *  @return generate hasToken code.
      *  @throws IllegalActionException
      */
-    public String generateHasTokenCode(int channel)
+    public String generateHasTokenCode()
             throws IllegalActionException {
         IOPort port = getComponent().getContainer();
+        int channel = port.getChannelForReceiver(getComponent());
         return "Event_Head_" + getAdapter(port).getName() + "[" + channel + "] != NULL";
     }
 
