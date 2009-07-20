@@ -603,6 +603,15 @@ public class NamedProgramCodeGeneratorAdapter extends ProgramCodeGeneratorAdapte
 
         return libraryDirectories;
     }
+    
+
+    /** Return the name of the object.
+     *  @return The name of the object.
+     *  @see #setName(String)
+     */
+    public String getName() {
+        return generateName(getComponent());
+    }
 
     /** Return a set of parameters that will be modified during the execution
      *  of the model. The actor gets those variables if it implements
