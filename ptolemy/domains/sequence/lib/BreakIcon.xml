@@ -15,7 +15,7 @@
         </property>
     </property>
     <property name="image" class="ptolemy.vergil.kernel.attributes.ImageAttribute">
-        <property name="source" class="ptolemy.data.expr.FileParameter" value="$PTII\ptolemy\actor\lib\BOSCH\ASCET\break.gif">
+        <property name="source" class="ptolemy.data.expr.FileParameter" value="$PTII/ptolemy/domains/sequence/lib/break.gif">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{-30.0, -3.0}">
         </property>

@@ -1,0 +1,579 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="SeqMoc_SeqTestIfElseNested" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={39, 180, 1300, 725}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1085, 608]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.953516090584">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{330.433238636364, 148.1446496212123}">
+    </property>
+    <property name="Sequence Director" class="ptolemy.domains.sequence.kernel.SequenceDirector">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="6">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 55.0]">
+        </property>
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Test nested If-Then-Else statements">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 65.0]">
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Test nested If-Then-Else statements, using the Then_InitialValue and the&#10;Else_InitialValue due to the sequence numbers.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[90.0, 595.0]">
+        </property>
+    </property>
+    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="If Then Else">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 130.0]">
+        </property>
+    </property>
+    <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="If Then Else2">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 200.0]">
+        </property>
+    </property>
+    <property name="Annotation6" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="If Then Else4">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[180.0, 695.0]">
+        </property>
+    </property>
+    <property name="Annotation7" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="If Then Else5">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[405.0, 700.0]">
+        </property>
+    </property>
+    <property name="Annotation8" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="If Then Else6">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[340.0, 975.0]">
+        </property>
+    </property>
+    <property name="Annotation9" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Triple nested If-Then-Else">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1000.0, 115.0]">
+        </property>
+    </property>
+    <property name="Annotation10" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="If Then Else3">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[215.0, 360.0]">
+        </property>
+    </property>
+    <property name="Annotation11" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="If Then Else7">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[880.0, 210.0]">
+        </property>
+    </property>
+    <property name="Annotation12" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="If Then Else8">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1140.0, 340.0]">
+        </property>
+    </property>
+    <property name="Annotation13" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="If Then Else9">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1370.0, 280.0]">
+        </property>
+    </property>
+    <property name="Annotation14" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="If Then">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[970.0, 455.0]">
+        </property>
+    </property>
+    <entity name="If Then Else" class="ptolemy.domains.sequence.lib.IfThenElse">
+        <property name="_hideName" class="ptolemy.kernel.util.StringAttribute" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 185.0]">
+        </property>
+        <property name="SequenceAttribute" class="ptolemy.domains.sequence.kernel.SequenceAttribute" value="1">
+        </property>
+        <property name="Then_InitialValue" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="Else_InitialValue" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+    </entity>
+    <entity name="Sequence" class="ptolemy.actor.lib.Sequence">
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{true, true, false}">
+        </property>
+        <property name="repeat" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="holdLastOutput" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-80.0, 120.0]">
+        </property>
+    </entity>
+    <entity name="If Then Else2" class="ptolemy.domains.sequence.lib.IfThenElse">
+        <property name="_hideName" class="ptolemy.kernel.util.StringAttribute" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[330.0, 250.0]">
+        </property>
+        <property name="SequenceAttribute" class="ptolemy.domains.sequence.kernel.SequenceAttribute" value="2">
+        </property>
+        <property name="Then_InitialValue" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="Else_InitialValue" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <port name="control" class="ptolemy.actor.TypedIOPort">
+            <property name="control"/>
+            <property name="input"/>
+        </port>
+    </entity>
+    <entity name="If Then Else3" class="ptolemy.domains.sequence.lib.IfThenElse">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[255.0, 420.0]">
+        </property>
+        <property name="SequenceAttribute" class="ptolemy.domains.sequence.kernel.SequenceAttribute" value="5">
+        </property>
+        <property name="Then_InitialValue" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="Else_InitialValue" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <port name="control" class="ptolemy.actor.TypedIOPort">
+            <property name="control"/>
+            <property name="input"/>
+        </port>
+    </entity>
+    <entity name="If Then Else4" class="ptolemy.domains.sequence.lib.IfThenElse">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[220.0, 740.0]">
+        </property>
+        <property name="SequenceAttribute" class="ptolemy.domains.sequence.kernel.SequenceAttribute" value="20">
+        </property>
+        <property name="Then_InitialValue" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="Else_InitialValue" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+    </entity>
+    <entity name="Sequence2" class="ptolemy.actor.lib.Sequence">
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{true, true, false}">
+        </property>
+        <property name="repeat" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="holdLastOutput" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, 695.0]">
+        </property>
+    </entity>
+    <entity name="If Then Else5" class="ptolemy.domains.sequence.lib.IfThenElse">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[450.0, 770.0]">
+        </property>
+        <property name="SequenceAttribute" class="ptolemy.domains.sequence.kernel.SequenceAttribute" value="19">
+        </property>
+        <property name="Then_InitialValue" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="Else_InitialValue" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <port name="control" class="ptolemy.actor.TypedIOPort">
+            <property name="control"/>
+            <property name="input"/>
+        </port>
+    </entity>
+    <entity name="If Then Else6" class="ptolemy.domains.sequence.lib.IfThenElse">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[365.0, 1025.0]">
+        </property>
+        <property name="SequenceAttribute" class="ptolemy.domains.sequence.kernel.SequenceAttribute" value="18">
+        </property>
+        <property name="Then_InitialValue" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="Else_InitialValue" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <port name="control" class="ptolemy.actor.TypedIOPort">
+            <property name="control"/>
+            <property name="input"/>
+        </port>
+    </entity>
+    <entity name="If Then Else7" class="ptolemy.domains.sequence.lib.IfThenElse">
+        <property name="_hideName" class="ptolemy.kernel.util.StringAttribute" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[920.0, 260.0]">
+        </property>
+        <property name="SequenceAttribute" class="ptolemy.domains.sequence.kernel.SequenceAttribute" value="2">
+        </property>
+        <property name="Then_InitialValue" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="Else_InitialValue" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+    </entity>
+    <entity name="Sequence3" class="ptolemy.actor.lib.Sequence">
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{true, true, false}">
+        </property>
+        <property name="repeat" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="holdLastOutput" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[760.0, 175.0]">
+        </property>
+    </entity>
+    <entity name="If Then Else8" class="ptolemy.domains.sequence.lib.IfThenElse">
+        <property name="_hideName" class="ptolemy.kernel.util.StringAttribute" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1165.0, 390.0]">
+        </property>
+        <property name="SequenceAttribute" class="ptolemy.domains.sequence.kernel.SequenceAttribute" value="2">
+        </property>
+        <property name="Then_InitialValue" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="Else_InitialValue" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <port name="control" class="ptolemy.actor.TypedIOPort">
+            <property name="control"/>
+            <property name="input"/>
+        </port>
+    </entity>
+    <entity name="If Then Else9" class="ptolemy.domains.sequence.lib.IfThenElse">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1420.0, 335.0]">
+        </property>
+        <property name="SequenceAttribute" class="ptolemy.domains.sequence.kernel.SequenceAttribute" value="2">
+        </property>
+        <property name="Then_InitialValue" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="Else_InitialValue" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <port name="control" class="ptolemy.actor.TypedIOPort">
+            <property name="control"/>
+            <property name="input"/>
+        </port>
+    </entity>
+    <entity name="If Then" class="ptolemy.domains.sequence.lib.IfThen">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[995.0, 505.0]">
+        </property>
+        <property name="SequenceAttribute" class="ptolemy.domains.sequence.kernel.SequenceAttribute" value="33">
+        </property>
+        <property name="Then_InitialValue" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <port name="control" class="ptolemy.actor.TypedIOPort">
+            <property name="control"/>
+            <property name="input"/>
+        </port>
+    </entity>
+    <entity name="Display" class="ptolemy.actor.lib.gui.Display">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[565.0, 290.0]">
+        </property>
+        <property name="SequenceAttribute" class="ptolemy.domains.sequence.kernel.SequenceAttribute" value="3">
+        </property>
+    </entity>
+    <entity name="Display2" class="ptolemy.actor.lib.gui.Display">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[450.0, 350.0]">
+        </property>
+        <property name="SequenceAttribute" class="ptolemy.domains.sequence.kernel.SequenceAttribute" value="4">
+        </property>
+    </entity>
+    <entity name="Display3" class="ptolemy.actor.lib.gui.Display">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[565.0, 415.0]">
+        </property>
+        <property name="SequenceAttribute" class="ptolemy.domains.sequence.kernel.SequenceAttribute" value="6">
+        </property>
+    </entity>
+    <entity name="Display4" class="ptolemy.actor.lib.gui.Display">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[380.0, 455.0]">
+        </property>
+        <property name="SequenceAttribute" class="ptolemy.domains.sequence.kernel.SequenceAttribute" value="7">
+        </property>
+    </entity>
+    <entity name="Display5" class="ptolemy.actor.lib.gui.Display">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[680.0, 700.0]">
+        </property>
+        <property name="SequenceAttribute" class="ptolemy.domains.sequence.kernel.SequenceAttribute" value="16">
+        </property>
+    </entity>
+    <entity name="Display6" class="ptolemy.actor.lib.gui.Display">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[690.0, 810.0]">
+        </property>
+        <property name="SequenceAttribute" class="ptolemy.domains.sequence.kernel.SequenceAttribute" value="17">
+        </property>
+    </entity>
+    <entity name="Display7" class="ptolemy.actor.lib.gui.Display">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[595.0, 975.0]">
+        </property>
+        <property name="SequenceAttribute" class="ptolemy.domains.sequence.kernel.SequenceAttribute" value="15">
+        </property>
+    </entity>
+    <entity name="Display8" class="ptolemy.actor.lib.gui.Display">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[560.0, 1110.0]">
+        </property>
+        <property name="SequenceAttribute" class="ptolemy.domains.sequence.kernel.SequenceAttribute" value="14">
+        </property>
+    </entity>
+    <entity name="Display9" class="ptolemy.actor.lib.gui.Display">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1595.0, 260.0]">
+        </property>
+        <property name="SequenceAttribute" class="ptolemy.domains.sequence.kernel.SequenceAttribute" value="34">
+        </property>
+    </entity>
+    <entity name="Display10" class="ptolemy.actor.lib.gui.Display">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1555.0, 425.0]">
+        </property>
+        <property name="SequenceAttribute" class="ptolemy.domains.sequence.kernel.SequenceAttribute" value="35">
+        </property>
+    </entity>
+    <entity name="Display11" class="ptolemy.actor.lib.gui.Display">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1315.0, 490.0]">
+        </property>
+        <property name="SequenceAttribute" class="ptolemy.domains.sequence.kernel.SequenceAttribute" value="36">
+        </property>
+    </entity>
+    <entity name="Display13" class="ptolemy.actor.lib.gui.Display">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1125.0, 565.0]">
+        </property>
+        <property name="SequenceAttribute" class="ptolemy.domains.sequence.kernel.SequenceAttribute" value="37">
+        </property>
+    </entity>
+    <entity name="Sequence4" class="ptolemy.actor.lib.Sequence">
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{true,false}">
+        </property>
+        <property name="repeat" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="holdLastOutput" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[250.0, 130.0]">
+        </property>
+    </entity>
+    <entity name="Sequence5" class="ptolemy.actor.lib.Sequence">
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{true,false}">
+        </property>
+        <property name="repeat" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="holdLastOutput" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 335.0]">
+        </property>
+    </entity>
+    <entity name="Sequence6" class="ptolemy.actor.lib.Sequence">
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{true,false}">
+        </property>
+        <property name="repeat" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="holdLastOutput" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1095.0, 305.0]">
+        </property>
+    </entity>
+    <entity name="Sequence7" class="ptolemy.actor.lib.Sequence">
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{true,false}">
+        </property>
+        <property name="repeat" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="holdLastOutput" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[745.0, 495.0]">
+        </property>
+    </entity>
+    <entity name="Sequence8" class="ptolemy.actor.lib.Sequence">
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{true,false}">
+        </property>
+        <property name="repeat" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="holdLastOutput" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1250.0, 205.0]">
+        </property>
+    </entity>
+    <entity name="Sequence9" class="ptolemy.actor.lib.Sequence">
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{true,false}">
+        </property>
+        <property name="repeat" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="holdLastOutput" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[275.0, 965.0]">
+        </property>
+    </entity>
+    <entity name="Sequence10" class="ptolemy.actor.lib.Sequence">
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{true,false}">
+        </property>
+        <property name="repeat" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="holdLastOutput" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[340.0, 680.0]">
+        </property>
+    </entity>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation15" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation12" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation11" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation13" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation14" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation18" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation20" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation21" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation22" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation23" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation10" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation16" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation17" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation19" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation24" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation25" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation26" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation27" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation28" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation29" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <link port="If Then Else.If" relation="relation2"/>
+    <link port="If Then Else.Then" relation="relation23"/>
+    <link port="If Then Else.Else" relation="relation"/>
+    <link port="Sequence.output" relation="relation2"/>
+    <link port="If Then Else2.If" relation="relation19"/>
+    <link port="If Then Else2.Then" relation="relation5"/>
+    <link port="If Then Else2.Else" relation="relation4"/>
+    <link port="If Then Else2.control" relation="relation23"/>
+    <link port="If Then Else3.If" relation="relation24"/>
+    <link port="If Then Else3.Then" relation="relation6"/>
+    <link port="If Then Else3.Else" relation="relation7"/>
+    <link port="If Then Else3.control" relation="relation"/>
+    <link port="If Then Else4.If" relation="relation8"/>
+    <link port="If Then Else4.Then" relation="relation3"/>
+    <link port="If Then Else4.Else" relation="relation10"/>
+    <link port="Sequence2.output" relation="relation8"/>
+    <link port="If Then Else5.If" relation="relation29"/>
+    <link port="If Then Else5.Then" relation="relation12"/>
+    <link port="If Then Else5.Else" relation="relation11"/>
+    <link port="If Then Else5.control" relation="relation3"/>
+    <link port="If Then Else6.If" relation="relation28"/>
+    <link port="If Then Else6.Then" relation="relation13"/>
+    <link port="If Then Else6.Else" relation="relation14"/>
+    <link port="If Then Else6.control" relation="relation10"/>
+    <link port="If Then Else7.If" relation="relation15"/>
+    <link port="If Then Else7.Then" relation="relation9"/>
+    <link port="If Then Else7.Else" relation="relation17"/>
+    <link port="Sequence3.output" relation="relation15"/>
+    <link port="If Then Else8.If" relation="relation25"/>
+    <link port="If Then Else8.Then" relation="relation16"/>
+    <link port="If Then Else8.Else" relation="relation21"/>
+    <link port="If Then Else8.control" relation="relation9"/>
+    <link port="If Then Else9.If" relation="relation27"/>
+    <link port="If Then Else9.Then" relation="relation18"/>
+    <link port="If Then Else9.Else" relation="relation20"/>
+    <link port="If Then Else9.control" relation="relation16"/>
+    <link port="If Then.If" relation="relation26"/>
+    <link port="If Then.Then" relation="relation22"/>
+    <link port="If Then.control" relation="relation17"/>
+    <link port="Display.input" relation="relation5"/>
+    <link port="Display2.input" relation="relation4"/>
+    <link port="Display3.input" relation="relation6"/>
+    <link port="Display4.input" relation="relation7"/>
+    <link port="Display5.input" relation="relation12"/>
+    <link port="Display6.input" relation="relation11"/>
+    <link port="Display7.input" relation="relation13"/>
+    <link port="Display8.input" relation="relation14"/>
+    <link port="Display9.input" relation="relation18"/>
+    <link port="Display10.input" relation="relation20"/>
+    <link port="Display11.input" relation="relation21"/>
+    <link port="Display13.input" relation="relation22"/>
+    <link port="Sequence4.output" relation="relation19"/>
+    <link port="Sequence5.output" relation="relation24"/>
+    <link port="Sequence6.output" relation="relation25"/>
+    <link port="Sequence7.output" relation="relation26"/>
+    <link port="Sequence8.output" relation="relation27"/>
+    <link port="Sequence9.output" relation="relation28"/>
+    <link port="Sequence10.output" relation="relation29"/>
+</entity>
