@@ -143,15 +143,14 @@ public class SDFDirector
                 boolean addComma = false;
                 while (inputPorts.hasNext()) {
                     TypedIOPort inputPort = (TypedIOPort) inputPorts.next();
-                    if (addComma) {
-                        code.append(", ");
-                    }
                     
                     for (int i = 0; i < inputPort.getWidth(); i++) {
+                        if (addComma) {
+                            code.append(", ");
+                        }
                         code.append(codegeneratorAdaptor.getReference( inputPort.getName() + "#" + i));
+                        addComma = true;
                     }
-                    
-                    addComma = true;
                 }
         /*
                 Iterator<?> outputPorts = actor.outputPortList()

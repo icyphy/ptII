@@ -642,7 +642,7 @@ public class ModularCodeGenTypedCompositeActor extends LazyTypedCompositeActor {
         }
     }
 
-    void _createCodeGenerator() throws IllegalActionException, NameDuplicationException {
+    private void _createCodeGenerator() throws IllegalActionException, NameDuplicationException {
         if (_codeGenerator == null) {
             _codeGenerator = new ModularCodeGenerator(this, "ModularCodeGenerator");
             _codeGenerator.setPersistent(false);

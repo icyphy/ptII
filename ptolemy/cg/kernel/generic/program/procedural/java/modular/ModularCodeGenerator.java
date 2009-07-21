@@ -155,23 +155,22 @@ public class ModularCodeGenerator extends JavaCodeGenerator {
             boolean addComma = false;
             while (inputPorts.hasNext()) {
                 TypedIOPort inputPort = (TypedIOPort) inputPorts.next();
-                if (addComma) {
-                    mainEntryCode.append(", ");
-                }
                 
                 String type = codeGenType(inputPort.getType());
                 if (!type.equals("Token") && !isPrimitive(type)) {
                     type = "Token";
                 }
                 for (int i = 0; i < inputPort.getWidth(); i++) {
+                    if (addComma) {
+                        mainEntryCode.append(", ");
+                    }                    
                     if (DFUtilities.getTokenConsumptionRate(inputPort) > 1) {
                         mainEntryCode.append(type + "[] " + inputPort.getName() + "_" + i);
                     } else {
                         mainEntryCode.append(type + " " + inputPort.getName() + "_" + i);
                     }
+                    addComma = true;
                 }
-                
-                addComma = true;
             }
 /*
             Iterator<?> outputPorts = ((Actor) getContainer()).outputPortList()

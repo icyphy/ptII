@@ -1259,7 +1259,7 @@ public class StaticSchedulingDirector extends Director {
                 }
             }
 
-            String result = null;
+            String result = "";
             Object offsetObject;
 
             // Get the offset index.
@@ -1324,7 +1324,7 @@ public class StaticSchedulingDirector extends Director {
                     offset %= getBufferSize(channel);
 
                     result = "[" + offset + "]";
-                } else {
+                } else if (offsetObject != null) {
 
                     //              if (MpiPNDirector.isLocalBuffer(_port, channel)) {
                     //              result = offsetObject.toString();
