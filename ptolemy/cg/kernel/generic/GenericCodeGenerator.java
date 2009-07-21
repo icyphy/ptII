@@ -696,6 +696,15 @@ public abstract class GenericCodeGenerator extends Attribute implements
                 throw new IllegalActionException(this, "Failed to make the \""
                         + codeDirectory.stringValue() + "\" directory.");
             }
+            // The base directory has been set, this might have happened before
+            // the directory was created. At that moment java assumes it is a file
+            // when you call asFile().toURI(), and java removes the last "/".
+            // When you afterwards call FileUtilities.openForWriting, this will call
+            // nameToFile, which will call URI.resolve. In the end java than parses
+            // the base directory and since it was recorded without a slash, it assumes
+            // it is a file and removes this from the path.
+            // To fix this we explicitly call setBaseDirectory again.
+            codeDirectory.setBaseDirectory(codeDirectory.asFile().toURI());
             
             Writer writer = null;
             try {
