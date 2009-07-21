@@ -199,6 +199,7 @@ CGPACKAGES = \
 	ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.cg.lib \
 	ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.domains.sdf.kernel \
 	ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.domains.sdf.lib \
+	ptolemy.cg.adapter.generic.program.procedural.java.modular.adapters.ptolemy.cg.lib
 	ptolemy.cg.adapter.generic.program.procedural.java.modular.adapters.ptolemy.domains.sdf.kernel \
 	ptolemy.cg.gui \
 	ptolemy.cg.kernel.generic \
