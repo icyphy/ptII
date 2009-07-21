@@ -417,6 +417,9 @@ public class RemoveGraphicalClasses implements MoMLFilter {
                 "ptolemy.domains.properties.kernel.PropertyLatticeAttribute",
                 "ptolemy.kernel.util.Attribute");
 
+        _graphicalClasses.put("ptolemy.vergil.actor.lib.MonitorReceiverContents",
+			      null);
+
     }
 
     /** True if we should remove the GR domain. */
