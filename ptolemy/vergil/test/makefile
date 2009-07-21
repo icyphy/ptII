@@ -92,7 +92,7 @@ KERNEL_TESTDEFS = $(ROOT)/util/testsuite/testDefs.tcl
 
 # These tests do not require a graphics terminal, but do use Jacl and Java
 test_jsimple: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljtests.tcl
-	$(JTCLSH) alljtests.tcl
+	DISPLAY=notADisplay:0.0	$(JTCLSH) alljtests.tcl
 
 
 
