@@ -16,18 +16,6 @@
         <property name="_renderFirst" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
     </property>
-    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="textSize" class="ptolemy.data.expr.Parameter" value="6">
-        </property>
-        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.0,1.0}">
-        </property>
-        <property name="bold" class="ptolemy.data.expr.Parameter" value="true">
-        </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="BOSCH">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-32.0, -22.0]">
-        </property>
-    </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={187, 232, 815, 507}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
