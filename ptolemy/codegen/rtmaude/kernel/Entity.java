@@ -41,13 +41,14 @@ import ptolemy.kernel.util.IllegalActionException;
 //// Entity
 
 /**
-* Generate RTMaude code for a general entity in DE domain.
-*
-* @see ptolemy.kernel.Entity
-* @author Kyungmin Bae
-* @version $Id$
-* @Pt.ProposedRating Red (kquine)
-*
+ * Generate RTMaude code for a general entity in DE domain.
+ *
+ * @see ptolemy.kernel.Entity
+ * @author Kyungmin Bae
+ * @since Ptolemy II 7.1
+ * @version $Id$
+ * @Pt.AcceptedRating Red (kquine)
+ * @Pt.ProposedRating Red (kquine)
 */
 public class Entity extends RTMaudeAdaptor {
 

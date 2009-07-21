@@ -1,4 +1,4 @@
-/*
+/* An interface for classes that are bit accurate at the type propertly level.
 Below is the copyright agreement for the Ptolemy II system.
 
 Copyright (c) 2009 The Regents of the University of California.
@@ -25,9 +25,28 @@ ENHANCEMENTS, OR MODIFICATIONS.
 */
 package ptolemy.data.properties.lattice;
 
+//////////////////////////////////////////////////////////////////////////
+//// TypePropertyBitAccurate
+
+/**
+ An interface for classes that are bit accurate at the type propertly level.
+
+
+ @author Charles Shelton (Bosch)
+ @version $Id$
+ @since Ptolemy II 7.1
+ @Pt.ProposedRating Red (cxh)
+ @Pt.AcceptedRating Red (cxh)
+ */
 public interface TypePropertyBitAccurate extends TypeProperty {
 
+    /** Return true if the property is signed.
+     *  @return true if the property is signed.
+     */
     public boolean isSigned();
 
+    /** Return the number of bits.
+     * @return The number of bits.
+     */
     public short getNumberBits();
 }
