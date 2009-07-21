@@ -48,9 +48,12 @@ import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.Token;
+import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.Type;
+import ptolemy.kernel.ComponentEntity;
+import ptolemy.kernel.ComponentRelation;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.util.Attribute;
@@ -159,14 +162,7 @@ public class ModularCodeGenTypedCompositeActor extends LazyTypedCompositeActor {
      */
     public ModularCodeGenTypedCompositeActor() {
         super();
-        // By default, when exporting MoML, the class name is whatever
-        // the Java class is, which in this case is ModularCodeGenTypedCompositeActor.
-        // However, a parent class, TypedCompositeActor sets the classname
-        // to TypedCompositeActor so that the MoML
-        // that is exported does not depend on the presence of the
-        // derived class Java definition. Thus, we force the class name
-        // here to be ModularCodeGenTypedCompositeActor.
-        setClassName("ptolemy.actor.ModularCodeGenTypedCompositeActor");
+        _init();
     }
 
     /** Construct a library in the specified workspace with
@@ -178,14 +174,7 @@ public class ModularCodeGenTypedCompositeActor extends LazyTypedCompositeActor {
      */
     public ModularCodeGenTypedCompositeActor(Workspace workspace) {
         super(workspace);
-        // By default, when exporting MoML, the class name is whatever
-        // the Java class is, which in this case is ModularCodeGenTypedCompositeActor.
-        // However, a parent class, TypedCompositeActor sets the classname
-        // to TypedCompositeActor so that the MoML
-        // that is exported does not depend on the presence of the
-        // derived class Java definition. Thus, we force the class name
-        // here to be ModularCodeGenTypedCompositeActor.
-        setClassName("ptolemy.actor.ModularCodeGenTypedCompositeActor");
+        _init();
     }
 
     /** Construct a library with the given container and name.
@@ -199,16 +188,17 @@ public class ModularCodeGenTypedCompositeActor extends LazyTypedCompositeActor {
     public ModularCodeGenTypedCompositeActor(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
-        // By default, when exporting MoML, the class name is whatever
-        // the Java class is, which in this case is ModularCodeGenTypedCompositeActor.
-        // However, a parent class, TypedCompositeActor sets the classname
-        // to TypedCompositeActor so that the MoML
-        // that is exported does not depend on the presence of the
-        // derived class Java definition. Thus, we force the class name
-        // here to be ModularCodeGenTypedCompositeActor.
-        setClassName("ptolemy.actor.ModularCodeGenTypedCompositeActor");
+        _init();
     }
 
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         parameters                        ////
+
+    public Parameter recompileHierarchy;
+    public Parameter recompileThisLevel;
+    
+    
     /** React to a change in an attribute.  This method is called by
      *  a contained attribute when its value changes.  This overrides
      *  the base class so that if the attribute is an instance of
@@ -219,11 +209,15 @@ public class ModularCodeGenTypedCompositeActor extends LazyTypedCompositeActor {
      */
     public void attributeChanged(Attribute attribute) throws IllegalActionException {
         super.attributeChanged(attribute);
-        if (!_populating) { //TODO rodiers: This test is not enough.
-            _modelChanged = true;
+        if (attribute != recompileHierarchy) {
+            // TODO search for inner ModularCodeGenTypedCompositeActors and change these.
+        }
+        else if (attribute != recompileThisLevel) {
+            _setRecompileFlag();
         }
     }
-    
+
+
     /** Generate actor name from its class name
      * @param className  The class name of the actor
      * @return a String that declares the actor name
@@ -241,8 +235,11 @@ public class ModularCodeGenTypedCompositeActor extends LazyTypedCompositeActor {
      */
     public void connectionsChanged(Port port) {
         super.connectionsChanged(port);
-        if (!_populating) { //TODO rodiers: This test is not enough.
-            _modelChanged = true;
+        try {
+            _setRecompileFlag();
+        } catch (IllegalActionException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
         }
     }
 
@@ -434,7 +431,8 @@ public class ModularCodeGenTypedCompositeActor extends LazyTypedCompositeActor {
     public void initialize() throws IllegalActionException {
         super.initialize();
         try {
-            if (_modelChanged) {
+            _generatingCode = true;
+            if (_modelChanged()) {
                     generateCode();
             }
             String className = NamedProgramCodeGeneratorAdapter.generateName(this);        
@@ -480,14 +478,170 @@ public class ModularCodeGenTypedCompositeActor extends LazyTypedCompositeActor {
             if (_debugging) {
                 _debug("ModularCodeGenerator: Done calling initilize method for generated code.");
             }
-            _modelChanged = false;
+            recompileThisLevel.setToken(new BooleanToken(false));
+            recompileHierarchy.setToken(new BooleanToken(false));
         } catch (Throwable throwable) {
             _objectWrapper = null;
             _fireMethod = null;
+        } finally {
+            _generatingCode = false;
         }
+    }
+    /** Create a new relation with the specified name, add it to the
+     *  relation list, and return it. Derived classes can override
+     *  this to create domain-specific subclasses of ComponentRelation.
+     *  This method is write-synchronized on the workspace and increments
+     *  its version number. This overrides the base class to force
+     *  evaluation of any deferred MoML. This is necessary so that
+     *  name collisions are detected deterministically and so that
+     *  order of relations does not change depending on whether
+     *  evaluation has occurred.
+     *  @param name The name of the new relation.
+     *  @return The new relation.
+     *  @exception IllegalActionException If name argument is null.
+     *  @exception NameDuplicationException If name collides with a name
+     *   already in the container.
+     */
+    public ComponentRelation newRelation(String name)
+            throws NameDuplicationException {
+        try {
+            _setRecompileFlag();
+        } catch (IllegalActionException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return super.newRelation(name);
+    }
+    
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+
+    /** Add an entity or class definition to this container. This method
+     *  should not be used directly.  Call the setContainer() method of
+     *  the entity instead. This method does not set
+     *  the container of the entity to point to this composite entity.
+     *  It assumes that the entity is in the same workspace as this
+     *  container, but does not check.  The caller should check.
+     *  Derived classes may override this method to constrain the
+     *  the entity to a subclass of ComponentEntity.
+     *  This method is <i>not</i> synchronized on the workspace, so the
+     *  caller should be.  This overrides the base class
+     *  to first populate the actor, if necessary, by calling populate().
+     *  This ensures that the entity being added now appears in order
+     *  after the ones previously specified and lazily instantiated.
+     *  @param entity Entity to contain.
+     *  @exception IllegalActionException If the entity has no name, or the
+     *   action would result in a recursive containment structure.
+     *  @exception NameDuplicationException If the name collides with a name
+     *  already in the entity.
+     */
+    protected void _addEntity(ComponentEntity entity)
+            throws IllegalActionException, NameDuplicationException {
+        _setRecompileFlag();
+        super._addEntity(entity);
+    }
+
+    /** Add a relation to this container. This method should not be used
+     *  directly.  Call the setContainer() method of the relation instead.
+     *  This method does not set
+     *  the container of the relation to refer to this container.
+     *  This method is <i>not</i> synchronized on the workspace, so the
+     *  caller should be. This overrides the base class
+     *  to first populate the actor, if necessary, by calling populate().
+     *  This ensures that the relation being added now appears in order
+     *  after the ones previously specified and lazily instantiated.
+     *  @param relation Relation to contain.
+     *  @exception IllegalActionException If the relation has no name.
+     *  @exception NameDuplicationException If the name collides with a name
+     *   already on the contained relations list.
+     */
+    protected void _addRelation(ComponentRelation relation)
+            throws IllegalActionException, NameDuplicationException {
+        _setRecompileFlag();
+        super._addRelation(relation);
+    }
+    
+
+    /** Remove the specified entity. This method should not be used
+     *  directly.  Call the setContainer() method of the entity instead with
+     *  a null argument.
+     *  The entity is assumed to be contained by this composite (otherwise,
+     *  nothing happens). This does not alter the entity in any way.
+     *  This method is <i>not</i> synchronized on the workspace, so the
+     *  caller should be. This overrides the base class
+     *  to first populate the actor, if necessary, by calling populate().
+     *  This ensures that the entity being removed now actually exists.
+     *  @param entity The entity to remove.
+     */
+    protected void _removeEntity(ComponentEntity entity) {
+        try {
+            _setRecompileFlag();
+        } catch (IllegalActionException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        super._removeEntity(entity);
+    }
+
+    /** Remove the specified relation. This method should not be used
+     *  directly.  Call the setContainer() method of the relation instead with
+     *  a null argument.
+     *  The relation is assumed to be contained by this composite (otherwise,
+     *  nothing happens). This does not alter the relation in any way.
+     *  This method is <i>not</i> synchronized on the workspace, so the
+     *  caller should be. This overrides the base class
+     *  to first populate the actor, if necessary, by calling populate().
+     *  This ensures that the relation being removed now actually exists.
+     *  @param relation The relation to remove.
+     */
+    protected void _removeRelation(ComponentRelation relation) {
+        try {
+            _setRecompileFlag();
+        } catch (IllegalActionException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        super._removeRelation(relation);
     }
 
 
+    private void _init() {
+        // By default, when exporting MoML, the class name is whatever
+        // the Java class is, which in this case is ModularCodeGenTypedCompositeActor.
+        // However, a parent class, TypedCompositeActor sets the classname
+        // to TypedCompositeActor so that the MoML
+        // that is exported does not depend on the presence of the
+        // derived class Java definition. Thus, we force the class name
+        // here to be ModularCodeGenTypedCompositeActor.
+        setClassName("ptolemy.actor.ModularCodeGenTypedCompositeActor");
+        try {        
+            recompileHierarchy = new Parameter(this, "recompileHierarchy");
+            recompileHierarchy.setExpression("False");
+            recompileHierarchy.setTypeEquals(BaseType.BOOLEAN);
+            
+            recompileThisLevel = new Parameter(this, "recompileThisLevel");
+            recompileThisLevel.setExpression("False");
+            recompileThisLevel.setTypeEquals(BaseType.BOOLEAN);
+        } catch (KernelException ex) {
+            throw new InternalErrorException(ex);
+        }
+    }
+
+    private boolean _modelChanged() throws IllegalActionException {
+        return ((BooleanToken) recompileThisLevel.getToken()).booleanValue() ||
+                ((BooleanToken) recompileHierarchy.getToken()).booleanValue();
+    }
+    
+    /**
+     * @throws IllegalActionException
+     */
+    private void _setRecompileFlag() throws IllegalActionException {
+        if (_configureDone && !_populating && !_generatingCode) { //TODO rodiers: This test is not enough.
+            recompileThisLevel.setToken(new BooleanToken(true));
+        }
+    }
+    
     private void _transferOutputs(IOPort port, Object outputTokens)
             throws IllegalActionException {
 
@@ -598,13 +752,12 @@ public class ModularCodeGenTypedCompositeActor extends LazyTypedCompositeActor {
             // FIXME: need to deal with other types
         }
     }
-
+    
+    private boolean _generatingCode = false;
     
     private ModularCodeGenerator _codeGenerator = null;
     
     private transient Method _fireMethod;
-    
-    private boolean _modelChanged = false;
     
     private Object _objectWrapper;
     

@@ -1007,6 +1007,9 @@ public class LazyTypedCompositeActor extends TypedCompositeActor implements
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
     
+    /** Indicate whether data given by configure() has been processed. */
+    protected boolean _configureDone = false;
+    
     /** Indicator that we are in the midst of populating. */
     protected boolean _populating = false;
 
@@ -1018,9 +1021,6 @@ public class LazyTypedCompositeActor extends TypedCompositeActor implements
 
     /** Indicate that we are cloning. */
     private boolean _cloning = false;
-
-    /** Indicate whether data given by configure() has been processed. */
-    private boolean _configureDone = false;
 
     /** URL specified to the configure() method. */
     private String _configureSource;
