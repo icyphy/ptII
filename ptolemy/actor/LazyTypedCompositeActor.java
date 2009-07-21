@@ -662,8 +662,10 @@ public class LazyTypedCompositeActor extends TypedCompositeActor implements
      *   an exception is thrown parsing its MoML data.
      */
     public void populate() throws InvalidStateException {
+        boolean resetPolulatingValue = false;
         try {
             if (_populating) {
+                resetPolulatingValue = true;
                 return;
             }
 
@@ -787,7 +789,7 @@ public class LazyTypedCompositeActor extends TypedCompositeActor implements
             throw new InvalidStateException(this, ex,
                     "Failed to populate contents");
         } finally {
-            _populating = false;
+            _populating = resetPolulatingValue;
         }
     }
 

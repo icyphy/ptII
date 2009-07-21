@@ -207,13 +207,24 @@ public class ModularCodeGenTypedCompositeActor extends LazyTypedCompositeActor {
      *  @exception IllegalActionException If the change is not acceptable
      *   to this container.
      */
-    public void attributeChanged(Attribute attribute) throws IllegalActionException {
+    public void  attributeChanged(Attribute attribute) throws IllegalActionException {
         super.attributeChanged(attribute);
-        if (attribute != recompileHierarchy) {
-            // TODO search for inner ModularCodeGenTypedCompositeActors and change these.
+        if (attribute == recompileHierarchy) {
+            // We will set the recompileHierarchy of all directly contained
+            // ModularCodeGenTypedCompositeActors.
+            // These will then do the same.
+            if (((BooleanToken) recompileHierarchy.getToken()).booleanValue()) { 
+                List<?> entities = entityList(ModularCodeGenTypedCompositeActor.class);
+                for (Object entity : entities) {
+                    ((ModularCodeGenTypedCompositeActor) entity).recompileHierarchy.setToken(new BooleanToken(true));
+                }
+            }
         }
         else if (attribute != recompileThisLevel) {
-            _setRecompileFlag();
+            // We don't support this yet. Enabling results in a recompilation when
+            // opening the model since expressions are lazy, and the notification does
+            // not happen when you parse the model, but when you read the model.
+            //_setRecompileFlag();
         }
     }
 
@@ -442,7 +453,15 @@ public class ModularCodeGenTypedCompositeActor extends LazyTypedCompositeActor {
             URL[] urls = new URL[] { url };
 
             ClassLoader classLoader = new URLClassLoader(urls);
-            classInstance = classLoader.loadClass(className);
+            try {
+                classInstance = classLoader.loadClass(className);
+            } catch (ClassNotFoundException ex) {
+                // We couldn't load the class, maybe the code is not generated (for example
+                // the user might have given this model to somebody else. Regenerate it again.
+                generateCode();
+                classInstance = classLoader.loadClass(className);
+            }
+
 
 
             _objectWrapper = classInstance.newInstance();
