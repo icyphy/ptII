@@ -74,7 +74,7 @@ test parseMoML-1.0 {call UtilitiyFunctions.parseMoML() directly} {
 test parseMoML-2.0 {create a  parse tree} {
     set parser [java::new ptolemy.data.expr.PtParser]
 
-    // Need to use backslashes here.
+    # Need to use backslashes here.
     set tree [$parser generateParseTree {parseMoML("    <entity name=\"top\" class=\"ptolemy.actor.TypedCompositeActor\">\n        <doc>xxx</doc>\n    </entity>\n")} ]
     set result [$tree evaluateParseTree]
     list [$result toString]
