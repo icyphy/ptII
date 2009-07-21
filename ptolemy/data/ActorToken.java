@@ -122,7 +122,7 @@ public class ActorToken extends Token implements Cloneable {
      *  @return A true-valued token if the first argument is equal to
      *  this token.
      */
-    public BooleanToken isCloseTo(Token rightArgument, double epsilon)
+    public BooleanToken isCloseTo(Token rightArgument, double epsilon) 
             throws IllegalActionException {
         return isEqualTo(rightArgument);
     }
@@ -137,7 +137,7 @@ public class ActorToken extends Token implements Cloneable {
      */
     public BooleanToken isEqualTo(Token token) throws IllegalActionException {
         if (token instanceof ActorToken) {
-            return new BooleanToken(this == token);
+            return new BooleanToken(toString().equals(token.toString()));
         } else {
             throw new IllegalActionException(
                     "Equality test not supported between "
