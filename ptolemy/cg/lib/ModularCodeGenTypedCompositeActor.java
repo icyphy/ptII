@@ -263,6 +263,13 @@ public class ModularCodeGenTypedCompositeActor extends LazyTypedCompositeActor {
      *   opaque.
      */
     public void fire() throws IllegalActionException {
+        if (_fireMethod == null) {
+            if (_debugging) {
+                _debug("ModularCodeGenerator: No generated code. Calling super.fire().");
+            }
+            super.fire();
+            return;
+        }
         try {
             // Invoke the native fire method
             if (_debugging) {

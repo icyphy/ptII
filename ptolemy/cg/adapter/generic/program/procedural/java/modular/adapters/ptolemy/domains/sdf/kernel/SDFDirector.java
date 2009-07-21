@@ -60,7 +60,6 @@ import ptolemy.data.type.BaseType;
 import ptolemy.data.type.Type;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
-import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NamedObj;
 
 //////////////////////////////////////////////////////////////////////////
@@ -123,12 +122,14 @@ public class SDFDirector
                     .getAdapter((NamedObj) actor);
 
             if (actor instanceof ModularCodeGenTypedCompositeActor) {
+                /*
                 //call the internal code generator of the composite actor
                 try {
                     ((ModularCodeGenTypedCompositeActor) actor).generateCode();
                 } catch (KernelException e) {
                     throw new IllegalActionException(actor, e, "Can't generate code for " + actor.getName());
                 }
+                */
                 
                 String className = NamedProgramCodeGeneratorAdapter.generateName((NamedObj) actor);
                 String actorName = ModularCodeGenTypedCompositeActor.classToActorName(className);
