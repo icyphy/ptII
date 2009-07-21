@@ -114,6 +114,18 @@ public class ActorToken extends Token implements Cloneable {
         return TYPE;
     }
 
+    /** Test for closeness of the values of this Token and the argument
+     *  Token.  For actor tokens, checking for closeness is the same
+     *  as checking for equality.
+     *  @param rightArgument The token to compare to this token.
+     *  @param epsilon This argument is ignored in this method.
+     *  @return A true-valued token if the first argument is equal to
+     *  this token.
+     */
+    public BooleanToken isCloseTo(Token rightArgument, double epsilon) {
+        return isEqualTo(rightArgument);
+    }
+    
     /** Model for equality of the values of this Token and the argument Token.
      *  It should be overridden in derived classes to provide type specific
      *  actions for equality testing.
