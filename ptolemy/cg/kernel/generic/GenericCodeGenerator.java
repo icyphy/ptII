@@ -685,6 +685,18 @@ public abstract class GenericCodeGenerator extends Attribute implements
                 }
             }
 
+            File codeDirectoryFile = codeDirectory.asFile();
+            if (codeDirectoryFile.isFile()) {
+                throw new IllegalActionException(this, "Error: "
+                        + codeDirectory.stringValue() + " is a file, "
+                        + " it should be a directory.");
+            }
+
+            if (!codeDirectoryFile.isDirectory() && !codeDirectoryFile.mkdirs()) {
+                throw new IllegalActionException(this, "Failed to make the \""
+                        + codeDirectory.stringValue() + "\" directory.");
+            }
+            
             Writer writer = null;
             try {
                 writer = FileUtilities.openForWriting(codeFileName,
