@@ -416,11 +416,7 @@ public class ModularCodeGenTypedCompositeActor extends LazyTypedCompositeActor {
     
     //TODO rodiers
     public void generateCode() throws KernelException {
-        if (_codeGenerator == null) {
-            _codeGenerator = new ModularCodeGenerator(this, "ModularCodeGenerator");
-            _codeGenerator.setPersistent(false);
-            // TODO hide
-        }
+        _createCodeGenerator();
         // TODO: Test whether we need to generate code. 
         _codeGenerator.generateCode();
     }
@@ -443,6 +439,7 @@ public class ModularCodeGenTypedCompositeActor extends LazyTypedCompositeActor {
         super.initialize();
         try {
             _generatingCode = true;
+            _createCodeGenerator();
             if (_modelChanged()) {
                     generateCode();
             }
@@ -461,8 +458,6 @@ public class ModularCodeGenTypedCompositeActor extends LazyTypedCompositeActor {
                 generateCode();
                 classInstance = classLoader.loadClass(className);
             }
-
-
 
             _objectWrapper = classInstance.newInstance();
 
@@ -647,6 +642,14 @@ public class ModularCodeGenTypedCompositeActor extends LazyTypedCompositeActor {
         }
     }
 
+    void _createCodeGenerator() throws IllegalActionException, NameDuplicationException {
+        if (_codeGenerator == null) {
+            _codeGenerator = new ModularCodeGenerator(this, "ModularCodeGenerator");
+            _codeGenerator.setPersistent(false);
+            // TODO hide
+        }
+    }
+    
     private boolean _modelChanged() throws IllegalActionException {
         return ((BooleanToken) recompileThisLevel.getToken()).booleanValue() ||
                 ((BooleanToken) recompileHierarchy.getToken()).booleanValue();
