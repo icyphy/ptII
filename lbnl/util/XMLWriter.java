@@ -142,7 +142,7 @@ public class XMLWriter {
     private final static String LS = System.getProperty("line.separator");
 
     /** Main method that can be used for testing.
-     *  @param An array of Strings, the first argument being a integer
+     *  @param arg An array of Strings, the first argument being a integer
      *  that names a file called test-XXX.txt.
      */
     public static void main(String[] arg) {
