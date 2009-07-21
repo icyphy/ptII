@@ -1298,6 +1298,9 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                 // Pass the input URL in case we need it for an error message.
                 // See test MoMLParser-31.1
                 NamedObj result = parse(base, input.toString(), inputStream);
+                if (_imports == null) {
+                    _imports = new HashMap();
+                }
                 _imports.put(input, new WeakReference(result));
                 return result;
             } finally {
