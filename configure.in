@@ -2396,6 +2396,9 @@ Be sure that your CLASSPATH includes JavaCC.zip, which is located in]);
     Note that the zip file that gets downloaded is actually an installer
     that must be run to install the JavaCC.zip file that contains the classes.
 
+    Note that JavaCC-4.1 and 4.2 will not work, there are problems with
+    ReInit() being static or not static.
+
     Configure looks for JavaCC in $PTII/vendors/sun/javacc-4.0
     so either install JavaCC in that location or use the --with-javacc= flag
     and then rerun configure.'])
