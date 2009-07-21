@@ -122,7 +122,8 @@ public class ActorToken extends Token implements Cloneable {
      *  @return A true-valued token if the first argument is equal to
      *  this token.
      */
-    public BooleanToken isCloseTo(Token rightArgument, double epsilon) {
+    public BooleanToken isCloseTo(Token rightArgument, double epsilon)
+            throws IllegalActionException {
         return isEqualTo(rightArgument);
     }
     
