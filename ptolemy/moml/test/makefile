@@ -71,6 +71,7 @@ JSIMPLE_TESTS = \
 	MoMLVariableChecker.tcl \
 	ParserAttribute.tcl \
 	parseMoML.tcl \
+	parseMoMLConst.xml \
 	StreamErrorHandler.tcl \
 	UndoContext.tcl \
 	UndoDeleteEntity.tcl \

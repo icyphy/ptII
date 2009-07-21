@@ -79,3 +79,43 @@ test parseMoML-2.0 {create a  parse tree} {
     set result [$tree evaluateParseTree]
     list [$result toString]
 } {{parseMoML("    <entity name=\"top\" class=\"ptolemy.actor.TypedCompositeActor\">\n        <doc>xxx</doc>\n    </entity>\n")}}
+
+
+######################################################################
+####
+#
+test parseMoML-3.0 {parse a file that has Const that calls parseMoML} {
+    set parser [java::new ptolemy.moml.MoMLParser]
+    $parser reset
+    # The list of filters is static, so we reset it in case there
+    # filters were already added.
+    java::call ptolemy.moml.MoMLParser setMoMLFilters [java::null]
+    java::call ptolemy.moml.MoMLParser addMoMLFilters \
+	    [java::call ptolemy.moml.filter.BackwardCompatibility allFilters]
+
+    java::call ptolemy.moml.MoMLParser addMoMLFilter [java::new \
+	    ptolemy.moml.filter.RemoveGraphicalClasses]
+
+    #######
+    # FIXME! This is very odd.  If we don't access BaseType ACTOR,
+    # then "$PTII/bin/ptjacl parseMoML.tcl" will fail because 
+    # BaseType.ACTOR is null in TypeLattice.
+    # ????
+    set baseTypeActor [java::field ptolemy.data.type.BaseType ACTOR]
+
+    set toplevel [$parser parseFile parseMoMLConst.xml]
+
+    list [$toplevel exportMoML]
+} {{<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="parseMoMLConst" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
+    </property>
+    <entity name="Const" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="parseMoML(&quot;&lt;entity name=\&quot;foo\&quot; class=\&quot;ptolemy.actor.TypedCompositeActor\&quot;/&gt;&quot;)">
+        </property>
+    </entity>
+</entity>
+}}
+
