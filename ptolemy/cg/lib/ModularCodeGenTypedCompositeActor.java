@@ -262,7 +262,7 @@ public class ModularCodeGenTypedCompositeActor extends LazyTypedCompositeActor {
     public void fire() throws IllegalActionException {
         if (_fireMethod == null) {
             if (_debugging) {
-                _debug("ModularCodeGenerator: No generated code. Calling super.fire().");
+                _debug("ModularCodeGenerator: No generated code. Calling simulation fire method.");
             }
             super.fire();
             return;
@@ -385,7 +385,7 @@ public class ModularCodeGenTypedCompositeActor extends LazyTypedCompositeActor {
             }
     
             if (_debugging) {
-                _debug("ModularCodeGenerator: Done calling fire method for generated code.");
+                _debug("ModularCodeGenerator: Done calling fire method of generated code.");
             }
             
         } catch (Throwable throwable) {
@@ -393,7 +393,7 @@ public class ModularCodeGenTypedCompositeActor extends LazyTypedCompositeActor {
             // use the model.
             
             if (_debugging) {
-                _debug("ModularCodeGenerator: Calling fire method for generated code failed.\n\t" +
+                _debug("ModularCodeGenerator: Calling fire method of generated code failed.\n\t" +
                                 "Reason: " + throwable.getMessage() + 
                 		"\n\tCalling fire method in ptolemy.");
             }
