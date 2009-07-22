@@ -102,8 +102,12 @@ test StreamExec-2.3 {execute a command that does not exist, get stderr} {
     set result4 \
 	{IOException: java.io.IOException: java.io.IOException: NotACommand: not found
 }
+    set result5 \
+	{IOException: java.io.IOException: Cannot run program "NotACommand": CreateProcess error=2, The system cannot find the file specified
+}
+
     set retval 0
-    if {"$stderr" == "$result1" || "$stderr" == "$result2" || "$stderr" == "$result3" || $stderr == "$result4"} {
+    if {"$stderr" == "$result1" || "$stderr" == "$result2" || "$stderr" == "$result3" || $stderr == "$result4" || $stderr == "$result5"} {
 	set retval 1
     } else {
 	puts "Did not match any of the known good results:\n----"
