@@ -35,7 +35,8 @@ import ptolemy.data.DoubleToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
-import ptolemy.domains.ptides.kernel.PtidesBasicDirector;
+// Don't insert interdependencies between domains
+//import ptolemy.domains.ptides.kernel.PtidesBasicDirector;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -312,11 +313,12 @@ public class TimedDelay extends DETransformer {
             throw new IllegalActionException(this, "No director.");
         }
         Time result = null;
-        if (director instanceof PtidesBasicDirector) {
-            result = ((PtidesBasicDirector)director).fireAt(this, time, null);
-        } else {
+        // FIXME: Don't insert interdependencies between domains
+//         if (director instanceof PtidesBasicDirector) {
+//             result = ((PtidesBasicDirector)director).fireAt(this, time, null);
+//         } else {
             result = director.fireAt(this, time);
-        }
+            //        }
         if (!result.equals(time)) {
             throw new IllegalActionException(this,
                     "Director is unable to fire the actor at the requested time: "
