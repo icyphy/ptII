@@ -91,7 +91,7 @@ EXTRA_SRCS =	testDefs.tcl $(TCL_SRCS) $(JSRCS) $(JSIMPLE_TESTS) #$(JGRAPHICAL_TE
 
 JCLASS = $(JSRCS:%.java=%.class)
 
-KRUFT = *.dll
+KRUFT = *.dll */*/*.class
 
 tests:: $(EXTRA_SRCS) jclass all_shared test_java test_jsimple
 
