@@ -167,9 +167,8 @@ test FileUtilities-2.6 {nameToFile: use $CLASSPATH} {
 ####
 #
 test FileUtilities-2.7 {nameToFile: use $CLASSPATH on a path that does not exist} {
-    set file1 [java::call ptolemy.util.FileUtilities nameToFile \
-		   {$CLASSPATH/ThisDoesNotExist.java} [java::null]]
-    set url1 [$file1 toURL]
+    set url1 [[[java::call ptolemy.util.FileUtilities nameToFile \
+		    {$CLASSPATH/ThisDoesNotExist.java} [java::null]] getCanonicalFile] toURL]
     set url2 [[[java::new java.io.File $PTII/ThisDoesNotExist.java] getCanonicalFile] toURL]
     list [$url1 sameFile $url2]
 } {1}
