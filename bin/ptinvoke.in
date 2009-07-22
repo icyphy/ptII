@@ -313,9 +313,6 @@ JODE_JAR="@JODE_CLASSES@"
 
 JODE_JFLAG=
 
-#### Kieler jar, used for layout in vergil
-KIELER_JAR="${CLASSPATHSEPARATOR}${PTII}/lib/kieler.jar"
-
 #### Mysql Java Database jar, used by space domain and actor/lib/database
 # PTSPACE_DIR is set to space and used in
 # $PTII/ptolemy/domains/makefile if mysql jar or ojdbc6.jar was found.
