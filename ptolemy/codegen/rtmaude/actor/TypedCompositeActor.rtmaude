@@ -19,9 +19,9 @@ $info(connections)
   var V : Value .  vars VM VAL : ValueMap .  var E : Exp .
   var MEM MEM' : Memory .  var K : K .
   var VIL : VarIdList . var VL : ValueList .
-  vars EQ EQ1 EQ2 EQ3 : EventQueue .  var EVTS EVTS' : Events . var T : Time .
+  vars EQ EQ1 EQ2 EQ3 : EventQueue .  var EVTS EVTS' : Events . 
+  var T : Time . var N : Nat .
   var AI : ActorID . var VI : VarId . var MI : MemoryId .
-  var UPDATED UPDATED' : Bool .
 
 ---------------------------------------------------------------------
 --- Message & Time
@@ -34,12 +34,12 @@ $info(connections)
 
   --- evt message (to top)
   eq < O : CompositeActor | 
-       innerActors : CF evt(event(AI ! PI, V), T) 
+       innerActors : CF schedule-evt(event(AI ! PI, V), T, N) 
      >
    = < O : CompositeActor | 
        innerActors : CF 
      >
-     evt(event((O . AI) ! PI, V), T)  .
+     schedule-evt(event((O . AI) ! PI, V), T, N)  .
 
   --- active-evt message (from top)
   eq active-evt(event((O . AI) ! PI, V))
@@ -79,15 +79,15 @@ $info(connections)
  **** setting hierarchical model ****
 
   --- if innerActors do not start portFixPoint, start it.
-  eq portFixPoints(UPDATED,
+  eq portFixPoints(
     < O : CompositeActor | 
       status : enabled,
       innerActors : ACTS 
     > 
     REST)
-  =  portFixPoints(true,
+  =  portFixPoints(
     < O : CompositeActor | 
-      innerActors : portFixPoints(true,ACTS) 
+      innerActors : portFixPoints(ACTS) 
     > 
     REST) .
 
@@ -98,20 +98,20 @@ $info(connections)
   --- of a parent.
 
   --- variables defined at the parent actor, and its already computed.
-  ceq portFixPoints(UPDATED,
+  ceq portFixPoints(
     < O : CompositeActor |
       status : enabled, 
       store : VI |-> V ; MEM,
-      innerActors : portFixPoints(UPDATED',
+      innerActors : portFixPoints(
         < O' : Actor |
           status : enabled,
           store : MI |-> k(VI -> K) ; MEM'
         >
         ACTS)
     > REST)
-   = portFixPoints(true,
+   = portFixPoints(
     < O : CompositeActor |
-      innerActors : portFixPoints(true,
+      innerActors : portFixPoints(
         < O' : Actor |
           store : MI |-> k(V -> K) ; MEM'
         >
@@ -121,44 +121,44 @@ $info(connections)
 
   --- If a variable is not in current actor and not already computed in
   --- the parent actor, it will be computed at the parent
-  ceq portFixPoints(UPDATED,
+  ceq portFixPoints(
     < O : CompositeActor |
       status : enabled, 
       parameters : VI |-> E ; VAL,
       store : MEM,
-      innerActors : portFixPoints(UPDATED',
+      innerActors : portFixPoints(
         < O' : Actor |
           status : enabled,
           store : MI |-> k(VI -> K) ; MEM'
         >
         ACTS)
     > REST)
-   = portFixPoints(true,
+   = portFixPoints(
     < O : CompositeActor |
       store : VI |-> k(E) ; MEM,
-      innerActors : portFixPoints(true, < O' : Actor | > ACTS)
+      innerActors : portFixPoints(< O' : Actor | > ACTS)
     > REST)
   if not VI in MEM' /\ not VI in MEM .
 
   --- If a variable is not in current actor and not already computed in
   --- the parent actor, and no variable is in parent actor,
   --- it will refer its parent again.
-  ceq portFixPoints(UPDATED,
+  ceq portFixPoints(
     < O : CompositeActor |
       status : enabled, 
       parameters : VAL,
       store : MEM,
-      innerActors : portFixPoints(UPDATED',
+      innerActors : portFixPoints(
         < O' : Actor |
           status : enabled,
           store : MI |-> k(VI -> K) ; MEM'
         >
         ACTS)
     > REST)
-   = portFixPoints(true,
+   = portFixPoints(
     < O : CompositeActor |
       store : VI |-> k(VI) ; MEM,
-      innerActors : portFixPoints(true, < O' : Actor | > ACTS)
+      innerActors : portFixPoints(< O' : Actor | > ACTS)
     > REST)
   if not VI in MEM' /\ not VI in MEM /\ not VI in VAL .
 
@@ -168,11 +168,11 @@ $info(connections)
   --- if connections exist.
 
   --- Down (Inner Actor)
-  eq portFixPoints(UPDATED,
+  eq portFixPoints(
     < O : CompositeActor |
       status : enabled, 
       ports : < PI : InPort | status : DPS, value : V > PORTS,
-      innerActors : portFixPoints(UPDATED',
+      innerActors : portFixPoints(
         < O' : Actor | 
           status : enabled,
           ports : < PI' : InPort | status : unknown > PORTS' 
@@ -180,9 +180,9 @@ $info(connections)
         ((parent ! PI) ==> ((O' ! PI') ; EPIS)) 
         ACTS)
     > REST)
-   = portFixPoints(true,
+   = portFixPoints(
     < O : CompositeActor |
-      innerActors :  portFixPoints(true,
+      innerActors :  portFixPoints(
         < O' : Actor | 
           ports : < PI' : InPort | status : DPS, value : V > PORTS' 
         >
@@ -191,21 +191,21 @@ $info(connections)
     > REST) .
 
   --- Up (Inner Actor)
-  eq portFixPoints(UPDATED,
+  eq portFixPoints(
     < O : CompositeActor |
       status : enabled, 
       ports : < PI : OutPort | status : unknown > PORTS,
-      innerActors : portFixPoints(UPDATED',
+      innerActors : portFixPoints(
         < O' : Actor | 
           ports : < PI' : OutPort | status : DPS, value : V > PORTS' 
         >
         ((O' ! PI') ==> ((parent ! PI) ; EPIS)) 
         ACTS)
     > REST)
-   = portFixPoints(true,
+   = portFixPoints(
     < O : CompositeActor |
       ports : < PI : OutPort | status : DPS, value : V > PORTS,
-      innerActors : portFixPoints(true,
+      innerActors : portFixPoints(
         < O' : Actor | >
         ((O' ! PI') ==> ((parent ! PI) ; EPIS)) 
         ACTS)
@@ -213,22 +213,12 @@ $info(connections)
 
  **** final condition (redefined) ****
 
-  --- if there a change (from bottom)
-  eq portFixPoints(false,
-    < O : CompositeActor |
-      status : enabled,
-      innerActors : portFixPoints(true,ACTS)
-    >
-    REST
-    )
-  =  portFixPoints(true, < O : CompositeActor | > REST) .
-
 ------------------------
 
   --- terminate all portFixPoints (from top)
   eq postfire(C:Cid,
     < O : CompositeActor | 
-      innerActors : portFixPoints(UPDATED, ACTS)
+      innerActors : portFixPoints(ACTS)
     >)
   =  postfire(C:Cid,
     < O : CompositeActor | 

@@ -687,7 +687,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             moml.append("<entity name=\"" + compositeActorName
                     + "\" class=\"ptolemy.actor.TypedCompositeActor\">\n");
             moml.append("\t<property name=\"_location\" class=\""
-                    + "ptolemy.moml.Location\" value=\"" + location[0] + ", "
+                    + "ptolemy.kernel.util.Location\" value=\"" + location[0] + ", "
                     + location[1] + "\">\n");
             moml.append("\t</property>\n");
             moml.append(newPorts);

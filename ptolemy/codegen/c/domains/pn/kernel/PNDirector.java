@@ -1,29 +1,26 @@
-/* Code generator helper class associated with the PNDirector class.
-
- Copyright (c) 2008-2009 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
-
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
-
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
-
- PT_COPYRIGHT_VERSION_2
- COPYRIGHTENDKEY
-
+/*
+ * Code generator helper class associated with the PNDirector class.
+ * 
+ * Copyright (c) 2008-2009 The Regents of the University of California. All
+ * rights reserved. Permission is hereby granted, without written agreement and
+ * without license or royalty fees, to use, copy, modify, and distribute this
+ * software and its documentation for any purpose, provided that the above
+ * copyright notice and the following two paragraphs appear in all copies of
+ * this software.
+ * 
+ * IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR
+ * DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES ARISING OUT
+ * OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF THE UNIVERSITY OF
+ * CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ * 
+ * THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ * INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
+ * FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE PROVIDED HEREUNDER IS ON AN
+ * "AS IS" BASIS, AND THE UNIVERSITY OF CALIFORNIA HAS NO OBLIGATION TO PROVIDE
+ * MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+ * 
+ * PT_COPYRIGHT_VERSION_2 COPYRIGHTENDKEY
+ * 
  */
 package ptolemy.codegen.c.domains.pn.kernel;
 
@@ -42,6 +39,7 @@ import ptolemy.actor.util.DFUtilities;
 import ptolemy.codegen.actor.Director;
 import ptolemy.codegen.kernel.CodeGeneratorHelper;
 import ptolemy.codegen.kernel.PortCodeGenerator;
+import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
@@ -55,9 +53,9 @@ import ptolemy.kernel.util.NamedObj;
  * Code generator helper associated with the PNDirector class. This director
  * initializes all the actors, then starts a thread for each actor that invokes
  * the fire code for the actor in an infinite loop.
- *
+ * 
  * FIXME: How to make it possible for executions to be finite?
- *
+ * 
  * @author Edward A. Lee (based on SDFDirector helper class)
  * @version $Id$
  * @since Ptolemy II 7.1
@@ -68,9 +66,8 @@ public class PNDirector extends Director {
 
     /**
      * Construct the code generator helper associated with the given PNDirector.
-     *
-     * @param pnDirector
-     *            The associated ptolemy.domains.pn.kernel.PNDirector
+     * 
+     * @param pnDirector The associated ptolemy.domains.pn.kernel.PNDirector
      */
     public PNDirector(ptolemy.domains.pn.kernel.PNDirector pnDirector) {
         super(pnDirector);
@@ -82,11 +79,10 @@ public class PNDirector extends Director {
 
     /**
      * Generate the body code that lies between variable declaration and wrapup.
-     *
+     * 
      * @return The generated body code.
-     * @exception IllegalActionException
-     *                If the {@link #_generateFireCode()} method throws the
-     *                exceptions.
+     * @exception IllegalActionException If the {@link #_generateFireCode()}
+     * method throws the exceptions.
      */
     public String generateFireCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
@@ -124,11 +120,10 @@ public class PNDirector extends Director {
     /**
      * Get the files needed by the code generated from this helper class. This
      * base class returns an empty set.
-     *
+     * 
      * @return A set of strings that are header files needed by the code
-     *         generated from this helper class.
-     * @exception IllegalActionException
-     *                If something goes wrong.
+     * generated from this helper class.
+     * @exception IllegalActionException If something goes wrong.
      */
     public Set getHeaderFiles() throws IllegalActionException {
         Set files = new HashSet();
@@ -140,10 +135,9 @@ public class PNDirector extends Director {
     /**
      * Return the libraries specified in the "libraries" blocks in the templates
      * of the actors included in this CompositeActor.
-     *
+     * 
      * @return A Set of libraries.
-     * @exception IllegalActionException
-     *                If thrown when gathering libraries.
+     * @exception IllegalActionException If thrown when gathering libraries.
      */
     public Set getLibraries() throws IllegalActionException {
         Set libraries = new LinkedHashSet();
@@ -190,8 +184,8 @@ public class PNDirector extends Director {
     /**
      * Generate the initialize code for the associated PN director.
      * @return The generated initialize code.
-     * @exception IllegalActionException If the helper associated
-     * with the director throws it while generating initialize code.
+     * @exception IllegalActionException If the helper associated with the
+     * director throws it while generating initialize code.
      */
     public String generateInitializeCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
@@ -222,8 +216,8 @@ public class PNDirector extends Director {
     /**
      * Return the main loop code for the associated PN director.
      * @return The generated main loop code.
-     * @exception IllegalActionException If the helper associated
-     * with the director throws it while generating main loop code.
+     * @exception IllegalActionException If the helper associated with the
+     * director throws it while generating main loop code.
      */
     public String generateMainLoop() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
@@ -248,8 +242,8 @@ public class PNDirector extends Director {
     /**
      * Generate the postfire code for the associated PN director.
      * @return The generated postfire code.
-     * @exception IllegalActionException If the helper associated
-     * with the director throws it while generating postfire code.
+     * @exception IllegalActionException If the helper associated with the
+     * director throws it while generating postfire code.
      */
     public String generatePostfireCode() throws IllegalActionException {
         return "";
@@ -257,11 +251,10 @@ public class PNDirector extends Director {
 
     /**
      * Generate the preinitialize code for the associated PN director.
-     *
+     * 
      * @return The generated preinitialize code.
-     * @exception IllegalActionException
-     *                If the helper associated with an actor throws it while
-     *                generating preinitialize code for the actor.
+     * @exception IllegalActionException If the helper associated with an actor
+     * throws it while generating preinitialize code for the actor.
      */
     public String generatePreinitializeCode() throws IllegalActionException {
         StringBuffer bufferCode = new StringBuffer();
@@ -315,13 +308,10 @@ public class PNDirector extends Director {
     /**
      * Generate code for transferring enough tokens to complete an internal
      * iteration.
-     *
-     * @param inputPort
-     *            The port to transfer tokens.
-     * @param code
-     *            The string buffer that the generated code is appended to.
-     * @exception IllegalActionException
-     *                If thrown while transferring tokens.
+     * 
+     * @param inputPort The port to transfer tokens.
+     * @param code The string buffer that the generated code is appended to.
+     * @exception IllegalActionException If thrown while transferring tokens.
      */
     public void generateTransferInputsCode(IOPort inputPort, StringBuffer code)
             throws IllegalActionException {
@@ -361,11 +351,10 @@ public class PNDirector extends Director {
 
     /**
      * Generate variable initialization for the referenced parameters.
-     *
+     * 
      * @return code The generated code.
-     * @exception IllegalActionException
-     *                If the helper class for the model director cannot be
-     *                found.
+     * @exception IllegalActionException If the helper class for the model
+     * director cannot be found.
      */
     public String generateVariableInitialization()
             throws IllegalActionException {
@@ -374,11 +363,10 @@ public class PNDirector extends Director {
 
     /**
      * Generate the wrapup code for the associated PN director.
-     *
+     * 
      * @return The generated preinitialize code.
-     * @exception IllegalActionException
-     *                If the helper associated with an actor throws it while
-     *                generating preinitialize code for the actor.
+     * @exception IllegalActionException If the helper associated with an actor
+     * throws it while generating preinitialize code for the actor.
      */
     public String generateWrapupCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
@@ -398,14 +386,14 @@ public class PNDirector extends Director {
     }
 
     /**
-     * Return the size of the generated buffer for the specified
-     * port channel. This returns the value of
-     * "initialQueueCapacity" parameter of the PNDirector
+     * Return the size of the generated buffer for the specified port channel.
+     * This returns the value of "initialQueueCapacity" parameter of the
+     * PNDirector
      * @param port The specified port.
      * @param channelNumber The specified channel number.
      * @return The size of the generated buffer.
-     * @exception IllegalActionException If an error occurs
-     *  when getting the value from the parameter.
+     * @exception IllegalActionException If an error occurs when getting the
+     * value from the parameter.
      */
     public int getBufferSize(IOPort port, int channelNumber)
             throws IllegalActionException {
@@ -420,8 +408,8 @@ public class PNDirector extends Director {
     /**
      * Generate the shared code for the associated PN director.
      * @return The generated shared code.
-     * @exception IllegalActionException If the helper associated
-     * with the director throws it while generating shared code.
+     * @exception IllegalActionException If the helper associated with the
+     * director throws it while generating shared code.
      */
     public Set getSharedCode() throws IllegalActionException {
         Set sharedCode = new HashSet();
@@ -437,8 +425,8 @@ public class PNDirector extends Director {
      * variables are generated unconditionally.
      * @param port The port whose offset variables are generated.
      * @return Code that declares the read and write offset variables.
-     * @exception IllegalActionException
-     *                If getting the rate or reading parameters throws it.
+     * @exception IllegalActionException If getting the rate or reading
+     * parameters throws it.
      */
     protected String _createDynamicOffsetVariables(IOPort port)
             throws IllegalActionException {
@@ -485,7 +473,7 @@ public class PNDirector extends Director {
      * Generate the notTerminate flag variable for the associated PN director.
      * Generating notTerminate instead of terminate saves the negation in
      * checking the flag (e.g. "while (!terminate) ...").
-     *
+     * 
      * @return The varaible label of the notTerminate flag.
      */
     protected String _generateNotTerminateFlag() {
@@ -493,8 +481,7 @@ public class PNDirector extends Director {
     }
 
     /**
-     * @param code
-     *            The given code buffer.
+     * @param code The given code buffer.
      * @exception IllegalActionException
      */
     private void _generateThreadFunctionCode(StringBuffer code)
@@ -508,6 +495,14 @@ public class PNDirector extends Director {
             StringBuffer functionCode = new StringBuffer();
 
             CodeGeneratorHelper helper = (CodeGeneratorHelper) _getHelper((NamedObj) actor);
+
+            // This is necessary for non-inline mode. The actor fire
+            // function code generated after this, so we need to generate
+            // a declaration for the function.
+            if (_codeGenerator.inline.getToken() == BooleanToken.FALSE) {
+                code.append(_eol + "void " + generateName((NamedObj) actor)
+                        + "();");
+            }
 
             code.append(_eol + "void* " + _getActorThreadLabel(actor)
                     + "(void* arg) {" + _eol);
@@ -529,7 +524,7 @@ public class PNDirector extends Director {
                         .getDirector());
 
                 // If so, it should contain a different Director.
-                assert (directorHelper != this);
+                assert directorHelper != this;
 
                 functionCode.append(directorHelper.generateMainLoop());
 
@@ -561,9 +556,9 @@ public class PNDirector extends Director {
                 // If not inline, generateFireCode() would be a call
                 // to the fire function which already includes the
                 // type conversion code.
-                //                                if (inline) {
-                //                functionCode.append(helper.generateTypeConvertFireCode());
-                //                                }
+                // if (inline) {
+                //      functionCode.append(helper.generateTypeConvertFireCode());
+                // }
 
                 functionCode.append(helper.generatePostfireCode());
 
@@ -609,8 +604,10 @@ public class PNDirector extends Director {
             // This needs to be called last because all references
             // need to be collected before generating their initialization.
             String initializeCode = helper.generateInitializeCode();
+
             String variableInitializeCode = helper
                     .generateVariableInitialization();
+
             code.append(variableInitializeCode);
             code.append(initializeCode);
 
@@ -624,9 +621,8 @@ public class PNDirector extends Director {
 
     /**
      * Generate the thread function name for a given actor.
-     *
-     * @param actor
-     *            The given actor.
+     * 
+     * @param actor The given actor.
      * @return A unique label for the actor thread function.
      */
     private String _getActorThreadLabel(Actor actor) {
@@ -634,6 +630,6 @@ public class PNDirector extends Director {
                 + "_ThreadFunction";
     }
 
-    private HashSet<String> _buffers = new HashSet<String>();
+    private final HashSet<String> _buffers = new HashSet<String>();
 
 }

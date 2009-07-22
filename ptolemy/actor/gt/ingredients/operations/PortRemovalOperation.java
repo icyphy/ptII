@@ -48,7 +48,7 @@ import ptolemy.moml.MoMLChangeRequest;
 
  @author Thomas Huining Feng
  @version $Id$
- @since Ptolemy II 8.0
+ @since Ptolemy II 7.1
  @Pt.ProposedRating Yellow (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */

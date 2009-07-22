@@ -9,7 +9,6 @@
   var REST : ObjectConfiguration . vars O : Oid .
   var E : Exp . var V TV : Value .  vars T : Time .
   var AM : AssignMap . var MEM : Memory .
-  var UPDATED : Bool .
 
 ---------------------------------------------------------------------
 --- Semantics Steps
@@ -23,13 +22,13 @@
 
   --- Note: Delay actors generate events "later" and hence
   --- do not generate output WHEN their ports are in unknown state
-  eq portFixPoints(UPDATED,
+  eq portFixPoints(
      < O : Delay | 
       status : enabled,
       ports :  < PI : OutPort | status : unknown > PORTS 
     > 
     REST) 
-   = portFixPoints(true,
+   = portFixPoints(
      < O : Delay |
        ports : < PI : OutPort | status : absent > PORTS > REST) .
 
@@ -44,7 +43,7 @@
         < 'output : OutPort | > PORTS), 
       store : 'delay |-> TV ; MEM
     >)
-  = evt(event(O ! 'output, V), toTime(TV)) 
+  = relative-evt(event(O ! 'output, V), toTime(TV)) 
     postfire(^ Delay, < O : Delay | >) .
 endtom)
 /**/

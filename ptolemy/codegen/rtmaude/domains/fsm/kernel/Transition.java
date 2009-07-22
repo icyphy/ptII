@@ -53,7 +53,6 @@ public class Transition extends RTMaudeAdaptor {
         super(component);
     }
 
-    @Override
     public String generateTermCode() throws IllegalActionException {
         ptolemy.domains.fsm.kernel.Transition t = (ptolemy.domains.fsm.kernel.Transition) getComponent();
         ParseTreeCodeGenerator pcg = getParseTreeCodeGenerator();

@@ -59,6 +59,8 @@ import ptolemy.kernel.util.NamedObj;
 *
 * @see ptolemy.codegen.kernel.CodeGeneratorHelper
 * @author Kyungmin Bae
+@version $Id$
+@since Ptolemy II 7.1
 * @version $Id$
 * @Pt.ProposedRating Red (kquine)
 *
@@ -92,7 +94,6 @@ public class RTMaudeAdaptor extends CodeGeneratorHelper {
         return super._generateBlockCode(blockName, Arrays.asList(args));
     }
     
-    @Override
     protected String _generateTypeConvertMethod(String ref, String castType,
             String refType) throws IllegalActionException {
         
@@ -106,7 +107,6 @@ public class RTMaudeAdaptor extends CodeGeneratorHelper {
             return super._generateTypeConvertMethod(ref, castType, refType);
     }
 
-    @Override
     public String generateFireCode() throws IllegalActionException {
         String comment = _codeGenerator.comment("Fire " +
                 ((getComponent() instanceof CompositeActor) ? "Composite Actor: " : "") +
@@ -119,13 +119,8 @@ public class RTMaudeAdaptor extends CodeGeneratorHelper {
             return processCode(comment + generateTermCode());        
     }
     
-    @Override
-    public String generateFireFunctionCode() throws IllegalActionException {
-        String fireModName = _generateBlockCode("funcModuleName");
-        
+    public String generateFireFunctionCode() throws IllegalActionException {        
         return _generateBlockCode("fireFuncBlock",
-                fireModName,
-                generateTermCode(),
                 CodeStream.indent(1,_generateFireCode() + generateTypeConvertFireCode())
                 );
     }
@@ -140,7 +135,6 @@ public class RTMaudeAdaptor extends CodeGeneratorHelper {
         return _generateBlockCode(defaultTermBlock);    // term block
     }
     
-    @Override
     public Set getSharedCode() throws IllegalActionException {
         // Use LinkedHashSet to give order to the shared code.
         Set sharedCode = new LinkedHashSet();
@@ -235,7 +229,6 @@ public class RTMaudeAdaptor extends CodeGeneratorHelper {
         throw new IllegalActionException("Unknown RTMaudeObj Information");
     }
     
-    @Override
     protected String _replaceMacro(String macro, String parameter)
             throws IllegalActionException {
         if (macro.equals("info") || macro.equals("block")) {
@@ -253,7 +246,7 @@ public class RTMaudeAdaptor extends CodeGeneratorHelper {
                 return _generateBlockCode(aName, largs);
         }
         if (macro.equals("indent")) {
-            return _eol + CodeStream.indent(1, processCode(parameter));
+            return CodeStream.indent(1, processCode(parameter));
         }
         return super._replaceMacro(macro, parameter);
     }

@@ -1,4 +1,4 @@
-/*
+/* A utility class for creating specialized Array types.
 Below is the copyright agreement for the Ptolemy II system.
 
 Copyright (c) 2009 The Regents of the University of California.

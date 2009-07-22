@@ -405,7 +405,9 @@ public class ComponentActor extends TypedCompositeActor implements Component {
 
             if (isOutput()) {
                 try {
-                    for (int i = 0; i < getWidthInside(); i++) {
+                    // FIXME: This loop will only go through
+                    // the once and then return.
+                    for (int i = 0; i < getWidthInside(); /*i++*/) {
                         if (hasTokenInside(i)) {
                             //System.out.println("has token to transfer to a method call outside");
                             Token t = getInside(i);

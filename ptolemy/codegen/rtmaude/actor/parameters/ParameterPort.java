@@ -52,7 +52,6 @@ public class ParameterPort extends IOPort {
         super(component);
     }
 
-    @Override
     protected String getInfo(String name, List<String> parameters)
             throws IllegalActionException {
         if (name.equals("param")) {

@@ -22,7 +22,7 @@ wait-queue : emptyList/**/
   var V : Value .  vars T  : Time . vars TL UQ : TimeList .
   var AM : AssignMap . var MEM : Memory .
   var NV : NumberValue . var E : Exp .
-  vars UPDATED FLAG : Bool .
+  var FLAG : Bool .
 
 ---------------------------------------------------------------------
 --- Semantics Steps
@@ -38,13 +38,13 @@ wait-queue : emptyList/**/
        store : 'value |-> k(E)
      >) .
 
-  eq portFixPoints(UPDATED,
+  eq portFixPoints(
      < O : NonInterruptibleTimer |
         status : enabled,
         ports :  < PI : OutPort | status : unknown > PORTS
     >
     REST)
-   = portFixPoints(true,
+   = portFixPoints(
      < O : NonInterruptibleTimer |
         ports : < PI : OutPort | status : absent > PORTS
     >
@@ -61,7 +61,7 @@ wait-queue : emptyList/**/
             PORTS)
     >)
   = if UQ =/= emptyList then
-        evt(event(O ! 'output, V), first(UQ))
+        relative-evt(event(O ! 'output, V), first(UQ))
         postfire(^ NonInterruptibleTimer,
         < O : NonInterruptibleTimer |
             wait-queue : rest(UQ)
@@ -90,7 +90,7 @@ wait-queue : emptyList/**/
             wait-queue : (TL toTime(NV))
         >)
     else
-        evt(event(O ! 'output, V), toTime(NV))
+        relative-evt(event(O ! 'output, V), toTime(NV))
         postfire(^ NonInterruptibleTimer,
         < O : NonInterruptibleTimer |
             processing : true

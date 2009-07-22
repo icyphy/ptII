@@ -94,7 +94,6 @@ public class LatticeGraphFrame extends FSMGraphFrame implements ActionListener {
         super(entity, tableau, defaultLibrary);
     }
 
-    @Override
     protected GraphPane _createGraphPane(NamedObj entity) {
         _controller = new LatticeGraphFrameController();
         _controller.setConfiguration(getConfiguration());
@@ -107,7 +106,6 @@ public class LatticeGraphFrame extends FSMGraphFrame implements ActionListener {
         return new BasicGraphPane(_controller, graphModel, entity);
     }
 
-    @Override
     protected JMenuItem[] _debugMenuItems() {
         // Add debug menu.
         JMenuItem[] debugMenuItems = {
@@ -116,7 +114,6 @@ public class LatticeGraphFrame extends FSMGraphFrame implements ActionListener {
         return debugMenuItems;
     }
 
-    @Override
     protected ActionListener _getDebugMenuListener() {
         DebugMenuListener debugMenuListener = new DebugMenuListener();
         return debugMenuListener;
@@ -154,6 +151,5 @@ public class LatticeGraphFrame extends FSMGraphFrame implements ActionListener {
                 }
             }
         }
-
     }
 }

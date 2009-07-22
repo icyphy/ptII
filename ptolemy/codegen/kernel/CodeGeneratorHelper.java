@@ -1,29 +1,26 @@
-/* Base class for code generator helper.
-
- Copyright (c) 2005-2009 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
-
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
-
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
-
- PT_COPYRIGHT_VERSION_2
- COPYRIGHTENDKEY
-
+/*
+ * Base class for code generator helper.
+ * 
+ * Copyright (c) 2005-2009 The Regents of the University of California. All
+ * rights reserved. Permission is hereby granted, without written agreement and
+ * without license or royalty fees, to use, copy, modify, and distribute this
+ * software and its documentation for any purpose, provided that the above
+ * copyright notice and the following two paragraphs appear in all copies of
+ * this software.
+ * 
+ * IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR
+ * DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES ARISING OUT
+ * OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF THE UNIVERSITY OF
+ * CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ * 
+ * THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ * INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
+ * FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE PROVIDED HEREUNDER IS ON AN
+ * "AS IS" BASIS, AND THE UNIVERSITY OF CALIFORNIA HAS NO OBLIGATION TO PROVIDE
+ * MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+ * 
+ * PT_COPYRIGHT_VERSION_2 COPYRIGHTENDKEY
+ * 
  */
 package ptolemy.codegen.kernel;
 
@@ -78,25 +75,27 @@ import ptolemy.util.StringUtilities;
 
 /**
  * Base class for code generator helper.
- *
- * <p>Subclasses should override generateFireCode(),
- * generateInitializeCode() generatePostfireCode(),
- * generatePreinitializeCode(), and generateWrapupCode() methods by
- * appending a corresponding code block.
- *
- * <p>Subclasses should be sure to properly indent the code by
- * either using the code block functionality in methods like
- * {@link #_generateBlockCode(String)} or by calling
- * {@link ptolemy.codegen.kernel.CodeStream#indent(String)},
- * for example:
+ * 
+ * <p>
+ * Subclasses should override generateFireCode(), generateInitializeCode()
+ * generatePostfireCode(), generatePreinitializeCode(), and generateWrapupCode()
+ * methods by appending a corresponding code block.
+ * 
+ * <p>
+ * Subclasses should be sure to properly indent the code by either using the
+ * code block functionality in methods like {@link #_generateBlockCode(String)}
+ * or by calling {@link ptolemy.codegen.kernel.CodeStream#indent(String)}, for
+ * example:
+ * 
  * <pre>
- *     StringBuffer code = new StringBuffer();
- *     code.append(super.generateWrapupCode());
- *     code.append("// Local wrapup code");
- *     return processCode(CodeStream.indent(code.toString()));
+ * StringBuffer code = new StringBuffer();
+ * code.append(super.generateWrapupCode());
+ * code.append(&quot;// Local wrapup code&quot;);
+ * return processCode(CodeStream.indent(code.toString()));
  * </pre>
- *
- * @author Ye Zhou, Gang Zhou, Edward A. Lee, Contributors: Christopher Brooks, Teale Fristoe
+ * 
+ * @author Ye Zhou, Gang Zhou, Edward A. Lee, Contributors: Christopher Brooks,
+ * Teale Fristoe
  * @version $Id$
  * @since Ptolemy II 6.0
  * @Pt.ProposedRating Yellow (eal)
@@ -104,15 +103,16 @@ import ptolemy.util.StringUtilities;
  */
 public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator {
 
-    /** Construct a code generator helper.
+    /**
+     * Construct a code generator helper.
      */
     public CodeGeneratorHelper() {
         this(null);
     }
 
-    /** Construct the code generator helper associated
-     *  with the given component.
-     *  @param component The associated component.
+    /**
+     * Construct the code generator helper associated with the given component.
+     * @param component The associated component.
      */
     public CodeGeneratorHelper(NamedObj component) {
         this((Object) component);
@@ -121,11 +121,11 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Construct the code generator helper associated
-     *  with the given component.
-     *  @param component The associated component.
-     *  @param name The name of helper.  All periods are
-     *  replaced with underscores.
+    /**
+     * Construct the code generator helper associated with the given component.
+     * @param component The associated component.
+     * @param name The name of helper. All periods are replaced with
+     * underscores.
      */
     public CodeGeneratorHelper(NamedObj component, String name) {
         this(component);
@@ -139,7 +139,8 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
         }
     }
 
-    /** Construct a code generator helper.
+    /**
+     * Construct a code generator helper.
      */
     public CodeGeneratorHelper(Object object) {
         // FIXME: Why is this a namedObj when the analyzeActor()
@@ -147,30 +148,33 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
         _object = object;
 
         _parseTreeCodeGenerator = new ParseTreeCodeGenerator() {
-            /** Given a string, escape special characters as necessary for the
-             *  target language.
-             *  @param string The string to escape.
-             *  @return A new string with special characters replaced.
+            /**
+             * Given a string, escape special characters as necessary for the
+             * target language.
+             * @param string The string to escape.
+             * @return A new string with special characters replaced.
              */
             public String escapeForTargetLanguage(String string) {
                 return string;
             }
 
-            /** Evaluate the parse tree with the specified root node using
-             *  the specified scope to resolve the values of variables.
-             *  @param node The root of the parse tree.
-             *  @param scope The scope for evaluation.
-             *  @return The result of evaluation.
-             *  @exception IllegalActionException If an error occurs during
-             *   evaluation.
+            /**
+             * Evaluate the parse tree with the specified root node using the
+             * specified scope to resolve the values of variables.
+             * @param node The root of the parse tree.
+             * @param scope The scope for evaluation.
+             * @return The result of evaluation.
+             * @exception IllegalActionException If an error occurs during
+             * evaluation.
              */
             public ptolemy.data.Token evaluateParseTree(ASTPtRootNode node,
                     ParserScope scope) {
                 return new Token();
             }
 
-            /** Generate code that corresponds with the fire() method.
-             *  @return The generated code.
+            /**
+             * Generate code that corresponds with the fire() method.
+             * @return The generated code.
              */
             public String generateFireCode() {
                 return "/* ParseTreeCodeGenerator.generateFireCode() "
@@ -179,9 +183,10 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
         };
     }
 
-    /** Add a type to the Set of types used thus far.
-     *  @param typeName A string naming the type, for example "Boolean"
-     *  or "String".
+    /**
+     * Add a type to the Set of types used thus far.
+     * @param typeName A string naming the type, for example "Boolean" or
+     * "String".
      */
     public void addNewTypeUsed(String typeName) {
         _codeGenerator._newTypesUsed.add(typeName);
@@ -192,9 +197,9 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
     }
 
     /**
-     * Find out each output port that needs to be converted for the
-     * actor associated with this helper. Then, mark these ports along
-     * with the sink ports (connection).
+     * Find out each output port that needs to be converted for the actor
+     * associated with this helper. Then, mark these ports along with the sink
+     * ports (connection).
      * @exception IllegalActionException Not thrown in this base class.
      */
     public void analyzeTypeConvert() throws IllegalActionException {
@@ -234,13 +239,13 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
 
     public boolean checkLocal(boolean forComposite, IOPort port)
             throws IllegalActionException {
-        return (port.isInput() && !forComposite && port.isOutsideConnected())
-                || (port.isOutput() && forComposite);
+        return port.isInput() && !forComposite && port.isOutsideConnected()
+                || port.isOutput() && forComposite;
     }
 
     public boolean checkRemote(boolean forComposite, IOPort port) {
-        return (port.isOutput() && !forComposite)
-                || (port.isInput() && forComposite);
+        return port.isOutput() && !forComposite || port.isInput()
+                && forComposite;
     }
 
     /**
@@ -248,26 +253,27 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
      * type.
      * @param ptType The given Ptolemy type.
      * @return The code generation type.
-     * @exception IllegalActionException Thrown if the given ptolemy cannot
-     *  be resolved.
+     * @exception IllegalActionException Thrown if the given ptolemy cannot be
+     * resolved.
      */
     public String codeGenType(Type ptType) {
         return _codeGenerator.codeGenType(ptType);
     }
 
-    /** Generate code for declaring read and write offset variables if needed.
-     *  Return empty string in this base class.
-     *
-     *  @return The empty string.
-     *  @exception IllegalActionException Not thrown in this base class.
+    /**
+     * Generate code for declaring read and write offset variables if needed.
+     * Return empty string in this base class.
+     * 
+     * @return The empty string.
+     * @exception IllegalActionException Not thrown in this base class.
      */
     public String createOffsetVariablesIfNeeded() throws IllegalActionException {
         return "";
     }
 
     /**
-     * Generate the fire code. This method is intended to be
-     * overwritten by sub-classes to generate actor-specific code.
+     * Generate the fire code. This method is intended to be overwritten by
+     * sub-classes to generate actor-specific code.
      * @return The generated code.
      * @exception IllegalActionException Not thrown in this base class.
      */
@@ -282,10 +288,10 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
 
     /**
      * Generate the fire code. In this base class, add the name of the
-     * associated component in the comment. It checks the inline parameter
-     * of the code generator. If the value is true, it generates the actor
-     * fire code and the necessary type conversion code. Otherwise, it
-     * generate an invocation to the actor function that is generated by
+     * associated component in the comment. It checks the inline parameter of
+     * the code generator. If the value is true, it generates the actor fire
+     * code and the necessary type conversion code. Otherwise, it generate an
+     * invocation to the actor function that is generated by
      * generateFireFunctionCode.
      * @return The generated code.
      * @exception IllegalActionException Not thrown in this base class.
@@ -293,21 +299,27 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
     public String generateFireCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
-        String composite = (getComponent() instanceof CompositeActor) ? "Composite Actor: "
+        String composite = getComponent() instanceof CompositeActor ? "Composite Actor: "
                 : "";
 
         code.append(_eol
                 + _codeGenerator.comment("Fire " + composite
                         + generateName(getComponent())));
 
+        // Generate, process and store the fire code now because
+        // we don't want to call _generateFireCode() in other places.
+        // We should process the fire code here so the code generator can
+        // infer information from the code blocks.
+        _fireCode = processCode(_generateFireCode());
+
         if (_codeGenerator.inline.getToken() == BooleanToken.TRUE) {
-            code.append(_generateFireCode());
+            code.append(_fireCode);
             code.append(generateTypeConvertFireCode());
         } else if (getCodeGenerator().getContainer().getContainer() != null) {
             // Here we test whether the codegenerator is embedded in another actor or whether it
             // is at the toplevel. In it is embedded we don't need to generateTypeConvertFireCode.
             // Needed for jni and embeddedJava.
-            code.append(_generateFireCode());
+            code.append(_fireCode);
         } else {
             code.append(_generateFireInvocation(getComponent()) + ";" + _eol);
         }
@@ -321,12 +333,13 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
         return processCode(code.toString());
     }
 
-    /** Generate The fire function code. This method is called when the firing
-     *  code of each actor is not inlined. Each actor's firing code is in a
-     *  function with the same name as that of the actor.
-     *
-     *  @return The fire function code.
-     *  @exception IllegalActionException If thrown while generating fire code.
+    /**
+     * Generate The fire function code. This method is called when the firing
+     * code of each actor is not inlined. Each actor's firing code is in a
+     * function with the same name as that of the actor.
+     * 
+     * @return The fire function code.
+     * @exception IllegalActionException If thrown while generating fire code.
      */
     public String generateFireFunctionCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
@@ -346,17 +359,17 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
         return processCode(code.toString());
     }
 
-    /** Generate The fire function code. This method is called when generating
-     *  code for a Giotto director. Produce the fire code but do not transfer
-     *  generate any type conversion code that sends this actors output to another
-     *  actor's input. The typeConversion and moving from an output to an input
-     *  should be taken care of in a driver method not the fire method.
-     *  This works under that assumption that _generateFireCode() also generates the code
-     *  for postfire.
-     *  If later we generate postfire code in a different method please add that method
-     *  call to this method
-     *  @return The fire function code.
-     *  @exception IllegalActionException If thrown while generating fire code.
+    /**
+     * Generate The fire function code. This method is called when generating
+     * code for a Giotto director. Produce the fire code but do not transfer
+     * generate any type conversion code that sends this actors output to
+     * another actor's input. The typeConversion and moving from an output to an
+     * input should be taken care of in a driver method not the fire method.
+     * This works under that assumption that _generateFireCode() also generates
+     * the code for postfire. If later we generate postfire code in a different
+     * method please add that method call to this method
+     * @return The fire function code.
+     * @exception IllegalActionException If thrown while generating fire code.
      */
     public String generateFireFunctionCode2() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
@@ -365,13 +378,12 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
     }
 
     /**
-     * Generate the initialize code. In this base class, return empty
-     * string. Subclasses may extend this method to generate initialize
-     * code of the associated component and append the code to the
-     * given string buffer.
+     * Generate the initialize code. In this base class, return empty string.
+     * Subclasses may extend this method to generate initialize code of the
+     * associated component and append the code to the given string buffer.
      * @return The initialize code of the containing composite actor.
-     * @exception IllegalActionException If thrown while appending to the
-     * the block or processing the macros.
+     * @exception IllegalActionException If thrown while appending to the the
+     * block or processing the macros.
      */
     public String generateInitializeCode() throws IllegalActionException {
         return _generateBlockByName(_defaultBlocks[1]);
@@ -386,36 +398,37 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
     //public String generateMainEntryCode() throws IllegalActionException {
     //    return _codeGenerator.comment("main entry code");
     //}
-    /** Generate the main entry point.
-     *  @return In this base class, return a comment.  Subclasses
-     *  should return the a string that closes optionally calls exit
-     *  and closes the main() method
-     *  @exception IllegalActionException Not thrown in this base class.
+    /**
+     * Generate the main entry point.
+     * @return In this base class, return a comment. Subclasses should return
+     * the a string that closes optionally calls exit and closes the main()
+     * method
+     * @exception IllegalActionException Not thrown in this base class.
      */
     //public String generateMainExitCode() throws IllegalActionException {
     //    return _codeGenerator.comment("main exit code");
     //}
-    /** Generate mode transition code. The mode transition code
-     *  generated in this method is executed after each global
-     *  iteration, e.g., in HDF model.  Do nothing in this base class.
-     *
-     *  @param code The string buffer that the generated code is appended to.
-     *  @exception IllegalActionException Not thrown in this base class.
+    /**
+     * Generate mode transition code. The mode transition code generated in this
+     * method is executed after each global iteration, e.g., in HDF model. Do
+     * nothing in this base class.
+     * 
+     * @param code The string buffer that the generated code is appended to.
+     * @exception IllegalActionException Not thrown in this base class.
      */
     public void generateModeTransitionCode(StringBuffer code)
             throws IllegalActionException {
     }
 
     /**
-     * Generate the expression that represents the offset in the generated
-     * code.
+     * Generate the expression that represents the offset in the generated code.
      * @param offsetString The specified offset from the user.
      * @param port The referenced port.
      * @param channel The referenced port channel.
      * @param isWrite Whether to generate the write or read offset.
      * @return The expression that represents the offset in the generated code.
      * @exception IllegalActionException If there is problems getting the port
-     *  buffer size or the offset in the channel and offset map.
+     * buffer size or the offset in the channel and offset map.
      */
     public String generateOffset(String offsetString, IOPort port, int channel,
             boolean isWrite) throws IllegalActionException {
@@ -432,10 +445,10 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
      * Generate the postfire code. In this base class, do nothing. Subclasses
      * may extend this method to generate the postfire code of the associated
      * component and append the code to the given string buffer.
-     *
+     * 
      * @return The generated postfire code.
-     * @exception IllegalActionException If thrown while appending to the
-     * the block or processing the macros.
+     * @exception IllegalActionException If thrown while appending to the the
+     * block or processing the macros.
      */
     public String generatePostfireCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
@@ -462,8 +475,8 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
 
     /**
      * Generate the preinitialize code. In this base class, return an empty
-     * string. This method generally does not generate any execution code
-     * and returns an empty string. Subclasses may generate code for variable
+     * string. This method generally does not generate any execution code and
+     * returns an empty string. Subclasses may generate code for variable
      * declaration, defining constants, etc.
      * @return A string of the preinitialize code for the helper.
      * @exception IllegalActionException Not thrown in this base class.
@@ -515,20 +528,22 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
         return code.toString();
     }
 
-    /** Generate variable declarations for inputs and outputs and parameters.
-     *  Append the declarations to the given string buffer.
-     *  @return code The generated code.
-     *  @exception IllegalActionException If the helper class for the model
-     *   director cannot be found.
+    /**
+     * Generate variable declarations for inputs and outputs and parameters.
+     * Append the declarations to the given string buffer.
+     * @return code The generated code.
+     * @exception IllegalActionException If the helper class for the model
+     * director cannot be found.
      */
     public String generateVariableDeclaration() throws IllegalActionException {
         return "";
     }
 
-    /** Generate variable initialization for the referenced parameters.
-     *  @return code The generated code.
-     *  @exception IllegalActionException If the helper class for the model
-     *   director cannot be found.
+    /**
+     * Generate variable initialization for the referenced parameters.
+     * @return code The generated code.
+     * @exception IllegalActionException If the helper class for the model
+     * director cannot be found.
      */
     public String generateVariableInitialization()
             throws IllegalActionException {
@@ -566,31 +581,32 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
         return code.toString();
     }
 
-    /** Generate a variable name for the NamedObj.
-     *  @param namedObj The NamedObj to generate variable name for.
-     *  @see ptolemy.codegen.kernel.CodeGenerator#generateVariableName(NamedObj)
-     *  @return The variable name for the NamedObj.
+    /**
+     * Generate a variable name for the NamedObj.
+     * @param namedObj The NamedObj to generate variable name for.
+     * @see ptolemy.codegen.kernel.CodeGenerator#generateVariableName(NamedObj)
+     * @return The variable name for the NamedObj.
      */
     public String generateVariableName(NamedObj namedObj) {
         return _codeGenerator.generateVariableName(namedObj);
     }
 
     /**
-     * Generate the wrapup code. In this base class, do nothing. Subclasses
-     * may extend this method to generate the wrapup code of the associated
+     * Generate the wrapup code. In this base class, do nothing. Subclasses may
+     * extend this method to generate the wrapup code of the associated
      * component and append the code to the given string buffer.
-     *
+     * 
      * @return The generated wrapup code.
-     * @exception IllegalActionException If thrown while appending to the
-     * the block or processing the macros.
+     * @exception IllegalActionException If thrown while appending to the the
+     * block or processing the macros.
      */
     public String generateWrapupCode() throws IllegalActionException {
         return _generateBlockByName(_defaultBlocks[4]);
     }
 
     /**
-     * Return the buffer size of a given port, which is the maximum of
-     * the bufferSizes of all channels of the given port.
+     * Return the buffer size of a given port, which is the maximum of the
+     * bufferSizes of all channels of the given port.
      * @param port The given port.
      * @return The buffer size of the given port.
      * @exception IllegalActionException If the
@@ -625,12 +641,13 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
         return bufferSize;
     }
 
-    /** Get the buffer size of the given port of this actor.
-     *  @param port The given port.
-     *  @param channelNumber The given channel.
-     *  @return The buffer size of the given port and channel.
-     *  @exception IllegalActionException If the getBufferSize()
-     *   method of the actor helper class throws it.
+    /**
+     * Get the buffer size of the given port of this actor.
+     * @param port The given port.
+     * @param channelNumber The given channel.
+     * @return The buffer size of the given port and channel.
+     * @exception IllegalActionException If the getBufferSize() method of the
+     * actor helper class throws it.
      * @see #setBufferSize(IOPort, int, int)
      */
     public int getBufferSize(IOPort port, int channelNumber)
@@ -639,9 +656,10 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
                 .getBufferSize(channelNumber);
     }
 
-    /** Get the code generator associated with this helper class.
-     *  @return The code generator associated with this helper class.
-     *  @see #setCodeGenerator(CodeGenerator)
+    /**
+     * Get the code generator associated with this helper class.
+     * @return The code generator associated with this helper class.
+     * @see #setCodeGenerator(CodeGenerator)
      */
     public CodeGenerator getCodeGenerator() {
         return _codeGenerator;
@@ -650,8 +668,9 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
     /////////////////////////////////////////////////////////////////////
     ////                      public inner classes                   ////
 
-    /** Get the component associated with this helper.
-     *  @return The associated component.
+    /**
+     * Get the component associated with this helper.
+     * @return The associated component.
      */
     public NamedObj getComponent() {
         return (NamedObj) _object;
@@ -672,12 +691,13 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
         return (Director) _getHelper(getDirector());
     }
 
-    /** Return the translated token instance function invocation string.
-     *  @param functionString The string within the $tokenFunc() macro.
-     *  @param isStatic True if the method is static.
-     *  @return The translated type function invocation string.
-     *  @exception IllegalActionException The given function string is
-     *   not well-formed.
+    /**
+     * Return the translated token instance function invocation string.
+     * @param functionString The string within the $tokenFunc() macro.
+     * @param isStatic True if the method is static.
+     * @return The translated type function invocation string.
+     * @exception IllegalActionException The given function string is not
+     * well-formed.
      */
     public String getFunctionInvocation(String functionString, boolean isStatic)
             throws IllegalActionException {
@@ -693,8 +713,8 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
         int closeFuncParenIndex = functionString.lastIndexOf(')');
 
         // Syntax checking.
-        if ((commaIndex == -1) || (openFuncParenIndex == -1)
-                || (closeFuncParenIndex != (functionString.length() - 1))) {
+        if (commaIndex == -1 || openFuncParenIndex == -1
+                || closeFuncParenIndex != functionString.length() - 1) {
             throw new IllegalActionException(
                     "Bad Syntax with the $tokenFunc / $typeFunc macro. "
                             + "[i.e. -- $tokenFunc(typeOrToken::func(arg1, ...))].  "
@@ -734,11 +754,12 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
         }
     }
 
-    /** Get the files needed by the code generated from this helper class.
-     *  This base class returns an empty set.
-     *  @return A set of strings that are header files needed by the code
-     *  generated from this helper class.
-     *  @exception IllegalActionException Not Thrown in this base class.
+    /**
+     * Get the files needed by the code generated from this helper class. This
+     * base class returns an empty set.
+     * @return A set of strings that are header files needed by the code
+     * generated from this helper class.
+     * @exception IllegalActionException Not Thrown in this base class.
      */
     public Set getHeaderFiles() throws IllegalActionException {
         Set files = new HashSet();
@@ -762,11 +783,12 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
         return files;
     }
 
-    /** Return a set of directories to include for the generated code.
-     *  @return A Set containing the contents of the actor's
-     *   "includeDirectories" block in its template.
-     *  @exception IllegalActionException If thrown when getting or reading
-     *   the CodeStream.
+    /**
+     * Return a set of directories to include for the generated code.
+     * @return A Set containing the contents of the actor's "includeDirectories"
+     * block in its template.
+     * @exception IllegalActionException If thrown when getting or reading the
+     * CodeStream.
      */
     public Set getIncludeDirectories() throws IllegalActionException {
         Set includeDirectories = new HashSet();
@@ -789,11 +811,12 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
         return includeDirectories;
     }
 
-    /** Return a set of libraries to link in the generated code.
-     *  @return A Set containing the libraries in the actor's
-     *   "libraries" block in its template.
-     *  @exception IllegalActionException If thrown when getting or reading
-     *   the CodeStream.
+    /**
+     * Return a set of libraries to link in the generated code.
+     * @return A Set containing the libraries in the actor's "libraries" block
+     * in its template.
+     * @exception IllegalActionException If thrown when getting or reading the
+     * CodeStream.
      */
     public Set getLibraries() throws IllegalActionException {
         Set libraries = new HashSet();
@@ -815,11 +838,12 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
         return libraries;
     }
 
-    /** Return a set of directories to find libraries in.
-     *  @return A Set containing the directories in the actor's
-     *   "libraryDirectories" block in its template.
-     *  @exception IllegalActionException If thrown when getting or reading
-     *   the CodeStream.
+    /**
+     * Return a set of directories to find libraries in.
+     * @return A Set containing the directories in the actor's
+     * "libraryDirectories" block in its template.
+     * @exception IllegalActionException If thrown when getting or reading the
+     * CodeStream.
      */
     public Set getLibraryDirectories() throws IllegalActionException {
         Set libraryDirectories = new HashSet();
@@ -842,13 +866,14 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
         return libraryDirectories;
     }
 
-    /** Return a set of parameters that will be modified during the execution
-     *  of the model. The actor gets those variables if it implements
-     *  ExplicitChangeContext interface or it contains PortParameters.
-     *
-     *  @return a set of parameters that will be modified.
-     *  @exception IllegalActionException If an actor throws it while getting
-     *   modified variables.
+    /**
+     * Return a set of parameters that will be modified during the execution of
+     * the model. The actor gets those variables if it implements
+     * ExplicitChangeContext interface or it contains PortParameters.
+     * 
+     * @return a set of parameters that will be modified.
+     * @exception IllegalActionException If an actor throws it while getting
+     * modified variables.
      */
     public Set getModifiedVariables() throws IllegalActionException {
         Set set = new HashSet();
@@ -869,14 +894,15 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
         return set;
     }
 
-    /** Return the translated new constructor invocation string. Keep the types
-     *  referenced in the info table of this helper. The kernel will retrieve
-     *  this information to determine the total number of referenced types in
-     *  the model.
-     *  @param constructorString The string within the $new() macro.
-     *  @return The translated new constructor invocation string.
-     *  @exception IllegalActionException The given constructor string is
-     *   not well-formed.
+    /**
+     * Return the translated new constructor invocation string. Keep the types
+     * referenced in the info table of this helper. The kernel will retrieve
+     * this information to determine the total number of referenced types in the
+     * model.
+     * @param constructorString The string within the $new() macro.
+     * @return The translated new constructor invocation string.
+     * @exception IllegalActionException The given constructor string is not
+     * well-formed.
      */
     public String getNewInvocation(String constructorString)
             throws IllegalActionException {
@@ -889,8 +915,8 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
         int closeFuncParenIndex = constructorString.lastIndexOf(')');
 
         // Syntax checking.
-        if ((openFuncParenIndex == -1)
-                || (closeFuncParenIndex != (constructorString.length() - 1))) {
+        if (openFuncParenIndex == -1
+                || closeFuncParenIndex != constructorString.length() - 1) {
             throw new IllegalActionException(
                     "Bad Syntax with the $new() macro. "
                             + "[i.e. -- $new([elementType]Array(8, 8, arg1, arg2, ...))]");
@@ -911,28 +937,28 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
                 + constructorString.substring(openFuncParenIndex));
     }
 
-    /** Get the object associated with this helper.
-     *  @return The associated object.
+    /**
+     * Get the object associated with this helper.
+     * @return The associated object.
      */
     public NamedObj getObject() {
         return (NamedObj) _object;
     }
 
-    /** Return the value or an expression in the target language for
-     *  the specified parameter of the associated actor.  If the
-     *  parameter is specified by an expression, then the expression
-     *  will be parsed. If any parameter referenced in that expression
-     *  is specified by another expression, the parsing continues
-     *  recursively until either a parameter is directly specified by
-     *  a constant or a parameter can be directly modified during
-     *  execution in which case a reference to the parameter is
-     *  generated.
-     *
-     *  @param name The name of the parameter.
-     *  @param container The container to search upwards from.
-     *  @return The value or expression as a string.
-     *  @exception IllegalActionException If the parameter does not exist or
-     *   does not have a value.
+    /**
+     * Return the value or an expression in the target language for the
+     * specified parameter of the associated actor. If the parameter is
+     * specified by an expression, then the expression will be parsed. If any
+     * parameter referenced in that expression is specified by another
+     * expression, the parsing continues recursively until either a parameter is
+     * directly specified by a constant or a parameter can be directly modified
+     * during execution in which case a reference to the parameter is generated.
+     * 
+     * @param name The name of the parameter.
+     * @param container The container to search upwards from.
+     * @return The value or expression as a string.
+     * @exception IllegalActionException If the parameter does not exist or does
+     * not have a value.
      */
     public String getParameterValue(String name, NamedObj container)
             throws IllegalActionException {
@@ -987,11 +1013,10 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
                 Variable variable = (Variable) attribute;
 
                 /*
-                 if (_codeGenerator._modifiedVariables.contains(variable)) {
-                 return generateVariableName(variable);
-                 } else if (variable.isStringMode()) {
-                 return "\"" + variable.getExpression() + "\"";
-                 }
+                 * if (_codeGenerator._modifiedVariables.contains(variable)) {
+                 * return generateVariableName(variable); } else if
+                 * (variable.isStringMode()) { return "\"" +
+                 * variable.getExpression() + "\""; }
                  */
 
                 ParseTreeCodeGenerator parseTreeCodeGenerator = getParseTreeCodeGenerator();
@@ -1043,7 +1068,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
                 return _generateTypeConvertMethod(fireCode, castType,
                         codeGenType(variable.getType()));
 
-            } else /* if (attribute instanceof Settable)*/{
+            } else /* if (attribute instanceof Settable) */{
                 return ((Settable) attribute).getExpression();
             }
 
@@ -1093,8 +1118,9 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
         }
     }
 
-    /** Return the parse tree to use with expressions.
-     *  @return the parse tree to use with expressions.
+    /**
+     * Return the parse tree to use with expressions.
+     * @return the parse tree to use with expressions.
      */
     public ParseTreeCodeGenerator getParseTreeCodeGenerator() {
         return _parseTreeCodeGenerator;
@@ -1132,24 +1158,26 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
         return null;
     }
 
-    /** Return the associated actor's rates for all configurations of
-     *  this actor.  In this base class, return null.
-     *  @return null
+    /**
+     * Return the associated actor's rates for all configurations of this actor.
+     * In this base class, return null.
+     * @return null
      */
     public int[][] getRates() {
         return null;
     }
 
-    /** Get the read offset in the buffer of a given channel from which a token
-     *  should be read. The channel is given by its containing port and
-     *  the channel number in that port.
-     *  @param inputPort The given port.
-     *  @param channelNumber The given channel number.
-     *  @return The offset in the buffer of a given channel from which a token
-     *   should be read.
-     *  @exception IllegalActionException Thrown if the helper class cannot
-     *   be found.
-     *  @see #setReadOffset(IOPort, int, Object)
+    /**
+     * Get the read offset in the buffer of a given channel from which a token
+     * should be read. The channel is given by its containing port and the
+     * channel number in that port.
+     * @param inputPort The given port.
+     * @param channelNumber The given channel number.
+     * @return The offset in the buffer of a given channel from which a token
+     * should be read.
+     * @exception IllegalActionException Thrown if the helper class cannot be
+     * found.
+     * @see #setReadOffset(IOPort, int, Object)
      */
     public Object getReadOffset(IOPort inputPort, int channelNumber)
             throws IllegalActionException {
@@ -1158,19 +1186,20 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
                 .getReadOffset(channelNumber);
     }
 
-    /** Return the reference to the specified parameter or port of the
-     *  associated actor. For a parameter, the returned string is in
-     *  the form "fullName_parameterName". For a port, the returned string
-     *  is in the form "fullName_portName[channelNumber][offset]", if
-     *  any channel number or offset is given.
-     *
-     *  FIXME: need documentation on the input string format.
-     *
-     *  @param name The name of the parameter or port
-     *  @return The reference to that parameter or port (a variable name,
-     *   for example).
-     *  @exception IllegalActionException If the parameter or port does not
-     *   exist or does not have a value.
+    /**
+     * Return the reference to the specified parameter or port of the associated
+     * actor. For a parameter, the returned string is in the form
+     * "fullName_parameterName". For a port, the returned string is in the form
+     * "fullName_portName[channelNumber][offset]", if any channel number or
+     * offset is given.
+     * 
+     * FIXME: need documentation on the input string format.
+     * 
+     * @param name The name of the parameter or port
+     * @return The reference to that parameter or port (a variable name, for
+     * example).
+     * @exception IllegalActionException If the parameter or port does not exist
+     * or does not have a value.
      */
     public String getReference(String name) throws IllegalActionException {
         boolean isWrite = false;
@@ -1195,13 +1224,13 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
         return sharedCode;
     }
 
-    /** Get the size of a parameter. The size of a parameter
-     *  is the length of its array if the parameter's type is array,
-     *  and 1 otherwise.
-     *  @param name The name of the parameter.
-     *  @return The expression that represents the size of a parameter or port.
-     *  @exception IllegalActionException If no port or parameter of
-     *   the given name is found.
+    /**
+     * Get the size of a parameter. The size of a parameter is the length of its
+     * array if the parameter's type is array, and 1 otherwise.
+     * @param name The name of the parameter.
+     * @return The expression that represents the size of a parameter or port.
+     * @exception IllegalActionException If no port or parameter of the given
+     * name is found.
      */
     public String getSize(String name) throws IllegalActionException {
 
@@ -1240,16 +1269,17 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
                 "Attribute not found: " + name);
     }
 
-    /** Get the write offset in the buffer of a given channel to which a token
-     *  should be put. The channel is given by its containing port and
-     *  the channel number in that port.
-     *  @param port The given port.
-     *  @param channelNumber The given channel number.
-     *  @return The offset in the buffer of a given channel to which a token
-     *   should be put.
-     *  @exception IllegalActionException Thrown if the helper class cannot
-     *   be found.
-     *  @see #setWriteOffset(IOPort, int, Object)
+    /**
+     * Get the write offset in the buffer of a given channel to which a token
+     * should be put. The channel is given by its containing port and the
+     * channel number in that port.
+     * @param port The given port.
+     * @param channelNumber The given channel number.
+     * @return The offset in the buffer of a given channel to which a token
+     * should be put.
+     * @exception IllegalActionException Thrown if the helper class cannot be
+     * found.
+     * @see #setWriteOffset(IOPort, int, Object)
      */
     public Object getWriteOffset(IOPort port, int channelNumber)
             throws IllegalActionException {
@@ -1276,7 +1306,8 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
         return _codeGenerator.isPrimitive(ptType);
     }
 
-    /** Process the specified code, replacing macros with their values.
+    /**
+     * Process the specified code, replacing macros with their values.
      * @param code The code to process.
      * @return The processed code.
      * @exception IllegalActionException If illegal macro names are found.
@@ -1318,7 +1349,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
 
             String subcode = code.substring(currentPos, nextPos);
 
-            if ((currentPos > 0) && (code.charAt(currentPos - 1) == '\\')) {
+            if (currentPos > 0 && code.charAt(currentPos - 1) == '\\') {
                 // found "\$", do not make replacement.
                 // FIXME: This is wrong. subcode may contain other macros
                 // to be processed.
@@ -1363,12 +1394,13 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
         return result.toString();
     }
 
-    /** Reset the offsets of all channels of all input ports of the
-     *  associated actor to the default value of 0.
-     *
-     *  @return The reset code of the associated actor.
-     *  @exception IllegalActionException If thrown while getting or
-     *   setting the offset.
+    /**
+     * Reset the offsets of all channels of all input ports of the associated
+     * actor to the default value of 0.
+     * 
+     * @return The reset code of the associated actor.
+     * @exception IllegalActionException If thrown while getting or setting the
+     * offset.
      */
     public String resetInputPortsOffset() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
@@ -1382,11 +1414,12 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
         return code.toString();
     }
 
-    /** Set the buffer size of a given port.
-     *  @param port The given port.
-     *  @param channelNumber The given channel.
-     *  @param bufferSize The buffer size to be set to that port and channel.
-     *  @see #getBufferSize(IOPort)
+    /**
+     * Set the buffer size of a given port.
+     * @param port The given port.
+     * @param channelNumber The given channel.
+     * @param bufferSize The buffer size to be set to that port and channel.
+     * @see #getBufferSize(IOPort)
      * @exception IllegalActionException
      */
     public void setBufferSize(IOPort port, int channelNumber, int bufferSize)
@@ -1395,23 +1428,25 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
                 bufferSize);
     }
 
-    /** Set the code generator associated with this helper class.
-     *  @param codeGenerator The code generator associated with this
-     *   helper class.
-     *  @see #getCodeGenerator()
+    /**
+     * Set the code generator associated with this helper class.
+     * @param codeGenerator The code generator associated with this helper
+     * class.
+     * @see #getCodeGenerator()
      */
     public void setCodeGenerator(CodeGenerator codeGenerator) {
         _codeGenerator = codeGenerator;
     }
 
-    /** Set the read offset in a buffer of a given channel from which a token
-     *  should be read.
-     *  @param port The given port.
-     *  @param channelNumber The given channel.
-     *  @param readOffset The offset to be set to the buffer of that channel.
-     *  @exception IllegalActionException Thrown if the helper class cannot
-     *   be found.
-     *  @see #getReadOffset(IOPort, int)
+    /**
+     * Set the read offset in a buffer of a given channel from which a token
+     * should be read.
+     * @param port The given port.
+     * @param channelNumber The given channel.
+     * @param readOffset The offset to be set to the buffer of that channel.
+     * @exception IllegalActionException Thrown if the helper class cannot be
+     * found.
+     * @see #getReadOffset(IOPort, int)
      */
     public void setReadOffset(IOPort port, int channelNumber, Object readOffset)
             throws IllegalActionException {
@@ -1419,14 +1454,15 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
                 readOffset);
     }
 
-    /** Set the write offset in a buffer of a given channel to which a token
-     *  should be put.
-     *  @param port The given port.
-     *  @param channelNumber The given channel.
-     *  @param writeOffset The offset to be set to the buffer of that channel.
-     *  @exception IllegalActionException If
-     *   {@link #setWriteOffset(IOPort, int, Object)} method throws it.
-     *  @see #getWriteOffset(IOPort, int)
+    /**
+     * Set the write offset in a buffer of a given channel to which a token
+     * should be put.
+     * @param port The given port.
+     * @param channelNumber The given channel.
+     * @param writeOffset The offset to be set to the buffer of that channel.
+     * @exception IllegalActionException If
+     * {@link #setWriteOffset(IOPort, int, Object)} method throws it.
+     * @see #getWriteOffset(IOPort, int)
      */
     public void setWriteOffset(IOPort port, int channelNumber,
             Object writeOffset) throws IllegalActionException {
@@ -1439,7 +1475,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
      * @param ptType The given Ptolemy type.
      * @return The C data type.
      */
-    public/*static*/String targetType(Type ptType) {
+    public/* static */String targetType(Type ptType) {
         return _codeGenerator.targetType(ptType);
     }
 
@@ -1451,14 +1487,14 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
     ////                      public inner classes                   ////
 
     /**
-     * Return the index of a specific character in the string starting
-     * from the given index. It find the first occurence of the character
-     * that is not embedded inside parentheses "()".
+     * Return the index of a specific character in the string starting from the
+     * given index. It find the first occurence of the character that is not
+     * embedded inside parentheses "()".
      * @param ch The character to search for.
      * @param string The given string to search from.
      * @param fromIndex The index to start the search.
-     * @return The first occurence of the character in the string that
-     *  is not embedded in parentheses.
+     * @return The first occurence of the character in the string that is not
+     * embedded in parentheses.
      */
     public static int _indexOf(String ch, String string, int fromIndex) {
 
@@ -1508,27 +1544,28 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
         return result;
     }
 
-    /** Copy files to the code directory.  The optional
-     *  <code>fileDependencies</code> codeBlock consists of one or
-     *  more lines where each line names a file that should be copied
-     *  to the directory named by the <i>codeDirectory</i> parameter
-     *  of the code generator. The file is only copied if a file by
-     *  that name does not exist in <i>codeDirectory</i> or if the
-     *  source file was more recently modified than the destination
-     *  file.
-     *  <p>Using the <code>fileDependencies</code> code block allows
-     *  actor writers to refer to code defined in other files.
-     *
-     *  @param namedObj If this argument is an instance of
-     *  ptolemy.actor.lib.jni.EmbeddedCActor, then the code blocks
-     *  from EmbeddedCActor's <i>embeddedCCode</i> parameter are used.
-     *  @param codeGenerator The code generator from which the
-     *  <i>codeDirectory</i> parameter is read.
-     *  @return The modification time of the most recent file.
-     *  @exception IOException If there is a problem reading the
-     *  <i>codeDirectory</i> parameter.
-     *  @exception IllegalActionException If there is a problem reading the
-     *  <i>codeDirectory</i> parameter.
+    /**
+     * Copy files to the code directory. The optional
+     * <code>fileDependencies</code> codeBlock consists of one or more lines
+     * where each line names a file that should be copied to the directory named
+     * by the <i>codeDirectory</i> parameter of the code generator. The file is
+     * only copied if a file by that name does not exist in <i>codeDirectory</i>
+     * or if the source file was more recently modified than the destination
+     * file.
+     * <p>
+     * Using the <code>fileDependencies</code> code block allows actor writers
+     * to refer to code defined in other files.
+     * 
+     * @param namedObj If this argument is an instance of
+     * ptolemy.actor.lib.jni.EmbeddedCActor, then the code blocks from
+     * EmbeddedCActor's <i>embeddedCCode</i> parameter are used.
+     * @param codeGenerator The code generator from which the <i>codeDirectory</i>
+     * parameter is read.
+     * @return The modification time of the most recent file.
+     * @exception IOException If there is a problem reading the <i>codeDirectory</i>
+     * parameter.
+     * @exception IllegalActionException If there is a problem reading the
+     * <i>codeDirectory</i> parameter.
      */
     public static long copyFilesToCodeDirectory(NamedObj namedObj,
             CodeGenerator codeGenerator) throws IOException,
@@ -1589,9 +1626,9 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
                         necessaryFileShortName);
                 File necessaryFileSource = new File(necessaryFileName);
                 if (!necessaryFileDestination.exists()
-                        || (necessaryFileSource.exists() && necessaryFileSource
-                                .lastModified() > necessaryFileDestination
-                                .lastModified())) {
+                        || necessaryFileSource.exists()
+                        && necessaryFileSource.lastModified() > necessaryFileDestination
+                                .lastModified()) {
                     // If the dest file does not exist or is older than the
                     // source file, we do the copy
                     System.out.println("Copying " + necessaryFileSource
@@ -1628,12 +1665,12 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
 
     /**
      * Generate a string that represents the offset for a dynamically determined
-     *  channel of a multiport.
+     * channel of a multiport.
      * @param port The referenced port.
      * @param isWrite Whether to generate the write or read offset.
      * @param channelString The string that will determine the channel.
-     * @return The expression that represents the offset for a channel determined
-     *  dynamically in the generated code.
+     * @return The expression that represents the offset for a channel
+     * determined dynamically in the generated code.
      */
     public static String generateChannelOffset(IOPort port, boolean isWrite,
             String channelString) {
@@ -1643,16 +1680,17 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
         }
 
         String channelOffset = CodeGeneratorHelper.generateName(port);
-        channelOffset += (isWrite) ? "_writeOffset" : "_readOffset";
+        channelOffset += isWrite ? "_writeOffset" : "_readOffset";
         channelOffset += "[" + channelString + "]";
 
         return channelOffset;
     }
 
-    /** Generate sanitized name for the given named object. Remove all
-     *  underscores to avoid conflicts with systems functions.
-     *  @param namedObj The named object for which the name is generated.
-     *  @return The sanitized name.
+    /**
+     * Generate sanitized name for the given named object. Remove all
+     * underscores to avoid conflicts with systems functions.
+     * @param namedObj The named object for which the name is generated.
+     * @return The sanitized name.
      */
     public static String generateName(NamedObj namedObj) {
         String name = StringUtilities.sanitizeName(namedObj.getFullName());
@@ -1671,10 +1709,11 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
         return name.replaceAll("\\$", "Dollar");
     }
 
-    /** Generate sanitized name for the given named object. Remove all
-     *  underscores to avoid conflicts with systems functions.
-     *  @param namedObj The named object for which the name is generated.
-     *  @return The sanitized name.
+    /**
+     * Generate sanitized name for the given named object. Remove all
+     * underscores to avoid conflicts with systems functions.
+     * @param namedObj The named object for which the name is generated.
+     * @return The sanitized name.
      */
     public static String generateSimpleName(NamedObj namedObj) {
         String name = StringUtilities.sanitizeName(namedObj.getName());
@@ -1707,12 +1746,12 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
     }
 
     /**
-     * Return an array of strings that are regular expressions of all the
-     * code blocks that are appended automatically by default. Since the
-     * content of the array are regex, users should use matches() instead
-     * of equals() to compare their strings.
-     * @return Array of string regular expressions of names of code blocks
-     * that are appended by default.
+     * Return an array of strings that are regular expressions of all the code
+     * blocks that are appended automatically by default. Since the content of
+     * the array are regex, users should use matches() instead of equals() to
+     * compare their strings.
+     * @return Array of string regular expressions of names of code blocks that
+     * are appended by default.
      */
     public static String[] getDefaultBlocks() {
         return _defaultBlocks;
@@ -1766,14 +1805,13 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
             // when the channel specification is not an integer.
             if (dynamicReferencesAllowed) {
                 try {
-                    channelNumber = (Integer.valueOf(channelAndOffset[0]))
+                    channelNumber = Integer.valueOf(channelAndOffset[0])
                             .intValue();
                 } catch (Exception ex) {
                     isChannelNumberInt = false;
                 }
             } else {
-                channelNumber = (Integer.valueOf(channelAndOffset[0]))
-                        .intValue();
+                channelNumber = Integer.valueOf(channelAndOffset[0]).intValue();
             }
         }
 
@@ -1912,13 +1950,14 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
         return "";
     }
 
-    /** Return a list of channel objects that are the sink input ports given
-     *  a port and channel. Note the returned channels are newly
-     *  created objects and therefore not associated with the helper class.
-     *  @param port The given output port.
-     *  @param channelNumber The given channel number.
-     *  @return The list of channel objects that are the sink channels
-     *   of the given output channel.
+    /**
+     * Return a list of channel objects that are the sink input ports given a
+     * port and channel. Note the returned channels are newly created objects
+     * and therefore not associated with the helper class.
+     * @param port The given output port.
+     * @param channelNumber The given channel number.
+     * @return The list of channel objects that are the sink channels of the
+     * given output channel.
      * @exception IllegalActionException
      */
     public static List<Channel> getSinkChannels(IOPort port, int channelNumber)
@@ -1942,16 +1981,12 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
 
         if (remoteReceivers[channelNumber] == null) {
             /*
-             // FIXME: Is this an important warning? The reference to
-             // printedNullPortWarnings prevents us from making this
-             // a static method.
-            if (!printedNullPortWarnings) {
-                printedNullPortWarnings = true;
-                System.out.println("Warning: Channel " + channelNumber
-                        + " of Port \"" + port
-                        + "\" was null! Total number of channels: "
-                        + remoteReceivers.length);
-            }
+             * // FIXME: Is this an important warning? The reference to //
+             * printedNullPortWarnings prevents us from making this // a static
+             * method. if (!printedNullPortWarnings) { printedNullPortWarnings =
+             * true; System.out.println("Warning: Channel " + channelNumber + "
+             * of Port \"" + port + "\" was null! Total number of channels: " +
+             * remoteReceivers.length); }
              */
             return sinkChannels;
         }
@@ -1988,13 +2023,14 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
     //        return newList;
     //    }
 
-    /** Given a port and channel number, create a Channel that sends
-     *  data to the specified port and channel number.
-     *  @param port The port.
-     *  @param channelNumber The channel number of the port.
-     *  @return the source channel.
-     *  @exception IllegalActionException If there is a problem getting
-     *  information about the receivers or constructing the new Channel.
+    /**
+     * Given a port and channel number, create a Channel that sends data to the
+     * specified port and channel number.
+     * @param port The port.
+     * @param channelNumber The channel number of the port.
+     * @return the source channel.
+     * @exception IllegalActionException If there is a problem getting
+     * information about the receivers or constructing the new Channel.
      */
     public static Channel getSourceChannel(IOPort port, int channelNumber)
             throws IllegalActionException {
@@ -2047,14 +2083,16 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
                 .println(_indexOf(",", "(((a), b,) a),bc,, (a , b, abc,)", 0));
     }
 
-    /** A class that defines a channel object. A channel object is
-     *  specified by its port and its channel index in that port.
+    /**
+     * A class that defines a channel object. A channel object is specified by
+     * its port and its channel index in that port.
      */
     public static class Channel {
         // FindBugs suggests making this class static so as to decrease
         // the size of instances and avoid dangling references.
 
-        /** Construct the channel with the given port and channel number.
+        /**
+         * Construct the channel with the given port and channel number.
          * @param portObject The given port.
          * @param channel The channel number of this object in the given port.
          */
@@ -2067,7 +2105,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
          * Whether this channel is the same as the given object.
          * @param object The given object.
          * @return True if this channel is the same reference as the given
-         *  object, otherwise false;
+         * object, otherwise false;
          */
         public boolean equals(Object object) {
             return object instanceof Channel
@@ -2076,8 +2114,8 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
         }
 
         /**
-         * Return the hash code for this channel. Implementing this method
-         * is required for comparing the equality of channels.
+         * Return the hash code for this channel. Implementing this method is
+         * required for comparing the equality of channels.
          * @return Hash code for this channel.
          */
         public int hashCode() {
@@ -2092,31 +2130,36 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
             return generateSimpleName(port) + "_" + channelNumber;
         }
 
-        /** The port that contains this channel.
+        /**
+         * The port that contains this channel.
          */
         public IOPort port;
 
-        /** The channel number of this channel.
+        /**
+         * The channel number of this channel.
          */
         public int channelNumber;
     }
 
-    /** This class implements a scope, which is used to generate the
-     *  parsed expressions in target language.
+    /**
+     * This class implements a scope, which is used to generate the parsed
+     * expressions in target language.
      */
     protected class VariableScope extends ModelScope {
-        /** Construct a scope consisting of the variables of the containing
-         *  actor and its containers and their scope-extending attributes.
+        /**
+         * Construct a scope consisting of the variables of the containing actor
+         * and its containers and their scope-extending attributes.
          */
         public VariableScope() {
             _variable = null;
         }
 
-        /** Construct a scope consisting of the variables of the container
-         *  of the given instance of Variable and its containers and their
-         *  scope-extending attributes.
-         *  @param variable The variable whose expression is under code
-         *   generation using this scope.
+        /**
+         * Construct a scope consisting of the variables of the container of the
+         * given instance of Variable and its containers and their
+         * scope-extending attributes.
+         * @param variable The variable whose expression is under code
+         * generation using this scope.
          */
         public VariableScope(Variable variable) {
             _variable = variable;
@@ -2125,12 +2168,13 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
         ///////////////////////////////////////////////////////////////////
         ////                         public methods                    ////
 
-        /** Look up and return the macro or expression in the target language
-         *  corresponding to the specified name in the scope.
-         *  @param name The given name string.
-         *  @return The macro or expression with the specified name in the scope.
-         *  @exception IllegalActionException If thrown while getting buffer
-         *   sizes or creating ObjectToken.
+        /**
+         * Look up and return the macro or expression in the target language
+         * corresponding to the specified name in the scope.
+         * @param name The given name string.
+         * @return The macro or expression with the specified name in the scope.
+         * @exception IllegalActionException If thrown while getting buffer
+         * sizes or creating ObjectToken.
          */
         public Token get(String name) throws IllegalActionException {
 
@@ -2176,13 +2220,13 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
             }
         }
 
-        /** Look up and return the type of the attribute with the
-         *  specified name in the scope. Return null if such an
-         *  attribute does not exist.
-         *  @param name The name of the attribute to look up.
-         *  @return The attribute with the specified name in the scope.
-         *  @exception IllegalActionException If a value in the scope
-         *  exists with the given name, but cannot be evaluated.
+        /**
+         * Look up and return the type of the attribute with the specified name
+         * in the scope. Return null if such an attribute does not exist.
+         * @param name The name of the attribute to look up.
+         * @return The attribute with the specified name in the scope.
+         * @exception IllegalActionException If a value in the scope exists with
+         * the given name, but cannot be evaluated.
          */
         public ptolemy.data.type.Type getType(String name)
                 throws IllegalActionException {
@@ -2192,14 +2236,15 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
             return null;
         }
 
-        /** Look up and return the type term for the specified name
-         *  in the scope. Return null if the name is not defined in this
-         *  scope, or is a constant type.
-         *  @param name The name of the type term to look up.
-         *  @return The InequalityTerm associated with the given name in
-         *  the scope.
-         *  @exception IllegalActionException If a value in the scope
-         *  exists with the given name, but cannot be evaluated.
+        /**
+         * Look up and return the type term for the specified name in the scope.
+         * Return null if the name is not defined in this scope, or is a
+         * constant type.
+         * @param name The name of the type term to look up.
+         * @return The InequalityTerm associated with the given name in the
+         * scope.
+         * @exception IllegalActionException If a value in the scope exists with
+         * the given name, but cannot be evaluated.
          */
         public ptolemy.graph.InequalityTerm getTypeTerm(String name)
                 throws IllegalActionException {
@@ -2209,10 +2254,11 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
             return null;
         }
 
-        /** Return the list of identifiers within the scope.
-         *  @return The list of variable names within the scope.
-         *  @exception IllegalActionException If there is a problem
-         *  getting the identifier set from the variable.
+        /**
+         * Return the list of identifiers within the scope.
+         * @return The list of variable names within the scope.
+         * @exception IllegalActionException If there is a problem getting the
+         * identifier set from the variable.
          */
         public Set identifierSet() throws IllegalActionException {
             if (_variable != null) {
@@ -2233,25 +2279,27 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
         ///////////////////////////////////////////////////////////////////
         ////                         private variables                 ////
 
-        /** If _variable is not null, then the helper scope created is
-         *  for parsing the expression specified for this variable and
-         *  generating the corresponding code in target language.
+        /**
+         * If _variable is not null, then the helper scope created is for
+         * parsing the expression specified for this variable and generating the
+         * corresponding code in target language.
          */
         private Variable _variable = null;
     }
 
-    /** Create the buffer size and offset maps for each input port, which is
-     *  associated with this helper object. A key of the map is an IOPort
-     *  of the actor. The corresponding value is an array of channel objects.
-     *  The i-th channel object corresponds to the i-th channel of that IOPort.
-     *  This method is used to maintain a internal HashMap of channels of the
-     *  actor. The channel objects in the map are used to keep track of the
-     *  buffer sizes or offsets in their buffer.
-     *  @exception IllegalActionException If the director helper or executive
-     *   director is not found, or if
-     *   {@link #setReadOffset(IOPort, int, Object)} method throws it, or if
-     *   {@link #setWriteOffset(IOPort, int, Object)} method throws it.
-     *
+    /**
+     * Create the buffer size and offset maps for each input port, which is
+     * associated with this helper object. A key of the map is an IOPort of the
+     * actor. The corresponding value is an array of channel objects. The i-th
+     * channel object corresponds to the i-th channel of that IOPort. This
+     * method is used to maintain a internal HashMap of channels of the actor.
+     * The channel objects in the map are used to keep track of the buffer sizes
+     * or offsets in their buffer.
+     * @exception IllegalActionException If the director helper or executive
+     * director is not found, or if {@link #setReadOffset(IOPort, int, Object)}
+     * method throws it, or if {@link #setWriteOffset(IOPort, int, Object)}
+     * method throws it.
+     * 
      */
     protected void _createBufferSizeAndOffsetMap()
             throws IllegalActionException {
@@ -2260,9 +2308,10 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
 
     }
 
-    /** Create the input buffer and offset map.
-     *  @exception IllegalActionException If thrown while
-     *  getting port information.
+    /**
+     * Create the input buffer and offset map.
+     * @exception IllegalActionException If thrown while getting port
+     * information.
      */
     protected void _createInputBufferSizeAndOffsetMap()
             throws IllegalActionException {
@@ -2295,14 +2344,14 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
     /////////////////////////////////////////////////////////////////////
     ////                      public inner classes                   ////
 
-    /** Given a block name, generate code for that block.
-     *  This method is called by actors helpers that have simple blocks
-     *  that do not take parameters or have widths.
-     *  @param blockName The name of the block.
-     *  @return The code for the given block.
-     *  @exception IllegalActionException If illegal macro names are
-     *  found, or if there is a problem parsing the code block from
-     *  the helper .c file.
+    /**
+     * Given a block name, generate code for that block. This method is called
+     * by actors helpers that have simple blocks that do not take parameters or
+     * have widths.
+     * @param blockName The name of the block.
+     * @return The code for the given block.
+     * @exception IllegalActionException If illegal macro names are found, or if
+     * there is a problem parsing the code block from the helper .c file.
      */
     protected String _generateBlockCode(String blockName)
             throws IllegalActionException {
@@ -2310,15 +2359,15 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
         return _generateBlockCode(blockName, new ArrayList());
     }
 
-    /** Given a block name, generate code for that block.
-     *  This method is called by actors helpers that have simple blocks
-     *  that do not take parameters or have widths.
-     *  @param blockName The name of the block.
-     *  @param args The arguments for the block.
-     *  @return The code for the given block.
-     *  @exception IllegalActionException If illegal macro names are
-     *  found, or if there is a problem parsing the code block from
-     *  the helper .c file.
+    /**
+     * Given a block name, generate code for that block. This method is called
+     * by actors helpers that have simple blocks that do not take parameters or
+     * have widths.
+     * @param blockName The name of the block.
+     * @param args The arguments for the block.
+     * @return The code for the given block.
+     * @exception IllegalActionException If illegal macro names are found, or if
+     * there is a problem parsing the code block from the helper .c file.
      */
     protected String _generateBlockCode(String blockName, List args)
             throws IllegalActionException {
@@ -2329,13 +2378,13 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
     }
 
     /**
-     * Generate expression that evaluates to a result of equivalent
-     * value with the cast type.
+     * Generate expression that evaluates to a result of equivalent value with
+     * the cast type.
      * @param expression The given variable expression.
      * @param castType The given cast type.
      * @param refType The given type of the variable.
-     * @return The variable expression that evaluates to a result of
-     *  equivalent value with the cast type.
+     * @return The variable expression that evaluates to a result of equivalent
+     * value with the cast type.
      * @exception IllegalActionException
      */
     protected String _generateTypeConvertMethod(String expression,
@@ -2352,15 +2401,15 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
     }
 
     /**
-     * Generate the type conversion statement for the particular offset of
-     * the two given channels. This assumes that the offset is the same for
-     * both channel. Advancing the offset of one has to advance the offset of
-     * the other.
+     * Generate the type conversion statement for the particular offset of the
+     * two given channels. This assumes that the offset is the same for both
+     * channel. Advancing the offset of one has to advance the offset of the
+     * other.
      * @param source The given source channel.
      * @param sink The given sink channel.
      * @param offset The given offset.
      * @return The type convert statement for assigning the converted source
-     *  variable to the sink variable with the given offset.
+     * variable to the sink variable with the given offset.
      * @exception IllegalActionException If there is a problem getting the
      * helpers for the ports or if the conversion cannot be handled.
      */
@@ -2463,7 +2512,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
      * @param source The given source channel.
      * @param sink The given sink channel.
      * @return The type convert statement for assigning the converted source
-     *  variable to the sink variable.
+     * variable to the sink variable.
      * @exception IllegalActionException If there is a problem getting the
      * helpers for the ports or if the conversion cannot be handled.
      */
@@ -2475,7 +2524,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
         int rate = Math.max(DFUtilities.getTokenProductionRate(source.port),
                 DFUtilities.getTokenConsumptionRate(source.port));
 
-        for (int offset = 0; offset < rate || (offset == 0 && rate == 0); offset++) {
+        for (int offset = 0; offset < rate || offset == 0 && rate == 0; offset++) {
             statements.append(_generateTypeConvertStatement(source, sink,
                     offset));
         }
@@ -2497,26 +2546,28 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
 
         if (tokenizer2.countTokens() == 2) {
             String type = tokenizer2.nextToken().trim();
-            return (type.length() > 0) ? type : null;
+            return type.length() > 0 ? type : null;
         }
         return null;
     }
 
-    /** Return the channel and offset given in a string.
-     *  The result is an string array of length 2. The first element
-     *  indicates the channel index, and the second the offset. If either
-     *  element is an empty string, it means that channel/offset is not
-     *  specified.
+    /**
+     * Return the channel and offset given in a string. The result is an string
+     * array of length 2. The first element indicates the channel index, and the
+     * second the offset. If either element is an empty string, it means that
+     * channel/offset is not specified.
      * @param name The given string.
      * @return An string array of length 2, containing expressions of the
-     *  channel index and offset.
+     * channel index and offset.
      * @exception IllegalActionException If the channel index or offset
-     *  specified in the given string is illegal.
+     * specified in the given string is illegal.
      */
     protected String[] _getChannelAndOffset(String name)
             throws IllegalActionException {
 
-        String[] result = { "", "" };
+        String[] result = {
+                "", ""
+        };
 
         // Given expression of forms:
         //     "port"
@@ -2543,19 +2594,20 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
         return result;
     }
 
-    /** Return the prototype for fire functions.
-     *  @return In this base class, return "()".
-     *  Derived classes, such as the C code generator helper
-     *  might return "(void)".
+    /**
+     * Return the prototype for fire functions.
+     * @return In this base class, return "()". Derived classes, such as the C
+     * code generator helper might return "(void)".
      */
     protected String _getFireFunctionArguments() {
         return "()";
     }
 
-    /** Get the code generator helper associated with the given component.
-     *  @param component The given component.
-     *  @return The code generator helper.
-     *  @exception IllegalActionException If the helper class cannot be found.
+    /**
+     * Get the code generator helper associated with the given component.
+     * @param component The given component.
+     * @return The code generator helper.
+     * @exception IllegalActionException If the helper class cannot be found.
      */
     protected ComponentCodeGenerator _getHelper(NamedObj component)
             throws IllegalActionException {
@@ -2566,17 +2618,18 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
         return _codeGenerator._getHelper(object);
     }
 
-    /** Return the reference to the specified parameter or port of the
-     *  associated actor. For a parameter, the returned string is in
-     *  the form "fullName_parameterName". For a port, the returned string
-     *  is in the form "fullName_portName[channelNumber][offset]", if
-     *  any channel number or offset is given.
-     *  @param name The name of the parameter or port
-     *  @param isWrite Whether to generate the write or read offset.
-     *  @return The reference to that parameter or port (a variable name,
-     *   for example).
-     *  @exception IllegalActionException If the parameter or port does not
-     *   exist or does not have a value.
+    /**
+     * Return the reference to the specified parameter or port of the associated
+     * actor. For a parameter, the returned string is in the form
+     * "fullName_parameterName". For a port, the returned string is in the form
+     * "fullName_portName[channelNumber][offset]", if any channel number or
+     * offset is given.
+     * @param name The name of the parameter or port
+     * @param isWrite Whether to generate the write or read offset.
+     * @return The reference to that parameter or port (a variable name, for
+     * example).
+     * @exception IllegalActionException If the parameter or port does not exist
+     * or does not have a value.
      */
     protected String _getReference(String name, boolean isWrite)
             throws IllegalActionException {
@@ -2584,11 +2637,10 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
     }
 
     /**
-     * Return the list of corresponding reference channel. This is
-     * because a channel may map to multiple reference channels in the
-     * generated code. At the same time, multiple channels may map
-     * to the same reference channel (e.g. the input-output
-     * port pair of a connection).
+     * Return the list of corresponding reference channel. This is because a
+     * channel may map to multiple reference channels in the generated code. At
+     * the same time, multiple channels may map to the same reference channel
+     * (e.g. the input-output port pair of a connection).
      * @param port The specified port.
      * @param channelNumber The specified channel number.
      * @param isWrite Whether this is a write or read access.
@@ -2618,8 +2670,8 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
     /**
      * Generate a variable reference for the given channel. This varaible
      * reference is needed for type conversion. The source helper get this
-     * reference instead of using the sink reference directly.
-     * This method assumes the given channel is a source (output) channel.
+     * reference instead of using the sink reference directly. This method
+     * assumes the given channel is a source (output) channel.
      * @param channel The given source channel.
      * @return The variable reference for the given channel.
      */
@@ -2635,14 +2687,15 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
     ///////////////////////////////////////////////////////////////////
     ////                     protected methods.                    ////
 
-    /** Return the replacement string of the given macro. Subclass
-     * of CodeGenerator may overriding this method to extend or support
-     * a different set of macros.
+    /**
+     * Return the replacement string of the given macro. Subclass of
+     * CodeGenerator may overriding this method to extend or support a different
+     * set of macros.
      * @param macro The given macro.
      * @param parameter The given parameter to the macro.
      * @return The replacement string of the given macro.
-     * @exception IllegalActionException Thrown if the given macro or
-     *  parameter is not valid.
+     * @exception IllegalActionException Thrown if the given macro or parameter
+     * is not valid.
      */
     protected String _replaceMacro(String macro, String parameter)
             throws IllegalActionException {
@@ -2750,20 +2803,24 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
                 userMacro = Class.forName("ptolemy.codegen.kernel.userMacro."
                         + macro);
 
-                handler = userMacro.getMethod("handleMacro",
-                        new Class[] { List.class });
-                checker = userMacro.getMethod("checkArguments",
-                        new Class[] { List.class });
+                handler = userMacro.getMethod("handleMacro", new Class[] {
+                    List.class
+                });
+                checker = userMacro.getMethod("checkArguments", new Class[] {
+                    List.class
+                });
             } catch (Exception ex) {
                 // Don't print out error, since this is probably not an user macro.
                 return null;
             }
 
             try {
-                checker.invoke(userMacro,
-                        new Object[] { _parseList(parameter) });
-                return (String) handler.invoke(userMacro,
-                        new Object[] { _parseList(parameter) });
+                checker.invoke(userMacro, new Object[] {
+                    _parseList(parameter)
+                });
+                return (String) handler.invoke(userMacro, new Object[] {
+                    _parseList(parameter)
+                });
             } catch (Exception ex) {
                 throw new IllegalActionException(this, ex,
                         "Failed to invoke user macro ($" + macro + ").");
@@ -2771,16 +2828,17 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
         }
     }
 
-    /** Find the paired close parenthesis given a string and an index
-     *  which is the position of an open parenthesis. Return -1 if no
-     *  paired close parenthesis is found.
-     *  @param string The given string.
-     *  @param pos The given index.
-     *  @return The index which indicates the position of the paired
-     *   close parenthesis of the string.
-     *  @exception IllegalActionException If the character at the
-     *   given position of the string is not an open parenthesis or
-     *   if the index is less than 0 or past the end of the string.
+    /**
+     * Find the paired close parenthesis given a string and an index which is
+     * the position of an open parenthesis. Return -1 if no paired close
+     * parenthesis is found.
+     * @param string The given string.
+     * @param pos The given index.
+     * @return The index which indicates the position of the paired close
+     * parenthesis of the string.
+     * @exception IllegalActionException If the character at the given position
+     * of the string is not an open parenthesis or if the index is less than 0
+     * or past the end of the string.
      */
     protected static int _findClosedParen(String string, int pos)
             throws IllegalActionException {
@@ -2840,16 +2898,18 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
         return -1;
     }
 
-    /** Return a number of spaces that is proportional to the argument.
-     *  If the argument is negative or zero, return an empty string.
-     *  @param level The level of indenting represented by the spaces.
-     *  @return A string with zero or more spaces.
+    /**
+     * Return a number of spaces that is proportional to the argument. If the
+     * argument is negative or zero, return an empty string.
+     * @param level The level of indenting represented by the spaces.
+     * @return A string with zero or more spaces.
      */
     protected static String _getIndentPrefix(int level) {
         return StringUtilities.getIndentPrefix(level);
     }
 
-    /** The code generator that contains this helper class.
+    /**
+     * The code generator that contains this helper class.
      */
     protected CodeGenerator _codeGenerator;
 
@@ -2858,34 +2918,39 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
      */
     protected CodeStream _codeStream = new CodeStream(this);
 
-    /** End of line character.  Under Unix: "\n", under Windows: "\n\r".
-     *  We use a end of line charactor so that the files we generate
-     *  have the proper end of line character for use by other native tools.
+    /**
+     * End of line character. Under Unix: "\n", under Windows: "\n\r". We use a
+     * end of line charactor so that the files we generate have the proper end
+     * of line character for use by other native tools.
      */
     protected final static String _eol;
 
     /** The parse tree to use with expressions. */
     protected ParseTreeCodeGenerator _parseTreeCodeGenerator;
 
-    /** A HashMap that contains mapping for ports and their conversion method.
-     *  Ports that does not need to be converted do NOT have record in this
-     *  map. The codegen kernel record this mapping during the first pass over
-     *  the model. This map is used later in the code generation phase.
+    /**
+     * A HashMap that contains mapping for ports and their conversion method.
+     * Ports that does not need to be converted do NOT have record in this map.
+     * The codegen kernel record this mapping during the first pass over the
+     * model. This map is used later in the code generation phase.
      */
     protected Hashtable _portConversions = new Hashtable();
 
-    /** A hashset that keeps track of parameters that are referenced for
-     *  the associated actor.
+    /**
+     * A hashset that keeps track of parameters that are referenced for the
+     * associated actor.
      */
     protected HashSet _referencedParameters = new HashSet();
 
-    /** Indent string for indent level 1.
-     *  @see ptolemy.util.StringUtilities#getIndentPrefix(int)
+    /**
+     * Indent string for indent level 1.
+     * @see ptolemy.util.StringUtilities#getIndentPrefix(int)
      */
     protected final static String _INDENT1 = StringUtilities.getIndentPrefix(1);
 
-    /** Indent string for indent level 2.
-     *  @see ptolemy.util.StringUtilities#getIndentPrefix(int)
+    /**
+     * Indent string for indent level 2.
+     * @see ptolemy.util.StringUtilities#getIndentPrefix(int)
      */
     protected final static String _INDENT2 = StringUtilities.getIndentPrefix(2);
 
@@ -2893,28 +2958,30 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
     ////                         private variables                 ////
 
     /** The associated object. */
-    private Object _object;
+    private final Object _object;
 
     /**
-     * The code block table that stores the code block body (StringBuffer)
-     * with the code block name (String) as key.
+     * The code block table that stores the code block body (StringBuffer) with
+     * the code block name (String) as key.
      */
-    private static final String[] _defaultBlocks = { "preinitBlock",
-            "initBlock", "fireBlock", "postfireBlock", "wrapupBlock" };
+    private static final String[] _defaultBlocks = {
+            "preinitBlock", "initBlock", "fireBlock", "postfireBlock",
+            "wrapupBlock"
+    };
 
     //private boolean printedNullPortWarnings = false;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    /** Generate code for a given block.  The comment includes
-     *  the portion of the blockName parameter up until the string
-     *  "Block".
-     *  @param blockName The name of the block, which usually ends
-     *  with the string "Block".
-     *  @return The generated wrapup code.
-     *  @exception IllegalActionException If thrown while appending to the
-     *  the block or processing the macros.
+    /**
+     * Generate code for a given block. The comment includes the portion of the
+     * blockName parameter up until the string "Block".
+     * @param blockName The name of the block, which usually ends with the
+     * string "Block".
+     * @return The generated wrapup code.
+     * @exception IllegalActionException If thrown while appending to the the
+     * block or processing the macros.
      */
     private String _generateBlockByName(String blockName)
             throws IllegalActionException {
@@ -2939,8 +3006,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
     }
 
     /**
-     * Generate the invocation of the fire function of
-     * the given component.
+     * Generate the invocation of the fire function of the given component.
      * @param component The given component.
      * @return The generated code.
      */
@@ -2948,7 +3014,8 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
         return generateName(component) + "()";
     }
 
-    /** Return the actual CodeStream for this Helper.
+    /**
+     * Return the actual CodeStream for this Helper.
      * @return The actual CodeStream.
      * @exception IllegalActionException If thrown by a called method.
      */
@@ -2957,9 +3024,9 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
     }
 
     /**
-     * Return the position of the first occurence of the "&" sign in
-     * the given code string, starting from the given from position.
-     * If the "&" sign found is escaped by "\\", it will be ignored.
+     * Return the position of the first occurence of the "&" sign in the given
+     * code string, starting from the given from position. If the "&" sign found
+     * is escaped by "\\", it will be ignored.
      * @param code The given code string.
      * @param from The given position to start searching from.
      * @return The next position of the "&" sign.
@@ -2977,8 +3044,8 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
     private String _getRefName(String name) throws IllegalActionException {
         StringTokenizer tokenizer = new StringTokenizer(name, "#,", true);
 
-        if ((tokenizer.countTokens() != 1) && (tokenizer.countTokens() != 3)
-                && (tokenizer.countTokens() != 5)) {
+        if (tokenizer.countTokens() != 1 && tokenizer.countTokens() != 3
+                && tokenizer.countTokens() != 5) {
             throw new IllegalActionException(getComponent(),
                     "Reference not found: " + name);
         }
@@ -3027,25 +3094,25 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
     }
 
     /**
-     * Get the list of sink channels that the given source channel needs to
-     * be type converted to.
+     * Get the list of sink channels that the given source channel needs to be
+     * type converted to.
      * @param source The given source channel.
-     * @return List of sink channels that the given source channel needs to
-     * be type converted to.
+     * @return List of sink channels that the given source channel needs to be
+     * type converted to.
      */
     private List _getTypeConvertSinkChannels(Channel source) {
         if (_portConversions.containsKey(source)) {
-            return ((List) _portConversions.get(source));
+            return (List) _portConversions.get(source);
         }
         return new ArrayList();
     }
 
-    /***
-     * Return a variable that matches the given label.
-     * Null is returned, if no such variable cannot found.
+    /***************************************************************************
+     * Return a variable that matches the given label. Null is returned, if no
+     * such variable cannot found.
      * @param refName The given label.
-     * @return A variable that matches the given label, or
-     *  null if no such variable is found.
+     * @return A variable that matches the given label, or null if no such
+     * variable is found.
      */
     private Variable _getVariable(String refName) {
         NamedObj actor = (NamedObj) _object;
@@ -3063,8 +3130,8 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
     }
 
     /**
-     * Mark the given connection between the source and the sink channels
-     * as type conversion required.
+     * Mark the given connection between the source and the sink channels as
+     * type conversion required.
      * @param source The given source channel.
      * @param sink The given input channel.
      */
@@ -3196,13 +3263,15 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
                 "Reference not found: " + name);
     }
 
-    /** Return the actual CodeStream associated with the given Actor and
-     *  CodeGenerator.  Generally, this will come from the Actor's template
-     *  file, but EmbeddedCActors get their code from the embeddedCCode parameter.
+    /**
+     * Return the actual CodeStream associated with the given Actor and
+     * CodeGenerator. Generally, this will come from the Actor's template file,
+     * but EmbeddedCActors get their code from the embeddedCCode parameter.
      * @param namedObj The actor whose code to return.
      * @param codeGenerator The actor's CodeGenerator.
      * @return The actor's actual CodeStream.
-     * @exception IllegalActionException If thrown when getting the actor's helper.
+     * @exception IllegalActionException If thrown when getting the actor's
+     * helper.
      */
     private static CodeStream _getActualCodeStream(NamedObj namedObj,
             CodeGenerator codeGenerator) throws IllegalActionException {
@@ -3235,4 +3304,5 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
         return 500.0;
     }
 
+    private String _fireCode = "";
 }

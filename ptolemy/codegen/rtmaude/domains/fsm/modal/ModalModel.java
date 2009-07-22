@@ -55,7 +55,6 @@ public class ModalModel extends TypedCompositeActor {
         super(component);
     }
 
-    @Override
     protected String getInfo(String name, List<String> parameters)
             throws IllegalActionException {
         ptolemy.domains.fsm.modal.ModalModel mm = (ptolemy.domains.fsm.modal.ModalModel) getComponent();

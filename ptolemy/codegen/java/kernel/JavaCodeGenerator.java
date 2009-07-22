@@ -119,9 +119,8 @@ public class JavaCodeGenerator extends CodeGenerator {
             }
         }
         if (result == null || result.length() == 0) {
-            System.out
-                    .println("Cannot resolved codegen type from Ptolemy type: "
-                            + type);
+            new Exception("Cannot resolve codegen type from Ptolemy type: "
+                    + type).printStackTrace();
         }
         if (result == null) {
             return null;

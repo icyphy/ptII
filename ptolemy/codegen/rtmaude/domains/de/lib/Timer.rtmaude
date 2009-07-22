@@ -9,7 +9,6 @@
   var O : Oid . var REST : ObjectConfiguration .
   var E : Exp . vars V TV : Value . 
   var AM : AssignMap . var MEM : Memory . var VM : ValueMap .  
-  var UPDATED : Bool .
 
 ---------------------------------------------------------------------
 --- Semantics Steps
@@ -22,13 +21,13 @@
    = prefire(Actor, 
     < O : Timer | store : 'value |-> k(E) >) .
 
-  eq portFixPoints(UPDATED,
+  eq portFixPoints(
      < O : Timer |
        status : enabled,
        ports :  < PI : OutPort | status : unknown > PORTS
     >
     REST)
-   = portFixPoints(true,
+   = portFixPoints(
      < O : Timer |
        ports : < PI : OutPort | status : absent > PORTS
     >
@@ -39,7 +38,7 @@
       store : 'value |-> V ; MEM,
       ports : < 'input : InPort | status : present, value : TV > PORTS
     >)
-  = evt(event(O ! 'output, V), toTime(TV))
+  = relative-evt(event(O ! 'output, V), toTime(TV))
     postfire(^ Timer, < O : Timer | >) .
 endtom)
 /**/

@@ -17,7 +17,7 @@ $index |-> $value/**/
   var AM : AssignMap . var MEM : Memory .
   var VI VV : Value . var EI EV : Exp .
   var V V' : Value . var VL VL' : ValueList .
-  vars N : Nat . var UPDATED : Bool .
+  vars N : Nat .
   
 ---------------------------------------------------------------------
 --- Semantics Steps
@@ -33,7 +33,7 @@ $index |-> $value/**/
       store : 'indexes |-> k(EI) ; 'values |-> k(EV)
     >) .
 
-  eq portFixPoints(UPDATED,
+  eq portFixPoints(
      < O : Pulse |
        status : enabled,
        ports :
@@ -41,7 +41,7 @@ $index |-> $value/**/
          < PI' : OutPort | status : unknown >
          PORTS
      > REST)
-   = portFixPoints(true,
+   = portFixPoints(
      < O : Pulse |
        ports :
          < PI : InPort | >
@@ -49,7 +49,7 @@ $index |-> $value/**/
          PORTS
      > REST) .
 
-  eq portFixPoints(UPDATED,
+  eq portFixPoints(
      < O : Pulse |
        status : enabled,
        current-index : N,
@@ -59,7 +59,7 @@ $index |-> $value/**/
          < PI' : OutPort | status : unknown >
          PORTS
      > REST)
-   = portFixPoints(true,
+   = portFixPoints(
      < O : Pulse |
        ports :
          < PI : InPort | >

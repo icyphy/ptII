@@ -13,13 +13,13 @@ current-time : 0/**/
   vars PORTS : Configuration . 
   vars PI PI' : PortId . var DPS : DetPortStatus .
   var O : Oid . var REST : ObjectConfiguration .
-  var T : Time . var UPDATED : Bool .
+  var T : Time .
 
 ---------------------------------------------------------------------
 --- Semantics Steps
 ---------------------------------------------------------------------
 
-  eq portFixPoints(UPDATED,
+  eq portFixPoints(
      < O : CurrentTime |
         status : enabled,
         current-time : T,
@@ -28,7 +28,7 @@ current-time : 0/**/
             < PI' : OutPort | status : unknown >
             PORTS
      > REST)
-   = portFixPoints(true,
+   = portFixPoints(
      < O : CurrentTime |
         ports :
             < PI : InPort | >

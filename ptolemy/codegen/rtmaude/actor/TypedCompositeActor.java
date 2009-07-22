@@ -45,6 +45,8 @@ import ptolemy.kernel.util.IllegalActionException;
  *
  * @see ptolemy.actor.TypedCompositeActor
  * @author Kyungmin Bae
+@version $Id$
+@since Ptolemy II 7.1
  * @version $Id$
  * @Pt.ProposedRating Red (kquine)
  *
@@ -58,7 +60,6 @@ public class TypedCompositeActor extends Entity {
         super(component);
     }
     
-    @Override
     public List<String> getBlockCodeList(String blockName, String ... args) 
             throws IllegalActionException {
         Director directorHelper = (Director) _getHelper(((ptolemy.actor
@@ -70,7 +71,6 @@ public class TypedCompositeActor extends Entity {
         return self;
     }
     
-    @Override
     public String generateFireFunctionCode() throws IllegalActionException {
         Director directorHelper = (Director) _getHelper(((ptolemy.actor
                 .CompositeActor) getComponent()).getDirector());
@@ -79,7 +79,6 @@ public class TypedCompositeActor extends Entity {
             _eol + directorHelper.generateFireFunctionCode();
     }
     
-    @Override
     public List<String> getModuleCode(String header)
             throws IllegalActionException {
         
@@ -103,7 +102,6 @@ public class TypedCompositeActor extends Entity {
         return modNames;
     }
 
-    @Override
     protected String getInfo(String name, List<String> parameters)
             throws IllegalActionException {
         ptolemy.actor.TypedCompositeActor c_actor = (ptolemy.actor.TypedCompositeActor) getComponent();

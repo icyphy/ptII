@@ -1,12 +1,12 @@
 /***attr_Ramp***/
-count : 0,
+firstStep : true,
 output-value : # 0/**/
 
 /***semantics_Ramp***/
 (tomod RAMP is 
   inc ACTOR .
 
-  class Ramp | count : Nat,
+  class Ramp | firstStep : Bool,
                output-value : Value .
     subclass Ramp < Actor .
   eq ^ Ramp = Actor .
@@ -15,7 +15,7 @@ output-value : # 0/**/
   var O : Oid . var REST : ObjectConfiguration .
   var AM : AssignMap . var MEM : Memory .
   var V VI VS : Value . var EI ES : Exp .
-  var UPDATED : Bool . var N : Nat .
+  var N : Nat . var B : Bool .
   
 ---------------------------------------------------------------------
 --- Semantics Steps
@@ -31,32 +31,32 @@ output-value : # 0/**/
       store : 'init |-> k(EI) ; 'step |-> k(ES)
     >) .
 
-  eq portFixPoints(UPDATED,
+  eq portFixPoints(
      < O : Ramp | 
        status : enabled,
        store : 'init |-> VI ; 'step |-> VS,
-       count : N,
+       firstStep : B,
        output-value : V,
        ports : 
          < PI : InPort | status : present >  
          < PI' : OutPort | status : unknown > PORTS 
      > REST)
-   = portFixPoints(true,
+   = portFixPoints(
      < O : Ramp | 
        ports : 
          < PI : InPort | > PORTS
          < PI' : OutPort | status : present, 
-                            value : if N > 0 then V + VS else VI fi >
+                            value : if B then VI else V + VS fi >
      > REST) .
      
-  eq portFixPoints(UPDATED,
+  eq portFixPoints(
      < O : Ramp | 
        status : enabled,
        ports : 
          < PI : InPort | status : absent >  
          < PI' : OutPort | status : unknown > PORTS 
      > REST)
-   = portFixPoints(true,
+   = portFixPoints(
      < O : Ramp | 
        ports : 
          < PI : InPort | > 
@@ -67,14 +67,14 @@ output-value : # 0/**/
     < O : Ramp | 
       status : enabled,
       store : 'init |-> VI ; 'step |-> VS,
-      count : N,
+      firstStep : B,
       output-value : V,
       ports : < PI : OutPort | status : present >  PORTS
     >) 
   = postfire(^ Ramp, 
     < O : Ramp | 
-      count : s(N),
-      output-value : if N > 0 then V + VS else VI fi
+      firstStep : false,
+      output-value : if B then VI else V + VS fi
     >) .
 endtom)
 /**/

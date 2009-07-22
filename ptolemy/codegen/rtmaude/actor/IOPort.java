@@ -56,7 +56,6 @@ public class IOPort extends RTMaudeAdaptor implements PortCodeGenerator {
         super(component);
     }
 
-    @Override
     public String generateTermCode() throws IllegalActionException {
         ptolemy.actor.IOPort p = (ptolemy.actor.IOPort) getComponent();
         if (p.getWidth() > 1) {

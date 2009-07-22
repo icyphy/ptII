@@ -53,7 +53,6 @@ public class AbstractActionsAttribute extends RTMaudeAdaptor {
         super(component);
     }
 
-    @Override
     public String generateTermCode() throws IllegalActionException {
         final ptolemy.domains.fsm.kernel.AbstractActionsAttribute aa = (ptolemy.domains.fsm.kernel.AbstractActionsAttribute) getComponent();
         final ParseTreeCodeGenerator pcg = getParseTreeCodeGenerator();

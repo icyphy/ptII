@@ -186,7 +186,10 @@ public class MoMLCommandLineApplication extends MoMLSimpleApplication {
                 throw new IllegalActionException("Unrecognized option: " + arg);
             }
         }
-        _manager.execute();
+
+        // See http://bugzilla.ecoinformatics.org/show_bug.cgi?id=4178
+        // "error handling with MoMLCommandLineApplication"
+        _manager.run();
 
         // PtExecuteApplication uses _activeCount to determine when
         // the models are done.  We can't do that here because
