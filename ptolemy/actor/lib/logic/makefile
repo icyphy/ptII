@@ -33,7 +33,7 @@
 
 ME =		ptolemy/actor/lib/logic
 
-DIRS = 		test fuzzy
+DIRS = 		test 
 
 # Root of the Java directory
 ROOT =		../../../..
