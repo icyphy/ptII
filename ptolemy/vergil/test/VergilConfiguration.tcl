@@ -105,6 +105,12 @@ proc expandConfiguration {configuration} {
     set object [$parser {parse java.net.URL java.net.URL} $URL $URL]
     # force everything to get expanded
     set configuration [java::cast ptolemy.kernel.CompositeEntity $object]
+
+    # The configuration has a removeGraphicalClasses parameter that
+    # defaults to false so we set it to true.
+    set removeGraphicalClasses [java::field [java::cast ptolemy.actor.gui.Configuration $configuration] removeGraphicalClasses]
+    $removeGraphicalClasses setExpression "true"
+
     set returnValue [catch {$configuration description} result]
 
     memoryGCmemory
@@ -118,42 +124,25 @@ proc expandConfiguration {configuration} {
 
 }
 
-######################################################################
-####
-#
-test VergilConfiguration-1.1 {make sure that everything inside the DSP configuration can be expanded} {
-    expandConfiguration "ptolemy/configs/dsp/configuration.xml"
-} {0}
+cd ../../configs
+set configs [glob */*configuration*.xml]
+cd ../vergil/test
 
-######################################################################
-####
-#
-test VergilConfiguration-1.2 {make sure that everything inside the Ptiny configuration can be expanded} {
-    expandConfiguration "ptolemy/configs/ptiny/configuration.xml"
-} {0}
+foreach i $configs {
 
-######################################################################
-####
-#
-test VergilConfiguration-1.2.1 {make sure that everything inside the Hybrid configuration can be expanded} {
-    expandConfiguration "ptolemy/configs/hyvisual/configuration.xml"
-} {0}
+    
+    if {[regexp "jxta/" $i] == 1} {
+	puts "Skipping $i, running vergil -jxta brings up a window"
+	continue
+    }
 
-######################################################################
-####
-#
-test VergilConfiguration-1.3 {make sure that everything inside the Full configuration (with the matlab and serial actors removed) can be expanded} {
-    expandConfiguration "ptolemy/configs/full/configuration.xml"
-} {0}
+    puts " Force everything to get expanded ptolemy/configs/$i"
+    puts "    (Skipping certain optional packages)"
 
-
-######################################################################
-####
-#
-#test VergilConfiguration-1.4 {make sure that everything inside the Full configuration can be expanded} {
-#    expandConfiguration "ptolemy/configs/vergilConfiguration.xml"
-#    # This is a known Failure because of matlab problems
-#} {0} {Known Failure}
+    test VergilConfiguration-$i-1.1 "Expand the $i configuration" {
+	expandConfiguration ptolemy/configs/$i
+    } {0}
+}
 
 # The list of filters is static, so we reset it
 java::call ptolemy.moml.MoMLParser setMoMLFilters [java::null]
