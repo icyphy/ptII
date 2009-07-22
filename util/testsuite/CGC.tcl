@@ -82,6 +82,8 @@ proc CGC_test {file inline {extraArgs {}} } {
 
     puts "------------------ CGC inline=$inline testing $relativeFilename"
     test "Auto" "Automatic CGC test in file $relativeFilename" {
+	global haveValgrind
+	global env
 	    # FIXME: we should use $relativeFilename here, but it
 	    # might have backslashes under Windows, which causes no end
 	    # of trouble.
@@ -110,6 +112,19 @@ proc CGC_test {file inline {extraArgs {}} } {
 	    error "$errMsg\n[jdkStackTrace]"
 	} else {
 	    $watchDog cancel
+	    if {$haveValgrind} {
+		set executableName [string range $file [ expr {[string last / $file] + 1}] [expr {[string length $file] -5}]]
+		set executable "$env(user.home)/codegen/$executableName"
+		puts "Running valgrind $executable"
+
+		set watchDog [java::new util.testsuite.WatchDog $timeout]
+		catch {set valgrind [exec -stderrok valgrind $executable]} errMsg
+		$watchDog cancel
+
+		if {![regexp "ERROR SUMMARY: 0 errors" $valgrind]} {
+		    error "Valgrind had a non-zero ERROR SUMMARY\n$valgrind"
+		}
+	    }
 	}
 	list $returnValue
     } {0}
@@ -118,6 +133,14 @@ set coverageArgs [java::new {String[]} 4 \
 		      [list \
 			   "-sourceLineBinding" "true" \
 			   "-compileTarget" "coverage"]]
+
+if {![catch {exec valgrind --version} errMsg]} {
+    set haveValgrind 1
+    puts "Valgrind is available"
+} else {
+    puts "Valgrind is not available"
+    set haveValgrind 0
+}
 
 foreach file [glob auto/*.xml] {
     CGC_test $file true
