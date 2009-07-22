@@ -244,6 +244,8 @@ public class RemoveGraphicalClasses implements MoMLFilter {
                 "ptolemy.actor.lib.Discard");
         _graphicalClasses.put("ptolemy.actor.lib.gui.SequencePlotter",
                 "ptolemy.actor.lib.Discard");
+        _graphicalClasses.put("ptolemy.vergil.actor.lib.LEDMatrix", 
+                "ptolemy.actor.lib.Discard");
 
         _graphicalClasses.put(
                 "ptolemy.data.properties.gui.PropertyHighlighter", null);
@@ -302,6 +304,9 @@ public class RemoveGraphicalClasses implements MoMLFilter {
 
         _graphicalClasses.put(
                 "ptolemy.vergil.kernel.attributes.ImageAttribute", null);
+
+        _graphicalClasses.put("ptolemy.vergil.kernel.attributes.ArrowAttribute",
+                null);
 
         _graphicalClasses.put("ptolemy.vergil.kernel.attributes.LineAttribute",
                 null);
