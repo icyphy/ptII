@@ -67,6 +67,7 @@ OTHER_FILES_TO_BE_JARED = \
 	basicUtilities.xml \
 	basicUtilitiesFSM.xml \
 	caseTableauFactory.xml \
+	classicDirectors.xml \
 	codegen.xml \
 	customize.xml \
 	defaultFullConfiguration.xml \
