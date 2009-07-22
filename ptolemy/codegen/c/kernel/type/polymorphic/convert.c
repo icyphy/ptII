@@ -292,6 +292,14 @@ Token convert_String_StringArray(char* s) {
 #define convert_Token_Token(a) a
 /**/
 
+/*** convert_Pointer_Token() ***/
+Token convert_Pointer_Token(void *a) {
+    // FIXME: this will only work on 32 bit machines.
+    return $new(Int((int)a));
+}
+/**/
+
+
 /*** convert_UnsignedByte_String() ***/
 char* convert_UnsignedByte_String(unsigned char a) {
         return $toString_UnsignedByte(a);
