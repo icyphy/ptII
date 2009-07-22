@@ -1179,6 +1179,7 @@ remote1distclean:
 	@echo "#"
 	@echo "#ptIInightly-mail#: Starting make clean at `date`"
 	@echo "`uptime`"
+	-rm -rf $(HOME)/codegen
 	(cd $(REMOTE1PTIIDIST); \
 		$(MAKE) clean)
 	-(cd $(REMOTE1PTIIDIST); \
