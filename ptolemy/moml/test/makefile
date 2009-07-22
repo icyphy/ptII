@@ -71,7 +71,6 @@ JSIMPLE_TESTS = \
 	MoMLVariableChecker.tcl \
 	ParserAttribute.tcl \
 	parseMoML.tcl \
-	parseMoMLConst.xml \
 	StreamErrorHandler.tcl \
 	UndoContext.tcl \
 	UndoDeleteEntity.tcl \
@@ -110,6 +109,7 @@ EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) $(JSIMPLE_TESTS) \
 	UndoDeleteEntityComposite.xml \
 	p1.moml \
 	p2.moml \
+	parseMoMLConst.xml \
 	testClass.xml \
 	testClassIcon.xml \
 	testClass2.xml \
