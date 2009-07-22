@@ -209,7 +209,7 @@ automatic.jar: $(JSRCS) $(JCLASS) $(OTHER_FILES_TO_BE_JARED) all
 	$(JAR_INDEX)
 	rm -rf $(PTJAR_TMPDIR)
 
-KRUFT = automatic.jar
+KRUFT = automatic.jar */*/*/*.class */*/*/*/*.class
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
