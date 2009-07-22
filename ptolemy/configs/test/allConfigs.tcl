@@ -130,6 +130,11 @@ foreach i $configs {
     set object [$parser {parse java.net.URL java.net.URL} $URL $URL]
     set configuration [java::cast ptolemy.kernel.CompositeEntity $object]
     
+    # The configuration has a removeGraphicalClasses parameter that
+    # defaults to false so we set it to true.
+    set removeGraphicalClasses [java::field [java::cast ptolemy.actor.gui.Configuration $configuration] removeGraphicalClasses]
+    $removeGraphicalClasses setExpression "true"
+
 
     test "$i-1.1" "Test to see if $i contains any bad XML" {
 	# force everything to get expanded

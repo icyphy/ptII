@@ -54,6 +54,38 @@ test allDemos-1.0 {} {
 	    continue
 	}
 
+        set grDemos [list \
+			 "domains/continuous/demo/NewtonsCradle/NewtonsCradleAnimated.xml" \
+			 "domains/ct/demo/BouncingBall/BouncingBallWithoutGR.xml" \
+			 "domains/ct/demo/BouncingBall/BouncingBall.xml" \
+			 "domains/ct/demo/CartPendulum/CartPendulum.xml" \
+			 "domains/ct/demo/NewtonsCradle/NewtonsCradleAnimated.xml" \
+			 "domains/ct/demo/NewtonsCradle/NewtonsCradleComplicated.xml" \
+			 "domains/ct/demo/NewtonsCradle/NewtonsCradleNondeterministic.xml" \
+			 "domains/ct/demo/NewtonsCradle/NewtonsCradlePerfectlyInelastic1.xml" \
+			 "domains/ct/demo/NewtonsCradle/ParameterizedNewtonsCradleAnimated.xml" \
+			 "domains/ct/demo/NewtonsCradle/ParameterizedNewtonsCradleAnimatedNondeterministic.xml" \
+			 "domains/ct/demo/Pendulum3D/Pendulum3D.xml" \
+			 "domains/de/demo/Clock/Clock.xml" \
+			 "domains/gr/demo/Pong/Pong.xml" \
+			 "domains/sdf/demo/Gravitation/Gravitation.xml" \
+			 "domains/sdf/demo/Gravitation/GravitationWithCollisionDetection.xml" \
+			 "actor/gt/demo/BouncingBallX2/BouncingBallX2.xml"]
+
+	set isGRDemo false
+	foreach grDemo $grDemos {
+	    if {[string first $grDemo $model] != -1} {
+		set isGRDemo true
+		continue
+	    }
+	}
+	if {[string first "domains/gr/demo" $model] != -1} {
+	    set isGRDemo true
+	}
+	if {$isGRDemo} {
+	    puts "Skipping $model, it is a GR model"
+	    continue;
+	}
 	# We create a new parser each time and avoid leaks,
 	# See ptdevel mail from 6/15/2009
 
@@ -71,7 +103,9 @@ test allDemos-1.0 {} {
 	# See ptII/util/testsuite/removeGraphicalClasses.tcl
 	removeGraphicalClasses $parser
 
-
+	#set filters [$parser getMoMLFilters]
+	#puts "filters: [$filters size]"
+	#puts [listToStrings $filters]
 
 	regsub {\$CLASSPATH} $model {$PTII} modelPath
 	set modelPath [subst $modelPath]
