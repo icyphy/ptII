@@ -7,11 +7,9 @@
 </head>
 <body>
 <h1>Installing Ptplot</h1>
-Ptplot 5.8.beta requires Java 1.4 or later.
-Java 1.4.2 is preferred, we use Java 1.4.2_08.  Java 1.4 has
-a bug concerning viewing local applets that have spaces in the path
-name, for details, see
-the <a href="troubleshooting.htm#spaces">Troubleshooting Guide</a>.
+Ptplot 5.8.beta requires Java 1.5 or later because we use Java generics
+@Deprecated tags and assert statements.  Ptplot will work with Java 1.6 (aka Java 6 SE),
+we have not tested under Java 1.7.
 
 <br>To run Ptplot, the Java runtime environment (JRE) is sufficient.
 <br>To run the applets in a browser, the Java plug-in is required.
@@ -19,15 +17,15 @@ the <a href="troubleshooting.htm#spaces">Troubleshooting Guide</a>.
 (JDK) or an equivalent Java development environment is required.  The
 JDK includes a Java compiler.
 
-<p>To run Ptplot 5.8.beta applets, you must install the version 1.4
+<p>To run Ptplot 5.8.beta applets, you must install the version 1.5
 or later of the
 <a href="http://www.javasoft.com/products/plugin/" target="_top">Javasoft Java Plug-in</a>.
 
 <p> If you will be extending the Ptplot classes, then you
-should install the Java 1.4.2 Java Development Kit: 
-<a href="http://java.sun.com/j2se/1.4/" target="_top"><CODE>http://java.sun.com/j2se/1.4/</CODE></a>
+should install the Java 6 SE Java Development Kit: 
+<a href="http://java.sun.com/javase/downloads/index.jsp" target="_top"><CODE>http://java.sun.com/javase/downloads/index.jsp</CODE></a>
 
-<p>If you do not want to require your users to install the Java 1.4.2  plug-in,
+<p>If you do not want to require your users to install the Java 1.5 or later plug-in,
 then you should stick with Ptplot 3.1, which does not use Swing.
 
 
@@ -72,16 +70,10 @@ then see
 with Cygwin.
 <ol>
 
-<li> Be sure that JDK 1.4.2  is installed, and that <CODE>javac</CODE>
+<li> Be sure that JDK 1.5 or later is installed, and that <CODE>javac</CODE>
 is in your path.
 
 <li> Untar or unzip the Ptplot distribution.
-
- <br> Note that under Java 1.4.0_01, viewing local applets that have
-spaces in the path name may fail if the applet tries to download a
-data file.  The workaround is to place the Ptplot distribution in a
-directory that does not have space in the pathname.  For details, see
-the <a href="troubleshooting.htm#spaces">Troubleshooting Guide</a>.
 
 <li> Set the <CODE>PTII</CODE> environment variable to point
 to the top of the Ptplot tree.  Under C-shell, one would do:
@@ -171,7 +163,7 @@ PTJAVA_DIR=@PTJAVA_DIR@
 becomes
 <pre>
 PTII_DEFAULT=/users/cxh/ptII
-PTJAVA_DIR=/opt/jdk1.4
+PTJAVA_DIR=/opt/jdk1.5
 </pre>
 
 
@@ -239,11 +231,11 @@ Java <CODE>.class</CODE> files
 <dl>
 
 <dt> <CODE>plotapplet.jar</CODE>
-<dd>  .class files necessary for simple JDK1.1
+<dd>  .class files necessary for simple 
 browser applets - no pxgraph, no plotml.
 
 <dt> <CODE>pxgraphapplet.jar</CODE>
-<dd> .class files necessary for simple JDK1.1
+<dd> .class files necessary for simple 
 browser applets with pxgraph classes, no plotml.
 Applets that use the <CODE>pxgraphargs</CODE> applet parameter
 should use this jar file.
