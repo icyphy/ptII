@@ -118,6 +118,7 @@
             <!-- NOTE: because this is in a configure, this list completely -->
             <!-- replaces anything in basicLibrary.xml, so we repeat this.  -->
             <input source="ptolemy/configs/basicDirectors.xml"/>
+            <input source="ptolemy/configs/classicDirectors.xml"/>
             <input source="ptolemy/configs/experimentalDirectors.xml"/>
           </group>
         ?>
