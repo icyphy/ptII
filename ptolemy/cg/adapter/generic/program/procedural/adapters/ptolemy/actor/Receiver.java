@@ -107,7 +107,6 @@ public abstract class Receiver extends ProgramCodeGeneratorAdapter {
      * both channel. Advancing the offset of one has to advance the offset of
      * the other.
      * @param source The given source channel.
-     * @param offset The given offset.
      * @return The type convert statement for assigning the converted source
      *  variable to the sink variable with the given offset.
      * @exception IllegalActionException If there is a problem getting the
