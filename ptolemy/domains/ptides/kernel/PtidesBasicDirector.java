@@ -66,6 +66,7 @@ import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.domains.de.kernel.DEDirector;
 import ptolemy.domains.de.kernel.DEEvent;
+import ptolemy.domains.modal.modal.RefinementPort;
 import ptolemy.domains.ptides.lib.NetworkInputDevice;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
@@ -1897,6 +1898,15 @@ public class PtidesBasicDirector extends DEDirector {
                     "Attempted to transferInputs on a port is not an opaque"
                             + "input port.");
         }
+        
+        // FIXME: This is more or less of a hack. If a modal model is used, then
+        // _transferInputs/_transferOutputs methods are used. However we do not
+        // want the input/output ports of modal models to have the same kind of
+        // behavior as sensor and actuator ports. Thus if they are RefinementPorts
+        // of modal models, we simply use the methods of the super class.
+        if (port instanceof RefinementPort) {
+            return super._transferInputs(port);
+        }
 
         boolean result = false;
         Time physicalTime = _getPhysicalTime();
@@ -2037,6 +2047,15 @@ public class PtidesBasicDirector extends DEDirector {
             throw new IllegalActionException(this, port,
                     "Attempted to transferOutputs on a port that "
                             + "is not an opaque input port.");
+        }
+
+        // FIXME: This is more or less of a hack. If a modal model is used, then
+        // _transferInputs/_transferOutputs methods are used. However we do not
+        // want the input/output ports of modal models to have the same kind of
+        // behavior as sensor and actuator ports. Thus if they are RefinementPorts
+        // of modal models, we simply use the methods of the super class.
+        if (port instanceof RefinementPort) {
+            return super._transferOutputs(port);
         }
 
         // first check for current time, and transfer any tokens that are already ready to output.
