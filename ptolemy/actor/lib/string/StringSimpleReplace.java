@@ -58,9 +58,13 @@ import ptolemy.kernel.util.NameDuplicationException;
  in Ptolemy II, can include references to parameter values in scope.
  E.g., if the enclosing composite actor has a parameter named "x"
  with value 1, say, then the replacement string a${x}b will become
- "a1b".
+ "a1b".</p>
+ <p>Note that if the <i>pattern</i> is the two character string
+ <code>\r</code>, then that pattern is handled specially and
+ collapsed to the single character '\r'.  This is for use in removing
+ \r's from test output.
 
- @author Antonio Yordan-Nones, Neil E. Turner, Edward A. Lee
+ @author Christopher Brooks
  @version $Id$
  @since Ptolemy II 8.0
  @Pt.ProposedRating ret (cxh)
@@ -141,6 +145,9 @@ public class StringSimpleReplace extends TypedAtomicActor {
             // want to compile the pattern
             _patternValue = ((StringToken) pattern.getToken())
                 .stringValue();
+            if (_patternValue.equals("\\r")) {
+                _patternValue = "\r";
+            }
         } else {
             super.attributeChanged(attribute);
         }
