@@ -173,7 +173,14 @@ public class ArrayToSequence extends SDFTransformer {
         }
 
         Token[] elements = token.arrayValue();
-        output.send(0, elements, elements.length);
+
+        // We no longer send the complete array all at once, since this might in
+        // for example PN lead to larger buffer sizes than strictly necessary.
+        // output.send(0, elements, elements.length);
+        
+        for (Token newToken : elements) {
+            output.send(0, newToken);
+        }
     }
 
     /** Return the type constraint that the type of the output port is no
