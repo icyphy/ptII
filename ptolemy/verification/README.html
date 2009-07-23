@@ -183,8 +183,8 @@ You may want to copy the above line; it would be a lot faster.<span
 example: Railroad control</h2>
 <span style="font-family: Arial;" lang="EN-US">Another example can be
 found in&nbsp;</span><span style="font-family: Arial;" lang="EN-US"></span><big><a
- href="demo/RailroadControl/RailroadSystem.xml"><code><span
- style="font-size: 10pt;">$PTII/ptolemy/verification/demo/RailroadControl/RailroadSystem.xml</span></code></a></big><span
+ href="demo/RailroadControl/RailroadControl.xml"><code><span
+ style="font-size: 10pt;">$PTII/ptolemy/verification/demo/RailroadControl/RailroadControl.xml</span></code></a></big><span
  style="font-family: Arial;" lang="EN-US"></span>.
 <h2><a name="LargeExample"><span lang="EN-US"></span></a>A larger
 example in robotic controller design (reactive control)</h2>
@@ -252,8 +252,15 @@ the DE domain, we are also performing preliminary experiments. </span><span
 examples having minor problems executing under NuSMV while they are
 executable under SMV. These problems can be easily fixed: the
 instructions in the corresponding model files show how to do this. Our
-preminiary diagnosis is that there are small syntactic differences
-between SMV and NuSMV. </span></li>
+preliminary diagnosis is that there are small syntactic differences
+between SMV and NuSMV.</span></li>
+  <li><span style="font-family: Arial;" lang="EN-US">The DE conversion
+mechanism in MathematicalModelConverter.java adapts current
+implementation of DE semantics (without the use of super dense time),
+rather than the semantics specified in the <a
+ href="http://www.eecs.berkeley.edu/Pubs/TechRpts/2008/EECS-2008-41.html">technical
+report</a>.<br>
+    </span></li>
 </ol>
 </body>
 </html>
