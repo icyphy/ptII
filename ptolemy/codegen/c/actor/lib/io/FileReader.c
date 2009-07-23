@@ -48,6 +48,7 @@ do {
         $ref(output)[$actorSymbol(index)++] = 'n';
     }
 } while ( $actorSymbol(charRead) != EOF );
+$ref(output)[$actorSymbol(index)++] = '\0';
 /**/
 
 
