@@ -91,7 +91,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  @Pt.ProposedRating Green (djstone)
  @Pt.AcceptedRating Green (net)
  */
-public class StringReplace extends TypedAtomicActor {
+public class StringReplace extends StringSimpleReplace {
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -104,62 +104,18 @@ public class StringReplace extends TypedAtomicActor {
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
-        // Create new parameters and ports.
-        // Set default values of the parameters and type constraints.
-        pattern = new PortParameter(this, "pattern");
-        pattern.setStringMode(true);
-        pattern.setExpression("");
-        (new SingletonParameter(pattern.getPort(), "_showName"))
-                .setToken(BooleanToken.TRUE);
-
         replaceAll = new Parameter(this, "replaceAll");
         replaceAll.setExpression("true");
         replaceAll.setTypeEquals(BaseType.BOOLEAN);
-
-        replacement = new PortParameter(this, "replacement");
-        replacement.setStringMode(true);
-        replacement.setExpression("");
-        (new SingletonParameter(replacement.getPort(), "_showName"))
-                .setToken(BooleanToken.TRUE);
-
-        stringToEdit = new PortParameter(this, "stringToEdit");
-        stringToEdit.setStringMode(true);
-        stringToEdit.setExpression("");
-        (new SingletonParameter(stringToEdit.getPort(), "_showName"))
-                .setToken(BooleanToken.TRUE);
-
-        output = new TypedIOPort(this, "output", false, true);
-        output.setTypeEquals(BaseType.STRING);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** The string to edit by replacing substrings that match the
-     *  specified pattern with the specified replacement. This is
-     *  a string that defaults to the empty string.
-     */
-    public PortParameter stringToEdit;
-
-    /** The output port on which the edited string is produced.
-     *  This has type string.
-     */
-    public TypedIOPort output;
-
-    /** The pattern used to pattern match and replace the stringToEdit
-     *  string. It is an empty string by default.
-     */
-    public PortParameter pattern;
-
     /** When the boolean value is true, replace all instances that match the
      *  pattern, and when false, replace the first instance.
      */
     public Parameter replaceAll;
-
-    /** The replacement string that replaces any matched instance of the
-     *  pattern. It is an empty string by default.
-     */
-    public PortParameter replacement;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -196,7 +152,11 @@ public class StringReplace extends TypedAtomicActor {
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
-        super.fire();
+        // We don't call super.fire because we use a regex here.
+        //super.fire();
+        if (_debugging) {
+            _debug("Called fire()");
+        }
         replacement.update();
         stringToEdit.update();
         pattern.update();
@@ -222,6 +182,7 @@ public class StringReplace extends TypedAtomicActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
+
     // The compiled regular expression.
     private Pattern _pattern;
 }
