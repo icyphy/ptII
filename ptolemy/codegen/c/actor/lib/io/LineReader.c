@@ -46,6 +46,7 @@ do {
     $ref(output)[$actorSymbol(index)++] = $actorClass(charRead);
 } while ( $actorClass(charRead) != '\n' && $actorClass(charRead) != EOF );
 $ref(endOfFile) = feof($actorSymbol(filePtr) );
+$ref(output)[$actorSymbol(index)++] = '\0';
 /**/
 
 /***closeFile***/
