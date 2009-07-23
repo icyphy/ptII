@@ -152,7 +152,11 @@ public class StringReplace extends StringSimpleReplace {
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
-        super.fire();
+        // We don't call super.fire because we use a regex here.
+        //super.fire();
+        if (_debugging) {
+            _debug("Called fire()");
+        }
         replacement.update();
         stringToEdit.update();
         pattern.update();
