@@ -54,6 +54,7 @@ JSRCS = \
 	StringLength.java \
 	StringMatches.java \
 	StringReplace.java \
+	StringSimpleReplace.java \
 	StringSubstring.java
 
 OTHER_FILES_TO_BE_JARED = \

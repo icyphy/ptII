@@ -1,7 +1,7 @@
 /* Replace an instance of a string with another input string according
- to a regular expression.
+ to simple matching (no regex)
 
- Copyright (c) 2003-2007 The Regents of the University of California.
+ Copyright (c) 2009 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -28,10 +28,6 @@
  */
 package ptolemy.actor.lib.string;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import java.util.regex.PatternSyntaxException;
-
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.parameters.PortParameter;
@@ -46,7 +42,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
 //////////////////////////////////////////////////////////////////////////
-//// StringReplace
+//// StringSimpleReplace
 
 /**
  On each firing, look for instances of the pattern specified by <i>pattern</i>
@@ -55,43 +51,22 @@ import ptolemy.kernel.util.NameDuplicationException;
  all instances that match <i>pattern</i>.  Otherwise, replace only
  the first instance that matches.  If there is no match, then the
  output is the string provided by <i>stringToEdit</i>, unchanged.
- The <i>pattern</i> is given by a regular expression.
- For a reference on regular expression syntax see:
- <a href="http://java.sun.com/docs/books/tutorial/extra/regex/index.html">
- http://java.sun.com/docs/books/tutorial/extra/regex/index.html</a>
+ The <i>pattern</i> is <b>not</b> a regular expression, to use
+ a regular expression, see {link ptolemy.actor.lib.io.StringReplace}.
  <p>
  The <i>replacement</i> string, as usual with string-valued parameters
  in Ptolemy II, can include references to parameter values in scope.
  E.g., if the enclosing composite actor has a parameter named "x"
  with value 1, say, then the replacement string a${x}b will become
  "a1b".
- <p>
- In addition, the <i>replacement</i> string can reference the pattern
- that is matched using the syntax "$$0".  For example, the regular
- expression "t[a-z]+" in <i>pattern</i> will match the character t followed by a
- sequence of one or more lower-case letters.
- If <i>replacement</i> is "p$$0" then "this is a test" becomes
- "pthis is a ptest".
- <p>
- If the <i>pattern</i> containes parenthesized subpatterns, such
- as "(t[a-z]+)|(T([a-z]+))", then the value of <i>replacement</i>
- can reference the match of each parenthesized subpattern with
- the syntax "$$n", where "n" is an integer between 1 and 9.
- For example, if <i>pattern</i>="(t[a-z]+)|(T([a-z]+))"
- and <i>replacement</i>="p$$1$$3", then "this is a Test" becomes
- "pthis is a pest". The index "n" corresponds to the order
- of opening parentheses in the pattern.
- <p>
- To get a "$" into the replacement string, use
- "\$$".  To get a "\" into the replacement string, use "\\".
 
  @author Antonio Yordan-Nones, Neil E. Turner, Edward A. Lee
  @version $Id$
- @since Ptolemy II 4.0
- @Pt.ProposedRating Green (djstone)
- @Pt.AcceptedRating Green (net)
+ @since Ptolemy II 8.0
+ @Pt.ProposedRating ret (cxh)
+ @Pt.AcceptedRating red (cxh)
  */
-public class StringReplace extends StringSimpleReplace {
+public class StringSimpleReplace extends TypedAtomicActor {
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -100,22 +75,54 @@ public class StringReplace extends StringSimpleReplace {
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public StringReplace(CompositeEntity container, String name)
+    public StringSimpleReplace(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
-        replaceAll = new Parameter(this, "replaceAll");
-        replaceAll.setExpression("true");
-        replaceAll.setTypeEquals(BaseType.BOOLEAN);
+        // Create new parameters and ports.
+        // Set default values of the parameters and type constraints.
+        pattern = new PortParameter(this, "pattern");
+        pattern.setStringMode(true);
+        pattern.setExpression("");
+        (new SingletonParameter(pattern.getPort(), "_showName"))
+                .setToken(BooleanToken.TRUE);
+
+        replacement = new PortParameter(this, "replacement");
+        replacement.setStringMode(true);
+        replacement.setExpression("");
+        (new SingletonParameter(replacement.getPort(), "_showName"))
+                .setToken(BooleanToken.TRUE);
+
+        stringToEdit = new PortParameter(this, "stringToEdit");
+        stringToEdit.setStringMode(true);
+        stringToEdit.setExpression("");
+        (new SingletonParameter(stringToEdit.getPort(), "_showName"))
+                .setToken(BooleanToken.TRUE);
+
+        output = new TypedIOPort(this, "output", false, true);
+        output.setTypeEquals(BaseType.STRING);
     }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                     ports and parameters                  ////
-
-    /** When the boolean value is true, replace all instances that match the
-     *  pattern, and when false, replace the first instance.
+    /** The string to edit by replacing substrings that match the
+     *  specified pattern with the specified replacement. This is
+     *  a string that defaults to the empty string.
      */
-    public Parameter replaceAll;
+    public PortParameter stringToEdit;
+
+    /** The output port on which the edited string is produced.
+     *  This has type string.
+     */
+    public TypedIOPort output;
+
+    /** The pattern used to pattern match and replace the stringToEdit
+     *  string. It is an empty string by default.
+     */
+    public PortParameter pattern;
+
+    /** The replacement string that replaces any matched instance of the
+     *  pattern. It is an empty string by default.
+     */
+    public PortParameter replacement;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -130,17 +137,10 @@ public class StringReplace extends StringSimpleReplace {
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == pattern) {
-            try {
-                String patternValue = ((StringToken) pattern.getToken())
-                        .stringValue();
-                _pattern = Pattern.compile(patternValue);
-            } catch (PatternSyntaxException ex) {
-                String patternValue = ((StringToken) pattern.getToken())
-                        .stringValue();
-                throw new IllegalActionException(this, ex,
-                        "Failed to compile regular expression \""
-                                + patternValue + "\"");
-            }
+            // We don't call super here because we don't
+            // want to compile the pattern
+            _patternValue = ((StringToken) pattern.getToken())
+                .stringValue();
         } else {
             super.attributeChanged(attribute);
         }
@@ -161,17 +161,10 @@ public class StringReplace extends StringSimpleReplace {
                 .stringValue();
         String stringToEditValue = ((StringToken) stringToEdit.getToken())
                 .stringValue();
-        boolean replaceAllTokens = ((BooleanToken) replaceAll.getToken())
-                .booleanValue();
 
-        Matcher match = _pattern.matcher(stringToEditValue);
         String outputString;
 
-        if (replaceAllTokens) {
-            outputString = match.replaceAll(replacementValue);
-        } else {
-            outputString = match.replaceFirst(replacementValue);
-        }
+        outputString = stringToEditValue.replace(_patternValue, replacementValue);
 
         output.send(0, new StringToken(outputString));
     }
@@ -179,6 +172,6 @@ public class StringReplace extends StringSimpleReplace {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    // The compiled regular expression.
-    private Pattern _pattern;
+    // The replacement string.
+    private String _patternValue;
 }
