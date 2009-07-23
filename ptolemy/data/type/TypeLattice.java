@@ -28,6 +28,7 @@
 package ptolemy.data.type;
 
 import ptolemy.data.Token;
+import ptolemy.data.ActorToken;
 import ptolemy.graph.CPO;
 import ptolemy.graph.DirectedAcyclicGraph;
 import ptolemy.kernel.util.InternalErrorException;
@@ -787,7 +788,12 @@ public class TypeLattice {
                 // NOTE: Removed NUMERICAL from the type lattice, EAL 7/22/06.
                 // _basicLattice.addNodeWeight(BaseType.NUMERICAL);
                 _basicLattice.addNodeWeight(BaseType.OBJECT);
-                _basicLattice.addNodeWeight(BaseType.ACTOR);
+
+                // Strange bug here, see moml/test/aJVMBug.xml
+                // and ptdevel email from 7/21.
+                //_basicLattice.addNodeWeight(BaseType.ACTOR);
+                _basicLattice.addNodeWeight(ActorToken.TYPE); 
+
                 _basicLattice.addNodeWeight(BaseType.XMLTOKEN);
                 _basicLattice.addNodeWeight(BaseType.SCALAR);
                 _basicLattice.addNodeWeight(BaseType.SHORT);
@@ -806,8 +812,13 @@ public class TypeLattice {
                 _basicLattice.addEdge(BaseType.UNKNOWN, BaseType.XMLTOKEN);
                 _basicLattice.addEdge(BaseType.OBJECT, BaseType.GENERAL);
                 _basicLattice.addEdge(BaseType.UNKNOWN, BaseType.OBJECT);
-                _basicLattice.addEdge(BaseType.ACTOR, BaseType.GENERAL);
-                _basicLattice.addEdge(BaseType.UNKNOWN, BaseType.ACTOR);
+
+                // More of the strange jvm bug, see above.
+                //_basicLattice.addEdge(BaseType.ACTOR, BaseType.GENERAL);
+                //_basicLattice.addEdge(BaseType.UNKNOWN, BaseType.ACTOR);
+                _basicLattice.addEdge(ActorToken.TYPE, BaseType.GENERAL);
+                _basicLattice.addEdge(BaseType.UNKNOWN, ActorToken.TYPE);
+
                 _basicLattice.addEdge(BaseType.STRING, BaseType.GENERAL);
                 _basicLattice.addEdge(BaseType.MATRIX, BaseType.STRING);
                 _basicLattice.addEdge(BaseType.BOOLEAN_MATRIX, BaseType.MATRIX);
