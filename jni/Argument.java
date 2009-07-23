@@ -173,7 +173,8 @@ public class Argument extends AbstractSettableAttribute {
                 return "int *";
             }
         } else if (StringUtilities.getProperty("os.name").startsWith("Linux")
-                || StringUtilities.getProperty("os.name").startsWith("Mac")) {
+                || StringUtilities.getProperty("os.name").startsWith("Mac")
+                || StringUtilities.getProperty("os.name").startsWith("Windows")) {
             if (result.startsWith("long")) {
                 return "jlong *";
             }
