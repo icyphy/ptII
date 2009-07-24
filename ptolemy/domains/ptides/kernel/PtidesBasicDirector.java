@@ -497,8 +497,8 @@ public class PtidesBasicDirector extends DEDirector {
     public void initialize() throws IllegalActionException {
         super.initialize();
         _currentlyExecutingStack = new Stack<DoubleTimedEvent>();
-        _realTimeOutputEventQueue = new PriorityQueue<RealTimeEvent>();
         _realTimeInputEventQueue = new PriorityQueue<RealTimeEvent>();
+        _realTimeOutputEventQueue = new PriorityQueue<RealTimeEvent>();
         _LastConsumedTag = new HashMap<NamedObj, Tag>();
         _physicalTimeExecutionStarted = null;
 
@@ -542,6 +542,7 @@ public class PtidesBasicDirector extends DEDirector {
         _calculateMinDelayOffsets();
         // In Ptides, we should never stop when queue is empty...
         stopWhenQueueIsEmpty.setExpression("false");
+        _checkSensorActuatorNetworkConsistency();
     }
 
     /** Return false if there are no more actors to be fired or the stop()
@@ -710,8 +711,15 @@ public class PtidesBasicDirector extends DEDirector {
 
         for (TypedIOPort inputPort : (List<TypedIOPort>) (((Actor) getContainer())
                 .inputPortList())) {
-            SuperdenseDependency startDelay = SuperdenseDependency.valueOf(
-                    -_getRealTimeDelay(inputPort), 0);
+            SuperdenseDependency startDelay;
+            // if the start port is a network port, the delay we start with is the
+            // network delay, otherwise the port is a sensor port, and the delay
+            // we start with is the realTimeDelay.
+            if (_isNetworkPort(inputPort)) {
+                startDelay = SuperdenseDependency.valueOf(_getNetworkDelay(inputPort), 0);
+            } else {
+                startDelay = SuperdenseDependency.valueOf(-_getRealTimeDelay(inputPort), 0);
+            }
             portDelays.put(inputPort, startDelay);
         }
         // Now start from each sensor (input port at the top level), traverse through all
@@ -855,6 +863,62 @@ public class PtidesBasicDirector extends DEDirector {
                         inputPort, portChannelMinDelay, inputModelTimeDelays);
             }
             _setMinDelay(inputPort, minDelays);
+        }
+    }
+    
+    /** Check the consistency of input/output ports. The following things are checked.
+     *  <p>
+     *  If an input port is a sensor port (no annotation), then it should not be connected
+     *  to a NetworkInputDevice. Also, it should not have a networkDelay attribute.
+     *  </p><p>
+     *  If an input port is a network port (annotated networkPort), then it should always
+     *  be connected to a NetworkInputDeivce. Also, it should not have a realTimeDelay
+     *  attribute.
+     *  </p>
+     *  @throws IllegalActionException 
+     */
+    protected void _checkSensorActuatorNetworkConsistency() throws IllegalActionException {
+        // These checks are constantly being updated. It is not yet complete.
+        for (TypedIOPort port : (List<TypedIOPort>) (((TypedCompositeActor) getContainer())
+                .inputPortList())) {
+            for (TypedIOPort sinkPort : (List<TypedIOPort>)port.sinkPortList()) {
+                if (_isNetworkPort(port)) {
+                    if (!(sinkPort.getContainer() instanceof NetworkInputDevice)) {
+                        throw new IllegalActionException(port, sinkPort.getContainer(),
+                                "An input network " +
+                                "port must have a NetworkInputDevice as" +
+                                "its sink.");
+                    }
+                    Parameter parameter = (Parameter) ((NamedObj) port)
+                        .getAttribute("realTimeDelay");
+                    if (parameter != null) {
+                        throw new IllegalActionException(port, "A network input " +
+                                "port must not have a realTimeDelay annotated " +
+                                "on it. Either this port is a not a network port " +
+                                "with realTimeDelay, or it should be a network" +
+                                "port with networkDelay. ");
+                    }
+                } else {
+                    // port is a sensor port.
+                    if (sinkPort.getContainer() instanceof NetworkInputDevice) {
+                        throw new IllegalActionException(port, sinkPort.getContainer(),
+                                "An input sensor " +
+                                "port should not be connected to a " +
+                                "NetworkInputDevice. Either denote this port as " +
+                                "a network port, or remove the NetworkInputDevice " +
+                                "connected to it.");
+                    }
+                    Parameter parameter = (Parameter) ((NamedObj) port)
+                        .getAttribute("networkDelay");
+                    if (parameter != null) {
+                        throw new IllegalActionException(port, "A sensor input " +
+                                "port must not have a networkDelay annotated " +
+                                "on it. Either this port is a not a network port " +
+                                "with realTimeDelay, or it should be a network" +
+                                "port with networkDelay. ");
+                    }
+                }
+            }
         }
     }
 
@@ -1919,11 +1983,11 @@ public class PtidesBasicDirector extends DEDirector {
         // in the order of the timestamps, but for two events of the same timestamp at an
         // actuator, there's no guarantee on the order of events sent to the outside.
         while (true) {
-            if (_realTimeOutputEventQueue.isEmpty()) {
+            if (_realTimeInputEventQueue.isEmpty()) {
                 break;
             }
 
-            RealTimeEvent realTimeEvent = (RealTimeEvent) _realTimeOutputEventQueue
+            RealTimeEvent realTimeEvent = (RealTimeEvent) _realTimeInputEventQueue
                     .peek();
             int compare = realTimeEvent.deliveryTime.compareTo(physicalTime);
 
@@ -1949,7 +2013,7 @@ public class PtidesBasicDirector extends DEDirector {
                     // set the proper timestamp associated with the token. This is because we rely
                     // on the fact every network input port is directly connected to a networkInputDevice,
                     // which will set the correct timestamp associated with the token.
-                    _realTimeOutputEventQueue.poll();
+                    _realTimeInputEventQueue.poll();
                     realTimeEvent.port.sendInside(realTimeEvent.channel,
                             realTimeEvent.token);
                 } else {
@@ -1959,7 +2023,7 @@ public class PtidesBasicDirector extends DEDirector {
                     // of the new event is set to 0.
                     setTag(realTimeEvent.deliveryTime.subtract(realTimeDelay),
                             0);
-                    _realTimeOutputEventQueue.poll();
+                    _realTimeInputEventQueue.poll();
                     realTimeEvent.port.sendInside(realTimeEvent.channel,
                             realTimeEvent.token);
                     setTag(lastModelTime, lastMicrostep);
@@ -1978,6 +2042,20 @@ public class PtidesBasicDirector extends DEDirector {
                                 + realTimeEvent.deliveryTime
                                 + ", and current physical time = "
                                 + physicalTime);
+            }
+        }
+        
+        // if the input port is a network port, the data should be transmitted into
+        // the platform immediately.
+        if (_isNetworkPort(port)) {
+            // if we transferred once to the network output, then return true,
+            // and go through this once again.
+            while (true) {
+                if (!super._transferInputs(port)) {
+                    break;
+                } else {
+                    result = true;
+                }
             }
         }
 
@@ -2011,7 +2089,7 @@ public class PtidesBasicDirector extends DEDirector {
                                     .add(realTimeDelay);
                             RealTimeEvent realTimeEvent = new RealTimeEvent(
                                     port, i, t, waitUntilTime);
-                            _realTimeOutputEventQueue.add(realTimeEvent);
+                            _realTimeInputEventQueue.add(realTimeEvent);
                             result = true;
 
                             // wait until physical time to transfer the token into the platform
@@ -2070,10 +2148,10 @@ public class PtidesBasicDirector extends DEDirector {
         // in the order of the timestamps, but for two events of the same timestamp at an
         // actuator, there's no guarantee on the order of events sent to the outside.
         while (true) {
-            if (_realTimeInputEventQueue.isEmpty()) {
+            if (_realTimeOutputEventQueue.isEmpty()) {
                 break;
             }
-            RealTimeEvent tokenEvent = (RealTimeEvent) _realTimeInputEventQueue
+            RealTimeEvent tokenEvent = (RealTimeEvent) _realTimeOutputEventQueue
                     .peek();
             compare = tokenEvent.deliveryTime.compareTo(physicalTime);
 
@@ -2085,7 +2163,7 @@ public class PtidesBasicDirector extends DEDirector {
                             "transferring network event from the"
                                     + "actuator event queue");
                 }
-                _realTimeInputEventQueue.poll();
+                _realTimeOutputEventQueue.poll();
                 tokenEvent.port.send(tokenEvent.channel, tokenEvent.token);
                 if (_debugging) {
                     _debug(getName(), "transferring output " + tokenEvent.token
@@ -2108,11 +2186,10 @@ public class PtidesBasicDirector extends DEDirector {
             while (true) {
                 if (!super._transferOutputs(port)) {
                     break;
+                } else {
+                    result = true;
                 }
             }
-            // do not need to update the result, because this loop ensures
-            // we have transmitted all network output events, so no need
-            // to enter here again.
         }
 
         compare = _currentTime.compareTo(physicalTime);
@@ -2139,7 +2216,7 @@ public class PtidesBasicDirector extends DEDirector {
                         Token t = port.getInside(i);
                         RealTimeEvent tokenEvent = new RealTimeEvent(port, i,
                                 t, _currentTime);
-                        _realTimeInputEventQueue.add(tokenEvent);
+                        _realTimeOutputEventQueue.add(tokenEvent);
                         // wait until physical time to transfer the output to the actuator
                         Actor container = (Actor) getContainer();
                         container.getExecutiveDirector().fireAt(
@@ -2207,13 +2284,28 @@ public class PtidesBasicDirector extends DEDirector {
     private Actor _getActorFromEventList(List<DEEvent> currentEventList) {
         return currentEventList.get(0).actor();
     }
+    
+    /** check if the port is a networkPort
+     *  this method is default to return false, i.e., an output port to the outside of the
+     *  platform is by default an actuator port.
+     *  @exception IllegalActionException
+     */
+    private static double _getNetworkDelay(IOPort port)
+            throws IllegalActionException {
+        Parameter parameter = (Parameter) ((NamedObj) port)
+                .getAttribute("networkDelay");
+        if (parameter != null) {
+            return ((DoubleToken) parameter.getToken()).doubleValue();
+        }
+        return 0.0;
+    }
 
     /** Returns the relativeDeadline parameter.
      *  @param port The port the relativeDeadline is associated with.
      *  @return relativeDeadline parameter
      *  @exception IllegalActionException
      */
-    private double _getRelativeDeadline(IOPort port)
+    private static double _getRelativeDeadline(IOPort port)
             throws IllegalActionException {
         Parameter parameter = (Parameter) ((NamedObj) port)
                 .getAttribute("relativeDeadline");
@@ -2227,7 +2319,7 @@ public class PtidesBasicDirector extends DEDirector {
     /** check if the port is a networkPort
      *  this method is default to return false, i.e., an output port to the outside of the
      *  platform is by default an actuator port.
-     * @exception IllegalActionException
+     *  @exception IllegalActionException
      */
     private static boolean _isNetworkPort(IOPort port)
             throws IllegalActionException {
@@ -2239,6 +2331,11 @@ public class PtidesBasicDirector extends DEDirector {
         return false;
     }
 
+    /** Set the minDelay of a port to an array of minDelay values.
+     *  @param inputPort The input port to be annotated.
+     *  @param minDelays The minDelay values to annotate.
+     *  @throws IllegalActionException
+     */
     private static void _setMinDelay(IOPort inputPort, double[] minDelays)
             throws IllegalActionException {
         Parameter parameter = (Parameter) (inputPort).getAttribute("minDelay");
@@ -2280,12 +2377,12 @@ public class PtidesBasicDirector extends DEDirector {
 
     /** a sorted queue of RealTimeEvents that buffer events before they are sent to the output.
      */
-    private PriorityQueue _realTimeInputEventQueue;
+    private PriorityQueue _realTimeOutputEventQueue;
 
     /** a sorted queue of RealTimeEvents that stores events when they arrive at the input of
      *  the platform, but are not yet visible to the platform (because of real time delay d_o)
      */
-    private PriorityQueue _realTimeOutputEventQueue;
+    private PriorityQueue _realTimeInputEventQueue;
 
     ///////////////////////////////////////////////////////////////////
     ////                     inner classes                         ////
