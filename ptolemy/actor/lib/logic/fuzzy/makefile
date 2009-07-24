@@ -39,7 +39,9 @@ DIRS =
 # Root of the Java directory
 ROOT =		../../../../..
 
-CLASSPATH =	$(ROOT)
+# FuzzyEngine director
+# http://people.clarkson.edu/~esazonov/FuzzyEngine.htm
+CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(PTFUZZYENGINE_DIR)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
@@ -56,7 +58,9 @@ JSRCS = \
 
 
 OTHER_FILES_TO_BE_JARED = \
-	Antenna.xml
+	Antenna.xml \
+	FuzzyEngine-copyright.htm \
+	fuzzy.xml
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 

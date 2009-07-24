@@ -229,7 +229,6 @@ CODEGENPACKAGES = \
 	ptolemy.codegen.c.actor.lib.javasound \
 	ptolemy.codegen.c.actor.lib.jni \
 	ptolemy.codegen.c.actor.lib.logic \
-	ptolemy.codegen.c.actor.lib.logic.fuzzy \
 	ptolemy.codegen.c.actor.lib.string \
 	ptolemy.codegen.c.actor.lib.test \
 	ptolemy.codegen.c.actor.lib.tutorial \
@@ -580,6 +579,7 @@ ALLPACKAGES = \
 	$(PTDATABASE_PACKAGES) \
 	$(PTDISTRIBUTED_PACKAGES) \
 	$(PTGR_PACKAGES) \
+	$(PTFUZZY_PACKAGES) \
 	$(PTIDES_PACKAGES) \
 	$(PTINYPACKAGES) \
 	$(PTJAI_PACKAGES) \

@@ -411,6 +411,18 @@ PTDISTRIBUTED_PACKAGES = @PTDISTRIBUTED_PACKAGES@
 # $PTII/doc if tools.jar can be found.
 PTDOCLETS_DIR =		@PTDOCLETS_DIR@ 	
 
+# Set to fuzzy and used in
+# $PTII/ptolemy/actor/lib/logic/makefile if FuzzyEngine.jar was found
+PTFUZZY_DIR = @PTFUZZY_DIR@
+
+# FuzzyEngine Jar directory, usually
+# $PTII/vendors/misc/FuzzyEngine.  Available from
+# http://people.clarkson.edu/~esazonov/FuzzyEngine.htm
+PTFUZZYENGINE_DIR = @PTFUZZYENGINE_DIR@
+
+# PTFUZZYLOGIC_PACKAGES is used in ptII/doc/makefile if FuzzyEngine.jar is found
+PTFUZZY_PACKAGES = @PTFUZZY_PACKAGES@
+
 # Location of the local $PTII directory as a file:/// URL
 # This variable is used with the Java Network Launching Protocol files
 PTII_LOCALURL = @PTII_LOCALURL@

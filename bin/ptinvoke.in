@@ -266,6 +266,16 @@ DIVA_JAR="${PTII}/lib/diva.jar"
 
 DIVA_JFLAG=
 
+#### FuzzyEngine
+# PTFUZZY_DIR is set to fuzzy if configure found FuzzyEngine.jar
+PTFUZZY_DIR=@PTFUZZY_DIR@
+FUZZYLOGIC_JARS=""
+if [ "$PTFUZZY_DIR" = "fuzzy" ]; then
+    # directory that contains Fuzzylogic interface,
+    # see http://people.clarkson.edu/~esazonov/FuzzyEngine.htm
+    FUZZYLOGIC_JARS="${CLASSPATHSEPARATOR}@PTFUZZYENGINE_DIR@"
+fi
+
 #### Tini board stuff
 # The tini jar file.
 TINI_DIR='@TINI_DIR@'
@@ -406,8 +416,7 @@ PTJYTHON_DIR=@PTJYTHON_DIR@
 JYTHON_JARS=""
 if [ "$PTJYTHON_DIR" = "python" ]; then
     JYTHON_DIR="@JYTHON_DIR@"
-    # Jar file that contains Joystick interface,
-    # see http://sourceforge.net/projects/javajoystick/
+    # Jar file that contains Python interface
     JYTHON_JARS="${CLASSPATHSEPARATOR}${JYTHON_DIR}/jython.jar"
     JYTHON_JFLAG="\"-Dpython.home=${JYTHON_DIR}\""
 fi
@@ -507,7 +516,8 @@ fi
 # a version of java cup
 #
 # If you update ALL_JARS, please update ptolemy/configs/test/makefile
-ALL_JAR="${DIVA_JAR}${JINI_JARS}${BACKTRACK_JARS}${CALTROP_JARS}${CHIC_JARS}${COLT_JARS}${COMMAPI_JARS}${SOOT_JARS}${PTJACL_JARS}${JOYSTICK_JARS}${JYTHON_JARS}${JXTA_JARS}${KIELER_JARS}${GIOTTO_JARS}${MYSQL_JAR}${ORACLE_OJDBC_JAR}${PDFRENDERER_JARS}${PTALON_JARS}${QTJAVA_JARS}${PSDF_JARS}${SAXON_JARS}${TOOLS_JAR}${TOSJARS}${NC2MOML_JARS}${PTVR_JARS}${X10_JARS}"
+#  and update ptolemy/vergil/test/makefile
+ALL_JAR="${DIVA_JAR}${JINI_JARS}${BACKTRACK_JARS}${CALTROP_JARS}${CHIC_JARS}${COLT_JARS}${COMMAPI_JARS}${FUZZYLOGIC_JARS}${SOOT_JARS}${PTJACL_JARS}${JOYSTICK_JARS}${JYTHON_JARS}${JXTA_JARS}${KIELER_JARS}${GIOTTO_JARS}${MYSQL_JAR}${ORACLE_OJDBC_JAR}${PDFRENDERER_JARS}${PTALON_JARS}${QTJAVA_JARS}${PSDF_JARS}${SAXON_JARS}${TOOLS_JAR}${TOSJARS}${NC2MOML_JARS}${PTVR_JARS}${X10_JARS}"
 ALL_JFLAG="${DIVA_JFLAG} ${JINI_JFLAG} ${JYTHON_JFLAG} -Xmx256M"
 
 #### Sandbox

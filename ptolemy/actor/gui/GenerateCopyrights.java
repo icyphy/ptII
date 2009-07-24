@@ -105,6 +105,9 @@ public class GenerateCopyrights {
                 "com.jgoodies.forms.factories.DefaultComponentFactory",
                 "com/jgoodies/jgoodies-copyright.htm");
 
+        _addIfPresent(copyrightsMap, "fuzzy.FuzzyEngine",
+                "ptolemy/actor/lib/logic/fuzzy/FuzzyEngine-copyright.htm");
+
         _addIfPresent(copyrightsMap, "jni.GenericJNIActor",
                 "jni/launcher/launcher-copyright.htm");
 

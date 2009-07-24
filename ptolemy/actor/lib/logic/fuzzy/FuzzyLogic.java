@@ -16,7 +16,8 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.util.StringUtilities;
-import ptolemy.actor.lib.logic.fuzzy.FuzzyEngine.fuzzy.*;
+import fuzzy.FuzzyEngine;
+import fuzzy.LinguisticVariable;
 
 
 import org.xml.sax.XMLReader;
@@ -56,7 +57,7 @@ class FuzzyParser extends DefaultHandler
             XMLReader xr = XMLReaderFactory.createXMLReader();
             xr.setContentHandler(this);
             xr.setErrorHandler(this);
-            FileReader r = new FileReader("ptolemy\\actor\\lib\\logic\\fuzzy\\"+filename.toString());
+            FileReader r = new FileReader("ptolemy/actor/lib/logic/fuzzy/" + filename.toString());
             xr.parse(new InputSource(r));
         }catch(Exception e){
             e.printStackTrace();   
@@ -227,7 +228,7 @@ public class FuzzyLogic extends Transformer{
     public void preinitialize() throws IllegalActionException
     {
         try{
-            File fileIn  = new File("ptolemy\\actor\\lib\\logic\\fuzzy\\"+rulesFileName.getExpression());
+            File fileIn  = new File("ptolemy/actor/lib/logic/fuzz/" + rulesFileName.getExpression());
 
             if (_debugging) {
                 _debug("rules file name is :"+rulesFileName.getExpression());

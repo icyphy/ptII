@@ -1546,6 +1546,65 @@ if test -z "$PTBACKTRACK_ECLIPSE_DIR"; then
 fi 
 
 #--------------------------------------------------------------------
+#       FuzzyEngine is an "Open source fuzzy inference engine for Java"
+#	http://people.clarkson.edu/~esazonov/FuzzyEngine.htm
+#	However, FuzzyEngine is GPL'd, so we don't ship it.
+#
+#       See if there was a command-line option for where FuzzyEngine interface is
+#       If not, look for $PTII/vendors/misc/FuzzyEngine/FuzzyEngine.jar
+#--------------------------------------------------------------------
+
+# PTFUZZY_DIR is set to fuzzy and used in
+# $PTII/ptolemy/actor/lib/logic/makefile if FuzzyEngine.jar was found
+PTFUZZY_DIR=
+
+# FuzzyEngine Directory
+# http://people.clarkson.edu/~esazonov/FuzzyEngine.htm
+PTFUZZYENGINE_DIR='${PTII}/vendors/misc/FuzzyEngine'
+
+FUZZYLOGIC_USER_DIR="$PTII/ptolemy/actor/lib/logic/fuzzy"
+# We only need to look for joystick if $FUZZYLOGIC_USER_DIR
+if test ! -d "$FUZZYLOGIC_USER_DIR"; then
+    PT_MSG_STATUS([$FUZZYLOGIC_USER_DIR is not present,
+    so we need not find the FuzzyEngine interface.])
+else
+    AC_MSG_CHECKING([for FuzzyEngine directory file])
+    AC_ARG_WITH(fuzzyengine, [  --with-fuzzyengine=DIRECTORY       use FuzzyEngine from DIRECTORY,
+                          defaults to \$PTII/vendors/misc/FuzzyEngine],
+	PTFUZZYENGINE_DIR=$withval,
+	PTFUZZYENGINE_DIR=$PTII/vendors/misc/FuzzyEngine)
+
+    if test -f "$PTFUZZYENGINE_DIR/fuzzy/FuzzyEngine.class"; then
+	PT_MSG_RESULT([$PTFUZZYENGINE_DIR])
+	# Set to fuzzy and used in
+	# $PTII/ptolemy/actor/lib/logic/makefile if FuzzyEngine.jar was found
+	PTFUZZY_DIR=fuzzy
+        # PTFUZZYLOGIC_PACKAGES is used in ptII/doc/makefile
+	PTFUZZY_PACKAGES=ptolemy.actor.lib.logic.fuzzy
+    fi	
+
+    if test "$PTFUZZY_DIR" = ""; then
+        AC_MSG_WARN([Failed to find fuzzy/FuzzyEngine.class
+    in $PTFUZZYENGINE_DIR
+    perhaps the FuzzyEngine is not installed?
+    You need not download the FuzzyEngine interface unless you
+    plan on using the actor.lib.logic.fuzzy actors with Ptolemy II. 
+    The FuzzyEngine interface can be downloaded from
+    http://people.clarkson.edu/~esazonov/FuzzyEngine.htm
+    an untar'd into $PTII/vendors/misc.] )
+	# Note that we don't substitute in the ${PTII} here
+	PTFUZZYENGINE_DIR='${PTII}/vendors/misc/FuzzyEngine'
+    fi
+fi
+
+if test -z "$PTFUZZY_DIR"; then
+   ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/actor/lib/logic/fuzzy/"
+else
+   ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
+    <classpathentry kind=\"lib\" path=\"$PTFUZZYENGINE_DIR\"/>"
+fi 
+
+#--------------------------------------------------------------------
 #       Garbage Collector (GC)
 #       The C code generator can use the Boehm Garbage Collector
 #       See http://www.hpl.hp.com/personal/Hans_Boehm/gc/
@@ -4360,6 +4419,17 @@ AC_SUBST(PTDISTRIBUTED_PACKAGES)
 # PTDOCLETS_DIR is set to doclets and used in 
 # $PTII/doc if tools.jar can be found.
 AC_SUBST(PTDOCLETS_DIR)
+
+# Set to fuzzy and used in
+# $PTII/ptolemy/actor/lib/logic/makefile if FuzzyEngine.jar was found
+AC_SUBST(PTFUZZY_DIR)
+
+# FuzzyEngine directory.  FuzzyEngine is from
+# http://people.clarkson.edu/~esazonov/FuzzyEngine.htm
+AC_SUBST(PTFUZZYENGINE_DIR)
+
+# PTFUZZYLOGIC_PACKAGES is used in ptII/doc/makefile if FuzzyEngine.jar is found
+AC_SUBST(PTFUZZY_PACKAGES)
 
 # Set to -I$PTII/mescal/include or -I/usr/local/include if gmp.h is found
 # and used in $PTII/mescal/relsat
