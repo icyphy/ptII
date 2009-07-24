@@ -314,14 +314,15 @@ public class GiottoDirector extends
                 + _eol
                 // #warning is non-standard, but useful.
                 + "#warning \"" + driverBound
-                + " was not defined.  Using default value of 1000.\"" + _eol
-                + "#define " + driverBound + " 1000" + _eol + "#endif" + _eol);
+                + " was not defined.  Using default value of 1 ms.\"" + _eol
+                + "#define " + driverBound + " MILLISEC" + _eol + "#endif" + _eol);
         // for
         String index = CodeGeneratorHelper.generateName((NamedObj) actor)
                 + "_frequency";
-        code.append("int " + index + ";" + _eol + "for (" + index + " = 0; "
-                + index + " < " + _getFrequency(actor) + "; ++" + index + ") {"
-                + _eol + "DEADBRANCH0(" + milliseconds + "*MILLISEC - " + driverBound
+        code.append("int " + index + ";" + _eol
+                + "for (" + index + " = 0; " + index + " < "
+                + _getFrequency(actor) + "; ++" + index + ") {" + _eol);
+        code.append("DEADBRANCH0(" + milliseconds + "*MILLISEC - " + driverBound
                 + "); // period - driver_wcet" + _eol + _getActorName(actor)
                 + "_driver_in();//read inputs from ports deterministically"
                 + _eol);
