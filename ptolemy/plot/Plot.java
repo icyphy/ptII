@@ -515,6 +515,14 @@ public class Plot extends PlotBox {
         _sawFirstDataSet = false;
         super.parseFile(filespec, documentBase);
     }
+    
+    /** Mark the disconnections with a Dot in case value equals true, otherwise these
+     *  points are not marked. 
+     *  @param value True when disconnections should be marked.
+     */
+    public void markDisconnections(boolean value) {
+        _markDisconnections = value;
+    }
 
     /** Read a file with the old syntax (non-XML).
      *  Override the base class to register that we are reading a new
@@ -1393,7 +1401,7 @@ public class Plot extends PlotBox {
                 _drawBin(graphics, dataset, binnum);
             }
 
-            if (_marks == 0 && numberOfBins > 0) {
+            if (_markDisconnections && _marks == 0 && numberOfBins > 0) {
                 Bin bin = data.get(numberOfBins - 1);
 
                 // We are going to add an extra dot for the last point.
@@ -1954,7 +1962,7 @@ public class Plot extends PlotBox {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-
+    
     /* Add a legend if necessary, return the value of the connected flag.
      */
     private boolean _addLegendIfNecessary(boolean connected) {
@@ -2369,6 +2377,7 @@ public class Plot extends PlotBox {
         points.clear();
 
         _points.set(dataset, points);
+        _bins.get(dataset).clear();
 
         _lastPointWithExtraDot.clear();
         repaint();
@@ -2451,7 +2460,7 @@ public class Plot extends PlotBox {
             marks = fmt.marks;
         }
 
-        if (marks == 0 && endPosition > startPosition && startPosition > 0) {
+        if (_markDisconnections && marks == 0 && endPosition > startPosition && startPosition > 0) {
             PlotPoint previousPoint = points.get(startPosition - 1);
             if (!(connectedFlag && points.get(startPosition).connected)) {
 
@@ -2531,7 +2540,7 @@ public class Plot extends PlotBox {
                 PlotPoint point = points.get(i);
 
                 // I a point is not connected, we mark it with a dot.
-                if (marks != 0 || !(connectedFlag && point.connected)) {
+                if (_marks != 0 || (_markDisconnections && !(connectedFlag && point.connected))) {
                     long ypos = _lry - (long) ((point.y - _yMin) * _yscale);
                     if (prevypos != ypos || prevxpos != xpos) {
                         int updatedMarks = marks;
@@ -2921,7 +2930,7 @@ public class Plot extends PlotBox {
                 }
             }
 
-            if (marks == 0 && endPosition > startPosition
+            if (_markDisconnections && marks == 0 && endPosition > startPosition
                     && endPosition < points.size()) {
                 PlotPoint point = points.get(endPosition - 1);
                 if ((connectedFlag && point.connected)) {
@@ -3197,6 +3206,9 @@ public class Plot extends PlotBox {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
+
+    /** True when disconnections should be marked.*/
+    private boolean _markDisconnections = false;
 
     /** @serial Offset per dataset in x axis units. */
     private volatile double _barOffset = 0.05;

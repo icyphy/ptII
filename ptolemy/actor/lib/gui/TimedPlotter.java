@@ -125,6 +125,7 @@ public class TimedPlotter extends Plotter implements TimedActor {
         for (int i = 0; i < width; i++) {
             _connected.add(true);
         }
+        ((Plot) plot).markDisconnections(true);
     }
 
     /** Read at most one input from each channel and plot it as a
