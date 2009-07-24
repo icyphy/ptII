@@ -569,6 +569,9 @@ PTJXTA_DIR =	@PTJXTA_DIR@
 # $PTII/ptolemy/vergil/basic/layout/makefile if kieler was found
 PTKIELER_DIR =	@PTKIELER_DIR@
 
+# Set to lbnl and used in $PTII/makefile if libxml2 was found.
+PTLBNL_DIR = 	@PTLBNL_DIR@
+
 # Set to lego and used in $PTII/ptolemy/apps/makefile if
 # the Java Communications API was found
 PTLEGO_DIR =	@PTLEGO_DIR@
