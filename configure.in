@@ -4059,11 +4059,13 @@ else
    fi
 fi
 
-if test -f "$LIBXML2_INCLUDE_DIR/libxml/xpath.h" -a ( -f "$LIBXML2_LIB_DIR/libxml2.${PTJNI_SHAREDLIBRARY_SUFFIX} -o -f "$LIBXML2_LIB_DIR/libxml2.${PTJNI_SHAREDLIBRARY_SUFFIX}.a " ) ; then
-   # Used in $PTII/lbnl/lib/util/makefile
-   PTLIBXML2_DIR=util
-   # Used in $PTII/makefile
-   PTLBNL_DIR=lbnl
+if test -f "$LIBXML2_INCLUDE_DIR/libxml/xpath.h"; then
+   if test -f "$LIBXML2_LIB_DIR/libxml2.${PTJNI_SHAREDLIBRARY_SUFFIX}" -o -f "$LIBXML2_LIB_DIR/libxml2.${PTJNI_SHAREDLIBRARY_SUFFIX}.a"; then
+      # Used in $PTII/lbnl/lib/util/makefile
+      PTLIBXML2_DIR=util
+      # Used in $PTII/makefile
+      PTLBNL_DIR=lbnl
+   fi
 fi
 
 # Keep these substitutions alphabetical, with a description
