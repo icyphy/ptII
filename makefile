@@ -36,11 +36,13 @@ ME =		.
 # Go into com before compiling ptolemy so we get JLex
 # PTJNI_DIR is set to jni by configure in $PTII/mk/ptII.mk
 #   if gcc or cc was found.
+# PTLBNL_DIR is set to lbnl by configure in $PTII/mk/ptII.mk
+#   if libxml2 was found.
 # PTMESCAL_DIR is set to mescal by configure in $PTII/mk/ptII.mk
 #   if $PTII/mescal was found
 PTTHALES_DIR = thales
 
-DIRS = util com diva org ptolemy $(PTJNI_DIR) lbnl $(PTMESCAL_DIR) $(PTTHALES_DIR) \
+DIRS = util com diva org ptolemy $(PTJNI_DIR) $(PTLBNL_DIR) $(PTMESCAL_DIR) $(PTTHALES_DIR) \
 	contrib bin doc
 
 # Root of Ptolemy II directory

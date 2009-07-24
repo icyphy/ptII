@@ -3987,6 +3987,9 @@ LIBXML2_LIB_DIR=
 # PTLIBXML2_DIR is set util if LIBXML2_INCLUDE_DIR and LIBXML2_LIB_DIR are set
 PTLIBXML2_DIR=
 
+# PTLBNL_DIR is set to lbnl if LIBXML2_INCLUDE_DIR and LIBXML2_LIB_DIR are set
+PTLBNL_DIR=
+
 LIBXML2_USER_DIR=$PTII/lbnl/lib/util
 if test ! -d "$LIBXML2_USER_DIR"; then
     PT_MSG_STATUS([$LIBXML2_USER_DIR is not present,
@@ -4012,6 +4015,12 @@ else
        do
            if test -f "$dir/libxml2.${PTJNI_SHAREDLIBRARY_SUFFIX}"; then
                PT_MSG_RESULT([$dir/libxml2.${PTJNI_SHAREDLIBRARY_SUFFIX}])
+	       LIBXML2_LIB_DIR=$dir
+	       break;
+           fi
+	   # Cygwin has /usr/lib/libxml2.dll.a
+           if test -f "$dir/libxml2.${PTJNI_SHAREDLIBRARY_SUFFIX}.a"; then
+               PT_MSG_RESULT([$dir/libxml2.${PTJNI_SHAREDLIBRARY_SUFFIX}.a])
 	       LIBXML2_LIB_DIR=$dir
 	       break;
            fi
@@ -4050,9 +4059,11 @@ else
    fi
 fi
 
-if test -f "$LIBXML2_INCLUDE_DIR/libxml/xpath.h" -a -f "$LIBXML2_LIB_DIR/libxml2.${PTJNI_SHAREDLIBRARY_SUFFIX}"; then
+if test -f "$LIBXML2_INCLUDE_DIR/libxml/xpath.h" -a ( -f "$LIBXML2_LIB_DIR/libxml2.${PTJNI_SHAREDLIBRARY_SUFFIX} -o -f "$LIBXML2_LIB_DIR/libxml2.${PTJNI_SHAREDLIBRARY_SUFFIX}.a " ) ; then
    # Used in $PTII/lbnl/lib/util/makefile
    PTLIBXML2_DIR=util
+   # Used in $PTII/makefile
+   PTLBNL_DIR=lbnl
 fi
 
 # Keep these substitutions alphabetical, with a description
@@ -4473,6 +4484,9 @@ AC_SUBST(PTKIELER_DIR)
 # Set to kvm and used in
 # $PTII/ptolemy/apps/makefile if kvm was found
 AC_SUBST(PTKVM_DIR)
+
+# Set to lbnl and used in $PTII/makefile if libxml2 was found.
+AC_SUBST(PTLBNL_DIR)
 
 # Set to lego and used in
 # $PTII/ptolemy/apps/makefile if the Java Communications API was found
