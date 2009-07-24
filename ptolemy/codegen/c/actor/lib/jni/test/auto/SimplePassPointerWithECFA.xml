@@ -23,6 +23,10 @@
         </property>
         <property name="generateEmbeddedCode" class="ptolemy.data.expr.Parameter" value="false">
         </property>
+        <property name="inline" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="overwriteFiles" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 40.0]">
         </property>
     </property>
@@ -55,7 +59,7 @@
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model illustrates how a C style pointer may be passed between two&#10;EmbeddedCActors.&#10;&#10;To see the C code definition of each actor, right click and select&#10;&quot;Look Inside&quot;&#10;&#10;Note that each actor has  an &quot;ptr&quot; output port that passes a&#10;pointer.&#10;&#10;This model is identical to SimplePassPointer.xml except that it utilizes the &#10;embeddedCFileActor rather than the embeddedCActor.&#10;&#10;The C code is located in the following two files:&#10;ptolemy/actor/lib/jni/demo/SimplePassPointer/mallocCode.c&#10;ptolemy/actor/lib/jni/demo/SimplePassPointer/codeForSimplePassPointerWithECFA.c">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 190.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 200.0]">
         </property>
     </property>
     <entity name="Const" class="ptolemy.actor.lib.Const">
@@ -212,7 +216,7 @@
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{675.0, 95.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[490.0, 145.0]">
         </property>
     </entity>
     <entity name="Test2" class="ptolemy.actor.lib.Test">
@@ -220,7 +224,26 @@
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[310.0, 165.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{311.5, 165.0}">
+        </property>
+    </entity>
+    <entity name="TokenToExpression" class="ptolemy.actor.lib.conversions.TokenToExpression">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[485.0, 95.0]">
+        </property>
+    </entity>
+    <entity name="Test3" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{17}">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="20">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[745.0, 115.0]">
+        </property>
+    </entity>
+    <entity name="StringLength" class="ptolemy.actor.lib.string.StringLength">
+        <doc>Output the length of an input string</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[605.0, 120.0]">
         </property>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
@@ -233,12 +256,24 @@
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
     </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+    </relation>
     <link port="Const.output" relation="relation3"/>
     <link port="EmbeddedCFileActor.in" relation="relation3"/>
     <link port="EmbeddedCFileActor.ptr" relation="relation"/>
     <link port="EmbeddedCFileActor.value" relation="relation5"/>
     <link port="EmbeddedCFileActor2.in" relation="relation"/>
+    <link port="EmbeddedCFileActor2.ptr" relation="relation6"/>
     <link port="EmbeddedCFileActor2.value" relation="relation4"/>
     <link port="Test.input" relation="relation4"/>
     <link port="Test2.input" relation="relation5"/>
+    <link port="TokenToExpression.input" relation="relation6"/>
+    <link port="TokenToExpression.output" relation="relation2"/>
+    <link port="Test3.input" relation="relation7"/>
+    <link port="StringLength.input" relation="relation2"/>
+    <link port="StringLength.output" relation="relation7"/>
 </entity>
