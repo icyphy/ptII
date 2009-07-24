@@ -234,7 +234,7 @@ public class Simulator extends SDFTransformer {
                                 + this.getFullName() + " is not synchronized."
                                 + LS + "Time in Ptolemy = " + simTim + LS
                                 + "Time in client  = " + simTimRea;
-                        throw new IllegalActionException(em);
+                        throw new IllegalActionException(this, em);
                     }
 
                     double[] dblRea = server.getDoubleArray();
@@ -250,9 +250,11 @@ public class Simulator extends SDFTransformer {
         output.send(0, outTok);
     }
 
-    /** Write the data to the server instance, which will send it to the client program.
+    /** Write the data to the server instance, which will send it to
+     * the client program.
      *
-     * @exception IllegalActionException If there was an error when writing to the server.
+     * @exception IllegalActionException If there was an error when
+     * writing to the server.
      */
     private void _writeToServer() throws IllegalActionException {
         //////////////////////////////////////////////////////
@@ -272,9 +274,11 @@ public class Simulator extends SDFTransformer {
         tokTim = getDirector().getModelTime().getDoubleValue();
     }
 
-    /** Read the data from the server instance, which will read it from the client program.
+    /** Read the data from the server instance, which will read it
+     * from the client program.
      *
-     * @exception IllegalActionException If there was an error when reading from the server.
+     * @exception IllegalActionException If there was an error when
+     * reading from the server.
      */
     private void _readFromServer() throws IllegalActionException {
         //////////////////////////////////////////////////////
@@ -288,7 +292,7 @@ public class Simulator extends SDFTransformer {
                         + " terminated communication by sending flag = " + fla
                         + " at time "
                         + getDirector().getModelTime().getDoubleValue() + ".";
-                throw new IllegalActionException(em);
+                throw new IllegalActionException(this, em);
             }
             if (fla > 0) {
                 final String msg = "Warning: "
@@ -318,7 +322,7 @@ public class Simulator extends SDFTransformer {
             } catch (java.io.IOException e2) {
             }
             ; // do nothing here
-            throw new IllegalActionException(em);
+            throw new IllegalActionException(this, e, em);
         } catch (java.io.IOException e) {
             String em = "IOException while reading from server: " + LS
                     + e.getMessage();
@@ -327,14 +331,16 @@ public class Simulator extends SDFTransformer {
             } catch (java.io.IOException e2) {
             }
             ; // do nothing here
-            throw new IllegalActionException(em);
+            throw new IllegalActionException(this, e, em);
         }
     }
 
-    /** Initializes the data members and checks if the parameters of the actor are valid.
+    /** Initializes the data members and checks if the parameters of
+     * the actor are valid.
      *
-     * @exception IllegalActionException If the parameters of the actor are invalid, or 
-     *     if the file with the socket information cannot be written to disk.
+     * @exception IllegalActionException If the parameters of the
+     *     actor are invalid, or if the file with the socket
+     *     information cannot be written to disk.
      */
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
@@ -350,7 +356,7 @@ public class Simulator extends SDFTransformer {
             String em = "Error: Working directory does not exist." + LS
                     + "Working directory is set to: '" + worDir + "'" + LS
                     + "Check configuration of '" + this.getFullName() + "'.";
-            throw new IllegalActionException(em);
+            throw new IllegalActionException(this, em);
         }
 
         // Command that starts the simulation
@@ -365,7 +371,7 @@ public class Simulator extends SDFTransformer {
             if (timOutMilSec <= 0) {
                 final String em = "Parameter for socket time out must be positive."
                         + LS + "Received " + timOutMilSec + " milliseconds";
-                throw new IllegalActionException(em);
+                throw new IllegalActionException(this, em);
             }
             if (porNo < 0) {
                 server = new Server(timOutMilSec); // server uses any free port number
@@ -383,7 +389,7 @@ public class Simulator extends SDFTransformer {
                 }
             }
             // throw original exception
-            throw new IllegalActionException(e.getMessage());
+            throw new IllegalActionException(this, e, e.getMessage());
         }
         ////////////////////////////////////////////////////////////// 
         // Write xml file for client
@@ -395,9 +401,9 @@ public class Simulator extends SDFTransformer {
         catch (java.io.FileNotFoundException e) {
             String em = "FileNotFoundException when trying to write '"
                     + new File(worDir, simCon).getAbsolutePath() + "'.";
-            throw new IllegalActionException(em);
+            throw new IllegalActionException(this, e, em);
         } catch (java.io.IOException e) {
-            throw new IllegalActionException(e.toString());
+            throw new IllegalActionException(this, e, e.toString());
         }
     }
 
@@ -422,8 +428,15 @@ public class Simulator extends SDFTransformer {
             // Maybe the user specified $CLASSPATH/lbnl/demo/CRoom/client
             comArg = commandFile.toString();
         } else {
-            // Maybe the user specfied "matlab"
-            comArg = programName.getExpression();
+            // If we are under Windows, look for the .exe
+            commandFile = new File(commandFile.toString() + ".exe");
+            if (commandFile.exists()) {
+                // Maybe the user specified $CLASSPATH/lbnl/demo/CRoom/client
+                comArg = commandFile.toString();
+            } else {
+                // Maybe the user specfied "matlab"
+                comArg = programName.getExpression();
+            }
         }
 
         final String argLin = cutQuotationMarks(programArguments.getExpression());
@@ -454,7 +467,7 @@ public class Simulator extends SDFTransformer {
                     + "Simulation log file is '" + slf.getAbsolutePath() + "'"
                     + LS + "Check configuration of '" + this.getFullName()
                     + "'.";
-            throw new IllegalActionException(em);
+            throw new IllegalActionException(this, e, em);
         }
         cliPro.setSimulationLogFile(slf);
         cliPro.run();
@@ -462,7 +475,7 @@ public class Simulator extends SDFTransformer {
             String em = "Error: Simulation process did not start." + LS
                     + cliPro.getErrorMessage() + LS
                     + "Check configuration of '" + this.getFullName() + "'.";
-            throw new IllegalActionException(em);
+            throw new IllegalActionException(this, em);
         }
     }
 
@@ -501,7 +514,7 @@ public class Simulator extends SDFTransformer {
             // Close the server.
             server.close();
         } catch (java.io.IOException e) {
-            throw new IllegalActionException(e.getMessage());
+            throw new IllegalActionException(this, e, e.getMessage());
         }
     }
 
@@ -537,7 +550,7 @@ public class Simulator extends SDFTransformer {
                 final String em = "Actor " + this.getFullName() + ": " + LS
                         + "Token number " + i + " is NaN at time "
                         + getDirector().getModelTime().getDoubleValue();
-                throw new IllegalActionException(em);
+                throw new IllegalActionException(this, em);
             }
         }
         return ret;
