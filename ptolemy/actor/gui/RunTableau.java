@@ -224,7 +224,7 @@ public class RunTableau extends Tableau {
                         }
 
                         if (debug != null) {
-                            Effigy effigy = (Effigy) getContainer();
+                            Effigy effigy = (Effigy) RunTableau.this.getContainer();
 
                             // Create a new text effigy inside this one.
                             Effigy textEffigy = new TextEffigy(effigy, effigy
