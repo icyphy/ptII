@@ -94,7 +94,7 @@ demo: demo_vergil
 
 demo_vergil:
 	BCVTB_HOME="$(PTII)/lbnl"; export BCVTB_HOME \
-	PATH="`pwd`:$(PTII)/lbnl/lib/util:$(PTII)/lib:$(PATH)"; export PATH; \
+	PATH="`pwd`:`$(PTII)/bin/ptcygpath -u $(PTII)/lbnl/lib/util`:$(PTII)/lib:$(PATH)"; export PATH; \
 	LD_LIBRARY_PATH="`pwd`:$(PTII)lbnl/lib/util:$(PTII)/lib:$(LD_LIBRARY_PATH)"; export LD_LIBRARY_PATH; \
 	"$(PTII)/bin/vergil" \
 		$(MODELS)

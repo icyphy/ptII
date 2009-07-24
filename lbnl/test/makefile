@@ -101,7 +101,7 @@ test_jsimple: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljtests.tcl test_auto_pa
 
 # Set PATH, LD_LIBRARY_PATH and DYLD_LIBRARY_PATH
 test_auto_path:
-	PATH="`pwd`:$(PTII)/lbnl/lib/util:$(PTII)/lib:$(PATH)"; export PATH; \
+	PATH="`pwd`:`$(PTII)/bin/ptcygpath -u $(PTII)/lbnl/lib/util`:$(PTII)/lib:$(PATH)"; export PATH; \
 	LD_LIBRARY_PATH="`pwd`:$(PTII)/lbnl/lib/util:$(PTII)/lib:$(LD_LIBRARY_PATH)"; export LD_LIBRARY_PATH; \
 	DYLD_LIBRARY_PATH="`pwd`:$(PTII)/lbnl/lib/util:$(PTII)/lib:$(DYLD_LIBRARY_PATH)"; export DYLD_LIBRARY_PATH; \
 	$(JTCLSH) $(ROOT)/util/testsuite/auto.tcl

@@ -316,7 +316,20 @@ public class Simulator extends SDFTransformer {
                     + e.getMessage()
                     + "."
                     + LS
-                    + "Try to increase the value of the parameter 'socketTimeout'";
+                    + "Try to increase the value of the parameter 'socketTimeout'.  It could be that the server \""
+                + programName.getExpression() 
+                + "\" is not executing properly.  From the command line, "
+                + "try running \""
+                + programName.getExpression() 
+                + " 60\", you should see something like:\n"
+                + " Simulation model has time step       60\n"
+                + " Error: Failed to obtain socket file descriptor. sockfd=-1.\n"
+                + "The error message is expected because Ptolemy is not "
+                + "present.\n"
+                + "Also, make sure that $PTII/lbnl/lib/util is in your"
+                + "PATH, LD_LIBRARY_PATH or DYLD_LIBRARY_PATH for Windows, "
+                + "Linux and Mac OS X respectively.  That directory "
+                + "contains the shared library used by the simulator.";
             try {
                 server.close();
             } catch (java.io.IOException e2) {
@@ -454,8 +467,10 @@ public class Simulator extends SDFTransformer {
         File slf = simulationLogFile.asFile();
         try {
             if (slf.exists()) {
-                if (!slf.delete()) {
-                    throw new Exception("Cannot delete file.");
+                if (slf.delete()) {
+                    if (slf.exists()) {
+                        throw new Exception("Cannot delete file.");
+                    }
                 }
             }
             slf.createNewFile(); // make sure we can write new file

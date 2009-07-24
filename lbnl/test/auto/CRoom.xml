@@ -342,7 +342,7 @@ is delayed by one time step.</text></svg></configure>
         </property>
     </entity>
     <entity name="Room" class="lbnl.actor.lib.Simulator">
-        <property name="programName" class="ptolemy.data.expr.FileParameter" value="$PTII/lbnl/demo/CRoom/cclient">
+        <property name="programName" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/lbnl/demo/CRoom/cclient">
         </property>
         <property name="programArguments" class="ptolemy.data.expr.Parameter" value="60">
         </property>

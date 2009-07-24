@@ -9,10 +9,21 @@ if [ $# -eq 0 ]; then
     exit 2
 fi
 
+pwd=`pwd`
+
 if [ "$1" = "--windows" ]; then
     shift;
-    pwd=`pwd`
     echo `cygpath --windows $pwd/$1 | sed 's@\\\@/@g'`
 else
-    echo `pwd`/$1
+    case "`uname -s`" in
+	CYGWIN_NT-*)
+	    if [ $# -eq 1 ]; then
+		echo `cygpath --windows $pwd/$1 | sed 's@\\\@/@g'`
+	    else 
+		echo `cygpath $1 $2`
+            fi		
+	    ;;
+	*)
+	    echo `pwd`/$1;;
+    esac
 fi
