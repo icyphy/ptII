@@ -323,6 +323,15 @@ JODE_JAR="@JODE_CLASSES@"
 
 JODE_JFLAG=
 
+
+#### Jogl
+# PTGRO_DIR is set to gro if configure found the Java OpenGL (Jogl) interface
+PTGRO_DIR=@PTGRO_DIR@
+JOGL_JARS=""
+if [ "$PTGRO_DIR" = "gro" ]; then
+    JOGL_JARS="@PTJOGL_JARS@"
+fi
+
 #### Mysql Java Database jar, used by space domain and actor/lib/database
 # PTSPACE_DIR is set to space and used in
 # $PTII/ptolemy/domains/makefile if mysql jar or ojdbc6.jar was found.
@@ -517,7 +526,7 @@ fi
 #
 # If you update ALL_JARS, please update ptolemy/configs/test/makefile
 #  and update ptolemy/vergil/test/makefile
-ALL_JAR="${DIVA_JAR}${JINI_JARS}${BACKTRACK_JARS}${CALTROP_JARS}${CHIC_JARS}${COLT_JARS}${COMMAPI_JARS}${FUZZYLOGIC_JARS}${SOOT_JARS}${PTJACL_JARS}${JOYSTICK_JARS}${JYTHON_JARS}${JXTA_JARS}${KIELER_JARS}${GIOTTO_JARS}${MYSQL_JAR}${ORACLE_OJDBC_JAR}${PDFRENDERER_JARS}${PTALON_JARS}${QTJAVA_JARS}${PSDF_JARS}${SAXON_JARS}${TOOLS_JAR}${TOSJARS}${NC2MOML_JARS}${PTVR_JARS}${X10_JARS}"
+ALL_JAR="${DIVA_JAR}${JINI_JARS}${BACKTRACK_JARS}${CALTROP_JARS}${CHIC_JARS}${COLT_JARS}${COMMAPI_JARS}${FUZZYLOGIC_JARS}${SOOT_JARS}${PTJACL_JARS}${JOYSTICK_JARS}${JYTHON_JARS}${JXTA_JARS}${KIELER_JARS}${GIOTTO_JARS}${JOGL_JARS}${MYSQL_JAR}${ORACLE_OJDBC_JAR}${PDFRENDERER_JARS}${PTALON_JARS}${QTJAVA_JARS}${PSDF_JARS}${SAXON_JARS}${TOOLS_JAR}${TOSJARS}${NC2MOML_JARS}${PTVR_JARS}${X10_JARS}"
 ALL_JFLAG="${DIVA_JFLAG} ${JINI_JFLAG} ${JYTHON_JFLAG} -Xmx256M"
 
 #### Sandbox

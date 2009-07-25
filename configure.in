@@ -1563,12 +1563,12 @@ PTFUZZY_DIR=
 PTFUZZYENGINE_DIR='${PTII}/vendors/misc/FuzzyEngine'
 
 FUZZYLOGIC_USER_DIR="$PTII/ptolemy/actor/lib/logic/fuzzy"
-# We only need to look for joystick if $FUZZYLOGIC_USER_DIR
+# We only need to look for FuzzyEngine if $FUZZYLOGIC_USER_DIR
 if test ! -d "$FUZZYLOGIC_USER_DIR"; then
     PT_MSG_STATUS([$FUZZYLOGIC_USER_DIR is not present,
     so we need not find the FuzzyEngine interface.])
 else
-    AC_MSG_CHECKING([for FuzzyEngine directory file])
+    AC_MSG_CHECKING([for FuzzyEngine directory])
     AC_ARG_WITH(fuzzyengine, [  --with-fuzzyengine=DIRECTORY       use FuzzyEngine from DIRECTORY,
                           defaults to \$PTII/vendors/misc/FuzzyEngine],
 	PTFUZZYENGINE_DIR=$withval,
@@ -1964,6 +1964,81 @@ if test -z "$PTJMF_DIR"; then
    ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/actor/lib/jmf/"
 fi
 
+
+#--------------------------------------------------------------------
+#       Jogl is Java bindings for OpenGL
+#	https://jogl.dev.java.net/
+#	Jogl is BSD licensed, but platform dependent, so we don't
+#       include Jogl in the Ptolemy II tree
+#--------------------------------------------------------------------
+
+# PTGRO_DIR is set to gro
+# $PTII/ptolemy/domains/makefile if Jogl was found
+PTGRO_DIR=
+
+# Jogl Directory.  Jogl is available from
+# https://jogl.dev.java.net/
+PTJOGL_DIR='${PTII}/vendors/sun/jogl'
+
+# Java OpenGL (Jogl) jar files.   Used to compile gro domain.
+PTJOGL_JARS=
+
+GRO_USER_DIR="$PTII/ptolemy/domains/gro"
+# We only need to look for Jogl if $GRO_USER_DIR
+if test ! -d "$GRO_USER_DIR"; then
+    PT_MSG_STATUS([$GRO_USER_DIR is not present,
+    so we need not find the Jogl interface.])
+else
+    AC_MSG_CHECKING([for Jogl directory])
+    AC_ARG_WITH(jogl, [  --with-jogl=DIRECTORY       use Java OpenGL interface (jogl) from DIRECTORY,
+                          defaults to \$PTII/vendors/sun/jogl],
+	PTJOGL_DIR=$withval,
+	PTJOGL_DIR=$PTII/vendors/sun/jogl)
+
+    if test -f "$PTJOGL_DIR/lib/jogl.jar"; then
+	PT_MSG_RESULT([$PTJOGL_DIR])
+	# Set to gro and used in
+	# $PTII/ptolemy/domains/makefile if jogl.jar was found.
+	PTGRO_DIR=gro
+        # PTGRO_PACKAGES is used in ptII/doc/makefile
+	PTGRO_PACKAGES="ptolemy.domains.gro ptolemy.domains.gro.kernel ptolemy.domains.gro.lib"
+
+	# Look for Jogl jar files
+	jogljars="jogl.jar gluegen-rt.jar"
+        for jar in $jogljars
+        do
+    	    if test "${PTVERBOSE:-none}" = "none"; then
+                $PT_ECHO $ECHO_N "."
+            else
+                $PT_ECHO $ECHO_N "$jar "
+            fi
+	    if test -f "$PTJOGL_DIR/lib/$jar"; then
+	       PTJOGL_JARS="${PTJOGL_JARS}${CLASSPATHSEPARATOR}${PTJOGL_DIR}/lib/$jar"
+	       ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
+	           <classpathentry kind=\"lib\" path=\"$PTJOGL_DIR/lib/$jar\"/>"
+	    fi 
+        done
+    fi
+
+    if test "$PTGRO_DIR" = ""; then
+        AC_MSG_WARN([Failed to find lib/jogl.jar
+    in $PTJOGL_DIR
+    perhaps the Java OpenGL (Jogl) interface is not installed?
+    You need not download the Jogl interface unless you
+    plan on using the GRO domain with Ptolemy II. 
+    The Jogl interface can be downloaded from
+    https://jogl.dev.java.net/
+    an untar'd into $PTII/vendors/sun.  Note that configure looks
+    for $PTII/vendors/sun/jogl, so either move the Jogl distribution
+    or create a symbolic link and then rerun configure.] )
+	# Note that we don't substitute in the ${PTII} here
+	PTJOGL_DIR='${PTII}/vendors/sun/jogl'
+    fi
+fi
+
+if test -z "$PTJOGL_DIR"; then
+   ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/domains/gro/"
+fi 
 
 
 #--------------------------------------------------------------------
@@ -4451,6 +4526,13 @@ AC_SUBST(PTGRDOMAIN_JAR)
 # PTGR_PACKAGES is used in ptII/doc/makefile
 AC_SUBST(PTGR_PACKAGES)
 
+# Set to gro and used in
+# $PTII/ptolemy/domains/makefile if the Java OpenGL (Jogl) interface was found.
+AC_SUBST(PTGRO_DIR)
+
+# PTGRO_PACKAGES is used in ptII/doc/makefile if Jogl was found.
+AC_SUBST(PTGRO_PACKAGES)
+
 # Location of the the PTII directory
 # $PTII/ptolemy/plot/ptplot.jnlp.in reads this
 AC_SUBST(PTII)
@@ -4530,6 +4612,13 @@ AC_SUBST(PTJNI_SHAREDLIBRARY_SUFFIX)
 
 # JNI libraries needed to link, such as -lcygwin (Used by Viptos) 
 AC_SUBST(PTJNI_LIBRARIES)
+
+# Java OpenGL (Jogl) directory.  FuzzyEngine is from
+# https://jogl.dev.java.net/
+AC_SUBST(PTJOGL_DIR)
+
+# Java OpenGL (Jogl) jar files.   Used to compile gro domain.
+AC_SUBST(PTJOGL_JARS)
 
 # Set to joystick if Joystick.jar was found
 AC_SUBST(PTJOYSTICK_DIR)

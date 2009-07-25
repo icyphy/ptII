@@ -1,4 +1,4 @@
-# Makefile for Java Ptolemy Domains Gro
+# Makefile for Ptolemy Java OpenGL domain
 #
 # @Authors: Man-Kit Leung, based on a file by Christopher Brooks
 #
@@ -36,7 +36,8 @@ DIRS =      kernel lib
 # Root of the Ptolemy II directory
 ROOT =      ../../..
 
-CLASSPATH = $(ROOT)
+# JOGL_JARS is set in $PTII/mk/ptII.mk
+CLASSPATH = $(ROOT)$(CLASSPATHSEPARATOR)$(PTJOGL_JARS)
 
 # Get configuration info
 CONFIG =    $(ROOT)/mk/ptII.mk
@@ -56,7 +57,11 @@ PTCLASSALLJARS = \
 JSRCS = \
 	JavaDia.java \
 	JavaRenderer.java
-EXTRA_SRCS =    $(JSRCS)
+
+OTHER_FILES_TO_JAR = \
+	JOGL-copyright.htm
+
+EXTRA_SRCS =    $(JSRCS) $(OTHER_FILES_TO_JAR)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.

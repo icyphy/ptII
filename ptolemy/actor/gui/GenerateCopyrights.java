@@ -108,6 +108,9 @@ public class GenerateCopyrights {
         _addIfPresent(copyrightsMap, "fuzzy.FuzzyEngine",
                 "ptolemy/actor/lib/logic/fuzzy/FuzzyEngine-copyright.htm");
 
+        _addIfPresent(copyrightsMap, "javax.media.opengl.GLCanvas",
+                "ptolemy/domains/gro/JOGL-copyright.htm");
+
         _addIfPresent(copyrightsMap, "jni.GenericJNIActor",
                 "jni/launcher/launcher-copyright.htm");
 

@@ -482,6 +482,13 @@ PTGRDOMAIN_JAR =	@PTGRDOMAIN_JAR@
 # PTGR_PACKAGES is used in ptII/doc/makefile
 PTGR_PACKAGES =		@PTGR_PACKAGES@
 
+# Set to gro and used in
+# $PTII/ptolemy/domains/makefile if the Java OpenGL (Jogl) interface was found.
+PTGRO_DIR =		@PTGRO_DIR@
+
+# PTGRO_PACKAGES is used in ptII/doc/makefile if Jogl was found.
+PTGRO_PACKAGES =	@PTGRO_PACKAGES@
+
 # Set to ptjacl and used in
 # $PTII/ptolemy/actor/gui/makefile if ptjacl.jar was found 
 PTJACL_DIR =	@PTJACL_DIR@
@@ -557,6 +564,13 @@ PTJNI_SHAREDLIBRARY_SUFFIX =	@PTJNI_SHAREDLIBRARY_SUFFIX@
 
 # JNI libraries needed to link, such as -lcygwin (Used by Viptos) 
 PTJNI_LIBRARIES = @PTJNI_LIBRARIES@
+
+# Java OpenGL (Jogl) directory.  FuzzyEngine is from
+# https://jogl.dev.java.net/
+PTJOGL_DIR =			@PTJOGL_DIR@
+
+# Java OpenGL (Jogl) jar files used by the gro domain.
+PTJOGL_JARS=			@PTJOGL_JARS@
 
 # Set to joystick if Joystick.jar was found.
 PTJOYSTICK_DIR =     @PTJOYSTICK_DIR@
