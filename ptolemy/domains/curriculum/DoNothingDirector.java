@@ -27,23 +27,19 @@
  */
 package ptolemy.domains.curriculum;
 
-import ptolemy.actor.TypedAtomicActor;
-import ptolemy.actor.TypedIOPort;
-import ptolemy.data.expr.Parameter;
-import ptolemy.data.type.BaseType;
+import ptolemy.actor.Director;
+import ptolemy.actor.IOPort;
+import ptolemy.actor.Initializable;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.Settable;
 
 //////////////////////////////////////////////////////////////////////////
-//// Course
+//// DoNothingDirector
 
 /**
- A course in a curriculum. This component customizes its interface
- by containing a DependencyHighlighter attribute. This attribute
- specifies a custom context menu that includes four commands for
- highlighting prerequisites and dependents.
+ A director that does nothing, for use in models that have no useful
+ execution.
 
  @author Edward A. Lee
  @version $Id$
@@ -51,9 +47,8 @@ import ptolemy.kernel.util.Settable;
  @Pt.ProposedRating Red (eal)
  @Pt.AcceptedRating Red (cxh)
  */
-public class Course extends TypedAtomicActor {
-    /** Construct an actor with the given container and name.
-     *  The postrequisites and trigger ports are also constructed.
+public class DoNothingDirector extends Director {
+    /** Construct a director with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
      *  @exception IllegalActionException If the entity cannot be contained
@@ -61,37 +56,21 @@ public class Course extends TypedAtomicActor {
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public Course(CompositeEntity container, String name)
+    public DoNothingDirector(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
-        postrequisites = new TypedIOPort(this, "postrequisites", false, true);
-        postrequisites.setTypeEquals(BaseType.BOOLEAN);
-
-        prerequisites = new TypedIOPort(this, "prerequisites", true, false);
-        prerequisites.setMultiport(true);
-        prerequisites.setTypeEquals(BaseType.BOOLEAN);
-
-        Parameter hide = new Parameter(this, "_hideName");
-        hide.setVisibility(Settable.EXPERT);
-
-        /*DependencyHighlighter controller =*///new DependencyHighlighter(this, "_controller");
-        units = new Parameter(this, "units");
-        units.setTypeEquals(BaseType.INT);
-        units.setExpression("4");
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                     ports and parameters                  ////
-
-    /** The postrequisites port. */
-    public TypedIOPort postrequisites = null;
-
-    /** The prerequisites port. */
-    public TypedIOPort prerequisites = null;
-
-    /** The number of units. This is an integer with default value 4. */
-    public Parameter units;
-
-    ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+    
+    public void addInitializable(Initializable initializable) {}
+    public void fire() {}
+    public void initialize() {}
+    public boolean postfire() {return false;}
+    public boolean prefire() {return false;}
+    public void preinitialize() {}
+    public boolean transferInputs(IOPort port) {return false;}
+    public boolean transferOutputs(IOPort port) {return false;}
+    public void wrapup() {}
 }
