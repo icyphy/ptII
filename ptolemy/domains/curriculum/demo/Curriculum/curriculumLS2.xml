@@ -2,15 +2,15 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="curriculumLS2" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-4, -4, 1032, 776}, maximized=true}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 1287, 874}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[817, 658]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1074, 764]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.105035971223">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{373.6712239583334, 255.2278645833328}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{489.9570312500023, 303.190104166667}">
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
@@ -158,6 +158,10 @@
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="General L&amp;S requirements:&#10; - 120 units, 36 upper div., 6 outside EECS&#10; - Reading and composition&#10; - Quantitative reasoning&#10; - Foreign language&#10; - One course from each of:&#10;    + Arts &amp; Literature&#10;    + Biological Science&#10;    + Historical Studies&#10;    + International Studies&#10;    + Philosophy &amp; Values&#10;    + Physical Science&#10;    + Social &amp; Behavioral&#10;">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{525.0, 215.0}">
+        </property>
+    </property>
+    <property name="DoNothingDirector" class="ptolemy.domains.curriculum.DoNothingDirector">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{795.0, 630.0}">
         </property>
     </property>
     <entity name="20" class="ptolemy.domains.curriculum.Course">
