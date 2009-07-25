@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="Curriculum" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={7, 30, 1065, 755}, maximized=false}">
     </property>
@@ -156,6 +156,10 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[480.0, 15.0]">
         </property>
     </property>
+    <property name="DoNothingDirector" class="ptolemy.domains.curriculum.DoNothingDirector">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[785.0, 620.0]">
+        </property>
+    </property>
     <entity name="20" class="ptolemy.domains.curriculum.Course">
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
@@ -202,8 +206,6 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[190.0, 493.5]">
         </property>
         <property name="_explanation" class="ptolemy.kernel.util.StringAttribute" value="Discrete Mathematics and Probability Theory">
-        </property>
-        <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.6,0.6,1.0}">
         </property>
     </entity>
     <entity name="150" class="ptolemy.domains.curriculum.Course">
@@ -562,8 +564,6 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 423.5]">
         </property>
         <property name="_explanation" class="ptolemy.kernel.util.StringAttribute" value="Programming">
-        </property>
-        <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.6,0.6,1.0}">
         </property>
     </entity>
     <entity name="Or" class="ptolemy.domains.curriculum.Or">
