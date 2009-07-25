@@ -761,6 +761,8 @@ PTGMP_LD_FLAGS
 PTGMP_LIB
 PTGRDOMAIN_JAR
 PTGR_PACKAGES
+PTGRO_DIR
+PTGRO_PACKAGES
 PTII
 PTJACL_DIR
 PTJACL_JAR
@@ -784,6 +786,8 @@ PTJNI_SHAREDLIBRARY_LDFLAG
 PTJNI_SHAREDLIBRARY_PREFIX
 PTJNI_SHAREDLIBRARY_SUFFIX
 PTJNI_LIBRARIES
+PTJOGL_DIR
+PTJOGL_JARS
 PTJOYSTICK_DIR
 PTJOYSTICK_PACKAGES
 PTJYTHON_DIR
@@ -1452,6 +1456,8 @@ Optional Packages:
                           defaults to \$PTII/vendors/misc/FuzzyEngine
   --with-gc-include=DIR       use gc.h from DIR
                           defaults to \$PTII/vendors/gc/gc/include
+  --with-jogl=DIRECTORY       use Java OpenGL interface (jogl) from DIRECTORY,
+                          defaults to \$PTII/vendors/sun/jogl
   --with-joystick-jar=JARFILE       use JOYSTICK from JARFILE,
                           defaults to \$PTII/vendors/misc/joystick/Joystick.jar
   --with-jython=DIR       use jython.jar from DIR,
@@ -6221,15 +6227,15 @@ PTFUZZY_DIR=
 PTFUZZYENGINE_DIR='${PTII}/vendors/misc/FuzzyEngine'
 
 FUZZYLOGIC_USER_DIR="$PTII/ptolemy/actor/lib/logic/fuzzy"
-# We only need to look for joystick if $FUZZYLOGIC_USER_DIR
+# We only need to look for FuzzyEngine if $FUZZYLOGIC_USER_DIR
 if test ! -d "$FUZZYLOGIC_USER_DIR"; then
     if test "${PTVERBOSE:-none}" != "none"; then { echo "$as_me:$LINENO: result: $FUZZYLOGIC_USER_DIR is not present,
     so we need not find the FuzzyEngine interface." >&5
 echo "${ECHO_T}$FUZZYLOGIC_USER_DIR is not present,
     so we need not find the FuzzyEngine interface." >&6; }; fi
 else
-    { echo "$as_me:$LINENO: checking for FuzzyEngine directory file" >&5
-echo $ECHO_N "checking for FuzzyEngine directory file... $ECHO_C" >&6; }
+    { echo "$as_me:$LINENO: checking for FuzzyEngine directory" >&5
+echo $ECHO_N "checking for FuzzyEngine directory... $ECHO_C" >&6; }
 
 # Check whether --with-fuzzyengine was given.
 if test "${with_fuzzyengine+set}" = set; then
@@ -7490,6 +7496,100 @@ if test -z "$PTJMF_DIR"; then
    ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/actor/lib/jmf/"
 fi
 
+
+#--------------------------------------------------------------------
+#       Jogl is Java bindings for OpenGL
+#	https://jogl.dev.java.net/
+#	Jogl is BSD licensed, but platform dependent, so we don't
+#       include Jogl in the Ptolemy II tree
+#--------------------------------------------------------------------
+
+# PTGRO_DIR is set to gro
+# $PTII/ptolemy/domains/makefile if Jogl was found
+PTGRO_DIR=
+
+# Jogl Directory.  Jogl is available from
+# https://jogl.dev.java.net/
+PTJOGL_DIR='${PTII}/vendors/sun/jogl'
+
+# Java OpenGL (Jogl) jar files.   Used to compile gro domain.
+PTJOGL_JARS=
+
+GRO_USER_DIR="$PTII/ptolemy/domains/gro"
+# We only need to look for Jogl if $GRO_USER_DIR
+if test ! -d "$GRO_USER_DIR"; then
+    if test "${PTVERBOSE:-none}" != "none"; then { echo "$as_me:$LINENO: result: $GRO_USER_DIR is not present,
+    so we need not find the Jogl interface." >&5
+echo "${ECHO_T}$GRO_USER_DIR is not present,
+    so we need not find the Jogl interface." >&6; }; fi
+else
+    { echo "$as_me:$LINENO: checking for Jogl directory" >&5
+echo $ECHO_N "checking for Jogl directory... $ECHO_C" >&6; }
+
+# Check whether --with-jogl was given.
+if test "${with_jogl+set}" = set; then
+  withval=$with_jogl; PTJOGL_DIR=$withval
+else
+  PTJOGL_DIR=$PTII/vendors/sun/jogl
+fi
+
+
+    if test -f "$PTJOGL_DIR/lib/jogl.jar"; then
+	if test "${PTVERBOSE:-none}" = "none"; then { echo "$as_me:$LINENO: result: ok" >&5
+echo "${ECHO_T}ok" >&6; }; else { echo "$as_me:$LINENO: result: $PTJOGL_DIR" >&5
+echo "${ECHO_T}$PTJOGL_DIR" >&6; }; fi
+	# Set to gro and used in
+	# $PTII/ptolemy/domains/makefile if jogl.jar was found.
+	PTGRO_DIR=gro
+        # PTGRO_PACKAGES is used in ptII/doc/makefile
+	PTGRO_PACKAGES="ptolemy.domains.gro ptolemy.domains.gro.kernel ptolemy.domains.gro.lib"
+
+	# Look for Jogl jar files
+	jogljars="jogl.jar gluegen-rt.jar"
+        for jar in $jogljars
+        do
+    	    if test "${PTVERBOSE:-none}" = "none"; then
+                $PT_ECHO $ECHO_N "."
+            else
+                $PT_ECHO $ECHO_N "$jar "
+            fi
+	    if test -f "$PTJOGL_DIR/lib/$jar"; then
+	       PTJOGL_JARS="${PTJOGL_JARS}${CLASSPATHSEPARATOR}${PTJOGL_DIR}/lib/$jar"
+	       ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
+	           <classpathentry kind=\"lib\" path=\"$PTJOGL_DIR/lib/$jar\"/>"
+	    fi
+        done
+    fi
+
+    if test "$PTGRO_DIR" = ""; then
+        { echo "$as_me:$LINENO: WARNING: Failed to find lib/jogl.jar
+    in $PTJOGL_DIR
+    perhaps the Java OpenGL (Jogl) interface is not installed?
+    You need not download the Jogl interface unless you
+    plan on using the GRO domain with Ptolemy II.
+    The Jogl interface can be downloaded from
+    https://jogl.dev.java.net/
+    an untar'd into $PTII/vendors/sun.  Note that configure looks
+    for $PTII/vendors/sun/jogl, so either move the Jogl distribution
+    or create a symbolic link and then rerun configure. " >&5
+echo "$as_me: WARNING: Failed to find lib/jogl.jar
+    in $PTJOGL_DIR
+    perhaps the Java OpenGL (Jogl) interface is not installed?
+    You need not download the Jogl interface unless you
+    plan on using the GRO domain with Ptolemy II.
+    The Jogl interface can be downloaded from
+    https://jogl.dev.java.net/
+    an untar'd into $PTII/vendors/sun.  Note that configure looks
+    for $PTII/vendors/sun/jogl, so either move the Jogl distribution
+    or create a symbolic link and then rerun configure. " >&2;}
+	# Note that we don't substitute in the ${PTII} here
+	PTJOGL_DIR='${PTII}/vendors/sun/jogl'
+    fi
+fi
+
+if test -z "$PTJOGL_DIR"; then
+   ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/domains/gro/"
+fi
 
 
 #--------------------------------------------------------------------
@@ -11068,6 +11168,13 @@ fi
 # PTGR_PACKAGES is used in ptII/doc/makefile
 
 
+# Set to gro and used in
+# $PTII/ptolemy/domains/makefile if the Java OpenGL (Jogl) interface was found.
+
+
+# PTGRO_PACKAGES is used in ptII/doc/makefile if Jogl was found.
+
+
 # Location of the the PTII directory
 # $PTII/ptolemy/plot/ptplot.jnlp.in reads this
 
@@ -11146,6 +11253,13 @@ fi
 
 
 # JNI libraries needed to link, such as -lcygwin (Used by Viptos)
+
+
+# Java OpenGL (Jogl) directory.  FuzzyEngine is from
+# https://jogl.dev.java.net/
+
+
+# Java OpenGL (Jogl) jar files.   Used to compile gro domain.
 
 
 # Set to joystick if Joystick.jar was found
@@ -12181,6 +12295,8 @@ PTGMP_LD_FLAGS!$PTGMP_LD_FLAGS$ac_delim
 PTGMP_LIB!$PTGMP_LIB$ac_delim
 PTGRDOMAIN_JAR!$PTGRDOMAIN_JAR$ac_delim
 PTGR_PACKAGES!$PTGR_PACKAGES$ac_delim
+PTGRO_DIR!$PTGRO_DIR$ac_delim
+PTGRO_PACKAGES!$PTGRO_PACKAGES$ac_delim
 PTII!$PTII$ac_delim
 PTJACL_DIR!$PTJACL_DIR$ac_delim
 PTJACL_JAR!$PTJACL_JAR$ac_delim
@@ -12204,6 +12320,8 @@ PTJNI_SHAREDLIBRARY_LDFLAG!$PTJNI_SHAREDLIBRARY_LDFLAG$ac_delim
 PTJNI_SHAREDLIBRARY_PREFIX!$PTJNI_SHAREDLIBRARY_PREFIX$ac_delim
 PTJNI_SHAREDLIBRARY_SUFFIX!$PTJNI_SHAREDLIBRARY_SUFFIX$ac_delim
 PTJNI_LIBRARIES!$PTJNI_LIBRARIES$ac_delim
+PTJOGL_DIR!$PTJOGL_DIR$ac_delim
+PTJOGL_JARS!$PTJOGL_JARS$ac_delim
 PTJOYSTICK_DIR!$PTJOYSTICK_DIR$ac_delim
 PTJOYSTICK_PACKAGES!$PTJOYSTICK_PACKAGES$ac_delim
 PTJYTHON_DIR!$PTJYTHON_DIR$ac_delim
@@ -12224,10 +12342,6 @@ PTPDFRENDERER_JAR!$PTPDFRENDERER_JAR$ac_delim
 PTPSDF_DIR!$PTPSDF_DIR$ac_delim
 PTSVG_DIR!$PTSVG_DIR$ac_delim
 PTSVG_JAR!$PTSVG_JAR$ac_delim
-PTPTALON_DIR!$PTPTALON_DIR$ac_delim
-PTPTALON_PACKAGES!$PTPTALON_PACKAGES$ac_delim
-ANTLR_DIR!$ANTLR_DIR$ac_delim
-PTQUICKTIME_DIR!$PTQUICKTIME_DIR$ac_delim
 _ACEOF
 
   if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 97; then
@@ -12269,6 +12383,10 @@ _ACEOF
 ac_delim='%!_!# '
 for ac_last_try in false false false false false :; do
   cat >conf$$subs.sed <<_ACEOF
+PTPTALON_DIR!$PTPTALON_DIR$ac_delim
+PTPTALON_PACKAGES!$PTPTALON_PACKAGES$ac_delim
+ANTLR_DIR!$ANTLR_DIR$ac_delim
+PTQUICKTIME_DIR!$PTQUICKTIME_DIR$ac_delim
 PTQUICKTIME_PACKAGES!$PTQUICKTIME_PACKAGES$ac_delim
 PTRXTX_PACKAGES!$PTRXTX_PACKAGES$ac_delim
 PTSPACE_DIR!$PTSPACE_DIR$ac_delim
@@ -12304,7 +12422,7 @@ LIBOBJS!$LIBOBJS$ac_delim
 LTLIBOBJS!$LTLIBOBJS$ac_delim
 _ACEOF
 
-  if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 33; then
+  if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 37; then
     break
   elif $ac_last_try; then
     { { echo "$as_me:$LINENO: error: could not make $CONFIG_STATUS" >&5
