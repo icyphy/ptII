@@ -321,6 +321,9 @@ public class Graph implements Cloneable {
      *  @exception GraphWeightException If the specified weight is null.
      */
     public Node addNodeWeight(Object weight) {
+        if (weight == null) {
+            throw new NullPointerException("weight == null");
+        }
         Node node = new Node(weight);
         _registerNode(node);
         return node;
