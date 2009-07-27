@@ -98,6 +98,6 @@ do
   # remove the leading adm/dists/ptIIX.Y.devel and then uncomment the
   # lines below and rerun in $PTII
    
-  cp $tmpfile $file
+  #cp $tmpfile $file
   #cvs commit -m "This file is new since Ptolemy 6.1, so the copyright and @since tag should reflect that." $file
 done
