@@ -763,6 +763,37 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
         if (_debugging) {
             _debug("Prefire called at time: " + getModelTime());
         }
+        // Clear the inside receivers of all output ports of the container.
+        // FIXME: why here? should this happen at the postfire() method?
+        // Note that  ct LevelCrossingDetectorDetectsGlitches.xml needs this.
+        // See https://chess.eecs.berkeley.edu/bugzilla/show_bug.cgi?id=296
+        CompositeActor actor = (CompositeActor) getContainer();
+        Iterator outputPorts = actor.outputPortList().iterator();
+        while (outputPorts.hasNext()) {
+            IOPort p = (IOPort) outputPorts.next();
+            Receiver[][] insideReceivers = p.getInsideReceivers();
+
+            if (insideReceivers == null) {
+                continue;
+            }
+
+            for (int i = 0; i < insideReceivers.length; i++) {
+                if (insideReceivers[i] == null) {
+                    continue;
+                }
+
+                for (int j = 0; j < insideReceivers[i].length; j++) {
+                    try {
+                        if (insideReceivers[i][j].hasToken()) {
+                            insideReceivers[i][j].get();
+                        }
+                    } catch (NoTokenException ex) {
+                        throw new InternalErrorException(this, ex, null);
+                    }
+                }
+            }
+        }
+
         // Set the current time based on the enclosing class.
         super.prefire();
         return getController().prefire();
@@ -833,6 +864,16 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
                         if ((insideReceivers != null)
                                 && (insideReceivers[i] != null)) {
                             for (int j = 0; j < insideReceivers[i].length; j++) {
+                                //  r45276 removed the code below, which cause 
+                                // problems with
+                                // ct LevelCrossingDetectorDetectsGlitches.xml.
+                                // However, the change below is not necessary to
+                                // fix this bug.
+                                // See https://chess.eecs.berkeley.edu/bugzilla/show_bug.cgi?id=296
+                                // if (insideReceivers[i][j].hasToken()) {
+                                // insideReceivers[i][j].get();
+                                // }
+                            
                                 insideReceivers[i][j].put(t);
                                 if (_debugging) {
                                     _debug(getFullName(),
