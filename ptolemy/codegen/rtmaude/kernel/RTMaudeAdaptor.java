@@ -59,6 +59,7 @@ import ptolemy.kernel.util.NamedObj;
 *
 * @see ptolemy.codegen.kernel.CodeGeneratorHelper
 * @author Kyungmin Bae
+* @since Ptolemy II 7.1
 * @version $Id$
 * @Pt.ProposedRating Red (kquine)
 *

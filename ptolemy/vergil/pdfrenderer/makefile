@@ -30,7 +30,7 @@
 # 						COPYRIGHTENDKEY
 
 
-ME =		ptolemy/vergil/pdf
+ME =		ptolemy/vergil/pdfrenderer
 
 DIRS =
 
@@ -46,7 +46,7 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	pdf
+PTPACKAGE = 	pdfrenderer
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
