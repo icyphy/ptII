@@ -48,7 +48,7 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	logic
+PTPACKAGE = 	fuzzy
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
