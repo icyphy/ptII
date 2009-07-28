@@ -37,15 +37,20 @@ void StringArray_set(Token array, int i, string element) {
 // StringArray_resize: Change the size of an array,
 // preserving those elements that fit.
 void StringArray_resize(Token array, int size) {
+    if (array.payload.StringArray->size == 0) {
+        array.payload.StringArray->elements = (string *) malloc(size * sizeof(string));
+    } else {
+        array.payload.StringArray->elements = (string*) realloc(
+                     array.payload.StringArray->elements, size * sizeof(string));
+    } 
     array.payload.StringArray->size = size;
-    array.payload.StringArray->elements = (string*) realloc(
-                    array.payload.StringArray->elements, size * sizeof(string));
 }
 
 // StringArray_insert: Append the specified element to the end of an array.
 void StringArray_insert(Token array, string token) {
-    int oldSize = array.payload.StringArray->size++;
-    StringArray_resize(array, array.payload.StringArray->size);
+    // FIXME: call this append(), not insert().  
+    int oldSize = array.payload.StringArray->size;
+    StringArray_resize(array, oldSize + 1 );
     ((string *) array.payload.StringArray->elements)[oldSize] = token;
 }
 /**/

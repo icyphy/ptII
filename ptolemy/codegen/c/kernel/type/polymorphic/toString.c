@@ -239,51 +239,46 @@ char* toString_String(char* a) {
 
 /*** toString_StringArray() ***/
 char* toString_StringArray(Token thisToken) {
-        int i;
+    int i;
     int currentSize, allocatedSize;
-
     char* string;
     char* elementString;
     allocatedSize = 256;
     string = (char*) malloc(allocatedSize);
     string[0] = '{';
+
     // Pos[1] is for the open quote "\"".
+    // Needed by valgrind.
+    string[1] = '\0';
+
     string[2] = '\0';
 
     // Since '{' is already printed, we initial this to pos 1.
     int charIndex = 1;
-
     // Space for '{', '}', and '\0' characters.
     currentSize = 3;
-
-    //printf("%d\n", thisToken.payload.StringArray->size);
     for (i = 0; i < thisToken.payload.StringArray->size; i++) {
-                // Calculate the require storage size.
-
-            // string temp = StringArray_get(thisToken, i);
-        elementString = StringArray_get(thisToken, i);
-
-        // make space also for the quotes "\"" characters.
-        currentSize += strlen(elementString) + 2;
-                if (i != 0) {
-                        currentSize += 2;
-                }
-
-                // Re-allocate storage.
-                if (currentSize > allocatedSize) {
-            allocatedSize *= 2;
-            string = (char*) realloc(string, allocatedSize);
-        }
-
-                // Concat the element strings and separators.
-                if (i != 0) {
-            string[charIndex++] = ',';
-            string[charIndex++] = ' ';
-        }
-        string[charIndex++] = '\"';
-        strcat(string, elementString);
-        charIndex += strlen(elementString);
-        string[charIndex++] = '\"';
+      // Calculate the require storage size.
+      // string temp = StringArray_get(thisToken, i);
+      elementString = StringArray_get(thisToken, i);
+      // Make space also for the quotes "\"" characters.
+      currentSize += strlen(elementString) + 2;
+      if (i != 0) {
+	// Add space for the ", "
+	currentSize += 2;
+      }
+      // Re-allocate storage.
+      if (currentSize > allocatedSize) {
+	allocatedSize *= 2;
+	string = (char*) realloc(string, allocatedSize);
+      }
+      // Concat the element strings and separators.
+      if (i != 0) {
+	strcat(string, ", ");
+      }
+      strcat(string, "\"");
+      strcat(string, elementString);
+      strcat(string, "\"");
     }
     strcat(string, "}");
     return string;

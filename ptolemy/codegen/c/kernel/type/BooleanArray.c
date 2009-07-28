@@ -37,16 +37,21 @@ void BooleanArray_set(Token array, int i, boolean element) {
 // BooleanArray_resize: Change the size of an array,
 // preserving those elements that fit.
 void BooleanArray_resize(Token array, int size) {
-    array.payload.BooleanArray->size = size;
-    array.payload.BooleanArray->elements = (boolean*) realloc(
-                    array.payload.BooleanArray->elements, size * sizeof(boolean));
+    if (array.payload.BooleanArray->size == 0) {
+        array.payload.BooleanArray->elements = (boolean *) malloc(size * sizeof(boolean));
+    } else {
+        array.payload.BooleanArray->elements = (boolean*) realloc(
+                     array.payload.BooleanArray->elements, size * sizeof(boolean));
+    } 
 }
 
 // BooleanArray_insert: Append the specified element to the end of an array.
 void BooleanArray_insert(Token array, boolean token) {
-    int oldSize = array.payload.BooleanArray->size++;
-    BooleanArray_resize(array, array.payload.BooleanArray->size);
+    // FIXME: call this append(), not insert().  
+    int oldSize = array.payload.BooleanArray->size;
+    BooleanArray_resize(array, oldSize + 1 );
     ((boolean *) array.payload.BooleanArray->elements)[oldSize] = token;
+
 }
 /**/
 
