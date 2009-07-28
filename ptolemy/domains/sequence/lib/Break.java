@@ -1,3 +1,29 @@
+/* An actor that implements a control break.
+
+ Copyright (c) 2009 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
+
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
+
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
+
+ */
 package ptolemy.domains.sequence.lib;
 
 import ptolemy.actor.TypedIOPort;
@@ -14,16 +40,32 @@ import ptolemy.kernel.util.StringAttribute;
  If this actor is reached, control returns to the caller.
  This block has no functionality.
   
-  Break is a ControlActor, meaning that it keeps a list of
+  <p>Break is a ControlActor, meaning that it keeps a list of
   enabled output ports.  However, the Break actor has no output ports,
   so this list is always empty here.
   
-  @author beth
-  
+  @author Elizabeth Latronico (Bosch)
+  @version $Id$
+  @since Ptolemy II 8.1
+  @Pt.ProposedRating Red (beth)
+  @Pt.AcceptedRating Red (beth)
  */
 
 public class Break extends ControlActor {
 
+    
+    /** Create a new actor in the specified container with the specified
+     *  name.  The name must be unique within the container or an exception
+     *  is thrown. The container argument must not be null, or a
+     *  NullPointerException will be thrown.
+     *
+     *  @param container The container.
+     *  @param name The name of this actor within the container.
+     *  @exception IllegalActionException If this actor cannot be contained
+     *   by the proposed container (see the setContainer() method).
+     *  @exception NameDuplicationException If the name coincides with
+     *   an entity already in the container.
+     */
     public Break(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
@@ -66,14 +108,13 @@ public class Break extends ControlActor {
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
+    /** The input. */
     public TypedIOPort input;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Beth added 02/04/09
-     *  
-     *  Add a check for an unconnected input port
+    /** Add a check for an unconnected input port.
      *  If the port is unconnected, set the type, so that the type
      *  will not resolve to unknown
      *  Can't use setAtLeast in the constructor, because the input
@@ -82,9 +123,7 @@ public class Break extends ControlActor {
      *
      *  @exception IllegalActionException Not thrown here
      */
-    
     public void preinitialize() throws IllegalActionException {
-    
     	super.preinitialize();
     	
     	if (input.connectedPortList().isEmpty())

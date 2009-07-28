@@ -1,6 +1,6 @@
 /* ProcessAttribute is a subclass of Parameter with support for strings.
 
- Copyright (c) 2000-2006 The Regents of the University of California.
+ Copyright (c) 2009 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -43,7 +43,11 @@ ProcessAttribute is a subclass of Parameter with support for strings
    The ProcessDirector collects the ProcessAttributes to determine the order
    in which order the actors in the model are fired. 
    
-   @author beth
+ @author Elizabeth Latronico (Bosch)
+ @version $Id$
+ @since Ptolemy II 8.1
+ @Pt.ProposedRating Red (beth)
+ @Pt.AcceptedRating Red (beth)
  */
 public class ProcessAttribute extends SequenceAttribute {
     /** Construct an attribute in the default workspace with an empty string
@@ -110,6 +114,7 @@ public class ProcessAttribute extends SequenceAttribute {
      *     This method assumes that the expression is well-formed (checked in validate()) 
      *     
      *   @param obj The SequenceAttribute or ProcessAttribute object.
+     *   @return 0 if the sequence numbers are the same.
      */
     public int compareTo(Object obj) {
 

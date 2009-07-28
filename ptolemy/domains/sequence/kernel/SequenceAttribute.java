@@ -1,6 +1,6 @@
 /* SequenceAttribute is a subclass of Parameter with support for integerToken.
 
- Copyright (c) 2000-2006 The Regents of the University of California.
+ Copyright (c) 2009 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -41,12 +41,16 @@ import ptolemy.kernel.util.Workspace;
 ////SequenceAttribute
 
 /**
-   SequenceAttribute is a subclass of Parameter with support for integerToken
+   SequenceAttribute is a subclass of Parameter with support for integerToken.
    
    The SequenceDirector collects the SequenceAttributes to determine the order
    in which order the actors in the model are fired.  
    
-   @author beth
+   @author Elizabeth Latronico (Bosch)
+   @version $Id$
+   @since Ptolemy II 8.1
+   @Pt.ProposedRating Red (beth)
+   @Pt.AcceptedRating Red (beth)
  */
 public class SequenceAttribute extends Parameter implements Comparable {
     /** Construct an attribute in the default workspace with an empty string
@@ -102,10 +106,11 @@ public class SequenceAttribute extends Parameter implements Comparable {
     ////                         public methods                    ////
 
     /** Implement compareTo method to compare sequence numbers 
-     *  Only the sequence numbers are compared (independent of any process name)
+     *  Only the sequence numbers are compared (independent of any process name).
      * 
      *  Object may be a SequenceAttribute or a ProcessAttribute
      *   @param obj The SequenceAttribute object.
+     *  @return 0 if the sequence numbers are the same.
      */
     public int compareTo(Object obj) {
     	
@@ -168,11 +173,11 @@ public class SequenceAttribute extends Parameter implements Comparable {
    
     }
     
-    /** Implement validate method to validate the SequenceAttribute and ProcessAttributes 
+    /** Implement validate method to validate the SequenceAttribute and ProcessAttributes .
      *  @return The current list of value listeners, which are evaluated
      *   as a consequence of this call to validate(). 
+     *  @exception IllegalActionException If thrown by the parent class.
      */
-
     public Collection validate() throws IllegalActionException {
 
         Collection result = null;

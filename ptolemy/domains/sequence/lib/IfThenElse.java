@@ -1,5 +1,28 @@
 /* A polymorphic IfThenElse actor.
 
+ Copyright (c) 2009 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
+
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
+
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
+
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
  */
 package ptolemy.domains.sequence.lib;
 
@@ -18,13 +41,18 @@ import ptolemy.kernel.util.StringAttribute;
  <p>A type polymorphic If-Then-Else actor. 
  In an iteration, if an input token is available at the <i>If</i> input,
  that token is read.
- The <i>Then<i> output is set to true, if then <i>If</i> input is true.
- The <i>Else<i> output is set to true, if then <i>If</i> input is false.
+ The <i>Then</i> output is set to true, if then <i>If</i> input is true.
+ The <i>Else</i> output is set to true, if then <i>If</i> input is false.
  The <i>If</i> port may only receive Tokens of type Boolean. The output 
  ports are also of type boolean.</p>
  
  IfThenElse is a ControlActor, meaning that it keeps a list of
  enabled output ports.  
+ @author Elizabeth Latronico (Bosch)
+ @version $Id$
+ @since Ptolemy II 8.1
+ @Pt.ProposedRating Red (beth)
+ @Pt.AcceptedRating Red (beth)
  */
 public class IfThenElse extends ControlActor {
     /** Construct an actor in the specified container with the specified
@@ -80,11 +108,11 @@ public class IfThenElse extends ControlActor {
      */
     public TypedIOPort ifInput;
 
-    /** Same as Input
+    /** Same as Input.
      */
     public TypedIOPort thenOutput;
 
-    /** Not Input
+    /** Not Input.
      */
     public TypedIOPort elseOutput;
 

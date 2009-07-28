@@ -1,6 +1,6 @@
 /* Director for the sequencing model of computation.
 
- Copyright (c) 1997-2007 The Regents of the University of California.
+ Copyright (c) 2009 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -50,7 +50,11 @@ import ptolemy.kernel.util.Workspace;
  * Please see SequencedModelDirector for more details on how the schedule
  * is computed. 
  *
- * @author rrs1pal, beth
+ * @author Elizabeth Latronico (Bosch), rrs1pal 
+ * @version $Id$
+ * @since Ptolemy II 8.1
+ * @Pt.ProposedRating Red (beth)
+ * @Pt.AcceptedRating Red (beth)
  */
 public class SequenceDirector extends SequencedModelDirector{
     /** Construct a director in the default workspace with an empty string

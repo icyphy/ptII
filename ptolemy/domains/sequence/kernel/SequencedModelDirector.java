@@ -1,6 +1,6 @@
 /* Director for the sequencing model of computation.
 
- Copyright (c) 1997-2007 The Regents of the University of California.
+ Copyright (c) 2009 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -56,12 +56,16 @@ import ptolemy.kernel.util.Workspace;
  * An abstract director, which SequenceDirector and ProcessDirector 
  * extend for the sequencing models of computation.
  *
- * The SequencedModelDirector
- * - Computes the sequenced actors and passes these in two lists to the 
+ * <p>The SequencedModelDirector
+ * <br>- Computes the sequenced actors and passes these in two lists to the 
  * SequenceScheduler (one list for independent sequenced actors, and one list
  * for sequenced actors that are dependent on other actors e.g. control actors)
  * 
- * @author rrs1pal, beth
+ * @author Elizabeth Latronico (Bosch), rrs1pal
+ * @version $Id$
+ * @since Ptolemy II 8.1
+ * @Pt.ProposedRating Red (beth)
+ * @Pt.AcceptedRating Red (beth)
  */
 public abstract class SequencedModelDirector extends Director{
     /** Construct a director in the default workspace with an empty string
@@ -132,10 +136,19 @@ public abstract class SequencedModelDirector extends Director{
      */
     public Parameter iterations;
     
+    /** If true, enable user defined output initial vaues.  The default value
+     *  is a boolean true.
+     */   
     public Parameter userDefinedOutputInitialValue;
     
+    /** The user defined default output initial value.  The default type
+     *  is BaseType.GENERAL.
+     */
     public Parameter userDefinedDefaultOutputInitialValue;
     
+    /** If true, enable default output initial vaues.  The default value
+     *  is a boolean true.
+     */   
     public Parameter defaultOutputInitialValue;
     
     ///////////////////////////////////////////////////////////////////
@@ -271,8 +284,9 @@ public abstract class SequencedModelDirector extends Director{
      * first which consumes data from a sequenced actor that is fired later in the schedule, 
      * then a value will be available for the first actor to use.
      * 
-     * @param actorEntity
-     * @throws IllegalActionException
+     * @param actorEntity The entity
+     * @throws IllegalActionException If thrown while getting the width of a port or
+     * getting the value of a parameter. 
      */
     public void setOutputInitialValues(Entity actorEntity) throws IllegalActionException {
 
@@ -408,8 +422,8 @@ public abstract class SequencedModelDirector extends Director{
      *  The scheduler will later need to ascertain which actors are dependent
      *  on control actors, and remove them from the _independentList. 
      * 
-     * @param compositeActor
-     * @throws IllegalActionException
+     * @param compositeActor The composite actor to be searched for entities.
+     * @throws IllegalActionException If thrown while checking the attribute type.
      */
     public void getContainedEntities(CompositeActor compositeActor) throws IllegalActionException {
 
@@ -515,12 +529,14 @@ public abstract class SequencedModelDirector extends Director{
 
     /** Check for SequenceAttribute or ProcessAttribute for multiple
      * or wrong occurrence in the model.
-     * @param actor
-     * @param sequenceAttributes
-     * @param processAttributes
-     * @throws IllegalActionException
+     * @param actor The actor to be checked.
+     * @param sequenceAttributes The list of sequence attributes to be checked.
+     * @param processAttributes The list of process attributes to be checked
+     * @throws IllegalActionException If sequenceAttributes has a length greater than one
+     * or if actor is not an instance of ControlActor. 
      */
     public void checkAttributeType(Actor actor, List sequenceAttributes, List processAttributes) throws IllegalActionException {
+        // FIXME: can we use Generics here for the lists?
 
         /*  Beth removed - There should not be any transparent composite actors
          *  with sequence numbers.  If there are, these sequence numbers are ignored.
@@ -772,10 +788,10 @@ public abstract class SequencedModelDirector extends Director{
 ////protected methods                 ////
 
     /**
-     * Return the initialValueParameter Name for each of the port 
-     * @param port
-     * @param channel
-     * @return initialValueParameterName
+     * Return the initialValueParameter Name for each of the port.
+     * @param port The port to be analyzed.
+     * @param channel The channel of the port to be analyzed.
+     * @return The initial value parameter name.
      */
     protected static String _getInitialValueParameterName(TypedIOPort port, int channel) {
 
@@ -795,13 +811,13 @@ public abstract class SequencedModelDirector extends Director{
     /** Cache of the value of allowDisconnectedGraphs. */
     // boolean _allowDisconnectedGraphs = false;
 
-///////////////////////////////////////////////////////////////////
-////protected variables                 ////
+    ///////////////////////////////////////////////////////////////////
+    ////                       protected variables                 ////
     
-    /** The list of sequenced actors in the model */
+    /** The list of sequenced actors in the model. */
     protected List<SequenceAttribute> _sequencedList;  
 
-    /** The scheduler for this director */
+    /** The scheduler for this director. */
     protected SequenceScheduler _scheduler;
     
     /** The value that the postfire method will return. */

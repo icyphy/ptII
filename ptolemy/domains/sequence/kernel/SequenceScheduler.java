@@ -106,7 +106,7 @@ import ptolemy.kernel.util.Workspace;
  for changes in the model.  Directors that use this scheduler should
  normally invalidate the schedule when mutations occur.
 
- @author Jie Liu, Steve Neuendorffer, rrs1pal, beth
+ @author Jie Liu, Steve Neuendorffer, Elizabeth Latronico (Bosch), rrs1pal 
  @version $Id$
  @since Ptolemy II 0.2
  @Pt.ProposedRating Red (beth)

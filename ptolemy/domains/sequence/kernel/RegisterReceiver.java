@@ -1,6 +1,6 @@
 /* A receiver which extends Mailbox and holds a single token.
 
- Copyright (c) 1997-2005 The Regents of the University of California.
+ Copyright (c) 2009 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -38,9 +38,14 @@ import ptolemy.kernel.util.IllegalActionException;
 //// RegisterReceiver
 
 /**
- A receiver which extends Mailbox and holds a single token
- */
+ A receiver which extends Mailbox and holds a single token.
 
+ @author Elizabeth Latronico (Bosch)
+ @version $Id$
+ @since Ptolemy II 8.1
+ @Pt.ProposedRating Red (beth)
+ @Pt.AcceptedRating Red (beth)
+ */
 public class RegisterReceiver extends Mailbox {
  
     /** Construct an empty RegisterReceiver with no container.
@@ -73,6 +78,7 @@ public class RegisterReceiver extends Mailbox {
     
     /** Put a token into the registerReceiver.  
      *  @param token The token to be put into the mailbox.
+     *  @exception NoRoomException Not thrown in this base class.
      */
     public void put(Token token) throws NoRoomException {
         _token = token;

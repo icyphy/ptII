@@ -137,7 +137,7 @@ import ptolemy.kernel.util.InvalidStateException;
  S. S. Bhattacharyya, P K. Murthy, and E. A. Lee,
  Software Syntheses from Dataflow Graphs, Kluwer Academic Publishers, 1996.
 
- @author Brian K. Vogel, Steve Neuendorffer, beth
+ @author Brian K. Vogel, Steve Neuendorffer, Elizabeth Latronico (Bosch)
  @version $Id$
  @since Ptolemy II 1.0
  @Pt.ProposedRating Red (beth)
@@ -882,7 +882,8 @@ public class SequenceSchedule extends Schedule {
      *  firingIterator to reflect what was computed
      *  FIXME: Change the add method to add to one of the other 
      *  data structures instead of the _schedule
-     *  Beth - added parameterization <ScheduleElement> */
+     *  Beth - added parameterization &lt;ScheduleElement&gt;
+     */
     protected List<ScheduleElement> _schedule;
     
     /** Keeps track of our position in the list.  Used by the hasNext() methods

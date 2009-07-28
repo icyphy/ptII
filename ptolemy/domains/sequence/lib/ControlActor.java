@@ -51,9 +51,12 @@ FIXME:  What to do about Ptolemy control actors?
 FIXME:  Should this be a class, or an interface?  Has a new variable 
         for holding control flow information.
 
-@author Beth Latronico
+  @author Elizabeth Latronico (Bosch)
+  @version $Id$
+  @since Ptolemy II 8.1
+  @Pt.ProposedRating Red (beth)
+  @Pt.AcceptedRating Red (beth)
 */
-
 public class ControlActor extends TypedAtomicActor {
     // All the constructors are wrappers of the super class constructors.
 
@@ -99,11 +102,11 @@ public class ControlActor extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
     
-    /** Return the (possibly empty) list of enabled output ports 
+    /** Return the (possibly empty) list of enabled output ports.
      * 
      *  @return The (possible empty) list of enabled output ports 
+     *  @see #setEnabledOutports(List) 
      **/
-    
     public ArrayList<TypedIOPort> getEnabledOutports()
     {
         return _enabledOutports;
@@ -140,6 +143,7 @@ public class ControlActor extends TypedAtomicActor {
      *  
      *  @param ports List of output ports
      *  @return True if operation was successful; false otherwise 
+     *  @see #getEnabledOutports()
      */
     protected boolean setEnabledOutports(List<TypedIOPort> ports) {
         // Clear the enabledOutports list

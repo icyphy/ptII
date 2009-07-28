@@ -50,7 +50,11 @@ import ptolemy.kernel.util.Workspace;
  * Please see SequencedModelDirector for more details on how the schedule
  * is computed. 
  *
- * @author beth
+ * @author Elizabeth Latronico (Bosch)
+ * @version $Id$
+ * @since Ptolemy II 8.1
+ * @Pt.ProposedRating Red (beth)
+ * @Pt.AcceptedRating Red (beth)
  */
 
 public class ProcessDirector extends SequencedModelDirector{
@@ -331,20 +335,21 @@ public class ProcessDirector extends SequencedModelDirector{
         }
     }
 
-///////////////////////////////////////////////////////////////////
-////private variables                 ////
+    ///////////////////////////////////////////////////////////////////
+    ////                       protected variables                 ////
 
-    /** The default ProcessName for the model */
-    // private String _DEFAULT_PROCESS = "P1";
-    
-    /** A table of mappings between processes and SequenceSchedules */
-    private Hashtable<String,SequenceSchedule> _processToSchedule;
-
-///////////////////////////////////////////////////////////////////
-////protected variables                 ////
-    /** The hashMap for Process and corresponding sequence numbers */
+    /** The hashMap for Process and corresponding sequence numbers. */
     protected MultiHashMap _processSeqMap;
     
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    /** The default ProcessName for the model. */
+    // private String _DEFAULT_PROCESS = "P1";
+    
+    /** A table of mappings between processes and SequenceSchedules. */
+    private Hashtable<String,SequenceSchedule> _processToSchedule;
 }
 
 
