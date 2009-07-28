@@ -1,0 +1,218 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="CompiledCompositeActor" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
+    </property>
+    <property name="AnnotationUpdated" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_hideAllParameters" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.2, 0.2, 0.2, 1.0}">
+        </property>
+        <property name="fontFamily" class="ptolemy.data.expr.StringParameter" value="SansSerif">
+        </property>
+        <property name="bold" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="italic" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Bert Rodiers, based on the Expression demo by Edward A. Lee">
+            <property name="_style" class="ptolemy.actor.gui.style.TextStyle">
+                <property name="height" class="ptolemy.data.expr.Parameter" value="20">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="80">
+                </property>
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 370.0]">
+        </property>
+    </property>
+    <property name="SDFDirector" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="200">
+        </property>
+        <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, 90.0]">
+        </property>
+    </property>
+    <property name="AnnotationUpdated2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_hideAllParameters" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+        </property>
+        <property name="fontFamily" class="ptolemy.data.expr.StringParameter" value="SansSerif">
+        </property>
+        <property name="bold" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="italic" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model illustrates the Java Compiled Composite Actor.&#10;It generates compiled java code for the model inside this&#10;actor during the initialization phase.&#10;">
+            <property name="_style" class="ptolemy.actor.gui.style.TextStyle">
+                <property name="height" class="ptolemy.data.expr.Parameter" value="20">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="80">
+                </property>
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[220.0, 55.0]">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 130, 815, 507}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.9876162185101">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{340.7617187500004, 234.6328125}">
+    </property>
+    <entity name="CompiledCompositeActor" class="ptolemy.cg.lib.CompiledCompositeActor">
+        <property name="executeEmbeddedCode" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 210.0]">
+        </property>
+        <property name="AnnotationUpdated" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+            <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="_hideAllParameters" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
+            </property>
+            <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+            <property name="fontFamily" class="ptolemy.data.expr.StringParameter" value="SansSerif">
+            </property>
+            <property name="bold" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="italic" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model repeatedly evaluates an expression, a function of two ramp&#10;signals, slow and fast. Try right clicking on the expr actor, select&#10;&quot;Configure&quot; and change it to &quot;cos(slow)*cos(fast)&quot; and then run&#10;the demo with View-&gt;Run Window-&gt;Go. Other interesting alternatives&#10;include:&#10;    &quot;cos(fast*cos(slow))&quot;&#10;    &quot;0.2*slow + cos(fast)&quot;">
+                <property name="_style" class="ptolemy.actor.gui.style.TextStyle">
+                    <property name="height" class="ptolemy.data.expr.Parameter" value="20">
+                    </property>
+                    <property name="width" class="ptolemy.data.expr.Parameter" value="80">
+                    </property>
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{165.0, 15.0}">
+            </property>
+        </property>
+        <property name="SDFDirector" class="ptolemy.domains.sdf.kernel.SDFDirector">
+            <property name="iterations" class="ptolemy.data.expr.Parameter" value="200">
+            </property>
+            <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+            <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{90.0, 60.0}">
+            </property>
+        </property>
+        <property name="CodeGenerator_AutoAdded" class="ptolemy.cg.kernel.generic.program.procedural.java.JavaCodeGenerator">
+            <property name="codeDirectory" class="ptolemy.data.expr.FileParameter" value="$HOME/cg/">
+                <property name="allowFiles" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="allowDirectories" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+            </property>
+            <property name="generatorPackageList" class="ptolemy.data.expr.StringParameter" value="generic.program.procedural.java">
+            </property>
+            <property name="overwriteFiles" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <property name="generateComment" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <property name="inline" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="measureTime" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="run" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <property name="compile" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <property name="compileTarget" class="ptolemy.data.expr.StringParameter" value="">
+            </property>
+            <property name="generateEmbeddedCode" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+        </property>
+        <port name="port" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{580.0, 200.0}">
+            </property>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
+            </property>
+        </port>
+        <entity name="slow" class="ptolemy.actor.lib.Ramp">
+            <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="init" class="ptolemy.data.expr.Parameter" value="0.0">
+            </property>
+            <property name="step" class="ptolemy.actor.parameters.PortParameter" value="PI/100.0">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{73.0, 123.0}">
+            </property>
+        </entity>
+        <entity name="fast" class="ptolemy.actor.lib.Ramp">
+            <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="init" class="ptolemy.data.expr.Parameter" value="0.0">
+            </property>
+            <property name="step" class="ptolemy.actor.parameters.PortParameter" value="PI/10.0">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{75.0, 233.5}">
+            </property>
+        </entity>
+        <entity name="Expression" class="ptolemy.actor.lib.Expression">
+            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="cos(slow) + cos(fast)">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{240.0, 200.0}">
+            </property>
+            <port name="slow" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+            </port>
+            <port name="fast" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+            </port>
+        </entity>
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+        </relation>
+        <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+        </relation>
+        <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <link port="port" relation="relation3"/>
+        <link port="slow.output" relation="relation"/>
+        <link port="fast.output" relation="relation2"/>
+        <link port="Expression.output" relation="relation3"/>
+        <link port="Expression.slow" relation="relation"/>
+        <link port="Expression.fast" relation="relation2"/>
+    </entity>
+    <entity name="Test" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{2.0, 1.9505630766609, 1.8070437228032, 1.5833472168956, 1.3011316956894, 0.9876883405951, 0.6732702563537, 0.3881315096463, 0.1595661667537, 0.0092371693818, -0.0489434837048, -0.0101757473409, 0.1207594915133, 0.3299693733915, 0.5958100580911, 0.8910065241884, 1.1853236744188, 1.4485272792964, 1.653344919877, 1.7781370905697, 1.8090169943749, 1.7412115286708, 1.5795302371507, 1.3378963219229, 1.0379856217963, 0.7071067811865, 0.3755301115537, 0.0735266130312, -0.1715930046263, -0.3381494626422, -0.4122147477075, -0.388973138443, -0.2731901993959, -0.0787438365421, 0.1727366797268, 0.4539904997396, 0.73479628594, 0.9849331429273, 1.1771415470596, 1.2897944365404, 1.3090169943749, 1.2300476223344, 1.0577068815398, 0.805928493689, 0.4963983089607, 0.1564344650402, -0.1836837608107, -0.493676938974, -0.7462264748456, -0.919645757217, -1.0, -0.9824672753733, -0.8718075139042, -0.681893565611, -0.4343502279392, -0.1564344650402, 0.1216356797892, 0.369642010896, 0.5603271072101, 0.6720654102559, 0.690983005625, 0.6123185960498, 0.4408924416902, 0.1906373616577, -0.1167622971902, -0.4539904997396, -0.7907706684767, -1.0968266680429, -1.344843789354, -1.5131398941473, -1.5877852522925, -1.5639635699481, -1.4464409841236, -1.2490971176161, -0.9935641003036, -0.7071067811865, -0.4199516330464, -0.1623258173379, 0.0385037515992, 0.1609015039195, 0.190983005625, 0.1239759420206, -0.0353109311271, -0.2729567747115, -0.567289685669, -0.8910065241885, -1.2138440468411, -1.5055398779765, -1.7387934802633, -1.8919372852494, -1.9510565162952, -1.9113502019721, -1.7776001555035, -1.5637020142311, -1.2913042451035, -0.987688340595, -0.6830977069394, -0.4077767123105, -0.1890097340533, -0.0484500440705, 0.0, -0.0484500440706, -0.1890097340534, -0.4077767123107, -0.6830977069396, -0.9876883405952, -1.2913042451037, -1.5637020142313, -1.7776001555036, -1.9113502019721, -1.9510565162951, -1.8919372852493, -1.7387934802631, -1.5055398779763, -1.2138440468408, -0.8910065241882, -0.5672896856688, -0.2729567747114, -0.035310931127, 0.1239759420206, 0.1909830056251, 0.1609015039194, 0.0385037515991, -0.1623258173381, -0.4199516330466, -0.7071067811867, -0.9935641003038, -1.2490971176162, -1.4464409841237, -1.5639635699482, -1.5877852522925, -1.5131398941472, -1.3448437893538, -1.0968266680427, -0.7907706684765, -0.4539904997394, -0.1167622971899, 0.1906373616578, 0.4408924416904, 0.6123185960499, 0.6909830056251, 0.6720654102559, 0.56032710721, 0.3696420108958, 0.1216356797891, -0.1564344650404, -0.4343502279394, -0.6818935656111, -0.8718075139044, -0.9824672753733, -1.0, -0.9196457572169, -0.7462264748455, -0.4936769389738, -0.1836837608104, 0.1564344650404, 0.4963983089609, 0.8059284936892, 1.0577068815399, 1.2300476223345, 1.309016994375, 1.2897944365404, 1.1771415470595, 0.9849331429271, 0.7347962859398, 0.4539904997393, 0.1727366797266, -0.0787438365423, -0.2731901993961, -0.3889731384431, -0.4122147477075, -0.3381494626421, -0.1715930046261, 0.0735266130314, 0.375530111554, 0.7071067811868, 1.0379856217966, 1.3378963219231, 1.5795302371509, 1.7412115286709, 1.809016994375, 1.7781370905696, 1.6533449198768, 1.4485272792962, 1.1853236744186, 0.8910065241881, 0.5958100580908, 0.3299693733913, 0.1207594915132, -0.010175747341, -0.0489434837048, 0.0092371693819, 0.1595661667538, 0.3881315096465, 0.673270256354, 0.9876883405954, 1.3011316956897, 1.5833472168958, 1.8070437228034, 1.950563076661}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 210.0]">
+        </property>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="CompiledCompositeActor.port" relation="relation"/>
+    <link port="Test.input" relation="relation"/>
+</entity>
