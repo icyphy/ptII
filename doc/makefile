@@ -42,18 +42,15 @@ ROOT =		..
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
-# Note that CALTROP_JARS should be before SOOT_JARS because
-# CALTROP_JARS contains java_cup.jar and jasminclasses.jar contains
-# a version of java cup
-CALTROP_JARS = $(CLASSPATHSEPARATOR)$(CALTROP_DIR)/ptCal.jar$(CLASSPATHSEPARATOR)$(SAXON_JAR)$(CLASSPATHSEPARATOR)$(CALTROP_DIR)/java_cup.jar
-
 # Classpath for the PtinyOS utilities
 PTINYOS_DIR =   $(PTII)/ptolemy/domains/ptinyos
 PTINYOS_CLASSPATH = $(PTINYOS_DIR)/lib/jdom.jar$(CLASSPATHSEPARATOR)$(PTINYOS_DIR)/lib/nesc.jar
 
 
 # COMPLETE_CLASSPATH is defined in $PTII/mk/ptII.mk.in
-CLASSPATH =	$(ROOT)$(COMPLETE_CLASSPATH)
+# We use "." instead of $PTII here because the javadoc command runs from ..
+# Also, if we use $PTII, we get "javadoc: warning - Multiple sources of package comments found for package . . ."
+CLASSPATH =	.$(CLASSPATHSEPARATOR)$(COMPLETE_CLASSPATH)
 
 # Used to build jar files
 PTPACKAGE = 	doc
@@ -436,6 +433,7 @@ HYVISUALPACKAGES = \
 	ptolemy.actor.lib.comm \
 	ptolemy.actor.lib.conversions \
 	ptolemy.actor.lib.gui \
+	ptolemy.actor.gui \
 	ptolemy.actor.gui.exec \
 	ptolemy.actor.gui.jnlp \
 	ptolemy.actor.gui.properties \
