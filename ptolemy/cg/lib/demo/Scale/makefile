@@ -75,7 +75,7 @@ install: all jars
 demo: demo_vergil
 
 demo_vergil:
-	"$(PTII)/bin/vergil" Scale.xml
+	"$(PTII)/bin/vergil" Scale_java.xml
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
