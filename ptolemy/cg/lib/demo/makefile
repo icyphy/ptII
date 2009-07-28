@@ -31,7 +31,7 @@
 ME =		ptolemy/cg/lib/demo
 
 # Keep these alphabetical please.
-DIRS = 		Scale
+DIRS = 		ModularCodeGen Scale
 
 # Root of Ptolemy II directory
 ROOT =		../../../..
@@ -46,6 +46,7 @@ PTCLASSJAR =
 
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
+	ModularCodeGen/ModularCodeGen.jar \
 	Scale/Scale.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
