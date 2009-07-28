@@ -580,7 +580,6 @@ public class RealTimeComposite extends MirrorComposite {
          *  and then the firing of the composite will transfer those tokens
          *  to the outside model.
          *  @param actor The actor requesting firing (ignored).
-         *  @param time The time at which to fire.
          */
         public Time fireAtCurrentTime(Actor actor)
                 throws IllegalActionException {

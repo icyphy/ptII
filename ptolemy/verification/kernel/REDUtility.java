@@ -630,7 +630,7 @@ public class REDUtility {
      * duplication exists.
      *
      * @param entity
-     * @return
+     * @return The synchronizer variable set.
      * @exception IllegalActionException
      */
     private static HashSet<String> _decideSynchronizerVariableSet(Entity entity)
@@ -1859,7 +1859,7 @@ public class REDUtility {
      *
      * @param actor
      * @param variableSet
-     * @return
+     * @return The variable initial value set.
      */
     private static HashMap<String, String> _retrieveVariableInitialValue(
             FSMActor actor, HashSet<String> variableSet) {
@@ -1919,7 +1919,7 @@ public class REDUtility {
      * meaning that the current implementation is powerful enough to deal with
      * state refinement.
      *
-     * @param model Whole System under analysis.
+     * @param modelmodel Whole System under analysis.
      * @return Equivalent FSMActor for later analysis.
      */
     private static FSMActor _rewriteModalModelWithStateRefinementToFSMActor(

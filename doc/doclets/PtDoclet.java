@@ -363,8 +363,8 @@ public class PtDoclet {
     /** Given two dot separated classpath names, return a relative
      *  path to the corresponding doc file.
      *  This method is used to create relative paths
-     *  @param directory The top level directory where the classes are written.
-     *  @param destinationClassName
+     *  @param baseDirectory The top level directory where the classes are written.
+     *  @param destinationClassName The dot separated fully qualified class name.
      *  @param programElementDoc The documentation for the base class.
      *  @param isIncluded True if the destination class is included in the
      *  set of classes we are documenting.  If isIncluded is true,

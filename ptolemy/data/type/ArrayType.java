@@ -710,7 +710,7 @@ public class ArrayType extends StructuredType implements Cloneable,
         }
 
         /** Throw an exception. This term cannot be set.
-         *  @parameter e A Type.
+         *  @param e A Type.
          *  @exception IllegalActionException If this type is a constant,
          *   or the argument is not a Type.
          */
@@ -796,7 +796,7 @@ public class ArrayType extends StructuredType implements Cloneable,
 
         /** Reset the variable part of the element type to the specified
          *  type.
-         *  @parameter e A Type.
+         *  @param e A Type.
          *  @exception IllegalActionException If this type is a constant,
          *   or the argument is not a Type.
          */
@@ -926,7 +926,7 @@ public class ArrayType extends StructuredType implements Cloneable,
         }
 
         /** Throw an exception. This term cannot be set.
-         *  @parameter e A Type.
+         *  @param e A Type.
          *  @exception IllegalActionException If this type is a constant,
          *   or the argument is not a Type.
          */
@@ -1068,7 +1068,6 @@ public class ArrayType extends StructuredType implements Cloneable,
         }
 
         /** Delegate to the element type term of the associated typeable.
-         *  @return an ArrayType.
          *  @param type A Type.
          *  @exception IllegalActionException If the delegate throws it.
          */
@@ -1204,7 +1203,7 @@ public class ArrayType extends StructuredType implements Cloneable,
         }
 
         /** Throw an exception. This term cannot be set.
-         *  @parameter e A Type.
+         *  @param e A Type.
          *  @exception IllegalActionException If this type is a constant,
          *   or the argument is not a Type.
          */

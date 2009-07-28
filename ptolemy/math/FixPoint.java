@@ -843,7 +843,7 @@ public class FixPoint implements Cloneable, Serializable {
     /** Return the BigInteger whose fractional part is aligned with the
      *  provided precision. This never involves rounding, but only
      *  padding the fractional part with zeros
-     *  @param The precision with which to align
+     *  @param exponent The precision with which to align
      *  @return A BigInteger with aligned precision
      */
     private BigInteger _alignToExponent(int exponent) {
@@ -874,7 +874,6 @@ public class FixPoint implements Cloneable, Serializable {
      *
      *  @param bigDecimal The floating point value.
      *  @param quant The quantization specification.
-     *  @return The quantized and rounded BigInteger value.
      */
     private void _initFromBigDecimal(BigDecimal bigDecimal, Quantization quant) {
 
@@ -915,9 +914,8 @@ public class FixPoint implements Cloneable, Serializable {
      *  After completing this method, the _value and _precision
      *  are set.
      *
-     *  @param bigDecimal The floating point value.
+     *  @param bigInteger The integer value.
      *  @param quant The quantization specification.
-     *  @return The quantized and rounded BigInteger value.
      */
     private void _initFromBigInteger(BigInteger bigInteger, Quantization quant) {
 

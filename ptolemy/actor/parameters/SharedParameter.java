@@ -611,7 +611,6 @@ public class SharedParameter extends Parameter implements Initializable {
      *  has the same name as this one, and is contained by the container
      *  class specified in the constructor.
      *  @param container The container.
-     *  @param set The list to update.
      *  @return A shared parameter different from this one, or null if
      *   there is none.
      */

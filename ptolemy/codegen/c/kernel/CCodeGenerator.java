@@ -571,8 +571,8 @@ public class CCodeGenerator extends CodeGenerator {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    /**
-     * @return
+    /** Return the set of referenced functions.
+     * @return The set of referenced functions.
      */
     private HashSet _getReferencedFunctions() {
         // Determine the total number of referenced polymorphic functions.
@@ -586,9 +586,10 @@ public class CCodeGenerator extends CodeGenerator {
         return functions;
     }
 
-    /**
-     * @param functions
-     * @return
+    /** Return the new types used by the given set of functions.
+     * @param functions The set of functions used, such as "equals",
+     * "isCloseTo", and "toString".
+     * @return The new types used.
      */
     private HashSet _getNewTypesUsed(HashSet functions) {
         // Determine the total number of referenced types.
@@ -1286,7 +1287,7 @@ public class CCodeGenerator extends CodeGenerator {
 
     /** Given a Collection of Strings, return a string where each element of the
      *  Set is separated by a space.
-     *  @param set The Set of Strings.
+     *  @param collection  The collection of elements.
      *  @return A String that contains each element of the Set separated by
      *  a space.
      */

@@ -72,7 +72,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  to register to the name service.
 
  @author Yang Zhao
- @version
+ @version $Id$
  @since Ptolemy II 3.0
  */
 public class TaskCoordinator extends Transformer {

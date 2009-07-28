@@ -695,7 +695,7 @@ public class PlotFrame extends JFrame {
     /** Display only .eps files */
     static class EPSFileFilter extends FileFilter {
         /** Accept only .eps files.
-         *  @param file The file to be checked.
+         *  @param fileOrDirectory The file or directory to be checked.
          *  @return true if the file is a directory, a .eps file
          */
         public boolean accept(File fileOrDirectory) {
@@ -732,7 +732,7 @@ public class PlotFrame extends JFrame {
     /** Display only .plt and .xml files */
     static class PLTOrXMLFileFilter extends FileFilter {
         /** Accept only .plt or .xml files.
-         *  @param file The file to be checked.
+         *  @param fileOrDirectory The file to be checked.
          *  @return true if the file is a directory, a .plot or a .xml file.
          */
         public boolean accept(File fileOrDirectory) {

@@ -341,8 +341,8 @@ public class GTFrameController implements ChangeListener, KeyListener {
         }
     }
 
-    /** Add a tabbed pane for the specified case.
-     *  @param refinement The case.
+    /** Add a tabbed pane for the specified matcher.
+     *  @param matcher The matcher
      *  @param newPane True to add the pane prior to the last pane.
      *  @return The pane.
      */

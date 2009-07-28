@@ -170,8 +170,6 @@ public class PropertyDisplayActions extends NodeControllerFactory {
          *  @param parent A frame to serve as a parent for the dialog, or
          *  null if there is none.
          *  @param target The object whose parameters are to be edited.
-         *  @param event The action event that triggered this, or null if
-         *   none.
          */
         private void _openDialog(Frame parent, NamedObj target) {
             new EditHighlightDialog(parent, target, "Highlight properties");

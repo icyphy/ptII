@@ -644,7 +644,7 @@ public class DDEReceiver extends PrioritizedTimedQueue implements
      *  particular, FeedBackDelay uses this method so that it can
      *  "see" NullTokens that it receives and give them appropriate
      *  delay values. For this reason this method is package friendly.
-     *  @parameter hide The parameter indicating whether NullTokens
+     *  @param hide The parameter indicating whether NullTokens
      *   should be taken into consideration by hasToken().
      */
     void _hideNullTokens(boolean hide) {

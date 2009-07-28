@@ -552,7 +552,7 @@ public class XmlParser {
      * DTD (if present) has been parsed.
      * <p>We do not look for the XML declaration here, because it is
      * handled by pushURL().
-     * @see pushURL
+     * @see #pushURL
      */
     void parseProlog() throws java.lang.Exception {
         parseMisc();
@@ -2252,7 +2252,6 @@ public class XmlParser {
 
     /**
      * Convert the data buffer to a string.
-     * @param internFlag true if the contents should be interned.
      * @see #intern(char[],int,int)
      */
     String dataBufferToString() {
@@ -3024,7 +3023,6 @@ public class XmlParser {
      * position in external entities, but it's not entirely accurate.
      * @return The next available input character.
      * @see #unread(char)
-     * @see #unread(String)
      * @see #readDataChunk
      * @see #readBuffer
      * @see #line
@@ -3091,16 +3089,14 @@ public class XmlParser {
     /**
      * Push a single character back onto the current input stream.
      * <p>This method usually pushes the character back onto
-     * the readBuffer, while the unread(String) method treats the
-     * string as a new internal entity.
+     * the readBuffer.
      * <p>I don't think that this would ever be called with
      * readBufferPos = 0, because the methods always reads a character
      * before unreading it, but just in case, I've added a boundary
      * condition.
      * @param c The character to push back.
      * @see #readCh
-     * @see #unread(String)
-     * @see #unread(char[])
+     * @see #unread(char[], int)
      * @see #readBuffer
      */
     void unread(char c) throws java.lang.Exception {
@@ -3123,7 +3119,6 @@ public class XmlParser {
      * haven't actually read: use pushString() instead.
      * @see #readCh
      * @see #unread(char)
-     * @see #unread(String)
      * @see #readBuffer
      * @see #pushString
      */
@@ -3151,7 +3146,13 @@ public class XmlParser {
      * the encoding; in the future, it should allow the caller to
      * request an encoding explicitly, and it should also look at the
      * headers with an HTTP connection.
-     * @param url The java.net.URL object for the entity.
+     * @param ename
+     * @param publicId
+     * @param systemId
+     * @param reader
+     * @param stream
+     * @param encoding
+     * @exception Exception
      * @see XmlHandler#resolveEntity
      * @see #pushString
      * @see #sourceType
@@ -3678,7 +3679,7 @@ public class XmlParser {
      * <p>This is a a little inefficient right now, since it calls tryRead()
      * for every character.
      * @param delim The string delimiter
-     * @see #tryRead(String, boolean)
+     * @see #tryRead(String)
      * @see #readCh
      */
     void parseUntil(String delim) throws java.lang.Exception {
@@ -3708,7 +3709,6 @@ public class XmlParser {
      * <p>This is a a little inefficient right now, since it calls tryRead()
      * for every character.
      * @param delim The string delimiter
-     * @see #tryRead(String, boolean)
      * @see #readCh
      */
     void skipUntil(String delim) throws java.lang.Exception {
@@ -3802,8 +3802,6 @@ public class XmlParser {
      * @see #filterCR
      * @see #copyUtf8ReadBuffer
      * @see #copyIso8859_1ReadBuffer
-     * @see #copyUcs_2ReadBuffer
-     * @see #copyUcs_4ReadBuffer
      */
     void readDataChunk() throws java.lang.Exception {
         int count;

@@ -105,7 +105,6 @@ public class DoubleCQComparator implements CQComparator {
      *  for this implementation.
      *
      *  @param entryArray An array of Double objects.
-     *  @return The bin width.
      *  @exception ClassCastException If one of the array elements is not
      *   an instance of Double.
      */

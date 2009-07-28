@@ -2133,7 +2133,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         }
     }
 
-    /** Given a transitions, find any input ports
+    /** Given a transition, find any input ports
      *  referenced in the guard expressions of the
      *  transitions, and if any of those input ports has status
      *  unknown, return false.
@@ -2146,7 +2146,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
      *  Otherwise, return true.
      *  These are the input ports whose status must be known
      *  for this transition to be enabled.
-     *  @param transitions A collection of transitions.
+     *  @param transition A transition
      *  @return A set of input ports.
      *  @exception IllegalActionException If the guard expression cannot
      *   be parsed.
@@ -2213,7 +2213,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
      *  unknown, return false. Otherwise, return true.
      *  These are the input ports whose status must be known
      *  to choose this transition.
-     *  @param transitions A collection of transitions.
+     *  @param transition A transition
      *  @return A set of input ports.
      *  @exception IllegalActionException If the guard expression cannot
      *   be parsed.

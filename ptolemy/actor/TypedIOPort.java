@@ -944,7 +944,7 @@ public class TypedIOPort extends IOPort implements Typeable {
         }
 
         /** Set the type of this port.
-         *  @parameter type A Type.
+         *  @param type A Type.
          *  @exception IllegalActionException If the new type violates
          *   the declared type of this port.
          */

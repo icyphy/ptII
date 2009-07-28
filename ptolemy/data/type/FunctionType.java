@@ -677,7 +677,7 @@ public class FunctionType extends StructuredType implements Cloneable {
 
         /** Reset the variable part of the element type to the specified
          *  type.
-         *  @parameter e A Type.
+         *  @param e A Type.
          *  @exception IllegalActionException If this type is not settable,
          *   or the argument is not a Type.
          */

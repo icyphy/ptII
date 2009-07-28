@@ -1375,8 +1375,8 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
          *  which is assumed to be a location representing a port,
          *  a port or a vertex.
          *  @param isHead True when newLinkHeadOrTail represents the head
-         *  @see #setHead()
-         *  @see #setTail()
+         *  @see #setHead(Object, Object)
+         *  @see #setTail(Object, Object)
          */
         private void _setHeadOrTail(final Object edge,
                 final Object newLinkHeadOrTail, final boolean isHead) {

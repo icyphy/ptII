@@ -125,7 +125,8 @@ public class ArrowAttribute extends LineAttribute {
      *  @param y The y extent.
      *  @param arrowLength Length of the arrow head.
      *  @param arrowWidth Width of the arrow head.
-     *  @return
+     *  @return An arrow with the given x, y, arrow length and arrow width
+     *  values.
      */
     private static Shape _createArrow(double x, double y, double arrowLength,
             double arrowWidth) {

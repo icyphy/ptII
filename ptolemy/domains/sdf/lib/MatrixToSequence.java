@@ -217,7 +217,7 @@ public class MatrixToSequence extends SDFTransformer {
         /** The constructor takes a port argument so that the clone()
          *  method can construct an instance of this class for the
          *  input port on the clone.
-         *  @parm port The port
+         *  @param port The port
          */
         private FunctionTerm(TypedIOPort port) {
             _port = port;

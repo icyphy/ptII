@@ -425,7 +425,7 @@ public class NondeterministicMerge extends TypedCompositeActor {
          *  @param thread The thread.
          *  @param receiver The receiver handling the I/O operation,
          *   or null if it is not a specific receiver.
-         *  @see #threadBlocked(Thread)
+         *  @see #threadBlocked(Thread, ProcessReceiver, boolean)
          */
         public synchronized void threadBlocked(Thread thread,
                 ProcessReceiver receiver) {
@@ -447,7 +447,7 @@ public class NondeterministicMerge extends TypedCompositeActor {
          *   or null if it is not a specific receiver.
          *  @param readOrWrite Either READ_BLOCKED or WRITE_BLOCKED
          *   to indicate whether the thread is blocked on read or write.
-         *  @see #threadBlocked(Thread)
+         *  @see #threadBlocked(Thread, ProcessReceiver)
          */
         public synchronized void threadBlocked(Thread thread,
                 ProcessReceiver receiver, boolean readOrWrite) {
@@ -500,7 +500,7 @@ public class NondeterministicMerge extends TypedCompositeActor {
          *  @param thread The thread.
          *  @param receiver The receiver handling the I/O operation,
          *   or null if it is not a specific receiver.
-         *  @see #threadBlocked(Thread)
+         *  @see #threadBlocked(Thread, ProcessReceiver)
          */
         public synchronized void threadUnblocked(Thread thread,
                 ProcessReceiver receiver) {
@@ -522,7 +522,7 @@ public class NondeterministicMerge extends TypedCompositeActor {
          *   or null if it is not a specific receiver.
          *  @param readOrWrite Either READ_BLOCKED or WRITE_BLOCKED
          *   to indicate whether the thread is blocked on read or write.
-         *  @see #threadBlocked(Thread)
+         *  @see #threadBlocked(Thread, ProcessReceiver, boolean)
          */
         public synchronized void threadUnblocked(Thread thread,
                 ProcessReceiver receiver, boolean readOrWrite) {

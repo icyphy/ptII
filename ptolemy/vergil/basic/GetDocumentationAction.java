@@ -404,7 +404,7 @@ public class GetDocumentationAction extends FigureAction {
     /**
      * Find and show the tableau for a given DocAttribute.
      * @param docAttribute the attribute to show
-     * @param taget the target of the documentation viewing
+     * @param target the target of the documentation viewing
      */
     private void showDocAttributeTableau(DocAttribute docAttribute,
             NamedObj target) {

@@ -2086,7 +2086,7 @@ public class TransformationEditor extends GTFrame implements ActionListener,
      @author Thomas Huining Feng
      @version $Id$
      @since Ptolemy II 6.1
-     @see ActorGraphFrame.LayoutAction
+     @see ptolemy.vergil.actor.ActorGraphFrame.LayoutAction
      @Pt.ProposedRating Red (tfeng)
      @Pt.AcceptedRating Red (tfeng)
      */

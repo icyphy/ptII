@@ -107,8 +107,6 @@ public class FindPackages {
      *  @param directory  The top level directory.
      *  @param directoriesSeen A Set of objects of type File
      *  that name directories that have been seen.
-     *  @param directoriesSeen A Set of objects of type File
-     *  that name .class files that have been seen.
      */
     private static void _getDirectories(File directory, Set directoriesSeen,
             Set classFilesSeen) {
@@ -130,7 +128,7 @@ public class FindPackages {
     /** Filter that returns true if the pathname ends with .class. */
     private static class ClassFileFilter implements FileFilter {
         /** Filter that returns true if the file name ends with .class.
-         *  @parameter pathname The pathname to be checked
+         *  @param pathname The pathname to be checked
          *  @return true if the pathname ends with .class.
          */
         public boolean accept(File pathname) {
@@ -141,7 +139,7 @@ public class FindPackages {
     /** Filter that returns true if the pathname is a directory. */
     private static class DirectoryFileFilter implements FileFilter {
         /** Filter that returns true if the pathname is a directory.
-         *  @parameter pathname The pathname to be checked
+         *  @param pathname The pathname to be checked
          *  @return true if the pathname is a directory.
          */
         public boolean accept(File pathname) {

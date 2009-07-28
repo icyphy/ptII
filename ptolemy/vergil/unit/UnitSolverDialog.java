@@ -399,8 +399,7 @@ public class UnitSolverDialog extends PtolemyDialog implements
 
     /** Create a Vector of selected odes in a Tableau. This method really
      *  belongs elsewhere and will be moved there at some point.
-     * @param tableau
-     * @return Vector of selected Nodes.
+     *  @return Vector of selected Nodes.
      */
     private Vector _getSelectedNodes() {
         Vector nodes = new Vector();
@@ -426,8 +425,7 @@ public class UnitSolverDialog extends PtolemyDialog implements
 
     /** Create a Vector of selected Relations in a Tableau. This method really
      *  belongs elsewhere and will be moved there at some point.
-     * @param tableau
-     * @return Vector of selected Relations.
+     *  @return Vector of selected Relations.
      */
     private Vector _getSelectedRelations() {
         Vector relations = new Vector();

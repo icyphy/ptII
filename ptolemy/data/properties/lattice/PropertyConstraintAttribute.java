@@ -55,7 +55,6 @@ public class PropertyConstraintAttribute extends PropertyAttribute {
      * @see ptolemy.kernel.util.Settable#setExpression(java.lang.String)
      */
 
-    @Override
     public void setExpression(String expression) throws IllegalActionException {
         super.setExpression(expression);
 
@@ -222,7 +221,7 @@ public class PropertyConstraintAttribute extends PropertyAttribute {
      * Parse the given expression for a basic Property.
      * @param lattice
      * @param expression
-     * @return
+     * @return The lattice property for the element expression.
      * @exception IllegalActionException
      */
     private static LatticeProperty _parseElementExpression(
@@ -241,7 +240,7 @@ public class PropertyConstraintAttribute extends PropertyAttribute {
      * Parse the given expression for an arbitrary Property.
      * @param lattice
      * @param expression
-     * @return
+     * @return The lattice property for the arbitrary Property.
      * @exception IllegalActionException
      */
     private static LatticeProperty _parsePropertyExpression(

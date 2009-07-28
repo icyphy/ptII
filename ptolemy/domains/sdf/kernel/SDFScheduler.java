@@ -1389,18 +1389,11 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
      *  actor has sufficient tokens on its inputs to fire.   Note that no
      *  claim is made that this is an optimal solution in any other sense.
      *
-     *  @param minimumBufferSize A map from relation to an Integer
-     *   representing the minimum size buffer necessary for the computed
-     *   schedule.  The map will be populated during the execution of this
-     *   method.
      *  @param externalRates Map from external port to an Integer
      *   representing the number of tokens produced or consumed from
      *   that port during the course of an iteration.
      *  @param actorList The actors that need to be scheduled.
-     *  @param allActorList All the actors, including those that do
-     *   not need to be scheduled.  These actors will still be
-     *   initialized, which means we must take their initial tokens
-     *   into account when calculating buffer sizes.
+     *  @param container The container.
      *  @return An instance of the Schedule class, indicating the order
      *   in which actors should fire.
      *  @exception NotSchedulableException If the algorithm encounters an SDF

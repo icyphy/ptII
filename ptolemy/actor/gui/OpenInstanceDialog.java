@@ -239,7 +239,7 @@ public class OpenInstanceDialog extends PtolemyDialog implements ChangeListener 
     private class ParametersTableModel extends AbstractTableModel {
 
         /** Create a table model for the specified target.
-         *  @param The target.
+         *  @param target The target.
          */
         public ParametersTableModel(NamedObj target) {
             _parameters = target.attributeList(Settable.class);
@@ -284,9 +284,9 @@ public class OpenInstanceDialog extends PtolemyDialog implements ChangeListener 
 
         /** Set the value at a particular row and column, which does nothing
          *  because this table is not editable.
+         *  @param value The new value.
          *  @param row The row number.
          *  @param col The column number.
-         *  @return value The new value.
          *  @see javax.swing.table.TableModel#setValueAt(Object, int, int)
          */
         public void setValueAt(Object value, int row, int col) {
