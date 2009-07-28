@@ -801,10 +801,10 @@ public class PropertyConstraintSolver extends PropertySolver {
     //  return (Property) term.getValue();
     //  }
 
-    /**
+    /** Return the Constraints as a log file string.
      * @param inequality
      * @param annotation
-     * @return
+     * @return The Constraints.
      * @exception IllegalActionException
      */
     private List _getConstraintAsLogFileString(Inequality inequality,
@@ -943,9 +943,9 @@ public class PropertyConstraintSolver extends PropertySolver {
     }
 
     /**
-     *
+     * Return the constraint type.
      * @param typeValue
-     * @return
+     * @return The constraint type.
      * @exception IllegalActionException
      */
     private ConstraintType _getConstraintType(String typeValue)
@@ -990,13 +990,16 @@ public class PropertyConstraintSolver extends PropertySolver {
         }
     }
 
-    /**
-     * @return
-     * @exception IllegalActionException
+    /** Return the trained constraint filename.
+     * @return The trained constraint filename.
+     * @exception IllegalActionException If there is a problem
+     * getting the name of the top level or the value of the
+     * <i>trainedConstraintDirectory</i> parameter.
      */
     private String _getTrainedConstraintFilename()
             throws IllegalActionException {
         // Make an unique file name from the toplevel container.
+        // FIXME: don't use __, they make the filenames too long.
         String constraintFilename = _toplevel().getName() + "__"
                 + getUseCaseName();
 

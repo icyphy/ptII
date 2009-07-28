@@ -275,7 +275,7 @@ public class NewComponentDialog extends JPanel {
     /** Cleans a string. Removes extra newlines.
      *
      * @param instr
-     * @return
+     * @return A clean string.
      */
     private String cleanString(String instr) {
         if (instr == null) {

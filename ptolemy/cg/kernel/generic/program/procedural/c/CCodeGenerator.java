@@ -602,8 +602,8 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    /**
-     * @return
+    /** Return the set of referenced functions.
+     * @return The set of referenced functions.
      */
     private HashSet<String> _getReferencedFunctions() {
         // Determine the total number of referenced polymorphic functions.
@@ -617,9 +617,10 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         return functions;
     }
 
-    /**
-     * @param functions
-     * @return
+    /** Return the new types used by the given set of functions.
+     * @param functions The set of functions used, such as "equals",
+     * "isCloseTo", and "toString".
+     * @return The new types used.
      */
     private HashSet<String> _getNewTypesUsed(HashSet<String> functions) {
         // Determine the total number of referenced types.
@@ -1344,7 +1345,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
 
     /** Given a Collection of Strings, return a string where each element of the
      *  Set is separated by a space.
-     *  @param set The Set of Strings.
+     *  @param collection The Collection of Strings.
      *  @return A String that contains each element of the Set separated by
      *  a space.
      */

@@ -1300,13 +1300,10 @@ public class PtinyOSDirector extends Director {
      *  @exception IllegalActionException If there is a problem accessing
      *  the {@link #destinationDirectory} or {@link #target} parameters
      *  or if the make subprocess fails or returns a non-zero value.
-     *
-     *  FIXME: Might want to use JTextAreaExec instead.
-     *
-     *  @param makefileName Name of makefile on which to call make.
-     *  @exception IllegalActionException If call to stringValue() throws it.
      */
     private void _compile(String makefileName) throws IllegalActionException {
+        // FIXME: Might want to use JTextAreaExec instead.
+
         // The command we run is:
         // make
         // -C : change to the destination directory before reading
@@ -1993,11 +1990,11 @@ include /home/celaine/ptII/vendors/ptinyos/tinyos-1.x/tools/make/Makerules
     }
 
     /** Generate code for the connections.  Called from {@link
-     *  _includeConnection(CompositeActor).
+     *  #_includeConnection(CompositeActor)}.
      *
      *  @param model The model containing nesC components for which to
      *  generate code.
-     *  @actor actor The actor representing the nesC component for
+     *  @param actor The actor representing the nesC component for
      *  which to generate code.
      *  @return The connections code.
      */

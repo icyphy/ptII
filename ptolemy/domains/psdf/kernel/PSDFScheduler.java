@@ -627,7 +627,7 @@ public class PSDFScheduler extends BaseSDFScheduler {
         /** Return the most recent expression that was used to set the
          *  iteration count of this symbolic firing.
          *  @return The most recent expression.
-         *  @see setIterationCount(String).
+         *  @see #setIterationCount(String).
          */
         public String expression() {
             return _expression;
@@ -710,7 +710,7 @@ public class PSDFScheduler extends BaseSDFScheduler {
         /** Return the most recent expression that was used to set the
          *  iteration count of this symbolic firing.
          *  @return The most recent expression.
-         *  @see setIterationCount(String).
+         *  @see #setIterationCount(String).
          */
         public String expression() {
             return _expression;
@@ -793,7 +793,7 @@ public class PSDFScheduler extends BaseSDFScheduler {
         /** Return the most recent expression that was used to set the
          *  iteration count of this symbolic firing.
          *  @return The most recent expression.
-         *  @see setIterationCount(String).
+         *  @see #setIterationCount(String).
          */
         public String expression();
 

@@ -679,9 +679,7 @@ public class SequenceScheduler extends Scheduler {
      *  model when deciding where to stop backtracking (done by checking if the actor
      *  has a SequenceAttribute (which will also match a ProcessAttribute).  
      *  
-     * @param processSequenceMapTest MultiHashMap
      * @exception IllegalActionException
-     * 
      */
     private void _createSubGraphFiringScheduleList() throws IllegalActionException {
 
@@ -943,7 +941,6 @@ public class SequenceScheduler extends Scheduler {
      *  The reachable nodes do not include the argument unless
      *  there is a loop from the specified node back to itself.
      * @param node
-     * @param visitedNodes
      * @param sequencedActorGraphNodes
      * @return subGraph of Sequenced Actor alongwith the upstream actor List directed to it. 
      */
@@ -955,8 +952,8 @@ public class SequenceScheduler extends Scheduler {
         return subGraph;
     }
     
-///////////////////////////////////////////////////////////////////
-////private methods                   ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
 
     /**  From original SequenceDirector - copied directly; slightly modified
      *  Given a node, get all the edges and nodes that are connected
@@ -964,7 +961,6 @@ public class SequenceScheduler extends Scheduler {
      *  Remove the nodes from the remaining nodes.
      * @param node
      * @param graph
-     * @param visitedNodes
      * @param sequencedActorGraphNodes
      */
     private void _connectedSubGraph(Node node, DirectedAcyclicGraph graph, List<Node> sequencedActorGraphNodes) {

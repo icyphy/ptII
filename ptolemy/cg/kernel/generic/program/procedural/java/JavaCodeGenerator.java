@@ -1312,8 +1312,8 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
     ////                         private methods                   ////
 
     /** Given a Collection of Strings, return a string where each element of the
-     *  Set is separated by $
-     *  @param set The Set of Strings.
+     *  Set is separated by $.
+     *  @param collection The Collection of Strings.
      *  @return A String that contains each element of the Set separated by
      *  a space.
      */
@@ -1334,11 +1334,13 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
 
     /** Given a Collection of Strings, return a string where each element of the
      *  Set is separated by a space.
-     *  @param set The Set of Strings.
+     *  @param collection The Collection of Strings.
      *  @return A String that contains each element of the Set separated by
      *  a space.
      */
     private static String _concatenateElements(Collection<String> collection) {
+        // FIXME: this is code duplication of
+        // ptolemy/cg/kernel/generic/program/procedural/c/CCodeGenerator.java
         StringBuffer buffer = new StringBuffer();
         Iterator<String> iterator = collection.iterator();
         while (iterator.hasNext()) {
@@ -1350,8 +1352,8 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
         return buffer.toString();
     }    
 
-    /**
-     * @return
+    /** Return the set of referenced functions.
+     * @return The set of referenced functions.
      */
     private HashSet<String> _getReferencedFunctions() {
         // Determine the total number of referenced polymorphic functions.
@@ -1367,11 +1369,14 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
         return functions;
     }
 
-    /**
-     * @param functions
-     * @return
+    /** Return the new types used by the given set of functions.
+     * @param functions The set of functions used, such as "equals",
+     * "isCloseTo", and "toString".
+     * @return The new types used.
      */
     private HashSet<String> _getReferencedTypes(HashSet<String> functions) {
+        // FIXME: Why is this not called _getNewTypesUsed() like what is in
+        // ptolemy/cg/kernel/generic/program/procedural/c/CCodeGenerator.java
         // Determine the total number of referenced types.
         HashSet<String> types = new HashSet<String>();
         if (functions.contains("equals") || functions.contains("isCloseTo")) {

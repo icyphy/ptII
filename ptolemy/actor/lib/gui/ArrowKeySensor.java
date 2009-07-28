@@ -251,8 +251,7 @@ public class ArrowKeySensor extends TypedAtomicActor {
          *  appear.  This is done by calling show() at the end of this
          *  constructor.
          *  @see Tableau#show()
-         *  @param entity The model to put in this frame.
-         *  @param tableau The tableau responsible for this frame.  */
+         */
         public MyFrame() {
             // up-arrow call-backs
             ActionListener myUpPressedListener = new ActionListenerExceptionCatcher(

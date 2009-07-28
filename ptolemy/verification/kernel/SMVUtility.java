@@ -645,7 +645,7 @@ public class SMVUtility {
      *
      * @param actor The actor under analysis
      * @param numSpan The size to expand the original domain
-     * @return
+     * @return The state variable set.
      * @exception IllegalActionException
      */
     private static HashSet<String> _decideStateVariableSet(FSMActor actor,
@@ -2651,7 +2651,7 @@ public class SMVUtility {
      * @param span The number to expand the domain of a variable. Note that
      *                it is in fact irrelevant to the signal generation. It is
      *                only used for the reuse of existing functions.
-     * @return
+     * @return An array of Strings that contains the pre-scan results.
      * @exception IllegalActionException
      * @exception NameDuplicationException
      */
@@ -4680,7 +4680,7 @@ public class SMVUtility {
      * @param span The constant span for expanding the integer domain for state (inner) variables
      * @param isController Whether the FSMActor is the controller of a ModalModel
      * @param refinementStateName The name of the refinement state
-     * @return
+     * @return An FSMActor in a format acceptable to the model checker.
      * @exception IllegalActionException
      */
     private static StringBuffer _translateSingleFSMActor(FSMActor actor,

@@ -289,8 +289,8 @@ public class TDLActionsGraph {
      * Analyze the slot selection string.
      *
      * @param actor
-     * @param modePeriod
-     * @return
+     * @param modePeriodTime
+     * @return The LetTask
      * @exception IllegalActionException
      * @exception TDLModeSchedulerException
      */
@@ -598,7 +598,7 @@ public class TDLActionsGraph {
      *
      * @param slots
      * @param frequency
-     * @return
+     * @return The list of invocations.
      * @exception IllegalActionException
      */
     private ArrayList _getInvocations(String slots, int frequency)
@@ -702,7 +702,7 @@ public class TDLActionsGraph {
      *
      * @param port
      * @param upper
-     * @return
+     * @return The node
      */
     private Node _getLastNodeBeforeTime(IOPort port, Time upper) {
         List<Node> nodes = (List<Node>) _graph.nodes();
@@ -892,7 +892,7 @@ public class TDLActionsGraph {
     /**
      * First read transitions and build subgraphs for the transitions.
      *
-     * @param state
+     * @param mode
      * @param refinement
      * @param modePeriod
      * @exception IllegalActionException
@@ -982,7 +982,7 @@ public class TDLActionsGraph {
      *
      * @param slotSelection
      * @param i
-     * @return
+     * @return True if the character at position i in the string is a number.
      */
     private boolean _nextCharIsANumber(String slotSelection, int i) {
         return slotSelection.length() > i + 1

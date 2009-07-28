@@ -330,9 +330,9 @@ public class PropertyConstraintFSMHelper extends
         }
     }
 
-    /**
-     * @param actions
-     * @return
+    /** Return the parse trees for a given action.
+     * @param actions The given action.
+     * @return The parse trees.
      */
     private List<ASTPtRootNode> _getParseTrees(AbstractActionsAttribute actions) {
         List<ASTPtRootNode> parseTrees = actions.getParseTreeList();

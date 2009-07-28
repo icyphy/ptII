@@ -787,7 +787,6 @@ public class CodeStream {
      * Otherwise, it recursively searches code blocks from super classes'
      * adapters.
      * @param mayNotExist Indicate if the file is required to exist.
-     * @param filePath The given .[target] file to read from.
      * @exception IllegalActionException If an error occurs when parsing the
      *  adapter .[target] file.
      */
@@ -922,8 +921,7 @@ public class CodeStream {
      *  if the source is bound only to the output file, or if there is
      *  no CodeGenerator associated with this stream.
      * @exception IllegalActionException If there is a problem reading
-     *  the {@link ptolemy.codegen.kernel.ProceduralCodeGenerator#sourceLineBinding}
-     *  parameter.
+     *  the <i>sourceLineBinding</i> parameter.
      */
     private boolean _needLineInfo() throws IllegalActionException {
         Token sourceLineBinding = null;
@@ -963,8 +961,8 @@ public class CodeStream {
      * @return The code body within the current code block.
      * @exception IllegalActionException If code block's close block
      *  pattern, _BLOCKEND, is missing.
-     * @see _parseIndex
-     * @see _BLOCKEND
+     * @see #_parseIndex
+     * @see #_BLOCKEND
      */
     private StringBuffer _parseBody(StringBuffer codeInFile)
             throws IllegalActionException {
@@ -1046,8 +1044,8 @@ public class CodeStream {
      * @return The name of the code block, or null if there is no more code
      *  blocks to be parsed.
      * @exception IllegalActionException If an error occurs during parsing.
-     * @see parseHeader(StringBuffer)
-     * @see parseBody(StringBuffer)
+     * @see #_parseHeader(StringBuffer)
+     * @see #_parseBody(StringBuffer)
      */
     private Signature _parseCodeBlock(StringBuffer codeInFile)
             throws IllegalActionException {
@@ -1071,14 +1069,14 @@ public class CodeStream {
      * arguments.
      * Parse from the _parseIndex for the next code block header and
      * return the next code block name. This method parses for any parameter
-     * declarations and put the list of parameter(s) into the _parameterTable.
+     * declarations and put the list of parameter(s) into the _declarations.
      * @param codeInFile Code from the adapter .c file.
      * @return The name of the code block, or null if there is no more
      *  code blocks to be parsed.
      * @exception IllegalActionException If the code block's close header
      *  pattern, _HEADEREND, is missing.
-     * @see _HEADEREND
-     * @see _parameterTable
+     * @see #_HEADEREND
+     * @see #_declarations
      */
     private Signature _parseHeader(StringBuffer codeInFile)
             throws IllegalActionException {
@@ -1600,7 +1598,7 @@ public class CodeStream {
          * code block name and the number of parameters.
          * @param functionName The given code block name.
          * @param numParameters The number of parameters.
-         * @throw IllegalActionException Thrown if the given name is null,
+         * @exception IllegalActionException Thrown if the given name is null,
          *  or the number of parameters is less than zero.
          */
         private Signature(String functionName, int numParameters)

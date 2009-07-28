@@ -646,7 +646,7 @@ public class RecordProperty extends StructuredProperty implements Cloneable {
         /**
          * Reset the variable part of the element property to the specified
          * property.
-         * @parameter property A Property.
+         * @param property A Property.
          * @exception IllegalActionException If this property is not settable,
          * or the argument is not a Property.
          */

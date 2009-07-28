@@ -392,7 +392,7 @@ public class PlotTableauFrame extends TableauFrame implements Printable {
         // the size of instances and avoid dangling references.
 
         /** Accept only .eps files.
-         *  @param file The file to be checked.
+         *  @param fileOrDirectory The file to be checked.
          *  @return true if the file is a directory, a .eps file
          */
         public boolean accept(File fileOrDirectory) {

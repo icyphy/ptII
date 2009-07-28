@@ -384,7 +384,7 @@ public class StreamExec implements ExecuteCommands {
     }
 
     /** Update the progress bar.  In this base class, do nothing.
-     *  @i The current location of the progress bar.
+     *  @param i The current location of the progress bar.
      */
     private void _updateProgressBar(final int i) {
     }

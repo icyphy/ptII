@@ -322,7 +322,7 @@ public class Configurer extends JPanel implements CloseListener {
      *  we will also return the decorated attributes.
      *  @param object The named object for which to show the visible
      *          Settables
-     *  @param object addDecoratedAttributes A flag that specifies whether
+     *  @param addDecoratedAttributes A flag that specifies whether
      *          decorated attributes should also be included.
      *  @return The visible attributes.
      */

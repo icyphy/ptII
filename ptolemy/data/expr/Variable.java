@@ -2267,7 +2267,7 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
      *  any container above it in the hierarchy is
      *  a class definition.
      *  @return True if this object is within a class definition.
-     *  @see #setClassDefinition(boolean)
+     *  @see ptolemy.kernel.InstantiableNamedObj#setClassDefinition(boolean)
      *  @see Instantiable
      */
     private boolean _isWithinClassDefinition() {

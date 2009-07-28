@@ -572,11 +572,10 @@ public class SequenceSchedule extends Schedule {
          *   
          *   Returns an empty list if there are none.
          * 
-         *   @param SequenceAttribute for a control actor
+         *   @param seq The SequenceAttribute for a control actor.
          *   @return List of actors on the branch of a control actor that should be executed
          */
-        private ArrayList<SequenceAttribute> findBranchActors(SequenceAttribute seq)
-        {
+        private ArrayList<SequenceAttribute> findBranchActors(SequenceAttribute seq) {
             
         ArrayList<SequenceAttribute> seqAttributes = new ArrayList<SequenceAttribute>();    
         

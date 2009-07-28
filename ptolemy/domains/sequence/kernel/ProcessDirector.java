@@ -1,6 +1,6 @@
 /* Director for the sequence model of computation plus processes.
 
- Copyright (c) 1997-2007 The Regents of the University of California.
+ Copyright (c) 2009 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -287,10 +287,8 @@ public class ProcessDirector extends SequencedModelDirector{
      * Uses the _sequencedList as an input, which has a list of all sequenced
      * actors in the model.
      * 
-     * @param actorEntityList
      * @throws IllegalActionException
      */
-
     private void _createProcessActorList() throws IllegalActionException {
 
         String processID = "";

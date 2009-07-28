@@ -3566,7 +3566,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
 
     /** Add all (deeply) contained instances of Settable to the
      *  _paramsToParse list, which will ensure that they get validated.
-     *  @param container The container for these settables.
+     *  @param object The object to be scanned for Settables.
      */
     private void _addParamsToParamsToParse(NamedObj object) {
         Iterator objects = object.lazyContainedObjectsIterator();
@@ -3823,8 +3823,8 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
      * @param source
      * @param isClass True to create a class definition, false to create
      *  an instance.
-     * @return
-     * @exception Exception
+     * @return The created NamedObj
+     * @exception Exception If anything goes wrong.
      */
     private NamedObj _createEntity(String className, String entityName,
             String source, boolean isClass) throws Exception {
@@ -5886,7 +5886,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
      *  This method adds all (deeply) contained instances
      *  of Settable to the _paramsToParse list, which ensures
      *  that they will be validated.
-     *  @param entity The instance to mark.
+     *  @param object The instance to mark.
      */
     private void _markParametersToParse(NamedObj object) {
         Iterator objects = object.lazyContainedObjectsIterator();

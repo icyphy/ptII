@@ -354,7 +354,7 @@ public class GiottoDirector extends
 
     /**
      * This method creates port variables for the actor passed in as a parameter.
-     * @param actor- Actor whose port variables need to be declared
+     * @param actor Actor whose port variables need to be declared
      * @return Port variables associated with this actor
      * @throws IllegalActionException
      */
@@ -504,9 +504,9 @@ public class GiottoDirector extends
     }
 
     /**
-     * Generates a name for a driver Method
-     * @param namedObj
-     * @return
+     * Generates a name for a driver method.
+     * @param namedObj The object for which a name should be generated.
+     * @return The driver name
      */
     private static String _generateDriverName(NamedObj namedObj) {
         String name = StringUtilities.sanitizeName(namedObj.getFullName());

@@ -3076,9 +3076,10 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
     }
 
     /**
-     * Return
-     * @param objectName
-     * @return
+     * If the object name is a Port or Variable, return its Port
+     * or Variable, otherwise return null.
+     * @param objectName  The object name
+     * @return Either the Port, Variable or null.
      */
     private Typeable _getTypeable(String objectName) {
         TypedIOPort port = getPort(objectName);

@@ -337,7 +337,7 @@ public class Receiver extends X10Interface {
         ///                       private methods                      ////
 
         /** Append a received command onto the </i>commandQueue<i>.
-         * @return void
+         * @param event The event to be appended.
          */
         private void _appendCommand(UnitEvent event) {
             if (_debugging) {

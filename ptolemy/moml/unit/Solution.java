@@ -702,8 +702,7 @@ public class Solution {
     }
 
     /**
-     * @param k
-     * @param l
+     * @param g
      */
     private void _eliminate(Index g) {
         int k = g.getK();
@@ -763,7 +762,7 @@ public class Solution {
 
     /**
      * @param rows
-     * @return
+     * @return A vector of Indexes.
      */
     private Vector _findAllGInRows(int[] rows) {
         Vector retv = new Vector();

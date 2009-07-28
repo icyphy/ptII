@@ -316,7 +316,8 @@ public class TableIcon extends DynamicEditorIcon {
     ////                         private methods                   ////
 
     /** Return a label figure for the specified token.
-     *  @param token The token
+     *  @param row The row.
+     *  @param column The column.
      *  @return A label figure.
      */
     private LabelFigure _labelFigure(RecordToken row, String column) {

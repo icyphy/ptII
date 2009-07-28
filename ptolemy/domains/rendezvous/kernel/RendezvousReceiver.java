@@ -1069,7 +1069,7 @@ public class RendezvousReceiver extends AbstractReceiver implements
      * Get the branch of the two-dimensional array of receivers that
      * has been selected by previous recursive calls of {@link
      * #_checkRendezvous(Receiver[][], boolean, Set, Set, Set,
-     * boolean, boolean)}.
+     * Set, boolean, boolean, Receiver)}.
      *
      * @param receivers The two-dimensional array of receivers.
      * @param beingChecked The set of receivers that are being checked

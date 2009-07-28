@@ -222,7 +222,7 @@ public class CustomizeDocumentationAction extends FigureAction {
     /** Edit the specified documentation attribute.
      *  @param owner The owning frame.
      *  @param attribute The attribute to edit.
-     *  @param taget The target whose documentation is being edited.
+     *  @param target The target whose documentation is being edited.
      */
     private void _editDocAttribute(Frame owner, DocAttribute attribute,
             NamedObj target) {

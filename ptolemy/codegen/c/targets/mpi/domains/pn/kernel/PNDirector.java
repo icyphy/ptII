@@ -1057,8 +1057,7 @@ public class PNDirector extends Director {
     }
 
     /**
-     * @param functionCode
-     *            The given code buffer.
+     * @param code The given code buffer.
      * @exception IllegalActionException
      */
     private void _generateThreadFunctionCode(StringBuffer code)

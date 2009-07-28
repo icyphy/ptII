@@ -798,7 +798,7 @@ public class FixMatrixToken extends MatrixToken {
     /** Initialize the row and column count and copy the specified
      *  matrix. This method is used by the constructors.
      *  @param value The value.
-     *  @param prevision The precision, or null to infer it from the values.
+     *  @param precision The precision, or null to infer it from the values.
      */
     private void _initialize(FixPoint[][] value, Precision precision)
             throws IllegalActionException {

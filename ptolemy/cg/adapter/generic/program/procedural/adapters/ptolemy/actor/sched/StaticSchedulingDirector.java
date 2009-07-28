@@ -863,13 +863,12 @@ public class StaticSchedulingDirector extends Director {
         }
 
         /**
-         * Return the buffer size of a given port, which is the maximum of
-         * the bufferSizes of all channels of the given port.
-         * @param port The given port.
-         * @return The buffer size of the given port.
+         * Return the buffer size of the port, which is the maximum of
+         * the bufferSizes of all channels the port
+         * @return The buffer size of the port.
          * @exception IllegalActionException If the
-         * {@link #getBufferSize(IOPort, int)} method throws it.
-         * @see #setBufferSize(IOPort, int, int)
+         * {@link #getBufferSize(int)} method throws it.
+         * @see #setBufferSize(int, int)
          */
         public int getBufferSize() throws IllegalActionException {
             int bufferSize = 1;
@@ -1165,7 +1164,6 @@ public class StaticSchedulingDirector extends Director {
 
         /** Update the read offset.
          *  @param rate  The rate of the channels.
-         *  @param directorHelper The Director helper
          *  @return The offset.
          *  @exception IllegalActionException If thrown while getting a token,
          *  adapter, read offset or buffer size.

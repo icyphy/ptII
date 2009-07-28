@@ -421,7 +421,7 @@ public class PtidesBasicDirector extends Director {
 
     /** This code reset the Event_Head pointer for each channel to null.
      * @param actor The actor which the input channels reside, whose pointers are pointed to null
-     * @return
+     * @return The code that resets the Event_Head pointer.
      * @exception IllegalActionException
      */
     private String _generateClearEventHeadCode(Actor actor)
