@@ -7,7 +7,7 @@
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="2">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[155.0, 30.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[135.0, 40.0]">
         </property>
     </property>
     <property name="ModularCodeGenerator" class="ptolemy.cg.kernel.generic.program.procedural.java.modular.ModularCodeGenerator">
@@ -53,12 +53,12 @@
         </port>
         <port name="port3" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[570.0, 110.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[570.0, 95.0]">
             </property>
         </port>
         <port name="port4" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[555.0, 200.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[570.0, 270.0]">
             </property>
         </port>
         <configure>
@@ -220,7 +220,7 @@
                 <relation name="relation4" class="ptolemy.actor.TypedIORelation">
                     <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
                     </property>
-                    <vertex name="vertex1" value="[450.0, 150.0]">
+                    <vertex name="vertex1" value="[485.0, 185.0]">
                     </vertex>
                 </relation>
                 <relation name="relation5" class="ptolemy.actor.TypedIORelation">
@@ -284,14 +284,6 @@
             </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 115.0]">
-        </property>
-    </entity>
-    <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={642, 436, 334, 234}, maximized=false}">
-        </property>
-        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[326, 186]">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[425.0, 130.0]">
         </property>
     </entity>
     <entity name="A2" class="ptolemy.cg.lib.ModularCodeGenTypedCompositeActor">
@@ -564,12 +556,18 @@
             </group>
         </configure>
     </entity>
-    <entity name="Display2" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={148, 448, 334, 234}, maximized=false}">
+    <entity name="Test" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{4.0, 4.0}, {4.0, 4.0}}">
         </property>
-        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[326, 186]">
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[410.0, 235.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[435.0, 125.0]">
+        </property>
+    </entity>
+    <entity name="Test2" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{4.0, 4.0}, {4.0, 4.0}}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[435.0, 225.0]">
         </property>
     </entity>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
@@ -578,25 +576,25 @@
         <vertex name="vertex1" value="{135.0, 115.0}">
         </vertex>
     </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+    </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-    </relation>
     <link port="A1.port" relation="relation2"/>
     <link port="A1.port2" relation="relation2"/>
-    <link port="A1.port3" relation="relation"/>
-    <link port="A1.port4" relation="relation3"/>
+    <link port="A1.port3" relation="relation6"/>
+    <link port="A1.port4" relation="relation"/>
     <link port="Const.output" relation="relation2"/>
-    <link port="Display.input" relation="relation"/>
-    <link port="Display.input" relation="relation3"/>
     <link port="A2.port" relation="relation2"/>
     <link port="A2.port2" relation="relation2"/>
-    <link port="A2.port3" relation="relation4"/>
-    <link port="A2.port4" relation="relation5"/>
-    <link port="Display2.input" relation="relation4"/>
-    <link port="Display2.input" relation="relation5"/>
+    <link port="A2.port3" relation="relation3"/>
+    <link port="A2.port4" relation="relation4"/>
+    <link port="Test.input" relation="relation6"/>
+    <link port="Test.input" relation="relation"/>
+    <link port="Test2.input" relation="relation3"/>
+    <link port="Test2.input" relation="relation4"/>
 </entity>

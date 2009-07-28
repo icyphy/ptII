@@ -292,14 +292,6 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 115.0]">
         </property>
     </entity>
-    <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={642, 436, 334, 234}, maximized=false}">
-        </property>
-        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[326, 186]">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[470.0, 110.0]">
-        </property>
-    </entity>
     <entity name="A2" class="ptolemy.cg.lib.ModularCodeGenTypedCompositeActor">
         <property name="recompileHierarchy" class="ptolemy.data.expr.Parameter" value="True">
         </property>
@@ -586,14 +578,6 @@
             </group>
         </configure>
     </entity>
-    <entity name="Display2" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={148, 448, 334, 234}, maximized=false}">
-        </property>
-        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[326, 186]">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[450.0, 240.0]">
-        </property>
-    </entity>
     <entity name="Const2" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="2">
         </property>
@@ -607,10 +591,32 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 85.0]">
         </property>
     </entity>
+    <entity name="Test" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{6.0, 6.0}, {6.0, 6.0}}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[450.0, 110.0]">
+        </property>
+    </entity>
+    <entity name="Test2" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{6.0, 6.0}, {6.0, 6.0}}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[455.0, 235.0]">
+        </property>
+    </entity>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
         <vertex name="vertex1" value="{135.0, 115.0}">
+        </vertex>
+    </relation>
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[175.0, 85.0]">
         </vertex>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
@@ -621,26 +627,20 @@
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
-        </property>
-        <vertex name="vertex1" value="[175.0, 85.0]">
-        </vertex>
-    </relation>
     <link port="A1.port" relation="relation2"/>
     <link port="A1.port" relation="relation7"/>
     <link port="A1.port2" relation="relation2"/>
     <link port="A1.port3" relation="relation"/>
     <link port="A1.port4" relation="relation3"/>
     <link port="Const.output" relation="relation2"/>
-    <link port="Display.input" relation="relation"/>
-    <link port="Display.input" relation="relation3"/>
     <link port="A2.port" relation="relation2"/>
     <link port="A2.port" relation="relation7"/>
     <link port="A2.port2" relation="relation2"/>
     <link port="A2.port3" relation="relation4"/>
     <link port="A2.port4" relation="relation5"/>
-    <link port="Display2.input" relation="relation4"/>
-    <link port="Display2.input" relation="relation5"/>
     <link port="Const2.output" relation="relation7"/>
+    <link port="Test.input" relation="relation"/>
+    <link port="Test.input" relation="relation3"/>
+    <link port="Test2.input" relation="relation4"/>
+    <link port="Test2.input" relation="relation5"/>
 </entity>
