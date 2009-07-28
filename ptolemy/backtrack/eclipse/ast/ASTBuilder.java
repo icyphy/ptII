@@ -60,8 +60,6 @@ public class ASTBuilder {
      *
      *  @return The ID of the Java language specification.
      *  @see #setLanguageSpecification(int)
-     *  @see AST#JLS2
-     *  @see AST#JLS3
      */
     public static int getLanguageSpecification() {
         return DEFAULT_LANGUAGE_SPECIFICATION;
@@ -137,8 +135,6 @@ public class ASTBuilder {
      *
      *  @param level The ID of the Java language specification.
      *  @see #getLanguageSpecification()
-     *  @see AST#JLS2
-     *  @see AST#JLS3
      */
     public static void setLanguageSpecification(int level) {
         DEFAULT_LANGUAGE_SPECIFICATION = level;

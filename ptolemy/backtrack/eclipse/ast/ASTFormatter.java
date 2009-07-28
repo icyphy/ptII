@@ -145,9 +145,9 @@ import org.eclipse.jdt.core.dom.WildcardType;
 
 /**
  An AST visitor that traverses an eclipse AST from a root node
- (usually a {@link CompilationUnit} object), and outputs the formatted
- Java source code. It is modified from {@link
- org.eclipse.jdt.core.dom.NaiveASTFlattener} in Eclipse 3.0.
+ (usually a {@link org.eclipse.jdt.core.dom.CompilationUnit} object), and outputs the formatted
+ Java source code. It is modified from 
+ org.eclipse.jdt.core.dom.NaiveASTFlattener in Eclipse 3.0.
 
  @author Thomas Feng
  @version $Id$

@@ -93,7 +93,7 @@ public abstract class AbstractTransformer {
     /** Create an AST name node with a name string (possibly partitioned with
      *  ".").
      *
-     *  @param ast The {@link AST} object.
+     *  @param ast The {@link org.eclipse.jdt.core.dom.AST} object.
      *  @param name The name.
      *  @return The AST name node.
      */
@@ -132,7 +132,7 @@ public abstract class AbstractTransformer {
     /** Create an AST type node with a type string (possibly partitioned with
      *  "." and "[]").
      *
-     *  @param ast The {@link AST} object.
+     *  @param ast The {@link org.eclipse.jdt.core.dom.AST} object.
      *  @param type The type.
      *  @return The AST type node.
      */
@@ -165,7 +165,7 @@ public abstract class AbstractTransformer {
      *  @param c The class.
      *  @param state The state of the type analyzer.
      *  @param root The root of the AST. If there is no conflict and the class
-     *   has not been imported yet, a new {@link ImportDeclaration} is added to
+     *   has not been imported yet, a new {@link org.eclipse.jdt.core.dom.ImportDeclaration} is added to
      *   it.
      *  @return The shortest possible class name.
      */
@@ -180,9 +180,9 @@ public abstract class AbstractTransformer {
      *
      *  @param name The full class name.
      *  @param state The state of the type analyzer.
-     *  @param root The root of the AST. If there is no conflict and the class
-     *   has not been imported yet, a new {@link ImportDeclaration} is added to
-     *   it.
+     *  @param root The root of the AST. If there is no conflict and
+     *   the class has not been imported yet, a new {@link
+     *   org.eclipse.jdt.core.dom.ImportDeclaration} is added to it.
      *  @return The shortest possible class name.
      */
     public static String getClassName(String name, TypeAnalyzerState state,
