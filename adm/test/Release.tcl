@@ -79,7 +79,6 @@ ptolemy.actor.corba.CorbaIOUtil
 ptolemy.actor.corba.util
 ptolemy.actor.lib.javasound.test.pitchshift
 ptolemy.actor.lib.jxta
-ptolemy.actor.lib.logic.fuzzy
 ptolemy.actor.lib.tutorial
 ptolemy.backtrack.automatic.ptolemy.math
 ptolemy.backtrack.eclipse.plugin.actions.codestyle
@@ -106,9 +105,6 @@ ptolemy.copernicus.interpreted
 ptolemy.copernicus.kernel.fragment
 ptolemy.domains.gr.lib.experimental
 ptolemy.domains.gr.lib.quicktime
-ptolemy.domains.gro
-ptolemy.domains.gro.kernel
-ptolemy.domains.gro.lib
 ptolemy.domains.wireless.lib.network
 ptolemy.domains.wireless.lib.network.mac
 ptolemy.domains.wireless.lib.tinyOS
