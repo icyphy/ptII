@@ -26,16 +26,20 @@ void Array_set(Token array, int i, Token element) {
 // Array_resize: Change the size of an array,
 // preserving those elements that fit.
 void Array_resize(Token array, int size) {
-        array.payload.Array->size = size;
-        // FIXME: Does realloc() initialize memory? If not, then we need to do that.
-        array.payload.Array->elements = (Token*) realloc(array.payload.Array->elements, size * sizeof(Token));
+    if (array.payload.Array->size == 0) {
+        array.payload.Array->elements = (Token *) malloc(size * sizeof(Token));
+    } else {
+        array.payload.Array->elements = (Token*) realloc(
+                     array.payload.Array->elements, size * sizeof(Token));
+    } 
 }
 
 // Array_insert: Append the specified element to the end of an array.
 void Array_insert(Token array, Token token) {
-        int oldSize = array.payload.Array->size++;
-        Array_resize(array, array.payload.Array->size);
-        array.payload.Array->elements[oldSize] = token;
+    // FIXME: call this append(), not insert().
+    int oldSize = array.payload.Array->size++;
+    Array_resize(array, array.payload.Array->size);
+    ((Token *)array.payload.Array->elements)[oldSize] = token;
 }
 
 #define Array_length(array) ((array).payload.Array->size)

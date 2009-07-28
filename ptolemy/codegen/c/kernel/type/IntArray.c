@@ -37,15 +37,20 @@ void IntArray_set(Token array, int i, int element) {
 // IntArray_resize: Change the size of an array,
 // preserving those elements that fit.
 void IntArray_resize(Token array, int size) {
+    if (array.payload.IntArray->size == 0) {
+        array.payload.IntArray->elements = (int *) malloc(size * sizeof(int));
+    } else {
+        array.payload.IntArray->elements = (int*) realloc(
+                     array.payload.IntArray->elements, size * sizeof(int));
+    } 
     array.payload.IntArray->size = size;
-    array.payload.IntArray->elements = (int*) realloc(
-                    array.payload.IntArray->elements, size * sizeof(int));
 }
 
 // IntArray_insert: Append the specified element to the end of an array.
 void IntArray_insert(Token array, int token) {
-    int oldSize = array.payload.IntArray->size++;
-    IntArray_resize(array, array.payload.IntArray->size);
+     // FIXME: call this append(), not insert().  
+    int oldSize = array.payload.IntArray->size;
+    IntArray_resize(array, oldSize + 1 );
     ((int *) array.payload.IntArray->elements)[oldSize] = token;
 }
 /**/

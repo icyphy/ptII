@@ -37,15 +37,20 @@ void DoubleArray_set(Token array, int i, double element) {
 // DoubleArray_resize: Change the size of an array,
 // preserving those elements that fit.
 void DoubleArray_resize(Token array, int size) {
+    if (array.payload.DoubleArray->size == 0) {
+        array.payload.DoubleArray->elements = (double *) malloc(size * sizeof(double));
+    } else {
+        array.payload.DoubleArray->elements = (double*) realloc(
+                     array.payload.DoubleArray->elements, size * sizeof(double));
+    } 
     array.payload.DoubleArray->size = size;
-    array.payload.DoubleArray->elements = (double*) realloc(
-                    array.payload.DoubleArray->elements, size * sizeof(double));
 }
 
 // DoubleArray_insert: Append the specified element to the end of an array.
 void DoubleArray_insert(Token array, double token) {
-    int oldSize = array.payload.DoubleArray->size++;
-    DoubleArray_resize(array, array.payload.DoubleArray->size);
+    // FIXME: call this append(), not insert().  
+    int oldSize = array.payload.DoubleArray->size;
+    DoubleArray_resize(array, oldSize + 1 );
     ((double *) array.payload.DoubleArray->elements)[oldSize] = token;
 }
 /**/
