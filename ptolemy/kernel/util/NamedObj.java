@@ -38,11 +38,13 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.Map;
 import java.util.Set;
 
 import ptolemy.util.StringUtilities;
@@ -116,8 +118,18 @@ import ptolemy.util.StringUtilities;
  Derived classes should override the _description() method to
  append new fields if there is new information that should be included
  in the description.
-
- @author Mudit Goel, Edward A. Lee, Neil Smyth
+ 
+ <p>
+ A NamedObj can contain DecoratedAttributes. These are attributes that are
+ added by another NamedObj, called a decorator to this NamedObj.
+ An example is for example a code generator. This one has specific attributes
+ for for example the generated code of the director in a model. These attributes
+ are added by the Decorator (the code generator), to the director ("this" object).
+ These attributes are stored seperately and can be retrieved by using
+ {@link #getDecoratorAttributes(Decorator)} or
+ {@link #getDecoratorAttributes(Decorator)}.
+  
+ @author Mudit Goel, Edward A. Lee, Neil Smyth, Contributor: Bert Rodiers
  @version $Id$
  @since Ptolemy II 0.2
  @Pt.ProposedRating Green (eal)
@@ -445,6 +457,8 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
             // workspace because this only affects its directory, and methods
             // to access the directory are synchronized.
             newObject._attributes = null;
+            
+            newObject._decoratedAttributes = new HashMap<Decorator, DecoratedAttributes>();
 
             // NOTE: As of version 5.0, clones inherit the derived
             // level of the object from which they are cloned.
@@ -480,6 +494,20 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
                                         + parameter.getFullName() + ": "
                                         + exception);
                     }
+                }
+            }
+            
+            for (DecoratedAttributes attribute : _decoratedAttributes.values()) {
+                DecoratedAttributes newParameter = (DecoratedAttributes) attribute
+                        .clone(workspace);
+
+                try {
+                    newParameter.setContainer(newObject);
+                } catch (KernelException exception) {
+                    throw new CloneNotSupportedException(
+                            "Failed to clone attribute "
+                                    + attribute.getFullName() + ": "
+                                    + exception);
                 }
             }
 
@@ -1054,6 +1082,43 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
     public NamedObj getContainer() {
         return null;
     }
+
+    /** Return the decorated attributes of this Named Object, decorated by decorator.
+     *  TODO: what is decorated attribute, what is the use-case?
+     *  @param decorator The decorator.
+     *  @return The decorated attributes. 
+     */
+    public DecoratedAttributes getDecoratorAttributes(Decorator decorator) {
+        synchronized(_decoratedAttributes) {
+            if (_decoratedAttributes.containsKey(decorator)) {
+                return _decoratedAttributes.get(decorator);
+            } else {                
+                try {
+                    DecoratedAttributes attributes = decorator.createDecoratedAttributes(this);
+                    _decoratedAttributes.put(decorator, attributes);
+                    return attributes;
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }                
+            }
+        }
+    }
+    
+    /** Return the decorated attribute with the given name for the decorator.
+     *  If the attribute can't be found null be returned.
+     *  @param decorator The decorator.
+     *  @param name The name of the attribute.
+     *  @return The attribute with the given name for the decorator. 
+     */
+    public Attribute getDecoratorAttribute(Decorator decorator, String name) {
+        DecoratedAttributes attributes = getDecoratorAttributes(decorator);
+        for (Object attribute : attributes.attributeList()) {
+            if (((Attribute) attribute).getName().equals(name)) {
+                return (Attribute) attribute;
+            }
+        }
+        return null;
+    }    
 
     /** Get the minimum level above this object in the hierarchy where a
      *  parent-child relationship implies the existence of this object.
@@ -2064,7 +2129,19 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
             IllegalActionException {
         try {
             _workspace.getWriteAccess();
-
+            
+            if (p instanceof DecoratedAttributes) {
+                DecoratedAttributes decoratedAttributes = (DecoratedAttributes) p;
+                Decorator decorator = decoratedAttributes.getDecorator();
+                
+                // When you are constructing the model, the decorator might
+                // not yet be filled in.
+                if (decorator != null) {                    
+                    _decoratedAttributes.put(decorator, decoratedAttributes);
+                }
+                return;
+            }
+            
             try {
                 if (_attributes == null) {
                     _attributes = new NamedList();
@@ -2394,6 +2471,14 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
                 attribute.exportMoML(output, depth);
             }
         }
+        for (Decorator decorator : _decoratedAttributes.keySet()) {
+            if (decorator instanceof NamedObj) {
+                NamedObj container = ((NamedObj)decorator).getContainer();
+                if (container != null) {
+                    container._recordDecoratedAttributes(_decoratedAttributes.get(decorator));
+                }
+            }
+        }
     }
 
     /** Get an object with the specified name in the specified container.
@@ -2590,6 +2675,14 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
      */
     protected void _propagateValue(NamedObj destination)
             throws IllegalActionException {
+    }
+    
+
+    /** Record decorated attributes to store at the level of the
+     *  container of the decorator.
+     *  @param attributes The decorated attributes.
+     */
+    protected void _recordDecoratedAttributes(DecoratedAttributes attributes) {        
     }
 
     /** Remove the given attribute.
@@ -3066,6 +3159,9 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
 
     /** The class name for MoML exports. */
     private String _className;
+
+    /** The decorated attributes decorated by a certain decorator.*/
+    private Map<Decorator, DecoratedAttributes> _decoratedAttributes = new HashMap<Decorator, DecoratedAttributes>();
 
     /** Instance of a workspace that can be used if no other
      *  is specified.

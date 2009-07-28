@@ -45,6 +45,7 @@ import java.util.TreeMap;
 
 import ptolemy.kernel.attributes.VersionAttribute;
 import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.DecoratedAttributes;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
@@ -2287,6 +2288,10 @@ public class CompositeEntity extends ComponentEntity {
                 }
             }
         }
+        for (DecoratedAttributes attributes : _decoratedAttributesToStoreAtThisLevel) {
+            attributes.exportToMoML(this, output, depth);
+        }
+        _decoratedAttributesToStoreAtThisLevel.clear();
     }
 
     /** Notify this entity that the given entity has been added inside it.
@@ -2299,6 +2304,14 @@ public class CompositeEntity extends ComponentEntity {
      */
     protected void _finishedAddEntity(ComponentEntity entity) {
     }
+    
+    /** Record decorated attributes to store at the level of the
+     *  container of the decorator.
+     *  @param attributes The decorated attributes.
+     */
+    protected void _recordDecoratedAttributes(DecoratedAttributes attributes) {
+        _decoratedAttributesToStoreAtThisLevel.add(attributes);
+    }    
 
     /** Remove the specified entity. This method should not be used
      *  directly.  Call the setContainer() method of the entity instead with
@@ -2652,6 +2665,13 @@ public class CompositeEntity extends ComponentEntity {
 
     /** Workspace version for cache. */
     private transient long _classDefinitionListVersion = -1L;
+    
+
+    /** Decorated attributes within this composite for which this composite
+     *  is responsible.  This data structure is populated when exportMoML()
+     *  is called.
+     */
+    private List<DecoratedAttributes> _decoratedAttributesToStoreAtThisLevel = new LinkedList<DecoratedAttributes>();
 
     /** The default value icon.  This is static so that we avoid doing
      *  string concatenation each time we construct this object.

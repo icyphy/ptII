@@ -27,14 +27,17 @@
  */
 package ptolemy.actor.gui;
 
+import java.awt.BorderLayout;
 import java.awt.Component;
 import java.util.LinkedList;
 import java.util.List;
 
 import javax.swing.JLabel;
+import javax.swing.JTabbedPane;
 
+import ptolemy.kernel.DecoratedAttributesImplementation;
 import ptolemy.kernel.util.Attribute;
-import ptolemy.kernel.util.DecoratedAttribute;
+import ptolemy.kernel.util.DecoratedAttributes;
 import ptolemy.kernel.util.Decorator;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -120,36 +123,58 @@ public class EditorPaneFactory extends Attribute {
      *  @return An instance of the PtolemyQuery class that is created
      *  with styles according to the type given in each visible attribute.
      */
-    public static Component createEditorPane(NamedObj object, PtolemyQuery query) {
-        List<Settable> parameters = new LinkedList<Settable>(object
-                .attributeList(Settable.class));
+    public static Component createEditorPane(NamedObj object,
+            PtolemyQuery query) {
 
         // Get decorated attributes
-        NamedObj toplevel = object.toplevel();
-
-        List<?> decorators = toplevel.attributeList(Decorator.class);
-        for (Object decorator : decorators) {
-            List<DecoratedAttribute> decoratedAttributes = ((Decorator) decorator)
-                    .getDecoratorAttributes(object);
-
-            for (DecoratedAttribute decoratedAttribute : decoratedAttributes) {
-                Attribute attribute = decoratedAttribute.getAttribute();
+        
+        JTabbedPane tabs = new JTabbedPane();
+        boolean foundOne = false;
+        
+        List<Settable> parameters = new LinkedList<Settable>(object.attributeList(Settable.class));
+        int nbrOfTabs = 1;
+        PtolemyQuery mainTab = new PtolemyQuery(object);
+        mainTab.setTextWidth(40);
+        tabs.addTab(object.getDisplayName(), mainTab);
+        
+        List<Decorator> decorators = DecoratedAttributesImplementation.findDecorators(object);
+        for (Decorator decorator : decorators) {            
+            DecoratedAttributes decoratedAttributes = object.getDecoratorAttributes(decorator);
+            
+            PtolemyQuery decoratorQuery = new PtolemyQuery(object);
+            decoratorQuery.setAlignmentY(PtolemyQuery.TOP_ALIGNMENT);
+            decoratorQuery.setTextWidth(40);
+            boolean foundDecoratorAttribute = false;
+            
+            for (Object attribute : decoratedAttributes.attributeList()) {
                 if (attribute instanceof Settable) {
                     Settable settable = (Settable) attribute;
-                    parameters.add(settable);
+                    if (Configurer.isVisible(object, settable)) {                        
+                        foundDecoratorAttribute = true;
+                        decoratorQuery.addStyledEntry(settable);
+                    }                    
                 }
             }
+            foundOne = foundOne || foundDecoratorAttribute;
+            if (foundDecoratorAttribute) {
+                tabs.addTab(decorator.getFullName(), decoratorQuery);
+                nbrOfTabs += 1;
+            }
+        }
+        
+        if (nbrOfTabs > 1) {
+            query.add(tabs, BorderLayout.CENTER);
         }
 
-        boolean foundOne = false;
-
+        PtolemyQuery queryForMainAttributes = (nbrOfTabs > 1) ? mainTab : query; 
+        
         for (Settable parameter : parameters) {
             if (Configurer.isVisible(object, parameter)) {
                 foundOne = true;
-                query.addStyledEntry(parameter);
+                queryForMainAttributes.addStyledEntry(parameter);
             }
         }
-
+        
         if (!foundOne) {
             return new JLabel(object.getName() + " has no parameters.");
         }

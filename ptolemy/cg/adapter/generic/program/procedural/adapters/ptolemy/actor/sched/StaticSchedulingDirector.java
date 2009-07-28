@@ -29,7 +29,6 @@ package ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.sch
 
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
@@ -55,9 +54,10 @@ import ptolemy.data.IntToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.Variable;
 import ptolemy.data.type.BaseType;
+import ptolemy.kernel.DecoratedAttributesImplementation;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.Attribute;
-import ptolemy.kernel.util.DecoratedAttribute;
+import ptolemy.kernel.util.DecoratedAttributes;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
@@ -101,9 +101,9 @@ public class StaticSchedulingDirector extends Director {
      */
     final public Boolean allowDynamicMultiportReference()
             throws IllegalActionException {
-        return ((BooleanToken) ((Parameter) getCodeGenerator()
-                .getDecoratorAttribute(getComponent(),
-                        "allowDynamicMultiportReference").getAttribute())
+        return ((BooleanToken) ((Parameter) getComponent()
+                .getDecoratorAttribute(getCodeGenerator(),
+                        "allowDynamicMultiportReference"))
                 .getToken()).booleanValue();
     }
 
@@ -116,28 +116,19 @@ public class StaticSchedulingDirector extends Director {
      *  @exception NameDuplicationException If the name coincides with
      *   a parameter already in the container.
      */
-    public List<DecoratedAttribute> createDecoratedAttributes(
-            GenericCodeGenerator genericCodeGenerator)
-            throws IllegalActionException, NameDuplicationException {
-
-        List<DecoratedAttribute> decoratedAttributes = new LinkedList<DecoratedAttribute>();
-        Parameter padBuffers = new Parameter(this, "padBuffers");
+    public DecoratedAttributes createDecoratedAttributes(NamedObj target, GenericCodeGenerator genericCodeGenerator) throws IllegalActionException, NameDuplicationException {
+        DecoratedAttributes decoratedAttributes = new DecoratedAttributesImplementation(target, genericCodeGenerator);
+        Parameter padBuffers = new Parameter(decoratedAttributes, "padBuffers");
         padBuffers.setTypeEquals(BaseType.BOOLEAN);
         padBuffers.setExpression("true");
-
-        decoratedAttributes.add(new DecoratedAttribute(padBuffers,
-                genericCodeGenerator));
 
         /** If true, then channels in multiports can be dynamically
          *  referenced using the $ref macro.
          */
-        Parameter allowDynamicMultiportReference = new Parameter(this,
+        Parameter allowDynamicMultiportReference = new Parameter(decoratedAttributes,
                 "allowDynamicMultiportReference");
         allowDynamicMultiportReference.setTypeEquals(BaseType.BOOLEAN);
         allowDynamicMultiportReference.setExpression("false");
-
-        decoratedAttributes.add(new DecoratedAttribute(
-                allowDynamicMultiportReference, genericCodeGenerator));
 
         return decoratedAttributes;
     }
@@ -580,9 +571,30 @@ public class StaticSchedulingDirector extends Director {
      *   and there are variables that depend on this one.
      */
     final public Boolean padBuffers() throws IllegalActionException {
-        return ((BooleanToken) ((Parameter) getCodeGenerator()
-                .getDecoratorAttribute(getComponent(), "padBuffers")
-                .getAttribute()).getToken()).booleanValue();
+        return ((BooleanToken) ((Parameter) getComponent()
+                .getDecoratorAttribute(getCodeGenerator(), "padBuffers"))
+                    .getToken()).booleanValue();
+    }
+
+    /** Set the current type of the decorated attributes.
+     *  The type information of the parameters are not saved in the
+     *  model hand hence this has to be reset when reading the model
+     *  again.
+     *  @param decoratedAttributes The decorated attributes
+     *  @return The decorated attributes for the target NamedObj. 
+     *  @exception IllegalActionException If the attribute is not of an
+     *   acceptable class for the container, or if the name contains a period.
+     */
+    public void setTypesOfDecoratedVariables(
+            DecoratedAttributes decoratedAttributes) throws IllegalActionException {
+        Parameter padBuffers = (Parameter) decoratedAttributes.getAttribute("padBuffers");
+        padBuffers.setTypeEquals(BaseType.BOOLEAN);
+
+        /** If true, then channels in multiports can be dynamically
+         *  referenced using the $ref macro.
+         */
+        Parameter allowDynamicMultiportReference = (Parameter) decoratedAttributes.getAttribute("allowDynamicMultiportReference");
+        allowDynamicMultiportReference.setTypeEquals(BaseType.BOOLEAN);
     }
 
     ////////////////////////////////////////////////////////////////////////
@@ -1047,7 +1059,7 @@ public class StaticSchedulingDirector extends Director {
             ProgramCodeGeneratorAdapter.Channel channel = _getChannel(channelNumber);
             _readOffsets.put(channel, readOffset);
         }
-
+        
         /** Set the write offset of a channel of the port.
          *  @param channelNumber The number of the channel that is being set.
          *  @param writeOffset The offset.

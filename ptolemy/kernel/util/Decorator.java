@@ -27,10 +27,9 @@
  */
 package ptolemy.kernel.util;
 
-import java.util.List;
-
 //////////////////////////////////////////////////////////////////////////
 ////Decorator
+
 
 /**
 A decorator is a class that decorates other NamedObj
@@ -39,21 +38,32 @@ and the NamedObj.
 
 @author Bert Rodiers
 @version $Id$
-@since Ptolemy II 7.1
+@since Ptolemy II 8.0
 @Pt.ProposedRating Red (rodiers)
 @Pt.AcceptedRating Red (rodiers)
 */
 
-public interface Decorator {
-
-    /** Return the name of the decorator.
-     * @return The name of the decorator.
-     */
-    public String getDecoratorName();
+public interface Decorator extends Nameable{
 
     /** Return the decorated attributes for the target NamedObj.
-     * @param target The NamedObj that will be decorated.
-     * @return A list of decorated attributes for the target NamedObj.
+     *  @param target The NamedObj that will be decorated.
+     *  @return The decorated attributes for the target NamedObj. 
+     *  @exception IllegalActionException If the attribute is not of an
+     *   acceptable class for the container, or if the name contains a period.
+     *  @exception NameDuplicationException If the name coincides with
+     *   an attribute already in the container.
      */
-    public List<DecoratedAttribute> getDecoratorAttributes(NamedObj target);
+    public DecoratedAttributes createDecoratedAttributes(NamedObj target) throws IllegalActionException, NameDuplicationException;
+    
+    /** Set the current type of the decorated attributes.
+     *  The type information of the parameters are not saved in the
+     *  model hand hence this has to be reset when reading the model
+     *  again.
+     *  @param decoratedAttributes The decorated attributes
+     *  @return The decorated attributes for the target NamedObj. 
+     *  @exception IllegalActionException If the attribute is not of an
+     *   acceptable class for the container, or if the name contains a period.
+     */
+    public void setTypesOfDecoratedVariables(
+            DecoratedAttributes decoratedAttributes) throws IllegalActionException;
 }
