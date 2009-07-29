@@ -417,7 +417,6 @@ public abstract class GenericCodeGenerator extends Attribute implements
      *  model hand hence this has to be reset when reading the model
      *  again.
      *  @param decoratedAttributes The decorated attributes
-     *  @return The decorated attributes for the target NamedObj. 
      *  @exception IllegalActionException If the attribute is not of an
      *   acceptable class for the container, or if the name contains a period.
      */
