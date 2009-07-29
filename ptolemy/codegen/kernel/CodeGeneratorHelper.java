@@ -2394,8 +2394,22 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
             return expression;
         }
 
+        if (castType.length() == 0 ) {
+            throw new IllegalActionException("_generateTypeConvertMethod(\""
+                    + expression + "\", \"" + castType + "\", \""
+                    + refType + "\") called with castType (the 2nd arg) "
+                    + "having length 0.");
+        }
+
+        if (refType.length() == 0 ) {
+            throw new IllegalActionException("_generateTypeConvertMethod(\""
+                    + expression + "\", \"" + castType + "\", \""
+                    + refType + "\") called with refType (the 3rd arg) "
+                    + "having length 0.");
+        }
+
         expression = "$convert_" + refType + "_" + castType + "(" + expression
-                + ")";
+            + ")";
 
         return processCode(expression);
     }
