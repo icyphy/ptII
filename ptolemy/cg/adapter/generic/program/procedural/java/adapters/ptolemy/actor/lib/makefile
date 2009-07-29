@@ -58,6 +58,7 @@ PTCLASSALLJARS = gui/gui.jar
 JSRCS = \
 	AddSubtract.java \
 	ElementsToArray.java \
+	Expression.java \
 	Ramp.java \
 	Test.java
 
