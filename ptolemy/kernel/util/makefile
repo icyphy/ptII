@@ -63,7 +63,7 @@ JSRCS = \
 	Debuggable.java \
 	DebugListener.java \
 	Decorator.java \
-	DecoratedAttribute.java \
+	DecoratedAttributes.java \
 	Derivable.java \
 	DropTargetHandler.java \
 	ExceptionHandler.java \
