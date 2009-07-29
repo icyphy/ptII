@@ -69,8 +69,7 @@ public interface Decorator extends Nameable{
      *  The type information of the parameters are not saved in the
      *  model hand hence this has to be reset when reading the model
      *  again.
-     *  @param decoratedAttributes The decorated attributes
-     *  @return The decorated attributes for the target NamedObj. 
+     *  @param decoratedAttributes The decorated attributes.
      *  @exception IllegalActionException If the attribute is not of an
      *   acceptable class for the container, or if the name contains a period.
      */

@@ -59,10 +59,9 @@ See DecoratedAttributes for more information.
 
 public class DecoratedAttributesImplementation extends DecoratedAttributes {
 
-    /** Construct a DecoratedAttribute from the name of the decorator and an attribute
-     * (the actual decorated attribute).
+    /** Construct a DecoratedAttribute from the container and the decorator.
+     *  @param container The container this object.
      *  @param decorator The decorator.
-     *  @param attribute The actual decorated attribute. 
      *  @exception IllegalActionException If the attribute is not of an
      *   acceptable class for the container, or if the name contains a period.
      *  @exception NameDuplicationException If the name coincides with
@@ -81,7 +80,7 @@ public class DecoratedAttributesImplementation extends DecoratedAttributes {
      *  Increment the version of the workspace.
      *  WARNING: don't use this constructor director. This should only be used
      *  by the MoMLParser. 
-     *  @param containerOfCodeGenerator The container of the decorator.
+     *  @param containerOfDecorator The container of the decorator.
      *  @param name The name of this attribute.
      *  @exception IllegalActionException If the attribute is not of an
      *   acceptable class for the container, or if the name contains a period.
@@ -89,10 +88,10 @@ public class DecoratedAttributesImplementation extends DecoratedAttributes {
      *   an attribute already in the container.
      *   @deprecated
      */
-    public DecoratedAttributesImplementation(NamedObj containerOfCodeGenerator, String name) throws IllegalActionException, NameDuplicationException {
+    public DecoratedAttributesImplementation(NamedObj containerOfDecorator, String name) throws IllegalActionException, NameDuplicationException {
         // FIXME: There should be a more elegant way to get this right.
         // This also only works for attributes not for entities.
-        super(_getRealContainer(containerOfCodeGenerator, name),
+        super(_getRealContainer(containerOfDecorator, name),
                 name.substring(name.lastIndexOf(".") + 1));
     }
     ///////////////////////////////////////////////////////////////////
