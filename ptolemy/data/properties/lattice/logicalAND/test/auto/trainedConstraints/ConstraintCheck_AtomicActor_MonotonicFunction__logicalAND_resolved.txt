@@ -1,9 +1,0 @@
-ptolemy.data.properties.lattice.logicalAND.kernel	CompositeEntity	topLevelComposite	base	eff		TypedIOPort	.Ramp.output	False	<=	eff		TypedIOPort	.Limiter.input	False
-ptolemy.data.properties.lattice.logicalAND.kernel	CompositeEntity	topLevelComposite	base	eff		TypedIOPort	.Limiter.output	True	<=	eff		TypedIOPort	.Discard.input	True
-ptolemy.data.properties.lattice.logicalAND.actor.lib	Limiter	.Limiter	base	eff		MonotonicFunction	.Limiter$FunctionTerm	True	<=	eff		TypedIOPort	.Limiter.output	True
-ptolemy.data.properties.lattice.logicalAND.actor.lib	Limiter	.Limiter	base	eff		TypedIOPort	.Limiter.input	False	MFV	eff	.Limiter	MonotonicFunction	.Limiter$FunctionTerm	True
-ptolemy.data.properties.lattice.logicalAND.actor.lib	Limiter	.Limiter	base	eff	.Limiter	ASTPtLeafNode	PtLeafNode:true:null:8:null	True	<=	eff		Parameter	.Limiter.top	True
-ptolemy.data.properties.lattice.logicalAND.actor.lib	Limiter	.Limiter	base	eff	.Limiter	ASTPtLeafNode	PtLeafNode:true:null:10:null	True	<=	eff		Parameter	.Limiter.bottom	True
-ptolemy.data.properties.lattice.logicalAND.actor.lib	Ramp	.Ramp	base	eff		PortParameter	.Ramp.step	True	<=	eff		TypedIOPort	.Ramp.output	False
-ptolemy.data.properties.lattice.logicalAND.actor.lib	Ramp	.Ramp	base	eff		LatticeProperty	False	False	<=	eff		TypedIOPort	.Ramp.output	False
-ptolemy.data.properties.lattice.logicalAND.actor.lib	Ramp	.Ramp	base	eff	.Ramp	ASTPtLeafNode	PtLeafNode:true:null:1:null	True	<=	eff		PortParameter	.Ramp.step	True

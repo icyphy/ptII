@@ -1,19 +1,19 @@
 /*
  * PropertyConstraintAttribute.java 53044 2009-04-10 21:47:49Z cxh $
- *
+ * 
  * Copyright (c) 2007-2009 The Regents of the University of California. All
  * rights reserved.
- *
+ * 
  * Permission is hereby granted, without written agreement and without license
  * or royalty fees, to use, copy, modify, and distribute this software and its
  * documentation for any purpose, provided that the above copyright notice and
  * the following two paragraphs appear in all copies of this software.
- *
+ * 
  * IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR
  * DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES ARISING OUT
  * OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF THE UNIVERSITY OF
  * CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- *
+ * 
  * THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
  * INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
  * FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE PROVIDED HEREUNDER IS ON AN
@@ -36,7 +36,7 @@ import ptolemy.kernel.util.NamedObj;
 public class PropertyConstraintAttribute extends PropertyAttribute {
 
     /**
-     *
+     * 
      * @param container
      * @param name
      * @exception IllegalActionException
@@ -218,11 +218,16 @@ public class PropertyConstraintAttribute extends PropertyAttribute {
     }
 
     /**
-     * Parse the given expression for a basic Property.
-     * @param lattice
-     * @param expression
-     * @return The lattice property for the element expression.
-     * @exception IllegalActionException
+     * Return a property in the specified lattice that is identified by the
+     * given expression. Return null if the expression is case-insensitively
+     * equivalent to "nil".
+     * @param lattice The specified lattice.
+     * @param expression The expression string.
+     * @return A property in the specified lattice, or null if the expression is
+     * equal "nil".
+     * @exception IllegalActionException If the lattice does not contain such
+     * element and the expression is not "nil".
+     * 
      */
     private static LatticeProperty _parseElementExpression(
             PropertyLattice lattice, String expression)
@@ -240,7 +245,7 @@ public class PropertyConstraintAttribute extends PropertyAttribute {
      * Parse the given expression for an arbitrary Property.
      * @param lattice
      * @param expression
-     * @return The lattice property for the arbitrary Property.
+     * @return
      * @exception IllegalActionException
      */
     private static LatticeProperty _parsePropertyExpression(

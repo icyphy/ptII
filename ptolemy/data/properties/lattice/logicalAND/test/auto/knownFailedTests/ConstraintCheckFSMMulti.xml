@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="ConstraintCheck_FSM_MultiplePorts_MultipleStates_Transitions_NoActions" class="ptolemy.domains.fsm.kernel.FSMActor">
+<entity name="FSM_MultiplePorts_MultipleStates_Transitions_NoActions" class="ptolemy.domains.fsm.kernel.FSMActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.1.devel_20080331">
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={69, 110, 1141, 804}, maximized=false}">

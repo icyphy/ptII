@@ -1,4 +1,0 @@
-ptolemy.data.properties.lattice.logicalAND.kernel	CompositeEntity	topLevelComposite	base	eff		TypedIOPort	.Subscriber.output	Unknown	<=	eff		TypedIOPort	.Discard.input	Unknown
-ptolemy.data.properties.lattice.logicalAND.kernel	CompositeEntity	topLevelComposite	base	eff		TypedIOPort	.Subscriber2.output	Unknown	<=	eff		TypedIOPort	.Discard.input	Unknown
-ptolemy.data.properties.lattice.logicalAND.actor	AtomicActor	.Subscriber	base	eff		TypedIOPort	.Subscriber.input	Unknown	<=	eff		TypedIOPort	.Subscriber.output	Unknown
-ptolemy.data.properties.lattice.logicalAND.actor	AtomicActor	.Subscriber2	base	eff		TypedIOPort	.Subscriber2.input	Unknown	<=	eff		TypedIOPort	.Subscriber2.output	Unknown

@@ -348,7 +348,7 @@
             </property>
         </entity>
         <entity name="FileReader" class="ptolemy.actor.lib.io.FileReader">
-            <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="c:\Documents and Settings\mankit\workspace\ptII\ptolemy\data\properties\lattice\logicalOrBackward\test\auto\ConstraintCheck_AtomicActor_1input_SinglePort_1output_Singleport.xml">
+            <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="c:\Documents and Settings\mankit\workspace\ptII\ptolemy\data\properties\lattice\logicalOrBackward\test\auto\AtomicActor_1input_SinglePort_1output_Singleport.xml">
             </property>
             <property name="newline" class="ptolemy.data.expr.Parameter" value="property(&quot;line.separator&quot;)">
             </property>

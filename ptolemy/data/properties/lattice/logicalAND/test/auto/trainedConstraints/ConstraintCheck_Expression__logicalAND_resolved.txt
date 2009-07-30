@@ -1,2 +1,0 @@
-ptolemy.data.properties.lattice.logicalAND.actor.lib	Expression	.Expression	base	eff		StringAttribute	.Expression.expression	True	<=	eff		TypedIOPort	.Expression.output	True
-ptolemy.data.properties.lattice.logicalAND.actor.lib	Expression	.Expression	base	eff	.Expression	ASTPtLeafNode	PtLeafNode:true:null:2:null	True	<=	eff		StringAttribute	.Expression.expression	True
