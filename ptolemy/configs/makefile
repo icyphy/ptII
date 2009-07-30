@@ -69,6 +69,7 @@ OTHER_FILES_TO_BE_JARED = \
 	caseTableauFactory.xml \
 	classicDirectors.xml \
 	codegen.xml \
+	cosimulation.xml \
 	customize.xml \
 	defaultFullConfiguration.xml \
 	experimentalDirectors.xml \
