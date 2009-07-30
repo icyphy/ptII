@@ -59,7 +59,9 @@ JSRCS = \
 	AddSubtract.java \
 	ElementsToArray.java \
 	Expression.java \
+	Publisher.java \
 	Ramp.java \
+	Subscriber.java \
 	Test.java
 
 OTHER_FILES_TO_BE_JARED = \
