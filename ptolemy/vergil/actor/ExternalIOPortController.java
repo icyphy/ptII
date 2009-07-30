@@ -529,7 +529,7 @@ public class ExternalIOPortController extends AttributeController {
 
                 double normal = CanvasUtilities.getNormal(direction);
 
-                String name = port.getName();
+                String name = port.getDisplayName();
                 Rectangle2D backBounds = figure.getBounds();
                 figure = new CompositeFigure(figure) {
                     // Override this because we want to show the type.
