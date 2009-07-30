@@ -1,5 +1,4 @@
-/* An utility function for traversing the system and generate files for
- * model checking using Regional Decision Diagram (RED).
+/* An utility function for traversing the system and generate files for model checking using Regional Decision Diagram (RED).
 
  Copyright (c) 1998-2009 The Regents of the University of California.
  All rights reserved.
@@ -109,10 +108,10 @@ import ptolemy.verification.lib.BoundedBufferTimedDelay;
 public class REDUtility {
 
     /**
-     * This function would try to generate an equivalent system with a flattened
-     * view. It would perform a rewriting of each ModalModel with hierarchy to a
+     * This function generates an equivalent system which is flattened. 
+     * It would perform a rewriting of each ModalModel with hierarchy to an
      * FSMActor. Note that in our current implementation the rewriting
-     * only supports to state refinements.
+     * only supports 'state refinements'.
      *
      * @param originalCompositeActor original system under processing
      * @return a flattened equivalent system.

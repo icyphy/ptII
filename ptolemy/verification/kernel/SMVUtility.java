@@ -1,4 +1,4 @@
-/* An utility function for traversing the system and generate files for model checking.
+/* An utility function for traversing the system and generate files for model checking using NuSMV.
 
  Copyright (c) 2008 The Regents of the University of California.
  All rights reserved.
@@ -77,6 +77,42 @@ import ptolemy.verification.lib.SMVLegacyCodeActor;
  */
 public class SMVUtility {
 
+    /**
+     * This function generates the reachability/risk specification of a
+     * system by scanning through the subsystem, and extract states which have
+     * special risk or reachability labels.
+     *
+     * @param model The system model under analysis.
+     * @param specType The type of the graphical specification, it may be either
+     *                "Risk" or "Reachability"
+     * @return A string indicating the CTL formula for risk/reachability
+     *         analysis.
+     * @exception IllegalActionException
+     */
+    public static String generateGraphicalSpecification(CompositeActor model,
+            String specType) throws IllegalActionException {
+
+        StringBuffer returnSpecStringBuffer = new StringBuffer("");
+        HashSet<String> specificationStateSet = _generateGraphicalSpecificationRecursiveStep(
+                model, specType, new StringBuffer(""));
+        // Combine all these states with conjunctions.
+        Iterator<String> stateSetSpecs = specificationStateSet.iterator();
+        while (stateSetSpecs.hasNext()) {
+            String stateSpec = stateSetSpecs.next();
+            if (stateSetSpecs.hasNext()) {
+                returnSpecStringBuffer.append(stateSpec + " & ");
+            } else {
+                returnSpecStringBuffer.append(stateSpec);
+            }
+        }
+        if (specType.equalsIgnoreCase("Risk")) {
+            return "!EF(" + returnSpecStringBuffer.toString() + ")";
+        } else {
+            return " EF(" + returnSpecStringBuffer.toString() + ")";
+        }
+    }
+    
+    
     /**
      * Return a StringBuffer that contains the converted .smv format of the
      * system. Current algorithm uses a modular approach for construction, enabling us to deal with
@@ -318,40 +354,6 @@ public class SMVUtility {
         return returnSMVFormat;
     }
 
-    /**
-     * This function generates the reachability/risk specification of a
-     * system by scanning through the subsystem, and extract states which have
-     * special risk or reachability labels.
-     *
-     * @param model The system model under analysis.
-     * @param specType The type of the graphical specification, it may be either
-     *                "Risk" or "Reachability"
-     * @return A string indicating the CTL formula for risk/reachability
-     *         analysis.
-     * @exception IllegalActionException
-     */
-    public static String generateGraphicalSpecification(CompositeActor model,
-            String specType) throws IllegalActionException {
-
-        StringBuffer returnSpecStringBuffer = new StringBuffer("");
-        HashSet<String> specificationStateSet = _generateGraphicalSpecificationRecursiveStep(
-                model, specType, new StringBuffer(""));
-        // Combine all these states with conjunctions.
-        Iterator<String> stateSetSpecs = specificationStateSet.iterator();
-        while (stateSetSpecs.hasNext()) {
-            String stateSpec = stateSetSpecs.next();
-            if (stateSetSpecs.hasNext()) {
-                returnSpecStringBuffer.append(stateSpec + " & ");
-            } else {
-                returnSpecStringBuffer.append(stateSpec);
-            }
-        }
-        if (specType.equalsIgnoreCase("Risk")) {
-            return "!EF(" + returnSpecStringBuffer.toString() + ")";
-        } else {
-            return " EF(" + returnSpecStringBuffer.toString() + ")";
-        }
-    }
 
     /**
      * This function decides if the director of the current actor is SR. If not,
