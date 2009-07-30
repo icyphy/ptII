@@ -62,13 +62,13 @@ import ptolemy.verification.lib.SMVLegacyCodeActor;
  * This is an utility function for Ptolemy II models. It performs a systematic
  * traversal of the system and generate NuSMV (or Cadence SMV) acceptable files
  * for model checking.
- *
+ * <p>
  * FIXME: A new version for users to specify the integer bound without using
  * abstraction of "LS" and "GT" should be implemented to support complicated
  * update functions. Note that this has already been implemented in REDUtility.java
  * since the format of RED 7.0 does not support these features.
  *
- * @author Chihhong Patrick Cheng, Contributor: Edward A. Lee, Christopher
+ * @author Chih-Hong Cheng, Contributor: Edward A. Lee, Christopher
  *         Brooks
  * @version $Id$
  * @since Ptolemy II 7.1
@@ -79,17 +79,15 @@ public class SMVUtility {
 
     /**
      * Return a StringBuffer that contains the converted .smv format of the
-     * system. Note that in this version we use modular approach instead of
-     * direct-dependency checking. Also the current algorithm enables us to deal with
-     * hierarchical systems. The up-to-date implementation also enables
-     * the recognition of Boolean tokens. Nevertheless, modular approach would generate a
-     * bigger state space.
+     * system. Current algorithm uses a modular approach for construction, enabling us to deal with
+     * hierarchical systems. Also recognition of Boolean tokens is supported. 
      *
-     * <p>For previous implementation, now matter what token is sent through the
+     * <p>For previous implementation, no matter what token is sent through the
      * channel, the receiver only senses the existence of the token by the
-     * guard expression XX_isPresent. We now support Boolean token recognition.
+     * guard expression <code>XX_isPresent</code>. We now support Boolean token recognition.
+     * <p>
      * In order to introduce this mechanism,
-     * for each signal XX, two boolean variables would be introduced:
+     * for each signal XX, two boolean variables are introduced:
      * <br>1) <code>XX_isPresent</code>: indicating whether the signal is present or not.
      * <br>2) <code>XX_value</code>: indicating the value of the signal.
      *
@@ -108,7 +106,7 @@ public class SMVUtility {
      * @param pattern The temporal formula used to be attached in the .smv file.
      * @param choice The type of the formula. It may be either a CTL or LTL
      *               formula.
-     * @param span A constant used to expand the size of the rough domain.
+     * @param span A constant used to expand the domain of the variable.
      * @return The converted .smv format of the system.
      * @exception IllegalActionException
      * @exception NameDuplicationException
@@ -124,8 +122,6 @@ public class SMVUtility {
         _globalSignalNestedRetrivalInfo = new HashMap<String, HashSet<String>>();
         _variableInfo = new HashMap<String, VariableInfo>();
 
-        // returnSMVFormat: a string storing the system description in SMV
-        // format.
         StringBuffer returnSMVFormat = new StringBuffer("");
 
         // Perform a scan of the whole system in order to retrieve signals
@@ -146,7 +142,6 @@ public class SMVUtility {
             } else if (innerEntity instanceof ModalModel) {
                 // We need to generate the description of the subsystem,
                 // and also implement the finite state controller.
-                // By calling the function, we are able to deal with it.
                 ArrayList<StringBuffer> subSystemDescription = _generateSMVDescriptionModalModelWithRefinement(
                         (ModalModel) innerEntity, span, "");
                 for (int i = 0; i < subSystemDescription.size(); i++) {
@@ -324,7 +319,7 @@ public class SMVUtility {
     }
 
     /**
-     * This function tries to generate the reachability/risk specification of a
+     * This function generates the reachability/risk specification of a
      * system by scanning through the subsystem, and extract states which have
      * special risk or reachability labels.
      *
@@ -640,7 +635,7 @@ public class SMVUtility {
     /**
      * This private function first decides state variables (or called inner variables)
      * that would be used in the Kripke structure. It would first perform a system
-     * prescan to have a rough domain for each variable. Then it tries to expand the
+     * prescan to have a rough domain for each variable. Then it expands the
      * domain by using the constant span.
      *
      * @param actor The actor under analysis
@@ -2360,22 +2355,1635 @@ public class SMVUtility {
 
     }
 
+    /** This function is used to generate detailed pre-conditions and
+     * post-conditions in .smv format. It is used by the function
+     * _generateAllVariableTransitions()
+     * 
+     * @param statePrecondition
+     * @param valueDomain
+     * @param lValue
+     * @param offset
+     * @param operatingSign
+     * @throws IllegalActionException
+     */
+    private static void _generatePremiseAndResultEachTransition(
+            String statePrecondition,
+            HashMap<String, ArrayList<Integer>> valueDomain, String lValue,
+            String offset, String operatingSign) throws IllegalActionException {
+
+        // 1. If operatingSign=="N", then offset means the value that needs to
+        // be assigned.
+        // 2. if operatingSign=="S", then offset means the destination vertex
+        // label.
+        // 3. For rest cases (operatingSign=="+","-","*","/"), variable
+        // has "X = X operatingSign offset".
+
+        // String[] keySetArray = (String[]) valueDomain.keySet().toArray(
+        // new String[0]);
+        String[] keySetArray = (String[]) valueDomain.keySet().toArray(
+                new String[valueDomain.keySet().size()]);
+
+        _generatePremiseAndResultEachTransitionRecursiveStep(statePrecondition,
+                0, keySetArray.length, keySetArray, valueDomain, lValue,
+                offset, operatingSign);
+
+    }
+
+    
+
     /**
-     * This function is used to deal with general case and generate the Kripke
-     * structure acceptable by NuSMV from system model in Ptolemy II. Here
-     * modular approach is applied to eliminate complexity of the conversion
-     * process.
+     * A private function used as a recursive step to generate all premises for
+     * enabling transition in .smv file. In variable valueDomain, it specifies
+     * that for a particular transition, the set of all possible values to
+     * invoke the transition. Thus it is the duty of this recursive step
+     * function to generate all possible combinations. The function would try to
+     * attach correct premise and update correct new value for the variable set
+     * by the transition based on the original value.
      *
+     * @param currentPremise
+     *                Current precondition for the transition. It is not
+     *                completed unless parameter index == maxIndex.
+     * @param index
+     *                Current depth for the recursive function. It would stop
+     *                when it reaches maxIndex.
+     * @param maxIndex
+     * @param keySetArray
+     *                keySetArray stores all variable names that is used in this
+     *                transition.
+     * @param valueDomain
+     *                valueDomain specifies for a particular transition, for
+     *                each variable, the set of all possible values to invoke
+     *                the transition.
+     * @param lValue
+     *                lValue specifies the variable name that would be set after
+     *                the transition.
+     * @param newVariableValue
+     *                newVariableValue can have different meanings based on
+     *                different value of variable operatingSign. When
+     *                operatingSign is +,-,*,/ it represents the offset.
+     *                Remember in the set-action, each sub-statement has formats
+     *                either <i>var = var operatingSign offset</i> or <i>var =
+     *                rValue</i>. When operatingSign is S or N, it represents
+     *                the rValue of the system.
+     * @param operatingSign
+     *
+     */
+    private static void _generatePremiseAndResultEachTransitionRecursiveStep(
+            String currentPremise, int index, int maxIndex,
+            String[] keySetArray,
+            HashMap<String, ArrayList<Integer>> valueDomain, String lValue,
+            String newVariableValue, String operatingSign)
+            throws IllegalActionException {
+    
+        if (index >= maxIndex) {
+            // MODIFICATION 2008.07.22:
+            // if the variable lValue is equal to the type XX_value,
+            // check if the new value is 0.
+            // if the new value is zero, then we should append a negation to the
+            // premise
+            boolean b2 = Pattern.matches(".*_value", lValue);
+            if ((b2 == true) && (newVariableValue.trim().equalsIgnoreCase("0"))) {
+                // Store in the array with !(currentPremise)
+                VariableTransitionInfo newTransitionInfo = new VariableTransitionInfo();
+                newTransitionInfo._preCondition = " !(" + currentPremise + ") ";
+                // newTransitionInfo._variableName = lValue;
+                newTransitionInfo._varibleNewValue = newVariableValue;
+                LinkedList<VariableTransitionInfo> temp = _variableTransitionInfo
+                        .remove(lValue);
+                if (temp == null) {
+                    throw new IllegalActionException(
+                            "Internal error, removing \"" + lValue
+                                    + "\" returned null?");
+                } else {
+                    temp.add(newTransitionInfo);
+                    _variableTransitionInfo.put(lValue, temp);
+                }
+            } else {
+                // Store in the array
+    
+                VariableTransitionInfo newTransitionInfo = new VariableTransitionInfo();
+                newTransitionInfo._preCondition = currentPremise;
+                // newTransitionInfo._variableName = lValue;
+                newTransitionInfo._varibleNewValue = newVariableValue;
+                LinkedList<VariableTransitionInfo> temp = _variableTransitionInfo
+                        .remove(lValue);
+                if (temp == null) {
+                    throw new IllegalActionException(
+                            "Internal error, removing \"" + lValue
+                                    + "\" returned null?");
+                } else {
+                    temp.add(newTransitionInfo);
+                    _variableTransitionInfo.put(lValue, temp);
+                }
+            }
+    
+        } else {
+            // retrieve all possible variable value in this stage, skip when no
+            // possible value is needed.
+    
+            // See if this key corresponds to the lValue; if so we need to
+            // record the new value of the outcome.
+            if (keySetArray[index].equalsIgnoreCase(lValue)) {
+                // update the newVariableValue based on +, -, *, /, and N.
+                if (operatingSign.equalsIgnoreCase("+")) {
+                    // vList stores all possible values for the variable
+                    // that is possible to perform transition
+                    ArrayList<Integer> vList = valueDomain
+                            .get(keySetArray[index]);
+                    if ((vList != null) && (vList.size() != 0)) {
+                        for (int i = 0; i < vList.size(); i++) {
+    
+                            // check whether the offset is positive or negative.
+                            if (Integer.parseInt(newVariableValue) >= 0) {
+                                // Offset positive/zero case (positive_const)
+    
+                                if (vList.get(i).intValue() == DOMAIN_GT) {
+    
+                                    // newpremise=currentPremise & (var = C)
+                                    // String newPremise = new String(
+                                    // currentPremise + " & "
+                                    // + keySetArray[index] + "="
+                                    // + "gt");
+                                    String newPremise = currentPremise + " & "
+                                            + keySetArray[index] + "=" + "gt";
+    
+                                    // When the original value is GT, then
+                                    // GT + positive_const = GT
+                                    // Hence the updated value remains the same.
+                                    _generatePremiseAndResultEachTransitionRecursiveStep(
+                                            newPremise, index + 1, maxIndex,
+                                            keySetArray, valueDomain, lValue,
+                                            "gt", operatingSign);
+    
+                                } else if (vList.get(i).intValue() == DOMAIN_LS) {
+                                    // For DOMAIN_LS, we place conservative
+                                    // analysis and assert that it might lead to
+                                    // all its possible values. For example, if
+                                    // min=1, and offset=3, then possible value
+                                    // may include LS, 1, 2.
+    
+                                    String newPremise = currentPremise + " & "
+                                            + keySetArray[index] + "=" + "ls";
+                                    // String newPremise = new String(
+                                    // currentPremise + " & "
+                                    // + keySetArray[index] + "="
+                                    // + "ls");
+                                    // First, LS + positive_const = LS
+                                    _generatePremiseAndResultEachTransitionRecursiveStep(
+                                            newPremise, index + 1, maxIndex,
+                                            keySetArray, valueDomain, lValue,
+                                            "ls", operatingSign);
+                                    VariableInfo variableInfo = _variableInfo
+                                            .get(lValue);
+                                    if (variableInfo == null) {
+                                        throw new IllegalActionException(
+                                                "Internal error, getting \""
+                                                        + lValue
+                                                        + "\" returned null?");
+                                    } else {
+                                        if (variableInfo._minValue != null
+                                                && variableInfo._maxValue != null) {
+                                            int minimumInBoundary = Integer
+                                                    .parseInt(variableInfo._minValue);
+                                            for (int j = 0; j < (Integer
+                                                    .parseInt(newVariableValue)); j++) {
+    
+                                                // We need to make sure that it
+                                                // would
+                                                // never exceeds upper bound. If
+                                                // it
+                                                // is below lower bound, we must
+                                                // stop it
+                                                // and use GT to replace the
+                                                // value.
+    
+                                                if ((minimumInBoundary + j) > Integer
+                                                        .parseInt(variableInfo._maxValue)) {
+                                                    _generatePremiseAndResultEachTransitionRecursiveStep(
+                                                            newPremise,
+                                                            index + 1,
+                                                            maxIndex,
+                                                            keySetArray,
+                                                            valueDomain,
+                                                            lValue, "gt",
+                                                            operatingSign);
+                                                    break;
+                                                }
+    
+                                                String updatedVariableValue = String
+                                                        .valueOf(minimumInBoundary
+                                                                + j);
+                                                _generatePremiseAndResultEachTransitionRecursiveStep(
+                                                        newPremise, index + 1,
+                                                        maxIndex, keySetArray,
+                                                        valueDomain, lValue,
+                                                        updatedVariableValue,
+                                                        operatingSign);
+                                            }
+                                        }
+                                    }
+                                } else {
+                                    VariableInfo variableInfo = _variableInfo
+                                            .get(lValue);
+                                    if (variableInfo != null) {
+                                        if (variableInfo._maxValue != null) {
+                                            // For ordinary cases, we only need
+                                            // to check if the new value
+                                            // would exceeds the upper
+                                            // bound. If so, then use DOMAIN_GT
+                                            // to replace the value.
+    
+                                            String newPremise = currentPremise
+                                                    + " & "
+                                                    + keySetArray[index]
+                                                    + "="
+                                                    + String.valueOf(vList.get(
+                                                            i).intValue());
+    
+                                            String updatedVariableValue = String
+                                                    .valueOf(vList.get(i)
+                                                            .intValue()
+                                                            + (Integer
+                                                                    .parseInt(newVariableValue)));
+    
+                                            if (vList.get(i).intValue()
+                                                    + (Integer
+                                                            .parseInt(newVariableValue)) > Integer
+                                                    .parseInt(variableInfo._maxValue)) {
+                                                // Use DOMAIN_GT to replace the
+                                                // value.
+                                                updatedVariableValue = "gt";
+                                            }
+    
+                                            _generatePremiseAndResultEachTransitionRecursiveStep(
+                                                    newPremise, index + 1,
+                                                    maxIndex, keySetArray,
+                                                    valueDomain, lValue,
+                                                    updatedVariableValue,
+                                                    operatingSign);
+                                        }
+                                    }
+    
+                                }
+                            } else {
+                                // Offset negative case (negative_const)
+    
+                                if (vList.get(i).intValue() == DOMAIN_LS) {
+    
+                                    String newPremise = currentPremise + " & "
+                                            + keySetArray[index] + "=" + "ls";
+    
+                                    // When the original value is LS, then
+                                    // LS + negative_const = LS
+                                    // Hence the updated value remains the same.
+                                    _generatePremiseAndResultEachTransitionRecursiveStep(
+                                            newPremise, index + 1, maxIndex,
+                                            keySetArray, valueDomain, lValue,
+                                            "ls", operatingSign);
+    
+                                } else if (vList.get(i).intValue() == DOMAIN_GT) {
+                                    String newPremise = currentPremise + " & "
+                                            + keySetArray[index] + "=" + "gt";
+    
+                                    // When the original value is GT, we place
+                                    // conservative analysis and assert that it
+                                    // might lead to all its possible values.
+    
+                                    // First case: GT + negative_const = GT
+                                    _generatePremiseAndResultEachTransitionRecursiveStep(
+                                            newPremise, index + 1, maxIndex,
+                                            keySetArray, valueDomain, lValue,
+                                            "gt", operatingSign);
+    
+                                    VariableInfo variableInfo = _variableInfo
+                                            .get(lValue);
+                                    if (variableInfo == null) {
+                                        throw new IllegalActionException(
+                                                "Internal error, getting \""
+                                                        + lValue
+                                                        + "\" returned null?");
+                                    } else {
+                                        if (variableInfo._minValue != null
+                                                && variableInfo._maxValue != null) {
+                                            int maximumInBoundary = Integer
+                                                    .parseInt(variableInfo._maxValue);
+                                            for (int j = 0; j > (Integer
+                                                    .parseInt(newVariableValue)); j--) {
+                                                // here j-- because
+                                                // newVariableValue is
+                                                // negative
+    
+                                                // We need to make sure that it
+                                                // would
+                                                // never exceeds upper bound. If
+                                                // it
+                                                // is below lower bound, we must
+                                                // stop it
+                                                // and use LS to replace the
+                                                // value.
+    
+                                                if ((maximumInBoundary + j) < Integer
+                                                        .parseInt(variableInfo._minValue)) {
+                                                    _generatePremiseAndResultEachTransitionRecursiveStep(
+                                                            newPremise,
+                                                            index + 1,
+                                                            maxIndex,
+                                                            keySetArray,
+                                                            valueDomain,
+                                                            lValue, "ls",
+                                                            operatingSign);
+                                                    break;
+                                                }
+    
+                                                String updatedVariableValue = String
+                                                        .valueOf(maximumInBoundary
+                                                                + j);
+                                                _generatePremiseAndResultEachTransitionRecursiveStep(
+                                                        newPremise, index + 1,
+                                                        maxIndex, keySetArray,
+                                                        valueDomain, lValue,
+                                                        updatedVariableValue,
+                                                        operatingSign);
+                                            }
+                                        }
+                                    }
+                                } else {
+                                    VariableInfo variableInfo = _variableInfo
+                                            .get(lValue);
+                                    if (variableInfo != null) {
+                                        if (variableInfo._minValue != null) {
+                                            // For ordinary cases, we only need
+                                            // to check
+                                            // if the new value would exceeds
+                                            // the lower
+                                            // bound. If so, then use DOMAIN_LS
+                                            // to
+                                            // replace the value.
+    
+                                            String newPremise = currentPremise
+                                                    + " & "
+                                                    + keySetArray[index]
+                                                    + "="
+                                                    + String.valueOf(vList.get(
+                                                            i).intValue());
+    
+                                            String updatedVariableValue = String
+                                                    .valueOf(vList.get(i)
+                                                            .intValue()
+                                                            + (Integer
+                                                                    .parseInt(newVariableValue)));
+    
+                                            if (vList.get(i).intValue()
+                                                    + (Integer
+                                                            .parseInt(newVariableValue)) < Integer
+                                                    .parseInt(variableInfo._minValue)) {
+                                                // Use DOMAIN_LS to replace the
+                                                // value.
+                                                updatedVariableValue = "ls";
+                                            }
+    
+                                            _generatePremiseAndResultEachTransitionRecursiveStep(
+                                                    newPremise, index + 1,
+                                                    maxIndex, keySetArray,
+                                                    valueDomain, lValue,
+                                                    updatedVariableValue,
+                                                    operatingSign);
+                                        }
+                                    }
+    
+                                }
+                            }
+    
+                        }
+                    } else {
+    
+                        _generatePremiseAndResultEachTransitionRecursiveStep(
+                                currentPremise, index + 1, maxIndex,
+                                keySetArray, valueDomain, lValue,
+                                newVariableValue, operatingSign);
+                    }
+    
+                } else if (operatingSign.equalsIgnoreCase("-")) {
+                    // Cases when operating sign is minus.
+    
+                    ArrayList<Integer> vList = valueDomain
+                            .get(keySetArray[index]);
+    
+                    if ((vList != null) && (vList.size() != 0)) {
+                        for (int i = 0; i < vList.size(); i++) {
+    
+                            // check whether the offset is positive or negative.
+                            if (Integer.parseInt(newVariableValue) >= 0) {
+                                // Offset positive/zero case (positive_const)
+    
+                                if (vList.get(i).intValue() == DOMAIN_LS) {
+                                    // When the original value is LS, then
+                                    // LS - positive_const = LS
+    
+                                    String newPremise = currentPremise + " & "
+                                            + keySetArray[index] + "=" + "ls";
+    
+                                    // Hence the updated value remains the same.
+                                    _generatePremiseAndResultEachTransitionRecursiveStep(
+                                            newPremise, index + 1, maxIndex,
+                                            keySetArray, valueDomain, lValue,
+                                            "ls", operatingSign);
+    
+                                } else if (vList.get(i).intValue() == DOMAIN_GT) {
+                                    VariableInfo variableInfo = _variableInfo
+                                            .get(lValue);
+                                    if (variableInfo != null) {
+                                        if ((variableInfo._minValue != null)
+                                                && (variableInfo._maxValue != null)) {
+                                            // If original variable value is GT,
+                                            // we
+                                            // place conservative analysis and
+                                            // assert
+                                            // that it might lead to all its
+                                            // possible
+                                            // values.
+    
+                                            String newPremise = currentPremise
+                                                    + " & "
+                                                    + keySetArray[index] + "="
+                                                    + "gt";
+    
+                                            // First, it may keep to be GT
+                                            _generatePremiseAndResultEachTransitionRecursiveStep(
+                                                    newPremise, index + 1,
+                                                    maxIndex, keySetArray,
+                                                    valueDomain, lValue, "gt",
+                                                    operatingSign);
+    
+                                            int maximumInBoundary = Integer
+                                                    .parseInt(variableInfo._maxValue);
+                                            for (int j = 0; j < (Integer
+                                                    .parseInt(newVariableValue)); j++) {
+    
+                                                // We need to make sure that it
+                                                // would
+                                                // never exceeds upper bound. If
+                                                // it
+                                                // is below lower bound, we must
+                                                // stop it
+                                                // and use LS to replace the
+                                                // value.
+    
+                                                if ((maximumInBoundary - j) < Integer
+                                                        .parseInt(variableInfo._minValue)) {
+                                                    _generatePremiseAndResultEachTransitionRecursiveStep(
+                                                            newPremise,
+                                                            index + 1,
+                                                            maxIndex,
+                                                            keySetArray,
+                                                            valueDomain,
+                                                            lValue, "ls",
+                                                            operatingSign);
+                                                    break;
+                                                }
+    
+                                                String updatedVariableValue = String
+                                                        .valueOf(maximumInBoundary
+                                                                - j);
+                                                _generatePremiseAndResultEachTransitionRecursiveStep(
+                                                        newPremise, index + 1,
+                                                        maxIndex, keySetArray,
+                                                        valueDomain, lValue,
+                                                        updatedVariableValue,
+                                                        operatingSign);
+                                            }
+                                        }
+                                    }
+    
+                                } else {
+                                    // For ordinary part, we only need to check
+                                    // if the new value would exceed the lower
+                                    // bound. If so, then use DOMAIN_LS to
+                                    // replace the value.
+    
+                                    String newPremise = currentPremise
+                                            + " & "
+                                            + keySetArray[index]
+                                            + "="
+                                            + String.valueOf(vList.get(i)
+                                                    .intValue());
+    
+                                    String updatedVariableValue = String
+                                            .valueOf(vList.get(i).intValue()
+                                                    - (Integer
+                                                            .parseInt(newVariableValue)));
+                                    VariableInfo variableInfo = _variableInfo
+                                            .get(lValue);
+                                    if (variableInfo != null) {
+                                        if (variableInfo._minValue != null) {
+                                            if (vList.get(i).intValue()
+                                                    - (Integer
+                                                            .parseInt(newVariableValue)) < Integer
+                                                    .parseInt(variableInfo._minValue)) {
+                                                // Use DOMAIN_LS to replace the
+                                                // value.
+                                                updatedVariableValue = "ls";
+                                            }
+                                        }
+                                    }
+    
+                                    _generatePremiseAndResultEachTransitionRecursiveStep(
+                                            newPremise, index + 1, maxIndex,
+                                            keySetArray, valueDomain, lValue,
+                                            updatedVariableValue, operatingSign);
+                                }
+    
+                            } else {
+                                // Offset negative case (negative_const)
+    
+                                if (vList.get(i).intValue() == DOMAIN_GT) {
+                                    // GT - negative_const = GT
+    
+                                    String newPremise = currentPremise + " & "
+                                            + keySetArray[index] + "=" + "gt";
+    
+                                    // Hence the updated value remains the same.
+                                    _generatePremiseAndResultEachTransitionRecursiveStep(
+                                            newPremise, index + 1, maxIndex,
+                                            keySetArray, valueDomain, lValue,
+                                            "gt", operatingSign);
+    
+                                } else if (vList.get(i).intValue() == DOMAIN_LS) {
+                                    // For DOMAIN_LS, we place conservative
+                                    // analysis and assert that it might lead to
+                                    // all its possible values
+    
+                                    String newPremise = currentPremise + " & "
+                                            + keySetArray[index] + "=" + "ls";
+    
+                                    // First, LS - negative_const = LS
+                                    _generatePremiseAndResultEachTransitionRecursiveStep(
+                                            newPremise, index + 1, maxIndex,
+                                            keySetArray, valueDomain, lValue,
+                                            "ls", operatingSign);
+    
+                                    VariableInfo variableInfo = _variableInfo
+                                            .get(lValue);
+                                    if (variableInfo == null) {
+                                        throw new IllegalActionException(
+                                                "Internal error, removing \""
+                                                        + lValue
+                                                        + "\" returned null?");
+                                    } else {
+                                        if (variableInfo._minValue != null
+                                                && variableInfo._maxValue != null) {
+                                            int minimumInBoundary = Integer
+                                                    .parseInt(variableInfo._minValue);
+    
+                                            for (int j = 0; j > (Integer
+                                                    .parseInt(newVariableValue)); j--) {
+    
+                                                // We need to make sure that it
+                                                // would
+                                                // never exceeds upper bound. If
+                                                // it
+                                                // exceeds upper bound, we must
+                                                // stop it
+                                                // and use GT to replace the
+                                                // value.
+    
+                                                if ((minimumInBoundary - j) < Integer
+                                                        .parseInt(variableInfo._maxValue)) {
+                                                    _generatePremiseAndResultEachTransitionRecursiveStep(
+                                                            newPremise,
+                                                            index + 1,
+                                                            maxIndex,
+                                                            keySetArray,
+                                                            valueDomain,
+                                                            lValue, "gt",
+                                                            operatingSign);
+                                                    break;
+                                                }
+    
+                                                String updatedVariableValue = String
+                                                        .valueOf(minimumInBoundary
+                                                                - j);
+    
+                                                _generatePremiseAndResultEachTransitionRecursiveStep(
+                                                        newPremise, index + 1,
+                                                        maxIndex, keySetArray,
+                                                        valueDomain, lValue,
+                                                        updatedVariableValue,
+                                                        operatingSign);
+    
+                                            }
+                                        }
+                                    }
+                                } else {
+                                    VariableInfo variableInfo = _variableInfo
+                                            .get(lValue);
+                                    if (variableInfo == null) {
+                                        throw new IllegalActionException(
+                                                "Internal error, removing \""
+                                                        + lValue
+                                                        + "\" returned null?");
+                                    } else {
+                                        if (variableInfo._minValue != null
+                                                && variableInfo._maxValue != null) {
+                                            // For ordinary part, we only need
+                                            // to check
+                                            // if the new value would exceeds
+                                            // the upper
+                                            // bound. If so, then use DOMAIN_GT
+                                            // to
+                                            // replace the value.
+    
+                                            String newPremise = currentPremise
+                                                    + " & "
+                                                    + keySetArray[index]
+                                                    + "="
+                                                    + String.valueOf(vList.get(
+                                                            i).intValue());
+    
+                                            String updatedVariableValue = String
+                                                    .valueOf(vList.get(i)
+                                                            .intValue()
+                                                            - (Integer
+                                                                    .parseInt(newVariableValue)));
+    
+                                            if (vList.get(i).intValue()
+                                                    - (Integer
+                                                            .parseInt(newVariableValue)) > Integer
+                                                    .parseInt(variableInfo._maxValue)) {
+                                                // Use DOMAIN_LS to replace the
+                                                // value.
+                                                updatedVariableValue = "gt";
+                                            }
+    
+                                            _generatePremiseAndResultEachTransitionRecursiveStep(
+                                                    newPremise, index + 1,
+                                                    maxIndex, keySetArray,
+                                                    valueDomain, lValue,
+                                                    updatedVariableValue,
+                                                    operatingSign);
+                                        }
+                                    }
+    
+                                }
+                            }
+                        }
+    
+                    } else {
+                        _generatePremiseAndResultEachTransitionRecursiveStep(
+                                currentPremise, index + 1, maxIndex,
+                                keySetArray, valueDomain, lValue,
+                                newVariableValue, operatingSign);
+                    }
+    
+                } else if (operatingSign.equalsIgnoreCase("*")) {
+    
+                    ArrayList<Integer> vList = valueDomain
+                            .get(keySetArray[index]);
+                    if ((vList != null) && (vList.size() != 0)) {
+                        for (int i = 0; i < vList.size(); i++) {
+    
+                            // check whether the offset is positive or negative.
+                            if (Integer.parseInt(newVariableValue) > 0) {
+                                // Positive case (positive_const)
+    
+                                if (vList.get(i).intValue() == DOMAIN_GT) {
+    
+                                    // newpremise = currentPremise & (var =
+                                    // const)
+                                    String newPremise = currentPremise + " & "
+                                            + keySetArray[index] + "=" + "gt";
+    
+                                    VariableInfo variableInfo = _variableInfo
+                                            .get(lValue);
+                                    if (variableInfo == null) {
+                                        throw new IllegalActionException(
+                                                "Internal error, getting \""
+                                                        + lValue
+                                                        + "\" returned null?");
+                                    } else {
+                                        if (variableInfo._minValue != null
+                                                && variableInfo._maxValue != null) {
+                                            if (Integer
+                                                    .parseInt(variableInfo._maxValue) >= 0) {
+                                                // when max>=0, GT *
+                                                // positive_const = GT
+                                                // Hence the updated value
+                                                // remains the
+                                                // same.
+                                                _generatePremiseAndResultEachTransitionRecursiveStep(
+                                                        newPremise, index + 1,
+                                                        maxIndex, keySetArray,
+                                                        valueDomain, lValue,
+                                                        "gt", operatingSign);
+                                            } else {
+                                                // Integer.parseInt(((VariableInfo)
+                                                // _variableInfo.get(lValue))._maxValue)
+                                                // < 0
+                                                //
+                                                // Starting from the upper bound
+                                                // + 1,
+                                                // +2, +3, +4 ... calculate all
+                                                // possible
+                                                // values until the new
+                                                // set-value is
+                                                // greater than GT.
+                                                //
+                                                // For example, if upper bound
+                                                // is -5,
+                                                // and if the offset is 2, then
+                                                // for
+                                                // values in GT that is greater
+                                                // or equal
+                                                // to -2, the new variable would
+                                                // be in
+                                                // GT. But if the lower bound is
+                                                // -7,
+                                                // then we need to replace cases
+                                                // that is
+                                                // lower to -7. For example,
+                                                // -4*2=-8. We
+                                                // should use LS to represent
+                                                // this
+                                                // value.
+                                                //
+                                                // Also we expect to record one
+                                                // LS as
+                                                // the new value only. So there
+                                                // are
+                                                // tricks that needs to be
+                                                // applied.
+    
+                                                int starter = Integer
+                                                        .parseInt(variableInfo._maxValue) + 1;
+    
+                                                while (starter
+                                                        * Integer
+                                                                .parseInt(newVariableValue) <= Integer
+                                                        .parseInt(variableInfo._maxValue)) {
+                                                    if ((starter
+                                                            * Integer
+                                                                    .parseInt(newVariableValue) < Integer
+                                                            .parseInt(variableInfo._minValue))
+                                                            && ((starter + 1)
+                                                                    * Integer
+                                                                            .parseInt(newVariableValue) >= Integer
+                                                                    .parseInt(variableInfo._minValue))) {
+                                                        // This IF statement
+                                                        // represents
+                                                        // tricks mentioned
+                                                        // above.
+                                                        _generatePremiseAndResultEachTransitionRecursiveStep(
+                                                                newPremise,
+                                                                index + 1,
+                                                                maxIndex,
+                                                                keySetArray,
+                                                                valueDomain,
+                                                                lValue, "ls",
+                                                                operatingSign);
+    
+                                                    } else if ((starter
+                                                            * Integer
+                                                                    .parseInt(newVariableValue) <= Integer
+                                                            .parseInt(variableInfo._maxValue))
+                                                            && (starter
+                                                                    * Integer
+                                                                            .parseInt(newVariableValue) >= Integer
+                                                                    .parseInt(variableInfo._minValue))) {
+                                                        String updatedVariableValue = String
+                                                                .valueOf(starter
+                                                                        * Integer
+                                                                                .parseInt(newVariableValue));
+                                                        _generatePremiseAndResultEachTransitionRecursiveStep(
+                                                                newPremise,
+                                                                index + 1,
+                                                                maxIndex,
+                                                                keySetArray,
+                                                                valueDomain,
+                                                                lValue,
+                                                                updatedVariableValue,
+                                                                operatingSign);
+                                                    }
+    
+                                                    starter++;
+    
+                                                }
+    
+                                                _generatePremiseAndResultEachTransitionRecursiveStep(
+                                                        newPremise, index + 1,
+                                                        maxIndex, keySetArray,
+                                                        valueDomain, lValue,
+                                                        "gt", operatingSign);
+    
+                                            }
+                                        }
+                                    }
+                                } else if (vList.get(i).intValue() == DOMAIN_LS) {
+    
+                                    String newPremise = currentPremise + " & "
+                                            + keySetArray[index] + "=" + "ls";
+    
+                                    VariableInfo variableInfo = _variableInfo
+                                            .get(lValue);
+                                    if (variableInfo == null) {
+                                        throw new IllegalActionException(
+                                                "Internal error, getting \""
+                                                        + lValue
+                                                        + "\" returned null?");
+                                    } else {
+                                        if (variableInfo._minValue != null
+                                                && variableInfo._maxValue != null) {
+                                            if (Integer
+                                                    .parseInt(variableInfo._minValue) <= 0) {
+                                                // when min<=0, LS *
+                                                // positive_const = LS
+                                                // Hence the updated value
+                                                // remains the
+                                                // same.
+                                                _generatePremiseAndResultEachTransitionRecursiveStep(
+                                                        newPremise, index + 1,
+                                                        maxIndex, keySetArray,
+                                                        valueDomain, lValue,
+                                                        "ls", operatingSign);
+                                            } else {
+                                                // Starting from the lower bound
+                                                // -1,
+                                                // -2, -3, -4 ...
+                                                // calculate all possible values
+                                                // until
+                                                // the value is greater than LS.
+    
+                                                int starter = Integer
+                                                        .parseInt(variableInfo._minValue) - 1;
+                                                while (starter
+                                                        * Integer
+                                                                .parseInt(newVariableValue) >= Integer
+                                                        .parseInt(variableInfo._minValue)) {
+                                                    if ((starter
+                                                            * Integer
+                                                                    .parseInt(newVariableValue) > Integer
+                                                            .parseInt(variableInfo._maxValue))
+                                                            && ((starter - 1)
+                                                                    * Integer
+                                                                            .parseInt(newVariableValue) <= Integer
+                                                                    .parseInt(variableInfo._maxValue))) {
+    
+                                                        _generatePremiseAndResultEachTransitionRecursiveStep(
+                                                                newPremise,
+                                                                index + 1,
+                                                                maxIndex,
+                                                                keySetArray,
+                                                                valueDomain,
+                                                                lValue, "gt",
+                                                                operatingSign);
+    
+                                                    } else if ((starter
+                                                            * Integer
+                                                                    .parseInt(newVariableValue) <= Integer
+                                                            .parseInt(variableInfo._maxValue))
+                                                            && (starter
+                                                                    * Integer
+                                                                            .parseInt(newVariableValue) >= Integer
+                                                                    .parseInt(variableInfo._minValue))) {
+                                                        String updatedVariableValue = String
+                                                                .valueOf(starter
+                                                                        * Integer
+                                                                                .parseInt(newVariableValue));
+                                                        _generatePremiseAndResultEachTransitionRecursiveStep(
+                                                                newPremise,
+                                                                index + 1,
+                                                                maxIndex,
+                                                                keySetArray,
+                                                                valueDomain,
+                                                                lValue,
+                                                                updatedVariableValue,
+                                                                operatingSign);
+                                                    }
+    
+                                                    starter++;
+    
+                                                }
+                                                _generatePremiseAndResultEachTransitionRecursiveStep(
+                                                        newPremise, index + 1,
+                                                        maxIndex, keySetArray,
+                                                        valueDomain, lValue,
+                                                        "ls", operatingSign);
+    
+                                            }
+                                        }
+                                    }
+                                } else {
+                                    // For ordinary part, we only need to check
+                                    // if the new value would exceed the lower
+                                    // or upper bound.
+    
+                                    String newPremise = currentPremise
+                                            + " & "
+                                            + keySetArray[index]
+                                            + "="
+                                            + String.valueOf(vList.get(i)
+                                                    .intValue());
+    
+                                    String updatedVariableValue = String
+                                            .valueOf(vList.get(i).intValue()
+                                                    * (Integer
+                                                            .parseInt(newVariableValue)));
+    
+                                    VariableInfo variableInfo = _variableInfo
+                                            .get(lValue);
+                                    if (variableInfo == null) {
+                                        throw new IllegalActionException(
+                                                "Internal error, getting \""
+                                                        + lValue
+                                                        + "\" returned null?");
+                                    } else {
+                                        if (variableInfo._minValue != null
+                                                && variableInfo._maxValue != null) {
+                                            if (vList.get(i).intValue()
+                                                    * (Integer
+                                                            .parseInt(newVariableValue)) < Integer
+                                                    .parseInt(variableInfo._minValue)) {
+                                                // Use DOMAIN_LS to replace the
+                                                // value.
+                                                updatedVariableValue = "ls";
+    
+                                            } else if (vList.get(i).intValue()
+                                                    * (Integer
+                                                            .parseInt(newVariableValue)) > Integer
+                                                    .parseInt(variableInfo._maxValue)) {
+                                                updatedVariableValue = "gt";
+                                            }
+    
+                                            _generatePremiseAndResultEachTransitionRecursiveStep(
+                                                    newPremise, index + 1,
+                                                    maxIndex, keySetArray,
+                                                    valueDomain, lValue,
+                                                    updatedVariableValue,
+                                                    operatingSign);
+                                        }
+                                    }
+                                }
+                            } else if (Integer.parseInt(newVariableValue) < 0) {
+                                // Negative case (negative_const)
+    
+                                if (vList.get(i).intValue() == DOMAIN_GT) {
+    
+                                    String newPremise = currentPremise + " & "
+                                            + keySetArray[index] + "=" + "gt";
+    
+                                    VariableInfo variableInfo = _variableInfo
+                                            .get(lValue);
+                                    if (variableInfo == null) {
+                                        throw new IllegalActionException(
+                                                "Internal error, getting \""
+                                                        + lValue
+                                                        + "\" returned null?");
+                                    } else {
+                                        if (variableInfo._minValue != null
+                                                && variableInfo._maxValue != null) {
+    
+                                            if (Integer
+                                                    .parseInt(variableInfo._maxValue) >= 0) {
+                                                // Starting from the upper bound
+                                                // + 1,
+                                                // +2, +3, +4 ...
+                                                // calculate all possible values
+                                                // until
+                                                // the value is less than LS.
+                                                //
+                                                // For example, if upper bound =
+                                                // 1,
+                                                // lower bound = -7, and offset
+                                                // = -2,
+                                                // then we might have possible
+                                                // new
+                                                // set-values -4, -6, LS
+    
+                                                int starter = Integer
+                                                        .parseInt(variableInfo._maxValue) + 1;
+    
+                                                while (starter
+                                                        * Integer
+                                                                .parseInt(newVariableValue) >= Integer
+                                                        .parseInt(variableInfo._minValue)) {
+    
+                                                    String updatedVariableValue = String
+                                                            .valueOf(starter
+                                                                    * Integer
+                                                                            .parseInt(newVariableValue));
+                                                    _generatePremiseAndResultEachTransitionRecursiveStep(
+                                                            newPremise,
+                                                            index + 1,
+                                                            maxIndex,
+                                                            keySetArray,
+                                                            valueDomain,
+                                                            lValue,
+                                                            updatedVariableValue,
+                                                            operatingSign);
+    
+                                                    starter++;
+                                                }
+    
+                                                _generatePremiseAndResultEachTransitionRecursiveStep(
+                                                        newPremise, index + 1,
+                                                        maxIndex, keySetArray,
+                                                        valueDomain, lValue,
+                                                        "ls", operatingSign);
+    
+                                            } else if (Integer
+                                                    .parseInt(variableInfo._maxValue) < 0) {
+                                                // One important thing is that
+                                                // we may
+                                                // have cases where 0 * const =
+                                                // 0.
+                                                // Because 0 is in GT, so we
+                                                // would have
+                                                // new value GT as a choice.
+    
+                                                int starter = Integer
+                                                        .parseInt(variableInfo._maxValue) + 1;
+                                                while (starter
+                                                        * Integer
+                                                                .parseInt(newVariableValue) >= Integer
+                                                        .parseInt(variableInfo._minValue)) {
+                                                    if ((starter
+                                                            * Integer
+                                                                    .parseInt(newVariableValue) > Integer
+                                                            .parseInt(variableInfo._maxValue))
+                                                            && ((starter + 1)
+                                                                    * Integer
+                                                                            .parseInt(newVariableValue) <= Integer
+                                                                    .parseInt(variableInfo._maxValue))) {
+    
+                                                        _generatePremiseAndResultEachTransitionRecursiveStep(
+                                                                newPremise,
+                                                                index + 1,
+                                                                maxIndex,
+                                                                keySetArray,
+                                                                valueDomain,
+                                                                lValue, "gt",
+                                                                operatingSign);
+    
+                                                    } else if ((starter
+                                                            * Integer
+                                                                    .parseInt(newVariableValue) <= Integer
+                                                            .parseInt(variableInfo._maxValue))
+                                                            && (starter
+                                                                    * Integer
+                                                                            .parseInt(newVariableValue) >= Integer
+                                                                    .parseInt(variableInfo._minValue))) {
+                                                        String updatedVariableValue = String
+                                                                .valueOf(starter
+                                                                        * Integer
+                                                                                .parseInt(newVariableValue));
+                                                        _generatePremiseAndResultEachTransitionRecursiveStep(
+                                                                newPremise,
+                                                                index + 1,
+                                                                maxIndex,
+                                                                keySetArray,
+                                                                valueDomain,
+                                                                lValue,
+                                                                updatedVariableValue,
+                                                                operatingSign);
+                                                    }
+    
+                                                    starter++;
+    
+                                                }
+                                                _generatePremiseAndResultEachTransitionRecursiveStep(
+                                                        newPremise, index + 1,
+                                                        maxIndex, keySetArray,
+                                                        valueDomain, lValue,
+                                                        "ls", operatingSign);
+    
+                                                // Special case where 0 * const
+                                                // = 0
+                                                _generatePremiseAndResultEachTransitionRecursiveStep(
+                                                        newPremise, index + 1,
+                                                        maxIndex, keySetArray,
+                                                        valueDomain, lValue,
+                                                        "gt", operatingSign);
+    
+                                            }
+                                        }
+                                    }
+                                } else if (vList.get(i).intValue() == DOMAIN_LS) {
+                                    // (Integer.parseInt(newVariableValue) < 0)
+                                    // && original variable value == DOMAIN_LS
+    
+                                    String newPremise = currentPremise + " & "
+                                            + keySetArray[index] + "=" + "ls";
+    
+                                    VariableInfo variableInfo = _variableInfo
+                                            .get(lValue);
+                                    if (variableInfo == null) {
+                                        throw new IllegalActionException(
+                                                "Internal error, getting \""
+                                                        + lValue
+                                                        + "\" returned null?");
+                                    } else {
+                                        if (variableInfo._minValue != null
+                                                && variableInfo._maxValue != null) {
+                                            if (Integer
+                                                    .parseInt(variableInfo._minValue) <= 0) {
+                                                // Starting from the lower bound
+                                                // -1,
+                                                // -2, -3, -4 ...
+                                                // calculate all possible values
+                                                // until
+                                                // the value is less than GT.
+                                                //
+                                                // For example, if upper bound =
+                                                // 7,
+                                                // lower bound = -1, and offset
+                                                // = -2,
+                                                // then we might have possible
+                                                // new
+                                                // set-values 4, 6, GT
+    
+                                                int starter = Integer
+                                                        .parseInt(variableInfo._minValue) - 1;
+    
+                                                while (starter
+                                                        * Integer
+                                                                .parseInt(newVariableValue) <= Integer
+                                                        .parseInt(variableInfo._maxValue)) {
+    
+                                                    String updatedVariableValue = String
+                                                            .valueOf(starter
+                                                                    * Integer
+                                                                            .parseInt(newVariableValue));
+                                                    _generatePremiseAndResultEachTransitionRecursiveStep(
+                                                            newPremise,
+                                                            index + 1,
+                                                            maxIndex,
+                                                            keySetArray,
+                                                            valueDomain,
+                                                            lValue,
+                                                            updatedVariableValue,
+                                                            operatingSign);
+    
+                                                    starter++;
+                                                }
+    
+                                                _generatePremiseAndResultEachTransitionRecursiveStep(
+                                                        newPremise, index + 1,
+                                                        maxIndex, keySetArray,
+                                                        valueDomain, lValue,
+                                                        "gt", operatingSign);
+    
+                                            } else if (Integer
+                                                    .parseInt(variableInfo._minValue) > 0) {
+                                                // One important thing is that
+                                                // we may
+                                                // have cases where 0 * const =
+                                                // 0.
+                                                // Because 0 is in LS, so we
+                                                // would have
+                                                // new value LS as a choice.
+    
+                                                int starter = Integer
+                                                        .parseInt(variableInfo._minValue) - 1;
+                                                while (starter
+                                                        * Integer
+                                                                .parseInt(newVariableValue) <= Integer
+                                                        .parseInt(variableInfo._maxValue)) {
+                                                    if ((starter
+                                                            * Integer
+                                                                    .parseInt(newVariableValue) < Integer
+                                                            .parseInt(variableInfo._minValue))
+                                                            && ((starter + 1)
+                                                                    * Integer
+                                                                            .parseInt(newVariableValue) >= Integer
+                                                                    .parseInt(variableInfo._minValue))) {
+    
+                                                        _generatePremiseAndResultEachTransitionRecursiveStep(
+                                                                newPremise,
+                                                                index + 1,
+                                                                maxIndex,
+                                                                keySetArray,
+                                                                valueDomain,
+                                                                lValue, "ls",
+                                                                operatingSign);
+    
+                                                    } else if ((starter
+                                                            * Integer
+                                                                    .parseInt(newVariableValue) <= Integer
+                                                            .parseInt(variableInfo._maxValue))
+                                                            && (starter
+                                                                    * Integer
+                                                                            .parseInt(newVariableValue) >= Integer
+                                                                    .parseInt(variableInfo._minValue))) {
+                                                        String updatedVariableValue = String
+                                                                .valueOf(starter
+                                                                        * Integer
+                                                                                .parseInt(newVariableValue));
+                                                        _generatePremiseAndResultEachTransitionRecursiveStep(
+                                                                newPremise,
+                                                                index + 1,
+                                                                maxIndex,
+                                                                keySetArray,
+                                                                valueDomain,
+                                                                lValue,
+                                                                updatedVariableValue,
+                                                                operatingSign);
+                                                    }
+    
+                                                    starter++;
+    
+                                                }
+                                                _generatePremiseAndResultEachTransitionRecursiveStep(
+                                                        newPremise, index + 1,
+                                                        maxIndex, keySetArray,
+                                                        valueDomain, lValue,
+                                                        "gt", operatingSign);
+    
+                                                // Special case where 0 * const
+                                                // = 0
+                                                _generatePremiseAndResultEachTransitionRecursiveStep(
+                                                        newPremise, index + 1,
+                                                        maxIndex, keySetArray,
+                                                        valueDomain, lValue,
+                                                        "ls", operatingSign);
+    
+                                            }
+                                        }
+                                    }
+                                } else {
+                                    VariableInfo variableInfo = _variableInfo
+                                            .get(lValue);
+                                    if (variableInfo == null) {
+                                        throw new IllegalActionException(
+                                                "Internal error, getting \""
+                                                        + lValue
+                                                        + "\" returned null?");
+                                    } else {
+                                        if (variableInfo._minValue != null
+                                                && variableInfo._maxValue != null) {
+                                            // For ordinary part, we only need
+                                            // to check
+                                            // if the new value would exceeds
+                                            // the upper
+                                            // bound. If so, then use DOMAIN_GT
+                                            // to
+                                            // replace the value.
+    
+                                            String newPremise = currentPremise
+                                                    + " & "
+                                                    + keySetArray[index]
+                                                    + "="
+                                                    + String.valueOf(vList.get(
+                                                            i).intValue());
+    
+                                            String updatedVariableValue = String
+                                                    .valueOf(vList.get(i)
+                                                            .intValue()
+                                                            - (Integer
+                                                                    .parseInt(newVariableValue)));
+    
+                                            if (vList.get(i).intValue()
+                                                    - (Integer
+                                                            .parseInt(newVariableValue)) > Integer
+                                                    .parseInt(variableInfo._maxValue)) {
+                                                // Use DOMAIN_LS to replace the
+                                                // value.
+                                                updatedVariableValue = "gt";
+                                            }
+    
+                                            _generatePremiseAndResultEachTransitionRecursiveStep(
+                                                    newPremise, index + 1,
+                                                    maxIndex, keySetArray,
+                                                    valueDomain, lValue,
+                                                    updatedVariableValue,
+                                                    operatingSign);
+                                        }
+                                    }
+    
+                                }
+                            } else {
+                                // Integer.parseInt(newVariableValue)==0
+                                // When offset is zero, the result should be
+                                // zero. So we only need to check if zero
+                                // exceeds the upper bound or is below the lower
+                                // bound.
+    
+                                String newPremise = currentPremise
+                                        + " & "
+                                        + keySetArray[index]
+                                        + "="
+                                        + String.valueOf(vList.get(i)
+                                                .intValue());
+    
+                                if (vList.get(i).intValue() == DOMAIN_LS) {
+                                    newPremise = currentPremise + " & "
+                                            + keySetArray[index] + "=" + "ls";
+                                } else if (vList.get(i).intValue() == DOMAIN_GT) {
+                                    newPremise = currentPremise + " & "
+                                            + keySetArray[index] + "=" + "gt";
+                                }
+    
+                                String updatedVariableValue = "0";
+    
+                                VariableInfo variableInfo = _variableInfo
+                                        .get(lValue);
+                                if (variableInfo == null) {
+                                    throw new IllegalActionException(
+                                            "Internal error, getting \""
+                                                    + lValue
+                                                    + "\" returned null?");
+                                } else {
+                                    if (variableInfo._minValue != null
+                                            && variableInfo._maxValue != null) {
+                                        if (0 > Integer
+                                                .parseInt(variableInfo._maxValue)) {
+                                            // Use DOMAIN_LS to replace the
+                                            // value.
+                                            updatedVariableValue = "gt";
+                                        } else if (0 < Integer
+                                                .parseInt(variableInfo._minValue)) {
+                                            updatedVariableValue = "ls";
+                                        }
+    
+                                        _generatePremiseAndResultEachTransitionRecursiveStep(
+                                                newPremise, index + 1,
+                                                maxIndex, keySetArray,
+                                                valueDomain, lValue,
+                                                updatedVariableValue,
+                                                operatingSign);
+                                    }
+    
+                                }
+                            }
+                        }
+                    } else {
+                        _generatePremiseAndResultEachTransitionRecursiveStep(
+                                currentPremise, index + 1, maxIndex,
+                                keySetArray, valueDomain, lValue,
+                                newVariableValue, operatingSign);
+                    }
+    
+                } else if (operatingSign.equalsIgnoreCase("/")) {
+                    // FIXME: Right now the execution of division is not
+                    // implemented.
+    
+                    ArrayList<Integer> vList = valueDomain
+                            .get(keySetArray[index]);
+    
+                    // Do as usual
+                    if ((vList != null) && (vList.size() != 0)) {
+                        for (int i = 0; i < vList.size(); i++) {
+                            String updatedVariableValue = String.valueOf(vList
+                                    .get(i).intValue()
+                                    / (Integer.parseInt(newVariableValue)));
+                            // retrieve the string and concatenate
+                            String newPremise = currentPremise + " & "
+                                    + keySetArray[index] + "="
+                                    + String.valueOf(vList.get(i).intValue());
+    
+                            if (vList.get(i).intValue() == DOMAIN_LS) {
+                                newPremise = currentPremise + " & "
+                                        + keySetArray[index] + "=" + "ls";
+                            } else if (vList.get(i).intValue() == DOMAIN_GT) {
+                                newPremise = currentPremise + " & "
+                                        + keySetArray[index] + "=" + "gt";
+                            }
+    
+                            _generatePremiseAndResultEachTransitionRecursiveStep(
+                                    newPremise, index + 1, maxIndex,
+                                    keySetArray, valueDomain, lValue,
+                                    updatedVariableValue, operatingSign);
+                        }
+                    } else {
+                        _generatePremiseAndResultEachTransitionRecursiveStep(
+                                currentPremise, index + 1, maxIndex,
+                                keySetArray, valueDomain, lValue,
+                                newVariableValue, operatingSign);
+                    }
+    
+                } else if (operatingSign.equalsIgnoreCase("N")) {
+    
+                    ArrayList<Integer> vList = valueDomain
+                            .get(keySetArray[index]);
+                    if ((vList != null) && (vList.size() != 0)) {
+                        boolean b1 = Pattern.matches(".*_isPresent",
+                                keySetArray[index].trim());
+                        if (b1 == true) {
+                            String updatedVariableValue = newVariableValue;
+                            String newPremise = currentPremise;
+    
+                            _generatePremiseAndResultEachTransitionRecursiveStep(
+                                    newPremise, index + 1, maxIndex,
+                                    keySetArray, valueDomain, lValue,
+                                    updatedVariableValue, operatingSign);
+                        } else {
+                            boolean b2 = Pattern.matches(".*_value",
+                                    keySetArray[index].trim());
+                            if ((b2 == true) && (vList.size() == 2)) {
+                                // See if vList.size() == 2, if so simply
+                                // attach XX_isPresent to the value.
+                                String[] variable = keySetArray[index].trim()
+                                        .split("_value");
+    
+                                if (currentPremise.trim().equalsIgnoreCase("")) {
+                                    _generatePremiseAndResultEachTransitionRecursiveStep(
+                                            currentPremise + variable[0].trim()
+                                                    + "_isPresent ", index + 1,
+                                            maxIndex, keySetArray, valueDomain,
+                                            lValue, newVariableValue,
+                                            operatingSign);
+                                } else {
+                                    _generatePremiseAndResultEachTransitionRecursiveStep(
+                                            currentPremise + " & "
+                                                    + variable[0].trim()
+                                                    + "_isPresent ", index + 1,
+                                            maxIndex, keySetArray, valueDomain,
+                                            lValue, newVariableValue,
+                                            operatingSign);
+                                }
+                            } else if (b2 == true) {
+                                // Since now we have XX_value, we should
+                                // also attach the premise XX_isPresent
+                                String[] variable = keySetArray[index].trim()
+                                        .split("_value");
+    
+                                for (int i = 0; i < vList.size(); i++) {
+                                    String updatedVariableValue = newVariableValue;
+                                    // retrieve the string and concatenate
+                                    String newPremise = currentPremise
+                                            + "&"
+                                            + keySetArray[index]
+                                            + "="
+                                            + String.valueOf(vList.get(i)
+                                                    .intValue()) + "&"
+                                            + variable[0].trim()
+                                            + "_isPresent ";
+    
+                                    if (vList.get(i).intValue() == DOMAIN_LS) {
+                                        newPremise = currentPremise + " & "
+                                                + keySetArray[index] + "="
+                                                + "ls" + "&"
+                                                + variable[0].trim()
+                                                + "_isPresent ";
+                                    } else if (vList.get(i).intValue() == DOMAIN_GT) {
+                                        newPremise = currentPremise + " & "
+                                                + keySetArray[index] + "="
+                                                + "gt" + "&"
+                                                + variable[0].trim()
+                                                + "_isPresent ";
+                                    }
+                                    _generatePremiseAndResultEachTransitionRecursiveStep(
+                                            newPremise, index + 1, maxIndex,
+                                            keySetArray, valueDomain, lValue,
+                                            updatedVariableValue, operatingSign);
+                                }
+                            } else {
+                                for (int i = 0; i < vList.size(); i++) {
+                                    String updatedVariableValue = newVariableValue;
+                                    // retrieve the string and concatenate
+                                    String newPremise = currentPremise
+                                            + " & "
+                                            + keySetArray[index]
+                                            + "="
+                                            + String.valueOf(vList.get(i)
+                                                    .intValue());
+    
+                                    if (vList.get(i).intValue() == DOMAIN_LS) {
+                                        newPremise = currentPremise + " & "
+                                                + keySetArray[index] + "="
+                                                + "ls";
+                                    } else if (vList.get(i).intValue() == DOMAIN_GT) {
+                                        newPremise = currentPremise + " & "
+                                                + keySetArray[index] + "="
+                                                + "gt";
+                                    }
+                                    _generatePremiseAndResultEachTransitionRecursiveStep(
+                                            newPremise, index + 1, maxIndex,
+                                            keySetArray, valueDomain, lValue,
+                                            updatedVariableValue, operatingSign);
+                                }
+                            }
+    
+                        }
+    
+                    } else {
+                        _generatePremiseAndResultEachTransitionRecursiveStep(
+                                currentPremise, index + 1, maxIndex,
+                                keySetArray, valueDomain, lValue,
+                                newVariableValue, operatingSign);
+                    }
+    
+                }
+    
+            } else {
+                // meaning: if
+                // (keySetArray[index].equalsIgnoreCase(lValue)==false)
+    
+                ArrayList<Integer> vList = valueDomain.get(keySetArray[index]);
+    
+                if ((vList != null) && (vList.size() != 0)) {
+                    // if the keySetArray[index] is similar to "XX_isPresent",
+                    // skip the update of premise.
+                    boolean b = Pattern.matches(".*_isPresent",
+                            keySetArray[index].trim());
+                    if (b == true) {
+                        _generatePremiseAndResultEachTransitionRecursiveStep(
+                                currentPremise, index + 1, maxIndex,
+                                keySetArray, valueDomain, lValue,
+                                newVariableValue, operatingSign);
+                    } else {
+                        boolean b2 = Pattern.matches(".*_value",
+                                keySetArray[index].trim());
+                        if ((b2 == true) && (vList.size() == 2)) {
+    
+                            _generatePremiseAndResultEachTransitionRecursiveStep(
+                                    currentPremise, index + 1, maxIndex,
+                                    keySetArray, valueDomain, lValue,
+                                    newVariableValue, operatingSign);
+    
+                        } else if (b2 == true) {
+                            String[] variable = keySetArray[index].trim()
+                                    .split("_value");
+                            for (int i = 0; i < vList.size(); i++) {
+                                // retrieve the string and concatenate
+                                String newPremise = currentPremise
+                                        + " & "
+                                        + keySetArray[index]
+                                        + "="
+                                        + String.valueOf(vList.get(i)
+                                                .intValue()) + " & "
+                                        + variable[0].trim() + "_isPresent ";
+    
+                                if (vList.get(i).intValue() == DOMAIN_LS) {
+                                    newPremise = currentPremise + " & "
+                                            + keySetArray[index] + "=" + "ls"
+                                            + " & " + variable[0].trim()
+                                            + "_isPresent ";
+                                } else if (vList.get(i).intValue() == DOMAIN_GT) {
+                                    newPremise = currentPremise + " & "
+                                            + keySetArray[index] + "=" + "gt"
+                                            + " & " + variable[0].trim()
+                                            + "_isPresent ";
+                                }
+                                _generatePremiseAndResultEachTransitionRecursiveStep(
+                                        newPremise, index + 1, maxIndex,
+                                        keySetArray, valueDomain, lValue,
+                                        newVariableValue, operatingSign);
+                            }
+                        } else {
+                            for (int i = 0; i < vList.size(); i++) {
+                                // retrieve the string and concatenate
+                                String newPremise = currentPremise
+                                        + " & "
+                                        + keySetArray[index]
+                                        + "="
+                                        + String.valueOf(vList.get(i)
+                                                .intValue());
+    
+                                if (vList.get(i).intValue() == DOMAIN_LS) {
+                                    newPremise = currentPremise + " & "
+                                            + keySetArray[index] + "=" + "ls";
+                                } else if (vList.get(i).intValue() == DOMAIN_GT) {
+                                    newPremise = currentPremise + " & "
+                                            + keySetArray[index] + "=" + "gt";
+                                }
+                                _generatePremiseAndResultEachTransitionRecursiveStep(
+                                        newPremise, index + 1, maxIndex,
+                                        keySetArray, valueDomain, lValue,
+                                        newVariableValue, operatingSign);
+                            }
+    
+                        }
+    
+                    }
+    
+                } else {
+                    _generatePremiseAndResultEachTransitionRecursiveStep(
+                            currentPremise, index + 1, maxIndex, keySetArray,
+                            valueDomain, lValue, newVariableValue,
+                            operatingSign);
+                }
+            }
+    
+        }
+    
+    }
+
+    /**
+     * This function generates the Kripke structure acceptable by NuSMV from 
+     * a ModalModel in Ptolemy II. Here modular approach is applied to 
+     * eliminate complexity of the conversion process.
+     *
+     * @param modalmodel ModalModel under analysis
      * @param span The size to expand the original domain
-     *
+     * @param upperStateName
      */
     private static ArrayList<StringBuffer> _generateSMVDescriptionModalModelWithRefinement(
             ModalModel modalmodel, String span, String upperStateName)
             throws IllegalActionException, NameDuplicationException {
+        
         /* The sketch of the algorithm is roughly as follows:
          *
          * (Step 0) All signals has been detected prior to execute this function.
-         * First scan from top, for each FSMActor generate the modular description.
+         * First scan from top, for each FSMActor generate its modular description.
          * If an actor is a ModalModel, we try to scan through each state.
          * In a ModalModel, the transition may consist of two different types:
          *
@@ -2574,8 +4182,10 @@ public class SMVUtility {
 
     }
 
+    
+    
     /**
-     * This private function tries to generate the system description of a
+     * This private function generates the system description of a
      * subsystem which has a ModalModel controller as its upper-layer.
      *
      * @param model The subsystem which is the refinement of a state.
@@ -2612,34 +4222,6 @@ public class SMVUtility {
         }
 
         return returnFmvFormat;
-    }
-
-    /**
-     * This function is used to generate detailed pre-conditions and
-     * post-conditions in .smv format. It is used by the function
-     * _generateAllVariableTransitions()
-     */
-    private static void _generatePremiseAndResultEachTransition(
-            String statePrecondition,
-            HashMap<String, ArrayList<Integer>> valueDomain, String lValue,
-            String offset, String operatingSign) throws IllegalActionException {
-
-        // 1. If operatingSign=="N", then offset means the value that needs to
-        // be assigned.
-        // 2. if operatingSign=="S", then offset means the destination vertex
-        // label.
-        // 3. For rest cases (operatingSign=="+","-","*","/"), variable
-        // has "X = X operatingSign offset".
-
-        // String[] keySetArray = (String[]) valueDomain.keySet().toArray(
-        // new String[0]);
-        String[] keySetArray = (String[]) valueDomain.keySet().toArray(
-                new String[valueDomain.keySet().size()]);
-
-        _recursiveStepGeneratePremiseAndResultEachTransition(statePrecondition,
-                0, keySetArray.length, keySetArray, valueDomain, lValue,
-                offset, operatingSign);
-
     }
 
     /**
@@ -3039,1580 +4621,475 @@ public class SMVUtility {
 
     }
 
+ 
+
     /**
-     * A private function used as a recursive step to generate all premises for
-     * enabling transition in .smv file. In variable valueDomain, it specifies
-     * that for a particular transition, the set of all possible values to
-     * invoke the transition. Thus it is the duty of this recursive step
-     * function to generate all possible combinations. The function would try to
-     * attach correct premise and update correct new value for the variable set
-     * by the transition based on the original value.
+     * This function is trying to generate the definition for modules contained
+     * in a controller. It need to check whether a signal is visible by the
+     * controller. If not, then this signal should be passed from outside, and
+     * the required signal set (extended by guard signals) for the controller
+     * should add up this signal. If a signal is visible by the controller, then
+     * we know that this signal is only passed between modules of the
+     * controller. We can list out the location of the signal.
      *
-     * @param currentPremise
-     *                Current precondition for the transition. It is not
-     *                completed unless parameter index == maxIndex.
-     * @param index
-     *                Current depth for the recursive function. It would stop
-     *                when it reaches maxIndex.
-     * @param maxIndex
-     * @param keySetArray
-     *                keySetArray stores all variable names that is used in this
-     *                transition.
-     * @param valueDomain
-     *                valueDomain specifies for a particular transition, for
-     *                each variable, the set of all possible values to invoke
-     *                the transition.
-     * @param lValue
-     *                lValue specifies the variable name that would be set after
-     *                the transition.
-     * @param newVariableValue
-     *                newVariableValue can have different meanings based on
-     *                different value of variable operatingSign. When
-     *                operatingSign is +,-,*,/ it represents the offset.
-     *                Remember in the set-action, each sub-statement has formats
-     *                either <i>var = var operatingSign offset</i> or <i>var =
-     *                rValue</i>. When operatingSign is S or N, it represents
-     *                the rValue of the system.
-     * @param operatingSign
-     *
+     * @param controller The controller which contains those modules
+     * @return An ArrayList containing all submodule definitions
+     * @exception IllegalActionException Undefined behavior happens.
      */
-    private static void _recursiveStepGeneratePremiseAndResultEachTransition(
-            String currentPremise, int index, int maxIndex,
-            String[] keySetArray,
-            HashMap<String, ArrayList<Integer>> valueDomain, String lValue,
-            String newVariableValue, String operatingSign)
-            throws IllegalActionException {
-
-        if (index >= maxIndex) {
-            // MODIFICATION 2008.07.22:
-            // if the variable lValue is equal to the type XX_value,
-            // check if the new value is 0.
-            // if the new value is zero, then we should append a negation to the
-            // premise
-            boolean b2 = Pattern.matches(".*_value", lValue);
-            if ((b2 == true) && (newVariableValue.trim().equalsIgnoreCase("0"))) {
-                // Store in the array with !(currentPremise)
-                VariableTransitionInfo newTransitionInfo = new VariableTransitionInfo();
-                newTransitionInfo._preCondition = " !(" + currentPremise + ") ";
-                // newTransitionInfo._variableName = lValue;
-                newTransitionInfo._varibleNewValue = newVariableValue;
-                LinkedList<VariableTransitionInfo> temp = _variableTransitionInfo
-                        .remove(lValue);
-                if (temp == null) {
-                    throw new IllegalActionException(
-                            "Internal error, removing \"" + lValue
-                                    + "\" returned null?");
+    private static ArrayList<StringBuffer> _retrieveSubSystemModuleNameParameterInfo(
+            FSMActor controller) throws IllegalActionException {
+    
+        // One important modification is that we need to see if the signal is
+        // exchanged between subsystems of a certain controller.
+        // Because a subsystem can not see the signal outside the system,
+        // thus if a subsystem really uses a signal from outside, we
+        // need to add up the signal name (without the position) as an invoker
+        // for example subModule (Sec_isPresent)
+        //
+    
+        ArrayList<StringBuffer> returnList = new ArrayList<StringBuffer>();
+        Iterator states = controller.entityList().iterator();
+        while (states.hasNext()) {
+            NamedObj state = (NamedObj) states.next();
+            if (state instanceof State) {
+                String refinementList = ((State) state).refinementName
+                        .getExpression();
+                if ((refinementList == null)
+                        || (refinementList.equalsIgnoreCase(""))) {
+                    continue;
                 } else {
-                    temp.add(newTransitionInfo);
-                    _variableTransitionInfo.put(lValue, temp);
-                }
-            } else {
-                // Store in the array
-
-                VariableTransitionInfo newTransitionInfo = new VariableTransitionInfo();
-                newTransitionInfo._preCondition = currentPremise;
-                // newTransitionInfo._variableName = lValue;
-                newTransitionInfo._varibleNewValue = newVariableValue;
-                LinkedList<VariableTransitionInfo> temp = _variableTransitionInfo
-                        .remove(lValue);
-                if (temp == null) {
-                    throw new IllegalActionException(
-                            "Internal error, removing \"" + lValue
-                                    + "\" returned null?");
-                } else {
-                    temp.add(newTransitionInfo);
-                    _variableTransitionInfo.put(lValue, temp);
-                }
-            }
-
-        } else {
-            // retrieve all possible variable value in this stage, skip when no
-            // possible value is needed.
-
-            // See if this key corresponds to the lValue; if so we need to
-            // record the new value of the outcome.
-            if (keySetArray[index].equalsIgnoreCase(lValue)) {
-                // update the newVariableValue based on +, -, *, /, and N.
-                if (operatingSign.equalsIgnoreCase("+")) {
-                    // vList stores all possible values for the variable
-                    // that is possible to perform transition
-                    ArrayList<Integer> vList = valueDomain
-                            .get(keySetArray[index]);
-                    if ((vList != null) && (vList.size() != 0)) {
-                        for (int i = 0; i < vList.size(); i++) {
-
-                            // check whether the offset is positive or negative.
-                            if (Integer.parseInt(newVariableValue) >= 0) {
-                                // Offset positive/zero case (positive_const)
-
-                                if (vList.get(i).intValue() == DOMAIN_GT) {
-
-                                    // newpremise=currentPremise & (var = C)
-                                    // String newPremise = new String(
-                                    // currentPremise + " & "
-                                    // + keySetArray[index] + "="
-                                    // + "gt");
-                                    String newPremise = currentPremise + " & "
-                                            + keySetArray[index] + "=" + "gt";
-
-                                    // When the original value is GT, then
-                                    // GT + positive_const = GT
-                                    // Hence the updated value remains the same.
-                                    _recursiveStepGeneratePremiseAndResultEachTransition(
-                                            newPremise, index + 1, maxIndex,
-                                            keySetArray, valueDomain, lValue,
-                                            "gt", operatingSign);
-
-                                } else if (vList.get(i).intValue() == DOMAIN_LS) {
-                                    // For DOMAIN_LS, we place conservative
-                                    // analysis and assert that it might lead to
-                                    // all its possible values. For example, if
-                                    // min=1, and offset=3, then possible value
-                                    // may include LS, 1, 2.
-
-                                    String newPremise = currentPremise + " & "
-                                            + keySetArray[index] + "=" + "ls";
-                                    // String newPremise = new String(
-                                    // currentPremise + " & "
-                                    // + keySetArray[index] + "="
-                                    // + "ls");
-                                    // First, LS + positive_const = LS
-                                    _recursiveStepGeneratePremiseAndResultEachTransition(
-                                            newPremise, index + 1, maxIndex,
-                                            keySetArray, valueDomain, lValue,
-                                            "ls", operatingSign);
-                                    VariableInfo variableInfo = _variableInfo
-                                            .get(lValue);
-                                    if (variableInfo == null) {
-                                        throw new IllegalActionException(
-                                                "Internal error, getting \""
-                                                        + lValue
-                                                        + "\" returned null?");
-                                    } else {
-                                        if (variableInfo._minValue != null
-                                                && variableInfo._maxValue != null) {
-                                            int minimumInBoundary = Integer
-                                                    .parseInt(variableInfo._minValue);
-                                            for (int j = 0; j < (Integer
-                                                    .parseInt(newVariableValue)); j++) {
-
-                                                // We need to make sure that it
-                                                // would
-                                                // never exceeds upper bound. If
-                                                // it
-                                                // is below lower bound, we must
-                                                // stop it
-                                                // and use GT to replace the
-                                                // value.
-
-                                                if ((minimumInBoundary + j) > Integer
-                                                        .parseInt(variableInfo._maxValue)) {
-                                                    _recursiveStepGeneratePremiseAndResultEachTransition(
-                                                            newPremise,
-                                                            index + 1,
-                                                            maxIndex,
-                                                            keySetArray,
-                                                            valueDomain,
-                                                            lValue, "gt",
-                                                            operatingSign);
+                    TypedActor[] actors = ((State) state).getRefinement();
+                    if (actors != null) {
+                        if (actors.length == 1) {
+                            // It would only have the case where
+                            // actor.length == 1.
+                            // If we encounter cases > 1, report error for
+                            // further bug fix.
+                            TypedActor innerActor = actors[0];
+                            if (innerActor instanceof FSMActor) {
+                                StringBuffer moduleDescription = new StringBuffer(
+                                        "");
+                                moduleDescription.append("\t\t"
+                                        + innerActor.getName() + ": "
+                                        + innerActor.getName() + "(");
+                                // Check if the variable has variable outside
+                                // (invisible
+                                // in the whole system); where is the location.
+                                // We use two variables to indicate the
+                                // possibilities:
+                                // (1) containInTheSystem: Signal visible in the
+                                // system
+                                // (2) containInTheModule: Signal visible by
+                                // module
+                                ArrayList<String> signalInfo = _globalSignalDistributionInfo
+                                        .get(innerActor.getName());
+                                if (signalInfo != null) {
+                                    for (int i = 0; i < signalInfo.size(); i++) {
+                                        String signalName = signalInfo.get(i);
+                                        boolean containInTheSystem = false;
+                                        boolean containInTheModule = false;
+                                        String location = "";
+                                        Iterator<String> it = _globalSignalRetrivalInfo
+                                                .keySet().iterator();
+                                        while (it.hasNext()) {
+                                            String place = it.next();
+    
+                                            if (_globalSignalRetrivalInfo
+                                                    .get(place) != null) {
+                                                if (_globalSignalRetrivalInfo
+                                                        .get(place).contains(
+                                                                signalName)) {
+                                                    location = place;
+                                                    containInTheSystem = true;
                                                     break;
                                                 }
-
-                                                String updatedVariableValue = String
-                                                        .valueOf(minimumInBoundary
-                                                                + j);
-                                                _recursiveStepGeneratePremiseAndResultEachTransition(
-                                                        newPremise, index + 1,
-                                                        maxIndex, keySetArray,
-                                                        valueDomain, lValue,
-                                                        updatedVariableValue,
-                                                        operatingSign);
                                             }
+    
                                         }
-                                    }
-                                } else {
-                                    VariableInfo variableInfo = _variableInfo
-                                            .get(lValue);
-                                    if (variableInfo != null) {
-                                        if (variableInfo._maxValue != null) {
-                                            // For ordinary cases, we only need
-                                            // to check if the new value
-                                            // would exceeds the upper
-                                            // bound. If so, then use DOMAIN_GT
-                                            // to replace the value.
-
-                                            String newPremise = currentPremise
-                                                    + " & "
-                                                    + keySetArray[index]
-                                                    + "="
-                                                    + String.valueOf(vList.get(
-                                                            i).intValue());
-
-                                            String updatedVariableValue = String
-                                                    .valueOf(vList.get(i)
-                                                            .intValue()
-                                                            + (Integer
-                                                                    .parseInt(newVariableValue)));
-
-                                            if (vList.get(i).intValue()
-                                                    + (Integer
-                                                            .parseInt(newVariableValue)) > Integer
-                                                    .parseInt(variableInfo._maxValue)) {
-                                                // Use DOMAIN_GT to replace the
-                                                // value.
-                                                updatedVariableValue = "gt";
+    
+                                        // Now we need to see whether this
+                                        // signal
+                                        // is within the scope of the
+                                        // controller.
+                                        // If the signal is not in the module,
+                                        // we set the variable
+                                        // containInTheModule=false
+                                        if (_globalSignalNestedRetrivalInfo
+                                                .get(controller.getName()) != null) {
+                                            if (_globalSignalNestedRetrivalInfo
+                                                    .get(controller.getName())
+                                                    .contains(signalName)) {
+                                                containInTheModule = true;
                                             }
-
-                                            _recursiveStepGeneratePremiseAndResultEachTransition(
-                                                    newPremise, index + 1,
-                                                    maxIndex, keySetArray,
-                                                    valueDomain, lValue,
-                                                    updatedVariableValue,
-                                                    operatingSign);
+    
                                         }
-                                    }
-
-                                }
-                            } else {
-                                // Offset negative case (negative_const)
-
-                                if (vList.get(i).intValue() == DOMAIN_LS) {
-
-                                    String newPremise = currentPremise + " & "
-                                            + keySetArray[index] + "=" + "ls";
-
-                                    // When the original value is LS, then
-                                    // LS + negative_const = LS
-                                    // Hence the updated value remains the same.
-                                    _recursiveStepGeneratePremiseAndResultEachTransition(
-                                            newPremise, index + 1, maxIndex,
-                                            keySetArray, valueDomain, lValue,
-                                            "ls", operatingSign);
-
-                                } else if (vList.get(i).intValue() == DOMAIN_GT) {
-                                    String newPremise = currentPremise + " & "
-                                            + keySetArray[index] + "=" + "gt";
-
-                                    // When the original value is GT, we place
-                                    // conservative analysis and assert that it
-                                    // might lead to all its possible values.
-
-                                    // First case: GT + negative_const = GT
-                                    _recursiveStepGeneratePremiseAndResultEachTransition(
-                                            newPremise, index + 1, maxIndex,
-                                            keySetArray, valueDomain, lValue,
-                                            "gt", operatingSign);
-
-                                    VariableInfo variableInfo = _variableInfo
-                                            .get(lValue);
-                                    if (variableInfo == null) {
-                                        throw new IllegalActionException(
-                                                "Internal error, getting \""
-                                                        + lValue
-                                                        + "\" returned null?");
-                                    } else {
-                                        if (variableInfo._minValue != null
-                                                && variableInfo._maxValue != null) {
-                                            int maximumInBoundary = Integer
-                                                    .parseInt(variableInfo._maxValue);
-                                            for (int j = 0; j > (Integer
-                                                    .parseInt(newVariableValue)); j--) {
-                                                // here j-- because
-                                                // newVariableValue is
-                                                // negative
-
-                                                // We need to make sure that it
-                                                // would
-                                                // never exceeds upper bound. If
-                                                // it
-                                                // is below lower bound, we must
-                                                // stop it
-                                                // and use LS to replace the
-                                                // value.
-
-                                                if ((maximumInBoundary + j) < Integer
-                                                        .parseInt(variableInfo._minValue)) {
-                                                    _recursiveStepGeneratePremiseAndResultEachTransition(
-                                                            newPremise,
-                                                            index + 1,
-                                                            maxIndex,
-                                                            keySetArray,
-                                                            valueDomain,
-                                                            lValue, "ls",
-                                                            operatingSign);
-                                                    break;
+    
+                                        if (containInTheSystem == true) {
+                                            if (containInTheModule == true) {
+                                                if (i == signalInfo.size() - 1) {
+                                                    moduleDescription
+                                                            .append(location
+                                                                    .trim()
+                                                                    + "."
+                                                                    + signalName
+                                                                    + " ");
+                                                } else {
+                                                    moduleDescription
+                                                            .append(location
+                                                                    .trim()
+                                                                    + "."
+                                                                    + signalName
+                                                                    + ", ");
                                                 }
-
-                                                String updatedVariableValue = String
-                                                        .valueOf(maximumInBoundary
-                                                                + j);
-                                                _recursiveStepGeneratePremiseAndResultEachTransition(
-                                                        newPremise, index + 1,
-                                                        maxIndex, keySetArray,
-                                                        valueDomain, lValue,
-                                                        updatedVariableValue,
-                                                        operatingSign);
-                                            }
-                                        }
-                                    }
-                                } else {
-                                    VariableInfo variableInfo = _variableInfo
-                                            .get(lValue);
-                                    if (variableInfo != null) {
-                                        if (variableInfo._minValue != null) {
-                                            // For ordinary cases, we only need
-                                            // to check
-                                            // if the new value would exceeds
-                                            // the lower
-                                            // bound. If so, then use DOMAIN_LS
-                                            // to
-                                            // replace the value.
-
-                                            String newPremise = currentPremise
-                                                    + " & "
-                                                    + keySetArray[index]
-                                                    + "="
-                                                    + String.valueOf(vList.get(
-                                                            i).intValue());
-
-                                            String updatedVariableValue = String
-                                                    .valueOf(vList.get(i)
-                                                            .intValue()
-                                                            + (Integer
-                                                                    .parseInt(newVariableValue)));
-
-                                            if (vList.get(i).intValue()
-                                                    + (Integer
-                                                            .parseInt(newVariableValue)) < Integer
-                                                    .parseInt(variableInfo._minValue)) {
-                                                // Use DOMAIN_LS to replace the
-                                                // value.
-                                                updatedVariableValue = "ls";
-                                            }
-
-                                            _recursiveStepGeneratePremiseAndResultEachTransition(
-                                                    newPremise, index + 1,
-                                                    maxIndex, keySetArray,
-                                                    valueDomain, lValue,
-                                                    updatedVariableValue,
-                                                    operatingSign);
-                                        }
-                                    }
-
-                                }
-                            }
-
-                        }
-                    } else {
-
-                        _recursiveStepGeneratePremiseAndResultEachTransition(
-                                currentPremise, index + 1, maxIndex,
-                                keySetArray, valueDomain, lValue,
-                                newVariableValue, operatingSign);
-                    }
-
-                } else if (operatingSign.equalsIgnoreCase("-")) {
-                    // Cases when operating sign is minus.
-
-                    ArrayList<Integer> vList = valueDomain
-                            .get(keySetArray[index]);
-
-                    if ((vList != null) && (vList.size() != 0)) {
-                        for (int i = 0; i < vList.size(); i++) {
-
-                            // check whether the offset is positive or negative.
-                            if (Integer.parseInt(newVariableValue) >= 0) {
-                                // Offset positive/zero case (positive_const)
-
-                                if (vList.get(i).intValue() == DOMAIN_LS) {
-                                    // When the original value is LS, then
-                                    // LS - positive_const = LS
-
-                                    String newPremise = currentPremise + " & "
-                                            + keySetArray[index] + "=" + "ls";
-
-                                    // Hence the updated value remains the same.
-                                    _recursiveStepGeneratePremiseAndResultEachTransition(
-                                            newPremise, index + 1, maxIndex,
-                                            keySetArray, valueDomain, lValue,
-                                            "ls", operatingSign);
-
-                                } else if (vList.get(i).intValue() == DOMAIN_GT) {
-                                    VariableInfo variableInfo = _variableInfo
-                                            .get(lValue);
-                                    if (variableInfo != null) {
-                                        if ((variableInfo._minValue != null)
-                                                && (variableInfo._maxValue != null)) {
-                                            // If original variable value is GT,
-                                            // we
-                                            // place conservative analysis and
-                                            // assert
-                                            // that it might lead to all its
-                                            // possible
-                                            // values.
-
-                                            String newPremise = currentPremise
-                                                    + " & "
-                                                    + keySetArray[index] + "="
-                                                    + "gt";
-
-                                            // First, it may keep to be GT
-                                            _recursiveStepGeneratePremiseAndResultEachTransition(
-                                                    newPremise, index + 1,
-                                                    maxIndex, keySetArray,
-                                                    valueDomain, lValue, "gt",
-                                                    operatingSign);
-
-                                            int maximumInBoundary = Integer
-                                                    .parseInt(variableInfo._maxValue);
-                                            for (int j = 0; j < (Integer
-                                                    .parseInt(newVariableValue)); j++) {
-
-                                                // We need to make sure that it
-                                                // would
-                                                // never exceeds upper bound. If
-                                                // it
-                                                // is below lower bound, we must
-                                                // stop it
-                                                // and use LS to replace the
-                                                // value.
-
-                                                if ((maximumInBoundary - j) < Integer
-                                                        .parseInt(variableInfo._minValue)) {
-                                                    _recursiveStepGeneratePremiseAndResultEachTransition(
-                                                            newPremise,
-                                                            index + 1,
-                                                            maxIndex,
-                                                            keySetArray,
-                                                            valueDomain,
-                                                            lValue, "ls",
-                                                            operatingSign);
-                                                    break;
-                                                }
-
-                                                String updatedVariableValue = String
-                                                        .valueOf(maximumInBoundary
-                                                                - j);
-                                                _recursiveStepGeneratePremiseAndResultEachTransition(
-                                                        newPremise, index + 1,
-                                                        maxIndex, keySetArray,
-                                                        valueDomain, lValue,
-                                                        updatedVariableValue,
-                                                        operatingSign);
-                                            }
-                                        }
-                                    }
-
-                                } else {
-                                    // For ordinary part, we only need to check
-                                    // if the new value would exceed the lower
-                                    // bound. If so, then use DOMAIN_LS to
-                                    // replace the value.
-
-                                    String newPremise = currentPremise
-                                            + " & "
-                                            + keySetArray[index]
-                                            + "="
-                                            + String.valueOf(vList.get(i)
-                                                    .intValue());
-
-                                    String updatedVariableValue = String
-                                            .valueOf(vList.get(i).intValue()
-                                                    - (Integer
-                                                            .parseInt(newVariableValue)));
-                                    VariableInfo variableInfo = _variableInfo
-                                            .get(lValue);
-                                    if (variableInfo != null) {
-                                        if (variableInfo._minValue != null) {
-                                            if (vList.get(i).intValue()
-                                                    - (Integer
-                                                            .parseInt(newVariableValue)) < Integer
-                                                    .parseInt(variableInfo._minValue)) {
-                                                // Use DOMAIN_LS to replace the
-                                                // value.
-                                                updatedVariableValue = "ls";
-                                            }
-                                        }
-                                    }
-
-                                    _recursiveStepGeneratePremiseAndResultEachTransition(
-                                            newPremise, index + 1, maxIndex,
-                                            keySetArray, valueDomain, lValue,
-                                            updatedVariableValue, operatingSign);
-                                }
-
-                            } else {
-                                // Offset negative case (negative_const)
-
-                                if (vList.get(i).intValue() == DOMAIN_GT) {
-                                    // GT - negative_const = GT
-
-                                    String newPremise = currentPremise + " & "
-                                            + keySetArray[index] + "=" + "gt";
-
-                                    // Hence the updated value remains the same.
-                                    _recursiveStepGeneratePremiseAndResultEachTransition(
-                                            newPremise, index + 1, maxIndex,
-                                            keySetArray, valueDomain, lValue,
-                                            "gt", operatingSign);
-
-                                } else if (vList.get(i).intValue() == DOMAIN_LS) {
-                                    // For DOMAIN_LS, we place conservative
-                                    // analysis and assert that it might lead to
-                                    // all its possible values
-
-                                    String newPremise = currentPremise + " & "
-                                            + keySetArray[index] + "=" + "ls";
-
-                                    // First, LS - negative_const = LS
-                                    _recursiveStepGeneratePremiseAndResultEachTransition(
-                                            newPremise, index + 1, maxIndex,
-                                            keySetArray, valueDomain, lValue,
-                                            "ls", operatingSign);
-
-                                    VariableInfo variableInfo = _variableInfo
-                                            .get(lValue);
-                                    if (variableInfo == null) {
-                                        throw new IllegalActionException(
-                                                "Internal error, removing \""
-                                                        + lValue
-                                                        + "\" returned null?");
-                                    } else {
-                                        if (variableInfo._minValue != null
-                                                && variableInfo._maxValue != null) {
-                                            int minimumInBoundary = Integer
-                                                    .parseInt(variableInfo._minValue);
-
-                                            for (int j = 0; j > (Integer
-                                                    .parseInt(newVariableValue)); j--) {
-
-                                                // We need to make sure that it
-                                                // would
-                                                // never exceeds upper bound. If
-                                                // it
-                                                // exceeds upper bound, we must
-                                                // stop it
-                                                // and use GT to replace the
-                                                // value.
-
-                                                if ((minimumInBoundary - j) < Integer
-                                                        .parseInt(variableInfo._maxValue)) {
-                                                    _recursiveStepGeneratePremiseAndResultEachTransition(
-                                                            newPremise,
-                                                            index + 1,
-                                                            maxIndex,
-                                                            keySetArray,
-                                                            valueDomain,
-                                                            lValue, "gt",
-                                                            operatingSign);
-                                                    break;
-                                                }
-
-                                                String updatedVariableValue = String
-                                                        .valueOf(minimumInBoundary
-                                                                - j);
-
-                                                _recursiveStepGeneratePremiseAndResultEachTransition(
-                                                        newPremise, index + 1,
-                                                        maxIndex, keySetArray,
-                                                        valueDomain, lValue,
-                                                        updatedVariableValue,
-                                                        operatingSign);
-
-                                            }
-                                        }
-                                    }
-                                } else {
-                                    VariableInfo variableInfo = _variableInfo
-                                            .get(lValue);
-                                    if (variableInfo == null) {
-                                        throw new IllegalActionException(
-                                                "Internal error, removing \""
-                                                        + lValue
-                                                        + "\" returned null?");
-                                    } else {
-                                        if (variableInfo._minValue != null
-                                                && variableInfo._maxValue != null) {
-                                            // For ordinary part, we only need
-                                            // to check
-                                            // if the new value would exceeds
-                                            // the upper
-                                            // bound. If so, then use DOMAIN_GT
-                                            // to
-                                            // replace the value.
-
-                                            String newPremise = currentPremise
-                                                    + " & "
-                                                    + keySetArray[index]
-                                                    + "="
-                                                    + String.valueOf(vList.get(
-                                                            i).intValue());
-
-                                            String updatedVariableValue = String
-                                                    .valueOf(vList.get(i)
-                                                            .intValue()
-                                                            - (Integer
-                                                                    .parseInt(newVariableValue)));
-
-                                            if (vList.get(i).intValue()
-                                                    - (Integer
-                                                            .parseInt(newVariableValue)) > Integer
-                                                    .parseInt(variableInfo._maxValue)) {
-                                                // Use DOMAIN_LS to replace the
-                                                // value.
-                                                updatedVariableValue = "gt";
-                                            }
-
-                                            _recursiveStepGeneratePremiseAndResultEachTransition(
-                                                    newPremise, index + 1,
-                                                    maxIndex, keySetArray,
-                                                    valueDomain, lValue,
-                                                    updatedVariableValue,
-                                                    operatingSign);
-                                        }
-                                    }
-
-                                }
-                            }
-                        }
-
-                    } else {
-                        _recursiveStepGeneratePremiseAndResultEachTransition(
-                                currentPremise, index + 1, maxIndex,
-                                keySetArray, valueDomain, lValue,
-                                newVariableValue, operatingSign);
-                    }
-
-                } else if (operatingSign.equalsIgnoreCase("*")) {
-
-                    ArrayList<Integer> vList = valueDomain
-                            .get(keySetArray[index]);
-                    if ((vList != null) && (vList.size() != 0)) {
-                        for (int i = 0; i < vList.size(); i++) {
-
-                            // check whether the offset is positive or negative.
-                            if (Integer.parseInt(newVariableValue) > 0) {
-                                // Positive case (positive_const)
-
-                                if (vList.get(i).intValue() == DOMAIN_GT) {
-
-                                    // newpremise = currentPremise & (var =
-                                    // const)
-                                    String newPremise = currentPremise + " & "
-                                            + keySetArray[index] + "=" + "gt";
-
-                                    VariableInfo variableInfo = _variableInfo
-                                            .get(lValue);
-                                    if (variableInfo == null) {
-                                        throw new IllegalActionException(
-                                                "Internal error, getting \""
-                                                        + lValue
-                                                        + "\" returned null?");
-                                    } else {
-                                        if (variableInfo._minValue != null
-                                                && variableInfo._maxValue != null) {
-                                            if (Integer
-                                                    .parseInt(variableInfo._maxValue) >= 0) {
-                                                // when max>=0, GT *
-                                                // positive_const = GT
-                                                // Hence the updated value
-                                                // remains the
-                                                // same.
-                                                _recursiveStepGeneratePremiseAndResultEachTransition(
-                                                        newPremise, index + 1,
-                                                        maxIndex, keySetArray,
-                                                        valueDomain, lValue,
-                                                        "gt", operatingSign);
                                             } else {
-                                                // Integer.parseInt(((VariableInfo)
-                                                // _variableInfo.get(lValue))._maxValue)
-                                                // < 0
-                                                //
-                                                // Starting from the upper bound
-                                                // + 1,
-                                                // +2, +3, +4 ... calculate all
-                                                // possible
-                                                // values until the new
-                                                // set-value is
-                                                // greater than GT.
-                                                //
-                                                // For example, if upper bound
-                                                // is -5,
-                                                // and if the offset is 2, then
-                                                // for
-                                                // values in GT that is greater
-                                                // or equal
-                                                // to -2, the new variable would
-                                                // be in
-                                                // GT. But if the lower bound is
-                                                // -7,
-                                                // then we need to replace cases
-                                                // that is
-                                                // lower to -7. For example,
-                                                // -4*2=-8. We
-                                                // should use LS to represent
-                                                // this
-                                                // value.
-                                                //
-                                                // Also we expect to record one
-                                                // LS as
-                                                // the new value only. So there
-                                                // are
-                                                // tricks that needs to be
-                                                // applied.
-
-                                                int starter = Integer
-                                                        .parseInt(variableInfo._maxValue) + 1;
-
-                                                while (starter
-                                                        * Integer
-                                                                .parseInt(newVariableValue) <= Integer
-                                                        .parseInt(variableInfo._maxValue)) {
-                                                    if ((starter
-                                                            * Integer
-                                                                    .parseInt(newVariableValue) < Integer
-                                                            .parseInt(variableInfo._minValue))
-                                                            && ((starter + 1)
-                                                                    * Integer
-                                                                            .parseInt(newVariableValue) >= Integer
-                                                                    .parseInt(variableInfo._minValue))) {
-                                                        // This IF statement
-                                                        // represents
-                                                        // tricks mentioned
-                                                        // above.
-                                                        _recursiveStepGeneratePremiseAndResultEachTransition(
-                                                                newPremise,
-                                                                index + 1,
-                                                                maxIndex,
-                                                                keySetArray,
-                                                                valueDomain,
-                                                                lValue, "ls",
-                                                                operatingSign);
-
-                                                    } else if ((starter
-                                                            * Integer
-                                                                    .parseInt(newVariableValue) <= Integer
-                                                            .parseInt(variableInfo._maxValue))
-                                                            && (starter
-                                                                    * Integer
-                                                                            .parseInt(newVariableValue) >= Integer
-                                                                    .parseInt(variableInfo._minValue))) {
-                                                        String updatedVariableValue = String
-                                                                .valueOf(starter
-                                                                        * Integer
-                                                                                .parseInt(newVariableValue));
-                                                        _recursiveStepGeneratePremiseAndResultEachTransition(
-                                                                newPremise,
-                                                                index + 1,
-                                                                maxIndex,
-                                                                keySetArray,
-                                                                valueDomain,
-                                                                lValue,
-                                                                updatedVariableValue,
-                                                                operatingSign);
+                                                if (_globalSignalDistributionInfo
+                                                        .get(controller
+                                                                .getName()) != null) {
+                                                    if (_globalSignalDistributionInfo
+                                                            .get(
+                                                                    controller
+                                                                            .getName())
+                                                            .contains(
+                                                                    signalName) == false) {
+                                                        _globalSignalDistributionInfo
+                                                                .get(
+                                                                        controller
+                                                                                .getName())
+                                                                .add(signalName);
                                                     }
-
-                                                    starter++;
-
                                                 }
-
-                                                _recursiveStepGeneratePremiseAndResultEachTransition(
-                                                        newPremise, index + 1,
-                                                        maxIndex, keySetArray,
-                                                        valueDomain, lValue,
-                                                        "gt", operatingSign);
-
+    
+                                                if (i == signalInfo.size() - 1) {
+                                                    moduleDescription
+                                                            .append(signalName
+                                                                    + " ");
+                                                } else {
+                                                    moduleDescription
+                                                            .append(signalName
+                                                                    + ", ");
+                                                }
                                             }
-                                        }
-                                    }
-                                } else if (vList.get(i).intValue() == DOMAIN_LS) {
-
-                                    String newPremise = currentPremise + " & "
-                                            + keySetArray[index] + "=" + "ls";
-
-                                    VariableInfo variableInfo = _variableInfo
-                                            .get(lValue);
-                                    if (variableInfo == null) {
-                                        throw new IllegalActionException(
-                                                "Internal error, getting \""
-                                                        + lValue
-                                                        + "\" returned null?");
-                                    } else {
-                                        if (variableInfo._minValue != null
-                                                && variableInfo._maxValue != null) {
-                                            if (Integer
-                                                    .parseInt(variableInfo._minValue) <= 0) {
-                                                // when min<=0, LS *
-                                                // positive_const = LS
-                                                // Hence the updated value
-                                                // remains the
-                                                // same.
-                                                _recursiveStepGeneratePremiseAndResultEachTransition(
-                                                        newPremise, index + 1,
-                                                        maxIndex, keySetArray,
-                                                        valueDomain, lValue,
-                                                        "ls", operatingSign);
+    
+                                        } else {
+                                            // use 1 to represent the signal
+                                            if (i == signalInfo.size() - 1) {
+                                                moduleDescription.append(" 1");
                                             } else {
-                                                // Starting from the lower bound
-                                                // -1,
-                                                // -2, -3, -4 ...
-                                                // calculate all possible values
-                                                // until
-                                                // the value is greater than LS.
-
-                                                int starter = Integer
-                                                        .parseInt(variableInfo._minValue) - 1;
-                                                while (starter
-                                                        * Integer
-                                                                .parseInt(newVariableValue) >= Integer
-                                                        .parseInt(variableInfo._minValue)) {
-                                                    if ((starter
-                                                            * Integer
-                                                                    .parseInt(newVariableValue) > Integer
-                                                            .parseInt(variableInfo._maxValue))
-                                                            && ((starter - 1)
-                                                                    * Integer
-                                                                            .parseInt(newVariableValue) <= Integer
-                                                                    .parseInt(variableInfo._maxValue))) {
-
-                                                        _recursiveStepGeneratePremiseAndResultEachTransition(
-                                                                newPremise,
-                                                                index + 1,
-                                                                maxIndex,
-                                                                keySetArray,
-                                                                valueDomain,
-                                                                lValue, "gt",
-                                                                operatingSign);
-
-                                                    } else if ((starter
-                                                            * Integer
-                                                                    .parseInt(newVariableValue) <= Integer
-                                                            .parseInt(variableInfo._maxValue))
-                                                            && (starter
-                                                                    * Integer
-                                                                            .parseInt(newVariableValue) >= Integer
-                                                                    .parseInt(variableInfo._minValue))) {
-                                                        String updatedVariableValue = String
-                                                                .valueOf(starter
-                                                                        * Integer
-                                                                                .parseInt(newVariableValue));
-                                                        _recursiveStepGeneratePremiseAndResultEachTransition(
-                                                                newPremise,
-                                                                index + 1,
-                                                                maxIndex,
-                                                                keySetArray,
-                                                                valueDomain,
-                                                                lValue,
-                                                                updatedVariableValue,
-                                                                operatingSign);
-                                                    }
-
-                                                    starter++;
-
-                                                }
-                                                _recursiveStepGeneratePremiseAndResultEachTransition(
-                                                        newPremise, index + 1,
-                                                        maxIndex, keySetArray,
-                                                        valueDomain, lValue,
-                                                        "ls", operatingSign);
-
+                                                moduleDescription.append(" 1,");
                                             }
                                         }
                                     }
+                                }
+                                // Add up the state as parameter because
+                                // these subsystems are controlled by the state
+                                // of the controller.
+    
+                                if ((signalInfo != null)
+                                        && (signalInfo.size() > 0)) {
+                                    moduleDescription.append(", state );\n");
                                 } else {
-                                    // For ordinary part, we only need to check
-                                    // if the new value would exceed the lower
-                                    // or upper bound.
-
-                                    String newPremise = currentPremise
-                                            + " & "
-                                            + keySetArray[index]
-                                            + "="
-                                            + String.valueOf(vList.get(i)
-                                                    .intValue());
-
-                                    String updatedVariableValue = String
-                                            .valueOf(vList.get(i).intValue()
-                                                    * (Integer
-                                                            .parseInt(newVariableValue)));
-
-                                    VariableInfo variableInfo = _variableInfo
-                                            .get(lValue);
-                                    if (variableInfo == null) {
-                                        throw new IllegalActionException(
-                                                "Internal error, getting \""
-                                                        + lValue
-                                                        + "\" returned null?");
-                                    } else {
-                                        if (variableInfo._minValue != null
-                                                && variableInfo._maxValue != null) {
-                                            if (vList.get(i).intValue()
-                                                    * (Integer
-                                                            .parseInt(newVariableValue)) < Integer
-                                                    .parseInt(variableInfo._minValue)) {
-                                                // Use DOMAIN_LS to replace the
-                                                // value.
-                                                updatedVariableValue = "ls";
-
-                                            } else if (vList.get(i).intValue()
-                                                    * (Integer
-                                                            .parseInt(newVariableValue)) > Integer
-                                                    .parseInt(variableInfo._maxValue)) {
-                                                updatedVariableValue = "gt";
-                                            }
-
-                                            _recursiveStepGeneratePremiseAndResultEachTransition(
-                                                    newPremise, index + 1,
-                                                    maxIndex, keySetArray,
-                                                    valueDomain, lValue,
-                                                    updatedVariableValue,
-                                                    operatingSign);
-                                        }
-                                    }
+                                    moduleDescription.append(" state );\n");
                                 }
-                            } else if (Integer.parseInt(newVariableValue) < 0) {
-                                // Negative case (negative_const)
-
-                                if (vList.get(i).intValue() == DOMAIN_GT) {
-
-                                    String newPremise = currentPremise + " & "
-                                            + keySetArray[index] + "=" + "gt";
-
-                                    VariableInfo variableInfo = _variableInfo
-                                            .get(lValue);
-                                    if (variableInfo == null) {
-                                        throw new IllegalActionException(
-                                                "Internal error, getting \""
-                                                        + lValue
-                                                        + "\" returned null?");
-                                    } else {
-                                        if (variableInfo._minValue != null
-                                                && variableInfo._maxValue != null) {
-
-                                            if (Integer
-                                                    .parseInt(variableInfo._maxValue) >= 0) {
-                                                // Starting from the upper bound
-                                                // + 1,
-                                                // +2, +3, +4 ...
-                                                // calculate all possible values
-                                                // until
-                                                // the value is less than LS.
-                                                //
-                                                // For example, if upper bound =
-                                                // 1,
-                                                // lower bound = -7, and offset
-                                                // = -2,
-                                                // then we might have possible
-                                                // new
-                                                // set-values -4, -6, LS
-
-                                                int starter = Integer
-                                                        .parseInt(variableInfo._maxValue) + 1;
-
-                                                while (starter
-                                                        * Integer
-                                                                .parseInt(newVariableValue) >= Integer
-                                                        .parseInt(variableInfo._minValue)) {
-
-                                                    String updatedVariableValue = String
-                                                            .valueOf(starter
-                                                                    * Integer
-                                                                            .parseInt(newVariableValue));
-                                                    _recursiveStepGeneratePremiseAndResultEachTransition(
-                                                            newPremise,
-                                                            index + 1,
-                                                            maxIndex,
-                                                            keySetArray,
-                                                            valueDomain,
-                                                            lValue,
-                                                            updatedVariableValue,
-                                                            operatingSign);
-
-                                                    starter++;
-                                                }
-
-                                                _recursiveStepGeneratePremiseAndResultEachTransition(
-                                                        newPremise, index + 1,
-                                                        maxIndex, keySetArray,
-                                                        valueDomain, lValue,
-                                                        "ls", operatingSign);
-
-                                            } else if (Integer
-                                                    .parseInt(variableInfo._maxValue) < 0) {
-                                                // One important thing is that
-                                                // we may
-                                                // have cases where 0 * const =
-                                                // 0.
-                                                // Because 0 is in GT, so we
-                                                // would have
-                                                // new value GT as a choice.
-
-                                                int starter = Integer
-                                                        .parseInt(variableInfo._maxValue) + 1;
-                                                while (starter
-                                                        * Integer
-                                                                .parseInt(newVariableValue) >= Integer
-                                                        .parseInt(variableInfo._minValue)) {
-                                                    if ((starter
-                                                            * Integer
-                                                                    .parseInt(newVariableValue) > Integer
-                                                            .parseInt(variableInfo._maxValue))
-                                                            && ((starter + 1)
-                                                                    * Integer
-                                                                            .parseInt(newVariableValue) <= Integer
-                                                                    .parseInt(variableInfo._maxValue))) {
-
-                                                        _recursiveStepGeneratePremiseAndResultEachTransition(
-                                                                newPremise,
-                                                                index + 1,
-                                                                maxIndex,
-                                                                keySetArray,
-                                                                valueDomain,
-                                                                lValue, "gt",
-                                                                operatingSign);
-
-                                                    } else if ((starter
-                                                            * Integer
-                                                                    .parseInt(newVariableValue) <= Integer
-                                                            .parseInt(variableInfo._maxValue))
-                                                            && (starter
-                                                                    * Integer
-                                                                            .parseInt(newVariableValue) >= Integer
-                                                                    .parseInt(variableInfo._minValue))) {
-                                                        String updatedVariableValue = String
-                                                                .valueOf(starter
-                                                                        * Integer
-                                                                                .parseInt(newVariableValue));
-                                                        _recursiveStepGeneratePremiseAndResultEachTransition(
-                                                                newPremise,
-                                                                index + 1,
-                                                                maxIndex,
-                                                                keySetArray,
-                                                                valueDomain,
-                                                                lValue,
-                                                                updatedVariableValue,
-                                                                operatingSign);
-                                                    }
-
-                                                    starter++;
-
-                                                }
-                                                _recursiveStepGeneratePremiseAndResultEachTransition(
-                                                        newPremise, index + 1,
-                                                        maxIndex, keySetArray,
-                                                        valueDomain, lValue,
-                                                        "ls", operatingSign);
-
-                                                // Special case where 0 * const
-                                                // = 0
-                                                _recursiveStepGeneratePremiseAndResultEachTransition(
-                                                        newPremise, index + 1,
-                                                        maxIndex, keySetArray,
-                                                        valueDomain, lValue,
-                                                        "gt", operatingSign);
-
-                                            }
-                                        }
-                                    }
-                                } else if (vList.get(i).intValue() == DOMAIN_LS) {
-                                    // (Integer.parseInt(newVariableValue) < 0)
-                                    // && original variable value == DOMAIN_LS
-
-                                    String newPremise = currentPremise + " & "
-                                            + keySetArray[index] + "=" + "ls";
-
-                                    VariableInfo variableInfo = _variableInfo
-                                            .get(lValue);
-                                    if (variableInfo == null) {
-                                        throw new IllegalActionException(
-                                                "Internal error, getting \""
-                                                        + lValue
-                                                        + "\" returned null?");
-                                    } else {
-                                        if (variableInfo._minValue != null
-                                                && variableInfo._maxValue != null) {
-                                            if (Integer
-                                                    .parseInt(variableInfo._minValue) <= 0) {
-                                                // Starting from the lower bound
-                                                // -1,
-                                                // -2, -3, -4 ...
-                                                // calculate all possible values
-                                                // until
-                                                // the value is less than GT.
-                                                //
-                                                // For example, if upper bound =
-                                                // 7,
-                                                // lower bound = -1, and offset
-                                                // = -2,
-                                                // then we might have possible
-                                                // new
-                                                // set-values 4, 6, GT
-
-                                                int starter = Integer
-                                                        .parseInt(variableInfo._minValue) - 1;
-
-                                                while (starter
-                                                        * Integer
-                                                                .parseInt(newVariableValue) <= Integer
-                                                        .parseInt(variableInfo._maxValue)) {
-
-                                                    String updatedVariableValue = String
-                                                            .valueOf(starter
-                                                                    * Integer
-                                                                            .parseInt(newVariableValue));
-                                                    _recursiveStepGeneratePremiseAndResultEachTransition(
-                                                            newPremise,
-                                                            index + 1,
-                                                            maxIndex,
-                                                            keySetArray,
-                                                            valueDomain,
-                                                            lValue,
-                                                            updatedVariableValue,
-                                                            operatingSign);
-
-                                                    starter++;
-                                                }
-
-                                                _recursiveStepGeneratePremiseAndResultEachTransition(
-                                                        newPremise, index + 1,
-                                                        maxIndex, keySetArray,
-                                                        valueDomain, lValue,
-                                                        "gt", operatingSign);
-
-                                            } else if (Integer
-                                                    .parseInt(variableInfo._minValue) > 0) {
-                                                // One important thing is that
-                                                // we may
-                                                // have cases where 0 * const =
-                                                // 0.
-                                                // Because 0 is in LS, so we
-                                                // would have
-                                                // new value LS as a choice.
-
-                                                int starter = Integer
-                                                        .parseInt(variableInfo._minValue) - 1;
-                                                while (starter
-                                                        * Integer
-                                                                .parseInt(newVariableValue) <= Integer
-                                                        .parseInt(variableInfo._maxValue)) {
-                                                    if ((starter
-                                                            * Integer
-                                                                    .parseInt(newVariableValue) < Integer
-                                                            .parseInt(variableInfo._minValue))
-                                                            && ((starter + 1)
-                                                                    * Integer
-                                                                            .parseInt(newVariableValue) >= Integer
-                                                                    .parseInt(variableInfo._minValue))) {
-
-                                                        _recursiveStepGeneratePremiseAndResultEachTransition(
-                                                                newPremise,
-                                                                index + 1,
-                                                                maxIndex,
-                                                                keySetArray,
-                                                                valueDomain,
-                                                                lValue, "ls",
-                                                                operatingSign);
-
-                                                    } else if ((starter
-                                                            * Integer
-                                                                    .parseInt(newVariableValue) <= Integer
-                                                            .parseInt(variableInfo._maxValue))
-                                                            && (starter
-                                                                    * Integer
-                                                                            .parseInt(newVariableValue) >= Integer
-                                                                    .parseInt(variableInfo._minValue))) {
-                                                        String updatedVariableValue = String
-                                                                .valueOf(starter
-                                                                        * Integer
-                                                                                .parseInt(newVariableValue));
-                                                        _recursiveStepGeneratePremiseAndResultEachTransition(
-                                                                newPremise,
-                                                                index + 1,
-                                                                maxIndex,
-                                                                keySetArray,
-                                                                valueDomain,
-                                                                lValue,
-                                                                updatedVariableValue,
-                                                                operatingSign);
-                                                    }
-
-                                                    starter++;
-
-                                                }
-                                                _recursiveStepGeneratePremiseAndResultEachTransition(
-                                                        newPremise, index + 1,
-                                                        maxIndex, keySetArray,
-                                                        valueDomain, lValue,
-                                                        "gt", operatingSign);
-
-                                                // Special case where 0 * const
-                                                // = 0
-                                                _recursiveStepGeneratePremiseAndResultEachTransition(
-                                                        newPremise, index + 1,
-                                                        maxIndex, keySetArray,
-                                                        valueDomain, lValue,
-                                                        "ls", operatingSign);
-
-                                            }
-                                        }
-                                    }
-                                } else {
-                                    VariableInfo variableInfo = _variableInfo
-                                            .get(lValue);
-                                    if (variableInfo == null) {
-                                        throw new IllegalActionException(
-                                                "Internal error, getting \""
-                                                        + lValue
-                                                        + "\" returned null?");
-                                    } else {
-                                        if (variableInfo._minValue != null
-                                                && variableInfo._maxValue != null) {
-                                            // For ordinary part, we only need
-                                            // to check
-                                            // if the new value would exceeds
-                                            // the upper
-                                            // bound. If so, then use DOMAIN_GT
-                                            // to
-                                            // replace the value.
-
-                                            String newPremise = currentPremise
-                                                    + " & "
-                                                    + keySetArray[index]
-                                                    + "="
-                                                    + String.valueOf(vList.get(
-                                                            i).intValue());
-
-                                            String updatedVariableValue = String
-                                                    .valueOf(vList.get(i)
-                                                            .intValue()
-                                                            - (Integer
-                                                                    .parseInt(newVariableValue)));
-
-                                            if (vList.get(i).intValue()
-                                                    - (Integer
-                                                            .parseInt(newVariableValue)) > Integer
-                                                    .parseInt(variableInfo._maxValue)) {
-                                                // Use DOMAIN_LS to replace the
-                                                // value.
-                                                updatedVariableValue = "gt";
-                                            }
-
-                                            _recursiveStepGeneratePremiseAndResultEachTransition(
-                                                    newPremise, index + 1,
-                                                    maxIndex, keySetArray,
-                                                    valueDomain, lValue,
-                                                    updatedVariableValue,
-                                                    operatingSign);
-                                        }
-                                    }
-
-                                }
-                            } else {
-                                // Integer.parseInt(newVariableValue)==0
-                                // When offset is zero, the result should be
-                                // zero. So we only need to check if zero
-                                // exceeds the upper bound or is below the lower
-                                // bound.
-
-                                String newPremise = currentPremise
-                                        + " & "
-                                        + keySetArray[index]
-                                        + "="
-                                        + String.valueOf(vList.get(i)
-                                                .intValue());
-
-                                if (vList.get(i).intValue() == DOMAIN_LS) {
-                                    newPremise = currentPremise + " & "
-                                            + keySetArray[index] + "=" + "ls";
-                                } else if (vList.get(i).intValue() == DOMAIN_GT) {
-                                    newPremise = currentPremise + " & "
-                                            + keySetArray[index] + "=" + "gt";
-                                }
-
-                                String updatedVariableValue = "0";
-
-                                VariableInfo variableInfo = _variableInfo
-                                        .get(lValue);
-                                if (variableInfo == null) {
+    
+                                returnList.add(moduleDescription);
+    
+                            } else if (innerActor instanceof CompositeActor) {
+                                // First see if its director is SR.
+                                // If not, then it is beyond our current
+                                // processing scope.
+                                Director director = ((CompositeActor) innerActor)
+                                        .getDirector();
+                                if (!(director instanceof SRDirector)) {
+                                    // This is not what we can process.
                                     throw new IllegalActionException(
-                                            "Internal error, getting \""
-                                                    + lValue
-                                                    + "\" returned null?");
+                                            "SMVUtility._retrieveSubSystemModuleNameParameterInfo(): "
+                                                    + "Inner director not SR.");
                                 } else {
-                                    if (variableInfo._minValue != null
-                                            && variableInfo._maxValue != null) {
-                                        if (0 > Integer
-                                                .parseInt(variableInfo._maxValue)) {
-                                            // Use DOMAIN_LS to replace the
-                                            // value.
-                                            updatedVariableValue = "gt";
-                                        } else if (0 < Integer
-                                                .parseInt(variableInfo._minValue)) {
-                                            updatedVariableValue = "ls";
+                                    // The general case, we need to list out
+                                    // all modules in the lower level
+                                    // (one layer lower only)
+    
+                                    for (Iterator innerInnerActors = (((CompositeActor) innerActor)
+                                            .entityList()).iterator(); innerInnerActors
+                                            .hasNext();) {
+                                        StringBuffer moduleDescription = new StringBuffer(
+                                                "");
+                                        Entity innerInnerEntity = (Entity) innerInnerActors
+                                                .next();
+                                        // Entity innerModel = innerEntity;
+                                        if (innerInnerEntity instanceof FSMActor) {
+                                            moduleDescription.append("\t\t"
+                                                    + innerInnerEntity
+                                                            .getName()
+                                                    + ": "
+                                                    + innerInnerEntity
+                                                            .getName() + "(");
+                                            // Check if the variable has
+                                            // variable outside; where is the
+                                            // location.
+                                            ArrayList<String> signalInfo = _globalSignalDistributionInfo
+                                                    .get(innerInnerEntity
+                                                            .getName());
+    
+                                            if (signalInfo != null) {
+                                                for (int i = 0; i < signalInfo
+                                                        .size(); i++) {
+                                                    String signalName = signalInfo
+                                                            .get(i);
+                                                    boolean containInTheSystem = false;
+                                                    boolean containInTheModule = false;
+                                                    String location = "";
+                                                    Iterator<String> it = _globalSignalRetrivalInfo
+                                                            .keySet()
+                                                            .iterator();
+                                                    while (it.hasNext()) {
+                                                        String place = it
+                                                                .next();
+                                                        if (_globalSignalRetrivalInfo
+                                                                .get(place) != null) {
+                                                            if (_globalSignalRetrivalInfo
+                                                                    .get(place)
+                                                                    .contains(
+                                                                            signalName)) {
+                                                                location = place;
+                                                                containInTheSystem = true;
+                                                                break;
+                                                            }
+                                                        }
+    
+                                                    }
+                                                    if (_globalSignalNestedRetrivalInfo
+                                                            .get(controller
+                                                                    .getName()) != null) {
+                                                        if (_globalSignalNestedRetrivalInfo
+                                                                .get(
+                                                                        controller
+                                                                                .getName())
+                                                                .contains(
+                                                                        signalName) == true) {
+                                                            containInTheModule = true;
+                                                        }
+                                                    }
+    
+                                                    if (containInTheSystem == true) {
+                                                        if (containInTheModule == true) {
+                                                            if (i == signalInfo
+                                                                    .size() - 1) {
+                                                                moduleDescription
+                                                                        .append(location
+                                                                                .trim()
+                                                                                + "."
+                                                                                + signalName
+                                                                                + ", ");
+                                                            } else {
+                                                                moduleDescription
+                                                                        .append(location
+                                                                                .trim()
+                                                                                + "."
+                                                                                + signalName
+                                                                                + ", ");
+                                                            }
+                                                        } else {
+                                                            if (_globalSignalDistributionInfo
+                                                                    .get(controller
+                                                                            .getName()) != null) {
+                                                                if (_globalSignalDistributionInfo
+                                                                        .get(
+                                                                                controller
+                                                                                        .getName())
+                                                                        .contains(
+                                                                                signalName) == false) {
+                                                                    _globalSignalDistributionInfo
+                                                                            .get(
+                                                                                    controller
+                                                                                            .getName())
+                                                                            .add(
+                                                                                    signalName);
+                                                                }
+                                                            }
+    
+                                                            if (i == signalInfo
+                                                                    .size() - 1) {
+                                                                moduleDescription
+                                                                        .append(signalName
+                                                                                + ", ");
+                                                            } else {
+                                                                moduleDescription
+                                                                        .append(signalName
+                                                                                + ", ");
+                                                            }
+                                                        }
+    
+                                                    } else {
+                                                        // use 1 to represent
+                                                        // the signal
+                                                        if (i == signalInfo
+                                                                .size() - 1) {
+                                                            moduleDescription
+                                                                    .append(" 1, state");
+                                                        } else {
+                                                            moduleDescription
+                                                                    .append(" 1,");
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                            if ((signalInfo != null)
+                                                    && (signalInfo.size() > 0)) {
+                                                moduleDescription
+                                                        .append(" , state );\n");
+                                            } else {
+                                                moduleDescription
+                                                        .append(" state );\n");
+                                            }
+    
+                                            returnList.add(moduleDescription);
+    
+                                        } else if (innerInnerEntity instanceof ModalModel) {
+                                            moduleDescription.append("\t\t"
+                                                    + innerInnerEntity
+                                                            .getName()
+                                                    + ": "
+                                                    + innerInnerEntity
+                                                            .getName() + "(");
+                                            // Check if the variable has
+                                            // variable outside;
+                                            // where is the location.
+                                            ArrayList<String> signalInfo = _globalSignalDistributionInfo
+                                                    .get(innerInnerEntity
+                                                            .getName());
+    
+                                            if (signalInfo != null) {
+                                                for (int i = 0; i < signalInfo
+                                                        .size(); i++) {
+                                                    String signalName = signalInfo
+                                                            .get(i);
+                                                    boolean containInTheSystem = false;
+                                                    boolean containInTheModule = false;
+                                                    String location = "";
+                                                    Iterator<String> it = _globalSignalRetrivalInfo
+                                                            .keySet()
+                                                            .iterator();
+                                                    while (it.hasNext()) {
+                                                        String place = it
+                                                                .next();
+                                                        if (_globalSignalRetrivalInfo
+                                                                .get(place)
+                                                                .contains(
+                                                                        signalName)) {
+                                                            location = place;
+                                                            containInTheSystem = true;
+                                                            break;
+                                                        }
+                                                    }
+                                                    if (_globalSignalNestedRetrivalInfo
+                                                            .get(controller
+                                                                    .getName()) != null) {
+                                                        if (_globalSignalNestedRetrivalInfo
+                                                                .get(
+                                                                        controller
+                                                                                .getName())
+                                                                .contains(
+                                                                        signalName) == true) {
+                                                            containInTheModule = true;
+                                                        }
+                                                    }
+    
+                                                    if (containInTheSystem == true) {
+                                                        if (containInTheModule == true) {
+                                                            if (i == signalInfo
+                                                                    .size() - 1) {
+                                                                moduleDescription
+                                                                        .append(location
+                                                                                .trim()
+                                                                                + "."
+                                                                                + signalName
+                                                                                + " ");
+                                                            } else {
+                                                                moduleDescription
+                                                                        .append(location
+                                                                                .trim()
+                                                                                + "."
+                                                                                + signalName
+                                                                                + ", ");
+                                                            }
+                                                        } else {
+                                                            if (_globalSignalDistributionInfo
+                                                                    .get(controller
+                                                                            .getName()) != null) {
+                                                                if (_globalSignalDistributionInfo
+                                                                        .get(
+                                                                                controller
+                                                                                        .getName())
+                                                                        .contains(
+                                                                                signalName) == false) {
+                                                                    _globalSignalDistributionInfo
+                                                                            .get(
+                                                                                    controller
+                                                                                            .getName())
+                                                                            .add(
+                                                                                    signalName);
+                                                                }
+                                                            }
+    
+                                                            if (i == signalInfo
+                                                                    .size() - 1) {
+                                                                moduleDescription
+                                                                        .append(signalName
+                                                                                + " ");
+                                                            } else {
+                                                                moduleDescription
+                                                                        .append(signalName
+                                                                                + ", ");
+                                                            }
+                                                        }
+    
+                                                    } else {
+                                                        // use 1 to represent
+                                                        // the signal
+                                                        if (i == signalInfo
+                                                                .size() - 1) {
+                                                            moduleDescription
+                                                                    .append(" 1");
+                                                        } else {
+                                                            moduleDescription
+                                                                    .append(" 1,");
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                            if ((signalInfo != null)
+                                                    && (signalInfo.size() > 0)) {
+                                                moduleDescription
+                                                        .append(", state );\n");
+                                            } else {
+                                                moduleDescription
+                                                        .append(" state );\n");
+                                            }
+                                            returnList.add(moduleDescription);
                                         }
-
-                                        _recursiveStepGeneratePremiseAndResultEachTransition(
-                                                newPremise, index + 1,
-                                                maxIndex, keySetArray,
-                                                valueDomain, lValue,
-                                                updatedVariableValue,
-                                                operatingSign);
                                     }
-
-                                }
-                            }
-                        }
-                    } else {
-                        _recursiveStepGeneratePremiseAndResultEachTransition(
-                                currentPremise, index + 1, maxIndex,
-                                keySetArray, valueDomain, lValue,
-                                newVariableValue, operatingSign);
-                    }
-
-                } else if (operatingSign.equalsIgnoreCase("/")) {
-                    // FIXME: Right now the execution of division is not
-                    // implemented.
-
-                    ArrayList<Integer> vList = valueDomain
-                            .get(keySetArray[index]);
-
-                    // Do as usual
-                    if ((vList != null) && (vList.size() != 0)) {
-                        for (int i = 0; i < vList.size(); i++) {
-                            String updatedVariableValue = String.valueOf(vList
-                                    .get(i).intValue()
-                                    / (Integer.parseInt(newVariableValue)));
-                            // retrieve the string and concatenate
-                            String newPremise = currentPremise + " & "
-                                    + keySetArray[index] + "="
-                                    + String.valueOf(vList.get(i).intValue());
-
-                            if (vList.get(i).intValue() == DOMAIN_LS) {
-                                newPremise = currentPremise + " & "
-                                        + keySetArray[index] + "=" + "ls";
-                            } else if (vList.get(i).intValue() == DOMAIN_GT) {
-                                newPremise = currentPremise + " & "
-                                        + keySetArray[index] + "=" + "gt";
-                            }
-
-                            _recursiveStepGeneratePremiseAndResultEachTransition(
-                                    newPremise, index + 1, maxIndex,
-                                    keySetArray, valueDomain, lValue,
-                                    updatedVariableValue, operatingSign);
-                        }
-                    } else {
-                        _recursiveStepGeneratePremiseAndResultEachTransition(
-                                currentPremise, index + 1, maxIndex,
-                                keySetArray, valueDomain, lValue,
-                                newVariableValue, operatingSign);
-                    }
-
-                } else if (operatingSign.equalsIgnoreCase("N")) {
-
-                    ArrayList<Integer> vList = valueDomain
-                            .get(keySetArray[index]);
-                    if ((vList != null) && (vList.size() != 0)) {
-                        boolean b1 = Pattern.matches(".*_isPresent",
-                                keySetArray[index].trim());
-                        if (b1 == true) {
-                            String updatedVariableValue = newVariableValue;
-                            String newPremise = currentPremise;
-
-                            _recursiveStepGeneratePremiseAndResultEachTransition(
-                                    newPremise, index + 1, maxIndex,
-                                    keySetArray, valueDomain, lValue,
-                                    updatedVariableValue, operatingSign);
-                        } else {
-                            boolean b2 = Pattern.matches(".*_value",
-                                    keySetArray[index].trim());
-                            if ((b2 == true) && (vList.size() == 2)) {
-                                // See if vList.size() == 2, if so simply
-                                // attach XX_isPresent to the value.
-                                String[] variable = keySetArray[index].trim()
-                                        .split("_value");
-
-                                if (currentPremise.trim().equalsIgnoreCase("")) {
-                                    _recursiveStepGeneratePremiseAndResultEachTransition(
-                                            currentPremise + variable[0].trim()
-                                                    + "_isPresent ", index + 1,
-                                            maxIndex, keySetArray, valueDomain,
-                                            lValue, newVariableValue,
-                                            operatingSign);
-                                } else {
-                                    _recursiveStepGeneratePremiseAndResultEachTransition(
-                                            currentPremise + " & "
-                                                    + variable[0].trim()
-                                                    + "_isPresent ", index + 1,
-                                            maxIndex, keySetArray, valueDomain,
-                                            lValue, newVariableValue,
-                                            operatingSign);
-                                }
-                            } else if (b2 == true) {
-                                // Since now we have XX_value, we should
-                                // also attach the premise XX_isPresent
-                                String[] variable = keySetArray[index].trim()
-                                        .split("_value");
-
-                                for (int i = 0; i < vList.size(); i++) {
-                                    String updatedVariableValue = newVariableValue;
-                                    // retrieve the string and concatenate
-                                    String newPremise = currentPremise
-                                            + "&"
-                                            + keySetArray[index]
-                                            + "="
-                                            + String.valueOf(vList.get(i)
-                                                    .intValue()) + "&"
-                                            + variable[0].trim()
-                                            + "_isPresent ";
-
-                                    if (vList.get(i).intValue() == DOMAIN_LS) {
-                                        newPremise = currentPremise + " & "
-                                                + keySetArray[index] + "="
-                                                + "ls" + "&"
-                                                + variable[0].trim()
-                                                + "_isPresent ";
-                                    } else if (vList.get(i).intValue() == DOMAIN_GT) {
-                                        newPremise = currentPremise + " & "
-                                                + keySetArray[index] + "="
-                                                + "gt" + "&"
-                                                + variable[0].trim()
-                                                + "_isPresent ";
-                                    }
-                                    _recursiveStepGeneratePremiseAndResultEachTransition(
-                                            newPremise, index + 1, maxIndex,
-                                            keySetArray, valueDomain, lValue,
-                                            updatedVariableValue, operatingSign);
+    
                                 }
                             } else {
-                                for (int i = 0; i < vList.size(); i++) {
-                                    String updatedVariableValue = newVariableValue;
-                                    // retrieve the string and concatenate
-                                    String newPremise = currentPremise
-                                            + " & "
-                                            + keySetArray[index]
-                                            + "="
-                                            + String.valueOf(vList.get(i)
-                                                    .intValue());
-
-                                    if (vList.get(i).intValue() == DOMAIN_LS) {
-                                        newPremise = currentPremise + " & "
-                                                + keySetArray[index] + "="
-                                                + "ls";
-                                    } else if (vList.get(i).intValue() == DOMAIN_GT) {
-                                        newPremise = currentPremise + " & "
-                                                + keySetArray[index] + "="
-                                                + "gt";
-                                    }
-                                    _recursiveStepGeneratePremiseAndResultEachTransition(
-                                            newPremise, index + 1, maxIndex,
-                                            keySetArray, valueDomain, lValue,
-                                            updatedVariableValue, operatingSign);
-                                }
+                                // We are not able to deal with it.
+                                // Simply skip without doing anything
                             }
-
-                        }
-
-                    } else {
-                        _recursiveStepGeneratePremiseAndResultEachTransition(
-                                currentPremise, index + 1, maxIndex,
-                                keySetArray, valueDomain, lValue,
-                                newVariableValue, operatingSign);
-                    }
-
-                }
-
-            } else {
-                // meaning: if
-                // (keySetArray[index].equalsIgnoreCase(lValue)==false)
-
-                ArrayList<Integer> vList = valueDomain.get(keySetArray[index]);
-
-                if ((vList != null) && (vList.size() != 0)) {
-                    // if the keySetArray[index] is similar to "XX_isPresent",
-                    // skip the update of premise.
-                    boolean b = Pattern.matches(".*_isPresent",
-                            keySetArray[index].trim());
-                    if (b == true) {
-                        _recursiveStepGeneratePremiseAndResultEachTransition(
-                                currentPremise, index + 1, maxIndex,
-                                keySetArray, valueDomain, lValue,
-                                newVariableValue, operatingSign);
-                    } else {
-                        boolean b2 = Pattern.matches(".*_value",
-                                keySetArray[index].trim());
-                        if ((b2 == true) && (vList.size() == 2)) {
-
-                            _recursiveStepGeneratePremiseAndResultEachTransition(
-                                    currentPremise, index + 1, maxIndex,
-                                    keySetArray, valueDomain, lValue,
-                                    newVariableValue, operatingSign);
-
-                        } else if (b2 == true) {
-                            String[] variable = keySetArray[index].trim()
-                                    .split("_value");
-                            for (int i = 0; i < vList.size(); i++) {
-                                // retrieve the string and concatenate
-                                String newPremise = currentPremise
-                                        + " & "
-                                        + keySetArray[index]
-                                        + "="
-                                        + String.valueOf(vList.get(i)
-                                                .intValue()) + " & "
-                                        + variable[0].trim() + "_isPresent ";
-
-                                if (vList.get(i).intValue() == DOMAIN_LS) {
-                                    newPremise = currentPremise + " & "
-                                            + keySetArray[index] + "=" + "ls"
-                                            + " & " + variable[0].trim()
-                                            + "_isPresent ";
-                                } else if (vList.get(i).intValue() == DOMAIN_GT) {
-                                    newPremise = currentPremise + " & "
-                                            + keySetArray[index] + "=" + "gt"
-                                            + " & " + variable[0].trim()
-                                            + "_isPresent ";
-                                }
-                                _recursiveStepGeneratePremiseAndResultEachTransition(
-                                        newPremise, index + 1, maxIndex,
-                                        keySetArray, valueDomain, lValue,
-                                        newVariableValue, operatingSign);
-                            }
+    
                         } else {
-                            for (int i = 0; i < vList.size(); i++) {
-                                // retrieve the string and concatenate
-                                String newPremise = currentPremise
-                                        + " & "
-                                        + keySetArray[index]
-                                        + "="
-                                        + String.valueOf(vList.get(i)
-                                                .intValue());
-
-                                if (vList.get(i).intValue() == DOMAIN_LS) {
-                                    newPremise = currentPremise + " & "
-                                            + keySetArray[index] + "=" + "ls";
-                                } else if (vList.get(i).intValue() == DOMAIN_GT) {
-                                    newPremise = currentPremise + " & "
-                                            + keySetArray[index] + "=" + "gt";
-                                }
-                                _recursiveStepGeneratePremiseAndResultEachTransition(
-                                        newPremise, index + 1, maxIndex,
-                                        keySetArray, valueDomain, lValue,
-                                        newVariableValue, operatingSign);
-                            }
-
+                            // Theoretically this should not happen.
+                            // Once this happens, report an error to
+                            // notify the author the situation.
+                            throw new IllegalActionException(
+                                    "SMVUtility._retrieveSubSystemModuleNameParameterInfo(): "
+                                            + "Refinement has two or more inner actors.");
                         }
-
                     }
-
-                } else {
-                    _recursiveStepGeneratePremiseAndResultEachTransition(
-                            currentPremise, index + 1, maxIndex, keySetArray,
-                            valueDomain, lValue, newVariableValue,
-                            operatingSign);
                 }
             }
-
         }
-
+    
+        return returnList;
     }
 
     /**
@@ -4672,7 +5149,7 @@ public class SMVUtility {
     }
 
     /**
-     * This function tries to translate an single FSMActor into the format
+     * This function translates an single FSMActor into the format
      * acceptable by model checker. New functionalities for supporting
      * boolean-token recognition are added.
      *
@@ -4680,14 +5157,14 @@ public class SMVUtility {
      * @param span The constant span for expanding the integer domain for state (inner) variables
      * @param isController Whether the FSMActor is the controller of a ModalModel
      * @param refinementStateName The name of the refinement state
-     * @return An FSMActor in a format acceptable to the model checker.
+     * @return
      * @exception IllegalActionException
      */
     private static StringBuffer _translateSingleFSMActor(FSMActor actor,
             String span, boolean isController, String refinementStateName)
             throws IllegalActionException {
 
-        // The utility function tries to translate a single
+        // The utility function translates a single
         // FSMActor into formats acceptable by model checker NuSMV.
         //
         // (1) A single FSMActor can be the controller of the ModalModel,
@@ -5039,488 +5516,6 @@ public class SMVUtility {
         return frontAttachment;
 
     }
-
-    /**
-     * This function is trying to generate the definition for modules contained
-     * in a controller. It need to check whether a signal is visible by the
-     * controller. If not, then this signal should be passed from outside, and
-     * the required signal set (extended by guard signals) for the controller
-     * should add up this signal. If a signal is visible by the controller, then
-     * we know that this signal is only passed between modules of the
-     * controller. We can list out the location of the signal.
-     *
-     * @param controller The controller which contains those modules
-     * @return An ArrayList containing all submodule definitions
-     * @exception IllegalActionException Undefined behavior happens.
-     */
-    private static ArrayList<StringBuffer> _retrieveSubSystemModuleNameParameterInfo(
-            FSMActor controller) throws IllegalActionException {
-
-        // One important modification is that we need to see if the signal is
-        // exchanged between subsystems of a certain controller.
-        // Because a subsystem can not see the signal outside the system,
-        // thus if a subsystem really uses a signal from outside, we
-        // need to add up the signal name (without the position) as an invoker
-        // for example subModule (Sec_isPresent)
-        //
-
-        ArrayList<StringBuffer> returnList = new ArrayList<StringBuffer>();
-        Iterator states = controller.entityList().iterator();
-        while (states.hasNext()) {
-            NamedObj state = (NamedObj) states.next();
-            if (state instanceof State) {
-                String refinementList = ((State) state).refinementName
-                        .getExpression();
-                if ((refinementList == null)
-                        || (refinementList.equalsIgnoreCase(""))) {
-                    continue;
-                } else {
-                    TypedActor[] actors = ((State) state).getRefinement();
-                    if (actors != null) {
-                        if (actors.length == 1) {
-                            // It would only have the case where
-                            // actor.length == 1.
-                            // If we encounter cases > 1, report error for
-                            // further bug fix.
-                            TypedActor innerActor = actors[0];
-                            if (innerActor instanceof FSMActor) {
-                                StringBuffer moduleDescription = new StringBuffer(
-                                        "");
-                                moduleDescription.append("\t\t"
-                                        + innerActor.getName() + ": "
-                                        + innerActor.getName() + "(");
-                                // Check if the variable has variable outside
-                                // (invisible
-                                // in the whole system); where is the location.
-                                // We use two variables to indicate the
-                                // possibilities:
-                                // (1) containInTheSystem: Signal visible in the
-                                // system
-                                // (2) containInTheModule: Signal visible by
-                                // module
-                                ArrayList<String> signalInfo = _globalSignalDistributionInfo
-                                        .get(innerActor.getName());
-                                if (signalInfo != null) {
-                                    for (int i = 0; i < signalInfo.size(); i++) {
-                                        String signalName = signalInfo.get(i);
-                                        boolean containInTheSystem = false;
-                                        boolean containInTheModule = false;
-                                        String location = "";
-                                        Iterator<String> it = _globalSignalRetrivalInfo
-                                                .keySet().iterator();
-                                        while (it.hasNext()) {
-                                            String place = it.next();
-
-                                            if (_globalSignalRetrivalInfo
-                                                    .get(place) != null) {
-                                                if (_globalSignalRetrivalInfo
-                                                        .get(place).contains(
-                                                                signalName)) {
-                                                    location = place;
-                                                    containInTheSystem = true;
-                                                    break;
-                                                }
-                                            }
-
-                                        }
-
-                                        // Now we need to see whether this
-                                        // signal
-                                        // is within the scope of the
-                                        // controller.
-                                        // If the signal is not in the module,
-                                        // we set the variable
-                                        // containInTheModule=false
-                                        if (_globalSignalNestedRetrivalInfo
-                                                .get(controller.getName()) != null) {
-                                            if (_globalSignalNestedRetrivalInfo
-                                                    .get(controller.getName())
-                                                    .contains(signalName)) {
-                                                containInTheModule = true;
-                                            }
-
-                                        }
-
-                                        if (containInTheSystem == true) {
-                                            if (containInTheModule == true) {
-                                                if (i == signalInfo.size() - 1) {
-                                                    moduleDescription
-                                                            .append(location
-                                                                    .trim()
-                                                                    + "."
-                                                                    + signalName
-                                                                    + " ");
-                                                } else {
-                                                    moduleDescription
-                                                            .append(location
-                                                                    .trim()
-                                                                    + "."
-                                                                    + signalName
-                                                                    + ", ");
-                                                }
-                                            } else {
-                                                if (_globalSignalDistributionInfo
-                                                        .get(controller
-                                                                .getName()) != null) {
-                                                    if (_globalSignalDistributionInfo
-                                                            .get(
-                                                                    controller
-                                                                            .getName())
-                                                            .contains(
-                                                                    signalName) == false) {
-                                                        _globalSignalDistributionInfo
-                                                                .get(
-                                                                        controller
-                                                                                .getName())
-                                                                .add(signalName);
-                                                    }
-                                                }
-
-                                                if (i == signalInfo.size() - 1) {
-                                                    moduleDescription
-                                                            .append(signalName
-                                                                    + " ");
-                                                } else {
-                                                    moduleDescription
-                                                            .append(signalName
-                                                                    + ", ");
-                                                }
-                                            }
-
-                                        } else {
-                                            // use 1 to represent the signal
-                                            if (i == signalInfo.size() - 1) {
-                                                moduleDescription.append(" 1");
-                                            } else {
-                                                moduleDescription.append(" 1,");
-                                            }
-                                        }
-                                    }
-                                }
-                                // Add up the state as parameter because
-                                // these subsystems are controlled by the state
-                                // of the controller.
-
-                                if ((signalInfo != null)
-                                        && (signalInfo.size() > 0)) {
-                                    moduleDescription.append(", state );\n");
-                                } else {
-                                    moduleDescription.append(" state );\n");
-                                }
-
-                                returnList.add(moduleDescription);
-
-                            } else if (innerActor instanceof CompositeActor) {
-                                // First see if its director is SR.
-                                // If not, then it is beyond our current
-                                // processing scope.
-                                Director director = ((CompositeActor) innerActor)
-                                        .getDirector();
-                                if (!(director instanceof SRDirector)) {
-                                    // This is not what we can process.
-                                    throw new IllegalActionException(
-                                            "SMVUtility._retrieveSubSystemModuleNameParameterInfo(): "
-                                                    + "Inner director not SR.");
-                                } else {
-                                    // The general case, we need to list out
-                                    // all modules in the lower level
-                                    // (one layer lower only)
-
-                                    for (Iterator innerInnerActors = (((CompositeActor) innerActor)
-                                            .entityList()).iterator(); innerInnerActors
-                                            .hasNext();) {
-                                        StringBuffer moduleDescription = new StringBuffer(
-                                                "");
-                                        Entity innerInnerEntity = (Entity) innerInnerActors
-                                                .next();
-                                        // Entity innerModel = innerEntity;
-                                        if (innerInnerEntity instanceof FSMActor) {
-                                            moduleDescription.append("\t\t"
-                                                    + innerInnerEntity
-                                                            .getName()
-                                                    + ": "
-                                                    + innerInnerEntity
-                                                            .getName() + "(");
-                                            // Check if the variable has
-                                            // variable outside; where is the
-                                            // location.
-                                            ArrayList<String> signalInfo = _globalSignalDistributionInfo
-                                                    .get(innerInnerEntity
-                                                            .getName());
-
-                                            if (signalInfo != null) {
-                                                for (int i = 0; i < signalInfo
-                                                        .size(); i++) {
-                                                    String signalName = signalInfo
-                                                            .get(i);
-                                                    boolean containInTheSystem = false;
-                                                    boolean containInTheModule = false;
-                                                    String location = "";
-                                                    Iterator<String> it = _globalSignalRetrivalInfo
-                                                            .keySet()
-                                                            .iterator();
-                                                    while (it.hasNext()) {
-                                                        String place = it
-                                                                .next();
-                                                        if (_globalSignalRetrivalInfo
-                                                                .get(place) != null) {
-                                                            if (_globalSignalRetrivalInfo
-                                                                    .get(place)
-                                                                    .contains(
-                                                                            signalName)) {
-                                                                location = place;
-                                                                containInTheSystem = true;
-                                                                break;
-                                                            }
-                                                        }
-
-                                                    }
-                                                    if (_globalSignalNestedRetrivalInfo
-                                                            .get(controller
-                                                                    .getName()) != null) {
-                                                        if (_globalSignalNestedRetrivalInfo
-                                                                .get(
-                                                                        controller
-                                                                                .getName())
-                                                                .contains(
-                                                                        signalName) == true) {
-                                                            containInTheModule = true;
-                                                        }
-                                                    }
-
-                                                    if (containInTheSystem == true) {
-                                                        if (containInTheModule == true) {
-                                                            if (i == signalInfo
-                                                                    .size() - 1) {
-                                                                moduleDescription
-                                                                        .append(location
-                                                                                .trim()
-                                                                                + "."
-                                                                                + signalName
-                                                                                + ", ");
-                                                            } else {
-                                                                moduleDescription
-                                                                        .append(location
-                                                                                .trim()
-                                                                                + "."
-                                                                                + signalName
-                                                                                + ", ");
-                                                            }
-                                                        } else {
-                                                            if (_globalSignalDistributionInfo
-                                                                    .get(controller
-                                                                            .getName()) != null) {
-                                                                if (_globalSignalDistributionInfo
-                                                                        .get(
-                                                                                controller
-                                                                                        .getName())
-                                                                        .contains(
-                                                                                signalName) == false) {
-                                                                    _globalSignalDistributionInfo
-                                                                            .get(
-                                                                                    controller
-                                                                                            .getName())
-                                                                            .add(
-                                                                                    signalName);
-                                                                }
-                                                            }
-
-                                                            if (i == signalInfo
-                                                                    .size() - 1) {
-                                                                moduleDescription
-                                                                        .append(signalName
-                                                                                + ", ");
-                                                            } else {
-                                                                moduleDescription
-                                                                        .append(signalName
-                                                                                + ", ");
-                                                            }
-                                                        }
-
-                                                    } else {
-                                                        // use 1 to represent
-                                                        // the signal
-                                                        if (i == signalInfo
-                                                                .size() - 1) {
-                                                            moduleDescription
-                                                                    .append(" 1, state");
-                                                        } else {
-                                                            moduleDescription
-                                                                    .append(" 1,");
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                            if ((signalInfo != null)
-                                                    && (signalInfo.size() > 0)) {
-                                                moduleDescription
-                                                        .append(" , state );\n");
-                                            } else {
-                                                moduleDescription
-                                                        .append(" state );\n");
-                                            }
-
-                                            returnList.add(moduleDescription);
-
-                                        } else if (innerInnerEntity instanceof ModalModel) {
-                                            moduleDescription.append("\t\t"
-                                                    + innerInnerEntity
-                                                            .getName()
-                                                    + ": "
-                                                    + innerInnerEntity
-                                                            .getName() + "(");
-                                            // Check if the variable has
-                                            // variable outside;
-                                            // where is the location.
-                                            ArrayList<String> signalInfo = _globalSignalDistributionInfo
-                                                    .get(innerInnerEntity
-                                                            .getName());
-
-                                            if (signalInfo != null) {
-                                                for (int i = 0; i < signalInfo
-                                                        .size(); i++) {
-                                                    String signalName = signalInfo
-                                                            .get(i);
-                                                    boolean containInTheSystem = false;
-                                                    boolean containInTheModule = false;
-                                                    String location = "";
-                                                    Iterator<String> it = _globalSignalRetrivalInfo
-                                                            .keySet()
-                                                            .iterator();
-                                                    while (it.hasNext()) {
-                                                        String place = it
-                                                                .next();
-                                                        if (_globalSignalRetrivalInfo
-                                                                .get(place)
-                                                                .contains(
-                                                                        signalName)) {
-                                                            location = place;
-                                                            containInTheSystem = true;
-                                                            break;
-                                                        }
-                                                    }
-                                                    if (_globalSignalNestedRetrivalInfo
-                                                            .get(controller
-                                                                    .getName()) != null) {
-                                                        if (_globalSignalNestedRetrivalInfo
-                                                                .get(
-                                                                        controller
-                                                                                .getName())
-                                                                .contains(
-                                                                        signalName) == true) {
-                                                            containInTheModule = true;
-                                                        }
-                                                    }
-
-                                                    if (containInTheSystem == true) {
-                                                        if (containInTheModule == true) {
-                                                            if (i == signalInfo
-                                                                    .size() - 1) {
-                                                                moduleDescription
-                                                                        .append(location
-                                                                                .trim()
-                                                                                + "."
-                                                                                + signalName
-                                                                                + " ");
-                                                            } else {
-                                                                moduleDescription
-                                                                        .append(location
-                                                                                .trim()
-                                                                                + "."
-                                                                                + signalName
-                                                                                + ", ");
-                                                            }
-                                                        } else {
-                                                            if (_globalSignalDistributionInfo
-                                                                    .get(controller
-                                                                            .getName()) != null) {
-                                                                if (_globalSignalDistributionInfo
-                                                                        .get(
-                                                                                controller
-                                                                                        .getName())
-                                                                        .contains(
-                                                                                signalName) == false) {
-                                                                    _globalSignalDistributionInfo
-                                                                            .get(
-                                                                                    controller
-                                                                                            .getName())
-                                                                            .add(
-                                                                                    signalName);
-                                                                }
-                                                            }
-
-                                                            if (i == signalInfo
-                                                                    .size() - 1) {
-                                                                moduleDescription
-                                                                        .append(signalName
-                                                                                + " ");
-                                                            } else {
-                                                                moduleDescription
-                                                                        .append(signalName
-                                                                                + ", ");
-                                                            }
-                                                        }
-
-                                                    } else {
-                                                        // use 1 to represent
-                                                        // the signal
-                                                        if (i == signalInfo
-                                                                .size() - 1) {
-                                                            moduleDescription
-                                                                    .append(" 1");
-                                                        } else {
-                                                            moduleDescription
-                                                                    .append(" 1,");
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                            if ((signalInfo != null)
-                                                    && (signalInfo.size() > 0)) {
-                                                moduleDescription
-                                                        .append(", state );\n");
-                                            } else {
-                                                moduleDescription
-                                                        .append(" state );\n");
-                                            }
-                                            returnList.add(moduleDescription);
-                                        }
-                                    }
-
-                                }
-                            } else {
-                                // We are not able to deal with it.
-                                // Simply skip without doing anything
-                            }
-
-                        } else {
-                            // Theoretically this should not happen.
-                            // Once this happens, report an error to
-                            // notify the author the situation.
-                            throw new IllegalActionException(
-                                    "SMVUtility._retrieveSubSystemModuleNameParameterInfo(): "
-                                            + "Refinement has two or more inner actors.");
-                        }
-                    }
-                }
-            }
-        }
-
-        return returnList;
-    }
-
-    // Used to store information regarding the position of the variable.
-    // (1) HashMap<String, ArrayList<String>> _globalSignalDistributionInfo:
-    // It tells you for a certain component, the set of signals
-    // used in its guard expression.
-    //
-    // (2)HashMap<String, HashSet<String>> _globalSignalRetrivalInfo:
-    // It tells you for a certain component, the set of signals emitted
-    // from that component.
-    //
-    // (3)HashMap<String, HashSet<String>> _globalSignalNestedRetrivalInfo:
-    // It tells you for a certain component, the set of all signals
-    // that is emitted from that component (including it subsystems/refinements)
 
     private static HashMap<String, ArrayList<String>> _globalSignalDistributionInfo;
     private static HashMap<String, HashSet<String>> _globalSignalRetrivalInfo;

@@ -66,42 +66,41 @@ import ptolemy.verification.lib.BoundedBufferTimedDelay;
  * This is an utility for Ptolemy model conversion. It performs a systematic
  * traversal of the system and convert the Ptolemy model into communicating
  * timed automata (CTA) with the format acceptable by model checker RED
- * (Regional Encoding Diagram Verification Engine, v.7.0). The conversion
- * mechanism roughly is based on the technical report UCB/EECS-2008-41
- * with some modifications. Basically, here the DE
- * domain can be viewed as a generalization of the SR domain, where each
- * "super dense" time tag in DE is now a tick in SR. The token would not
+ * (Regional Encoding Diagram Verification Engine, v.7.0). 
+ * <p>
+ * The conversion mechanism roughly is based on the technical report UCB/EECS-2008-41
+ * with some modifications. Basically, the token would not
  * be accumulated in the port of the FSMActor - therefore buffer overflow
  * property would no longer exist in this implementation; it
  * would only happen in the TimedDelay or NondeterministicTimedDelay actor.
- *
- * Note that for a successful conversion, we simply disallow a system to
+ * <p>
+ * For a successful conversion, we simply disallow a system to
  * have super dense time tag with the format (\tau, i), where i>0.
  * In our context this only happens when there is a TimedDelay actor with its
  * parameter equals to zero. For systems with super dense time tag with the
  * format (\tau, i), where i>0, the system can still be converted. However,
  * please note that the semantics might no longer be preserved.
- *
+ * <p>
  * One important feature in our converted model is the use of "complementary"
- * edges. This is used to tackle the situation where the FSMActor must react
+ * edges. This is used to handle the situation where the FSMActor must react
  * to an arrival of token in the incoming port, but the token can not trigger
- * any transition. For this case, the present token should turn to be absent
+ * any transition. For this case, the 'present' token should turn to be 'absent'
  * as time advances. To avoid including any unnecessary behavior we add one
  * "invalid" transition, mentioning that the FSMActor will perform a "stable"
  * move, and at the same time the token will be bring to absent state.
- *
+ * <p>
  * For the tool RED, all time constants should be an integer. This is not a
  * problem because the unit is actually not specified by the timed automata.
  * Therefore, we expect users to use integer values to specify their delay
  * or period.
- *
+ * <p>
  * Limitations: Simply following the statement in the technical report, we
  * restate limitations of the conversion. The designer must understand the
  * boundary of variable domain for the model under conversion. Also, due to
- * the use of complementary edges, for verification complex guard conditions
- * is not supported. It will soon be added.
+ * the use of complementary edges, complex guard conditions
+ * are currently not supported. 
  *
- * @author Chihhong Patrick Cheng, Contributor: Edward A. Lee
+ * @author Chih-Hong Cheng, Contributor: Edward A. Lee
  * @version $Id$
  * @since Ptolemy II 7.1
  * @Pt.ProposedRating Red (patrickj)
@@ -112,13 +111,13 @@ public class REDUtility {
     /**
      * This function would try to generate an equivalent system with a flattened
      * view. It would perform a rewriting of each ModalModel with hierarchy to a
-     * FSMActor. Note that in our current implementation this kind of rewriting
+     * FSMActor. Note that in our current implementation the rewriting
      * only supports to state refinements.
      *
-     * @param originalCompositeActor
+     * @param originalCompositeActor original system under processing
      * @return a flattened equivalent system.
      */
-    public static CompositeActor generateEquivalentSystemWithoutHierachy(
+    public static CompositeActor generateEquivalentSystemWithoutHierarchy(
             CompositeActor originalCompositeActor)
             throws NameDuplicationException, IllegalActionException,
             CloneNotSupportedException {
@@ -153,12 +152,11 @@ public class REDUtility {
     }
 
     /**
-     * This is the main function which tries to generate the system description
-     * with the type StringBuffer where its content is acceptable by the tool
-     * RED (Regional Encoding Diagram).
-     *
+     * This is the main function which generates the system description
+     * which is acceptable by the tool RED (Regional Encoding Diagram).
+     * <p>
      * For hierarchical conversion, here we are able to deal with cases where
-     * state refinement exists. For a modalmodel with state refinement, we can
+     * state refinement exists. For a modalmodel with state refinement, we first
      * rewrite it into an equivalent FSMActor.
      *
      * @param PreModel The original model in Ptolemy II
@@ -179,7 +177,7 @@ public class REDUtility {
         StringBuffer returnREDFormat = new StringBuffer("");
 
         // A pre-processing to generate equivalent system without hierarchy.
-        CompositeActor model = generateEquivalentSystemWithoutHierachy(PreModel);
+        CompositeActor model = generateEquivalentSystemWithoutHierarchy(PreModel);
 
         // The format of RED 7.0 is roughly organized as follows:
         //
@@ -612,7 +610,7 @@ public class REDUtility {
      * when the director is DE.
      *
      * @param model Model used for testing.
-     * @return a boolean value indicating if the director is DE.
+     * @return boolean value indicating if the director is DE.
      */
     public static boolean isValidModelForVerification(CompositeActor model) {
         Director director = ((CompositeActor) model).getDirector();
@@ -624,13 +622,127 @@ public class REDUtility {
     }
 
     /**
+     * This private function is used by the private function _translateFSMActor
+     * to generate the set of signals used in the guard expression. Each of the
+     * signal used by the guard expression would need to have a process
+     * representing the port receiving the signal.
+     *
+     * @param actor The actor under analysis.
+     * @return Set of signals used in guard expressions in the FSMActor.
+     * @exception IllegalActionException
+     */
+    private static HashSet<String> _decideGuardSignalVariableSet(FSMActor actor)
+            throws IllegalActionException {
+
+        HashSet<String> returnVariableSet = new HashSet<String>();
+        HashSet<State> stateSet = new HashSet<State>();
+        // initialize
+        HashMap<String, State> frontier = new HashMap<String, State>();
+
+        // create initial state
+        State stateInThis = actor.getInitialState();
+        String name = stateInThis.getName();
+        frontier.put(name, stateInThis);
+
+        // iterate
+        while (!frontier.isEmpty()) {
+            Iterator<String> iterator = frontier.keySet().iterator();
+            name = (String) iterator.next();
+            stateInThis = (State) frontier.remove(name);
+            if (stateInThis == null) {
+                throw new IllegalActionException("Internal error, removing \""
+                        + name + "\" returned null?");
+            }
+            ComponentPort outPort = stateInThis.outgoingPort;
+            Iterator transitions = outPort.linkedRelationList().iterator();
+
+            while (transitions.hasNext()) {
+                Transition transition = (Transition) transitions.next();
+
+                State destinationInThis = transition.destinationState();
+
+                if (!stateSet.contains(destinationInThis)) {
+                    frontier
+                            .put(destinationInThis.getName(), destinationInThis);
+                    stateSet.add(destinationInThis);
+                }
+
+                // get transitionLabel, transitionName and relation
+                // name for later use. Retrieve the transition
+
+                boolean hasAnnotation = false;
+                String text;
+                try {
+                    text = transition.annotation.stringValue();
+                } catch (IllegalActionException e) {
+                    text = "Exception evaluating annotation: " + e.getMessage();
+                }
+                if (!text.trim().equals("")) {
+                    hasAnnotation = true;
+                    // buffer.append(text);
+                }
+
+                // Retrieve the guardExpression for checking the existence
+                // of inner variables used in FmcAutomaton.
+                String guard = transition.getGuardExpression();
+
+                if ((guard != null) && !guard.trim().equals("")) {
+                    if (guard.trim().equalsIgnoreCase("true")) {
+                        // If the guard is true, then it can be triggered by any arrival of the signal
+                        for (int i = 0; i < actor.inputPortList().size(); i++) {
+                            returnVariableSet.add(((IOPort) actor
+                                    .inputPortList().get(i)).getName());
+                        }
+                        return returnVariableSet;
+                    }
+                    if (hasAnnotation) {
+                        // do nothing
+                    } else {
+                        // Separate each guard expression into substring
+                        String[] guardSplitExpression = guard.split("(&&)");
+                        if (guardSplitExpression.length != 0) {
+                            for (int i = 0; i < guardSplitExpression.length; i++) {
+
+                                String subGuardCondition = guardSplitExpression[i]
+                                        .trim();
+                                // Retrieve the left value of the inequality.
+                                String[] characterOfSubGuard = subGuardCondition
+                                        .split("(>=)|(<=)|(==)|(!=)|[><]");
+                                // Here we may still have two cases:
+                                // (1) XXX_isPresent (2) the normal case.
+                                boolean b = Pattern.matches(".*_isPresent",
+                                        characterOfSubGuard[0].trim());
+                                if (b == true) {
+                                    String[] sigs = characterOfSubGuard[0]
+                                            .trim().split("_isPresent");
+                                    if (returnVariableSet.contains(sigs[0]) == false) {
+                                        returnVariableSet.add(sigs[0]);
+                                    }
+                                }
+
+                            }
+
+                        }
+                    }
+                }
+            }
+        }
+        return returnVariableSet;
+    }
+
+    /**
      * This private function is used to decide the set of global synchronizers
      * used in the entity. When we later return the set, the system would use
      * another set container to store the synchronizer to make sure that no
      * duplication exists.
      *
+<<<<<<< .mine
+     * @param entity entity under analysis
+     * @return The set of synchronizers used in this entity
+=======
      * @param entity
      * @return The synchronizer variable set.
+>>>>>>> .r55317
      * @exception IllegalActionException
      */
     private static HashSet<String> _decideSynchronizerVariableSet(Entity entity)
@@ -786,115 +898,6 @@ public class REDUtility {
                 }
             }
             returnVariableSet.add(outputSignalName);
-        }
-        return returnVariableSet;
-    }
-
-    /**
-     * This private function is used by the private function _translateFSMActor
-     * to generate the set of signals used in the guard expression. Each of the
-     * signal used by the guard expression would need to have a process
-     * representing the port receiving the signal.
-     *
-     * @param actor The actor under analysis.
-     * @return Set of signals used in guard expressions in the FSMActor.
-     * @exception IllegalActionException
-     */
-    private static HashSet<String> _decideGuardSignalVariableSet(FSMActor actor)
-            throws IllegalActionException {
-
-        HashSet<String> returnVariableSet = new HashSet<String>();
-        HashSet<State> stateSet = new HashSet<State>();
-        // initialize
-        HashMap<String, State> frontier = new HashMap<String, State>();
-
-        // create initial state
-        State stateInThis = actor.getInitialState();
-        String name = stateInThis.getName();
-        frontier.put(name, stateInThis);
-
-        // iterate
-        while (!frontier.isEmpty()) {
-            Iterator<String> iterator = frontier.keySet().iterator();
-            name = (String) iterator.next();
-            stateInThis = (State) frontier.remove(name);
-            if (stateInThis == null) {
-                throw new IllegalActionException("Internal error, removing \""
-                        + name + "\" returned null?");
-            }
-            ComponentPort outPort = stateInThis.outgoingPort;
-            Iterator transitions = outPort.linkedRelationList().iterator();
-
-            while (transitions.hasNext()) {
-                Transition transition = (Transition) transitions.next();
-
-                State destinationInThis = transition.destinationState();
-
-                if (!stateSet.contains(destinationInThis)) {
-                    frontier
-                            .put(destinationInThis.getName(), destinationInThis);
-                    stateSet.add(destinationInThis);
-                }
-
-                // get transitionLabel, transitionName and relation
-                // name for later use. Retrieve the transition
-
-                boolean hasAnnotation = false;
-                String text;
-                try {
-                    text = transition.annotation.stringValue();
-                } catch (IllegalActionException e) {
-                    text = "Exception evaluating annotation: " + e.getMessage();
-                }
-                if (!text.trim().equals("")) {
-                    hasAnnotation = true;
-                    // buffer.append(text);
-                }
-
-                // Retrieve the guardExpression for checking the existence
-                // of inner variables used in FmcAutomaton.
-                String guard = transition.getGuardExpression();
-
-                if ((guard != null) && !guard.trim().equals("")) {
-                    if (guard.trim().equalsIgnoreCase("true")) {
-                        // If the guard is true, then it can be triggered by any arrival of the signal
-                        for (int i = 0; i < actor.inputPortList().size(); i++) {
-                            returnVariableSet.add(((IOPort) actor
-                                    .inputPortList().get(i)).getName());
-                        }
-                        return returnVariableSet;
-                    }
-                    if (hasAnnotation) {
-                        // do nothing
-                    } else {
-                        // Separate each guard expression into substring
-                        String[] guardSplitExpression = guard.split("(&&)");
-                        if (guardSplitExpression.length != 0) {
-                            for (int i = 0; i < guardSplitExpression.length; i++) {
-
-                                String subGuardCondition = guardSplitExpression[i]
-                                        .trim();
-                                // Retrieve the left value of the inequality.
-                                String[] characterOfSubGuard = subGuardCondition
-                                        .split("(>=)|(<=)|(==)|(!=)|[><]");
-                                // Here we may still have two cases:
-                                // (1) XXX_isPresent (2) the normal case.
-                                boolean b = Pattern.matches(".*_isPresent",
-                                        characterOfSubGuard[0].trim());
-                                if (b == true) {
-                                    String[] sigs = characterOfSubGuard[0]
-                                            .trim().split("_isPresent");
-                                    if (returnVariableSet.contains(sigs[0]) == false) {
-                                        returnVariableSet.add(sigs[0]);
-                                    }
-                                }
-
-                            }
-
-                        }
-                    }
-                }
-            }
         }
         return returnVariableSet;
     }
@@ -1248,7 +1251,7 @@ public class REDUtility {
     }
 
     /**
-     * This private function tries to generate all possible combinations of
+     * This private function generates all possible combinations of
      * string with length i with character 0 and 1. For example, for i = 2 it
      * would generate {00, 01, 10, 11}. This is designed to invoke recursively
      * to achieve this goal.
@@ -1853,9 +1856,9 @@ public class REDUtility {
     }
 
     /**
-     * A private function used as to generate variable initial values for the
-     * initial variable set. The current approach is to retrieve from the
-     * parameter specified in the actor.
+     * A private function for generating initial values for the
+     * initial variable set. The current approach is to retrieve them 
+     * from the parameter specified in the actor.
      *
      * @param actor
      * @param variableSet
@@ -1865,7 +1868,7 @@ public class REDUtility {
             FSMActor actor, HashSet<String> variableSet) {
         // One problem regarding the initial value retrieval from parameters
         // is that when retrieving parameters, the return value would consist
-        // of some undesirable infomation. We need to use split to do further
+        // of some undesirable information. We need to use split to do further
         // analysis.
 
         // FIXME: One potential problem happens when a user forgets
@@ -1902,28 +1905,30 @@ public class REDUtility {
     }
 
     /**
-     * This is an experimental function which tries to analyze a ModalModel and
-     * flatten it into a single FSMActor. The purpose of implementation is to
-     * understand the underlying structure of the ModalModel and Refinement, so
-     * that in the future we may have better implementation. Also it would be
-     * suitable for the exhibition of BEAR 2008.
-     *
+     * This is an experimental function which analyzes a ModalModel and
+     * flatten it into a single FSMActor. As model checkers
+     * in timed systems are using models without hierarchy, this function is required.
+     * <p>
      * In our current implementation we only allow one additional layer for the
-     * refinement; an arbitrary layer of refinement would lead to state
-     * explosion of the system. Also the additional layer must be a finite state
+     * refinement. Also the additional layer must be a finite state
      * refinement so that the conversion is possible. But it is easy to expand
      * this functionality into multiple layer.
-     *
+     * <p>
      * Note that in the current context of ModalModel, when state machine
-     * refinement is used, it is not possible to generate further refinement,
+     * refinement is used, it is not possible to generate further refinements,
      * meaning that the current implementation is powerful enough to deal with
-     * state refinement.
+     * state refinements.
      *
+<<<<<<< .mine
+     * @param model system (modal model) under analysis.
+     * @return equivalent FSMActor.
+=======
      * @param modelmodel Whole System under analysis.
      * @return Equivalent FSMActor for later analysis.
+>>>>>>> .r55317
      */
     private static FSMActor _rewriteModalModelWithStateRefinementToFSMActor(
-            ModalModel modelmodel) throws IllegalActionException,
+            ModalModel modalmodel) throws IllegalActionException,
             NameDuplicationException, CloneNotSupportedException {
 
         // The algorithm is roughly constructed as follows:
@@ -1941,10 +1946,10 @@ public class REDUtility {
         // existing one; thus we offer utility functions which performs deep
         // copy of states, transitions, and FSMActors.
 
-        FSMActor model = modelmodel.getController();
+        FSMActor model = modalmodel.getController();
         FSMActor returnFSMActor = new FSMActor(model.workspace());
         // try {
-        returnFSMActor.setName(modelmodel.getName());
+        returnFSMActor.setName(modalmodel.getName());
         Iterator states = model.entityList().iterator();
         while (states.hasNext()) {
             NamedObj state = (NamedObj) states.next();
@@ -1956,7 +1961,6 @@ public class REDUtility {
                     // This is done in a reverse way, that is,
                     // set the container of the state instead of
                     // adding component of a FSMActor.
-                    // Interesting :)
                     State newState = (State) state.clone();
                     newState.setName(state.getName());
                     (newState).setContainer(returnFSMActor);
@@ -2403,6 +2407,339 @@ public class REDUtility {
     }
 
     /**
+     * 
+     * @param delayedActor
+     * @param inputSignalName
+     * @param outputSignalName
+     * @return
+     * @throws IllegalActionException
+     */
+    private static REDSingleEntityBean _translateBBNondeterministicDelayedActor(
+            BoundedBufferNondeterministicDelay delayedActor,
+            String inputSignalName, String outputSignalName)
+            throws IllegalActionException {
+        // If we expect to convert a TimedDelayedActor into a timed automata,
+        // we need to have the following information from the
+        // BoundedBufferTimedDelay actor:
+        // (1) delay time:
+        // (2) size of buffer:
+
+        // Also, we need to retrieve the information for the name of
+        // input and output signals. These (inputSignalName, outputSignalName)
+        // should be analyzed by callers and pass to this function.
+
+        // Retrieve parameters from clockActors
+        double delay = ((DoubleToken) delayedActor.delay.getToken())
+                .doubleValue();
+        int bufferSize = ((IntToken) delayedActor.bufferSize.getToken())
+                .intValue();
+
+        REDSingleEntityBean bean = new REDSingleEntityBean();
+
+        bean._defineConstants.append("#define " + delayedActor.getName().trim()
+                + "_DELAY " + String.valueOf((int) delay) + "\n");
+
+        REDModuleNameInitialBean innerBean = new REDModuleNameInitialBean();
+        innerBean._name = delayedActor.getName().trim();
+        StringBuffer str = new StringBuffer(delayedActor.getName().trim()
+                + "_S");
+        for (int i = 0; i < bufferSize; i++) {
+            str.append("0");
+        }
+        innerBean._initialStateDescription = str.toString();
+        bean._nameInitialState = innerBean;
+        // Based on different buffer size, we need to generate the delayedActor
+        // which represents the buffer situation.
+        // For a delayedActor with buffer size 1, the we need two states:
+        // delayedActor_0 to represent no token.
+        // delayedActor_1 to represent one token.
+        //
+        // Also, clocks used by the system is related to the size of the buffer.
+        // We need to capture this behavior.
+        //
+        // Decide number of clocks used in the system.
+        for (int i = 0; i < bufferSize; i++) {
+            bean._clockSet.add(delayedActor.getName().trim() + "_C"
+                    + String.valueOf(i));
+
+        }
+
+        // Generate strings with arbitrary combination of 0 and 1s of fixed
+        // length bufferSize. For the case of buffer size is 3,
+        // then we generate 000, 001, 010, 011, 100, 101, 110, 111.
+        // These separate numbers would represent different states
+        // indicating the status of buffers.
+
+        ArrayList<String> initial = new ArrayList<String>();
+        initial.add("");
+        ArrayList<String> stringList = _enumerateString(bufferSize, initial);
+
+        // Generate the state based on the content in the stringList
+        bean._moduleDescription.append("\n/* Process name: "
+                + delayedActor.getName().trim() + " */\n");
+        for (String content : stringList) {
+
+            bean._moduleDescription.append("mode "
+                    + delayedActor.getName().trim() + "_S" + content.trim()
+                    + " (");
+            char[] charContent = content.toCharArray();
+
+            StringBuffer StateClockConstraint = new StringBuffer("");
+            StringBuffer StateTransitionCondition = new StringBuffer("");
+            boolean clockAssigned = false;
+
+            if (charContent.length != 0) {
+                for (int i = charContent.length - 1; i >= 0; i--) {
+                    if (charContent[i] == '0') {
+                        if (clockAssigned == false) {
+                            char[] newStateContent = content.toCharArray();
+                            newStateContent[i] = '1';
+                            StateTransitionCondition.append("    when ?"
+                                    + inputSignalName.trim() + " (true) may "
+                                    + delayedActor.getName().trim() + "_C"
+                                    + String.valueOf(i) + " = 0 ; goto "
+                                    + delayedActor.getName().trim() + "_S"
+                                    + String.valueOf(newStateContent) + "; \n");
+                            clockAssigned = true;
+                        }
+                    } else {
+                        if (StateClockConstraint.toString()
+                                .equalsIgnoreCase("")) {
+                            StateClockConstraint
+                                    .append(" " + delayedActor.getName().trim()
+                                            + "_C" + String.valueOf(i) + "<= "
+                                            + delayedActor.getName().trim()
+                                            + "_DELAY ");
+                        } else {
+                            StateClockConstraint
+                                    .append(" && "
+                                            + delayedActor.getName().trim()
+                                            + "_C" + String.valueOf(i) + "<= "
+                                            + delayedActor.getName().trim()
+                                            + "_DELAY ");
+                        }
+                        char[] newStateContent = content.toCharArray();
+                        newStateContent[i] = '0';
+                        StateTransitionCondition.append("    when " + "!"
+                                + outputSignalName.trim() + " ("
+                                + delayedActor.getName().trim() + "_C"
+                                + String.valueOf(i) + " <= "
+                                + delayedActor.getName().trim() + "_DELAY && "
+                                + delayedActor.getName().trim() + "_C"
+                                + String.valueOf(i) + ">0) may goto "
+                                + delayedActor.getName().trim() + "_S"
+                                + String.valueOf(newStateContent) + "; \n");
+                        if (i == 0) {
+                            if (content.contains("0") == false) {
+                                // All true cases. then we need to represent one
+                                // case for overflow.
+                                StateTransitionCondition
+                                        .append("    when ?"
+                                                + outputSignalName.trim()
+                                                + " (true) may goto Buffer_Overflow; \n");
+                            }
+                        }
+                    }
+                }
+                if (StateClockConstraint.toString().trim().equalsIgnoreCase("")) {
+                    bean._moduleDescription.append("true ) { \n");
+                } else {
+                    bean._moduleDescription.append(StateClockConstraint
+                            .toString()
+                            + " ) { \n");
+                }
+                bean._moduleDescription.append(StateTransitionCondition);
+                bean._moduleDescription.append("}\n");
+            }
+        }
+        return bean;
+    }
+
+    /**
+     * This is an utility function which performs the translation of a single
+     * TimedDelay actor into the format of communicating timed automata (CTA)
+     * acceptable by model checker RED.
+     *
+     * @param delayedActor actor which needs to be converted
+     * @param inputSignalName The name of the input signal. This must be derived externally.
+     * @param outputSignalName
+     *                The name of the output signal. This must be derived
+     *                externally.
+     * @return description of the TimedDelayActor acceptable by model checker
+     *         RED.
+     * @exception IllegalActionException
+     */
+    private static REDSingleEntityBean _translateBBTimedDelayedActor(
+            BoundedBufferTimedDelay delayedActor, String inputSignalName,
+            String outputSignalName) throws IllegalActionException {
+
+        // If we expect to convert a BoundedBufferTimedDelayedActor into a timed
+        // automata,
+        // we need to have the following information from the
+        // BoundedBufferTimedDelay actor:
+        // (1) delay time:
+        // (2) size of buffer:
+        //
+        // Also, we need to retrieve the information for the name of
+        // input and output signals. These (inputSignalName, outputSignalName)
+        // should be analyzed by callers and pass to this function.
+        //
+
+        // Retrieve parameters from clockActors
+        double delay = ((DoubleToken) delayedActor.delay.getToken())
+                .doubleValue();
+        int bufferSize = ((IntToken) delayedActor.bufferSize.getToken())
+                .intValue();
+
+        REDSingleEntityBean bean = new REDSingleEntityBean();
+
+        bean._defineConstants.append("#define " + delayedActor.getName().trim()
+                + "_DELAY " + String.valueOf((int) delay) + "\n");
+
+        REDModuleNameInitialBean innerBean = new REDModuleNameInitialBean();
+        innerBean._name = delayedActor.getName().trim();
+        // innerBean._initialStateDescription =
+        StringBuffer str = new StringBuffer(delayedActor.getName().trim()
+                + "_S");
+        for (int i = 0; i < bufferSize; i++) {
+            str.append("0");
+        }
+        innerBean._initialStateDescription = str.toString();
+        bean._nameInitialState = innerBean;
+
+        // Based on different buffer size, we need to generate the delayedActor
+        // which represents the buffer situation.
+        // For a delayedActor with buffer size 1, the we need two states:
+        // delayedActor_0 to represent no token.
+        // delayedActor_1 to represent one token.
+        //
+        // Also, clocks used by the system is related to the size of the buffer.
+        // We need to capture this behavior.
+        //
+        // Decide number of clocks used in the system.
+        for (int i = 0; i < bufferSize; i++) {
+            bean._clockSet.add(delayedActor.getName().trim() + "_C"
+                    + String.valueOf(i));
+
+        }
+
+        // Generate strings with arbitrary combination of 0 and 1s of fixed
+        // length bufferSize. For the case of buffer size is 3,
+        // then we generate 000, 001, 010, 011, 100, 101, 110, 111.
+        // These separate numbers would represent different states
+        // indicating the status of buffers.
+
+        ArrayList<String> initial = new ArrayList<String>();
+        initial.add("");
+        ArrayList<String> stringList = _enumerateString(bufferSize, initial);
+
+        // Generate the state based on the content in the stringList
+        bean._moduleDescription.append("\n/* Process name: "
+                + delayedActor.getName().trim() + " */\n");
+        for (String content : stringList) {
+
+            bean._moduleDescription.append("mode "
+                    + delayedActor.getName().trim() + "_S" + content.trim()
+                    + " (");
+            char[] charContent = content.toCharArray();
+
+            StringBuffer StateClockConstraint = new StringBuffer("");
+            StringBuffer StateTransitionCondition = new StringBuffer("");
+            boolean clockAssigned = false;
+
+            if (charContent.length != 0) {
+                for (int i = charContent.length - 1; i >= 0; i--) {
+                    if (charContent[i] == '0') {
+
+                        // We don't need to add clock constraints.
+
+                        // when ?inputSignal(TimedDelay2_Ci <=
+                        // TIMEDDELAY2_DELAY) may TimedDelay2_Ci = 0; goto
+                        // TimedDelay2_SXX1;
+                        //
+                        // Note that we are not setting all clocks.
+                        // Instead, we would set up only one clock.
+                        // For example, in 1(C0)0(C1)0(C2), we would only set up
+                        // C2.
+                        // In 0(C0)0(C1)1(C2), we would only set up C1, but not
+                        // C0.
+                        if (clockAssigned == false) {
+                            char[] newStateContent = content.toCharArray();
+
+                            newStateContent[i] = '1';
+                            StateTransitionCondition.append("    when ?"
+                                    + inputSignalName.trim() + " (true) may "
+                                    + delayedActor.getName().trim() + "_C"
+                                    + String.valueOf(i) + " = 0 ; goto "
+                                    + delayedActor.getName().trim() + "_S"
+                                    + String.valueOf(newStateContent) + "; \n");
+                            clockAssigned = true;
+                        }
+
+                    } else {
+                        // (charContent[i] == '1')
+                        // We need to add up clock constraints
+                        if (StateClockConstraint.toString()
+                                .equalsIgnoreCase("")) {
+                            StateClockConstraint
+                                    .append(" " + delayedActor.getName().trim()
+                                            + "_C" + String.valueOf(i) + "<= "
+                                            + delayedActor.getName().trim()
+                                            + "_DELAY ");
+                        } else {
+                            StateClockConstraint
+                                    .append(" && "
+                                            + delayedActor.getName().trim()
+                                            + "_C" + String.valueOf(i) + "<= "
+                                            + delayedActor.getName().trim()
+                                            + "_DELAY ");
+                        }
+
+                        // when !D_Pgo (TimedDelay2_C1 == TIMEDDELAY2_DELAY) may
+                        // goto TimedDelay2_S00;
+                        char[] newStateContent = content.toCharArray();
+                        newStateContent[i] = '0';
+                        StateTransitionCondition.append("    when " + "!"
+                                + outputSignalName.trim() + " ("
+                                + delayedActor.getName().trim() + "_C"
+                                + String.valueOf(i) + " == "
+                                + delayedActor.getName().trim()
+                                + "_DELAY ) may goto "
+                                + delayedActor.getName().trim() + "_S"
+                                + String.valueOf(newStateContent) + "; \n");
+                        if (i == 0) {
+                            if (content.contains("0") == false) {
+                                // All true cases. then we need to represent one
+                                // case
+                                // for overflow.
+                                StateTransitionCondition
+                                        .append("    when ?"
+                                                + outputSignalName.trim()
+                                                + " (true) may goto Buffer_Overflow; \n");
+                            }
+                        }
+
+                    }
+                }
+                if (StateClockConstraint.toString().trim().equalsIgnoreCase("")) {
+                    bean._moduleDescription.append("true ) { \n");
+                } else {
+                    bean._moduleDescription.append(StateClockConstraint
+                            .toString()
+                            + " ) { \n");
+                }
+
+                bean._moduleDescription.append(StateTransitionCondition);
+                bean._moduleDescription.append("}\n");
+
+            }
+
+        }
+
+        return bean;
+    }
+
+    /**
      * This is an utility function which performs the translation of a single
      * clock actor into the format of communicating timed automata (CTA)
      * acceptable by model checker RED.
@@ -2697,6 +3034,14 @@ public class REDUtility {
         }
     }
 
+    /**
+     * 
+     * @param actor
+     * @param span
+     * @param globalSynchronizerSet
+     * @return
+     * @throws IllegalActionException
+     */
     private static REDSingleEntityBean _translateFSMActor(FSMActor actor,
             int span, HashSet<String> globalSynchronizerSet)
             throws IllegalActionException {
@@ -3109,331 +3454,6 @@ public class REDUtility {
         }
         return bean;
 
-    }
-
-    private static REDSingleEntityBean _translateBBNondeterministicDelayedActor(
-            BoundedBufferNondeterministicDelay delayedActor,
-            String inputSignalName, String outputSignalName)
-            throws IllegalActionException {
-        // If we expect to convert a TimedDelayedActor into a timed automata,
-        // we need to have the following information from the
-        // BoundedBufferTimedDelay actor:
-        // (1) delay time:
-        // (2) size of buffer:
-
-        // Also, we need to retrieve the information for the name of
-        // input and output signals. These (inputSignalName, outputSignalName)
-        // should be analyzed by callers and pass to this function.
-
-        // Retrieve parameters from clockActors
-        double delay = ((DoubleToken) delayedActor.delay.getToken())
-                .doubleValue();
-        int bufferSize = ((IntToken) delayedActor.bufferSize.getToken())
-                .intValue();
-
-        REDSingleEntityBean bean = new REDSingleEntityBean();
-
-        bean._defineConstants.append("#define " + delayedActor.getName().trim()
-                + "_DELAY " + String.valueOf((int) delay) + "\n");
-
-        REDModuleNameInitialBean innerBean = new REDModuleNameInitialBean();
-        innerBean._name = delayedActor.getName().trim();
-        StringBuffer str = new StringBuffer(delayedActor.getName().trim()
-                + "_S");
-        for (int i = 0; i < bufferSize; i++) {
-            str.append("0");
-        }
-        innerBean._initialStateDescription = str.toString();
-        bean._nameInitialState = innerBean;
-        // Based on different buffer size, we need to generate the delayedActor
-        // which represents the buffer situation.
-        // For a delayedActor with buffer size 1, the we need two states:
-        // delayedActor_0 to represent no token.
-        // delayedActor_1 to represent one token.
-        //
-        // Also, clocks used by the system is related to the size of the buffer.
-        // We need to capture this behavior.
-        //
-        // Decide number of clocks used in the system.
-        for (int i = 0; i < bufferSize; i++) {
-            bean._clockSet.add(delayedActor.getName().trim() + "_C"
-                    + String.valueOf(i));
-
-        }
-
-        // Generate strings with arbitrary combination of 0 and 1s of fixed
-        // length bufferSize. For the case of buffer size is 3,
-        // then we generate 000, 001, 010, 011, 100, 101, 110, 111.
-        // These separate numbers would represent different states
-        // indicating the status of buffers.
-
-        ArrayList<String> initial = new ArrayList<String>();
-        initial.add("");
-        ArrayList<String> stringList = _enumerateString(bufferSize, initial);
-
-        // Generate the state based on the content in the stringList
-        bean._moduleDescription.append("\n/* Process name: "
-                + delayedActor.getName().trim() + " */\n");
-        for (String content : stringList) {
-
-            bean._moduleDescription.append("mode "
-                    + delayedActor.getName().trim() + "_S" + content.trim()
-                    + " (");
-            char[] charContent = content.toCharArray();
-
-            StringBuffer StateClockConstraint = new StringBuffer("");
-            StringBuffer StateTransitionCondition = new StringBuffer("");
-            boolean clockAssigned = false;
-
-            if (charContent.length != 0) {
-                for (int i = charContent.length - 1; i >= 0; i--) {
-                    if (charContent[i] == '0') {
-                        if (clockAssigned == false) {
-                            char[] newStateContent = content.toCharArray();
-                            newStateContent[i] = '1';
-                            StateTransitionCondition.append("    when ?"
-                                    + inputSignalName.trim() + " (true) may "
-                                    + delayedActor.getName().trim() + "_C"
-                                    + String.valueOf(i) + " = 0 ; goto "
-                                    + delayedActor.getName().trim() + "_S"
-                                    + String.valueOf(newStateContent) + "; \n");
-                            clockAssigned = true;
-                        }
-                    } else {
-                        if (StateClockConstraint.toString()
-                                .equalsIgnoreCase("")) {
-                            StateClockConstraint
-                                    .append(" " + delayedActor.getName().trim()
-                                            + "_C" + String.valueOf(i) + "<= "
-                                            + delayedActor.getName().trim()
-                                            + "_DELAY ");
-                        } else {
-                            StateClockConstraint
-                                    .append(" && "
-                                            + delayedActor.getName().trim()
-                                            + "_C" + String.valueOf(i) + "<= "
-                                            + delayedActor.getName().trim()
-                                            + "_DELAY ");
-                        }
-                        char[] newStateContent = content.toCharArray();
-                        newStateContent[i] = '0';
-                        StateTransitionCondition.append("    when " + "!"
-                                + outputSignalName.trim() + " ("
-                                + delayedActor.getName().trim() + "_C"
-                                + String.valueOf(i) + " <= "
-                                + delayedActor.getName().trim() + "_DELAY && "
-                                + delayedActor.getName().trim() + "_C"
-                                + String.valueOf(i) + ">0) may goto "
-                                + delayedActor.getName().trim() + "_S"
-                                + String.valueOf(newStateContent) + "; \n");
-                        if (i == 0) {
-                            if (content.contains("0") == false) {
-                                // All true cases. then we need to represent one
-                                // case for overflow.
-                                StateTransitionCondition
-                                        .append("    when ?"
-                                                + outputSignalName.trim()
-                                                + " (true) may goto Buffer_Overflow; \n");
-                            }
-                        }
-                    }
-                }
-                if (StateClockConstraint.toString().trim().equalsIgnoreCase("")) {
-                    bean._moduleDescription.append("true ) { \n");
-                } else {
-                    bean._moduleDescription.append(StateClockConstraint
-                            .toString()
-                            + " ) { \n");
-                }
-                bean._moduleDescription.append(StateTransitionCondition);
-                bean._moduleDescription.append("}\n");
-            }
-        }
-        return bean;
-    }
-
-    /**
-     * This is an utility function which performs the translation of a single
-     * TimedDelay actor into the format of communicating timed automata (CTA)
-     * acceptable by model checker RED.
-     *
-     * @param delayedActor actor which needs to be converted
-     * @param inputSignalName The name of the input signal. This must be derived externally.
-     * @param outputSignalName
-     *                The name of the output signal. This must be derived
-     *                externally.
-     * @return description of the TimedDelayActor acceptable by model checker
-     *         RED.
-     * @exception IllegalActionException
-     */
-    private static REDSingleEntityBean _translateBBTimedDelayedActor(
-            BoundedBufferTimedDelay delayedActor, String inputSignalName,
-            String outputSignalName) throws IllegalActionException {
-
-        // If we expect to convert a BoundedBufferTimedDelayedActor into a timed
-        // automata,
-        // we need to have the following information from the
-        // BoundedBufferTimedDelay actor:
-        // (1) delay time:
-        // (2) size of buffer:
-        //
-        // Also, we need to retrieve the information for the name of
-        // input and output signals. These (inputSignalName, outputSignalName)
-        // should be analyzed by callers and pass to this function.
-        //
-
-        // Retrieve parameters from clockActors
-        double delay = ((DoubleToken) delayedActor.delay.getToken())
-                .doubleValue();
-        int bufferSize = ((IntToken) delayedActor.bufferSize.getToken())
-                .intValue();
-
-        REDSingleEntityBean bean = new REDSingleEntityBean();
-
-        bean._defineConstants.append("#define " + delayedActor.getName().trim()
-                + "_DELAY " + String.valueOf((int) delay) + "\n");
-
-        REDModuleNameInitialBean innerBean = new REDModuleNameInitialBean();
-        innerBean._name = delayedActor.getName().trim();
-        // innerBean._initialStateDescription =
-        StringBuffer str = new StringBuffer(delayedActor.getName().trim()
-                + "_S");
-        for (int i = 0; i < bufferSize; i++) {
-            str.append("0");
-        }
-        innerBean._initialStateDescription = str.toString();
-        bean._nameInitialState = innerBean;
-
-        // Based on different buffer size, we need to generate the delayedActor
-        // which represents the buffer situation.
-        // For a delayedActor with buffer size 1, the we need two states:
-        // delayedActor_0 to represent no token.
-        // delayedActor_1 to represent one token.
-        //
-        // Also, clocks used by the system is related to the size of the buffer.
-        // We need to capture this behavior.
-        //
-        // Decide number of clocks used in the system.
-        for (int i = 0; i < bufferSize; i++) {
-            bean._clockSet.add(delayedActor.getName().trim() + "_C"
-                    + String.valueOf(i));
-
-        }
-
-        // Generate strings with arbitrary combination of 0 and 1s of fixed
-        // length bufferSize. For the case of buffer size is 3,
-        // then we generate 000, 001, 010, 011, 100, 101, 110, 111.
-        // These separate numbers would represent different states
-        // indicating the status of buffers.
-
-        ArrayList<String> initial = new ArrayList<String>();
-        initial.add("");
-        ArrayList<String> stringList = _enumerateString(bufferSize, initial);
-
-        // Generate the state based on the content in the stringList
-        bean._moduleDescription.append("\n/* Process name: "
-                + delayedActor.getName().trim() + " */\n");
-        for (String content : stringList) {
-
-            bean._moduleDescription.append("mode "
-                    + delayedActor.getName().trim() + "_S" + content.trim()
-                    + " (");
-            char[] charContent = content.toCharArray();
-
-            StringBuffer StateClockConstraint = new StringBuffer("");
-            StringBuffer StateTransitionCondition = new StringBuffer("");
-            boolean clockAssigned = false;
-
-            if (charContent.length != 0) {
-                for (int i = charContent.length - 1; i >= 0; i--) {
-                    if (charContent[i] == '0') {
-
-                        // We don't need to add clock constraints.
-
-                        // when ?inputSignal(TimedDelay2_Ci <=
-                        // TIMEDDELAY2_DELAY) may TimedDelay2_Ci = 0; goto
-                        // TimedDelay2_SXX1;
-                        //
-                        // Note that we are not setting all clocks.
-                        // Instead, we would set up only one clock.
-                        // For example, in 1(C0)0(C1)0(C2), we would only set up
-                        // C2.
-                        // In 0(C0)0(C1)1(C2), we would only set up C1, but not
-                        // C0.
-                        if (clockAssigned == false) {
-                            char[] newStateContent = content.toCharArray();
-
-                            newStateContent[i] = '1';
-                            StateTransitionCondition.append("    when ?"
-                                    + inputSignalName.trim() + " (true) may "
-                                    + delayedActor.getName().trim() + "_C"
-                                    + String.valueOf(i) + " = 0 ; goto "
-                                    + delayedActor.getName().trim() + "_S"
-                                    + String.valueOf(newStateContent) + "; \n");
-                            clockAssigned = true;
-                        }
-
-                    } else {
-                        // (charContent[i] == '1')
-                        // We need to add up clock constraints
-                        if (StateClockConstraint.toString()
-                                .equalsIgnoreCase("")) {
-                            StateClockConstraint
-                                    .append(" " + delayedActor.getName().trim()
-                                            + "_C" + String.valueOf(i) + "<= "
-                                            + delayedActor.getName().trim()
-                                            + "_DELAY ");
-                        } else {
-                            StateClockConstraint
-                                    .append(" && "
-                                            + delayedActor.getName().trim()
-                                            + "_C" + String.valueOf(i) + "<= "
-                                            + delayedActor.getName().trim()
-                                            + "_DELAY ");
-                        }
-
-                        // when !D_Pgo (TimedDelay2_C1 == TIMEDDELAY2_DELAY) may
-                        // goto TimedDelay2_S00;
-                        char[] newStateContent = content.toCharArray();
-                        newStateContent[i] = '0';
-                        StateTransitionCondition.append("    when " + "!"
-                                + outputSignalName.trim() + " ("
-                                + delayedActor.getName().trim() + "_C"
-                                + String.valueOf(i) + " == "
-                                + delayedActor.getName().trim()
-                                + "_DELAY ) may goto "
-                                + delayedActor.getName().trim() + "_S"
-                                + String.valueOf(newStateContent) + "; \n");
-                        if (i == 0) {
-                            if (content.contains("0") == false) {
-                                // All true cases. then we need to represent one
-                                // case
-                                // for overflow.
-                                StateTransitionCondition
-                                        .append("    when ?"
-                                                + outputSignalName.trim()
-                                                + " (true) may goto Buffer_Overflow; \n");
-                            }
-                        }
-
-                    }
-                }
-                if (StateClockConstraint.toString().trim().equalsIgnoreCase("")) {
-                    bean._moduleDescription.append("true ) { \n");
-                } else {
-                    bean._moduleDescription.append(StateClockConstraint
-                            .toString()
-                            + " ) { \n");
-                }
-
-                bean._moduleDescription.append(StateTransitionCondition);
-                bean._moduleDescription.append("}\n");
-
-            }
-
-        }
-
-        return bean;
     }
 
     /**
