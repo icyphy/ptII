@@ -17,8 +17,20 @@ discusses how to design actors, but the design document does
 not discuss compiling the actor and adding it to Vergil.  The reason
 for this omission is because we are hoping to eventually have a cleaner
 method for adding actors.  The text below is a how-to guide for
-the current environment
+the current environment.
 
+
+<p>There are at least two ways to add an actor:
+<ul>
+<li><a href="#instantiate">Instantiating an actor and saving it the user library</a>
+<li><a href="#editingFiles">Creating a new actor by editing files</a>
+</ul>
+<h2><a name="instantiate">Instantiating an actor and saving it the user library</a><h2>
+If you have already compiled your actor, you can instantiate it using
+Graph -&gt; InstantiateEntity.
+<p>To add it to the user library, right click and select "Save Actor in Library"
+
+<h2><a name="editingFiles">Creating a new actor by editing files</a></h2>
  <p> For this example, we are going to take the Ramp actor
 and change the default step from <CODE>1</CODE> to <CODE>2</CODE>.
 The new actor will be called Ramp2.
