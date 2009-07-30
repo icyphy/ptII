@@ -364,7 +364,9 @@ public class GRDirector extends StaticSchedulingDirector {
         // to be fired again during the execution. This can be
         // interpreted as the actor being dead.
         // Also, fireAt() calls by the actor will be ignored.
-        boolean result = super.postfire();
+        // We don't return the value of super.postfire() here because
+        // if we do, then the model does not run.
+        /*boolean result =*/ super.postfire();
 
         int totalIterations = ((IntToken) (iterations.getToken())).intValue();
         _iteration++;
@@ -374,7 +376,7 @@ public class GRDirector extends StaticSchedulingDirector {
             return false;
         }
 
-        return result;
+        return /*result*/ true;
     }
 
     /** Always return true. A GR composite actor will always be iterated.
