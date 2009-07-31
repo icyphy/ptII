@@ -2,9 +2,9 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="Butterfly" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 3, 795, 723}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 793, 716}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[580, 606]">
     </property>
@@ -51,9 +51,9 @@
         </property>
     </property>
     <entity name="XYPlotter" class="ptolemy.actor.lib.gui.XYPlotter">
-        <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="false">
+        <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={508, 230, 508, 511}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={508, 230, 500, 507}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 463]">
         </property>
@@ -66,13 +66,14 @@
 <title>Butterfly Curve</title>
 <xLabel></xLabel>
 <yLabel></yLabel>
-<xRange min="-2.5" max="4.0"/>
-<yRange min="-4.0" max="4.0"/>
+<xRange min="-2.4845557281711304" max="3.9293144658408394"/>
+<yRange min="-3.650536945760177" max="3.6505369457601025"/>
 <noGrid/>
 </plot>?>
         </configure>
     </entity>
     <entity name="CompiledCompositeActor" class="ptolemy.actor.lib.jni.CompiledCompositeActor">
+        <display name="CCompiledCompositeActor"/>
         <property name="invokeJNI" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{110.0, 170.0}">

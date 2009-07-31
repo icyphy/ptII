@@ -626,7 +626,9 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
 
         if (ptType == BaseType.SCALAR) {
             // FIXME: do we need a codegen type for scalar?
-            return "";
+            // This is needed by the Case actor in
+            // ptolemy/codegen/c/actor/lib/hoc/test/auto/Case5.xml
+            return "Token";
         }
 
         // FIXME: We may need to add more types.
