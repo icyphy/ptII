@@ -572,7 +572,6 @@ public class Transformer {
      *  outside of this class.
      *
      *  @param fileName The Java source file name.
-     *  @param writer The writer where the output is written.
      *  @param classPaths An array of explicit class paths, or <tt>null</tt>
      *   if none.
      *

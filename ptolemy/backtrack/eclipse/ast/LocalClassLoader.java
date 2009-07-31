@@ -746,7 +746,7 @@ public class LocalClassLoader extends URLClassLoader {
      *   is searched for.
      *  @return The nested class loaded if found. If no such class is found or
      *   error occurs while loading, the return value is <tt>null</tt>.
-     *  @see #searchForClass(StringBuffer, boolean, Class)
+     *  @see #searchForClass(StringBuffer, Class)
      */
     private Class _checkNestedClass(StringBuffer dollarName, Class currentClass) {
         if (currentClass == null) {

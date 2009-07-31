@@ -1597,10 +1597,10 @@ public class TypeAnalyzer extends ASTVisitor {
         _state.getVariableStack().pop();
     }
 
-    /** Find a variable of field from the current scope.
+    /** Find a variable or field from the current scope.
      *
      *  @param name The name of the variable or field.
-     *  @return
+     *  @return The variable or field.
      */
     private TypeAndOwner _findVariable(String name) {
         Stack<Hashtable<String, Type>> variableStack = _state

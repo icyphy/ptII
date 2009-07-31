@@ -243,10 +243,12 @@ public class PropertyConstraintAttribute extends PropertyAttribute {
 
     /**
      * Parse the given expression for an arbitrary Property.
-     * @param lattice
-     * @param expression
-     * @return
-     * @exception IllegalActionException
+     * @param lattice The lattice.
+     * @param expression The expression
+     * @return The LatticeProperty that corresponds with
+     * the lattice and expression.
+     * @exception IllegalActionException If thrown by
+     * {@link #_parseElementExpression(PropertyLattice, String)}
      */
     private static LatticeProperty _parsePropertyExpression(
             PropertyLattice lattice, String expression)

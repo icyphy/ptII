@@ -5151,15 +5151,15 @@ public class SMVUtility {
     }
 
     /**
-     * This function translates an single FSMActor into the format
-     * acceptable by model checker. New functionalities for supporting
-     * boolean-token recognition are added.
+     * Translate a single FSMActor into the format acceptable by model
+     * checker. New functionalities for supporting boolean-token
+     * recognition are added.
      *
      * @param actor The FSMActor under analysis.
      * @param span The constant span for expanding the integer domain for state (inner) variables
      * @param isController Whether the FSMActor is the controller of a ModalModel
      * @param refinementStateName The name of the refinement state
-     * @return
+     * @return The translated actor in a format suitable for the model checker.
      * @exception IllegalActionException
      */
     private static StringBuffer _translateSingleFSMActor(FSMActor actor,

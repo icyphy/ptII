@@ -735,14 +735,10 @@ public class REDUtility {
      * another set container to store the synchronizer to make sure that no
      * duplication exists.
      *
-<<<<<<< .mine
      * @param entity entity under analysis
      * @return The set of synchronizers used in this entity
-=======
-     * @param entity
-     * @return The synchronizer variable set.
->>>>>>> .r55317
-     * @exception IllegalActionException
+     * @exception IllegalActionException If thrown while getting the initial state
+     * of the actor. 
      */
     private static HashSet<String> _decideSynchronizerVariableSet(Entity entity)
             throws IllegalActionException {
@@ -1918,13 +1914,8 @@ public class REDUtility {
      * meaning that the current implementation is powerful enough to deal with
      * state refinements.
      *
-<<<<<<< .mine
-     * @param model system (modal model) under analysis.
-     * @return equivalent FSMActor.
-=======
      * @param modelmodel Whole System under analysis.
      * @return Equivalent FSMActor for later analysis.
->>>>>>> .r55317
      */
     private static FSMActor _rewriteModalModelWithStateRefinementToFSMActor(
             ModalModel modalmodel) throws IllegalActionException,
@@ -2406,17 +2397,20 @@ public class REDUtility {
     }
 
     /**
-     * 
-     * @param delayedActor
-     * @param inputSignalName
-     * @param outputSignalName
-     * @return
-     * @throws IllegalActionException
+     * Translate a bounded buffer, nondeterministic delayed actor.
+     * @param delayedActor The actor.
+     * @param inputSignalName The input signal
+     * @param outputSignalName The output signal
+     * @return description of the TimedDelayActor acceptable by model checker
+     *         RED.
+     * @throws IllegalActionException If the <i>delay</i> or 
+     * <i>bufferSize</i> parameters of the delayedActor cannot be read.
      */
     private static REDSingleEntityBean _translateBBNondeterministicDelayedActor(
             BoundedBufferNondeterministicDelay delayedActor,
             String inputSignalName, String outputSignalName)
             throws IllegalActionException {
+
         // If we expect to convert a TimedDelayedActor into a timed automata,
         // we need to have the following information from the
         // BoundedBufferTimedDelay actor:
@@ -3034,12 +3028,19 @@ public class REDUtility {
     }
 
     /**
-     * 
-     * @param actor
-     * @param span
-     * @param globalSynchronizerSet
-     * @return
-     * @throws IllegalActionException
+     * Translate an FSM actor. 
+     * @param actor The actor to be translated.
+     * @param span The size of the span to expand the variable domain. This
+     * variable is used to determine the inner variables used by an actor
+     * @param globalSynchronizerSet The set of useful
+     * synchronizers. There are some synchronizers which is not
+     * useful. They are not connected to/from a valid actor where
+     * analysis is possible.
+     * @return description of the TimedDelayActor acceptable by model checker
+     * RED.
+     * @throws IllegalActionException If thrown while getting the initial
+     * state of the actor, deciding the guard signal variable set or
+     * generating transitions.
      */
     private static REDSingleEntityBean _translateFSMActor(FSMActor actor,
             int span, HashSet<String> globalSynchronizerSet)
