@@ -522,9 +522,19 @@ public class CCodeGeneratorHelper extends CodeGeneratorHelper {
             }
         }
 
-        sourceRef = _generateTypeConvertMethod(sourceRef,
-                codeGenType(sinkType), codeGenType(sourceType));
-
+        try {
+            sourceRef = _generateTypeConvertMethod(sourceRef,
+                    codeGenType(sinkType), codeGenType(sourceType));
+        } catch (IllegalActionException ex) {
+            throw new IllegalActionException(getComponent(), ex, "Failed to generate "
+                    + "type convert method for " + sinkRef 
+                    + " of type "
+                    + sinkType + " (converted to \""
+                    + codeGenType(sinkType) + "\") = " 
+                    + sourceRef + " of type "
+                    + sourceType + " (converted to \""
+                    + codeGenType(sourceType) +"\")");
+        }
         return sinkRef + " = " + sourceRef + ";" + _eol;
     }
 

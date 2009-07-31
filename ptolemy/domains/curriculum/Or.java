@@ -30,6 +30,7 @@ package ptolemy.domains.curriculum;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -62,8 +63,11 @@ public class Or extends TypedAtomicActor {
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
         postrequisites = new TypedIOPort(this, "postrequisites", false, true);
+        postrequisites.setTypeEquals(BaseType.BOOLEAN);
+
         prerequisites = new TypedIOPort(this, "prerequisites", true, false);
         prerequisites.setMultiport(true);
+        prerequisites.setTypeEquals(BaseType.BOOLEAN);
 
         Parameter hide = new Parameter(this, "_hideName");
         hide.setVisibility(Settable.EXPERT);

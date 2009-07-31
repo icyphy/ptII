@@ -288,8 +288,52 @@ Token convert_String_StringArray(char* s) {
 }
 /**/
 
+/*** convert_String_Token() ***/
+Token convert_String_Token(char* s) {
+    return String_new(s);
+}
+/**/
+
 /*** convert_Token_Token() ***/
 #define convert_Token_Token(a) a
+/**/
+
+/*** convert_Token_String() ***/
+char*  convert_Token_String(Token token) {
+    char* stringPointer;
+
+    switch (token.type) {
+#ifdef TYPE_Boolean
+    case TYPE_Boolean:
+        stringPointer = BooleantoString(token.payload.Boolean);
+        break;
+#endif
+
+#ifdef TYPE_Int
+    case TYPE_Int:
+        stringPointer = InttoString(token.payload.Int);
+        break;
+#endif
+
+#ifdef TYPE_Double
+    case TYPE_Double:
+        stringPointer = DoubletoString(token.payload.Double);
+        break;
+#endif
+
+#ifdef TYPE_String
+    case TYPE_String:
+        stringPointer = thisToken.payload.String;
+        break;
+#endif
+
+    default:
+        // FIXME: not finished
+        fprintf(stderr, "String_convert(): Conversion from an unsupported type. (%d)\n", token.type);
+        break;
+    }
+    return stringPointer;
+}
 /**/
 
 /*** convert_Pointer_Token() ***/

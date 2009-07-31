@@ -36,6 +36,7 @@ import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Set;
 
+import ptolemy.data.BooleanToken;
 import ptolemy.codegen.c.kernel.CCodeGeneratorHelper;
 import ptolemy.codegen.kernel.CodeStream;
 import ptolemy.kernel.util.IllegalActionException;
@@ -168,6 +169,13 @@ public class PlotterBase extends CCodeGeneratorHelper {
     public String generateWrapupCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
         code.append(super.generateWrapupCode());
+        ptolemy.actor.lib.gui.PlotterBase actor = (ptolemy.actor.lib.gui.PlotterBase) getComponent();
+        if (((BooleanToken)actor.fillOnWrapup.getToken()).booleanValue()) {
+            code.append("jmethodID fillPlotMethod = (*env)->GetMethodID"
+                    + "(env, $actorSymbol(plotClass), \"fillPlot\", \"()V\");" + _eol
+                    + "(*env)->CallVoidMethod(env, $actorSymbol(plotObject), "
+                    + "fillPlotMethod);" + _eol);
+        }
         // FIXME: this is a dumb way to leave the plot window open
         // when the program runs to the end. I need to figure out a
         // better way.
@@ -175,6 +183,7 @@ public class PlotterBase extends CCodeGeneratorHelper {
         code.append("printf(\"type any key and then return to exit...\");"
                 + _eol);
         code.append("scanf(\"%s\",$actorSymbol(temp));" + _eol);
+        code.append("exit(0);" + _eol);
         return processCode(CodeStream.indent(code.toString()));
     }
 

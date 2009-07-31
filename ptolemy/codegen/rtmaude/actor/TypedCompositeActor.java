@@ -45,8 +45,7 @@ import ptolemy.kernel.util.IllegalActionException;
  *
  * @see ptolemy.actor.TypedCompositeActor
  * @author Kyungmin Bae
-@version $Id$
-@since Ptolemy II 7.1
+ * @since Ptolemy II 7.1
  * @version $Id$
  * @Pt.ProposedRating Red (kquine)
  *

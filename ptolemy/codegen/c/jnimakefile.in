@@ -17,6 +17,9 @@ PTJNI_NO_CYGWIN =		@PTJNI_NO_CYGWIN@
 # GCC shared flag.  For Mac OS X, -dynamiclib.  For all others, -shared 
 PTJNI_GCC_SHARED_FLAG =		@PTJNI_GCC_SHARED_FLAG@
 
+# Mac OS X, need when we call the plotter from generated C code. 
+PTJNI_PLATFORM_LDFLAG = 	@PTJNI_PLATFORM_LDFLAG@
+
 # JNI shared library linker flag, under Solaris this would be -fPIC.
 PTJNI_SHAREDLIBRARY_LDFLAG =	@PTJNI_SHAREDLIBRARY_LDFLAG@
 
@@ -31,4 +34,4 @@ PTLIB = $(PTJNI_SHAREDLIBRARY_PREFIX)$(MODELNAME).$(PTJNI_SHAREDLIBRARY_SUFFIX)
 
 # We need -lm so we can get floor() for ftoi() 
 $(PTLIB): $(MODELNAME).c
-	@PTCGCompiler@ $(PTJNI_NO_CYGWIN) $(PTCGINCLUDES) $(PTJNI_SHAREDLIBRARY_LDFLAG) $(PTJNI_GCC_SHARED_FLAG) -o $(PTLIB) @modelName@.c -lm $(PTCGLIBRARIES)
+	@PTCGCompiler@ $(PTJNI_NO_CYGWIN) $(PTCGINCLUDES) $(PTJNI_SHAREDLIBRARY_LDFLAG) $(PTJNI_GCC_SHARED_FLAG) -o $(PTLIB) @modelName@.c -lm $(PTCGLIBRARIES) $(PTJNI_PLATFORM_LDFLAG)

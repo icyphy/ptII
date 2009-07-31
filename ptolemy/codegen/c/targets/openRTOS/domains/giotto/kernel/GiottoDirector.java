@@ -1006,7 +1006,7 @@ public class GiottoDirector extends
 
     /**
      * Generates methods for all the actors seen by this director
-     * @return
+     * @return The actor code.
      * @exception IllegalActionException
      */
     private String _generateActorsCode() throws IllegalActionException {
@@ -1311,7 +1311,6 @@ public class GiottoDirector extends
      *  NOTE: Duplicate ports connected through a fork are removed. IE. if an input is connected to a fork
      *  and the fork is connected to two other places... it removes the first place from the list of places and keeps the last place
      *  need to ask Jackie if there is a way to work around this b/c Reciever [][] recievers = getRecievers doesn't work.
-     *  @param none
      *  @return code that copies inputs from a port in a driver method
      */
     String _generateDriverCode() throws IllegalActionException {
@@ -1514,8 +1513,7 @@ public class GiottoDirector extends
      *  NOTE: Duplicate ports connected through a fork are removed. IE. if an input is connected to a fork
      *  and the fork is connected to two other places... it removes the first place from the list of places and keeps the last place
      *  need to ask Jackie if there is a way to work around this b/c Reciever [][] recievers = getRecievers doesn't work.
-     *  @param none
-     *  @return code that copies outputs to a port
+     *  @return code that copies outputs to a port.
      */
     String _generateOutputDriverCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
@@ -1618,9 +1616,9 @@ public class GiottoDirector extends
     }
 
     /** Generate PORT variables. A PORT allows control over the value read
-     *  A port is an efficient way to handle double buffering
-     *  @param none
-     *  @return port variables
+     *  A port is an efficient way to handle double buffering.
+     *  @param actor  The actor for which port variables should be generated
+     *  @return port variables.
      */
     private String _generatePortVariableDeclarations(Actor actor)
             throws IllegalActionException {
@@ -1723,12 +1721,13 @@ public class GiottoDirector extends
     }
 
     /**
-     * Generates a string of the actor's name
-     * @param actor
-     * @return
+     * Generates a string of the actor's name.
+     * @param actor The actor for which a name should be generated.
+     * @return The actor
      */
     private String _getActorName(Actor actor) {
         String actorFullName = actor.getFullName();
+        // FIXME: Use CodeGeneratorHelper.generateName(_model); 
         actorFullName = actorFullName.substring(1, actorFullName.length());
         actorFullName = actorFullName.replace('.', '_');
         actorFullName = actorFullName.replace(' ', '_');
@@ -1762,9 +1761,9 @@ public class GiottoDirector extends
     }
 
     /**
-     * Generates a string representation of the port's name
-     * @param port
-     * @return
+     * Generates a string representation of the port's name;
+     * @param port The port.
+     * @return The port name.
      */
     private String _getPortName(IOPort port) {
         String portFullName = port.getFullName();
@@ -1788,10 +1787,11 @@ public class GiottoDirector extends
     }
 
     /**
-     * Determines the frequeny of the actor passed in as a parameter
-     * @param actor
-     * @return
-     * @exception IllegalActionException
+     * Determines the frequeny of the actor passed in as a parameter.
+     * @param actor The actor.
+     * @return The frequency.
+     * @exception IllegalActionException If throw while reading the "frequency"
+     * attribute.
      */
     private int _getFrequency(Actor actor) throws IllegalActionException {
         Attribute frequency = ((Entity) actor).getAttribute("frequency");
@@ -1808,8 +1808,9 @@ public class GiottoDirector extends
      * I.E. If the actor has a frequency 1, and it is inside a composite actor at the top of the director chain with frequency2,
      * the actor's true frequency is 1*2 = 2, which is the priority it should be given.
      * @param actor
-     * @return
-     * @exception IllegalActionException
+     * @return The priority.
+     * @exception IllegalActionException If thrown while reading the 
+     * "frequency" attribute.
      */
     private int _getPriority(Actor actor) throws IllegalActionException {
         Attribute frequency = ((Entity) actor).getAttribute("frequency");
@@ -1871,7 +1872,7 @@ public class GiottoDirector extends
     /**
      * Determines the stack size necessary for the actors passed in
      * @param actors
-     * @return
+     * @return The stack size.
      */
     private int _getStackSize(List<Actor> actors) {
         // FIXME: there may be static analysis in the future.
@@ -1889,8 +1890,8 @@ public class GiottoDirector extends
     }
 
     /**
-     * Determines if this Giotto director is the top most Giotto Director
-     * @return
+     * Return true if this Giotto director is the top most Giotto Director.
+     * @return True if this Giotto director is the top most Giotto Director.
      */
     private boolean _isTopGiottoDirector() {
         ptolemy.actor.Director director = ((TypedCompositeActor) _director

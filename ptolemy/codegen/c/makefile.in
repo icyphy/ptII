@@ -15,6 +15,9 @@
 PTCGLIBRARIES = @PTCGLibraries@
 PTCGINCLUDES = @PTCGIncludes@
 
+# Mac OS X, need when we call the plotter from generated C code. 
+PTJNI_PLATFORM_LDFLAG = 	@PTJNI_PLATFORM_LDFLAG@
+
 # Under Windows, to create a binary that does not pop up a console window,
 # compile with: make -f @modelName@.mk CC_FLAGS=-mwindows
 CC_FLAGS=
@@ -43,7 +46,7 @@ WARNING_CC_FLAGS = -Wall
 # We need -lm so we can get floor() for ftoi() 
 # We need -D__int64="long long" when invoking jni interface under cygwin
 @modelName@: @modelName@.c
-	@PTCGCompiler@ -D__int64="long long" $(WARNING_CC_FLAGS) $(CC_FLAGS) $(USER_CC_FLAGS) $(DEBUG) @modelName@.c $(PTCGINCLUDES) -o @modelName@ -lm $(PTCGLIBRARIES)
+	@PTCGCompiler@ -D__int64="long long" $(WARNING_CC_FLAGS) $(CC_FLAGS) $(USER_CC_FLAGS) $(DEBUG) @modelName@.c $(PTCGINCLUDES) -o @modelName@ -lm $(PTCGLIBRARIES) $(PTJNI_PLATFORM_LDFLAG)
 
 # Rule to compile with different optimizers
 O_FLAGS=-O0 -O -Os -O2 -O3
