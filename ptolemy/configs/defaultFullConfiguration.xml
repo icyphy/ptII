@@ -141,11 +141,7 @@
             <input source="ptolemy/actor/lib/io/comm/comm.xml"/>
 	    <!-- Corba actors are not being shipped in 4.0 -->
             <!--input source="ptolemy/actor/corba/corba.xml"/-->
-
-	    <!-- matlab depends on Matlab being present -->
-            <input source="ptolemy/matlab/matlab.xml"/>
-	    <input source="lbnl/actor/lib/simulator.xml"/>
-
+            <input source="ptolemy/configs/cosimulation.xml"/>
             <input source="ptolemy/actor/lib/database/database.xml"/>
             <input source="ptolemy/actor/designs/designPatterns.xml"/>
             <input source="ptolemy/actor/lib/esoteric.xml"/>
