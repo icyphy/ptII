@@ -113,7 +113,7 @@ public class ASTDump extends ASTVisitor {
     }
 
     /** Visit a node in the AST and output it. If the node is an {@link
-     *  Expression}, its content is also output. If the AST has been
+     *  org.eclipse.jdt.core.dom.Expression}, its content is also output. If the AST has been
      *  type-checked with {@link TypeAnalyzer}, the type (if any)
      *  associated with each node is also output.
      *
