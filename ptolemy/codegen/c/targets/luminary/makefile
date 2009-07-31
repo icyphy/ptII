@@ -49,7 +49,8 @@ PTPACKAGE = 	luminary
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
-JSRCS =
+JSRCS = \
+	LuminaryTarget.java
 
 OTHER_FILES_TO_BE_JARED = \
 	makefile.in \
