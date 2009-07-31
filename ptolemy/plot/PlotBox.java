@@ -92,10 +92,11 @@ import ptolemy.util.StringUtilities;
 //// PlotBox
 
 /**
- This class provides a labeled box within which to place a data plot.
- A title, X and Y axis labels, tick marks, and a legend are all supported.
- Zooming in and out is supported.  To zoom in, drag the mouse
- downwards to draw a box.  To zoom out, drag the mouse upward.
+ A labeled box within which to place a data plot.
+ <p>A title, X and Y axis labels, tick marks, and a legend are all
+ supported.  Zooming in and out is supported.  To zoom in, click and
+ hold mouse button 1 and drag the mouse downwards to draw a box.  To
+ zoom out, click and hold mouse button1 and drag the mouse upward.
  <p>
  The box can be configured either through a file with commands or
  through direct invocation of the public methods of the class.
@@ -4378,7 +4379,12 @@ public class PlotBox extends JPanel implements Printable {
             //   buttons.
             // This problem affects Netscape 4.61 under Digital Unix and
             // 4.51 under Solaris
+            //
+            // Mac OS X 10.5: we want BUTTON1_MASK set and BUTTON3_MASK not set
+            // so that when we edit a dataset we don't get the zoom box
+            // https://chess.eecs.berkeley.edu/bugzilla/show_bug.cgi?id=300
             if (((event.getModifiers() & InputEvent.BUTTON1_MASK) != 0)
+                    && ((event.getModifiers() & InputEvent.BUTTON3_MASK) == 0)
                     || (event.getModifiers() == 0)) {
                 PlotBox.this._zoomStart(event.getX(), event.getY());
             }
@@ -4395,6 +4401,7 @@ public class PlotBox extends JPanel implements Printable {
 
         public void mouseReleased(MouseEvent event) {
             if (((event.getModifiers() & InputEvent.BUTTON1_MASK) != 0)
+                    && ((event.getModifiers() & InputEvent.BUTTON3_MASK) == 0)
                     || (event.getModifiers() == 0)) {
                 PlotBox.this._zoom(event.getX(), event.getY());
             }
@@ -4407,10 +4414,10 @@ public class PlotBox extends JPanel implements Printable {
             // not work on mouse drags.  It does work on MouseListener
             // methods, so those methods set a variable _zooming that
             // is used by _zoomBox to determine whether to draw a box.
-            // if ((event.getModifiers() & event.BUTTON1_MASK)!= 0) {
-            PlotBox.this._zoomBox(event.getX(), event.getY());
-
-            // }
+            if ((event.getModifiers() & event.BUTTON1_MASK)!= 0
+                    && ((event.getModifiers() & InputEvent.BUTTON3_MASK) == 0)) {
+                PlotBox.this._zoomBox(event.getX(), event.getY());
+            }
         }
 
         public void mouseMoved(MouseEvent event) {
