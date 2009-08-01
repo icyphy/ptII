@@ -38,7 +38,7 @@ import ptolemy.kernel.util.StringAttribute;
 
 /**
  A type polymorphic If-Then-Else actor. 
- </p>In an iteration, if an input token is available at the <i>If</i> input,
+ <p>In an iteration, if an input token is available at the <i>If</i> input,
  that token is read.
  The <i>Then</i> output is set to true, if then <i>If</i> input is true.
  The <i>Else</i> output is set to true, if then <i>If</i> input is false.
@@ -46,7 +46,7 @@ import ptolemy.kernel.util.StringAttribute;
  ports are also of type boolean.</p>
  
  <p>IfThen is a ControlActor, meaning that it keeps a list of
- enabled output ports. 
+ enabled output ports.</p>
 
  @author Elizabeth Latronico (Bosch)
  @version $Id$

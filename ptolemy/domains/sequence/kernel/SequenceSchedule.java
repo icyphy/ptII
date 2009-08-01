@@ -158,7 +158,18 @@ public class SequenceSchedule extends Schedule {
         super();
     }
     
-    // Return a new schedule based on these data structures
+    /** Instantiate a new schedule based on these data structures.
+     *  @param independentList List of independent sequence attributes. 
+     *  (and, associated actors, found by calling .getContainer 
+     *  on a SequenceAttribute)  
+     *  There must be at least one sequence attribute in the _independentList.
+     *  @param controlTable A hash table mapping a sequence actor name
+     *  to a hash table of branches and a list of dependent actors (if
+     *  any) for each branch.
+     *  @param sequencedActorsToSubgraph Hash table of sequenced actor
+     *  nodes to their subgraphs Used in conjunction with the control
+     *  graph for determining the schedule.
+     */
     public SequenceSchedule(List <SequenceAttribute> independentList, Hashtable<SequenceAttribute,Hashtable> controlTable, Hashtable<Actor,DirectedAcyclicGraph> sequencedActorsToSubgraph) {
         super();
         
@@ -907,9 +918,10 @@ public class SequenceSchedule extends Schedule {
     ////                         private variables                 ////
     
     /** List of independent sequence attributes 
-     * (and, associated actors, found by calling .getContainer 
+     *  (and, associated actors, found by calling .getContainer 
      *  on a SequenceAttribute)  
-     *  There must be at least one sequence attribute in the _independentList */
+     *  There must be at least one sequence attribute in the _independentList.
+     */
     private List<SequenceAttribute> _independentList;
     
     /** Copy of the original list of independent actors passed in.
@@ -918,16 +930,18 @@ public class SequenceSchedule extends Schedule {
      */
     private List<SequenceAttribute> _originalIndependentList;
     
-    /** Position in the _independentList so that we can insert things into it**/
+    /** Position in the _independentList so that we can insert things into it.
+     **/
     private int _independentListPosition;
     
     /** A hash table mapping a sequence actor name to a hash table of 
-     *  branches and a list of dependent actors (if any) for each branch */
+     *  branches and a list of dependent actors (if any) for each branch.
+     */
     private Hashtable _controlTable; 
     
     /** Hash table of sequenced actor nodes to their subgraphs 
      *  Used in conjunction with the control graph for determining the
-     *  schedule
+     *  schedule.
      */
     private Hashtable<Actor,DirectedAcyclicGraph> _sequencedActorsToSubgraph;
     

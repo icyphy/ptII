@@ -133,6 +133,7 @@ public abstract class DecoratedAttributes extends Attribute {
      *  decorator in the model.
      *  This variable is used for persistence to recreate
      *  the code generator after having parsed the model.
+     *  @return The full path of the decorator in the model.
      */
     protected abstract StringAttribute _decoratorPath();
     

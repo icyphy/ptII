@@ -219,6 +219,10 @@ public class SequenceScheduler extends Scheduler {
      *  normally override the protected method, not this one.
      *  The validity of the current schedule is set by the setValid()
      *  method.  This method is read-synchronized on the workspace.
+     *  @param independentList List of independent and dependent
+     *  sequence attributes (and, associated actors, found by calling
+     *  getContainer() on a SequenceAttribute) There must be at least
+     *  one sequence attribute in the _independentList.
      *  @return The Schedule returned by the _getSchedule() method.
      *  @exception IllegalActionException If the scheduler has no container
      *  (a director), or the director has no container (a CompositeActor),
@@ -232,8 +236,7 @@ public class SequenceScheduler extends Scheduler {
     	
     	// Check the list of sequence attributes
     	// There must be at least one actor with a sequence attribute in the model
-        if (independentList == null || independentList.isEmpty())
-        {
+        if (independentList == null || independentList.isEmpty()) {
             throw new IllegalActionException(this, "A model or composite actor with a SequencedModelDirector must have at least one actor, not dependent on other actors such as control actors, with a SequenceAttribute or ProcessAttribute.  No SequenceAttributes or ProcessAttributes were found.");
         }
         
@@ -584,7 +587,7 @@ public class SequenceScheduler extends Scheduler {
      *  This function also clears some of the data structures used
      *  that are re-used potentially over multiple processes
      *  (could be moved to a separate function)
-     *  @param actorList
+     *  @param actorList  The list of actors.
      * 
      */
     public void createActorGraph(List<Entity> actorList) {
@@ -731,9 +734,6 @@ public class SequenceScheduler extends Scheduler {
         // dynamically determined)
     }
     
-
-
-
     /**
      * Process the actor graph to find out cycles and create a subGraphList of 
      * subGraphs containing SequencedActor with directed upstream actors. 
@@ -881,12 +881,11 @@ public class SequenceScheduler extends Scheduler {
     }
     
     
-    /** From original SequenceDirector - copied directly 
-     * Print the subGraph edges and nodes
-     * @param subGraph
+    /** Print the subGraph edges and nodes.
+     * @param subGraph  The directed acyclic graph to print.
      */
     public void printSubGraph(DirectedAcyclicGraph subGraph) {
-
+        // From original SequenceDirector - copied directly 
         if (_debugging) {
             _debug("Printing subGraph edges -- >");
 
@@ -1059,17 +1058,18 @@ public class SequenceScheduler extends Scheduler {
         }
     }
     
-///////////////////////////////////////////////////////////////////
-////protected methods                 ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
 
     /**
-     * From original SequenceDirector - copied directly
-     * Return the initialValueParameter Name for each of the port 
-     * @param port
-     * @param channel
-     * @return initialValueParameterName
+     * Return the initialValueParameter name for each of the port .
+     * @param port The port.
+     * @param channel The channel of the port.
+     * @return THe initialValueParameter name.
      */
     protected static String _getInitialValueParameterName(TypedIOPort port, int channel) {
+        //From original SequenceDirector - copied directly.
+
 
         if (port.isMultiport()) {
             return port.getName() + "_" + channel + "_InitialValue";            
@@ -1097,7 +1097,7 @@ public class SequenceScheduler extends Scheduler {
     // want to save a SequenceSchedule and not just a Schedule
     private SequenceSchedule _cachedGetSchedule = null;
        
-    /** The DirectedGraph for the model */
+    /** The DirectedGraph for the model. */
     public DirectedGraph _actorGraph;
 
     /** List of independent and dependent sequence attributes 
