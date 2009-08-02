@@ -22,8 +22,8 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.util.StringUtilities;
-import fuzzy.FuzzyEngine;
-import fuzzy.LinguisticVariable;
+import ptolemy.actor.lib.logic.fuzzy.FuzzyEngine.fuzzy.FuzzyEngine;
+import ptolemy.actor.lib.logic.fuzzy.FuzzyEngine.fuzzy.LinguisticVariable;
 
 
 
