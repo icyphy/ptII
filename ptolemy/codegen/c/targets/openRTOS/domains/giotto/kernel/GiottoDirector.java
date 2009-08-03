@@ -81,8 +81,7 @@ ptolemy.codegen.c.domains.giotto.kernel.GiottoDirector {
      *  @param giottoDirector The associated
      *  ptolemy.domains.giotto.kernel.GiottoDirector
      */
-    public GiottoDirector
-    ptolemy.domains.giotto.kernel.GiottoDirector giottoDirector) {
+    public GiottoDirector(ptolemy.domains.giotto.kernel.GiottoDirector giottoDirector) {
         super(giottoDirector);
         if(_debugging) {
             _debug("GiottoDirector constructor in OpenRTOS target called");
@@ -255,7 +254,7 @@ ptolemy.codegen.c.domains.giotto.kernel.GiottoDirector {
 
 
         //Attribute iterations = _director.getAttribute("iterations");
-        code.append( "g_ulSystemClock = SysCtlClockGet();"+_eol);
+        code.append( _eol+"g_ulSystemClock = SysCtlClockGet();"+_eol);
         if (_isTopGiottoDirector()) {
             code.append("vTaskStartScheduler();"+_eol);
         }
