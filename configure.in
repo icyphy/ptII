@@ -1551,11 +1551,11 @@ fi
 #	However, FuzzyEngine is GPL'd, so we don't ship it.
 #
 #       See if there was a command-line option for where FuzzyEngine interface is
-#       If not, look for $PTII/vendors/misc/FuzzyEngine/FuzzyEngine.jar
+#       If not, look for $PTII/vendors/misc/FuzzyEngine/fuzzy/FuzzyEngine.class
 #--------------------------------------------------------------------
 
 # PTFUZZY_DIR is set to fuzzy and used in
-# $PTII/ptolemy/actor/lib/logic/makefile if FuzzyEngine.jar was found
+# $PTII/ptolemy/actor/lib/logic/makefile if FuzzyEngine.class was found
 PTFUZZY_DIR=
 
 # FuzzyEngine Directory
@@ -1577,7 +1577,7 @@ else
     if test -f "$PTFUZZYENGINE_DIR/fuzzy/FuzzyEngine.class"; then
 	PT_MSG_RESULT([$PTFUZZYENGINE_DIR])
 	# Set to fuzzy and used in
-	# $PTII/ptolemy/actor/lib/logic/makefile if FuzzyEngine.jar was found
+	# $PTII/ptolemy/actor/lib/logic/makefile if FuzzyEngine.class
 	PTFUZZY_DIR=fuzzy
         # PTFUZZYLOGIC_PACKAGES is used in ptII/doc/makefile
 	PTFUZZY_PACKAGES=ptolemy.actor.lib.logic.fuzzy
@@ -1585,13 +1585,14 @@ else
 
     if test "$PTFUZZY_DIR" = ""; then
         AC_MSG_WARN([Failed to find fuzzy/FuzzyEngine.class
-    in $PTFUZZYENGINE_DIR
-    perhaps the FuzzyEngine is not installed?
+    in $PTFUZZYENGINE_DIR.
+    Perhaps the FuzzyEngine is not installed?
     You need not download the FuzzyEngine interface unless you
     plan on using the actor.lib.logic.fuzzy actors with Ptolemy II. 
     The FuzzyEngine interface can be downloaded from
     http://people.clarkson.edu/~esazonov/FuzzyEngine.htm
-    an untar'd into $PTII/vendors/misc.] )
+    an untar'd into $PTII/vendors/misc so that
+    $PTII/vendors/misc/FuzzyEngine/fuzzy/FuzzyEngine.class exists.] )
 	# Note that we don't substitute in the ${PTII} here
 	PTFUZZYENGINE_DIR='${PTII}/vendors/misc/FuzzyEngine'
     fi

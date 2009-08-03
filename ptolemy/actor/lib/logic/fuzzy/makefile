@@ -39,7 +39,7 @@ DIRS =
 # Root of the Java directory
 ROOT =		../../../../..
 
-# FuzzyEngine director
+# FuzzyEngine directory that contains fuzzy/FuzzyEngine.class
 # http://people.clarkson.edu/~esazonov/FuzzyEngine.htm
 CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(PTFUZZYENGINE_DIR)
 
