@@ -412,15 +412,15 @@ PTDISTRIBUTED_PACKAGES = @PTDISTRIBUTED_PACKAGES@
 PTDOCLETS_DIR =		@PTDOCLETS_DIR@ 	
 
 # Set to fuzzy and used in
-# $PTII/ptolemy/actor/lib/logic/makefile if FuzzyEngine.jar was found
+# $PTII/ptolemy/actor/lib/logic/makefile if fuzzy/FuzzyEngine.class was found
 PTFUZZY_DIR = @PTFUZZY_DIR@
 
-# FuzzyEngine Jar directory, usually
+# The FuzzyEngine directory, usually
 # $PTII/vendors/misc/FuzzyEngine.  Available from
 # http://people.clarkson.edu/~esazonov/FuzzyEngine.htm
 PTFUZZYENGINE_DIR = @PTFUZZYENGINE_DIR@
 
-# PTFUZZYLOGIC_PACKAGES is used in ptII/doc/makefile if FuzzyEngine.jar is found
+# PTFUZZYLOGIC_PACKAGES is used in ptII/doc/makefile if fuzzy/FuzzyEngine.class is found
 PTFUZZY_PACKAGES = @PTFUZZY_PACKAGES@
 
 # Location of the local $PTII directory as a file:/// URL
@@ -565,7 +565,7 @@ PTJNI_SHAREDLIBRARY_SUFFIX =	@PTJNI_SHAREDLIBRARY_SUFFIX@
 # JNI libraries needed to link, such as -lcygwin (Used by Viptos) 
 PTJNI_LIBRARIES = @PTJNI_LIBRARIES@
 
-# Java OpenGL (Jogl) directory.  FuzzyEngine is from
+# Java OpenGL (Jogl) directory.  Jogl is from
 # https://jogl.dev.java.net/
 PTJOGL_DIR =			@PTJOGL_DIR@
 
