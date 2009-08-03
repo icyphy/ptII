@@ -47,7 +47,7 @@ import ptolemy.kernel.util.IllegalActionException;
  @Pt.ProposedRating Red
  @Pt.AcceptedRating Red
  */
-public class TimedPlotter extends CCodeGeneratorHelper {//PlotterBase{  //CCodeGeneratorHelper {
+public class TimedPlotter extends PlotterBase {
 
     /** Constructor method for the TimedPlotter helper.
      *  @param actor the associated actor.
