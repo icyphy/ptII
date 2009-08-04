@@ -236,7 +236,7 @@ public class FileUtilities {
             if (base != null) {
                 // Need to replace \ with /, otherwise resolve would fail even
                 // if invoked in a windows OS. -- tfeng (02/27/2009)
-                URI newURI = base.resolve(name.replace('\\', '/'));
+                URI newURI = base.resolve(StringUtilities.substitute(name, " ", "%20").replace('\\', '/'));
 
                 //file = new File(newURI);
                 String urlString = newURI.getPath();
