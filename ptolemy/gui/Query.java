@@ -1986,7 +1986,7 @@ public class Query extends JPanel {
             _entryBox.setBackground(background);
             _entryBox.setForeground(foreground);
 
-            JButton button = new JButton("Browse");
+            JButton button = new JButton("Browse ");
             button.addActionListener(this);
             add(_entryBox);
             add(button);
@@ -2091,7 +2091,13 @@ public class Query extends JPanel {
                     }
 
                     URI relativeURI = _base.relativize(selectedFile.toURI());
-                    _entryBox.setText(relativeURI.toString());
+                    if (relativeURI.getScheme().equals("file")) {
+                        // Fix for "undesired file:\ prefix added by FileParameter"
+                        // http://bugzilla.ecoinformatics.org/show_bug.cgi?id=4022
+                        _entryBox.setText(relativeURI.getPath().replace("%20", " "));
+                    } else {
+                        _entryBox.setText(relativeURI.toString());
+                    }
                 }
 
                 _owner._notifyListeners(_name);
