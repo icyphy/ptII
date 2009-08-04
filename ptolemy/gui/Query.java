@@ -2091,10 +2091,19 @@ public class Query extends JPanel {
                     }
 
                     URI relativeURI = _base.relativize(selectedFile.toURI());
-                    if (relativeURI.getScheme().equals("file")) {
+                    if (relativeURI != null
+                            && relativeURI.getScheme() != null
+                            && relativeURI.getScheme().equals("file")) {
                         // Fix for "undesired file:\ prefix added by FileParameter"
                         // http://bugzilla.ecoinformatics.org/show_bug.cgi?id=4022
-                        _entryBox.setText(relativeURI.getPath().replace("%20", " "));
+                        String pathName = relativeURI.getPath();
+                        // Sigh.  Under Windows, getPath() returns a leading /
+                        File file = new File(pathName.replace("%20",  " "));
+                        try {
+                            _entryBox.setText(file.getCanonicalPath().replace('\\', '/'));
+                        } catch (IOException ex) {
+                            _entryBox.setText(file.toString());
+                        }
                     } else {
                         _entryBox.setText(relativeURI.toString());
                     }
