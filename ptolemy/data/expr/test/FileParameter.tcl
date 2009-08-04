@@ -323,3 +323,24 @@ test FileParameter-11.0 {setBaseDirectory  on a new FileParameter} {
 	[$r2 toString]
 } {1 file:.}
 
+######################################################################
+####
+# 
+test FileParameter-12.0 {directory with a space} {
+    set directoryName "dir with space"
+    file mkdir $directoryName
+    set dataFileName [file join $directoryName dataFile.txt] 
+    set fd [open $dataFileName w]
+    puts $fd "# a file"
+    puts $fd "1 + 1"
+    close $fd
+    set e12 [java::new {ptolemy.kernel.Entity String} entity12]
+    set fileParam12 [java::new ptolemy.data.expr.FileParameter $e12 myFileParam12]
+
+    $fileParam12 setExpression $dataFileName
+
+    regsub { } [pwd] {%20} pwdURIPath
+    $fileParam12 setBaseDirectory [java::new java.net.URI "$pwdURIPath/"]
+    set file [$fileParam12 asFile]
+    $file exists
+} {1}
