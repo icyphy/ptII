@@ -29,6 +29,7 @@ package ptolemy.actor.lib;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
@@ -39,6 +40,7 @@ import ptolemy.data.expr.ModelScope;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.Variable;
 import ptolemy.data.type.BaseType;
+import ptolemy.graph.Inequality;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.Attribute;
@@ -350,6 +352,31 @@ public class SetVariable extends TypedAtomicActor implements ChangeListener,
         _setFailed = false;
     }
 
+    /** Override the base class so that if there is a specified
+     *  variable to modify, an inequality is included to ensure
+     *  that the output type is greater than or equal to the
+     *  type of that variable. Strictly speaking, this is necessary
+     *  only if the <i>delay</i> parameter is set to true, because
+     *  in that case, on the first firing, this actor will produce
+     *  a token whose value is whatever the initial value of the
+     *  parameter is.
+     *  @return A set of type constraints.
+     */
+    public Set<Inequality> typeConstraints() {
+        Set<Inequality> result = super.typeConstraints();
+        try {
+            Attribute attribute = getModifiedVariable();
+            if (attribute instanceof Variable) {
+                result.add(new Inequality(
+                        ((Variable)attribute).getTypeTerm(),
+                        output.getTypeTerm()));
+            }
+        } catch (IllegalActionException e) {
+            // The variable cannot be found. Ignore it.
+        }
+        return result;
+    }
+    
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
