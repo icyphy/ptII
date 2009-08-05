@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="PtidesBasic_SafeToProcess_InsideTransparent" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="10">
@@ -14,7 +14,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{70.0, 50.0}">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={219, 52, 815, 507}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={219, 52, 814, 513}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
     </property>
@@ -41,7 +41,7 @@
                 </property>
             </property>
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={369, 0, 815, 507}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={260, 150, 814, 513}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
         </property>
@@ -65,13 +65,14 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[520.0, 135.0]">
             </property>
         </port>
-        <entity name="SensorInputDevice" class="ptolemy.domains.ptides.lib.SensorInputDevice">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[125.0, 135.0]">
-            </property>
-        </entity>
         <entity name="ActuatorOutputDevice" class="ptolemy.domains.ptides.lib.ActuatorOutputDevice">
             <property name="_location" class="ptolemy.kernel.util.Location" value="[455.0, 135.0]">
             </property>
+            <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="minDelay" class="ptolemy.data.expr.Parameter" value="{2.5}">
+                </property>
+            </port>
         </entity>
         <entity name="CompositeActor" class="ptolemy.actor.TypedCompositeActor">
             <property name="_location" class="ptolemy.kernel.util.Location" value="[295.0, 135.0]">
@@ -97,6 +98,11 @@
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[370.0, 200.0]">
                 </property>
+                <port name="input" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                    <property name="minDelay" class="ptolemy.data.expr.Parameter" value="{-0.5}">
+                    </property>
+                </port>
             </entity>
             <entity name="Const" class="ptolemy.actor.lib.Const">
                 <property name="value" class="ptolemy.data.expr.Parameter" value=".7">
@@ -114,6 +120,12 @@
                     <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
                     </property>
                 </property>
+                <port name="trigger" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                    <property name="multiport"/>
+                    <property name="minDelay" class="ptolemy.data.expr.Parameter" value="{-0.5}">
+                    </property>
+                </port>
             </entity>
             <relation name="relation2" class="ptolemy.actor.TypedIORelation">
                 <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
@@ -134,14 +146,15 @@
             <link port="Const.output" relation="relation2"/>
             <link port="Const.trigger" relation="relation3"/>
         </entity>
-        <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-            <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+        <entity name="SensorInputDevice" class="ptolemy.domains.ptides.lib.SensorInputDevice">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[125.0, 135.0]">
             </property>
-        </relation>
-        <relation name="relation" class="ptolemy.actor.TypedIORelation">
-            <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
-            </property>
-        </relation>
+            <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="minDelay" class="ptolemy.data.expr.Parameter" value="{-0.5}">
+                </property>
+            </port>
+        </entity>
         <relation name="relation6" class="ptolemy.actor.TypedIORelation">
             <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
             </property>
@@ -150,14 +163,22 @@
             <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
             </property>
         </relation>
+        <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+            </property>
+        </relation>
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+            </property>
+        </relation>
         <link port="sensor" relation="relation2"/>
         <link port="actuator" relation="relation3"/>
-        <link port="SensorInputDevice.input" relation="relation2"/>
-        <link port="SensorInputDevice.output" relation="relation"/>
         <link port="ActuatorOutputDevice.input" relation="relation6"/>
         <link port="ActuatorOutputDevice.output" relation="relation3"/>
         <link port="CompositeActor.port" relation="relation"/>
         <link port="CompositeActor.port3" relation="relation6"/>
+        <link port="SensorInputDevice.input" relation="relation2"/>
+        <link port="SensorInputDevice.output" relation="relation"/>
     </entity>
     <entity name="Clock" class="ptolemy.actor.lib.Clock">
         <property name="period" class="ptolemy.actor.parameters.PortParameter" value="1.0">
