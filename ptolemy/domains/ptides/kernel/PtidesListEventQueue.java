@@ -51,11 +51,11 @@ import ptolemy.kernel.util.InvalidStateException;
  *  @Pt.AcceptedRating Red (jiazou)
  *
  */
-public class DEListEventQueue implements DEEventQueue {
+public class PtidesListEventQueue implements DEEventQueue {
 
     /** Construct an empty event queue.
      */
-    public DEListEventQueue() {
+    public PtidesListEventQueue() {
         // Construct a calendar queue _cQueue with its default parameters:
         // minBinCount is 2, binCountFactor is 2, and isAdaptive is true.
         _listQueue = new LinkedList();
@@ -68,8 +68,8 @@ public class DEListEventQueue implements DEEventQueue {
     }
 
     /** Get the smallest event from the event queue. */
-    public DEEvent get() throws InvalidStateException {
-        DEEvent result = (DEEvent) _listQueue.getFirst();
+    public PtidesEvent get() throws InvalidStateException {
+        PtidesEvent result = (PtidesEvent) _listQueue.getFirst();
         if (_debugging) {
             _debug("--- getting from queue: " + result);
         }
@@ -81,8 +81,8 @@ public class DEListEventQueue implements DEEventQueue {
      *  @return a DEEvent object pointed to by the index.
      *  @exception InvalidStateException if get() method of the queue throws it.
      */
-    public DEEvent get(int index) throws InvalidStateException {
-        DEEvent result = (DEEvent) _listQueue.get(index);
+    public PtidesEvent get(int index) throws InvalidStateException {
+        PtidesEvent result = (PtidesEvent) _listQueue.get(index);
         if (_debugging) {
             _debug("--- getting " + index + "th element from queue: " + result);
         }
@@ -96,7 +96,7 @@ public class DEListEventQueue implements DEEventQueue {
     }
 
     /** Put the event queue into the event queue, and then sort it by timestamp order. */
-    public void put(DEEvent event) throws IllegalActionException {
+    public void put(PtidesEvent event) throws IllegalActionException {
         if (_debugging) {
             _debug("+++ putting in queue: " + event);
         }
@@ -123,20 +123,17 @@ public class DEListEventQueue implements DEEventQueue {
      *  @return The event associated with this index in the event queue.
      *  @exception InvalidStateException
      */
-    public DEEvent take() throws InvalidStateException {
-        DEEvent result = (DEEvent) _listQueue.remove();
+    public PtidesEvent take() throws InvalidStateException {
+        PtidesEvent ptidesEvent = (PtidesEvent) _listQueue.remove();
         // put the token of this event into the destined receiver.
-        if (result instanceof PtidesEvent) {
-            PtidesEvent ptidesEvent = (PtidesEvent) result;
-            if (ptidesEvent.receiver() != null) {
-                ((PtidesBasicReceiver) (ptidesEvent).receiver())
-                        .putToReceiver((ptidesEvent).token());
-            }
+        if (ptidesEvent.receiver() != null) {
+            ((PtidesBasicReceiver) (ptidesEvent).receiver())
+            .putToReceiver((ptidesEvent).token());
         }
         if (_debugging) {
-            _debug("--- taking from queue: " + result);
+            _debug("--- taking from queue: " + ptidesEvent);
         }
-        return result;
+        return ptidesEvent;
     }
 
     /** Take this event and remove it from the event queue.
@@ -153,20 +150,17 @@ public class DEListEventQueue implements DEEventQueue {
      *  @return The event associated with this index in the event queue.
      *  @exception InvalidStateException
      */
-    public DEEvent take(int index) throws InvalidStateException {
-        DEEvent result = (DEEvent) _listQueue.remove(index);
+    public PtidesEvent take(int index) throws InvalidStateException {
+        PtidesEvent ptidesEvent = (PtidesEvent) _listQueue.remove(index);
         // put the token of this event into the destined receiver.
-        if (result instanceof PtidesEvent) {
-            PtidesEvent ptidesEvent = (PtidesEvent) result;
-            if (ptidesEvent.receiver() != null) {
-                ((PtidesBasicReceiver) (ptidesEvent).receiver())
-                .putToReceiver((ptidesEvent).token());
-            }
+        if (ptidesEvent.receiver() != null) {
+            ((PtidesBasicReceiver) (ptidesEvent).receiver())
+            .putToReceiver((ptidesEvent).token());
         }
         if (_debugging) {
-            _debug("--- taking " + index + "th element from queue: " + result);
+            _debug("--- taking " + index + "th element from queue: " + ptidesEvent);
         }
-        return result;
+        return ptidesEvent;
     }
 
     /** Return an array representation of this event queue.
@@ -236,4 +230,7 @@ public class DEListEventQueue implements DEEventQueue {
     /** The queue as represented by a linked list. */
     private LinkedList _listQueue;
 
+    public void put(DEEvent event) throws IllegalActionException {
+        put((PtidesEvent)event);
+    }
 }
