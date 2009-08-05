@@ -43,6 +43,10 @@ import ptolemy.kernel.util.NamedObj;
  *  at, in addition to the information that is stored in the super class, such as
  *  the timestamp, etc. This class is used
  *  in the PTIDES domain, because events may arrive out of timestamp order.
+ *  <p>
+ *  Note in PtidesEvent, unlike DEEvent, the IOPort parameter is special, in that
+ *  it's not necessarily the port the event is destined to, but the port where this
+ *  event is causally related with.
  *
  *  @author Jia Zou, Slobodan Matic
  *  @version $Id$
@@ -54,6 +58,7 @@ public class PtidesEvent extends DEEvent {
     /** Construct a pure event with the specified destination actor,
      *  timestamp, microstep, depth, and minDelay offset.
      *  @param actor The destination actor
+     *  @param ioPort The causally related IO port.
      *  @param timeStamp The time when the event occurs.
      *  @param microstep The phase of execution within a fixed time.
      *  @param depth The topological depth of the destination actor.
@@ -61,10 +66,12 @@ public class PtidesEvent extends DEEvent {
      *  @exception IllegalActionException If the actor has a priority parameter,
      *  but its value cannot be obtained, which should be an integer.
      */
-    public PtidesEvent(Actor actor, Time timeStamp, int microstep, int depth,
-            double minDelay) throws IllegalActionException {
+    public PtidesEvent(Actor actor, IOPort ioPort, Time timeStamp, int microstep, int depth) 
+            throws IllegalActionException {
         super(actor, timeStamp, microstep, depth);
-        _minDelay = minDelay;
+        _ioPort = ioPort;
+        _channel = 0;
+        _isPureEvent = true;
     }
 
     /** Construct a trigger event with the specified destination IO port,
@@ -86,6 +93,7 @@ public class PtidesEvent extends DEEvent {
         _channel = channel;
         _token = token;
         _receiver = receiver;
+        _isPureEvent = false;
     }
 
     /** Return the channel.
@@ -114,8 +122,8 @@ public class PtidesEvent extends DEEvent {
     /** Return the receiver.
      *  @return The receiver.
      */
-    public final double minDelay() {
-        return _minDelay;
+    public final boolean isPureEvent() {
+        return _isPureEvent;
     }
 
     /** Return the receiver.
@@ -141,7 +149,7 @@ public class PtidesEvent extends DEEvent {
         if (_actor != null) {
             name = ((NamedObj) _actor).getFullName();
         }
-        if (_ioPort != null) {
+        if (!_isPureEvent) {
             return "DEEvent(time = " + _timestamp + ", microstep = "
                     + _microstep + ", depth = " + _depth + ", token = "
                     + _token + ", dest = " + name + "." + _ioPort.getName()
@@ -149,8 +157,8 @@ public class PtidesEvent extends DEEvent {
         } else {
             return "DEEvent(time = " + _timestamp + ", microstep = "
                     + _microstep + ", depth = " + _depth + ", token = "
-                    + _token + ", dest = " + name + ", minDelay = "
-                    + _minDelay + ")" + " -- A PURE EVENT.";
+                    + _token + ", dest = " + name + ", isPureEvent = "
+                    + _isPureEvent + ")" + " -- A PURE EVENT.";
         }
     }
 
@@ -166,6 +174,6 @@ public class PtidesEvent extends DEEvent {
     /** The receiver this token is destined at. */
     private Receiver _receiver;
     
-    /** The minDelay offset associated with this event. */
-    private double _minDelay;
+    /** Boolean indicating whether this event is a pure event */
+    private boolean _isPureEvent;
 }
