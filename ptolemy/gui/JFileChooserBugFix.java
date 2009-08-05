@@ -111,7 +111,7 @@ public class JFileChooserBugFix {
 
     /** Restore the background.
      *  @param background The background to be restored.
-     *  @see #saveBackground();
+     *  @see #saveBackground()
      */
     public void restoreBackground(Color background) {
         try {
