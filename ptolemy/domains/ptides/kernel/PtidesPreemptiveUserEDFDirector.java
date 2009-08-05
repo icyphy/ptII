@@ -46,7 +46,6 @@ import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
-import ptolemy.domains.de.kernel.DEEvent;
 import ptolemy.domains.de.lib.TimedDelay;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
@@ -220,19 +219,24 @@ public class PtidesPreemptiveUserEDFDirector extends
      *  @param event The event of interest.
      *  @throws IllegalActionException
      */
-    protected boolean _safeToProcess(DEEvent event) throws IllegalActionException {
+    protected boolean _safeToProcess(PtidesEvent event) throws IllegalActionException {
         boolean result = super._safeToProcess(event);
         if (result == false) {
             return false;
         } else {
             IOPort port = event.ioPort();
+            // FIXME: this method is not entirely correct. This check ensures totally independent
+            // pure events are always safe to process (like those produced in TimeDelay actor.)
+            // However, for those pure events with ports, This check may unnecessarily stall their
+            // execution because these ports are their origin ports, not the current port they reside
+            // at.
             if (port != null) {
-                List<DEEvent> eventList = new ArrayList();
+                List<PtidesEvent> eventList = new ArrayList();
                 for (DoubleTimedEvent timedEvent : _currentlyExecutingStack) {
-                    eventList.addAll((List<DEEvent>)timedEvent.contents);
+                    eventList.addAll((List<PtidesEvent>)timedEvent.contents);
                 }
                 for (int eventIndex = 0; eventIndex < _eventQueue.size(); eventIndex++) {
-                    DEEvent earlierEvent = ((DEListEventQueue)_eventQueue).get(eventIndex);
+                    PtidesEvent earlierEvent = ((PtidesListEventQueue)_eventQueue).get(eventIndex);
                     // Assuming all actors are causal, we only need to search until this event
                     // in the event queue. Even if there are other events of the same timestamp
                     // in the event queue, those of smaller depth are before this event, thus
@@ -243,7 +247,7 @@ public class PtidesPreemptiveUserEDFDirector extends
                     }
                     eventList.add(earlierEvent);
                 }
-                for (DEEvent earlierEvent : eventList) {
+                for (PtidesEvent earlierEvent : eventList) {
                     IOPort earlierPort = earlierEvent.ioPort();
                     double delay = 0;
                     if (earlierPort == null) {

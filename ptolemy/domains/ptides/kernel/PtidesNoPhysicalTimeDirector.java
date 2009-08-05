@@ -38,7 +38,6 @@ import java.util.PriorityQueue;
 import ptolemy.actor.Actor;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.util.Time;
-import ptolemy.domains.de.kernel.DEEvent;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -116,22 +115,21 @@ public class PtidesNoPhysicalTimeDirector extends PtidesBasicDirector {
      *  @return List of events of the same tag.
      *  @exception IllegalActionException
      */
-    protected List<DEEvent> _getAllSameTagEventsFromQueue(DEEvent event)
+    protected List<PtidesEvent> _getAllSameTagEventsFromQueue(PtidesEvent event)
             throws IllegalActionException {
-        if (event != ((DEListEventQueue) _eventQueue).get(_peekingIndex)) {
+        if (event != ((PtidesListEventQueue) _eventQueue).get(_peekingIndex)) {
             throw new IllegalActionException(
                     "The event to get is not the event pointed "
                             + "to by peeking index.");
         }
-        List<DEEvent> eventList = new ArrayList<DEEvent>();
+        List<PtidesEvent> eventList = new ArrayList<PtidesEvent>();
         eventList.add(event);
         for (int i = _peekingIndex; (i + 1) < _eventQueue.size(); i++) {
-            DEEvent nextEvent = ((DEListEventQueue) _eventQueue).get(i + 1);
-            // FIXME: when causality interface for RealDependency works, replace this actor
-            // by the same equivalence class.
-            if (nextEvent.hasTheSameTagAs(event)
-                    && (nextEvent.actor() == event.actor())) {
-                eventList.add(nextEvent);
+            PtidesEvent nextEvent = ((PtidesListEventQueue) _eventQueue).get(i + 1);
+            if (nextEvent.hasTheSameTagAs(event)) {
+                if (_destinedToSameEquivalenceClass(event, nextEvent)) {
+                    eventList.add(nextEvent);
+                }
             } else {
                 break;
             }
@@ -144,9 +142,9 @@ public class PtidesNoPhysicalTimeDirector extends PtidesBasicDirector {
      *  queue, and return the actor associated with it.
      *
      */
-    protected Actor _getNextActorToFireForTheseEvents(List<DEEvent> events)
+    protected Actor _getNextActorToFireForTheseEvents(List<PtidesEvent> events)
             throws IllegalActionException {
-        if (events.get(0) != ((DEListEventQueue) _eventQueue)
+        if (events.get(0) != ((PtidesListEventQueue) _eventQueue)
                 .get(_peekingIndex)) {
             throw new IllegalActionException(
                     "The event to get is not the event pointed "
@@ -155,7 +153,7 @@ public class PtidesNoPhysicalTimeDirector extends PtidesBasicDirector {
         // Assume the event queue orders by Tag and depth so all these events should be
         // next to each other.
         for (int i = 0; (_peekingIndex + i) < events.size(); i++) {
-            ((DEListEventQueue) _eventQueue).take(_peekingIndex + i);
+            ((PtidesListEventQueue) _eventQueue).take(_peekingIndex + i);
         }
         return events.get(0).actor();
     }
@@ -163,10 +161,10 @@ public class PtidesNoPhysicalTimeDirector extends PtidesBasicDirector {
     /** Return the next event we want to process, which is the event of smallest tag
      *  that is safe to process.
      */
-    protected DEEvent _getNextSafeEvent() throws IllegalActionException {
+    protected PtidesEvent _getNextSafeEvent() throws IllegalActionException {
         _peekingIndex = 0;
         while (_peekingIndex < _eventQueue.size()) {
-            DEEvent eventFromQueue = ((DEListEventQueue) _eventQueue)
+            PtidesEvent eventFromQueue = ((PtidesListEventQueue) _eventQueue)
                     .get(_peekingIndex);
             if (_safeToProcess(eventFromQueue)) {
                 return eventFromQueue;
@@ -192,17 +190,19 @@ public class PtidesNoPhysicalTimeDirector extends PtidesBasicDirector {
      *  @exception IllegalActionException
      *  @see #_setTimedInterrupt(Time)
      */
-    protected boolean _safeToProcess(DEEvent event)
+    protected boolean _safeToProcess(PtidesEvent event)
             throws IllegalActionException {
         IOPort port = event.ioPort();
         Tag currentTag = new Tag(event.timeStamp(), event.microstep());
-        // if this event is a pure event, i.e., port == null, then we don't
-        // need to keep track of the events.
-        Actor actor = null;
-        if (port != null) {
-            actor = (Actor) port.getContainer();
-        } else {
-            actor = event.actor();
+        // if this event is a pure event, then we need to make sure
+        // there is an event at each of the actor's input port with larger
+        // timestamps.
+        Actor actor = event.actor();
+        if (event.isPureEvent()) {
+            port = null;
+        }
+        if (actor == null) {
+            actor = (Actor)event.ioPort().getContainer();
         }
         boolean result = true;
         for (IOPort inputPort : (List<IOPort>) actor.inputPortList()) {
@@ -226,7 +226,7 @@ public class PtidesNoPhysicalTimeDirector extends PtidesBasicDirector {
         // the event at this input port is the smallest among them all, so we take it
         // out of _eventAtPort.
         if (result == true) {
-            if (port != null) {
+            if (!event.isPureEvent()) {
                 PriorityQueue<Tag> events = _eventAtPort.get(port);
                 // since super._getNextActorToFire() removes the smallest event from the queue,
                 // it also has to be the smallest event at the current port.

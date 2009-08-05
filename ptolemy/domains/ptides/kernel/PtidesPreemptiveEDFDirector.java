@@ -43,14 +43,11 @@ import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.util.SuperdenseDependency;
 import ptolemy.actor.util.Time;
-import ptolemy.data.ArrayToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.expr.Parameter;
-import ptolemy.domains.de.kernel.DEEvent;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.NamedObj;
 
 /**
  *  This director implements preemptive PTIDES scheduling algorithm, and uses
@@ -222,10 +219,6 @@ public class PtidesPreemptiveEDFDirector extends PtidesBasicDirector {
         }
     }
     
-    protected void _clearDeadlines() {
-        
-    }
-    
     /** Return all the events in the event queue that are of the same tag as the event
      *  passed in.
      *  <p>
@@ -234,31 +227,28 @@ public class PtidesPreemptiveEDFDirector extends PtidesBasicDirector {
      *  @return List of events of the same tag.
      *  @exception IllegalActionException
      */
-    protected List<DEEvent> _getAllSameTagEventsFromQueue(DEEvent event)
+    protected List<PtidesEvent> _getAllSameTagEventsFromQueue(PtidesEvent event)
             throws IllegalActionException {
-        if (event != ((DEListEventQueue)_eventQueue).get(_peekingIndex)) {
+        if (event != ((PtidesListEventQueue)_eventQueue).get(_peekingIndex)) {
             throw new IllegalActionException("The event to get is not the event pointed " +
                         "to by peeking index.");
         }
-        List<DEEvent> eventList = new ArrayList<DEEvent>();
+        List<PtidesEvent> eventList = new ArrayList<PtidesEvent>();
         eventList.add(event);
         for (int i = _peekingIndex; (i + 1) < _eventQueue.size(); i++) {
-            DEEvent nextEvent = ((DEListEventQueue)_eventQueue).get(i+1);
-            // FIXME: when causality interface for RealDependency works, replace this actor
-            // by the same equivalence class.
-            if (nextEvent.hasTheSameTagAs(event) && (nextEvent.actor() == event.actor())) {
+            PtidesEvent nextEvent = ((PtidesListEventQueue)_eventQueue).get(i+1);
+            if (nextEvent.hasTheSameTagAs(event) 
+                    && _destinedToSameEquivalenceClass(event, nextEvent)) {
                 eventList.add(nextEvent);
             } else {
                 break;
             }
         }
         for (int i = _peekingIndex; (i - 1) >= 0; i--) {
-            DEEvent nextEvent = ((DEListEventQueue) _eventQueue)
+            PtidesEvent nextEvent = ((PtidesListEventQueue) _eventQueue)
             	    .get(_peekingIndex-1);
-            // FIXME: when causality interface for RealDependency works, replace this actor
-            // by the same equivalence class.
             if (nextEvent.hasTheSameTagAs(event)
-            	    && (nextEvent.actor() == event.actor())) {
+                    && _destinedToSameEquivalenceClass(event, nextEvent)) {
                 eventList.add(nextEvent);
                 _peekingIndex--;
             } else {
@@ -273,9 +263,9 @@ public class PtidesPreemptiveEDFDirector extends PtidesBasicDirector {
      *  queue, and return the actor associated with it.
      *
      */
-    protected Actor _getNextActorToFireForTheseEvents(List<DEEvent> events)
+    protected Actor _getNextActorToFireForTheseEvents(List<PtidesEvent> events)
             throws IllegalActionException {
-        if (events.get(0) != ((DEListEventQueue) _eventQueue)
+        if (events.get(0) != ((PtidesListEventQueue) _eventQueue)
                 .get(_peekingIndex)) {
             throw new IllegalActionException(
                     "The event to get is not the event pointed "
@@ -289,7 +279,7 @@ public class PtidesPreemptiveEDFDirector extends PtidesBasicDirector {
         for (int i = 0; i < events.size(); i++) {
             // We always take the one from _peekingIndex because it points to the next
             // event in the queue once we take the previous one from the event queue.
-            ((DEListEventQueue) _eventQueue).take(_peekingIndex);
+            ((PtidesListEventQueue) _eventQueue).take(_peekingIndex);
         }
         return events.get(0).actor();
     }
@@ -301,8 +291,8 @@ public class PtidesPreemptiveEDFDirector extends PtidesBasicDirector {
      *  cleared to null, so that later iterations will not see the same events stored
      *  in _eventToProcess.
      */
-    protected DEEvent _getNextSafeEvent() throws IllegalActionException {
-        DEEvent tempEvent;
+    protected PtidesEvent _getNextSafeEvent() throws IllegalActionException {
+        PtidesEvent tempEvent;
         if (_eventToProcess == null) {
             // _eventToProcess is set in the following method.
             // _peekingIndex is also updated.
@@ -334,11 +324,9 @@ public class PtidesPreemptiveEDFDirector extends PtidesBasicDirector {
         int result = 0;
 
         for (int eventIndex = 0; eventIndex < _eventQueue.size(); eventIndex++) {
-            DEEvent event = ((DEListEventQueue) _eventQueue).get(eventIndex);
-            IOPort port = event.ioPort();
-            if (port == null) {
-                List<IOPort> inputPortList = event.actor().inputPortList();
-                if (inputPortList.size() == 0) {
+            PtidesEvent event = ((PtidesListEventQueue) _eventQueue).get(eventIndex);
+            if (event.isPureEvent()) {
+                if (event.actor().inputPortList().size() == 0) {
                     throw new IllegalActionException(
                             "When getting the deadline for "
                                     + "a pure event at " + event.actor()
@@ -346,7 +334,6 @@ public class PtidesPreemptiveEDFDirector extends PtidesBasicDirector {
                                     + "does not have an input port, thus"
                                     + "unable to get relative deadline");
                 }
-                port = inputPortList.get(0);
             }
 
             // The event from queue needs to be safe to process AND has smaller deadline.
@@ -400,10 +387,10 @@ public class PtidesPreemptiveEDFDirector extends PtidesBasicDirector {
         // at the top of the stack.
         Time smallestStackDeadline = new Time(this, Double.POSITIVE_INFINITY);
         DoubleTimedEvent doubleTimedEvent = _currentlyExecutingStack.peek();
-        List eventList = (List<DEEvent>) (doubleTimedEvent.contents);
-        DEEvent executingEvent = (DEEvent) eventList.get(0);
+        List eventList = (List<PtidesEvent>) (doubleTimedEvent.contents);
+        PtidesEvent executingEvent = (PtidesEvent) eventList.get(0);
         for (int i = 0; i < eventList.size(); i++) {
-            Time absExecutingDeadline = _getAbsoluteDeadline(((DEEvent) eventList
+            Time absExecutingDeadline = _getAbsoluteDeadline(((PtidesEvent) eventList
                     .get(i)));
             if (absExecutingDeadline.compareTo(smallestStackDeadline) <= 0) {
                 smallestStackDeadline = absExecutingDeadline;
@@ -449,36 +436,35 @@ public class PtidesPreemptiveEDFDirector extends PtidesBasicDirector {
      *  this is true, the event is safe to process, otherwise it is not.
      *
      */
-    protected boolean _safeToProcess(DEEvent event)
+    protected boolean _safeToProcess(PtidesEvent event)
     	    throws IllegalActionException {
-        boolean result = false;
-        if (result == true) {
-            return result;
-        } else {
-            IOPort port = event.ioPort();
-            if (port != null) {
-                Parameter parameter = (Parameter) ((NamedObj) port)
-                        .getAttribute("minDelay");
-                if (parameter != null) {
-                    DoubleToken token = ((DoubleToken) ((ArrayToken) parameter
-                            .getToken()).arrayValue()[((PtidesEvent) event)
-                            .channel()]);
-                    Time waitUntilPhysicalTime = event.timeStamp().subtract(
-                            token.doubleValue());
-                    if (_getPhysicalTime().subtract(waitUntilPhysicalTime)
-                            .compareTo(_zero) >= 0) {
-                        return true;
-                    } else {
-                        _setTimedInterrupt(waitUntilPhysicalTime);
-                        return false;
-                    }
-                } else {
-                    return true;
-                }
-            } else {
-                // event does not have a destination port, must be a pure event.
-                return true;
+        
+        IOPort port = event.ioPort();
+        if (port == null) {
+            if (!event.isPureEvent()) {
+                throw new IllegalActionException(port, "Event is expected" +
+                    "to be a pure event, however it is not.");
             }
+            // port could be null only if the event is a pure event, and the pure
+            // event is not causally related to any input port. thus the event
+            // is always safe to process.
+            return true;
+        }
+        // port is an output port, this could only happen if it is the output port
+        // of a composite actor. Thus transferOutput should take care of this, and
+        // we say it's always safe to process.
+        if (port.isOutput()) {
+            return true;
+        }     
+        double minDelay = _getMinDelay(port, ((PtidesEvent) event).channel(), event.isPureEvent());
+        Time waitUntilPhysicalTime = event.timeStamp().subtract(
+                minDelay);
+        if (_getPhysicalTime().subtract(waitUntilPhysicalTime)
+                .compareTo(_zero) >= 0) {
+            return true;
+        } else {
+            _setTimedInterrupt(waitUntilPhysicalTime);
+            return false;
         }
     }
     
@@ -505,7 +491,7 @@ public class PtidesPreemptiveEDFDirector extends PtidesBasicDirector {
     ////                     protected variables                   ////
 
     /** The event to be processed next. */
-    protected DEEvent _eventToProcess;
+    protected PtidesEvent _eventToProcess;
     
     /** The index of the event we are peeking in the event queue. */
     protected int _peekingIndex;

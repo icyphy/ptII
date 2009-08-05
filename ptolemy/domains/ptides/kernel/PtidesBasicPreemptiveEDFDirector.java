@@ -32,9 +32,7 @@ package ptolemy.domains.ptides.kernel;
 
 import java.util.List;
 
-import ptolemy.actor.IOPort;
 import ptolemy.actor.util.Time;
-import ptolemy.domains.de.kernel.DEEvent;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -76,23 +74,23 @@ public class PtidesBasicPreemptiveEDFDirector extends PtidesBasicDirector {
      *  @exception IllegalActionException
      */
     protected boolean _preemptExecutingActor() throws IllegalActionException {
-        IOPort port = _eventQueue.get().ioPort();
-        if (port == null) {
+        PtidesEvent event = (PtidesEvent)_eventQueue.get();
+        if (event.isPureEvent()) {
             if (_debugging) {
                 _debug("We decided to preempt the current "
                         + "executing event with a pure event at "
-                        + _eventQueue.get().actor());
+                        + event.actor());
             }
             // FIXME: for now, if the event is pure event, always preempt whatever that is
             // processing. This is because a pure event is caused by an input event, and
             // if the input event already processed, so should the pure event.
             return true;
         }
-        Time absNextDeadline = _getAbsoluteDeadline(_eventQueue.get());
+        Time absNextDeadline = _getAbsoluteDeadline(event);
         DoubleTimedEvent doubleTimedEvent = _currentlyExecutingStack.peek();
-        List eventList = (List<DEEvent>) (doubleTimedEvent.contents);
+        List eventList = (List<PtidesEvent>) (doubleTimedEvent.contents);
         for (int i = 0; i < eventList.size(); i++) {
-            Time absExecutingDeadline = _getAbsoluteDeadline((DEEvent) eventList
+            Time absExecutingDeadline = _getAbsoluteDeadline((PtidesEvent) eventList
                     .get(i));
             if (absExecutingDeadline.compareTo(absNextDeadline) <= 0) {
                 return false;
@@ -101,9 +99,9 @@ public class PtidesBasicPreemptiveEDFDirector extends PtidesBasicDirector {
         if (_debugging) {
             _debug("We decided to preempt the current "
                     + "executing event at actor: "
-                    + ((DEEvent) eventList.get(0)).actor()
+                    + ((PtidesEvent) eventList.get(0)).actor()
                     + " with another event at actor: "
-                    + _eventQueue.get().actor()
+                    + event.actor()
                     + ". This preemption happened at physical time "
                     + _getPhysicalTime());
         }
