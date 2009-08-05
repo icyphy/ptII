@@ -818,7 +818,7 @@ public class HTMLAbout {
     // Return true if a configuration can be found
     // @param configurationName The name of the configuration, for
     // example "full"
-    // @returns True if ptolemy/configs/<i>configuration</i>/configuration.xml
+    // @return True if ptolemy/configs/<i>configuration</i>/configuration.xml
     // can be found
     private static boolean _configurationExists(String configurationName) {
         boolean configurationExists = false;
