@@ -185,6 +185,7 @@ $(ROOT)/ptolemy/gui/QueryChooser.class:
 # PlotBox uses PlotFormatter which uses ptolemy.gui.Query and other classes
 # ptolemy.gui has lots of classes, we need only a few of them.
 PTOLEMYGUIFILES = \
+	ptolemy/gui/JFileChooserBugFix.class \
 	ptolemy/gui/PtGUIUtilities.class \
 	ptolemy/gui/Query.class \
 	'ptolemy/gui/Query$$1.class' \
@@ -526,6 +527,8 @@ fixtmpdist:
 		$(PTTMPDIR)/$(PTDIST)/ptolemy/gui
 	cp "$(PTII)/ptolemy/gui/QueryListener.java" \
 		$(PTTMPDIR)/$(PTDIST)/ptolemy/gui
+	cp "$(PTII)/ptolemy/gui/JFileChooserBugFix.java" \
+		$(PTTMPDIR)/$(PTDIST)/ptolemy/gui
 	cp "$(PTII)/ptolemy/gui/PtGUIUtilities.java" \
 		$(PTTMPDIR)/$(PTDIST)/ptolemy/gui
 	cp "$(PTII)/ptolemy/gui/CloseListener.java" \
@@ -564,7 +567,7 @@ fixtmpdist:
 		$(PTTMPDIR)/$(PTDIST)/ptolemy/util/makefile
 	# Get rid of CVS directories in com and gui
 	-(cd $(PTTMPDIR)/$(PTDIST); \
-		$(FIND) . \( -name CVS -o -name "META-INF" -o -name ".#*" -o -name "#*" -o -name "*.zip" -o -name "*.tar.gz" -o -name "*~" -o -name "adm" -o -name "autom4te.cache" -o -name "*Build_output" -o -name ".buildinstaller*" -o -name "ptplot*locales" \) -print -exec rm -rf {} \; )
+		$(FIND) . \( -name .svn -o -name CVS -o -name "META-INF" -o -name ".#*" -o -name "#*" -o -name "*.zip" -o -name "*.tar.gz" -o -name "*~" -o -name "adm" -o -name "autom4te.cache" -o -name "*Build_output" -o -name ".buildinstaller*" -o -name "ptplot*locales" \) -print -exec rm -rf {} \; )
 	#
 	# Setting up top level doc directory
 	#
