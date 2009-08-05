@@ -27,6 +27,10 @@
  */
 package ptolemy.actor.lib;
 
+import java.util.HashSet;
+import java.util.Set;
+
+import ptolemy.actor.CausalityMarker;
 import ptolemy.actor.util.CalendarQueue;
 import ptolemy.actor.util.Time;
 import ptolemy.actor.util.TimedEvent;
@@ -35,6 +39,7 @@ import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.Port;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -124,6 +129,12 @@ public class TimeDelay extends Transformer {
         _delay = 1.0;
 
         output.setTypeSameAs(input);
+        
+        // empty set of dependent ports.
+        Set<Port> dependentPorts = new HashSet<Port>();
+        _causalityMarker = new CausalityMarker(this, "causalityMarker");
+        _causalityMarker.addDependentPortSet(dependentPorts);
+
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -278,4 +289,10 @@ public class TimeDelay extends Transformer {
 
     /** A local event queue to store the delayed output tokens. */
     protected CalendarQueue _delayedOutputTokens;
+
+    /** A causality marker to store information about how pure events are causally
+     *  related to trigger events
+     */
+    protected CausalityMarker _causalityMarker;
+
 }

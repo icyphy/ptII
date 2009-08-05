@@ -27,10 +27,15 @@
  */
 package ptolemy.domains.de.lib;
 
+import java.util.HashSet;
+import java.util.Set;
+
+import ptolemy.actor.CausalityMarker;
 import ptolemy.actor.parameters.PortParameter;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.Port;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
@@ -122,5 +127,9 @@ public class VariableDelay extends TimedDelay {
         delay = new PortParameter(this, "delay");
         delay.setExpression("1.0");
         delay.setTypeEquals(BaseType.DOUBLE);
+        
+        Set<Port> dependentPorts = new HashSet<Port>();
+        _causalityMarker = new CausalityMarker(this, "causalityMarker");
+        _causalityMarker.addDependentPortSet(dependentPorts);
     }
 }

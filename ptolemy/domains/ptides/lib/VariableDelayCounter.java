@@ -28,14 +28,20 @@
 
 package ptolemy.domains.ptides.lib;
 
+import java.util.HashSet;
+import java.util.Set;
+
+import ptolemy.actor.CausalityMarker;
 import ptolemy.actor.Director;
+import ptolemy.actor.parameters.PortParameter;
 import ptolemy.actor.util.Time;
 import ptolemy.actor.util.TimedEvent;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
+import ptolemy.data.type.BaseType;
 import ptolemy.domains.de.lib.VariableDelay;
-import ptolemy.domains.ptides.kernel.PtidesBasicDirector;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.Port;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
@@ -191,17 +197,29 @@ public class VariableDelayCounter extends VariableDelay {
         if (director == null) {
             throw new IllegalActionException(this, "No director.");
         }
-        Time result = null;
-        if (director instanceof PtidesBasicDirector) {
-            result = ((PtidesBasicDirector)director).fireAt(this, time, input);
-        } else {
-            result = director.fireAt(this, time);
-        }
+        Time result = director.fireAt(this, time);
         if (!result.equals(time)) {
             throw new IllegalActionException(this,
                     "Director is unable to fire the actor at the requested time: "
                             + time + ". It responds it will fire it at: "
                             + result);
         }
+    }
+    
+    /** Override the method of the super class to initialize the
+     *  parameter values.
+     */
+    protected void _init() throws NameDuplicationException,
+            IllegalActionException {
+        delay = new PortParameter(this, "delay");
+        delay.setExpression("1.0");
+        delay.setTypeEquals(BaseType.DOUBLE);
+        
+        Set<Port> dependentPorts = new HashSet<Port>();
+        dependentPorts.add(input);
+        dependentPorts.add(delay.getPort());
+        _causalityMarker = new CausalityMarker(this, "causalityMarker");
+        _causalityMarker.addDependentPortSet(dependentPorts);
+
     }
 }

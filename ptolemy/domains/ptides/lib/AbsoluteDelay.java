@@ -28,6 +28,8 @@
 
 package ptolemy.domains.ptides.lib;
 
+import java.util.Set;
+
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.lib.TimeDelay;
 import ptolemy.actor.util.Time;
@@ -35,6 +37,7 @@ import ptolemy.actor.util.TimedEvent;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.Token;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.Port;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
@@ -70,6 +73,11 @@ public class AbsoluteDelay extends TimeDelay {
         
         outputTime = new TypedIOPort(this, "outputTime", true, false);
         _zero = new Time(getDirector());
+        
+        Set<Port> dependentPorts = _causalityMarker.causalityMarker.get(0);
+        dependentPorts.add(input);
+        dependentPorts.add(outputTime);
+        _causalityMarker.addDependentPortSet(dependentPorts);
     }
 
     ///////////////////////////////////////////////////////////////////
