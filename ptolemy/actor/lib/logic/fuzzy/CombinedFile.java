@@ -221,8 +221,7 @@ public class CombinedFile extends DefaultHandler {
             myOptions = new ArrayList();
         }
         /*
-         * @return
-         * */
+         *          * */
         public ArrayList getComponents() {
             ArrayList componentNames = new ArrayList();
 

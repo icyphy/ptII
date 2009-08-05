@@ -359,8 +359,7 @@ public class CPUScheduler extends ApeActor {
     
     /**
      * release resources if higher priority task is ready
-     * @return
-     * @throws IllegalActionException 
+     *      * @throws IllegalActionException 
      * @throws NoRoomException 
      */
     public StatusType Schedule() throws NoRoomException, IllegalActionException {

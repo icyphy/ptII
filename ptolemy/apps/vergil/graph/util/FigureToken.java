@@ -81,8 +81,7 @@ public class FigureToken extends Token {
     }
 
     /** Return the type of this token.
-     *  @return
-     */
+     *       */
     public Type getType() {
         return TYPE;
     }

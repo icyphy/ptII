@@ -809,8 +809,7 @@ ptolemy.codegen.c.domains.giotto.kernel.GiottoDirector {
     }
     /**
      * Determines how may Giotto directors are above this director.
-     *  * @return
-     */
+     *  *      */
     private int _depthInGiottoHierarchy()
     {
         int depth = 0;
@@ -966,8 +965,7 @@ ptolemy.codegen.c.domains.giotto.kernel.GiottoDirector {
 
     /**
      * Generates methods for all the actors seen by this director
-     * @return
-     * @throws IllegalActionException
+     *      * @throws IllegalActionException
      */
     private String _generateActorsCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
@@ -1583,8 +1581,7 @@ ptolemy.codegen.c.domains.giotto.kernel.GiottoDirector {
      /**
       * Generates a string of the actor's name
       * @param actor
-      * @return
-      */
+      *       */
      private String _getActorName(Actor actor) {
          String actorFullName = actor.getFullName();
          actorFullName = actorFullName.substring(1,actorFullName.length());
@@ -1621,8 +1618,7 @@ ptolemy.codegen.c.domains.giotto.kernel.GiottoDirector {
      /**
       * Generates a string representation of the port's name
       * @param port
-      * @return
-      */
+      *       */
      private String _getPortName(IOPort port)
      {
          String portFullName= port.getFullName();
@@ -1651,8 +1647,7 @@ ptolemy.codegen.c.domains.giotto.kernel.GiottoDirector {
      /**
       * Determines the frequeny of the actor passed in as a parameter
       * @param actor
-      * @return
-      * @throws IllegalActionException
+      *       * @throws IllegalActionException
       */
      private int _getFrequency(Actor actor) throws IllegalActionException {
          Attribute frequency = ((Entity)actor).getAttribute("frequency");
@@ -1670,8 +1665,7 @@ ptolemy.codegen.c.domains.giotto.kernel.GiottoDirector {
       * I.E. If the actor has a frequency 1, and it is inside a composite actor at the top of the director chain with frequency2,
       * the actor's true frequency is 1*2 = 2, which is the priority it should be given.
       * @param actor
-      * @return
-      * @throws IllegalActionException
+      *       * @throws IllegalActionException
       */
      private int _getPriority(Actor actor) throws IllegalActionException {
          Attribute frequency = ((Entity)actor).getAttribute("frequency");
@@ -1736,8 +1730,7 @@ ptolemy.codegen.c.domains.giotto.kernel.GiottoDirector {
      /**
       * Determines the stack size necessary for the actors passed in
       * @param actors
-      * @return
-      */
+      *       */
      private int _getStackSize(List<Actor> actors) {
          // FIXME: there may be static analysis in the future.
          // However, we are hard-coding this number for now.
@@ -1756,8 +1749,7 @@ ptolemy.codegen.c.domains.giotto.kernel.GiottoDirector {
 
      /**
       * Determines if this Giotto director is the top most Giotto Director
-      * @return
-      */
+      *       */
      private boolean _isTopGiottoDirector() {
          ptolemy.actor.Director director = ((TypedCompositeActor)
                  _director.getContainer()).getExecutiveDirector();

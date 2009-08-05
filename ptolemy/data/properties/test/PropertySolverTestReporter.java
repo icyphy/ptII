@@ -256,8 +256,7 @@ public class PropertySolverTestReporter {
      *
      * @param directoryPath
      *
-     * @return
-     *
+     *      *
      * @exception IOException
      */
     private static Map[] _testPropertiesDirectory(String directoryPath)

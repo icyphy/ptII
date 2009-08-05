@@ -80,8 +80,7 @@ public class MouseEventToken extends Token {
     }
 
     /** Return the type of this token.
-     *  @return
-     */
+     *       */
     public Type getType() {
         return _type;
     }
