@@ -27,6 +27,7 @@
 package ptolemy.actor.gui;
 
 import java.awt.Component;
+import java.awt.Color;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -1026,64 +1027,71 @@ public class TableauFrame extends Top {
                     "No associated Tableau! Can't save.");
         }
 
-        // Use the strategy pattern here to create the actual
-        // dialog so that subclasses can customize this dialog.
-        JFileChooser fileDialog = _saveAsFileDialog();
-        if (_initialSaveAsFileName != null) {
-            fileDialog.setSelectedFile(new File(fileDialog
-                    .getCurrentDirectory(), _initialSaveAsFileName));
-        }
-
-        // Show the dialog.
-        int returnVal = fileDialog.showSaveDialog(this);
-        if (returnVal == JFileChooser.APPROVE_OPTION) {
-            File file = fileDialog.getSelectedFile();
-            if (extension != null && file.getName().indexOf(".") == -1) {
-                // if the user has not given the file an extension, add it
-                file = new File(file.getAbsolutePath() + extension);
+        // Swap backgrounds and avoid white boxes in "common places" dialog
+        Color background = null;
+        try {
+            background = _saveBackground();
+            // Use the strategy pattern here to create the actual
+            // dialog so that subclasses can customize this dialog.
+            JFileChooser fileDialog = _saveAsFileDialog();
+            if (_initialSaveAsFileName != null) {
+                fileDialog.setSelectedFile(new File(fileDialog
+                                .getCurrentDirectory(), _initialSaveAsFileName));
             }
 
-            try {
-                if (!_confirmFile(null, file)) {
+            // Show the dialog.
+            int returnVal = fileDialog.showSaveDialog(this);
+            if (returnVal == JFileChooser.APPROVE_OPTION) {
+                File file = fileDialog.getSelectedFile();
+                if (extension != null && file.getName().indexOf(".") == -1) {
+                    // if the user has not given the file an extension, add it
+                    file = new File(file.getAbsolutePath() + extension);
+                }
+
+                try {
+                    if (!_confirmFile(null, file)) {
+                        return false;
+                    }
+
+                    URL newURL = file.toURI().toURL();
+                    String newKey = newURL.toExternalForm();
+
+                    _directory = fileDialog.getCurrentDirectory();
+                    _writeFile(file);
+
+                    // The original file will still be open, and has not
+                    // been saved, so we do not change its modified status.
+                    // setModified(false);
+                    // Open a new window on the model.
+                    getConfiguration().openModel(newURL, newURL, newKey);
+
+                    // If the tableau was unnamed before, then we need
+                    // to close this window after doing the save.
+                    Effigy effigy = getEffigy();
+
+                    if (effigy != null) {
+                        String id = effigy.identifier.getExpression();
+
+                        if (id.equals("Unnamed")) {
+                            // This will have the effect of closing all the
+                            // tableaux associated with the unnamed model.
+                            effigy.setContainer(null);
+                        }
+                    }
+
+                    return true;
+                } catch (Exception ex) {
+                    report("Error in save as.", ex);
                     return false;
                 }
-
-                URL newURL = file.toURI().toURL();
-                String newKey = newURL.toExternalForm();
-
-                _directory = fileDialog.getCurrentDirectory();
-                _writeFile(file);
-
-                // The original file will still be open, and has not
-                // been saved, so we do not change its modified status.
-                // setModified(false);
-                // Open a new window on the model.
-                getConfiguration().openModel(newURL, newURL, newKey);
-
-                // If the tableau was unnamed before, then we need
-                // to close this window after doing the save.
-                Effigy effigy = getEffigy();
-
-                if (effigy != null) {
-                    String id = effigy.identifier.getExpression();
-
-                    if (id.equals("Unnamed")) {
-                        // This will have the effect of closing all the
-                        // tableaux associated with the unnamed model.
-                        effigy.setContainer(null);
-                    }
-                }
-
-                return true;
-            } catch (Exception ex) {
-                report("Error in save as.", ex);
-                return false;
             }
-        }
 
-        // The user hit cancel or there was an error, so we did not
-        // successfully save.
-        return false;
+            // The user hit cancel or there was an error, so we did not
+            // successfully save.
+            return false;
+        } finally {
+            _restoreBackground(background);
+        }
     }
 
     /** Write the model to the specified file.  This method delegates
