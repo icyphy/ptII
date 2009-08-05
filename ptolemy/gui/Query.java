@@ -2012,104 +2012,115 @@ public class Query extends JPanel {
         }
 
         public void actionPerformed(ActionEvent e) {
-            // NOTE: If the last argument is null, then choose a default dir.
-            JFileChooser fileChooser = new JFileChooser(_startingDirectory) {
-                public void approveSelection() {
-                    File file = getSelectedFile();
-                    if (file.exists() && getDialogType() == SAVE_DIALOG) {
-                        String queryString = file.getName()
-                                + " already exists. Overwrite?";
-                        int selected = JOptionPane.showOptionDialog(null,
-                                queryString, "Confirm save",
-                                JOptionPane.YES_NO_OPTION,
-                                JOptionPane.QUESTION_MESSAGE, null, null, null);
-                        if (selected == 0) {
-                            super.approveSelection();
+
+            // Swap backgrounds and avoid white boxes in "common places" dialog
+            JFileChooserBugFix jFileChooserBugFix = new JFileChooserBugFix();
+            Color background = null;
+            try {
+                background = jFileChooserBugFix.saveBackground();
+                // NOTE: If the last argument is null, then choose a
+                // default dir.
+                JFileChooser fileChooser = new JFileChooser(_startingDirectory) {
+                        public void approveSelection() {
+                            File file = getSelectedFile();
+                            if (file.exists() && getDialogType() == SAVE_DIALOG) {
+                                String queryString = file.getName()
+                                    + " already exists. Overwrite?";
+                                int selected = JOptionPane.showOptionDialog(null,
+                                        queryString, "Confirm save",
+                                        JOptionPane.YES_NO_OPTION,
+                                        JOptionPane.QUESTION_MESSAGE, null, null, null);
+                                if (selected == 0) {
+                                    super.approveSelection();
+                                }
+                            } else {
+                                super.approveSelection();
+                            }
                         }
-                    } else {
-                        super.approveSelection();
-                    }
+                    };
+                String fileName = getSelectedFileName().trim();
+                if (!fileName.equals("")) {
+                    fileChooser.setSelectedFile(new File(fileName));
                 }
-            };
-            String fileName = getSelectedFileName().trim();
-            if (!fileName.equals("")) {
-                fileChooser.setSelectedFile(new File(fileName));
-            }
-            fileChooser.setApproveButtonText("Select");
+                fileChooser.setApproveButtonText("Select");
 
-            // FIXME: The following doesn't have any effect.
-            fileChooser.setApproveButtonMnemonic('S');
+                // FIXME: The following doesn't have any effect.
+                fileChooser.setApproveButtonMnemonic('S');
 
-            if (_allowFiles && _allowDirectories) {
-                fileChooser
+                if (_allowFiles && _allowDirectories) {
+                    fileChooser
                         .setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
-            } else if (_allowFiles && !_allowDirectories) {
-                // This is the default.
-                fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-            } else if (!_allowFiles && _allowDirectories) {
-                fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-            } else {
-                // Usually, we would use InternalErrorException here,
-                // but if we do, then this package would depend on kernel.util,
-                // which causes problems when we ship Ptplot.
-                throw new RuntimeException(
-                        "QueryFileChooser: nothing to be chosen.");
-            }
+                } else if (_allowFiles && !_allowDirectories) {
+                    // This is the default.
+                    fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+                } else if (!_allowFiles && _allowDirectories) {
+                    fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+                } else {
+                    // Usually, we would use InternalErrorException
+                    // here, but if we do, then this package would
+                    // depend on kernel.util, which causes problems
+                    // when we ship Ptplot.
+                    throw new RuntimeException(
+                            "QueryFileChooser: nothing to be chosen.");
+                }
 
-            int returnValue = _save ? fileChooser.showSaveDialog(_owner)
+                int returnValue = _save ? fileChooser.showSaveDialog(_owner)
                     : fileChooser.showOpenDialog(_owner);
 
-            if (returnValue == JFileChooser.APPROVE_OPTION) {
-                if (_base == null) {
-                    // Absolute file name.
-                    try {
-                        _entryBox.setText(fileChooser.getSelectedFile()
-                                .getCanonicalPath());
-                    } catch (IOException ex) {
-                        // If we can't get a path, then just use the name.
-                        _entryBox.setText(fileChooser.getSelectedFile()
-                                .getName());
-                    }
-                } else {
-                    // Relative file name.
-                    File selectedFile = fileChooser.getSelectedFile();
-
-                    // FIXME: There is a bug here under Windows XP
-                    // at least... Sometimes, the drive ID (like c:)
-                    // is lower case, and sometimes it's upper case.
-                    // When we open a MoML file, it's upper case.
-                    // When we do "save as", it's lower case.
-                    // This despite the fact that both use the same
-                    // file browser to determine the file name.
-                    // Beats me... Consequence is that if you save as,
-                    // then the following relativize call doesn't work
-                    // until you close and reopen the file.
-                    try {
-                        selectedFile = selectedFile.getCanonicalFile();
-                    } catch (IOException ex) {
-                        // Ignore, since we can't do much about it anyway.
-                    }
-
-                    URI relativeURI = _base.relativize(selectedFile.toURI());
-                    if (relativeURI != null
-                            && relativeURI.getScheme() != null
-                            && relativeURI.getScheme().equals("file")) {
-                        // Fix for "undesired file:\ prefix added by FileParameter"
-                        // http://bugzilla.ecoinformatics.org/show_bug.cgi?id=4022
-                        String pathName = relativeURI.getPath();
-                        // Sigh.  Under Windows, getPath() returns a leading /
-                        File file = new File(pathName.replace("%20",  " "));
+                if (returnValue == JFileChooser.APPROVE_OPTION) {
+                    if (_base == null) {
+                        // Absolute file name.
                         try {
-                            _entryBox.setText(file.getCanonicalPath().replace('\\', '/'));
+                            _entryBox.setText(fileChooser.getSelectedFile()
+                                    .getCanonicalPath());
                         } catch (IOException ex) {
-                            _entryBox.setText(file.toString());
+                            // If we can't get a path, then just use the name.
+                            _entryBox.setText(fileChooser.getSelectedFile()
+                                    .getName());
                         }
                     } else {
-                        _entryBox.setText(relativeURI.toString());
-                    }
-                }
+                        // Relative file name.
+                        File selectedFile = fileChooser.getSelectedFile();
 
-                _owner._notifyListeners(_name);
+                        // FIXME: There is a bug here under Windows XP
+                        // at least... Sometimes, the drive ID (like c:)
+                        // is lower case, and sometimes it's upper case.
+                        // When we open a MoML file, it's upper case.
+                        // When we do "save as", it's lower case.
+                        // This despite the fact that both use the same
+                        // file browser to determine the file name.
+                        // Beats me... Consequence is that if you save as,
+                        // then the following relativize call doesn't work
+                        // until you close and reopen the file.
+                        try {
+                            selectedFile = selectedFile.getCanonicalFile();
+                        } catch (IOException ex) {
+                            // Ignore, since we can't do much about it anyway.
+                        }
+
+                        URI relativeURI = _base.relativize(selectedFile.toURI());
+                        if (relativeURI != null
+                                && relativeURI.getScheme() != null
+                                && relativeURI.getScheme().equals("file")) {
+                            // Fix for "undesired file:\ prefix added by FileParameter"
+                            // http://bugzilla.ecoinformatics.org/show_bug.cgi?id=4022
+                            String pathName = relativeURI.getPath();
+                            // Sigh.  Under Windows, getPath() returns a leading /
+                            File file = new File(pathName.replace("%20",  " "));
+                            try {
+                                _entryBox.setText(file.getCanonicalPath().replace('\\', '/'));
+                            } catch (IOException ex) {
+                                _entryBox.setText(file.toString());
+                            }
+                        } else {
+                            _entryBox.setText(relativeURI.toString());
+                        }
+                    }
+                    
+                    _owner._notifyListeners(_name);
+                }
+            } finally {
+                jFileChooserBugFix.restoreBackground(background);
             }
         }
 

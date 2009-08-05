@@ -60,7 +60,11 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
 import javax.swing.filechooser.FileFilter;
+import javax.swing.text.AttributeSet;
+import javax.swing.text.html.HTMLEditorKit;
+import javax.swing.text.html.StyleSheet;
 
 import ptolemy.util.MessageHandler;
 import ptolemy.util.StringUtilities;
@@ -710,80 +714,90 @@ public abstract class Top extends JFrame {
      *  _read() to open the file.
      */
     protected void _open() {
-        JFileChooser fileDialog = new JFileChooser();
-        // To disable the Windows places bar on the left, uncomment the
-        // line below.
-        // fileDialog.putClientProperty("FileChooser.useShellFolder", Boolean.FALSE);
-        if (_fileFilter != null) {
-            fileDialog.addChoosableFileFilter(_fileFilter);
-        }
+        // Swap backgrounds and avoid white boxes in "common places" dialog
+        JFileChooserBugFix jFileChooserBugFix = new JFileChooserBugFix();
+        Color background = null;
+        try {
+            background = jFileChooserBugFix.saveBackground();
 
-        fileDialog.setDialogTitle("Select a model file.");
+            JFileChooser fileDialog = new JFileChooser();
 
-        if (_directory != null) {
-            fileDialog.setCurrentDirectory(_directory);
-        } else {
-            // The default on Windows is to open at user.home, which is
-            // typically an absurd directory inside the O/S installation.
-            // So we use the current directory instead.
-            // This will throw a security exception in an applet.
-            // FIXME: we should support users under applets opening files
-            // on the server.
-            String currentWorkingDirectory = StringUtilities
+            // To disable the Windows places bar on the left, uncomment the
+            // line below.
+            // fileDialog.putClientProperty("FileChooser.useShellFolder", Boolean.FALSE);
+            if (_fileFilter != null) {
+                fileDialog.addChoosableFileFilter(_fileFilter);
+            }
+
+            fileDialog.setDialogTitle("Select a model file.");
+
+            if (_directory != null) {
+                fileDialog.setCurrentDirectory(_directory);
+            } else {
+                // The default on Windows is to open at user.home, which is
+                // typically an absurd directory inside the O/S installation.
+                // So we use the current directory instead.
+                // This will throw a security exception in an applet.
+                // FIXME: we should support users under applets opening files
+                // on the server.
+                String currentWorkingDirectory = StringUtilities
                     .getProperty("user.dir");
 
-            if (currentWorkingDirectory != null) {
-                fileDialog
+                if (currentWorkingDirectory != null) {
+                    fileDialog
                         .setCurrentDirectory(new File(currentWorkingDirectory));
+                }
             }
-        }
 
-        if (fileDialog.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
-            _directory = fileDialog.getCurrentDirectory();
+            if (fileDialog.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
+                _directory = fileDialog.getCurrentDirectory();
 
-            try {
-                // NOTE: It would be nice if it were possible to enter
-                // a URL in the file chooser, but Java's file chooser does
-                // not permit this, regrettably.  So we have a separate
-                // menu item for this.
-                File file = fileDialog.getSelectedFile().getCanonicalFile();
-                // Report on the time it takes to open the model.
-                long startTime = System.currentTimeMillis();
-                _read(file.toURI().toURL());
-                long endTime = System.currentTimeMillis();
-                if (endTime > startTime + 10000) {
-                    // Only print the time if it is more than 10 seconds
-                    // See also PtolemyEffigy.
-                    // Perhaps this code should be in PtolemyEffigy, but
-                    // if it is here, we get the time it takes to read any file, not
-                    // just a Ptolemy model.
-                    System.out
+                try {
+                    // NOTE: It would be nice if it were possible to enter
+                    // a URL in the file chooser, but Java's file chooser does
+                    // not permit this, regrettably.  So we have a separate
+                    // menu item for this.
+                    File file = fileDialog.getSelectedFile().getCanonicalFile();
+                    // Report on the time it takes to open the model.
+                    long startTime = System.currentTimeMillis();
+                    _read(file.toURI().toURL());
+                    long endTime = System.currentTimeMillis();
+                    if (endTime > startTime + 10000) {
+                        // Only print the time if it is more than 10
+                        // seconds See also PtolemyEffigy.  Perhaps
+                        // this code should be in PtolemyEffigy, but
+                        // if it is here, we get the time it takes to
+                        // read any file, not just a Ptolemy model.
+                        System.out
                             .println("Opened " + file + " in "
                                     + (System.currentTimeMillis() - startTime)
                                     + " ms.");
-                }
-            } catch (Error error) {
-                // Be sure to catch Error here so that if we throw an
-                // Error, then we will report it to with a window.
-                // FIXME: The report() methods and
-                // the MessageHandler class should take Throwable
-                // as an argument instead of taking an vException.
-                try {
-                    throw new RuntimeException(error);
-                } catch (Exception ex2) {
-                    report("Error while reading input:", ex2);
-                }
-            } catch (Exception ex) {
-                // NOTE: The XML parser can only throw an XmlException.
-                // It signals that it is a user cancellation with the special
-                // string pattern "*** Canceled." in the message.
-                if ((ex.getMessage() != null)
-                        && !ex.getMessage().startsWith("*** Canceled.")) {
-                    // No need to report a CancelException, since it results
-                    // from the user clicking a "Cancel" button.
-                    report("Error reading input", ex);
+                    }
+                } catch (Error error) {
+                    // Be sure to catch Error here so that if we throw an
+                    // Error, then we will report it to with a window.
+                    try {
+                        throw new RuntimeException(error);
+                    } catch (Exception ex2) {
+                        report("Error while reading input:", ex2);
+                    }
+                } catch (Exception ex) {
+                    // NOTE: The XML parser can only throw an
+                    // XmlException.  It signals that it is a user
+                    // cancellation with the special string pattern
+                    // "*** Canceled." in the message.
+
+                    if ((ex.getMessage() != null)
+                            && !ex.getMessage().startsWith("*** Canceled.")) {
+                        // No need to report a CancelException, since
+                        // it results from the user clicking a
+                        // "Cancel" button.
+                        report("Error reading input", ex);
+                    }
                 }
             }
+        } finally {
+            jFileChooserBugFix.restoreBackground(background);
         }
     }
 
@@ -1030,39 +1044,45 @@ public abstract class Top extends JFrame {
      *  @return True if the save succeeds.
      */
     protected boolean _saveAs() {
-        // Use the strategy pattern here to create the actual
-        // dialog so that subclasses can customize this dialog.
-        JFileChooser fileDialog = _saveAsFileDialog();
+        // Swap backgrounds and avoid white boxes in "common places" dialog
+        JFileChooserBugFix jFileChooserBugFix = new JFileChooserBugFix();
+        Color background = null;
+        try {
+            background = jFileChooserBugFix.saveBackground();
 
-        // Show the dialog.
-        int returnVal = fileDialog.showSaveDialog(this);
+            // Use the strategy pattern here to create the actual
+            // dialog so that subclasses can customize this dialog.
+            JFileChooser fileDialog = _saveAsFileDialog();
 
-        if (returnVal == JFileChooser.APPROVE_OPTION) {
-            _file = fileDialog.getSelectedFile();
+            if (fileDialog.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
+                _file = fileDialog.getSelectedFile();
 
-            if (_file.exists()) {
-                // Ask for confirmation before overwriting a file.
-                String query = "Overwrite " + _file.getName() + "?";
+                if (_file.exists()) {
+                    // Ask for confirmation before overwriting a file.
+                    String query = "Overwrite " + _file.getName() + "?";
 
-                // Show a MODAL dialog
-                int selected = JOptionPane.showOptionDialog(this, query,
-                        "Save Changes?", JOptionPane.YES_NO_OPTION,
-                        JOptionPane.QUESTION_MESSAGE, null, null, null);
+                    // Show a MODAL dialog
+                    int selected = JOptionPane.showOptionDialog(this, query,
+                            "Save Changes?", JOptionPane.YES_NO_OPTION,
+                            JOptionPane.QUESTION_MESSAGE, null, null, null);
 
-                if (selected == 1) {
-                    return false;
+                    if (selected == 1) {
+                        return false;
+                    }
                 }
+
+                // Truncate the name so that dialogs under Web Start on the Mac
+                // work better.
+                setTitle(StringUtilities.abbreviate(_getName()));
+                _directory = fileDialog.getCurrentDirectory();
+                return _save();
             }
 
-            // Truncate the name so that dialogs under Web Start on the Mac
-            // work better.
-            setTitle(StringUtilities.abbreviate(_getName()));
-            _directory = fileDialog.getCurrentDirectory();
-            return _save();
+            // Action was canceled.
+            return false;
+        } finally {
+            jFileChooserBugFix.restoreBackground(background);
         }
-
-        // Action was canceled.
-        return false;
     }
 
     /** Create and return a file dialog for the "Save As" command.

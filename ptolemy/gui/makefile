@@ -53,6 +53,7 @@ JSRCS = \
 	CloseListener.java \
 	ComponentDialog.java \
 	GraphicalMessageHandler.java \
+	JFileChooserBugFix.java \
 	JTextAreaExec.java \
 	MessageHandler.java \
 	PtGUIUtilities.java \
