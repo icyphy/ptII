@@ -57,8 +57,8 @@ import ptolemy.kernel.util.NameDuplicationException;
  */
 public class ListenSink extends DDESink {
     /** Construct a ListenSink with the specified container and name.
-     * @params cont The container of this actor.
-     * @params name The name of this actor.
+     * @param cont The container of this actor.
+     * @param name The name of this actor.
      */
     public ListenSink(CompositeEntity cont, String name)
             throws IllegalActionException, NameDuplicationException {
