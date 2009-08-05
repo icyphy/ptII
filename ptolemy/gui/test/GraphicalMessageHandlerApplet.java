@@ -103,7 +103,9 @@ public class GraphicalMessageHandlerApplet extends BasicJApplet {
         GraphicalMessageHandler handler = new GraphicalMessageHandler();
         MessageHandler.setMessageHandler(handler);
         Exception exception = new Exception("My Test Exception");
-        MessageHandler.error("My Error Message.", exception);
+        // This should wrap.  If it does not, see
+        // http://bugzilla.ecoinformatics.org/show_bug.cgi?id=4147
+        MessageHandler.error("My Really, Really, Really, Really, Really, Really, Really, Really, Really, Really, Really, Really, Really, Really, Extra, Extra, Extra, Extra, Extra, Extra, Extra, Extra, Extra, Extra, Extra, Extra, Extra, Long Error Message.", exception);
     }
 
     /** Stop execution of the model. This method is called by the
