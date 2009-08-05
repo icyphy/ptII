@@ -55,6 +55,7 @@ import ptolemy.data.BooleanToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.FileParameter;
 import ptolemy.data.expr.Parameter;
+import ptolemy.gui.JFileChooserBugFix;
 import ptolemy.gui.StatusBar;
 import ptolemy.gui.Top;
 import ptolemy.gui.UndeferredGraphicalMessageHandler;
@@ -1028,9 +1029,10 @@ public class TableauFrame extends Top {
         }
 
         // Swap backgrounds and avoid white boxes in "common places" dialog
+        JFileChooserBugFix jFileChooserBugFix = new JFileChooserBugFix();
         Color background = null;
         try {
-            background = _saveBackground();
+            background = jFileChooserBugFix.saveBackground();
             // Use the strategy pattern here to create the actual
             // dialog so that subclasses can customize this dialog.
             JFileChooser fileDialog = _saveAsFileDialog();
@@ -1090,7 +1092,7 @@ public class TableauFrame extends Top {
             // successfully save.
             return false;
         } finally {
-            _restoreBackground(background);
+            jFileChooserBugFix.restoreBackground(background);
         }
     }
 

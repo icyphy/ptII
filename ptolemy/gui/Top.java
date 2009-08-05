@@ -715,9 +715,11 @@ public abstract class Top extends JFrame {
      */
     protected void _open() {
         // Swap backgrounds and avoid white boxes in "common places" dialog
+        JFileChooserBugFix jFileChooserBugFix = new JFileChooserBugFix();
         Color background = null;
         try {
-            background = _saveBackground();
+            background = jFileChooserBugFix.saveBackground();
+
             JFileChooser fileDialog = new JFileChooser();
 
             // To disable the Windows places bar on the left, uncomment the
@@ -795,7 +797,7 @@ public abstract class Top extends JFrame {
                 }
             }
         } finally {
-            _restoreBackground(background);
+            jFileChooserBugFix.restoreBackground(background);
         }
     }
 
@@ -1019,36 +1021,11 @@ public abstract class Top extends JFrame {
      */
     protected abstract void _read(URL url) throws Exception;
 
-    /** Restore the background.
-     *  @param background The background to be restored.
-     *  @see #saveBackground();
-     */
-    protected void _restoreBackground(Color background) {
-        try {
-            if (background != null) {
-                // Restore the background color.
-                String rgb = Integer.toHexString(background.getRGB());
-                String rule = "body {background: #"
-                    + rgb.substring(2, rgb.length()) + ";}";
-                if (_HTMLEditorKit == null) {
-                    _HTMLEditorKit = new HTMLEditorKit();
-                }
-                StyleSheet styleSheet = _HTMLEditorKit.getStyleSheet();
-                styleSheet.addRule(rule);
-                _HTMLEditorKit.setStyleSheet(styleSheet);
-            }
-        } catch (Exception ex) {
-            System.out.println("Problem restoring background color.");
-            ex.printStackTrace();
-        }
-    }
-
     /** Save the model to the current file, if there is one, and otherwise
      *  invoke _saveAs().  This calls _writeFile().
      *  @return True if the save succeeds.
      */
     protected boolean _save() {
-        System.out.println("Top._save()");
         if (_file != null) {
             try {
                 _writeFile(_file);
@@ -1067,12 +1044,12 @@ public abstract class Top extends JFrame {
      *  @return True if the save succeeds.
      */
     protected boolean _saveAs() {
-        System.out.println("Top._saveAs()");
         // Swap backgrounds and avoid white boxes in "common places" dialog
+        JFileChooserBugFix jFileChooserBugFix = new JFileChooserBugFix();
         Color background = null;
         try {
-            background = _saveBackground();
-            System.out.println("Top._saveAs() " + background);
+            background = jFileChooserBugFix.saveBackground();
+
             // Use the strategy pattern here to create the actual
             // dialog so that subclasses can customize this dialog.
             JFileChooser fileDialog = _saveAsFileDialog();
@@ -1104,7 +1081,7 @@ public abstract class Top extends JFrame {
             // Action was canceled.
             return false;
         } finally {
-            _restoreBackground(background);
+            jFileChooserBugFix.restoreBackground(background);
         }
     }
 
@@ -1121,48 +1098,6 @@ public abstract class Top extends JFrame {
         fileDialog.setDialogTitle("Save as...");
         fileDialog.setCurrentDirectory(_getCurrentDirectory());
         return fileDialog;
-    }
-
-    /** Set the background to the value of the ToolBar.shadow property
-     *  and return the previous background.   
-     *  <p>Avoid a problem under Windows where the common places pane
-     *  on the left of the file browser dialog has white boxes
-     *  because the background is set to white.
-     *  http://bugzilla.ecoinformatics.org/show_bug.cgi?id=3801
-     *  <p>Call this method before instantiating a JFileChooser.
-     *  @return the value of the previous background.
-     */
-    protected Color _saveBackground() {
-        if (_HTMLEditorKit == null) {
-            _HTMLEditorKit = new HTMLEditorKit();
-        }
-        StyleSheet styleSheet = _HTMLEditorKit.getStyleSheet();
-        Color background = null;
-
-        try {
-            // Get the background color of the HTML widget.
-            AttributeSet bodyAttribute = (AttributeSet) styleSheet.getStyle(
-                    "body").getAttribute(
-                    javax.swing.text.StyleConstants.ResolveAttribute);
-            background = styleSheet.getBackground(bodyAttribute);
-        } catch (Exception ex) {
-            System.err.println("Problem getting background color");
-            ex.printStackTrace();
-        }
-
-        try {
-            // Get the color of the ToolBar shadow and use it.
-            Color shadow = UIManager.getColor("ToolBar.shadow");
-            String rgb = Integer.toHexString(shadow.getRGB());
-            String rule = "body {background: #"
-                + rgb.substring(2, rgb.length()) + ";}";
-            styleSheet.addRule(rule);
-            _HTMLEditorKit.setStyleSheet(styleSheet);
-        } catch (Exception ex) {
-            System.err.println("Problem setting background color");
-            ex.printStackTrace();
-        }
-        return background;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -1338,9 +1273,6 @@ public abstract class Top extends JFrame {
 
     // Flag to hide the menu bar.
     private boolean _hideMenuBar = false;
-
-    /** The HTMLEditorKit associated with this window. */
-    private static HTMLEditorKit _HTMLEditorKit;
 
     // The most recently entered URL in Open URL.
     private String _lastURL = "http://ptolemy.eecs.berkeley.edu/xml/models/";
