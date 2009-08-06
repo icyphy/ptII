@@ -54,15 +54,16 @@ import ptolemy.kernel.util.NamedObj;
 //// RTMaudeAdaptor
 
 /**
-* Generate RTMaude code in DE domain. Every adaptor (helper) class for
-* RTMaude should extend this class.
-*
-* @see ptolemy.codegen.kernel.CodeGeneratorHelper
-* @author Kyungmin Bae
-* @since Ptolemy II 7.1
-* @version $Id$
-* @Pt.ProposedRating Red (kquine)
-*
+ * Generate RTMaude code in DE domain. Every adaptor (helper) class for
+ * RTMaude should extend this class.
+ *
+ * @see ptolemy.codegen.kernel.CodeGeneratorHelper
+ * @author Kyungmin Bae
+ * @since Ptolemy II 7.1
+ * @version $Id$
+ * @Pt.AcceptedRating Red (kquine)
+ * @Pt.ProposedRating Red (kquine)
+ *
 */
 public class RTMaudeAdaptor extends CodeGeneratorHelper {
     

@@ -25,20 +25,46 @@ ENHANCEMENTS, OR MODIFICATIONS.
 */
 package ptolemy.codegen.util;
 
+/**
+   A dynamic result.
+   Used the PartialResult interface is used in DE code generation.
+
+   @author Man-Kit Leung
+   @version $Id$
+   @since Ptolemy II 7.1
+   @Pt.ProposedRating Red (mankit)
+   @Pt.AcceptedRating Red (mankit)
+ */
 public class StaticResult implements PartialResult {
 
+    /** Create a dynamic result object.
+     *  @param result The result to be stored.
+     */
     public StaticResult(Object result) {
         _result = result;
     }
 
-    Object _result;
 
+    /** Return the result.
+     *  @return the result.
+     */
     public Object getResult() {
         return _result;
     }
 
+    /** Return true if static.
+     *  In this class, false is always returned because this
+     *  result is dynamic, not static.
+     *  @return Always return false, indicating that this 
+     *  result is dynamic.
+     */
     public boolean isStatic() {
         return true;
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    /** The result that is stored. */
+    private Object _result;
 }

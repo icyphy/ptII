@@ -56,7 +56,6 @@ Code generator helper for IOPort.
 @Pt.ProposedRating Red (mankit)
 @Pt.AcceptedRating Red (mankit)
  */
-
 public class IOPort extends CCodeGeneratorHelper implements PortCodeGenerator {
 
     /** Construct a code generator helper associated
