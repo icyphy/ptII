@@ -47,8 +47,8 @@ import ptolemy.kernel.util.IllegalActionException;
  * @author Kyungmin Bae
  * @since Ptolemy II 7.1
  * @version $Id$
+ * @Pt.AcceptedRating Red (kquine)
  * @Pt.ProposedRating Red (kquine)
- *
  */
 public class TypedCompositeActor extends Entity {
     /** Construct the code generator helper associated

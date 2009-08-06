@@ -27,6 +27,15 @@
  */
 package ptolemy.codegen.c.actor;
 
+/**
+Code generator helper for TypedIOPort.
+
+@author Man-Kit Leung
+@version $Id$
+@since Ptolemy II 7.1
+@Pt.ProposedRating Red (mankit)
+@Pt.AcceptedRating Red (mankit)
+ */
 public class TypedIOPort extends IOPort {
 
     /** Construct the code generator helper associated

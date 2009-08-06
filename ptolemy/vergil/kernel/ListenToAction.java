@@ -1,6 +1,6 @@
 /* The action to listen to debug messages of a NamedObj.
 
- Copyright (c) 1998-2009 The Regents of the University of California.
+ Copyright (c) 2009 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -46,6 +46,12 @@ import ptolemy.vergil.toolbox.FigureAction;
 
 /** An action to listen to debug messages in the NamedObj.
  *  This is static so that other classes can use it.
+ *
+ *  @author Man-Kit Leung
+ *  @version $Id$
+ *  @since Ptolemy II 7.1
+ *  @Pt.ProposedRating Red (mankit)
+ *  @Pt.AcceptedRating Red (mankit)
  */
 public class ListenToAction extends FigureAction {
     /** Construct an action that listens to NamedObj messages.
