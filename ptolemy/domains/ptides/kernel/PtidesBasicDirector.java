@@ -42,7 +42,6 @@ import java.util.Set;
 import java.util.Stack;
 
 import ptolemy.actor.Actor;
-import ptolemy.actor.AtomicActor;
 import ptolemy.actor.CausalityMarker;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
@@ -53,8 +52,6 @@ import ptolemy.actor.Receiver;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.util.CausalityInterface;
-import ptolemy.actor.util.CausalityInterfaceForComposites;
-import ptolemy.actor.util.DefaultCausalityInterface;
 import ptolemy.actor.util.Dependency;
 import ptolemy.actor.util.SuperdenseDependency;
 import ptolemy.actor.util.Time;
@@ -489,7 +486,7 @@ public class PtidesBasicDirector extends DEDirector {
         stopWhenQueueIsEmpty.setExpression("false");
         _checkSensorActuatorNetworkConsistency();
         
-        _annotateModelDelays((CompositeEntity)getContainer());
+        _annotateModelDelays((CompositeActor)getContainer());
     }
 
     /** Return false if there are no more actors to be fired or the stop()
@@ -588,7 +585,7 @@ public class PtidesBasicDirector extends DEDirector {
         super.wrapup();
         _setIcon(_getIdleIcon(), false);
         if (_lastExecutingActor != null) {
-            _clearHighlight(_lastExecutingActor);
+            _clearHighlight(_lastExecutingActor, false);
         }
     }
 
@@ -874,8 +871,8 @@ public class PtidesBasicDirector extends DEDirector {
      *  @exception IllegalActionException If the animateExecution
      *   parameter cannot be evaluated.
      */
-    protected void _clearHighlight(Actor actor) throws IllegalActionException {
-        if (((BooleanToken) animateExecution.getToken()).booleanValue()) {
+    protected void _clearHighlight(Actor actor, boolean overwriteHighlight) throws IllegalActionException {
+        if (((BooleanToken) animateExecution.getToken()).booleanValue() || overwriteHighlight) {
             String completeMoML = "<deleteProperty name=\"_highlightColor\"/>";
             MoMLChangeRequest request = new MoMLChangeRequest(this,
                     (NamedObj) actor, completeMoML);
@@ -1058,18 +1055,7 @@ public class PtidesBasicDirector extends DEDirector {
         // Should it?
         Collection<IOPort> result = new HashSet<IOPort>();
         Actor actor = (Actor) port.getContainer();
-        CausalityInterface actorCausalityInterface;
-        if (actor instanceof AtomicActor) {
-            actorCausalityInterface = (DefaultCausalityInterface) actor
-                    .getCausalityInterface();
-        } else if (actor instanceof CompositeActor) {
-            actorCausalityInterface = (CausalityInterfaceForComposites) actor
-                    .getCausalityInterface();
-        } else {
-            throw new IllegalActionException(actor,
-                    "Actor is not a typed atomic or typed composite "
-                            + "actor, do not know how to deal with it.");
-        }
+        CausalityInterface actorCausalityInterface = actor.getCausalityInterface();
         if (port.isInput()) {
             List<IOPort> outputs = ((Actor) port.getContainer())
                     .outputPortList();
@@ -1446,7 +1432,7 @@ public class PtidesBasicDirector extends DEDirector {
 
                 // Animate, if appropriate.
                 _setIcon(_getIdleIcon(), false);
-                _clearHighlight(_getActorFromEventList((List<PtidesEvent>) currentEventList.contents));
+                _clearHighlight(_getActorFromEventList((List<PtidesEvent>) currentEventList.contents), false);
                 _lastExecutingActor = null;
 
                 // Request a refiring so we can process the next event
@@ -2159,14 +2145,19 @@ public class PtidesBasicDirector extends DEDirector {
      *  is not equal to the OTimesIdenty, then we annotate this actor with
      *  a certain color. We repeat this process recursively.
      */
-    private void _annotateModelDelays(CompositeEntity compositeEntity) throws IllegalActionException {
-        for (Actor actor : (List<Actor>)(compositeEntity.deepEntityList())) {
+    private void _annotateModelDelays(CompositeActor compositeActor) throws IllegalActionException {
+        for (Actor actor : (List<Actor>)(compositeActor.deepEntityList())) {
             boolean annotateThisActor = false;
             CausalityInterface causalityInterface = actor.getCausalityInterface();
             for (IOPort input : (List<IOPort>)actor.inputPortList()) {
                 for (IOPort output : (Collection<IOPort>)_finiteDependentPorts(input)) {
                     Dependency dependency = causalityInterface.getDependency(input, output);
-                    if (dependency.compareTo(dependency.oTimesIdentity()) == Dependency.GREATER_THAN) {
+                    // Annotate the actor if dependency is neither oPlus or oTimes
+                    // Notice this means if the actor is governed by a DEDirector,
+                    // which uses BooleanDependency, then the actors will never
+                    // be annotated.
+                    if (!dependency.equals(dependency.oTimesIdentity()) &&
+                            !dependency.equals(dependency.oPlusIdentity())) {
                         annotateThisActor = true;
                         break;
                     }
@@ -2178,11 +2169,10 @@ public class PtidesBasicDirector extends DEDirector {
             if (annotateThisActor) {
                 _highlightActor(actor, "{0.0, 1.0, 1.0, 1.0}", true);
             }
-            if (actor instanceof CompositeEntity) {
-                _annotateModelDelays((CompositeEntity)actor);
+            if (actor instanceof CompositeActor) {
+                _annotateModelDelays((CompositeActor)actor);
             }
-        }
-        
+        }        
     }
 
     /** For a particular input port channel pair, find the min delay.
