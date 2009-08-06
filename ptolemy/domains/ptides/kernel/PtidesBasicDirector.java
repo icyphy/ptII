@@ -488,6 +488,8 @@ public class PtidesBasicDirector extends DEDirector {
         // In Ptides, we should never stop when queue is empty...
         stopWhenQueueIsEmpty.setExpression("false");
         _checkSensorActuatorNetworkConsistency();
+        
+        _annotateModelDelays((CompositeEntity)getContainer());
     }
 
     /** Return false if there are no more actors to be fired or the stop()
@@ -1214,7 +1216,7 @@ public class PtidesBasicDirector extends DEDirector {
      */
     protected String _getExecutingIcon(Actor actorExecuting)
             throws IllegalActionException {
-        _highlightActor(actorExecuting, "{0.0, 0.0, 1.0, 1.0}");
+        _highlightActor(actorExecuting, "{0.0, 0.0, 1.0, 1.0}", false);
         return "  <property name=\"rectangle\" class=\"ptolemy.vergil.kernel.attributes.RectangleAttribute\">"
                 + "    <property name=\"height\" value=\"30\"/>"
                 + "    <property name=\"fillColor\" value=\"{0.0, 0.0, 1.0, 1.0}\"/>"
@@ -1680,9 +1682,9 @@ public class PtidesBasicDirector extends DEDirector {
      *  @exception IllegalActionException If the animateExecution
      *   parameter cannot be evaluated.
      */
-    protected void _highlightActor(Actor actor, String color)
+    protected void _highlightActor(Actor actor, String color, boolean overwriteHighlight)
             throws IllegalActionException {
-        if (((BooleanToken) animateExecution.getToken()).booleanValue()) {
+        if (((BooleanToken) animateExecution.getToken()).booleanValue() || overwriteHighlight) {
             String completeMoML = "<property name=\"_highlightColor\" class=\"ptolemy.actor.gui.ColorAttribute\" value=\""
                     + color + "\"/>";
             MoMLChangeRequest request = new MoMLChangeRequest(this,
@@ -2153,6 +2155,36 @@ public class PtidesBasicDirector extends DEDirector {
     ///////////////////////////////////////////////////////////////////
     ////                     private methods                       ////
     
+    /** For all deeply contained actors, if the actor has a dependency that
+     *  is not equal to the OTimesIdenty, then we annotate this actor with
+     *  a certain color. We repeat this process recursively.
+     */
+    private void _annotateModelDelays(CompositeEntity compositeEntity) throws IllegalActionException {
+        for (Actor actor : (List<Actor>)(compositeEntity.deepEntityList())) {
+            boolean annotateThisActor = false;
+            CausalityInterface causalityInterface = actor.getCausalityInterface();
+            for (IOPort input : (List<IOPort>)actor.inputPortList()) {
+                for (IOPort output : (Collection<IOPort>)_finiteDependentPorts(input)) {
+                    Dependency dependency = causalityInterface.getDependency(input, output);
+                    if (dependency.compareTo(dependency.oTimesIdentity()) == Dependency.GREATER_THAN) {
+                        annotateThisActor = true;
+                        break;
+                    }
+                }
+                if (annotateThisActor) {
+                    break;
+                }
+            }
+            if (annotateThisActor) {
+                _highlightActor(actor, "{0.0, 1.0, 1.0, 1.0}", true);
+            }
+            if (actor instanceof CompositeEntity) {
+                _annotateModelDelays((CompositeEntity)actor);
+            }
+        }
+        
+    }
+
     /** For a particular input port channel pair, find the min delay.
      *  @param inputPort The input port to find min delay for.
      *  @param channel The channel at this input port.
