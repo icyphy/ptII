@@ -1208,7 +1208,6 @@ ptolemy.codegen.c.domains.giotto.kernel.GiottoDirector {
      *  NOTE: Duplicate ports connected through a fork are removed. IE. if an input is connected to a fork
      *  and the fork is connected to two other places... it removes the first place from the list of places and keeps the last place
      *  need to ask Jackie if there is a way to work around this b/c Reciever [][] recievers = getRecievers doesn't work.
-     *  @param none
      *  @return code that copies inputs from a port in a driver method
      */ 
     String _generateDriverCode() throws IllegalActionException {
@@ -1481,7 +1480,6 @@ ptolemy.codegen.c.domains.giotto.kernel.GiottoDirector {
 
      /** Generate PORT variables. A PORT allows control over the value read
       *  A port is an efficient way to handle double buffering
-      *  @param none
       *  @return port variables
       */
      private String _generatePortVariableDeclarations(Actor actor) throws IllegalActionException {
