@@ -54,30 +54,28 @@ import ptolemy.kernel.util.NameDuplicationException;
  A simple use of this actor is to pad a block of inputs with zeros.
  Set <i>offset</i> to zero and use <i>numberToWrite &gt; numberToRead</i>.
  <a name="zero padding"></a>
- <a name="padding"></a>
+ <a name="padding"></a></p>
  <p>
  Another simple use is to obtain overlapping windows from
  an input stream.
  Set <i>usePastInputs</i> to true, use <i>numberToWrite &gt; numberToRead</i>,
  and set <i>offset</i> equal to <i>numberToWrite - numberToRead</i>.
  <a name="overlapping windows"></a>
- <a name="windowing"></a>
+ <a name="windowing"></a></p>
  <p>
  The general operation is illustrated with the following examples.
  If <i>offset</i> is positive,
- there two possible scenarios, illustrated by the following examples:
+ there two possible scenarios, illustrated by the following examples:</p>
  <p>
  <pre>
- <pre>
- iiiiii                  numberToRead = 6
- \    \                 offset = 2
- ppiiiiii00              numberToWrite = 10
- <p>
- iiiiii                  numberToRead = 6
- \ \  \                 offset = 2
- ppiii                   numberToWrite = 5
- </pre>
- </pre>
+     iiiiii                  numberToRead = 6
+      \    \                 offset = 2
+     ppiiiiii00              numberToWrite = 10
+
+     iiiiii                  numberToRead = 6
+      \ \  \                 offset = 2
+     ppiii                   numberToWrite = 5
+ </pre></p>
  <p>
  The symbol "i" refers to any input token. The leftmost symbol
  refers to the oldest input token of the ones consumed in a given
@@ -89,31 +87,30 @@ import ptolemy.kernel.util.NameDuplicationException;
  copied to the output, and then filled out with zeros.
  In the second example, only a portion of the input block fits.
  The remaining input tokens are discarded, although they might
- be used in subsequent firings if <i>usePastInputs</i> is true.
+ be used in subsequent firings if <i>usePastInputs</i> is true.</p>
  <p>
  When the <i>offset</i> is negative, this indicates that the
  first <i>offset</i> input tokens that are read should be
- discarded.  The corresponding scenarios are shown below:
+ discarded.  The corresponding scenarios are shown below:</p>
  <p>
  <pre>
- <pre>
- iiiiii                  numberToRead = 6
- / /  /                   offset = -2
- iiii000000              numberToWrite = 10
- <p>
- iiiiii                  numberToRead = 6
- / / //                   offset = -2
- iii                     numberToWrite = 3
+     iiiiii                  numberToRead = 6
+    / /  /                   offset = -2
+     iiii000000              numberToWrite = 10
+
+     iiiiii                  numberToRead = 6
+    / / //                   offset = -2
+     iii                     numberToWrite = 3
  </pre>
- </pre>
+</p>
  <p>
  In the first of these examples, the first two input tokens are
  discarded.  In the second example, the first two and the last input
- token are discarded.
+ token are discarded.</p>
  <p>
  The zero-valued tokens are constructed using the zero() method of
  the first input token that is read in the firing.  This returns
- a zero-valued token with the same type as the input.
+ a zero-valued token with the same type as the input.</p>
 
  @author Edward A. Lee
  @version $Id$

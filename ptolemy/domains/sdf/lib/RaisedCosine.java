@@ -55,9 +55,9 @@ import ptolemy.math.SignalProcessing;
  For the ordinary raised cosine response,
  the impulse response of the filter would ideally be
  <pre>
- sin(pi n/T)   cos(alpha pi n/T)
+        sin(pi n/T)   cos(alpha pi n/T)
  h(n) = ----------- * -----------------
- pi n/T      1-(2 alpha n/T)<sup>2</sup>
+          pi n/T      1-(2 alpha n/T)<sup>2</sup>
  </pre>
  where <i>alpha</i> is <i>excessBW</i> and <i>T</i> is the
  <i>interpolation</i> factor.
@@ -84,9 +84,9 @@ import ptolemy.math.SignalProcessing;
  <p>
  The impulse response of the square-root raised cosine pulse is given by
  <pre>
- 4 alpha(cos((1+alpha)pi n/T)+Tsin((1-alpha)pi n/T)/(4n alpha/T))
+         4 alpha(cos((1+alpha)pi n/T)+Tsin((1-alpha)pi n/T)/(4n alpha/T))
  h(n) = -----------------------------------------------------------------
- pi sqrt(T)(1-(4 alpha n/T)<sup>2</sup>)
+                      pi sqrt(T)(1-(4 alpha n/T)<sup>2</sup>)
  </pre>
  This impulse response convolved with itself will, in principle, be equal
  to a raised cosine pulse.  However, because of the abrupt rectangular

@@ -53,16 +53,16 @@ import ptolemy.kernel.util.NameDuplicationException;
  differential equation (ODE) dx/dt = f(x, t) can be built by:
  <P>
  <pre>
- <pre>               +---------------+
- <pre>        dx/dt  |               |   x
- <pre>    +--------->|   Integrator  |---------+----->
- <pre>    |          |               |         |
- <pre>    |          +---------------+         |
- <pre>    |                                    |
- <pre>    |             |---------|            |
- <pre>    +-------------| f(x, t) |<-----------+
- <pre>                  |---------|
- </pre></pre></pre></pre></pre></pre></pre></pre></pre></pre>
+                +---------------+
+         dx/dt  |               |   x
+     +--------->|   Integrator  |---------+----->
+     |          |               |         |
+     |          +---------------+         |
+     |                                    |
+     |             |---------|            |
+     +-------------| f(x, t) |<-----------+
+                   |---------|
+ </pre>
 
  <P>
  An integrator is a dynamic actor that can emit a token (a state) at a time

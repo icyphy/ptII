@@ -65,9 +65,9 @@ import ptolemy.kernel.util.Workspace;
  The Static scheduler for the CT domain.
  A CT (sub)system can be mathematically represented as:<Br>
  <pre>
- <pre>    dx/dt = f(x, u, t)<Br>
- <pre>    y = g(x, u, t)<BR>
- </pre></pre></pre>
+     dx/dt = f(x, u, t)
+         y = g(x, u, t)
+ </pre>
  where x is the state of the system, u is the input, y is the output,
  f() is the state transition map and g() is the output map.
  <P>

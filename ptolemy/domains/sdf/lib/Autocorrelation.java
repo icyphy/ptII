@@ -64,12 +64,12 @@ import ptolemy.kernel.util.Workspace;
  the autocorrelation estimate is
  <a name="unbiased autocorrelation"></a>
  <pre>
- N-1-k
- 1  ---
- r(k) = -  \    x<sup>*</sup>(n)x(n+k)
- N  /
- ---
- n = 0
+          N-1-k
+        1  --- 
+ r(k) = -  \    x(n)x(n+k)
+        N  /
+           ---
+           n=0
  </pre>
  for <i>k </i>= 0<i>, ... , p</i>, where <i>N</i> is the number of
  inputs to average (<i>numberOfInputs</i>), <i>p</i> is the number of
@@ -81,12 +81,12 @@ import ptolemy.kernel.util.Workspace;
  <p>
  If the parameter <i>biased</i> is false (the default), then the estimate is
  <pre>
- N-1-k
- 1   ---
- r(k) = ---  \    x<sup>*</sup>(n)x(n+k)
- N-k  /
- ---
- n = 0
+            N-1-k
+         1   ---
+ r(k) = ---  \    x(n)x(n+k)
+        N-k  /
+             ---
+             n=0
  </pre>
  In this case, the estimate is unbiased.
  However, note that the unbiased estimate does not guarantee

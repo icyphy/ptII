@@ -54,23 +54,22 @@ import ptolemy.kernel.util.Workspace;
  The default reflection coefficients correspond to the following
  transfer function:
  <pre>
- 1
+                           1
  H(z) =  --------------------------------------
- 1 - 2z<sup>-1</sup> + 1.91z<sup>-2</sup> - 0.91z<sup>-3</sup> + 0.205z<sup>-4</sup>
+        1 - 2z<sup>-1</sup> + 1.91z<sup>-2</sup> - 0.91z<sup>-3</sup> + 0.205z<sup>-4</sup>
  </pre>
  <p>
  The structure of the filter is as follows:
  <pre>
- y[0]          y[1]                 y[n-1]           y[n]
+      y[0]          y[1]                 y[n-1]           y[n]
  X(n) ---(+)-&gt;--o--&gt;----(+)-&gt;--o---&gt;-- ... -&gt;--(+)-&gt;--o---&gt;---o---&gt;  Y(n)
- \   /          \   /                  \   /        |
- +Kn /        +Kn-1 /                  +K1 /         |
- X              X                      X          |
- -Kn \        -Kn-1 \                  -K1 \         V
- /   \          /   \                  /   \        |
- (+)-&lt;--o--[z]--(+)-&lt;--o--[z]- ... -&lt;--(+)-&lt;--o--[z]--/
- w[1]           w[2]                   w[n]
-
+           \   /          \   /                  \   /        |
+          +Kn /        +Kn-1 /                  +K1 /         |
+             X              X                      X          |
+          -Kn \        -Kn-1 \                  -K1 \         V
+           /   \          /   \                  /   \        |
+         (+)-&lt;--o--[z]--(+)-&lt;--o--[z]- ... -&lt;--(+)-&lt;--o--[z]--/
+                w[1]           w[2]                   w[n]
  </pre>
  where the [z] are unit delays and the (+) are adders
  and "y" and "w" are variables representing the state of the filter.

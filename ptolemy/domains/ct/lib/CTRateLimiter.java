@@ -45,9 +45,9 @@ import ptolemy.kernel.util.NameDuplicationException;
  The output (y) changes no faster than the specified limit. The derivative
  is calculated using this equation:
  <pre>
- u(k) - y(k-1)
+         u(k) - y(k-1)
  rate = --------------
- t(k) - t(k-1)
+         t(k) - t(k-1)
  </pre>
  where u(k) and t(k) are the current input and time, and y(k-1) and t(k-1)
  are the output and time at the previous step. The output is determined
@@ -71,7 +71,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  or falling slew rate. As a consequence, this may cause some ODE solvers
  not converging under some circumstances.
 
- FIXME: This actor should implement the CTStateful interface to support
+ <p>FIXME: This actor should implement the CTStateful interface to support
  rollback.
 
  @author Jie Liu

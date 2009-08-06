@@ -63,13 +63,14 @@ import cern.jet.random.Beta;
  <p>Returns the area from zero to <tt>x</tt> under the beta density
  function.
  <pre>                          x
- -             -
- | (a+b)       | |  a-1      b-1
+            -             -
+           | (a+b)       | |  a-1      b-1
  P(x)  =  ----------     |   t    (1-t)    dt
- -     -     | |
- | (a) | (b)   -
- 0
+           -     -     | |
+          | (a) | (b)   -
+                         0
  </pre>
+
  This function is identical to the incomplete beta
  integral function <tt>Gamma.incompleteBeta(a, b, x)</tt>.
 
