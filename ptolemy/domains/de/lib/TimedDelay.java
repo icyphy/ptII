@@ -168,6 +168,7 @@ public class TimedDelay extends DETransformer {
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         TimedDelay newObject = (TimedDelay) super.clone(workspace);
         newObject.output.setTypeSameAs(newObject.input);
+        newObject._causalityMarker = (CausalityMarker)newObject.getAttribute("causalityMarker");
         return newObject;
     }
 

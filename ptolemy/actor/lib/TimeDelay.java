@@ -184,6 +184,7 @@ public class TimeDelay extends Transformer {
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         TimeDelay newObject = (TimeDelay) super.clone(workspace);
         newObject.output.setTypeSameAs(newObject.input);
+        newObject._causalityMarker = (CausalityMarker)newObject.getAttribute("causalityMarker");
         return newObject;
     }
 
