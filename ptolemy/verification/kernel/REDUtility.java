@@ -1914,7 +1914,7 @@ public class REDUtility {
      * meaning that the current implementation is powerful enough to deal with
      * state refinements.
      *
-     * @param modelmodel Whole System under analysis.
+     * @param modalmodel Whole System under analysis.
      * @return Equivalent FSMActor for later analysis.
      */
     private static FSMActor _rewriteModalModelWithStateRefinementToFSMActor(
