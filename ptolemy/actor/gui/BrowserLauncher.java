@@ -184,7 +184,7 @@ public class BrowserLauncher {
                     + errorMessage);
         }
 
-        if (!url.startsWith("http:")) {
+        if (!url.startsWith("http:") && !url.startsWith("https:")) {
             // If the url does not start with http:, then look it up
             // as a regular file and then possibly in the classpath.
             File urlFile = null;
@@ -335,7 +335,7 @@ public class BrowserLauncher {
             break;
 
         case MRJ_3_1:
-            if (!url.startsWith("file:") && !url.startsWith("http:")) {
+            if (!url.startsWith("file:") && !url.startsWith("http:") && !url.startsWith("https:")) {
                 // Needed by Web Start file:
                 // ptII/ptolemy/domains/ct/demo/CartPendulum/CartPendulum.jnlp
                 url = new File(url).toURL().toString();
