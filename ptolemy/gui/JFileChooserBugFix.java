@@ -153,8 +153,7 @@ public class JFileChooserBugFix {
                     javax.swing.text.StyleConstants.ResolveAttribute);
             background = styleSheet.getBackground(bodyAttribute);
         } catch (Exception ex) {
-            System.err.println("Problem getting background color");
-            ex.printStackTrace();
+            // Ignore, we just won't set the background. 
         }
 
         try {
