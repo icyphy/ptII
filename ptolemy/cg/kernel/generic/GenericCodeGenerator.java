@@ -1073,6 +1073,11 @@ public abstract class GenericCodeGenerator extends Attribute implements
      */
     public static final String INDENT2 = StringUtilities.getIndentPrefix(2);
     
+    /** Indent string for indent level 3.
+     *  @see ptolemy.util.StringUtilities#getIndentPrefix(int)
+     */
+    public static final String INDENT3 = StringUtilities.getIndentPrefix(3);
+    
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
