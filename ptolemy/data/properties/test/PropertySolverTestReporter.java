@@ -267,7 +267,7 @@ public class PropertySolverTestReporter {
                     + "\" directory.");
         }
         if (!new File(_exceptionLogsDirectory).mkdirs()) {
-            throw new IOException("Failed to create \"" + _exceptionsLogsDirectory
+            throw new IOException("Failed to create \"" + _exceptionLogsDirectory
                     + "\" directory.");
         }
         // See MoMLSimpleApplication for similar code
