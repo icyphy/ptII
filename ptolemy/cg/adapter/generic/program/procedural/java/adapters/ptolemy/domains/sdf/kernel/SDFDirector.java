@@ -471,7 +471,7 @@ public class SDFDirector
         }
 
         if (port.isMultiport()) {
-            code.append("[" + port.getWidth() + "]");
+            code.append("[" + java.lang.Math.max(port.getWidth(), port.getWidthInside()) + "]");
         }
 
         if (bufferSize > 1) {
