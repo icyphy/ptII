@@ -191,7 +191,8 @@ public class MobileModel extends TypedCompositeActor {
                 try {
                     model.exportMoML(writer, 1);
                 } catch (Exception ex) {
-                    // FIXME: don't ignore?
+                    throw new IllegalActionException(this, ex, 
+                            "Failed to export MoML for " + model);
                 }
 
                 String modelMoML = writer.toString();

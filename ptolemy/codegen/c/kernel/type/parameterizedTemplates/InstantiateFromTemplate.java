@@ -104,9 +104,15 @@ public class InstantiateFromTemplate {
             codeString = codeString.replaceAll(key, replaceMap.get(key));
         }
 
-        FileWriter writer = new FileWriter(new File(filename));
-        writer.write(codeString);
-        writer.close();
+        FileWriter writer = null;
+        try {
+            writer = new FileWriter(new File(filename));
+            writer.write(codeString);
+        } finally {
+            if (writer != null) {
+                writer.close();
+            }
+        }
     }
 
     /**

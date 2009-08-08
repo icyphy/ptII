@@ -684,6 +684,7 @@ public class PythonScript extends TypedAtomicActor {
             _interpreter.exec("sys.path.append('" + ptIIDir
                     + "/vendors/jython/Lib')");
         } catch (Exception ex) {
+            // Ignore this, $PTII/vendors/jython/Lib might not exist.
         }
 
         String className = "ptolemy.kernel.util.NamedObj";

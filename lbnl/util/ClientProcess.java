@@ -116,7 +116,10 @@ public class ClientProcess extends Thread {
         logFil = new File(simLogFil.getAbsolutePath());
         logToSysOut = true;
         // Delete log file if it exists
-        logFil.delete();
+        if (!logFil.delete()) {
+            throw new RuntimeException("Cannot delete \""
+                    + logFil.getAbsolutePath() + "\"");
+        }
     }
 
     /** Runs the process. */
@@ -126,6 +129,7 @@ public class ClientProcess extends Thread {
             proSta = false;
             pb.directory(worDir);
             pb.redirectErrorStream(true);
+            // FIXME: should we call simPro.exitValue() and destroy() 
             simPro = pb.start();
             proSta = true;
             new PrintOutput().start();
@@ -172,29 +176,50 @@ public class ClientProcess extends Thread {
             }
             InputStream is = simPro.getInputStream();
             InputStreamReader isr = new InputStreamReader(is);
-            BufferedReader br = new BufferedReader(isr);
-            PrintWriter pwLogFil;
-            PrintWriter pwSysOut = new PrintWriter(System.out);
+            BufferedReader br = null;
             try {
-                pwLogFil = new PrintWriter(new BufferedWriter(new FileWriter(
-                        logFil)));
-            } catch (java.io.IOException e) {
-                e.printStackTrace();
-                pwLogFil = new PrintWriter(System.err);
-            }
-
-            String line;
-            try {
-                while ((line = br.readLine()) != null) {
-                    if (logToSysOut) {
-                        pwSysOut.println(line);
-                        pwSysOut.flush();
-                    }
-                    pwLogFil.println(line);
-                    pwLogFil.flush();
+                isr = new InputStreamReader(is);
+                br = new BufferedReader(isr);
+                PrintWriter pwLogFil;
+                PrintWriter pwSysOut = new PrintWriter(System.out);
+                try {
+                    pwLogFil = new PrintWriter(new BufferedWriter(new FileWriter(
+                                            logFil)));
+                } catch (java.io.IOException e) {
+                    e.printStackTrace();
+                    pwLogFil = new PrintWriter(System.err);
                 }
-            } catch (java.io.IOException e) {
-                e.printStackTrace();
+
+                String line;
+                try {
+                    while ((line = br.readLine()) != null) {
+                        if (logToSysOut) {
+                            pwSysOut.println(line);
+                            pwSysOut.flush();
+                        }
+                        pwLogFil.println(line);
+                        pwLogFil.flush();
+                    }
+                } catch (java.io.IOException e) {
+                    e.printStackTrace();
+                }
+            } finally {
+                // FindBugs suggests closing these, but
+                // is that ok if simPro has not terminated?
+                if (isr != null) {
+                    try {
+                        isr.close();
+                    } catch (java.io.IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+                if (br != null) {
+                    try {
+                        br.close();
+                    } catch (java.io.IOException e) {
+                        e.printStackTrace();
+                    }
+                }
             }
         }
     }

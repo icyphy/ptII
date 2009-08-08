@@ -110,6 +110,9 @@ public class PtidesEvent extends DEEvent {
      *  @see #hashCode()
      */
     public boolean equals(Object object) {
+        //FIXME: FindBugs: "This class overrides equals(Object), but does not
+        // override hashCode(); Therefore, the class may violate the
+        // invariant that equal objects must have equal hashcodes."
         boolean result = super.equals(object);
         if (result == true && ((PtidesEvent) object).token() == _token) {
             return true;

@@ -473,7 +473,10 @@ public class Simulator extends SDFTransformer {
                     }
                 }
             }
-            slf.createNewFile(); // make sure we can write new file
+            if (!slf.createNewFile()) {
+                throw new Exception("Cannot create file.");
+            }
+            // make sure we can write new file
             if (!slf.canWrite()) {
                 throw new Exception("Cannot write to file.");
             }

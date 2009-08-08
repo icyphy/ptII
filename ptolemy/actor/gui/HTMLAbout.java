@@ -768,6 +768,10 @@ public class HTMLAbout {
                                         model = MoMLApplication.specToURL(
                                                 modelLink).toString();
                                     } catch (Exception ex2) {
+                                        System.out.println("Failed to look up "
+                                                + demosURLParent + modelLink
+                                                + " and " + modelLink + "\n"
+                                                + ex2);
                                     }
                                 } else {
                                     String absoluteModelLink = demosURLParent

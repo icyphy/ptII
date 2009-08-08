@@ -202,6 +202,7 @@ public class DatabaseManager extends TypedAtomicActor {
             // FIXME: Findbugs: SQL A prepared statement is generated from a nonconstant String
             // It would be nice if we offered a statement that takes a prepared
             // statement as input.
+
             statement = connection.prepareStatement(sql);
             boolean result = statement.execute();
             // Get all the results into a string.
@@ -214,7 +215,7 @@ public class DatabaseManager extends TypedAtomicActor {
                     ResultSetMetaData metaData = resultSet.getMetaData();
                     int columnCount = metaData.getColumnCount();
                     List<String[]> rows = new LinkedList<String[]>();
-
+                    
                     // First, put in the result table the column names
                     String[] columnNames = new String[columnCount];
                     int[] columnWidths = new int[columnCount];
@@ -245,7 +246,7 @@ public class DatabaseManager extends TypedAtomicActor {
                         for (int c = 0; c < columnCount; c++) {
                             resultString.append(row[c]);
                             for (int i = 0; i <= columnWidths[c]
-                                    - row[c].length(); i++) {
+                                     - row[c].length(); i++) {
                                 resultString.append(" ");
                             }
                         }
@@ -272,6 +273,14 @@ public class DatabaseManager extends TypedAtomicActor {
             }
             // Send the error message to the output.
             return ("Error:\n" + e.getMessage());
+        } finally {
+            if (statement != null) {
+                try {
+                    statement.close();
+                } catch (SQLException e1) {
+                    // Not much to do here.
+                }
+            }
         }
     }
 
@@ -320,6 +329,14 @@ public class DatabaseManager extends TypedAtomicActor {
             }
         } catch (SQLException e) {
             throw new IllegalActionException(this, e, "Database query failed.");
+        } finally {
+            if (statement != null) {
+                try {
+                    statement.close();
+                } catch (SQLException e1) {
+                    // Not much to do here.
+                }
+            }
         }
         int numberOfMatches = matches.size();
         ArrayToken result;
@@ -382,6 +399,14 @@ public class DatabaseManager extends TypedAtomicActor {
                 // Not much we can do here...
             }
             throw new IllegalActionException(this, e, "Update failed.");
+        } finally {
+            if (statement != null) {
+                try {
+                    statement.close();
+                } catch (SQLException e1) {
+                    // Not much to do here.
+                }
+            }
         }
     }
 

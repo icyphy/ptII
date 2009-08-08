@@ -198,9 +198,15 @@ public class ChangeFixedWidth1ToAuto implements MoMLFilter {
             input.close();
             if (model != null && filter.madeModification) {
                 System.out.println("Start updating " + fileName);
-                FileWriter file = new FileWriter(fileName);
-                model.exportMoML(file, 0);
-                file.close();
+                FileWriter file = null;
+                try {
+                    file = new FileWriter(fileName);
+                    model.exportMoML(file, 0);
+                } finally {
+                    if (file != null) {
+                        file.close();
+                    }
+                }
                 System.out.println("End updating " + fileName);
             }
         }

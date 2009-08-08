@@ -2194,7 +2194,7 @@ public class PtidesBasicDirector extends DEDirector {
             if (channelDependency != null) {
                 for (Integer integer : channelDependency.keySet()) {
                     if (((BooleanToken) actorsReceiveEventsInTimestampOrder.getToken()).booleanValue()) {
-                        if (!(port == inputPort && integer == channel)) {
+                        if (!(port == inputPort && integer.equals(channel))) {
                             SuperdenseDependency candidate = channelDependency
                                 .get(integer);
                             if (smallestDependency.compareTo(candidate) > 0) {
@@ -2430,6 +2430,23 @@ public class PtidesBasicDirector extends DEDirector {
          *  @param arg0 The object checking against.
          */
         public boolean equals(Object arg0) {
+            // FIXME: FindBugs:
+            // "This class overrides equals(Object), but does not
+            // override hashCode(), and inherits the implementation of
+            // hashCode() from java.lang.Object (which returns
+            // the identity hash code, an arbitrary value assigned to the object
+            // by the VM).&nbsp; Therefore, the class is very likely to violate the
+            // invariant that equal objects must have equal hashcodes.
+            //
+            // If you don't think instances of this class will ever be
+            // inserted into a HashMap/HashTable, the recommended
+            // hashCode implementation to use is:
+            //
+            // public int hashCode() {
+            // assert false : "hashCode not designed";
+            // return 42; // any arbitrary constant will do 
+            // }
+
             if (compareTo(arg0) == 0) {
                 return true;
             } else {

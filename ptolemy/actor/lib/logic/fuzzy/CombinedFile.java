@@ -38,6 +38,7 @@ public class CombinedFile extends DefaultHandler {
     public Architecture thisArchitecture;
     public Option tempOption;
     boolean startArch;
+    // FIXME: these do not follow our coding style.
     boolean startOpt;
     boolean startDim;
     boolean endArch;
@@ -52,8 +53,11 @@ public class CombinedFile extends DefaultHandler {
     private void readCreate() {
         ArrayList componentNames = new ArrayList();
         try {
+            // FIXME: FindBugs: outputStream will not be closed on an exception.
             BufferedWriter outputStream = new BufferedWriter(new FileWriter(
                     "ptolemy\\actor\\lib\\logic\\fuzzy\\" + outputFileName));// test2.xml"));
+            // FIXME: use \n here or else get the eol character from file and combine
+            // all these outputStreams calls into one call and use String +.
             outputStream.write("<?xml version= \"1.0\" standalone=\"no\"?>");
             outputStream.newLine();
             outputStream

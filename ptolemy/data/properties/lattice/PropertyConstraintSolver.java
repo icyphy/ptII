@@ -554,7 +554,11 @@ public class PropertyConstraintSolver extends PropertySolver {
 
                     } else {
                         if (!logDirectory.asFile().exists()) {
-                            logDirectory.asFile().mkdirs();
+                            if (!logDirectory.asFile().mkdirs()) {
+                                throw new IllegalActionException(this, "Failed to create \""
+                                        + logDirectory.asFile().getAbsolutePath()
+                                        + "\" directory.");
+                            }
                         }
                         file = FileUtilities.nameToFile(logFilename,
                                 logDirectory.asFile().toURI());
@@ -563,9 +567,18 @@ public class PropertyConstraintSolver extends PropertySolver {
                     try {
                         if (!file.exists()) {
                             if (!file.getParentFile().exists()) {
-                                file.getParentFile().mkdirs();
+                                if (!file.getParentFile().mkdirs()) {
+                                    throw new IllegalActionException(this, "Failed to create \""
+                                            + file.getParentFile().getAbsolutePath()
+                                            + "\" directory.");
+                                }
+
                             }
-                            file.createNewFile();
+                            if (!file.createNewFile()) {
+                                throw new IllegalActionException(this, "Failed to create \""
+                                + file.getAbsolutePath()
+                                + "\".");
+                            }
                         }
 
                         writer = new FileWriter(file);
@@ -1021,7 +1034,11 @@ public class PropertyConstraintSolver extends PropertySolver {
 
         } else {
             if (!trainedConstraintDirectory.asFile().exists()) {
-                trainedConstraintDirectory.asFile().mkdirs();
+                if (!trainedConstraintDirectory.asFile().mkdirs()) {
+                    throw new IllegalActionException(this, "Failed to create \""
+                            + trainedConstraintDirectory.asFile().getAbsolutePath()
+                            + "\" directory.");
+                }
             }
             constraintFile = FileUtilities.nameToFile(constraintFilename,
                     trainedConstraintDirectory.asFile().toURI());
@@ -1168,9 +1185,17 @@ public class PropertyConstraintSolver extends PropertySolver {
                 }
             } else {
                 if (!constraintFile.getParentFile().exists()) {
-                    constraintFile.getParentFile().mkdirs();
+                    if (!constraintFile.getParentFile().mkdirs()) {
+                        throw new IllegalActionException(this, "Failed to create \""
+                                + constraintFile.getParentFile().getAbsolutePath()
+                                + "\" directory.");
+                    }
                 }
-                constraintFile.createNewFile();
+                if (!constraintFile.createNewFile()) {
+                    throw new IllegalActionException(this, "Failed to create \""
+                            + constraintFile.getAbsolutePath()
+                            + "\".");
+                }
             }
 
             Writer writer = null;

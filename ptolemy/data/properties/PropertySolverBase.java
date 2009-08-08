@@ -671,7 +671,11 @@ public abstract class PropertySolverBase extends Attribute {
         try {
             File file;
             File directory = FileUtilities.nameToFile(directoryPath, null);
-            directory.mkdirs();
+            if (!directory.mkdirs()) {
+                throw new IllegalActionException(this, "Failed to create \""
+                        + directory.getAbsolutePath() + "\" directory.");
+
+            }
             file = new File(directory, entity.getClass().getSimpleName()
                     + ".java");
 
