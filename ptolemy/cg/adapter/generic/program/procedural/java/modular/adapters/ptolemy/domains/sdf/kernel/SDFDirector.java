@@ -346,9 +346,12 @@ public class SDFDirector
                 //}
             }
         }
-        code.append("tokensToAllOutputPorts ["
-                + String.valueOf(_portNumber) + "] = " + tokensToThisPort
-                + ";" + _eol);
+        
+        if (outputPort.getWidthInside() > 0) {
+            code.append("tokensToAllOutputPorts ["
+                    + String.valueOf(_portNumber) + "] = " + tokensToThisPort
+                    + ";" + _eol);
+        }
 
         _portNumber++;
         
