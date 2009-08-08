@@ -349,7 +349,7 @@ public class DistributedSDFDirector extends SDFDirector {
                             .booleanValue());
         }
 
-        System.out.println(getScheduler().getSchedule().toString());
+        //System.out.println(getScheduler().getSchedule().toString());
     }
 
     /** Invoke the wrapup() method of all the actors contained in the
