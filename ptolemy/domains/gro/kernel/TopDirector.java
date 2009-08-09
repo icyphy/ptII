@@ -35,6 +35,7 @@ import ptolemy.domains.sdf.kernel.SDFDirector;
 import ptolemy.domains.sdf.kernel.SDFReceiver;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 
 //////////////////////////////////////////////////////////////////////////
@@ -80,7 +81,10 @@ public class TopDirector extends SDFDirector {
            public void put(Token token) {
                try {
                    super.put(token);
-               } catch (Exception e) {};
+               } catch (Exception ex) {
+                   throw new InternalErrorException(null, ex,
+                           "Failed to put token \"" + token + "\"");
+               }
            }           
        };
    }
