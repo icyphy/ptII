@@ -31,6 +31,7 @@ import ptolemy.actor.parameters.PortParameter;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -99,6 +100,8 @@ public class Ramp extends SequenceSource {
     ////                     ports and parameters                  ////
 
     /** The value produced by the ramp on its first iteration.
+     *  If this value is changed during execution, then the new
+     *  value will be the output on the next iteration.
      *  The default value of this parameter is the integer 0.
      */
     public Parameter init;
@@ -110,6 +113,22 @@ public class Ramp extends SequenceSource {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+    
+    /** If the argument is the <i>init</i> parameter, then reset the
+     *  state to the specified value.
+     *  @param attribute The attribute that changed.
+     *  @throws IllegalActionException If <i>init<i> cannot be evaluated
+     *   or cannot be converted to the output type, or if the superclass
+     *   throws it.
+     */
+    public void attributeChanged(Attribute attribute)
+            throws IllegalActionException {
+        if (attribute == init) {
+            _stateToken = output.getType().convert(init.getToken());
+        } else {
+            super.attributeChanged(attribute);
+        }
+    }
 
     /** Clone the actor into the specified workspace. This calls the
      *  base class and then sets the <code>init</code> and <code>step</code>
