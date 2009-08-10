@@ -805,10 +805,10 @@ public class GiottoDirector extends StaticSchedulingDirector {
                         // iteration of the container actor in order to
                         // avoid using read and write offset variables.
                         if (inline) {
-                            Variable firings = (Variable) ((NamedObj) actor)
+                            /*Variable firings = (Variable) ((NamedObj) actor)
                                     .getAttribute("firingsPerIteration");
-                            int firingsPerIteration = ((IntToken) firings
-                                    .getToken()).intValue();
+                                    */
+                            int firingsPerIteration = 1;
                             readTokens = DFUtilities.getRate(inputPort)
                                     * firingsPerIteration;
                             writeTokens = readTokens;
