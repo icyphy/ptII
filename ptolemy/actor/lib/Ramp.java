@@ -27,6 +27,7 @@
  */
 package ptolemy.actor.lib;
 
+import ptolemy.actor.Manager;
 import ptolemy.actor.parameters.PortParameter;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
@@ -124,7 +125,17 @@ public class Ramp extends SequenceSource {
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == init) {
-            _stateToken = output.getType().convert(init.getToken());
+            // If type resolution has happened (the model is running),
+            // then update the current state.
+            Manager manager = getManager();
+            if (manager != null) {
+                Manager.State state = manager.getState();
+                if (state == Manager.ITERATING
+                        || state == Manager.PAUSED
+                        || state == Manager.PAUSED_ON_BREAKPOINT) {
+                    _stateToken = output.getType().convert(init.getToken());
+                }
+            }
         } else {
             super.attributeChanged(attribute);
         }
