@@ -37,7 +37,7 @@ import ptolemy.kernel.util.IllegalActionException;
 /**
  A code generation helper class for ptolemy.domains.sdf.lib.UpSample.
 
- @author Man-Kit Leung, Dai Bui
+ @author Man-Kit Leung, Dai Bui, Bert Rodiers
  @version $Id: UpSample.java 53042 2009-04-10 20:31:21Z cxh $
  @since Ptolemy II 7.1
  @Pt.ProposedRating Red (mankit)
@@ -63,7 +63,6 @@ public class UpSample extends NamedProgramCodeGeneratorAdapter {
      */
     @Override
     protected String _generateFireCode() throws IllegalActionException {
-        super._generateFireCode();
         CodeStream codeStream = getStrategy().getTemplateParser().getCodeStream();
 
         ptolemy.domains.sdf.lib.UpSample actor = (ptolemy.domains.sdf.lib.UpSample) getComponent();
@@ -81,7 +80,7 @@ public class UpSample extends NamedProgramCodeGeneratorAdapter {
             args.add("0");
         }
 
-        codeStream.append(getStrategy().getTemplateParser().generateBlockCode("fireBlock", args));
+        codeStream.appendCodeBlock("fireBlock", args);
         return codeStream.toString();
     }
 
