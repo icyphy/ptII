@@ -87,6 +87,18 @@ test Auto-2.0 {Testing Display} {
 } {0}
 
 
+test Auto-3.0 {Testing Multirate1} {
+	test_cg Multirate1.xml
+} {0}
+
+test Auto-4.0 {Testing Multirate2} {
+	test_cg Multirate2.xml
+} {0}
+
+test Auto-5.0 {Testing Multirate3} {
+	test_cg Multirate3.xml
+} {0}
+
 # Reset the isRunningNightlyBuild property
 java::call System setProperty "ptolemy.ptII.isRunningNightlyBuild" \
     $oldIsRunningNightlyBuild 
