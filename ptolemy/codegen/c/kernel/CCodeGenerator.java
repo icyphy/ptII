@@ -164,12 +164,17 @@ public class CCodeGenerator extends CodeGenerator {
             // "function declaration isn't a prototype
             if (!_hasPlaceable()) {
                 return _eol + _eol + "void initialize(void) {" + _eol;
-            } else {
+            } else if(_hasPlaceable()&&target.equals("posix")){
                 return _eol + _eol + "#ifdef __MAC_OS_X_VERSION_10_0" + _eol
-                    + "void initialize(void * options) {" + _eol
-                    + "#else" + _eol
-                    + "void initialize(void) {" + _eol
-                    + "#endif" + _eol;
+                + "void initialize(void * options) {" + _eol
+                + "#else" + _eol
+                + "void initialize(void) {" + _eol
+                + "#endif" + _eol;
+                
+            } else{
+                return _eol + _eol +
+                     "void initialize(void) {" + _eol;
+                   
             }
             // If the container is not in the top level, we are generating code
             // for the Java and C co-simulation.
@@ -194,7 +199,7 @@ public class CCodeGenerator extends CodeGenerator {
      */
     public String generateInitializeProcedureName()
             throws IllegalActionException {
-        if (_hasPlaceable()) {
+        if (_hasPlaceable()&&target.equals("posix")) {
             return "    initialize(options);" + _eol
                 + "#else" + _eol
                 + "     initialize();" + _eol
@@ -233,7 +238,8 @@ public class CCodeGenerator extends CodeGenerator {
         if (isTopLevel()) {
             mainEntryCode.append(_eol + _eol
                     + "int main(int argc, char *argv[]) {" + _eol);
-            if (_hasPlaceable()) {
+          
+             if (_hasPlaceable()&& target.equals("posix")) {
                 mainEntryCode.append(_eol + _eol
                     + "#ifdef __MAC_OS_X_VERSION_10_0" + _eol
                     + "    CFRunLoopSourceContext sourceContext;" + _eol
