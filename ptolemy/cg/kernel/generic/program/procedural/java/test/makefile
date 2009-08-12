@@ -89,7 +89,7 @@ RAMP_CLASS = $(ROOT)/ptolemy/cg/adapter/generic/program/procedural/java/adapters
 
 $(RAMP_CLASS): 
 	if [ ! -f $(RAMP_CLASS) ]; then \
-	    echo "Building cg/c classes so tests work"; \
+	    echo "Building cg/adapter classes so tests work"; \
 	    cd $(ROOT)/ptolemy/cg/adapter; $(MAKE) fast; \
         fi
 
