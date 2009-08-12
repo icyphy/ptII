@@ -176,12 +176,12 @@ public class SDFDirector extends StaticSchedulingDirector {
         StringBuffer code = new StringBuffer();
         code.append(super.generatePreinitializeCode());
 
-        code.append(_createOffsetVariablesIfNeeded());
-
         _createInputBufferSizeAndOffsetMap();
 
         // For the inside receivers of the output ports.
         _createOutputBufferSizeAndOffsetMap();
+
+        code.append(_createOffsetVariablesIfNeeded());
 
         return code.toString();
     }

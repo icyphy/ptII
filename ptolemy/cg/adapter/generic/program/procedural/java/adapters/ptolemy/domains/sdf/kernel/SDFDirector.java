@@ -91,11 +91,13 @@ public class SDFDirector
      */
     public String generatePreinitializeCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
-        code.append(super.generatePreinitializeCode());
+        _updatePortBufferSize();        
 
+        code.append(super.generatePreinitializeCode());
+        
         _updatePortBufferSize();
         _portNumber = 0;
-
+        
         return code.toString();
     }
 
