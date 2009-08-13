@@ -40,6 +40,7 @@ import java.util.StringTokenizer;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.TypedIOPort;
+import ptolemy.cg.adapter.generic.adapters.ptolemy.actor.Director;
 import ptolemy.cg.kernel.generic.CGException;
 import ptolemy.cg.kernel.generic.GenericCodeGenerator;
 import ptolemy.cg.kernel.generic.ParseTreeCodeGenerator;
@@ -759,13 +760,17 @@ public class TemplateParser {
         }
         if (macro.equals("get")) {
             return _replaceGetMacro(parameter);
-
-        } else if (macro.equals("send")) {
-            return _replaceSendMacro(parameter);
+        } else if (macro.equals("put")) {
+            return _replacePutMacro(parameter);
+        } else if (macro.equals("hasToken")) {
+            return _replaceHasTokenMacro(parameter);
         } else if (macro.equals("ref")) {
             // TODO: This is a workaround and should be removed.
-            // Probably we should remove the $ref feature.         
-            return ((NamedProgramCodeGeneratorAdapter) _codeGenerator.getAdapter(_component)).getReference(parameter);
+            // Probably we should remove the $ref feature.
+            CGException.throwException("$ref is no longer supported as a macro.");
+//            return ((NamedProgramCodeGeneratorAdapter) _codeGenerator.getAdapter(_component)).getReference(parameter);
+        } else if (macro.equals("param")) {
+            return _replaceParameter(parameter);
         } else if (macro.equals("targetType")) {
 
             TypedIOPort port = getPort(parameter);
@@ -1022,62 +1027,183 @@ public class TemplateParser {
         return null;
     }
 
+    /** Checks if the string is just a String of port. If true, then
+     *  return a pair of strings, where the second index is a string
+     *  "0", indicating the channel is 0. If not, check if the string
+     *  if of the form port#channel. If not,
+     *  throws an exception, if it is, put the port and channel into
+     *  two different indices of an array of strings, and return that
+     *  array.
+     *  @param name
+     *  @return port and channel
+     *  @throws IllegalActionException
+     */
+    private String[] _parsePortChannel(String name)
+        throws IllegalActionException {
+
+        String[] result = { "", "" };
+
+        // Given expression of forms:
+        //     "port", or
+        //     "port#channel".
+
+        int commaIndex = TemplateParser.indexOf(",", name,
+                0);
+
+        if (commaIndex >= 0) {
+            throw new IllegalActionException("Parsing the string:" +
+                    name + ". However we are expecting a string" +
+                    "of the form: port, or port#channel.");
+        }
+
+        int poundIndex = indexOf("#", name,
+                0);
+        if (poundIndex < 0) {
+            result[0] = name;
+            result[1] = "0";
+        } else {
+            result[0] = name.substring(0, poundIndex);
+            result[1] = name.substring(poundIndex + 1); 
+        }
+        return result;
+    }
+
     
     private String _replaceGetMacro(String parameter)
             throws IllegalActionException {
-        // e.g. $get(0, input);
+        // e.g. $get(input#channel, offset); or
+        // $get(input, offset); or,
+        // $get(input#channel); or,
+        // $get(input);
         List<String> parameters = parseList(parameter);
-
-        TypedIOPort port = null;
-        String channel = "";
-        if (parameters.size() == 2) {
-            port = getPort(parameters.get(0));
-            channel = parameters.get(1);
+        String offset;
+        if (parameters.size() == 1) {
+            offset = "0";
+        } else {
+            offset = parameters.get(1);
         }
 
+        String[] portChannel = _parsePortChannel(parameters.get(0));
+
+        TypedIOPort port = getPort(portChannel[0]);
+        String channel = portChannel[1];
+        
         if (port == null || channel.length() == 0) {
             CGException.throwException(parameter
                     + " is not acceptable by $get(). "
                     + "The $get macro takes in as arguments "
-                    + "a channelNumber, and a port (e.g. $get(0, output).");
+                    + "a channelNumber, and a port (e.g. $get(output#0).");
         }
 
         PortCodeGenerator portAdapter = (PortCodeGenerator) _codeGenerator.getAdapter(port);
 
-        return portAdapter.generateGetCode(channel);
+        return processCode(portAdapter.generateGetCode(channel, offset));
+    }
+    
+    /** replace the $hasToken() with the corresponding parameter 
+     *  @param parameter The name and offset of the parameter
+     *  @return the hasToken parameter is returned
+     *  @throws IllegalActionException
+     */
+    private String _replaceHasTokenMacro(String parameter) throws IllegalActionException {
+        // e.g. $hasToken(input#channel, offset); or
+        // $hasToken(input, offset); or,
+        // $hasToken(input#channel); or,
+        // $hasToken(input);
+        List<String> parameters = parseList(parameter);
+        String offset;
+        if (parameters.size() == 1) {
+            offset = "0";
+        } else {
+            offset = parameters.get(1);
+        }
+
+        String[] portChannel = _parsePortChannel(parameters.get(0));
+
+        TypedIOPort port = getPort(portChannel[0]);
+        String channel = portChannel[1];
+        
+        if (port == null || channel.length() == 0) {
+            CGException.throwException(parameter
+                    + " is not acceptable by $get(). "
+                    + "The $get macro takes in as arguments "
+                    + "a channelNumber, and a port (e.g. $get(output#0).");
+        }
+
+        PortCodeGenerator portAdapter = (PortCodeGenerator) _codeGenerator.getAdapter(port);
+
+        return processCode(portAdapter.generateHasTokenCode(channel, offset));
+    }
+    
+    /** replace the $param() with the corresponding parameter
+     *  @param parameter The name and offset of the parameter.
+     *  @return the parameter to be returned.
+     *  @throws IllegalActionException
+     */
+    private String _replaceParameter(String parameter) throws IllegalActionException {
+        // e.g. $param(thisParam, 0), or $param(thisParam).
+        // First is the name of the parameter, second is the offset of the parameter.
+        if (!(_component instanceof Actor)) {
+            CGException.throwException(_component, "Parameters are only supported for" +
+            		"actors, but this component is not one.");
+        }
+        Director directorAdapter = (Director)_codeGenerator.getAdapter(((Actor)_component).getDirector());
+        NamedProgramCodeGeneratorAdapter adapter = 
+            (NamedProgramCodeGeneratorAdapter)_codeGenerator.getAdapter(_component);
+        List<String> parameters = parseList(parameter);
+        String paramName = parameters.get(0);
+        String[] offset = new String[]{"", ""};
+        if (parameters.size() == 2) {
+            offset[1] = parameters.get(1);
+        } else if (parameters.size() != 1){
+            CGException.throwException(_component, "$param() can be used as follows:" +
+            		"$param(name), or, $param(name, offset)");
+        }
+        Attribute attribute = adapter.getComponent().getAttribute(paramName);
+        return directorAdapter.getParameter(adapter, attribute, offset);
     }
 
-    private String _replaceSendMacro(String parameter)
+    private String _replacePutMacro(String parameter)
             throws IllegalActionException {
-        // e.g. $send(input, 0, token);
+        // e.g. $put(input#channel, token); or 
+        // $put(input, token); or
+        // $put(input#channel, offset, token)
+        // $put(input, offset, token)
         List<String> parameters = parseList(parameter);
 
+        String offset = null;
+        String dataToken = null;
+        
+        if (parameters.size() == 2) {
+            offset = "0";
+            dataToken = parameters.get(1);
+        } else if (parameters.size() == 3) {
+            offset = parameters.get(1);
+            dataToken = parameters.get(2);
+        } else {
+            CGException.throwException("parameter is not acceptable by $put(). " + 
+                    "$put could be used in the following ways: " +
+                    "$put(output#channel, token); or, $put(output, token); or," +
+                    "$put(input#channel, offset, token); or, $put(input, offset, token)");
+        }
+        
         TypedIOPort port = null;
         String channel = "";
-        String dataToken = "";
-
-        port = getPort(parameters.get(0));
-        channel = parameters.get(1);
-
-        if (port == null || channel.length() == 0) {
-            CGException.throwException(
-                    parameter
-                            + " is not acceptable by $send(). "
-                            + "The $send macro takes in as arguments "
-                            + "a channelNumber, port, and data (e.g. $send(0, output, 45).");
-        }
-
-        if (parameters.size() == 2) {
-            dataToken = processCode("$ref(" + port.getName() + "#" + channel
-                    + ")");
-
-        } else if (parameters.size() == 3) {
-            dataToken = parameters.get(2);
+        
+        String[] portAndChannel = _parsePortChannel(parameters.get(0));
+        
+        port = getPort(portAndChannel[0]);
+        channel = portAndChannel[1];
+        
+        if (port == null) {
+            CGException.throwException("parameter is not acceptable by $put(). " + 
+                    "$put could be used in the following ways: " +
+                    "$put(output, 0, token); or, $put(output, token);");
         }
 
         PortCodeGenerator portAdapter = (PortCodeGenerator) _codeGenerator.getAdapter(port);
 
-        return portAdapter.generateSendCode(channel, dataToken);
+        return processCode(portAdapter.generatePutCode(channel, offset, dataToken));
     }
 
     ///////////////////////////////////////////////////////////////////
