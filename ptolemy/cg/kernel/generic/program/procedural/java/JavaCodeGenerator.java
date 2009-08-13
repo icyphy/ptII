@@ -43,6 +43,7 @@ import java.util.Set;
 import java.util.StringTokenizer;
 
 import ptolemy.actor.Actor;
+import ptolemy.actor.CompositeActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.lib.jni.PointerToken;
 import ptolemy.cg.kernel.generic.CodeGeneratorUtilities;
@@ -315,8 +316,13 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
         if (_isTopLevel()) {
             return INDENT1 + "System.exit(0);" + _eol + "}" + _eol + "}" + _eol;
         } else {
-            return INDENT1 + "return tokensToAllOutputPorts;" + _eol + "}"
-                    + _eol + "}" + _eol;
+            if (_model instanceof CompositeActor && ((CompositeActor) _model).outputPortList().isEmpty()) { 
+                return INDENT1 + "return null;" + _eol + "}"
+                + _eol + "}" + _eol;
+            } else {
+                return INDENT1 + "return tokensToAllOutputPorts;" + _eol + "}"
+                        + _eol + "}" + _eol;
+            }
         }
     }
 
