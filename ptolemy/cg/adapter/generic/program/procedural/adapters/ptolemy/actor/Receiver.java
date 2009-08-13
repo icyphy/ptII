@@ -27,9 +27,14 @@
  */
 package ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor;
 
+import ptolemy.actor.Actor;
 import ptolemy.actor.IOPort;
+import ptolemy.cg.adapter.generic.adapters.ptolemy.actor.Director;
+import ptolemy.cg.kernel.generic.CGException;
 import ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapter;
+import ptolemy.cg.kernel.generic.program.TemplateParser;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InvalidStateException;
 
 ///////////////////////////////////////////////////////////////////////
 ////Receiver
@@ -48,24 +53,20 @@ public abstract class Receiver extends ProgramCodeGeneratorAdapter {
      */
     public Receiver(ptolemy.actor.Receiver receiver)
             throws IllegalActionException {
-        super(null);
-
-        IOPort port = getComponent().getContainer();
-        int channel = port.getChannelForReceiver(getComponent());
-        _name = getCodeGenerator().generateVariableName(port) + "_" + channel;
+        super(receiver);
     }
 
     /** Abstract class to generate code for getting tokens from the receiver.
      *  @return generate get code.
      *  @throws IllegalActionException
      */
-    abstract public String generateGetCode() throws IllegalActionException;
+    abstract public String generateGetCode(String offset) throws IllegalActionException;
 
     /** Abstract class to generate code to check if the receiver has token.
      *  @return generate hasToken code.
      *  @throws IllegalActionException
      */
-    abstract public String generateHasTokenCode() throws IllegalActionException;
+    abstract public String generateHasTokenCode(String offset) throws IllegalActionException;
     
     /**
      * Generate the initialize code. In this base class, return empty
@@ -81,10 +82,11 @@ public abstract class Receiver extends ProgramCodeGeneratorAdapter {
     }
     
     /** Abstract class to generate code for putting tokens from the receiver.
-     *  @return generate put code.
+     *  Note the type conversion is also done in this put method.
+     *  @return generate type conversion as well as put code.
      *  @throws IllegalActionException
      */
-    abstract public String generatePutCode(String token)
+    abstract public String generatePutCode(IOPort sourcePort, String offset, String token)
             throws IllegalActionException;
 
     /** Get the corresponding component */
@@ -95,6 +97,16 @@ public abstract class Receiver extends ProgramCodeGeneratorAdapter {
     /** Return the name of this receiver
      */
     public String getName() {
+        if (_name == null) {
+            IOPort port = getComponent().getContainer();
+            int channel;
+            try {
+                channel = port.getChannelForReceiver(getComponent());
+            } catch (IllegalActionException e) {
+                throw new InvalidStateException(port, e, "Can't retrieve channel for receiver.");
+            }
+            _name = getCodeGenerator().generateVariableName(port) + "_" + channel;
+        }        
         return _name;
     }
     
@@ -115,9 +127,40 @@ public abstract class Receiver extends ProgramCodeGeneratorAdapter {
     abstract protected String _generateTypeConvertStatement(ProgramCodeGeneratorAdapter.Channel source)
             throws IllegalActionException;
     
+    /** The token should be in the form of sinkRef = $convert(sourceRef).
+     *  @throws IllegalActionException 
+     */
+    protected String _removeSink(String token) throws IllegalActionException {
+        int equalIndex = TemplateParser.indexOf("=", token, 0);
+
+        if (equalIndex < 0) {
+            CGException.throwException("The parsed type conversion statement is" +
+                        "expected to be of the form: sinkRef = $convert(sourceRef)");
+        }
+        
+        return token.substring(equalIndex + 1);
+    }
+    
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
-    protected String _name;
+    
+    /** Each receiver is associated with a director, return that director.
+     *  @return The director associated with this receiver.
+     *  @throws IllegalActionException 
+     *  
+     *  FIXME: this is not exactly correct.
+     */
+    protected Director _getDirectorForReceiver() throws IllegalActionException {
+        return (Director)getAdapter(((Actor)getComponent().getContainer().getContainer()).getDirector());
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables               ////
+
+    private String _name;
 
 }

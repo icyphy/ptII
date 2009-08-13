@@ -27,9 +27,7 @@
  */
 package ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor;
 
-import java.util.HashSet;
-import java.util.Set;
-
+import ptolemy.actor.TypedIOPort;
 import ptolemy.cg.kernel.generic.PortCodeGenerator;
 import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
 import ptolemy.data.type.Type;
@@ -73,25 +71,30 @@ public class IOPort extends NamedProgramCodeGeneratorAdapter implements
      *  not found or it encounters an error while generating the
      *  get code.
      */
-    public String generateGetCode(String channel) throws IllegalActionException {
+    public String generateGetCode(String channel, String offset) throws IllegalActionException {
         Receiver[][] receivers = getReceiverAdapters();
         int channelIndex = Integer.parseInt(channel);
         // FIXME: take care of the offset, and why are we getting all the receivers all the time?
-        StringBuffer code = new StringBuffer();
         // FIXME: Don't know why would a channel have more than one relations
         // Thus for now to make sure we don't run into such problems, have a check to ensure
         // this is not true. IF THIS IS TRUE HOWEVER, then the generated code in the receivers would
         // need to change to ensure no name collisions between multiple receivers within the same 
         // channel would occur.
-        if (receivers[channelIndex].length > 1) {
-            throw new IllegalActionException(
-                    "Didn't take care of the case where one channel"
-                            + "has more than one receiver");
+        if (receivers.length != 0) {
+            if (receivers[channelIndex].length > 1) {
+                throw new IllegalActionException(
+                        "Didn't take care of the case where one channel"
+                        + "has more than one receiver");
+            }
+            if (receivers[channelIndex].length > 0) {
+                return receivers[channelIndex][0].generateGetCode(offset);
+            }
         }
-        for (int j = 0; j < receivers[channelIndex].length; j++) {
-            code.append(receivers[channelIndex][j].generateGetCode());
-        }
-        return code.toString();
+        Type type = ((TypedIOPort)getComponent()).getType();
+        String typeString = getCodeGenerator().codeGenType(type);
+        // The component port is not connected to anything, so hasToken should
+        // always return something trivial;
+        return "$convert_Integer_" + typeString + "(0)";
     }
 
     /** 
@@ -106,21 +109,24 @@ public class IOPort extends NamedProgramCodeGeneratorAdapter implements
      *  not found or it encounters an error while generating the
      *  hasToken code.
      */
-    public String generateHasTokenCode(String channel)
+    public String generateHasTokenCode(String channel, String offset)
             throws IllegalActionException {
         Receiver[][] receivers = getReceiverAdapters();
         int channelNumber = Integer.parseInt(channel);
         // FIXME: take care of the offset, and why are we getting all the receivers all the time?
-        if (receivers[channelNumber].length > 1) {
-            throw new IllegalActionException(
-                    "Didn't take care of the case where one channel"
-                            + "has more than one receiver");
+        if (receivers.length != 0) {
+            if (receivers[channelNumber].length > 1) {
+                throw new IllegalActionException(
+                        "Didn't take care of the case where one channel"
+                        + "has more than one receiver");
+            }
+            if (receivers[channelNumber].length > 0) {
+                return receivers[channelNumber][0].generateHasTokenCode(offset);
+            }
         }
-        if (receivers[channelNumber].length > 0) {
-            return receivers[channelNumber][0].generateHasTokenCode();
-        } else {
-            return "";
-        }
+        // The component port is not connected to anything, so hasToken should
+        // always return false;
+        return "false";
     }
 
     /** 
@@ -134,7 +140,7 @@ public class IOPort extends NamedProgramCodeGeneratorAdapter implements
      *  not found or it encounters an error while generating the
      *  send code.
      */
-    public String generateSendCode(String channel, String dataToken)
+    public String generatePutCode(String channel, String offset, String dataToken)
             throws IllegalActionException {
 
         Receiver[][] remoteReceivers = getRemoteReceiverAdapters();
@@ -157,15 +163,8 @@ public class IOPort extends NamedProgramCodeGeneratorAdapter implements
                             + "has more than one receiver");
         }
         for (int i = 0; i < remoteReceivers[channelIndex].length; i++) {
-            Type sourceType = ((ptolemy.actor.TypedIOPort) getComponent())
-                    .getType();
-            Type sinkType = ((ptolemy.actor.TypedIOPort) remoteReceivers[channelIndex][i]
-                    .getComponent().getContainer()).getType();
-            dataToken = "$convert_" + getCodeGenerator().codeGenType(sourceType)
-                    + "_" + getCodeGenerator().codeGenType(sinkType) + "("
-                    + dataToken + ")";
-            code.append(remoteReceivers[channelIndex][i]
-                    .generatePutCode(dataToken));
+            code.append(remoteReceivers[channelIndex][i].generatePutCode(
+                    (ptolemy.actor.IOPort)this.getComponent(), offset, dataToken));
         }
         return code.toString();
     }
