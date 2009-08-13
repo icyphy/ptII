@@ -262,7 +262,7 @@ public class NamedProgramCodeGeneratorAdapter extends ProgramCodeGeneratorAdapte
      *  @return The associated component.
      */
     public NamedObj getComponent() {
-        return _strategy.getComponent();
+        return (NamedObj) _strategy.getComponent();
     }
 
     /**
@@ -299,7 +299,6 @@ public class NamedProgramCodeGeneratorAdapter extends ProgramCodeGeneratorAdapte
 
         if (getCodeGenerator().inline.getToken() == BooleanToken.TRUE) {
             code.append(_generateFireCode());
-            code.append(generateTypeConvertFireCode());
         } else if (getCodeGenerator().getContainer().getContainer() != null) {
             // Here we test whether the codegenerator is embedded in another actor or whether it
             // is at the toplevel. In it is embedded we don't need to generateTypeConvertFireCode.
@@ -330,7 +329,6 @@ public class NamedProgramCodeGeneratorAdapter extends ProgramCodeGeneratorAdapte
         code.append(_eol + "void " + NamedProgramCodeGeneratorAdapter.generateName(getComponent())
                 + getCodeGenerator()._getFireFunctionArguments() + " {" + _eol);
         code.append(_generateFireCode());
-        code.append(generateTypeConvertFireCode());
         code.append("}" + _eol);
         return processCode(code.toString());
     }
@@ -877,7 +875,7 @@ public class NamedProgramCodeGeneratorAdapter extends ProgramCodeGeneratorAdapte
      */
     protected String _generateTypeConvertStatement(ProgramCodeGeneratorAdapter.Channel source,
             ProgramCodeGeneratorAdapter.Channel sink, int offset) throws IllegalActionException {
-        return _strategy._generateTypeConvertStatement(source, sink, offset);
+        return _strategy.generateTypeConvertStatement(source, sink, offset, null);
     }
 
     /**
