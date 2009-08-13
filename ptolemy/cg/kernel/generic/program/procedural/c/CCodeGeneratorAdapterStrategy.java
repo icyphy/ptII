@@ -83,8 +83,9 @@ public class CCodeGeneratorAdapterStrategy extends ProceduralCodeGeneratorAdapte
      * @exception IllegalActionException If there is a problem getting the
      * adapters for the ports or if the conversion cannot be handled.
      */
-    protected String _generateTypeConvertStatement(ProgramCodeGeneratorAdapter.Channel source,
-            ProgramCodeGeneratorAdapter.Channel sink, int offset) throws IllegalActionException {
+    public String generateTypeConvertStatement(ProgramCodeGeneratorAdapter.Channel source,
+            ProgramCodeGeneratorAdapter.Channel sink, int offset, String alternativeSourceRef)
+            throws IllegalActionException {
 
         Type sourceType = ((TypedIOPort) source.port).getType();
         Type sinkType = ((TypedIOPort) sink.port).getType();
@@ -101,8 +102,14 @@ public class CCodeGeneratorAdapterStrategy extends ProceduralCodeGeneratorAdapte
         // to find the associated adapter.
         String sourcePortChannel = source.port.getName() + "#"
                 + source.channelNumber + ", " + offset;
-        String sourceRef = (_getAdapter(source.port.getContainer()))
-                .getReference(sourcePortChannel);
+        String sourceRef;
+        
+        if (alternativeSourceRef == null) {
+            sourceRef = ((NamedProgramCodeGeneratorAdapter) _getAdapter(source.port
+                .getContainer())).getReference(sourcePortChannel);
+        } else {
+            sourceRef = alternativeSourceRef;
+        }
 
         String sinkPortChannel = sink.port.getName() + "#" + sink.channelNumber
                 + ", " + offset;
