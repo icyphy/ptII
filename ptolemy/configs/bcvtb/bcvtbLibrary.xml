@@ -45,6 +45,8 @@
 	<input source="ptolemy/actor/lib/realtime.xml"/>
 	<input source="ptolemy/actor/lib/signalprocessing.xml"/>
 	<input source="ptolemy/actor/lib/string/string.xml"/>
+	<input source="ptolemy/actor/lib/xslt/xslt.xml"/>
+	<input source="ptolemy/actor/lib/database/database.xml"/>
         </group>
       ?>
     </configure>
