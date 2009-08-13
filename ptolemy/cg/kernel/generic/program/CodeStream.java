@@ -62,10 +62,11 @@ import ptolemy.util.StringUtilities;
  * specify. Parameter substitution syntax is straight-forward string pattern
  * substitution, so the user is responsible for declaring unique parameter
  * names. For example, a code block is declared to be the following:
+ * FIXME: $ref()'s should be replaced with $get() and $put().
  * <pre>
  *     &#47;*** initBlock ($arg) ***&#47;
- *         if ($ref(input) != $arg) {
- *             $ref(output) = $arg;
+ *         if ($get(input) != $arg) {
+ *             $put(output, $arg);
  *         }
  *     &#47;**&#47;
  * </pre>
@@ -77,9 +78,10 @@ import ptolemy.util.StringUtilities;
  *     appendCodeBlock("initBlock", args);
  * </pre>
  * then after parameter substitution, the code block would become:
+ * FIXME: $ref()'s should be replaced with $get() and $put().
  * <pre>
- *     if ($ref(input) != 3) {
- *         $ref(output) = 3;
+ *     if ($get(input) != 3) {
+ *         $put(output, 3);
  *     }
  * </pre>
  * Parameter substitution takes place before macro substitution processed
