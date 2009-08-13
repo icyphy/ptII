@@ -72,7 +72,8 @@ public class UpSample extends NamedProgramCodeGeneratorAdapter {
         Type type = actor.input.getType();
         if (!getCodeGenerator().isPrimitive(type)) {
             if (type == BaseType.GENERAL) {
-                args.add("$typeFunc($ref(input).type::zero())");
+//                args.add("$typeFunc($ref(input).type::zero())");
+                args.add("$typeFunc($get(input).type::zero())");
             } else {
                 args.add(getCodeGenerator().codeGenType(type) + "_zero()");
             }

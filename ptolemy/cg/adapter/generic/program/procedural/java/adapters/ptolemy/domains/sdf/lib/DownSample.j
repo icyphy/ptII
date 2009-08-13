@@ -1,4 +1,4 @@
 /*** fireBlock ***/
-        $ref(output) = $ref(input, $val(factor) - $val(phase) - 1);
+        $put(output, $get(input, $val(factor) - $val(phase) - 1));
 /**/
 
