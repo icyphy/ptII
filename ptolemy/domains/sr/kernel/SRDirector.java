@@ -26,6 +26,10 @@
  */
 package ptolemy.domains.sr.kernel;
 
+import java.util.HashSet;
+import java.util.Set;
+import java.util.TreeMap;
+
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
@@ -55,11 +59,10 @@ import ptolemy.kernel.util.Workspace;
  enclosing director. If the period is greater than 0.0, then
  if this director is at the top level, it increments
  time by this amount in each invocation of postfire().
- If it is not at the top level, then it calls
+ If it is not at the top level, then it refuses to fire
+ at times that do not match a multiple of the <i>period</i>
+ (by returning false in prefire()), and if it fires, it calls
  fireAt(currentTime + period) in postfire().
- Moreover, if the period is non-zero and it fires at a time
- not matching a multiple of the period value, it will return
- false in prefire(), thus refusing to fire.
  </p><p>
  This behavior gives an interesting use of SR within DE or
  Continuous. In particular, if set a period other than 0.0,
@@ -147,13 +150,16 @@ public class SRDirector extends FixedPointDirector {
     ////                         public methods                    ////
 
     /** Request a firing of the given actor at the given absolute
-     *  time.  This method delegates to the enclosing director
-     *  if there is one. Otherwise, it checks to see whether the
+     *  time, and return the time at which the specified will be
+     *  fired. If the <i>period</i> is 0.0 and there is no enclosing
+     *  director, then this method returns the current time. If
+     *  the period is 0.0 and there is an enclosing director, then
+     *  this method delegates to the enclosing director, returning
+     *  whatever it returns. If the <i>period</i> is not 0.0, then
+     *  this method checks to see whether the
      *  requested time is equal to the current time plus an integer
      *  multiple of the period. If so, it returns the requested time.
-     *  If not, it returns current time plus the period,
-     *  even if the period is 0.0, thus indicating to the caller the next
-     *  time at which it will be called.
+     *  If not, it returns current time plus the period.
      *  @param actor The actor scheduled to be fired.
      *  @param time The requested time.
      *  @exception IllegalActionException If the operation is not
@@ -162,48 +168,62 @@ public class SRDirector extends FixedPointDirector {
      *  period.
      */
     public Time fireAt(Actor actor, Time time) throws IllegalActionException {
+        // NOTE: This used to delegate to the enclosing director, but
+        // prefire() will refuse to fire at that time if it isn't a multiple of
+        // the period. So it is wrong to delegate to the enclosing
+        // director. EAL 8/10/09
         Actor container = (Actor) getContainer();
-        if (container != null) {
-            Director executiveDirector = container.getExecutiveDirector();
-            if (executiveDirector != null) {
-                return executiveDirector.fireAt(container, time);
+        double periodValue = ((DoubleToken) period.getToken()).doubleValue();
+        Time currentTime = getModelTime();
+        
+        // Check the most common case first.
+        if (periodValue == 0.0) {
+            if (container != null) {
+                Director executiveDirector = container.getExecutiveDirector();
+                if (executiveDirector != null) {
+                    _recordPendingFireAt(actor, time);
+                    return executiveDirector.fireAt(container, time);
+                }
             }
+            // All subsequent firings will be at the current time.
+            _recordPendingFireAt(actor, currentTime);
+            return currentTime;
         }
-        // No executive director. Return current time plus the period,
+        // Now we know the period is not 0.0.
+        // Return current time plus the period,
         // or some multiple of the period.
         // NOTE: this is potentially very expensive to compute precisely
         // because the Time class has an infinite range and only supports
         // precise addition. Determining whether the argument satisfies
         // the criterion seems difficult. Hence, we check to be sure
         // that the test is worth doing.
-        Time currentTime = getModelTime();
-        double periodValue = ((DoubleToken) period.getToken()).doubleValue();
-        // Check the most common case first.
-        if (periodValue == 0.0) {
-            // All subsequent firings will be at the current time.
-            return currentTime;
-        }
-        // Now we know the period is not 0.0.
+
         // First check to see whether we are in the initialize phase, in
         // which case, return the start time.
         if (container != null) {
             Manager manager = ((CompositeActor) container).getManager();
             if (manager.getState().equals(Manager.INITIALIZING)) {
+                _recordPendingFireAt(actor, currentTime);
                 return currentTime;
             }
         }
         if (time.isInfinite() || currentTime.compareTo(time) > 0) {
             // Either the requested time is infinite or it is in the past.
-            return currentTime.add(periodValue);
+            Time result = currentTime.add(periodValue);
+            _recordPendingFireAt(actor, result);
+            return result;
         }
         Time futureTime = currentTime;
         while (time.compareTo(futureTime) > 0) {
             futureTime = futureTime.add(periodValue);
             if (futureTime.equals(time)) {
+                _recordPendingFireAt(actor, time);
                 return time;
             }
         }
-        return currentTime.add(periodValue);
+        Time result = currentTime.add(periodValue);
+        _recordPendingFireAt(actor, result);
+        return result;
     }
 
     /** Return the time value of the next iteration.
@@ -261,6 +281,9 @@ public class SRDirector extends FixedPointDirector {
      *  director have enough tokens.
      */
     public boolean prefire() throws IllegalActionException {
+        
+        boolean result = super.prefire();
+                
         // If the superdense time index is zero
         // then either this is the first iteration, or
         // it was set to zero in the last call to postfire().
@@ -276,6 +299,9 @@ public class SRDirector extends FixedPointDirector {
         if (periodValue > 0.0) {
             Actor container = (Actor) getContainer();
             Director executiveDirector = container.getExecutiveDirector();
+            // If we are at the top level, then this check is not necessary
+            // since presumably we will be assured that current time matches
+            // the period.
             if (executiveDirector != null) {
                 // Not at the top level.
                 Time enclosingTime = executiveDirector.getModelTime();
@@ -288,7 +314,8 @@ public class SRDirector extends FixedPointDirector {
                         int index = ((SuperdenseTimeDirector) executiveDirector)
                                 .getIndex();
                         if (index == 0) {
-                            return super.prefire();
+                            _updatePendingFireAts(enclosingTime);
+                            return result;
                         }
                         // If the index is not zero, do not agree to fire, but request
                         // a refiring at the next multiple of the period.
@@ -306,6 +333,9 @@ public class SRDirector extends FixedPointDirector {
                     // We must have been dormant in a modal model.
                     // Catch up.
                     while (_nextFiringTime.compareTo(enclosingTime) < 0) {
+                        // FIXME: Any enclosed actors that called fireAt() need
+                        // to be notified if their requested time has been
+                        // skipped by calling fireAtSkipped.
                         _nextFiringTime = _nextFiringTime.add(periodValue);
                     }
                     if (_nextFiringTime.compareTo(enclosingTime) == 0) {
@@ -316,7 +346,8 @@ public class SRDirector extends FixedPointDirector {
                             int index = ((SuperdenseTimeDirector) executiveDirector)
                                     .getIndex();
                             if (index == 0) {
-                                return super.prefire();
+                                _updatePendingFireAts(enclosingTime);
+                                return result;
                             }
                             // If the index is not zero, do not agree to fire, but request
                             // a refiring at the next multiple of the period.
@@ -326,7 +357,8 @@ public class SRDirector extends FixedPointDirector {
                         }
                         // If the enclosing director does not support superdense time,
                         // then agree to fire.
-                        return super.prefire();
+                        _updatePendingFireAts(enclosingTime);
+                        return result;
                     } else {
                         // NOTE: The following throws an exception if the time
                         // requested cannot be honored by the enclosed director
@@ -339,7 +371,8 @@ public class SRDirector extends FixedPointDirector {
             }
         }
         // If period is zero, then just return the superclass result.
-        return super.prefire();
+        _updatePendingFireAts(getModelTime());
+        return result;
     }
 
     /** Call postfire() on all contained actors that were fired on the last
@@ -401,9 +434,49 @@ public class SRDirector extends FixedPointDirector {
         period.setExpression("0.0");
     }
 
+    /** Record a pending fireAt().
+     *  @param actor The actor requesting a firing.
+     *  @param time The time returned by fireAt().
+     */
+    private void _recordPendingFireAt(Actor actor, Time time) {
+        if (_pendingFireAts == null) {
+            _pendingFireAts = new TreeMap<Time, Set<Actor>>();
+        }
+        Set<Actor> pending = _pendingFireAts.get(time);
+        if (pending == null) {
+            pending = new HashSet<Actor>();
+        }
+        pending.add(actor);
+    }
+
+    /** Notify any actors expecting fireAt() calls if the time
+     *  they were told they would fire is in the past compared
+     *  to the argument. Remove all pending fireAt() records
+     *  up to and including the specified time.
+     *  @param time The time returned by fireAt().
+     *  @throws IllegalActionException If a notified actor throws it.
+     */
+    private void _updatePendingFireAts(Time time) throws IllegalActionException {
+        if (_pendingFireAts != null && !_pendingFireAts.isEmpty()) {
+            Time firstKey = _pendingFireAts.firstKey();
+            while(firstKey != null && firstKey.compareTo(time) < 0) {
+                Set<Actor> actors = _pendingFireAts.remove(firstKey);
+                if (actors != null) {
+                    for (Actor actor : actors) {
+                        actor.fireAtSkipped(firstKey);
+                    }
+                }
+            }
+            _pendingFireAts.remove(time);
+        }
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
     /** The expected next firing time. */
     private Time _nextFiringTime;
+    
+    /** Pending fireAt() calls, in case we have to call fireAtSkipped(). */
+    private TreeMap<Time, Set<Actor>> _pendingFireAts;
 }
