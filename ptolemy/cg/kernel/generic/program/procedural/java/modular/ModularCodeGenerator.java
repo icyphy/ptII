@@ -215,9 +215,13 @@ public class ModularCodeGenerator extends JavaCodeGenerator {
         if (_isTopLevel()) {
             return INDENT1 + "System.exit(0);" + _eol + "}" + _eol + "}" + _eol;
         } else {
-            return INDENT1 + "return tokensToAllOutputPorts;" + _eol + "}"
-                    + _eol + "}" + _eol;
-
+            if (_model instanceof CompositeActor && ((CompositeActor) _model).outputPortList().isEmpty()) { 
+                return INDENT1 + "return null;" + _eol + "}"
+                + _eol + "}" + _eol;
+            } else {
+                return INDENT1 + "return tokensToAllOutputPorts;" + _eol + "}"
+                        + _eol + "}" + _eol;
+            }
         }
     }
 }
