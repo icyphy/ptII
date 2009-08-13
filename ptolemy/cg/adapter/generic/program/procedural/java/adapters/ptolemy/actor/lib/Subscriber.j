@@ -1,3 +1,3 @@
 /***fireBlock($channel)***/
-$ref(output#$channel) = $ref(($cgType(output)) input#$channel);
+$put(output#$channel, $get(($cgType(output)) input#$channel));
 /**/

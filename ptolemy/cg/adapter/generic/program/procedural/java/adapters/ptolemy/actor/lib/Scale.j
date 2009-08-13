@@ -1,13 +1,13 @@
 /***FireBlock***/
 // primitive is commutative.
-$ref(output) = $val(factor) * $ref(input);
+$put(output, $val(factor) * $get(input));
 /**/
 
 /***TokenFireBlock***/
-if ($ref(scaleOnLeft)) {
-    $ref(output) = Scale_scaleOnLeft($ref(input), (double) $val(factor));
+if ($param(scaleOnLeft)) {
+    $put(output, Scale_scaleOnLeft($get(input), (double) $val(factor)));
 } else {
-    $ref(output) = Scale_scaleOnRight($ref(input), (double) $val(factor));
+    $put(output, Scale_scaleOnRight($get(input), (double) $val(factor)));
 }
 /**/
 

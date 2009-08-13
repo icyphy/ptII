@@ -95,7 +95,7 @@ public class EmbeddedJavaActor extends CompiledCompositeActor {
         // // Assuming you have added an input port named "input"
         // // and an output port named "output", then the following
         // // line results in the input being copied to the output.
-        // $ref(output) = $ref(input);
+        // $put(output, $get(input));
         // /**/
         //
         // /***wrapupBlock***/
@@ -225,7 +225,7 @@ public class EmbeddedJavaActor extends CompiledCompositeActor {
                 + "// and an output port named \"output\", "
                 + "then the following\n"
                 + "// line results in the input being copied to the output.\n"
-                + "//$ref(output) = $ref(input);\n" + "/**/\n\n";
+                + "//$put(output, $get(input));\n" + "/**/\n\n";
         return code;
     }
 

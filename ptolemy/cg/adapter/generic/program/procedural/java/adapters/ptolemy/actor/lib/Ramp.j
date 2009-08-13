@@ -7,41 +7,41 @@ $actorSymbol(state) = $typeFunc(TYPE_Array::convert($actorSymbol(state), $elemen
 /**/
 
 /*** ArrayConvertStepBlock($elementType) ***/
-$ref(step) = $typeFunc(TYPE_Array::convert($ref(step), $elementType));
+$param(step) = $typeFunc(TYPE_Array::convert($param(step), $elementType)));
 /**/
-
 
 /***CommonInitBlock($type)***/
 $actorSymbol(state) = $val(($type)init);
 /**/
 
-/***StringInitBlock***/
-$actorSymbol(state) = strdup($val((String)init));
-/**/
-
 /***IntegerFireBlock***/
-$ref(output) = $actorSymbol(state);
-$actorSymbol(state) += $ref((Integer)step);
+$put(output, $actorSymbol(state));
+if ($hasToken(step)) {
+	$param(step) = $get(step);
+}
+$actorSymbol(state) += (Integer)$param(step);
 /**/
 
 /***DoubleFireBlock***/
-$ref(output) = $actorSymbol(state);
-$actorSymbol(state) += $ref((Double)step);
+$put(output, $actorSymbol(state));
+if ($hasToken(step)) {
+	$param(step) = $get(step);
+}
+$actorSymbol(state) += (Double)$param(step);
 /**/
 
 /***BooleanFireBlock***/
-$ref(output) = $actorSymbol(state);
-$actorSymbol(state) |= $ref((Boolean)step);
-/**/
-
-/***StringFireBlock***/
-$ref(output) = (char*) realloc($ref(output), sizeof(char) * (strlen($actorSymbol(state)) + 1) );
-strcpy($ref(output), $actorSymbol(state));
-$actorSymbol(state) = (char*) realloc($actorSymbol(state), sizeof(char) * (strlen($actorSymbol(state)) + strlen($ref((String)step)) + 1) );
-strcat($actorSymbol(state),  $ref((String)step));
+$put(output, $actorSymbol(state));
+if ($hasToken(step)) {
+	$param(step) = $get(step);
+}
+$actorSymbol(state) |= (Boolean)$param(step);
 /**/
 
 /***TokenFireBlock***/
-$ref(output) = $actorSymbol(state);
-$actorSymbol(state) = $add_Token_Token($ref(output), $ref(step));
+$put(output, $actorSymbol(state));
+if ($hasToken(step)) {
+	$param(step) = $get(step);
+}
+$actorSymbol(state) = $add_Token_Token($actorSymbol(state), $param(step));
 /**/

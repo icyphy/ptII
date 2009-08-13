@@ -79,9 +79,12 @@ public class Expression extends NamedProgramCodeGeneratorAdapter {
         StringBuffer code = new StringBuffer();
         code.append(super._generateFireCode());
 
-        code.append(processCode("    $ref(output) = "
+//        code.append(processCode("    $ref(output) = "
+//                + _javaParseTreeCodeGenerator.generateFireCode())
+//                + ";" + _eol);
+        code.append(processCode("    $put(output, "
                 + _javaParseTreeCodeGenerator.generateFireCode())
-                + ";" + _eol);
+                + ");" + _eol);
         return code.toString();
     }
 
@@ -226,7 +229,7 @@ public class Expression extends NamedProgramCodeGeneratorAdapter {
                     if (generateSimpleName(
                             ((IOPort) _actor.inputPortList().get(i))).equals(
                             name)) {
-                        return new ObjectToken("$ref(" + name + ")");
+                        return new ObjectToken("$get(" + name + ")");
                     }
                 }
 
