@@ -36,9 +36,9 @@ import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.util.CausalityInterfaceForComposites;
+import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.expr.Parameter;
-import ptolemy.data.type.Type;
 import ptolemy.kernel.util.IllegalActionException;
 
 ///////////////////////////////////////////////////////////////////////
@@ -66,7 +66,7 @@ public class PtidesBasicReceiver extends ptolemy.cg.adapter.generic.program.proc
      *  @return generate get code.
      *  @throws IllegalActionException
      */
-    public String generateGetCode() throws IllegalActionException {
+    public String generateGetCode(String offset) throws IllegalActionException {
         TypedIOPort port = (TypedIOPort) getComponent().getContainer();
         int channel = port.getChannelForReceiver(getComponent());
         return "Event_Head_" + getAdapter(port).getName() + "[" + channel + "]->Val."
@@ -74,10 +74,11 @@ public class PtidesBasicReceiver extends ptolemy.cg.adapter.generic.program.proc
     }
 
     /** Generates code to check the receiver has token.
+     *  @param offset is ignored because it is not applicable in PTIDES.
      *  @return generate hasToken code.
      *  @throws IllegalActionException
      */
-    public String generateHasTokenCode()
+    public String generateHasTokenCode(String offset)
             throws IllegalActionException {
         IOPort port = getComponent().getContainer();
         int channel = port.getChannelForReceiver(getComponent());
@@ -88,10 +89,21 @@ public class PtidesBasicReceiver extends ptolemy.cg.adapter.generic.program.proc
      *  @return generate put code.
      *  @throws IllegalActionException
      */
-    public String generatePutCode(String token)
+    public String generatePutCode(IOPort sourcePort, String offset, String token)
             throws IllegalActionException {
         TypedIOPort sinkPort = (TypedIOPort) getComponent().getContainer();
-        Type sinkType = sinkPort.getType();
+        int sinkChannel = sinkPort.getChannelForReceiver(getComponent());
+
+        Channel source = new Channel(sourcePort, 0);
+        Channel sink = new Channel(sinkPort, sinkChannel);
+        
+        token = ((NamedProgramCodeGeneratorAdapter)getAdapter(
+                getComponent().getContainer().getContainer())).getStrategy()
+                .generateTypeConvertStatement(source, sink, 0, token);
+
+        
+        token = _removeSink(token);
+        
         Actor actor = (Actor) sinkPort.getContainer();
         Director director = actor.getDirector();
         // Getting depth.
@@ -133,7 +145,7 @@ public class PtidesBasicReceiver extends ptolemy.cg.adapter.generic.program.proc
         // output port.
         // Generate a new event.
         List args = new ArrayList();
-        args.add(sinkType);
+        args.add(sinkPort.getType());
         args.add(token);
         args.add((sinkPort.getContainer().getName()));
         args.add("Event_Head_" + sinkPort.getName() + "["
