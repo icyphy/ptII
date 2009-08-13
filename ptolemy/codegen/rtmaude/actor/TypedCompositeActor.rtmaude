@@ -12,16 +12,17 @@ $info(connections)
     subclass CompositeActor < Actor .
   eq ^ CompositeActor = Actor .
 
-  vars CF PORTS PORTS' : Configuration .
+  vars CF CF' PORTS PORTS' : Configuration .
   vars PI PI' : PortId . var EPIS : EPortIdSet . 
   var PS : PortStatus . var DPS : DetPortStatus .
   vars REST ACTS : ObjectConfiguration . var OBJ : Object . vars QUE O O' : Oid .
-  var V : Value .  vars VM VAL : ValueMap .  var E : Exp .
+  vars MSGS : MsgConfiguration .
+  var V V' : Value .  vars VM VAL : ValueMap .  var E : Exp .
   var MEM MEM' : Memory .  var K : K .
   var VIL : VarIdList . var VL : ValueList .
   vars EQ EQ1 EQ2 EQ3 : EventQueue .  var EVTS EVTS' : Events . 
   var T : Time . var N : Nat .
-  var AI : ActorID . var VI : VarId . var MI : MemoryId .
+  var AI AI' : ActorID . var VI : VarId . var MI : MemoryId .
 
 ---------------------------------------------------------------------
 --- Message & Time
@@ -41,15 +42,8 @@ $info(connections)
      >
      schedule-evt(event((O . AI) ! PI, V), T, N)  .
 
-  --- active-evt message (from top)
-  eq active-evt(event((O . AI) ! PI, V))
-     < O : CompositeActor | 
-       status : enabled,
-       innerActors : CF 
-     >
-   = < O : CompositeActor | 
-       innerActors : active-evt(event(AI ! PI, V)) CF 
-     > .
+  --- active-evt message (from top) will be defined
+  --- using portFixPoints
      
   eq delta(< O : CompositeActor | innerActors : CF >, T)
    = < O : CompositeActor | innerActors : delta(CF, T) > .
@@ -77,19 +71,28 @@ $info(connections)
   --- and terminating portFixPoint at the same time for all level.
 
  **** setting hierarchical model ****
+    
+  --- if an event is passed to innerActors, start portFixPoints for them.
+  --- Fix of innerActors is set when every event is delivered.
+  
+  ceq portFixPoints(
+       active-evt(event((O . AI) ! PI, V)) 
+       < O : CompositeActor | status : enabled, innerActors : ACTS > 
+       CF)
+    = portFixPoints(
+       < O : CompositeActor | 
+         innerActors : portFixPoints(active-evt(event(AI ! PI, V)) MSGS ACTS)
+       > 
+       CF')
+   if fr(MSGS, CF') := filterMsg(O, CF, none) .
 
-  --- if innerActors do not start portFixPoint, start it.
-  eq portFixPoints(
-    < O : CompositeActor | 
-      status : enabled,
-      innerActors : ACTS 
-    > 
-    REST)
-  =  portFixPoints(
-    < O : CompositeActor | 
-      innerActors : portFixPoints(ACTS) 
-    > 
-    REST) .
+   sort FilterResult .
+   op fr : MsgConfiguration Configuration -> FilterResult [ctor] .
+   
+   op filterMsg : Oid Configuration MsgConfiguration -> FilterResult .
+   eq filterMsg(O, active-evt(event((O . AI) ! PI, V)) CF, MSGS)
+    = filterMsg(O, CF, active-evt(event(AI ! PI, V)) MSGS) .
+   eq filterMsg(O, CF, MSGS) = fr(MSGS, CF) [owise] .
 
  **** variable ****
 
@@ -167,7 +170,31 @@ $info(connections)
   --- The value of ports can be dilivered among different levels
   --- if connections exist.
 
-  --- Down (Inner Actor)
+--- Down (Inner Actor)
+  --- set fix of children
+  eq portFixPoints(
+    < O : CompositeActor |
+      status : enabled, 
+      ports : < PI : InPort | status : DPS, value : V > PORTS,
+      innerActors :
+        < O' : Actor | 
+          status : enabled,
+          ports : < PI' : InPort | status : unknown > PORTS' 
+        >
+        ((parent ! PI) ==> ((O' ! PI') ; EPIS)) 
+        ACTS
+    > REST)
+   = portFixPoints(
+    < O : CompositeActor |
+      innerActors :  portFixPoints(
+        < O' : Actor | 
+          ports : < PI' : InPort | status : DPS, value : V > PORTS' 
+        >
+        ((parent ! PI) ==> ((O' ! PI') ; EPIS)) 
+        ACTS)
+    > REST) .
+    
+  --- down when fix of children are already set.
   eq portFixPoints(
     < O : CompositeActor |
       status : enabled, 
@@ -190,40 +217,41 @@ $info(connections)
         ACTS)
     > REST) .
 
-  --- Up (Inner Actor)
+--- Up (Inner Actor)
+  --- up only if fix of children done.
   eq portFixPoints(
     < O : CompositeActor |
       status : enabled, 
       ports : < PI : OutPort | status : unknown > PORTS,
-      innerActors : portFixPoints(
+      innerActors :
         < O' : Actor | 
           ports : < PI' : OutPort | status : DPS, value : V > PORTS' 
         >
         ((O' ! PI') ==> ((parent ! PI) ; EPIS)) 
-        ACTS)
+        ACTS
     > REST)
    = portFixPoints(
     < O : CompositeActor |
       ports : < PI : OutPort | status : DPS, value : V > PORTS,
-      innerActors : portFixPoints(
+      innerActors :
         < O' : Actor | >
         ((O' ! PI') ==> ((parent ! PI) ; EPIS)) 
-        ACTS)
+        ACTS
     > REST) .
 
  **** final condition (redefined) ****
+ 
+   ceq portFixPoints(ACTS) = ACTS
+    if innerFixpointsComputed(ACTS) [owise] .
+    
+   op innerFixpointsComputed : Configuration -> Bool .
+   eq innerFixpointsComputed(
+     < O : CompositeActor | 
+       innerActors : portFixPoints(ACTS) >
+     REST) = false . 
+   eq innerFixpointsComputed(REST) = true [owise] .
 
 ------------------------
-
-  --- terminate all portFixPoints (from top)
-  eq postfire(C:Cid,
-    < O : CompositeActor | 
-      innerActors : portFixPoints(ACTS)
-    >)
-  =  postfire(C:Cid,
-    < O : CompositeActor | 
-      innerActors : ACTS
-    >) .
 
   --- variables of inner actors cannot be accessed from
   --- outside. Hence, updating those before doing parent actor

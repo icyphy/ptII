@@ -68,35 +68,35 @@ endom)
   op event : EPortId Value -> Event [ctor] .
 
   vars EQ : EventQueue .  var EVENT : Event .  var EVTS : Events .
-  var QUE : Oid . vars T T' : Time .  var N : Nat . 
+  var QUE : Oid . vars T T' : Time .  var N N' : Nat . 
 
-  op addEvent : Event Time EventQueue -> EventQueue .
+  op addEvent : Event Time Nat EventQueue -> EventQueue .
 
   --- add event first:
-  ceq addEvent(EVENT, T, (EVTS ; T' ; N) :: EQ) 
-    = ((EVENT ; T ; 0) :: (EVTS ; T' ; N) :: EQ)
-   if T < T' .
+  ceq addEvent(EVENT, T, N, (EVTS ; T' ; N') :: EQ) 
+    = ((EVENT ; T ; N) :: (EVTS ; T' ; N') :: EQ)
+   if T < T' or (T == T' and N < N') .
 
   --- add event to the first event:
-  eq addEvent(EVENT, T, (EVTS ; T ; 0) :: EQ) 
-   = (EVENT EVTS ; T ; 0) :: EQ .
+  eq addEvent(EVENT, T, N, (EVTS ; T ; N) :: EQ) 
+   = (EVENT EVTS ; T ; N) :: EQ .
 
   --- add event to rest of queue:
-  ceq addEvent(EVENT, T, (EVTS ; T' ; N) :: EQ) 
-    = ((EVTS ; T' ; N) :: addEvent(EVENT, T, EQ))
-   if T' < T .
+  ceq addEvent(EVENT, T, N, (EVTS ; T' ; N') :: EQ) 
+    = ((EVTS ; T' ; N') :: addEvent(EVENT, T, N, EQ))
+   if T' < T or (T' == T and N' < N) .
 
-  eq addEvent(EVENT, T, nil) = (EVENT ; T ; 0) .
+  eq addEvent(EVENT, T, N, nil) = (EVENT ; T ; N) .
 
   --- In a first attempt, the global event queue is just an "object":
   class EventQUEUE | queue : EventQueue .
 
   --- generated events are just an "message" and delivered to an event queue.
-  msg evt : Event Time -> Msg .
+  msg schedule-evt : Event Time Nat -> Msg .
 
   --- event message is dilivered to event queue
-  eq < QUE : EventQUEUE | queue : EQ > evt(EVENT, T)
-   = < QUE : EventQUEUE | queue : addEvent(EVENT, T, EQ) > .
+  eq < QUE : EventQUEUE | queue : EQ > schedule-evt(EVENT, T, N)
+   = < QUE : EventQUEUE | queue : addEvent(EVENT, T, N, EQ) > .
 
   --- events will be also delivered from a queue to each port.
   --- the acceptance of a message must be defined .
@@ -226,7 +226,7 @@ endtom)
   vars EQ : EventQueue .  var EVENT : Event .  var EVTS : Events .
   var VI : VarId . var V V' : Value . 
   vars MEM MEM' : Memory . var CP : Computation .
-  var T : Time .
+  var T : Time . var N : Nat .
   var KR : KResult .
 
   sort ActorStatus .
@@ -258,6 +258,11 @@ endtom)
   eq delta(O:Object, T) = O:Object [owise] .
   eq delta(M, T) = M .
   eq delta(none, T) = none .
+
+*** 
+  op relative-evt : Event Time -> Msg .
+  eq relative-evt(EVENT, T) 
+   = schedule-evt(EVENT, T, if T == 0 then 1 else 0 fi) .
 
 *** The followings are steps for actor execution.
 *** Each step should be implemented for each actor, or
@@ -293,17 +298,11 @@ endtom)
 *** 2. Compute fixed points for the various ports. (fire)
 
   --- fixpoint computation
-  --- 1st argument: flag to represent that something has been changed.
-  op portFixPoints : Bool Configuration -> Configuration [frozen (1)] .
+  op portFixPoints : Configuration -> Configuration [frozen (1)] .
 
-  --- denote the top level
-  op top : Configuration -> Configuration [frozen (1)] .
-
-  --- terminate portFixPoints if no change (determined at the top level)
-  eq top(portFixPoints(false, OC)) = OC [owise] .
-
-  --- If no change is possible, set flag to false
-  eq portFixPoints(true, OC) = portFixPoints(false, OC) [owise] .
+  --- terminate portFixPoints if no change 
+  --- NOTE: redefined at CompositeActor for hierarchical models
+---  eq portFixPoints(OC) = OC [owise] .
 
 *** 3. Generating events and updating states and parameters. (post-fire)
   --- 1st argument : class id for hierarchical computation
@@ -375,8 +374,7 @@ endtom)
   --- execute a step:
   rl [executeStep] : 
 	{ SYSTEM < QUE : EventQUEUE | queue : (EVTS ; 0 ; 0) :: EVENTQUEUE > }
-  =>	{ postfireAll(
-	    top(portFixPoints(true, releaseEvt(EVTS) prefireAll(SYSTEM))))
+  =>	{ postfireAll(portFixPoints(releaseEvt(EVTS) prefireAll(SYSTEM)))
 	 < QUE : EventQUEUE | queue : EVENTQUEUE >
 	} .
 

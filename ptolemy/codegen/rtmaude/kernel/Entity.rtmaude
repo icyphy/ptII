@@ -48,11 +48,11 @@ parameters : ($indent(
   --- and it is dilivered to each port
   eq active-evt(event(O ! PI, V))
     < O : Actor | 
-    status : enabled,
-    ports : < PI : Port | status : PS, value : V' > PORTS 
+      status : enabled,
+      ports : < PI : Port | status : PS, value : V' > PORTS 
     > 
   = < O : Actor | 
-    ports : < PI : Port | status : present, value : V > PORTS 
+      ports : < PI : Port | status : present, value : V > PORTS 
      > .
 
 ---------------------------------------------------------------------
@@ -73,24 +73,24 @@ parameters : ($indent(
   --- when variable is already computed, the value is used.
   eq portFixPoints(
     < O : Actor | 
-    status : enabled,
-        store : MI |->  k(VI -> K) ; VI |-> V ; MEM
+      status : enabled,
+      store : MI |->  k(VI -> K) ; VI |-> V ; MEM
     > REST)
    = portFixPoints(
     < O : Actor | 
-        store : MI |-> k(V -> K) ; VI |-> V ; MEM
+      store : MI |-> k(V -> K) ; VI |-> V ; MEM
     > REST) .
 
   --- if the variable is not yet computed, it will computed
   ceq portFixPoints(
     < O : Actor | 
-    status : enabled,
-    parameters : VI |-> E ; VAL,
-    store : MI |-> k(VI -> K) ; MEM
+      status : enabled,
+      parameters : VI |-> E ; VAL,
+      store : MI |-> k(VI -> K) ; MEM
     > REST)
    = portFixPoints(
     < O : Actor | 
-    store : VI |-> k(E) ; MI |-> k(VI -> K) ; MEM
+      store : VI |-> k(E) ; MI |-> k(VI -> K) ; MEM
     > REST) 
   if not VI in MEM .
 
@@ -103,13 +103,13 @@ parameters : ($indent(
 
   eq portFixPoints(
     < O : Actor | 
-    status : enabled,
-    ports : < PI : Port | status : DPS > PORTS,
-    store : MI |-> k(isPresent(PI) -> K) ; MEM
+      status : enabled,
+      ports : < PI : Port | status : DPS > PORTS,
+      store : MI |-> k(isPresent(PI) -> K) ; MEM
     > REST)
    = portFixPoints(
     < O : Actor | 
-    store : MI |-> k(# (DPS == present) -> K) ; MEM
+      store : MI |-> k(# (DPS == present) -> K) ; MEM
     > REST) .
 
  **** closure(function) ****
@@ -123,23 +123,23 @@ parameters : ($indent(
   ---    much more complicated
   eq portFixPoints(
     < O : Actor | 
-    status : enabled,
-    store : MI |-> k((function(VIL) E)(VL) -> K) ; MEM
+      status : enabled,
+      store : MI |-> k((function(VIL) E)(VL) -> K) ; MEM
     > REST)
    = portFixPoints(
     < O : Actor | 
-    store : MI |-> k(E -> restore(MEM) -> K) ; (VIL |-> VL) <+ MEM
+      store : MI |-> k(E -> restore(MEM) -> K) ; (VIL |-> VL) <+ MEM
     > REST) .
 
   --- after computing a function, environments should be restored.
   eq portFixPoints(
     < O : Actor | 
-    status : enabled,
-    store : MI |-> k(restore(VM') -> K) ; MEM
+      status : enabled,
+      store : MI |-> k(restore(VM') -> K) ; MEM
     > REST)
    = portFixPoints(
     < O : Actor | 
-    store : MI |-> k(K) ; VM' <+ MEM
+      store : MI |-> k(K) ; VM' <+ MEM
     > REST) .
 
  **** port ****
@@ -147,20 +147,20 @@ parameters : ($indent(
   --- deliver a value of ports to connected ports with the status 'unknown'
   eq portFixPoints(
     < O : Actor | 
-    status : enabled,
-    ports :  < PI : OutPort | status : DPS, value : V > PORTS 
+      status : enabled,
+      ports :  < PI : OutPort | status : DPS, value : V > PORTS 
     >
     ((O ! PI) ==> ((O' ! PI') ; EPIS)) 
     < O' : Actor | 
-    status : enabled,
-    ports : < PI' : InPort | status : unknown > PORTS' 
+      status : enabled,
+      ports : < PI' : InPort | status : unknown > PORTS' 
     > 
     REST)
    = portFixPoints(
     < O : Actor | > 
-    ((O ! PI) ==> ((O' ! PI') ; EPIS)) 
+      ((O ! PI) ==> ((O' ! PI') ; EPIS)) 
     < O' : Actor | 
-    ports : < PI' : InPort | status : DPS, value : V > PORTS' 
+      ports : < PI' : InPort | status : DPS, value : V > PORTS' 
     > 
     REST) .
 
@@ -168,13 +168,13 @@ parameters : ($indent(
 
   ceq portFixPoints(
     < O : Actor | 
-    status : enabled,
-    ports :  < PI : OutPort | > PORTS 
+      status : enabled,
+      ports :  < PI : OutPort | > PORTS 
     >
     ((O ! PI) ==> ((O' ! PI') ; EPIS)) 
     < O' : Actor | 
-    status : enabled,
-    ports : 
+      status : enabled,
+      ports : 
         < PI' : MultiInPort | 
         channels : CHS
         > PORTS'
@@ -184,7 +184,7 @@ parameters : ($indent(
     < O : Actor | > 
     ((O ! PI) ==> ((O' ! PI') ; EPIS)) 
     < O' : Actor | 
-    ports : 
+      ports : 
         < PI' : MultiInPort | 
         channels : ([O ! PI,unknown,# 0] ; CHS)
         > PORTS'
@@ -194,13 +194,13 @@ parameters : ($indent(
 
   eq portFixPoints(
     < O : Actor | 
-    status : enabled,
-    ports :  < PI : OutPort | status : DPS, value : V > PORTS 
+      status : enabled,
+      ports :  < PI : OutPort | status : DPS, value : V > PORTS 
     >
     ((O ! PI) ==> ((O' ! PI') ; EPIS)) 
     < O' : Actor | 
-    status : enabled,
-    ports : 
+      status : enabled,
+      ports : 
         < PI' : MultiInPort | 
         channels : ([O ! PI,unknown,V'] ; CHS)
         > PORTS'
@@ -210,9 +210,9 @@ parameters : ($indent(
     < O : Actor | > 
     ((O ! PI) ==> ((O' ! PI') ; EPIS)) 
     < O' : Actor | 
-    ports : 
+      ports : 
         < PI' : MultiInPort | 
-        channels : ([O ! PI,DPS,V] ; CHS)
+          channels : ([O ! PI,DPS,V] ; CHS)
         > PORTS'
     > 
     REST) .
@@ -221,18 +221,17 @@ parameters : ($indent(
   --- clear store as well (to save a state space)
   eq postfire(Actor, 
     < O : Actor | 
-    status : enabled,
-    ports : PORTS, 
-    parameters : VAL, 
-    store : MEM 
+      status : enabled,
+      ports : PORTS, 
+      parameters : VAL
     >)
   = < O : Actor | 
-    parameters : updateParam(VAL, PORTS), 
-    store : emptyMap
+      parameters : updateParam(VAL, PORTS), 
+      store : emptyMap
     > .
 
   eq postfire(Actor, < O : Actor | status : disabled >)
-   = < O : Actor | > .
+   = < O : Actor | store : emptyMap > .
 endtom)
 /**/
 

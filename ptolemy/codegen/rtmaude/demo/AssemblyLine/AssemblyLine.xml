@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="AssemblyLine" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.2.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="50">
@@ -34,6 +34,8 @@
     </property>
     <property name="RTMaudeCodeGenerator" class="ptolemy.codegen.rtmaude.kernel.RTMaudeCodeGenerator">
         <property name="codeDirectory" class="ptolemy.data.expr.FileParameter" value="file:/Users/kquine/Projects/NAOMI/ptolemy-rtm/">
+        </property>
+        <property name="inline" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <property name="Simulation bound" class="ptolemy.data.expr.Parameter" value="50">
         </property>
