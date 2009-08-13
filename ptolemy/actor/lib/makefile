@@ -255,6 +255,7 @@ OTHER_FILES_TO_BE_JARED = \
 	SelectIcon.xml \
 	Sinewave.xml \
 	SwitchIcon.xml \
+	TimeDelayIcon.xml \
 	TimedSine.xml \
 	UniformIcon.xml \
 	aggregators.xml \
