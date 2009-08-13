@@ -55,7 +55,9 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 PTCLASSALLJARS = 
 
 # Keep this list alphabetized.
-JSRCS = SDFDirector.java
+JSRCS = \
+	SDFDirector.java \
+	SDFReceiver.java
 
 OTHER_FILES_TO_BE_JARED = 
 
