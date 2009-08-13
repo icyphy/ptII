@@ -68,57 +68,6 @@ public class ProgramCodeGeneratorAdapterStrategy {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Get the code generator associated with this adapter class.
-     *  @return The code generator associated with this adapter class.
-     *  @see #setCodeGenerator(ProgramCodeGenerator)
-     */
-    public ProgramCodeGenerator getCodeGenerator() {
-        return _codeGenerator;
-    }
-
-    /** Get the component associated with this adapter.
-     *  @return The associated component.
-     *  @see #setComponent
-     */
-    public NamedObj getComponent() {
-        return (NamedObj) _object;
-    }
-
-    /** Get the template parser associated with this strategy.
-     *  @return The associated template parser.
-     */
-    final public TemplateParser getTemplateParser() {
-        return _templateParser;
-    }
-
-    /** Set the adapter.
-     *  @param adapter The given adapter.
-     */
-    final public void setAdapter(ProgramCodeGeneratorAdapter adapter) {
-        _adapter = adapter;
-        _createParser();        
-    }
-
-    /** Set the associated code generator.
-     *  @param codeGenerator The code generator associated with this class.
-     *  @see #getCodeGenerator()
-     */
-    final public void setCodeGenerator(ProgramCodeGenerator codeGenerator) {
-        _codeGenerator = codeGenerator;
-        if (_templateParser != null) {
-            _templateParser.setCodeGenerator(codeGenerator);
-        }
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                     protected methods.                    ////
-
-    /** Create the template parser.
-     */
-    protected void _createParser() { 
-        _templateParser = new TemplateParser(_object, _adapter);
-    }
-    
     /**
      * Generate the type conversion statement for the particular offset of
      * the two given channels. This assumes that the offset is the same for
@@ -126,14 +75,15 @@ public class ProgramCodeGeneratorAdapterStrategy {
      * the other.
      * @param source The given source channel.
      * @param sink The given sink channel.
-     * @param offset The given offset.
+     * @param offset The given offset._genera_generateTypeConvertStatement_generateTypeConvertStatementteTypeConvertStatement
      * @return The type convert statement for assigning the converted source
      *  variable to the sink variable with the given offset.
      * @exception IllegalActionException If there is a problem getting the
      * adapters for the ports or if the conversion cannot be handled.
      */
-    protected String _generateTypeConvertStatement(ProgramCodeGeneratorAdapter.Channel source,
-            ProgramCodeGeneratorAdapter.Channel sink, int offset) throws IllegalActionException {
+    public String generateTypeConvertStatement(ProgramCodeGeneratorAdapter.Channel source,
+            ProgramCodeGeneratorAdapter.Channel sink, int offset, String alternativeSourceRef)
+            throws IllegalActionException {
 
         Type sourceType = ((TypedIOPort) source.port).getType();
         Type sinkType = ((TypedIOPort) sink.port).getType();
@@ -150,8 +100,14 @@ public class ProgramCodeGeneratorAdapterStrategy {
         // to find the associated adapter.
         String sourcePortChannel = source.port.getName() + "#"
                 + source.channelNumber + ", " + offset;
-        String sourceRef = ((NamedProgramCodeGeneratorAdapter) _getAdapter(source.port
+        String sourceRef;
+        
+        if (alternativeSourceRef == null) {
+            sourceRef = ((NamedProgramCodeGeneratorAdapter) _getAdapter(source.port
                 .getContainer())).getReference(sourcePortChannel);
+        } else {
+            sourceRef = alternativeSourceRef;
+        }
 
         String sinkPortChannel = sink.port.getName() + "#" + sink.channelNumber
                 + ", " + offset;
@@ -226,6 +182,57 @@ public class ProgramCodeGeneratorAdapterStrategy {
         return sinkRef + " = " + result + ";" + _eol;
     }
 
+    /** Get the code generator associated with this adapter class.
+     *  @return The code generator associated with this adapter class.
+     *  @see #setCodeGenerator(ProgramCodeGenerator)
+     */
+    public ProgramCodeGenerator getCodeGenerator() {
+        return _codeGenerator;
+    }
+
+    /** Get the component associated with this adapter.
+     *  @return The associated component.
+     *  @see #setComponent
+     */
+    public Object getComponent() {
+        return _object;
+    }
+
+    /** Get the template parser associated with this strategy.
+     *  @return The associated template parser.
+     */
+    final public TemplateParser getTemplateParser() {
+        return _templateParser;
+    }
+
+    /** Set the adapter.
+     *  @param adapter The given adapter.
+     */
+    final public void setAdapter(ProgramCodeGeneratorAdapter adapter) {
+        _adapter = adapter;
+        _createParser();        
+    }
+
+    /** Set the associated code generator.
+     *  @param codeGenerator The code generator associated with this class.
+     *  @see #getCodeGenerator()
+     */
+    final public void setCodeGenerator(ProgramCodeGenerator codeGenerator) {
+        _codeGenerator = codeGenerator;
+        if (_templateParser != null) {
+            _templateParser.setCodeGenerator(codeGenerator);
+        }
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                     protected methods.                    ////
+
+    /** Create the template parser.
+     */
+    protected void _createParser() { 
+        _templateParser = new TemplateParser(_object, _adapter);
+    }
+    
     /** Get the code generator adapter associated with the given component.
      *  @param component The given component.
      *  @return The code generator adapter.
