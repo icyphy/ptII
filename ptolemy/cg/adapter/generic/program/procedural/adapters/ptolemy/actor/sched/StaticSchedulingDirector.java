@@ -350,7 +350,7 @@ public class StaticSchedulingDirector extends Director {
         if (attribute != null) {
             String refType = _getRefType(attribute);
 
-            String result = _getReference(target, attribute, channelAndOffset);
+            String result = _getParameter(target, attribute, channelAndOffset);
 
             return getStrategy().getTemplateParser().generateTypeConvertMethod(result, castType,
                     refType);
@@ -636,7 +636,7 @@ public class StaticSchedulingDirector extends Director {
      * @throws IllegalActionException If the helper throws it while
      *  generating the label.
      */
-    protected String _getReference(NamedProgramCodeGeneratorAdapter target,
+    protected String _getParameter(NamedProgramCodeGeneratorAdapter target,
             Attribute attribute, String[] channelAndOffset)
             throws IllegalActionException {
         return "";
@@ -1453,7 +1453,7 @@ public class StaticSchedulingDirector extends Director {
     }
 
     /** A helper class that allows generating code for ports.*/
-    protected class Ports {
+    public class Ports {
 
         /**Generate the expression that represents the offset in the generated
          * code.
@@ -1623,6 +1623,6 @@ public class StaticSchedulingDirector extends Director {
     }
 
     /** The meta information about the ports in the container. */
-    protected Ports _ports = new Ports();
+    public Ports _ports = new Ports();
 
 }
