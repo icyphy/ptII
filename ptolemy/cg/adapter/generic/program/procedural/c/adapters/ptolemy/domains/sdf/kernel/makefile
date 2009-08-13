@@ -56,8 +56,7 @@ PTCLASSALLJARS =
 
 # Keep this list alphabetized.
 JSRCS = \
-	SDFDirector.java \
-	SDFReceiver.java
+	SDFDirector.java
 
 OTHER_FILES_TO_BE_JARED = 
 
