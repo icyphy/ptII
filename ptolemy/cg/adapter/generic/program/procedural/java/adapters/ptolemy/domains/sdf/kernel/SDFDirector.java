@@ -390,7 +390,7 @@ public class SDFDirector
      *  generating the label.
      */
     @Override
-    protected String _getReference(NamedProgramCodeGeneratorAdapter target,
+    protected String _getParameter(NamedProgramCodeGeneratorAdapter target,
             Attribute attribute, String[] channelAndOffset)
             throws IllegalActionException {
         StringBuffer result = new StringBuffer();
