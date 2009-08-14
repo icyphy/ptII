@@ -53,7 +53,6 @@ public class ProceduralCodeGeneratorAdapterStrategy extends
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 

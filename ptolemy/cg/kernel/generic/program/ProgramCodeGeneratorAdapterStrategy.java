@@ -73,9 +73,14 @@ public class ProgramCodeGeneratorAdapterStrategy {
      * the two given channels. This assumes that the offset is the same for
      * both channel. Advancing the offset of one has to advance the offset of
      * the other.
+     * <p>
+     * If alternativeSourceRef is not null, then we use this instead of the source
+     * itself. Thus we generate the type conversion statement with alternativeSourceRef
+     * on the right side of the equal sign, and a reference to the sink on the left
+     * side.
      * @param source The given source channel.
      * @param sink The given sink channel.
-     * @param offset The given offset._genera_generateTypeConvertStatement_generateTypeConvertStatementteTypeConvertStatement
+     * @param offset The given offset._generateTypeConvertStatement
      * @return The type convert statement for assigning the converted source
      *  variable to the sink variable with the given offset.
      * @exception IllegalActionException If there is a problem getting the
