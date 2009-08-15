@@ -327,7 +327,7 @@ public class StaticSchedulingDirector extends Director {
             refName = refName.substring(1);
         }
 
-        TypedIOPort port = target.getStrategy().getTemplateParser().getPort(refName);
+        TypedIOPort port = target.getTemplateParser().getPort(refName);
         if (port != null) {
 
             if (port instanceof ParameterPort && port.numLinks() <= 0) {
@@ -339,7 +339,7 @@ public class StaticSchedulingDirector extends Director {
 
                 String refType = getCodeGenerator().codeGenType(port.getType());
 
-                return getStrategy().getTemplateParser().generateTypeConvertMethod(result,
+                return _templateParser.generateTypeConvertMethod(result,
                         castType, refType);
             }
         }
@@ -352,7 +352,7 @@ public class StaticSchedulingDirector extends Director {
 
             String result = _getParameter(target, attribute, channelAndOffset);
 
-            return getStrategy().getTemplateParser().generateTypeConvertMethod(result, castType,
+            return _templateParser.generateTypeConvertMethod(result, castType,
                     refType);
         }
 

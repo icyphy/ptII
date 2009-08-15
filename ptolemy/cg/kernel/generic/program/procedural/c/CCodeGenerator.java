@@ -50,7 +50,7 @@ import ptolemy.cg.kernel.generic.CodeGeneratorUtilities;
 import ptolemy.cg.kernel.generic.program.CodeStream;
 import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
 import ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapter;
-import ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapterStrategy;
+import ptolemy.cg.kernel.generic.program.TemplateParser;
 import ptolemy.cg.kernel.generic.program.procedural.ProceduralCodeGenerator;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.Parameter;
@@ -1102,10 +1102,14 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         return startCode.toString();
     }
 
-    protected Class<? extends ProgramCodeGeneratorAdapterStrategy> _strategyClass() {
-        return CCodeGeneratorAdapterStrategy.class;
+    /** Return the class of the templateParser class. In cse
+     *  there isn't one return null.
+     *  @return The base class for templateParser.  
+     */
+    protected Class<? extends TemplateParser> _templateParserClass() {
+        return CTemplateParser.class;
     }
-
+    
     /** Read in a template makefile, substitute variables and write
      *  the resulting makefile.
      *

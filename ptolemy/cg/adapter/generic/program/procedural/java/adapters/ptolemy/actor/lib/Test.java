@@ -78,7 +78,7 @@ public class Test extends NamedProgramCodeGeneratorAdapter {
         String multiChannel = "";
         String inputType = "";
 
-        CodeStream codeStream = getStrategy().getTemplateParser().getCodeStream();
+        CodeStream codeStream = _templateParser.getCodeStream();
 
         if (actor.input.getWidth() > 1) {
             // If we have multiple inputs, use different blocks
@@ -94,10 +94,10 @@ public class Test extends NamedProgramCodeGeneratorAdapter {
                 inputType = "Token";
                 ((JavaCodeGenerator) getCodeGenerator()).markFunctionCalled(
                         "equals_Token_Token",
-                        (JavaTemplateParser) getStrategy().getTemplateParser());
+                        (JavaTemplateParser) _templateParser);
                 ((JavaCodeGenerator) getCodeGenerator()).markFunctionCalled(
                         "isCloseTo_Token_Token",
-                        (JavaTemplateParser) getStrategy().getTemplateParser());
+                        (JavaTemplateParser) _templateParser);
             }
 
             codeStream
@@ -113,7 +113,7 @@ public class Test extends NamedProgramCodeGeneratorAdapter {
     public String generateInitializeCode() throws IllegalActionException {
         super.generateInitializeCode();
 
-        CodeStream codeStream = getStrategy().getTemplateParser().getCodeStream();
+        CodeStream codeStream = _templateParser.getCodeStream();
 
         ptolemy.actor.lib.Test actor = (ptolemy.actor.lib.Test) getComponent();
         for (int i = 0; i < actor.input.getWidth(); i++) {
@@ -140,7 +140,7 @@ public class Test extends NamedProgramCodeGeneratorAdapter {
 
         ptolemy.actor.lib.Test actor = (ptolemy.actor.lib.Test) getComponent();
 
-        CodeStream codeStream = getStrategy().getTemplateParser().getCodeStream();
+        CodeStream codeStream = _templateParser.getCodeStream();
 
         if (actor.input.getWidth() > 1) {
             ArrayList<String> args = new ArrayList<String>();

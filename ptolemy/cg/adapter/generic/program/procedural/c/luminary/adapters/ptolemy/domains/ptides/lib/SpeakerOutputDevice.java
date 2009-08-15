@@ -62,7 +62,7 @@ public class SpeakerOutputDevice extends OutputDevice {
     public String generateActuatorActuationFuncCode()
             throws IllegalActionException {
         List args = new LinkedList();
-        CodeStream _codeStream = getStrategy().getTemplateParser().getCodeStream();
+        CodeStream _codeStream = _templateParser.getCodeStream();
 
         _codeStream.clear();
         _codeStream.appendCodeBlock("actuationBlock", args);
@@ -82,7 +82,7 @@ public class SpeakerOutputDevice extends OutputDevice {
      */
     public String generateFireCode() throws IllegalActionException {
         List args = new LinkedList();
-        CodeStream _codeStream = getStrategy().getTemplateParser().getCodeStream();
+        CodeStream _codeStream = _templateParser.getCodeStream();
 
         ptolemy.domains.ptides.lib.targets.luminary.SpeakerOutputDevice actor = (ptolemy.domains.ptides.lib.targets.luminary.SpeakerOutputDevice) getComponent();
         PtidesBasicDirector helper = (PtidesBasicDirector) getAdapter(actor
@@ -99,7 +99,7 @@ public class SpeakerOutputDevice extends OutputDevice {
     public String generateHardwareInitializationCode()
             throws IllegalActionException {
         StringBuffer code = new StringBuffer();
-        code.append(processCode(getStrategy().getTemplateParser().getCodeStream().getCodeBlock(
+        code.append(processCode(_templateParser.getCodeStream().getCodeBlock(
                 "initializeAudioOutput")));
         return code.toString();
     }

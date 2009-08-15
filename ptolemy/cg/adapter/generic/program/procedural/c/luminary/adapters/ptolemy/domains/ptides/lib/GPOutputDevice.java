@@ -87,7 +87,7 @@ public class GPOutputDevice extends OutputDevice {
     public String generateActuatorActuationFuncCode()
             throws IllegalActionException {
         List args = new LinkedList();
-        CodeStream _codeStream = getStrategy().getTemplateParser().getCodeStream();
+        CodeStream _codeStream = _templateParser.getCodeStream();
 
         args.add(_padID);
         args.add(_pinID);
@@ -110,7 +110,7 @@ public class GPOutputDevice extends OutputDevice {
      */
     public String generateFireCode() throws IllegalActionException {
         List args = new LinkedList();
-        CodeStream _codeStream = getStrategy().getTemplateParser().getCodeStream();
+        CodeStream _codeStream = _templateParser.getCodeStream();
 
         ptolemy.domains.ptides.lib.targets.luminary.GPOutputDevice actor = (ptolemy.domains.ptides.lib.targets.luminary.GPOutputDevice) getComponent();
         PtidesBasicDirector adapter = (PtidesBasicDirector) getAdapter(actor
@@ -130,7 +130,7 @@ public class GPOutputDevice extends OutputDevice {
         List args = new ArrayList();
         args.add(_padID);
         args.add(_pinID);
-        code.append(processCode(getStrategy().getTemplateParser().getCodeStream().getCodeBlock(
+        code.append(processCode(_templateParser.getCodeStream().getCodeBlock(
                 "initializeGPOutput", args)));
         return code.toString();
     }

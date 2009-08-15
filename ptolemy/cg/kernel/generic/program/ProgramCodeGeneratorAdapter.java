@@ -73,22 +73,14 @@ public class ProgramCodeGeneratorAdapter extends CodeGeneratorAdapter {
      *  @see #setCodeGenerator(GenericCodeGenerator)
      */
     public ProgramCodeGenerator getCodeGenerator() {
-        return _strategy.getCodeGenerator();
+        return _codeGenerator;
     }
 
     /** Get the component associated with this adapter.
      *  @return The associated component.
      */
     public Object getComponent() {
-        return _strategy.getComponent();
-    }
-
-    /** Get the strategy associated with this adapter.
-     *  @return The associated strategy.
-     *   @see #setStrategy
-     */
-    public ProgramCodeGeneratorAdapterStrategy getStrategy() {
-        return _strategy;
+        return _component;
     }
 
     /** Process the specified code, replacing macros with their values.
@@ -97,17 +89,16 @@ public class ProgramCodeGeneratorAdapter extends CodeGeneratorAdapter {
      * @exception IllegalActionException If illegal macro names are found.
      */
     public final String processCode(String code) throws IllegalActionException {
-        return _strategy.getTemplateParser().processCode(code);
+        return _templateParser.processCode(code);
     }
 
     /** Set the strategy for generating code for this adapter.
      * @param strategy The strategy.
      * @see #getStrategy
      */
-    public final void setStrategy(Object strategy) {
-        _strategy = (ProgramCodeGeneratorAdapterStrategy) strategy;
-        _strategy.setComponent(_component);
-        _strategy.setAdapter(this);
+    public final void setTemplateParser(TemplateParser templateParser) {
+        _templateParser = templateParser;
+        templateParser.init(_component, this);
     }
 
     /** Set the code generator associated with this adapter class.
@@ -116,9 +107,16 @@ public class ProgramCodeGeneratorAdapter extends CodeGeneratorAdapter {
      *  @see #getCodeGenerator()
      */
     public void setCodeGenerator(GenericCodeGenerator codeGenerator) {
-        _strategy.setCodeGenerator((ProgramCodeGenerator) codeGenerator);
+        _codeGenerator = (ProgramCodeGenerator) codeGenerator;
     }
     
+    /** Get the template parser associated with this strategy.
+     *  @return The associated template parser.
+     */
+    final public TemplateParser getTemplateParser() {
+        return _templateParser;
+    }
+
     public String toString() {
         return getComponent().toString() + "'s Adapter";
     }
@@ -137,7 +135,7 @@ public class ProgramCodeGeneratorAdapter extends CodeGeneratorAdapter {
      */
     protected String _generateBlockByName(String blockName)
             throws IllegalActionException {
-        CodeStream codeStream = getStrategy().getTemplateParser().getCodeStream();
+        CodeStream codeStream = _templateParser.getCodeStream();
         codeStream.clear();
         codeStream.appendCodeBlock(blockName, true);
         // There is no need to generate comment for empty code block.
@@ -168,6 +166,13 @@ public class ProgramCodeGeneratorAdapter extends CodeGeneratorAdapter {
     /** The associated component. */
     protected Object _component;
 
+    /**
+     * The code block table that stores the code block body (StringBuffer)
+     * with the code block name (String) as key.
+     */
+    protected static final String[] _defaultBlocks = { "preinitBlock",
+            "initBlock", "fireBlock", "postfireBlock", "wrapupBlock" };
+
     /** End of line character.  Under Unix: "\n", under Windows: "\n\r".
      *  We use a end of line character so that the files we generate
      *  have the proper end of line character for use by other native tools.
@@ -181,19 +186,15 @@ public class ProgramCodeGeneratorAdapter extends CodeGeneratorAdapter {
     }
 
     /** The strategy for generating code for this adapter.*/
-    protected ProgramCodeGeneratorAdapterStrategy _strategy;
-
+    protected TemplateParser _templateParser;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     
-    /**
-     * The code block table that stores the code block body (StringBuffer)
-     * with the code block name (String) as key.
+    /** The code generator that contains this adapter class.
      */
-    protected static final String[] _defaultBlocks = { "preinitBlock",
-            "initBlock", "fireBlock", "postfireBlock", "wrapupBlock" };
-    
+    private ProgramCodeGenerator _codeGenerator;
+
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
 

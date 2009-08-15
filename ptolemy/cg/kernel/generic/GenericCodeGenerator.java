@@ -57,7 +57,6 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.DecoratedAttributes;
 import ptolemy.kernel.util.Decorator;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
@@ -560,6 +559,62 @@ public abstract class GenericCodeGenerator extends Attribute implements
         return _sanitizedModelName + "." + _outputFileExtension;
     }
 
+    /** Instantiate the given code generator adapter.
+     *  @param component The given component.
+     *  @param adapterClassName The dot separated name of the adapter.
+     *  @return The code generator adapter.
+     *  @exception IllegalActionException If the adapter class cannot be found.
+     */
+    protected CodeGeneratorAdapter _instantiateAdapter(Object component,
+            Class<?> componentClass, String adapterClassName)
+    throws IllegalActionException {
+
+        Class<?> adapterClass = null;
+
+        try {
+            adapterClass = Class.forName(adapterClassName);
+        } catch (ClassNotFoundException e) {
+            throw new IllegalActionException(this, e,
+                    "Cannot find adapter class " + adapterClassName);
+        }
+
+        Constructor<?> constructor = null;
+
+        try {
+            constructor = adapterClass
+                    .getConstructor(new Class[] { componentClass });
+
+        } catch (NoSuchMethodException e) {
+            throw new IllegalActionException(this, e,
+                    "There is no constructor in " + adapterClassName
+                    + " which accepts an instance of "
+                    + component.getClass().getName()
+                    + " as the argument.");
+        }
+
+        CodeGeneratorAdapter adapterObject = null;
+
+        try {
+            adapterObject = (CodeGeneratorAdapter) constructor
+                    .newInstance(new Object[] { component });
+        } catch (Exception ex) {
+            throw new IllegalActionException(null, ex,
+                    "Failed to create adapter class code generator for "
+                    + adapterClassName + ".");
+        }
+
+        if (!_getAdapterClassFilter().isInstance(adapterObject)) {
+            throw new IllegalActionException(this,
+                    "Cannot generate code for this component: " + component
+                            + ". Its adapter class does not" + " implement "
+                            + _getAdapterClassFilter() + ".");
+        }
+
+        adapterObject.setCodeGenerator(this);
+
+        return adapterObject;
+    }
+
     /** Test if the containing actor is in the top level.
      *  @return true if the containing actor is in the top level.
      */
@@ -591,15 +646,6 @@ public abstract class GenericCodeGenerator extends Attribute implements
         _codeFileName = null;
         
         _adapterStore.clear();
-    }
-
-    /** Return the class of the strategy class. In cse
-     *  there isn't one return null.
-     *  @return The base class for strategy.  
-     */
-    protected Class<?> _strategyClass() {
-        return null;
-
     }
     
     /** Write the code to a directory named by the codeDirectory
@@ -711,72 +757,6 @@ public abstract class GenericCodeGenerator extends Attribute implements
     
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-
-    /** Instantiate the given code generator adapter.
-     *  @param component The given component.
-     *  @param adapterClassName The dot separated name of the adapter.
-     *  @return The code generator adapter.
-     *  @exception IllegalActionException If the adapter class cannot be found.
-     */
-    private CodeGeneratorAdapter _instantiateAdapter(Object component,
-            Class<?> componentClass, String adapterClassName)
-    throws IllegalActionException {
-
-        Class<?> adapterClass = null;
-
-        try {
-            adapterClass = Class.forName(adapterClassName);
-        } catch (ClassNotFoundException e) {
-            throw new IllegalActionException(this, e,
-                    "Cannot find adapter class " + adapterClassName);
-        }
-
-        Constructor<?> constructor = null;
-
-        try {
-            constructor = adapterClass
-                    .getConstructor(new Class[] { componentClass });
-
-        } catch (NoSuchMethodException e) {
-            throw new IllegalActionException(this, e,
-                    "There is no constructor in " + adapterClassName
-                    + " which accepts an instance of "
-                    + component.getClass().getName()
-                    + " as the argument.");
-        }
-
-        CodeGeneratorAdapter adapterObject = null;
-
-        try {
-            adapterObject = (CodeGeneratorAdapter) constructor
-                    .newInstance(new Object[] { component });
-        } catch (Exception ex) {
-            throw new IllegalActionException(null, ex,
-                    "Failed to create adapter class code generator for "
-                    + adapterClassName + ".");
-        }
-
-        if (!_getAdapterClassFilter().isInstance(adapterObject)) {
-            throw new IllegalActionException(this,
-                    "Cannot generate code for this component: " + component
-                            + ". Its adapter class does not" + " implement "
-                            + _getAdapterClassFilter() + ".");
-        }
-
-        try {
-            Class<?> strategyClass = _strategyClass();
-            if (strategyClass != null){
-                adapterObject.setStrategy(strategyClass.newInstance());
-            }
-        } catch (InstantiationException e) {
-            throw new InternalErrorException(e);
-        } catch (IllegalAccessException e) {
-            throw new InternalErrorException(e);
-        }
-        adapterObject.setCodeGenerator(this);
-
-        return adapterObject;
-    }
 
     /** Set the parameters in the model stored in _parameterNames
      *  to the values given by _parameterValues. Those lists are

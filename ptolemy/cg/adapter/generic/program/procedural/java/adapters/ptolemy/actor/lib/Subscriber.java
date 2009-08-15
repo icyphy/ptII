@@ -79,10 +79,10 @@ public class Subscriber extends NamedProgramCodeGeneratorAdapter {
 
         for (int i = 0; i < width; i++) {
             args.set(0, Integer.toString(i));
-            getStrategy().getTemplateParser().getCodeStream().appendCodeBlock("fireBlock", args);
+            _templateParser.getCodeStream().appendCodeBlock("fireBlock", args);
         }
 
-        return processCode(getStrategy().getTemplateParser().getCodeStream().toString());
+        return processCode(_templateParser.getCodeStream().toString());
     }
 
 }

@@ -63,7 +63,7 @@ public class UpSample extends NamedProgramCodeGeneratorAdapter {
      */
     @Override
     protected String _generateFireCode() throws IllegalActionException {
-        CodeStream codeStream = getStrategy().getTemplateParser().getCodeStream();
+        CodeStream codeStream = _templateParser.getCodeStream();
 
         ptolemy.domains.sdf.lib.UpSample actor = (ptolemy.domains.sdf.lib.UpSample) getComponent();
 
@@ -105,7 +105,7 @@ public class UpSample extends NamedProgramCodeGeneratorAdapter {
         Type type = actor.input.getType();
         args.add(targetType(type));
 
-        CodeStream codeStream = getStrategy().getTemplateParser().getCodeStream();
+        CodeStream codeStream = _templateParser.getCodeStream();
 
         if (codeStream.isEmpty()) {
             codeStream.append(_eol

@@ -86,7 +86,7 @@ public class GPInputDevice extends InputDevice {
 
     public String generateSensorSensingFuncCode() throws IllegalActionException {
         List args = new LinkedList();
-        CodeStream _codeStream = getStrategy().getTemplateParser().getCodeStream();
+        CodeStream _codeStream = _templateParser.getCodeStream();
 
         args.add(NamedProgramCodeGeneratorAdapter
                 .generateName(getComponent()));
@@ -105,7 +105,7 @@ public class GPInputDevice extends InputDevice {
         List args = new ArrayList();
         args.add(_padID);
         args.add(_pinID);
-        code.append(processCode(getStrategy().getTemplateParser().getCodeStream().getCodeBlock(
+        code.append(processCode(_templateParser.getCodeStream().getCodeBlock(
                 "initializeGPInput", args)));
         return code.toString();
     }

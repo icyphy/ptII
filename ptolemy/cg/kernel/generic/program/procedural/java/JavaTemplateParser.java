@@ -54,24 +54,23 @@ public class JavaTemplateParser extends ProceduralTemplateParser {
 
     /** Construct the JavaTemplateParser associated
      *  with the given component and the given adapter.
-     *  @param component The associated component.
-     *  @param adapter The associated adapter.
      */
-    public JavaTemplateParser(Object component, ProgramCodeGeneratorAdapter adapter) {
-        super(component, adapter);
-        _parseTreeCodeGenerator = new JavaParseTreeCodeGenerator();
+    public JavaTemplateParser() {        
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                   ////
 
-    /** Get the code generator associated with this adapter class.
-     *  @return The code generator associated with this adapter class.
+    /** Init the TemplateParser with the associated
+     *  given component and the given adapter.
+     *  @param component The associated component.
+     *  @param adapter The associated adapter.
      */
-    public JavaCodeGenerator _getCodeGenerator() {
-        return (JavaCodeGenerator) super._getCodeGenerator();
-    }    
-
+    public void init(Object component, ProgramCodeGeneratorAdapter adapter) {
+        super.init(component, adapter);
+        _parseTreeCodeGenerator = new JavaParseTreeCodeGenerator();
+    }
+    
     /** Return the translated token instance function invocation string.
      *  @param functionString The string within the $tokenFunc() macro.
      *  @param isStatic True if the method is static.
@@ -171,6 +170,13 @@ public class JavaTemplateParser extends ProceduralTemplateParser {
 
     ///////////////////////////////////////////////////////////////////
     ////                     protected methods.                    ////
+
+    /** Get the code generator associated with this adapter class.
+     *  @return The code generator associated with this adapter class.
+     */
+    protected JavaCodeGenerator _getCodeGenerator() {
+        return (JavaCodeGenerator) super._getCodeGenerator();
+    }    
 
     /** Return the replacement string of the given macro. Subclass
      * of GenericCodeGenerator may overriding this method to extend or support

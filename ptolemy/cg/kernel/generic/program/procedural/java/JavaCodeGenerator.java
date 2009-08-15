@@ -50,7 +50,7 @@ import ptolemy.cg.kernel.generic.CodeGeneratorUtilities;
 import ptolemy.cg.kernel.generic.program.CodeStream;
 import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
 import ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapter;
-import ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapterStrategy;
+import ptolemy.cg.kernel.generic.program.TemplateParser;
 import ptolemy.cg.kernel.generic.program.procedural.ProceduralCodeGenerator;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.Variable;
@@ -1079,20 +1079,14 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
         return adapter.processCode(code);
     }
 
-    /** Generate the code for recording the current time.
-     *  This writes current time into a timespec struct called "start".
-     *  @return Return the code for recording the current time.
+    /** Return the class of the templateParser class. In cse
+     *  there isn't one return null.
+     *  @return The base class for templateParser.  
      */
-    protected String _recordStartTime() {
-        StringBuffer startCode = new StringBuffer();
-        startCode.append("long startTime = System.currentTimeMillis();");
-        return startCode.toString();
+    protected Class<? extends TemplateParser> _templateParserClass() {
+        return JavaTemplateParser.class;
     }
-
-    protected Class<? extends ProgramCodeGeneratorAdapterStrategy> _strategyClass() {
-        return JavaCodeGeneratorAdapterStrategy.class;
-    }
-
+    
     /** Read in a template makefile, substitute variables and write
      *  the resulting makefile.
      *

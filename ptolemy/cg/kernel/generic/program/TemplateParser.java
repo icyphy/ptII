@@ -39,6 +39,7 @@ import java.util.Set;
 import java.util.StringTokenizer;
 
 import ptolemy.actor.Actor;
+import ptolemy.actor.CompositeActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.cg.adapter.generic.adapters.ptolemy.actor.Director;
 import ptolemy.cg.kernel.generic.CGException;
@@ -56,7 +57,9 @@ import ptolemy.data.expr.ParserScope;
 import ptolemy.data.expr.PtParser;
 import ptolemy.data.expr.Variable;
 import ptolemy.data.type.ArrayType;
+import ptolemy.data.type.BaseType;
 import ptolemy.data.type.Type;
+import ptolemy.domains.fsm.modal.ModalController;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
@@ -82,45 +85,8 @@ public class TemplateParser {
     
     /** Construct the TemplateParser associated
      *  with the given component and the given adapter.
-     *  @param component The associated component.
-     *  @param adapter The associated adapter.
      */
-    public TemplateParser(Object component, ProgramCodeGeneratorAdapter adapter) {
-        _component = component;
-        _codeGenerator = adapter.getCodeGenerator();
-        _codeStream = new CodeStream(adapter);
-        
-        _parseTreeCodeGenerator = new ParseTreeCodeGenerator() {
-            /** Given a string, escape special characters as necessary for the
-             *  target language.
-             *  @param string The string to escape.
-             *  @return A new string with special characters replaced.
-             */
-            public String escapeForTargetLanguage(String string) {
-                return string;
-            }
-
-            /** Evaluate the parse tree with the specified root node using
-             *  the specified scope to resolve the values of variables.
-             *  @param node The root of the parse tree.
-             *  @param scope The scope for evaluation.
-             *  @return The result of evaluation.
-             *  @exception IllegalActionException If an error occurs during
-             *   evaluation.
-             */
-            public ptolemy.data.Token evaluateParseTree(ASTPtRootNode node,
-                    ParserScope scope) {
-                return new Token();
-            }
-
-            /** Generate code that corresponds with the fire() method.
-             *  @return The generated code.
-             */
-            public String generateFireCode() {
-                return "/* ParseTreeCodeGenerator.generateFireCode() "
-                        + "not implemented in codegen.kernel.GenericCodeGenerator */";
-            }
-        };        
+    public TemplateParser() {
     }
     
     ///////////////////////////////////////////////////////////////////
@@ -154,6 +120,125 @@ public class TemplateParser {
                 + ")";
 
         return processCode(expression);
+    }
+
+    /**
+     * Generate the type conversion statement for the particular offset of
+     * the two given channels. This assumes that the offset is the same for
+     * both channel. Advancing the offset of one has to advance the offset of
+     * the other.
+     * <p>
+     * If alternativeSourceRef is not null, then we use this instead of the source
+     * itself. Thus we generate the type conversion statement with alternativeSourceRef
+     * on the right side of the equal sign, and a reference to the sink on the left
+     * side.
+     * @param source The given source channel.
+     * @param sink The given sink channel.
+     * @param offset The given offset._generateTypeConvertStatement
+     * @return The type convert statement for assigning the converted source
+     *  variable to the sink variable with the given offset.
+     * @exception IllegalActionException If there is a problem getting the
+     * adapters for the ports or if the conversion cannot be handled.
+     */
+    public String generateTypeConvertStatement(ProgramCodeGeneratorAdapter.Channel source,
+            ProgramCodeGeneratorAdapter.Channel sink, int offset, String alternativeSourceRef)
+            throws IllegalActionException {
+
+        Type sourceType = ((TypedIOPort) source.port).getType();
+        Type sinkType = ((TypedIOPort) sink.port).getType();
+
+        // In a modal model, a refinement may have an output port which is
+        // not connected inside, in this case the type of the port is
+        // unknown and there is no need to generate type conversion code
+        // because there is no token transferred from the port.
+        if (sourceType == BaseType.UNKNOWN) {
+            return "";
+        }
+
+        // The references are associated with their own adapter, so we need
+        // to find the associated adapter.
+        String sourcePortChannel = source.port.getName() + "#"
+                + source.channelNumber + ", " + offset;
+        String sourceRef;
+        
+        if (alternativeSourceRef == null) {
+            sourceRef = ((NamedProgramCodeGeneratorAdapter) _codeGenerator.getAdapter(source.port
+                .getContainer())).getReference(sourcePortChannel);
+        } else {
+            sourceRef = alternativeSourceRef;
+        }
+
+        String sinkPortChannel = sink.port.getName() + "#" + sink.channelNumber
+                + ", " + offset;
+
+        // For composite actor, generate a variable corresponding to
+        // the inside receiver of an output port.
+        // FIXME: I think checking sink.port.isOutput() is enough here.
+        if (sink.port.getContainer() instanceof CompositeActor
+                && sink.port.isOutput()) {
+            sinkPortChannel = "@" + sinkPortChannel;
+        }
+        String sinkRef = ((NamedProgramCodeGeneratorAdapter) _codeGenerator.getAdapter(sink.port
+                .getContainer())).getReference(sinkPortChannel, true);
+
+        // When the sink port is contained by a modal controller, it is
+        // possible that the port is both input and output port. we need
+        // to pay special attention. Directly calling getReference() will
+        // treat it as output port and this is not correct.
+        // FIXME: what about offset?
+        if (sink.port.getContainer() instanceof ModalController) {
+            sinkRef = NamedProgramCodeGeneratorAdapter.generateName(sink.port);
+            if (sink.port.isMultiport()) {
+                sinkRef = sinkRef + "[" + sink.channelNumber + "]";
+            }
+        }
+
+        String result = sourceRef;
+
+        if (!sinkType.equals(sourceType)) {
+            if (_codeGenerator.isPrimitive(sinkType)) {
+                result = _codeGenerator.codeGenType(sourceType) + "to" + _codeGenerator.codeGenType(sinkType)
+                        + "(" + result + ")";
+
+            } else if (_codeGenerator.isPrimitive(sourceType)) {
+                result = "$new(" + _codeGenerator.codeGenType(sourceType) + "(" + result
+                        + "))";
+            }
+
+            if (sinkType != BaseType.SCALAR && sinkType != BaseType.GENERAL
+                    && !_codeGenerator.isPrimitive(sinkType)) {
+                if (sinkType instanceof ArrayType) {
+                    if (_codeGenerator.isPrimitive(sourceType)) {
+                        result = "$new(" + _codeGenerator.codeGenType(sinkType) + "(1, 1, "
+                                + result + ", TYPE_" + _codeGenerator.codeGenType(sourceType)
+                                + "))";
+                    }
+
+                    // Deep converting for ArrayType.
+                    Type elementType = ((ArrayType) sinkType).getElementType();
+                    while (elementType instanceof ArrayType) {
+                        elementType = ((ArrayType) elementType)
+                                .getElementType();
+                    }
+
+                    if (elementType != BaseType.SCALAR
+                            && elementType != BaseType.GENERAL) {
+                        result = "$typeFunc(TYPE_"
+                                + _codeGenerator.codeGenType(sinkType)
+                                + "::convert("
+                                + result
+                                + ", /*CGH*/ TYPE_"
+                                + _codeGenerator.codeGenType(((ArrayType) sinkType)
+                                        .getElementType()) + "))";
+                    }
+
+                } else {
+                    result = "$typeFunc(TYPE_" + _codeGenerator.codeGenType(sinkType)
+                            + "::convert(" + result + "))";
+                }
+            }
+        }
+        return sinkRef + " = " + result + ";" + StringUtilities.getProperty("line.separator");
     }
 
     /** Return the code stream.
@@ -432,6 +517,48 @@ public class TemplateParser {
         return result;
     }
 
+    /** Init the TemplateParser with the associated
+     *  given component and the given adapter.
+     *  @param component The associated component.
+     *  @param adapter The associated adapter.
+     */
+    public void init(Object component, ProgramCodeGeneratorAdapter adapter) {
+        _component = component;
+        _codeGenerator = adapter.getCodeGenerator();
+        _codeStream = new CodeStream(adapter);
+        
+        _parseTreeCodeGenerator = new ParseTreeCodeGenerator() {
+            /** Given a string, escape special characters as necessary for the
+             *  target language.
+             *  @param string The string to escape.
+             *  @return A new string with special characters replaced.
+             */
+            public String escapeForTargetLanguage(String string) {
+                return string;
+            }
+
+            /** Evaluate the parse tree with the specified root node using
+             *  the specified scope to resolve the values of variables.
+             *  @param node The root of the parse tree.
+             *  @param scope The scope for evaluation.
+             *  @return The result of evaluation.
+             *  @exception IllegalActionException If an error occurs during
+             *   evaluation.
+             */
+            public ptolemy.data.Token evaluateParseTree(ASTPtRootNode node,
+                    ParserScope scope) {
+                return new Token();
+            }
+
+            /** Generate code that corresponds with the fire() method.
+             *  @return The generated code.
+             */
+            public String generateFireCode() {
+                return "/* ParseTreeCodeGenerator.generateFireCode() "
+                        + "not implemented in codegen.kernel.GenericCodeGenerator */";
+            }
+        };
+    }
 
     /** Process the specified code, replacing macros with their values.
      * @param code The code to process.

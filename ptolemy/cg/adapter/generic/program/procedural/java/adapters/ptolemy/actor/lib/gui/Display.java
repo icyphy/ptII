@@ -30,7 +30,6 @@ package ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.acto
 import java.util.ArrayList;
 
 import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
-import ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapterStrategy;
 import ptolemy.kernel.util.IllegalActionException;
 
 /**
@@ -66,8 +65,6 @@ public class Display extends NamedProgramCodeGeneratorAdapter {
 
         ptolemy.actor.lib.gui.Display actor = (ptolemy.actor.lib.gui.Display) getComponent();
 
-        ProgramCodeGeneratorAdapterStrategy strategy = getStrategy();
-
         String type = getCodeGenerator().codeGenType(actor.input.getType());
         if (!getCodeGenerator().isPrimitive(type)) {
             type = "Token";
@@ -86,7 +83,7 @@ public class Display extends NamedProgramCodeGeneratorAdapter {
         args.add(Integer.valueOf(0));
         for (int i = 0; i < actor.input.getWidth(); i++) {
             args.set(1, Integer.toString(i));
-            code.append(strategy.getTemplateParser().generateBlockCode(type + "PrintBlock", args));
+            code.append(_templateParser.generateBlockCode(type + "PrintBlock", args));
         }
 
         return code.toString();

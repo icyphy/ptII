@@ -149,7 +149,7 @@ public class PtidesBasicDirector
         }
 
         // In the future if we add more devices, then it should be a derivation of the above code.
-        code.append(getStrategy().getTemplateParser().getCodeStream().getCodeBlock(
+        code.append(_templateParser.getCodeStream().getCodeBlock(
                 "assemblyFileBlock", args));
 
         return code;
@@ -205,7 +205,7 @@ public class PtidesBasicDirector
         code.append(getCodeGenerator().comment(
                 "Initialization code of the PtidesDirector."));
 
-        code.append(getStrategy().getTemplateParser().getCodeStream().getCodeBlock("initPDBlock"));
+        code.append(_templateParser.getCodeStream().getCodeBlock("initPDBlock"));
         code.append(super.generateInitializeCode());
 
         return code.toString();
@@ -244,10 +244,10 @@ public class PtidesBasicDirector
 
         code.append(super.generatePreinitializeCode());
 
-        code.append(getStrategy().getTemplateParser().getCodeStream().getCodeBlock(
+        code.append(_templateParser.getCodeStream().getCodeBlock(
                 "preinitPDBlock", args));
 
-        code.append(getStrategy().getTemplateParser().getCodeStream().getCodeBlock(
+        code.append(_templateParser.getCodeStream().getCodeBlock(
                 "initPDCodeBlock"));
 
         code.append(_generateInitializeHardwareCode());

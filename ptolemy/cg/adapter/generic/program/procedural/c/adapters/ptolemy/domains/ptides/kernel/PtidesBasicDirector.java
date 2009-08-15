@@ -101,7 +101,7 @@ public class PtidesBasicDirector extends Director {
         StringBuffer code = new StringBuffer();
         code.append(super.generateInitializeCode());
 
-        code.append(getStrategy().getTemplateParser().getCodeStream().getCodeBlock("initPIBlock"));
+        code.append(_templateParser.getCodeStream().getCodeBlock("initPIBlock"));
         return code.toString();
     }
 
@@ -128,7 +128,7 @@ public class PtidesBasicDirector extends Director {
         args.add(((CompositeActor) _director.getContainer()).deepEntityList()
                 .size());
 
-        CodeStream codestream = getStrategy().getTemplateParser().getCodeStream();
+        CodeStream codestream = _templateParser.getCodeStream();
 
         codestream.clear();
         code.append(codestream.getCodeBlock("preinitPIBlock", args));
@@ -172,27 +172,27 @@ public class PtidesBasicDirector extends Director {
         _modelStaticAnalysis();
 
         Set sharedCode = new HashSet();
-        getStrategy().getTemplateParser().getCodeStream().clear();
+        _templateParser.getCodeStream().clear();
 
         // define the number of actuators in the system as a macro.
-        getStrategy().getTemplateParser().getCodeStream().append(
+        _templateParser.getCodeStream().append(
                 "#define numActuators " + _actuators.size() + _eol);
 
-        getStrategy().getTemplateParser().getCodeStream().appendCodeBlocks("StructDefBlock");
-        getStrategy().getTemplateParser().getCodeStream().appendCodeBlocks("FuncProtoBlock");
+        _templateParser.getCodeStream().appendCodeBlocks("StructDefBlock");
+        _templateParser.getCodeStream().appendCodeBlocks("FuncProtoBlock");
 
         // prototypes for actor functions
-        getStrategy().getTemplateParser().getCodeStream().append(_generateActorFuncProtoCode());
+        _templateParser.getCodeStream().append(_generateActorFuncProtoCode());
 
         // prototypes for actuator functions.
-        getStrategy().getTemplateParser().getCodeStream().append(
+        _templateParser.getCodeStream().append(
                 _generateActuatorActuationFuncArrayCode());
 
-        getStrategy().getTemplateParser().getCodeStream().appendCodeBlocks("FuncBlock");
+        _templateParser.getCodeStream().appendCodeBlocks("FuncBlock");
 
-        if (!getStrategy().getTemplateParser().getCodeStream().isEmpty()) {
+        if (!_templateParser.getCodeStream().isEmpty()) {
             sharedCode
-                    .add(processCode(getStrategy().getTemplateParser().getCodeStream().toString()));
+                    .add(processCode(_templateParser.getCodeStream().toString()));
         }
 
         return sharedCode;

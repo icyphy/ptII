@@ -31,7 +31,6 @@ package ptolemy.cg.kernel.generic.program.procedural;
 import java.util.HashSet;
 import java.util.Set;
 
-import ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapter;
 import ptolemy.cg.kernel.generic.program.TemplateParser;
 import ptolemy.kernel.util.IllegalActionException;
 
@@ -52,13 +51,9 @@ perspective.
 
 public class ProceduralTemplateParser extends TemplateParser {
 
-    /** Construct the ProceduralTemplateParser associated
-     *  with the given component and the given adapter.
-     *  @param component The associated component.
-     *  @param adapter The associated adapter.
+    /** Construct the ProceduralTemplateParser.
      */
-    public ProceduralTemplateParser(Object component, ProgramCodeGeneratorAdapter adapter) {
-        super(component, adapter);
+    public ProceduralTemplateParser() {
     }
 
     ///////////////////////////////////////////////////////////////////

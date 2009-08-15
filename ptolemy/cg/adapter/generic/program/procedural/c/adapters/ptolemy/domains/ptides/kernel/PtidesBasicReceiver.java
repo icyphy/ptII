@@ -98,7 +98,7 @@ public class PtidesBasicReceiver extends ptolemy.cg.adapter.generic.program.proc
         Channel sink = new Channel(sinkPort, sinkChannel);
         
         token = ((NamedProgramCodeGeneratorAdapter)getAdapter(
-                getComponent().getContainer().getContainer())).getStrategy()
+                getComponent().getContainer().getContainer())).getTemplateParser()
                 .generateTypeConvertStatement(source, sink, 0, token);
 
         
@@ -155,7 +155,7 @@ public class PtidesBasicReceiver extends ptolemy.cg.adapter.generic.program.proc
         args.add(deadlineNsecsString);
         args.add(offsetSecsString);//offsetTime
         args.add(offsetNsecsString);
-        return getStrategy().getTemplateParser().generateBlockCode("createEvent", args);
+        return _templateParser.generateBlockCode("createEvent", args);
     }
 
     protected String _generateTypeConvertStatement(Channel source)

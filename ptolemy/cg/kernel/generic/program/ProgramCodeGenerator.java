@@ -41,6 +41,7 @@ import java.util.StringTokenizer;
 import ptolemy.actor.Actor;
 import ptolemy.actor.lib.jni.PointerToken;
 import ptolemy.cg.adapter.generic.adapters.ptolemy.actor.Director;
+import ptolemy.cg.kernel.generic.CodeGeneratorAdapter;
 import ptolemy.cg.kernel.generic.GenericCodeGenerator;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.Parameter;
@@ -50,6 +51,7 @@ import ptolemy.data.type.MatrixType;
 import ptolemy.data.type.Type;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
@@ -479,6 +481,30 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
      */
     final public String getTemplateExtension() {
         return _templateExtension;
+    }
+
+    /** Instantiate the given code generator adapter.
+     *  @param component The given component.
+     *  @param adapterClassName The dot separated name of the adapter.
+     *  @return The code generator adapter.
+     *  @exception IllegalActionException If the adapter class cannot be found.
+     */
+    protected CodeGeneratorAdapter _instantiateAdapter(Object component,
+            Class<?> componentClass, String adapterClassName)
+        throws IllegalActionException {
+        ProgramCodeGeneratorAdapter adapter = (ProgramCodeGeneratorAdapter) super._instantiateAdapter(component, componentClass, adapterClassName);
+        try {
+            Class<?> templateParserClass = _templateParserClass();
+            if (templateParserClass != null){
+                adapter.setTemplateParser((TemplateParser) templateParserClass.newInstance());
+            }
+        } catch (InstantiationException e) {
+            throw new InternalErrorException(e);
+        } catch (IllegalAccessException e) {
+            throw new InternalErrorException(e);
+        }
+        
+        return adapter;
     }
 
     /**
@@ -1047,12 +1073,12 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
         _typeFuncUsed.clear();
     }
 
-    /** Return the class of the strategy class. In cse
+    /** Return the class of the templateParser class. In cse
      *  there isn't one return null.
-     *  @return The base class for strategy.  
+     *  @return The base class for templateParser.  
      */
-    protected Class<? extends ProgramCodeGeneratorAdapterStrategy> _strategyClass() {
-        return ProgramCodeGeneratorAdapterStrategy.class;
+    protected Class<? extends TemplateParser> _templateParserClass() {
+        return TemplateParser.class;
 
     }
 

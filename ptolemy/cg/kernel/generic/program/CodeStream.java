@@ -38,7 +38,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
-import ptolemy.cg.kernel.generic.CodeGeneratorAdapter;
 import ptolemy.cg.kernel.generic.program.procedural.c.CCodeGenerator;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.Token;
@@ -104,7 +103,7 @@ public class CodeStream {
      * @param adapter The actor adapter associated with this code stream,
      * which is currently ignored.
      */
-    public CodeStream(CodeGeneratorAdapter adapter) {
+    public CodeStream(ProgramCodeGeneratorAdapter adapter) {
         _adapter = adapter;
         this._codeGenerator = _adapter.getCodeGenerator();
     }
@@ -119,7 +118,7 @@ public class CodeStream {
      * which is currently ignored.
      */
     public CodeStream(List<String> templateArguments,
-            CodeGeneratorAdapter adapter) {
+            ProgramCodeGeneratorAdapter adapter) {
         this(adapter);
         _templateArguments = templateArguments;
     }
@@ -1730,7 +1729,7 @@ public class CodeStream {
     /**
      * The adapter associated with this code stream.
      */
-    private CodeGeneratorAdapter _adapter = null;
+    private ProgramCodeGeneratorAdapter _adapter = null;
 
     /** Original value of _filePath, used for error messages. */
     private String _originalFilePath = null;

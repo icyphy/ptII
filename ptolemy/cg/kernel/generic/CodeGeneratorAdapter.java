@@ -27,7 +27,6 @@
  */
 package ptolemy.cg.kernel.generic;
 
-import ptolemy.cg.kernel.generic.program.ProgramCodeGenerator;
 import ptolemy.kernel.DecoratedAttributesImplementation;
 import ptolemy.kernel.util.DecoratedAttributes;
 import ptolemy.kernel.util.IllegalActionException;
@@ -35,7 +34,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 
 ///////////////////////////////////////////////////////////////////////
-////ProgramCodeGeneratorAdapterStrategy
+////CodeGeneratorAdapter
 
 /**
 * FIXME: Overhaul comments.
@@ -85,7 +84,7 @@ abstract public class CodeGeneratorAdapter extends NamedObj {
      *  @return The code generator associated with this adapter class.
      *  @see #setCodeGenerator(GenericCodeGenerator)
      */
-    abstract public ProgramCodeGenerator getCodeGenerator();
+    abstract public GenericCodeGenerator getCodeGenerator();
     
     /** Set the code generator associated with this adapter class.
      *  @param codeGenerator The code generator associated with this
@@ -94,12 +93,6 @@ abstract public class CodeGeneratorAdapter extends NamedObj {
      */
     abstract public void setCodeGenerator(GenericCodeGenerator codeGenerator);
     
-    /** Set the strategy for generating code for this adapter.
-     * @param strategy The strategy.
-     */ 
-    public void setStrategy(Object strategy) {
-    }
-
     /** Set the current type of the decorated attributes.
      *  The type information of the parameters are not saved in the
      *  model hand hence this has to be reset when reading the model

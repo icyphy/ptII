@@ -101,7 +101,7 @@ public class SDFReceiver extends Receiver {
         ProgramCodeGeneratorAdapter.Channel source = new Channel(sourcePort, 0);
         ProgramCodeGeneratorAdapter.Channel sink = new Channel(port, channel);
         token = ((NamedProgramCodeGeneratorAdapter)
-            getAdapter(getComponent().getContainer().getContainer())).getStrategy()
+            getAdapter(getComponent().getContainer().getContainer())).getTemplateParser()
             .generateTypeConvertStatement(source, sink, 0, token);
         
         token = _removeSink(token);

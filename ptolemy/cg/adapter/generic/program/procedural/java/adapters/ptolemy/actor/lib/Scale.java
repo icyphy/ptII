@@ -28,7 +28,6 @@
 package ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.actor.lib;
 
 import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
-import ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapterStrategy;
 import ptolemy.kernel.util.IllegalActionException;
 
 //////////////////////////////////////////////////////////////////////////
@@ -62,12 +61,11 @@ public class Scale extends NamedProgramCodeGeneratorAdapter {
         super._generateFireCode();
 
         ptolemy.actor.lib.Scale actor = (ptolemy.actor.lib.Scale) getComponent();
-        ProgramCodeGeneratorAdapterStrategy strategy = getStrategy();
 
         String type = getCodeGenerator().isPrimitive(actor.input.getType()) ? ""
                 : "Token";
 
-        strategy.getTemplateParser().getCodeStream().appendCodeBlock(type + "FireBlock", false);
-        return processCode(strategy.getTemplateParser().getCodeStream().toString());
+        _templateParser.getCodeStream().appendCodeBlock(type + "FireBlock", false);
+        return processCode(_templateParser.getCodeStream().toString());
     }
 }

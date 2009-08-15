@@ -262,7 +262,7 @@ public class NamedProgramCodeGeneratorAdapter extends ProgramCodeGeneratorAdapte
      *  @return The associated component.
      */
     public NamedObj getComponent() {
-        return (NamedObj) _strategy.getComponent();
+        return (NamedObj) super.getComponent();
     }
 
     /**
@@ -519,7 +519,7 @@ public class NamedProgramCodeGeneratorAdapter extends ProgramCodeGeneratorAdapte
      *  @exception IllegalActionException Not Thrown in this base class.
      */
     public Set<String> getHeaderFiles() throws IllegalActionException {
-        return _strategy.getTemplateParser().getHeaderFiles();
+        return _templateParser.getHeaderFiles();
     }
 
     /** Return a set of directories to include for the generated code.
@@ -530,7 +530,7 @@ public class NamedProgramCodeGeneratorAdapter extends ProgramCodeGeneratorAdapte
      */
     public Set<String> getIncludeDirectories() throws IllegalActionException {
         Set<String> includeDirectories = new HashSet<String>();
-        CodeStream codeStream = getStrategy().getTemplateParser()._getActualCodeStream();
+        CodeStream codeStream = _templateParser._getActualCodeStream();
         codeStream.appendCodeBlock("includeDirectories", true);
         String includeDirectoriesString = codeStream.toString();
 
@@ -557,7 +557,7 @@ public class NamedProgramCodeGeneratorAdapter extends ProgramCodeGeneratorAdapte
      */
     public Set<String> getLibraries() throws IllegalActionException {
         Set<String> libraries = new HashSet<String>();
-        CodeStream codeStream = getStrategy().getTemplateParser()._getActualCodeStream();
+        CodeStream codeStream = _templateParser._getActualCodeStream();
         codeStream.appendCodeBlock("libraries", true);
         String librariesString = codeStream.toString();
 
@@ -583,7 +583,7 @@ public class NamedProgramCodeGeneratorAdapter extends ProgramCodeGeneratorAdapte
      */
     public Set<String> getLibraryDirectories() throws IllegalActionException {
         Set<String> libraryDirectories = new HashSet<String>();
-        CodeStream codeStream = getStrategy().getTemplateParser()._getActualCodeStream();
+        CodeStream codeStream = _templateParser._getActualCodeStream();
         codeStream.appendCodeBlock("libraryDirectories", true);
         String libraryDirectoriesString = codeStream.toString();
 
@@ -656,7 +656,7 @@ public class NamedProgramCodeGeneratorAdapter extends ProgramCodeGeneratorAdapte
      */
     final public String getParameterValue(String name, NamedObj container)
             throws IllegalActionException {
-        return _strategy.getTemplateParser().getParameterValue(name, container);
+        return _templateParser.getParameterValue(name, container);
     }
 
     /** Return the reference to the specified parameter or port of the
@@ -717,11 +717,11 @@ public class NamedProgramCodeGeneratorAdapter extends ProgramCodeGeneratorAdapte
      */
     public Set<String> getSharedCode() throws IllegalActionException {
         Set<String> sharedCode = new HashSet<String>();
-        CodeStream codestream = getStrategy().getTemplateParser().getCodeStream();
+        CodeStream codestream = _templateParser.getCodeStream();
         codestream.clear();
         codestream.appendCodeBlocks(".*shared.*");
         if (!codestream.isEmpty()) {
-            sharedCode.add(getStrategy().getTemplateParser().processCode(codestream.toString()));
+            sharedCode.add(_templateParser.processCode(codestream.toString()));
         }
         return sharedCode;
 
@@ -851,7 +851,7 @@ public class NamedProgramCodeGeneratorAdapter extends ProgramCodeGeneratorAdapte
      * @exception IllegalActionException Not thrown in this base class.
      */
     protected String _generateFireCode() throws IllegalActionException {
-        CodeStream codeStream = getStrategy().getTemplateParser().getCodeStream();
+        CodeStream codeStream = _templateParser.getCodeStream();
         codeStream.clear();
 
         // If the component name starts with a $, then convert "$" to "Dollar" and avoid problems
@@ -875,7 +875,7 @@ public class NamedProgramCodeGeneratorAdapter extends ProgramCodeGeneratorAdapte
      */
     protected String _generateTypeConvertStatement(ProgramCodeGeneratorAdapter.Channel source,
             ProgramCodeGeneratorAdapter.Channel sink, int offset) throws IllegalActionException {
-        return _strategy.generateTypeConvertStatement(source, sink, offset, null);
+        return _templateParser.generateTypeConvertStatement(source, sink, offset, null);
     }
 
     /**

@@ -69,7 +69,7 @@ public class Ramp extends NamedProgramCodeGeneratorAdapter {
         ArrayList<String> args = new ArrayList<String>();
         args.add(getCodeGenerator().codeGenType(actor.output.getType()));
 
-        CodeStream codeStream = getStrategy().getTemplateParser().getCodeStream();
+        CodeStream codeStream = _templateParser.getCodeStream();
         codeStream.append(_eol
                 + CodeStream.indent(getCodeGenerator().comment(
                         "initialize " + getComponent().getName())));
@@ -111,7 +111,7 @@ public class Ramp extends NamedProgramCodeGeneratorAdapter {
             type = "Token";
         }
 
-        CodeStream codeStream = getStrategy().getTemplateParser().getCodeStream();
+        CodeStream codeStream = _templateParser.getCodeStream();
         codeStream.appendCodeBlock(type + "FireBlock");
         return processCode(codeStream.toString());
     }
