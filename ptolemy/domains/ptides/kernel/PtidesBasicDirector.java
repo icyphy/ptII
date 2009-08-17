@@ -830,7 +830,7 @@ public class PtidesBasicDirector extends DEDirector {
                     if (!(sinkPort.getContainer() instanceof NetworkInputDevice)) {
                         throw new IllegalActionException(port, sinkPort.getContainer(),
                                 "An input network " +
-                                "port must have a NetworkInputDevice as" +
+                                "port must have a NetworkInputDevice as " +
                                 "its sink.");
                     }
                     Parameter parameter = (Parameter) ((NamedObj) port)

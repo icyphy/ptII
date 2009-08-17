@@ -38,15 +38,13 @@ import ptolemy.kernel.util.NameDuplicationException;
 ////ActuatorOutputDevice
 
 /**
- *  Note this actor (or some other subclass of EnvironmentTransmitter) should
- *  be directly connected to a actuator output port for a PtidesBasicDirector.
- *  Though this actor does not do anything interesting, it is mainly used for
- *  code generation purposes.
+ *  This actor is a simple identity function in simulation.
+ *  In other words, this actor is not needed if the user is only
+ *  running simulation, but if the user wants to codegen to PtidyOS, this actor
+ *  should be added, and directly connected to an actuator output port for a 
+ *  PtidesBasicDirector.
  *
- *  In other words, this actor is not necessarily needed if the user is only
- *  running simulation, but not doing codegen to PtidyOS.
- *
- *  However the same argument does not hold for a NetworkTransmitter.
+ *  However the same argument does not hold for a NetworkOutputDevice.
  *
  *  @author Jia Zou, Slobodan Matic
  *  @version $ld$
