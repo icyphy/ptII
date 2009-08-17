@@ -61,7 +61,7 @@ JSRCS = \
 	NamedProgramCodeGeneratorAdapter.java \
 	ProgramCodeGenerator.java \
 	ProgramCodeGeneratorAdapter.java \
-	ProgramCodeGeneratorAdapterStrategy.java
+	TemplateParser.java
 
 OTHER_FILES_TO_BE_JARED = 
 
@@ -78,10 +78,7 @@ OPTIONAL_FILES = \
 	demo \
 	'CodeStream$$1.class' \
 	'CodeStream$$CodeBlockTable.class' \
-	'CodeStream$$Signature.class' \
-	'ProgramCodeGeneratorAdapterStrategy$$1.class' \
-	'ProgramCodeGeneratorAdapterStrategy$$Channel.class' \
-	'ProgramCodeGeneratorAdapterStrategy$$VariableScope.class' \
+	'CodeStream$$Signature.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

@@ -58,7 +58,8 @@ PTCLASSALLJARS = \
 
 # Keep this list alphabetized.
 JSRCS = \
-	ProceduralCodeGenerator.java
+	ProceduralCodeGenerator.java \
+	ProceduralTemplateParser.java
 
 OTHER_FILES_TO_BE_JARED = 
 

@@ -57,9 +57,9 @@ PTCLASSALLJARS = \
 
 # Keep this list alphabetized.
 JSRCS = CCodeGenerator.java \
-	CCodeGeneratorAdapterStrategy.java \
 	CCodegenUtilities.java \
-	CParseTreeCodeGenerator.java
+	CParseTreeCodeGenerator.java \
+	CTemplateParser.java
 
 OTHER_FILES_TO_BE_JARED = \
 	makefile.in \
@@ -76,8 +76,7 @@ MISC_FILES =	$(DIRS)
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	demo \
-	'CCodeGeneratorAdapter$$1.class' \
-        'CCodeGeneratorAdapterStrategy$$1.class' \
+	'CCodeGeneratorAdapter$$1.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 
