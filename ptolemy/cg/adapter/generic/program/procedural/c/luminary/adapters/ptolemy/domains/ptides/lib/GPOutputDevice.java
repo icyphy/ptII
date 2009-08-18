@@ -57,7 +57,7 @@ public class GPOutputDevice extends OutputDevice {
      *  @throws NameDuplicationException 
      */
     public GPOutputDevice(
-            ptolemy.domains.ptides.lib.targets.luminary.GPOutputDevice actor)
+            ptolemy.domains.ptides.lib.luminary.GPOutputDevice actor)
             throws IllegalActionException, NameDuplicationException {
         super(actor);
 
@@ -112,7 +112,7 @@ public class GPOutputDevice extends OutputDevice {
         List args = new LinkedList();
         CodeStream _codeStream = _templateParser.getCodeStream();
 
-        ptolemy.domains.ptides.lib.targets.luminary.GPOutputDevice actor = (ptolemy.domains.ptides.lib.targets.luminary.GPOutputDevice) getComponent();
+        ptolemy.domains.ptides.lib.luminary.GPOutputDevice actor = (ptolemy.domains.ptides.lib.luminary.GPOutputDevice) getComponent();
         PtidesBasicDirector adapter = (PtidesBasicDirector) getAdapter(actor
                 .getDirector());
 

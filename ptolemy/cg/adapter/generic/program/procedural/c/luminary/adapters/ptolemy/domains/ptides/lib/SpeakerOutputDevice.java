@@ -51,7 +51,7 @@ public class SpeakerOutputDevice extends OutputDevice {
      *  @throws NameDuplicationException 
      */
     public SpeakerOutputDevice(
-            ptolemy.domains.ptides.lib.targets.luminary.SpeakerOutputDevice actor)
+            ptolemy.domains.ptides.lib.luminary.SpeakerOutputDevice actor)
             throws IllegalActionException, NameDuplicationException {
         super(actor);
     }
@@ -84,7 +84,7 @@ public class SpeakerOutputDevice extends OutputDevice {
         List args = new LinkedList();
         CodeStream _codeStream = _templateParser.getCodeStream();
 
-        ptolemy.domains.ptides.lib.targets.luminary.SpeakerOutputDevice actor = (ptolemy.domains.ptides.lib.targets.luminary.SpeakerOutputDevice) getComponent();
+        ptolemy.domains.ptides.lib.luminary.SpeakerOutputDevice actor = (ptolemy.domains.ptides.lib.luminary.SpeakerOutputDevice) getComponent();
         PtidesBasicDirector helper = (PtidesBasicDirector) getAdapter(actor
                 .getDirector());
 
