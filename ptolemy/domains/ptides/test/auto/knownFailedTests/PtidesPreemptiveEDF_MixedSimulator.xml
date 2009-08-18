@@ -16,7 +16,7 @@
     </property>
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{350.1825275397796, 253.0612186352509}">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={193, 23, 1027, 753}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={301, 149, 1026, 750}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[813, 640]">
     </property>
@@ -358,6 +358,10 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[90.0, 55.0]">
             </property>
         </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={313, 195, 813, 510}, maximized=false}">
+        </property>
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+        </property>
         <port name="in" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 240.0]">
@@ -387,17 +391,17 @@
             </property>
         </entity>
         <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={165, 56, 508, 347}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={158, 398, 500, 344}, maximized=false}">
             </property>
             <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 335.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[325.0, 360.0]">
             </property>
             <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
-<title>TimedPlotter</title>
+<title>Integrator Input and Output</title>
 <xLabel></xLabel>
 <yLabel></yLabel>
 <xRange min="0.0" max="0.5"/>
@@ -406,11 +410,26 @@
 </plot>?>
             </configure>
         </entity>
-        <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        <entity name="CurrentTime" class="ptolemy.actor.lib.CurrentTime">
+            <doc>Output the current time.</doc>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{255, 115}">
             </property>
-        </relation>
-        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        </entity>
+        <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
+            <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 0.005, 0.015, 0.02, 0.02, 0.1, 0.1, 0.105, 0.115, 0.12, 0.12, 0.2, 0.2, 0.205, 0.215, 0.22, 0.22, 0.3, 0.3, 0.305, 0.315, 0.32, 0.32, 0.4, 0.4, 0.405, 0.415, 0.42, 0.42, 0.5, 0.5}">
+            </property>
+            <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="true">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{375.0, 115.0}">
+            </property>
+        </entity>
+        <entity name="NonStrictTest2" class="ptolemy.actor.lib.NonStrictTest">
+            <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1.0, 1.0, 1.0, 1.0, 10.0, 10.0, 10.0, 10.0, 10.0, 10.0, 1.85, 1.85, 1.85, 1.85, 1.85, 1.85, -1.13, -1.13, -1.13, -1.13, -1.13, -1.13, -0.5035, -0.5035, -0.5035, -0.5035, -0.5035, -0.5035, 0.0688, 0.0688, 0.0688}">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 175.0]">
+            </property>
+        </entity>
+        <relation name="relation2" class="ptolemy.actor.TypedIORelation">
             <property name="width" class="ptolemy.data.expr.Parameter" value="1">
             </property>
         </relation>
@@ -424,15 +443,28 @@
             <vertex name="vertex1" value="{210.0, 240.0}">
             </vertex>
         </relation>
+        <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+            <vertex name="vertex1" value="{330.0, 240.0}">
+            </vertex>
+        </relation>
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        </relation>
         <link port="in" relation="relation2"/>
         <link port="out" relation="relation3"/>
         <link port="Integrator.derivative" relation="relation5"/>
-        <link port="Integrator.state" relation="relation"/>
+        <link port="Integrator.state" relation="relation4"/>
         <link port="ZeroOrderHold.input" relation="relation2"/>
         <link port="ZeroOrderHold.output" relation="relation5"/>
-        <link port="PeriodicSampler2.input" relation="relation"/>
+        <link port="PeriodicSampler2.input" relation="relation4"/>
         <link port="PeriodicSampler2.output" relation="relation3"/>
         <link port="TimedPlotter.input" relation="relation5"/>
+        <link port="TimedPlotter.input" relation="relation4"/>
+        <link port="CurrentTime.output" relation="relation"/>
+        <link port="CurrentTime.trigger" relation="relation5"/>
+        <link port="NonStrictTest.input" relation="relation"/>
+        <link port="NonStrictTest2.input" relation="relation5"/>
     </entity>
     <entity name="P2: Sensor+Alarm" class="ptolemy.actor.TypedCompositeActor">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[260.0, 220.0]">
@@ -441,7 +473,7 @@
         </property>
         <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{283.4469696969697, 141.9885574494949}">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={107, 55, 814, 513}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={107, 55, 813, 510}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
         </property>
@@ -979,26 +1011,6 @@ Then delete this annotation.</text>
         <link port="ModalModel.port" relation="relation8"/>
         <link port="ModalModel.input2" relation="relation5"/>
     </entity>
-    <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={658, 417, 508, 347}, maximized=false}">
-        </property>
-        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[220.0, 305.0]">
-        </property>
-        <configure>
-<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
-"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
-<plot>
-<title>TimedPlotter</title>
-<xLabel></xLabel>
-<yLabel></yLabel>
-<xRange min="0.0" max="0.5"/>
-<yRange min="0.0" max="1.113"/>
-<default marks="dots"/>
-</plot>?>
-        </configure>
-    </entity>
     <entity name="SingleEvent" class="ptolemy.domains.de.lib.SingleEvent">
         <property name="value" class="ptolemy.data.expr.Parameter" value="v1">
         </property>
@@ -1009,6 +1021,26 @@ Then delete this annotation.</text>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
             </property>
         </port>
+    </entity>
+    <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={670, 407, 500, 344}, maximized=false}">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[220.0, 305.0]">
+        </property>
+        <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>Tank Output</title>
+<xLabel></xLabel>
+<yLabel></yLabel>
+<xRange min="0.0" max="0.5"/>
+<yRange min="0.0" max="1.113"/>
+<default marks="dots"/>
+</plot>?>
+        </configure>
     </entity>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
@@ -1038,6 +1070,6 @@ Then delete this annotation.</text>
     <link port="P2: Sensor+Alarm.sensor" relation="relation6"/>
     <link port="P2: Sensor+Alarm.networkOutput" relation="relation2"/>
     <link port="P2: Sensor+Alarm.port" relation="relation4"/>
-    <link port="TimedPlotter.input" relation="relation6"/>
     <link port="SingleEvent.output" relation="relation"/>
+    <link port="TimedPlotter.input" relation="relation6"/>
 </entity>
