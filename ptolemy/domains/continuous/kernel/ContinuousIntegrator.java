@@ -325,7 +325,11 @@ public class ContinuousIntegrator extends TypedAtomicActor implements
      */
     public double getDerivative() throws NoTokenException,
             IllegalActionException {
-        return ((DoubleToken) derivative.get(0)).doubleValue();
+        double result = ((DoubleToken) derivative.get(0)).doubleValue();
+        if (_debugging) {
+            _debug("Read input: " + result);
+        }
+        return result;
     }
 
     /** Return the state of the integrator. The returned state is the
@@ -483,6 +487,9 @@ public class ContinuousIntegrator extends TypedAtomicActor implements
      *  to the current state.
      */
     public void rollBackToCommittedState() {
+        if (_debugging) {
+            _debug("Rolling back to state: " + _state);
+        }
         _lastRound = -1;
         _tentativeState = _state;
     }
