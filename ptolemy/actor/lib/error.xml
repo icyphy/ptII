@@ -1,0 +1,18 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="ErrorAction" class="ptolemy.actor.lib.Error">
+    <property name="errorAction">
+        <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+            <property name="warn" value="Warn"
+	              class="ptolemy.kernel.util.StringAttribute"/>
+            <property name="reset" value="Reset"
+	              class="ptolemy.kernel.util.StringAttribute"/>
+            <property name="timeutility" value="TimedUtilityFucntion"
+	              class="ptolemy.kernel.util.StringAttribute"/>
+            </property>
+     </property>
+    <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+        <property name="attributeName" value="ErrorAction"/>
+    </property>
+  </entity>
