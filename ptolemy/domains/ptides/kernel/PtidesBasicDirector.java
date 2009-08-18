@@ -825,7 +825,7 @@ public class PtidesBasicDirector extends DEDirector {
         // These checks are constantly being updated. It is not yet complete.
         for (TypedIOPort port : (List<TypedIOPort>) (((TypedCompositeActor) getContainer())
                 .inputPortList())) {
-            for (TypedIOPort sinkPort : (List<TypedIOPort>)port.sinkPortList()) {
+            for (TypedIOPort sinkPort : (List<TypedIOPort>)port.deepInsidePortList()) {
                 if (_isNetworkPort(port)) {
                     if (!(sinkPort.getContainer() instanceof NetworkInputDevice)) {
                         throw new IllegalActionException(port, sinkPort.getContainer(),

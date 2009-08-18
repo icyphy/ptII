@@ -37,14 +37,13 @@ import ptolemy.kernel.util.NameDuplicationException;
 //////////////////////////////////////////////////////////////////////////
 ////ActuatorOutputDevice
 
-/**
- *  This actor is a simple identity function in simulation.
- *  In other words, this actor is not needed if the user is only
- *  running simulation, but if the user wants to codegen to PtidyOS, this actor
- *  should be added, and directly connected to an actuator output port for a 
- *  PtidesBasicDirector.
- *
- *  However the same argument does not hold for a NetworkOutputDevice.
+/** A model of actuator hardware on a target platform.
+ *  This base class copies inputs unchanged to the outputs,
+ *  but subclasses will model specific properties of physical
+ *  hardware on a target platform.  This base class also
+ *  imposes no type constraints on the inputs, but subclasses
+ *  will constrain the types to those that the physical hardware
+ *  can handle.
  *
  *  @author Jia Zou, Slobodan Matic
  *  @version $ld$
