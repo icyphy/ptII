@@ -36,8 +36,12 @@ import ptolemy.kernel.util.StringAttribute;
 import ptolemy.actor.TypedAtomicActor;
 
 /**
- Produce an output token on each firing with a value that is
- the current time. The output is of type double.
+This error actor enables the user to specify how an error is handled in 
+C code generated from a Giotto model. In theory it should implement the 
+Model Error Handler interface, however I'm not sure if it is correct to 
+incorporate error handling in the specification and simulation of a Giotto 
+Model since a giotto model only specifies logical execution time.
+
 
  @author Shanna-Shaye Forbes
  @version $Id$
@@ -81,11 +85,11 @@ public class Error extends TypedAtomicActor { //should probably also implement t
             errorActionName = errorAction.getExpression().trim();
 
             if (errorActionName.equals("Warn")) {
-                _errorAction = _W;
+                _errorAction = _warn;
             } else if (errorActionName.equals("Reset")) {
-                _errorAction = _R;
+                _errorAction = _reset;
             } else if (errorActionName.equals("TimedUtilityFunction")) {
-                _errorAction = _T;
+                _errorAction =  _timedutiltiyfunction;
             }  else {
                 throw new IllegalActionException(this,
                         "Unrecognized action on error: " + errorActionName);
@@ -120,11 +124,11 @@ private int _errorAction;
 
 
 // Constants used for more efficient execution.
-private static final int _W = 0;
+private static final int _warn = 0;
 
-private static final int _R = 1;
+private static final int _reset = 1;
 
-private static final int _T = 2;
+private static final int _timedutiltiyfunction = 2;
 
 
 
