@@ -404,13 +404,23 @@ public class ContinuousDirector extends FixedPointDirector implements
         // If there are external inputs and there is no enclosing continuous
         // director, then those external inputs are to be understood as discrete
         // inputs. We must process them when we have a step size of zero.
-        if (_transferInputsToInside() || _currentStepSize == 0.0) {
+        // However, if we just backtracked (due to our previous step size
+        // having been too big, and the speculative execution having been
+        // nullified by the appearance of an unexpected event), then we should
+        // not call _transferInptusToInside(), because the environment time
+        // is ahead of the local time and any inputs that might present
+        // are in the future. Presumably, since we are redoing a speculative
+        // solver iteration, there must have been no inputs at the
+        // _iterationBeginTime, which is now our _currentTime.
+        if (!_redoingSolverIteration && _transferInputsToInside() || _currentStepSize == 0.0) {
             _currentStepSize = 0.0;
             _ODESolver._reset();
             super.fire();
             _transferOutputsToEnvironment();
             return;
         }
+        // Reset this flag before we forget.
+        _redoingSolverIteration = false;
 
         // If we get to here, then we are either at the top level, or we
         // are enclosed within a director that is not a ContinuousDirector
@@ -719,6 +729,7 @@ public class ContinuousDirector extends FixedPointDirector implements
         _commitIsPending = false;
         _postfireReturns = true;
         _isInitializing = false;
+        _redoingSolverIteration = false;
     }
 
     /** Return true if all step size control actors agree that the current
@@ -971,7 +982,6 @@ public class ContinuousDirector extends FixedPointDirector implements
             // then we must be inside a modal model and have been
             // disabled for some interval.
             // If there is a commit pending, then that commit is invalid.
-            // would be effective.
             if (_commitIsPending) {
                 _commitIsPending = false;
                 rollBackToCommittedState();
@@ -1306,6 +1316,8 @@ public class ContinuousDirector extends FixedPointDirector implements
         // in their postfire() method, which will insert breakpoints,
         // which will affect the next step size.
         // NOTE: This increments _index.
+        // FIXME: This also resets all receivers, which is redundant since in this
+        // director, resetting receivers is handled by fire(). Efficiency concern?
         _postfireReturns = super.postfire();
 
         // Correct for the above incrementing of the index.
@@ -1640,9 +1652,6 @@ public class ContinuousDirector extends FixedPointDirector implements
             // would have thrown an exception. Hence, current time must match
             // the environment time.
             if (!_commitIsPending) {
-
-                // FIXME: Needed?
-
                 // Request a refiring at the current time.
                 // The reason for this is that local time has not advanced,
                 // so we can't be sure of any interval of future time over which
@@ -1689,7 +1698,8 @@ public class ContinuousDirector extends FixedPointDirector implements
         }
         boolean result = super.prefire();
         // Initialize everything for the fixedpoint iteration.
-        _resetAllReceivers();
+        // NOTE: This is done in fire. Not necessary here.
+        // _resetAllReceivers();
 
         if (_debugging) {
             _debug("ContinuousDirector: prefire() returns " + result);
@@ -1737,7 +1747,9 @@ public class ContinuousDirector extends FixedPointDirector implements
         // beginning of this method.
         boolean result = super.prefire();
         // Initialize everything for the fixedpoint iteration.
-        _resetAllReceivers();
+        // NOTE: This is done in fire(), and anyway, should not be done
+        // if there is commit pending.
+        // _resetAllReceivers();
 
         if (_debugging) {
             _debug("-- prefire() returns " + result);
@@ -1758,7 +1770,8 @@ public class ContinuousDirector extends FixedPointDirector implements
         Time outTime = executiveDirector.getModelTime();
         int localTimeExceedsOutsideTime = _currentTime.compareTo(outTime);
         if (localTimeExceedsOutsideTime > 0) {
-            // Local current time exceeds that of the environment.
+            ///////////////////////////////////////////////////////////////
+            // First case: Local current time exceeds that of the environment.
             // We need to roll back. Make sure this is allowable.
             if (!_commitIsPending) {
                 throw new IllegalActionException(this, "The model time of "
@@ -1790,7 +1803,16 @@ public class ContinuousDirector extends FixedPointDirector implements
             }
             rollBackToCommittedState();
             _commitIsPending = false;
+            // Set a flag to prevent the fire() method from reading inputs
+            // and resetting the step size to 0.0 if there are inputs
+            // present. Presumably, there are no inputs present at the
+            // _iterationBeginTime because had there been any, then
+            // the speculative execution that we are rolling back
+            // would not have occurred.
+            _redoingSolverIteration = true;
         } else if (localTimeExceedsOutsideTime == 0 && _commitIsPending) {
+            ///////////////////////////////////////////////////////////////
+            // Second case:
             // A commit is pending and the environment time matches
             // our local time. This means that no additional events have
             // arrived during the interval of the last successful integration
@@ -1798,44 +1820,55 @@ public class ContinuousDirector extends FixedPointDirector implements
             // producing any outputs previously computed in the speculative
             // execution. It will then request a refiring at the current time.
             _currentStepSize = 0.0;
+            // If the enclosing director implements SuperdenseTimeDirector,
+            // then get the current index from it.
+            if (executiveDirector instanceof SuperdenseTimeDirector) {
+                _index = ((SuperdenseTimeDirector) executiveDirector).getIndex();
+            }
             return true;
-        } else if (localTimeExceedsOutsideTime < 0
-                && executiveDirector != _enclosingContinuousDirector()) {
-            // Local current time is behind environment time, so
-            // We must be inside a modal model and have been
+        } else if (localTimeExceedsOutsideTime < 0) {
+            ///////////////////////////////////////////////////////////////
+            // Third case:
+            // Local current time is behind environment time.
+            // This could have happened if
+            // we are inside a modal model and have been
             // disabled at the time that the commit
-            // would be effective. Cancel any pending commit.
+            // would be effective. We should cancel any pending commit.
             if (_commitIsPending) {
                 _commitIsPending = false;
                 rollBackToCommittedState();
             }
-            // Force current time to match the environment time, and treat
-            // this as if were were starting again in initialize().
-            // This ensures that actors like plotters will be postfired at
-            // the current time.
-            // FIXME: How do we know that that time matches the
-            // time at which the commit occurred?
-            // Shouldn't this be checked?
+            // We should set current time to the environment time and set
+            // the step size to zero.
             _currentTime = outTime;
             if (_debugging) {
                 _debug("-- Setting current time to match enclosing non-ContinuousDirector: "
                         + _currentTime + ", and step size to 0.0.");
             }
             _currentStepSize = 0.0;
-        }
-
-        // Adjust the step size to
-        // make sure the time does not exceed the next iteration
-        // time of the environment during this next integration step.
-        Time environmentNextIterationTime = executiveDirector
-                .getModelNextIterationTime();
-        Time localTargetTime = _iterationBeginTime.add(_currentStepSize);
-        if (environmentNextIterationTime.compareTo(localTargetTime) < 0) {
-            _currentStepSize = environmentNextIterationTime.subtract(
-                    _currentTime).getDoubleValue();
-            if (_debugging) {
-                _debug("-- Revising step size due to environment's next iteration time to "
-                        + _currentStepSize);
+        } else {
+            ///////////////////////////////////////////////////////////////
+            // Fourth case:
+            // Environment time matches local time and there is no pending
+            // commit.
+            // Adjust the step size to
+            // make sure the time does not exceed the next iteration
+            // time of the environment during this next integration step.
+            Time environmentNextIterationTime = executiveDirector
+                    .getModelNextIterationTime();
+            Time localTargetTime = _iterationBeginTime.add(_currentStepSize);
+            if (environmentNextIterationTime.compareTo(localTargetTime) < 0) {
+                _currentStepSize = environmentNextIterationTime.subtract(
+                        _currentTime).getDoubleValue();
+                if (_debugging) {
+                    _debug("-- Revising step size due to environment's next iteration time to "
+                            + _currentStepSize);
+                }
+            }
+            // If the enclosing director implements SuperdenseTimeDirector,
+            // then get the current index from it.
+            if (executiveDirector instanceof SuperdenseTimeDirector) {
+                _index = ((SuperdenseTimeDirector) executiveDirector).getIndex();
             }
         }
 
@@ -1880,24 +1913,21 @@ public class ContinuousDirector extends FixedPointDirector implements
             }
         }
 
-        // The super.prefire() method cannot be called before this point
-        // because it sets the local model time to match that of the
-        // executive director.
-        boolean result = super.prefire();
-
-        // If the enclosing director implements SuperdenseTimeDirector,
-        // then get the current index from it.
-        if (executiveDirector instanceof SuperdenseTimeDirector) {
-            _index = ((SuperdenseTimeDirector) executiveDirector).getIndex();
-        }
-
+        // Do not call super.prefire() because it sets the local mode
+        // time to match that of the executive director, defeating the
+        // above logic. Therefore, we have duplicate what it does here.
+        _synchronizeToRealTime();
+        _postfireReturns = true;
+        
         // Initialize everything for the fixedpoint iteration.
-        _resetAllReceivers();
+        // NOTE: This is handled by fire(), and anyway, should
+        // not be done if there is a commit pending.
+        // _resetAllReceivers();
 
         if (_debugging) {
-            _debug("-- prefire() returns " + result);
+            _debug("Called prefire(), which returns true.");
         }
-        return result;
+        return true;
     }
 
     /** Set the current step size.
@@ -1969,9 +1999,7 @@ public class ContinuousDirector extends FixedPointDirector implements
         return _stepSizeControllers;
     }
 
-    /** Transfer inputs from the environment to inside. This also
-     *  marks the receivers that get data as inputs so that the data
-     *  will not be overwritten later in the same iteration.
+    /** Transfer inputs from the environment to inside.
      *  @exception IllegalActionException If the transferInputs(Port)
      *   method throws it.
      *  @return True if at least one token is transferred.
@@ -2055,11 +2083,9 @@ public class ContinuousDirector extends FixedPointDirector implements
      *  the <i>ODESolver</i> parameter.
      */
     private ContinuousODESolver _ODESolver = null;
-
-    /** Flag indicating that all actors have returned false from postfire or
-     *  the stop time has been reached.
-     */
-    private boolean _postfireReturns = true;
+    
+    /** Flag indicating that we are redoing a speculative solver iteration. */
+    private boolean _redoingSolverIteration = false;
 
     /** The package name for the solvers supported by this director. */
     private static String _solverClasspath = "ptolemy.domains.continuous.kernel.solver.";
