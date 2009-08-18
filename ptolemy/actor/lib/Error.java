@@ -49,9 +49,10 @@ Model since a giotto model only specifies logical execution time.
  @Pt.ProposedRating Red (sssf)
  @Pt.AcceptedRating Red (sssf)
  */
+
 public class Error extends TypedAtomicActor { //should probably also implement the ModelErrorHandler interface//extends Sink {
-
-
+   
+    
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -85,11 +86,11 @@ public class Error extends TypedAtomicActor { //should probably also implement t
             errorActionName = errorAction.getExpression().trim();
 
             if (errorActionName.equals("Warn")) {
-                _errorAction = _warn;
+                _errorAction = ErrorAction.warn;
             } else if (errorActionName.equals("Reset")) {
-                _errorAction = _reset;
+                _errorAction = ErrorAction.reset;
             } else if (errorActionName.equals("TimedUtilityFunction")) {
-                _errorAction =  _timedutiltiyfunction;
+                _errorAction =  ErrorAction.timedutilityfunction;
             }  else {
                 throw new IllegalActionException(this,
                         "Unrecognized action on error: " + errorActionName);
@@ -101,36 +102,30 @@ public class Error extends TypedAtomicActor { //should probably also implement t
     }
 
 
-public void fire() throws IllegalActionException {
-    System.out.print("fire method called"); 
-}
+    public void fire() throws IllegalActionException {
+        System.out.print("fire method called"); 
+    }
 
-public void initialize()
-{
-    System.out.println("Initialize method called");
+    public void initialize()
+    {
+        System.out.println("Initialize method called");
 
-}
+    }
 
-/** The comparison operator.  This is a string-valued attribute
- *  that defaults to "&gt;".
- */
-public StringAttribute errorAction;
+    /** The errorAction operator.  This is a string-valued attribute
+     *  that defaults to "warn".
+     */
+    public StringAttribute errorAction;
 
+    
+    /// Enumeration of the different ways to handle errors
+    public enum ErrorAction
+    {warn,reset,timedutilityfunction }
 
 ///////////////////////////////////////////////////////////////////
-////                         private variables                 ////
-// An indicator for the comparison to compute.
-private int _errorAction;
-
-
-// Constants used for more efficient execution.
-private static final int _warn = 0;
-
-private static final int _reset = 1;
-
-private static final int _timedutiltiyfunction = 2;
-
-
+////private variables                 ////
+//  An indicator for the error action to take.
+    private ErrorAction _errorAction;
 
 
 }
