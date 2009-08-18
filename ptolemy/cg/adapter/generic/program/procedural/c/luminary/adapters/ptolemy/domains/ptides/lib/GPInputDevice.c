@@ -11,7 +11,7 @@
 
 /*** fireBlock ***/
 // send an dummy value out of its output port.
-$send(output#0, 1);
+$put(output#0, 1);
 /**/
 
 /*** initializeGPInput($pad, $pin) ***/

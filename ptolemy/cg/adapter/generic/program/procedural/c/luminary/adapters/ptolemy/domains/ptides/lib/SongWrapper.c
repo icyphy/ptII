@@ -17,7 +17,7 @@ $actorSymbol(result) = 0;
 /**/
 
 /*** fireBlock ***/
-$send(output#0, g_sysClock / (song[$actorSymbol(result)++]<<3))
+$put(output#0, g_sysClock / (song[$actorSymbol(result)++]<<3))
 if ($actorSymbol(result) >= (SONG_MEASURES<<3))
     $actorSymbol(result) = 0;
  
