@@ -1420,7 +1420,10 @@ public class Director extends Attribute implements Executable {
                 Time result = director.fireAt(container, time);
                 if (!result.equals(time)) {
                     throw new IllegalActionException(this,
-                            "Director is unable to fire the actor at the requested time: "
+                            director.getName()
+                                    + " is unable to fire "
+                                    + container.getName()
+                                    + " at the requested time: "
                                     + time
                                     + ". It responds it will fire it at: "
                                     + result);
