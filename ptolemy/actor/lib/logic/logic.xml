@@ -27,6 +27,22 @@
     </property>
   </entity>
 
+<entity name="ErrorAction" class="ptolemy.actor.lib.Error">
+    <property name="errorAction">
+        <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+            <property name="warn" value="Warn"
+	              class="ptolemy.kernel.util.StringAttribute"/>
+            <property name="reset" value="Reset"
+	              class="ptolemy.kernel.util.StringAttribute"/>
+            <property name="timeutility" value="TimedUtilityFucntion"
+	              class="ptolemy.kernel.util.StringAttribute"/>
+            </property>
+     </property>
+    <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+        <property name="attributeName" value="ErrorAction"/>
+    </property>
+  </entity>
+
   <entity name="Equals" class="ptolemy.actor.lib.logic.Equals">
   </entity>
 
