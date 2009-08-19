@@ -26,16 +26,10 @@
  */
 package ptolemy.domains.sr.kernel;
 
-import java.util.HashSet;
-import java.util.Set;
-import java.util.TreeMap;
-
 import ptolemy.actor.Actor;
-import ptolemy.actor.CompositeActor;
-import ptolemy.actor.Director;
-import ptolemy.actor.Manager;
-import ptolemy.actor.SuperdenseTimeDirector;
 import ptolemy.actor.sched.FixedPointDirector;
+import ptolemy.actor.util.PeriodicDirector;
+import ptolemy.actor.util.PeriodicDirectorHelper;
 import ptolemy.actor.util.Time;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.expr.Parameter;
@@ -51,6 +45,63 @@ import ptolemy.kernel.util.Workspace;
 
 /**
  A director for the Synchronous Reactive (SR) model of computation.
+ The SR model of computation has a notion of a global "tick" of a
+ clock, and at each tick of the clock, each port either has a value
+ or is "absent." The job of this director is determine what that
+ value is for each connection between ports. An iteration of this
+ director is one tick of this global clock.
+ <p>
+ Execution proceeds as follows. The director checks
+ each actor to determine whether it is <i>strict</i> or not by calling
+ its isStrict() method (here, "strict" means that all inputs
+ must be known before the actor can specify any outputs).
+ By default, actors are strict. Strict actors are fired only
+ once in an iteration. Their inputs are all known (and may
+ absent) when prefire() is invoked. If prefire() returns true,
+ the fire() and postfire() are invoked exactly once.
+ <p>
+ Specialized actors may be non-strict, meaning that they are able
+ to produce outputs even their inputs are not known. Such actors
+ must conform to certain requirements in order to ensure determinacy.
+ First, such actors should check input ports by calling their
+ isKnown() method before calling hasToken() to determine whether
+ the port is "absent." Only if both isKnown() and hasToken() return
+ true should the actor call get() on that port.
+ A non-strict actor may be prefired and fired
+ repeatedly in an iteration if some of the inputs are unknown.
+ Once an actor is fired with all its inputs known, it will not
+ be fired again in the same iteration.
+ A composite actor containing this director is a non-strict actor.
+ <p>
+ Each actor's fire() method implements a (possibly state-dependent)
+ function from input ports to output ports. At each tick of the
+ clock, the fire() method of each non-strict actor may be evaluated multiple
+ times, and each time, it <i>must</i> implement the same function.
+ Thus, the actors are required to conform with the strict actor
+ semantics, which means that they do not change their state in
+ the prefire() or fire() methods, and only change their state
+ in postfire(). This helps ensure that the actor is <i>monotonic</i>.
+ Montonicity implies three constraints on the actor. First, if prefire()
+ ever returns true during an iteration, then it will return true
+ on all subsequent invocations of prefire() in the same iteration().
+ In subsequent iterations, inputs may become known, but once they
+ are known, the value of the input and whether it is present cannot
+ change in subsequent firings in the same iteration.
+ Second, if either prefire() or fire() call clear() on an output port,
+ then no subsequent invocation in the same iteration can call
+ put() on the port. Third, if prefire() or fire() call put() on an
+ output port with some token, then no subsequent invocation in
+ the same iteration can call clear() or put() with a token with
+ a different value.
+ These constraints ensure determinacy.
+ </p><p>
+ If <i>synchronizeToRealTime</i> is set to <code>true</code>,
+ then the postfire() method stalls until the real time elapsed
+ since the model started matches the current time.
+ This ensures that the director does not get ahead of real time. However,
+ of course, this does not ensure that the director keeps up with real time.
+ Note that this synchronization occurs <i>after</i> actors have been fired,
+ but before they have been postfired.
  <p>
  The SR director has a <i>period</i> parameter which specifies the
  amount of model time that elapses per iteration. If the value of
@@ -83,7 +134,7 @@ import ptolemy.kernel.util.Workspace;
  @Pt.ProposedRating Green (pwhitake)
  @Pt.AcceptedRating Green (pwhitake)
  */
-public class SRDirector extends FixedPointDirector {
+public class SRDirector extends FixedPointDirector implements PeriodicDirector {
     /** Construct a director in the default workspace with an empty string
      *  as its name. The director is added to the list of objects in
      *  the workspace. Increment the version number of the workspace.
@@ -168,62 +219,7 @@ public class SRDirector extends FixedPointDirector {
      *  period.
      */
     public Time fireAt(Actor actor, Time time) throws IllegalActionException {
-        // NOTE: This used to delegate to the enclosing director, but
-        // prefire() will refuse to fire at that time if it isn't a multiple of
-        // the period. So it is wrong to delegate to the enclosing
-        // director. EAL 8/10/09
-        Actor container = (Actor) getContainer();
-        double periodValue = ((DoubleToken) period.getToken()).doubleValue();
-        Time currentTime = getModelTime();
-        
-        // Check the most common case first.
-        if (periodValue == 0.0) {
-            if (container != null) {
-                Director executiveDirector = container.getExecutiveDirector();
-                if (executiveDirector != null) {
-                    _recordPendingFireAt(actor, time);
-                    return executiveDirector.fireAt(container, time);
-                }
-            }
-            // All subsequent firings will be at the current time.
-            _recordPendingFireAt(actor, currentTime);
-            return currentTime;
-        }
-        // Now we know the period is not 0.0.
-        // Return current time plus the period,
-        // or some multiple of the period.
-        // NOTE: this is potentially very expensive to compute precisely
-        // because the Time class has an infinite range and only supports
-        // precise addition. Determining whether the argument satisfies
-        // the criterion seems difficult. Hence, we check to be sure
-        // that the test is worth doing.
-
-        // First check to see whether we are in the initialize phase, in
-        // which case, return the start time.
-        if (container != null) {
-            Manager manager = ((CompositeActor) container).getManager();
-            if (manager.getState().equals(Manager.INITIALIZING)) {
-                _recordPendingFireAt(actor, currentTime);
-                return currentTime;
-            }
-        }
-        if (time.isInfinite() || currentTime.compareTo(time) > 0) {
-            // Either the requested time is infinite or it is in the past.
-            Time result = currentTime.add(periodValue);
-            _recordPendingFireAt(actor, result);
-            return result;
-        }
-        Time futureTime = currentTime;
-        while (time.compareTo(futureTime) > 0) {
-            futureTime = futureTime.add(periodValue);
-            if (futureTime.equals(time)) {
-                _recordPendingFireAt(actor, time);
-                return time;
-            }
-        }
-        Time result = currentTime.add(periodValue);
-        _recordPendingFireAt(actor, result);
-        return result;
+        return _periodicDirectorHelper.fireAt(actor, time);
     }
 
     /** Return the time value of the next iteration.
@@ -237,8 +233,7 @@ public class SRDirector extends FixedPointDirector {
             return super.getModelNextIterationTime();
         }
         try {
-            double periodValue = ((DoubleToken) period.getToken())
-                    .doubleValue();
+            double periodValue = periodValue();
 
             if (periodValue > 0.0) {
                 return getModelTime().add(periodValue);
@@ -252,20 +247,24 @@ public class SRDirector extends FixedPointDirector {
     }
 
     /** Initialize the director and all deeply contained actors by calling
-     *  the super.initialize() method. Reset all private variables.
+     *  the super.initialize() method.
+     *  If the <i>period</i> parameter is greater than zero, then
+     *  request a first firing of the executive director, if there
+     *  is one.
      *  @exception IllegalActionException If the superclass throws it.
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-        _nextFiringTime = getModelTime();
+        _periodicDirectorHelper.initialize();
+    }
 
-        // In case we are embedded within a timed director, request a first
-        // firing.
-        Director executiveDirector = ((Actor) getContainer())
-                .getExecutiveDirector();
-        if (executiveDirector != null) {
-            executiveDirector.fireAtCurrentTime((Actor) getContainer());
-        }
+    /** Return the value of the period as a double.
+     *  @return The value of the period as a double.
+     *  @exception IllegalActionException If the period parameter
+     *   cannot be evaluated
+     */
+    public double periodValue() throws IllegalActionException {
+        return ((DoubleToken) period.getToken()).doubleValue();
     }
 
     /** Invoke super.prefire(), which will synchronize to real time, if appropriate.
@@ -276,108 +275,16 @@ public class SRDirector extends FixedPointDirector {
      *  next expected to be invoked, then adjust that time to the least multiple
      *  of the period that either matches or exceeds the time of the enclosing
      *  director.
-     *  @exception IllegalActionException If port methods throw it.
-     *  @return true If all of the input ports of the container of this
-     *  director have enough tokens.
+     *  @exception IllegalActionException If the <i>period</i>
+     *   parameter cannot be evaluated.
+     *  @return true If current time is appropriate for a firing.
      */
     public boolean prefire() throws IllegalActionException {
-        
-        boolean result = super.prefire();
-                
-        // If the superdense time index is zero
-        // then either this is the first iteration, or
-        // it was set to zero in the last call to postfire().
-        // In the latter case, we expect to be invoked at
-        // the previous time plus the non-zero period.
-        // If the enclosing time does not match or exceed
-        // that (the latter could occur if we have been
-        // dormant in a modal model), then return false.
-        // If the enclosing time exceeds the local current
-        // time, then we must have been dormant. We need to
-        // catch up.
-        double periodValue = ((DoubleToken) period.getToken()).doubleValue();
-        if (periodValue > 0.0) {
-            Actor container = (Actor) getContainer();
-            Director executiveDirector = container.getExecutiveDirector();
-            // If we are at the top level, then this check is not necessary
-            // since presumably we will be assured that current time matches
-            // the period.
-            if (executiveDirector != null) {
-                // Not at the top level.
-                Time enclosingTime = executiveDirector.getModelTime();
-                int comparison = _nextFiringTime.compareTo(enclosingTime);
-                if (comparison == 0) {
-                    // The enclosing time matches the time we expect to fire.
-                    // If the enclosing director supports superdense time, then
-                    // make sure we are at index zero before agreeing to fire.
-                    if (executiveDirector instanceof SuperdenseTimeDirector) {
-                        int index = ((SuperdenseTimeDirector) executiveDirector)
-                                .getIndex();
-                        if (index == 0) {
-                            _updatePendingFireAts(enclosingTime);
-                            return result;
-                        }
-                        // If the index is not zero, do not agree to fire, but request
-                        // a refiring at the next multiple of the period.
-                        _nextFiringTime = _nextFiringTime.add(periodValue);
-                        _fireContainerAt(_nextFiringTime);
-                        return false;
-                    }
-                } else if (comparison > 0) {
-                    // Enclosing time has not yet reached our expected firing time.
-                    // No need to call fireAt(), since presumably we already
-                    // did that in postfire().
-                    return false;
-                } else {
-                    // Enclosing time has exceeded our expected firing time.
-                    // We must have been dormant in a modal model.
-                    // Catch up.
-                    while (_nextFiringTime.compareTo(enclosingTime) < 0) {
-                        // FIXME: Any enclosed actors that called fireAt() need
-                        // to be notified if their requested time has been
-                        // skipped by calling fireAtSkipped.
-                        _nextFiringTime = _nextFiringTime.add(periodValue);
-                    }
-                    if (_nextFiringTime.compareTo(enclosingTime) == 0) {
-                        // The caught up time matches a multiple of the period.
-                        // If the enclosing director supports superdense time, then
-                        // make sure we are at index zero before agreeing to fire.
-                        if (executiveDirector instanceof SuperdenseTimeDirector) {
-                            int index = ((SuperdenseTimeDirector) executiveDirector)
-                                    .getIndex();
-                            if (index == 0) {
-                                _updatePendingFireAts(enclosingTime);
-                                return result;
-                            }
-                            // If the index is not zero, do not agree to fire, but request
-                            // a refiring at the next multiple of the period.
-                            _nextFiringTime = _nextFiringTime.add(periodValue);
-                            _fireContainerAt(_nextFiringTime);
-                            return false;
-                        }
-                        // If the enclosing director does not support superdense time,
-                        // then agree to fire.
-                        _updatePendingFireAts(enclosingTime);
-                        return result;
-                    } else {
-                        // NOTE: The following throws an exception if the time
-                        // requested cannot be honored by the enclosed director
-                        // Presumably, if the user set the period, he or she wanted
-                        // that behavior.
-                        _fireContainerAt(_nextFiringTime);
-                        return false;
-                    }
-                }
-            }
-        }
-        // If period is zero, then just return the superclass result.
-        _updatePendingFireAts(getModelTime());
-        return result;
+        return super.prefire() && _periodicDirectorHelper.prefire();
     }
 
     /** Call postfire() on all contained actors that were fired on the last
-     *  invocation of fire().  If <i>synchronizeToRealTime</i> is true, then
-     *  wait for real time elapse to match or exceed model time. Return false if the model
+     *  invocation of fire().  Return false if the model
      *  has finished executing, either by reaching the iteration limit, or if
      *  no actors in the model return true in postfire(), or if stop has
      *  been requested. This method is called only once for each iteration.
@@ -388,35 +295,14 @@ public class SRDirector extends FixedPointDirector {
      *  by the specified period, and otherwise request a refiring
      *  at the current time plus the period.
      *  @return True if the Director wants to be fired again in the
-     *  future.
-     *  @exception IllegalActionException If the iterations parameter
-     *  does not contain a legal value.
+     *   future.
+     *  @exception IllegalActionException If the iterations or
+     *   period parameter does not contain a legal value.
      */
     public boolean postfire() throws IllegalActionException {
         // The super.postfire() method increments the superdense time index.
         boolean result = super.postfire();
-        double periodValue = ((DoubleToken) period.getToken()).doubleValue();
-        if (periodValue > 0.0) {
-            Actor container = (Actor) getContainer();
-            Director executiveDirector = container.getExecutiveDirector();
-            Time currentTime = getModelTime();
-            _nextFiringTime = currentTime.add(periodValue);
-
-            if (executiveDirector != null) {
-                // Not at the top level.
-                // NOTE: The following throws an exception if the time
-                // requested cannot be honored by the enclosed director
-                // Presumably, if the user set the period, he or she wanted
-                // that behavior.
-                _fireContainerAt(_nextFiringTime);
-            } else {
-                // Increment time to the next cycle.
-                _currentTime = _nextFiringTime;
-            }
-            // Set the index to zero because the next firing will occur at
-            // a strictly greater time.
-            _index = 0;
-        }
+        _periodicDirectorHelper.postfire();
         return result;
     }
 
@@ -432,51 +318,13 @@ public class SRDirector extends FixedPointDirector {
         period = new Parameter(this, "period");
         period.setTypeEquals(BaseType.DOUBLE);
         period.setExpression("0.0");
-    }
-
-    /** Record a pending fireAt().
-     *  @param actor The actor requesting a firing.
-     *  @param time The time returned by fireAt().
-     */
-    private void _recordPendingFireAt(Actor actor, Time time) {
-        if (_pendingFireAts == null) {
-            _pendingFireAts = new TreeMap<Time, Set<Actor>>();
-        }
-        Set<Actor> pending = _pendingFireAts.get(time);
-        if (pending == null) {
-            pending = new HashSet<Actor>();
-        }
-        pending.add(actor);
-    }
-
-    /** Notify any actors expecting fireAt() calls if the time
-     *  they were told they would fire is in the past compared
-     *  to the argument. Remove all pending fireAt() records
-     *  up to and including the specified time.
-     *  @param time The time returned by fireAt().
-     *  @throws IllegalActionException If a notified actor throws it.
-     */
-    private void _updatePendingFireAts(Time time) throws IllegalActionException {
-        if (_pendingFireAts != null && !_pendingFireAts.isEmpty()) {
-            Time firstKey = _pendingFireAts.firstKey();
-            while(firstKey != null && firstKey.compareTo(time) < 0) {
-                Set<Actor> actors = _pendingFireAts.remove(firstKey);
-                if (actors != null) {
-                    for (Actor actor : actors) {
-                        actor.fireAtSkipped(firstKey);
-                    }
-                }
-            }
-            _pendingFireAts.remove(time);
-        }
+        
+        _periodicDirectorHelper = new PeriodicDirectorHelper(this);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
-    /** The expected next firing time. */
-    private Time _nextFiringTime;
     
-    /** Pending fireAt() calls, in case we have to call fireAtSkipped(). */
-    private TreeMap<Time, Set<Actor>> _pendingFireAts;
+    /** Helper class supporting the <i>period</i> parameter. */
+    private PeriodicDirectorHelper _periodicDirectorHelper;
 }

@@ -32,7 +32,6 @@ import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
-import ptolemy.actor.Manager;
 import ptolemy.actor.NoTokenException;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.TypedCompositeActor;
@@ -41,6 +40,8 @@ import ptolemy.actor.sched.NotSchedulableException;
 import ptolemy.actor.sched.Schedule;
 import ptolemy.actor.sched.StaticSchedulingDirector;
 import ptolemy.actor.util.DFUtilities;
+import ptolemy.actor.util.PeriodicDirector;
+import ptolemy.actor.util.PeriodicDirectorHelper;
 import ptolemy.actor.util.Time;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
@@ -154,7 +155,7 @@ import ptolemy.kernel.util.Workspace;
  @Pt.ProposedRating Green (neuendor)
  @Pt.AcceptedRating Green (neuendor)
  */
-public class SDFDirector extends StaticSchedulingDirector {
+public class SDFDirector extends StaticSchedulingDirector implements PeriodicDirector {
     /** Construct a director in the default workspace with an empty string
      *  as its name. The director is added to the list of objects in
      *  the workspace. Increment the version number of the workspace.
@@ -335,8 +336,7 @@ public class SDFDirector extends StaticSchedulingDirector {
             return super.getModelNextIterationTime();
         }
         try {
-            double periodValue = ((DoubleToken) period.getToken())
-                    .doubleValue();
+            double periodValue = periodValue();
 
             if (periodValue > 0.0) {
                 return getModelTime().add(periodValue);
@@ -349,64 +349,26 @@ public class SDFDirector extends StaticSchedulingDirector {
         }
     }
 
-    /** Request a firing of the given actor at the given model
-     *  time.  This method delegates to the enclosing director
-     *  if there is one. Otherwise, it checks to see whether the
+    /** Request a firing of the given actor at the given absolute
+     *  time, and return the time at which the specified will be
+     *  fired. If the <i>period</i> is 0.0 and there is no enclosing
+     *  director, then this method returns the current time. If
+     *  the period is 0.0 and there is an enclosing director, then
+     *  this method delegates to the enclosing director, returning
+     *  whatever it returns. If the <i>period</i> is not 0.0, then
+     *  this method checks to see whether the
      *  requested time is equal to the current time plus an integer
-     *  multiple of the period. If so, it returns requested time.
-     *  If not, it returns current time plus the period,
-     *  even if the period is 0.0, thus indicating to the caller the next
-     *  time at which it will be called.
+     *  multiple of the period. If so, it returns the requested time.
+     *  If not, it returns current time plus the period.
      *  @param actor The actor scheduled to be fired.
      *  @param time The requested time.
-     *  @return The time at which the actor passed as an argument
-     *   will be fired.
      *  @exception IllegalActionException If the operation is not
      *    permissible (e.g. the given time is in the past).
+     *  @return Either the requested time or the current time plus the
+     *  period.
      */
     public Time fireAt(Actor actor, Time time) throws IllegalActionException {
-        Actor container = (Actor) getContainer();
-        if (container != null) {
-            Director executiveDirector = container.getExecutiveDirector();
-            if (executiveDirector != null) {
-                return executiveDirector.fireAt(container, time);
-            }
-        }
-        // No executive director. Return current time plus the period,
-        // or some multiple of the period.
-        // NOTE: this is potentially very expensive to compute precisely
-        // because the Time class has an infinite range and only supports
-        // precise addition. Determining whether the argument satisfies
-        // the criterion seems difficult. Hence, we check to be sure
-        // that the test is worth doing.
-        Time currentTime = getModelTime();
-        double periodValue = ((DoubleToken) period.getToken()).doubleValue();
-        // Check the most common case first.
-        if (periodValue == 0.0) {
-            // All subsequent firings will be at the current time.
-            return currentTime;
-        }
-        // Now we know the period is not 0.0.
-        // First check to see whether we are in the initialize phase, in
-        // which case, return the start time.
-        if (container != null) {
-            Manager manager = ((CompositeActor) container).getManager();
-            if (manager.getState().equals(Manager.INITIALIZING)) {
-                return currentTime;
-            }
-        }
-        if (time.isInfinite() || currentTime.compareTo(time) > 0) {
-            // Either the requested time is infinite or it is in the past.
-            return currentTime.add(periodValue);
-        }
-        Time futureTime = currentTime;
-        while (time.compareTo(futureTime) > 0) {
-            futureTime = futureTime.add(periodValue);
-            if (futureTime.equals(time)) {
-                return time;
-            }
-        }
-        return currentTime.add(periodValue);
+        return _periodicDirectorHelper.fireAt(actor, time);
     }
 
     /** Initialize the actors associated with this director and then
@@ -422,6 +384,8 @@ public class SDFDirector extends StaticSchedulingDirector {
     public void initialize() throws IllegalActionException {
         super.initialize();
         _iterationCount = 0;
+
+        _periodicDirectorHelper.initialize();
 
         CompositeActor container = (CompositeActor) getContainer();
 
@@ -468,6 +432,15 @@ public class SDFDirector extends StaticSchedulingDirector {
         return new SDFReceiver();
     }
 
+    /** Return the value of the period as a double.
+     *  @return The value of the period as a double.
+     *  @exception IllegalActionException If the period parameter
+     *   cannot be evaluated
+     */
+    public double periodValue() throws IllegalActionException {
+        return ((DoubleToken) period.getToken()).doubleValue();
+    }
+
     /** Check the input ports of the container composite actor (if there
      *  are any) to see whether they have enough tokens, and return true
      *  if they do.  If there are no input ports, then also return true.
@@ -481,7 +454,7 @@ public class SDFDirector extends StaticSchedulingDirector {
         // Set current time based on the enclosing model.
         super.prefire();
 
-        double periodValue = ((DoubleToken) period.getToken()).doubleValue();
+        double periodValue = periodValue();
         boolean synchronizeValue = ((BooleanToken) synchronizeToRealTime
                 .getToken()).booleanValue();
 
@@ -544,9 +517,15 @@ public class SDFDirector extends StaticSchedulingDirector {
             }
         }
 
+        // Refuse to fire if the period is greater than zero and the current
+        // time is not a multiple of the period.
+        if (!_periodicDirectorHelper.prefire()) {
+            return false;
+        }
+
+        // Check to see whether the input ports have enough data.
         TypedCompositeActor container = ((TypedCompositeActor) getContainer());
         Iterator inputPorts = container.inputPortList().iterator();
-
         while (inputPorts.hasNext()) {
             IOPort inputPort = (IOPort) inputPorts.next();
 
@@ -579,7 +558,7 @@ public class SDFDirector extends StaticSchedulingDirector {
         if (_debugging) {
             _debug("Director prefire returns true.");
         }
-
+        
         return true;
     }
 
@@ -655,27 +634,9 @@ public class SDFDirector extends StaticSchedulingDirector {
             return false;
         }
 
-        double periodValue = ((DoubleToken) period.getToken()).doubleValue();
-
-        if (periodValue > 0.0) {
-            Actor container = (Actor) getContainer();
-            Director executiveDirector = container.getExecutiveDirector();
-            Time currentTime = getModelTime();
-
-            if (executiveDirector != null) {
-                // Not at the top level.
-                // NOTE: The following throws an exception if the time
-                // requested cannot be honored by the enclosed director
-                // Presumably, if the user set the period, he or she wanted
-                // that behavior.
-                _fireContainerAt(currentTime.add(periodValue));
-            } else {
-                // At the top level.
-                setModelTime(currentTime.add(periodValue));
-            }
-        }
-
-        return super.postfire();
+        boolean result = super.postfire();
+        _periodicDirectorHelper.postfire();
+        return result;
     }
 
     /** Return an array of suggested ModalModel directors  to use with
@@ -883,6 +844,8 @@ public class SDFDirector extends StaticSchedulingDirector {
         SDFScheduler scheduler = new SDFScheduler(this, uniqueName("Scheduler"));
         scheduler.constrainBufferSizes.setExpression("constrainBufferSizes");
         setScheduler(scheduler);
+        
+        _periodicDirectorHelper = new PeriodicDirectorHelper(this);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -893,6 +856,9 @@ public class SDFDirector extends StaticSchedulingDirector {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
+
+    /** Helper class supporting the <i>period</i> parameter. */
+    private PeriodicDirectorHelper _periodicDirectorHelper;
 
     /** The real time at which the model begins executing. */
     private long _realStartTime = 0L;
