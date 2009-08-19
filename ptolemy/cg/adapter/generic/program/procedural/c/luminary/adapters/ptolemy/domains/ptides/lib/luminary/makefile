@@ -29,7 +29,7 @@
 #                       PT_COPYRIGHT_VERSION_2
 #                       COPYRIGHTENDKEY
 
-ME =		ptolemy/cg/luminary/adapter/generic/program/procedural/c/adapters/ptolemy/domains/ptides/lib/luminary
+ME =		ptolemy/cg/adapter/generic/program/procedural/c/luminary/adapters/ptolemy/domains/ptides/lib/luminary
 
 DIRS =		
 

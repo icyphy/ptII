@@ -31,7 +31,7 @@
 # 						COPYRIGHTENDKEY
 ##########################################################################
 
-ME =		ptolemy/cg/luminary/adapter/generic/program/procedural/c/adapters/ptolemy/domains/ptides/lib
+ME =		ptolemy/cg/adapter/generic/program/procedural/c/luminary/adapters/ptolemy/domains/ptides/lib
 
 DIRS =		luminary
 
