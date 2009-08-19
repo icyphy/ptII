@@ -105,9 +105,7 @@ if (timeCompare(currentModelTime, currentPhysicalTime) == MORE) {
 	 	GPIOPinWrite(GPIO_PORTA_BASE, GPIO_PIN_7, 0);
 	}*/
 			
-}											   
-else
-{
+} else {
 	// FIXME: do something!
 	/*	Debug - write to GPIO on deadline miss
 	GPIOPinWrite(GPIO_PORTC_BASE,GPIO_PIN_7,GPIO_PIN_7);
@@ -132,8 +130,7 @@ if (previous != $actorSymbol(result)[bufferHead]) {
     previous = $actorSymbol(result)[bufferHead];
     PWMGenPeriodSet(PWM_BASE, PWM_GEN_0, $actorSymbol(result)[bufferHead++]);
     PWMSyncUpdate(PWM_BASE, PWM_GEN_0_BIT);
-}
-else{
+} else {
     bufferHead++;
 }
 bufferCount--;

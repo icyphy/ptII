@@ -26,7 +26,7 @@
 
 
  */
-package ptolemy.cg.adapter.generic.program.procedural.c.luminary.adapters.ptolemy.domains.ptides.lib;
+package ptolemy.cg.adapter.generic.program.procedural.c.luminary.adapters.ptolemy.domains.ptides.lib.luminary;
 
 import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
 

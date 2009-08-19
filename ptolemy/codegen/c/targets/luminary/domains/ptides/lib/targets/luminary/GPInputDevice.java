@@ -56,7 +56,7 @@ public class GPInputDevice extends InputDevice {
      * @throws NameDuplicationException 
      */
     public GPInputDevice(
-            ptolemy.domains.ptides.lib.targets.luminary.GPInputDevice actor)
+            ptolemy.domains.ptides.lib.luminary.GPInputDevice actor)
             throws IllegalActionException, NameDuplicationException {
         super(actor);
 

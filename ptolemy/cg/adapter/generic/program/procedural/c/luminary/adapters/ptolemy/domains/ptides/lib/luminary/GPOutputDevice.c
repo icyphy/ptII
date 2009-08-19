@@ -51,9 +51,7 @@ if (timeCompare(currentModelTime, currentPhysicalTime) == MORE) {
 	 	GPIOPinWrite(GPIO_PORTA_BASE, GPIO_PIN_7, 0);
 	}*/
 			
-}											   
-else
-{
+} else {
 	// FIXME: do something!
 	/*	Debug - write to GPIO on deadline miss
 	GPIOPinWrite(GPIO_PORTC_BASE,GPIO_PIN_7,GPIO_PIN_7);

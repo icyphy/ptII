@@ -45,7 +45,7 @@ public class SongWrapper extends CCodeGeneratorHelper {
      * @param actor the associated actor
      */
     public SongWrapper(
-            ptolemy.domains.ptides.lib.targets.luminary.SongWrapper actor) {
+            ptolemy.domains.ptides.lib.luminary.SongWrapper actor) {
         super(actor);
     }
 

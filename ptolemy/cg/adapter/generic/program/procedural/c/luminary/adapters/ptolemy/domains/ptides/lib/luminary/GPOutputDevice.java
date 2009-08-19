@@ -1,4 +1,6 @@
-/* Copyright (c) 2006-2009 The Regents of the University of California.
+/* A code generation helper class for ptolemy.domains.ptides.lib.targets.luminary.GPOutputDevice
+
+ Copyright (c) 2006-2009 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -23,19 +25,23 @@
  COPYRIGHTENDKEY
 
  */
-package ptolemy.cg.adapter.generic.program.procedural.c.luminary.adapters.ptolemy.domains.ptides.lib;
+package ptolemy.cg.adapter.generic.program.procedural.c.luminary.adapters.ptolemy.domains.ptides.lib.luminary;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
 import ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.ptides.kernel.PtidesBasicDirector;
 import ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.ptides.lib.OutputDevice;
 import ptolemy.cg.kernel.generic.program.CodeStream;
+import ptolemy.data.IntToken;
+import ptolemy.data.expr.Parameter;
+import ptolemy.data.expr.StringParameter;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
 /**
- * A code generation helper class for ptolemy.domains.ptides.lib.targets.luminary.SpeakerOutputDevice.
+ * A code generation helper class for ptolemy.domains.ptides.lib.targets.luminary.GPOutputDevice.
  * @author Jia Zou, Isaac Liu, Jeff C. Jensen
  * @version $Id$
  * @since Ptolemy II 7.1
@@ -43,17 +49,36 @@ import ptolemy.kernel.util.NameDuplicationException;
  * @Pt.AcceptedRating Red (jiazou)
  */
 
-public class SpeakerOutputDevice extends OutputDevice {
+public class GPOutputDevice extends OutputDevice {
     /** Construct a helper with the given
-     *  ptolemy.domains.ptides.lib.SpeakerOutputDevice actor.
-     *  @param actor The given ptolemy.domains.ptides.lib.targets.luminary.SpeakerOutputDevice actor.
+     *  ptolemy.domains.ptides.lib.GPOutputDevice actor.
+     *  @param actor The given ptolemy.domains.ptides.lib.targets.luminary.GPOutputDevice actor.
      *  @throws IllegalActionException 
      *  @throws NameDuplicationException 
      */
-    public SpeakerOutputDevice(
-            ptolemy.domains.ptides.lib.luminary.SpeakerOutputDevice actor)
+    public GPOutputDevice(
+            ptolemy.domains.ptides.lib.luminary.GPOutputDevice actor)
             throws IllegalActionException, NameDuplicationException {
         super(actor);
+
+        Parameter pinParameter = actor.pin;
+        StringParameter padParameter = actor.pad;
+        _pinID = null;
+        _padID = null;
+
+        if (pinParameter != null) {
+            _pinID = ((IntToken) pinParameter.getToken()).toString();
+        } else {
+            throw new IllegalActionException(
+                    "does not know what pin this output device is associated to.");
+        }
+        if (padParameter != null) {
+            _padID = padParameter.stringValue();
+        } else {
+            throw new IllegalActionException(
+                    "does not know what pin this output device is associated to.");
+        }
+
     }
 
     ////////////////////////////////////////////////////////////////////
@@ -63,6 +88,9 @@ public class SpeakerOutputDevice extends OutputDevice {
             throws IllegalActionException {
         List args = new LinkedList();
         CodeStream _codeStream = _templateParser.getCodeStream();
+
+        args.add(_padID);
+        args.add(_pinID);
 
         _codeStream.clear();
         _codeStream.appendCodeBlock("actuationBlock", args);
@@ -84,11 +112,11 @@ public class SpeakerOutputDevice extends OutputDevice {
         List args = new LinkedList();
         CodeStream _codeStream = _templateParser.getCodeStream();
 
-        ptolemy.domains.ptides.lib.luminary.SpeakerOutputDevice actor = (ptolemy.domains.ptides.lib.luminary.SpeakerOutputDevice) getComponent();
-        PtidesBasicDirector helper = (PtidesBasicDirector) getAdapter(actor
+        ptolemy.domains.ptides.lib.luminary.GPOutputDevice actor = (ptolemy.domains.ptides.lib.luminary.GPOutputDevice) getComponent();
+        PtidesBasicDirector adapter = (PtidesBasicDirector) getAdapter(actor
                 .getDirector());
 
-        args.add((helper._actuators.get(actor)).toString());
+        args.add((adapter._actuators.get(actor)).toString());
 
         _codeStream.clear();
         _codeStream.appendCodeBlock("fireBlock", args);
@@ -99,8 +127,14 @@ public class SpeakerOutputDevice extends OutputDevice {
     public String generateHardwareInitializationCode()
             throws IllegalActionException {
         StringBuffer code = new StringBuffer();
+        List args = new ArrayList();
+        args.add(_padID);
+        args.add(_pinID);
         code.append(processCode(_templateParser.getCodeStream().getCodeBlock(
-                "initializeAudioOutput")));
+                "initializeGPOutput", args)));
         return code.toString();
     }
+
+    private String _pinID;
+    private String _padID;
 }
