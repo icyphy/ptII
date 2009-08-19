@@ -30,7 +30,6 @@ package ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -46,6 +45,7 @@ import ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapter;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.Type;
 import ptolemy.domains.fsm.modal.ModalController;
+import ptolemy.domains.ptides.lib.ActuationDevice;
 import ptolemy.domains.ptides.lib.InputDevice;
 import ptolemy.domains.ptides.lib.InterruptDevice;
 import ptolemy.domains.ptides.lib.OutputDevice;
@@ -122,16 +122,10 @@ public class PtidesBasicDirector extends Director {
 
         code.append(_generateActorFireCode());
 
-        List args = new LinkedList();
-        args.add(_generateDirectorHeader());
-
-        args.add(((CompositeActor) _director.getContainer()).deepEntityList()
-                .size());
-
         CodeStream codestream = _templateParser.getCodeStream();
 
         codestream.clear();
-        code.append(codestream.getCodeBlock("preinitPIBlock", args));
+        code.append(codestream.getCodeBlock("preinitPIBlock"));
 
         code.append(codestream.getCodeBlock("initPICodeBlock"));
 
@@ -357,13 +351,10 @@ public class PtidesBasicDirector extends Director {
         for (Actor actor : (List<Actor>) ((CompositeActor) _director
                 .getContainer()).deepEntityList()) {
             // FIXME: should I be using Interrupt/ActuationDevice or just Input/OutputDevice?
-            if (1==1) {
-                throw new RuntimeException("This code broke the build");
-            }
-//             if (actor instanceof ActuationDevice) {
-//                 _actuators.put(actor, new Integer(actuatorIndex));
-//                 actuatorIndex++;
-//             }
+             if (actor instanceof ActuationDevice) {
+                 _actuators.put(actor, new Integer(actuatorIndex));
+                 actuatorIndex++;
+             }
 
             if (actor instanceof InterruptDevice) {
                 _sensors.put(actor, new Integer(sensorIndex));
@@ -391,9 +382,6 @@ public class PtidesBasicDirector extends Director {
             NamedProgramCodeGeneratorAdapter adapter = (NamedProgramCodeGeneratorAdapter) getCodeGenerator()
                     .getAdapter(actor);
 
-            if (1==1) {
-                throw new RuntimeException("This code broke the build");
-            }
 //             if (actor instanceof ActuationDevice) {
 //                 code
 //                         .append("void Actuation_"

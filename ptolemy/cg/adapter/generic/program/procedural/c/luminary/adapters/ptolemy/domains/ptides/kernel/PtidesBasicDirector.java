@@ -34,12 +34,11 @@ import java.util.Map;
 import java.util.Set;
 
 import ptolemy.actor.Actor;
-import ptolemy.actor.CompositeActor;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
 import ptolemy.domains.ptides.lib.InterruptDevice;
-import ptolemy.domains.ptides.lib.targets.luminary.GPInputDevice;
+import ptolemy.domains.ptides.lib.luminary.GPInputDevice;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
 
@@ -95,7 +94,7 @@ public class PtidesBasicDirector
         // generate a name for it, and put the name along with this actor into a
         // HashMap.
         Map devices = new HashMap<Actor, String>();
-        for (Actor actor : (List<Actor>) ((TypedCompositeActor) getComponent())
+        for (Actor actor : (List<Actor>) ((TypedCompositeActor) getComponent().getContainer())
                 .deepEntityList()) {
             // If the input is a sensor device, then we need to use interrupts to trigger it.
             if (actor instanceof InterruptDevice) {
@@ -236,16 +235,10 @@ public class PtidesBasicDirector
     public String generatePreinitializeCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
-        List args = new LinkedList();
-        args.add(_generateDirectorHeader());
-
-        args.add(((CompositeActor) _director.getContainer()).deepEntityList()
-                .size());
-
         code.append(super.generatePreinitializeCode());
 
         code.append(_templateParser.getCodeStream().getCodeBlock(
-                "preinitPDBlock", args));
+                "preinitPDBlock"));
 
         code.append(_templateParser.getCodeStream().getCodeBlock(
                 "initPDCodeBlock"));

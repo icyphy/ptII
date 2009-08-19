@@ -533,6 +533,6 @@ void initializePISystem() {
 }
 /**/
 
-/*** preinitPIBlock($director, $name) ***/
+/*** preinitPIBlock() ***/
 // This is the platform independent preinitialization code
 /**/

@@ -508,14 +508,14 @@ void initializeInterrupts(void) {
 }
 /**/
 
-/*** preinitPDBlock($director, $name) ***/
+/*** preinitPDBlock()***/
 /**/
 
 /*** wrapupPDBlock() ***/
 /**/
 
 /*** assemblyFileBlock($externs, $GPIOAHandler, $GPIOBHandler, $GPIOCHandler, 
- $GPIODHandler, $GPIOEHandler, $GPIOFHandler, $GPIOGHandler, $GPIOHHandler, ) ***/
+ $GPIODHandler, $GPIOEHandler, $GPIOFHandler, $GPIOGHandler, $GPIOHHandler) ***/
 ;******************************************************************************
 ;
 ; startup_rvmdk.S - Startup code for use with Keil's uVision.

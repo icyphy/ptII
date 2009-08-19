@@ -37,6 +37,7 @@ import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.util.CausalityInterfaceForComposites;
 import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
+import ptolemy.data.ArrayToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.util.IllegalActionException;
@@ -107,8 +108,8 @@ public class PtidesBasicReceiver extends ptolemy.cg.adapter.generic.program.proc
         Actor actor = (Actor) sinkPort.getContainer();
         Director director = actor.getDirector();
         // Getting depth.
-        int depth = ((CausalityInterfaceForComposites) director
-                .getCausalityInterface()).getDepthOfActor(actor);
+        String depth = Integer.toString(((CausalityInterfaceForComposites) director
+                .getCausalityInterface()).getDepthOfActor(actor));
         // Getting deadline.
         Parameter relativeDeadline = (Parameter) sinkPort
                 .getAttribute("relativeDeadline");
@@ -131,21 +132,21 @@ public class PtidesBasicReceiver extends ptolemy.cg.adapter.generic.program.proc
         String offsetSecsString = null;
         String offsetNsecsString = null;
         if (offsetTime != null) {
-            double value = ((DoubleToken) offsetTime.getToken()).doubleValue();
+            double value = ((DoubleToken) ((ArrayToken) offsetTime
+                    .getToken()).arrayValue()[sinkChannel]).doubleValue();
             int intPart = (int) value;
             int fracPart = (int) ((value - intPart) * 1000000000.0);
             offsetSecsString = Integer.toString(intPart);
             offsetNsecsString = Integer.toString(fracPart);
         } else {
-            offsetSecsString = new String("0");
-            offsetNsecsString = new String("0");
+            throw new IllegalActionException("Cannot get the minDelay Parameter.");
         }
 
         // FIXME: not sure whether we should check if we are putting into an input port or
         // output port.
         // Generate a new event.
         List args = new ArrayList();
-        args.add(sinkPort.getType());
+        args.add(sinkPort.getType().toString());
         args.add(token);
         args.add((sinkPort.getContainer().getName()));
         args.add("Event_Head_" + sinkPort.getName() + "["

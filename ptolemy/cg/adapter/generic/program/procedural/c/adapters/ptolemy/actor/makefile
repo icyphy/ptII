@@ -1,6 +1,6 @@
 # Makefile for Ptolemy Classic style Codegen
 #
-# @Version: $Id$
+# @Version: $Id: makefile 54591 2009-06-20 15:06:01Z rodiers $
 # @Author: Christopher Brooks
 #
 # @Copyright (c) 2005-2009 The Regents of the University of California
@@ -31,9 +31,9 @@
 # 						COPYRIGHTENDKEY
 ##########################################################################
 
-ME =		ptolemy/cg/adapter/generic/program/procedural/adapters/ptolemy/actor/lib
+ME =		ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor
 
-DIRS =		
+DIRS =		lib
 
 # Root of the Java directory
 ROOT =		../../../../../../../../../..
@@ -45,29 +45,27 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	lib
+PTPACKAGE = 	actor
 PTCLASSJAR =
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
 # Include the .class files from these jars in PTCLASSALLJAR
 # If you change this, change DIRS above
-PTCLASSALLJARS = 
+PTCLASSALLJARS = \
+	lib/lib.jar
 
 # Keep this list alphabetized.
-JSRCS = \
-	AddSubtract.java \
-	Const.java
+JSRCS = 
 
-OTHER_FILES_TO_BE_JARED = \
-	$(JSRCS:%.java=%.j)
+OTHER_FILES_TO_BE_JARED = 
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
 # Don't include demo or DIRS here, or else 'make sources' will run 'make demo'
-MISC_FILES =	
+MISC_FILES =	lib
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
