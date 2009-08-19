@@ -1239,51 +1239,6 @@ public class PtidesBasicDirector extends DEDirector {
                 + "  </property>";
     }
     
-//    /** If the source is null, then it is assumed this event is safe to process,
-//     *  thsu minDelay = PositiveInfinity.
-//     *  If the source is an actor, find minimum minDelay among all its inputs. If
-//     *  the source is a source input port,   
-//     *  For all ports within the same equivalence class as the source input, find the
-//     *  minDelay parameter. Return the minimum among all minDelay parameter.
-//     *  @param source
-//     *  @return minDelay
-//     *  @throws IllegalActionException if _finiteEquivalentPorts throws it.
-//     *  
-//     */
-//    protected double _getMinDelay(NamedObj source) throws IllegalActionException {
-//        double result = Double.POSITIVE_INFINITY;
-//        Iterator iter = null;
-//        if (source == null) {
-//            return Double.POSITIVE_INFINITY;
-//        } else if (source instanceof Actor) {
-//            iter = ((Actor) source).inputPortList().iterator();
-//        } else if (source instanceof IOPort) {
-//            iter = _finiteEquivalentPorts((IOPort)source).iterator();
-//        }
-//        while (iter.hasNext()) {
-//            IOPort port = (IOPort)iter.next();
-//            Parameter parameter = (Parameter) ((NamedObj) port)
-//            .getAttribute("minDelay");
-//            if (parameter != null) {
-//                Token[] tokens = ((ArrayToken) parameter
-//                        .getToken()).arrayValue();
-//                for (int channel = 0; channel < port.getWidth(); channel++) {
-//                    double minDelay = ((DoubleToken)tokens[channel]).doubleValue();
-//                    if (minDelay < result) {
-//                        result = minDelay;
-//                    }
-//                }
-//            }
-//        }
-//        if (result == Double.POSITIVE_INFINITY) {
-//            throw new IllegalActionException("If the actorsReceiveEventsInTimestampOrder " +
-//            		"parameter is checked, then this director cannot fire any actor " +
-//            		"that uses fireAt(Actor Time, IOPort) method. e.g. variableDelayCounter " +
-//            		"is not allowed.");
-//        }
-//        return result;
-//    }
-
     /** Returns the minDelay parameter.
      *  @param port The port where this minDelay parameter is associated to.
      *  @param channel The channel where this minDelay parameter is associated to.
