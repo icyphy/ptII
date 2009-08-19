@@ -27,6 +27,11 @@
  */
 package ptolemy.cg.kernel.generic.program.procedural.c.ptidyos;
 
+import java.util.List;
+
+import ptolemy.actor.Actor;
+import ptolemy.actor.Director;
+import ptolemy.actor.TypedCompositeActor;
 import ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.ptides.kernel.PtidesBasicDirector;
 import ptolemy.cg.kernel.generic.program.procedural.c.CCodeGenerator;
 import ptolemy.kernel.util.IllegalActionException;
@@ -83,13 +88,32 @@ public class PtidyOSCodeGenerator extends CCodeGenerator {
         return result;
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+
+    /** Generate code for the assembly file.
+     *  @throws IllegalActionException if getAdaptor throws it.
+     * 
+     */
+    protected void _generateAssemblyFile() throws IllegalActionException {
+        PtidesBasicDirector directorAdapter = null;
+        for (Actor actor : (List<Actor>)((TypedCompositeActor)getContainer()).deepEntityList()) {
+            Director director = actor.getDirector();
+            if (director instanceof ptolemy.domains.ptides.kernel.PtidesBasicDirector) {
+                directorAdapter = (PtidesBasicDirector)getAdapter(director);
+            }
+        }
+        
+        _writeCode(directorAdapter.generateAsseblyFile());
+    }
+    
     /**
      * Return the name of the output file.
      * @return The output file name.
      * @exception IllegalActionException If there is problem resolving
      *  the string value of the generatorPackage parameter.
      */
-    public String getOutputFilename() throws IllegalActionException {
+    protected String _getOutputFilename() throws IllegalActionException {
         String extension = null;
         if (_generateFile == SOURCE_FILE) {
             extension = ".c";
@@ -98,15 +122,6 @@ public class PtidyOSCodeGenerator extends CCodeGenerator {
         }
 
         return _sanitizedModelName + extension;
-    }
-
-    /** Generate code for the assembly file.
-     *  @throws IllegalActionException if getAdaptor throws it.
-     * 
-     */
-    protected void _generateAssemblyFile() throws IllegalActionException {
-        PtidesBasicDirector director = (PtidesBasicDirector) getAdapter(getContainer());
-        _writeCode(director.generateAsseblyFile());
     }
 
     ///////////////////////////////////////////////////////////////////

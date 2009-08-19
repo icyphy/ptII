@@ -1196,7 +1196,7 @@ public class CodeStream {
 
     /**
      * Substitute parameters.
-     * This method searches all occurences of each parameter expressions
+     * This method searches all occurrences of each parameter expressions
      * in the given code block content and replace each with the given
      * arguments using straight-forward text substitution.
      * @param codeBlock The given code block content.

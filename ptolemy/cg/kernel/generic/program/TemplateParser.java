@@ -1218,8 +1218,11 @@ public class TemplateParser {
         if (port == null || channel.length() == 0) {
             CGException.throwException(parameter
                     + " is not acceptable by $get(). "
-                    + "The $get macro takes in as arguments "
-                    + "a channelNumber, and a port (e.g. $get(output#0).");
+                    + "The $get macro can accept the following forms: "
+                    + "$get(input#channel, offset); or, "
+                    + "$get(input, offset); or, "
+                    + "$get(input#channel); or, "
+                    + "$get(input);");
         }
 
         PortCodeGenerator portAdapter = (PortCodeGenerator) _codeGenerator.getAdapter(port);
@@ -1252,9 +1255,12 @@ public class TemplateParser {
         
         if (port == null || channel.length() == 0) {
             CGException.throwException(parameter
-                    + " is not acceptable by $get(). "
-                    + "The $get macro takes in as arguments "
-                    + "a channelNumber, and a port (e.g. $get(output#0).");
+                    + " is not acceptable by $hasToken(). "
+                    + "The $hasToken macro can accept the following forms: "
+                    + "$hasToken(input#channel, offset); or, "
+                    + "$hasToken(input, offset); or, "
+                    + "$hasToken(input#channel); or, "
+                    + "$hasToken(input);");
         }
 
         PortCodeGenerator portAdapter = (PortCodeGenerator) _codeGenerator.getAdapter(port);
@@ -1308,7 +1314,7 @@ public class TemplateParser {
             offset = parameters.get(1);
             dataToken = parameters.get(2);
         } else {
-            CGException.throwException("parameter is not acceptable by $put(). " + 
+            CGException.throwException(parameter, " is not acceptable by $put(). " + 
                     "$put could be used in the following ways: " +
                     "$put(output#channel, token); or, $put(output, token); or," +
                     "$put(input#channel, offset, token); or, $put(input, offset, token)");
@@ -1325,7 +1331,8 @@ public class TemplateParser {
         if (port == null) {
             CGException.throwException("parameter is not acceptable by $put(). " + 
                     "$put could be used in the following ways: " +
-                    "$put(output, 0, token); or, $put(output, token);");
+                    "$put(output#channel, token); or, $put(output, token); or," +
+                    "$put(input#channel, offset, token); or, $put(input, offset, token)");
         }
 
         PortCodeGenerator portAdapter = (PortCodeGenerator) _codeGenerator.getAdapter(port);

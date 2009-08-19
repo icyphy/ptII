@@ -1291,7 +1291,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
                 + "/makefile.in");
 
         // 3. Look for the generic C makefile.in
-        templateList.add("ptolemy/cg/kernel/generic/procedural/c/makefile.in");
+        templateList.add("ptolemy/cg/kernel/generic/program/procedural/c/makefile.in");
 
         // If necessary, add a trailing / after codeDirectory.
         String makefileOutputName = codeDirectory.stringValue()
