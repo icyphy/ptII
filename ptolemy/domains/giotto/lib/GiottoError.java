@@ -25,7 +25,7 @@
  COPYRIGHTENDKEY
 
  */
-package ptolemy.domains.lib;
+package ptolemy.domains.giotto.lib;
 
 
 import ptolemy.kernel.CompositeEntity;
@@ -57,8 +57,8 @@ public class GiottoError extends TypedAtomicActor { //should probably also imple
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    public Error(CompositeEntity container, String name)throws IllegalActionException, NameDuplicationException {
-        super(container,name);
+    public GiottoError(CompositeEntity container, String name) throws IllegalActionException, NameDuplicationException {
+       super(container,name);
         // Parameters
         errorAction = new StringParameter(this, "errorAction");
         errorAction.setExpression("Warn");
