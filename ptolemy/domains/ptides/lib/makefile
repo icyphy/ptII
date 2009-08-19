@@ -32,7 +32,7 @@
 
 ME =		ptolemy/domains/ptides/lib
 
-DIRS =		targets test
+DIRS =		luminary test
 
 # Root of the Java directory
 ROOT =		../../../..
@@ -49,7 +49,7 @@ PTCLASSJAR =
 
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
-	targets/targets.jar
+	luminary/luminary.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 

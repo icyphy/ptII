@@ -30,12 +30,12 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/domains/ptides/lib/targets/luminary
+ME =		ptolemy/domains/ptides/lib/luminary
 
 DIRS =		
 
 # Root of the Java directory
-ROOT =		../../../../../..
+ROOT =		../../../../..
 
 CLASSPATH =	$(ROOT)
 

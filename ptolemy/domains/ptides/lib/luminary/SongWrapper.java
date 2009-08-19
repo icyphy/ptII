@@ -26,7 +26,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
  */
 
-package ptolemy.domains.ptides.lib.targets.luminary;
+package ptolemy.domains.ptides.lib.luminary;
 
 import ptolemy.actor.lib.LimitedFiringSource;
 import ptolemy.kernel.CompositeEntity;

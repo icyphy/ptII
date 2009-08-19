@@ -26,10 +26,11 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 */
 
-package ptolemy.domains.ptides.lib.targets.luminary;
+package ptolemy.domains.ptides.lib.luminary;
 
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
+import ptolemy.domains.ptides.lib.ActuationDevice;
 import ptolemy.domains.ptides.lib.ActuatorOutputDevice;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
@@ -47,7 +48,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  * @Pt.AcceptedRating
  *
  */
-public class GPOutputDevice extends ActuatorOutputDevice {
+public class GPOutputDevice extends ActuatorOutputDevice implements ActuationDevice {
 
     /**
      * Constructs a GPOutputDevice object.

@@ -26,8 +26,9 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 */
 
-package ptolemy.domains.ptides.lib.targets.luminary;
+package ptolemy.domains.ptides.lib.luminary;
 
+import ptolemy.domains.ptides.lib.ActuationDevice;
 import ptolemy.domains.ptides.lib.ActuatorOutputDevice;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
@@ -45,7 +46,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  * @Pt.AcceptedRating
  *
  */
-public class SpeakerOutputDevice extends ActuatorOutputDevice {
+public class SpeakerOutputDevice extends ActuatorOutputDevice implements ActuationDevice {
 
     /**
      * Constructs a SpeakerOutputDevice  object.

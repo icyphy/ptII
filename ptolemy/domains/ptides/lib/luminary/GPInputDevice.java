@@ -26,7 +26,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
  */
 
-package ptolemy.domains.ptides.lib.targets.luminary;
+package ptolemy.domains.ptides.lib.luminary;
 
 import java.util.LinkedList;
 import java.util.List;
