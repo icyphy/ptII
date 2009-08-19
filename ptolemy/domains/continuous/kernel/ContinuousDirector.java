@@ -412,15 +412,14 @@ public class ContinuousDirector extends FixedPointDirector implements
         // are in the future. Presumably, since we are redoing a speculative
         // solver iteration, there must have been no inputs at the
         // _iterationBeginTime, which is now our _currentTime.
-        if (!_redoingSolverIteration && _transferInputsToInside() || _currentStepSize == 0.0) {
+        if ((!_redoingSolverIteration && _transferInputsToInside()) || _currentStepSize == 0.0) {
             _currentStepSize = 0.0;
             _ODESolver._reset();
             super.fire();
             _transferOutputsToEnvironment();
+            _redoingSolverIteration = false;
             return;
         }
-        // Reset this flag before we forget.
-        _redoingSolverIteration = false;
 
         // If we get to here, then we are either at the top level, or we
         // are enclosed within a director that is not a ContinuousDirector
@@ -448,10 +447,20 @@ public class ContinuousDirector extends FixedPointDirector implements
                         && !_stopRequested) {
     
                     _resetAllReceivers();
-                    // We only get here if we have no input events.
-                    // The following call sets the receivers connected to the
-                    // inputs to be "absent".
-                    _transferInputsToInside();
+                    
+                    // Set receivers connected to the inputs to "absent."
+                    // Note that this cannot be done by calling 
+                    // _transferInputsToInside() because if we are redoing
+                    // the solver iteration then there are inputs available,
+                    // but they should not be consumed yet.
+                    CompositeActor container = (CompositeActor) getContainer();
+                    Iterator inports = container.inputPortList().iterator();
+                    while (inports.hasNext()) {
+                        IOPort port = (IOPort) inports.next();
+                        for (int i = 0; i < port.getWidth(); i++) {
+                            port.sendClearInside(i);
+                        }
+                    }
     
                     super.fire();
                     // Outputs should only be produced on the first iteration of
@@ -460,12 +469,16 @@ public class ContinuousDirector extends FixedPointDirector implements
                     // reduce the step size and try again because that could
                     // result in multiple output events where there should only
                     // be one.
-                    if (!outputsProduced) {
+                    if (!_redoingSolverIteration && !outputsProduced) {
                         // Outputs need to be produced now, since the
                         // values at the output ports are now the correct
                         // values at the _iterationBeginTime, which on
                         // the first pass through, will match the
-                        // current environment time.
+                        // current environment time. We do not do this
+                        // if we are redoing the solver iteration, since
+                        // presumably those outputs were already produced,
+                        // and current time in the environment has passed
+                        // the time that they were produced.
                         _transferOutputsToEnvironment();
                         outputsProduced = true;
                     }
@@ -501,6 +514,7 @@ public class ContinuousDirector extends FixedPointDirector implements
                 }
             } finally {
                 _isIntermediateStep = false;
+                _redoingSolverIteration = false;
             }
             // If the step size is accurate and we did not reach the
             // maximum number of iterations then we are done.
