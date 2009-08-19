@@ -55,7 +55,7 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 PTCLASSALLJARS =
 
 # Keep this list alphabetized.
-JSRCS = JavaCodeGenerator.java \	
+JSRCS = JavaCodeGenerator.java \
 	JavaParseTreeCodeGenerator.java \
 	JavaTemplateParser.java
 
