@@ -138,7 +138,7 @@ public abstract class Receiver extends ProgramCodeGeneratorAdapter {
                         "expected to be of the form: sinkRef = $convert(sourceRef)");
         }
         
-        return token.substring(equalIndex + 1);
+        return token.substring(equalIndex + 2);
     }
     
     ///////////////////////////////////////////////////////////////////
