@@ -1,6 +1,6 @@
 # Makefile for Ptolemy Classic style Codegen
 #
-# @Version: $Id$
+# @Version: $Id: makefile 55321 2009-07-30 15:40:52Z rodiers $
 # @Author: Christopher Brooks
 #
 # @Copyright (c) 2005-2009 The Regents of the University of California
@@ -31,12 +31,12 @@
 # 						COPYRIGHTENDKEY
 ##########################################################################
 
-ME =		ptolemy/cg/luminary/adapter/generic/program/procedural/c/adapters/ptolemy/domains/ptides
+ME =		ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib
 
-DIRS =		demo kernel lib
+DIRS =	
 
 # Root of the Java directory
-ROOT =		../../../../../../../../../../../..
+ROOT =		../../../../../../../../../../..
 
 CLASSPATH =	$(ROOT)
 
@@ -45,29 +45,29 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	ptides
+PTPACKAGE = 	lib
 PTCLASSJAR =
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
 # Include the .class files from these jars in PTCLASSALLJAR
 # If you change this, change DIRS above
-PTCLASSALLJARS = \
-	demo/demo.jar \
-	kernel/kernel.jar \
-	lib/lib.jar
+PTCLASSALLJARS = gui/gui.jar
 
 # Keep this list alphabetized.
-JSRCS = 
+JSRCS = \
+	AddSubtract.java \
+	TimeDelay.java
 
-OTHER_FILES_TO_BE_JARED = 
+OTHER_FILES_TO_BE_JARED = \
+	$(JSRCS:%.java=%.j)
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
 # Don't include demo or DIRS here, or else 'make sources' will run 'make demo'
-MISC_FILES = $(DIRS)	
+MISC_FILES =	
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES

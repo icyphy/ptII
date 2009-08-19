@@ -1,6 +1,6 @@
 # Makefile for Ptolemy Classic style Codegen
 #
-# @Version: $Id$
+# @Version: $Id: makefile 54464 2009-06-17 19:10:03Z bldmastr $
 # @Author: Christopher Brooks
 #
 # @Copyright (c) 2005-2009 The Regents of the University of California
@@ -31,12 +31,12 @@
 # 						COPYRIGHTENDKEY
 ##########################################################################
 
-ME =		ptolemy/cg/luminary/adapter/generic/program/procedural/c/adapters/ptolemy/domains/ptides
+ME =		ptolemy/cg/luminary/adapter/generic/program/procedural/c/adapters/ptolemy/domains/ptides/demo
 
-DIRS =		demo kernel lib
+DIRS =		Speaker
 
 # Root of the Java directory
-ROOT =		../../../../../../../../../../../..
+ROOT =		../../../../../../../../../../../../..
 
 CLASSPATH =	$(ROOT)
 
@@ -45,7 +45,7 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	ptides
+PTPACKAGE = 	demo
 PTCLASSJAR =
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
@@ -53,9 +53,7 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 # Include the .class files from these jars in PTCLASSALLJAR
 # If you change this, change DIRS above
 PTCLASSALLJARS = \
-	demo/demo.jar \
-	kernel/kernel.jar \
-	lib/lib.jar
+	Speaker/Speaker.jar
 
 # Keep this list alphabetized.
 JSRCS = 
@@ -72,7 +70,6 @@ MISC_FILES = $(DIRS)
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	demo 
 
 JCLASS = $(JSRCS:%.java=%.class)
 
