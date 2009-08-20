@@ -489,7 +489,8 @@ LBNL_PACKAGES = \
 # PTIDES packages
 PTIDES_PACKAGES = \
 	ptolemy.domains.ptides.kernel \
-	ptolemy.domains.ptides.lib
+	ptolemy.domains.ptides.lib \
+	ptolemy.domains.ptides.lib.luminary 
 
 # Packages used by Ptiny.  
 PTINYPACKAGES = \
