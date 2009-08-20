@@ -53,7 +53,7 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 # Include the .class files from these jars in PTCLASSALLJAR
 # If you change this, change DIRS above
 PTCLASSALLJARS = \
-	luminary/luminary/jar
+	luminary/luminary.jar
 
 # Keep this list alphabetized.
 JSRCS = 
