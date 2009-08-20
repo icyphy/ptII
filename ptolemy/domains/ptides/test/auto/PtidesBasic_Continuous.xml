@@ -16,7 +16,7 @@
     </property>
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{350.1825275397796, 253.0612186352509}">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={165, 71, 1026, 750}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={165, 50, 1036, 754}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[813, 640]">
     </property>
@@ -98,7 +98,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[90.0, 55.0]">
             </property>
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={307, 350, 813, 510}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={307, 286, 823, 514}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
         </property>
@@ -131,7 +131,7 @@
             </property>
         </entity>
         <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
-            <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1.0, 1.0, 1.0, 1.0}">
+            <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1.0, 1.0, 1.0, 1.0, 1.0, 1.0}">
             </property>
             <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
             </property>
@@ -139,9 +139,11 @@
             </property>
         </entity>
         <entity name="NonStrictTest2" class="ptolemy.actor.lib.NonStrictTest">
-            <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 0.005, 0.01, 0.02}">
+            <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 0.005, 0.01, 0.01, 0.01, 0.02}">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[440.0, 130.0]">
+            <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{440.0, 130.0}">
             </property>
         </entity>
         <relation name="relation2" class="ptolemy.actor.TypedIORelation">
@@ -187,13 +189,13 @@
         </port>
     </entity>
     <entity name="P1: Controller" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{225.0, 120.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 115.0]">
         </property>
         <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
         </property>
         <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{329.5, 200.0}">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={31, 369, 872, 510}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={309, 226, 882, 514}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[659, 400]">
         </property>
@@ -222,8 +224,6 @@
         <port name="port" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 225.0]">
-            </property>
-            <property name="networkPort" class="ptolemy.data.expr.Parameter" value="true">
             </property>
             <property name="realTimeDelay" class="ptolemy.data.expr.Parameter" value="TDMAPeriod">
             </property>
@@ -255,11 +255,11 @@
             </port>
         </entity>
         <entity name="SensorInputDevice" class="ptolemy.domains.ptides.lib.SensorInputDevice">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, 270.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 225.0]">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
-                <property name="minDelay" class="ptolemy.data.expr.Parameter" value="{0.0}">
+                <property name="minDelay" class="ptolemy.data.expr.Parameter" value="{-0.005}">
                 </property>
                 <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="0.01">
                 </property>
@@ -306,7 +306,7 @@
         <relation name="relation2" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="relation11" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" value="[190.0234375, 168.0703125]">
+            <vertex name="vertex1" value="[225.0, 225.0]">
             </vertex>
         </relation>
         <relation name="relation" class="ptolemy.actor.TypedIORelation">
@@ -339,7 +339,7 @@
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[325.0, 110.0]">
+        <vertex name="vertex1" value="[325.0, 105.0]">
         </vertex>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
