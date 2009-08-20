@@ -92,9 +92,9 @@ public class ProgramCodeGeneratorAdapter extends CodeGeneratorAdapter {
         return _templateParser.processCode(code);
     }
 
-    /** Set the strategy for generating code for this adapter.
-     * @param strategy The strategy.
-     * @see #getStrategy
+    /** Set the template parser for this adapter.
+     * @param strategy The template parser.
+     * @see #getTemplateParser()
      */
     public final void setTemplateParser(TemplateParser templateParser) {
         _templateParser = templateParser;
@@ -112,6 +112,7 @@ public class ProgramCodeGeneratorAdapter extends CodeGeneratorAdapter {
     
     /** Get the template parser associated with this strategy.
      *  @return The associated template parser.
+     *  @see #setTemplateParser(TemplateParser)
      */
     final public TemplateParser getTemplateParser() {
         return _templateParser;
