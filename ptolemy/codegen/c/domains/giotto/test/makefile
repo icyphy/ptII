@@ -86,6 +86,9 @@ KERNEL_TESTDEFS = $(ROOT)/util/testsuite/testDefs.tcl
 test_jsimple: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljtests.tcl test_auto test_codegen
 	$(JTCLSH) alljtests.tcl
 
+test_codegen_noinline:
+	export NOINLINE=true; $(JTCLSH) $(ROOT)/util/testsuite/CGC.tcl
+
 # 'make clean' removes $(KRUFT)
 KRUFT = 
 
