@@ -115,7 +115,7 @@ public class XMLWriter {
     public synchronized void write() throws FileNotFoundException, IOException {
         // Prepare string
         final InetAddress localHost = InetAddress.getLocalHost();
-        final String hosNam = localHost.getCanonicalHostName();
+        final String hosNam = localHost.getHostName();
         final String s = "<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>" + LS
                 + "<BCVTB-client>" + LS + "  <ipc>" + LS
                 + "    <socket port=\"" + porNo + "\" hostname=\"" + hosNam
