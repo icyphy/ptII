@@ -184,11 +184,13 @@ CGPACKAGES = \
 	ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib \
 	ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.sched \
 	ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.sdf.kernel \
+        ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.actor.lib \
 	ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.cg.lib \
 	ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.sdf.kernel \
 	ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.ptides.kernel \
 	ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.ptides.lib \
 	ptolemy.cg.adapter.generic.program.procedural.c.luminary.adapters.ptolemy.domains.ptides.kernel \
+	ptolemy.cg.adapter.generic.program.procedural.c.luminary.adapters.ptolemy.domains.ptides.lib.luminary \
 	ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.actor.lib \
 	ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.actor.lib.gui \
 	ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.cg.lib \
@@ -626,6 +628,8 @@ ALLPACKAGES = \
 	ptolemy.domains.dt.kernel \
 	ptolemy.domains.fsm.kernel.fmv \
 	ptolemy.domains.giotto.kernel \
+	ptolemy.domains.giotto.lib \
+	ptolemy.domains.giotto.lib.luminary \
 	ptolemy.domains.hdf.kernel \
 	ptolemy.domains.modal.kernel.fmv \
 	ptolemy.domains.petrinet.kernel \
