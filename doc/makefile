@@ -189,7 +189,6 @@ CGPACKAGES = \
 	ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.ptides.kernel \
 	ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.ptides.lib \
 	ptolemy.cg.adapter.generic.program.procedural.c.luminary.adapters.ptolemy.domains.ptides.kernel \
-	ptolemy.cg.adapter.generic.program.procedural.c.luminary.adapters.ptolemy.domains.ptides.lib \
 	ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.actor.lib \
 	ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.actor.lib.gui \
 	ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.cg.lib \
@@ -488,8 +487,7 @@ LBNL_PACKAGES = \
 # PTIDES packages
 PTIDES_PACKAGES = \
 	ptolemy.domains.ptides.kernel \
-	ptolemy.domains.ptides.lib \
-	ptolemy.domains.ptides.lib.targets.luminary
+	ptolemy.domains.ptides.lib
 
 # Packages used by Ptiny.  
 PTINYPACKAGES = \
@@ -1195,7 +1193,7 @@ ptII.fb:
 		done; \
 	fi
 
-FINDBUGS_ARGS = -maxHeap 900 -experimental -effort:max -textui -exclude findbugs-exclude.xml -project ptII.fb
+FINDBUGS_ARGS = -maxHeap 1500 -experimental -effort:max -textui -exclude findbugs-exclude.xml -project ptII.fb
 
 findbugs.htm:  ptII.fb findbugs-exclude.xml makefile
 	@if [ -f "$(FINDBUGS)/bin/findbugs" ]; then \
