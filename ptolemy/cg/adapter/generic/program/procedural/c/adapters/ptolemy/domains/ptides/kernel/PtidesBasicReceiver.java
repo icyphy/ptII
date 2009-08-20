@@ -41,6 +41,7 @@ import ptolemy.data.ArrayToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NamedObj;
 
 ///////////////////////////////////////////////////////////////////////
 ////PtidesBasicReceiver
@@ -145,11 +146,13 @@ public class PtidesBasicReceiver extends ptolemy.cg.adapter.generic.program.proc
         // FIXME: not sure whether we should check if we are putting into an input port or
         // output port.
         // Generate a new event.
+        String sinkName = NamedProgramCodeGeneratorAdapter
+        .generateName((NamedObj)sinkPort.getContainer());
         List args = new ArrayList();
         args.add(sinkPort.getType().toString());
         args.add(token);
-        args.add((sinkPort.getContainer().getName()));
-        args.add("Event_Head_" + sinkPort.getName() + "["
+        args.add(sinkName);
+        args.add("Event_Head_" + sinkName + "_" + sinkPort.getName() + "["
                 + sinkPort.getChannelForReceiver(getComponent()) + "]");
         args.add(depth);//depth
         args.add(deadlineSecsString);//deadline

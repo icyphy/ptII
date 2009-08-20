@@ -1,7 +1,4 @@
 /***preinitBlock***/
-#include "audio.h"
-#include "inc/hw_pwm.h"
-#include "driverlib/pwm.h"
 #define MAX_SPEAKER_DEVICE_BUFFER 1000
 static unsigned short $actorSymbol(result)[MAX_SPEAKER_DEVICE_BUFFER];
 int bufferHead = 0;

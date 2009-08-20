@@ -47,8 +47,8 @@ import ptolemy.data.type.Type;
 import ptolemy.domains.fsm.modal.ModalController;
 import ptolemy.domains.ptides.lib.ActuationDevice;
 import ptolemy.domains.ptides.lib.InputDevice;
-import ptolemy.domains.ptides.lib.InterruptDevice;
 import ptolemy.domains.ptides.lib.OutputDevice;
+import ptolemy.domains.ptides.lib.SensorInputDevice;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
 
@@ -356,7 +356,7 @@ public class PtidesBasicDirector extends Director {
                  actuatorIndex++;
              }
 
-            if (actor instanceof InterruptDevice) {
+            if (actor instanceof SensorInputDevice) {
                 _sensors.put(actor, new Integer(sensorIndex));
                 sensorIndex++;
             }
@@ -382,19 +382,19 @@ public class PtidesBasicDirector extends Director {
             NamedProgramCodeGeneratorAdapter adapter = (NamedProgramCodeGeneratorAdapter) getCodeGenerator()
                     .getAdapter(actor);
 
-//             if (actor instanceof ActuationDevice) {
-//                 code
-//                         .append("void Actuation_"
-//                                 + ProgramCodeGeneratorAdapterStrategy
-//                                         .generateName((NamedObj) actor)
-//                                 + "() {" + _eol);
-//                 code
-//                         .append(((ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.ptides.lib.OutputDevice) adapter)
-//                                 .generateActuatorActuationFuncCode());
-//                 code.append("}" + _eol);
-//             }
+             if (actor instanceof ActuationDevice) {
+                 code
+                         .append("void Actuation_"
+                                 + NamedProgramCodeGeneratorAdapter
+                                         .generateName((NamedObj) actor)
+                                 + "() {" + _eol);
+                 code
+                         .append(((ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.ptides.lib.OutputDevice) adapter)
+                                 .generateActuatorActuationFuncCode());
+                 code.append("}" + _eol);
+             }
 
-            if (actor instanceof InterruptDevice) {
+            if (actor instanceof SensorInputDevice) {
                 code
                         .append("void Sensing_"
                                 + NamedProgramCodeGeneratorAdapter

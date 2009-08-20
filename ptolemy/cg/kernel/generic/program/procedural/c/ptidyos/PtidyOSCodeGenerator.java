@@ -118,7 +118,7 @@ public class PtidyOSCodeGenerator extends CCodeGenerator {
         if (_generateFile == SOURCE_FILE) {
             extension = ".c";
         } else if (_generateFile == ASSEMBLY_FILE) {
-            extension = ".S";
+            extension = ".s";
         }
 
         return _sanitizedModelName + extension;

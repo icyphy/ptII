@@ -37,8 +37,7 @@ import ptolemy.actor.Actor;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
-import ptolemy.domains.ptides.lib.InterruptDevice;
-import ptolemy.domains.ptides.lib.luminary.GPInputDevice;
+import ptolemy.domains.ptides.lib.luminary.LuminarySensorInputDevice;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
 
@@ -97,7 +96,7 @@ public class PtidesBasicDirector
         for (Actor actor : (List<Actor>) ((TypedCompositeActor) getComponent().getContainer())
                 .deepEntityList()) {
             // If the input is a sensor device, then we need to use interrupts to trigger it.
-            if (actor instanceof InterruptDevice) {
+            if (actor instanceof LuminarySensorInputDevice) {
                 devices.put(actor, new String("Sensing_"
                         + NamedProgramCodeGeneratorAdapter
                                 .generateName((NamedObj) actor)));
@@ -120,22 +119,21 @@ public class PtidesBasicDirector
         // a particular configuration, add it into the array associated with the device, 
         // and the index of this actor should equal to the index of the configuration in
         // supportedConfigurations().
-        int configurationSize = GPInputDevice.numSupportedConfigurations;
+        int configurationSize = LuminarySensorInputDevice.numSupportedInputDeviceConfigurations;
         String[] GPHandlers = new String[configurationSize];
-        for (Actor actor : (Set<Actor>) devices.keySet()) {
-            if (actor instanceof GPInputDevice) {
-                GPInputDevice GPActor = (GPInputDevice) actor;
-                for (int i = 0; i < configurationSize; i++) {
-                    if (GPActor.pad.toString() == GPActor
-                            .supportedConfigurations().get(i)) {
-                        GPHandlers[i] = (String) devices.get(actor);
-                        break;
-                    }
+        boolean foundConfig = false;
+        for (LuminarySensorInputDevice actor : (Set<LuminarySensorInputDevice>) devices.keySet()) {
+            for (int i = 0; i < actor.supportedConfigurations().size(); i++) {
+                if (actor.configuration().compareTo(actor
+                        .supportedConfigurations().get(i)) == 0) {
+                    GPHandlers[i + actor.startingConfiguration()] = (String) devices.get(actor);
+                    foundConfig = true;
+                    break;
                 }
-            } else {
-                throw new IllegalActionException(actor,
-                        "This actor is not an interrupt"
-                                + "device, cannot generate an ISR for it.");
+            }
+            if (foundConfig == false) {
+                throw new IllegalActionException(actor, "Cannot found the configuration for this " +
+                		"actor.");
             }
         }
         for (int i = 0; i < configurationSize; i++) {

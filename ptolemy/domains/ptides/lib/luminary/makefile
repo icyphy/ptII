@@ -50,6 +50,7 @@ PTCLASSJAR =	$(PTPACKAGE).jar
 JSRCS = \
 	GPInputDevice.java \
 	GPOutputDevice.java \
+	LuminarySensorInputDevice.java \
 	SongWrapper.java \
 	SpeakerOutputDevice.java
 

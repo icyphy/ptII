@@ -113,17 +113,17 @@ static Time ZERO_TIME = {0, 0};
 // deadline, timestamp, microstep, and depth.
 int compareEvents(Event* event1, Event* event2) {
     int compare;
-    compare = timeCompare(event1->deadline, event2->deadline).
+    compare = timeCompare(event1->deadline, event2->deadline);
     if (compare != 0) {
         return compare;
     } else {
-        compare = timeCompare(event1->timestamp, event2->timestamp);
+        compare = timeCompare(event1->tag.timestamp, event2->tag.timestamp);
         if (compare != 0) {
             return compare;
         } else {
-            if (event1->microstep < event2->microstep) {
+            if (event1->tag.microstep < event2->tag.microstep) {
                 return -1;
-            } else if (event1->microstep > event2->microstep) {
+            } else if (event1->tag.microstep > event2->tag.microstep) {
                 return 1;
             } else {
                 if (event1->depth < event2->depth) {
@@ -142,7 +142,6 @@ void addEvent(Event* newEvent) {
     // now add event to the deadline queue
 	Event *compare_deadline;
 	Event *before_deadline;
-    int compare;
 
     disableInterrupts();
 
@@ -200,6 +199,14 @@ int notSameTag(const Event* event1, const Event* event2) {
     }
 }
 
+int sameDestination(const Event* event1, const Event* event2) {
+    // for now, assume if two events are destined to the same actor,
+    // then they should be processed together. This is however not
+    // true in general. It should be two events destined to the same
+    // equivalence class should be processed togetherd.
+    return event1->fireMethod == event2->fireMethod;
+}
+
 void removeAndPropagateSameTagEvents(int peekingIndex) {
     int i;
     Event* event = DEADLINE_QUEUE_HEAD;
@@ -220,7 +227,7 @@ void removeAndPropagateSameTagEvents(int peekingIndex) {
     refEvent = event;
     // Now find the next event see we should process it at the same time.
     while (true) {
-        event = event->next;
+        event = event->nextEvent;
         if (notSameTag(refEvent, event)) {
             break;
         } else {
@@ -297,7 +304,7 @@ int timeSub(const Time time1, const Time time2, Time* timeSub) {
 /* event processing */
 
 void processEvents() {
-	// peakingPoint keeps track which event to peak at.
+	// peekingPoint keeps track which event to peek at.
 	int peekingIndex = 0;
 	// keeps track of how many events in the event queue cannot be processed because their
 	// buffer has been blocked.

@@ -8,6 +8,25 @@
 #define RIGHT           GPIO_PIN_3 /* PE3 */
 #define BUTTON         (UP | DOWN | LEFT | RIGHT)
 
+/* Hardware library includes. */
+#include "../../../boards/hw_ints.h"
+#include "../../../boards/hw_memmap.h"
+#include "../../../boards/hw_types.h"
+#include "../../../src/debug.h"
+#include "../../../src/gpio.h"
+#include "../../../src/interrupt.h"
+#include "../../../src/sysctl.h"
+#include "../../../src/uart.h"
+#include "../rit128x96x4.h"
+#include "../../../src/timer.h"
+#include "../../../src/systick.h"
+#include "../../../boards/hw_nvic.h"
+#include "ethernet.h"
+
+#include "statics.h"
+#include "globals.h"
+#include <debug.h>
+
 $super.StructDefBlock();
 /**/
 
@@ -660,9 +679,9 @@ __Vectors
         DCD     IntDefaultHandler           ; Comp 2
         DCD     IntDefaultHandler           ; System Control
         DCD     IntDefaultHandler           ; Flash Control
-        DCD     $GPIOFHandler               ; GPIO Port E
-        DCD     $GPIOGHandler               ; GPIO Port E
-        DCD     $GPIOHHandler               ; GPIO Port E
+        DCD     $GPIOFHandler               ; GPIO Port F
+        DCD     $GPIOGHandler               ; GPIO Port G
+        DCD     $GPIOHHandler               ; GPIO Port H
         DCD     IntDefaultHandler           ; UART2 Rx and Tx
         DCD     IntDefaultHandler           ; SSI1 Rx and Tx
         DCD     IntDefaultHandler           ; Timer 3 subtimer A

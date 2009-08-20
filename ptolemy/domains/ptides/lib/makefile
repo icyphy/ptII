@@ -55,9 +55,9 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 
 JSRCS = \
 	AbsoluteDelay.java \
+	ActuationDevice.java \
 	ActuatorOutputDevice.java \
 	InputDevice.java \
-	InterruptDevice.java \
 	NetworkInputDevice.java \
 	NetworkOutputDevice.java \
 	OutputDevice.java \
