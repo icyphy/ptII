@@ -93,7 +93,7 @@ public class ProgramCodeGeneratorAdapter extends CodeGeneratorAdapter {
     }
 
     /** Set the template parser for this adapter.
-     * @param strategy The template parser.
+     * @param templateParser The template parser.
      * @see #getTemplateParser()
      */
     public final void setTemplateParser(TemplateParser templateParser) {
