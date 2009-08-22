@@ -359,7 +359,7 @@ public class PeriodicDirectorHelper {
             if (director != null) {
                 Time result = director.fireAt(container, time);
                 if (!result.equals(time)) {
-                    throw new IllegalActionException(_director,
+                    throw new IllegalActionException(director,
                             director.getName()
                                     + " is unable to fire "
                                     + container.getName()
