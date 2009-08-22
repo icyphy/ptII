@@ -31,6 +31,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 package ptolemy.domains.ptides.kernel;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -38,15 +39,12 @@ import java.util.Map;
 import ptolemy.actor.Actor;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedCompositeActor;
-import ptolemy.actor.lib.TimeDelay;
 import ptolemy.actor.util.Dependency;
 import ptolemy.actor.util.SuperdenseDependency;
 import ptolemy.actor.util.Time;
 import ptolemy.data.BooleanToken;
-import ptolemy.data.DoubleToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
-import ptolemy.domains.de.lib.TimedDelay;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -224,71 +222,73 @@ public class PtidesPreemptiveUserEDFDirector extends
         if (result == false) {
             return false;
         } else {
-            IOPort port = event.ioPort();
+            IOPort thisPort = event.ioPort();
             // FIXME: this method is not entirely correct. This check ensures totally independent
             // pure events are always safe to process (like those produced in TimeDelay actor.)
             // However, for those pure events with ports, This check may unnecessarily stall their
             // execution because these ports are their origin ports, not the current port they reside
             // at.
-            if (port != null) {
-                List<PtidesEvent> eventList = new ArrayList();
-                for (DoubleTimedEvent timedEvent : _currentlyExecutingStack) {
-                    eventList.addAll((List<PtidesEvent>)timedEvent.contents);
+            if (event.isPureEvent()) {
+                // this event is a pure event.
+                if (thisPort == null) {
+                    // if the input port is null, i.e., it does not causally relate to any event
+                    // that is coming from any other input ports, then this event is always safe
+                    // to process
+                    return true;                    
+                } else {
+                    thisPort = _getOneSinkPort(thisPort);
                 }
-                for (int eventIndex = 0; eventIndex < _eventQueue.size(); eventIndex++) {
-                    PtidesEvent earlierEvent = ((PtidesListEventQueue)_eventQueue).get(eventIndex);
-                    // Assuming all actors are causal, we only need to search until this event
-                    // in the event queue. Even if there are other events of the same timestamp
-                    // in the event queue, those of smaller depth are before this event, thus
-                    // they must be earlier in the event queue, since the event queue is
-                    // also sorted by depth.
-                    if (event == earlierEvent) {
-                        break;
-                    }
-                    eventList.add(earlierEvent);
+            }
+            // The event is not a pure event, or the event is a pure event,
+            // but it depends on events coming from other input ports.
+            List<PtidesEvent> eventList = new ArrayList();
+            for (DoubleTimedEvent timedEvent : _currentlyExecutingStack) {
+                eventList.addAll((List<PtidesEvent>)timedEvent.contents);
+            }
+            for (int eventIndex = 0; eventIndex < _eventQueue.size(); eventIndex++) {
+                PtidesEvent earlierEvent = ((PtidesListEventQueue)_eventQueue).get(eventIndex);
+                // Since the event queue is sorted in the order of timestamps, any event with
+                // larger timestamp cannot causally affect the execution of the event of interest.
+                // Any smaller event will also 
+                if (earlierEvent == event) {
+                    break;
                 }
-                for (PtidesEvent earlierEvent : eventList) {
-                    IOPort earlierPort = earlierEvent.ioPort();
-                    double delay = 0;
+                eventList.add(earlierEvent);
+            }
+            for (PtidesEvent earlierEvent : eventList) {
+                IOPort earlierPort = earlierEvent.ioPort();
+                if (earlierEvent.isPureEvent()) {
                     if (earlierPort == null) {
-                        // pure event.
-                        Actor actor = earlierEvent.actor();
-                        // FIXME: HACK.
-                        if (actor instanceof TimedDelay) {
-                            TimedDelay timedDelay = (TimedDelay) actor;
-                            delay = ((DoubleToken)(timedDelay.delay).getToken()).doubleValue();
-                            earlierPort = ((TimedDelay) actor).input;
-                        } else if (actor instanceof TimeDelay) {
-                            TimeDelay timeDelay = (TimeDelay) actor;
-                            delay = ((DoubleToken)(timeDelay.delay).getToken()).doubleValue();
-                            earlierPort = timeDelay.input;
-                        } else {
-                            throw new IllegalActionException(actor, "The safe to process analysis " +
-                                    "cannot work with actors that produce pure events " +
-                            "and are not either TimedDelay or TimeDelay actors.");
-                        }
+                        // The earlier event doesn't have a ioPort, so we assume the pure event
+                        // can result in events at all of its output ports. 
+                        earlierPort = _getOneSinkPort((IOPort)earlierEvent.actor().inputPortList().get(0));
+                    } else {
+                        earlierPort = _getOneSinkPort(earlierPort);                        
                     }
-                    Map<IOPort, Dependency> portDependency = _inputPairDependencies
-                    .get(earlierPort);
-                    if (portDependency != null) {
-                        SuperdenseDependency dependency = (SuperdenseDependency)portDependency.get(port);
-                        Time timeDifference = event.timeStamp().subtract(earlierEvent.timeStamp());
-                        timeDifference = timeDifference.add(delay);
-                        if (dependency != null) {
-                            // if the difference in model time between these two events is smaller
-                            // or equal to the dependency between the two residing ports, then the
-                            // event is unsafe.
-                            if (timeDifference.getDoubleValue() >= dependency.timeValue()) {
+                }
+                Map<IOPort, Dependency> portDependency = _inputPairDependencies
+                .get(earlierPort);
+                if (portDependency != null) {
+                    SuperdenseDependency dependency = (SuperdenseDependency)portDependency.get(thisPort);
+                    Time timeDifference = event.timeStamp().subtract(earlierEvent.timeStamp());
+                    if (dependency != null) {
+                        // if the difference in model time between these two events is smaller
+                        // or equal to the dependency between the two residing ports, then the
+                        // event is unsafe.
+                        if (timeDifference.getDoubleValue() > dependency.timeValue()) {
+                            return false;
+                        } else if (timeDifference.getDoubleValue() == dependency.timeValue()) {
+                            // If they are equal, and these two events do not reside at the same
+                            // equivalence class, then the event of interest is not safe.
+                            if (!_destinedToSameEquivalenceClass(earlierEvent, event)) {
                                 return false;
                             }
                         }
                     }
-                    //                        throw new IllegalActionException(earlierPort, port, "The dependency " +
-                    //                                "between these two ports are not calculated, safe to " +
-                    //                                "process analysis cannot be performed.");
                 }
-            } else {
-                return true;
+                //                        throw new IllegalActionException(earlierPort, port, "The dependency " +
+                //                                "between these two ports are not calculated, safe to " +
+                //                                "process analysis cannot be performed.");
             }
         }
         return true;
@@ -300,6 +300,31 @@ public class PtidesPreemptiveUserEDFDirector extends
     /** Computed dependencies between each pair of input ports of actors in the
      *  composite actor that is governed by this director. */
     private Map<IOPort, Map<IOPort, Dependency>> _inputPairDependencies;
+    
+    /** Given an input port (a), return one input port (b) such that \delta_0{a, o) < \infty,
+     *  where o is an output port, and o is directly connected to b. 
+     *  @param thisPort
+     *  @return
+     *  @throws IllegalActionException 
+     */
+    private IOPort _getOneSinkPort(IOPort thisPort) throws IllegalActionException {
+        Collection<IOPort> outputPorts = _finiteDependentPorts(thisPort);
+        if (outputPorts.size() == 0) {
+            throw new IllegalActionException(thisPort.getContainer(), thisPort,
+                    "This actor's output ports are not finitely dependent on any " +
+                    "of its input ports, We cannot determine whether pure events " +
+                    "produced by this actor are safe to process or not.");
+        }
+        IOPort outputPort = outputPorts.iterator().next();
+        List<IOPort> sinkPorts = outputPort.sinkPortList();
+        if (sinkPorts.size() == 0) {
+            throw new IllegalActionException(outputPort, "This port " +
+                            "must be connected to some downstream actor.");
+        }
+        // This port can be any arbitrary port that is going to receive outputs
+        // from this pure event.
+        return sinkPorts.get(0);
+    }
 
 
 }

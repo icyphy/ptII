@@ -265,12 +265,19 @@ public class PtidesPreemptiveEDFDirector extends PtidesBasicDirector {
      */
     protected Actor _getNextActorToFireForTheseEvents(List<PtidesEvent> events)
             throws IllegalActionException {
-        if (events.get(0) != ((PtidesListEventQueue) _eventQueue)
-                .get(_peekingIndex)) {
+        boolean foundEvent = false;
+        for (int i = 0; i < events.size(); i++) {
+            if (events.get(i) == ((PtidesListEventQueue) _eventQueue)
+                    .get(_peekingIndex)) {
+                foundEvent = true;
+                break;
+            }
+        }
+        if (foundEvent == false) {
             throw new IllegalActionException(
-                    "The event to get is not the event pointed "
-                            + "to by peeking index." + ", size "
-                            + events.size() + ", peek " + _peekingIndex);
+                    "The events to get is not the event pointed "
+                    + "to by peeking index." + ", size "
+                    + events.size() + ", peek " + _peekingIndex);
         }
         // take from the event queue all the events from the event queue starting
         // for _peekingIndex. Here we assume _peekingIndex is the index of the smallest
