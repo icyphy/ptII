@@ -457,7 +457,8 @@ public class ContinuousDirector extends FixedPointDirector implements
                     Iterator inports = container.inputPortList().iterator();
                     while (inports.hasNext()) {
                         IOPort port = (IOPort) inports.next();
-                        for (int i = 0; i < port.getWidth(); i++) {
+                        int insideWidth = port.getWidthInside();
+                        for (int i = 0; i < insideWidth; i++) {
                             port.sendClearInside(i);
                         }
                     }
