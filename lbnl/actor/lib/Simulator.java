@@ -451,14 +451,19 @@ public class Simulator extends SDFTransformer {
                 comArg = programName.getExpression();
             }
         }
-
         final String argLin = cutQuotationMarks(programArguments.getExpression());
         List<String> com = new ArrayList<String>();
-        StringTokenizer st = new StringTokenizer(comArg);
-        while (st.hasMoreTokens()) {
+	/* mwetter: 
+	   Disabled section. Otherwise, C:\Program Files\xyz is parsed to
+                    two tokens ("C:\Program" and "Files\xyz") in which case
+                    the process builder would try to launch C:\Program
+	  StringTokenizer st = new StringTokenizer(comArg);
+	  while (st.hasMoreTokens()) {
             com.add(st.nextToken());
         }
-        st = new StringTokenizer(argLin);
+	*/
+	com.add(comArg);
+        StringTokenizer st = new StringTokenizer(argLin);
         while (st.hasMoreTokens()) {
             com.add(st.nextToken());
         }
