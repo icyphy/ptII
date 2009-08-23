@@ -1,5 +1,5 @@
 // Methods for interfacing clients using BSD sockets.
-
+#define NDEBUG 1
 /*
 ********************************************************************
 Copyright Notice
@@ -222,12 +222,21 @@ int assembleBuffer(int flag,
 int getIntCheckError(const char *nptr, char **endptr, const int base,
 		      int* val){
   errno = 0; // must reset errno to 0
-  *val = strtol(nptr, endptr, base);  
+  long results = strtol(nptr, endptr, base);  
   /////////////////////////////////////////////////////////////////
   // do error checking
-  if ((errno == ERANGE && (*val == LONG_MAX || *val == LONG_MIN))
-      || (errno != 0 && *val == 0)) {
+  if ((errno == ERANGE
+       && (results == LONG_MAX
+	   || results == LONG_MIN))
+      || (errno != 0 && results == 0)) {
     perror("strtol caused error.");
+    return EXIT_FAILURE;
+  }
+  if (results > INT_MAX
+      || results < INT_MIN) {
+    //  64 bit problems here.  Under 64 bit linux, int is 4 bytes,
+    // long is 8 bytes.  Under MacOS X, int is 4 bytes, long is 4 bytes.
+    perror("strtol returned a long outside the range of an int.");
     return EXIT_FAILURE;
   }
   if (*endptr == nptr) {
@@ -236,6 +245,7 @@ int getIntCheckError(const char *nptr, char **endptr, const int base,
     fprintf(stderr, "Sending EXIT_FAILURE = : %d\n", EXIT_FAILURE);
     return EXIT_FAILURE;
   }
+  val = (int *) results;  
   return 0;
 }
 
@@ -410,7 +420,7 @@ int getsockethost(const char *const docname, char *const hostname) {
 int establishclientsocket(const char *const docname){
   int portNo, retVal, sockfd;
   char *hostname;
-  char* serverIP;
+  char *serverIP;
 
 #ifdef _MSC_VER /************* Windows specific code ********/
   struct hostent* FAR server;
@@ -543,7 +553,12 @@ int establishclientsocket(const char *const docname){
   serverIP = (char*)inet_ntoa(*(struct in_addr *)*server->h_addr_list);
   memset((char *) &serAdd, '\0', sizeof(serAdd));
   serAdd.sin_family = AF_INET;
+  // FIXME: inet_addr() is obsolete.
   serAdd.sin_addr.s_addr = inet_addr(serverIP);
+#ifdef NDEBUG
+  fprintf(f1, "Debugging: utilSocket.c: serverIP: %d, inet_addr: %d\n",
+	 serverIP,   serAdd.sin_addr.s_addr);
+#endif
   serAdd.sin_port = htons(portNo);
   //////////////////////////////////////////////////////
   // establish connection
