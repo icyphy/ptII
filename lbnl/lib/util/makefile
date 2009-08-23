@@ -105,10 +105,12 @@ clean: ptmatlab_clean
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
 
+C_DEBUG=-g
 # $(PTJNI_SHAREDLIBRARY_LDFLAG) is needed for 64 bit linux, it is set to -fPIC
 LIBXML2_LD_ARGS = -L$(LIBXML2_LIB_DIR) -lxml2
 $(PTLIB): $(CSRCS) $(HSRCS)
 	"$(PTCC)" -shared $(PTJNI_GCC_SHARED_FLAG) \
+		$(C_DEBUG) \
 		$(PTJNI_SHAREDLIBRARY_LDFLAG)\
 		-o $@ \
 		-I.. -I$(LIBXML2_INCLUDE_DIR) \
