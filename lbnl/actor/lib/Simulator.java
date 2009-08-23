@@ -334,6 +334,15 @@ public class Simulator extends SDFTransformer {
                 server.close();
             } catch (java.io.IOException e2) {
             }
+	    // Check the exit value of the subprocess
+	    em += "\nClient subprocess exit value (should be 0): ";
+	    try {
+		// If the subprocess is still running, then we may
+		// get an exception here.  See Process.exitValue().
+		em +=  cliPro.exitValue();
+	    } catch (Throwable throwable) {
+		em += "<<Unknown: " + throwable.getMessage();
+	    }
             ; // do nothing here
             throw new IllegalActionException(this, e, em);
         } catch (java.io.IOException e) {
