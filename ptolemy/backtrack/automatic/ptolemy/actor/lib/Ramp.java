@@ -30,6 +30,7 @@
 package ptolemy.backtrack.automatic.ptolemy.actor.lib;
 
 import java.lang.Object;
+import ptolemy.actor.Manager;
 import ptolemy.actor.lib.SequenceSource;
 import ptolemy.actor.parameters.PortParameter;
 import ptolemy.backtrack.Checkpoint;
@@ -39,6 +40,7 @@ import ptolemy.backtrack.util.FieldRecord;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -76,6 +78,8 @@ public class Ramp extends SequenceSource implements Rollbackable {
     ////                     ports and parameters                  ////
     /**     
      * The value produced by the ramp on its first iteration.
+     * If this value is changed during execution, then the new
+     * value will be the output on the next iteration.
      * The default value of this parameter is the integer 0.
      */
     public Parameter init;
@@ -88,6 +92,8 @@ public class Ramp extends SequenceSource implements Rollbackable {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+    // If type resolution has happened (the model is running),
+    // then update the current state.
     // set the type constraints.
     // Check whether we need to reallocate the output token array.
     // Consume any trigger inputs.
@@ -125,6 +131,28 @@ public class Ramp extends SequenceSource implements Rollbackable {
         output.setTypeAtLeast(step);
         _attachText("_iconDescription", "<svg>\n" + "<rect x=\"-30\" y=\"-20\" "+"width=\"60\" height=\"40\" "+"style=\"fill:white\"/>\n"+"<polygon points=\"-20,10 20,-10 20,10\" "+"style=\"fill:grey\"/>\n"+"</svg>\n");
         $ASSIGN$_resultArray(new Token[1]);
+    }
+
+    /**     
+     * If the argument is the <i>init</i> parameter, then reset the
+     * state to the specified value.
+     * @param attribute The attribute that changed.
+     * @throws IllegalActionException If <i>init<i> cannot be evaluated
+     * or cannot be converted to the output type, or if the superclass
+     * throws it.
+     */
+    public void attributeChanged(Attribute attribute) throws IllegalActionException  {
+        if (attribute == init) {
+            Manager manager = getManager();
+            if (manager != null) {
+                Manager.State state = manager.getState();
+                if (state == Manager.ITERATING || state == Manager.PAUSED || state == Manager.PAUSED_ON_BREAKPOINT) {
+                    $ASSIGN$_stateToken(output.getType().convert(init.getToken()));
+                }
+            }
+        } else {
+            super.attributeChanged(attribute);
+        }
     }
 
     /**     
