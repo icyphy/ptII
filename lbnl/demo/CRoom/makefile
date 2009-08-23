@@ -102,7 +102,7 @@ demo_vergil: $(CCLIENT)
 SHARED_LIBRARY = $(PTJNI_SHAREDLIBRARY_PREFIX)$(SHAREDBASE).$(PTJNI_SHAREDLIBRARY_SUFFIX)
 
 $(CCLIENT): cclient.c
-	$(PTCC) -o $@ -I../../lib -I../../lib/util $^ -L../../lib/util -lbcvtb
+	$(PTCC) -g -o $@ -I../../lib -I../../lib/util $^ -L../../lib/util -lbcvtb
 
 
 include $(ROOT)/mk/ptcommon.mk
