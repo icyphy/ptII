@@ -133,6 +133,7 @@ public class ClientProcess extends Thread {
             simPro = pb.start();
             proSta = true;
             new PrintOutput().start();
+            new PrintStderr().start();
         } catch (SecurityException exc) {
             proSta = false;
             errMes = "Error when starting external process."
@@ -164,6 +165,13 @@ public class ClientProcess extends Thread {
         return errMes;
     }
 
+    /** Get the exit value of the subprocess.
+     *  @return the exit value of the subprocess
+     */
+    public int exitValue() {
+	return simPro.exitValue();
+    }
+	
     /** Inner class to print any output of the process to the console. */
     private class PrintOutput extends Thread {
         public PrintOutput() {
@@ -193,6 +201,68 @@ public class ClientProcess extends Thread {
                 String line;
                 try {
                     while ((line = br.readLine()) != null) {
+                        if (logToSysOut) {
+                            pwSysOut.println(line);
+                            pwSysOut.flush();
+                        }
+                        pwLogFil.println(line);
+                        pwLogFil.flush();
+                    }
+                } catch (java.io.IOException e) {
+                    e.printStackTrace();
+                }
+            } finally {
+                // FindBugs suggests closing these, but
+                // is that ok if simPro has not terminated?
+                if (isr != null) {
+                    try {
+                        isr.close();
+                    } catch (java.io.IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+                if (br != null) {
+                    try {
+                        br.close();
+                    } catch (java.io.IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
+    }
+
+
+    /** Inner class to print any stderr of the process to the console. */
+    private class PrintStderr extends Thread {
+        public PrintStderr() {
+        }
+
+        /** Runs the process. */
+        public void run() {
+            if (simPro == null) {
+                return;
+            }
+            InputStream is = simPro.getErrorStream();
+            InputStreamReader isr = new InputStreamReader(is);
+            BufferedReader br = null;
+            try {
+                isr = new InputStreamReader(is);
+                br = new BufferedReader(isr);
+                PrintWriter pwLogFil;
+                PrintWriter pwSysOut = new PrintWriter(System.err);
+                try {
+                    pwLogFil = new PrintWriter(new BufferedWriter(new FileWriter(
+                                            logFil)));
+                } catch (java.io.IOException e) {
+                    e.printStackTrace();
+                    pwLogFil = new PrintWriter(System.err);
+                }
+
+                String line;
+                try {
+                    while ((line = br.readLine()) != null) {
+			System.out.println("Error: "+ line);
                         if (logToSysOut) {
                             pwSysOut.println(line);
                             pwSysOut.flush();
