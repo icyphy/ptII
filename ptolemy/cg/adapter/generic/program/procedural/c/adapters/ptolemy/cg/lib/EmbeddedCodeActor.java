@@ -62,7 +62,6 @@ public class EmbeddedCodeActor extends CompiledCompositeActor {
      * @return The generated code.
      * @exception IllegalActionException Not thrown in this base class.
      */
-    // FIXME rodiers
     public String generateTypeConvertFireCode(boolean forComposite)
             throws IllegalActionException {
         return "";
