@@ -304,7 +304,7 @@ public class PtidesPreemptiveUserEDFDirector extends
     /** Given an input port (a), return one input port (b) such that \delta_0{a, o) < \infty,
      *  where o is an output port, and o is directly connected to b. 
      *  @param thisPort
-     *  @return
+     *  @return one input port.
      *  @throws IllegalActionException 
      */
     private IOPort _getOneSinkPort(IOPort thisPort) throws IllegalActionException {
