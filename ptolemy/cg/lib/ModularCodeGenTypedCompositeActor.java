@@ -32,14 +32,21 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
+import ptolemy.actor.CompositeActor;
+import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
+import ptolemy.actor.IORelation;
 import ptolemy.actor.LazyTypedCompositeActor;
 import ptolemy.actor.NoTokenException;
 import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.TypedIORelation;
 import ptolemy.actor.util.DFUtilities;
 import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
 import ptolemy.cg.kernel.generic.program.procedural.java.modular.ModularCodeGenerator;
@@ -48,6 +55,7 @@ import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.Token;
+import ptolemy.data.expr.FileParameter;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
@@ -61,6 +69,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
@@ -191,14 +200,33 @@ public class ModularCodeGenTypedCompositeActor extends LazyTypedCompositeActor {
         _init();
     }
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         parameters                        ////
 
+    /** A boolean parameter to enforce recompilation of this ModularCodeGenTypedCompositeActor 
+     *  and all contained ModularCodeGenTypedCompositeActors.
+     */
     public Parameter recompileHierarchy;
+
+    /** A boolean parameter to enforce recompilation of this ModularCodeGenTypedCompositeActor. 
+     */
     public Parameter recompileThisLevel;
-    
-    
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
+
+    /** Convert this Ptolemy port to a port that will be saved in the profile.
+     *  @param port The Ptolemy port.
+     *  @exception IllegalActionException When the width can't be retrieved.
+     */
+    public Profile.Port convertProfilePort(IOPort port) throws IllegalActionException {
+        boolean publisher = _isPublishedPort(port);
+        boolean subscriber = _isSubscribedPort(port);
+        return new Profile.Port(port.getName(), publisher,
+                subscriber, port.getWidth(), port.isInput(), port.isOutput(), _pubSubChannelName(port, publisher, subscriber));
+    }
+
     /** React to a change in an attribute.  This method is called by
      *  a contained attribute when its value changes.  This overrides
      *  the base class so that if the attribute is an instance of
@@ -247,13 +275,63 @@ public class ModularCodeGenTypedCompositeActor extends LazyTypedCompositeActor {
     public void connectionsChanged(Port port) {
         super.connectionsChanged(port);
         try {
-            _setRecompileFlag();
+            if (!inferringWidths()) { 
+                _setRecompileFlag();
+            }
         } catch (IllegalActionException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            throw new InternalErrorException(e);
         }
     }
 
+    /** Get the ports belonging to this entity.
+     *  The order is the order in which they became contained by this entity.
+     *  This method is read-synchronized on the workspace.
+     *  @return An unmodifiable list of Port objects.
+     */
+    public List portList() {
+        Profile profile = _getProfile();
+        if (_USE_PROFILE && profile != null) {
+            List<TypedIOPort> ports = new LinkedList<TypedIOPort>(super.portList());
+            HashSet<String> portSet = new HashSet<String>();
+            for (Object port : ports) {
+                portSet.add(((NamedObj) port).getName());
+            }
+            try {
+                for (Profile.Port port : profile.ports()) {
+                    if (port.publisher()) {
+                        if (!portSet.contains(port.name())) {
+                            IOPort newPort = new TypedIOPort(this, port.name());
+                            new Parameter(newPort, "_hide", BooleanToken.TRUE);
+                            newPort.setInput(port.input());
+                            newPort.setOutput(port.output());
+                            ports.add(new TypedIOPort(this, port.name()));
+                            NamedObj container = getContainer();
+                            if (container instanceof CompositeActor) {
+                                ((CompositeActor) container).registerPublisherPort(port.getPubSubChannelName(), newPort);
+                            }
+                        }
+                    }
+                }
+                return ports;
+            } catch (IllegalActionException e) {
+                profile = null;
+            } catch (NameDuplicationException e) {
+                profile = null;
+            }
+        }
+        if (!_USE_PROFILE || profile == null){
+            populate();
+            List<?> entities = entityList(ModularCodeGenTypedCompositeActor.class);
+            for (Object entity : entities) {
+                ((ModularCodeGenTypedCompositeActor) entity).populate();
+            }            
+        } else {
+            System.err.println("Error");
+        }
+        return super.portList();
+        
+    }
+    
     /** If this actor is opaque, transfer any data from the input ports
      *  of this composite to the ports connected on the inside, and then
      *  invoke the fire() method of its local director.
@@ -275,6 +353,7 @@ public class ModularCodeGenTypedCompositeActor extends LazyTypedCompositeActor {
             if (_debugging) {
                 _debug("ModularCodeGenerator: No generated code. Calling simulation fire method.");
             }
+            System.out.println("ModularCodeGenerator: No generated code. Calling simulation fire method.");
             super.fire();
             return;
         }
@@ -386,9 +465,10 @@ public class ModularCodeGenTypedCompositeActor extends LazyTypedCompositeActor {
                 }
             }
 
-            Object[]  tokensToAllOutputPorts = (Object[]) _fireMethod.invoke(
+            Object[] tokensToAllOutputPorts;
+            tokensToAllOutputPorts = (Object[]) _fireMethod.invoke(
                     _objectWrapper, argList.toArray());
-            
+        
             int portNumber = 0;
             for (Object port : outputPortList()) {
                     IOPort iOPort = (IOPort) port;
@@ -398,29 +478,15 @@ public class ModularCodeGenTypedCompositeActor extends LazyTypedCompositeActor {
             if (_debugging) {
                 _debug("ModularCodeGenerator: Done calling fire method of generated code.");
             }
-            
-        } catch (Throwable throwable) {
-            // If we can't use the compiled code we directly
-            // use the model.
-            
-            if (_debugging) {
-                _debug("ModularCodeGenerator: Calling fire method of generated code failed.\n\t" +
-                                "Reason: " + throwable.getMessage() + 
-                		"\n\tCalling fire method in ptolemy.");
-            }
-            
-            super.fire();
+        } catch (IllegalArgumentException e) {
+            throw new IllegalActionException(this, e, "Could no execute the generated code.");
+        } catch (IllegalAccessException e) {
+            throw new IllegalActionException(this, e, "Could no execute the generated code.");
+        } catch (InvocationTargetException e) {
+            throw new IllegalActionException(this, e, "Could no execute the generated code.");
         }
-
     }
-    
-    //TODO rodiers
-    public void generateCode() throws KernelException {
-        _createCodeGenerator();
-        // TODO: Test whether we need to generate code. 
-        _codeGenerator.generateCode();
-    }
-
+        
     /** Create receivers and invoke the
      *  preinitialize() method of the local director. If this actor is
      *  not opaque, throw an exception.  This method also resets
@@ -436,17 +502,16 @@ public class ModularCodeGenTypedCompositeActor extends LazyTypedCompositeActor {
      *   is not opaque.
      */
     public void initialize() throws IllegalActionException {
-        super.initialize();
+        super.initialize(); // TODO only do when not generating code
         try {
             _generatingCode = true;
             _createCodeGenerator();
             if (_modelChanged()) {
-                    generateCode();
+                    _generateCode();
             }
             String className = NamedProgramCodeGeneratorAdapter.generateName(this);        
             Class<?> classInstance = null;
-            URL url = null;
-            url = _codeGenerator.codeDirectory.asFile().toURI().toURL();
+            URL url = _codeGenerator.codeDirectory.asFile().toURI().toURL();
             URL[] urls = new URL[] { url };
 
             ClassLoader classLoader = new URLClassLoader(urls);
@@ -455,7 +520,7 @@ public class ModularCodeGenTypedCompositeActor extends LazyTypedCompositeActor {
             } catch (ClassNotFoundException ex) {
                 // We couldn't load the class, maybe the code is not generated (for example
                 // the user might have given this model to somebody else. Regenerate it again.
-                generateCode();
+                _generateCode();
                 classInstance = classLoader.loadClass(className);
             }
 
@@ -495,12 +560,104 @@ public class ModularCodeGenTypedCompositeActor extends LazyTypedCompositeActor {
             recompileThisLevel.setToken(new BooleanToken(false));
             recompileHierarchy.setToken(new BooleanToken(false));
         } catch (Throwable throwable) {
+            System.err.println(throwable);
             _objectWrapper = null;
             _fireMethod = null;
         } finally {
             _generatingCode = false;
         }
     }
+
+    /** Link the subscriberPort with a already registered "published port" coming
+     *  from a publisher. The name is the name being used in the
+     *  matching process to match publisher and subscriber. A
+     *  subscriber interested in the output of this publisher uses
+     *  the  name. This registration process of publisher
+     *  typically happens before the model is preinitialized,
+     *  for example when opening the model. The subscribers
+     *  will look for publishers during the preinitialization phase.
+     *  @param name The name is being used in the matching process
+     *          to match publisher and subscriber.
+     *  @param subscriberPort The subscribed port. 
+     *  @exception NameDuplicationException If there are name conflicts
+     *          as a result of the added relations or ports. 
+     *  @exception IllegalActionException If the published port cannot be found.
+     */
+    public void linkToPublishedPort(String name, IOPort subscriberPort) throws IllegalActionException, NameDuplicationException {
+        try {
+            ++_creatingPubSub;
+            
+            if (_publisherRelations != null && _publisherRelations.containsKey(name)) {
+                IOPort port = _publishedPorts.get(name);
+                if (port != null && port.getContainer() == null) {
+                    // The user deleted the port.
+                    port.setContainer(this);
+                    port.liberalLink(_publisherRelations.get(name));
+                }
+                
+                super.linkToPublishedPort(name, subscriberPort);
+            } else {
+                NamedObj container = getContainer();
+                if (!isOpaque() && container instanceof CompositeActor) {
+                    // Published ports are not propagated if this actor
+                    // is opaque.
+                    ((CompositeActor) container).linkToPublishedPort(name, subscriberPort);
+                } else {
+                    if (container != null) {
+                        IOPort stubPort;
+                        if (!(_subscriberPorts != null && _subscriberPorts.containsKey(name))) {
+                            stubPort = new TypedIOPort(this, uniqueName("subscriberStubPort"));
+                            stubPort.setMultiport(true);
+                            stubPort.setInput(true);
+                            stubPort.setPersistent(false);
+                            new Parameter(stubPort, "_hide", BooleanToken.TRUE);
+                            
+                            if (_subscriberPorts == null) {
+                                _subscriberPorts = new HashMap<String, IOPort>();
+                            }
+                            _subscriberPorts.put(name, stubPort);
+                            
+                            IORelation relation = new TypedIORelation((CompositeEntity) this, this
+                                    .uniqueName("subscriberRelation"));
+                    
+                            // Prevent the relation and its links from being exported.
+                            relation.setPersistent(false);
+                            
+                            if (_subscriberRelations == null) {
+                                _subscriberRelations = new HashMap<String, IORelation>();
+                            }
+        
+                            _subscriberRelations.put(name, relation);
+        
+                            // Prevent the relation from showing up in vergil.
+                            new Parameter(relation, "_hide", BooleanToken.TRUE);
+                            stubPort.liberalLink(relation);                        
+                            subscriberPort.liberalLink(relation);
+        
+                            Director director = getDirector();
+                            if (director != null) {
+                                director.invalidateSchedule();
+                                director.invalidateResolvedTypes();
+                            }
+                        } else {
+                            stubPort = _subscriberPorts.get(name);
+                            if (stubPort.getContainer() == null) {
+                                // The user deleted the port.
+                                stubPort.setContainer(this);
+                                stubPort.liberalLink(_subscriberRelations.get(name));
+                            }
+                        }
+                        if (container instanceof CompositeActor) {
+                            ((CompositeActor) container).linkToPublishedPort(name, stubPort);
+                        }
+                    }
+                }
+            }
+        } finally {
+            --_creatingPubSub;
+        }
+    }
+
     /** Create a new relation with the specified name, add it to the
      *  relation list, and return it. Derived classes can override
      *  this to create domain-specific subclasses of ComponentRelation.
@@ -521,13 +678,245 @@ public class ModularCodeGenTypedCompositeActor extends LazyTypedCompositeActor {
         try {
             _setRecompileFlag();
         } catch (IllegalActionException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            throw new IllegalStateException(e);
         }
         return super.newRelation(name);
     }
-    
 
+    /** Create receivers and invoke the
+     *  preinitialize() method of the local director. If this actor is
+     *  not opaque, throw an exception.  This method also resets
+     *  the protected variable _stopRequested
+     *  to false, so if a derived class overrides this method, then it
+     *  should also do that.  This method is
+     *  read-synchronized on the workspace, so the preinitialize()
+     *  method of the director need not be, assuming it is only called
+     *  from here.
+     *
+     *  @exception IllegalActionException If there is no director, or if
+     *   the director's preinitialize() method throws it, or if this actor
+     *   is not opaque.
+     */
+    public void preinitialize() throws IllegalActionException {
+        Profile profile = _getProfile();
+        if (!_USE_PROFILE || profile == null || _modelChanged()) {
+            super.preinitialize();
+        } else {
+            // Read back the widths, types, rates, ...
+            if (!_addedSubscribersFromProfile) {
+                _addedSubscribersFromProfile = true;
+                if (profile != null) {
+                    List ports = new LinkedList(super.portList());
+                    HashSet<String> portSet = new HashSet<String>();
+                    for (Object port : ports) {
+                        portSet.add(((NamedObj) port).getName());
+                    }
+                    try {
+                        for (Profile.Port port : profile.ports()) {
+                            if (port.subscriber() && !portSet.contains(port.name())) {
+                                IOPort newPort = new TypedIOPort(this, port.name());
+                                new Parameter(newPort, "_hide", BooleanToken.TRUE);
+                                newPort.setInput(port.input());
+                                newPort.setOutput(port.output());
+                                NamedObj container = getContainer();
+                                if (container instanceof CompositeActor) {
+                                    ((CompositeActor) container).linkToPublishedPort(port.getPubSubChannelName(), newPort);
+                                }
+                            }
+                        }
+                    } catch (NameDuplicationException e) {
+                        throw new IllegalActionException(this, e, "Can't preinitialize.");
+                    }
+
+                }                
+            }
+
+            // FIXME port.getTypeTerm().setValue(resolvedType);
+        }
+    }
+
+    /** Register a "published port" coming from a publisher. The name
+     *  is the name being used in the
+     *  matching process to match publisher and subscriber. A
+     *  subscriber interested in the output of this publisher uses
+     *  the same name. This registration process of publisher
+     *  typically happens before the model is preinitialized,
+     *  for example when opening the model. The subscribers
+     *  will look for publishers during the preinitialization phase.
+     *  @param name The name is being used in the matching process
+     *          to match publisher and subscriber.
+     *  @param port The published port. 
+     *  @exception NameDuplicationException If the published port
+     *          is already registered.
+     *  @exception IllegalActionException If the published port can't
+     *          be added.
+     */
+    public void registerPublisherPort(String name, IOPort port) throws NameDuplicationException, IllegalActionException {
+        try {
+            ++_creatingPubSub;
+            if (_subscriberPorts != null && _subscriberPorts.containsKey(name)) {
+                // The model was run with a subscriber without a publisher. This resulted
+                // in a number of stub subscriber ports. These should be cleaned up since
+                // we now have a publisher.
+                this.unlinkToPublishedPort(name, _subscriberPorts.get(name));
+            }
+            
+            if (_publishedPorts != null && _publishedPorts.containsKey(name)) {
+                throw new NameDuplicationException(this, port,
+                        "There is already a published port with name " + name);
+            }
+
+            NamedObj container = getContainer();
+            if (container != null) {
+                IOPort stubPort = new TypedIOPort(this, uniqueName("publisherStubPort"));
+                stubPort.setMultiport(true);
+                stubPort.setOutput(true);
+                stubPort.setPersistent(false);
+                new Parameter(stubPort, "_hide", BooleanToken.TRUE);
+                
+                IORelation relation = new TypedIORelation((CompositeEntity) this,
+                        uniqueName("publisherRelation"));
+        
+                // Prevent the relation and its links from being exported.
+                relation.setPersistent(false);
+                // Prevent the relation from showing up in vergil.
+                new Parameter(relation, "_hide", BooleanToken.TRUE);
+                stubPort.liberalLink(relation);
+                port.liberalLink(relation);
+                if (_publisherRelations == null) {
+                    _publisherRelations = new HashMap<String, IORelation>();
+                }
+                _publisherRelations.put(name, relation);
+                if (_publishedPorts == null) {
+                    _publishedPorts = new HashMap<String, IOPort>();
+                }
+                _publishedPorts.put(name, stubPort);
+                
+                if (container instanceof CompositeActor) {
+                    ((CompositeActor) container).registerPublisherPort(name, stubPort);
+                }
+            }
+        } finally {
+            --_creatingPubSub;
+        }
+    }
+
+    /** Unlink the subscriberPort with a already registered "published port" coming
+     *  from a publisher. The name is the name being used in the
+     *  matching process to match publisher and subscriber. A
+     *  subscriber interested in the output of this publisher uses
+     *  the  name. This registration process of publisher
+     *  typically happens before the model is preinitialized,
+     *  for example when opening the model. The subscribers
+     *  will look for publishers during the preinitialization phase.
+     *  @param name The name is being used in the matching process
+     *          to match publisher and subscriber.
+     *  @param subscriberPort The subscribed port. 
+     *  @exception NameDuplicationException If there are name conflicts
+     *          as a result of the added relations or ports. 
+     *  @exception IllegalActionException If the published port cannot be found.
+     */
+    public void unlinkToPublishedPort(String name, IOPort subscriberPort) throws IllegalActionException {
+        try {
+            ++_creatingPubSub;
+            if (_subscriberRelations != null) {
+                IORelation relation = _subscriberRelations.get(name);
+                if (relation != null) {
+                    relation.setContainer(null);
+                    _subscriberRelations.remove(name);
+                }
+            }
+            if (_subscriberPorts != null) {
+                IOPort port = _subscriberPorts.get(name);
+                if (port != null) {
+                    port.setContainer(null);
+                    NamedObj container = getContainer();
+                    if (container instanceof CompositeActor) {
+                        ((CompositeActor) container).unlinkToPublishedPort(name, port);
+                    }
+                    _subscriberPorts.remove(name);
+                }
+            }
+            Director director = getDirector();
+            if (director != null) {
+                director.invalidateSchedule();
+                director.invalidateResolvedTypes();
+            }
+    
+            if (_publisherRelations != null && _publisherRelations.containsKey(name)) {
+                super.unlinkToPublishedPort(name, subscriberPort);
+            } else {
+                NamedObj container = getContainer();
+                if (!isOpaque() && container instanceof CompositeActor) {
+                    // Published ports are not propagated if this actor
+                    // is opaque.
+                    ((CompositeActor) container).unlinkToPublishedPort(name, subscriberPort);
+                }
+            }
+        } catch (NameDuplicationException e) {
+            throw new IllegalActionException(this, e, "Can't unlink the container");
+        } finally {
+            --_creatingPubSub;
+        }
+    }
+
+    /** Unregister a "published port" coming
+     *  from a publisher. The name is the name being used in the
+     *  matching process to match publisher and subscriber. A
+     *  subscriber interested in the output of this publisher uses
+     *  the same name. This registration process of publisher
+     *  typically happens before the model is preinitialized,
+     *  for example when opening the model. The subscribers
+     *  will look for publishers during the preinitialization phase.
+     *  @param name The name is being used in the matching process
+     *          to match publisher and subscriber. This will be the port
+     *          that should be removed
+     */
+    public void unregisterPublisherPort(String name) {
+        try {
+            ++_creatingPubSub;
+            NamedObj container = getContainer();
+            if (container != null) {
+                if (_publishedPorts != null) {                
+                    try {
+                        _publishedPorts.get(name).setContainer(null); // Remove stubPort
+                    } catch (IllegalActionException e) {
+                        // Should not happen.
+                        throw new IllegalStateException(e);
+                    } catch (NameDuplicationException e) {
+                        // Should not happen.
+                        throw new IllegalStateException(e);
+                    }
+                }
+                super.unregisterPublisherPort(name);
+                if (container instanceof CompositeActor) {
+                    ((CompositeActor) container).unregisterPublisherPort(name);
+                }
+            }
+        } finally {
+            --_creatingPubSub;
+        }
+    }
+
+    /** Invoke the wrapup() method of all the actors contained in the
+     *  director's container.   In this base class wrapup() is called on the
+     *  associated actors in the order of their creation.  If the container
+     *  is not an instance of CompositeActor, then this method does nothing.
+     *  <p>
+     *  This method should be invoked once per execution.  None of the other
+     *  action methods should be invoked after it in the execution.
+     *  This method is <i>not</i> synchronized on the workspace, so the
+     *  caller should be.
+     *
+     *  @exception IllegalActionException If the wrapup() method of
+     *   one of the associated actors throws it.
+     */
+    public void wrapup() throws IllegalActionException {
+        if (_fireMethod == null) {
+            super.wrapup();
+        }
+    }
+    
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
@@ -592,8 +981,7 @@ public class ModularCodeGenTypedCompositeActor extends LazyTypedCompositeActor {
         try {
             _setRecompileFlag();
         } catch (IllegalActionException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            throw new IllegalStateException(e);
         }
         super._removeEntity(entity);
     }
@@ -613,13 +1001,24 @@ public class ModularCodeGenTypedCompositeActor extends LazyTypedCompositeActor {
         try {
             _setRecompileFlag();
         } catch (IllegalActionException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            throw new IllegalStateException(e);
         }
         super._removeRelation(relation);
     }
 
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                 ////
+
+
+    private void _createCodeGenerator() throws IllegalActionException, NameDuplicationException {
+        if (_codeGenerator == null) {
+            _codeGenerator = new ModularCodeGenerator(this, "ModularCodeGenerator");
+            _codeGenerator.setPersistent(false);
+            new Parameter(_codeGenerator, "_hide", BooleanToken.TRUE);
+        }
+    }
+    
     private void _init() {
         // By default, when exporting MoML, the class name is whatever
         // the Java class is, which in this case is ModularCodeGenTypedCompositeActor.
@@ -642,25 +1041,85 @@ public class ModularCodeGenTypedCompositeActor extends LazyTypedCompositeActor {
         }
     }
 
-    private void _createCodeGenerator() throws IllegalActionException, NameDuplicationException {
-        if (_codeGenerator == null) {
-            _codeGenerator = new ModularCodeGenerator(this, "ModularCodeGenerator");
-            _codeGenerator.setPersistent(false);
-            // TODO hide
-        }
+    private boolean _isSubscribedPort(IOPort port) {
+        // FIXME: this method might be slow
+        return _subscriberPorts != null && _subscriberPorts.containsValue(port);
     }
+
+    private boolean _isPublishedPort(IOPort port) {
+     // FIXME: this method might be slow
+        return _publishedPorts != null && _publishedPorts.containsValue(port);        
+    }
+    
+    private void _generateCode() throws KernelException {
+        _createCodeGenerator();
+        _codeGenerator.createProfile();
+        _codeGenerator.generateCode();
+    }
+
+    private Profile _getProfile() {
+        try{
+        if (_profile != null || _modelChanged()) {
+            // if _modelChanged => _profile == null
+            return _profile;
+        } else {
+            String className = NamedProgramCodeGeneratorAdapter.generateName(this) + "_profile";        
+            Class<?> classInstance = null;
+
+            NamedObj toplevel = toplevel();
+            FileParameter path = new FileParameter(toplevel, toplevel.uniqueName("dummyParam"));
+            path.setExpression("$HOME/cg/");
+            URL url = path.asFile().toURI().toURL();
+            path.setContainer(null); //Remove the parameter again.
+            URL[] urls = new URL[] { url };
+
+            ClassLoader classLoader = new URLClassLoader(urls);
+            classInstance = classLoader.loadClass(className);
+            _profile = (Profile) (classInstance.newInstance());
+        }
+        } catch (Exception e) {
+            try {
+                if (_USE_PROFILE) {
+                    _setRecompileFlag();
+                }
+                _profile = null;
+            } catch (IllegalActionException e1) {
+                throw new IllegalStateException(e1);
+            }
+        }
+        return _profile;
+    }
+
     
     private boolean _modelChanged() throws IllegalActionException {
         return ((BooleanToken) recompileThisLevel.getToken()).booleanValue() ||
                 ((BooleanToken) recompileHierarchy.getToken()).booleanValue();
     }
     
-    /**
-     * @throws IllegalActionException
-     */
+
+    private String _pubSubChannelName(IOPort port, boolean publisher, boolean subscriber) {
+     // FIXME: this method might be slow
+        if (subscriber) {
+            for (Map.Entry<String, IOPort> element : _subscriberPorts.entrySet()) {
+                if (element.getValue() == port) {
+                    return element.getKey();
+                }
+            }
+        } else if (publisher) {
+            for (Map.Entry<String, IOPort> element : _publishedPorts.entrySet()) {
+                if (element.getValue() == port) {
+                    return element.getKey();
+                }
+            }                
+        }
+        return "";
+    }
+    
     private void _setRecompileFlag() throws IllegalActionException {
-        if (_configureDone && !_populating && !_generatingCode) { //TODO rodiers: This test is not enough.
+        if (_configureDone && !_populating && !_generatingCode
+                && _creatingPubSub == 0) {
             recompileThisLevel.setToken(new BooleanToken(true));
+            _profile = null;
         }
     }
     
@@ -749,24 +1208,17 @@ public class ModularCodeGenTypedCompositeActor extends LazyTypedCompositeActor {
                         port.send(i, token);
                         
                     } catch (SecurityException e) {
-                        // TODO Auto-generated catch block
-                        e.printStackTrace();
+                        throw new IllegalActionException(this, e, "Can't generate transfer code.");
                     } catch (NoSuchMethodException e) {
-                        // TODO Auto-generated catch block
-                        e.printStackTrace();
+                        throw new IllegalActionException(this, e, "Can't generate transfer code.");
                     } catch (IllegalArgumentException e) {
-                        // TODO Auto-generated catch block
-                        e.printStackTrace();
+                        throw new IllegalActionException(this, e, "Can't generate transfer code.");
                     } catch (IllegalAccessException e) {
-                        // TODO Auto-generated catch block
-                        e.printStackTrace();
+                        throw new IllegalActionException(this, e, "Can't generate transfer code.");
                     } catch (InvocationTargetException e) {
-                        // TODO Auto-generated catch block
-                        e.printStackTrace();
-                        
+                        throw new IllegalActionException(this, e, "Can't generate transfer code.");                        
                     } catch (NoSuchFieldException e) {
-                        // TODO Auto-generated catch block
-                        e.printStackTrace();
+                        throw new IllegalActionException(this, e, "Can't generate transfer code.");
                     } 
                 }
             }
@@ -775,6 +1227,13 @@ public class ModularCodeGenTypedCompositeActor extends LazyTypedCompositeActor {
         }
     }
     
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    
+    private boolean _addedSubscribersFromProfile = false;
+
     private boolean _generatingCode = false;
     
     private ModularCodeGenerator _codeGenerator = null;
@@ -782,5 +1241,15 @@ public class ModularCodeGenTypedCompositeActor extends LazyTypedCompositeActor {
     private transient Method _fireMethod;
     
     private Object _objectWrapper;
+    
+    private int _creatingPubSub = 0;
+    
+    private Profile _profile = null;
+    
+    private Map<String, IOPort> _subscriberPorts;
+    
+    private Map<String, IORelation> _subscriberRelations;
+    
+    static private boolean _USE_PROFILE = false;
     
 }
