@@ -30,55 +30,135 @@ package ptolemy.cg.kernel.generic.program.procedural.java.modular;
 
 import java.util.Date;
 import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
+import ptolemy.actor.IOPort;
 import ptolemy.actor.Manager;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.util.DFUtilities;
+import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
 import ptolemy.cg.kernel.generic.program.procedural.java.JavaCodeGenerator;
+import ptolemy.cg.lib.ModularCodeGenTypedCompositeActor;
+import ptolemy.cg.lib.Profile;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.util.StringBufferExec;
+import ptolemy.util.StringUtilities;
 
 //////////////////////////////////////////////////////////////////////////
 ////GenericCodeGenerator
 
-/** Class for modular code generator.
-*
-*  @author Dai Bui, Bert Rodiers
-*  @version $Id$
-*  @since Ptolemy II 8.0
-*  @Pt.ProposedRating red (rodiers)
-*  @Pt.AcceptedRating red (daib)
-*/
+/**
+ * Class for modular code generator.
+ * 
+ * @author Dai Bui, Bert Rodiers
+ * @version $Id$
+ * @since Ptolemy II 8.0
+ * @Pt.ProposedRating red (rodiers)
+ * @Pt.AcceptedRating red (daib)
+ */
 
 public class ModularCodeGenerator extends JavaCodeGenerator {
 
-    /** Create a new instance of the Modular java code generator.
-     *  @param container The container.
-     *  @param name The name of the Java code generator.
-     *  @exception IllegalActionException If the super class throws the
-     *   exception or error occurs when setting the file path.
-     *  @exception NameDuplicationException If the super class throws the
-     *   exception or an error occurs when setting the file path.
+    /**
+     * Create a new instance of the Modular java code generator.
+     * 
+     * @param container
+     *            The container.
+     * @param name
+     *            The name of the Java code generator.
+     * @exception IllegalActionException
+     *                If the super class throws the exception or error occurs
+     *                when setting the file path.
+     * @exception NameDuplicationException
+     *                If the super class throws the exception or an error occurs
+     *                when setting the file path.
      */
     public ModularCodeGenerator(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        
-        generatorPackageList.setExpression("generic.program.procedural.java.modular");
+
+        generatorPackageList
+                .setExpression("generic.program.procedural.java.modular");
     }
-    
-    ///////////////////////////////////////////////////////////////////
-    ////                     public methods                        ////
-    /** Generate code.  This is the main entry point.
-     *  @param code The code buffer into which to generate the code.
-     *  @return The return value of the last subprocess that was executed.
-     *  or -1 if no commands were executed.
-     *  @exception KernelException If a type conflict occurs or the model
-     *  is running.
+
+    // /////////////////////////////////////////////////////////////////
+    // // public methods ////
+
+    /**
+     * Create the profile for the model (at this level).
+     * 
+     * @exception IllegalActionException
+     *                when the profile can't be generated.
+     */
+    public void createProfile() throws IllegalActionException {
+        String modelName = NamedProgramCodeGeneratorAdapter
+                .generateName(_model);
+        String profileClassName = modelName + "_profile";
+
+        StringBuffer profileCode = new StringBuffer();
+        
+        profileCode.append("import java.util.List;" + _eol);
+        profileCode.append("import java.util.LinkedList;" + _eol);
+        profileCode.append("import ptolemy.cg.lib.Profile;" + _eol);
+
+        profileCode.append(_eol + "public class " + profileClassName + " extends Profile {"
+                + _eol);
+        profileCode.append(INDENT1
+                + "public " + profileClassName + "() { }" + _eol);
+        
+        profileCode.append(INDENT1
+                + "public List<Profile.Port> ports() {" + _eol);
+        profileCode.append(INDENT2 + "List<Profile.Port> ports = new LinkedList<Profile.Port>();" + _eol);
+        ModularCodeGenTypedCompositeActor model = (ModularCodeGenTypedCompositeActor) _model;
+        for (Object object : model.portList()) {
+            
+            IOPort port = (IOPort) object;
+            Profile.Port profilePort = model.convertProfilePort(port);
+            
+            profileCode.append(INDENT2
+                    + "ports.add(new Profile.Port(\"" + profilePort.name() + "\", " + profilePort.publisher() + ", "
+                    + profilePort.subscriber() + ", " + profilePort.width() + ", " + port.isInput() + ", " + port.isOutput() + ", \"" + profilePort.getPubSubChannelName() + "\"));" + _eol);
+        }
+        profileCode.append(INDENT2 + "return ports;" + _eol);
+        profileCode.append(INDENT1 + "}" + _eol);
+
+        profileCode.append("}" + _eol);
+
+        _writeCodeFileName(profileCode, profileClassName + ".java", true, true);
+        
+        List<String> commands = new LinkedList<String>();
+        commands.add("javac -classpath \".;"  + StringUtilities.getProperty("ptolemy.ptII.dir") + "\"" + profileClassName + ".java");
+
+        StringBufferExec executeCommands = new StringBufferExec(true);
+        executeCommands.setWorkingDirectory(codeDirectory.asFile());
+        executeCommands.setCommands(commands);
+        executeCommands.start();
+        
+        int lastSubprocessReturnCode = executeCommands
+        .getLastSubprocessReturnCode();
+        if (lastSubprocessReturnCode != 0) {
+            throw new IllegalActionException(this,
+                "Execution of subcommands failed, last process returned "
+                        + lastSubprocessReturnCode + ", which is not 0:\n"
+                        + executeCommands.buffer.toString());
+        }
+    }
+
+    /**
+     * Generate code. This is the main entry point.
+     * 
+     * @param code
+     *            The code buffer into which to generate the code.
+     * @return The return value of the last subprocess that was executed. or -1
+     *         if no commands were executed.
+     * @exception KernelException
+     *                If a type conflict occurs or the model is running.
      */
     public int generateCode(StringBuffer code) throws KernelException {
 
@@ -100,8 +180,10 @@ public class ModularCodeGenerator extends JavaCodeGenerator {
                 toplevel.setManager(manager);
             }
 
-            //set director for transparent composite actors?
+            // set director for transparent composite actors?
             try {
+                // TODO: we should bypass preinitializeAndResolveTypes
+                // Otherwise we give up the lazyness of the model
                 manager.preinitializeAndResolveTypes();
                 returnValue = _generateCode(code);
             } finally {
@@ -127,10 +209,13 @@ public class ModularCodeGenerator extends JavaCodeGenerator {
         return returnValue;
     }
 
-    /** Generate the main entry point.
-     *  @return Return the definition of the main entry point for a program.
-     *   In C, this would be defining main().
-     *  @exception IllegalActionException Not thrown in this base class.
+    /**
+     * Generate the main entry point.
+     * 
+     * @return Return the definition of the main entry point for a program. In
+     *         C, this would be defining main().
+     * @exception IllegalActionException
+     *                Not thrown in this base class.
      */
     public String generateMainEntryCode() throws IllegalActionException {
 
@@ -155,7 +240,7 @@ public class ModularCodeGenerator extends JavaCodeGenerator {
             boolean addComma = false;
             while (inputPorts.hasNext()) {
                 TypedIOPort inputPort = (TypedIOPort) inputPorts.next();
-                
+
                 String type = codeGenType(inputPort.getType());
                 if (!type.equals("Token") && !isPrimitive(type)) {
                     type = "Token";
@@ -163,40 +248,42 @@ public class ModularCodeGenerator extends JavaCodeGenerator {
                 for (int i = 0; i < inputPort.getWidth(); i++) {
                     if (addComma) {
                         mainEntryCode.append(", ");
-                    }                    
+                    }
                     if (DFUtilities.getTokenConsumptionRate(inputPort) > 1) {
-                        mainEntryCode.append(type + "[] " + inputPort.getName() + "_" + i);
+                        mainEntryCode.append(type + "[] " + inputPort.getName()
+                                + "_" + i);
                     } else {
-                        mainEntryCode.append(type + " " + inputPort.getName() + "_" + i);
+                        mainEntryCode.append(type + " " + inputPort.getName()
+                                + "_" + i);
                     }
                     addComma = true;
                 }
             }
-/*
-            Iterator<?> outputPorts = ((Actor) getContainer()).outputPortList()
-            .iterator();
-            while (outputPorts.hasNext()) {
-                TypedIOPort outputPort = (TypedIOPort) outputPorts.next();
-                if (addComma) {
-                    mainEntryCode.append(", ");
-                }
-                
-                String type = codeGenType(outputPort.getType());
-                
-                if (!type.equals("Token") && !isPrimitive(type)) {
-                    type = "Token";
-                }
-                
-                for (int i = 0; i < outputPort.getWidth(); i++) {
-                    if (DFUtilities.getTokenConsumptionRate(outputPort) > 1) {
-                        mainEntryCode.append(type + "[] " + outputPort.getName() + "_" + i);
-                    } else {
-                        mainEntryCode.append(type + " " + outputPort.getName() + "_" + i);
-                    }
-                }
-                addComma = true;
-            }
-            */
+            /*
+                        Iterator<?> outputPorts = ((Actor) getContainer()).outputPortList()
+                        .iterator();
+                        while (outputPorts.hasNext()) {
+                            TypedIOPort outputPort = (TypedIOPort) outputPorts.next();
+                            if (addComma) {
+                                mainEntryCode.append(", ");
+                            }
+                            
+                            String type = codeGenType(outputPort.getType());
+                            
+                            if (!type.equals("Token") && !isPrimitive(type)) {
+                                type = "Token";
+                            }
+                            
+                            for (int i = 0; i < outputPort.getWidth(); i++) {
+                                if (DFUtilities.getTokenConsumptionRate(outputPort) > 1) {
+                                    mainEntryCode.append(type + "[] " + outputPort.getName() + "_" + i);
+                                } else {
+                                    mainEntryCode.append(type + " " + outputPort.getName() + "_" + i);
+                                }
+                            }
+                            addComma = true;
+                        }
+                        */
 
             mainEntryCode.append(") {" + _eol);
 
@@ -205,10 +292,12 @@ public class ModularCodeGenerator extends JavaCodeGenerator {
         return _processCode(mainEntryCode.toString());
     }
 
-
-    /** Generate the main exit point.
-     *  @return Return a string that declares the end of the main() function.
-     *  @exception IllegalActionException Not thrown in this base class.
+    /**
+     * Generate the main exit point.
+     * 
+     * @return Return a string that declares the end of the main() function.
+     * @exception IllegalActionException
+     *                Not thrown in this base class.
      */
     public String generateMainExitCode() throws IllegalActionException {
 
