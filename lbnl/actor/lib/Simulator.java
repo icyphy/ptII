@@ -264,7 +264,7 @@ public class Simulator extends SDFTransformer {
             //	    	   		Thread.sleep(1000); // in milliseconds
             server.write(0, tokTim, dblWri);
         } catch (java.io.IOException e) {
-            String em = "Error while writing to server: " + LS + e.getMessage();
+            String em = "Error while writing to client: " + LS + e.getMessage();
             throw new IllegalActionException(this, em);
         }
         // get tokens' time stamp. This time will be written to the 
@@ -309,27 +309,31 @@ public class Simulator extends SDFTransformer {
                 System.err.println("*** " + msg);
             }
         } catch (java.net.SocketTimeoutException e) {
-            String em = "SocketTimeoutException while reading from server in "
-                    + this.getFullName()
-                    + ": "
-                    + LS
-                    + e.getMessage()
-                    + "."
-                    + LS
-                    + "Try to increase the value of the parameter 'socketTimeout'.  It could be that the server \""
+            String em = "SocketTimeoutException while reading from client in "
+		+ this.getFullName()
+		+ ": "
+		+ LS
+		+ e.getMessage()
+		+ "."
+		+ LS
+		+ "Try to increase the value of the parameter 'socketTimeout'." + LS
+		+ "It could be that the client \""
                 + programName.getExpression() 
                 + "\" is not executing properly.  From the command line, "
-                + "try running \""
-                + programName.getExpression() 
-                + " 60\", you should see something like:\n"
-                + " Simulation model has time step       60\n"
-                + " Error: Failed to obtain socket file descriptor. sockfd=-1.\n"
+                + "try running:" + LS
+                + "  " + programName.getExpression() + " " 
+		+ programArguments.getExpression() + LS
+		+ "You should see something like:" + LS
+                + "  Simulation model has time step       60" + LS
+                + "  Error: Failed to obtain socket file descriptor. sockfd=-1." + LS
                 + "The error message is expected because Ptolemy is not "
-                + "present.\n"
-                + "Also, make sure that $PTII/lbnl/lib/util is in your"
-                + "PATH, LD_LIBRARY_PATH or DYLD_LIBRARY_PATH for Windows, "
-                + "Linux and Mac OS X respectively.  That directory "
-                + "contains the shared library used by the simulator.";
+                + "present." + LS
+                + "Also, make sure that the directory that contains" + LS 
+		+ "\"bcvtb.dll\" (on Windows), \"libbcvtb.so\" (on Linux) or" + LS
+		+ "\"libbcvtb.dylib\" (on Mac OS X) is on your"
+                + "PATH, LD_LIBRARY_PATH or DYLD_LIBRARY_PATH for Windows, " + LS
+                + "Linux and Mac OS X respectively." + LS
+                + "That directory contains the shared library used by the simulator.";
             try {
                 server.close();
             } catch (java.io.IOException e2) {
