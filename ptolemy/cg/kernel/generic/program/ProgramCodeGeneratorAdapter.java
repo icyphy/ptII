@@ -179,8 +179,6 @@ public class ProgramCodeGeneratorAdapter extends CodeGeneratorAdapter {
      *  have the proper end of line character for use by other native tools.
      */
     protected final static String _eol;
-    // FIXME rodiers: This is defined multiple times, in different root classes
-    //              Not really what we want.
 
     static {
         _eol = StringUtilities.getProperty("line.separator");
