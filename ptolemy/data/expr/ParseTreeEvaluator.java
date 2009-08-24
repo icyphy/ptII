@@ -43,6 +43,7 @@ import ptolemy.data.FunctionToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.MatrixToken;
 import ptolemy.data.ObjectToken;
+import ptolemy.data.OrderedRecordToken;
 import ptolemy.data.RecordToken;
 import ptolemy.data.ScalarToken;
 import ptolemy.data.StringToken;
@@ -976,7 +977,11 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
         String[] labels = (String[]) node.getFieldNames().toArray(
                 new String[numChildren]);
 
-        _evaluatedChildToken = (new RecordToken(labels, tokens));
+        if (node instanceof ASTPtOrderedRecordConstructNode) {
+            _evaluatedChildToken = (new OrderedRecordToken(labels, tokens));
+        } else {
+            _evaluatedChildToken = (new RecordToken(labels, tokens));
+        }
 
         if (node.isConstant()) {
             node.setToken(_evaluatedChildToken);

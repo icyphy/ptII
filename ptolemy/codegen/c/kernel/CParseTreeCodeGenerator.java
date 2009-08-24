@@ -42,6 +42,7 @@ import ptolemy.data.BooleanToken;
 import ptolemy.data.FunctionToken;
 import ptolemy.data.LongToken;
 import ptolemy.data.MatrixToken;
+import ptolemy.data.OrderedRecordToken;
 import ptolemy.data.RecordToken;
 import ptolemy.data.ScalarToken;
 import ptolemy.data.StringToken;
@@ -54,6 +55,7 @@ import ptolemy.data.expr.ASTPtLeafNode;
 import ptolemy.data.expr.ASTPtLogicalNode;
 import ptolemy.data.expr.ASTPtMatrixConstructNode;
 import ptolemy.data.expr.ASTPtMethodCallNode;
+import ptolemy.data.expr.ASTPtOrderedRecordConstructNode;
 import ptolemy.data.expr.ASTPtPowerNode;
 import ptolemy.data.expr.ASTPtProductNode;
 import ptolemy.data.expr.ASTPtRecordConstructNode;
@@ -1237,7 +1239,11 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
         String[] labels = (String[]) node.getFieldNames().toArray(
                 new String[numChildren]);
 
-        _evaluatedChildToken = (new RecordToken(labels, tokens));
+        if (node instanceof ASTPtOrderedRecordConstructNode) {
+            _evaluatedChildToken = (new OrderedRecordToken(labels, tokens));
+        } else {
+            _evaluatedChildToken = (new RecordToken(labels, tokens));
+        }
 
         //if (node.isConstant()) {
         //    node.setToken(_evaluatedChildToken);

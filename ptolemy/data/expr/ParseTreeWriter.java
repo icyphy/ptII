@@ -241,8 +241,12 @@ public class ParseTreeWriter extends AbstractParseTreeVisitor {
     public void visitRecordConstructNode(ASTPtRecordConstructNode node)
             throws IllegalActionException {
         Iterator names = node.getFieldNames().iterator();
-        _writer.print("{");
-
+        if (node instanceof ASTPtOrderedRecordConstructNode) {
+            _writer.print("[");
+        } else {
+        	_writer.print("{");
+        }
+        
         if (node.jjtGetNumChildren() > 0) {
             _writer.print(names.next());
             _writer.print("=");
@@ -256,7 +260,11 @@ public class ParseTreeWriter extends AbstractParseTreeVisitor {
             }
         }
 
-        _writer.print("}");
+        if (node instanceof ASTPtOrderedRecordConstructNode) {
+            _writer.print("]");
+        } else {
+        	_writer.print("}");
+        }
     }
 
     public void visitRelationalNode(ASTPtRelationalNode node)

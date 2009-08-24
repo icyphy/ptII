@@ -358,7 +358,7 @@ public class RecordToken extends AbstractNotConvertibleToken {
             values[i] = get(labels[i]).one();
         }
 
-        return new RecordToken(labels, values);
+        return _createRecordToken(labels, values);
     }
 
     /** Return the value of this token as a string.
@@ -424,7 +424,7 @@ public class RecordToken extends AbstractNotConvertibleToken {
             values[i] = get(labels[i]).zero();
         }
 
-        return new RecordToken(labels, values);
+        return _createRecordToken(labels, values);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -468,7 +468,7 @@ public class RecordToken extends AbstractNotConvertibleToken {
             i++;
         }
 
-        return new RecordToken(newLabels, newValues);
+        return _createRecordToken(newLabels, newValues);
     }
 
     /** Return a new token whose value is the field-wise division of
@@ -503,7 +503,7 @@ public class RecordToken extends AbstractNotConvertibleToken {
             i++;
         }
 
-        return new RecordToken(newLabels, newValues);
+        return _createRecordToken(newLabels, newValues);
     }
 
     /** Test whether the value of this token is close to the first
@@ -620,7 +620,7 @@ public class RecordToken extends AbstractNotConvertibleToken {
             i++;
         }
 
-        return new RecordToken(newLabels, newValues);
+        return _createRecordToken(newLabels, newValues);
     }
 
     /** Return a new token whose value is the field-wise
@@ -656,7 +656,7 @@ public class RecordToken extends AbstractNotConvertibleToken {
             i++;
         }
 
-        return new RecordToken(newLabels, newValues);
+        return _createRecordToken(newLabels, newValues);
     }
 
     /** Return a new token whose value is the field-wise subtraction
@@ -692,7 +692,7 @@ public class RecordToken extends AbstractNotConvertibleToken {
             i++;
         }
 
-        return new RecordToken(newLabels, newValues);
+        return _createRecordToken(newLabels, newValues);
     }
 
     /**
@@ -702,6 +702,17 @@ public class RecordToken extends AbstractNotConvertibleToken {
      */
     protected void _initializeStorage() {
         _fields = new TreeMap();
+    }
+    
+    /**
+     * Subclasses of RecordToken may return a different subclass instance
+     * @param labels
+     * @param values
+     * @return
+     * @throws IllegalActionException
+     */
+    protected RecordToken _createRecordToken(String[] labels, Token[] values) throws IllegalActionException {
+        return new RecordToken(labels, values);
     }
 
     ///////////////////////////////////////////////////////////////////

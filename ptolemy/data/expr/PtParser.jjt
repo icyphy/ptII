@@ -1217,12 +1217,15 @@ String tidied, x;
   |   LOOKAHEAD(<OPENPAREN>)
       <OPENPAREN> expression() <CLOSEPAREN>
 
+  |   LOOKAHEAD( <OPENBRACKET> <ID> <SETEQUALS> )
+      orderedRecordConstruct()
+      
   |   LOOKAHEAD(<OPENBRACKET>)
-      matrixConstruct()
-
+      matrixConstruct()      
+      
   |   LOOKAHEAD( <OPENBRACE> <ID> <SETEQUALS> )
       recordConstruct()
-  
+        
   |   LOOKAHEAD(<OPENUNION>)
       unionConstruct()
 
@@ -1365,6 +1368,16 @@ void recordConstruct() #PtRecordConstructNode :
     <OPENBRACE> x = <ID> {jjtThis._fieldNames.add(x.image);} <SETEQUALS> funcIf() 
         (<COMMA> x = <ID> {jjtThis._fieldNames.add(x.image);} <SETEQUALS> funcIf())*
     <CLOSEBRACE>
+}
+
+void orderedRecordConstruct() #PtOrderedRecordConstructNode :
+{
+  Token x = null;
+}
+{
+    <OPENBRACKET> x = <ID> {jjtThis._fieldNames.add(x.image);} <SETEQUALS> funcIf() 
+        (<COMMA> x = <ID> {jjtThis._fieldNames.add(x.image);} <SETEQUALS> funcIf())*
+    <CLOSEBRACKET>
 }
 
 void unionConstruct() #PtUnionConstructNode :

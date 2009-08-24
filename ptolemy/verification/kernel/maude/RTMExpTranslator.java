@@ -41,6 +41,7 @@ import ptolemy.data.expr.ASTPtLeafNode;
 import ptolemy.data.expr.ASTPtLogicalNode;
 import ptolemy.data.expr.ASTPtMatrixConstructNode;
 import ptolemy.data.expr.ASTPtMethodCallNode;
+import ptolemy.data.expr.ASTPtOrderedRecordConstructNode;
 import ptolemy.data.expr.ASTPtPowerNode;
 import ptolemy.data.expr.ASTPtProductNode;
 import ptolemy.data.expr.ASTPtRecordConstructNode;
@@ -266,7 +267,12 @@ public class RTMExpTranslator extends AbstractParseTreeVisitor {
     public void visitRecordConstructNode(ASTPtRecordConstructNode node)
             throws IllegalActionException {
         Iterator names = node.getFieldNames().iterator();
-        _writer.print("{");
+        if (node instanceof ASTPtOrderedRecordConstructNode) {
+            _writer.print("[");
+        } else {
+            _writer.print("{");
+        }
+        
         for (int i = 0; i < node.jjtGetNumChildren(); i++) {
             if (i > 0) {
                 _writer.print(", ");
@@ -276,7 +282,11 @@ public class RTMExpTranslator extends AbstractParseTreeVisitor {
             _printChild(node, i);
             _writer.print(")");
         }
-        _writer.print("}");
+        if (node instanceof ASTPtOrderedRecordConstructNode) {
+            _writer.print("]");
+        } else {
+            _writer.print("}");
+        }
     }
 
     protected PrintWriter _writer = new PrintWriter(System.out);
