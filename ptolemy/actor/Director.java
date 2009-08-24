@@ -245,6 +245,13 @@ public class Director extends Attribute implements Executable {
         super.attributeChanged(attribute);
     }
 
+    /** Create the schedule for this director, if necessary.
+     *  In this base class nothing is done.
+     *  @exception IllegalActionException If the schedule can't be created.
+     */
+    public void createSchedule() throws IllegalActionException {
+    }
+
     /** Return a default dependency to use between input input
      *  ports and output ports.
      *  Director subclasses may override this if
@@ -984,7 +991,7 @@ public class Director extends Attribute implements Executable {
                 actor.preinitialize();
             }
         }
-        _createReceivers();
+        //_createReceivers();
         if (_debugging) {
             _debug(getFullName(), "Finished preinitialize().");
         }
@@ -1604,14 +1611,14 @@ public class Director extends Attribute implements Executable {
      *  actor throws it when its receivers are created.
      *  @see Actor#createReceivers
      */
-    private void _createReceivers() throws IllegalActionException {
+/*    private void _createReceivers() throws IllegalActionException {
         Nameable container = getContainer();
         if (container instanceof CompositeActor) {
             for (Object actor : ((CompositeActor) container).deepEntityList()) {
                 ((Actor) actor).createReceivers();
             }
         }
-    }
+    }*/
 
     // Initialize parameters.
     private void _initializeParameters() {
@@ -1646,5 +1653,4 @@ public class Director extends Attribute implements Executable {
 
     /** Time resolution cache, with a reasonable default value. */
     private double _timeResolution = 1E-10;
-
 }
