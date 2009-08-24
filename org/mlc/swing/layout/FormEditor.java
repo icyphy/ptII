@@ -1087,12 +1087,12 @@ public class FormEditor extends JPanel {
             return nameField.getText();
         }
 
-        public String getComponentDeclaration() {
-            ComponentBuilder builder = (ComponentBuilder) typeCombo
-                    .getSelectedItem();
-            return builder
-                    .getDeclaration(getComponentName(), controlProperties);
-        }
+//        public String getComponentDeclaration() {
+//            ComponentBuilder builder = (ComponentBuilder) typeCombo
+//                    .getSelectedItem();
+//            return builder
+//                    .getDeclaration(getComponentName(), controlProperties);
+//        }
 
         public boolean isUsingLayoutComponent() {
             ComponentBuilder builder = (ComponentBuilder) typeCombo
@@ -1149,12 +1149,12 @@ public class FormEditor extends JPanel {
                         : controlProperties.get(property.getName());
             }
 
-            public Component getComponent() throws Exception {
-                ComponentBuilder builder = (ComponentBuilder) typeCombo
-                        .getSelectedItem();
-                Component instance = builder.getInstance(controlProperties);
-                return instance;
-            }
+//            public Component getComponent() throws Exception {
+//                ComponentBuilder builder = (ComponentBuilder) typeCombo
+//                        .getSelectedItem();
+//                Component instance = builder.getInstance(controlProperties);
+//                return instance;
+//            }
         }
     }
 

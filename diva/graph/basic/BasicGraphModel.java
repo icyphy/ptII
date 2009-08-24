@@ -253,7 +253,7 @@ public class BasicGraphModel extends BasicModularGraphModel {
         /**
          * The weight on this edge.
          */
-        private double _weight = 1.0;
+        //private double _weight = 1.0;
 
         /**
          * Create a new edge with the specified user object

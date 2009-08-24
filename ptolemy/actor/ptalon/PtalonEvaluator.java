@@ -28,8 +28,6 @@
  */
 package ptolemy.actor.ptalon;
 
-import java.io.IOException;
-import java.io.Writer;
 import java.net.URL;
 import java.util.Hashtable;
 import java.util.LinkedList;
@@ -1037,24 +1035,24 @@ public class PtalonEvaluator extends AbstractPtalonEvaluator {
             return _actorParameter;
         }
 
-        /** Get the first actor tree descendent of this actor tree
-         *  with the specified name. This should be unique, as each
-         *  subtree should have a unique name.
-         *
-         *  @param uniqueName Unique name of the actor tree to get.
-         *  @return The descendent, or null if there is none.
-         */
-        public ActorTree getActorTree(String uniqueName) {
-            if (_name.equals(uniqueName)) {
-                return this;
-            }
-            for (ActorTree child : _children) {
-                if (child.getActorTree(uniqueName) != null) {
-                    return child.getActorTree(uniqueName);
-                }
-            }
-            return null;
-        }
+//        /** Get the first actor tree descendent of this actor tree
+//         *  with the specified name. This should be unique, as each
+//         *  subtree should have a unique name.
+//         *
+//         *  @param uniqueName Unique name of the actor tree to get.
+//         *  @return The descendent, or null if there is none.
+//         */
+//        public ActorTree getActorTree(String uniqueName) {
+//            if (_name.equals(uniqueName)) {
+//                return this;
+//            }
+//            for (ActorTree child : _children) {
+//                if (child.getActorTree(uniqueName) != null) {
+//                    return child.getActorTree(uniqueName);
+//                }
+//            }
+//            return null;
+//        }
 
         /** Get an expression representing this actor tree, like
          *    a := b(c := d())(n := <2/>)
@@ -1655,29 +1653,29 @@ public class PtalonEvaluator extends AbstractPtalonEvaluator {
             _symbol = symbol;
         }
 
-        /** Write an xml version of this actor to the given output.
-         *
-         *  @param output The writer to which to send the output.
-         *  @param depth The depth of indents with which to start.
-         *  @exception IOException If there is a problem writing to
-         *  the output.
-         */
-        public void xmlSerialize(Writer output, int depth) throws IOException {
-            String text;
-            if (_actorParameter == null) {
-                text = _getIndentPrefix(depth) + "<actor_declaration name=\""
-                        + _name + "\" symbol=\"" + _symbol + "\">\n";
-            } else {
-                text = _getIndentPrefix(depth) + "<actor_declaration name=\""
-                        + _name + "\" actorParameter=\"" + _actorParameter
-                        + "\" symbol=\"" + _symbol + "\">\n";
-            }
-            output.write(text);
-            for (ActorTree child : _children) {
-                child.xmlSerialize(output, depth + 1);
-            }
-            output.write(_getIndentPrefix(depth) + "</actor_declaration>\n");
-        }
+//        /** Write an xml version of this actor to the given output.
+//         *
+//         *  @param output The writer to which to send the output.
+//         *  @param depth The depth of indents with which to start.
+//         *  @exception IOException If there is a problem writing to
+//         *  the output.
+//         */
+//        public void xmlSerialize(Writer output, int depth) throws IOException {
+//            String text;
+//            if (_actorParameter == null) {
+//                text = _getIndentPrefix(depth) + "<actor_declaration name=\""
+//                        + _name + "\" symbol=\"" + _symbol + "\">\n";
+//            } else {
+//                text = _getIndentPrefix(depth) + "<actor_declaration name=\""
+//                        + _name + "\" actorParameter=\"" + _actorParameter
+//                        + "\" symbol=\"" + _symbol + "\">\n";
+//            }
+//            output.write(text);
+//            for (ActorTree child : _children) {
+//                child.xmlSerialize(output, depth + 1);
+//            }
+//            output.write(_getIndentPrefix(depth) + "</actor_declaration>\n");
+//        }
 
         ///////////////////////////////////////////////////////////////////
         ////                        public members                    ////

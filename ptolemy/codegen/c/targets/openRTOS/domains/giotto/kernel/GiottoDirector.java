@@ -38,7 +38,6 @@ import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
-import ptolemy.actor.Receiver;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.codegen.kernel.CodeGeneratorHelper;
@@ -321,11 +320,11 @@ public class GiottoDirector extends
         }
         //}
 
-        int outerActorFrequency = 1;
+        //int outerActorFrequency = 1;
         if (!_isTopGiottoDirector()) {
             //code.append(_eol+"//not the top most Giotto director"+_eol);
             Actor myOuterActor = (TypedCompositeActor) _director.getContainer();
-            outerActorFrequency = _getFrequency(myOuterActor);
+            /*outerActorFrequency =*/ _getFrequency(myOuterActor);
             //code.append(_eol+"// I think I'm inside actor: "+_director.getContainer().getFullName()+" it has frequency"+outerActorFrequency+_eol);
         }
 
@@ -388,12 +387,12 @@ public class GiottoDirector extends
             _debug("generatePostFireCode from openRTOS giotto director called here");
         }
 
-        for (Actor actor : (List<Actor>) ((TypedCompositeActor) _director
-                .getContainer()).deepEntityList()) {
-
-            //for each of the actors generate postfire code
-            //code.append(generatePostFireCode(actor));
-        }
+//        for (Actor actor : (List<Actor>) ((TypedCompositeActor) _director
+//                .getContainer()).deepEntityList()) {
+//
+//            //for each of the actors generate postfire code
+//            //code.append(generatePostFireCode(actor));
+//        }
 
         return code.toString();
     }
@@ -433,12 +432,12 @@ public class GiottoDirector extends
         code.append(_generateBlockCode("preinitBlock"));
         HashSet<Integer> frequencies = _getAllFrequencies();
 
-        StringBuffer frequencyTCode = new StringBuffer();
+        //StringBuffer frequencyTCode = new StringBuffer();
 
         ArrayList args = new ArrayList();
         args.add("");
 
-        int currentPriorityLevel = 1;
+        //int currentPriorityLevel = 1;
         if (_isTopGiottoDirector()) {
             args.set(0, "$actorSymbol()_scheduler");
             code.append(_generateBlockCode("declareTaskHandle", args));
@@ -867,15 +866,15 @@ public class GiottoDirector extends
         return depth;
     }
 
-    private String _generateVariableDeclarations(Actor actor) {
-        // TODO Auto-generated method stub
-        StringBuffer code = new StringBuffer();
-        // input variables
-        // output variables
-
-        return code.toString();
-
-    }
+//    private String _generateVariableDeclarations(Actor actor) {
+//        // TODO Auto-generated method stub
+//        StringBuffer code = new StringBuffer();
+//        // input variables
+//        // output variables
+//
+//        return code.toString();
+//
+//    }
 
     protected String _generateBlockCode(String blockName, List args)
             throws IllegalActionException {
@@ -1333,8 +1332,8 @@ public class GiottoDirector extends
             String srcReference = "";
             String temp = "";
             StringBuffer transferIn = new StringBuffer();
-            StringBuffer transferOut = new StringBuffer();
-            String output = "";
+            //StringBuffer transferOut = new StringBuffer();
+            //String output = "";
             int i = 0; //sink index counter
             int j = 0; // src index counter
             CodeGeneratorHelper myHelper;
@@ -1346,7 +1345,7 @@ public class GiottoDirector extends
                 if (_debugging) {
                     _debug("this port's name is " + port.getFullName());
                 }
-                Receiver[][] channelArray = port.getReceivers();
+                //Receiver[][] channelArray = port.getReceivers();
                 // port.
                 List<IOPort> cip = port.sourcePortList();
                 if (cip.size() > 0) {
@@ -1366,7 +1365,7 @@ public class GiottoDirector extends
                     }
                 }
 
-                List<IOPort> connectedPorts = port.deepConnectedOutPortList();
+                //List<IOPort> connectedPorts = port.deepConnectedOutPortList();
                 List<IOPort> connectToMe = port.sourcePortList();//port.connectedPortList(); //connectedPortList();
                 if (_debugging) {
                     _debug("connectToMe size is " + connectToMe.size());
@@ -1493,7 +1492,7 @@ public class GiottoDirector extends
                 _debug(actorDriverCode);
             }
 
-            ArrayList args = new ArrayList();
+            //ArrayList args = new ArrayList();
             code.append("void " + _generateDriverName((NamedObj) actor));
             code.append("(){" + _eol);
             code.append(actorDriverCode + _eol);
@@ -1587,20 +1586,20 @@ public class GiottoDirector extends
         return code.toString();
     }
 
-    private void _generateTransferInputsCode(IOPort source, StringBuffer code)
-            throws IllegalActionException {
-        //super.generateTransferInputsCode(source, code);
-        code.append(_eol + "// Giotto _genereateTransferInputsCode " + _eol);
+//    private void _generateTransferInputsCode(IOPort source, StringBuffer code)
+//            throws IllegalActionException {
+//        //super.generateTransferInputsCode(source, code);
+//        code.append(_eol + "// Giotto _genereateTransferInputsCode " + _eol);
+//
+//    }
 
-    }
-
-    private void _generateTransferOutputsCode(IOPort source, StringBuffer code)
-            throws IllegalActionException {
-        //super.generateTransferOutputsCode(source, code);
-        code.append(_eol + "//Giotto _generateTransferOutputsCode called here"
-                + _eol);
-
-    }
+//    private void _generateTransferOutputsCode(IOPort source, StringBuffer code)
+//            throws IllegalActionException {
+//        //super.generateTransferOutputsCode(source, code);
+//        code.append(_eol + "//Giotto _generateTransferOutputsCode called here"
+//                + _eol);
+//
+//    }
 
     /**
      * This function simply overwrites the base class function
@@ -1774,17 +1773,17 @@ public class GiottoDirector extends
         return portFullName;
     }
 
-    /**
-     * Generate the thread function name for a given actor.
-     *
-     * @param actor
-     *            The given actor.
-     * @return A unique label for the actor thread function.
-     */
-    private String _getActorThreadLabel(Actor actor) {
-        return CodeGeneratorHelper.generateName((NamedObj) actor)
-                + "_ThreadFunction";
-    }
+//    /**
+//     * Generate the thread function name for a given actor.
+//     *
+//     * @param actor
+//     *            The given actor.
+//     * @return A unique label for the actor thread function.
+//     */
+//    private String _getActorThreadLabel(Actor actor) {
+//        return CodeGeneratorHelper.generateName((NamedObj) actor)
+//                + "_ThreadFunction";
+//    }
 
     /**
      * Determines the frequeny of the actor passed in as a parameter.
@@ -2006,7 +2005,7 @@ public class GiottoDirector extends
                 .getContainer()).deepEntityList()) {
             actorCount++;
             Attribute frequency = ((Entity) actor).getAttribute("frequency");
-            ptolemy.actor.Director dd = actor.getDirector();
+            //ptolemy.actor.Director dd = actor.getDirector();
             Attribute WCET = ((Entity) actor).getAttribute("WCET");
 
             if (actor instanceof CompositeActor) {
@@ -2020,8 +2019,8 @@ public class GiottoDirector extends
                         .getDirector());
                 System.out.println(dir.getFullName());
                 System.out.println(directorHelper._getWCET());
-                ptolemy.codegen.actor.Director df = new ptolemy.codegen.actor.Director(
-                        actor.getDirector());
+                //ptolemy.codegen.actor.Director df = new ptolemy.codegen.actor.Director(
+                //        actor.getDirector());
                 //if (dir == null)
                 if (dir == null) {
 

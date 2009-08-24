@@ -31,7 +31,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -703,7 +702,7 @@ public class PropertyConstraintSolver extends PropertySolver {
      *  accessing files or parameters.
      */
     private void _addChoices() throws IllegalActionException {
-        File file = null;
+        //File file = null;
 
         // Add all the subdirectories in lattice/ directory as
         // choices.  Directories named "CVS" and ".svn" are skipped.

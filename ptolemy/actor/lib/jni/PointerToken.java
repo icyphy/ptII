@@ -332,8 +332,6 @@ public class PointerToken extends Token {
 	// FIXME: it is difficult to detect if we are under a
 	// 64bit JVM.  See
 	// http://forums.sun.com/thread.jspa?threadID=5306174
-
-	boolean result = true;
 	if (dataModelProperty.indexOf("64") != -1) {
 	    return false;
 	} else {

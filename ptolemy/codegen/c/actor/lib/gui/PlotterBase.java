@@ -36,9 +36,9 @@ import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Set;
 
-import ptolemy.data.BooleanToken;
 import ptolemy.codegen.c.kernel.CCodeGeneratorHelper;
 import ptolemy.codegen.kernel.CodeStream;
+import ptolemy.data.BooleanToken;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.plot.Plot;
 import ptolemy.util.StringUtilities;

@@ -145,7 +145,6 @@ import ptolemy.moml.MoMLParser;
 import ptolemy.util.MessageHandler;
 import ptolemy.vergil.actor.ActorController;
 import ptolemy.vergil.actor.ActorEditorGraphController;
-import ptolemy.vergil.actor.ActorGraphFrame;
 import ptolemy.vergil.actor.ExternalIOPortController;
 import ptolemy.vergil.actor.IOPortController;
 import ptolemy.vergil.actor.LinkController;
@@ -585,9 +584,9 @@ public class TransformationEditor extends GTFrame implements ActionListener,
                         return;
                     }
 
-                    PatternObjectAttribute attribute;
+                    //PatternObjectAttribute attribute;
                     try {
-                        attribute = GTTools.getPatternObjectAttribute(
+                        /*attribute = */ GTTools.getPatternObjectAttribute(
                                 replacementObject, true);
                     } catch (KernelException e) {
                         throw new KernelRuntimeException(e, "Unable to "
