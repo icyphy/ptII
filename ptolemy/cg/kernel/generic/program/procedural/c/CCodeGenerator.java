@@ -892,23 +892,6 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         String directorFunctionDir = cCodegenPath
                 + "kernel/parameterized/directorFunctions/";
         _overloadedFunctions.parse(directorFunctionDir + "PNDirector.c");
-
-        /* FIXME rodiers: do target specific code differently
-
-        // ------------ Parse target-specific functions. --------------------
-        if (target.getExpression().equals("default")) {
-            return;
-        }
-
-        try {
-            String targetDir = cCodegenPath + "targets/" + target.getExpression() + "/";
-            directorFunctionDir = targetDir + "kernel/parameterized/directorFunctions/";
-            _overloadedFunctions.parse(directorFunctionDir + "PNDirector.c", true);
-        } catch (IllegalActionException ex) {
-            // Some API's may not have these files.
-        }
-        End FIXME rodiers
-        */
     }
 
     /** Execute the compile and run commands in the
@@ -922,8 +905,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
 
         List<String> commands = new LinkedList<String>();
         if (((BooleanToken) compile.getToken()).booleanValue()) {
-            commands.add("make -f " + _sanitizedModelName + ".mk "
-                    + compileTarget.stringValue());
+            commands.add("make -f " + _sanitizedModelName + ".mk ");
         }
 
         if (_isTopLevel()) {
@@ -1283,8 +1265,6 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         }
 
         // 2. If the target parameter is set, look for a makefile.
-
-        // FIXME rodiers: don't access generatorPackageList directly!
 
         // Look for generator specific make file
         templateList.add("ptolemy/cg/kernel/" + generatorDirectory
