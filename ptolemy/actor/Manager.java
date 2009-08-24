@@ -938,8 +938,10 @@ public class Manager extends NamedObj implements Runnable {
             // based on the parameter values.
             // EAL 5/31/02.
             _container.preinitialize();
-
+            _container.createReceivers();
+            _container.createSchedule();
             executeChangeRequests();
+            
 
             // Infer widths (if not already done)
             if (IORelation._USE_NEW_WIDTH_INFERENCE_ALGO) {
