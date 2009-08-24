@@ -831,10 +831,10 @@ public class NamedProgramCodeGeneratorAdapter extends ProgramCodeGeneratorAdapte
     }
 
     /**
-     * Get the corresponding type in C from the given Ptolemy type.
+     * Get the corresponding type in the target language
+     * from the given Ptolemy type.
      * @param ptType The given Ptolemy type.
-     * @return The C data type.
-     * FIXME rodiers: This is C specific
+     * @return The target language data type.
      */
     final public String targetType(Type ptType) {
         return getCodeGenerator().targetType(ptType);
