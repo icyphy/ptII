@@ -34,10 +34,12 @@
  */
 package ptolemy.actor;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import ptolemy.actor.parameters.ParameterPort;
@@ -46,6 +48,8 @@ import ptolemy.actor.util.CausalityInterface;
 import ptolemy.actor.util.CausalityInterfaceForComposites;
 import ptolemy.actor.util.Dependency;
 import ptolemy.actor.util.Time;
+import ptolemy.data.BooleanToken;
+import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.ComponentPort;
 import ptolemy.kernel.ComponentRelation;
@@ -112,7 +116,7 @@ import ptolemy.kernel.util.Workspace;
  may impose further constraints by overriding newPort(), _addPort(),
  newRelation(), _addRelation(), and _addEntity().
 
- @author Mudit Goel, Edward A. Lee, Lukito Muliadi, Steve Neuendorffer, Contributor: Daniel Crawl
+ @author Mudit Goel, Edward A. Lee, Lukito Muliadi, Steve Neuendorffer, Contributor: Daniel Crawl, Bert Rodiers
  @version $Id$
  @since Ptolemy II 0.2
  @Pt.ProposedRating Green (cxh)
@@ -478,6 +482,22 @@ public class CompositeActor extends CompositeEntity implements Actor,
                 workspace().doneTemporaryWriting();
             }
         }
+        for (Object actor : deepEntityList()) {
+            ((Actor) actor).createReceivers();
+        }
+
+    }
+
+    /** Create the schedule for this model, if necessary.
+     *  @exception IllegalActionException If the schedule can't be created.
+     */
+    public void createSchedule() throws IllegalActionException {
+        for (Object actor : deepEntityList()) {
+            if (actor instanceof CompositeActor) {
+                ((CompositeActor) actor).createSchedule();
+            }
+        }
+        getDirector().createSchedule();
     }
 
     /** Notify this actor that a {@link Director#fireAt(Actor,Time)}
@@ -933,6 +953,67 @@ public class CompositeActor extends CompositeEntity implements Actor,
         }
     }
 
+    /** Link the subscriberPort with a already registered "published port" coming
+     *  from a publisher. The name is the name being used in the
+     *  matching process to match publisher and subscriber. A
+     *  subscriber interested in the output of this publisher uses
+     *  the  name. This registration process of publisher
+     *  typically happens before the model is preinitialized,
+     *  for example when opening the model. The subscribers
+     *  will look for publishers during the preinitialization phase.
+     *  @param name The name is being used in the matching process
+     *          to match publisher and subscriber.
+     *  @param subscriberPort The subscribed port. 
+     *  @exception NameDuplicationException If there are name conflicts
+     *          as a result of the added relations or ports. 
+     *  @exception IllegalActionException If the published port cannot be found.
+     */
+    public void linkToPublishedPort(String name, IOPort subscriberPort) throws IllegalActionException, NameDuplicationException {
+        NamedObj container = getContainer();
+        if (!isOpaque() && container instanceof CompositeActor) {
+            // Published ports are not propagated if this actor
+            // is opaque.
+            ((CompositeActor) container).linkToPublishedPort(name, subscriberPort);
+        } else {
+            IORelation relation = _publisherRelations != null
+                ? _publisherRelations.get(name) : null;
+
+            if (relation == null) {
+                IOPort publishedPort = _publishedPorts.get(name);
+                if (publishedPort == null) {
+                    throw new IllegalActionException(this, "Can't find the publisher for " + name + ".");
+                }
+                try {
+                    relation = new TypedIORelation(this, this
+                                    .uniqueName("publisherRelation"));
+                } catch (NameDuplicationException e) {
+                    // Shouldn't happen.
+                    throw new IllegalStateException(e);
+                }
+        
+                // Prevent the relation and its links from being exported.
+                relation.setPersistent(false);
+                // Prevent the relation from showing up in vergil.
+                new Parameter(relation, "_hide", BooleanToken.TRUE);
+                publishedPort.liberalLink(relation);
+                if (_publisherRelations == null) {
+                    _publisherRelations = new HashMap<String, IORelation>();
+                }
+                _publisherRelations.put(name, relation);
+                
+            }
+            if (!subscriberPort.isLinked(relation)) {
+                subscriberPort.liberalLink(relation);
+          
+                Director director = getDirector();
+                if (director != null) {
+                    director.invalidateSchedule();
+                    director.invalidateResolvedTypes();
+                }
+            }
+        }
+    }
+
     /**
      *  Return whether the current widths of the relation in the model
      *  are no longer valid anymore and the widths need to be inferred again.
@@ -1262,7 +1343,7 @@ public class CompositeActor extends CompositeEntity implements Actor,
                                 + getFullName());
             }
 
-            createReceivers();
+            // createReceivers();
 
             // Note that this is assured of firing the local director,
             // not the executive director, because this is opaque.
@@ -1278,6 +1359,40 @@ public class CompositeActor extends CompositeEntity implements Actor,
      */
     public void recordFiring(FiringEvent.FiringEventType type) {
         _actorFiring(new FiringEvent(null, this, type));
+    }
+
+    /** Register a "published port" coming from a publisher. The name
+     *  is the name being used in the
+     *  matching process to match publisher and subscriber. A
+     *  subscriber interested in the output of this publisher uses
+     *  the same name. This registration process of publisher
+     *  typically happens before the model is preinitialized,
+     *  for example when opening the model. The subscribers
+     *  will look for publishers during the preinitialization phase.
+     *  @param name The name is being used in the matching process
+     *          to match publisher and subscriber.
+     *  @param port The published port. 
+     *  @exception NameDuplicationException If the published port
+     *          is already registered.
+     *  @exception IllegalActionException If the published port can't
+     *          be added.
+     */
+    public void registerPublisherPort(String name, IOPort port) throws NameDuplicationException, IllegalActionException {
+        if (_publishedPorts!= null && _publishedPorts.containsKey(name)) {
+            throw new NameDuplicationException(this, port,
+                    "There is already a published port with name " + name);
+        }
+        NamedObj container = getContainer();
+        if (!isOpaque() && container instanceof CompositeActor) {
+            // Published ports are not propagated if this actor
+            // is opaque.
+            ((CompositeActor) container).registerPublisherPort(name, port);
+        } else {
+            if (_publishedPorts == null) {
+                _publishedPorts = new HashMap<String, IOPort>();
+            }
+            _publishedPorts.put(name, port);            
+        }
     }
 
     /** Unregister an actor firing listener.  If the specified listener has not
@@ -1598,6 +1713,86 @@ public class CompositeActor extends CompositeEntity implements Actor,
         getDirector().terminate();
     }
 
+    /** Unlink the subscriberPort with a already registered "published port" coming
+     *  from a publisher. The name is the name being used in the
+     *  matching process to match publisher and subscriber. A
+     *  subscriber interested in the output of this publisher uses
+     *  the  name. This registration process of publisher
+     *  typically happens before the model is preinitialized,
+     *  for example when opening the model. The subscribers
+     *  will look for publishers during the preinitialization phase.
+     *  @param name The name is being used in the matching process
+     *          to match publisher and subscriber.
+     *  @param subscriberPort The subscribed port. 
+     *  @exception NameDuplicationException If there are name conflicts
+     *          as a result of the added relations or ports. 
+     *  @exception IllegalActionException If the published port cannot be found.
+     */
+    public void unlinkToPublishedPort(String name, IOPort subscriberPort) throws IllegalActionException {
+        NamedObj container = getContainer();
+        if (!isOpaque() && container instanceof CompositeActor) {
+            // Published ports are not propagated if this actor
+            // is opaque.
+            ((CompositeActor) container).unlinkToPublishedPort(name, subscriberPort);
+        } else {
+            // Remove the link to a previous relation, if necessary.
+               
+            IORelation relation = _publisherRelations != null
+                ? _publisherRelations.get(name) : null;
+
+            if (relation != null) {
+                subscriberPort.unlink(relation);                
+            }
+            
+            Director director = getDirector();
+            if (director != null) {
+                director.invalidateSchedule();
+                director.invalidateResolvedTypes();
+            }
+        }
+    }
+
+    /** Unregister a "published port" coming
+     *  from a publisher. The name is the name being used in the
+     *  matching process to match publisher and subscriber. A
+     *  subscriber interested in the output of this publisher uses
+     *  the same name. This registration process of publisher
+     *  typically happens before the model is preinitialized,
+     *  for example when opening the model. The subscribers
+     *  will look for publishers during the preinitialization phase.
+     *  @param name The name is being used in the matching process
+     *          to match publisher and subscriber. This will be the port
+     *          that should be removed
+     */
+    public void unregisterPublisherPort(String name) {
+        NamedObj container = getContainer();
+        if (!isOpaque() && container instanceof CompositeActor) {
+            // Published ports are not propagated if this actor
+            // is opaque.
+            ((CompositeActor) container).unregisterPublisherPort(name);
+        } else {
+            if (_publishedPorts != null) {
+                _publishedPorts.remove(name);
+            }
+            if (_publisherRelations != null) {
+                IORelation relation = _publisherRelations.get(name);
+                if (relation != null) {
+                    try {
+                        relation.setContainer(null);
+                    } catch (IllegalActionException e) {
+                        // Should not happen.
+                        throw new IllegalStateException(e);
+                    } catch (NameDuplicationException e) {
+                        // Should not happen.
+                        throw new IllegalStateException(e);
+                    }
+
+                    _publisherRelations.remove(name);
+                }
+            }
+        }
+    }
+
     /** If this actor is opaque, then invoke the wrapup() method of the local
      *  director. This method is read-synchronized on the workspace.
      *
@@ -1871,6 +2066,12 @@ public class CompositeActor extends CompositeEntity implements Actor,
 
     /** Flag that is true if there are actor firing listeners. */
     protected boolean _notifyingActorFiring = false;
+    
+    /** Keep track of all published ports accessable in this container.*/
+    protected Map<String, IOPort> _publishedPorts;
+ 
+    /** Keep track of all relations with published ports accessable in this container.*/
+    protected Map<String, IORelation> _publisherRelations;
 
     /** Indicator that a stop has been requested by a call to stop(). */
     protected boolean _stopRequested = false;
@@ -1916,5 +2117,4 @@ public class CompositeActor extends CompositeEntity implements Actor,
      * for the complete model.
      */
     private RelationWidthInference _relationWidthInference;
-
 }
