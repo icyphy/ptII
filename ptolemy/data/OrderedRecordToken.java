@@ -48,7 +48,7 @@ import ptolemy.kernel.util.IllegalActionException;
  (those with the same labels) will be added or subtracted,
  and the disjoint records will not appear in the result.
 
- This implementation maintains the order of the entries as they were added
+ <p>This implementation maintains the order of the entries as they were added.
 
  @author Ben Leinfelder
 @version $Id$

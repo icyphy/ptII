@@ -1,6 +1,6 @@
 /* ASTPtRecordConstructNode represents record construction in the parse tree.
 
- Copyright (c) 2000-2005 The Regents of the University of California.
+ Copyright (c) 2009 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -24,16 +24,13 @@
  PT_COPYRIGHT_VERSION_2
  COPYRIGHTENDKEY
 
-
- Created : December 2000
-
  */
 package ptolemy.data.expr;
 
 import ptolemy.kernel.util.IllegalActionException;
 
 //////////////////////////////////////////////////////////////////////////
-//// ASTPtRecordConstructNode
+//// ASTPtOrderedRecordConstructNode
 
 /**
  The parse tree created from the expression string consists of a
@@ -43,10 +40,10 @@ import ptolemy.kernel.util.IllegalActionException;
  a field <i>foo</i> containing a StringToken of value "abc", and a field
  <i>bar</i> containing a IntToken of value 1.
 
- @author Xiaojun Liu, Steve Neuendorffer
+ @author Ben Leinfelder, based on ASTPtRecordConstructNode by Xiaojun Liu, Steve Neuendorffer
  @version $Id$
  @since Ptolemy II 1.0
- @Pt.ProposedRating Yellow (liuxj)
+ @Pt.ProposedRating Red (liuxj)
  @Pt.AcceptedRating Red (cxh)
  @see ptolemy.data.expr.ASTPtRootNode
  @see ptolemy.data.expr.PtParser

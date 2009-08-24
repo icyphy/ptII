@@ -11,6 +11,7 @@
   <entity name="Commutator" class="ptolemy.actor.lib.Commutator"/>
   <entity name="Distributor" class="ptolemy.actor.lib.Distributor"/>
   <entity name="Multiplexor" class="ptolemy.actor.lib.Multiplexor"/>
+  <entity name="OrderedRecordAssembler" class="ptolemy.actor.lib.OrderedRecordAssembler"/>
   <entity name="RecordAssembler" class="ptolemy.actor.lib.RecordAssembler"/>
   <entity name="RecordDisassembler" class="ptolemy.actor.lib.RecordDisassembler"/>
   <entity name="RecordUpdater" class="ptolemy.actor.lib.RecordUpdater"/>

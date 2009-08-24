@@ -1,6 +1,6 @@
 /* An actor that assembles multiple inputs to an [Ordered]RecordToken.
 
- Copyright (c) 1998-2006 The Regents of the University of California.
+ Copyright (c) 2009 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -48,9 +48,9 @@ import ptolemy.kernel.util.NameDuplicationException;
 
  @author Ben Leinfelder
  @version $Id$
- @since Ptolemy II 1.0
- @Pt.ProposedRating Yellow (yuhong)
- @Pt.AcceptedRating Yellow (cxh)
+ @since Ptolemy II 8.0
+ @Pt.ProposedRating Red (cxh)
+ @Pt.AcceptedRating Red (cxh)
  @see RecordAssembler, RecordDisassembler
  */
 public class OrderedRecordAssembler extends RecordAssembler {
