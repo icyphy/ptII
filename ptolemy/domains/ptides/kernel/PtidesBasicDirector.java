@@ -170,6 +170,23 @@ public class PtidesBasicDirector extends DEDirector {
         return new Tag(_currentTime, _microstep);
     }
 
+    /** Return the model time of the enclosing director, which is our model
+     *  of physical time.
+     *  @return Physical time.
+     *  @throws IllegalActionException 
+     */
+    public Time getPhysicalTime() throws IllegalActionException {
+        Director director = this;
+        while (director instanceof PtidesBasicDirector) {
+            director = ((Actor)director.getContainer().getContainer()).getDirector();
+        }
+        if (!(director instanceof DEDirector)) {
+            throw new IllegalActionException(director, "The enclosing director of the Ptides " +
+                        "director is not a DE Director.");
+        }
+        return director.getModelTime();
+    }
+
     /** Advance the current model tag to that of the earliest event in
      *  the event queue, and fire all actors that have requested or
      *  are triggered to be fired at the current tag. If
@@ -1323,7 +1340,7 @@ public class PtidesBasicDirector extends DEDirector {
         // This means that this director cannot be used inside a director that
         // does a fixed point iteration, which includes (currently), Continuous
         // and CT and SR, but in the future may also include DE.
-        Time physicalTime = _getPhysicalTime();
+        Time physicalTime = getPhysicalTime();
         Actor container = (Actor) getContainer();
         Director executiveDirector = container.getExecutiveDirector();
 
@@ -1559,16 +1576,6 @@ public class PtidesBasicDirector extends DEDirector {
         }
     }
 
-    /** Return the model time of the enclosing director, which is our model
-     *  of physical time.
-     *  @return Physical time.
-     */
-    protected Time _getPhysicalTime() {
-        Actor container = (Actor) getContainer();
-        Director director = container.getExecutiveDirector();
-        return director.getModelTime();
-    }
-
     /** Returns the realTimeDelay parameter.
      *  @param port The port the realTimeDelay is associated with.
      *  @return realTimeDelay parameter
@@ -1663,7 +1670,7 @@ public class PtidesBasicDirector extends DEDirector {
         double minDelay = _getMinDelay(port, channel, event.isPureEvent());
         Time waitUntilPhysicalTime = event.timeStamp().subtract(
                 minDelay);
-        if (_getPhysicalTime().subtract(waitUntilPhysicalTime)
+        if (getPhysicalTime().subtract(waitUntilPhysicalTime)
                 .compareTo(_zero) >= 0) {
             return true;
         } else {
@@ -1845,7 +1852,7 @@ public class PtidesBasicDirector extends DEDirector {
         }
 
         boolean result = false;
-        Time physicalTime = _getPhysicalTime();
+        Time physicalTime = getPhysicalTime();
         // First transfer all tokens that are already in the event queue for the sensor.
         // FIXME: notice this is done NOT for the specific port
         // in question. Instead, we do it for ALL events that can be transferred out of
@@ -2002,7 +2009,7 @@ public class PtidesBasicDirector extends DEDirector {
 
         // first check for current time, and transfer any tokens that are already ready to output.
         boolean result = false;
-        Time physicalTime = _getPhysicalTime();
+        Time physicalTime = getPhysicalTime();
         int compare = 0;
         // FIXME: notice this is done NOT for the specific port
         // in question. Instead, we do it for ALL events that can be transferred out of

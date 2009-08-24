@@ -348,7 +348,7 @@ public class PtidesPreemptiveEDFDirector extends PtidesBasicDirector {
             if (_debugging) {
                 _debug("We decided not to do preemption in this round, "
                         + "but to keep executing " + executingEvent.actor()
-                        + " at physical time " + _getPhysicalTime());
+                        + " at physical time " + getPhysicalTime());
             }
             return false;
         } else {
@@ -359,7 +359,7 @@ public class PtidesPreemptiveEDFDirector extends PtidesBasicDirector {
                         + " with another event at actor: "
                         + _eventToProcess.actor()
                         + ". This preemption happened at physical time "
-                        + _getPhysicalTime());
+                        + getPhysicalTime());
             }
 
             return true;
@@ -394,7 +394,7 @@ public class PtidesPreemptiveEDFDirector extends PtidesBasicDirector {
         double minDelay = _getMinDelay(port, ((PtidesEvent) event).channel(), event.isPureEvent());
         Time waitUntilPhysicalTime = event.timeStamp().subtract(
                 minDelay);
-        if (_getPhysicalTime().subtract(waitUntilPhysicalTime)
+        if (getPhysicalTime().subtract(waitUntilPhysicalTime)
                 .compareTo(_zero) >= 0) {
             return true;
         } else {

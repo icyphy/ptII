@@ -103,7 +103,7 @@ public class PtidesBasicPreemptiveEDFDirector extends PtidesBasicDirector {
                     + " with another event at actor: "
                     + event.actor()
                     + ". This preemption happened at physical time "
-                    + _getPhysicalTime());
+                    + getPhysicalTime());
         }
         return true;
     }
