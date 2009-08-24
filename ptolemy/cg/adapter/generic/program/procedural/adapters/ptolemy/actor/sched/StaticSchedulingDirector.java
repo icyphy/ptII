@@ -952,34 +952,7 @@ public class StaticSchedulingDirector extends Director {
          */
         public String generateOffset(String offset, int channel, boolean isWrite)
                 throws IllegalActionException {
-
-            //Receiver receiver = _getReceiver(offset, channel, _port);
-
-            // FIXME rodiers: reintroduce PN! (but somewhere else)
-            if (false) {
-                /*
-                if (_isPthread() && receiver instanceof PNQueueReceiver) {
-                    String result;
-                    if (offset.length() == 0 || offset.equals("0")) {
-                        result = (isWrite) ?
-                                "$getWriteOffset(" : "$getReadOffset(";
-                    } else {
-                        result = (isWrite) ?
-                                "$getAdvancedWriteOffset(" : "$getAdvancedReadOffset(";
-                        result += offset + ", ";
-                    }
-
-                    // FIXME: why does this depend on PN?
-                    PNDirector pnDirector = (PNDirector) _getAdapter(director);
-                    result += "&" + PNDirector.generatePortHeader(port, channel) + ", ";
-                    result += "&" + pnDirector.generateDirectorHeader() + ")";
-                    return "[" + result + "]";
-                    */
-                return "";
-                // End FIXME rodiers
-            } else {
                 return _generateOffset(offset, channel, isWrite);
-            }
         }
 
         /** Get the read offset of a channel of the port.
@@ -1113,54 +1086,38 @@ public class StaticSchedulingDirector extends Director {
                     Object offsetObject = _ports.getWriteOffset(sinkPort,
                             sinkChannelNumber);
 
-                    //Receiver receiver = _getReceiver(
-                    //        offsetObject.toString(), sinkChannelNumber, sinkPort);
+                    if (offsetObject instanceof Integer) {
+                        int offset = ((Integer) offsetObject).intValue();
+                        int bufferSize = _ports.getBufferSize(sinkPort,
+                                sinkChannelNumber);
+                        if (bufferSize != 0) {
+                            offset = (offset + rate) % bufferSize;
+                        }
+                        _ports.setWriteOffset(sinkPort, sinkChannelNumber,
+                                Integer.valueOf(offset));
+                    } else { // If offset is a variable.
+                        String offsetVariable = (String) _ports
+                                .getWriteOffset(sinkPort, sinkChannelNumber);
 
-                    // FIXME rodiers: reintroduce PN specifics (but somewhere else)
-                    if (false) {
-                        /*if (_isPthread() && MpiPNDirector.isMpiReceiveBuffer(sinkPort, sinkChannelNumber)) {
-                            code.append(_generateMPISendCode(j, rate, sinkPort, sinkChannelNumber, director));
+                        if (padBuffers) {
+                            int modulo = _ports.getBufferSize(sinkPort,
+                                    sinkChannelNumber) - 1;
+                            code.append(offsetVariable + " = ("
+                                    + offsetVariable + " + " + rate + ")&"
+                                    + modulo + ";" + _eol);
+                        } else {
+                            code
+                                    .append(offsetVariable
+                                            + " = ("
+                                            + offsetVariable
+                                            + " + "
+                                            + rate
+                                            + ") % "
+                                            + _ports.getBufferSize(
+                                                    sinkPort,
+                                                    sinkChannelNumber)
+                                            + ";" + _eol);
 
-                        } else if (_isPthread() && receiver instanceof PNQueueReceiver) {
-
-                            // PNReceiver.
-                            code.append(_updatePNOffset(rate, sinkPort, sinkChannelNumber, director, true));
-                            */
-                        // End FIXME rodiers
-                    } else {
-
-                        if (offsetObject instanceof Integer) {
-                            int offset = ((Integer) offsetObject).intValue();
-                            int bufferSize = _ports.getBufferSize(sinkPort,
-                                    sinkChannelNumber);
-                            if (bufferSize != 0) {
-                                offset = (offset + rate) % bufferSize;
-                            }
-                            _ports.setWriteOffset(sinkPort, sinkChannelNumber,
-                                    Integer.valueOf(offset));
-                        } else { // If offset is a variable.
-                            String offsetVariable = (String) _ports
-                                    .getWriteOffset(sinkPort, sinkChannelNumber);
-
-                            if (padBuffers) {
-                                int modulo = _ports.getBufferSize(sinkPort,
-                                        sinkChannelNumber) - 1;
-                                code.append(offsetVariable + " = ("
-                                        + offsetVariable + " + " + rate + ")&"
-                                        + modulo + ";" + _eol);
-                            } else {
-                                code
-                                        .append(offsetVariable
-                                                + " = ("
-                                                + offsetVariable
-                                                + " + "
-                                                + rate
-                                                + ") % "
-                                                + _ports.getBufferSize(
-                                                        sinkPort,
-                                                        sinkChannelNumber)
-                                                + ";" + _eol);
-                            }
                         }
                     }
                 }
@@ -1189,43 +1146,14 @@ public class StaticSchedulingDirector extends Director {
                             + NamedProgramCodeGeneratorAdapter
                                     .generateName(_port));
 
-            //        int width = 0;
-            //        if (port.isInput()) {
-            //            width = port.getWidth();
-            //        } else {
-            //            width = port.getWidthInside();
-            //        }
-
             for (int i = 0; i < _port.getWidth(); i++) {
-                // FIXME rodiers: reintroduce PN specifics (but somewhere else)
-                if (false) {
-                    /*
-                    if (MpiPNDirector.isMpiReceiveBuffer(port, i)) {
-                        // do nothing.
-                    } else if (_isPthread() && receiver instanceof PNQueueReceiver) {
-
-                        // FIXME: this is kind of hacky.
-                        //PNDirector pnDirector = (PNDirector)//directorAdapter;
-                        _getAdapter(((Actor) port.getContainer()).getExecutiveDirector());
-
-                        List<Channel> channels = PNDirector.getReferenceChannels(port, i);
-
-                        for (Channel channel : channels) {
-                            code += _updatePNOffset(rate, channel.port,
-                                    channel.channelNumber, directorAdapter, false);
-                        }
-                        code += getCodeGenerator().comment(_eol + "....End updateOffset (PN)...."
-                                                           + ProgramCodeGeneratorAdapterStrategy.generateName(port));
-                    */
-                    // End FIXME rodiers
-                } else {
-                    code += _updateOffset(i, rate);
-                    code += getCodeGenerator().comment(
-                            _eol
-                                    + "\n....End updateOffset...."
-                                    + NamedProgramCodeGeneratorAdapter
-                                            .generateName(_port));
-                }
+          
+                code += _updateOffset(i, rate);
+                code += getCodeGenerator().comment(
+                        _eol
+                                + "\n....End updateOffset...."
+                                + NamedProgramCodeGeneratorAdapter
+                                        .generateName(_port));
             }
             return code;
         }
