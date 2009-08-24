@@ -325,6 +325,42 @@ public class SDFDirector extends StaticSchedulingDirector implements PeriodicDir
         super.attributeChanged(attribute);
     }
 
+    /**  Create the SDF schedule for this director.
+      */
+    public void createSchedule() throws IllegalActionException {
+        BaseSDFScheduler scheduler = (BaseSDFScheduler) getScheduler();
+
+        if (scheduler == null) {
+            throw new IllegalActionException("Attempted to initialize "
+                    + "SDF system with no scheduler");
+        }
+
+        // force the schedule to be computed.
+        if (_debugging) {
+            _debug("### Schedule:");
+        }
+
+        try {
+            Schedule schedule = scheduler.getSchedule();
+            if (_debugging) {
+                _debug(schedule.toString());
+                _debug("### End schedule");
+            }
+        } catch (NotSchedulableException ex) {
+            // Capt. Robbins suggested that we show which actors are connected
+            // or disconnected at the top, rather than burying it.
+            throw ex;
+        } catch (Exception ex) {
+            throw new IllegalActionException(this, ex,
+                    "Failed to compute schedule:");
+        }
+
+        // Declare the dependencies of rate parameters of external
+        // ports.  Note that this must occur after scheduling, since
+        // rate parameters are assumed to exist.
+        scheduler.declareRateDependency();    
+    }
+
     /** Return the time value of the next iteration.
      *  If this director is at the top level, then the returned value
      *  is the current time plus the period. Otherwise, this method
@@ -370,7 +406,7 @@ public class SDFDirector extends StaticSchedulingDirector implements PeriodicDir
     public Time fireAt(Actor actor, Time time) throws IllegalActionException {
         return _periodicDirectorHelper.fireAt(actor, time);
     }
-
+    
     /** Initialize the actors associated with this director and then
      *  set the iteration count to zero.  The order in which the
      *  actors are initialized is arbitrary.  In addition, if actors
@@ -382,7 +418,8 @@ public class SDFDirector extends StaticSchedulingDirector implements PeriodicDir
      *  scheduler.
      */
     public void initialize() throws IllegalActionException {
-        super.initialize();
+
+            super.initialize();
         _iterationCount = 0;
 
         _periodicDirectorHelper.initialize();
@@ -560,53 +597,6 @@ public class SDFDirector extends StaticSchedulingDirector implements PeriodicDir
         }
         
         return true;
-    }
-
-    /** Preinitialize the actors associated with this director and
-     *  compute the schedule.  The schedule is computed during
-     *  preinitialization so that hierarchical opaque composite actors
-     *  can be scheduled properly, since the act of computing the
-     *  schedule sets the rate parameters of the external ports.  In
-     *  addition, performing scheduling during preinitialization
-     *  enables it to be present during code generation.  The order in
-     *  which the actors are preinitialized is arbitrary.
-     *  @exception IllegalActionException If the preinitialize() method of
-     *  one of the associated actors throws it.
-     */
-    public void preinitialize() throws IllegalActionException {
-        super.preinitialize();
-
-        BaseSDFScheduler scheduler = (BaseSDFScheduler) getScheduler();
-
-        if (scheduler == null) {
-            throw new IllegalActionException("Attempted to initialize "
-                    + "SDF system with no scheduler");
-        }
-
-        // force the schedule to be computed.
-        if (_debugging) {
-            _debug("### Schedule:");
-        }
-
-        try {
-            Schedule schedule = scheduler.getSchedule();
-            if (_debugging) {
-                _debug(schedule.toString());
-                _debug("### End schedule");
-            }
-        } catch (NotSchedulableException ex) {
-            // Capt. Robbins suggested that we show which actors are connected
-            // or disconnected at the top, rather than burying it.
-            throw ex;
-        } catch (Exception ex) {
-            throw new IllegalActionException(this, ex,
-                    "Failed to compute schedule:");
-        }
-
-        // Declare the dependencies of rate parameters of external
-        // ports.  Note that this must occur after scheduling, since
-        // rate parameters are assumed to exist.
-        scheduler.declareRateDependency();
     }
 
     /** Return false if the system has finished executing, either by
