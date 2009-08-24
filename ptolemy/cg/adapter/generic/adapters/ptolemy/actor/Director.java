@@ -29,8 +29,6 @@ package ptolemy.cg.adapter.generic.adapters.ptolemy.actor;
 
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Set;
 
 import ptolemy.actor.Actor;
@@ -39,9 +37,8 @@ import ptolemy.actor.IOPort;
 import ptolemy.actor.util.ExplicitChangeContext;
 import ptolemy.cg.kernel.generic.GenericCodeGenerator;
 import ptolemy.cg.kernel.generic.program.CodeStream;
-import ptolemy.cg.kernel.generic.program.ProgramCodeGenerator;
 import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
-import ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapter;
+import ptolemy.cg.kernel.generic.program.ProgramCodeGenerator;
 import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -440,48 +437,6 @@ public class Director extends NamedProgramCodeGeneratorAdapter {
     public String getReference(String name, boolean isWrite,
             NamedProgramCodeGeneratorAdapter target) throws IllegalActionException {
         return "";
-    }
-
-    /**
-     * Return the reference channels for the specified port channel.
-     * If the port channel is input or contained by an opaque CompositeActor, 
-     * then this will return a list containing the given port channel. 
-     * Otherwise, it returns a list of the connected sink channels.
-     * @param port The given port.
-     * @param channelNumber The given channel.
-     * @return The list of reference channels.
-     * @throws IllegalActionException If {@link #getSinkChannels(IOPort, int)}
-     *  throws it.
-     */
-    // FIXME rodiers: Method only used for PN (in IOPort). Move to PNDirector?
-    public static List<ProgramCodeGeneratorAdapter.Channel> getReferenceChannels(IOPort port,
-            int channelNumber) throws IllegalActionException {
-
-        boolean forComposite = false;
-
-        // To support modal model, we need to check the following condition
-        // first because an output port of a modal controller should be
-        // mainly treated as an output port. However, during choice action,
-        // an output port of a modal controller will receive the tokens sent
-        // from the same port.  During commit action, an output port of a modal
-        // controller will NOT receive the tokens sent from the same port.
-        if ((port.isOutput() && !forComposite)
-                || (port.isInput() && forComposite)) {
-
-            List<ProgramCodeGeneratorAdapter.Channel> sinkChannels = 
-                    getSinkChannels(port, channelNumber);
-
-            return sinkChannels;
-        }
-
-        List<ProgramCodeGeneratorAdapter.Channel> result = new LinkedList<ProgramCodeGeneratorAdapter.Channel>();
-
-        if ((port.isInput() && !forComposite && port.isOutsideConnected())
-                || (port.isOutput() && forComposite)) {
-
-            result.add(new ProgramCodeGeneratorAdapter.Channel(port, channelNumber));
-        }
-        return result;
     }
 
     /** Return the director associated with this class.
