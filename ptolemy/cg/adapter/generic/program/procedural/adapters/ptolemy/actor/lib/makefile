@@ -33,7 +33,7 @@
 
 ME =		ptolemy/cg/adapter/generic/program/procedural/adapters/ptolemy/actor/lib
 
-DIRS =		
+DIRS =		logic
 
 # Root of the Java directory
 ROOT =		../../../../../../../../../..
@@ -52,12 +52,14 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 
 # Include the .class files from these jars in PTCLASSALLJAR
 # If you change this, change DIRS above
-PTCLASSALLJARS = 
+PTCLASSALLJARS = \
+	logic/logic.jar
 
 # Keep this list alphabetized.
 JSRCS = \
 	AddSubtract.java \
-	Const.java
+	Const.java \
+	MultiplyDivide.java
 
 OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS:%.java=%.j)

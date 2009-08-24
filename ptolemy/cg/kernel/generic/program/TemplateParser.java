@@ -892,10 +892,8 @@ public class TemplateParser {
         } else if (macro.equals("hasToken")) {
             return _replaceHasTokenMacro(parameter);
         } else if (macro.equals("ref")) {
-            // TODO: This is a workaround and should be removed.
-            // Probably we should remove the $ref feature.
-            CGException.throwException("$ref is no longer supported as a macro.");
-//            return ((NamedProgramCodeGeneratorAdapter) _codeGenerator.getAdapter(_component)).getReference(parameter);
+            CGException.throwException("$ref is no longer supported as a macro. To reference " +
+            		"input/output ports, use $get() and $put(). For parameters, use $param()");
         } else if (macro.equals("param")) {
             return _replaceParameter(parameter);
         } else if (macro.equals("targetType")) {

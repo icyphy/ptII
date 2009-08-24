@@ -1,6 +1,6 @@
 # Makefile for Ptolemy Classic style Codegen
 #
-# @Version: $Id: makefile 55321 2009-07-30 15:40:52Z rodiers $
+# @Version: $Id: makefile 55482 2009-08-19 03:09:45Z jiazou $
 # @Author: Christopher Brooks
 #
 # @Copyright (c) 2005-2009 The Regents of the University of California
@@ -31,9 +31,9 @@
 # 						COPYRIGHTENDKEY
 ##########################################################################
 
-ME =		ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib
+ME =		ptolemy/cg/adapter/generic/program/procedural/adapters/ptolemy/actor/lib/logic
 
-DIRS =		logic
+DIRS =		
 
 # Root of the Java directory
 ROOT =		../../../../../../../../../../..
@@ -52,19 +52,14 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 
 # Include the .class files from these jars in PTCLASSALLJAR
 # If you change this, change DIRS above
-PTCLASSALLJARS = logic/logic.jar
+PTCLASSALLJARS = 
 
 # Keep this list alphabetized.
 JSRCS = \
-	Accumulator.java \
-	AddSubtract.java \
-	MultiplyDivide.java \
-	Remainder.java \
-	TimeDelay.java \
-	UnaryMathFunction.java
+	Comparator.java
 
 OTHER_FILES_TO_BE_JARED = \
-	$(JSRCS:%.java=%.c)
+	$(JSRCS:%.java=%.j)
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
