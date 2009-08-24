@@ -179,6 +179,7 @@ JSRCS = \
 	MultiplyDivide.java \
 	NonStrictTest.java \
 	OrderedMerge.java \
+	OrderedRecordAssembler.java \
 	PhaseUnwrap.java \
 	PoissonClock.java \
 	Publisher.java \
