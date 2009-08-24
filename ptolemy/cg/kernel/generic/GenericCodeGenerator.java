@@ -519,7 +519,6 @@ public abstract class GenericCodeGenerator extends Attribute implements
             for (int i = 0; i < packages.size(); ++i) {
                 String packageName = packages.get(i);
 
-                // FIXME rodiers: this mombo jumbo should probably move to a utility function
                 String adapterClassName = "ptolemy.cg.adapter." + packageName
                         + ".adapters." + className;
                 try {
