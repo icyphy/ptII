@@ -107,57 +107,6 @@ public class PtidesNoPhysicalTimeDirector extends PtidesBasicDirector {
         _eventAtPort.put(ioPort, events);
     }
 
-    /** Return all the events in the event queue that are of the same tag as the event
-     *  passed in.
-     *  <p>
-     *  Notice these events should _NOT_ be taken out of the event queue.
-     *  @param event The reference event.
-     *  @return List of events of the same tag.
-     *  @exception IllegalActionException
-     */
-    protected List<PtidesEvent> _getAllSameTagEventsFromQueue(PtidesEvent event)
-            throws IllegalActionException {
-        if (event != ((PtidesListEventQueue) _eventQueue).get(_peekingIndex)) {
-            throw new IllegalActionException(
-                    "The event to get is not the event pointed "
-                            + "to by peeking index.");
-        }
-        List<PtidesEvent> eventList = new ArrayList<PtidesEvent>();
-        eventList.add(event);
-        for (int i = _peekingIndex; (i + 1) < _eventQueue.size(); i++) {
-            PtidesEvent nextEvent = ((PtidesListEventQueue) _eventQueue).get(i + 1);
-            if (nextEvent.hasTheSameTagAs(event)) {
-                if (_destinedToSameEquivalenceClass(event, nextEvent)) {
-                    eventList.add(nextEvent);
-                }
-            } else {
-                break;
-            }
-        }
-        return eventList;
-    }
-
-    /** Return the actor associated with this event. This method takes
-     *  all events of the same tag destined for the same actor from the event
-     *  queue, and return the actor associated with it.
-     *
-     */
-    protected Actor _getNextActorToFireForTheseEvents(List<PtidesEvent> events)
-            throws IllegalActionException {
-        if (events.get(0) != ((PtidesListEventQueue) _eventQueue)
-                .get(_peekingIndex)) {
-            throw new IllegalActionException(
-                    "The event to get is not the event pointed "
-                            + "to by peeking index.");
-        }
-        // Assume the event queue orders by Tag and depth so all these events should be
-        // next to each other.
-        for (int i = 0; (_peekingIndex + i) < events.size(); i++) {
-            ((PtidesListEventQueue) _eventQueue).take(_peekingIndex + i);
-        }
-        return events.get(0).actor();
-    }
-
     /** Return the next event we want to process, which is the event of smallest tag
      *  that is safe to process.
      */
@@ -238,6 +187,38 @@ public class PtidesNoPhysicalTimeDirector extends PtidesBasicDirector {
             }
         }
         return result;
+    }
+
+    /** Return all the events in the event queue that are of the same tag as the event
+     *  passed in, AND are destined to the same finite equivalence class. These events
+     *  should be removed from the event queue in the process.
+     *  @param event The reference event.
+     *  @return List of events of the same tag.
+     *  @exception IllegalActionException
+     */
+    protected List<PtidesEvent> _takeAllSameTagEventsFromQueue(PtidesEvent event)
+            throws IllegalActionException {
+        if (event != ((PtidesListEventQueue) _eventQueue).get(_peekingIndex)) {
+            throw new IllegalActionException(
+                    "The event to get is not the event pointed "
+                            + "to by peeking index.");
+        }
+        List<PtidesEvent> eventList = new ArrayList<PtidesEvent>();
+        eventList.add(((PtidesListEventQueue) _eventQueue).take(_peekingIndex));
+        int eventIndex = _peekingIndex;
+        while (eventIndex < _eventQueue.size()) {
+            PtidesEvent nextEvent = ((PtidesListEventQueue) _eventQueue).get(eventIndex);
+            if (nextEvent.hasTheSameTagAs(event)) {
+                if (_destinedToSameEquivalenceClass(event, nextEvent)) {
+                    eventList.add(((PtidesListEventQueue) _eventQueue).take(eventIndex));
+                } else {
+                    eventIndex++;
+                }
+            } else {
+                break;
+            }
+        }
+        return eventList;
     }
 
     ///////////////////////////////////////////////////////////////////

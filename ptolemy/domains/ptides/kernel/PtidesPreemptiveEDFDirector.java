@@ -218,78 +218,6 @@ public class PtidesPreemptiveEDFDirector extends PtidesBasicDirector {
             }
         }
     }
-    
-    /** Return all the events in the event queue that are of the same tag as the event
-     *  passed in.
-     *  <p>
-     *  Notice these events should _NOT_ be taken out of the event queue.
-     *  @param event The reference event.
-     *  @return List of events of the same tag.
-     *  @exception IllegalActionException
-     */
-    protected List<PtidesEvent> _getAllSameTagEventsFromQueue(PtidesEvent event)
-            throws IllegalActionException {
-        if (event != ((PtidesListEventQueue)_eventQueue).get(_peekingIndex)) {
-            throw new IllegalActionException("The event to get is not the event pointed " +
-                        "to by peeking index.");
-        }
-        List<PtidesEvent> eventList = new ArrayList<PtidesEvent>();
-        eventList.add(event);
-        for (int i = _peekingIndex; (i + 1) < _eventQueue.size(); i++) {
-            PtidesEvent nextEvent = ((PtidesListEventQueue)_eventQueue).get(i+1);
-            if (nextEvent.hasTheSameTagAs(event) 
-                    && _destinedToSameEquivalenceClass(event, nextEvent)) {
-                eventList.add(nextEvent);
-            } else {
-                break;
-            }
-        }
-        for (int i = _peekingIndex; (i - 1) >= 0; i--) {
-            PtidesEvent nextEvent = ((PtidesListEventQueue) _eventQueue)
-            	    .get(_peekingIndex-1);
-            if (nextEvent.hasTheSameTagAs(event)
-                    && _destinedToSameEquivalenceClass(event, nextEvent)) {
-                eventList.add(nextEvent);
-                _peekingIndex--;
-            } else {
-                break;
-            }
-        }
-        return eventList;
-    }
-
-    /** Return the actor associated with this event. This method takes
-     *  all events of the same tag destined for the same actor from the event
-     *  queue, and return the actor associated with it.
-     *
-     */
-    protected Actor _getNextActorToFireForTheseEvents(List<PtidesEvent> events)
-            throws IllegalActionException {
-        boolean foundEvent = false;
-        for (int i = 0; i < events.size(); i++) {
-            if (events.get(i) == ((PtidesListEventQueue) _eventQueue)
-                    .get(_peekingIndex)) {
-                foundEvent = true;
-                break;
-            }
-        }
-        if (foundEvent == false) {
-            throw new IllegalActionException(
-                    "The events to get is not the event pointed "
-                    + "to by peeking index." + ", size "
-                    + events.size() + ", peek " + _peekingIndex);
-        }
-        // take from the event queue all the events from the event queue starting
-        // for _peekingIndex. Here we assume _peekingIndex is the index of the smallest
-        // event in the event queue. that we want to process. (This is set in
-        // _getAllSameTagEventsFromQueue()).
-        for (int i = 0; i < events.size(); i++) {
-            // We always take the one from _peekingIndex because it points to the next
-            // event in the queue once we take the previous one from the event queue.
-            ((PtidesListEventQueue) _eventQueue).take(_peekingIndex);
-        }
-        return events.get(0).actor();
-    }
 
     /** Returns the event that was selected to preempt in _preemptExecutingActor.
      *  If no event was selected, return the event of smallest deadline that is
@@ -492,6 +420,52 @@ public class PtidesPreemptiveEDFDirector extends PtidesBasicDirector {
         }
         parameter.setToken(new DoubleToken(dependency.timeValue()));
 
+    }
+
+    /** Return all the events in the event queue that are of the same tag as the event
+     *  passed in, AND are destined to the same finite equivalence class. These events
+     *  should be removed from the event queue in the process.
+     *  @param event The reference event.
+     *  @return List of events of the same tag.
+     *  @exception IllegalActionException
+     */
+    protected List<PtidesEvent> _takeAllSameTagEventsFromQueue(PtidesEvent event)
+            throws IllegalActionException {
+        if (event != ((PtidesListEventQueue)_eventQueue).get(_peekingIndex)) {
+            throw new IllegalActionException("The event to get is not the event pointed " +
+                        "to by peeking index.");
+        }
+        List<PtidesEvent> eventList = new ArrayList<PtidesEvent>();
+        eventList.add(((PtidesListEventQueue)_eventQueue).take(_peekingIndex));
+        // The original event at _peekingIndex has been taken, so the eventIndex points to
+        // the next event.
+        int eventIndex = _peekingIndex;
+        while (eventIndex < _eventQueue.size()) {
+            PtidesEvent nextEvent = ((PtidesListEventQueue)_eventQueue).get(eventIndex);
+            if (nextEvent.hasTheSameTagAs(event)) {
+                if (_destinedToSameEquivalenceClass(event, nextEvent)) {
+                    eventList.add(((PtidesListEventQueue)_eventQueue).take(eventIndex));
+                } else {
+                    eventIndex++;
+                }
+            } else {
+                break;
+            }
+        }
+        while (_peekingIndex > 0) {
+            PtidesEvent nextEvent = ((PtidesListEventQueue) _eventQueue)
+                    .get(_peekingIndex-1);
+            if (nextEvent.hasTheSameTagAs(event)) {
+                if (_destinedToSameEquivalenceClass(event, nextEvent)) {
+                    eventList.add(((PtidesListEventQueue) _eventQueue)
+                            .take(_peekingIndex-1));
+                }
+            } else {
+                break;
+            }
+            _peekingIndex--;
+        }
+        return eventList;
     }
 
     ///////////////////////////////////////////////////////////////////

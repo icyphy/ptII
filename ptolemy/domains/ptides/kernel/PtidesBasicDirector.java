@@ -716,33 +716,37 @@ public class PtidesBasicDirector extends DEDirector {
                         // led to that pair would not be in distQueue if it the dependency was smaller.
                         Receiver[][] remoteReceivers = port
                                 .getRemoteReceivers();
-                        for (int i = 0; i < remoteReceivers.length; i++) {
-                            for (int j = 0; j < remoteReceivers[i].length; j++) {
-                                IOPort sinkPort = remoteReceivers[i][j]
-                                        .getContainer();
-                                int channel = sinkPort
+                        if (remoteReceivers != null) {
+                            for (int i = 0; i < remoteReceivers.length; i++) {
+                                if (remoteReceivers[0] != null) {
+                                    for (int j = 0; j < remoteReceivers[i].length; j++) {
+                                        IOPort sinkPort = remoteReceivers[i][j]
+                                                                             .getContainer();
+                                        int channel = sinkPort
                                         .getChannelForReceiver(remoteReceivers[i][j]);
-                                // we do not want to traverse to the outside of the platform.
-                                if (sinkPort.getContainer() != getContainer()) {
-                                    // for this port channel pair, add the dependency.
-                                    Map<Integer, SuperdenseDependency> channelDependency = (Map<Integer, SuperdenseDependency>) inputModelTimeDelays
+                                        // we do not want to traverse to the outside of the platform.
+                                        if (sinkPort.getContainer() != getContainer()) {
+                                            // for this port channel pair, add the dependency.
+                                            Map<Integer, SuperdenseDependency> channelDependency = (Map<Integer, SuperdenseDependency>) inputModelTimeDelays
                                             .get(sinkPort);
-                                    if (channelDependency == null) {
-                                        channelDependency = new HashMap<Integer, SuperdenseDependency>();
-                                    }
-                                    channelDependency.put(Integer
-                                            .valueOf(channel), prevDependency);
-                                    inputModelTimeDelays.put(sinkPort,
-                                            channelDependency);
-                                    // After updating dependencies, we need to decide whether we should keep traversing
-                                    // the graph.
-                                    if (((SuperdenseDependency) localPortDelays
-                                            .get(sinkPort))
-                                            .compareTo(prevDependency) > 0) {
-                                        localPortDelays.put(sinkPort,
-                                                prevDependency);
-                                        distQueue.add(new PortDependency(
-                                                sinkPort, prevDependency));
+                                            if (channelDependency == null) {
+                                                channelDependency = new HashMap<Integer, SuperdenseDependency>();
+                                            }
+                                            channelDependency.put(Integer
+                                                    .valueOf(channel), prevDependency);
+                                            inputModelTimeDelays.put(sinkPort,
+                                                    channelDependency);
+                                            // After updating dependencies, we need to decide whether we should keep traversing
+                                            // the graph.
+                                            if (((SuperdenseDependency) localPortDelays
+                                                    .get(sinkPort))
+                                                    .compareTo(prevDependency) > 0) {
+                                                localPortDelays.put(sinkPort,
+                                                        prevDependency);
+                                                distQueue.add(new PortDependency(
+                                                        sinkPort, prevDependency));
+                                            }
+                                        }
                                     }
                                 }
                             }
@@ -1129,35 +1133,6 @@ public class PtidesBasicDirector extends DEDirector {
         return event.timeStamp().add(_getRelativeDeadline(event.ioPort()));
     }
 
-    /** Return all the events in the event queue that are of the same tag as the event
-     *  passed in.
-     *  <p>
-     *  Notice these events should _NOT_ be taken out of the event queue.
-     *  @param event The reference event.
-     *  @return List of events of the same tag.
-     *  @exception IllegalActionException
-     */
-    protected List<PtidesEvent> _getAllSameTagEventsFromQueue(PtidesEvent event)
-            throws IllegalActionException {
-        List<PtidesEvent> eventList = new ArrayList<PtidesEvent>();
-        for (int eventIndex = 0; eventIndex < _eventQueue.size(); eventIndex++) {
-            PtidesEvent nextEvent = ((PtidesListEventQueue) _eventQueue)
-                    .get(eventIndex);
-            if (event == nextEvent) {
-                eventList.add(nextEvent);
-            } else {
-                if (nextEvent.hasTheSameTagAs(event)) {
-                    if (_destinedToSameEquivalenceClass(event, nextEvent)) {
-                        eventList.add(nextEvent);
-                    }
-                } else {
-                    break;
-                }
-            }
-        }
-        return eventList;
-    }
-
     /** Get the dependency between the input and output ports. If the
      *  ports does not belong to the same actor, an exception is thrown.
      *  Depending on the actor, the corresponding getDependency() method in
@@ -1454,7 +1429,7 @@ public class PtidesBasicDirector extends DEDirector {
         // track if safeToProcess() somehow failed to produce the correct results.
         _trackLastTagConsumedByActor(eventFromQueue);
 
-        List<PtidesEvent> eventsToProcess = _getAllSameTagEventsFromQueue(eventFromQueue);
+        List<PtidesEvent> eventsToProcess = _takeAllSameTagEventsFromQueue(eventFromQueue);
 
         Actor actorToFire = _getNextActorToFireForTheseEvents(eventsToProcess);
 
@@ -1540,11 +1515,7 @@ public class PtidesBasicDirector extends DEDirector {
         }
     }
 
-    /** Return the actor associated with this event. This method should take
-     *  all events of the same tag destined for the same actor from the event
-     *  queue, and return the actor associated with it.
-     *  <p>
-     *  In this baseline implementation, super._getNextActorToFire() is called.
+    /** Return the actor associated with the events. All events should point to the same actor.
      *  @param events list of events that are destined for the
      *  same actor and of the same tag.
      *  @return Actor associated with the event.
@@ -1553,14 +1524,13 @@ public class PtidesBasicDirector extends DEDirector {
     protected Actor _getNextActorToFireForTheseEvents(List<PtidesEvent> events)
             throws IllegalActionException {
         PtidesEvent eventInList = events.get(0);
-        PtidesEvent eventInQueue = (PtidesEvent)_eventQueue.get();
-        if (!(eventInList.hasTheSameTagAs(eventInQueue) && (eventInQueue
-                .actor() == eventInList.actor()))) {
-            throw new IllegalActionException(
-                    "The event passed in is not the top event "
-                            + "in the event queue, Probably need to overwrite this method. ");
+        for (int i = 1; i < events.size(); i++) {
+            if (events.get(i).actor() != eventInList.actor()) {
+                throw new IllegalActionException("All events to be processed should point to " +
+                		"the same actor.");
+            }
         }
-        return super._getNextActorToFire();
+        return eventInList.actor();
     }
 
     /** Return the next event we want to process. Notice this event returned must
@@ -1740,6 +1710,39 @@ public class PtidesBasicDirector extends DEDirector {
         } catch (IllegalActionException e) {
             e.printStackTrace();
         }
+    }
+    
+    /** Return all the events in the event queue that are of the same tag as the event
+     *  passed in, AND are destined to the same finite equivalence class. These events
+     *  should be removed from the event queue in the process.
+     *  @param event The reference event.
+     *  @return List of events of the same tag.
+     *  @exception IllegalActionException
+     */
+    protected List<PtidesEvent> _takeAllSameTagEventsFromQueue(PtidesEvent event)
+            throws IllegalActionException {
+        List<PtidesEvent> eventList = new ArrayList<PtidesEvent>();
+        int eventIndex = 0;
+        while (eventIndex < _eventQueue.size()) {
+            PtidesEvent nextEvent = ((PtidesListEventQueue) _eventQueue)
+                    .get(eventIndex);
+            if (event == nextEvent) {
+                eventList.add(((PtidesListEventQueue) _eventQueue)
+                        .take(eventIndex));
+            } else {
+                if (nextEvent.hasTheSameTagAs(event)) {
+                    if (_destinedToSameEquivalenceClass(event, nextEvent)) {
+                        eventList.add(((PtidesListEventQueue) _eventQueue)
+                                .take(eventIndex));
+                    } else {
+                        eventIndex++;
+                    }
+                } else {
+                    break;
+                }
+            }
+        }
+        return eventList;
     }
 
     /** This method keeps track of the last event an actor decides to process. This method
