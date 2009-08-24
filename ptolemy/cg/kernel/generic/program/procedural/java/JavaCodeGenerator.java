@@ -924,8 +924,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
 
         List<String> commands = new LinkedList<String>();
         if (((BooleanToken) compile.getToken()).booleanValue()) {
-            commands.add("make -f " + _sanitizedModelName + ".mk "
-                    + compileTarget.stringValue());
+            commands.add("make -f " + _sanitizedModelName + ".mk ");
         }
 
         if (_isTopLevel()) {
@@ -1244,7 +1243,6 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
         }
         // 2. If the target parameter is set, look for a makefile.
 
-        // FIXME rodiers: don't access generatorPackageList directly!
         String generatorDirectory = generatorPackageList.stringValue().replace(
                 '.', '/');
         templateList.add("ptolemy/cg/kernel/" + generatorDirectory
@@ -1253,7 +1251,6 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
         // 3. Look for the generic makefile.in
         // Note this code is repeated in the catch below.
 
-        // FIXME rodiers: this should happen for many functions (hence has to be abstracted)
         templateList.add("ptolemy/cg/kernel/" + generatorDirectory
                 + "/makefile.in");
 
