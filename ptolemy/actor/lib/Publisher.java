@@ -27,26 +27,17 @@
  */
 package ptolemy.actor.lib;
 
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-
-import ptolemy.actor.Director;
-import ptolemy.actor.IORelation;
+import ptolemy.actor.CompositeActor;
 import ptolemy.actor.TypedAtomicActor;
-import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.TypedIOPort;
-import ptolemy.actor.TypedIORelation;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.SingletonParameter;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.Port;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
@@ -76,7 +67,7 @@ import ptolemy.kernel.util.Workspace;
  Publisher-Subscriber pairs. That is, the type of the Subscriber
  output will match the type of the Publisher input.
 
- @author Edward A. Lee, Raymond A. Cardillo, Contributor: Bert Rodiers
+ @author Edward A. Lee, Raymond A. Cardillo, Bert Rodiers
  @version $Id$
  @since Ptolemy II 5.2
  @Pt.ProposedRating Green (cxh)
@@ -157,10 +148,19 @@ public class Publisher extends TypedAtomicActor {
             // ptolemy/actor/lib/test/auto/PublisherClassNoParameter.xml
             if (!isWithinClassDefinition()) {
                 String newValue = channel.stringValue();
-                if (!newValue.equals(_channel)) {
+                if (!newValue.equals(_channel)) {                    
+                    NamedObj container = getContainer();
+                    if (container instanceof CompositeActor) {
+                        try {
+                            ((CompositeActor) container).registerPublisherPort(newValue, output);
+                            if (!(_channel == null || _channel.trim().equals(""))) {                            
+                                ((CompositeActor) container).unregisterPublisherPort(_channel);
+                            }
+                        } catch (NameDuplicationException e) {
+                            throw new IllegalActionException(this, e, "Can't add published port.");
+                        }
+                    }
                     _channel = newValue;
-                    // We now call _updateLinks in preinitialize().
-                    // This change makes the open time roughly 40% faster.
                 }
             }
         } else {
@@ -178,8 +178,6 @@ public class Publisher extends TypedAtomicActor {
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         Publisher newObject = (Publisher) super.clone(workspace);
         try {
-            newObject._updatedLinks = false;
-            //newObject._updateLinks();
             newObject._channel = _channel;
         } catch (Throwable throwable) {
             CloneNotSupportedException exception = new CloneNotSupportedException();
@@ -193,28 +191,6 @@ public class Publisher extends TypedAtomicActor {
         newObject.output.setWidthEquals(newObject.input, false);
 
         return newObject;
-    }
-
-    /** Override the base class to update the width of the hidden link.
-     *  @param port The port that has connection changes.
-     */
-    public void connectionsChanged(Port port) {
-        super.connectionsChanged(port);
-        if (!IORelation._USE_NEW_WIDTH_INFERENCE_ALGO) {
-            if (port == input) {
-                if (_relation != null && !_inConnectionsChanged) {
-                    try {
-                        _inConnectionsChanged = true;
-                        int width = input.getWidth();
-                        _relation.setWidth(width);
-                    } catch (IllegalActionException e) {
-                        throw new InternalErrorException(e);
-                    } finally {
-                        _inConnectionsChanged = false;
-                    }
-                }
-            }
-        }
     }
 
     /** Read at most one input token from each
@@ -243,12 +219,7 @@ public class Publisher extends TypedAtomicActor {
             throw new IllegalActionException(this,
                     "No channel name has been specified.");
         }
-        // If this was created by instantiating a container class,
-        // then the links would not have been updated when setContainer()
-        // was called, so we must do it now.
-        if (!_updatedLinks) {
-            _updateLinks();
-        }
+
         // Call super.preinitialize() after updating links so that
         // we have connections made before possibly inferring widths.
         super.preinitialize();
@@ -264,124 +235,19 @@ public class Publisher extends TypedAtomicActor {
      */
     public void setContainer(CompositeEntity container)
             throws IllegalActionException, NameDuplicationException {
-
-        if (container == null && _relation != null) {
-            try {
-                _relation.setContainer(null);
-            } catch (NameDuplicationException e) {
-                throw new InternalErrorException(e);
+        
+        if (container == null && !(_channel == null || _channel.trim().equals(""))) {
+            NamedObj previousContainer = getContainer();
+            if (previousContainer instanceof CompositeActor) {
+                ((CompositeActor) previousContainer).unregisterPublisherPort(_channel);
             }
-            _relation = null;
         }
+        
         super.setContainer(container);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                       protected method                    ////
-
-    /** Find subscribers.
-     *  @return A list of subscribers.
-     *  @exception IllegalActionException If there is already a publisher
-     *   using the same channel, or if the channel name has not been set.
-     */
-    protected List _findSubscribers() throws IllegalActionException {
-        // This method is protected so that users can subclass this class
-        // and create alternative ways of managing finding Subscribers.
-        LinkedList result = new LinkedList();
-        // Find the nearest opaque container above in the hierarchy.
-        CompositeEntity container = (CompositeEntity) getContainer();
-        while (container != null && !container.isOpaque()) {
-            container = (CompositeEntity) container.getContainer();
-        }
-        if (container != null) {
-            if (_channel == null || _channel.trim().equals("")) {
-                throw new IllegalActionException(this,
-                        "No channel name has been specified.");
-            }
-            Iterator actors = container.deepOpaqueEntityList().iterator();
-            while (actors.hasNext()) {
-                Object actor = actors.next();
-                if (actor instanceof Subscriber) {
-                    if (((Subscriber) actor).channelMatches(_channel)) {
-                        result.add(actor);
-                    }
-                } else if (actor instanceof Publisher && actor != this) {
-                    // Throw an exception if there is another publisher
-                    // trying to publish on the same channel.
-                    if (_channel.equals(((Publisher) actor)._channel)) {
-                        throw new IllegalActionException(this,
-                                "There is already a publisher using channel \""
-                                        + _channel + "\": "
-                                        + ((NamedObj) actor).getFullName());
-                    }
-                }
-            }
-        }
-        return result;
-    }
-
-    /** Update connections to subscribers.
-     *  @exception IllegalActionException If there is already a publisher
-     *   publishing on the same channel.
-     */
-    protected void _updateLinks() throws IllegalActionException {
-        // If the channel has not been set, then there is nothing
-        // to do.  This is probably the first setContainer() call,
-        // before the object is fully constructed.
-        if (_channel == null) {
-            return;
-        }
-
-        // Do this before making any changes to the model in case
-        // it throws an exception.
-        Iterator subscribers = _findSubscribers().iterator();
-
-        // Remove the previous relation, if necessary.
-        if (_relation != null) {
-            try {
-                _relation.setContainer(null);
-            } catch (NameDuplicationException e) {
-                throw new InternalErrorException(e);
-            }
-            _relation = null;
-        }
-
-        NamedObj container = getContainer();
-        if (container instanceof TypedCompositeActor) {
-            // If the container is not a typed composite actor, then don't create
-            // a relation. Probably the container is a library.
-            try {
-                _relation = new TypedIORelation(
-                        (TypedCompositeActor) container, container
-                                .uniqueName("publisherRelation"));
-                // Prevent the relation and its links from being exported.
-                _relation.setPersistent(false);
-                // Prevent the relation from showing up in vergil.
-                new Parameter(_relation, "_hide", BooleanToken.TRUE);
-                // Set the width of the relation to match the
-                // width of the input.
-                if (!IORelation._USE_NEW_WIDTH_INFERENCE_ALGO) {
-                    _relation.setWidth(input.getWidth());
-                }
-            } catch (NameDuplicationException e) {
-                throw new InternalErrorException(e);
-            }
-            output.link(_relation);
-
-            // Link to the subscribers.
-            while (subscribers.hasNext()) {
-                Subscriber subscriber = (Subscriber) subscribers.next();
-                subscriber.input.liberalLink(_relation);
-            }
-        }
-
-        Director director = getDirector();
-        if (director != null) {
-            director.invalidateSchedule();
-            director.invalidateResolvedTypes();
-        }
-        _updatedLinks = true;
-    }
 
     ///////////////////////////////////////////////////////////////////
     ////                       protected variables                 ////
@@ -389,15 +255,7 @@ public class Publisher extends TypedAtomicActor {
     /** Cached channel name. */
     protected String _channel;
 
-    /** The relation used to link to subscribers. */
-    protected TypedIORelation _relation;
-
-    /** An indicator that _updateLinks has been called at least once. */
-    protected boolean _updatedLinks = false;
-
     ///////////////////////////////////////////////////////////////////
     ////                       private variables                   ////
 
-    /** An indicator that connectionsChanged() has been called. */
-    private boolean _inConnectionsChanged = false;
 }

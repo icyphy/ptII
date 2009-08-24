@@ -27,12 +27,9 @@
  */
 package ptolemy.actor.lib;
 
-import java.util.Iterator;
-
-import ptolemy.actor.Director;
+import ptolemy.actor.CompositeActor;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
-import ptolemy.actor.TypedIORelation;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
@@ -41,6 +38,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
@@ -66,7 +64,7 @@ import ptolemy.kernel.util.Workspace;
  Publisher-Subscriber pairs. That is, the type of the Subscriber
  output will match the type of the Publisher input.
 
- @author Edward A. Lee, Raymond A. Cardillo
+ @author Edward A. Lee, Raymond A. Cardillo, Bert Rodiers
  @version $Id$
  @since Ptolemy II 5.2
  @Pt.ProposedRating Green (cxh)
@@ -139,6 +137,10 @@ public class Subscriber extends TypedAtomicActor {
         if (attribute == channel) {
             String newValue = channel.stringValue();
             if (!newValue.equals(_channel)) {
+                NamedObj container = getContainer();
+                if (container instanceof CompositeActor && !(_channel == null || _channel.trim().equals(""))) {
+                    ((CompositeActor) container).unlinkToPublishedPort(_channel, input);
+                }
                 _channel = newValue;
                 /* NOTE: We used to call _updateLinks(), as shown below,
                  * but now we defer that to preinitialize().  This
@@ -194,8 +196,6 @@ public class Subscriber extends TypedAtomicActor {
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         Subscriber newObject = (Subscriber) super.clone(workspace);
         try {
-            newObject._updatedLinks = false;
-            //newObject._updateLinks();
             newObject._channel = _channel;
         } catch (Throwable throwable) {
             CloneNotSupportedException exception = new CloneNotSupportedException();
@@ -261,68 +261,36 @@ public class Subscriber extends TypedAtomicActor {
         // number when we set _updatedLinks.  However, this could
         // result in poor performance.
 
-        if (!_updatedLinks || !input.isOutsideConnected()) {
-            _updateLinks();
-            if (!input.isOutsideConnected()) {
-                // Find the nearest opaque container above in the hierarchy.
-                CompositeEntity container = (CompositeEntity) getContainer();
-                while (container != null && !container.isOpaque()) {
-                    container = (CompositeEntity) container.getContainer();
-                }
-                StringBuffer publisherChannelNames = new StringBuffer();
-                if (container != null) {
-                    Iterator<?> actors = container.deepOpaqueEntityList()
-                            .iterator();
-                    while (actors.hasNext()) {
-                        Object actor = actors.next();
-                        if (actor instanceof Publisher) {
-                            publisherChannelNames
-                                    .append(((Publisher) actor)._channel + "\n");
-                        }
-                    }
-                }
-
-                throw new IllegalActionException(this,
-                        "Subscriber has no matching Publisher, channel was \""
-                                + channel.getExpression()
-                                + "\" which evaluated to \""
-                                + channel.stringValue() + "\"."
-                                + publisherChannelNames);
-            }
-        }
+        _updateLinks();
+    
         // Call super.preinitialize() after updating links so that
         // we have connections made before possibly inferring widths.
         super.preinitialize();
     }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                       protected methods                   ////
-
-    /** Find the publisher, if there is one.
-     *  @return A publisher, or null if none is found.
+    /** If the new container is null, delete the named channel.
+     *  @param container The proposed container.
+     *  @exception IllegalActionException If the action would result in a
+     *   recursive containment structure, or if
+     *   this entity and container are not in the same workspace.
+     *  @exception NameDuplicationException If the container already has
+     *   an entity with the name of this entity.
      */
-    protected Publisher _findPublisher() {
-        // This method is protected so that users can subclass this class
-        // and create alternative ways of managing finding Publishers.
-
-        // Find the nearest opaque container above in the hierarchy.
-        CompositeEntity container = (CompositeEntity) getContainer();
-        while (container != null && !container.isOpaque()) {
-            container = (CompositeEntity) container.getContainer();
-        }
-        if (container != null) {
-            Iterator<?> actors = container.deepOpaqueEntityList().iterator();
-            while (actors.hasNext()) {
-                Object actor = actors.next();
-                if (actor instanceof Publisher) {
-                    if (_channel.equals(((Publisher) actor)._channel)) {
-                        return (Publisher) actor;
-                    }
-                }
+    public void setContainer(CompositeEntity container)
+            throws IllegalActionException, NameDuplicationException {
+        
+        if (container == null && !(_channel == null || _channel.trim().equals(""))) {
+            NamedObj previousContainer = getContainer();
+            if (previousContainer instanceof CompositeActor) {
+                ((CompositeActor) previousContainer).unlinkToPublishedPort(_channel, input);
             }
         }
-        return null;
+        
+        super.setContainer(container);
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                       protected methods                   ////
 
     /** Update the connection to the publisher, if there is one.
      *  Note that this method is computationally intensive for large
@@ -341,34 +309,15 @@ public class Subscriber extends TypedAtomicActor {
         if (_channel == null) {
             return;
         }
-        Publisher publisher = _findPublisher();
-
-        // Remove the link to a previous relation, if necessary.
-        if (_relation != null) {
-            input.unlink(_relation);
-            _relation = null;
-        }
-        if (publisher != null) {
-            if (publisher._relation == null || !publisher._updatedLinks) {
-                // If we call Subscriber.preinitialize()
-                // before we call Publisher.preinitialize(),
-                // then the publisher will not have created
-                // its relation.
-                publisher._updateLinks();
-            }
-            _relation = publisher._relation;
-
-            if (!input.isLinked(_relation)) {
-                // The Publisher._updateLinks() may have already linked us.
-                input.liberalLink(_relation);
+        NamedObj container = getContainer();
+        if (container instanceof CompositeActor) {
+            try {
+                ((CompositeActor) container).linkToPublishedPort(_channel, input);
+            } catch (NameDuplicationException e) {
+                throw new IllegalActionException(this, e,
+                        "Can't link Subscriber with Publisher.");
             }
         }
-        Director director = getDirector();
-        if (director != null) {
-            director.invalidateSchedule();
-            director.invalidateResolvedTypes();
-        }
-        _updatedLinks = true;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -377,12 +326,7 @@ public class Subscriber extends TypedAtomicActor {
     /** Cached channel name. */
     protected String _channel;
 
-    /** An indicator that _updateLinks has been called at least once. */
-    protected boolean _updatedLinks = false;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
-    /** The relation used to link to subscribers. */
-    private TypedIORelation _relation;
 }

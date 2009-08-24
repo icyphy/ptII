@@ -38,7 +38,6 @@ import java.util.regex.Pattern;
 import ptolemy.actor.Director;
 import ptolemy.data.Token;
 import ptolemy.data.expr.StringParameter;
-import ptolemy.kernel.ComponentRelation;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Relation;
 import ptolemy.kernel.util.Attribute;
@@ -73,7 +72,8 @@ import ptolemy.kernel.util.Workspace;
  @Pt.AcceptedRating Red (cxh)
  */
 public class SubscriptionAggregator extends Subscriber {
-
+//TODO rodiers: fix this component!!!
+    
     /** Construct a subscriber with the specified container and name.
      *  @param container The container actor.
      *  @param name The name of the actor.
@@ -299,6 +299,9 @@ public class SubscriptionAggregator extends Subscriber {
         Iterator publishers = _findPublishers().iterator();
         while (publishers.hasNext()) {
             Publisher publisher = (Publisher) publishers.next();
+            /*
+             
+             TODO rodiers
             if (publisher._relation == null) {
                 if (!publisher._updatedLinks) {
                     // If we call Subscriber.preinitialize()
@@ -314,13 +317,13 @@ public class SubscriptionAggregator extends Subscriber {
                 input.liberalLink(relation);
             }
             _relations.add(relation);
+            */
         }
         Director director = getDirector();
         if (director != null) {
             director.invalidateSchedule();
             director.invalidateResolvedTypes();
         }
-        _updatedLinks = true;
     }
 
     ///////////////////////////////////////////////////////////////////

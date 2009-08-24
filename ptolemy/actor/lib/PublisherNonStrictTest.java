@@ -233,12 +233,6 @@ public class PublisherNonStrictTest extends Publisher {
      */
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
-        // If this was created by instantiating a container class,
-        // then the links would not have been updated when setContainer()
-        // was called, so we must do it now.
-        if (!_updatedLinks) {
-            _updateLinks();
-        }
     }
 
     /** Read one token from each input channel and compare against
