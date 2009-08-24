@@ -62,6 +62,7 @@ JSRCS = \
 	NetworkOutputDevice.java \
 	OutputDevice.java \
 	SensorInputDevice.java \
+	SimulatedPhysicalTime.java \
 	VariableDelayCounter.java
 
 OTHER_FILES_TO_BE_JARED = \
