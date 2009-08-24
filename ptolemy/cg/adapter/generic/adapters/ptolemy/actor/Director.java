@@ -183,28 +183,6 @@ public class Director extends NamedProgramCodeGeneratorAdapter {
                     .getAdapter(actor);
             // Initialize code for the actor.
             code.append(adapterObject.generateInitializeCode());
-
-            /*
-             * TODO rodiers: first part can certainly be removed
-             * code.append(portAdapter.generateInitializeCode());
-             *  also?
-             *
-            // Update write offset due to initial tokens produced.
-            Iterator<?> outputPorts = actor.outputPortList().iterator();
-            while (outputPorts.hasNext()) {
-                IOPort port = (IOPort) outputPorts.next();
-                int rate = DFUtilities.getTokenInitProduction(port);
-                _updateConnectedPortsOffset(port, code, rate);
-            }
-
-            for (IOPort port : (List<IOPort>) ((Entity) actor).portList()) {
-                if (port.isOutsideConnected()) {
-                    ProgramCodeGeneratorAdapter portAdapter =
-                        getCodeGenerator().getAdapter(port);
-                    code.append(portAdapter.generateInitializeCode());
-                }
-            }
-            */
         }
         return code.toString();
     }
@@ -355,11 +333,6 @@ public class Director extends NamedProgramCodeGeneratorAdapter {
                 code.append(";" + _eol);
             }
         }
-
-        // The offset of the ports connected to the output port is
-        // updated by outside director.
-        // TODO rodiers: does this need to happen? where?
-        //_updatePortOffset(outputPort, code, 1);
     }
 
     /** Generate variable declarations for inputs and outputs and parameters.
