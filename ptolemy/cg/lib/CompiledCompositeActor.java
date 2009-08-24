@@ -606,9 +606,9 @@ public class CompiledCompositeActor extends TypedCompositeActor {
 
         Effigy effigy = Configuration.findEffigy(this.toplevel());
 
-        // FIXME rodiers
-        // effigy.isModified() is not the correct way to deal with changes.
-        // It might be the case that we already compiled after the change
+        // FIXME
+        // effigy.isModified() is not the optimal way to deal with changes.
+        // It might be the case that we already compiled after the change.
         if (effigy != null && effigy.isModified()) {
             System.out
                     .println(message
