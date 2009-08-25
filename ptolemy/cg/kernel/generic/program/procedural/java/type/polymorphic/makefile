@@ -29,12 +29,12 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/codegen/java/kernel/type/polymorphic
+ME =		ptolemy/cg/kernel/generic/program/procedural/java/type/polymorphic
 
 DIRS =
 
 # Root of the Java directory
-ROOT =		../../../../../..
+ROOT =		../../../../../../../..
 
 CLASSPATH =	$(ROOT)
 
@@ -46,8 +46,7 @@ include $(CONFIG)
 PTPACKAGE = 	polymorphic
 PTCLASSJAR =	$(PTPACKAGE).jar
 
-JSRCS = \
-	AlphabetizeOperation.java
+JSRCS = 
 
 OTHER_FILES_TO_BE_JARED = \
 	add.j \

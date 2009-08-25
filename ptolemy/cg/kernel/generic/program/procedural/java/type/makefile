@@ -29,12 +29,12 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/codegen/java/kernel/type
+ME =		ptolemy\cg\kernel\generic\program\procedural\java\type
 
 DIRS =		polymorphic
 
 # Root of the Java directory
-ROOT =		../../../../..
+ROOT =		../../../../../../../../..
 
 CLASSPATH =	$(ROOT)
 
