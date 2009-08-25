@@ -353,7 +353,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         // Include the constantsBlock at the top so that sharedBlocks from
         // actors can use true and false etc.  StringMatches needs this.
         CodeStream sharedStream = new CodeStream(
-                "$CLASSPATH/ptolemy/codegen/c/kernel/SharedCode.c", this);
+                "$CLASSPATH/ptolemy/cg/kernel/generic/program/procedural/c/SharedCode.c", this);
         sharedStream.appendCodeBlock("constantsBlock");
         code.append(sharedStream.toString());
 
@@ -371,7 +371,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         for (int i = 0; i < typesArray.length; i++) {
             // Open the .c file for each type.
             typeStreams[i] = new CodeStream(
-                    "$CLASSPATH/ptolemy/codegen/c/kernel/type/" + typesArray[i]
+                    "$CLASSPATH/ptolemy/cg/kernel/generic/program/procedural/c/type/" + typesArray[i]
                             + ".c", this);
 
             code.append("#define TYPE_" + typesArray[i] + " " + i + _eol);
@@ -856,7 +856,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         super._analyzeTypeConversions();
         _overloadedFunctionSet = new LinkedHashSet<String>();
 
-        String cCodegenPath = "$CLASSPATH/ptolemy/codegen/c/";
+        String cCodegenPath = "$CLASSPATH/ptolemy/cg/kernel/generic/program/procedural/c/";
         String typeDir = cCodegenPath + "kernel/type/";
         String functionDir = typeDir + "polymorphic/";
 
