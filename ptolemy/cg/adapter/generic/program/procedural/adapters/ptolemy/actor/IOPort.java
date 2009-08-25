@@ -152,16 +152,7 @@ public class IOPort extends NamedProgramCodeGeneratorAdapter implements
             return "";
         }
         StringBuffer code = new StringBuffer();
-        // FIXME: Don't know why would a channel have more than one relations
-        // Thus for now to make sure we don't run into such problems, have a check to ensure
-        // this is not true. IF THIS IS TRUE HOWEVER, then the generated code in the receivers would
-        // need to change to ensure no name collisions between multiple receivers within the same 
-        // channel would occur.
-        if (remoteReceivers[channelIndex].length > 1) {
-            throw new IllegalActionException(
-                    "Didn't take care of the case where one channel"
-                            + "has more than one receiver");
-        }
+
         for (int i = 0; i < remoteReceivers[channelIndex].length; i++) {
             code.append(remoteReceivers[channelIndex][i].generatePutCode(
                     (ptolemy.actor.IOPort)this.getComponent(), offset, dataToken));
