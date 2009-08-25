@@ -2,22 +2,18 @@
 $type $actorSymbol(result);
 /**/
 
-/***initSum($type1, $type2)***/
-$actorSymbol(result) = $zero_$cgType(output)();
-/**/
-
-/***minusOnlyInitSum($minusType)***/
+/***initSum()***/
 $actorSymbol(result) = $zero_$cgType(output)();
 /**/
 
 /***plusBlock($channel, $type1, $type2)***/
-if ($hasToken(plus#channel)) {
+if ($hasToken(plus#$channel)) {
     $actorSymbol(result) = $add_$type1_$type2($actorSymbol(result), $get(plus#$channel));
 }
 /**/
 
 /***minusBlock($channel, $type1, $type2)***/
-if ($hasToken(minus#channel)) {
+if ($hasToken(minus#$channel)) {
     $actorSymbol(result) = $subtract_$type1_$type2($actorSymbol(result), $get(minus#$channel));
 }
 /**/
