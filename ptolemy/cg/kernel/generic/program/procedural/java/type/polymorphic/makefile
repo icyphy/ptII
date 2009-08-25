@@ -57,7 +57,8 @@ OTHER_FILES_TO_BE_JARED = \
 	negate.j \
 	print.j \
 	subtract.j \
-	toString.j
+	toString.j \
+	zero.j
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 

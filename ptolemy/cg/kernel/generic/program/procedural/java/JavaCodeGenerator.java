@@ -897,6 +897,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
         _overloadedFunctions.parse(functionDir + "convert.j");
         _overloadedFunctions.parse(functionDir + "print.j");
         _overloadedFunctions.parse(functionDir + "negate.j");
+        _overloadedFunctions.parse(functionDir + "zero.j");
         _overloadedFunctions.parse(typeDir + "Array.j");
         _overloadedFunctions.parse(typeDir + "Boolean.j");
         _overloadedFunctions.parse(typeDir + "Double.j");
