@@ -55,6 +55,7 @@ import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.Workspace;
@@ -163,7 +164,10 @@ public class Display extends AbstractPlaceableActor {
     /** The text area in which the data will be displayed. */
     public transient JTextArea textArea;
 
-    /** The title to put on top. */
+    /** The title to put on top. Note that the value of the title
+     *  overrides the value of the name of the actor or the display
+     *  name of the actor.
+     */
     public StringParameter title;
 
     ///////////////////////////////////////////////////////////////////
@@ -229,6 +233,10 @@ public class Display extends AbstractPlaceableActor {
         } else if (attribute == suppressBlankLines) {
             _suppressBlankLines = ((BooleanToken) suppressBlankLines.getToken())
                     .booleanValue();
+        } else if (attribute == title) {
+            if (_tableau != null) {
+                _tableau.setTitle(title.stringValue());
+            }
         }
     }
 
@@ -432,6 +440,45 @@ public class Display extends AbstractPlaceableActor {
         }
     }
 
+
+    /** Set a name to present to the user.
+     *  <p>If the <i>title</i> parameter is set to the empty string,
+     *  and the Display window has been rendered, then the title of the
+     *  Display window will be updated to the value of the name parameter.</p>
+     *  @param name A name to present to the user.
+     *  @see #getDisplayName()
+     */
+    public void setDisplayName(String name) {
+        super.setDisplayName(name);
+        // See http://bugzilla.ecoinformatics.org/show_bug.cgi?id=4302
+        _setTitle(name);
+    }
+
+    /** Set or change the name.  If a null argument is given the
+     *  name is set to an empty string.
+     *  Increment the version of the workspace.
+     *  This method is write-synchronized on the workspace.
+     *  <p>If the <i>title</i> parameter is set to the empty string,
+     *  and the Display window has been rendered, then the title of the
+     *  Display window will be updated to the value of the name parameter.</p>
+     *  @param name The new name.
+     *  @exception IllegalActionException If the name contains a period
+     *   or if the object is a derived object and the name argument does
+     *   not match the current name.
+     *  @exception NameDuplicationException Not thrown in this base class.
+     *   May be thrown by derived classes if the container already contains
+     *   an object with this name.
+     *  @see #getName()
+     *  @see #getName(NamedObj)
+     *  @see #title
+     */
+    public void setName(String name) throws IllegalActionException,
+            NameDuplicationException {
+        super.setName(name);
+        // See http://bugzilla.ecoinformatics.org/show_bug.cgi?id=4302
+        _setTitle(name);
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
@@ -461,9 +508,9 @@ public class Display extends AbstractPlaceableActor {
                 // to destroy the original window.
                 textEffigy.identifier.setExpression(getFullName());
 
-                DisplayWindowTableau tableau = new DisplayWindowTableau(this,
+                _tableau = new DisplayWindowTableau(this,
                         textEffigy, "tableau");
-                _frame = tableau.frame;
+                _frame = _tableau.frame;
             } catch (Exception ex) {
                 throw new IllegalActionException(this, null, ex,
                         "Error creating effigy and tableau");
@@ -529,6 +576,27 @@ public class Display extends AbstractPlaceableActor {
     protected boolean _suppressBlankLines = false;
 
     ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+    /** Set the title of this window.
+     *  <p>If the <i>title</i> parameter is set to the empty string,
+     *  and the Display window has been rendered, then the title of the
+     *  Display window will be updated to the value of the name parameter.</p>
+     */
+    private void _setTitle(String name) {
+        if (_tableau != null) {
+            try {
+                if (title.stringValue().trim().equals("")) {
+                    _tableau.setTitle(name);
+                }
+            } catch (IllegalActionException ex) {
+                throw new InternalErrorException(this, ex,
+                        "Failed to get the value of the title parameter.");
+            }
+        }
+    }
+
+    ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
     // The container for the text display, if there is one.
     private Container _container;
@@ -541,6 +609,9 @@ public class Display extends AbstractPlaceableActor {
 
     // The scroll pane.
     private JScrollPane _scrollPane;
+
+    /** The version of TextEditorTableau that creates a Display window. */
+    private DisplayWindowTableau _tableau;
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////

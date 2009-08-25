@@ -310,6 +310,46 @@ public class MatrixViewer extends AbstractPlaceableActor {
         }
     }
 
+    /** Set a name to present to the user.
+     *  <p>If the MatrixViewer window has been rendered, then the title of the
+     *  MatrixViewer window will be updated to the value of the name parameter.</p>
+     *  @param name A name to present to the user.
+     *  @see #getDisplayName()
+     */
+    public void setDisplayName(String name) {
+        super.setDisplayName(name);
+        // See http://bugzilla.ecoinformatics.org/show_bug.cgi?id=4302
+        if (_tableau != null) {
+            _tableau.setTitle(name);
+        }
+    }
+
+    /** Set or change the name.  If a null argument is given the
+     *  name is set to an empty string.
+     *  Increment the version of the workspace.
+     *  This method is write-synchronized on the workspace.
+     *  <p>If the MatrixViewer window has been rendered, then the title of the
+     *  MatrixViewer window will be updated to the value of the name parameter.</p>
+     *  @param name The new name.
+     *  @exception IllegalActionException If the name contains a period
+     *   or if the object is a derived object and the name argument does
+     *   not match the current name.
+     *  @exception NameDuplicationException Not thrown in this base class.
+     *   May be thrown by derived classes if the container already contains
+     *   an object with this name.
+     *  @see #getName()
+     *  @see #getName(NamedObj)
+     *  @see #title
+     */
+    public void setName(String name) throws IllegalActionException,
+            NameDuplicationException {
+        super.setName(name);
+        // See http://bugzilla.ecoinformatics.org/show_bug.cgi?id=4302
+        if (_tableau != null) {
+            _tableau.setTitle(name);
+        }
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
