@@ -48,7 +48,8 @@ include $(CONFIG)
 PTPACKAGE = 	java
 PTCLASSJAR =
 
-PTCLASSALLJAR = $(PTPACKAGE).jar
+PTCLASSALLJAR = $(PTPACKAGE).jar \
+	type/type.jar
 
 # Include the .class files from these jars in PTCLASSALLJAR
 # If you change this, change DIRS above
