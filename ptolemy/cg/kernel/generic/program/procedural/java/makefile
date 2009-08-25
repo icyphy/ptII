@@ -33,7 +33,7 @@
 
 ME =		ptolemy/cg/kernel/generic/program/procedural/java
 
-DIRS =		test
+DIRS =		test type
 
 # Root of the Java directory
 ROOT =		../../../../../../..
