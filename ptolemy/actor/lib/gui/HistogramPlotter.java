@@ -273,9 +273,9 @@ public class HistogramPlotter extends PlotterBase {
                 // to destroy the original window.
                 plotEffigy.identifier.setExpression(getFullName());
 
-                PlotWindowTableau tableau = new PlotWindowTableau(plotEffigy,
+                _tableau = new PlotWindowTableau(plotEffigy,
                         "tableau");
-                _frame = tableau.frame;
+                _frame = _tableau.frame;
             } catch (Exception ex) {
                 throw new IllegalActionException(this, null, ex,
                         "Error creating effigy and tableau");

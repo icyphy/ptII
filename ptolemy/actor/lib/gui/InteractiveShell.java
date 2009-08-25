@@ -304,9 +304,9 @@ public class InteractiveShell extends TypedAtomicActor implements Placeable,
                 // to destroy the original window.
                 shellEffigy.identifier.setExpression(getFullName());
 
-                ShellTableau tableau = new ShellTableau(shellEffigy, "tableau");
-                _frame = tableau.frame;
-                shell = tableau.shell;
+                _tableau = new ShellTableau(shellEffigy, "tableau");
+                _frame = _tableau.frame;
+                shell = _tableau.shell;
                 shell.setInterpreter(this);
 
                 // Prevent editing until the first firing.
@@ -407,6 +407,46 @@ public class InteractiveShell extends TypedAtomicActor implements Placeable,
         }
     }
 
+    /** Set a name to present to the user.
+     *  <p>If the Plot window has been rendered, then the title of the
+     *  Plot window will be updated to the value of the name parameter.</p>
+     *  @param name A name to present to the user.
+     *  @see #getDisplayName()
+     */
+    public void setDisplayName(String name) {
+        super.setDisplayName(name);
+        // See http://bugzilla.ecoinformatics.org/show_bug.cgi?id=4302
+        if (_tableau != null) {
+            _tableau.setTitle(name);
+        }
+    }
+
+    /** Set or change the name.  If a null argument is given the
+     *  name is set to an empty string.
+     *  Increment the version of the workspace.
+     *  This method is write-synchronized on the workspace.
+     *  <p>If the Plot window has been rendered, then the title of the
+     *  Plot window will be updated to the value of the name parameter.</p>
+     *  @param name The new name.
+     *  @exception IllegalActionException If the name contains a period
+     *   or if the object is a derived object and the name argument does
+     *   not match the current name.
+     *  @exception NameDuplicationException Not thrown in this base class.
+     *   May be thrown by derived classes if the container already contains
+     *   an object with this name.
+     *  @see #getName()
+     *  @see #getName(NamedObj)
+     *  @see #title
+     */
+    public void setName(String name) throws IllegalActionException,
+            NameDuplicationException {
+        super.setName(name);
+        // See http://bugzilla.ecoinformatics.org/show_bug.cgi?id=4302
+        if (_tableau != null) {
+            _tableau.setTitle(name);
+        }
+    }
+
     /** Specify an output string to be sent. This method
      *  appends the specified string to a queue. Strings
      *  are retrieved from the queue by getOutput().
@@ -481,6 +521,9 @@ public class InteractiveShell extends TypedAtomicActor implements Placeable,
 
     /** Flag indicating that "exit" or "quit" has been entered. */
     private boolean _returnFalseInPostfire = false;
+
+    /** The version of ExpressionShellTableau that creates a Shell window. */
+    private ShellTableau _tableau;
 
     // A specification for the window properties of the frame.
     private WindowPropertiesAttribute _windowProperties;
