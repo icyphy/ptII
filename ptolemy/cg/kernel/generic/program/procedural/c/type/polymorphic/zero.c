@@ -6,7 +6,7 @@ Token zero_Array(Token a) {
 
 /*** zero_Boolean() ***/
 boolean zero_Boolean() {
-        return true;
+        return false;
 }
 /**/
 
