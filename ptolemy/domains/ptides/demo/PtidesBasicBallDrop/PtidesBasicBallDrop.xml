@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="Ball Drop v9" class="ptolemy.actor.TypedCompositeActor">
+<entity name="PtidesBasicBallDrop" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
@@ -12,7 +12,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-40.0, 170.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={83, 13, 1037, 723}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={83, 13, 1036, 729}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[822, 616]">
     </property>
@@ -143,13 +143,13 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 10.0]">
             </property>
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 0, 1192, 623}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={25, 0, 1191, 629}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[977, 516]">
         </property>
         <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
         </property>
-        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{616.1006944444443, -40.1199494949495}">
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{517.5724431818182, -59.2535511363636}">
         </property>
         <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
             <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Simple kinematics model for a dropping ball. Given initial altitude, initial&#10;velocity, and the time at which these values were valid (t0), calculate&#10;the final velocity and time of impact (with respect to global time).&#10;&#10;impactTime = (sqrt(initialVelocity^2 + 2*g*initialAltitude) - initialVelocity) / g&#10;impactVelocity = initialVelocity + g*impactTime&#10;&#10;These equations are effectively calculated by the actor network below.">
@@ -533,7 +533,7 @@
             <link port="AddSubtract.output" relation="relation5"/>
         </entity>
         <entity name="Actual Disc Rate" class="ptolemy.actor.lib.gui.TimedPlotter">
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1441, 17, 508, 348}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={772, 17, 508, 347}, maximized=false}">
             </property>
             <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
             </property>
@@ -544,8 +544,8 @@
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
 <title>Actual Disc Rate</title>
-<xRange min="0.0067042051" max="4.9997324089"/>
-<yRange min="47.122484461680635" max="54.3571100700152"/>
+<xRange min="0.0063661977" max="4.9999255702"/>
+<yRange min="1.1543350692890013" max="51.98635615476978"/>
 </plot>?>
             </configure>
         </entity>
@@ -781,7 +781,7 @@
                     </property>
                 </port>
                 <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1950, 365, 633, 231}, maximized=false}">
+                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={647, 365, 633, 230}, maximized=false}">
                     </property>
                     <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[625, 183]">
                     </property>
@@ -1086,7 +1086,7 @@
     <entity name="Controller" class="ptolemy.actor.TypedCompositeActor">
         <property name="_location" class="ptolemy.kernel.util.Location" value="{225.0, 465.0}">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={184, 191, 1143, 595}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={137, 191, 1142, 601}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[928, 488]">
         </property>
@@ -1133,9 +1133,9 @@
             </property>
         </port>
         <entity name="Disc Kinematics" class="ptolemy.actor.TypedCompositeActor">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{460.0, 25.0}">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[460.0, 25.0]">
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={139, 262, 1108, 457}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={139, 262, 1107, 463}, maximized=false}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[893, 268]">
             </property>
@@ -1207,7 +1207,7 @@
                     <property name="_location" class="ptolemy.kernel.util.Location" value="{45.0, 125.0}">
                     </property>
                 </property>
-                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={312, 196, 815, 507}, maximized=false}">
+                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={312, 196, 814, 513}, maximized=false}">
                 </property>
                 <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
                 </property>
@@ -1598,13 +1598,13 @@
         <entity name="Servo Sensor" class="ptolemy.actor.TypedCompositeActor">
             <property name="_location" class="ptolemy.kernel.util.Location" value="{270.0, 100.0}">
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={194, 35, 1055, 457}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={25, 68, 1054, 463}, maximized=false}">
             </property>
-            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[840, 316]">
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[840, 350]">
             </property>
             <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
             </property>
-            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{480.5994318181818, 158.8923611111111}">
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{480.5994318181818, 175.8923611111111}">
             </property>
             <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
                 <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Convert the servo encoder signal into the absolute disc rate&#10;and angle. Each tick event corresponds to a fractional degree&#10;of rotation; the time delay between these ticks is inversely&#10;proportional to the rate.">
@@ -1614,29 +1614,20 @@
             </property>
             <port name="encoderTick" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[90.0, 190.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[90.0, 180.0]">
                 </property>
                 <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
             </port>
             <port name="discState" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[850.0, 190.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[1060.0, 190.0]">
                 </property>
                 <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
             </port>
-            <entity name="TimeGap" class="ptolemy.domains.de.lib.TimeGap">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[185.0, 190.0]">
-                </property>
-                <port name="input" class="ptolemy.actor.TypedIOPort">
-                    <property name="input"/>
-                    <property name="minDelay" class="ptolemy.data.expr.Parameter" value="{0.0}">
-                    </property>
-                </port>
-            </entity>
             <entity name="MultiplyDivide" class="ptolemy.actor.lib.MultiplyDivide">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[545.0, 180.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[755.0, 180.0]">
                 </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
@@ -1656,7 +1647,7 @@
             <entity name="Integrator" class="ptolemy.actor.lib.Accumulator">
                 <property name="init" class="ptolemy.data.expr.Parameter" value="0">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[565.0, 255.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[775.0, 255.0]">
                 </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -1666,7 +1657,7 @@
                 </port>
             </entity>
             <entity name="RecordAssembler" class="ptolemy.actor.lib.RecordAssembler">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[730.0, 170.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[940.0, 170.0]">
                 </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
@@ -1688,7 +1679,7 @@
             <entity name="Remainder" class="ptolemy.actor.lib.Remainder">
                 <property name="divisor" class="ptolemy.data.expr.Parameter" value="2.0 * pi">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[655.0, 255.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[865.0, 255.0]">
                 </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -1706,12 +1697,57 @@
                     <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
                     </property>
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[365.0, 170.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[575.0, 170.0]">
                 </property>
                 <port name="trigger" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="multiport"/>
                     <property name="minDelay" class="ptolemy.data.expr.Parameter" value="{0.0}">
+                    </property>
+                </port>
+            </entity>
+            <entity name="Register" class="ptolemy.domains.de.lib.Register">
+                <property name="initialValue" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[295.0, 135.0]">
+                </property>
+                <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 1.0, 1.0, 1.0}">
+                </property>
+                <port name="input" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                    <property name="multiport"/>
+                    <property name="minDelay" class="ptolemy.data.expr.Parameter" value="{0.0}">
+                    </property>
+                </port>
+                <port name="trigger" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                    <property name="minDelay" class="ptolemy.data.expr.Parameter" value="{0.0}">
+                    </property>
+                </port>
+            </entity>
+            <entity name="SimulatedPhysicalTime" class="ptolemy.domains.ptides.lib.SimulatedPhysicalTime">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[190.0, 180.0]">
+                </property>
+                <port name="trigger" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                    <property name="multiport"/>
+                    <property name="minDelay" class="ptolemy.data.expr.Parameter" value="{0.0}">
+                    </property>
+                </port>
+            </entity>
+            <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[370.0, 190.0]">
+                </property>
+                <port name="plus" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                    <property name="multiport"/>
+                    <property name="minDelay" class="ptolemy.data.expr.Parameter" value="{0.0}">
+                    </property>
+                </port>
+                <port name="minus" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                    <property name="multiport"/>
+                    <property name="minDelay" class="ptolemy.data.expr.Parameter" value="{Infinity}">
                     </property>
                 </port>
             </entity>
@@ -1726,23 +1762,29 @@
                     <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
                     </property>
                 </property>
-                <vertex name="vertex1" value="[245.0, 190.0]">
+                <vertex name="vertex1" value="[455.0, 190.0]">
                 </vertex>
             </relation>
             <relation name="relation" class="ptolemy.actor.TypedIORelation">
                 <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
                 </property>
-                <vertex name="vertex1" value="[490.0, 170.0]">
+                <vertex name="vertex1" value="[700.0, 170.0]">
                 </vertex>
             </relation>
             <relation name="relation5" class="ptolemy.actor.TypedIORelation">
             </relation>
+            <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="relation10" class="ptolemy.actor.TypedIORelation">
+                <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+                </property>
+                <vertex name="vertex1" value="[255.0, 180.0]">
+                </vertex>
+            </relation>
             <relation name="relation3" class="ptolemy.actor.TypedIORelation">
             </relation>
-            <link port="encoderTick" relation="relation3"/>
+            <link port="encoderTick" relation="relation6"/>
             <link port="discState" relation="relation8"/>
-            <link port="TimeGap.input" relation="relation3"/>
-            <link port="TimeGap.output" relation="relation7"/>
             <link port="MultiplyDivide.multiply" relation="relation"/>
             <link port="MultiplyDivide.divide" relation="relation7"/>
             <link port="MultiplyDivide.output" relation="relation5"/>
@@ -1755,6 +1797,14 @@
             <link port="Remainder.output" relation="relation4"/>
             <link port="rad / tick.output" relation="relation"/>
             <link port="rad / tick.trigger" relation="relation7"/>
+            <link port="Register.input" relation="relation10"/>
+            <link port="Register.output" relation="relation3"/>
+            <link port="Register.trigger" relation="relation10"/>
+            <link port="SimulatedPhysicalTime.output" relation="relation10"/>
+            <link port="SimulatedPhysicalTime.trigger" relation="relation6"/>
+            <link port="AddSubtract.plus" relation="relation10"/>
+            <link port="AddSubtract.minus" relation="relation3"/>
+            <link port="AddSubtract.output" relation="relation7"/>
         </entity>
         <entity name="Disc Control" class="ptolemy.actor.TypedCompositeActor">
             <property name="_location" class="ptolemy.kernel.util.Location" value="{655.0, 35.0}">
@@ -2162,6 +2212,12 @@
                 </port>
             </entity>
             <entity name="Const" class="ptolemy.actor.lib.Const">
+                <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                    <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+                    </property>
+                    <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+                    </property>
+                </property>
                 <port name="trigger" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="multiport"/>
@@ -2210,7 +2266,7 @@
         <link port="Ball Kinematics.impactEvent" relation="relation3"/>
     </entity>
     <entity name="Control Signal" class="ptolemy.actor.lib.gui.TimedScope">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1441, 364, 495, 320}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={785, 364, 495, 319}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[487, 272]">
         </property>
@@ -2221,15 +2277,15 @@
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
 <title>Control Signal</title>
-<xRange min="0.0067042051" max="4.9997324089"/>
-<yRange min="48.04948483961992" max="55.45140638085831"/>
+<xRange min="0.0063661977" max="4.9999255702"/>
+<yRange min="0.23301106572018943" max="53.03886867377944"/>
 <wrap/>
 <default marks="pixels"/>
 </plot>?>
         </configure>
     </entity>
     <entity name="Disc Angle Error" class="ptolemy.actor.lib.gui.TimedPlotter">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1949, 19, 508, 348}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={772, 19, 508, 347}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
         </property>
@@ -2240,8 +2296,8 @@
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
 <title>Disc Angle Error</title>
-<xRange min="0.0067042051" max="4.9997324089"/>
-<yRange min="-2.300266230655218" max="0.9268898628284461"/>
+<xRange min="0.0063661977" max="4.9999255702"/>
+<yRange min="-2.5109807037409553" max="3.1159017890617697"/>
 </plot>?>
         </configure>
     </entity>
