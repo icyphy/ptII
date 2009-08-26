@@ -20,13 +20,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, -110.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={122, 22, 1286, 874}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={50, 22, 1286, 874}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1073, 764]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.7988302469388">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.7139055222888">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{545.607017956479, 339.8007812499999}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{638.5, 396.686371446878}">
     </property>
     <property name="inrange" class="ptolemy.data.expr.Parameter" value="200.0">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -123,6 +123,34 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-110.0, 770.0]">
         </property>
     </property>
+    <property name="Ellipse8" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{910.0, 500.0}">
+        </property>
+        <property name="width" class="ptolemy.data.expr.Parameter" value="2*inrange">
+        </property>
+        <property name="height" class="ptolemy.data.expr.Parameter" value="2*inrange">
+        </property>
+        <property name="_renderFirst" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+    </property>
+    <property name="Ellipse9" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{910.0, 500.0}">
+        </property>
+        <property name="width" class="ptolemy.data.expr.Parameter" value="2*inrange">
+        </property>
+        <property name="height" class="ptolemy.data.expr.Parameter" value="2*inrange">
+        </property>
+        <property name="_renderFirst" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="For testing purposes, we pull replace the SeqN value with 666&#10;because SeqN is incremented each time the model is run.&#10;">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[470.0, -70.0]">
+        </property>
+    </property>
     <entity name="SingleEvent" class="ptolemy.domains.de.lib.SingleEvent">
         <property name="time" class="ptolemy.data.expr.Parameter" value="0.1">
         </property>
@@ -167,14 +195,6 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[695.0, 335.0]">
         </property>
     </entity>
-    <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={11, 100, 1025, 225}, maximized=false}">
-        </property>
-        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[1025, 181]">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[1150.0, 110.0]">
-        </property>
-    </entity>
     <entity name="canal" class="ptolemy.domains.wireless.lib.PowerLossChannel">
         <property name="defaultProperties" class="ptolemy.data.expr.Parameter" value="{range = 200, power = Infinity}">
         </property>
@@ -190,7 +210,7 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[765.0, 425.0]">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1, 0, 1278, 993}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1, 22, 1276, 874}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1063, 883]">
         </property>
@@ -202,7 +222,7 @@
         </property>
         <property name="NodeId" class="ptolemy.data.expr.Parameter" value="3">
         </property>
-        <property name="SeqN" class="ptolemy.data.expr.Parameter" value="63">
+        <property name="SeqN" class="ptolemy.data.expr.Parameter" value="22">
         </property>
         <property name="inrange" class="ptolemy.data.expr.Parameter" value="200.0">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -549,8 +569,8 @@
                 <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
                     <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="MsgId">
                     </property>
-		    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
-		    </property>
+                    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
                     <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
                         </property>
@@ -1041,8 +1061,8 @@
                 <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
                     <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="Table">
                     </property>
-		    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
-		    </property>
+                    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
                     <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
                         </property>
@@ -1531,8 +1551,8 @@
                 <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
                     <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="ActiveREQ">
                     </property>
-		    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
-		    </property>
+                    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
                     <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
                         </property>
@@ -1633,8 +1653,8 @@
                 <entity name="SetVariable2" class="ptolemy.actor.lib.SetVariable">
                     <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="Table">
                     </property>
-		    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
-		    </property>
+                    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
                     <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
                         </property>
@@ -2257,8 +2277,8 @@
                 <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
                     <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="ActiveREQ">
                     </property>
-		    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
-		    </property>
+                    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
                     <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
                         </property>
@@ -2292,8 +2312,8 @@
                 <entity name="SetVariable2" class="ptolemy.actor.lib.SetVariable">
                     <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="Table">
                     </property>
-		    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
-		    </property>
+                    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
                     <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
                         </property>
@@ -2471,8 +2491,8 @@
                 <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
                     <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="MsgId">
                     </property>
-		    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
-		    </property>
+                    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
                     <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
                         </property>
@@ -2511,8 +2531,8 @@
                 <entity name="SetVariable2" class="ptolemy.actor.lib.SetVariable">
                     <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="Table">
                     </property>
-		    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
-		    </property>
+                    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
                     <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
                         </property>
@@ -2525,8 +2545,8 @@
                 <entity name="SetVariable3" class="ptolemy.actor.lib.SetVariable">
                     <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="ActiveREQ">
                     </property>
-		    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
-		    </property>
+                    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
                     <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
                         </property>
@@ -2678,14 +2698,6 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[-1320.0, -650.0]">
             </property>
         </entity>
-        <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={515, 340, 128, 339}, maximized=false}">
-            </property>
-            <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[128, 295]">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[-1360.0, -840.0]">
-            </property>
-        </entity>
         <entity name="Const" class="ptolemy.actor.lib.Const">
             <property name="value" class="ptolemy.data.expr.Parameter" value="SeqN">
             </property>
@@ -2719,8 +2731,8 @@
         <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
             <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="SeqN">
             </property>
-		    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
-		    </property>
+            <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
             <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                 <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
                 </property>
@@ -2728,6 +2740,12 @@
                 </property>
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[-1155.0, -705.0]">
+            </property>
+        </entity>
+        <entity name="Test" class="ptolemy.actor.lib.Test">
+            <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0, 2, 0, 1, 0}">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{-1180, -855}">
             </property>
         </entity>
         <relation name="relation2" class="ptolemy.actor.TypedIORelation">
@@ -2742,10 +2760,6 @@
             <vertex name="vertex1" value="[-1605.0, -700.0]">
             </vertex>
         </relation>
-        <relation name="relation" class="ptolemy.actor.TypedIORelation">
-            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-            </property>
-        </relation>
         <relation name="relation4" class="ptolemy.actor.TypedIORelation">
             <property name="width" class="ptolemy.data.expr.Parameter" value="1">
             </property>
@@ -2754,28 +2768,30 @@
             <property name="width" class="ptolemy.data.expr.Parameter" value="1">
             </property>
         </relation>
+        <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+        </relation>
         <link port="CommOut" relation="relation2"/>
         <link port="ComIn" relation="relation3"/>
         <link port="ModalModel.CommIn" relation="relation3"/>
-        <link port="ModalModel.NextState" relation="relation"/>
+        <link port="ModalModel.NextState" relation="relation6"/>
         <link port="ModalModel.Comm" relation="relation2"/>
         <link port="MonitorValue.input" relation="relation3"/>
         <link port="MonitorValue2.input" relation="relation2"/>
-        <link port="Display.input" relation="relation"/>
         <link port="Const.output" relation="relation4"/>
         <link port="Const.trigger" relation="relation2"/>
         <link port="Expression.output" relation="relation5"/>
         <link port="Expression.i" relation="relation4"/>
         <link port="SetVariable.input" relation="relation5"/>
+        <link port="Test.input" relation="relation6"/>
     </entity>
     <entity name="WirelessComposite" class="ptolemy.domains.wireless.kernel.WirelessComposite">
         <property name="DEDirector" class="ptolemy.domains.de.kernel.DEDirector">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[-1710.0, -1070.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{-1710.0, -1070.0}">
             </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[635.0, 380.0]">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1, 0, 1278, 993}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1, 22, 1276, 874}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1063, 883]">
         </property>
@@ -2787,7 +2803,7 @@
         </property>
         <property name="NodeId" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <property name="SeqN" class="ptolemy.data.expr.Parameter" value="63">
+        <property name="SeqN" class="ptolemy.data.expr.Parameter" value="22">
         </property>
         <property name="inrange" class="ptolemy.data.expr.Parameter" value="200.0">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -2805,7 +2821,7 @@
             </property>
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[-1425.0, -900.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{-1425.0, -900.0}">
             </property>
         </property>
         <property name="Table" class="ptolemy.data.expr.Parameter" value="{{Dest = 0, Next = 0, NoH = 0, SeqN = 0}, {Dest = 12, Next = 27, NoH = 5, SeqN = 1}, {Dest = 27, Next = 27, NoH = 1, SeqN = 1}}">
@@ -2824,7 +2840,7 @@
             </property>
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[-1725.0, -970.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{-1725.0, -970.0}">
             </property>
         </property>
         <property name="ActiveREQ" class="ptolemy.data.expr.Parameter" value="{{IdReq = 0, Requester = 0, Responder = 0}, {IdReq = 10, Requester = 12, Responder = 6}}">
@@ -2837,7 +2853,7 @@
             </property>
             <property name="insideChannel" class="ptolemy.data.expr.StringParameter" value="">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[-1140.0, -745.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{-1140.0, -745.0}">
             </property>
         </port>
         <port name="ComIn" class="ptolemy.domains.wireless.kernel.WirelessIOPort">
@@ -2848,7 +2864,7 @@
             </property>
             <property name="insideChannel" class="ptolemy.data.expr.StringParameter" value="">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[-1730.0, -700.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{-1730.0, -700.0}">
             </property>
         </port>
         <entity name="ModalModel" class="ptolemy.domains.fsm.modal.ModalModel">
@@ -3134,8 +3150,8 @@
                 <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
                     <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="MsgId">
                     </property>
-		    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
-		    </property>
+                    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
                     <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
                         </property>
@@ -3626,8 +3642,8 @@
                 <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
                     <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="Table">
                     </property>
-		    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
-		    </property>
+                    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
                     <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
                         </property>
@@ -4116,8 +4132,8 @@
                 <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
                     <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="ActiveREQ">
                     </property>
-		    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
-		    </property>
+                    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
                     <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
                         </property>
@@ -4218,8 +4234,8 @@
                 <entity name="SetVariable2" class="ptolemy.actor.lib.SetVariable">
                     <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="Table">
                     </property>
-		    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
-		    </property>
+                    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
                     <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
                         </property>
@@ -4842,8 +4858,8 @@
                 <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
                     <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="ActiveREQ">
                     </property>
-		    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
-		    </property>
+                    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
                     <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
                         </property>
@@ -4877,8 +4893,8 @@
                 <entity name="SetVariable2" class="ptolemy.actor.lib.SetVariable">
                     <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="Table">
                     </property>
-		    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
-		    </property>
+                    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
                     <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
                         </property>
@@ -5056,8 +5072,8 @@
                 <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
                     <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="MsgId">
                     </property>
-		    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
-		    </property>
+                    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
                     <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
                         </property>
@@ -5096,8 +5112,8 @@
                 <entity name="SetVariable2" class="ptolemy.actor.lib.SetVariable">
                     <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="Table">
                     </property>
-		    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
-		    </property>
+                    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
                     <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
                         </property>
@@ -5110,8 +5126,8 @@
                 <entity name="SetVariable3" class="ptolemy.actor.lib.SetVariable">
                     <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="ActiveREQ">
                     </property>
-		    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
-		    </property>
+                    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
                     <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
                         </property>
@@ -5247,7 +5263,7 @@
                 <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="displayWidth">
                 </property>
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[-1495.0, -570.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{-1495.0, -570.0}">
             </property>
         </entity>
         <entity name="MonitorValue2" class="ptolemy.actor.lib.MonitorValue">
@@ -5260,15 +5276,7 @@
                 <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="displayWidth">
                 </property>
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[-1320.0, -650.0]">
-            </property>
-        </entity>
-        <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={161, 343, 128, 320}, maximized=false}">
-            </property>
-            <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[128, 276]">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[-1360.0, -840.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{-1320.0, -650.0}">
             </property>
         </entity>
         <entity name="Const" class="ptolemy.actor.lib.Const">
@@ -5281,7 +5289,7 @@
                 <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
                 </property>
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{-1295, -705}">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{-1295.0, -705.0}">
             </property>
         </entity>
         <entity name="Expression" class="ptolemy.actor.lib.Expression">
@@ -5295,7 +5303,7 @@
                 <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
                 </property>
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[-1235.0, -705.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{-1235.0, -705.0}">
             </property>
             <port name="i" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -5304,32 +5312,36 @@
         <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
             <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="SeqN">
             </property>
-		    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
-		    </property>
+            <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
             <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                 <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
                 </property>
                 <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
                 </property>
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[-1155.0, -705.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{-1155.0, -705.0}">
+            </property>
+        </entity>
+        <entity name="Test" class="ptolemy.actor.lib.Test">
+            <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0, 2, 0, 1, 0}">
+            </property>
+            <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{-1065.0, -840.0}">
             </property>
         </entity>
         <relation name="relation2" class="ptolemy.actor.TypedIORelation">
             <property name="width" class="ptolemy.data.expr.Parameter" value="1">
             </property>
-            <vertex name="vertex1" value="[-1465.0, -745.0]">
+            <vertex name="vertex1" value="{-1465.0, -745.0}">
             </vertex>
         </relation>
         <relation name="relation3" class="ptolemy.actor.TypedIORelation">
             <property name="width" class="ptolemy.data.expr.Parameter" value="1">
             </property>
-            <vertex name="vertex1" value="[-1605.0, -700.0]">
+            <vertex name="vertex1" value="{-1605.0, -700.0}">
             </vertex>
-        </relation>
-        <relation name="relation" class="ptolemy.actor.TypedIORelation">
-            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-            </property>
         </relation>
         <relation name="relation4" class="ptolemy.actor.TypedIORelation">
             <property name="width" class="ptolemy.data.expr.Parameter" value="1">
@@ -5339,19 +5351,21 @@
             <property name="width" class="ptolemy.data.expr.Parameter" value="1">
             </property>
         </relation>
+        <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+        </relation>
         <link port="CommOut" relation="relation2"/>
         <link port="ComIn" relation="relation3"/>
         <link port="ModalModel.CommIn" relation="relation3"/>
-        <link port="ModalModel.NextState" relation="relation"/>
+        <link port="ModalModel.NextState" relation="relation6"/>
         <link port="ModalModel.Comm" relation="relation2"/>
         <link port="MonitorValue.input" relation="relation3"/>
         <link port="MonitorValue2.input" relation="relation2"/>
-        <link port="Display.input" relation="relation"/>
         <link port="Const.output" relation="relation4"/>
         <link port="Const.trigger" relation="relation2"/>
         <link port="Expression.output" relation="relation5"/>
         <link port="Expression.i" relation="relation4"/>
         <link port="SetVariable.input" relation="relation5"/>
+        <link port="Test.input" relation="relation6"/>
     </entity>
     <entity name="WirelessComposite3" class="ptolemy.domains.wireless.kernel.WirelessComposite">
         <property name="DEDirector" class="ptolemy.domains.de.kernel.DEDirector">
@@ -5360,7 +5374,7 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[805.0, 555.0]">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1, 0, 1278, 993}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1, 22, 1276, 874}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1063, 883]">
         </property>
@@ -5372,7 +5386,7 @@
         </property>
         <property name="NodeId" class="ptolemy.data.expr.Parameter" value="4">
         </property>
-        <property name="SeqN" class="ptolemy.data.expr.Parameter" value="63">
+        <property name="SeqN" class="ptolemy.data.expr.Parameter" value="22">
         </property>
         <property name="inrange" class="ptolemy.data.expr.Parameter" value="200.0">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -5719,8 +5733,8 @@
                 <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
                     <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="MsgId">
                     </property>
-		    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
-		    </property>
+                    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
                     <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
                         </property>
@@ -6211,8 +6225,8 @@
                 <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
                     <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="Table">
                     </property>
-		    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
-		    </property>
+                    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
                     <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
                         </property>
@@ -6701,8 +6715,8 @@
                 <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
                     <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="ActiveREQ">
                     </property>
-		    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
-		    </property>
+                    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
                     <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
                         </property>
@@ -6803,8 +6817,8 @@
                 <entity name="SetVariable2" class="ptolemy.actor.lib.SetVariable">
                     <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="Table">
                     </property>
-		    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
-		    </property>
+                    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
                     <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
                         </property>
@@ -7427,8 +7441,8 @@
                 <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
                     <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="ActiveREQ">
                     </property>
-		    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
-		    </property>
+                    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
                     <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
                         </property>
@@ -7462,8 +7476,8 @@
                 <entity name="SetVariable2" class="ptolemy.actor.lib.SetVariable">
                     <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="Table">
                     </property>
-		    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
-		    </property>
+                    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
                     <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
                         </property>
@@ -7641,8 +7655,8 @@
                 <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
                     <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="MsgId">
                     </property>
-		    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
-		    </property>
+                    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
                     <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
                         </property>
@@ -7681,8 +7695,8 @@
                 <entity name="SetVariable2" class="ptolemy.actor.lib.SetVariable">
                     <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="Table">
                     </property>
-		    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
-		    </property>
+                    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
                     <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
                         </property>
@@ -7695,8 +7709,8 @@
                 <entity name="SetVariable3" class="ptolemy.actor.lib.SetVariable">
                     <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="ActiveREQ">
                     </property>
-		    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
-		    </property>
+                    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
                     <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
                         </property>
@@ -7848,14 +7862,6 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[-1320.0, -650.0]">
             </property>
         </entity>
-        <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={634, 340, 128, 332}, maximized=false}">
-            </property>
-            <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[128, 288]">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[-1360.0, -840.0]">
-            </property>
-        </entity>
         <entity name="Const" class="ptolemy.actor.lib.Const">
             <property name="value" class="ptolemy.data.expr.Parameter" value="SeqN">
             </property>
@@ -7889,8 +7895,8 @@
         <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
             <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="SeqN">
             </property>
-		    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
-		    </property>
+            <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
             <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                 <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
                 </property>
@@ -7898,6 +7904,12 @@
                 </property>
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[-1155.0, -705.0]">
+            </property>
+        </entity>
+        <entity name="Test" class="ptolemy.actor.lib.Test">
+            <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0, 2, 0, 1, 0}">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{-1245, -835}">
             </property>
         </entity>
         <relation name="relation2" class="ptolemy.actor.TypedIORelation">
@@ -7912,10 +7924,6 @@
             <vertex name="vertex1" value="[-1605.0, -700.0]">
             </vertex>
         </relation>
-        <relation name="relation" class="ptolemy.actor.TypedIORelation">
-            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-            </property>
-        </relation>
         <relation name="relation4" class="ptolemy.actor.TypedIORelation">
             <property name="width" class="ptolemy.data.expr.Parameter" value="1">
             </property>
@@ -7924,6 +7932,8 @@
             <property name="width" class="ptolemy.data.expr.Parameter" value="1">
             </property>
         </relation>
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        </relation>
         <link port="CommOut" relation="relation2"/>
         <link port="ComIn" relation="relation3"/>
         <link port="ModalModel.CommIn" relation="relation3"/>
@@ -7931,12 +7941,12 @@
         <link port="ModalModel.Comm" relation="relation2"/>
         <link port="MonitorValue.input" relation="relation3"/>
         <link port="MonitorValue2.input" relation="relation2"/>
-        <link port="Display.input" relation="relation"/>
         <link port="Const.output" relation="relation4"/>
         <link port="Const.trigger" relation="relation2"/>
         <link port="Expression.output" relation="relation5"/>
         <link port="Expression.i" relation="relation4"/>
         <link port="SetVariable.input" relation="relation5"/>
+        <link port="Test.input" relation="relation"/>
     </entity>
     <entity name="WirelessComposite4" class="ptolemy.domains.wireless.kernel.WirelessComposite">
         <property name="DEDirector" class="ptolemy.domains.de.kernel.DEDirector">
@@ -7945,7 +7955,7 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[900.0, 480.0]">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1, 0, 1278, 993}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1, 22, 1276, 874}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1063, 883]">
         </property>
@@ -7957,7 +7967,7 @@
         </property>
         <property name="NodeId" class="ptolemy.data.expr.Parameter" value="5">
         </property>
-        <property name="SeqN" class="ptolemy.data.expr.Parameter" value="63">
+        <property name="SeqN" class="ptolemy.data.expr.Parameter" value="22">
         </property>
         <property name="inrange" class="ptolemy.data.expr.Parameter" value="200.0">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -8304,8 +8314,8 @@
                 <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
                     <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="MsgId">
                     </property>
-		    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
-		    </property>
+                    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
                     <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
                         </property>
@@ -8796,8 +8806,8 @@
                 <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
                     <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="Table">
                     </property>
-		    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
-		    </property>
+                    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
                     <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
                         </property>
@@ -9286,8 +9296,8 @@
                 <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
                     <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="ActiveREQ">
                     </property>
-		    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
-		    </property>
+                    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
                     <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
                         </property>
@@ -9388,8 +9398,8 @@
                 <entity name="SetVariable2" class="ptolemy.actor.lib.SetVariable">
                     <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="Table">
                     </property>
-		    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
-		    </property>
+                    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
                     <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
                         </property>
@@ -10012,8 +10022,8 @@
                 <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
                     <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="ActiveREQ">
                     </property>
-		    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
-		    </property>
+                    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
                     <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
                         </property>
@@ -10047,8 +10057,8 @@
                 <entity name="SetVariable2" class="ptolemy.actor.lib.SetVariable">
                     <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="Table">
                     </property>
-		    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
-		    </property>
+                    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
                     <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
                         </property>
@@ -10226,8 +10236,8 @@
                 <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
                     <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="MsgId">
                     </property>
-		    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
-		    </property>
+                    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
                     <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
                         </property>
@@ -10266,8 +10276,8 @@
                 <entity name="SetVariable2" class="ptolemy.actor.lib.SetVariable">
                     <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="Table">
                     </property>
-		    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
-		    </property>
+                    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
                     <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
                         </property>
@@ -10280,8 +10290,8 @@
                 <entity name="SetVariable3" class="ptolemy.actor.lib.SetVariable">
                     <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="ActiveREQ">
                     </property>
-		    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
-		    </property>
+                    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
                     <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
                         </property>
@@ -10433,14 +10443,6 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[-1320.0, -650.0]">
             </property>
         </entity>
-        <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={42, 343, 128, 337}, maximized=false}">
-            </property>
-            <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[128, 293]">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[-1360.0, -840.0]">
-            </property>
-        </entity>
         <entity name="Const" class="ptolemy.actor.lib.Const">
             <property name="value" class="ptolemy.data.expr.Parameter" value="SeqN">
             </property>
@@ -10474,8 +10476,8 @@
         <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
             <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="SeqN">
             </property>
-		    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
-		    </property>
+            <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
             <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                 <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
                 </property>
@@ -10483,6 +10485,12 @@
                 </property>
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[-1155.0, -705.0]">
+            </property>
+        </entity>
+        <entity name="Test" class="ptolemy.actor.lib.Test">
+            <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0, 2, 0, 1, 0}">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{-1205, -800}">
             </property>
         </entity>
         <relation name="relation2" class="ptolemy.actor.TypedIORelation">
@@ -10497,10 +10505,6 @@
             <vertex name="vertex1" value="[-1605.0, -700.0]">
             </vertex>
         </relation>
-        <relation name="relation" class="ptolemy.actor.TypedIORelation">
-            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-            </property>
-        </relation>
         <relation name="relation4" class="ptolemy.actor.TypedIORelation">
             <property name="width" class="ptolemy.data.expr.Parameter" value="1">
             </property>
@@ -10509,28 +10513,30 @@
             <property name="width" class="ptolemy.data.expr.Parameter" value="1">
             </property>
         </relation>
+        <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+        </relation>
         <link port="CommOut" relation="relation2"/>
         <link port="ComIn" relation="relation3"/>
         <link port="ModalModel.CommIn" relation="relation3"/>
-        <link port="ModalModel.NextState" relation="relation"/>
+        <link port="ModalModel.NextState" relation="relation6"/>
         <link port="ModalModel.Comm" relation="relation2"/>
         <link port="MonitorValue.input" relation="relation3"/>
         <link port="MonitorValue2.input" relation="relation2"/>
-        <link port="Display.input" relation="relation"/>
         <link port="Const.output" relation="relation4"/>
         <link port="Const.trigger" relation="relation2"/>
         <link port="Expression.output" relation="relation5"/>
         <link port="Expression.i" relation="relation4"/>
         <link port="SetVariable.input" relation="relation5"/>
+        <link port="Test.input" relation="relation6"/>
     </entity>
     <entity name="WirelessComposite6" class="ptolemy.domains.wireless.kernel.WirelessComposite">
         <property name="DEDirector" class="ptolemy.domains.de.kernel.DEDirector">
             <property name="_location" class="ptolemy.kernel.util.Location" value="[-1710.0, -1070.0]">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[960.0, 615.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[960.0, 610.0]">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1, 0, 1278, 993}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1, 22, 1276, 874}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1063, 883]">
         </property>
@@ -10542,7 +10548,7 @@
         </property>
         <property name="NodeId" class="ptolemy.data.expr.Parameter" value="6">
         </property>
-        <property name="SeqN" class="ptolemy.data.expr.Parameter" value="58">
+        <property name="SeqN" class="ptolemy.data.expr.Parameter" value="22">
         </property>
         <property name="inrange" class="ptolemy.data.expr.Parameter" value="200.0">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -10889,8 +10895,8 @@
                 <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
                     <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="MsgId">
                     </property>
-		    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
-		    </property>
+                    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
                     <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
                         </property>
@@ -11381,8 +11387,8 @@
                 <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
                     <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="Table">
                     </property>
-		    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
-		    </property>
+                    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
                     <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
                         </property>
@@ -11871,8 +11877,8 @@
                 <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
                     <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="ActiveREQ">
                     </property>
-		    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
-		    </property>
+                    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
                     <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
                         </property>
@@ -11973,8 +11979,8 @@
                 <entity name="SetVariable2" class="ptolemy.actor.lib.SetVariable">
                     <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="Table">
                     </property>
-		    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
-		    </property>
+                    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
                     <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
                         </property>
@@ -12597,8 +12603,8 @@
                 <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
                     <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="ActiveREQ">
                     </property>
-		    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
-		    </property>
+                    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
                     <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
                         </property>
@@ -12632,8 +12638,8 @@
                 <entity name="SetVariable2" class="ptolemy.actor.lib.SetVariable">
                     <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="Table">
                     </property>
-		    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
-		    </property>
+                    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
                     <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
                         </property>
@@ -12811,8 +12817,8 @@
                 <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
                     <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="MsgId">
                     </property>
-		    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
-		    </property>
+                    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
                     <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
                         </property>
@@ -12851,8 +12857,8 @@
                 <entity name="SetVariable2" class="ptolemy.actor.lib.SetVariable">
                     <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="Table">
                     </property>
-		    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
-		    </property>
+                    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
                     <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
                         </property>
@@ -12865,8 +12871,8 @@
                 <entity name="SetVariable3" class="ptolemy.actor.lib.SetVariable">
                     <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="ActiveREQ">
                     </property>
-		    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
-		    </property>
+                    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
                     <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
                         </property>
@@ -13018,14 +13024,6 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[-1320.0, -650.0]">
             </property>
         </entity>
-        <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={279, 343, 128, 323}, maximized=false}">
-            </property>
-            <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[128, 279]">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[-1360.0, -840.0]">
-            </property>
-        </entity>
         <entity name="Const" class="ptolemy.actor.lib.Const">
             <property name="value" class="ptolemy.data.expr.Parameter" value="SeqN">
             </property>
@@ -13059,8 +13057,8 @@
         <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
             <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="SeqN">
             </property>
-		    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
-		    </property>
+            <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
             <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                 <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
                 </property>
@@ -13068,6 +13066,12 @@
                 </property>
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[-1155.0, -705.0]">
+            </property>
+        </entity>
+        <entity name="Test" class="ptolemy.actor.lib.Test">
+            <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0, 2, 0, 2, 0}">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{-1220, -825}">
             </property>
         </entity>
         <relation name="relation2" class="ptolemy.actor.TypedIORelation">
@@ -13082,10 +13086,6 @@
             <vertex name="vertex1" value="[-1605.0, -700.0]">
             </vertex>
         </relation>
-        <relation name="relation" class="ptolemy.actor.TypedIORelation">
-            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-            </property>
-        </relation>
         <relation name="relation4" class="ptolemy.actor.TypedIORelation">
             <property name="width" class="ptolemy.data.expr.Parameter" value="1">
             </property>
@@ -13094,19 +13094,21 @@
             <property name="width" class="ptolemy.data.expr.Parameter" value="1">
             </property>
         </relation>
+        <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+        </relation>
         <link port="CommOut" relation="relation2"/>
         <link port="ComIn" relation="relation3"/>
         <link port="ModalModel.CommIn" relation="relation3"/>
-        <link port="ModalModel.NextState" relation="relation"/>
+        <link port="ModalModel.NextState" relation="relation6"/>
         <link port="ModalModel.Comm" relation="relation2"/>
         <link port="MonitorValue.input" relation="relation3"/>
         <link port="MonitorValue2.input" relation="relation2"/>
-        <link port="Display.input" relation="relation"/>
         <link port="Const.output" relation="relation4"/>
         <link port="Const.trigger" relation="relation2"/>
         <link port="Expression.output" relation="relation5"/>
         <link port="Expression.i" relation="relation4"/>
         <link port="SetVariable.input" relation="relation5"/>
+        <link port="Test.input" relation="relation6"/>
     </entity>
     <entity name="WirelessToWired2" class="ptolemy.domains.wireless.lib.WirelessToWired">
         <property name="inputChannelName" class="ptolemy.data.expr.StringParameter" value="canal">
@@ -13133,7 +13135,7 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[730.0, 265.0]">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1, 0, 1278, 993}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1, 22, 1276, 874}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1063, 883]">
         </property>
@@ -13145,7 +13147,7 @@
         </property>
         <property name="NodeId" class="ptolemy.data.expr.Parameter" value="5">
         </property>
-        <property name="SeqN" class="ptolemy.data.expr.Parameter" value="63">
+        <property name="SeqN" class="ptolemy.data.expr.Parameter" value="22">
         </property>
         <property name="inrange" class="ptolemy.data.expr.Parameter" value="200.0">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -13492,8 +13494,8 @@
                 <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
                     <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="MsgId">
                     </property>
-		    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
-		    </property>
+                    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
                     <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
                         </property>
@@ -13984,8 +13986,8 @@
                 <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
                     <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="Table">
                     </property>
-		    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
-		    </property>
+                    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
                     <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
                         </property>
@@ -14474,8 +14476,8 @@
                 <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
                     <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="ActiveREQ">
                     </property>
-		    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
-		    </property>
+                    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
                     <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
                         </property>
@@ -14576,8 +14578,8 @@
                 <entity name="SetVariable2" class="ptolemy.actor.lib.SetVariable">
                     <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="Table">
                     </property>
-		    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
-		    </property>
+                    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
                     <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
                         </property>
@@ -15200,8 +15202,8 @@
                 <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
                     <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="ActiveREQ">
                     </property>
-		    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
-		    </property>
+                    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
                     <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
                         </property>
@@ -15235,8 +15237,8 @@
                 <entity name="SetVariable2" class="ptolemy.actor.lib.SetVariable">
                     <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="Table">
                     </property>
-		    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
-		    </property>
+                    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
                     <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
                         </property>
@@ -15414,8 +15416,8 @@
                 <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
                     <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="MsgId">
                     </property>
-		    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
-		    </property>
+                    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
                     <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
                         </property>
@@ -15454,8 +15456,8 @@
                 <entity name="SetVariable2" class="ptolemy.actor.lib.SetVariable">
                     <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="Table">
                     </property>
-		    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
-		    </property>
+                    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
                     <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
                         </property>
@@ -15468,8 +15470,8 @@
                 <entity name="SetVariable3" class="ptolemy.actor.lib.SetVariable">
                     <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="ActiveREQ">
                     </property>
-		    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
-		    </property>
+                    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
                     <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
                         </property>
@@ -15621,14 +15623,6 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[-1320.0, -650.0]">
             </property>
         </entity>
-        <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={161, 343, 128, 320}, maximized=false}">
-            </property>
-            <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[128, 276]">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[-1360.0, -840.0]">
-            </property>
-        </entity>
         <entity name="Const" class="ptolemy.actor.lib.Const">
             <property name="value" class="ptolemy.data.expr.Parameter" value="SeqN">
             </property>
@@ -15662,8 +15656,8 @@
         <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
             <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="SeqN">
             </property>
-		    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
-		    </property>
+            <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
             <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                 <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
                 </property>
@@ -15671,6 +15665,14 @@
                 </property>
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[-1155.0, -705.0]">
+            </property>
+        </entity>
+        <entity name="Test" class="ptolemy.actor.lib.Test">
+            <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0, 2, 0, 1, 0}">
+            </property>
+            <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{-1250.0, -830.0}">
             </property>
         </entity>
         <relation name="relation2" class="ptolemy.actor.TypedIORelation">
@@ -15685,10 +15687,6 @@
             <vertex name="vertex1" value="[-1605.0, -700.0]">
             </vertex>
         </relation>
-        <relation name="relation" class="ptolemy.actor.TypedIORelation">
-            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-            </property>
-        </relation>
         <relation name="relation4" class="ptolemy.actor.TypedIORelation">
             <property name="width" class="ptolemy.data.expr.Parameter" value="1">
             </property>
@@ -15697,19 +15695,165 @@
             <property name="width" class="ptolemy.data.expr.Parameter" value="1">
             </property>
         </relation>
+        <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+        </relation>
         <link port="CommOut" relation="relation2"/>
         <link port="ComIn" relation="relation3"/>
         <link port="ModalModel.CommIn" relation="relation3"/>
-        <link port="ModalModel.NextState" relation="relation"/>
+        <link port="ModalModel.NextState" relation="relation6"/>
         <link port="ModalModel.Comm" relation="relation2"/>
         <link port="MonitorValue.input" relation="relation3"/>
         <link port="MonitorValue2.input" relation="relation2"/>
-        <link port="Display.input" relation="relation"/>
         <link port="Const.output" relation="relation4"/>
         <link port="Const.trigger" relation="relation2"/>
         <link port="Expression.output" relation="relation5"/>
         <link port="Expression.i" relation="relation4"/>
         <link port="SetVariable.input" relation="relation5"/>
+        <link port="Test.input" relation="relation6"/>
+    </entity>
+    <entity name="RecordDisassembler" class="ptolemy.actor.lib.RecordDisassembler">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1015.0, 205.0]">
+        </property>
+        <port name="Data" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="Sender" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="Test4" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{3, 4, 5, 6}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1085.0, 250.0]">
+        </property>
+    </entity>
+    <entity name="RecordUpdater" class="ptolemy.actor.lib.RecordUpdater">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1225.0, 205.0]">
+        </property>
+        <port name="SeqN" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
+            </property>
+        </port>
+    </entity>
+    <entity name="Const3" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="666">
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1175.0, 275.0]">
+        </property>
+    </entity>
+    <entity name="Test3" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{IdReq = 10, Lifetime = 0, NoH = 7, Requester = 12, Responder = 6, SeqN = 666}, {IdReq = 10, Lifetime = 0, NoH = 8, Requester = 12, Responder = 6, SeqN = 666}, {IdReq = 10, Lifetime = 0, NoH = 8, Requester = 12, Responder = 6, SeqN = 666}, {IdReq = 10, Lifetime = 100, NoH = 1, Requester = 12, Responder = 6, SeqN = 666}}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1350.0, 225.0]">
+        </property>
+    </entity>
+    <entity name="RecordDisassembler2" class="ptolemy.actor.lib.RecordDisassembler">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1000.0, 80.0]">
+        </property>
+        <port name="Data" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="Sender" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="Test5" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1, 5, 3, 4, 5}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1075.0, 130.0]">
+        </property>
+    </entity>
+    <entity name="RecordUpdater4" class="ptolemy.actor.lib.RecordUpdater">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1240.0, 80.0]">
+        </property>
+        <port name="SeqN" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
+            </property>
+        </port>
+    </entity>
+    <entity name="Const6" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="666">
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1180.0, 160.0]">
+        </property>
+    </entity>
+    <entity name="Test6" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{IdReq = 10, Lifetime = 0, NoH = 6, Requester = 12, Responder = 6, SeqN = 666}, {IdReq = 10, Lifetime = 0, NoH = 6, Requester = 12, Responder = 6, SeqN = 666}, {IdReq = 10, Lifetime = 0, NoH = 7, Requester = 12, Responder = 6, SeqN = 666}, {IdReq = 10, Lifetime = 0, NoH = 8, Requester = 12, Responder = 6, SeqN = 666}, {IdReq = 10, Lifetime = 0, NoH = 8, Requester = 12, Responder = 6, SeqN = 666}}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1350.0, 100.0]">
+        </property>
+    </entity>
+    <entity name="RecordDisassembler3" class="ptolemy.actor.lib.RecordDisassembler">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1000.0, -80.0]">
+        </property>
+        <port name="Data" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="Sender" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="Test2" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{27, 1, 5, 3}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1070.0, -30.0]">
+        </property>
+    </entity>
+    <entity name="RecordUpdater2" class="ptolemy.actor.lib.RecordUpdater">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1205.0, -80.0]">
+        </property>
+        <port name="SeqN" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
+            </property>
+        </port>
+    </entity>
+    <entity name="Const4" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="666">
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1160.0, -5.0]">
+        </property>
+    </entity>
+    <entity name="Test7" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{IdReq = 10, Lifetime = 0, NoH = 5, Requester = 12, Responder = 6, SeqN = 666}, {IdReq = 10, Lifetime = 0, NoH = 6, Requester = 12, Responder = 6, SeqN = 666}, {IdReq = 10, Lifetime = 0, NoH = 6, Requester = 12, Responder = 6, SeqN = 666}, {IdReq = 10, Lifetime = 0, NoH = 7, Requester = 12, Responder = 6, SeqN = 666}}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1345.0, -60.0]">
+        </property>
     </entity>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
@@ -15725,17 +15869,57 @@
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
     </relation>
-    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
+    <relation name="relation10" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex" value="{0.0, 0.0}">
+        </vertex>
+    </relation>
+    <relation name="relation15" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
+        <vertex name="vertex" value="{0.0, 0.0}">
+        </vertex>
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+    </relation>
+    <relation name="relation16" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation18" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation19" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation20" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation22" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation11" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation25" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
+        <vertex name="vertex1" value="[955.0, 275.0]">
+        </vertex>
+    </relation>
+    <relation name="relation12" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[890.0, 160.0]">
+        </vertex>
+    </relation>
+    <relation name="relation13" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+        </property>
+        <vertex name="vertex1" value="[850.0, -5.0]">
+        </vertex>
     </relation>
     <link port="SingleEvent.output" relation="relation3"/>
     <link port="Const.output" relation="relation"/>
@@ -15744,10 +15928,37 @@
     <link port="Const2.trigger" relation="relation3"/>
     <link port="WiredToWireless.payload" relation="relation"/>
     <link port="WiredToWireless.properties" relation="relation2"/>
-    <link port="WirelessToWired.payload" relation="relation4"/>
-    <link port="Display.input" relation="relation4"/>
-    <link port="Display.input" relation="relation7"/>
-    <link port="Display.input" relation="relation5"/>
-    <link port="WirelessToWired2.payload" relation="relation7"/>
-    <link port="WirelessToWired3.payload" relation="relation5"/>
+    <link port="WirelessToWired.payload" relation="relation13"/>
+    <link port="WirelessToWired2.payload" relation="relation12"/>
+    <link port="WirelessToWired3.payload" relation="relation6"/>
+    <link port="RecordDisassembler.input" relation="relation6"/>
+    <link port="RecordDisassembler.Data" relation="relation5"/>
+    <link port="RecordDisassembler.Sender" relation="relation15"/>
+    <link port="Test4.input" relation="relation15"/>
+    <link port="RecordUpdater.output" relation="relation8"/>
+    <link port="RecordUpdater.input" relation="relation5"/>
+    <link port="RecordUpdater.SeqN" relation="relation16"/>
+    <link port="Const3.output" relation="relation16"/>
+    <link port="Const3.trigger" relation="relation6"/>
+    <link port="Test3.input" relation="relation8"/>
+    <link port="RecordDisassembler2.input" relation="relation12"/>
+    <link port="RecordDisassembler2.Data" relation="relation19"/>
+    <link port="RecordDisassembler2.Sender" relation="relation18"/>
+    <link port="Test5.input" relation="relation18"/>
+    <link port="RecordUpdater4.output" relation="relation22"/>
+    <link port="RecordUpdater4.input" relation="relation19"/>
+    <link port="RecordUpdater4.SeqN" relation="relation20"/>
+    <link port="Const6.output" relation="relation20"/>
+    <link port="Const6.trigger" relation="relation12"/>
+    <link port="Test6.input" relation="relation22"/>
+    <link port="RecordDisassembler3.input" relation="relation13"/>
+    <link port="RecordDisassembler3.Data" relation="relation9"/>
+    <link port="RecordDisassembler3.Sender" relation="relation4"/>
+    <link port="Test2.input" relation="relation4"/>
+    <link port="RecordUpdater2.output" relation="relation25"/>
+    <link port="RecordUpdater2.input" relation="relation9"/>
+    <link port="RecordUpdater2.SeqN" relation="relation11"/>
+    <link port="Const4.output" relation="relation11"/>
+    <link port="Const4.trigger" relation="relation13"/>
+    <link port="Test7.input" relation="relation25"/>
 </entity>
