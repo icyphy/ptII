@@ -12,7 +12,7 @@
         <property name="_renderFirst" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
     </property>
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
     <property name="Wireless Director" class="ptolemy.domains.wireless.kernel.WirelessDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="30.0">
@@ -202,7 +202,7 @@
         </property>
         <property name="NodeId" class="ptolemy.data.expr.Parameter" value="3">
         </property>
-        <property name="SeqN" class="ptolemy.data.expr.Parameter" value="60">
+        <property name="SeqN" class="ptolemy.data.expr.Parameter" value="63">
         </property>
         <property name="inrange" class="ptolemy.data.expr.Parameter" value="200.0">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -549,6 +549,8 @@
                 <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
                     <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="MsgId">
                     </property>
+		    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+		    </property>
                     <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
                         </property>
@@ -1039,6 +1041,8 @@
                 <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
                     <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="Table">
                     </property>
+		    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+		    </property>
                     <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
                         </property>
@@ -1527,6 +1531,8 @@
                 <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
                     <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="ActiveREQ">
                     </property>
+		    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+		    </property>
                     <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
                         </property>
@@ -1627,6 +1633,8 @@
                 <entity name="SetVariable2" class="ptolemy.actor.lib.SetVariable">
                     <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="Table">
                     </property>
+		    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+		    </property>
                     <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
                         </property>
@@ -2249,6 +2257,8 @@
                 <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
                     <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="ActiveREQ">
                     </property>
+		    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+		    </property>
                     <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
                         </property>
@@ -2282,6 +2292,8 @@
                 <entity name="SetVariable2" class="ptolemy.actor.lib.SetVariable">
                     <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="Table">
                     </property>
+		    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+		    </property>
                     <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
                         </property>
@@ -2459,6 +2471,8 @@
                 <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
                     <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="MsgId">
                     </property>
+		    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+		    </property>
                     <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
                         </property>
@@ -2497,6 +2511,8 @@
                 <entity name="SetVariable2" class="ptolemy.actor.lib.SetVariable">
                     <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="Table">
                     </property>
+		    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+		    </property>
                     <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
                         </property>
@@ -2509,6 +2525,8 @@
                 <entity name="SetVariable3" class="ptolemy.actor.lib.SetVariable">
                     <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="ActiveREQ">
                     </property>
+		    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+		    </property>
                     <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
                         </property>
@@ -2701,6 +2719,8 @@
         <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
             <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="SeqN">
             </property>
+		    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+		    </property>
             <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                 <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
                 </property>
@@ -2767,7 +2787,7 @@
         </property>
         <property name="NodeId" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <property name="SeqN" class="ptolemy.data.expr.Parameter" value="60">
+        <property name="SeqN" class="ptolemy.data.expr.Parameter" value="63">
         </property>
         <property name="inrange" class="ptolemy.data.expr.Parameter" value="200.0">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -3114,6 +3134,8 @@
                 <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
                     <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="MsgId">
                     </property>
+		    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+		    </property>
                     <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
                         </property>
@@ -3604,6 +3626,8 @@
                 <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
                     <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="Table">
                     </property>
+		    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+		    </property>
                     <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
                         </property>
@@ -4092,6 +4116,8 @@
                 <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
                     <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="ActiveREQ">
                     </property>
+		    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+		    </property>
                     <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
                         </property>
@@ -4192,6 +4218,8 @@
                 <entity name="SetVariable2" class="ptolemy.actor.lib.SetVariable">
                     <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="Table">
                     </property>
+		    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+		    </property>
                     <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
                         </property>
@@ -4814,6 +4842,8 @@
                 <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
                     <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="ActiveREQ">
                     </property>
+		    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+		    </property>
                     <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
                         </property>
@@ -4847,6 +4877,8 @@
                 <entity name="SetVariable2" class="ptolemy.actor.lib.SetVariable">
                     <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="Table">
                     </property>
+		    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+		    </property>
                     <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
                         </property>
@@ -5024,6 +5056,8 @@
                 <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
                     <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="MsgId">
                     </property>
+		    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+		    </property>
                     <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
                         </property>
@@ -5062,6 +5096,8 @@
                 <entity name="SetVariable2" class="ptolemy.actor.lib.SetVariable">
                     <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="Table">
                     </property>
+		    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+		    </property>
                     <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
                         </property>
@@ -5074,6 +5110,8 @@
                 <entity name="SetVariable3" class="ptolemy.actor.lib.SetVariable">
                     <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="ActiveREQ">
                     </property>
+		    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+		    </property>
                     <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
                         </property>
@@ -5266,6 +5304,8 @@
         <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
             <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="SeqN">
             </property>
+		    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+		    </property>
             <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                 <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
                 </property>
@@ -5332,7 +5372,7 @@
         </property>
         <property name="NodeId" class="ptolemy.data.expr.Parameter" value="4">
         </property>
-        <property name="SeqN" class="ptolemy.data.expr.Parameter" value="60">
+        <property name="SeqN" class="ptolemy.data.expr.Parameter" value="63">
         </property>
         <property name="inrange" class="ptolemy.data.expr.Parameter" value="200.0">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -5679,6 +5719,8 @@
                 <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
                     <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="MsgId">
                     </property>
+		    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+		    </property>
                     <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
                         </property>
@@ -6169,6 +6211,8 @@
                 <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
                     <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="Table">
                     </property>
+		    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+		    </property>
                     <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
                         </property>
@@ -6657,6 +6701,8 @@
                 <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
                     <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="ActiveREQ">
                     </property>
+		    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+		    </property>
                     <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
                         </property>
@@ -6757,6 +6803,8 @@
                 <entity name="SetVariable2" class="ptolemy.actor.lib.SetVariable">
                     <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="Table">
                     </property>
+		    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+		    </property>
                     <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
                         </property>
@@ -7379,6 +7427,8 @@
                 <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
                     <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="ActiveREQ">
                     </property>
+		    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+		    </property>
                     <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
                         </property>
@@ -7412,6 +7462,8 @@
                 <entity name="SetVariable2" class="ptolemy.actor.lib.SetVariable">
                     <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="Table">
                     </property>
+		    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+		    </property>
                     <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
                         </property>
@@ -7589,6 +7641,8 @@
                 <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
                     <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="MsgId">
                     </property>
+		    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+		    </property>
                     <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
                         </property>
@@ -7627,6 +7681,8 @@
                 <entity name="SetVariable2" class="ptolemy.actor.lib.SetVariable">
                     <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="Table">
                     </property>
+		    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+		    </property>
                     <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
                         </property>
@@ -7639,6 +7695,8 @@
                 <entity name="SetVariable3" class="ptolemy.actor.lib.SetVariable">
                     <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="ActiveREQ">
                     </property>
+		    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+		    </property>
                     <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
                         </property>
@@ -7831,6 +7889,8 @@
         <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
             <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="SeqN">
             </property>
+		    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+		    </property>
             <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                 <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
                 </property>
@@ -7897,7 +7957,7 @@
         </property>
         <property name="NodeId" class="ptolemy.data.expr.Parameter" value="5">
         </property>
-        <property name="SeqN" class="ptolemy.data.expr.Parameter" value="60">
+        <property name="SeqN" class="ptolemy.data.expr.Parameter" value="63">
         </property>
         <property name="inrange" class="ptolemy.data.expr.Parameter" value="200.0">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -8244,6 +8304,8 @@
                 <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
                     <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="MsgId">
                     </property>
+		    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+		    </property>
                     <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
                         </property>
@@ -8734,6 +8796,8 @@
                 <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
                     <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="Table">
                     </property>
+		    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+		    </property>
                     <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
                         </property>
@@ -9222,6 +9286,8 @@
                 <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
                     <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="ActiveREQ">
                     </property>
+		    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+		    </property>
                     <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
                         </property>
@@ -9322,6 +9388,8 @@
                 <entity name="SetVariable2" class="ptolemy.actor.lib.SetVariable">
                     <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="Table">
                     </property>
+		    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+		    </property>
                     <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
                         </property>
@@ -9944,6 +10012,8 @@
                 <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
                     <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="ActiveREQ">
                     </property>
+		    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+		    </property>
                     <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
                         </property>
@@ -9977,6 +10047,8 @@
                 <entity name="SetVariable2" class="ptolemy.actor.lib.SetVariable">
                     <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="Table">
                     </property>
+		    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+		    </property>
                     <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
                         </property>
@@ -10154,6 +10226,8 @@
                 <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
                     <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="MsgId">
                     </property>
+		    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+		    </property>
                     <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
                         </property>
@@ -10192,6 +10266,8 @@
                 <entity name="SetVariable2" class="ptolemy.actor.lib.SetVariable">
                     <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="Table">
                     </property>
+		    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+		    </property>
                     <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
                         </property>
@@ -10204,6 +10280,8 @@
                 <entity name="SetVariable3" class="ptolemy.actor.lib.SetVariable">
                     <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="ActiveREQ">
                     </property>
+		    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+		    </property>
                     <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
                         </property>
@@ -10396,6 +10474,8 @@
         <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
             <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="SeqN">
             </property>
+		    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+		    </property>
             <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                 <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
                 </property>
@@ -10462,7 +10542,7 @@
         </property>
         <property name="NodeId" class="ptolemy.data.expr.Parameter" value="6">
         </property>
-        <property name="SeqN" class="ptolemy.data.expr.Parameter" value="55">
+        <property name="SeqN" class="ptolemy.data.expr.Parameter" value="58">
         </property>
         <property name="inrange" class="ptolemy.data.expr.Parameter" value="200.0">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -10809,6 +10889,8 @@
                 <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
                     <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="MsgId">
                     </property>
+		    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+		    </property>
                     <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
                         </property>
@@ -11299,6 +11381,8 @@
                 <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
                     <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="Table">
                     </property>
+		    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+		    </property>
                     <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
                         </property>
@@ -11787,6 +11871,8 @@
                 <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
                     <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="ActiveREQ">
                     </property>
+		    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+		    </property>
                     <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
                         </property>
@@ -11887,6 +11973,8 @@
                 <entity name="SetVariable2" class="ptolemy.actor.lib.SetVariable">
                     <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="Table">
                     </property>
+		    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+		    </property>
                     <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
                         </property>
@@ -12509,6 +12597,8 @@
                 <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
                     <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="ActiveREQ">
                     </property>
+		    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+		    </property>
                     <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
                         </property>
@@ -12542,6 +12632,8 @@
                 <entity name="SetVariable2" class="ptolemy.actor.lib.SetVariable">
                     <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="Table">
                     </property>
+		    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+		    </property>
                     <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
                         </property>
@@ -12719,6 +12811,8 @@
                 <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
                     <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="MsgId">
                     </property>
+		    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+		    </property>
                     <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
                         </property>
@@ -12757,6 +12851,8 @@
                 <entity name="SetVariable2" class="ptolemy.actor.lib.SetVariable">
                     <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="Table">
                     </property>
+		    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+		    </property>
                     <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
                         </property>
@@ -12769,6 +12865,8 @@
                 <entity name="SetVariable3" class="ptolemy.actor.lib.SetVariable">
                     <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="ActiveREQ">
                     </property>
+		    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+		    </property>
                     <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
                         </property>
@@ -12961,6 +13059,8 @@
         <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
             <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="SeqN">
             </property>
+		    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+		    </property>
             <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                 <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
                 </property>
@@ -13045,7 +13145,7 @@
         </property>
         <property name="NodeId" class="ptolemy.data.expr.Parameter" value="5">
         </property>
-        <property name="SeqN" class="ptolemy.data.expr.Parameter" value="60">
+        <property name="SeqN" class="ptolemy.data.expr.Parameter" value="63">
         </property>
         <property name="inrange" class="ptolemy.data.expr.Parameter" value="200.0">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -13392,6 +13492,8 @@
                 <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
                     <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="MsgId">
                     </property>
+		    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+		    </property>
                     <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
                         </property>
@@ -13882,6 +13984,8 @@
                 <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
                     <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="Table">
                     </property>
+		    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+		    </property>
                     <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
                         </property>
@@ -14370,6 +14474,8 @@
                 <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
                     <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="ActiveREQ">
                     </property>
+		    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+		    </property>
                     <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
                         </property>
@@ -14470,6 +14576,8 @@
                 <entity name="SetVariable2" class="ptolemy.actor.lib.SetVariable">
                     <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="Table">
                     </property>
+		    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+		    </property>
                     <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
                         </property>
@@ -15092,6 +15200,8 @@
                 <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
                     <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="ActiveREQ">
                     </property>
+		    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+		    </property>
                     <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
                         </property>
@@ -15125,6 +15235,8 @@
                 <entity name="SetVariable2" class="ptolemy.actor.lib.SetVariable">
                     <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="Table">
                     </property>
+		    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+		    </property>
                     <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
                         </property>
@@ -15302,6 +15414,8 @@
                 <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
                     <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="MsgId">
                     </property>
+		    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+		    </property>
                     <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
                         </property>
@@ -15340,6 +15454,8 @@
                 <entity name="SetVariable2" class="ptolemy.actor.lib.SetVariable">
                     <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="Table">
                     </property>
+		    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+		    </property>
                     <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
                         </property>
@@ -15352,6 +15468,8 @@
                 <entity name="SetVariable3" class="ptolemy.actor.lib.SetVariable">
                     <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="ActiveREQ">
                     </property>
+		    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+		    </property>
                     <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
                         </property>
@@ -15544,6 +15662,8 @@
         <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
             <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="SeqN">
             </property>
+		    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+		    </property>
             <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                 <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
                 </property>
