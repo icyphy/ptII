@@ -1560,11 +1560,18 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
 
         Properties properties = new Properties();
         try {
-
-            properties.load(new FileInputStream(keystorePropertiesFileName));
-            storePassword = properties.getProperty("storePassword");
-            keyPassword = properties.getProperty("keyPassword");
-            alias = properties.getProperty("alias");
+            FileInputStream fileInputStream = null;
+            try {
+                fileInputStream = new FileInputStream(keystorePropertiesFileName);
+                properties.load(fileInputStream);
+                storePassword = properties.getProperty("storePassword");
+                keyPassword = properties.getProperty("keyPassword");
+                alias = properties.getProperty("alias");
+            } finally {
+                if (fileInputStream != null) {
+                    fileInputStream.close();
+                }
+            }
         } catch (IOException ex) {
             System.out
                     .println("Warning: failed to read \""
