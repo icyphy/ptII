@@ -55,7 +55,9 @@ PTCLASSALLJARS =
 JSRCS = \
 	GROActor.java \
 	GRODirector.java \
-	GROScheduler.java
+	GROScheduler.java \
+	TopDirector.java \
+	Transformation.java
 EXTRA_SRCS =    $(JSRCS)
 
 # Sources that may or may not be present, but if they are present, we don't
