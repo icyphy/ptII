@@ -58,8 +58,11 @@ PTCLASSALLJARS = logic/logic.jar
 JSRCS = \
 	Accumulator.java \
 	AddSubtract.java \
+	Const.java \
+	Expression.java \
 	MultiplyDivide.java \
 	Remainder.java \
+	Scale.java \
 	TimeDelay.java \
 	UnaryMathFunction.java
 
