@@ -211,46 +211,76 @@ public class RTMaudeUtility {
             ClassLoader loader = RTMaudeUtility.class.getClassLoader();
             InputStream stream = loader.getResourceAsStream(SEMANTIC_FILE_PATH
                     + "/ptolemy-modelcheck.maude");
-            BufferedReader reader = new BufferedReader(new InputStreamReader(
-                    stream));
-            Stack<BufferedReader> readerStack = new Stack<BufferedReader>();
-            readerStack.push(null);
-            while (!readerStack.isEmpty()) {
-                try {
-                    String line = reader.readLine();
-                    boolean skip = false;
-                    while (line != null) {
-                        String trim = line.trim();
-                        if (trim.startsWith("load ")) {
-                            trim = trim.substring(5).trim();
-                            stream = loader
+            BufferedReader reader = null;
+            Stack<BufferedReader> readerStack = null;
+            try {
+                reader = new BufferedReader(new InputStreamReader(
+                                stream));
+                readerStack = new Stack<BufferedReader>();
+                readerStack.push(null);
+                while (!readerStack.isEmpty()) {
+                    try {
+                        String line = reader.readLine();
+                        boolean skip = false;
+                        while (line != null) {
+                            String trim = line.trim();
+                            if (trim.startsWith("load ")) {
+                                trim = trim.substring(5).trim();
+                                stream = loader
                                     .getResourceAsStream(SEMANTIC_FILE_PATH
                                             + "/" + trim + ".maude");
-                            if (stream != null) {
-                                readerStack.push(reader);
-                                reader = new BufferedReader(
-                                        new InputStreamReader(stream));
-                                skip = true;
+                                if (stream != null) {
+                                    readerStack.push(reader);
+                                    reader = new BufferedReader(
+                                            new InputStreamReader(stream));
+                                    skip = true;
+                                }
                             }
+                            if (skip) {
+                                skip = false;
+                            } else {
+                                buffer.append(line);
+                                buffer.append("\n");
+                            }
+                            line = reader.readLine();
                         }
-                        if (skip) {
-                            skip = false;
-                        } else {
-                            buffer.append(line);
-                            buffer.append("\n");
+                    } catch (IOException e) {
+                        throw new IllegalActionException("Unable to read file.");
+                    } finally {
+                        try {
+                            if (reader != null) {
+                                reader.close();
+                                reader = null;
+                            }
+                        } catch (IOException e) {
+                            throw new IllegalActionException("Failed to close "
+                                    + reader);
                         }
-                        line = reader.readLine();
                     }
-                } catch (IOException e) {
-                    throw new IllegalActionException("Unable to read file.");
-                } finally {
+                    reader = readerStack.pop();
+                }
+            } finally {
+                if (reader != null) {
                     try {
                         reader.close();
-                    } catch (IOException e) {
-                        // Ignore.
+                    } catch (IOException ex) {
+                        throw new IllegalActionException("Failed to close "
+                                + reader);
                     }
                 }
-                reader = readerStack.pop();
+                if (readerStack != null) {
+                    while (!readerStack.isEmpty()) {
+                        reader = readerStack.pop();
+                        if (reader != null) {
+                            try {
+                                reader.close();
+                            } catch (IOException ex) {
+                                throw new IllegalActionException("Failed to close "
+                                        + reader);
+                            }
+                        } 
+                    }
+                }
             }
         } else {
             buffer.append("load ptolemy-modelcheck\n");

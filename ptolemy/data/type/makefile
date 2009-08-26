@@ -47,6 +47,7 @@ PTPACKAGE = 	type
 PTCLASSJAR =	$(PTPACKAGE).jar
 
 JSRCS = \
+	ActorType.java \
 	ArrayType.java \
 	BaseType.java \
 	FixType.java \

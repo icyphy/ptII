@@ -70,7 +70,7 @@ import ptolemy.verification.kernel.MathematicalModelConverter.OutputType;
  generator. This UI will be invoked when you double click on the
  code generator.
 
- @author Chihhong Patrick Cheng, Thomas Huining Feng, Edward A. Lee, Christopher Brooks
+ @author Chih-Hong Cheng, Thomas Huining Feng, Edward A. Lee, Christopher Brooks
  @version $Id$
  @since Ptolemy II 7.1
  @Pt.ProposedRating Red (patrickj)

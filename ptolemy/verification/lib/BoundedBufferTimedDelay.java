@@ -97,9 +97,6 @@ public class BoundedBufferTimedDelay extends TimedDelay {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         protected variables               ////
-
-    ///////////////////////////////////////////////////////////////////
     ////                       protected method                    ////
 
     /** Override the method of the super class to initialize the

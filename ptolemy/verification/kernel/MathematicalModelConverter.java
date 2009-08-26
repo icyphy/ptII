@@ -294,20 +294,19 @@ public class MathematicalModelConverter extends Attribute {
                 MessageHandler
                         .error("The execution director is not SR or DE.\nCurrently it is beyond our scope of analysis.");
             }
-
         }
 
         return returnStringBuffer;
     }
 
     /**
-     * This is the main entry point to generate the graphical spec of the system.
+     * This is the main entry point to generate the graphical specification of the system.
      * It would invoke SMVUtility.generateGraphicalSpecification and return
-     * the spec.
+     * the specification.
      *
-     * @param formulaType The type of the graphical spec. It may be either "Risk"
+     * @param formulaType The type of the graphical specification. It may be either "Risk"
      *                    or "Reachability".
-     * @return The textual format of the graphical spec.
+     * @return The textual format of the graphical specification.
      * @exception IllegalActionException
      */
     public String generateGraphicalSpec(FormulaType formulaType)

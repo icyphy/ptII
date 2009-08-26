@@ -132,7 +132,14 @@ public class RTMaudeAdaptor extends CodeGeneratorHelper {
      * @throws IllegalActionException 
      */
     public String generateTermCode() throws IllegalActionException {
-        return _generateBlockCode(defaultTermBlock);    // term block
+        try 
+        {
+            return _generateBlockCode(defaultTermBlock);    // term block
+        } 
+        catch (Exception e)   // FIXME: temporally ignore exceptions, for avoiding bugs caused by others..
+        {
+            return null;
+        }
     }
     
     public Set getSharedCode() throws IllegalActionException {

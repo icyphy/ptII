@@ -14,7 +14,7 @@
         <property name="_renderFirst" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
     </property>
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.2.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={239, 135, 934, 550}, maximized=false}">
     </property>
@@ -377,11 +377,13 @@
     <property name="RTMaudeCodeGenerator" class="ptolemy.codegen.rtmaude.kernel.RTMaudeCodeGenerator">
         <property name="codeDirectory" class="ptolemy.data.expr.FileParameter" value="file:/Users/kquine/Projects/NAOMI/ptolemy-rtm/">
         </property>
+        <property name="inline" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-45.0, 240.0]">
         </property>
-        <property name="Safe property" class="ptolemy.codegen.rtmaude.data.expr.PropertyParameter" value="[] ~ ('DE_SimpleTrafficLight | ('Pgrn = # 1, 'Cgrn = # 1))">
+        <property name="Safety Property" class="ptolemy.codegen.rtmaude.data.expr.PropertyParameter" value="[] ~ ('DE_SimpleTrafficLight | ('Pgrn = # 1, 'Cgrn = # 1))">
         </property>
-        <property name="Counter Example" class="ptolemy.codegen.rtmaude.data.expr.PropertyParameter" value="[] ~ ('DE_SimpleTrafficLight | ('Pgrn = # 1, 'Cred = # 1))">
+        <property name="Alternation Property" class="ptolemy.codegen.rtmaude.data.expr.PropertyParameter" value="[]&lt;&gt; ('DE_SimpleTrafficLight | ('Pgrn = # 1, 'Cgrn = # 0)) /\ []&lt;&gt; ('DE_SimpleTrafficLight | ('Pgrn = # 0, 'Cgrn = # 1))">
         </property>
     </property>
     <entity name="Clock" class="ptolemy.actor.lib.Clock">

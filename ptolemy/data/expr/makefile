@@ -90,6 +90,7 @@ JSRCS = \
 	GeneralToken.java \
 	MatlabUtilities.java \
 	ModelScope.java \
+	MoMLUtilities.java \
         NamedConstantsScope.java \
 	NameParameter.java \
         NestedScope.java \

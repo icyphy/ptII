@@ -62,7 +62,6 @@ public class PropertySetLattice extends PropertyLattice {
      * @param t2 an instance of PropertySet.
      * @return An integer.
      */
-    @Override
     public int compare(Object t1, Object t2) {
         PropertySet property1 = (PropertySet) t1;
         PropertySet property2 = (PropertySet) t2;
@@ -93,7 +92,6 @@ public class PropertySetLattice extends PropertyLattice {
      * @param elementName the specified element name.
      * @return The property.
      */
-    @Override
     public LatticeProperty getElement(String elementName)
             throws IllegalActionException {
         try {
@@ -117,7 +115,6 @@ public class PropertySetLattice extends PropertyLattice {
      * @param t2 an instance of PropertySet.
      * @return The greatest lower bound of property1 and property2.
      */
-    @Override
     public Object greatestLowerBound(Object t1, Object t2) {
         PropertySet property1 = (PropertySet) t1;
         PropertySet property2 = (PropertySet) t2;
@@ -143,7 +140,6 @@ public class PropertySetLattice extends PropertyLattice {
      * @param t2 an instance of PropertySet.
      * @return The least upper bound of property1 and property2.
      */
-    @Override
     public Object leastUpperBound(Object t1, Object t2) {
         PropertySet property1 = (PropertySet) t1;
         PropertySet property2 = (PropertySet) t2;

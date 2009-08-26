@@ -44,7 +44,7 @@ import ptolemy.kernel.util.IllegalActionException;
  * @Pt.ProposedRating Red (mankit)
  * @Pt.AcceptedRating Red (mankit)
  */
-public class LatticeProperty extends Property implements PropertyTerm, Cloneable {
+public class LatticeProperty extends Property implements PropertyTerm {
 
     /**
      * Create a new lattice property associated with the given lattice.

@@ -34,12 +34,12 @@ transitions : ($indent( $info(transitions) ))/**/
 
 ----------------------
 
-  vars CF PORTS : Configuration .  vars O O' QUE : Oid .
+  vars CF PORTS PORTS' : Configuration .  vars O O' QUE : Oid .
   vars REST : ObjectConfiguration .
   vars PI PI' : PortId .  var PS : PortStatus .
   vars L STATE STATE' STATE'' : Location . var TI : TransitionId .
   var VM : ValueMap .  var AM OL AL VAL : AssignMap .
-  var MEM : Memory . var CP : Computation .
+  var MEM MEM' : Memory . var CP : Computation .
   var VA : ValueAssignment .  var BODY : TransBody .
   var VI : VarId . vars V : Value .  var VM : ValueMap .
   var TRANSSET : TransitionSet .  vars E TG : Exp .
@@ -90,14 +90,52 @@ transitions : ($indent( $info(transitions) ))/**/
     > REST) 
   =  portFixPoints(
     < O : FSM-Actor |
-      ports : < PI : InPort | > PORTS, --- setOutPortsAbsent(PORTS),       
+      ports : < PI : InPort | > PORTS,
       store : @next(STATE') ; evalOut(OL) ; evalSet(AL) ; clearGuards(MEM)
     > REST) .
-
-  op setOutPortsAbsent : Configuration -> Configuration .
-  eq setOutPortsAbsent(< PI : OutPort | status : PS > PORTS)
-   = < PI : OutPort | status : absent > setOutPortsAbsent(PORTS) .
-  eq setOutPortsAbsent(PORTS) = PORTS [owise] .
+    
+  --- if no transition is applicable, set every outport absent.
+  ceq portFixPoints(
+    < O : FSM-Actor |
+      status : enabled,
+      ports : < PI : InPort | status : present > PORTS,      
+      store : @guard(TI) |-> # false ; MEM
+    > REST)
+  =  portFixPoints(
+    < O : FSM-Actor |
+      ports : < PI : InPort | > setUnknownOutPortsAbsent(PORTS),      
+      store : clearGuards(MEM)
+    > REST)
+   if allGuardsFalse(MEM) .
+   
+  --- if every input port is absent, set every output absent as well.
+  ceq portFixPoints(
+    < O : FSM-Actor |
+      status : enabled,
+      ports : < PI : InPort | status : absent > 
+              < PI : OutPort | status : unknown > PORTS
+    > REST)
+  =  portFixPoints(
+    < O : FSM-Actor |
+      ports : < PI : InPort | > 
+              < PI : OutPort | status : absent > 
+              setUnknownOutPortsAbsent(PORTS)    
+    > REST)
+   if allInputPortsAbsent(PORTS) .
+   
+  op setUnknownOutPortsAbsent : Configuration -> Configuration .
+  eq setUnknownOutPortsAbsent(< PI : OutPort | status : unknown > PORTS)
+   = < PI : OutPort | status : absent > setUnknownOutPortsAbsent(PORTS) .
+  eq setUnknownOutPortsAbsent(PORTS) = PORTS [owise] .
+  
+  op allInputPortsAbsent : Configuration -> Bool .
+  eq allInputPortsAbsent(< PI : OutPort | status : absent > PORTS) = true .
+  eq allInputPortsAbsent(PORTS) = false [owise] .
+  
+  op allGuardsFalse : Memory -> Bool .
+  ceq allGuardsFalse(@guard(TI) |-> KR:KResult ; MEM) = false
+   if KR:KResult =/= # false .
+  eq allGuardsFalse(MEM) = true [owise] .
 
   op clearGuards : Memory -> Memory .
   eq clearGuards(@guard(TI) |-> KR:KResult ; MEM) = clearGuards(MEM) .
@@ -113,20 +151,26 @@ transitions : ($indent( $info(transitions) ))/**/
 
   --- write output result of transition to ports
   eq portFixPoints(
-    < O : FSM-Actor |
-      status : enabled,    
+    < O : FSM-Actor | 
       ports : 
-        < PI' : InPort | status : present > 
-        < PI : OutPort | > PORTS,    
-      store : @out(PI) |-> V ; MEM
-    > REST)
+        < PI' : InPort | status : present >  
+        < PI : OutPort | > PORTS,
+      store : @out(PI) |-> V ; MEM 
+    >
+    REST)
    = portFixPoints(
-    < O : FSM-Actor |
+    < O : FSM-Actor | 
       ports : 
         < PI' : InPort | > 
-        < PI : OutPort | status : present, value : V > PORTS,        
-      store : MEM
-    > REST) .
+        < PI : OutPort | status : present, value : V >
+        if noOutValue(MEM) then setUnknownOutPortsAbsent(PORTS) else PORTS fi,
+      store : MEM 
+    >
+    REST) .
+    
+  op noOutValue : Memory -> Bool .
+  eq noOutValue(@out(PI) |-> V ; MEM) = false .
+  eq noOutValue(MEM) = true [owise] .
 
   *** FSM-Actor does NOT generate events in our first version, only changes
   *** the internal state/valuation as a result of applying one transition ...

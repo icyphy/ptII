@@ -256,16 +256,20 @@ public class PropertySolverTestReporter {
      *
      * @param directoryPath
      *
-     * @return
-     *
+     *      *
      * @exception IOException
      */
     private static Map[] _testPropertiesDirectory(String directoryPath)
             throws IOException {
         // Create the log directories.
-        new File(_statsDirectory).mkdirs();
-        new File(_exceptionLogsDirectory).mkdirs();
-
+        if (!new File(_statsDirectory).mkdirs()) {
+            throw new IOException("Failed to create \"" + _statsDirectory
+                    + "\" directory.");
+        }
+        if (!new File(_exceptionLogsDirectory).mkdirs()) {
+            throw new IOException("Failed to create \"" + _exceptionLogsDirectory
+                    + "\" directory.");
+        }
         // See MoMLSimpleApplication for similar code
         MoMLParser parser = new MoMLParser();
         MoMLParser.setMoMLFilters(BackwardCompatibility.allFilters());

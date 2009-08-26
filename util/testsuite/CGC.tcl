@@ -143,7 +143,12 @@ if {![catch {exec valgrind --version} errMsg]} {
 }
 
 foreach file [glob auto/*.xml] {
-    CGC_test $file true
+    # Set NOINLINE in the environment to skip the inline tests:
+    # NOINLINE=true $(JTCLSH) $(ROOT)/util/testsuite/CGCNoInline.tcl
+    global env
+    if { [java::call System getenv NOINLINE] != {true} } {
+	CGC_test $file true
+    }
     #CGC_test $file false
     CGC_test $file false $coverageArgs
 }

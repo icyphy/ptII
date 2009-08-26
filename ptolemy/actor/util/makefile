@@ -76,6 +76,8 @@ JSRCS = \
 	FreeVariableModelAnalysis.java \
 	FuzzyDoubleComparator.java \
 	GeneralComparator.java \
+	PeriodicDirector.java \
+	PeriodicDirectorHelper.java \
 	RealDependency.java \
 	SuperdenseDependency.java \
 	SuperdenseTime.java \

@@ -63,14 +63,11 @@ refine-state('$state,'$actor)/**/
      setStateRefinement(STATE, REFS, REST) .
   eq setStateRefinement(STATE, empty, REST) = REST .
 
-  ---Enable a controller. Before this,
-  ---I assume that all innerActors are already computed
-  ---by the default Maude equation strategy (inner-most one reduced first)
+  ---Enable a controller, after all innerActors are computed
   eq portFixPoints(
     < O : ModalModel |
       controller : CO,
-      innerActors : portFixPoints(
-            < CO : FSM-Actor | status : disabled > ACTS)
+      innerActors : < CO : FSM-Actor | status : disabled > ACTS
     > REST)
    = portFixPoints(
     < O : ModalModel |

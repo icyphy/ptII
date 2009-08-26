@@ -110,7 +110,6 @@ public class PropertyCombineHelper extends PropertyHelper {
         }
     }
 
-    @Override
     protected ParseTreeAnnotationEvaluator _annotationEvaluator() {
         return new ParseTreeAnnotationEvaluator();
     }

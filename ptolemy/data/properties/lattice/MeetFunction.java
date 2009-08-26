@@ -80,7 +80,6 @@ public class MeetFunction extends MonotonicFunction {
      * @return A Property.
      * @exception IllegalActionException
      */
-    @Override
     public Object getValue() throws IllegalActionException {
         Property meetValue = null;
         Property termValue = null;
@@ -96,7 +95,6 @@ public class MeetFunction extends MonotonicFunction {
         return meetValue;
     }
 
-    @Override
     public String toString() {
         String result = "meet(";
 
@@ -137,7 +135,6 @@ public class MeetFunction extends MonotonicFunction {
 
     private final List<PropertyTerm> _terms = new LinkedList<PropertyTerm>();
 
-    @Override
     protected InequalityTerm[] _getDependentTerms() {
         InequalityTerm[] terms = new InequalityTerm[_terms.size()];
         System.arraycopy(_terms.toArray(), 0, terms, 0, _terms.size());

@@ -2,15 +2,15 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="curriculumOption1" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-4, -4, 1032, 776}, maximized=true}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 1328, 871}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[817, 658]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1115, 761]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.105035971223">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{373.6712239583334, 255.2278645833329}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{508.5084635416694, 301.8326822916671}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Current EECS/COE requirements:&#10;- 120 units total&#10;- 30 units math &amp; science, including:&#10;  + 11 units science w/ Phys 7A/B&#10;  + Math 1A/B, 53, 54.&#10;  + Physics 7C or Chem 1A, 1B,&#10;   3AB, 4AB, 5, Bio 1A, 1B,&#10;   Astro 7A, MCB 32 or ...&#10;- EECS 20, 40, 61A, 61B, 61C">
@@ -146,12 +146,18 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[400.0, 510.0]">
         </property>
     </property>
+    <property name="DoNothingDirector" class="ptolemy.domains.curriculum.DoNothingDirector">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[875.0, 625.0]">
+        </property>
+    </property>
     <entity name="20" class="ptolemy.domains.curriculum.Course">
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 115.0]">
         </property>
         <property name="_explanation" class="ptolemy.kernel.util.StringAttribute" value="Structure and Interpretation of Signals and Systems">
+        </property>
+        <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.4,0.8,0.0,1.0}">
         </property>
     </entity>
     <entity name="40" class="ptolemy.domains.curriculum.Course">
@@ -161,6 +167,8 @@
         </property>
         <property name="_explanation" class="ptolemy.kernel.util.StringAttribute" value="Introduction to Microelectronic Circuits">
         </property>
+        <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.4,0.8,0.0,1.0}">
+        </property>
     </entity>
     <entity name="61A" class="ptolemy.domains.curriculum.Course">
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
@@ -168,6 +176,8 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 385.0]">
         </property>
         <property name="_explanation" class="ptolemy.kernel.util.StringAttribute" value="Structure and Interpretation of Computer Programs">
+        </property>
+        <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.6,0.6,1.0}">
         </property>
     </entity>
     <entity name="61B" class="ptolemy.domains.curriculum.Course">
@@ -185,6 +195,8 @@
         </property>
         <property name="_explanation" class="ptolemy.kernel.util.StringAttribute" value="Machine Structures">
         </property>
+        <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.4,0.8,0.0,1.0}">
+        </property>
     </entity>
     <entity name="70" class="ptolemy.domains.curriculum.Course">
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
@@ -200,6 +212,8 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[385.0, 305.0]">
         </property>
         <property name="_explanation" class="ptolemy.kernel.util.StringAttribute" value="Components and Design Techniques for DigitalSystems">
+        </property>
+        <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.6,0.0,1.0}">
         </property>
     </entity>
     <entity name="152" class="ptolemy.domains.curriculum.Course">
@@ -225,6 +239,8 @@
         </property>
         <property name="_explanation" class="ptolemy.kernel.util.StringAttribute" value="Multivariable Calculus">
         </property>
+        <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.6,0.6,1.0}">
+        </property>
     </entity>
     <entity name="Math 54" class="ptolemy.domains.curriculum.Course">
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
@@ -232,6 +248,8 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[165.0, 65.0]">
         </property>
         <property name="_explanation" class="ptolemy.kernel.util.StringAttribute" value="Linear Algebra and Differential Equations">
+        </property>
+        <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.4,0.8,0.0,1.0}">
         </property>
     </entity>
     <entity name="Math 55" class="ptolemy.domains.curriculum.Course">
@@ -325,6 +343,8 @@
         </property>
         <property name="_explanation" class="ptolemy.kernel.util.StringAttribute" value="Physics for Scientists and Engineers">
         </property>
+        <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.6,0.6,1.0}">
+        </property>
     </entity>
     <entity name="Physics 7B" class="ptolemy.domains.curriculum.Course">
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
@@ -332,6 +352,8 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 190.0]">
         </property>
         <property name="_explanation" class="ptolemy.kernel.util.StringAttribute" value="Physics for Scientists and Engineers">
+        </property>
+        <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.6,0.6,1.0}">
         </property>
     </entity>
     <entity name="100" class="ptolemy.domains.curriculum.Course">
@@ -357,6 +379,8 @@
         </property>
         <property name="_explanation" class="ptolemy.kernel.util.StringAttribute" value="Microelectronic Devices and Circuits">
         </property>
+        <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,1.0,1.0}">
+        </property>
     </entity>
     <entity name="Math 1A" class="ptolemy.domains.curriculum.Course">
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
@@ -364,6 +388,8 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, -10.0]">
         </property>
         <property name="_explanation" class="ptolemy.kernel.util.StringAttribute" value="Calculus">
+        </property>
+        <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.8,0.8,1.0}">
         </property>
     </entity>
     <entity name="Math 1B" class="ptolemy.domains.curriculum.Course">
@@ -373,6 +399,8 @@
         </property>
         <property name="_explanation" class="ptolemy.kernel.util.StringAttribute" value="Calculus">
         </property>
+        <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.8,0.8,1.0}">
+        </property>
     </entity>
     <entity name="117" class="ptolemy.domains.curriculum.Course">
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
@@ -380,6 +408,8 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[280.0, 95.0]">
         </property>
         <property name="_explanation" class="ptolemy.kernel.util.StringAttribute" value="Electromagnetic Fields and Waves">
+        </property>
+        <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,1.0,1.0}">
         </property>
     </entity>
     <entity name="118" class="ptolemy.domains.curriculum.Course">
@@ -413,6 +443,8 @@
         </property>
         <property name="_explanation" class="ptolemy.kernel.util.StringAttribute" value="Signals and Systems">
         </property>
+        <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,1.0,1.0}">
+        </property>
     </entity>
     <entity name="121" class="ptolemy.domains.curriculum.Course">
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
@@ -420,6 +452,8 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[380.0, -20.0]">
         </property>
         <property name="_explanation" class="ptolemy.kernel.util.StringAttribute" value="Introduction to Communication Systems">
+        </property>
+        <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.6,0.0,1.0}">
         </property>
     </entity>
     <entity name="122" class="ptolemy.domains.curriculum.Course">
@@ -465,6 +499,8 @@
         </property>
         <property name="_explanation" class="ptolemy.kernel.util.StringAttribute" value="Integrated-Circuit Devices">
         </property>
+        <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,1.0,1.0}">
+        </property>
     </entity>
     <entity name="131" class="ptolemy.domains.curriculum.Course">
         <property name="units" class="ptolemy.data.expr.Parameter" value="3">
@@ -475,6 +511,8 @@
         </property>
         <property name="_explanation" class="ptolemy.kernel.util.StringAttribute" value="Semiconductor Electronics">
         </property>
+        <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.6,0.0,1.0}">
+        </property>
     </entity>
     <entity name="133" class="ptolemy.domains.curriculum.Course">
         <property name="units" class="ptolemy.data.expr.Parameter" value="2">
@@ -484,6 +522,8 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[265.0, 145.0]">
         </property>
         <property name="_explanation" class="ptolemy.kernel.util.StringAttribute" value="Microfabrication Equipment Laboratory">
+        </property>
+        <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.6,0.0,1.0}">
         </property>
     </entity>
     <entity name="140" class="ptolemy.domains.curriculum.Course">
@@ -582,6 +622,8 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 140.0]">
         </property>
         <property name="_explanation" class="ptolemy.kernel.util.StringAttribute" value="Structure and Interpretation of Signals and Systems">
+        </property>
+        <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.6,0.6,1.0}">
         </property>
     </entity>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
