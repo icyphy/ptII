@@ -49,7 +49,6 @@ import ptolemy.data.type.Type;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.util.StringUtilities;
 
 ////GiottoDirector
 
@@ -805,10 +804,10 @@ public class GiottoDirector extends StaticSchedulingDirector {
                         // iteration of the container actor in order to
                         // avoid using read and write offset variables.
                         if (inline) {
-                            /*Variable firings = (Variable) ((NamedObj) actor)
+                            Variable firings = (Variable) ((NamedObj) actor)
                                     .getAttribute("firingsPerIteration");
-                                    */
-                            int firingsPerIteration = 1;
+                            int firingsPerIteration = ((IntToken) firings
+                                    .getToken()).intValue();
                             readTokens = DFUtilities.getRate(inputPort)
                                     * firingsPerIteration;
                             writeTokens = readTokens;
@@ -1019,27 +1018,27 @@ public class GiottoDirector extends StaticSchedulingDirector {
         return newBufferSize;
     }
 
-    /** Generate sanitized name for the given named object. Remove all
-     *  underscores to avoid conflicts with systems functions.
-     *  @param namedObj The named object for which the name is generated.
-     *  @return The sanitized name.
-     */
-    private static String _generateDriverName(NamedObj namedObj) {
-        String name = StringUtilities.sanitizeName(namedObj.getFullName());
-        // FIXME: Assume that all objects share the same top level. In this case,
-        // having the top level in the generated name does not help to
-        // expand the name space but merely lengthen the name string.
-        //        NamedObj parent = namedObj.toplevel();
-        //        if (namedObj.toplevel() == namedObj) {
-        //            return "_toplevel_";
-        //        }
-        //        String name = StringUtilities.sanitizeName(namedObj.getName(parent));
-        if (name.startsWith("_")) {
-            name = name.substring(1, name.length());
-        }
-        return name.replaceAll("\\$", "Dollar") + "_driver";
-
-    }
+//    /** Generate sanitized name for the given named object. Remove all
+//     *  underscores to avoid conflicts with systems functions.
+//     *  @param namedObj The named object for which the name is generated.
+//     *  @return The sanitized name.
+//     */
+//    private static String _generateDriverName(NamedObj namedObj) {
+//        String name = StringUtilities.sanitizeName(namedObj.getFullName());
+//        // FIXME: Assume that all objects share the same top level. In this case,
+//        // having the top level in the generated name does not help to
+//        // expand the name space but merely lengthen the name string.
+//        //        NamedObj parent = namedObj.toplevel();
+//        //        if (namedObj.toplevel() == namedObj) {
+//        //            return "_toplevel_";
+//        //        }
+//        //        String name = StringUtilities.sanitizeName(namedObj.getName(parent));
+//        if (name.startsWith("_")) {
+//            name = name.substring(1, name.length());
+//        }
+//        return name.replaceAll("\\$", "Dollar") + "_driver";
+//
+//    }
 
     private int _portNumber = 0;
 

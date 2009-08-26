@@ -564,6 +564,6 @@ public class ComponentActor extends TypedCompositeActor implements Component {
         // Lists of local receivers, indexed by relation.
         private Receiver[][] _insideReceivers;
 
-        private boolean _isProviedPort = false;
+        //private boolean _isProviedPort = false;
     }
 }
