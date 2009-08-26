@@ -1948,7 +1948,7 @@ public class AssignmentTransformer extends AbstractTransformer implements
     /** Get the name of the set checkpoint method.
      *
      *  @param isAnonymous Whether the current class is an anonymous class.
-     *  @return The name of the set checkoint method.
+     *  @return The name of the set checkpoint method.
      */
     private String _getSetCheckpointMethodName(boolean isAnonymous) {
         return SET_CHECKPOINT_NAME + (isAnonymous ? "_ANONYMOUS" : "");
