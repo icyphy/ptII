@@ -57,10 +57,13 @@ PTCLASSALLJARS = gui/gui.jar
 # Keep this list alphabetized.
 JSRCS = \
 	AddSubtract.java \
+	Const.java \
 	ElementsToArray.java \
 	Expression.java \
+	MultiplyDivide.java \
 	Publisher.java \
 	Ramp.java \
+	Scale.java \
 	Subscriber.java \
 	Test.java
 

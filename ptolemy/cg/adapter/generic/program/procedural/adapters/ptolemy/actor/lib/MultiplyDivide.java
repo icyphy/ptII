@@ -72,32 +72,21 @@ public class MultiplyDivide extends NamedProgramCodeGeneratorAdapter {
         String multiplyType = getCodeGenerator().codeGenType(actor.multiply.getType());
         String divideType = getCodeGenerator().codeGenType(actor.divide.getType());
 
-        boolean divideOnly = !actor.multiply.isOutsideConnected();
-
         ArrayList args = new ArrayList();
 
-        ArrayList initArgs = new ArrayList();
-        if (divideOnly) {
-            initArgs.add(divideType);
-        } else {
-            initArgs.add(multiplyType);
-            initArgs.add(outputType);
-        }
-        
         CodeStream codeStream = getTemplateParser().getCodeStream();
-        codeStream.appendCodeBlock(divideOnly ? "divideOnlyInitProduct"
-                : "initProduct", initArgs);
+        codeStream.appendCodeBlock("initProduct");
 
         args.add("");
         args.add(outputType);
         args.add(multiplyType);
 
-        for (int i = 1; i < actor.multiply.getWidth(); i++) {
+        for (int i = 0; i < actor.multiply.getWidth(); i++) {
             args.set(0, Integer.valueOf(i));
             codeStream.appendCodeBlock("multiplyBlock", args);
         }
 
-        for (int i = divideOnly ? 1 : 0; i < actor.divide.getWidth(); i++) {
+        for (int i = 0; i < actor.divide.getWidth(); i++) {
             args.set(0, Integer.valueOf(i));
             args.set(2, divideType);
             codeStream.appendCodeBlock("divideBlock", args);

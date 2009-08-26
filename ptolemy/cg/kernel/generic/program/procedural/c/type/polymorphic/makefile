@@ -57,6 +57,7 @@ OTHER_FILES_TO_BE_JARED = \
 	equals.c \
 	multiply.c \
 	negate.c \
+	one.c \
 	print.c \
 	subtract.c \
 	toString.c \

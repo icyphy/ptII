@@ -55,6 +55,7 @@ OTHER_FILES_TO_BE_JARED = \
 	equals.j \
 	multiply.j \
 	negate.j \
+	one.j \
 	print.j \
 	subtract.j \
 	toString.j \
