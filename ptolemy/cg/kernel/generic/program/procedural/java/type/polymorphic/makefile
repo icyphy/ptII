@@ -34,7 +34,7 @@ ME =		ptolemy/cg/kernel/generic/program/procedural/java/type/polymorphic
 DIRS =
 
 # Root of the Java directory
-ROOT =		../../../../../../../..
+ROOT =		../../../../../../../../..
 
 CLASSPATH =	$(ROOT)
 
