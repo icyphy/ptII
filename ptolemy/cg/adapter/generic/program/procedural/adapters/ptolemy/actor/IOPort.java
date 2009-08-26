@@ -83,7 +83,7 @@ public class IOPort extends NamedProgramCodeGeneratorAdapter implements
         if (receivers.length != 0) {
             if (receivers[channelIndex].length > 1) {
                 throw new IllegalActionException(
-                        "Didn't take care of the case where one channel"
+                        "Didn't take care of the case where one channel "
                         + "has more than one receiver");
             }
             if (receivers[channelIndex].length > 0) {
@@ -117,7 +117,7 @@ public class IOPort extends NamedProgramCodeGeneratorAdapter implements
         if (receivers.length != 0) {
             if (receivers[channelNumber].length > 1) {
                 throw new IllegalActionException(
-                        "Didn't take care of the case where one channel"
+                        "Didn't take care of the case where one channel "
                         + "has more than one receiver");
             }
             if (receivers[channelNumber].length > 0) {
