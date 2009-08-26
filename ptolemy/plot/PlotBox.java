@@ -4414,7 +4414,7 @@ public class PlotBox extends JPanel implements Printable {
             // not work on mouse drags.  It does work on MouseListener
             // methods, so those methods set a variable _zooming that
             // is used by _zoomBox to determine whether to draw a box.
-            if ((event.getModifiers() & event.BUTTON1_MASK)!= 0
+            if ((event.getModifiers() & InputEvent.BUTTON1_MASK)!= 0
                     && ((event.getModifiers() & InputEvent.BUTTON3_MASK) == 0)) {
                 PlotBox.this._zoomBox(event.getX(), event.getY());
             }
