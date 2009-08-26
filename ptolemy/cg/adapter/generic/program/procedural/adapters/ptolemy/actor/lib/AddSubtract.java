@@ -73,8 +73,6 @@ public class AddSubtract extends NamedProgramCodeGeneratorAdapter {
         String plusType = getCodeGenerator().codeGenType(actor.plus.getType());
         String minusType = getCodeGenerator().codeGenType(actor.minus.getType());
 
-        boolean minusOnly = !actor.plus.isOutsideConnected();
-
         ArrayList<String> args = new ArrayList<String>();
 
         CodeStream codeStream = _templateParser.getCodeStream();
@@ -84,12 +82,12 @@ public class AddSubtract extends NamedProgramCodeGeneratorAdapter {
         args.add(outputType);
         args.add(plusType);
 
-        for (int i = 1; i < actor.plus.getWidth(); i++) {
+        for (int i = 0; i < actor.plus.getWidth(); i++) {
             args.set(0, Integer.valueOf(i).toString());
             codeStream.appendCodeBlock("plusBlock", args);
         }
 
-        for (int i = minusOnly ? 1 : 0; i < actor.minus.getWidth(); i++) {
+        for (int i = 0; i < actor.minus.getWidth(); i++) {
             args.set(0, Integer.valueOf(i).toString());
             args.set(2, minusType);
             codeStream.appendCodeBlock("minusBlock", args);
