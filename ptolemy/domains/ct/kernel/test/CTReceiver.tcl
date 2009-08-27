@@ -139,17 +139,16 @@ Are you trying to use a discrete signal to drive a continuous port?
 test CTReceiver-3.1 {passing tokens} {
     set ca [java::new ptolemy.actor.TypedCompositeActor]
     $ca setName CA
-    $ca setManager [java::new ptolemy.actor.Manager]        
+    set manager [java::new ptolemy.actor.Manager]
+    $ca setManager $manager    
+            
     set dir [java::new ptolemy.domains.ct.kernel.CTMultiSolverDirector $ca Dir]
     set a1 [java::new ptolemy.domains.ct.kernel.test.CTDummySource $ca A1]
     set a2 [java::new ptolemy.domains.ct.kernel.test.CTDummySink $ca A2]
     set p1o [java::cast ptolemy.actor.IOPort [$a1 getPort output]]
     set p2i [java::cast ptolemy.actor.IOPort [$a2 getPort input]]
     set r1 [$ca connect $p1o $p2i]
-    $dir preinitialize
-    $dir initialize	
-    #$a1 preinitialize
-    #$a2 preinitialize
+    $manager initialize
     $p1o broadcast $zero
     [java::cast ptolemy.data.DoubleToken [$p2i get 0]] doubleValue
 } {0.0}
