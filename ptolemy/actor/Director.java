@@ -991,7 +991,7 @@ public class Director extends Attribute implements Executable {
                 actor.preinitialize();
             }
         }
-        //_createReceivers();
+        _createReceivers(); // Undid this change temporarily since the move of createReceivers breaks HDF
         if (_debugging) {
             _debug(getFullName(), "Finished preinitialize().");
         }
@@ -1611,14 +1611,14 @@ public class Director extends Attribute implements Executable {
      *  actor throws it when its receivers are created.
      *  @see Actor#createReceivers
      */
-/*    private void _createReceivers() throws IllegalActionException {
+    private void _createReceivers() throws IllegalActionException {
         Nameable container = getContainer();
         if (container instanceof CompositeActor) {
             for (Object actor : ((CompositeActor) container).deepEntityList()) {
                 ((Actor) actor).createReceivers();
             }
         }
-    }*/
+    }
 
     // Initialize parameters.
     private void _initializeParameters() {

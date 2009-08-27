@@ -598,6 +598,21 @@ public class SDFDirector extends StaticSchedulingDirector implements PeriodicDir
         return true;
     }
 
+    /** Preinitialize the actors associated with this director and
+     *  compute the schedule.  The schedule is computed during
+     *  preinitialization so that hierarchical opaque composite actors
+     *  can be scheduled properly, since the act of computing the
+     *  schedule sets the rate parameters of the external ports.  In
+     *  addition, performing scheduling during preinitialization
+     *  enables it to be present during code generation.  The order in
+     *  which the actors are preinitialized is arbitrary.
+     *  @exception IllegalActionException If the preinitialize() method of
+     *  one of the associated actors throws it.
+     */
+    public void preinitialize() throws IllegalActionException {
+        super.preinitialize();
+        createSchedule(); // Undid this change temporarily since the move of createReceivers breaks HDF
+    }
     /** Return false if the system has finished executing, either by
      *  reaching the iteration limit, or having an actor in the system return
      *  false in postfire.  Increment the number of iterations.

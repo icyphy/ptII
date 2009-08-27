@@ -466,6 +466,7 @@ public class CompositeActor extends CompositeEntity implements Actor,
      *  @exception IllegalActionException If any port throws it.
      */
     public void createReceivers() throws IllegalActionException {
+        
         if (workspace().getVersion() != _receiversVersion) {
             Iterator<?> ports = portList().iterator();
 
@@ -482,10 +483,13 @@ public class CompositeActor extends CompositeEntity implements Actor,
                 workspace().doneTemporaryWriting();
             }
         }
+
+        // Undid this change temporarily since the move of createReceivers breaks HDF
+        /*
         for (Object actor : deepEntityList()) {
             ((Actor) actor).createReceivers();
         }
-
+        */
     }
 
     /** Create the schedule for this model, if necessary.
@@ -1343,7 +1347,7 @@ public class CompositeActor extends CompositeEntity implements Actor,
                                 + getFullName());
             }
 
-            // createReceivers();
+            createReceivers(); // Undid this change temporarily since the move of createReceivers breaks HDF
 
             // Note that this is assured of firing the local director,
             // not the executive director, because this is opaque.

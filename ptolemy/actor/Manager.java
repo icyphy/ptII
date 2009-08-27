@@ -938,8 +938,8 @@ public class Manager extends NamedObj implements Runnable {
             // based on the parameter values.
             // EAL 5/31/02.
             _container.preinitialize();
-            _container.createReceivers();
-            _container.createSchedule();
+            //_container.createReceivers(); // Undid this change temporarily since the move of createReceivers breaks HDF
+            //_container.createSchedule(); // Undid this change temporarily since the move of createReceivers breaks HDF
             executeChangeRequests();
             
 
