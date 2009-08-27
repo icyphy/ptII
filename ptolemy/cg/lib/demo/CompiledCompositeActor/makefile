@@ -1,4 +1,4 @@
-# Makefile for Ptolemy II JNI CompilesCompositeActor Demo
+# Makefile for Ptolemy II JNI CompiledCompositeActor Demo
 #
 # @Authors: Christopher Brooks (makefile only)
 #
@@ -29,7 +29,7 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/cg/lib/demo/CompilesCompositeActor
+ME =		ptolemy/cg/lib/demo/CompiledCompositeActor
 
 # Root of the Java directory
 ROOT =		../../../../..
@@ -41,14 +41,14 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	CompilesCompositeActor
+PTPACKAGE = 	CompiledCompositeActor
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS) \
-	CompilesCompositeActor.xml
+	CompiledCompositeActor.xml
 
 EXTRA_SRCS = \
 	$(OTHER_FILES_TO_BE_JARED)
@@ -74,7 +74,7 @@ install: all jars
 demo: demo_vergil
 
 demo_vergil:
-	"$(PTII)/bin/vergil" CompilesCompositeActor.xml
+	"$(PTII)/bin/vergil" CompiledCompositeActor.xml
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

@@ -59,6 +59,9 @@ JGRAPHICAL_TESTS = \
 
 EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) $(JSIMPLE_TESTS) \
 	Display.xml \
+	Multirate1.xml \
+	Multirate2.xml \
+	Multirate3.xml \
 	Repeat.xml
 
 #$(JGRAPHICAL_TESTS)

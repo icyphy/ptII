@@ -48,7 +48,10 @@ TCL_SRCS = \
 JSRCS =
 
 # Non-graphical Java tests written in Tcl
-JSIMPLE_TESTS = auto.tcl
+# If there are no tests, we use a dummy file so that the script that builds
+# alljtests.tcl works.  If you add a test, be sure to add
+# $(JGRAPHICAL_TESTS) to EXTRA_SRCS
+JSIMPLE_TESTS = dummy.tcl
 
 # Graphical Java tests that use Tcl.
 # If there are no tests, we use a dummy file so that the script that builds
@@ -57,19 +60,13 @@ JSIMPLE_TESTS = auto.tcl
 JGRAPHICAL_TESTS = \
 	dummy.tcl
 
-EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) $(JSIMPLE_TESTS) \
-	Display.xml \
-	Multirate1.xml \
-	Multirate2.xml \
-	Multirate3.xml \
-	Repeat.xml
-
-#$(JGRAPHICAL_TESTS)
+EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) #$(JSIMPLE_TESTS) #$(JGRAPHICAL_TESTS)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
 MISC_FILES =	alljtests.tcl \
-                     auto
+		auto \
+		modulartest1.xml
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES

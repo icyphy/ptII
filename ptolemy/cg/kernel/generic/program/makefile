@@ -78,7 +78,10 @@ OPTIONAL_FILES = \
 	demo \
 	'CodeStream$$1.class' \
 	'CodeStream$$CodeBlockTable.class' \
-	'CodeStream$$Signature.class'
+	'CodeStream$$Signature.class'\
+	'ProgramCodeGeneratorAdapter$$Channel.class' \
+	'TemplateParser$$1.class' \
+	'TemplateParser$$VariableScope.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

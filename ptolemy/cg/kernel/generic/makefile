@@ -58,6 +58,7 @@ PTCLASSALLJARS = \
 
 # Keep this list alphabetized.
 JSRCS = \
+	CGException.java \
 	CodeGeneratorAdapter.java \
 	CodeGeneratorUtilities.java \
 	GenericCodeGenerator.java \

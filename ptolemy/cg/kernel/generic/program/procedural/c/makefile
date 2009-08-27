@@ -77,6 +77,7 @@ MISC_FILES =	$(DIRS)
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	demo \
+	'CCodeGenerator$$1.class' \
 	'CCodeGeneratorAdapter$$1.class'
 
 JCLASS = $(JSRCS:%.java=%.class)

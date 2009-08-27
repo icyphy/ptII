@@ -31,7 +31,7 @@
 ME =		ptolemy/cg/lib/demo
 
 # Keep these alphabetical please.
-DIRS = 		ModularCodeGen Scale
+DIRS = 		CompiledCompositeActor ModularCodeGen Scale
 
 # Root of Ptolemy II directory
 ROOT =		../../../..
