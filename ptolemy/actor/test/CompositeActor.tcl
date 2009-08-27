@@ -301,11 +301,10 @@ test CompositeActor-10.1 {Test wormhole data transfers} {
     $e2 connect $p6 $p3
 
     
-    # Call initialize on the director so that the receivers get created
-    # added Neil Smyth. Need to call this as receivers are no longer 
+    # Call preinitialize on the manager so that the receivers get created
+    # added Neil Smyth/Bert Rodiers. Need to call this as receivers are no longer 
     # created on the fly.
-    $director preinitialize
-    $director initialize
+    $manager preinitializeAndResolveTypes
 
     set token [java::new ptolemy.data.StringToken foo]
     # Tcl requires a fully qualified method signature for the overloaded
@@ -334,6 +333,9 @@ test CompositeActor-10.1 {Test wormhole data transfers} {
     $e2 postfire
     set res8 [$p4 hasToken 0]
     set res9 [[$p4 get 0] toString]
+
+    $manager wrapup
+    
     
     list $res1 $res2 $res3 $res4 $res5 $res6 $res7 $res8 $res9
 } {1 0 1 0 0 {ptolemy.kernel.util.IllegalActionException: Port is not an input port!
