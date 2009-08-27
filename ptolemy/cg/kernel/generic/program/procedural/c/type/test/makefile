@@ -40,7 +40,7 @@
 ME =		ptolemy/codegen/c/kernel/type/test
 
 # Root of the Java directory
-ROOT =		../../../../../..
+ROOT =		../../../../../../../../..
 
 CLASSPATH =	$(ROOT)
 

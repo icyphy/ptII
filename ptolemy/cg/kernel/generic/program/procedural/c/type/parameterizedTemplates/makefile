@@ -47,8 +47,7 @@ include $(CONFIG)
 PTPACKAGE = 	parameterizedTemplates
 PTCLASSJAR = $(PTPACKAGE).jar
 
-JSRCS = \
-	InstantiateFromTemplate.java
+JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
 	ArrayTemplate.c 
