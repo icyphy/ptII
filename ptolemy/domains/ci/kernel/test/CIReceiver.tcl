@@ -69,9 +69,14 @@ test CIReceiver-2.1 {Check put and get tokens} {
     set outp [java::cast ptolemy.actor.IOPort [$a1 getPort "output"]]
     $e connect $outp $inp
     set p [java::new ptolemy.data.expr.Parameter $inp "p"]
-    $d preinitialize
-    $e resolveTypes $e
+    # Call preinitialize on the manager so that the receivers get created
+    # added Bert Rodiers. Need to call this as receivers are no longer 
+    # created on the fly.
+    $manager preinitializeAndResolveTypes
+
+    #$e resolveTypes $e
     $outp broadcast [java::new ptolemy.data.IntToken 1]
+    $manager wrapup
     list [[$inp get 0] toString]
 } {1}
 
