@@ -95,6 +95,7 @@ import ptolemy.util.StringUtilities;
   } finally {
       jFileChooserBugFix.restoreBackground(background);
   }
+ </pre>
 
  @author Christopher Brooks
  @version $Id$

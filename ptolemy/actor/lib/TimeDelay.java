@@ -292,7 +292,7 @@ public class TimeDelay extends Transformer {
     protected CalendarQueue _delayedOutputTokens;
 
     /** A causality marker to store information about how pure events are causally
-     *  related to trigger events
+     *  related to trigger events.
      */
     protected CausalityMarker _causalityMarker;
 
