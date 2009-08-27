@@ -224,13 +224,14 @@ test IOPort-5.4 {Test getWidth after unlinking} {
     $p1 link $r1
     $p2 link $r1
     
-    # Call preinitialize on the director so that the receivers get created
-    # added Neil Smyth. Need to call this as receivers are no longer 
+    # Call preinitialize on the manager so that the receivers get created
+    # added Neil Smyth/Bert Rodiers. Need to call this as receivers are no longer 
     # created on the fly.
-    $director preinitialize
+    $manager preinitializeAndResolveTypes
 
     $p1 getRemoteReceivers
     $p2 unlink $r1
+    $manager wrapup
     list [$p1 getWidth] [$p2 getWidth]
 } {1 0}
 
@@ -309,13 +310,14 @@ test IOPort-7.3 {test getReceivers()} {
     set r3 [java::cast ptolemy.actor.IORelation [$e2 connect $p2 $p4]]
     $r3 setWidth 4
 
-    # Call preinitialize on the director so that the receivers get created
-    # added Neil Smyth. Need to call this as receivers are no longer 
+    # Call preinitialize on the manager so that the receivers get created
+    # added Neil Smyth/Bert Rodiers. Need to call this as receivers are no longer 
     # created on the fly.
-    $e0 preinitialize
+    $manager preinitializeAndResolveTypes
     
     set receivers [java::field ptolemy.actor.IOPort RECEIVERS]
     set remotereceivers [java::field ptolemy.actor.IOPort REMOTERECEIVERS]
+    $manager wrapup
     $p2 description $receivers
 } {receivers {
     {
@@ -433,15 +435,16 @@ test IOPort-8.2 {Check getRemoteReceivers on a port after unlinking} {
     $p1 link $r1
     $p2 link $r1
     
-    # Call preinitialize on the director so that the receivers get created
-    # added Neil Smyth. Need to call this as receivers are no longer 
+    # Call preinitialize on the manager so that the receivers get created
+    # added Neil Smyth/Bert Rodiers. Need to call this as receivers are no longer 
     # created on the fly.
-    $director preinitialize
+    $manager preinitializeAndResolveTypes
 
     $p1 getRemoteReceivers
     $p2 unlink $r1
     set p1Rcvrs [$p1 getRemoteReceivers]
     $p1Rcvrs length
+    $manager wrapup
     expr {[$p1 getRemoteReceivers] == [java::null]}
 } {0}
 
@@ -465,10 +468,10 @@ test IOPort-9.1 {Check connectivity via send} {
     $p1 link $r1
     $p2 link $r1
     
-    # Call preinitialize on the director so that the receivers get created
-    # added Neil Smyth. Need to call this as receivers are no longer 
+    # Call preinitialize on the manager so that the receivers get created
+    # added Neil Smyth/Bert Rodiers. Need to call this as receivers are no longer 
     # created on the fly.
-    $director preinitialize
+    $manager preinitializeAndResolveTypes
 
     # token to send
     set token [java::new ptolemy.data.StringToken foo]
@@ -476,6 +479,7 @@ test IOPort-9.1 {Check connectivity via send} {
     # send() method.
     $p1 {send int ptolemy.data.Token} 0 $token
     set received [$p2 get 0]
+    $manager wrapup
     $received toString
 } {"foo"}
 
@@ -504,10 +508,10 @@ test IOPort-9.1.0 {Check connectivity via vectorized send and get} {
     $p1 link $r1
     $p2 link $r1
     
-    # Call preinitialize on the director so that the receivers get created
-    # added Neil Smyth. Need to call this as receivers are no longer 
+    # Call preinitialize on the manager so that the receivers get created
+    # added Neil Smyth/Bert Rodiers. Need to call this as receivers are no longer 
     # created on the fly.
-    $director preinitialize
+    $manager preinitializeAndResolveTypes
 
     # token to send
     set token [java::new ptolemy.data.StringToken foo]
@@ -521,6 +525,7 @@ test IOPort-9.1.0 {Check connectivity via vectorized send and get} {
     # send() method.
     $p1 {send int ptolemy.data.Token[] int} 0 $tokenArray 1
     set received [$p2 get 0 1]
+    $manager wrapup
     jdkPrintArray $received
 } {{"foo"}}
 
@@ -590,15 +595,16 @@ test IOPort-9.3 {Check unlink and get from unlinked port} {
     # unlink one end
     $p1 unlink $r1
     
-    # Call preinitialize on the director so that the receivers get created
-    # added Neil Smyth. Need to call this as receivers are no longer 
+    # Call preinitialize on the manager so that the receivers get created
+    # added Neil Smyth/Bert Rodiers. Need to call this as receivers are no longer 
     # created on the fly.
-    $director preinitialize
+    $manager preinitializeAndResolveTypes
 
     # token to send
     set token [java::new ptolemy.data.StringToken foo]
     catch {$p1 hasRoom 0} msg1
     catch {$p2 get 0} msg2
+    $manager wrapup
     list [$p2 getWidth] $msg1 $msg2
 } {1 {ptolemy.kernel.util.IllegalActionException: hasRoom: channel index is out of range.
   in .<Unnamed Object>.E1.P1} {ptolemy.actor.NoTokenException: Attempt to get data from an empty mailbox.
@@ -618,15 +624,16 @@ test IOPort-9.4 {Check loopback send} {
     # token to send
     set token [java::new ptolemy.data.StringToken foo]
 
-    # Call preinitialize on the director so that the receivers get created
-    # added Neil Smyth. Need to call this as receivers are no longer 
+    # Call preinitialize on the manager so that the receivers get created
+    # added Neil Smyth/Bert Rodiers. Need to call this as receivers are no longer 
     # created on the fly.
-    $director preinitialize
+    $manager preinitializeAndResolveTypes
 
     # Tcl requires a fully qualified method signature for the overloaded
     # send() method.
     $p1 {send int ptolemy.data.Token} 0 $token
     set received [$p2 get 0]
+    $manager wrapup
     $received toString
 } {"foo"}
 
@@ -667,10 +674,11 @@ test IOPort-10.3 {Check description use test-9.1 topology} {
     set p2 [java::new ptolemy.actor.IOPort $e2 P2 true false]
     set r1 [$e0 connect $p1 $p2 R1]
 
-    # Call preinitialize on the director so that the receivers get created
-    # added Neil Smyth. Need to call this as receivers are no longer 
+    # Call preinitialize on the manager so that the receivers get created
+    # added Neil Smyth/Bert Rodiers. Need to call this as receivers are no longer 
     # created on the fly.
-    $director preinitialize
+    $manager preinitializeAndResolveTypes
+    $manager wrapup
 
     list "[$p1 description $detail]\n[$p2 description $detail]"
 } {{ptolemy.actor.IOPort {..E1.P1} receivers {
@@ -705,10 +713,11 @@ test IOPort-10.4 {Check description use 1 sender 2 destinaton topology} {
     $p2 link $r1
     $p3 link $r1
 
-    # Call preinitialize on the director so that the receivers get created
-    # added Neil Smyth. Need to call this as receivers are no longer 
+    # Call preinitialize on the manager so that the receivers get created
+    # added Neil Smyth/Bert Rodiers. Need to call this as receivers are no longer 
     # created on the fly.
-    $director preinitialize
+    $manager preinitializeAndResolveTypes
+    $manager wrapup
 
     list "[$p1 description $detail]\n[$p2 description $detail]\n[$p3 description $detail]"
 } {{ptolemy.actor.IOPort {..E1.P1} receivers {
@@ -753,10 +762,11 @@ test IOPort-10.5 {Check description use multi-output port} {
     $p1 link $r2
     $p3 link $r2
 
-    # Call preinitialize on the director so that the receivers get created
-    # added Neil Smyth. Need to call this as receivers are no longer 
+    # Call preinitialize on the manager so that the receivers get created
+    # added Neil Smyth/Bert Rodiers. Need to call this as receivers are no longer 
     # created on the fly.
-    $director preinitialize
+    $manager preinitializeAndResolveTypes
+    $manager wrapup
 
     list "[$p1 description $detail]\n[$p2 description $detail]\n[$p3 description $detail]"
 } {{ptolemy.actor.IOPort {..E1.P1} receivers {
@@ -849,10 +859,11 @@ test IOPort-10.6 {Check description use the example (that used to be) in design 
     $p6 link $r7
     $p9 link $r7
 
-    # Call preinitialize on the director so that the receivers get created
-    # added Neil Smyth. Need to call this as receivers are no longer 
+    # Call preinitialize on the manager so that the receivers get created
+    # added Neil Smyth/Bert Rodiers. Need to call this as receivers are no longer 
     # created on the fly.
-    $director preinitialize
+    $manager preinitializeAndResolveTypes
+    $manager wrapup
 
     list "[$p1 description $detail]\n[$p10 description $detail]"
 } {{ptolemy.actor.IOPort {..E1.E2.P1} receivers {
@@ -1295,13 +1306,14 @@ test IOPort-13.1 {test getReceivers()} {
     set r3 [java::cast ptolemy.actor.IORelation [$e2 connect $p2 $p4]]
     $r3 setWidth 4
 
-    # Call preinitialize on the director so that the receivers get created
-    # added Neil Smyth. Need to call this as receivers are no longer 
+    # Call preinitialize on the manager so that the receivers get created
+    # added Neil Smyth/Bert Rodiers. Need to call this as receivers are no longer 
     # created on the fly.
-    $e0 preinitialize
-    
+    $manager preinitializeAndResolveTypes
+
     set receivers [java::field ptolemy.actor.IOPort RECEIVERS]
     set remotereceivers [java::field ptolemy.actor.IOPort REMOTERECEIVERS]
+    $manager wrapup
     $p2 description $receivers
 } {receivers {
     {
@@ -1702,9 +1714,14 @@ test IOPort-22.1 {test getChannelForReceiver} {
     set r2 [java::cast ptolemy.actor.IORelation [$e0 connect $p2 $p3]]
     $r2 setWidth 4
 
-    $director preinitialize
-    set p1Rcvrs [$p1 getRemoteReceivers]
 
+    # Call preinitialize on the manager so that the receivers get created
+    # added Neil Smyth/Bert Rodiers. Need to call this as receivers are no longer 
+    # created on the fly.
+    $manager preinitializeAndResolveTypes
+    
+    set p1Rcvrs [$p1 getRemoteReceivers]
+		$manager wrapup
     list [$p3 getChannelForReceiver [[$p1Rcvrs get 0] get 0]] \
     [$p3 getChannelForReceiver [[$p1Rcvrs get 1] get 0]] \
     [$p3 getChannelForReceiver [[$p1Rcvrs get 2] get 0]]
@@ -1770,8 +1787,13 @@ test IOPort-22.4 { test getChannelForReceiver} {
     # connect insides of composite
     set r3 [java::cast ptolemy.actor.IORelation [$composite connect $compositeInput $compositeOutput]]
 
-    $director preinitialize
+    
+    # Call preinitialize on the manager so that the receivers get created
+    # added Neil Smyth/Bert Rodiers. Need to call this as receivers are no longer 
+    # created on the fly.
+    $manager preinitializeAndResolveTypes
 
     set recvrs [$compositeOutput getInsideReceivers]
+    $manager wrapup
     $compositeOutput getChannelForReceiver [[$recvrs get 0] get 0]
 } {0}

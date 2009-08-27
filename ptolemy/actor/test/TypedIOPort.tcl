@@ -247,10 +247,10 @@ test TypedIOPort-9.1.0.2 {test that AbstractReceiver.putArrayToAll() calls conve
     $p1 link $r1
     $p2 link $r1
     
-    # Call preinitialize on the director so that the receivers get created
-    # added Neil Smyth. Need to call this as receivers are no longer 
+    # Call preinitialize on the manager so that the receivers get created
+    # added Neil Smyth/Bert Rodiers. Need to call this as receivers are no longer 
     # created on the fly.
-    $director preinitialize
+    $manager preinitializeAndResolveTypes
 
     # token to send
     set token [java::new ptolemy.data.IntToken 1]
@@ -264,6 +264,7 @@ test TypedIOPort-9.1.0.2 {test that AbstractReceiver.putArrayToAll() calls conve
     # send() method.
     $p1 {send int ptolemy.data.Token[] int} 0 $tokenArray 1
     set received [$p2 get 0 1]
+    $manager wrapup
     jdkPrintArray $received
 } {{"1"}}
 
