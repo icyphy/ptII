@@ -49,7 +49,8 @@ JSRCS =
 OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS) \
 	DOPCenter.gif \
-	DOPCenter.xml
+	DOPCenter.xml \
+	expand-group.vbs
 
 EXTRA_SRCS = \
 	$(OTHER_FILES_TO_BE_JARED) \
