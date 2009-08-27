@@ -258,7 +258,7 @@ test CSPReceiver-4.1 {Check is...Boundary() methods for single layer boundary} {
 
 
     # Create Receivers
-    $toplevel preinitialize
+    $toplevel createReceivers
 
     set b1InIOPort [java::cast ptolemy.actor.TypedIOPort $b1InPort]
     set rcvrs [$b1InIOPort getReceivers]
@@ -387,7 +387,7 @@ test CSPReceiver-4.2 {Check is...Boundary() for multilayered boundaries} {
 
 
     # Create Receivers
-    $toplevel preinitialize
+    $toplevel createReceivers
 
     set innerwormOutIOPort [java::cast ptolemy.actor.TypedIOPort $innerwormOutPort]
     set rcvrs [$innerwormOutIOPort getInsideReceivers]
