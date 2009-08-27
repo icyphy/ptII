@@ -1,0 +1,488 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="NaomiConfigurer" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
+    </property>
+    <property name="Custom" class="ptolemy.domains.properties.kernel.PropertyLatticeAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[295.0, 70.0]">
+        </property>
+        <configure>
+            <entity name="Model" class="ptolemy.domains.properties.PropertyLatticeComposite">
+                <entity name="TrainSpeed" class="ptolemy.domains.properties.LatticeElement">
+                    <property name="solutionColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,1.0,1.0,1.0}">
+                    </property>
+                    <property name="LatticeElementIcon" class="ptolemy.domains.properties.LatticeElementIcon">
+                        <property name="spacing" class="ptolemy.data.expr.Parameter" value="0.0">
+                        </property>
+                    </property>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[195.0, 160.0]">
+                    </property>
+                </entity>
+                <entity name="String" class="ptolemy.domains.properties.LatticeElement">
+                    <property name="solutionColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.6,0.6,1.0}">
+                    </property>
+                    <property name="LatticeElementIcon" class="ptolemy.domains.properties.LatticeElementIcon">
+                        <property name="spacing" class="ptolemy.data.expr.Parameter" value="0.0">
+                        </property>
+                    </property>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[310.0, 165.0]">
+                    </property>
+                </entity>
+                <entity name="Unknown" class="ptolemy.domains.properties.LatticeElement">
+                    <property name="isAcceptableSolution" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="solutionColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.8,0.8,0.8,1.0}">
+                    </property>
+                    <property name="LatticeElementIcon" class="ptolemy.domains.properties.LatticeElementIcon">
+                        <property name="spacing" class="ptolemy.data.expr.Parameter" value="0.0">
+                        </property>
+                    </property>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[280.0, 235.0]">
+                    </property>
+                </entity>
+                <entity name="Conflict" class="ptolemy.domains.properties.LatticeElement">
+                    <property name="solutionColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,1.0,0.6,1.0}">
+                    </property>
+                    <property name="LatticeElementIcon" class="ptolemy.domains.properties.LatticeElementIcon">
+                        <property name="spacing" class="ptolemy.data.expr.Parameter" value="0.0">
+                        </property>
+                    </property>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[280.0, 80.0]">
+                    </property>
+                </entity>
+                <relation name="relation" class="ptolemy.domains.modal.kernel.Transition">
+                    <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
+                    </property>
+                    <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.03664981486767589">
+                    </property>
+                    <property name="gamma" class="ptolemy.data.expr.Parameter" value="-0.7128888519156533">
+                    </property>
+                    <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                </relation>
+                <relation name="relation2" class="ptolemy.domains.modal.kernel.Transition">
+                    <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
+                    </property>
+                    <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.0050283960368577955">
+                    </property>
+                    <property name="gamma" class="ptolemy.data.expr.Parameter" value="-2.4177890368688795">
+                    </property>
+                    <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                </relation>
+                <relation name="relation3" class="ptolemy.domains.modal.kernel.Transition">
+                    <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
+                    </property>
+                    <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.024834597195704626">
+                    </property>
+                    <property name="gamma" class="ptolemy.data.expr.Parameter" value="-0.7515255602596176">
+                    </property>
+                    <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                </relation>
+                <relation name="relation4" class="ptolemy.domains.modal.kernel.Transition">
+                    <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
+                    </property>
+                    <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.030736356885893688">
+                    </property>
+                    <property name="gamma" class="ptolemy.data.expr.Parameter" value="-2.3210154577113524">
+                    </property>
+                    <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                </relation>
+                <link port="TrainSpeed.incomingPort" relation="relation2"/>
+                <link port="TrainSpeed.outgoingPort" relation="relation3"/>
+                <link port="String.incomingPort" relation="relation"/>
+                <link port="String.outgoingPort" relation="relation4"/>
+                <link port="Unknown.outgoingPort" relation="relation2"/>
+                <link port="Unknown.outgoingPort" relation="relation"/>
+                <link port="Conflict.incomingPort" relation="relation3"/>
+                <link port="Conflict.incomingPort" relation="relation4"/>
+            </entity>
+        </configure>
+    </property>
+    <property name="Custom::exportConstraint" class="ptolemy.data.properties.AnnotationAttribute" value="config.TrainSpeed &gt;= TrainSpeed">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg><text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text></svg></configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-125.0, 295.0]">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 0, 1032, 746}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[817, 639]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{238.0104166666667, 142.2083333333334}">
+    </property>
+    <property name="CustomSolver" class="ptolemy.data.properties.lattice.PropertyConstraintSolver">
+        <property name="action" class="ptolemy.actor.parameters.SharedParameter" value="ANNOTATE">
+        </property>
+        <property name="PropertyMoMLHandler" class="ptolemy.data.properties.PropertyMoMLHandler">
+            <property name="abc" class="ptolemy.kernel.util.StringAttribute" value="property value">
+            </property>
+            <property name="abcHighlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+            </property>
+        </property>
+        <property name="manualAnnotation" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="propertyLattice" class="ptolemy.data.expr.StringParameter" value="Attribute::Custom">
+        </property>
+        <property name="actorConstraintType" class="ptolemy.data.expr.StringParameter" value="out &gt;= in">
+        </property>
+        <property name="connectionConstraintType" class="ptolemy.data.expr.StringParameter" value="sink &gt;= src">
+        </property>
+        <property name="compositeConnectionConstraintType" class="ptolemy.data.expr.StringParameter" value="sink &gt;= src">
+        </property>
+        <property name="fsmConstraintType" class="ptolemy.data.expr.StringParameter" value="sink &gt;= src">
+        </property>
+        <property name="expressionASTNodeConstraintType" class="ptolemy.data.expr.StringParameter" value="parent &gt;= child">
+        </property>
+        <property name="PropertyDisplayActions" class="ptolemy.data.properties.gui.PropertyDisplayActions">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[390.0, 90.0]">
+        </property>
+    </property>
+    <property name="Custom::importConstraint" class="ptolemy.data.properties.AnnotationAttribute" value="ptIIsr.TrainSpeed = TrainSpeed">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg><text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text></svg></configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[255.0, 175.0]">
+        </property>
+    </property>
+    <property name="Custom::importConstraint2" class="ptolemy.data.properties.AnnotationAttribute" value="ptIIde.TrainSpeed = TrainSpeed">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg><text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text></svg></configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[255.0, 195.0]">
+        </property>
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="16">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.2,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Declare import constraints">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[255.0, 140.0]">
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="16">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.4,0.4,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Declare export constraints">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-130.0, 260.0]">
+        </property>
+    </property>
+    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="16">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="A simple model of the NAOMI framework.&#10;Each node, the blue circles, represents&#10;a domain-specific model created by some&#10;tool. These models share between each other&#10;a set of attributes or parameters set by&#10;a configurer (config).">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-135.0, 15.0]">
+        </property>
+    </property>
+    <entity name="config" class="ptolemy.actor.TypedCompositeActor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-105.0, 195.0]">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="ellipse" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[3.0, 1.0]">
+                </property>
+                <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="30">
+                </property>
+                <property name="height" class="ptolemy.data.expr.Parameter" value="30">
+                </property>
+                <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,1.0,1.0,1.0}">
+                </property>
+            </property>
+        </property>
+        <property name="_rotatePorts" class="ptolemy.data.expr.Parameter" value="0">
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="lattice::Custom" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="Unknown">
+            </property>
+        </property>
+        <port name="TrainSpeed" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="lattice::Custom" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="TrainSpeed">
+            </property>
+        </port>
+        <port name="DEPath" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="lattice::Custom" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="Unknown">
+            </property>
+        </port>
+        <port name="NuSMVType" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="lattice::Custom" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="Unknown">
+            </property>
+        </port>
+        <port name="RTMaudePath" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="lattice::Custom" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="Unknown">
+            </property>
+        </port>
+        <port name="RTMaudeType" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="lattice::Custom" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="Unknown">
+            </property>
+        </port>
+        <entity name="Two" class="ptolemy.actor.lib.Const">
+            <property name="value" class="ptolemy.data.expr.Parameter" value="2">
+                <property name="lattice::Custom" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="Unknown">
+                </property>
+            </property>
+            <doc>Create a constant sequence.</doc>
+            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{91.25, 90.0}">
+            </property>
+            <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+                <property name="lattice::Custom" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="Unknown">
+                </property>
+            </port>
+            <port name="trigger" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="multiport"/>
+                <property name="lattice::Custom" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="Unknown">
+                </property>
+            </port>
+        </entity>
+    </entity>
+    <entity name="ptIIsr" class="ptolemy.actor.TypedCompositeActor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[210.0, 115.0]">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="ellipse" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[3.0, 1.0]">
+                </property>
+                <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="30">
+                </property>
+                <property name="height" class="ptolemy.data.expr.Parameter" value="30">
+                </property>
+                <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.6,0.6,1.0}">
+                </property>
+            </property>
+        </property>
+        <property name="_rotatePorts" class="ptolemy.data.expr.Parameter" value="-90">
+            <property name="lattice::Custom" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="Unknown">
+            </property>
+        </property>
+        <port name="TrainSpeed" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="lattice::Custom" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="TrainSpeed">
+            </property>
+        </port>
+        <port name="DEPath" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="lattice::Custom" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="Unknown">
+            </property>
+        </port>
+        <port name="NuSMVType" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="lattice::Custom" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="Unknown">
+            </property>
+        </port>
+        <entity name="Two" class="ptolemy.actor.lib.Const">
+            <property name="value" class="ptolemy.data.expr.Parameter" value="2">
+                <property name="lattice::Custom" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="Unknown">
+                </property>
+            </property>
+            <doc>Create a constant sequence.</doc>
+            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{91.25, 90.0}">
+            </property>
+            <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+                <property name="lattice::Custom" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="Unknown">
+                </property>
+            </port>
+            <port name="trigger" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="multiport"/>
+                <property name="lattice::Custom" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="Unknown">
+                </property>
+            </port>
+        </entity>
+    </entity>
+    <entity name="ptIIde" class="ptolemy.actor.TypedCompositeActor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[210.0, 235.0]">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="ellipse" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[3.0, 1.0]">
+                </property>
+                <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="30">
+                </property>
+                <property name="height" class="ptolemy.data.expr.Parameter" value="30">
+                </property>
+                <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.6,0.6,1.0}">
+                </property>
+            </property>
+        </property>
+        <property name="_rotatePorts" class="ptolemy.data.expr.Parameter" value="-180">
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="lattice::Custom" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="Unknown">
+            </property>
+        </property>
+        <property name="_flipPortsVertical" class="ptolemy.data.expr.Parameter" value="true">
+            <property name="lattice::Custom" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="Unknown">
+            </property>
+        </property>
+        <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
+            <property name="lattice::Custom" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="Unknown">
+            </property>
+        </property>
+        <port name="TrainSpeed" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="lattice::Custom" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="TrainSpeed">
+            </property>
+        </port>
+        <port name="RTMaudePath" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="lattice::Custom" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="Unknown">
+            </property>
+        </port>
+        <port name="RTMaudeType" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="lattice::Custom" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="Unknown">
+            </property>
+        </port>
+        <entity name="Two" class="ptolemy.actor.lib.Const">
+            <property name="value" class="ptolemy.data.expr.Parameter" value="2">
+                <property name="lattice::Custom" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="Unknown">
+                </property>
+            </property>
+            <doc>Create a constant sequence.</doc>
+            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{91.25, 90.0}">
+            </property>
+            <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+                <property name="lattice::Custom" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="Unknown">
+                </property>
+            </port>
+            <port name="trigger" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="multiport"/>
+                <property name="lattice::Custom" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="Unknown">
+                </property>
+            </port>
+        </entity>
+    </entity>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+        </property>
+        <vertex name="vertex1" value="[40.0, 175.0]">
+        </vertex>
+    </relation>
+    <link port="config.TrainSpeed" relation="relation6"/>
+    <link port="config.DEPath" relation="relation2"/>
+    <link port="config.NuSMVType" relation="relation3"/>
+    <link port="config.RTMaudePath" relation="relation4"/>
+    <link port="config.RTMaudeType" relation="relation5"/>
+    <link port="ptIIsr.TrainSpeed" relation="relation6"/>
+    <link port="ptIIsr.DEPath" relation="relation2"/>
+    <link port="ptIIsr.NuSMVType" relation="relation3"/>
+    <link port="ptIIde.TrainSpeed" relation="relation6"/>
+    <link port="ptIIde.RTMaudePath" relation="relation4"/>
+    <link port="ptIIde.RTMaudeType" relation="relation5"/>
+</entity>
