@@ -133,7 +133,9 @@ public class ModularCodeGenerator extends JavaCodeGenerator {
         _writeCodeFileName(profileCode, profileClassName + ".java", true, true);
         
         List<String> commands = new LinkedList<String>();
-        commands.add("javac -classpath \".;"  + StringUtilities.getProperty("ptolemy.ptII.dir") + "\"" + profileClassName + ".java");
+        commands.add("javac -classpath \"."
+                + StringUtilities.getProperty("path.separator")
+                + StringUtilities.getProperty("ptolemy.ptII.dir") + "\"" + profileClassName + ".java");
 
         StringBufferExec executeCommands = new StringBufferExec(true);
         executeCommands.setWorkingDirectory(codeDirectory.asFile());
