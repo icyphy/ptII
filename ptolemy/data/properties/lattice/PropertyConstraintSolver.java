@@ -1,18 +1,18 @@
 /*
-
+ * 
  * Copyright (c) 2007-2009 The Regents of the University of California. All
  * rights reserved.
- *
+ * 
  * Permission is hereby granted, without written agreement and without license
  * or royalty fees, to use, copy, modify, and distribute this software and its
  * documentation for any purpose, provided that the above copyright notice and
  * the following two paragraphs appear in all copies of this software.
- *
+ * 
  * IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR
  * DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES ARISING OUT
  * OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF THE UNIVERSITY OF
  * CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- *
+ * 
  * THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
  * INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
  * FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE PROVIDED HEREUNDER IS ON AN
@@ -20,7 +20,7 @@
  * MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 /**
- *
+ * 
  */
 package ptolemy.data.properties.lattice;
 
@@ -31,7 +31,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -69,11 +68,11 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.util.FileUtilities;
 
 /**
- @author Man-Kit Leung, Edward A. Lee
- @version $Id$
- @since Ptolemy II 7.1
- @Pt.ProposedRating Red (mankit)
- @Pt.AcceptedRating Red (mankit)
+ * @author Man-Kit Leung, Edward A. Lee
+ * @version $Id$
+ * @since Ptolemy II 7.1
+ * @Pt.ProposedRating Red (mankit)
+ * @Pt.AcceptedRating Red (mankit)
  */
 public class PropertyConstraintSolver extends PropertySolver {
 
@@ -147,7 +146,7 @@ public class PropertyConstraintSolver extends PropertySolver {
     ////                     ports and parameters                  ////
 
     /**
-     *
+     * 
      */
     public static enum ConstraintType {
         EQUALS, NONE, NOT_EQUALS, SINK_EQUALS_GREATER, SINK_EQUALS_MEET, SINK_GREATER, SRC_EQUALS_GREATER, SRC_EQUALS_MEET, SRC_GREATER
@@ -339,6 +338,7 @@ public class PropertyConstraintSolver extends PropertySolver {
         _propertyTermManager = null;
         _trainedConstraints.clear();
         _lattice = null;
+        PropertyLattice.resetAll();
     }
 
     public void setLogMode(boolean isLogMode) {
@@ -501,7 +501,7 @@ public class PropertyConstraintSolver extends PropertySolver {
              * _helperStore.values().iterator(); while (helpers.hasNext()) {
              * PropertyConstraintHelper helper = (PropertyConstraintHelper)
              * helpers.next();
-             *
+             * 
              * constraintList.addAll(helper.constraintList()); } //
              */
 
@@ -555,9 +555,11 @@ public class PropertyConstraintSolver extends PropertySolver {
                     } else {
                         if (!logDirectory.asFile().exists()) {
                             if (!logDirectory.asFile().mkdirs()) {
-                                throw new IllegalActionException(this, "Failed to create \""
-                                        + logDirectory.asFile().getAbsolutePath()
-                                        + "\" directory.");
+                                throw new IllegalActionException(this,
+                                        "Failed to create \""
+                                                + logDirectory.asFile()
+                                                        .getAbsolutePath()
+                                                + "\" directory.");
                             }
                         }
                         file = FileUtilities.nameToFile(logFilename,
@@ -568,16 +570,19 @@ public class PropertyConstraintSolver extends PropertySolver {
                         if (!file.exists()) {
                             if (!file.getParentFile().exists()) {
                                 if (!file.getParentFile().mkdirs()) {
-                                    throw new IllegalActionException(this, "Failed to create \""
-                                            + file.getParentFile().getAbsolutePath()
-                                            + "\" directory.");
+                                    throw new IllegalActionException(this,
+                                            "Failed to create \""
+                                                    + file.getParentFile()
+                                                            .getAbsolutePath()
+                                                    + "\" directory.");
                                 }
 
                             }
                             if (!file.createNewFile()) {
-                                throw new IllegalActionException(this, "Failed to create \""
-                                + file.getAbsolutePath()
-                                + "\".");
+                                throw new IllegalActionException(this,
+                                        "Failed to create \""
+                                                + file.getAbsolutePath()
+                                                + "\".");
                             }
                         }
 
@@ -711,13 +716,12 @@ public class PropertyConstraintSolver extends PropertySolver {
         }
     }
 
-    /** Add choices to the parameters.
-     *  @exception IllegalActionException If there is a problem
-     *  accessing files or parameters.
+    /**
+     * Add choices to the parameters.
+     * @exception IllegalActionException If there is a problem accessing files
+     * or parameters.
      */
     private void _addChoices() throws IllegalActionException {
-        File file = null;
-
         // Add all the subdirectories in lattice/ directory as
         // choices.  Directories named "CVS" and ".svn" are skipped.
         _addChoices(propertyLattice,
@@ -814,7 +818,8 @@ public class PropertyConstraintSolver extends PropertySolver {
     //  return (Property) term.getValue();
     //  }
 
-    /** Return the Constraints as a log file string.
+    /**
+     * Return the Constraints as a log file string.
      * @param inequality
      * @param annotation
      * @return The Constraints.
@@ -1003,11 +1008,12 @@ public class PropertyConstraintSolver extends PropertySolver {
         }
     }
 
-    /** Return the trained constraint filename.
+    /**
+     * Return the trained constraint filename.
      * @return The trained constraint filename.
-     * @exception IllegalActionException If there is a problem
-     * getting the name of the top level or the value of the
-     * <i>trainedConstraintDirectory</i> parameter.
+     * @exception IllegalActionException If there is a problem getting the name
+     * of the top level or the value of the <i>trainedConstraintDirectory</i>
+     * parameter.
      */
     private String _getTrainedConstraintFilename()
             throws IllegalActionException {
@@ -1035,9 +1041,11 @@ public class PropertyConstraintSolver extends PropertySolver {
         } else {
             if (!trainedConstraintDirectory.asFile().exists()) {
                 if (!trainedConstraintDirectory.asFile().mkdirs()) {
-                    throw new IllegalActionException(this, "Failed to create \""
-                            + trainedConstraintDirectory.asFile().getAbsolutePath()
-                            + "\" directory.");
+                    throw new IllegalActionException(this,
+                            "Failed to create \""
+                                    + trainedConstraintDirectory.asFile()
+                                            .getAbsolutePath()
+                                    + "\" directory.");
                 }
             }
             constraintFile = FileUtilities.nameToFile(constraintFilename,
@@ -1048,7 +1056,7 @@ public class PropertyConstraintSolver extends PropertySolver {
     }
 
     /**
-     *
+     * 
      * @param helper
      * @exception IllegalActionException
      */
@@ -1186,15 +1194,17 @@ public class PropertyConstraintSolver extends PropertySolver {
             } else {
                 if (!constraintFile.getParentFile().exists()) {
                     if (!constraintFile.getParentFile().mkdirs()) {
-                        throw new IllegalActionException(this, "Failed to create \""
-                                + constraintFile.getParentFile().getAbsolutePath()
-                                + "\" directory.");
+                        throw new IllegalActionException(this,
+                                "Failed to create \""
+                                        + constraintFile.getParentFile()
+                                                .getAbsolutePath()
+                                        + "\" directory.");
                     }
                 }
                 if (!constraintFile.createNewFile()) {
-                    throw new IllegalActionException(this, "Failed to create \""
-                            + constraintFile.getAbsolutePath()
-                            + "\".");
+                    throw new IllegalActionException(this,
+                            "Failed to create \""
+                                    + constraintFile.getAbsolutePath() + "\".");
                 }
             }
 
