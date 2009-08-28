@@ -61,8 +61,7 @@ JSRCS = \
 	Const.java \
 	MultiplyDivide.java
 
-OTHER_FILES_TO_BE_JARED = \
-	$(JSRCS:%.java=%.j)
+OTHER_FILES_TO_BE_JARED = 
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
