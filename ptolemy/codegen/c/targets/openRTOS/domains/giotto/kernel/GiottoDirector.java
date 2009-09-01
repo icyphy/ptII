@@ -254,9 +254,10 @@ ptolemy.codegen.c.domains.giotto.kernel.GiottoDirector {
 
 
         //Attribute iterations = _director.getAttribute("iterations");
-        code.append( _eol+"g_ulSystemClock = SysCtlClockGet();"+_eol);
+       // code.append( _eol+"g_ulSystemClock = SysCtlClockGet();"+_eol);
         if (_isTopGiottoDirector()) {
-            code.append("vTaskStartScheduler();"+_eol);
+         //   code.append("vTaskStartScheduler();"+_eol);
+            code.append(_eol+_generateBlockCode("mainCode")+_eol);
         }
         return code.toString();
 
