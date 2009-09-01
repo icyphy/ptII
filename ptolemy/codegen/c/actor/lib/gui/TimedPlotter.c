@@ -1,6 +1,5 @@
 /***preinitBlock***/
 //preinit code should be here
-$super()
 /**/
 
 
