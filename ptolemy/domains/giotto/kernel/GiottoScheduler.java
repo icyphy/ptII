@@ -135,6 +135,11 @@ public class GiottoScheduler extends Scheduler {
         }
     }
 
+     public int getLCM()
+     {
+         return _lcm;
+         
+     }
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
@@ -197,12 +202,12 @@ public class GiottoScheduler extends Scheduler {
             Actor actor = (Actor) actorListIterator.next();
             int frequency = getFrequency(actor);
 
-            if (Arrays.binarySearch(_candidateFrequencies, frequency) >= 0) {
+           // if (Arrays.binarySearch(_candidateFrequencies, frequency) >= 0) {
                 // this frequency is a good candidate to calculate accurate
                 // _unitTimeIncrement for the director.
                 frequencyArray[i] = frequency;
                 i++;
-            } else if (frequency > biggestFrequency) {
+            /*} else if (frequency > biggestFrequency) {
                 throw new NotSchedulableException(
                         this,
                         "The specified frequency "
@@ -224,10 +229,11 @@ public class GiottoScheduler extends Scheduler {
                                 + ", because time cannot be calculated accurately. \n"
                                 + " A good frequency will be of 2^m*5^n, where m and n"
                                 + " are non-negative integers.");
-            }
+            }*/
         }
 
         _lcm = _lcm(frequencyArray);
+         System.out.println("the lcm of the frequencies is "+_lcm);
 
         if (_debugging) {
             _debug("LCM of frequencies is " + _lcm);
@@ -262,6 +268,7 @@ public class GiottoScheduler extends Scheduler {
 
         return schedule;
     }
+    
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////

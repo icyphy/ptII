@@ -244,6 +244,7 @@ public class GiottoDirector extends StaticSchedulingDirector implements
 
             while (scheduleIterator.hasNext()) {
                 Actor actor = ((Firing) scheduleIterator.next()).getActor();
+               System.out.println("to be fired is actor "+actor.getDisplayName());
 
                 if (_debugging) {
                     _debug("Updating destination receivers of "
@@ -584,6 +585,7 @@ public class GiottoDirector extends StaticSchedulingDirector implements
                 int frequencyValue = _getActorFrequency(compositeActor);
 
                 _periodValue = periodValue / frequencyValue;
+                System.out.println("I'm an embedded giotto director inside actor"+compositeActor.getDisplayName()+" and my period value.. accounting for outerdirector and my frequency is "+_periodValue);
                 period.setExpression(Double.toString(_periodValue));
             }
         }
@@ -594,6 +596,8 @@ public class GiottoDirector extends StaticSchedulingDirector implements
         GiottoScheduler scheduler = (GiottoScheduler) getScheduler();
         _schedule = scheduler.getSchedule();
         _unitTimeIncrement = scheduler._getMinTimeStep(_periodValue);
+        double temp = _unitTimeIncrement*scheduler.getLCM(); 
+        System.out.println("unit time increment has value "+ _unitTimeIncrement+"the lcm has value "+scheduler.getLCM()+"the product of timeIncrement and lcm is "+temp);
     }
 
     /** Return an array of suggested directors to be used with
@@ -768,7 +772,7 @@ public class GiottoDirector extends StaticSchedulingDirector implements
         try {
             GiottoScheduler scheduler = new GiottoScheduler(workspace());
             setScheduler(scheduler);
-
+            
             period = new Parameter(this, "period");
             period.setToken(new DoubleToken(_DEFAULT_GIOTTO_PERIOD));
             iterations = new Parameter(this, "iterations", new IntToken(0));
