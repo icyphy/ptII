@@ -26,10 +26,8 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 205.0]">
         </property>
     </property>
-    <property name="CCodeGenerator" class="ptolemy.cg.kernel.generic.program.procedural.c.CCodeGenerator">
-        <property name="measureTime" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[355.0, 70.0]">
+    <property name="PtidyOSCodeGenerator" class="ptolemy.cg.kernel.generic.program.procedural.c.ptidyos.PtidyOSCodeGenerator">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[400.0, 55.0]">
         </property>
     </property>
     <entity name="CompositeActor" class="ptolemy.actor.TypedCompositeActor">
@@ -105,57 +103,6 @@
                 </property>
             </port>
         </entity>
-        <entity name="GPOutputDevice" class="ptolemy.domains.ptides.lib.targets.luminary.GPOutputDevice">
-            <property name="pad" class="ptolemy.data.expr.StringParameter" value="C">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[500.0, 215.0]">
-            </property>
-            <port name="input" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="minDelay" class="ptolemy.data.expr.Parameter" value="{1.0}">
-                </property>
-            </port>
-        </entity>
-        <entity name="GPInputDevice" class="ptolemy.domains.ptides.lib.targets.luminary.GPInputDevice">
-            <property name="pin" class="ptolemy.data.expr.Parameter" value="0">
-            </property>
-            <property name="pad" class="ptolemy.data.expr.StringParameter" value="G">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 205.0]">
-            </property>
-            <port name="input" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
-                </property>
-                <property name="minDelay" class="ptolemy.data.expr.Parameter" value="{0.0}">
-                </property>
-            </port>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-                <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
-                </property>
-            </port>
-        </entity>
-        <entity name="GPInputDevice2" class="ptolemy.domains.ptides.lib.targets.luminary.GPInputDevice">
-            <property name="pin" class="ptolemy.data.expr.Parameter" value="5">
-            </property>
-            <property name="pad" class="ptolemy.data.expr.StringParameter" value="C">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 280.0]">
-            </property>
-            <port name="input" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
-                </property>
-                <property name="minDelay" class="ptolemy.data.expr.Parameter" value="{0.0}">
-                </property>
-            </port>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-                <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
-                </property>
-            </port>
-        </entity>
         <entity name="Const2" class="ptolemy.actor.lib.Const">
             <doc>Create a constant sequence.</doc>
             <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
@@ -199,30 +146,47 @@
                 </property>
             </port>
         </entity>
-        <relation name="relation" class="ptolemy.actor.TypedIORelation">
-            <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+        <entity name="GPInputDevice" class="ptolemy.domains.ptides.lib.luminary.GPInputDevice">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 205.0]">
             </property>
-        </relation>
-        <relation name="relation8" class="ptolemy.actor.TypedIORelation">
-            <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+            <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="minDelay" class="ptolemy.data.expr.Parameter" value="{0.0}">
+                </property>
+            </port>
+            <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+                <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
+                </property>
+            </port>
+        </entity>
+        <entity name="GPInputDevice2" class="ptolemy.domains.ptides.lib.luminary.GPInputDevice">
+            <property name="pin" class="ptolemy.data.expr.Parameter" value="5">
             </property>
-        </relation>
-        <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-            <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+            <property name="pad" class="ptolemy.data.expr.StringParameter" value="C">
             </property>
-        </relation>
-        <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-            <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 280.0]">
             </property>
-        </relation>
-        <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-            <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+            <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="minDelay" class="ptolemy.data.expr.Parameter" value="{0.0}">
+                </property>
+            </port>
+            <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+                <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
+                </property>
+            </port>
+        </entity>
+        <entity name="GPOutputDevice" class="ptolemy.domains.ptides.lib.luminary.GPOutputDevice">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[486.0269470214844, 215.94696044921875]">
             </property>
-        </relation>
-        <relation name="relation7" class="ptolemy.actor.TypedIORelation">
-            <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
-            </property>
-        </relation>
+            <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="minDelay" class="ptolemy.data.expr.Parameter" value="{1.0}">
+                </property>
+            </port>
+        </entity>
         <relation name="relation2" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="relation9" class="ptolemy.actor.TypedIORelation">
@@ -231,25 +195,37 @@
         </relation>
         <relation name="relation10" class="ptolemy.actor.TypedIORelation">
         </relation>
-        <link port="port" relation="relation4"/>
-        <link port="port3" relation="relation8"/>
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <link port="port" relation="relation3"/>
+        <link port="port3" relation="relation7"/>
         <link port="port2" relation="relation5"/>
         <link port="AddSubtract.plus" relation="relation9"/>
         <link port="AddSubtract.minus" relation="relation10"/>
-        <link port="AddSubtract.output" relation="relation"/>
+        <link port="AddSubtract.output" relation="relation8"/>
         <link port="Const.output" relation="relation2"/>
-        <link port="Const.trigger" relation="relation3"/>
-        <link port="GPOutputDevice.input" relation="relation"/>
-        <link port="GPOutputDevice.output" relation="relation8"/>
-        <link port="GPInputDevice.input" relation="relation4"/>
-        <link port="GPInputDevice.output" relation="relation3"/>
-        <link port="GPInputDevice2.input" relation="relation5"/>
-        <link port="GPInputDevice2.output" relation="relation7"/>
+        <link port="Const.trigger" relation="relation"/>
         <link port="Const2.output" relation="relation6"/>
-        <link port="Const2.trigger" relation="relation7"/>
+        <link port="Const2.trigger" relation="relation4"/>
         <link port="TimeDelay.input" relation="relation2"/>
         <link port="TimeDelay.output" relation="relation9"/>
         <link port="TimeDelay2.input" relation="relation6"/>
         <link port="TimeDelay2.output" relation="relation10"/>
+        <link port="GPInputDevice.input" relation="relation3"/>
+        <link port="GPInputDevice.output" relation="relation"/>
+        <link port="GPInputDevice2.input" relation="relation5"/>
+        <link port="GPInputDevice2.output" relation="relation4"/>
+        <link port="GPOutputDevice.input" relation="relation8"/>
+        <link port="GPOutputDevice.output" relation="relation7"/>
     </entity>
 </entity>

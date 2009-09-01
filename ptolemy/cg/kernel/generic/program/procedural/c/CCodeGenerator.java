@@ -857,7 +857,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         _overloadedFunctionSet = new LinkedHashSet<String>();
 
         String cCodegenPath = "$CLASSPATH/ptolemy/cg/kernel/generic/program/procedural/c/";
-        String typeDir = cCodegenPath + "kernel/type/";
+        String typeDir = cCodegenPath + "type/";
         String functionDir = typeDir + "polymorphic/";
 
         _overloadedFunctions = new CodeStream(functionDir + "add.c", this);
@@ -890,9 +890,9 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         _overloadedFunctions.parse(typeDir + "UnsignedByte.c");
 
         // Parse other function files.
-        String directorFunctionDir = cCodegenPath
-                + "kernel/parameterized/directorFunctions/";
-        _overloadedFunctions.parse(directorFunctionDir + "PNDirector.c");
+//        String directorFunctionDir = cCodegenPath
+//                + "kernel/parameterized/directorFunctions/";
+//        _overloadedFunctions.parse(directorFunctionDir + "PNDirector.c");
     }
 
     /** Execute the compile and run commands in the

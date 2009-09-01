@@ -64,7 +64,8 @@ JSRCS = CCodeGenerator.java \
 
 OTHER_FILES_TO_BE_JARED = \
 	makefile.in \
-	jnimakefile.in
+	jnimakefile.in \
+	sharedCode.c
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
