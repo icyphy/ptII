@@ -63,3 +63,8 @@ void $actorName() {
 /*** updatePort($sinkPort, $srcPort) ***/
         $sinkPort = $srcPort;
 /**/
+
+/*** mainCode ***/
+g_ulSystemClock = SysCtlClockGet();
+vTaskStartScheduler();
+/**/
