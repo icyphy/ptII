@@ -110,6 +110,10 @@ public class PtidesBasicDirector extends DEDirector {
         actorsReceiveEventsInTimestampOrder = new Parameter(this, "actorsReceiveEventsInTimestampOrder");
         actorsReceiveEventsInTimestampOrder.setExpression("false");
         actorsReceiveEventsInTimestampOrder.setTypeEquals(BaseType.BOOLEAN);
+        
+        syncError = new Parameter(this, "synchronizationError");
+        syncError.setExpression("0.0");
+        syncError.setTypeEquals(BaseType.DOUBLE);
 
         _zero = new Time(this);
     }
@@ -126,6 +130,11 @@ public class PtidesBasicDirector extends DEDirector {
      *  order. This simplifies the safe to process analysis.
      */
     public Parameter actorsReceiveEventsInTimestampOrder;
+    
+    /** A parameter that stores the synchronization error in the platform governed
+     *  by this Ptides director.
+     */
+    public Parameter syncError;
 
     ///////////////////////////////////////////////////////////////////
     ////                     public methods                        ////
@@ -182,9 +191,25 @@ public class PtidesBasicDirector extends DEDirector {
         }
         if (!(director instanceof DEDirector)) {
             throw new IllegalActionException(director, "The enclosing director of the Ptides " +
-                        "director is not a DE Director.");
+                        "director is not a DE Director or a PtidesTopLevelDirector.");
         }
-        return director.getModelTime();
+        if (director instanceof PtidesTopLevelDirector) {
+            return ((PtidesTopLevelDirector)director).getSimulatedPhysicalTime((Actor)getContainer());
+        } else {
+            if (getSyncError() != 0.0) {
+                throw new IllegalActionException(this, "The synchronization error is non-zero, the top level" +
+                		"needs to be a PtidesTopLevelDirector.");
+            }
+            return director.getModelTime();
+        }
+    }
+    
+    /** Get the synchronization error of this platform.
+     *  @return the synchronization error.
+     *  @throws IllegalActionException
+     */
+    public double getSyncError() throws IllegalActionException {
+           return ((DoubleToken) syncError.getToken()).doubleValue();
     }
 
     /** Advance the current model tag to that of the earliest event in

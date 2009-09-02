@@ -284,6 +284,14 @@
             </property>
         </port>
     </entity>
+    <entity name="Display" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1280, 412, 450, 199}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[442, 152]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{325, 525}">
+        </property>
+    </entity>
     <relation name="relation8" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
@@ -300,4 +308,5 @@
     <link port="Controller.encoderTick" relation="relation"/>
     <link port="Controller.controlSignal" relation="relation8"/>
     <link port="Discard.input" relation="relation3"/>
+    <link port="Display.input" relation="relation8"/>
 </entity>
