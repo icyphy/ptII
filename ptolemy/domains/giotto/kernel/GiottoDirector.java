@@ -64,8 +64,8 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 
-//////////////////////////////////////////////////////////////////////////
-//// GiottoDirector
+
+////GiottoDirector
 
 /**
  This class implements a director for the Giotto model of computation
@@ -90,7 +90,7 @@ import ptolemy.kernel.util.Workspace;
  @see GiottoReceiver
  */
 public class GiottoDirector extends StaticSchedulingDirector implements
-        TimedDirector {
+TimedDirector {
     /** Construct a director in the default workspace with an empty string
      *  as its name. The director is added to the list of objects in
      *  the workspace. Increment the version number of the workspace.
@@ -114,7 +114,7 @@ public class GiottoDirector extends StaticSchedulingDirector implements
      *   attribute in the container.
      */
     public GiottoDirector(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+    throws IllegalActionException, NameDuplicationException {
         super(container, name);
         _init();
     }
@@ -143,7 +143,7 @@ public class GiottoDirector extends StaticSchedulingDirector implements
      *   is <i>filename</i> and the file cannot be opened.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+    throws IllegalActionException {
         if (attribute == period) {
             _periodValue = ((DoubleToken) period.getToken()).doubleValue();
         } else if (attribute == synchronizeToRealTime) {
@@ -244,7 +244,6 @@ public class GiottoDirector extends StaticSchedulingDirector implements
 
             while (scheduleIterator.hasNext()) {
                 Actor actor = ((Firing) scheduleIterator.next()).getActor();
-               System.out.println("to be fired is actor "+actor.getDisplayName());
 
                 if (_debugging) {
                     _debug("Updating destination receivers of "
@@ -290,7 +289,13 @@ public class GiottoDirector extends StaticSchedulingDirector implements
             _unitIndex++;
 
             _expectedNextIterationTime = _expectedNextIterationTime
-                    .add(_unitTimeIncrement);
+            .add(_unitTimeIncrement);
+            //this compensates for rounding errors that may occur  
+            if(_unitIndex == _lcm)
+            {
+                _expectedNextIterationTime = new Time(this,_periodValue *(_iterationCount+1));
+
+            }
 
             if (_debugging) {
                 _debug("next Iteration time " + _expectedNextIterationTime
@@ -432,7 +437,7 @@ public class GiottoDirector extends StaticSchedulingDirector implements
             while (outputPorts.hasNext()) {
                 IOPort port = (IOPort) outputPorts.next();
                 Parameter initialValueParameter = (Parameter) ((NamedObj) port)
-                        .getAttribute("initialValue");
+                .getAttribute("initialValue");
 
                 if (initialValueParameter != null) {
                     // Since we delay the transfer of outputs, we have to
@@ -486,7 +491,7 @@ public class GiottoDirector extends StaticSchedulingDirector implements
         }
 
         int numberOfIterations = ((IntToken) (iterations.getToken()))
-                .intValue();
+        .intValue();
 
         if ((numberOfIterations > 0) && (_iterationCount >= numberOfIterations)) {
             // iterations limit is reached
@@ -528,7 +533,7 @@ public class GiottoDirector extends StaticSchedulingDirector implements
         if (_isEmbedded()) {
             CompositeActor container = (CompositeActor) getContainer();
             Time outsideCurrentTime = ((Actor) container)
-                    .getExecutiveDirector().getModelTime();
+            .getExecutiveDirector().getModelTime();
 
             if (outsideCurrentTime.compareTo(_expectedNextIterationTime) < 0) {
                 // not the scheduled time to fire.
@@ -581,11 +586,10 @@ public class GiottoDirector extends StaticSchedulingDirector implements
 
             if (executiveDirector instanceof GiottoDirector) {
                 double periodValue = ((GiottoDirector) executiveDirector)
-                        .getPeriod();
+                .getPeriod();
                 int frequencyValue = _getActorFrequency(compositeActor);
 
                 _periodValue = periodValue / frequencyValue;
-                System.out.println("I'm an embedded giotto director inside actor"+compositeActor.getDisplayName()+" and my period value.. accounting for outerdirector and my frequency is "+_periodValue);
                 period.setExpression(Double.toString(_periodValue));
             }
         }
@@ -596,8 +600,7 @@ public class GiottoDirector extends StaticSchedulingDirector implements
         GiottoScheduler scheduler = (GiottoScheduler) getScheduler();
         _schedule = scheduler.getSchedule();
         _unitTimeIncrement = scheduler._getMinTimeStep(_periodValue);
-        double temp = _unitTimeIncrement*scheduler.getLCM(); 
-        System.out.println("unit time increment has value "+ _unitTimeIncrement+"the lcm has value "+scheduler.getLCM()+"the product of timeIncrement and lcm is "+temp);
+        _lcm = scheduler.getLCM();
     }
 
     /** Return an array of suggested directors to be used with
@@ -630,7 +633,7 @@ public class GiottoDirector extends StaticSchedulingDirector implements
         if (!port.isInput() || !port.isOpaque()) {
             throw new IllegalActionException(this, port,
                     "transferInputs: port argument is not an opaque"
-                            + "input port.");
+                    + "input port.");
         }
 
         boolean transfer = false;
@@ -679,7 +682,7 @@ public class GiottoDirector extends StaticSchedulingDirector implements
         if (!port.isOutput() || !port.isOpaque()) {
             throw new IllegalActionException(port,
                     "transferOutputs: this port is not "
-                            + "an opaque output port.");
+                    + "an opaque output port.");
         }
 
         boolean wasTransferred = false;
@@ -695,12 +698,12 @@ public class GiottoDirector extends StaticSchedulingDirector implements
                                     if (_debugging) {
                                         _debug(getName(),
                                                 "transferring output from "
-                                                        + port.getName()
-                                                        + " to channel " + i);
+                                                + port.getName()
+                                                + " to channel " + i);
                                     }
 
                                     Token t = ((GiottoReceiver) insideReceivers[i][j])
-                                            .remove();
+                                    .remove();
                                     port.send(i, t);
                                     wasTransferred = true;
                                 }
@@ -755,7 +758,7 @@ public class GiottoDirector extends StaticSchedulingDirector implements
      *  return 1.
      */
     private int _getActorFrequency(NamedObj actor)
-            throws IllegalActionException {
+    throws IllegalActionException {
         int frequencyValue = 1;
         Attribute frequency = actor.getAttribute("frequency");
         if (frequency instanceof Parameter) {
@@ -772,7 +775,7 @@ public class GiottoDirector extends StaticSchedulingDirector implements
         try {
             GiottoScheduler scheduler = new GiottoScheduler(workspace());
             setScheduler(scheduler);
-            
+
             period = new Parameter(this, "period");
             period.setToken(new DoubleToken(_DEFAULT_GIOTTO_PERIOD));
             iterations = new Parameter(this, "iterations", new IntToken(0));
@@ -833,4 +836,7 @@ public class GiottoDirector extends StaticSchedulingDirector implements
 
     // Minimum time step size (a Giotto "unit").
     private double _unitTimeIncrement = 0.0;
+
+    //lcm of frequencies see my this director
+    private int _lcm;
 }
