@@ -1823,8 +1823,12 @@ public class ContinuousDirector extends FixedPointDirector implements
             // present. Presumably, there are no inputs present at the
             // _iterationBeginTime because had there been any, then
             // the speculative execution that we are rolling back
-            // would not have occurred.
-            _redoingSolverIteration = true;
+            // would not have occurred. However, it could be a new input
+            // has occurred at the _iterationBeginTime, but with a
+            // larger microstep. In this case, there could be new inputs.
+            if (_currentStepSize != 0.0) {
+                _redoingSolverIteration = true;
+            }
         } else if (localTimeExceedsOutsideTime == 0 && _commitIsPending) {
             ///////////////////////////////////////////////////////////////
             // Second case:
