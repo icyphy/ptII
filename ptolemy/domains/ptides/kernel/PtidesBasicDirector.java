@@ -702,7 +702,7 @@ public class PtidesBasicDirector extends DEDirector {
             // network delay, otherwise the port is a sensor port, and the delay
             // we start with is the realTimeDelay.
             if (_isNetworkPort(inputPort)) {
-                startDelay = SuperdenseDependency.valueOf(_getNetworkDelay(inputPort), 0);
+                startDelay = SuperdenseDependency.valueOf(-_getNetworkDelay(inputPort), 0);
             } else {
                 startDelay = SuperdenseDependency.valueOf(-_getRealTimeDelay(inputPort), 0);
             }
@@ -1669,8 +1669,6 @@ public class PtidesBasicDirector extends DEDirector {
      *  @return True if the event is safe to process, otherwise return false.
      *  @exception IllegalActionException
      *  @see #_setTimedInterrupt(Time)
-     *  
-     *  FIXME: CHANGE ALL PtidesEvent TO PTIDESEVENT.
      */
     protected boolean _safeToProcess(PtidesEvent event)
     throws IllegalActionException {
@@ -2224,7 +2222,7 @@ public class PtidesBasicDirector extends DEDirector {
             return _lastSourcePort;
         }
         if (causalityMarker.containsPort(_lastSourcePort)) {
-            return _lastSourcePort;   
+            return _lastSourcePort;
         } else {
             return null;
         }
