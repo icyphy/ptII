@@ -224,6 +224,7 @@ JSRCS = \
 	ThrowModelError.java \
 	TimeDelay.java \
 	TimedSource.java \
+	TopLevelCurrentTime.java \
 	Transformer.java \
 	Triangular.java \
 	TrigFunction.java \
