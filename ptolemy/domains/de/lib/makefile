@@ -52,6 +52,7 @@ JSRCS = \
 	DETransformer.java \
 	EventButton.java \
 	EventFilter.java \
+	getCurrentMicrostep.java \
 	Inhibit.java \
 	Merge.java \
 	NonInterruptibleTimer.java \

@@ -819,6 +819,14 @@ public class DEDirector extends Director implements SuperdenseTimeDirector,
     public void fireAtSkipped(Time time) throws IllegalActionException {
         fireAtCurrentTime((Actor) getContainer());
     }
+    
+    /** Get the current microstep.
+     *  @see #setMicrostep
+     *  @return microstep of the current time.
+     */
+    public int getMicrostep() {
+        return _microstep;
+    }
 
     /** Return the event queue. Note that this method is not synchronized.
      *  Any further accesses to this event queue needs synchronization.

@@ -164,14 +164,6 @@ public class PtidesBasicDirector extends DEDirector {
         return SuperdenseDependency.valueOf(delay, index);
     }
 
-    /** Get the current microstep.
-     *  @see #setMicrostep
-     *  @return microstep of the current time.
-     */
-    public int getMicrostep() {
-        return _microstep;
-    }
-
     /** Get the current Tag.
      *  @return timestamp and microstep of the current time.
      */
