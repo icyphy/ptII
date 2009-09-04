@@ -12,7 +12,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-135.0, 160.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={23, 71, 1095, 666}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={29, 74, 1095, 666}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[880, 559]">
     </property>
@@ -580,7 +580,7 @@
     <entity name="Controller" class="ptolemy.actor.TypedCompositeActor">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 515.0]">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 51, 1153, 717}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={3, 135, 1153, 717}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[938, 610]">
         </property>
@@ -806,8 +806,8 @@
                     </property>
                 </port>
             </entity>
-            <entity name="SimulatedPhysicalTime" class="ptolemy.domains.ptides.lib.SimulatedPhysicalTime">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[325.0, 190.0]">
+            <entity name="TopLevelCurrentTime" class="ptolemy.actor.lib.TopLevelCurrentTime">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[335.0, 190.0]">
                 </property>
                 <port name="trigger" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -864,16 +864,16 @@
             <link port="Remainder.output" relation="relation4"/>
             <link port="Const.output" relation="relation9"/>
             <link port="Const.trigger" relation="relation"/>
-            <link port="SimulatedPhysicalTime.output" relation="relation6"/>
-            <link port="SimulatedPhysicalTime.trigger" relation="relation10"/>
+            <link port="TopLevelCurrentTime.output" relation="relation6"/>
+            <link port="TopLevelCurrentTime.trigger" relation="relation10"/>
         </entity>
         <entity name="Disc Control" class="ptolemy.actor.TypedCompositeActor">
             <property name="_location" class="ptolemy.kernel.util.Location" value="[645.0, 75.0]">
             </property>
             <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-                <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Simple proportional-integral (PI) control for the disc.&#10;&#10;This controller will respond to angle error events, in which case the angle&#10;at the time of impact is the control variable, and rate error events, in which&#10;case the rate of the disc is the control variable. The control variable not&#10;used will have its accumulator reset.">
+                <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Simple proportional-integral (PI) control for the disc.&#10;&#10;This controller will respond to angle error events, in which case the angle&#10;at the time of impact is the control variable, and rate error events, in which&#10;case the rate of the disc is the control variable. The control variable not&#10;used will have its accumulator reset.&#10;&#10;FIXME: Reset events should only be generated once...">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[-20.0, 105.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[-20.0, 65.0]">
                 </property>
             </property>
             <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={99, 14, 984, 715}, maximized=false}">
@@ -972,7 +972,7 @@
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 110.0]">
                     </property>
                 </property>
-                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={18, 84, 1012, 565}, maximized=false}">
+                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={21, 89, 1012, 565}, maximized=false}">
                 </property>
                 <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[797, 458]">
                 </property>
@@ -1064,11 +1064,6 @@
                         </property>
                     </port>
                 </entity>
-                <entity name="CurrentTime" class="ptolemy.actor.lib.CurrentTime">
-                    <doc>Output the current time.</doc>
-                    <property name="_location" class="ptolemy.kernel.util.Location" value="[220.0, 165.0]">
-                    </property>
-                </entity>
                 <entity name="AddSubtract2" class="ptolemy.actor.lib.AddSubtract">
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[405.0, 175.0]">
                     </property>
@@ -1081,6 +1076,10 @@
                 </entity>
                 <entity name="MultiplyDivide" class="ptolemy.actor.lib.MultiplyDivide">
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[535.0, 110.0]">
+                    </property>
+                </entity>
+                <entity name="TopLevelCurrentTime" class="ptolemy.actor.lib.TopLevelCurrentTime">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 165.0]">
                     </property>
                 </entity>
                 <relation name="relation" class="ptolemy.actor.TypedIORelation">
@@ -1135,8 +1134,6 @@
                 <link port="Integral Scale.output" relation="relation7"/>
                 <link port="Const.output" relation="relation9"/>
                 <link port="Const.trigger" relation="relation3"/>
-                <link port="CurrentTime.output" relation="relation5"/>
-                <link port="CurrentTime.trigger" relation="relation"/>
                 <link port="AddSubtract2.plus" relation="relation5"/>
                 <link port="AddSubtract2.minus" relation="relation2"/>
                 <link port="AddSubtract2.output" relation="relation11"/>
@@ -1146,6 +1143,8 @@
                 <link port="MultiplyDivide.multiply" relation="relation10"/>
                 <link port="MultiplyDivide.divide" relation="relation11"/>
                 <link port="MultiplyDivide.output" relation="relation12"/>
+                <link port="TopLevelCurrentTime.output" relation="relation5"/>
+                <link port="TopLevelCurrentTime.trigger" relation="relation"/>
             </class>
             <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[305.0, 260.0]">
@@ -1236,14 +1235,6 @@
                         </property>
                     </port>
                 </entity>
-                <entity name="CurrentTime" class="ptolemy.actor.lib.CurrentTime">
-                    <port name="trigger" class="ptolemy.actor.TypedIOPort">
-                        <property name="input"/>
-                        <property name="multiport"/>
-                        <property name="minDelay" class="ptolemy.data.expr.Parameter" value="{0.0}">
-                        </property>
-                    </port>
-                </entity>
                 <entity name="AddSubtract2" class="ptolemy.actor.lib.AddSubtract">
                     <port name="plus" class="ptolemy.actor.TypedIOPort">
                         <property name="input"/>
@@ -1281,6 +1272,14 @@
                         </property>
                     </port>
                     <port name="divide" class="ptolemy.actor.TypedIOPort">
+                        <property name="input"/>
+                        <property name="multiport"/>
+                        <property name="minDelay" class="ptolemy.data.expr.Parameter" value="{0.0}">
+                        </property>
+                    </port>
+                </entity>
+                <entity name="TopLevelCurrentTime" class="ptolemy.actor.lib.TopLevelCurrentTime">
+                    <port name="trigger" class="ptolemy.actor.TypedIOPort">
                         <property name="input"/>
                         <property name="multiport"/>
                         <property name="minDelay" class="ptolemy.data.expr.Parameter" value="{0.0}">
@@ -1359,14 +1358,6 @@
                         </property>
                     </port>
                 </entity>
-                <entity name="CurrentTime" class="ptolemy.actor.lib.CurrentTime">
-                    <port name="trigger" class="ptolemy.actor.TypedIOPort">
-                        <property name="input"/>
-                        <property name="multiport"/>
-                        <property name="minDelay" class="ptolemy.data.expr.Parameter" value="{0.0}">
-                        </property>
-                    </port>
-                </entity>
                 <entity name="AddSubtract2" class="ptolemy.actor.lib.AddSubtract">
                     <port name="plus" class="ptolemy.actor.TypedIOPort">
                         <property name="input"/>
@@ -1404,6 +1395,14 @@
                         </property>
                     </port>
                     <port name="divide" class="ptolemy.actor.TypedIOPort">
+                        <property name="input"/>
+                        <property name="multiport"/>
+                        <property name="minDelay" class="ptolemy.data.expr.Parameter" value="{0.0}">
+                        </property>
+                    </port>
+                </entity>
+                <entity name="TopLevelCurrentTime" class="ptolemy.actor.lib.TopLevelCurrentTime">
+                    <port name="trigger" class="ptolemy.actor.TypedIOPort">
                         <property name="input"/>
                         <property name="multiport"/>
                         <property name="minDelay" class="ptolemy.data.expr.Parameter" value="{0.0}">
@@ -1506,7 +1505,7 @@
                 </port>
             </entity>
             <entity name="Distributor" class="ptolemy.actor.lib.Distributor">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 205.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[195.0, 220.0]">
                 </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -1567,8 +1566,8 @@
                     </property>
                 </port>
             </entity>
-            <entity name="SimulatedPhysicalTime" class="ptolemy.domains.ptides.lib.SimulatedPhysicalTime">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[114.36993408203125, 190.859375]">
+            <entity name="TopLevelCurrentTime" class="ptolemy.actor.lib.TopLevelCurrentTime">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, 205.0]">
                 </property>
                 <port name="trigger" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -1627,8 +1626,8 @@
             <link port="MultiplyDivide.output" relation="relation9"/>
             <link port="Const.output" relation="relation6"/>
             <link port="Const.trigger" relation="relation8"/>
-            <link port="SimulatedPhysicalTime.output" relation="relation"/>
-            <link port="SimulatedPhysicalTime.trigger" relation="relation3"/>
+            <link port="TopLevelCurrentTime.output" relation="relation"/>
+            <link port="TopLevelCurrentTime.trigger" relation="relation3"/>
         </entity>
         <entity name="Ball Kinematics" class="ptolemy.actor.TypedCompositeActor">
             <property name="_location" class="ptolemy.kernel.util.Location" value="{275.0, 65.0}">
@@ -2024,8 +2023,8 @@
                         </property>
                     </port>
                 </entity>
-                <entity name="SimulatedPhysicalTime" class="ptolemy.domains.ptides.lib.SimulatedPhysicalTime">
-                    <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 245.0]">
+                <entity name="TopLevelCurrentTime" class="ptolemy.actor.lib.TopLevelCurrentTime">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[165.0, 250.0]">
                     </property>
                     <port name="trigger" class="ptolemy.actor.TypedIOPort">
                         <property name="input"/>
@@ -2060,8 +2059,8 @@
                 <link port="Maximum.maximumValue" relation="relation4"/>
                 <link port="Const.output" relation="relation2"/>
                 <link port="Const.trigger" relation="relation5"/>
-                <link port="SimulatedPhysicalTime.output" relation="relation3"/>
-                <link port="SimulatedPhysicalTime.trigger" relation="relation"/>
+                <link port="TopLevelCurrentTime.output" relation="relation3"/>
+                <link port="TopLevelCurrentTime.trigger" relation="relation"/>
             </entity>
             <entity name="Register" class="ptolemy.domains.de.lib.Register">
                 <property name="initialValue" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -2361,8 +2360,8 @@
 <title>timeToImpact</title>
 <xLabel>time (s)</xLabel>
 <yLabel>time to impact (s)</yLabel>
-<xRange min="0.0" max="0.0"/>
-<yRange min="0.0" max="0.0"/>
+<xRange min="0.0" max="3.5889908782"/>
+<yRange min="0.0" max="1.2317872522250668"/>
 </plot>?>
                 </configure>
             </entity>
@@ -2648,7 +2647,7 @@
 <title>Control Signal</title>
 <xLabel>time (s)</xLabel>
 <yLabel>control signal (V)</yLabel>
-<xRange min="0.0" max="0.2931169226"/>
+<xRange min="0.0" max="3.5889908782"/>
 <yRange min="-6.8734440809576896" max="9.95904316765698"/>
 </plot>?>
             </configure>
@@ -2667,7 +2666,7 @@
 <title>Disc Rate</title>
 <xLabel>time (s)</xLabel>
 <yLabel>rate (rev / s)</yLabel>
-<xRange min="0.0" max="0.36025356550000004"/>
+<xRange min="0.0" max="3.5889908782"/>
 <yRange min="-0.0" max="5.546979924592641"/>
 </plot>?>
             </configure>
@@ -2705,8 +2704,8 @@
 <title>Angle Error</title>
 <xLabel>time (s)</xLabel>
 <yLabel>rotation % error </yLabel>
-<xRange min="0.0" max="0.0"/>
-<yRange min="0.0" max="0.0"/>
+<xRange min="0.0" max="3.5889908782"/>
+<yRange min="-0.927391420354517" max="0.8872207523400246"/>
 </plot>?>
             </configure>
         </entity>
