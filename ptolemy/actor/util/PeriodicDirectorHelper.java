@@ -80,7 +80,8 @@ public class PeriodicDirectorHelper {
      *  this method checks to see whether the
      *  requested time is equal to the current time plus an integer
      *  multiple of the period. If so, it returns the requested time.
-     *  If not, it returns current time plus the period.
+     *  If not, it returns the earliest future time that exceeds the
+     *  requested time.
      *  @param actor The actor scheduled to be fired.
      *  @param time The requested time.
      *  @exception IllegalActionException If the operation is not
@@ -141,7 +142,7 @@ public class PeriodicDirectorHelper {
                 return time;
             }
         }
-        Time result = currentTime.add(periodValue);
+        Time result = futureTime;
         recordPendingFireAt(actor, result);
         return result;
     }
@@ -359,14 +360,16 @@ public class PeriodicDirectorHelper {
             if (director != null) {
                 Time result = director.fireAt(container, time);
                 if (!result.equals(time)) {
-                    throw new IllegalActionException(director,
-                            director.getName()
+                    throw new IllegalActionException(_director,
+                            "Timing incompatibility error: "
+                                    + director.getName()
                                     + " is unable to fire "
                                     + container.getName()
                                     + " at the requested time: "
                                     + time
                                     + ". It responds it will fire it at: "
-                                    + result);
+                                    + result
+                                    + ".");
                 }
                 return result;
             }
