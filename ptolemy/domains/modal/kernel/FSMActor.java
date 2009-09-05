@@ -404,6 +404,19 @@ public class FSMActor extends CompositeEntity implements TypedActor,
                 Action action = (Action) actions.next();
                 action.execute();
             }
+            
+            // If the current state has no refinement and there
+            // outputs that remain unknown, make them absent.
+            if (_currentState.getRefinement() == null) {
+                List<IOPort> outputs = outputPortList();
+                for (IOPort port : outputs) {
+                    for (int channel = 0; channel < port.getWidth(); channel++) {
+                        if (!port.isKnown(channel)) {
+                            port.sendClear(channel);
+                        }
+                    }
+                }
+            }
         }
         // Commit to this transition even if it cannot be
         _lastChosenTransition = result;
@@ -497,7 +510,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
             if (transition.isDefault()) {
                 defaultTransitions.add(transition);
             } else {
-                foundUnknown = !_referencedInputPortsByGuardKnown(transition);
+                foundUnknown = foundUnknown || !_referencedInputPortsByGuardKnown(transition);
                 // Try to evaluate the guard whether the inputs are known
                 // or not. An unknown input might be in a part of the
                 // guard expression that is not evaluated, e.g. if the
@@ -526,9 +539,23 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         if (enabledTransitions.size() > 0) {
             return enabledTransitions;
         } else {
+            // No enabled transitions. Check for default transitions.
+            // Default transitions cannot become enabled until all
+            // guard expressions can be evaluated.
             if (!foundUnknown) {
-                // Default transitions cannot become enabled until all
-                // guard expressions can be evaluated.
+                // If there is no default transition,
+                // the current state has no refinement, and there
+                // outputs that remain unknown, make them absent.
+                if (defaultTransitions.size() == 0 && _currentState.getRefinement() == null) {
+                    List<IOPort> outputs = outputPortList();
+                    for (IOPort port : outputs) {
+                        for (int channel = 0; channel < port.getWidth(); channel++) {
+                            if (!port.isKnown(channel)) {
+                                port.sendClear(channel);
+                            }
+                        }
+                    }
+                }
                 return defaultTransitions;
             }
         }
