@@ -35,13 +35,25 @@ import ptolemy.kernel.util.InvalidStateException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
+//////////////////////////////////////////////////////////////////////////////
+//// SequenceDirector
 
 /**
- * The SequenceDirector implements a sequencing model of computation.
- * The order of execution is given by adding SequenceAttributes to 
- * actors in the model.
+ * A director that executes actors in a sequence explicitly specified
+ * by the model. Actors are required to either contain an instance
+ * of SequenceAttribute or to be upstream of an actor that contains
+ * an instance of SequenceAttribute. Each SequenceAttribute contains
+ * a unique integer that specifies the position in the sequence for
+ * the actor. This director will sort the list of actors that
+ * contain a SequenceAttribute according to these integers, and
+ * fire them in order. Before each firing, it will also fire any
+ * upstream actors actors that do not contain an instance of SequenceAttribute.
+ * FIXME: In what order are those actors fired?
+ * FIXME: What if the upstream actors do contain a SequenceAttribute?
+ * FIXME: If an actor is upstream of two actors with SequenceAttribute,
+ * does it fire twice in an iteration? Are it's output valued queued?
  * 
- * A SequenceAttribute is an integer sequenceNumber.
+ * <p>
  * 
  * The SequenceDirector computes the sequenced actors and passes these in two lists to the 
  * SequenceScheduler (one list for independent sequenced actors, and one list

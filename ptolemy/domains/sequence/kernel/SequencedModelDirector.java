@@ -37,14 +37,13 @@ import ptolemy.actor.FiringEvent;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.TypedIOPort;
-import ptolemy.domains.sequence.lib.ControlActor;
 import ptolemy.actor.sched.Firing;
-import ptolemy.actor.sched.Scheduler;
 import ptolemy.actor.util.Time;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
+import ptolemy.domains.sequence.lib.ControlActor;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.IllegalActionException;
@@ -53,8 +52,7 @@ import ptolemy.kernel.util.Workspace;
 
 
 /**
- * An abstract director, which SequenceDirector and ProcessDirector 
- * extend for the sequencing models of computation.
+ * An abstract base class for SequenceDirector and ProcessDirector.
  *
  * <p>The SequencedModelDirector
  * <br>- Computes the sequenced actors and passes these in two lists to the 

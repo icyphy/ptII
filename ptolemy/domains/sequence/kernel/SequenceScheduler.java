@@ -1,4 +1,4 @@
-/* A base class for schedulers.
+/* A scheduler for the sequence domain.
 
  Copyright (c) 1998-2005 The Regents of the University of California.
  All rights reserved.
@@ -64,24 +64,24 @@ import ptolemy.kernel.util.Workspace;
 //////////////////////////////////////////////////////////////////////////
 //// SequenceScheduler
 
-/** The SequenceScheduler is responsible for creating and maintaining a
- * SequenceSchedule for sequenced models of computation.
- * 
- * The scheduler accepts a list of elements from the director.
- * 
- * This scheduler assembles three data structures that are used by SequenceSchedule:
- * - A directed graph containing all actors scheduled by this scheduler
- * - A hash table mapping each sequenced actor to an ordered list of dependent upstream actors
- * - A control table, which identifies the sequenced actors that are dependent
- * on other actors (for example, an If: Then (dependent actors) and :Else (dependent actors)
- * -   
- * - Sequence numbers are reused within a composite actor.  So, 
- * - Things with a sequence number but not a process number should be
- * treated as upstream actors 
- * (note for SequenceDirector and ProcessDirector)
- * - When the boundary (port) of a class or module is reached, no further items
- * inside that module are executed
- * 
+/**
+The SequenceScheduler is responsible for creating and maintaining a
+schedule for the sequence models of computation.
+The scheduler accepts a list of elements from the director.
+
+This scheduler assembles three data structures that are used by SequenceSchedule:
+- A directed graph containing all actors scheduled by this scheduler
+- A hash table mapping each sequenced actor to an ordered list of dependent upstream actors
+- A control table, which identifies the sequenced actors that are dependent
+on other actors (for example, an If: Then (dependent actors) and :Else (dependent actors)
+-   
+- Sequence numbers are reused within a composite actor.  So, 
+- Things with a sequence number but not a process number should be
+treated as upstream actors 
+(note for SequenceDirector and ProcessDirector)
+- When the boundary (port) of a class or module is reached, no further items
+inside that module are executed
+
  The base class for schedulers. A scheduler schedules the execution
  order of the containees of a CompositeActor.  <p>
 
@@ -106,9 +106,9 @@ import ptolemy.kernel.util.Workspace;
  for changes in the model.  Directors that use this scheduler should
  normally invalidate the schedule when mutations occur.
 
- @author Jie Liu, Steve Neuendorffer, Elizabeth Latronico (Bosch), rrs1pal 
+ @author Elizabeth Latronico (Bosch), Thomas Mandl (Bosch), Edward A. Lee 
  @version $Id$
- @since Ptolemy II 0.2
+ @since Ptolemy II 8.2
  @Pt.ProposedRating Red (beth)
  @Pt.AcceptedRating Red (beth)
  @see ptolemy.actor.sched.Schedule
@@ -275,6 +275,34 @@ public class SequenceScheduler extends Scheduler {
     
     }
 
+    /** Returns a list of unreachable actors found in the most recent call to
+     *  {@see #getSchedule()}. Actors are unreachable if they
+     *  are not connected FIXME and have no sequence number?.
+     *  , that are unreachable due to a lack of 
+     *  connected actors.  These will be 'upstream' actors that are not upstream
+     *  of any sequenced actor.  
+     *  This is done by returning a list of all actors with a 'false' entry 
+     *  in the hashtable _visitedNodes. 
+     *  This method is meant to be called after processGraph() has been called for
+     *  all schedules.  However, the SequenceScheduler itself does not know if there
+     *  are any more schedules remaining.  So, the director can call this function,
+     *  once all schedules have been handled.
+     * @return (Possible empty) List of unreachable upstream actors
+     */
+    public List<Actor> unreachableActorList() {
+        ArrayList<Actor> unreachables = new ArrayList<Actor>();
+        
+        // Get key set from hash table populated
+        // in the most recent call to getSchedule().
+        for (Node key : _visitedNodes.keySet()) {
+            boolean visited = _visitedNodes.get(key);
+            if (!visited) {
+                unreachables.add((Actor) key.getWeight());
+            }
+        }
+        return unreachables;
+    }
+
     /** FIXME:  Keep this or change?
      *  Should the SequencedModelDirector be a sub-class of StaticSchedulingDirector?
      *  If it is, then can just use superclass function
@@ -420,7 +448,7 @@ public class SequenceScheduler extends Scheduler {
     	SequencedModelDirector director = (SequencedModelDirector) getContainer();
     	
         // Get the deepEntityList from the container of the director (the composite actor it's in)
-        createActorGraph(((CompositeEntity) director.getContainer()).deepEntityList());
+        _createActorGraph(((CompositeEntity) director.getContainer()).deepEntityList());
         
         // Assemble control table
         // Hashtable <SequenceAttribute controlActor, Hashtable<String portName, ArrayList<SequenceAttribute> connectedActors>> 
@@ -580,6 +608,10 @@ public class SequenceScheduler extends Scheduler {
         
     }   // End function
     
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
     /** Create a graph of all the actors.
      *  The reachable nodes do not include the argument unless
      *  there is a loop from the specified node back to itself.
@@ -590,8 +622,8 @@ public class SequenceScheduler extends Scheduler {
      *  @param actorList  The list of actors.
      * 
      */
-    public void createActorGraph(List<Entity> actorList) {
-
+    private void _createActorGraph(List<Entity> actorList) {
+    
         _actorGraph = new DirectedGraph();
         
         // Create also additional data structures
@@ -605,7 +637,7 @@ public class SequenceScheduler extends Scheduler {
             Actor sa = (Actor) actors.next();
             if (!_actorGraph.containsNodeWeight(sa))
                 _actorGraph.addNodeWeight(sa);
-
+    
             // Add also an entry in the hashtable to easily look
             // up the node that goes with this actor
             // Get the node that was just added
@@ -625,8 +657,8 @@ public class SequenceScheduler extends Scheduler {
             }
             
             // Find all the predecessors of actor
-            Iterator predecessors = predecessorList(sa).iterator();
-
+            Iterator predecessors = _predecessorList(sa).iterator();
+    
             while (predecessors.hasNext()) {
                 Actor ps = (Actor) predecessors.next();
                 if (!_actorGraph.containsNodeWeight(ps))
@@ -636,42 +668,6 @@ public class SequenceScheduler extends Scheduler {
                 _actorGraph.addEdge(ps, sa);
             }
         }
-    }
-    
-    /** Return the predecessors of the given actor in the same level of
-     *  hierarchy. If the argument is null, return null. If the actor is
-     *  a source, return an empty list.
-     *  @param actor The given actor.
-     *  @return The list of predecessors, unordered.
-     */
-    public List<Actor> predecessorList(Actor actor) {
-        if (actor == null) {
-            return null;
-        }
-
-        LinkedList<Actor> predecessors = new LinkedList<Actor>();
-        Iterator inPorts = (actor).inputPortList().iterator();
-
-        while (inPorts.hasNext()) {
-            IOPort port = (IOPort) inPorts.next();
-            Iterator outPorts = port.deepConnectedOutPortList().iterator();
-            
-            while (outPorts.hasNext()) {
-                IOPort outPort = (IOPort) outPorts.next();
-                Actor pre = (Actor)outPort.getContainer();
-                
-                // NOTE: This could be done by using
-                // NamedObj.depthInHierarchy() instead of comparing the
-                // executive directors, but its tested this way, so we
-                // leave it alone.
-                if ((actor.getExecutiveDirector() == (pre).getExecutiveDirector())
-                        && !predecessors.contains(pre)) {
-                    predecessors.addLast(pre);
-                }
-            }
-        }
-
-        return predecessors;
     }
 
     /** Traverse the actor graph created from the model to check for cycles in the 
@@ -727,13 +723,49 @@ public class SequenceScheduler extends Scheduler {
         // This list must contain ALL nodes with sequence numbers in the whole model
         // since the backtrack function checks to see if a node has a sequence number
         // so as not to include it in a list of upstream actors
-        processGraph(subGraphList, sequencedActorGraphNodes);
+        _processGraph(subGraphList, sequencedActorGraphNodes);
         
         // Return from this method
         // A SequenceSchedule will determine its own set of firings (since they are
         // dynamically determined)
     }
     
+    /** Return the predecessors of the given actor in the same level of
+     *  hierarchy. If the argument is null, return null. If the actor is
+     *  a source, return an empty list.
+     *  @param actor The given actor.
+     *  @return The list of predecessors, unordered.
+     */
+    private List<Actor> _predecessorList(Actor actor) {
+        if (actor == null) {
+            return null;
+        }
+    
+        LinkedList<Actor> predecessors = new LinkedList<Actor>();
+        Iterator inPorts = (actor).inputPortList().iterator();
+    
+        while (inPorts.hasNext()) {
+            IOPort port = (IOPort) inPorts.next();
+            Iterator outPorts = port.deepConnectedOutPortList().iterator();
+            
+            while (outPorts.hasNext()) {
+                IOPort outPort = (IOPort) outPorts.next();
+                Actor pre = (Actor)outPort.getContainer();
+                
+                // NOTE: This could be done by using
+                // NamedObj.depthInHierarchy() instead of comparing the
+                // executive directors, but its tested this way, so we
+                // leave it alone.
+                if ((actor.getExecutiveDirector() == (pre).getExecutiveDirector())
+                        && !predecessors.contains(pre)) {
+                    predecessors.addLast(pre);
+                }
+            }
+        }
+    
+        return predecessors;
+    }
+
     /**
      * Process the actor graph to find out cycles and create a subGraphList of 
      * subGraphs containing SequencedActor with directed upstream actors. 
@@ -741,7 +773,7 @@ public class SequenceScheduler extends Scheduler {
      * @param sequencedActorGraphNodes
      * @throws IllegalActionException
      */
-    public void processGraph(List<Object[]> subGraphList, List<Node> sequencedActorGraphNodes) throws IllegalActionException {
+    private void _processGraph(List<Object[]> subGraphList, List<Node> sequencedActorGraphNodes) throws IllegalActionException {
 
 	 // From original SequenceDirector 
 
@@ -823,36 +855,6 @@ public class SequenceScheduler extends Scheduler {
                 }
             }
         }
-    }
-    
-    /** Prints a list of unreachable actors, that are unreachable due to a lack of 
-     *  connected actors.  These will be 'upstream' actors that are not upstream
-     *  of any sequenced actor.  
-     *  This is done by returning a list of all actors with a 'false' entry 
-     *  in the hashtable _visitedNodes. 
-     *  This method is meant to be called after processGraph() has been called for
-     *  all schedules.  However, the SequenceScheduler itself does not know if there
-     *  are any more schedules remaining.  So, the director can call this function,
-     *  once all schedules have been handled.
-     *
-     * @return (Possible empty) List of unreachable upstream actors
-     */
-    
-    public List<Actor> unreachableActorList()
-    {
-        ArrayList unreachables = new ArrayList();
-        
-        // Get key set from hash table
-        for (Node key : _visitedNodes.keySet())
-        {
-            boolean visited = _visitedNodes.get(key);
-            if (!visited)
-            {
-                unreachables.add((Actor) key.getWeight());
-            }
-        }
-        
-        return unreachables;
     }
     
     /** Prints a list of unreachable actors, that are unreachable due to a lack of 

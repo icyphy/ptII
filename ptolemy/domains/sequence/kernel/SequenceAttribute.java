@@ -37,20 +37,21 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 
-
-////SequenceAttribute
+//////////////////////////////////////////////////////////////////////////////
+//// SequenceAttribute
 
 /**
-   SequenceAttribute is a subclass of Parameter with support for integerToken.
-   
-   The SequenceDirector collects the SequenceAttributes to determine the order
-   in which order the actors in the model are fired.  
-   
-   @author Elizabeth Latronico (Bosch)
-   @version $Id$
-   @since Ptolemy II 8.1
-   @Pt.ProposedRating Red (beth)
-   @Pt.AcceptedRating Red (beth)
+ * The sequence number for actor in the sequence domain.
+ * This parameter stores an integer value that is required to be unique within
+ * the portion of the model under the control of a single SequenceDirector.
+ * Duplicate sequence numbers will trigger an exception.
+ * FIXME: Shouldn't these numbers be forced to be unique, like by their
+ * position in the XML file?
+ * @author Elizabeth Latronico (Bosch)
+ * @version $Id$
+ * @since Ptolemy II 8.1
+ * @Pt.ProposedRating Red (beth)
+ * @Pt.AcceptedRating Red (beth)
  */
 public class SequenceAttribute extends Parameter implements Comparable {
     /** Construct an attribute in the default workspace with an empty string
@@ -118,41 +119,28 @@ public class SequenceAttribute extends Parameter implements Comparable {
     	int seq2 = 0;
     	 
         // Check for either a SequenceAttribute or ProcessAttribute (which is a SequenceAttribute)
-        if (obj instanceof SequenceAttribute)
-        {
+        if (obj instanceof SequenceAttribute) {
             // If the second object is a ProcessAttribute, use the correct getSequenceNumber()
         	// FIXME:  Is this needed, or is it OK just to use (SequenceAttribute) x.getSequenceNumber()?
                 // FIXME:  This is bad coding style, because SequenceAtribute should not know about 
                 // its subclass ProcessAttribute - refactor?
-            if (obj instanceof ProcessAttribute)
-            {
+            if (obj instanceof ProcessAttribute) {
             	seq2 = ((ProcessAttribute) obj).getSequenceNumber();
-            }
-            
-            else
-            {
+            } else {
             	seq2 = ((SequenceAttribute) obj).getSequenceNumber();
             }
             
-            if (seq1 < seq2)
-            {
+            if (seq1 < seq2) {
                 return -1;
-            }
-            else if (seq1 > seq2)
-            {
+            } else if (seq1 > seq2) {
                 return 1;
-            }
-            else
-            {
+            } else {
                 return 0;
             }
-            
-            
         }
-    	
-        // FIXME:  Throw exception?  Otherwise we can not compare them, if the second object
-        // is not a SequenceAttribute or ProcessAttribute
-        return 0;
+    	throw new IllegalArgumentException(
+    	        "SequenceAttribute can only be compared to other" +
+    	        " instances of SequenceAttribute.");
     }
     
     /** Returns the sequence number as an int, or 0 if there is none.
@@ -232,13 +220,4 @@ public class SequenceAttribute extends Parameter implements Comparable {
         }
         return result;  
     }
-
-   
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected methods                 ////
-
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
-
 }
