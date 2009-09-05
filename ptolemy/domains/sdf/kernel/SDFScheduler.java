@@ -911,6 +911,7 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
                             + "parameter of the SDF director to false.");
         }
 
+        /* FIXME: This is bogus. It rules out perfectly legitimate models.
         Entity changeContext = analysis.getChangeContext(variable);
 
         if (!((changeContext == model) || changeContext.deepContains(model))) {
@@ -918,6 +919,7 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
                     "The SDF rate parameter changes during "
                             + "execution of the schedule!");
         }
+        */
     }
 
     /** Update the The external rates of those directly connected input
