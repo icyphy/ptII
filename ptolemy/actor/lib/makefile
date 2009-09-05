@@ -244,6 +244,8 @@ JSRCS = \
 	Writer.java
 
 OTHER_FILES_TO_BE_JARED = \
+    AccumulatorIcon.pdf \
+    AccumulatorIcon.xml \
 	BooleanSelectIcon.xml \
 	BooleanSwitchIcon.xml \
 	CommutatorIcon.xml \
