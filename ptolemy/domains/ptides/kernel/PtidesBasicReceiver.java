@@ -65,6 +65,7 @@ public class PtidesBasicReceiver extends DEReceiver {
      * Construct an empty queue with no container.
      */
     public PtidesBasicReceiver() {
+        super();
     }
 
     /**

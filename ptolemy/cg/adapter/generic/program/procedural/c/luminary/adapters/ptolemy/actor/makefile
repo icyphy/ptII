@@ -1,6 +1,6 @@
 # Makefile for Ptolemy Classic style Codegen
 #
-# @Version: $Id: makefile 55321 2009-07-30 15:40:52Z rodiers $
+# @Version: $Id: makefile 55488 2009-08-19 18:52:03Z jiazou $
 # @Author: Christopher Brooks
 #
 # @Copyright (c) 2005-2009 The Regents of the University of California
@@ -31,9 +31,9 @@
 # 						COPYRIGHTENDKEY
 ##########################################################################
 
-ME =		ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib
+ME =		ptolemy/cg/adapter/generic/program/procedural/c/luminary/adapters/ptolemy/actor
 
-DIRS =		logic
+DIRS =		lib
 
 # Root of the Java directory
 ROOT =		../../../../../../../../../../..
@@ -45,45 +45,32 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	lib
+PTPACKAGE = 	actor
 PTCLASSJAR =
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
 # Include the .class files from these jars in PTCLASSALLJAR
 # If you change this, change DIRS above
-PTCLASSALLJARS = logic/logic.jar
+PTCLASSALLJARS = \
+	lib/lib.jar
 
 # Keep this list alphabetized.
-JSRCS = \
-	Accumulator.java \
-	AddSubtract.java \
-	Const.java \
-	Distributor.java \
-	Expression.java \
-	Maximum.java \
-	MultiplyDivide.java \
-	Remainder.java \
-	Scale.java \
-	Synchronizer.java \
-	TimeDelay.java \
-	UnaryMathFunction.java
+JSRCS = 
 
-OTHER_FILES_TO_BE_JARED = \
-	$(JSRCS:%.java=%.c)
+OTHER_FILES_TO_BE_JARED = 
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
 # Don't include demo or DIRS here, or else 'make sources' will run 'make demo'
-MISC_FILES =	logic
+MISC_FILES =	lib
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	demo \
-	'Expression$$VariableScope.class'
+	demo 
 
 JCLASS = $(JSRCS:%.java=%.class)
 
