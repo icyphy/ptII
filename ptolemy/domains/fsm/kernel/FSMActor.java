@@ -280,8 +280,9 @@ public class FSMActor extends CompositeEntity implements TypedActor,
                 if (!enabledTransition.isNondeterministic()) {
                     throw new MultipleEnabledTransitionsException(
                             currentState(),
-                            "Multiple enabled transitions found but not all"
-                                    + " of them are nondeterministic. Transition "
+                            "Nondeterministic FSM error: "
+                                    + "Multiple enabled transitions found but not all"
+                                    + " of them are marked nondeterministic. Transition "
                                     + enabledTransition.getName()
                                     + " is deterministic.");
                 }
