@@ -94,8 +94,7 @@ public class Register extends NamedProgramCodeGeneratorAdapter {
         // for this firing)
         for(int channel = 0; channel < commonWidth; channel++){
             templateArgs.set(0, Integer.valueOf(channel).toString());
-//FIXME: Code generator exception
-//            codeStream.appendCodeBlock("updateValueBlock", templateArgs);
+            codeStream.appendCodeBlock("updateValueBlock", templateArgs);
         }
         
         return processCode(codeStream.toString());
