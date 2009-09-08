@@ -1,4 +1,4 @@
-/* A adapter class for ptolemy.actor.lib.BooleanMultiplexor
+/* A adapter class for ptolemy.actor.lib.BooleanSwitch
 
  Copyright (c) 2006-2009 The Regents of the University of California.
  All rights reserved.

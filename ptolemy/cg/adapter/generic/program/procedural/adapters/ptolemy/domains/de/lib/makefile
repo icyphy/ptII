@@ -1,4 +1,4 @@
-# Makefile for Ptolemy Classic style Codegen
+# Makefile for Ptolemy cg
 #
 # @Version: $Id$
 # @Author: Christopher Brooks
@@ -31,12 +31,12 @@
 # 						COPYRIGHTENDKEY
 ##########################################################################
 
-ME =		ptolemy/cg/adapter/generic/program/procedural/adapters/ptolemy/domains
+ME =		ptolemy/cg/adapter/generic/program/procedural/adapters/ptolemy/domains/de/lib
 
-DIRS =		sdf de
+DIRS =		
 
 # Root of the Java directory
-ROOT =		../../../../../../../../..
+ROOT =		../../../../../../../../../..
 
 CLASSPATH =	$(ROOT)
 
@@ -45,15 +45,14 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	domains
+PTPACKAGE = 	lib
 PTCLASSJAR =
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
 # Include the .class files from these jars in PTCLASSALLJAR
 # If you change this, change DIRS above
-PTCLASSALLJARS = \
-	sdf/sdf.jar de/de.jar
+PTCLASSALLJARS = 
 
 # Keep this list alphabetized.
 JSRCS = 
@@ -65,7 +64,7 @@ EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
 # Don't include demo or DIRS here, or else 'make sources' will run 'make demo'
-MISC_FILES =	sdf
+MISC_FILES =	kernel
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
