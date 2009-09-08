@@ -73,6 +73,12 @@ import ptolemy.kernel.util.Workspace;
  The output will then be routed to some subsystem for processing,
  and the result will be fed back to the input.
  </p><p>
+ If the user types "quit" or "exit" (without the quotation marks)
+ on the prompt, then this actor's postfire() method will return false.
+ Depending on the domain, this can result in the model execution stopping
+ (in SDF, for example) or in subsequent firings of this actor being
+ skipped (in DE, for example).
+ </p><p>
  Note that because of complexities in Swing, if you resize the display
  window, then, unlike the plotters, the new size will not be persistent.
  That is, if you save the model and then re-open it, the new size is
@@ -215,30 +221,31 @@ public class InteractiveShell extends TypedAtomicActor implements Placeable,
      */
     public void fire() throws IllegalActionException {
         super.fire();
+        // If window has been dismissed, there is nothing more to do.
+        if (shell == null) {
+            return;
+        }
+
         prompt.update();
         shell.mainPrompt = ((StringToken) prompt.getToken()).stringValue();
 
+        String value = "";
         if ((input.numberOfSources() > 0) && input.hasToken(0)) {
-            String value = ((StringToken) input.get(0)).stringValue();
-
-            // FIXME: shell will never be null because it is dereferenced
-            // above.  We leave this code for documentation purposes.
-            // If window has been dismissed, there is nothing more to do.
-            //if (shell == null) {
-            //    return;
-            //}
-
-            if (_firstTime) {
-                _firstTime = false;
-                shell.initialize(value);
-            } else {
-                shell.returnResult(value);
-            }
+            value = ((StringToken) input.get(0)).stringValue();
         }
-
-        shell.setEditable(true);
-
-        // FIXME: What to type if there is no input connected.
+        if (_firstTime) {
+            _firstTime = false;
+            shell.initialize(value);
+        } else {
+            shell.returnResult(value);
+        }
+        Runnable doSetEditable = new Runnable() {
+            public void run() {
+                shell.setEditable(true);
+            }
+        };
+        SwingUtilities.invokeLater(doSetEditable);
+        
         String userCommand = getOutput();
 
         if (userCommand.trim().equalsIgnoreCase("quit")
