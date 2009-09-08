@@ -27,8 +27,10 @@
  */
 package ptolemy.vergil.modal;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.Stroke;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
@@ -204,6 +206,18 @@ public class TransitionController extends BasicEdgeController {
                 }
                 if (transition.isNondeterministic()) {
                     c.setStrokePaint(Color.RED);
+                }
+                try {
+                    if (transition.isDefault()) {
+                        float[] dashvalues = new float[2];
+                        dashvalues[0] = (float) 2.0;
+                        dashvalues[1] = (float) 2.0;
+                        Stroke dashed = new BasicStroke(1.0f, BasicStroke.CAP_BUTT,
+                                BasicStroke.JOIN_BEVEL, 0, dashvalues, 0);
+                        c.setStroke(dashed);
+                    }
+                } catch (IllegalActionException e) {
+                    // Ignore and don't render dashed line if default parameter fails to evaluate.
                 }
 
                 c.setToolTipText(transition.getName());
