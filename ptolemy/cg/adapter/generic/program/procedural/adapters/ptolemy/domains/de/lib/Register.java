@@ -70,10 +70,12 @@ public class Register extends NamedProgramCodeGeneratorAdapter {
         
         //Generate preinit block; this block differs depending
         // on whether or not an initial value has been set.
-        if(actor.initialValue.getToken() != null)
+        if(actor.initialValue.getToken() != null){
             initialValueBlock = "preinitBlock_hasInitialValue";
-        else
+        }
+        else{
             initialValueBlock = "preinitBlock_noInitialValue";
+        }
         templateArgs.add("");
         for(int channel = 0; channel < commonWidth; channel++){
             templateArgs.set(0, Integer.valueOf(channel).toString());
