@@ -325,7 +325,8 @@ public class FSMActor extends CompositeEntity implements TypedActor,
                 if (!enabledTransition.isNondeterministic()) {
                     throw new MultipleEnabledTransitionsException(
                             currentState(),
-                            "Multiple enabled transitions found but not all"
+                            "Nondeterministic FSM error: "
+                                    + "Multiple enabled transitions found but not all"
                                     + " of them are nondeterministic. Transition "
                                     + enabledTransition.getName()
                                     + " is deterministic.");
@@ -508,7 +509,9 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         while (transitionRelations.hasNext() && !_stopRequested) {
             Transition transition = (Transition) transitionRelations.next();
             if (transition.isDefault()) {
-                defaultTransitions.add(transition);
+                if (transition.isEnabled()) {
+                    defaultTransitions.add(transition);
+                }
             } else {
                 foundUnknown = foundUnknown || !_referencedInputPortsByGuardKnown(transition);
                 // Try to evaluate the guard whether the inputs are known
