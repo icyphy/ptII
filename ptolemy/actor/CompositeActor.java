@@ -41,6 +41,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import ptolemy.actor.parameters.ParameterPort;
 import ptolemy.actor.util.BooleanDependency;
@@ -1018,6 +1020,39 @@ public class CompositeActor extends CompositeEntity implements Actor,
         }
     }
 
+    /** Link the subscriberPort with a already registered "published port" coming
+     *  from a publisher. The pattern represents the name being used in the
+     *  matching process to match publisher and subscriber. A
+     *  subscriber interested in the output of this publisher uses
+     *  the  name. This registration process of publisher
+     *  typically happens before the model is preinitialized,
+     *  for example when opening the model. The subscribers
+     *  will look for publishers during the preinitialization phase.
+     *  @param pattern The pattern is being used in the matching process
+     *          to match publisher and subscriber.
+     *  @param subscriberPort The subscribed port. 
+     *  @exception NameDuplicationException If there are name conflicts
+     *          as a result of the added relations or ports. 
+     *  @exception IllegalActionException If the published port cannot be found.
+     */
+    public void linkToPublishedPort(Pattern pattern, TypedIOPort subscriberPort) throws IllegalActionException, NameDuplicationException {
+        NamedObj container = getContainer();
+        if (!isOpaque() && container instanceof CompositeActor) {
+            // Published ports are not propagated if this actor
+            // is opaque.
+            ((CompositeActor) container).linkToPublishedPort(pattern, subscriberPort);
+        } else {
+            if (_publishedPorts != null) {
+                for (String name : _publishedPorts.keySet()) {
+                    Matcher matcher = pattern.matcher(name);
+                    if (matcher.matches()) {
+                        linkToPublishedPort(name, subscriberPort);
+                    }
+                }
+            }
+        }
+    }
+    
     /**
      *  Return whether the current widths of the relation in the model
      *  are no longer valid anymore and the widths need to be inferred again.
@@ -1756,6 +1791,39 @@ public class CompositeActor extends CompositeEntity implements Actor,
         }
     }
 
+    /** Unlink the subscriberPort with a already registered "published port" coming
+     *  from a publisher. The pattern is the pattern being used in the
+     *  matching process to match publisher and subscriber. A
+     *  subscriber interested in the output of this publisher uses
+     *  the  name. This registration process of publisher
+     *  typically happens before the model is preinitialized,
+     *  for example when opening the model. The subscribers
+     *  will look for publishers during the preinitialization phase.
+     *  @param pattern The pattern is being used in the matching process
+     *          to match publisher and subscriber.
+     *  @param subscriberPort The subscribed port. 
+     *  @exception NameDuplicationException If there are name conflicts
+     *          as a result of the added relations or ports. 
+     *  @exception IllegalActionException If the published port cannot be found.
+     */
+    public void unlinkToPublishedPort(Pattern pattern, TypedIOPort subscriberPort) throws IllegalActionException {
+        NamedObj container = getContainer();
+        if (!isOpaque() && container instanceof CompositeActor) {
+            // Published ports are not propagated if this actor
+            // is opaque.
+            ((CompositeActor) container).unlinkToPublishedPort(pattern, subscriberPort);
+        } else {
+            if (_publishedPorts != null) {
+                for (String name : _publishedPorts.keySet()) {
+                    Matcher matcher = pattern.matcher(name);
+                    if (matcher.matches()) {
+                        unlinkToPublishedPort(name, subscriberPort);
+                    }
+                }
+            }
+        }
+    }
+
     /** Unregister a "published port" coming
      *  from a publisher. The name is the name being used in the
      *  matching process to match publisher and subscriber. A
@@ -2121,4 +2189,6 @@ public class CompositeActor extends CompositeEntity implements Actor,
      * for the complete model.
      */
     private RelationWidthInference _relationWidthInference;
+
+
 }

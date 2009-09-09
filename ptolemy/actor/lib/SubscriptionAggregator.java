@@ -27,22 +27,16 @@
  */
 package ptolemy.actor.lib;
 
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import ptolemy.actor.Director;
+import ptolemy.actor.CompositeActor;
 import ptolemy.data.Token;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.Relation;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
@@ -65,14 +59,13 @@ import ptolemy.kernel.util.Workspace;
  <code>channel\.foo.+</code>.
 
 
- @author Edward A. Lee, Raymond A. Cardillo, contributor: Christopher Brooks
+ @author Edward A. Lee, Raymond A. Cardillo, contributor: Christopher Brooks, Bert Rodiers
  @version $Id$
  @since Ptolemy II 5.2
  @Pt.ProposedRating Green (cxh)
  @Pt.AcceptedRating Red (cxh)
  */
 public class SubscriptionAggregator extends Subscriber {
-//TODO rodiers: fix this component!!!
     
     /** Construct a subscriber with the specified container and name.
      *  @param container The container actor.
@@ -123,54 +116,16 @@ public class SubscriptionAggregator extends Subscriber {
             } else {
                 _addOperation = false;
             }
-        } else if (attribute == channel) {
-            _channelPattern = Pattern.compile(channel.stringValue());
+        } else if (attribute == channel) {            
+            NamedObj container = getContainer();
+            if (container instanceof CompositeActor && !(_channel == null || _channel.trim().equals(""))) {
+                ((CompositeActor) container).unlinkToPublishedPort(_channelPattern, input);
+            }            
             super.attributeChanged(attribute);
+            _channelPattern = Pattern.compile(_channel);
         } else {
             super.attributeChanged(attribute);
         }
-    }
-
-    /** Determine whether a channel name matches this subscriber.
-     *  This class returns true if the specified string matches
-     *  the value of the <i>channel</i> parameter interpreted
-     *  as a regular expression.
-     *  @param channelName A channel name.
-     *  @return True if this subscriber subscribes to the specified channel.
-     */
-    protected boolean channelMatches(String channelName) {
-        // It turns out that Java regex is computational intensive.
-        // For an analysis, see http://swtch.com/~rsc/regexp/regexp1.html
-        if (_channel != null && channelName != null) {
-            if (_channelMatches.contains(channelName)) {
-                // If we've already been asked about this channel and returned
-                // true, then return true again.
-                return true;
-            }
-            if (_channelDoesNotMatch.contains(channelName)) {
-                // If we've already been asked about this channel and returned
-                // false, then return false again.
-                return false;
-            }
-            if (_channelPattern == null) {
-                // We call channelMatches() many times, so cache the compiled
-                // pattern.
-                _channelPattern = Pattern.compile(_channel);
-            }
-            Matcher matcher = _channelPattern.matcher(channelName);
-            if (matcher.matches()) {
-                _channelMatches.add(channelName);
-                return true;
-            }
-            // FIXME: this might end up consuming lots of space in large
-            // graphs.  We could store the hash of the channelName
-            // and if the hash is present, then do the comparison.
-
-            // FIXME: so when does _channelDoesNotMatch and _channelMatches
-            // get reset?  What if the channel name changes?
-            _channelDoesNotMatch.add(channelName);
-        }
-        return false;
     }
 
     /** Clone the actor into the specified workspace.
@@ -182,9 +137,6 @@ public class SubscriptionAggregator extends Subscriber {
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         SubscriptionAggregator newObject = (SubscriptionAggregator) super
                 .clone(workspace);
-        newObject._channelDoesNotMatch = new HashSet();
-        newObject._channelMatches = new HashSet();
-        newObject._relations = new LinkedList();
         newObject._channel = _channel;
         return newObject;
     }
@@ -225,56 +177,29 @@ public class SubscriptionAggregator extends Subscriber {
         output.send(0, result);
     }
 
-    //     public void preinitialize() throws IllegalActionException {
-    //         super.preinitialize();
-    //         String pattern = "([^\\\\])\\.";
-    //         String replacement=  "$1\\\\.";
-    //         String backslashed = channel.stringValue().replaceAll(pattern, replacement);
-    //         System.out.println("SubscriptionAgg: old: "
-    //                 + channel.stringValue()
-    //                 + " " + backslashed);
-
-    //         pattern = "\\*";
-    //         replacement = ".+";
-    //         String backslashed2 = backslashed.replaceAll(pattern, replacement);
-
-    //         System.out.println("SubscriptionAgg: old: "
-    //                 + channel.stringValue()
-    //                 + " tmp: " + backslashed
-    //                 + " new: " + backslashed2);
-
-    //         channel.setExpression(backslashed2);
-    //     }
+    /** If the new container is null, delete the named channel.
+     *  @param container The proposed container.
+     *  @exception IllegalActionException If the action would result in a
+     *   recursive containment structure, or if
+     *   this entity and container are not in the same workspace.
+     *  @exception NameDuplicationException If the container already has
+     *   an entity with the name of this entity.
+     */
+    public void setContainer(CompositeEntity container)
+            throws IllegalActionException, NameDuplicationException {
+        
+        if (container == null && !(_channel == null || _channel.trim().equals(""))) {
+            NamedObj previousContainer = getContainer();
+            if (previousContainer instanceof CompositeActor) {
+              ((CompositeActor) previousContainer).unlinkToPublishedPort(_channelPattern, input);
+            }
+        }
+        
+        super.setContainer(container);
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                       protected methods                   ////
-
-    /** Find matching publishers, if there are any.
-     *  @return A list of publishers.
-     */
-    protected List _findPublishers() {
-        // This method is protected so that users can subclass this class
-        // and create alternative ways of managing finding Publishers.
-
-        List result = new LinkedList();
-        // Find the nearest opaque container above in the hierarchy.
-        CompositeEntity container = (CompositeEntity) getContainer();
-        while (container != null && !container.isOpaque()) {
-            container = (CompositeEntity) container.getContainer();
-        }
-        if (container != null) {
-            Iterator actors = container.deepOpaqueEntityList().iterator();
-            while (actors.hasNext()) {
-                Object actor = actors.next();
-                if (actor instanceof Publisher) {
-                    if (channelMatches(((Publisher) actor)._channel)) {
-                        result.add(actor);
-                    }
-                }
-            }
-        }
-        return result;
-    }
 
     /** Update the connection to the publishers, if there are any.
      *  @exception IllegalActionException If creating the link
@@ -287,42 +212,15 @@ public class SubscriptionAggregator extends Subscriber {
         if (_channel == null) {
             return;
         }
-        // Unlink to all previous relations, if any.
-        Iterator relations = _relations.iterator();
-        while (relations.hasNext()) {
-            Relation relation = (Relation) relations.next();
-            input.unlink(relation);
-        }
-        _relations.clear();
-
-        // Link to all matching publishers.
-        Iterator publishers = _findPublishers().iterator();
-        while (publishers.hasNext()) {
-            Publisher publisher = (Publisher) publishers.next();
-            /*
-             
-             TODO rodiers
-            if (publisher._relation == null) {
-                if (!publisher._updatedLinks) {
-                    // If we call Subscriber.preinitialize()
-                    // before we call Publisher.preinitialize(),
-                    // then the publisher will not have created
-                    // its relation.
-                    publisher._updateLinks();
-                }
+        
+        NamedObj container = getContainer();
+        if (container instanceof CompositeActor) {
+            try {
+              ((CompositeActor) container).linkToPublishedPort(_channelPattern, input);
+            } catch (NameDuplicationException e) {
+                throw new IllegalActionException(this, e,
+                        "Can't link Subscriber with Publisher.");
             }
-            ComponentRelation relation = publisher._relation;
-            if (!input.isLinked(relation)) {
-                // The Publisher._updateLinks() may have already linked us.
-                input.liberalLink(relation);
-            }
-            _relations.add(relation);
-            */
-        }
-        Director director = getDirector();
-        if (director != null) {
-            director.invalidateSchedule();
-            director.invalidateResolvedTypes();
         }
     }
 
@@ -332,15 +230,7 @@ public class SubscriptionAggregator extends Subscriber {
     /** Indicator that the operation is "add" rather than "multiply". */
     private boolean _addOperation = true;
 
-    /** Set of channel names that have already not been matched. */
-    private Set _channelDoesNotMatch = new HashSet();
-
-    /** Set of channel names that have already matched. */
-    private Set _channelMatches = new HashSet();
-
     /** Regex Pattern for _channelName. */
     private Pattern _channelPattern;
 
-    /** The list of relations used to link to subscribers. */
-    private List _relations = new LinkedList();
 }

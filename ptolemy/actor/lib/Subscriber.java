@@ -173,19 +173,6 @@ public class Subscriber extends TypedAtomicActor {
         }
     }
 
-    /** Determine whether a channel name matches this subscriber.
-     *  This base class returns true if the specified string
-     *  is equal to the value of the <i>channel</i> parameter.
-     *  @param channelName A channel name.
-     *  @return True if this subscriber subscribes to the specified channel.
-     */
-    protected boolean channelMatches(String channelName) {
-        if (_channel == null) {
-            return false;
-        }
-        return _channel.equals(channelName);
-    }
-
     /** Clone the actor into the specified workspace. This calls the
      *  base class and then set the filename public member.
      *  @param workspace The workspace for the new object.
