@@ -11,37 +11,37 @@ $actorSymbol(sum) = $val(($cgType(output)) init);
 /**/
 
 /***StringInitSum***/
-$actorSymbol(sum) = strdup($val(($cgType(output)) init));
+$actorSymbol(sum) = strdup($val(($targetType(output)) init));
 /**/
 
 /***IntFireBlock($channel) ***/
 if ($hasToken(input#$channel)) {
-    $actorSymbol(sum) += ($cgType(output)) $get(input#$channel);
+    $actorSymbol(sum) += ($targetType(output)) $get(input#$channel);
 }
 /**/
 
 /***DoubleFireBlock($channel) ***/
 if ($hasToken(input#$channel)) {
-    $actorSymbol(sum) += ($cgType(output)) $get(input#$channel);
+    $actorSymbol(sum) += ($targetType(output)) $get(input#$channel);
 }
 /**/
 
 /***BooleanFireBlock($channel) ***/
 if ($hasToken(input#$channel)) {
-    $actorSymbol(sum) |= ($cgType(output)) $get(input#$channel);
+    $actorSymbol(sum) |= ($targetType(output)) $get(input#$channel);
 }
 /**/
 
 /***StringFireBlock($channel)***/
 if ($hasToken(input#$channel)) {
     $actorSymbol(sum) = (char*) realloc($actorSymbol(sum), sizeof(char) * (strlen($actorSymbol(sum)) + strlen(($cgType(output)) $get(input#$channel)) + 1) );
-    strcat($actorSymbol(sum), ($cgType(output)) $get(input#$channel));
+    strcat($actorSymbol(sum), ($targetType(output)) $get(input#$channel));
 }
 /**/
 
 /***TokenFireBlock($channel)***/
 if ($hasToken(input#$channel)) {
-    $actorSymbol(sum) = $tokenFunc($actorSymbol(sum)::add(($cgType(output)) $get(input#$channel)));
+    $actorSymbol(sum) = $tokenFunc($actorSymbol(sum)::add(($targetType(output)) $get(input#$channel)));
 }
 /**/
 

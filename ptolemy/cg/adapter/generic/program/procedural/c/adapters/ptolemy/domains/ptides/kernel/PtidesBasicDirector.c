@@ -28,6 +28,7 @@ typedef struct event {
         double double_Value;
         long long_Value;
         char char_Value;
+        unsigned int boolean_Value;
     } Val;
     Tag tag;
     uint32 depth;

@@ -1,10 +1,10 @@
 /***preinitBlock($type)***/
-static $cgType(output) $actorSymbol(previous) = $zero_$cgType(output)();
-$cgType(input) $actorSymbol(inputTemp);
+static $targetType(output) $actorSymbol(previous) = $zero_$cgType(output)();
+$targetType(input) $actorSymbol(inputTemp);
 /**/
 
 /***fireBlock***/
-$put(output, ($cgType(output))$subtract_$cgType(input)_$cgType(input)($actorSymbol(inputTemp), $actorSymbol(previous)));
+$put(output, ($targetType(output))$subtract_$cgType(input)_$cgType(input)($actorSymbol(inputTemp), $actorSymbol(previous)));
 $actorSymbol(inputTemp) = $get(input);
 previous = $actorSymbol(inputTemp);
 /**/
