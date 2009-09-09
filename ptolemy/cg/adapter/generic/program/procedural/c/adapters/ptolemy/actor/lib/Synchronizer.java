@@ -66,12 +66,12 @@ public class Synchronizer extends NamedProgramCodeGeneratorAdapter {
         ptolemy.actor.lib.Synchronizer actor = (ptolemy.actor.lib.Synchronizer) getComponent();
 
         ArrayList args = new ArrayList();
-        args.add(Integer.valueOf(0));
+        args.add(Integer.toString(0));
 
         CodeStream codeStream = getTemplateParser().getCodeStream();
 
         for (int i = 0; i < actor.input.getWidth(); i++) {
-            args.set(0, Integer.valueOf(i));
+            args.set(0, Integer.toString(i));
             codeStream.appendCodeBlock("fireBlock", args);
         }
         return processCode(codeStream.toString());

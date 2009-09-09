@@ -72,13 +72,13 @@ public class Accumulator extends NamedProgramCodeGeneratorAdapter {
         CodeStream codeStream = getTemplateParser().getCodeStream();
         
         ArrayList args = new ArrayList();
-        args.add(Integer.valueOf(0));
+        args.add(Integer.toString(0));
         String type = getCodeGenerator().codeGenType(actor.output.getType());
 
         if (actor.reset.isOutsideConnected()) {
             codeStream.appendCodeBlock("initReset");
             for (int i = 1; i < actor.reset.getWidth(); i++) {
-                args.set(0, Integer.valueOf(i));
+                args.set(0, Integer.toString(i));
                 codeStream.appendCodeBlock("readReset", args);
             }
             codeStream.appendCodeBlock("ifReset");
@@ -92,7 +92,7 @@ public class Accumulator extends NamedProgramCodeGeneratorAdapter {
             type = "Token";
         }
         for (int i = 0; i < actor.input.getWidth(); i++) {
-            args.set(0, Integer.valueOf(i));
+            args.set(0, Integer.toString(i));
             codeStream.appendCodeBlock(type + "FireBlock", args);
         }
         codeStream.appendCodeBlock("sendBlock");

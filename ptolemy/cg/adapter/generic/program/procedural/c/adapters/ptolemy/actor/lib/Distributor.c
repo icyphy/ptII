@@ -1,8 +1,8 @@
 /*** assignBlock($channel, $type) ***/
-// there is no need for $hasToken() because this actor
+// there is no need for hasToken() because this actor
 // only has one input port, so it should always be able
 // to successfully read from the channel. 
-// Also, $channel in $get(input, $channel) is actually
+// Also, channel in get(input, channel) is actually
 // used as the offset.
 $put(output#$channel, $get(input, $channel));
 /**/

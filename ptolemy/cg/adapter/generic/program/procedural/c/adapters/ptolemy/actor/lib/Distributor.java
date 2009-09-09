@@ -68,13 +68,13 @@ public class Distributor extends NamedProgramCodeGeneratorAdapter {
         ptolemy.actor.lib.Distributor actor = (ptolemy.actor.lib.Distributor) getComponent();
 
         ArrayList args = new ArrayList();
-        args.add(Integer.valueOf(0));
+        args.add(Integer.toString(0));
         Type inputType = actor.input.getType();
-        args.add(inputType);
+        args.add(getCodeGenerator().codeGenType(inputType));
         CodeStream codeStream = getTemplateParser().getCodeStream();
 
         for (int i = 0; i < actor.output.getWidth(); i++) {
-            args.set(0, Integer.valueOf(i));
+            args.set(0, Integer.toString(i));
 
             String codeBlock = "";
             if (getCodeGenerator().isPrimitive(inputType) 

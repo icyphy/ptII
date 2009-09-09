@@ -46,7 +46,7 @@ public class TopLevelCurrentTime extends NamedProgramCodeGeneratorAdapter {
      *  Construct a Scale helper.
      *  @param actor The given ptolemy.actor.lib.Scale actor.
      */
-    public TopLevelCurrentTime(ptolemy.actor.lib.Scale actor) {
+    public TopLevelCurrentTime(ptolemy.actor.lib.TopLevelCurrentTime actor) {
         super(actor);
     }
 }

@@ -121,7 +121,14 @@ public class IOPort extends NamedProgramCodeGeneratorAdapter implements
     public String generateHasTokenCode(String channel, String offset)
             throws IllegalActionException {
         Receiver[][] receivers = getReceiverAdapters();
-        int channelNumber = Integer.parseInt(channel);
+        int channelNumber = 0;
+//        try {
+        channelNumber = Integer.parseInt(channel);
+//        } catch (NumberFormatException e) {
+//            if receivers
+//            return Receiver.generateStaticGetCode(offset, channel, getName(), 
+//                    getCodeGenerator().codeGenType(((TypedIOPort)getComponent()).getType()));
+//        }
         // FIXME: take care of the offset, and why are we getting all the receivers all the time?
         if (receivers.length != 0) {
             if (receivers[channelNumber].length > 1) {

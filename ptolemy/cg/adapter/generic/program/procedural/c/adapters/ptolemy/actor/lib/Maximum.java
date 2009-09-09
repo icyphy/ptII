@@ -68,23 +68,27 @@ public class Maximum extends NamedProgramCodeGeneratorAdapter {
 
         CodeStream codeStream = getTemplateParser().getCodeStream();
 
-        ArrayList width = new ArrayList();
-        width.add(Integer.valueOf(actor.input.getWidth()));
-        codeStream.appendCodeBlock("fireInitBlock", width);
+        codeStream.append("while (true) {" + _eol);
+        for (int i = 0; i < actor.input.getWidth(); i++) {
+            ArrayList args = new ArrayList();
+            args.add(Integer.toString(i));
+            codeStream.appendCodeBlock("fireInitBlock", args);
+        }
+        codeStream.append("}" + _eol);
         // FIXME: we need to resolve other ScalarTokens like Complex.
         for (int i = 0; i < actor.input.getWidth(); i++) {
             ArrayList args = new ArrayList();
-            args.add(Integer.valueOf(i));
+            args.add(Integer.toString(i));
             codeStream.appendCodeBlock("findBlock", args);
         }
         for (int i = 0; i < actor.maximumValue.getWidth(); i++) {
             ArrayList args = new ArrayList();
-            args.add(Integer.valueOf(i));
+            args.add(Integer.toString(i));
             codeStream.appendCodeBlock("sendBlock1", args);
         }
         for (int i = 0; i < actor.channelNumber.getWidth(); i++) {
             ArrayList args = new ArrayList();
-            args.add(Integer.valueOf(i));
+            args.add(Integer.toString(i));
             codeStream.appendCodeBlock("sendBlock2", args);
         }
         return processCode(codeStream.toString());

@@ -1,3 +1,3 @@
 /***fireBlock***/
-$put(output, remainder($get(input), $val(divisor));
+$put(output, remainder($get(input), $val(divisor)));
 /**/

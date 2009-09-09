@@ -1,16 +1,13 @@
 /*** preinitBlock ***/
 int $actorSymbol(maximumTemp);
 int $actorSymbol(channelTemp);
-int $actorSymbol(channel);
 /**/
 
-/*** fireInitBlock($width)***/
-for ($actorSymbol(channel) = 0; $actorSymbol(channel) < $width; $actorSymbol(channel)++) {
-	if (hasToken($actorSymbol(channel)) {
-		$actorSymbol(maximumTemp) = $get(input#$actorSymbol(channel));
-		$actorSymbol(channelTemp) = $actorSymbol(channel);
-		break;
-	}
+/*** fireInitBlock($channel)***/
+if ($hasToken(input#$channel)) {
+	$actorSymbol(maximumTemp) = $get(input#$channel);
+	$actorSymbol(channelTemp) = $channel;
+	break;
 }
 /**/
 

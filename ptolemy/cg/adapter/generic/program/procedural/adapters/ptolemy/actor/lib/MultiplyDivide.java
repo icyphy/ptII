@@ -82,12 +82,12 @@ public class MultiplyDivide extends NamedProgramCodeGeneratorAdapter {
         args.add(multiplyType);
 
         for (int i = 0; i < actor.multiply.getWidth(); i++) {
-            args.set(0, Integer.valueOf(i));
+            args.set(0, Integer.toString(i));
             codeStream.appendCodeBlock("multiplyBlock", args);
         }
 
         for (int i = 0; i < actor.divide.getWidth(); i++) {
-            args.set(0, Integer.valueOf(i));
+            args.set(0, Integer.toString(i));
             args.set(2, divideType);
             codeStream.appendCodeBlock("divideBlock", args);
         }
