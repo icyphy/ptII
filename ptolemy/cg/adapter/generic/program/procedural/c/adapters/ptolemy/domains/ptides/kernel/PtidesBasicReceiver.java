@@ -140,7 +140,7 @@ public class PtidesBasicReceiver extends ptolemy.cg.adapter.generic.program.proc
             offsetSecsString = Integer.toString(intPart);
             offsetNsecsString = Integer.toString(fracPart);
         } else {
-            throw new IllegalActionException("Cannot get the minDelay Parameter.");
+            throw new IllegalActionException(sinkPort, "Cannot get the minDelay Parameter.");
         }
 
         // FIXME: not sure whether we should check if we are putting into an input port or

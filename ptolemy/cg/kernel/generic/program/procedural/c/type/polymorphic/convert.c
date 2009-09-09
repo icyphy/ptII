@@ -20,6 +20,13 @@ Token convert_Boolean_Array(boolean a) {
 }
 /**/
 
+/*** convert_Boolean_Token() ***/
+// FIXME: don't know if this is correct.
+Token convert_Boolean_Array(boolean a) {
+  return $new(Int(a));
+}
+/**/
+
 /*** convert_Boolean_Boolean() ***/
 #define convert_Boolean_Boolean(a) a
 /**/
