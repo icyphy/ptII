@@ -124,6 +124,21 @@ public class PtidyOSCodeGenerator extends CCodeGenerator {
         return _sanitizedModelName + extension;
     }
 
+    /** Overwrite the base class, and use a method from the Ptides director
+     *  to determine whether this is top level. Test if the containing actor
+     *  is in the top level.
+     *  @return true if the containing actor is in the top level.
+     *  @throws IllegalActionException 
+     */
+    protected boolean _isTopLevel() throws IllegalActionException {
+        Director director = ((Actor)getContainer()).getDirector();
+        if (!(director instanceof ptolemy.domains.ptides.kernel.PtidesBasicDirector)) {
+            throw new IllegalActionException(director, "PtidyOSCodeGenerator can only" +
+            		"work with Ptides directors.");
+        }
+        return ((ptolemy.domains.ptides.kernel.PtidesBasicDirector)director).isTopLevel();
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 

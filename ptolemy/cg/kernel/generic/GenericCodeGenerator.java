@@ -616,8 +616,9 @@ public abstract class GenericCodeGenerator extends Attribute implements
 
     /** Test if the containing actor is in the top level.
      *  @return true if the containing actor is in the top level.
+     *  @throws IllegalActionException 
      */
-    final protected boolean _isTopLevel() {
+    protected boolean _isTopLevel() throws IllegalActionException {
         return getContainer().getContainer() == null;
     }
 

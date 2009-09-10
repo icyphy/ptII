@@ -494,6 +494,13 @@ public class PtidesBasicDirector extends DEDirector {
 
         _setIcon(_getIdleIcon(), true);
     }
+    
+    /** Return whether this director is at top level.
+     *  @return
+     */
+    public boolean isTopLevel() {
+        return !_isEmbedded();
+    }
 
     /** Return a new receiver of the type PtidesBasicReceiver.
      *  @return A new PtidesBasicReceiver.

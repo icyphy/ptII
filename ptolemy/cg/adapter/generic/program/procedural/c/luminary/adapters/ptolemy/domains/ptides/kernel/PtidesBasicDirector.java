@@ -208,22 +208,6 @@ public class PtidesBasicDirector
         return code.toString();
     }
 
-    /**
-     * Generate the main loop code.
-     * @return The main loop code.
-     * @exception IllegalActionException If looking up the inline
-     *  parameter or generating the fire code throws it.
-     */
-    public String generateMainLoop() throws IllegalActionException {
-        StringBuffer code = new StringBuffer();
-
-        code.append(NamedProgramCodeGeneratorAdapter.generateName(_director
-                .getContainer())
-                + "();" + _eol);
-
-        return code.toString();
-    }
-
     /** Generate the preinitialize code for the associated Ptides director.
      *  @return The generated preinitialize code.
      *  @exception IllegalActionException If the helper associated with

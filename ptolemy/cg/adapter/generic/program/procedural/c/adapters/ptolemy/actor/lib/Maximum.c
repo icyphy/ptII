@@ -12,7 +12,7 @@ if ($hasToken(input#$channel)) {
 /**/
 
 /*** findBlock($arg) ***/
-if (hasToken($arg)) {
+if ($hasToken(input#$arg)) {
 	if ($get(input#$arg) > $actorSymbol(maximumTemp)) {
    		$actorSymbol(maximumTemp) = $get(input#$arg);
     	$actorSymbol(channelTemp) = $arg;

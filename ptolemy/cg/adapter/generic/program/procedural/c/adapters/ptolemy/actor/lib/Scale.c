@@ -1,7 +1,9 @@
 /***scaleOnLeft***/
-    $put(output, $multiply_$cgType(input)_$cgType(factor)($get(input), $val(factor)));
+$targetType(output) $actorSymbol(result) = $multiply_$cgType(input)_$cgType(factor)($get(input), $val(factor));
+$put(output, $actorSymbol(result));
 /**/
 
 /***scaleOnRight***/
-    $put(output, $multiply_$cgType(factor)_$cgType(input)($val(factor), $get(input)));
+$targetType(output) $actorSymbol(result) = $multiply_$cgType(factor)_$cgType(input)($val(factor), $get(input)); 
+$put(output, $actorSymbol(result));
 /**/
