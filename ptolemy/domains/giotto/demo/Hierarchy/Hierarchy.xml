@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="Hierarchy" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
     <property name="GiottoDirector" class="ptolemy.domains.giotto.kernel.GiottoDirector">
         <property name="period" class="ptolemy.data.expr.Parameter" value="1.0">
@@ -17,15 +17,15 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[90.0, 80.0]">
         </property>
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[583, 350]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[681, 472]">
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[113, 152]">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={6, 22, 796, 460}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={6, 22, 896, 589}, maximized=false}">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{291.5, 175.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{340.5, 236.0}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="frequency = 2">
@@ -71,6 +71,14 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[365.0, 290.0]">
         </property>
     </property>
+    <property name="CCodeGenerator" class="ptolemy.codegen.c.kernel.CCodeGenerator">
+        <property name="generateEmbeddedCode" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="target" class="ptolemy.data.expr.StringParameter" value="openRTOS">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 310.0]">
+        </property>
+    </property>
     <entity name="Source" class="ptolemy.actor.lib.Const">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 230.0]">
         </property>
@@ -110,9 +118,9 @@
         </configure>
     </entity>
     <entity name="Upper Composite" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 195.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 190.0]">
         </property>
-        <property name="internalFrequency" class="ptolemy.data.expr.Parameter" value="4">
+        <property name="internalFrequency" class="ptolemy.data.expr.Parameter" value="7">
         </property>
         <property name="Giotto Director" class="ptolemy.domains.giotto.kernel.GiottoDirector">
             <property name="_location" class="ptolemy.kernel.util.Location" value="{120.0, 55.0}">
@@ -122,14 +130,6 @@
             <property name="text" class="ptolemy.kernel.util.StringAttribute" value="For a Giotto model that is embedded inside another Giotto model, the period &#10;parameter of the local director is meaningless. So, during the prefire method&#10;of the local Giotto director, the period is set according the frequency of&#10;the embedded Giotto model and the period of the upper level Giotto director.&#10;&#10;Note: due to the possible numerical error introduced by divisions like&#10;1.0 (period) / 3 (frequency) = 0.333333..., a good design will choose an &#10;appropriate frequency such that the local period can be represented by a finite&#10;number of digits. &#10;">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 175.0]">
-            </property>
-        </property>
-        <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-            <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.0,1.0}">
-            </property>
-            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="We restrict the frequency to be 2^m * 5^n, where n and m are non-negative &#10;integers.">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 350.0]">
             </property>
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
@@ -173,14 +173,6 @@
             <property name="text" class="ptolemy.kernel.util.StringAttribute" value="For a Giotto model that is embedded inside another Giotto model, the period &#10;parameter of the local director is meaningless. So, during the prefire method&#10;of the local Giotto director, the period is set according the frequency of&#10;the embedded Giotto model and the period of the upper level Giotto director.&#10;&#10;Note: due to the possible numerical error introduced by divisions like&#10;1.0 (period) / 3 (frequency) = 0.333333..., a good design will choose an &#10;appropriate frequency such that the local period can be represented by a finite&#10;number of digits. &#10;">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{65.0, 185.0}">
-            </property>
-        </property>
-        <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-            <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.0,1.0}">
-            </property>
-            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="We restrict the frequency to be 2^m * 5^n, where n and m are non-negative &#10;integers.">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{65.0, 360.0}">
             </property>
         </property>
         <property name="frequency" class="ptolemy.data.expr.Parameter" value="2">
