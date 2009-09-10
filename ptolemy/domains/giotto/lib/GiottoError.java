@@ -64,10 +64,8 @@ public class GiottoError extends TypedAtomicActor { //should probably also imple
         errorAction.setExpression("Warn");
         errorAction.addChoice("Warn");
         errorAction.addChoice("Reset");
-        errorAction.addChoice("TimedUtilityFunction");
-        
+        errorAction.addChoice("TimedUtilityFunction");     
 
-        System.out.println("2nd Error Constructor called");
         // Icon is a stop sign named error handler
         _attachText("_iconDescription", "<svg>\n"
                 + "<polygon points=\"-8,-19 8,-19 19,-8 19,8 8,19 "
@@ -76,7 +74,6 @@ public class GiottoError extends TypedAtomicActor { //should probably also imple
                 + "style=\"font-size:10; fill:red; font-family:SansSerif\">"
                 + "Error Actor</text>\n" + "</svg>\n");
     }
-
 
     /** Override the base class to determine which comparison is being
      *  specified.  Read the value of the comparison attribute and set
@@ -108,12 +105,12 @@ public class GiottoError extends TypedAtomicActor { //should probably also imple
 
 
     public void fire() throws IllegalActionException {
-        System.out.print("fire method called"); 
+       // System.out.print("fire method called"); 
     }
 
     public void initialize()
     {
-        System.out.println("Initialize method called");
+        //System.out.println("Initialize method called");
 
     }
 
