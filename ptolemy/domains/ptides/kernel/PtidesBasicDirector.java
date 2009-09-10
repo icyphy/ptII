@@ -1567,8 +1567,11 @@ public class PtidesBasicDirector extends DEDirector {
         PtidesEvent eventInList = events.get(0);
         for (int i = 1; i < events.size(); i++) {
             if (events.get(i).actor() != eventInList.actor()) {
-                throw new IllegalActionException("All events to be processed should point to " +
-                		"the same actor.");
+                throw new InternalErrorException(events.get(i).actor(), 
+                        eventInList.actor(), new IllegalActionException("Multiple " +
+                                "events are processed at the same time. These events " +
+                                "should " + "be destined to the same actor"),
+                                "");
             }
         }
         return eventInList.actor();
