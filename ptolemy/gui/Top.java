@@ -69,6 +69,9 @@ import javax.swing.text.html.StyleSheet;
 import ptolemy.util.MessageHandler;
 import ptolemy.util.StringUtilities;
 
+import ptolemy.actor.gui.Configuration;
+import ptolemy.kernel.util.StringAttribute;
+
 //////////////////////////////////////////////////////////////////////////
 //// Top
 
@@ -164,6 +167,31 @@ public abstract class Top extends JFrame {
         });
 
         getContentPane().setLayout(new BorderLayout());
+        
+        List configsList = Configuration.configurations();
+        Configuration config = null;
+        Object object = null;
+        for (Iterator it = configsList.iterator(); it.hasNext();) {
+          config = (Configuration) it.next();
+          if (config != null) {
+            break;
+          }
+        }
+        
+        if(config != null) {
+          try {
+            StringAttribute topHandlerAttribute = (StringAttribute) config
+              .getAttribute("_alternativeTopHandler");
+            if(topHandlerAttribute != null)
+            {
+              String topHandlerClassName = topHandlerAttribute.getExpression();
+              Class topHandlerClass = Class.forName(topHandlerClassName);
+              _topHandler = (TopHandler)topHandlerClass.newInstance();
+            }
+          } catch(Exception e) {
+            report("Error overriding Top.  ", e);
+          }
+        }
 
         // Make this the default context for modal messages.
         UndeferredGraphicalMessageHandler.setContext(this);
@@ -311,6 +339,13 @@ public abstract class Top extends JFrame {
      *  performed in that thread.
      */
     public void pack() {
+      if(_topHandler != null) {
+        FileMenuListener fileMenuListener = new FileMenuListener();
+        HelpMenuListener helpMenuListener = new HelpMenuListener();
+        _topHandler.pack(this, fileMenuListener, helpMenuListener);
+        return;
+      }
+      
         Runnable doPack = new Runnable() {
             public void run() {
                 // NOTE: This always runs in the swing thread,
@@ -714,6 +749,11 @@ public abstract class Top extends JFrame {
      *  _read() to open the file.
      */
     protected void _open() {
+        if(_topHandler != null) {
+          _topHandler.open(this);
+          return;
+        }
+      
         // Swap backgrounds and avoid white boxes in "common places" dialog
         JFileChooserBugFix jFileChooserBugFix = new JFileChooserBugFix();
         Color background = null;
@@ -1026,6 +1066,7 @@ public abstract class Top extends JFrame {
      *  @return True if the save succeeds.
      */
     protected boolean _save() {
+      System.out.println("save()");
         if (_file != null) {
             try {
                 _writeFile(_file);
@@ -1044,6 +1085,12 @@ public abstract class Top extends JFrame {
      *  @return True if the save succeeds.
      */
     protected boolean _saveAs() {
+      System.out.println("saveas()");
+        if(_topHandler != null) {
+          JFileChooser fileDialog = _saveAsFileDialog();
+          return _topHandler.saveAs(this, fileDialog, _file);
+        }
+        
         // Swap backgrounds and avoid white boxes in "common places" dialog
         JFileChooserBugFix jFileChooserBugFix = new JFileChooserBugFix();
         Color background = null;
@@ -1099,6 +1146,14 @@ public abstract class Top extends JFrame {
         fileDialog.setCurrentDirectory(_getCurrentDirectory());
         return fileDialog;
     }
+    
+    /**
+     * call pack on the superclass
+     */
+    protected void callSuperPack()
+    {
+      super.pack();
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
@@ -1150,6 +1205,18 @@ public abstract class Top extends JFrame {
 
     /** The status bar. */
     protected StatusBar _statusBar = null;
+    
+    /** The input file */
+    protected File _file = null;
+    
+    /** Indicator that the menu has been populated.*/
+    protected boolean _menuPopulated = false;
+    
+    /** Flag to hide the menu bar.*/
+    protected boolean _hideMenuBar = false;
+    
+    /** A flag indicating whether or not to center the window.*/
+    protected boolean _centering = true;
 
     /** Listener for file menu commands. */
     class FileMenuListener implements ActionListener {
@@ -1168,7 +1235,9 @@ public abstract class Top extends JFrame {
                 } else if (actionCommand.equals("Save")) {
                     _save();
                 } else if (actionCommand.equals("Save As")) {
+                  System.out.println("SA");
                     _saveAs();
+                  System.out.println("after SA");
                 } else if (actionCommand.equals("Print")) {
                     _print();
                 } else if (actionCommand.equals("Close")) {
@@ -1262,17 +1331,8 @@ public abstract class Top extends JFrame {
     /** Indicator of whether actions are deferred. */
     private static boolean _actionsDeferred = false;
 
-    // A flag indicating whether or not to center the window.
-    private boolean _centering = true;
-
     /** List of deferred actions. */
     private static List _deferredActions = new LinkedList();
-
-    // The input file.
-    private File _file = null;
-
-    // Flag to hide the menu bar.
-    private boolean _hideMenuBar = false;
 
     // The most recently entered URL in Open URL.
     private String _lastURL = "http://ptolemy.eecs.berkeley.edu/xml/models/";
@@ -1280,9 +1340,9 @@ public abstract class Top extends JFrame {
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
 
-    // Indicator that the menu has been populated.
-    private boolean _menuPopulated = false;
-
     // Indicator that the data represented in the window has been modified.
     private boolean _modified = false;
+    
+    // Allows a configuration change to override some of Top's functionality
+    private TopHandler _topHandler = null;
 }
