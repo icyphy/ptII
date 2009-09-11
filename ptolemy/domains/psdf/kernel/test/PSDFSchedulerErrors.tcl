@@ -82,8 +82,5 @@ The SDF rate parameter may change. This is not allowed in SDF models that will b
 test PSDFSchedulerErrors-1.2 {} {
     catch {createAndExecute "badRateChanges2.xml"} foo
     list $foo
-} {{ptolemy.kernel.util.IllegalActionException: Failed to compute schedule:
-  in .badRateChanges2.SDF Director
-Because:
-The SDF rate parameter changes during execution of the schedule!
-  in .badRateChanges2.typed composite actor.port._tokenConsumptionRate}}
+} {{ptolemy.actor.NoRoomException: Queue is at capacity of 2. Cannot put a token.
+  in .badRateChanges2.NonStrictTest.input}}
