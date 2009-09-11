@@ -273,7 +273,7 @@ public class AnalyzerAttribute extends Attribute {
                             try {
                                 // only consider class files
                                 if (className.endsWith(".class")) {
-                                    _solvers.add(Class.forName(path
+                                    solvers.add(Class.forName(path
                                             + "."
                                             + className.substring(0, className
                                                     .length() - 6)));
@@ -308,7 +308,7 @@ public class AnalyzerAttribute extends Attribute {
                                 String className = name.replace("/", ".")
                                         .substring(0, name.length() - 6);
                                 try {
-                                    _solvers.add(Class.forName(className));
+                                    solvers.add(Class.forName(className));
                                 } catch (ClassNotFoundException ex) {
                                     throw new InternalErrorException(this, ex,
                                             "Can't find class " + className);
@@ -374,13 +374,13 @@ public class AnalyzerAttribute extends Attribute {
 
     private void _addChoices() throws IllegalActionException {
 
-        List<Class> solvers = getListOfSolverClass("ptolemy.data.properties.configuredSolvers");
+        _solvers.addAll(getListOfSolverClass("ptolemy.data.properties.configuredSolvers"));
 
-        if (solvers.size() > 0) {
-            property.setExpression(solvers.get(0).getSimpleName());
+        if (_solvers.size() > 0) {
+            property.setExpression(_solvers.get(0).getSimpleName());
         }
 
-        for (Class solver : solvers) {
+        for (Class solver : _solvers) {
             property.addChoice(solver.getSimpleName());
         }
 

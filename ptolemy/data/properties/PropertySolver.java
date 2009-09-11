@@ -929,8 +929,8 @@ public abstract class PropertySolver extends PropertySolverBase {
         // comparison is necessary for "equivalent" elements, such as
         // those in the SetLattice usecase.
         if ((previousProperty == null && property != null)
-                || (previousProperty != null && !previousProperty
-                        .equals(property))) {
+                || (previousProperty != null && !previousProperty.toString()
+                        .equals(property.toString()))) {
 
             addErrors(_eol + "Property \"" + getUseCaseName()
                     + "\" resolution failed for " + namedObj.getFullName()
