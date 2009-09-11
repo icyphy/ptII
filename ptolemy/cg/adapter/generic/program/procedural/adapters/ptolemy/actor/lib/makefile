@@ -58,6 +58,10 @@ PTCLASSALLJARS = \
 # Keep this list alphabetized.
 JSRCS = \
 	AddSubtract.java \
+	BooleanMultiplexor.java \
+	BooleanSwitch.java \
+	Differential.java \
+	Discard.java \
 	Const.java \
 	MultiplyDivide.java
 

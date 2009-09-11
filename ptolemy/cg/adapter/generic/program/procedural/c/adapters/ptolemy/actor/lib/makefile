@@ -58,7 +58,11 @@ PTCLASSALLJARS = logic/logic.jar
 JSRCS = \
 	Accumulator.java \
 	AddSubtract.java \
+	BooleanMultiplexor.java \
+	BooleanSwitch.java \
 	Const.java \
+	Differential.java \
+	Discard.java \
 	Distributor.java \
 	Expression.java \
 	Maximum.java \

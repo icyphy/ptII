@@ -36,7 +36,7 @@ ME =		ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/d
 DIRS =		
 
 # Root of the Java directory
-ROOT =		../../../../../../../../../../..
+ROOT =		../../../../../../../../../../../..
 
 CLASSPATH =	$(ROOT)
 
@@ -55,9 +55,11 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 PTCLASSALLJARS = 
 
 # Keep this list alphabetized.
-JSRCS = 
+JSRCS = \
+	Register.java
 
-OTHER_FILES_TO_BE_JARED = 
+OTHER_FILES_TO_BE_JARED = \
+	Register.c
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
