@@ -207,7 +207,6 @@ CGPACKAGES = \
 	ptolemy.cg.kernel.generic.program.procedural.c.ptidyos \
 	ptolemy.cg.kernel.generic.program.procedural.java \
 	ptolemy.cg.kernel.generic.program.procedural.java.modular \
-	ptolemy.cg.kernel.generic.program.procedural.java.type.polymorphic \
 	ptolemy.cg.lib
 
 # Codegen packages.  Use this command to update:
