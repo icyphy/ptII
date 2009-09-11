@@ -44,7 +44,7 @@ MODELPATH =		@modelPath@
 
 # Location where we create code that we are generating
 TARGETPACKAGE = 	@targetPackage@
-TARGETPATH =		@outDir@
+TARGETPATH =		@outputDirectory@
 
 TARGETCLASS = $(TARGETPACKAGE).$(MODEL)
 
