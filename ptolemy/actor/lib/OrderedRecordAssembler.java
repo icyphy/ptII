@@ -51,7 +51,8 @@ import ptolemy.kernel.util.NameDuplicationException;
  @since Ptolemy II 8.0
  @Pt.ProposedRating Red (cxh)
  @Pt.AcceptedRating Red (cxh)
- @see RecordAssembler, RecordDisassembler
+ @see ptolemy.actor.lib.RecordAssembler
+ @see ptolemy.actor.lib.RecordDisassembler
  */
 public class OrderedRecordAssembler extends RecordAssembler {
     /** Construct an OrderedRecordAssembler with the given container and name.

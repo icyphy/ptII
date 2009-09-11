@@ -705,11 +705,12 @@ public class RecordToken extends AbstractNotConvertibleToken {
     }
     
     /**
-     * Subclasses of RecordToken may return a different subclass instance
-     * @param labels
-     * @param values
-     * @return
-     * @throws IllegalActionException
+     * Create a new RecordToken.
+     * Subclasses of RecordToken may return a different subclass instance.
+     * @param labels An array of String labels for the RecordToken to be created.
+     * @param values An array of Token values for the RecordToken to be created.
+     * @return a new RecordToken.
+     * @throws IllegalActionException If thrown while constructing the RecordToken
      */
     protected RecordToken _createRecordToken(String[] labels, Token[] values) throws IllegalActionException {
         return new RecordToken(labels, values);

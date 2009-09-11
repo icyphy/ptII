@@ -276,7 +276,7 @@ public class SequenceScheduler extends Scheduler {
     }
 
     /** Returns a list of unreachable actors found in the most recent call to
-     *  {@see #getSchedule()}. Actors are unreachable if they
+     *  {@link #getSchedule()}. Actors are unreachable if they
      *  are not connected FIXME and have no sequence number?.
      *  , that are unreachable due to a lack of 
      *  connected actors.  These will be 'upstream' actors that are not upstream

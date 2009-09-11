@@ -438,7 +438,6 @@ public class PlotterBase extends TypedAtomicActor implements Configurable,
      *   an object with this name.
      *  @see #getName()
      *  @see #getName(NamedObj)
-     *  @see #title
      */
     public void setName(String name) throws IllegalActionException,
             NameDuplicationException {

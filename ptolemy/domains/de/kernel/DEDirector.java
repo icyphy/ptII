@@ -821,8 +821,10 @@ public class DEDirector extends Director implements SuperdenseTimeDirector,
     }
     
     /** Get the current microstep.
-     *  @see #setMicrostep
      *  @return microstep of the current time.
+     *  @see #getIndex()
+     *  @see #setIndex(int)
+     *  @see ptolemy.actor.SuperdenseTimeDirector
      */
     public int getMicrostep() {
         return _microstep;
