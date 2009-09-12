@@ -147,7 +147,7 @@ import ptolemy.kernel.util.Workspace;
  appear on the output of the composite actor containing this director.
  However, the first of these output values, the one produced by
  the refinement, may affect whether the transition is taken.
- That is, it can affect the guard. If an addition a transition refinement
+ That is, it can affect the guard. If in addition a transition refinement
  writes to the output, then that value will be produced, overwriting
  the value produced either by the state refinement or the output
  action on the transition.
@@ -162,7 +162,7 @@ import ptolemy.kernel.util.Workspace;
  executed and the current state of the mode controller is set to the
  destination state of the transition.
 
- @author Xiaojun Liu, Haiyang Zheng
+ @author Xiaojun Liu, Haiyang Zheng, Edward A. Lee
  @version $Id$
  @since Ptolemy II 7.1
  @Pt.ProposedRating Yellow (hyzheng)
