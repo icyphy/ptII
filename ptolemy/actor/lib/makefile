@@ -246,6 +246,7 @@ JSRCS = \
 OTHER_FILES_TO_BE_JARED = \
         AccumulatorIcon.png \
         AccumulatorIcon.xml \
+        BernoulliIcon.xml \
 	BooleanSelectIcon.xml \
 	BooleanSwitchIcon.xml \
 	CommutatorIcon.xml \
