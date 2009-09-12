@@ -220,6 +220,15 @@ public class TransitionController extends BasicEdgeController {
                     // Ignore and don't render dashed line if default parameter fails to evaluate.
                 }
 
+                try {
+                    TypedActor[] refinements = transition.getRefinement();
+                    if (refinements != null && refinements.length > 0) {
+                        c.setLineWidth(4.0f);
+                    }
+                } catch (IllegalActionException e1) {
+                    // Ignore. Unable to get refinement.
+                }
+
                 c.setToolTipText(transition.getName());
 
                 String labelStr = transition.getLabel();
