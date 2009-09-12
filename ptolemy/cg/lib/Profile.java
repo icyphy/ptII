@@ -68,12 +68,13 @@ abstract public class Profile {
          * @param output A flag that specifies whether the port is an output port.
          * @param pubSubChannelName The name
          */
-        public Port(String name, boolean publisher, boolean subscriber, int width,
+        public Port(String name, boolean publisher, boolean subscriber, int width, int rate,
                 boolean input, boolean output, String pubSubChannelName) {
             _name = name;
             _publisher = publisher;
             _subscriber = subscriber;
             _width = width;
+            _rate = rate;
             _input = input;
             _output = output;
             _pubSubChannelName = pubSubChannelName;
@@ -113,6 +114,11 @@ abstract public class Profile {
          *  @return the width of the port.
          */     
         public int width() { return _width; }
+        
+        /** Return whether the rate of the port.
+         *  @return the rate of the port.
+         */     
+        public int rate() { return _rate;}
 
         /** A flag that specifies whether the port in an input port.*/
         private boolean _input;
@@ -134,5 +140,8 @@ abstract public class Profile {
 
         /** The width of the port.*/
         private int _width;
+        
+        /** The rate of the port */
+        private int _rate;
     }    
 }

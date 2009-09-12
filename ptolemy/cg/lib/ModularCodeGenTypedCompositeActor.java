@@ -156,7 +156,7 @@ will simply result in the expression failing to evaluate.
 
 
  @author Bert Rodiers, Dai Bui
- @version $Id$
+ @version $Id: $
  @since Ptolemy II 8.1
  @Pt.ProposedRating Red (rodiers)
  @Pt.AcceptedRating Red (rodiers)
@@ -224,7 +224,8 @@ public class ModularCodeGenTypedCompositeActor extends LazyTypedCompositeActor {
         boolean publisher = _isPublishedPort(port);
         boolean subscriber = _isSubscribedPort(port);
         return new Profile.Port(port.getName(), publisher,
-                subscriber, port.getWidth(), port.isInput(), port.isOutput(), _pubSubChannelName(port, publisher, subscriber));
+                subscriber, port.getWidth(), DFUtilities.getTokenConsumptionRate(port),
+                port.isInput(), port.isOutput(), _pubSubChannelName(port, publisher, subscriber));
     }
 
     /** React to a change in an attribute.  This method is called by
@@ -713,11 +714,21 @@ public class ModularCodeGenTypedCompositeActor extends LazyTypedCompositeActor {
                     }
                     try {
                         for (Profile.Port port : profile.ports()) {
+                            for (Object actorPort : ports) {
+                                if(port.name().equals(((NamedObj) actorPort).getName())) {
+//                                    if(port.rate() > 0)
+                                        DFUtilities.setRateVariable((IOPort)actorPort, 
+                                            port.input() ? "tokenConsumptionRate":"tokenProductionRate", port.rate());
+                                    break;
+                                }
+                            }
+                              
                             if (port.subscriber() && !portSet.contains(port.name())) {
                                 IOPort newPort = new TypedIOPort(this, port.name());
                                 new Parameter(newPort, "_hide", BooleanToken.TRUE);
                                 newPort.setInput(port.input());
                                 newPort.setOutput(port.output());
+                                DFUtilities.setRateVariable(newPort, port.input() ? "tokenConsumptionRate":"tokenProductionRate", port.rate());
                                 NamedObj container = getContainer();
                                 if (container instanceof CompositeActor) {
                                     ((CompositeActor) container).linkToPublishedPort(port.getPubSubChannelName(), newPort);
@@ -1250,6 +1261,6 @@ public class ModularCodeGenTypedCompositeActor extends LazyTypedCompositeActor {
     
     private Map<String, IORelation> _subscriberRelations;
     
-    static private boolean _USE_PROFILE = false;
+    static private boolean _USE_PROFILE = true;
     
 }
