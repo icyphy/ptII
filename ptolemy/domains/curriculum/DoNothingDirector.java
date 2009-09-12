@@ -1,4 +1,4 @@
-/* Base class for simple source actors.
+/* A director that does nothing.
 
  Copyright (c) 1998-2007 The Regents of the University of California.
  All rights reserved.
