@@ -95,12 +95,11 @@ public class PtolemyExpressionString {
      *  @exception IllegalActionException If error occurs in the evaluation.
      */
     public Token getToken() throws IllegalActionException {
-        if (_needReparse) {
-            ASTPtRootNode tree = new PtParser().generateParseTree(_value);
-            _token = new ParseTreeEvaluator().evaluateParseTree(tree,
-                    _variableScope);
-            _needReparse = false;
+        if (_valueParseTree == null) {
+            _valueParseTree = new PtParser().generateParseTree(_value);
         }
+        _token = new ParseTreeEvaluator().evaluateParseTree(_valueParseTree,
+                _variableScope);
         return _token;
     }
 
@@ -111,7 +110,7 @@ public class PtolemyExpressionString {
      */
     public void set(String value) {
         _value = value;
-        _needReparse = true;
+        _valueParseTree = null;
     }
 
     /** Return the Ptolemy expression in a string.
@@ -122,10 +121,6 @@ public class PtolemyExpressionString {
         return get();
     }
 
-    /** Whether the Ptolemy expression needs to be reparsed.
-     */
-    private boolean _needReparse;
-
     /** The last evaluation result.
      */
     private Token _token;
@@ -133,6 +128,10 @@ public class PtolemyExpressionString {
     /** The Ptolemy expression.
      */
     private String _value;
+    
+    /** The value parse tree.
+     */
+    private ASTPtRootNode _valueParseTree;
 
     /** The scope in which the Ptolemy expression is evaluated.
      */
