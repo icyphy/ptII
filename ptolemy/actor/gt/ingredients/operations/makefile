@@ -50,6 +50,7 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 JSRCS = \
 	AttributeOperation.java \
 	BooleanOperationElement.java \
+	DynamicAttributeOperation.java \
 	Operation.java \
 	OperationElement.java \
 	PortCreationOperation.java \

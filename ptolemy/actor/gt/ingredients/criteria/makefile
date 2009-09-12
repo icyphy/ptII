@@ -53,6 +53,7 @@ JSRCS = \
 	ChoiceCriterionElement.java \
 	Criterion.java \
 	CriterionElement.java \
+	DynamicNameCriterion.java \
 	GuardCriterion.java \
 	NameCriterion.java \
 	PortCriterion.java \
