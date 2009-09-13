@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="ContinuousInContinuous" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={2, 22, 813, 510}, maximized=false}">
     </property>
@@ -28,7 +28,7 @@
         <property name="values" class="ptolemy.data.expr.Parameter" value="{1}">
         </property>
         <doc>Create a set of pulses</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{100, 175}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 175.0]">
         </property>
     </entity>
     <entity name="ModalModel" class="ptolemy.domains.modal.modal.ModalModel">
@@ -64,7 +64,7 @@
         <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory"></property></entity></entity>
       </configure>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={56, 386, 813, 511}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={313, 194, 813, 511}, maximized=false}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
             </property>
@@ -389,13 +389,13 @@
         <link port="state2.ramp" relation="rampRelation"/>
     </entity>
     <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1.0, 2.0, 1.0, 1.0, 1.0, 2.0, 2.0}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1.0, 2.0, 2.0, 1.0, 1.0, 1.0, 2.0, 2.0, 1.0}">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{410, 150}">
         </property>
     </entity>
     <entity name="NonStrictTest2" class="ptolemy.actor.lib.NonStrictTest">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 0.1, 1.1, 2.0, 3.0, 3.0, 3.1, 4.1, 5.0, 5.0, 5.1, 6.1, 7.0, 7.0, 7.1, 8.1, 9.1, 10.0}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 0.0, 0.1, 1.1, 2.1, 3.0, 3.0, 3.1, 4.1, 5.0, 5.0, 5.0, 5.1, 6.0, 7.0, 8.0, 8.0, 8.1, 9.1, 10.0}">
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
@@ -408,7 +408,7 @@
         </property>
     </entity>
     <entity name="NonStrictTest3" class="ptolemy.actor.lib.NonStrictTest">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 3.0, 6.0, 8.0, 10.0, 12.0, 15.0}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 0.0, 3.0, 5.0, 7.0, 9.0, 10.0, 13.0, 15.0}">
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
@@ -421,17 +421,13 @@
         </property>
     </entity>
     <entity name="NonStrictTest4" class="ptolemy.actor.lib.NonStrictTest">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 0.1, 1.1, 2.0, 3.0, 3.0, 3.1, 4.1, 5.0, 10.0, 10.1, 11.1, 12.0, 12.0, 12.1, 13.1, 14.1, 15.0}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 0.0, 0.1, 1.1, 2.1, 3.0, 3.0, 3.1, 4.1, 5.0, 10.0, 10.0, 10.1, 11.0, 12.0, 13.0, 13.0, 13.1, 14.1, 15.0}">
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{460.0, 300.0}">
         </property>
     </entity>
-    <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
-    </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
@@ -447,6 +443,8 @@
         </property>
         <vertex name="vertex1" value="[325.0, 200.0]">
         </vertex>
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
     <link port="Clock.output" relation="relation"/>
     <link port="ModalModel.in" relation="relation"/>
