@@ -174,5 +174,6 @@ public class Register extends Sampler {
         // Declare that output does not immediately depend on the input,
         // though there is no lower bound on the time delay.
         declareDelayDependency(input, output, 0.0);
+        declareDelayDependency(trigger, output, 0.0);
     }
 }
