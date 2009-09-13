@@ -27,7 +27,9 @@
  */
 package ptolemy.actor.lib;
 
+import ptolemy.actor.Actor;
 import ptolemy.actor.Director;
+import ptolemy.actor.TimedActor;
 import ptolemy.actor.util.Time;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
@@ -47,42 +49,33 @@ import ptolemy.kernel.util.Workspace;
 //// PoissonClock
 
 /**
- This actor produces a signal that is piecewise constant, with transitions
- between levels taken at times given by a Poisson process.
- It has various uses.  Its simplest use in the DE domain
- is to generate a sequence of events at intervals that are spaced
- randomly, according to an exponential distribution.
- In CT, it can be used to generate a piecewise constant waveform
- with randomly spaced transition times.
- In both domains, the output value can cycle through a set of values.
+ This actor produces discrete events according to a Poisson process.
+ The time between events is given by independent and identically
+ distributed exponential random variables. The values produced
+ rotate sequentially through those given in the <i>values</i> parameter,
+ which is an array of anything and defaults to {1, 0}.
+ The type of the output can be any token type.  This type is inferred from
+ the element type of the <i>values</i> parameter.
+ The mean time between events is given by the <i>meanTime</i> parameter,
+ which defaults to 1.0.
  <p>
- The mean time between events is given by the <i>meanTime</i> parameter.
- An <i>event</i> is defined to be the transition to a new output value.
- The default mean time is 1.0.
- <p>
- The <i>values</i> parameter must contain an ArrayToken, or an
- exception will be thrown when it is set.
- By default the elements of the array are IntTokens with values 1 and 0,
- Thus, the default output value is always 1 or 0.
- <p>
- In the initialize() method and in each invocation of the fire() method,
+ In the initialize() method and postfire() methods,
  the actor uses the fireAt() method of the director to request
  the next firing.  The first firing is always at the start time, unless
  the parameter <i>fireAtStart</i> is changed to <i>false</i>.
- It may in addition fire at any time in response to a trigger
- input.  On such firings, it simply repeats the most recent output
- (or generates a new output if the time is suitable.)
- Thus, the trigger, in effect, asks the actor what its current
- output value is. Some directors, such as those in CT, may also fire the
- actor at other times, without requiring a trigger input.  Again, the actor
- simply repeats the previous output.
- Thus, the output can be viewed as samples of the piecewise
- constant waveform,
- where the time of each sample is the time of the firing that
- produced it.
  <p>
- The type of the output can be any token type.  This type is inferred from
- the element type of the <i>values</i> parameter.
+ If the trigger input is connected, then any event on it will
+ cause the Poisson process to immediately produce the next
+ event, as if the time for that event had arrived.
+ <p>
+ If this actor is inactive at the time at which it would have
+ otherwise produced an output (e.g., if it is in a ModalModel
+ state refinement and that state is inactive), then the next
+ event will be produced a random amount of time after it
+ becomes active again (specifically, a random amount of time
+ after fireAtSkipped() is called by the director).
+ This strategy is valid because of the memoryless property
+ of a Poisson process.
 
  @author Edward A. Lee
  @version $Id$
@@ -90,7 +83,7 @@ import ptolemy.kernel.util.Workspace;
  @Pt.ProposedRating Yellow (eal)
  @Pt.AcceptedRating Yellow (yuhong)
  */
-public class PoissonClock extends TimedSource {
+public class PoissonClock extends RandomSource implements TimedActor {
     /** Construct an actor with the specified container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -118,6 +111,25 @@ public class PoissonClock extends TimedSource {
         fireAtStart = new Parameter(this, "fireAtStart");
         fireAtStart.setExpression("true");
         fireAtStart.setTypeEquals(BaseType.BOOLEAN);
+        
+        // Note that this class copies much of TimedSource into here
+        // because it can't subclass both TimedSource and RandomSource.
+        stopTime = new Parameter(this, "stopTime");
+        stopTime.setExpression("Infinity");
+        stopTime.setTypeEquals(BaseType.DOUBLE);
+
+        _attachText("_iconDescription", "<svg>\n"
+                + "<rect x=\"-20\" y=\"-20\" " + "width=\"40\" height=\"40\" "
+                + "style=\"fill:lightGrey\"/>\n"
+                + "<circle cx=\"0\" cy=\"0\" r=\"17\""
+                + "style=\"fill:white\"/>\n"
+                + "<line x1=\"0\" y1=\"-15\" x2=\"0\" y2=\"-13\"/>\n"
+                + "<line x1=\"0\" y1=\"14\" x2=\"0\" y2=\"16\"/>\n"
+                + "<line x1=\"-15\" y1=\"0\" x2=\"-13\" y2=\"0\"/>\n"
+                + "<line x1=\"14\" y1=\"0\" x2=\"16\" y2=\"0\"/>\n"
+                + "<line x1=\"0\" y1=\"-8\" x2=\"0\" y2=\"0\"/>\n"
+                + "<line x1=\"0\" y1=\"0\" x2=\"11.26\" y2=\"-6.5\"/>\n"
+                + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -133,6 +145,13 @@ public class PoissonClock extends TimedSource {
      *  This parameter must contain a DoubleToken.
      */
     public Parameter meanTime;
+    
+    /** The time at which postfire() should return false. This is a
+     *  double that defaults to Infinity, which means that postfire()
+     *  never returns false (or at least, doesn't do so due to stopTime
+     *  having been exceeded).
+     */
+    public Parameter stopTime;
 
     /** The values that will be produced at the output.
      *  This parameter can contain any ArrayToken, and it defaults to {1, 0}.
@@ -161,6 +180,30 @@ public class PoissonClock extends TimedSource {
         } else if (attribute == values) {
             ArrayToken val = (ArrayToken) (values.getToken());
             _length = val.length();
+        } else if (attribute == stopTime) {
+            double newStopTimeValue = ((DoubleToken) stopTime.getToken()).doubleValue();
+
+            if (_executing) {
+                Time newStopTime = new Time(getDirector(), newStopTimeValue);
+                Director director = getDirector();
+
+                if (director != null) {
+                    Time currentTime = director.getModelTime();
+
+                    if (newStopTime.compareTo(currentTime) > 0) {
+                        // NOTE: Do not throw an exception if the director ignores this
+                        // stop time request or returns some other value of time.
+                        // postfire() will return false on the next firing after time
+                        // equals the stop time or exceeds it.
+                        director.fireAt(this, newStopTime);
+                    } else {
+                        throw new IllegalActionException(this, "The stop time "
+                                + "is earlier than the current time.");
+                    }
+                }
+
+                _stopTime = newStopTime;
+            }
         } else {
             super.attributeChanged(attribute);
         }
@@ -189,75 +232,218 @@ public class PoissonClock extends TimedSource {
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
+        // If this is the first call to fire() in an iteration,
+        // the the superclass will generate a new random number
+        // to be used in postfire().
         super.fire();
-
-        // Get the current time and period.
-        Time currentTime = getDirector().getModelTime();
-
-        // Indicator whether we've reached the next event.
-        _boundaryCrossed = false;
-
-        _tentativeCurrentOutputIndex = _currentOutputIndex;
-
-        output.send(0, _getValue(_tentativeCurrentOutputIndex));
-
-        // In case current time has reached or crossed a boundary to the
-        // next output, update it.
-        if (currentTime.compareTo(_nextFiringTime) == 0) {
-            _tentativeCurrentOutputIndex++;
-
-            if (_tentativeCurrentOutputIndex >= _length) {
-                _tentativeCurrentOutputIndex = 0;
-            }
-
-            _boundaryCrossed = true;
+        output.send(0, _getValue(_nextOutputIndex));
+    }
+    
+    /** Notify this actor that a {@link Director#fireAt(Actor,Time)}
+     *  request was skipped, and that current time has passed the
+     *  requested time. A director calls this method when in a modal
+     *  model it was inactive at the time of the request, and it
+     *  became active again after the time of the request had
+     *  expired. This method identifies the next time at which
+     *  a firing should occur, and calls fireAt() with that time
+     *  argument. Because of the memoryless property of the Poisson
+     *  process, that next time is simply the current time plus
+     *  an exponential random variable.
+     *  @param time The time of the request that was skipped.
+     *  @exception IllegalActionException If skipping the request
+     *   is not acceptable to the actor.
+     */
+    public void fireAtSkipped(Time time) throws IllegalActionException {
+        // If the time skipped does not match our expected next firing time,
+        // then this report is probably not intended for us. (The Continuous
+        // director broadcasts these reports to all actors since it doesn't
+        // keep track of which actors registered a breakpoint).
+        if (!time.equals(_nextFiringTime)) {
+            return;
         }
+        Director director = getDirector();
+        Time currentTime = director.getModelTime();
+        int comparison = currentTime.compareTo(time);
+        if (comparison < 0) {
+            throw new IllegalActionException(this, director,
+                    "Director indicates that a fireAt() request at time "
+                    + time
+                    + " was skipped, but current time has only advanced to "
+                    + currentTime);
+        } else if (comparison > 0) {
+            // Current time is ahead of the skipped time.
+            // If current time is also ahead of the _nextFiringTime,
+            // then we need to generate a new _nextFiringTime.
+            // It may not be ahead because fireAtSkipped() may
+            // get called multiple times in one inactive interval.
+            if (currentTime.compareTo(_nextFiringTime) > 0) {
+                _generateRandomNumber();
+                _nextFiringTime = currentTime.add(_current);
+                _fireAt(_nextFiringTime);
+                if (_debugging) {
+                    _debug("At time "
+                            + currentTime
+                            + ", director reports that requested firing at time "
+                            + time
+                            + " was skipped. Generating new firing request for time "
+                            + _nextFiringTime);
+                }
+            }
+        }
+        // If current time is equal to the time skipped, then
+        // we can safely ignore this report from the director.
+        // The director is reporting that it has passed our requested
+        // superdense time index, but in such cases we go ahead
+        // and produce an output, so there is no problem.
+        // All we have to do is request a refiring at the current time.
+        director.fireAtCurrentTime(this);
     }
 
-    /** Schedule the first firing at time zero and initialize local variables.
+    /** Get the stop time.
+     *  @return The stop time.
+     *  @deprecated As of Ptolemy II 4.1, replaced by
+     *  {@link #getModelStopTime}
+     */
+    public double getStopTime() {
+        return getModelStopTime().getDoubleValue();
+    }
+
+    /** Get the stop time.
+     *  @return The stop time.
+     */
+    public Time getModelStopTime() {
+        return _stopTime;
+    }
+
+    /** Request the first firing either at the start time
+     *  or at a random time, depending on <i>fireAtStart</i>.
      *  @exception IllegalActionException If the fireAt() method of the
      *   director throws it, or if the director does not
      *   agree to fire the actor at the specified time.
      */
     public void initialize() throws IllegalActionException {
+        // The superclass will ensure that the next call to fire() generates
+        // a new random number. That random number will be first used
+        // in the first postfire() call.
         super.initialize();
-        _tentativeCurrentOutputIndex = 0;
-        _currentOutputIndex = 0;
+        Director director = getDirector();
+        if (director == null) {
+            throw new IllegalActionException(this, "No director!");
+        }
 
-        Time currentTime = getDirector().getModelTime();
+        double stopTimeValue = ((DoubleToken) stopTime.getToken())
+                .doubleValue();
+        _stopTime = new Time(getDirector(), stopTimeValue);
+
+        Time currentTime = director.getModelTime();
+
+        if (!_stopTime.isInfinite() && (_stopTime.compareTo(currentTime) > 0)) {
+            // NOTE: Do not throw an exception if the director ignores this
+            // stop time request or returns some other value of time.
+            // postfire() will return false on the next firing after time
+            // equals the stop time or exceeds it.
+            director.fireAt(this, _stopTime);
+            _executing = true;
+        }
+
+        _nextOutputIndex = 0;
         _nextFiringTime = currentTime;
 
         if (((BooleanToken) fireAtStart.getToken()).booleanValue()) {
             _fireAt(currentTime);
         } else {
-            double meanTimeValue = ((DoubleToken) meanTime.getToken())
-                    .doubleValue();
-            double exp = -Math.log((1 - Math.random())) * meanTimeValue;
-            Director director = getDirector();
-            _nextFiringTime = director.getModelTime().add(exp);
+            // Have to explicitly generate the first random number
+            // becuase the superclass doesn't do it until the first
+            // call to fire().
+            _generateRandomNumber();
+            _nextFiringTime = director.getModelTime().add(_current);
             _fireAt(_nextFiringTime);
         }
     }
 
-    /** Update the state of the actor and schedule the next firing,
-     *  if appropriate.
+    /** Generate an exponential random number and schedule the next firing.
      *  @exception IllegalActionException If the director throws it when
      *   scheduling the next firing, or if the director does not
      *   agree to fire the actor at the specified time.
      */
     public boolean postfire() throws IllegalActionException {
-        _currentOutputIndex = _tentativeCurrentOutputIndex;
+        boolean result = super.postfire();
+        Time currentTime = getDirector().getModelTime();
+        _nextOutputIndex++;
+        if (_nextOutputIndex >= _length) {
+            _nextOutputIndex = 0;
+        }
+        // The following is not needed because the first call
+        // to fire() in the superclass generated a new random
+        // number.
+        // _generateRandomNumber();
+        _nextFiringTime = currentTime.add(_current);
+        _fireAt(_nextFiringTime);
 
-        if (_boundaryCrossed) {
-            double meanTimeValue = ((DoubleToken) meanTime.getToken())
-                    .doubleValue();
-            double exp = -Math.log((1 - Math.random())) * meanTimeValue;
-            Director director = getDirector();
-            _nextFiringTime = director.getModelTime().add(exp);
-            _fireAt(_nextFiringTime);
+        if (currentTime.compareTo(_stopTime) >= 0) {
+            return false;
+        }
+        return result;
+    }
+
+    /** If the current time matches the expected time for the next
+     *  output, then return true. Also return true if the
+     *  trigger input is connected and has events.
+     *  Otherwise, return false.
+     *  @exception IllegalActionException If there is no director.
+     */
+    public boolean prefire() throws IllegalActionException {
+        // Do not call super.prefire() because that returns false if
+        // there are no trigger inputs.
+        if (_debugging) {
+            _debug("Called prefire()");
+        }
+        
+        // If any trigger input has a token, then return true.
+        // NOTE: It might seem that using trigger.numberOfSources() is
+        // correct here, but it is not. It is possible for channels
+        // to be connected, for example, to other output ports or
+        // even back to this same trigger port, in which case higher
+        // numbered channels will not have their inputs read.
+        for (int i = 0; i < trigger.getWidth(); i++) {
+            if (trigger.isKnown() && trigger.hasToken(i)) {
+                // No need to continue. fire() will
+                // consume the tokens (in the superclass).
+                return true;
+            }
         }
 
-        return super.postfire();
+        // Also return true if there are no trigger inputs
+        // but it is time for the next output.
+        Time currentTime = getDirector().getModelTime();
+        if (currentTime.compareTo(_nextFiringTime) == 0) {
+            return true;
+        }
+        
+        // Otherwise, return false.
+        return false;
+    }
+
+    /** Override the base class to reset a flag that indicates that the
+     *  model is executing. This method is invoked exactly once per execution
+     *  of an application.  None of the other action methods should be
+     *  be invoked after it.
+     *  @exception IllegalActionException Not thrown in this base class.
+     */
+    public void wrapup() throws IllegalActionException {
+        super.wrapup();
+        _executing = false;
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+
+    /** Generate a new random number.
+     *  @exception IllegalActionException If parameter values are incorrect.
+     */
+    protected void _generateRandomNumber() throws IllegalActionException {
+        double meanTimeValue = ((DoubleToken) meanTime.getToken()).doubleValue();
+        _current = -Math.log((1 - _random.nextDouble())) * meanTimeValue;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -278,6 +464,13 @@ public class PoissonClock extends TimedSource {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
+    
+    // Most recently generated exponential random number.
+    private double _current;
+
+    // Flag indicating that the model is running.
+    private boolean _executing = false;
+
     // The following are all transient to silence a javadoc bug
     // about the @serialize tag.
     // The transient qualifier should probably be removed if this
@@ -285,14 +478,12 @@ public class PoissonClock extends TimedSource {
     // The length of the values parameter vector.
     private transient int _length;
 
-    // The index of the current output.
-    private transient int _tentativeCurrentOutputIndex;
-
-    private transient int _currentOutputIndex;
-
     // The next firing time requested of the director.
     private transient Time _nextFiringTime;
+    
+    // The index of the next output.
+    private transient int _nextOutputIndex;
 
-    // An indicator of whether a boundary is crossed in the fire() method.
-    private transient boolean _boundaryCrossed;
+    // stop time.
+    private Time _stopTime;
 }
