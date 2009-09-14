@@ -29,13 +29,11 @@
 //// PoissonClock
 package ptolemy.backtrack.automatic.ptolemy.actor.lib;
 
-import java.lang.Object;
+import ptolemy.actor.Actor;
 import ptolemy.actor.Director;
-import ptolemy.actor.lib.TimedSource;
+import ptolemy.actor.TimedActor;
 import ptolemy.actor.util.Time;
-import ptolemy.backtrack.Checkpoint;
 import ptolemy.backtrack.Rollbackable;
-import ptolemy.backtrack.util.CheckpointRecord;
 import ptolemy.backtrack.util.FieldRecord;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
@@ -52,54 +50,45 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
 /** 
- * This actor produces a signal that is piecewise constant, with transitions
- * between levels taken at times given by a Poisson process.
- * It has various uses.  Its simplest use in the DE domain
- * is to generate a sequence of events at intervals that are spaced
- * randomly, according to an exponential distribution.
- * In CT, it can be used to generate a piecewise constant waveform
- * with randomly spaced transition times.
- * In both domains, the output value can cycle through a set of values.
+ * This actor produces discrete events according to a Poisson process.
+ * The time between events is given by independent and identically
+ * distributed exponential random variables. The values produced
+ * rotate sequentially through those given in the <i>values</i> parameter,
+ * which is an array of anything and defaults to {1, 0}.
+ * The type of the output can be any token type.  This type is inferred from
+ * the element type of the <i>values</i> parameter.
+ * The mean time between events is given by the <i>meanTime</i> parameter,
+ * which defaults to 1.0.
  * <p>
- * The mean time between events is given by the <i>meanTime</i> parameter.
- * An <i>event</i> is defined to be the transition to a new output value.
- * The default mean time is 1.0.
- * <p>
- * The <i>values</i> parameter must contain an ArrayToken, or an
- * exception will be thrown when it is set.
- * By default the elements of the array are IntTokens with values 1 and 0,
- * Thus, the default output value is always 1 or 0.
- * <p>
- * In the initialize() method and in each invocation of the fire() method,
+ * In the initialize() method and postfire() methods,
  * the actor uses the fireAt() method of the director to request
  * the next firing.  The first firing is always at the start time, unless
  * the parameter <i>fireAtStart</i> is changed to <i>false</i>.
- * It may in addition fire at any time in response to a trigger
- * input.  On such firings, it simply repeats the most recent output
- * (or generates a new output if the time is suitable.)
- * Thus, the trigger, in effect, asks the actor what its current
- * output value is. Some directors, such as those in CT, may also fire the
- * actor at other times, without requiring a trigger input.  Again, the actor
- * simply repeats the previous output.
- * Thus, the output can be viewed as samples of the piecewise
- * constant waveform,
- * where the time of each sample is the time of the firing that
- * produced it.
  * <p>
- * The type of the output can be any token type.  This type is inferred from
- * the element type of the <i>values</i> parameter.
+ * If the trigger input is connected, then any event on it will
+ * cause the Poisson process to immediately produce the next
+ * event, as if the time for that event had arrived.
+ * <p>
+ * If this actor is inactive at the time at which it would have
+ * otherwise produced an output (e.g., if it is in a ModalModel
+ * state refinement and that state is inactive), then the next
+ * event will be produced a random amount of time after it
+ * becomes active again (specifically, a random amount of time
+ * after fireAtSkipped() is called by the director).
+ * This strategy is valid because of the memoryless property
+ * of a Poisson process.
  * @author Edward A. Lee
  * @version $Id$
  * @since Ptolemy II 1.0
  * @Pt.ProposedRating Yellow (eal)
  * @Pt.AcceptedRating Yellow (yuhong)
  */
-public class PoissonClock extends TimedSource implements Rollbackable {
-
-    protected transient Checkpoint $CHECKPOINT = new Checkpoint(this);
+public class PoissonClock extends RandomSource implements TimedActor, Rollbackable {
 
     // Set the values parameter
     // Call this so that we don't have to copy its code here...
+    // Note that this class copies much of TimedSource into here
+    // because it can't subclass both TimedSource and RandomSource.
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
     /**     
@@ -116,6 +105,14 @@ public class PoissonClock extends TimedSource implements Rollbackable {
     public Parameter meanTime;
 
     /**     
+     * The time at which postfire() should return false. This is a
+     * double that defaults to Infinity, which means that postfire()
+     * never returns false (or at least, doesn't do so due to stopTime
+     * having been exceeded).
+     */
+    public Parameter stopTime;
+
+    /**     
      * The values that will be produced at the output.
      * This parameter can contain any ArrayToken, and it defaults to {1, 0}.
      */
@@ -123,33 +120,84 @@ public class PoissonClock extends TimedSource implements Rollbackable {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    // Get the current time and period.
-    // Indicator whether we've reached the next event.
-    // In case current time has reached or crossed a boundary to the
-    // next output, update it.
+    // NOTE: Do not throw an exception if the director ignores this
+    // stop time request or returns some other value of time.
+    // postfire() will return false on the next firing after time
+    // equals the stop time or exceeds it.
+    // If this is the first call to fire() in an iteration,
+    // the the superclass will generate a new random number
+    // to be used in postfire().
+    // If the time skipped does not match our expected next firing time,
+    // then this report is probably not intended for us. (The Continuous
+    // director broadcasts these reports to all actors since it doesn't
+    // keep track of which actors registered a breakpoint).
+    // Current time is ahead of the skipped time.
+    // If current time is also ahead of the _nextFiringTime,
+    // then we need to generate a new _nextFiringTime.
+    // It may not be ahead because fireAtSkipped() may
+    // get called multiple times in one inactive interval.
+    // If current time is equal to the time skipped, then
+    // we can safely ignore this report from the director.
+    // The director is reporting that it has passed our requested
+    // superdense time index, but in such cases we go ahead
+    // and produce an output, so there is no problem.
+    // All we have to do is request a refiring at the current time.
+    // The superclass will ensure that the next call to fire() generates
+    // a new random number. That random number will be first used
+    // in the first postfire() call.
+    // NOTE: Do not throw an exception if the director ignores this
+    // stop time request or returns some other value of time.
+    // postfire() will return false on the next firing after time
+    // equals the stop time or exceeds it.
+    // Have to explicitly generate the first random number
+    // becuase the superclass doesn't do it until the first
+    // call to fire().
+    // The following is not needed because the first call
+    // to fire() in the superclass generated a new random
+    // number.
+    // _generateRandomNumber();
+    // Do not call super.prefire() because that returns false if
+    // there are no trigger inputs.
+    // If any trigger input has a token, then return true.
+    // NOTE: It might seem that using trigger.numberOfSources() is
+    // correct here, but it is not. It is possible for channels
+    // to be connected, for example, to other output ports or
+    // even back to this same trigger port, in which case higher
+    // numbered channels will not have their inputs read.
+    // No need to continue. fire() will
+    // consume the tokens (in the superclass).
+    // Also return true if there are no trigger inputs
+    // but it is time for the next output.
+    // Otherwise, return false.
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
     /* Get the specified value, checking the form of the values parameter.
      */
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
+    // Most recently generated exponential random number.
+    // Flag indicating that the model is running.
     // The following are all transient to silence a javadoc bug
     // about the @serialize tag.
     // The transient qualifier should probably be removed if this
     // class is made serializable.
     // The length of the values parameter vector.
-    // The index of the current output.
     // The next firing time requested of the director.
-    // An indicator of whether a boundary is crossed in the fire() method.
+    // The index of the next output.
+    // stop time.
+    private double _current;
+
+    private boolean _executing = false;
+
     private transient int _length;
-
-    private transient int _tentativeCurrentOutputIndex;
-
-    private transient int _currentOutputIndex;
 
     private transient Time _nextFiringTime;
 
-    private transient boolean _boundaryCrossed;
+    private transient int _nextOutputIndex;
+
+    private Time _stopTime;
 
     /**     
      * Construct an actor with the specified container and name.
@@ -172,6 +220,10 @@ public class PoissonClock extends TimedSource implements Rollbackable {
         fireAtStart = new Parameter(this, "fireAtStart");
         fireAtStart.setExpression("true");
         fireAtStart.setTypeEquals(BaseType.BOOLEAN);
+        stopTime = new Parameter(this, "stopTime");
+        stopTime.setExpression("Infinity");
+        stopTime.setTypeEquals(BaseType.DOUBLE);
+        _attachText("_iconDescription", "<svg>\n" + "<rect x=\"-20\" y=\"-20\" "+"width=\"40\" height=\"40\" "+"style=\"fill:lightGrey\"/>\n"+"<circle cx=\"0\" cy=\"0\" r=\"17\""+"style=\"fill:white\"/>\n"+"<line x1=\"0\" y1=\"-15\" x2=\"0\" y2=\"-13\"/>\n"+"<line x1=\"0\" y1=\"14\" x2=\"0\" y2=\"16\"/>\n"+"<line x1=\"-15\" y1=\"0\" x2=\"-13\" y2=\"0\"/>\n"+"<line x1=\"14\" y1=\"0\" x2=\"16\" y2=\"0\"/>\n"+"<line x1=\"0\" y1=\"-8\" x2=\"0\" y2=\"0\"/>\n"+"<line x1=\"0\" y1=\"0\" x2=\"11.26\" y2=\"-6.5\"/>\n"+"</svg>\n");
     }
 
     /**     
@@ -190,6 +242,21 @@ public class PoissonClock extends TimedSource implements Rollbackable {
         } else if (attribute == values) {
             ArrayToken val = (ArrayToken)(values.getToken());
             $ASSIGN$_length(val.length());
+        } else if (attribute == stopTime) {
+            double newStopTimeValue = ((DoubleToken)stopTime.getToken()).doubleValue();
+            if (_executing) {
+                Time newStopTime = new Time(getDirector(), newStopTimeValue);
+                Director director = getDirector();
+                if (director != null) {
+                    Time currentTime = director.getModelTime();
+                    if (newStopTime.compareTo(currentTime) > 0) {
+                        director.fireAt(this, newStopTime);
+                    } else {
+                        throw new IllegalActionException(this, "The stop time " + "is earlier than the current time.");
+                    }
+                }
+                $ASSIGN$_stopTime(newStopTime);
+            }
         } else {
             super.attributeChanged(attribute);
         }
@@ -220,59 +287,160 @@ public class PoissonClock extends TimedSource implements Rollbackable {
      */
     public void fire() throws IllegalActionException  {
         super.fire();
-        Time currentTime = getDirector().getModelTime();
-        $ASSIGN$_boundaryCrossed(false);
-        $ASSIGN$_tentativeCurrentOutputIndex(_currentOutputIndex);
-        output.send(0, _getValue(_tentativeCurrentOutputIndex));
-        if (currentTime.compareTo(_nextFiringTime) == 0) {
-            $ASSIGN$SPECIAL$_tentativeCurrentOutputIndex(11, _tentativeCurrentOutputIndex);
-            if (_tentativeCurrentOutputIndex >= _length) {
-                $ASSIGN$_tentativeCurrentOutputIndex(0);
-            }
-            $ASSIGN$_boundaryCrossed(true);
-        }
+        output.send(0, _getValue(_nextOutputIndex));
     }
 
     /**     
-     * Schedule the first firing at time zero and initialize local variables.
+     * Notify this actor that a {
+@link Director#fireAt(Actor, Time)    }
+request was skipped, and that current time has passed the
+     * requested time. A director calls this method when in a modal
+     * model it was inactive at the time of the request, and it
+     * became active again after the time of the request had
+     * expired. This method identifies the next time at which
+     * a firing should occur, and calls fireAt() with that time
+     * argument. Because of the memoryless property of the Poisson
+     * process, that next time is simply the current time plus
+     * an exponential random variable.
+     * @param time The time of the request that was skipped.
+     * @exception IllegalActionException If skipping the request
+     * is not acceptable to the actor.
+     */
+    public void fireAtSkipped(Time time) throws IllegalActionException  {
+        if (!time.equals(_nextFiringTime)) {
+            return;
+        }
+        Director director = getDirector();
+        Time currentTime = director.getModelTime();
+        int comparison = currentTime.compareTo(time);
+        if (comparison < 0) {
+            throw new IllegalActionException(this, director, "Director indicates that a fireAt() request at time " + time+" was skipped, but current time has only advanced to "+currentTime);
+        } else if (comparison > 0) {
+            if (currentTime.compareTo(_nextFiringTime) > 0) {
+                _generateRandomNumber();
+                $ASSIGN$_nextFiringTime(currentTime.add(_current));
+                _fireAt(_nextFiringTime);
+                if (_debugging) {
+                    _debug("At time " + currentTime+", director reports that requested firing at time "+time+" was skipped. Generating new firing request for time "+_nextFiringTime);
+                }
+            }
+        }
+        director.fireAtCurrentTime(this);
+    }
+
+    /**     
+     * Get the stop time.
+     * @return The stop time.
+     * @deprecated As of Ptolemy II 4.1, replaced by{
+@link #getModelStopTime    }
+
+     */
+    public double getStopTime() {
+        return getModelStopTime().getDoubleValue();
+    }
+
+    /**     
+     * Get the stop time.
+     * @return The stop time.
+     */
+    public Time getModelStopTime() {
+        return _stopTime;
+    }
+
+    /**     
+     * Request the first firing either at the start time
+     * or at a random time, depending on <i>fireAtStart</i>.
      * @exception IllegalActionException If the fireAt() method of the
      * director throws it, or if the director does not
      * agree to fire the actor at the specified time.
      */
     public void initialize() throws IllegalActionException  {
         super.initialize();
-        $ASSIGN$_tentativeCurrentOutputIndex(0);
-        $ASSIGN$_currentOutputIndex(0);
-        Time currentTime = getDirector().getModelTime();
+        Director director = getDirector();
+        if (director == null) {
+            throw new IllegalActionException(this, "No director!");
+        }
+        double stopTimeValue = ((DoubleToken)stopTime.getToken()).doubleValue();
+        $ASSIGN$_stopTime(new Time(getDirector(), stopTimeValue));
+        Time currentTime = director.getModelTime();
+        if (!_stopTime.isInfinite() && (_stopTime.compareTo(currentTime) > 0)) {
+            director.fireAt(this, _stopTime);
+            $ASSIGN$_executing(true);
+        }
+        $ASSIGN$_nextOutputIndex(0);
         $ASSIGN$_nextFiringTime(currentTime);
         if (((BooleanToken)fireAtStart.getToken()).booleanValue()) {
             _fireAt(currentTime);
         } else {
-            double meanTimeValue = ((DoubleToken)meanTime.getToken()).doubleValue();
-            double exp = -Math.log((1 - Math.random())) * meanTimeValue;
-            Director director = getDirector();
-            $ASSIGN$_nextFiringTime(director.getModelTime().add(exp));
+            _generateRandomNumber();
+            $ASSIGN$_nextFiringTime(director.getModelTime().add(_current));
             _fireAt(_nextFiringTime);
         }
     }
 
     /**     
-     * Update the state of the actor and schedule the next firing,
-     * if appropriate.
+     * Generate an exponential random number and schedule the next firing.
      * @exception IllegalActionException If the director throws it when
      * scheduling the next firing, or if the director does not
      * agree to fire the actor at the specified time.
      */
     public boolean postfire() throws IllegalActionException  {
-        $ASSIGN$_currentOutputIndex(_tentativeCurrentOutputIndex);
-        if (_boundaryCrossed) {
-            double meanTimeValue = ((DoubleToken)meanTime.getToken()).doubleValue();
-            double exp = -Math.log((1 - Math.random())) * meanTimeValue;
-            Director director = getDirector();
-            $ASSIGN$_nextFiringTime(director.getModelTime().add(exp));
-            _fireAt(_nextFiringTime);
+        boolean result = super.postfire();
+        Time currentTime = getDirector().getModelTime();
+        $ASSIGN$SPECIAL$_nextOutputIndex(11, _nextOutputIndex);
+        if (_nextOutputIndex >= _length) {
+            $ASSIGN$_nextOutputIndex(0);
         }
-        return super.postfire();
+        $ASSIGN$_nextFiringTime(currentTime.add(_current));
+        _fireAt(_nextFiringTime);
+        if (currentTime.compareTo(_stopTime) >= 0) {
+            return false;
+        }
+        return result;
+    }
+
+    /**     
+     * If the current time matches the expected time for the next
+     * output, then return true. Also return true if the
+     * trigger input is connected and has events.
+     * Otherwise, return false.
+     * @exception IllegalActionException If there is no director.
+     */
+    public boolean prefire() throws IllegalActionException  {
+        if (_debugging) {
+            _debug("Called prefire()");
+        }
+        for (int i = 0; i < trigger.getWidth(); i++) {
+            if (trigger.isKnown() && trigger.hasToken(i)) {
+                return true;
+            }
+        }
+        Time currentTime = getDirector().getModelTime();
+        if (currentTime.compareTo(_nextFiringTime) == 0) {
+            return true;
+        }
+        return false;
+    }
+
+    /**     
+     * Override the base class to reset a flag that indicates that the
+     * model is executing. This method is invoked exactly once per execution
+     * of an application.  None of the other action methods should be
+     * be invoked after it.
+     * @exception IllegalActionException Not thrown in this base class.
+     */
+    public void wrapup() throws IllegalActionException  {
+        super.wrapup();
+        $ASSIGN$_executing(false);
+    }
+
+    /**     
+     * Generate a new random number.
+     * @exception IllegalActionException If parameter values are incorrect.
+     */
+    protected void _generateRandomNumber() throws IllegalActionException  {
+        double meanTimeValue = ((DoubleToken)meanTime.getToken()).doubleValue();
+        $ASSIGN$_current(-Math.log((1 - _random.nextDouble())) * meanTimeValue);
     }
 
     private Token _getValue(int index) throws IllegalActionException  {
@@ -283,65 +451,25 @@ public class PoissonClock extends TimedSource implements Rollbackable {
         return val.getElement(index);
     }
 
+    private final double $ASSIGN$_current(double newValue) {
+        if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
+            $RECORD$_current.add(null, _current, $CHECKPOINT.getTimestamp());
+        }
+        return _current = newValue;
+    }
+
+    private final boolean $ASSIGN$_executing(boolean newValue) {
+        if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
+            $RECORD$_executing.add(null, _executing, $CHECKPOINT.getTimestamp());
+        }
+        return _executing = newValue;
+    }
+
     private final int $ASSIGN$_length(int newValue) {
         if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
             $RECORD$_length.add(null, _length, $CHECKPOINT.getTimestamp());
         }
         return _length = newValue;
-    }
-
-    private final int $ASSIGN$_tentativeCurrentOutputIndex(int newValue) {
-        if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-            $RECORD$_tentativeCurrentOutputIndex.add(null, _tentativeCurrentOutputIndex, $CHECKPOINT.getTimestamp());
-        }
-        return _tentativeCurrentOutputIndex = newValue;
-    }
-
-    private final int $ASSIGN$SPECIAL$_tentativeCurrentOutputIndex(int operator, long newValue) {
-        if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-            $RECORD$_tentativeCurrentOutputIndex.add(null, _tentativeCurrentOutputIndex, $CHECKPOINT.getTimestamp());
-        }
-        switch (operator) {
-            case 0:
-                return _tentativeCurrentOutputIndex += newValue;
-            case 1:
-                return _tentativeCurrentOutputIndex -= newValue;
-            case 2:
-                return _tentativeCurrentOutputIndex *= newValue;
-            case 3:
-                return _tentativeCurrentOutputIndex /= newValue;
-            case 4:
-                return _tentativeCurrentOutputIndex &= newValue;
-            case 5:
-                return _tentativeCurrentOutputIndex |= newValue;
-            case 6:
-                return _tentativeCurrentOutputIndex ^= newValue;
-            case 7:
-                return _tentativeCurrentOutputIndex %= newValue;
-            case 8:
-                return _tentativeCurrentOutputIndex <<= newValue;
-            case 9:
-                return _tentativeCurrentOutputIndex >>= newValue;
-            case 10:
-                return _tentativeCurrentOutputIndex >>>= newValue;
-            case 11:
-                return _tentativeCurrentOutputIndex++;
-            case 12:
-                return _tentativeCurrentOutputIndex--;
-            case 13:
-                return ++_tentativeCurrentOutputIndex;
-            case 14:
-                return --_tentativeCurrentOutputIndex;
-            default:
-                return _tentativeCurrentOutputIndex;
-        }
-    }
-
-    private final int $ASSIGN$_currentOutputIndex(int newValue) {
-        if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-            $RECORD$_currentOutputIndex.add(null, _currentOutputIndex, $CHECKPOINT.getTimestamp());
-        }
-        return _currentOutputIndex = newValue;
     }
 
     private final Time $ASSIGN$_nextFiringTime(Time newValue) {
@@ -351,67 +479,94 @@ public class PoissonClock extends TimedSource implements Rollbackable {
         return _nextFiringTime = newValue;
     }
 
-    private final boolean $ASSIGN$_boundaryCrossed(boolean newValue) {
+    private final int $ASSIGN$_nextOutputIndex(int newValue) {
         if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-            $RECORD$_boundaryCrossed.add(null, _boundaryCrossed, $CHECKPOINT.getTimestamp());
+            $RECORD$_nextOutputIndex.add(null, _nextOutputIndex, $CHECKPOINT.getTimestamp());
         }
-        return _boundaryCrossed = newValue;
+        return _nextOutputIndex = newValue;
+    }
+
+    private final int $ASSIGN$SPECIAL$_nextOutputIndex(int operator, long newValue) {
+        if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
+            $RECORD$_nextOutputIndex.add(null, _nextOutputIndex, $CHECKPOINT.getTimestamp());
+        }
+        switch (operator) {
+            case 0:
+                return _nextOutputIndex += newValue;
+            case 1:
+                return _nextOutputIndex -= newValue;
+            case 2:
+                return _nextOutputIndex *= newValue;
+            case 3:
+                return _nextOutputIndex /= newValue;
+            case 4:
+                return _nextOutputIndex &= newValue;
+            case 5:
+                return _nextOutputIndex |= newValue;
+            case 6:
+                return _nextOutputIndex ^= newValue;
+            case 7:
+                return _nextOutputIndex %= newValue;
+            case 8:
+                return _nextOutputIndex <<= newValue;
+            case 9:
+                return _nextOutputIndex >>= newValue;
+            case 10:
+                return _nextOutputIndex >>>= newValue;
+            case 11:
+                return _nextOutputIndex++;
+            case 12:
+                return _nextOutputIndex--;
+            case 13:
+                return ++_nextOutputIndex;
+            case 14:
+                return --_nextOutputIndex;
+            default:
+                return _nextOutputIndex;
+        }
+    }
+
+    private final Time $ASSIGN$_stopTime(Time newValue) {
+        if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
+            $RECORD$_stopTime.add(null, _stopTime, $CHECKPOINT.getTimestamp());
+        }
+        return _stopTime = newValue;
     }
 
     public void $COMMIT(long timestamp) {
         FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
-        $RECORD$$CHECKPOINT.commit(timestamp);
+        super.$COMMIT(timestamp);
     }
 
     public void $RESTORE(long timestamp, boolean trim) {
+        _current = $RECORD$_current.restore(_current, timestamp, trim);
+        _executing = $RECORD$_executing.restore(_executing, timestamp, trim);
         _length = $RECORD$_length.restore(_length, timestamp, trim);
-        _tentativeCurrentOutputIndex = $RECORD$_tentativeCurrentOutputIndex.restore(_tentativeCurrentOutputIndex, timestamp, trim);
-        _currentOutputIndex = $RECORD$_currentOutputIndex.restore(_currentOutputIndex, timestamp, trim);
         _nextFiringTime = (Time)$RECORD$_nextFiringTime.restore(_nextFiringTime, timestamp, trim);
-        _boundaryCrossed = $RECORD$_boundaryCrossed.restore(_boundaryCrossed, timestamp, trim);
-        if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
-            $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this, timestamp, trim);
-            FieldRecord.popState($RECORDS);
-            $RESTORE(timestamp, trim);
-        }
+        _nextOutputIndex = $RECORD$_nextOutputIndex.restore(_nextOutputIndex, timestamp, trim);
+        _stopTime = (Time)$RECORD$_stopTime.restore(_stopTime, timestamp, trim);
+        super.$RESTORE(timestamp, trim);
     }
 
-    public final Checkpoint $GET$CHECKPOINT() {
-        return $CHECKPOINT;
-    }
+    private transient FieldRecord $RECORD$_current = new FieldRecord(0);
 
-    public final Object $SET$CHECKPOINT(Checkpoint checkpoint) {
-        if ($CHECKPOINT != checkpoint) {
-            Checkpoint oldCheckpoint = $CHECKPOINT;
-            if (checkpoint != null) {
-                $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint.getTimestamp());
-                FieldRecord.pushState($RECORDS);
-            }
-            $CHECKPOINT = checkpoint;
-            oldCheckpoint.setCheckpoint(checkpoint);
-            checkpoint.addObject(this);
-        }
-        return this;
-    }
-
-    protected transient CheckpointRecord $RECORD$$CHECKPOINT = new CheckpointRecord();
+    private transient FieldRecord $RECORD$_executing = new FieldRecord(0);
 
     private transient FieldRecord $RECORD$_length = new FieldRecord(0);
 
-    private transient FieldRecord $RECORD$_tentativeCurrentOutputIndex = new FieldRecord(0);
-
-    private transient FieldRecord $RECORD$_currentOutputIndex = new FieldRecord(0);
-
     private transient FieldRecord $RECORD$_nextFiringTime = new FieldRecord(0);
 
-    private transient FieldRecord $RECORD$_boundaryCrossed = new FieldRecord(0);
+    private transient FieldRecord $RECORD$_nextOutputIndex = new FieldRecord(0);
+
+    private transient FieldRecord $RECORD$_stopTime = new FieldRecord(0);
 
     private transient FieldRecord[] $RECORDS = new FieldRecord[] {
+            $RECORD$_current,
+            $RECORD$_executing,
             $RECORD$_length,
-            $RECORD$_tentativeCurrentOutputIndex,
-            $RECORD$_currentOutputIndex,
             $RECORD$_nextFiringTime,
-            $RECORD$_boundaryCrossed
+            $RECORD$_nextOutputIndex,
+            $RECORD$_stopTime
         };
 
 }
