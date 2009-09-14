@@ -32,9 +32,11 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.data.expr.StringParameter;
+import ptolemy.kernel.util.ModelErrorHandler;
 
 /**
 This error actor enables the user to specify how an error is handled in 
@@ -51,8 +53,8 @@ Model since a giotto model only specifies logical execution time.
  @Pt.AcceptedRating Red (sssf)
  */
 
-public class GiottoError extends TypedAtomicActor { //should probably also implement the ModelErrorHandler interface//extends Sink {
-   
+
+public class GiottoError extends TypedAtomicActor implements ModelErrorHandler{
     
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -113,6 +115,49 @@ public class GiottoError extends TypedAtomicActor { //should probably also imple
         //System.out.println("Initialize method called");
 
     }
+    
+///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
+    /** Handle a model error.
+     *  @param context The object in which the error occurred.
+     *  @param exception An exception that represents the error.
+     *  @return True if the error has been handled, or false if the
+     *   error is not handled.
+     *  @exception IllegalActionException If the handler handles the
+     *   error by throwing an exception.
+     */
+    public boolean handleModelError(NamedObj context,
+            IllegalActionException exception) throws IllegalActionException
+            {
+
+        System.out.println("handleModelError called for the GiottoError Actor with name "+this.getDisplayName());
+
+        if (_errorAction == ErrorAction.warn){
+            System.out.println("an error was detected in "+context.getFullName());
+            return true;
+        } else if(_errorAction == ErrorAction.timedutilityfunction){
+            System.out.println("I should check to see if I'm within the acceptable range for the timed utility function");
+            String temp = exception.toString();
+            int i,j,k,l =0;
+            i = temp.indexOf("(");
+            j = temp.indexOf(")");
+            k = temp.lastIndexOf("(");
+            l = temp.lastIndexOf(")");
+            double wcet = Double.parseDouble(temp.substring(i+1, j));
+            double periodvalue = Double.parseDouble(temp.substring(k+1, l));
+            System.out.println("wcet value is "+wcet+" and period value is "+periodvalue);
+            return true;
+        }
+        else if(_errorAction == ErrorAction.reset){
+            System.out.println("I should request a reset to the model");
+            throw exception;
+
+        }
+
+
+        return false;
+            }
 
     /** The errorAction operator.  This is a string-valued attribute
      *  that defaults to "warn".
