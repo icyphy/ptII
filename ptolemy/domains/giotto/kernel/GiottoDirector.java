@@ -28,11 +28,11 @@
  */
 package ptolemy.domains.giotto.kernel;
 
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
-
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
@@ -49,20 +49,25 @@ import ptolemy.actor.sched.StaticSchedulingDirector;
 import ptolemy.actor.util.BooleanDependency;
 import ptolemy.actor.util.Dependency;
 import ptolemy.actor.util.Time;
+import ptolemy.codegen.kernel.CodeGeneratorHelper;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.expr.Variable;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
+import ptolemy.kernel.util.ModelErrorHandler;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
+import ptolemy.domains.giotto.lib.GiottoError;
 
 
 ////GiottoDirector
@@ -177,7 +182,7 @@ TimedDirector {
      */
     public void fire() throws IllegalActionException {
         TypedCompositeActor container = (TypedCompositeActor) getContainer();
-
+      
         if (container == null) {
             throw new IllegalActionException(this, "Has no container!");
         }
@@ -242,9 +247,13 @@ TimedDirector {
             // in its initialize() method.
             Iterator scheduleIterator = unitSchedule.iterator();
 
+
             while (scheduleIterator.hasNext()) {
                 Actor actor = ((Firing) scheduleIterator.next()).getActor();
+                System.out.println("actor to be fired in this iteration has name "+actor.getFullName());
+                Time thistime = getModelTime();
 
+                System.out.println("the current time is "+thistime.toString()+" and it's double value is :"+thistime.getDoubleValue());
                 if (_debugging) {
                     _debug("Updating destination receivers of "
                             + ((NamedObj) actor).getFullName());
@@ -255,6 +264,7 @@ TimedDirector {
 
                 while (outputPorts.hasNext()) {
                     IOPort port = (IOPort) outputPorts.next();
+                    System.out.print("output port is "+port.getDisplayName());
                     Receiver[][] channelArray = port.getRemoteReceivers();
 
                     for (int i = 0; i < channelArray.length; i++) {
@@ -272,6 +282,12 @@ TimedDirector {
 
             while (scheduleIterator.hasNext()) {
                 Actor actor = ((Firing) scheduleIterator.next()).getActor();
+                Attribute WCET = ((Entity)actor).getAttribute("WCET");
+                if (WCET == null) {
+                    System.out.println(actor.getFullName()+" WECT parameter is null");
+                } else {
+                    System.out.println("WECT parameter is "+ ((DoubleToken) ((Variable) WCET).getToken()).doubleValue());
+                }
 
                 if (_debugging) {
                     _debug("Iterating " + ((NamedObj) actor).getFullName());
@@ -285,8 +301,9 @@ TimedDirector {
                             + actor.getFullName() + "\"");
                 }
             }
-
+            System.out.println("unit index has value "+_unitIndex);
             _unitIndex++;
+
 
             _expectedNextIterationTime = _expectedNextIterationTime
             .add(_unitTimeIncrement);
@@ -330,6 +347,7 @@ TimedDirector {
      *    permissible (e.g. the given time is in the past).
      */
     public Time fireAt(Actor actor, Time time) throws IllegalActionException {
+        System.out.println("fireAt method was called for actor: "+actor.getFullName());
         // No executive director. Return current time plus the period divided
         // by the frequency of the specified actor,
         // or some multiple of that number.
@@ -601,6 +619,30 @@ TimedDirector {
         _schedule = scheduler.getSchedule();
         _unitTimeIncrement = scheduler._getMinTimeStep(_periodValue);
         _lcm = scheduler.getLCM();
+        CompositeActor localCompositeActor = (CompositeActor) (getContainer());
+        List actorList = compositeActor.deepEntityList();
+        ListIterator actors = actorList.listIterator();
+        Actor actor;
+        double wcet;
+        boolean errorHandlerSet = false;
+        actor = _getErrorHandler();
+        if(actor != null){
+            setModelErrorHandler((ModelErrorHandler)actor);
+        }
+
+        actors = actorList.listIterator();
+        while(actors.hasNext()){
+            actor = (Actor)actors.next();
+            wcet = _getWCET();
+            System.out.println("Inside preinitilize. The worst case execution time seen by this director is "+ wcet+".  The period is "+_periodValue);
+            if(wcet >_periodValue) 
+            {
+                System.out.println("check to see if you have an error actor and if yes throw an exception");
+                handleModelError(this, new IllegalActionException(this, "total WCET of ("+wcet+
+                        ") is larger than period ("+_periodValue +") for actor "+((CompositeActor) (getContainer())).getDisplayName()));
+
+            }         
+        }
     }
 
     /** Return an array of suggested directors to be used with
@@ -768,6 +810,103 @@ TimedDirector {
             }
         }
         return frequencyValue;
+    }
+
+    public double _getWCET()throws IllegalActionException
+    {
+        double wcet=0;
+        double actorFrequency =0;
+        double actorWCET = 0;
+        int actorCount = 0;
+        CodeGeneratorHelper  directorHelper;
+        for (Actor actor : (List<Actor>) 
+                ((TypedCompositeActor) this.getContainer()).deepEntityList()) {
+            actorCount++;
+            Attribute frequency = ((Entity)actor).getAttribute("frequency");
+            ptolemy.actor.Director dd =actor.getDirector();
+            Attribute WCET = ((Entity)actor).getAttribute("WCET");
+
+
+            if(actor instanceof CompositeActor)
+            {
+
+                if(_debugging) {
+                    _debug("Composite Actor, if it has a director I need to ask it for it's WCET");
+                }
+                Director dir = actor.getDirector();
+
+                System.out.println(dir.getFullName());
+                System.out.println(dir._getWCET());
+
+                if(dir == null)
+                {
+
+                    if(_debugging) {
+                        _debug("no director in composite actor ");
+                    }
+
+                }
+                else
+                {
+                    double dummyWCET = dir._getWCET();
+                    if(_debugging) {
+                        _debug("Composite Actor:"+actor.getFullName()+" has WCET "+ dummyWCET);
+                    }
+                    wcet+= dummyWCET;
+                }
+            }else{
+
+                if (frequency == null) {
+                    actorFrequency = 1;
+                } else {
+                    actorFrequency =  ((IntToken) ((Variable) frequency).getToken()).intValue();
+                }
+                if (WCET == null) {
+                    actorWCET = 0.0011;
+                } else {
+                    actorWCET =  ((DoubleToken) ((Variable) WCET).getToken()).doubleValue();
+                }
+
+                wcet+= (actorFrequency * actorWCET);
+            }
+            if(_debugging) {
+                _debug("with actor "+actor.getFullName()+" wect thus far is "+wcet);
+            }
+            System.out.println("with actor "+actor.getFullName()+" wect thus far is "+wcet);
+        }
+        if(_debugging) {
+            _debug("actor count is "+actorCount);
+        }
+
+        if (wcet > _periodValue)
+        {
+            System.out.println("about to call handleModelError");
+            handleModelError(this, new IllegalActionException(this, "dummyMessage"));
+        }
+        return wcet;
+    }
+
+    private Actor _getErrorHandler()
+    {
+        Actor actor= null;
+        boolean errorActorFound = false;
+        CompositeActor localCompositeActor = (CompositeActor) (getContainer());
+        List actorList;
+        ListIterator actors ;
+        while (errorActorFound == false){
+            actorList = localCompositeActor.deepEntityList();
+            actors = actorList.listIterator();
+            while (actors.hasNext()  && !errorActorFound){
+                actor = (Actor)actors.next();
+                if(actor instanceof ptolemy.domains.giotto.lib.GiottoError){
+                    errorActorFound = true;
+                }
+            }
+
+            localCompositeActor = (CompositeActor)localCompositeActor.getContainer();
+        }
+        System.out.println("about to return the error actor. It's name is "+actor.getDisplayName());
+        return actor;
     }
 
     // Initialize the director by creating a scheduler and parameters.
