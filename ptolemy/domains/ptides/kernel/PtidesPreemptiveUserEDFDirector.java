@@ -223,11 +223,6 @@ public class PtidesPreemptiveUserEDFDirector extends
             return false;
         } else {
             IOPort thisPort = event.ioPort();
-            // FIXME: this method is not entirely correct. This check ensures totally independent
-            // pure events are always safe to process (like those produced in TimeDelay actor.)
-            // However, for those pure events with ports, This check may unnecessarily stall their
-            // execution because these ports are their origin ports, not the current port they reside
-            // at.
             if (event.isPureEvent()) {
                 // this event is a pure event.
                 if (thisPort == null) {
