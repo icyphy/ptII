@@ -87,7 +87,18 @@ proc CGC_test {file inline {extraArgs {}} } {
 	    # FIXME: we should use $relativeFilename here, but it
 	    # might have backslashes under Windows, which causes no end
 	    # of trouble.
+	# Avoid a bug with Pub/Sub where generating code for a Pub/Sub
+	# fails on the second run.  r55530 causes this.
+
+	set parser [java::new ptolemy.moml.MoMLParser]
+	$parser purgeAllModelRecords	
+
         set application [createAndExecute $file]
+
+	
+	set parser [java::new ptolemy.moml.MoMLParser]
+	$parser purgeAllModelRecords	
+
 	if {$extraArgs != {}} {
 	    # We might pass -sourceLineBinding true to this method
 	    set args [java::new {String[]} [expr {3 + [$extraArgs length]}] \

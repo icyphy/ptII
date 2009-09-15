@@ -73,3 +73,17 @@ test CodeGenerator-4.1 {Call main and copy two files to the codeDirectory becaus
 	[file exists $necessaryFile1] \
 	[file exists $necessaryFile2]
 } {1 1}
+
+test CodeGenerator-5.1 {Test problem where generating code for a Pub/Sub fails on the second run} {
+
+    # r55530 introduced this bug.
+
+    set args [java::new {String[]} 1 [list auto/PublisherTestSubscriber14.xml]]
+    java::call ptolemy.codegen.kernel.CodeGenerator  generateCode $args
+
+    # Note that if we reset the parser between calls, then this bug goes away.
+    #set parser [java::new ptolemy.moml.MoMLParser]
+    #$parser purgeAllModelRecords
+
+    java::new ptolemy.moml.MoMLSimpleApplication auto/PublisherTestSubscriber14.xml
+} {}
