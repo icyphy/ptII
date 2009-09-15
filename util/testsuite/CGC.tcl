@@ -167,7 +167,7 @@ foreach file [glob auto/*.xml] {
 if {![java::call ptolemy.actor.lib.jni.PointerToken is32Bit]} {
     puts "Skipping 32bit tests because we are on a 64bit machine"
 } else {
-    foreach file [glob auto32/*.xml] {
+    foreach file [glob auto/32bit/*.xml] {
 	# Set NOINLINE in the environment to skip the inline tests:
 	# NOINLINE=true $(JTCLSH) $(ROOT)/util/testsuite/CGCNoInline.tcl
 	global env
