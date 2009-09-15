@@ -83,10 +83,11 @@ test_java: jclass
 KERNEL_TESTDEFS = $(ROOT)/util/testsuite/testDefs.tcl
 
 # These tests do not require a graphics terminal, but do use Jacl and Java
-test_jsimple: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljtests.tcl test_auto test_codegen
+test_jsimple: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljtests.tcl test_auto test_codegen_noinline
 	$(JTCLSH) alljtests.tcl
 
 test_codegen_noinline:
+	@echo "C codegen for Giotto does not support -inline true"
 	export NOINLINE=true; $(JTCLSH) $(ROOT)/util/testsuite/CGC.tcl
 
 # 'make clean' removes $(KRUFT)
