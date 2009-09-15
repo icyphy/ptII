@@ -43,6 +43,7 @@ if {[string compare test [info procs test]] == 1} then {
 test release-1.1 {Check for missing makefiles} {
     exec make --no-print-directory --silent missingMakefiles
 } {./config/makefile
+./doc/books/design/modal/test/makefile
 ./doc/coding/templates/makefile
 ./ptolemy/backtrack/automatic/ptolemy/actor/lib/makefile
 ./ptolemy/backtrack/automatic/ptolemy/domains/sdf/lib/makefile
