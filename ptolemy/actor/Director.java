@@ -1653,4 +1653,9 @@ public class Director extends Attribute implements Executable {
 
     /** Time resolution cache, with a reasonable default value. */
     private double _timeResolution = 1E-10;
+
+    public double _getWCET() throws IllegalActionException {
+        // TODO Auto-generated method stub
+        return 0;
+    }
 }
