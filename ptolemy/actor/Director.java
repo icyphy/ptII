@@ -1350,6 +1350,15 @@ public class Director extends Attribute implements Executable {
             }
         }
     }
+    
+    /** Returns 0 as the WCET seen by the director. Each director should have its own 
+     * _getWCET() method that overwrites this method to return the actual WCET seen.
+     */
+    
+    public double _getWCET() throws IllegalActionException {
+        
+        return 0;
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
@@ -1654,8 +1663,5 @@ public class Director extends Attribute implements Executable {
     /** Time resolution cache, with a reasonable default value. */
     private double _timeResolution = 1E-10;
 
-    public double _getWCET() throws IllegalActionException {
-        // TODO Auto-generated method stub
-        return 0;
-    }
+   
 }
