@@ -49,6 +49,7 @@ import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.TypedIORelation;
 import ptolemy.actor.util.DFUtilities;
 import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
+import ptolemy.cg.kernel.generic.program.procedural.java.JavaCodeGenerator;
 import ptolemy.cg.kernel.generic.program.procedural.java.modular.ModularCodeGenerator;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
@@ -225,6 +226,7 @@ public class ModularCodeGenTypedCompositeActor extends LazyTypedCompositeActor {
         boolean subscriber = _isSubscribedPort(port);
         return new Profile.Port(port.getName(), publisher,
                 subscriber, port.getWidth(), DFUtilities.getTokenConsumptionRate(port),
+                JavaCodeGenerator.ptTypeToCodegenType(((TypedIOPort)port).getType()),
                 port.isInput(), port.isOutput(), _pubSubChannelName(port, publisher, subscriber));
     }
 
@@ -716,9 +718,9 @@ public class ModularCodeGenTypedCompositeActor extends LazyTypedCompositeActor {
                         for (Profile.Port port : profile.ports()) {
                             for (Object actorPort : ports) {
                                 if(port.name().equals(((NamedObj) actorPort).getName())) {
-//                                    if(port.rate() > 0)
-                                        DFUtilities.setRateVariable((IOPort)actorPort, 
+                                    DFUtilities.setRateVariable((IOPort)actorPort, 
                                             port.input() ? "tokenConsumptionRate":"tokenProductionRate", port.rate());
+                                    ((TypedIOPort)actorPort).setTypeEquals(JavaCodeGenerator.codeGenTypeToPtType(port.type()));
                                     break;
                                 }
                             }

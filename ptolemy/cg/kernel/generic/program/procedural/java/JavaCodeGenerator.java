@@ -163,6 +163,63 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
         return typeReturn;
     }
     
+    static public Type codeGenTypeToPtType(int codeGenType) throws IllegalActionException {
+        Type returnType;
+        
+        //FIXME: Add more types
+        switch(codeGenType) {
+        case 0:
+            returnType = BaseType.STRING;
+            break;
+        case 2:
+            returnType = BaseType.INT;
+            break;
+        case 3:
+            returnType = BaseType.LONG;
+            break;
+        case 4:
+            returnType = BaseType.DOUBLE;
+            break;
+        case 5:
+            returnType = BaseType.BOOLEAN;
+            break;
+        case 6:
+            returnType = BaseType.UNSIGNED_BYTE;
+            break;
+        case 7:
+            returnType = PointerToken.POINTER;
+            break;
+        default:
+            throw new IllegalActionException("Unsuported type");
+        }
+        return returnType;
+    }
+    
+    static public int ptTypeToCodegenType(Type type) throws IllegalActionException {
+        int result = type == BaseType.INT ? 2
+                : type == BaseType.LONG ? 3
+                        : type == BaseType.STRING ? 0
+                                : type == BaseType.DOUBLE ? 4
+                                        : type == BaseType.BOOLEAN ? 5
+                                                : type == BaseType.UNSIGNED_BYTE ? 6
+                                                        : type == PointerToken.POINTER ? 7
+                                                                : -10;
+
+        if (result == -10) {
+            if (type instanceof ArrayType) {
+                result = 0;
+
+            } else if (type instanceof MatrixType) {
+                result = 8;
+            }
+        }
+        
+        if (result == -10) {
+            throw new IllegalActionException("Unsuported type");
+        }
+        
+        return result;
+    }
     /** Generate the function table.  In this base class return
      *  the empty string.
      *  @param types An array of types.

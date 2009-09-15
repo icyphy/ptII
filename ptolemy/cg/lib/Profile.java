@@ -38,7 +38,7 @@ import java.util.List;
  *  generated code.
  *  The actual profile instances derive from this class.
  *  @author Bert Rodiers
- *  @version $Id$
+ *  @version $Id $
  *  @since Ptolemy II 8.1
  *  @Pt.ProposedRating Red (rodiers)
  *  @Pt.AcceptedRating Red (rodiers)
@@ -68,13 +68,14 @@ abstract public class Profile {
          * @param output A flag that specifies whether the port is an output port.
          * @param pubSubChannelName The name
          */
-        public Port(String name, boolean publisher, boolean subscriber, int width, int rate,
+        public Port(String name, boolean publisher, boolean subscriber, int width, int rate, int type,
                 boolean input, boolean output, String pubSubChannelName) {
             _name = name;
             _publisher = publisher;
             _subscriber = subscriber;
             _width = width;
             _rate = rate;
+            _type = type;
             _input = input;
             _output = output;
             _pubSubChannelName = pubSubChannelName;
@@ -119,6 +120,12 @@ abstract public class Profile {
          *  @return the rate of the port.
          */     
         public int rate() { return _rate;}
+        
+        /** Return whether the rate of the port.
+         *  @return the rate of the port.
+         */     
+        public int type() { return _type;}
+        
 
         /** A flag that specifies whether the port in an input port.*/
         private boolean _input;
@@ -143,5 +150,8 @@ abstract public class Profile {
         
         /** The rate of the port */
         private int _rate;
+        
+        /** The codegen type of the port */
+        private int _type;
     }    
 }

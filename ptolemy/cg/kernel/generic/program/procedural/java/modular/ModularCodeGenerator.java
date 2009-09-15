@@ -123,7 +123,10 @@ public class ModularCodeGenerator extends JavaCodeGenerator {
             
             profileCode.append(INDENT2
                     + "ports.add(new Profile.Port(\"" + profilePort.name() + "\", " + profilePort.publisher() + ", "
-                    + profilePort.subscriber() + ", " + profilePort.width() + ", " + port.isInput() + ", " + port.isOutput() + ", \"" + profilePort.getPubSubChannelName() + "\"));" + _eol);
+                    + profilePort.subscriber() + ", " + profilePort.width() + ", "
+                    + (port.isInput() ? DFUtilities.getTokenConsumptionRate(port):DFUtilities.getTokenProductionRate(port)) + ", "
+                    + ptTypeToCodegenType(((TypedIOPort)port).getType()) + ", "
+                    + port.isInput() + ", " + port.isOutput() + ", \"" + profilePort.getPubSubChannelName() + "\"));" + _eol);
         }
         profileCode.append(INDENT2 + "return ports;" + _eol);
         profileCode.append(INDENT1 + "}" + _eol);
