@@ -230,6 +230,11 @@ int getIntCheckError(const char *nptr, char **endptr, const int base,
 	   || results == LONG_MIN))
       || (errno != 0 && results == 0)) {
     perror("strtol caused error.");
+    if (strlen(nptr) < 1) {
+        fprintf(stderr, "strtol() was called with a string of length less than 1. This can occur when no data is read.\n");
+    } else {
+        fprintf(stderr, "strtol was called with strtol(%s, %x, %d)\n", nptr, endptr, base);
+    }
     return EXIT_FAILURE;
   }
   if (results > INT_MAX
