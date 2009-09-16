@@ -113,6 +113,8 @@ derivative works thereof, in binary and source code form.
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <netdb.h> 
+// Include arpa/inet.h so that inet_ntoa is defined for 64bit linux.
+#include <arpa/inet.h>
 #endif
 
 #include <stdio.h>
