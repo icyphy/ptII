@@ -1146,6 +1146,7 @@ public class PtidesBasicDirector extends DEDirector {
     protected static Collection<IOPort> _finiteEquivalentPorts(IOPort input)
             throws IllegalActionException {
         Collection<IOPort> result = new HashSet<IOPort>();
+        result.add(input);
         // first get all outputs that are dependent on this input.
         Collection<IOPort> outputs = _finiteDependentPorts(input);
         // now for every input that is also dependent on the output, add
@@ -2076,7 +2077,7 @@ public class PtidesBasicDirector extends DEDirector {
             }
         }
 
-        if (_isNetworkPort(port)) {
+        if (_isNetworkPort(port) || _transferImmediately(port)) {
             // if we transferred once to the network output, then return true,
             // and go through this once again.
             while (true) {
@@ -2307,6 +2308,20 @@ public class PtidesBasicDirector extends DEDirector {
         }
         ArrayToken arrayToken = new ArrayToken(tokens);
         parameter.setToken(arrayToken);
+    }
+
+    /** check if we should output to the conclosing director immediately.
+     *  this method is default to return false.
+     *  @exception IllegalActionException
+     */
+    private static boolean _transferImmediately(IOPort port)
+            throws IllegalActionException {
+        Parameter parameter = (Parameter) ((NamedObj) port)
+                .getAttribute("transferImmediately");
+        if (parameter != null) {
+            return ((BooleanToken) parameter.getToken()).booleanValue();
+        }
+        return false;
     }
 
     ///////////////////////////////////////////////////////////////////
