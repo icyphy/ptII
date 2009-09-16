@@ -51,6 +51,7 @@ JSRCS = \
 	CompiledCompositeActor.java \
 	EmbeddedCodeActor.java \
 	ModularCodeGenTypedCompositeActor.java \
+	ModularCompiledSDFTypedCompositeActor.java \
 	PointerToken.java \
 	Profile.java
 

@@ -55,7 +55,8 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 PTCLASSALLJARS =
 
 # Keep this list alphabetized.
-JSRCS = ModularCodeGenerator.java
+JSRCS = ModularCodeGenerator.java \
+	ModularSDFCodeGenerator.java
 
 OTHER_FILES_TO_BE_JARED = \
 	makefile.in
