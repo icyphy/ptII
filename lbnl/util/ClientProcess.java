@@ -107,6 +107,8 @@ public class ClientProcess extends Thread {
         super();
         proSta = false;
         errMes = null;
+        stdOut = new StringBuilder();
+        stdErr = new StringBuilder();
     }
 
     /** Sets the simulation log file.
@@ -132,8 +134,10 @@ public class ClientProcess extends Thread {
             // FIXME: should we call simPro.exitValue() and destroy() 
             simPro = pb.start();
             proSta = true;
-            new PrintOutput().start();
-            new PrintStderr().start();
+            priStdOut = new PrintOutput();
+            priStdErr = new PrintStderr();
+            priStdOut.start();
+            priStdErr.start();
         } catch (SecurityException exc) {
             proSta = false;
             errMes = "Error when starting external process."
@@ -165,16 +169,54 @@ public class ClientProcess extends Thread {
         return errMes;
     }
 
-    /** Get the exit value of the subprocess.
-     *  @return the exit value of the subprocess
+    /** Causes the current thread to wait, if necessary, until the process represented 
+      * by this Process object has terminated. This method returns immediately if the 
+      * subprocess has already terminated. If the subprocess has not yet terminated, 
+      * the calling thread will be blocked until the subprocess exits.
+      *
+      *@returns the exit value of the process. By convention, 0 indicates normal termination. 
+      *@exception InterruptedException if the current thread is interrupted by another thread 
+      *           while it is waiting, then the wait is ended and an InterruptedException is thrown.
+      */
+      public int waitFor()
+              throws InterruptedException{
+          this.join();
+          priStdOut.join();
+          priStdErr.join();
+            // Call waitFor() to make sure that the process exited.
+            // Without this call, the exception
+            // java.lang.IllegalThreadStateException: process hasn't exited
+            //            at java.lang.UNIXProcess.exitValue(UNIXProcess.java)
+            // is occasionally thrown
+          return simPro.waitFor();
+      }
+
+    /** Get the standard output of the process.
+     *  @return the standard output of the process
+     */
+    public String getStandardOutput() {
+	return stdOut.toString();
+    }
+
+    /** Get the standard error of the process.
+     *  @return the standard error of the process
+     */
+    public String getStandardError() {
+	return stdErr.toString();
+    }
+
+    /** Get the exit value of the process.
+     * @return the exit value of the process
      */
     public int exitValue() {
 	return simPro.exitValue();
     }
-	
+
+    /////////////////////////////////////////////////////////////////////
     /** Inner class to print any output of the process to the console. */
     private class PrintOutput extends Thread {
         public PrintOutput() {
+            stdOut = new StringBuilder();
         }
 
         /** Runs the process. */
@@ -207,6 +249,7 @@ public class ClientProcess extends Thread {
                         }
                         pwLogFil.println(line);
                         pwLogFil.flush();
+                        stdOut.append(line + LS);
                     }
                 } catch (java.io.IOException e) {
                     e.printStackTrace();
@@ -232,10 +275,11 @@ public class ClientProcess extends Thread {
         }
     }
 
-
+    /////////////////////////////////////////////////////////////////////
     /** Inner class to print any stderr of the process to the console. */
     private class PrintStderr extends Thread {
         public PrintStderr() {
+            stdErr = new StringBuilder();
         }
 
         /** Runs the process. */
@@ -269,6 +313,7 @@ public class ClientProcess extends Thread {
                         }
                         pwLogFil.println(line);
                         pwLogFil.flush();
+                        stdOut.append(line);
                     }
                 } catch (java.io.IOException e) {
                     e.printStackTrace();
@@ -293,7 +338,7 @@ public class ClientProcess extends Thread {
             }
         }
     }
-
+    /////////////////////////////////////////////////////////////////////
     /** Set the process arguments.
      * @param cmdarray array containing the command to call and its arguments.
      * @param dir the working directory of the subprocess.
@@ -339,25 +384,36 @@ public class ClientProcess extends Thread {
     }
 
     /** Array containing the command to call and its arguments */
-    List<String> cmdArr;
+    protected List<String> cmdArr;
 
     /** Working directory of the subprocess, or null if the subprocess should inherit the working directory of the current process */
-    File worDir;
+    protected File worDir;
 
     /** Log file where simulation output will be written to */
-    File logFil;
+    protected File logFil;
 
     /** Flag, if <code>true</code>, then the output will be written to System.out */
-    boolean logToSysOut;
+    protected boolean logToSysOut;
 
     /** Process for the simulation */
-    Process simPro;
+    protected Process simPro;
 
     /** Flag that is set to <code>true</code> if the process started without throwing an exception */
-    boolean proSta;
+    protected boolean proSta;
 
     /** Error message if <code>proSta=true</code> or null pointer otherwise */
-    String errMes;
+    protected String errMes;
+
+    /** String that contains the standard output stream. */
+    protected StringBuilder stdOut;
+
+    /** String that contains the standard error stream. */
+    protected StringBuilder stdErr;
+
+    /** The thread that captures the standard output stream. */
+    protected PrintOutput priStdOut;
+    /** The thread that captures the standard error stream. */
+    protected PrintStderr priStdErr;
 
     /** Main method for testing.
      *  @param args  Commands to pass to the client process.
