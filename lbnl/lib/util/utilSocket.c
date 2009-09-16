@@ -1,5 +1,5 @@
 // Methods for interfacing clients using BSD sockets.
-#define NDEBUG 1
+#define NDEBUG 0
 /*
 ********************************************************************
 Copyright Notice
@@ -96,9 +96,14 @@ derivative works thereof, in binary and source code form.
 /// the method \c establishclientsocket()
 /// once, and then call the method 
 /// \c exchangewithsocket() in each time step.
+/// At the end of the simulation, a client should call
+/// \c closeipc() to close the socket connection.
+/// These three functions are the only functions that are
+/// needed to interface a client to the BCVTB.
 ///
 /// \sa establishclientsocket
 /// \sa exchangewithsocket
+/// \sa closeipc
 ///
 ///////////////////////////////////////////////////////
 #include "utilSocket.h"
@@ -222,13 +227,11 @@ int assembleBuffer(int flag,
 int getIntCheckError(const char *nptr, char **endptr, const int base,
 		      int* val){
   errno = 0; // must reset errno to 0
-  long results = strtol(nptr, endptr, base);  
+  *val = strtol(nptr, endptr, base);  
   /////////////////////////////////////////////////////////////////
   // do error checking
-  if ((errno == ERANGE
-       && (results == LONG_MAX
-	   || results == LONG_MIN))
-      || (errno != 0 && results == 0)) {
+  if ((errno == ERANGE)
+      || (errno != 0 && *val == 0)) {
     perror("strtol caused error.");
     if (strlen(nptr) < 1) {
         fprintf(stderr, "strtol() was called with a string of length less than 1. This can occur when no data is read.\n");
@@ -237,20 +240,12 @@ int getIntCheckError(const char *nptr, char **endptr, const int base,
     }
     return EXIT_FAILURE;
   }
-  if (results > INT_MAX
-      || results < INT_MIN) {
-    //  64 bit problems here.  Under 64 bit linux, int is 4 bytes,
-    // long is 8 bytes.  Under MacOS X, int is 4 bytes, long is 4 bytes.
-    perror("strtol returned a long outside the range of an int.");
-    return EXIT_FAILURE;
-  }
   if (*endptr == nptr) {
     fprintf(stderr, "Error: No digits were found in getIntCheckError.\n");
-    fprintf(stderr, "Further characters after number: %s\n", endptr);
+    fprintf(stderr, "Further characters after number: %s\n", *endptr);
     fprintf(stderr, "Sending EXIT_FAILURE = : %d\n", EXIT_FAILURE);
     return EXIT_FAILURE;
   }
-  val = (int *) results;  
   return 0;
 }
 
@@ -275,7 +270,7 @@ int getDoubleCheckError(const char *nptr, char **endptr,
   }
   if (*endptr == nptr) {
     fprintf(stderr, "Error: No digits were found in getDoubleCheckError.\n");
-    fprintf(stderr, "Further characters after number: %s\n", endptr);
+    fprintf(stderr, "Further characters after number: %s\n", *endptr);
     fprintf(stderr, "Sending EXIT_FAILURE = : %d\n", EXIT_FAILURE);
     return EXIT_FAILURE;
   }
@@ -383,9 +378,9 @@ int disassembleBuffer(const char* buffer,
 /// \return the socket port number if successful, or -1 if an error occured.
 int getsocketportnumber(const char *const docname) {
   int retVal;
-  char *xPat = "//ipc/socket";
-  char *atrNam = "port";
+  char *xPat = "//ipc/socket[@port]";
   char *res;
+  int i;
   res = malloc(BUFFER_LENGTH);
   if (res == NULL) {
     perror("Realloc failed in getsocketportnumber.");
@@ -394,11 +389,11 @@ int getsocketportnumber(const char *const docname) {
 #endif
     return -1;
   }
-  if (0 == getxmlvalue(docname, xPat, atrNam, res))
+  if (0 == getxmlvalue(docname, xPat, res, &i, BUFFER_LENGTH))
     retVal = atoi((char*)res);
   else
     retVal = -1;
-  free(res);
+    free(res);
   return retVal;
 }
 /////////////////////////////////////////////////////////////////////
@@ -409,9 +404,9 @@ int getsocketportnumber(const char *const docname) {
 /// \param hostname The hostname will be written to this argument.
 /// \return 0 if successful, or -1 if an error occured.
 int getsockethost(const char *const docname, char *const hostname) {
-  char *xPat = "//ipc/socket";
-  char *atrNam = "hostname";
-  int r = getxmlvalue(docname, xPat, atrNam, hostname);
+  char *xPat = "//ipc/socket[@hostname]";
+  int i;
+  int r = getxmlvalue(docname, xPat, hostname, &i, BUFFER_LENGTH);
   return r;
 }
 
@@ -424,25 +419,16 @@ int getsockethost(const char *const docname, char *const hostname) {
 /// \return The socket file descripter, or a negative value if an error occured.
 int establishclientsocket(const char *const docname){
   int portNo, retVal, sockfd;
-  char *hostname;
-  char *serverIP;
+  char* hostname;
+  char* serverIP;
 
 #ifdef _MSC_VER /************* Windows specific code ********/
   struct hostent* FAR server;
   WSADATA wsaData;
   WORD wVersionRequested;
-  //  int PASCAL FAR sockWin;
-  //  char sockWinChar[20];
 #else  /************* End of Windows specific code *******/
   struct hostent *server;
 #endif
-  //++  char* ip = "127.0.0.1";
-  //++  char* port;
-  //++  struct addrinfo aiHints;
-  //++  struct addrinfo *aiList = NULL;
-
-  //  struct addrinfo *server;
-
   struct sockaddr_in serAdd;
   const int arg=1; // 1: true
 #ifdef NDEBUG
@@ -461,7 +447,7 @@ int establishclientsocket(const char *const docname){
 #ifdef NDEBUG
     fprintf(f1, "Realloc failed in establishclientsocket.\n");
 #endif
-    return -1;
+    return -2;
   }
 
   //////////////////////////////////////////////////////
@@ -518,7 +504,6 @@ int establishclientsocket(const char *const docname){
 #endif
   /* The WinSock DLL is acceptable. Proceed. */
 #endif /************* End of Windows specific code *******/
-
   sockfd = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
   if( sockfd < 0){
 #ifdef NDEBUG
@@ -548,22 +533,16 @@ int establishclientsocket(const char *const docname){
   // establish server address
   server = gethostbyname(hostname);
   free(hostname);
-  
   if (server == NULL) {
 #ifdef NDEBUG
     fprintf(f1,"ERROR, no such host\n");
 #endif
     return -1;
   }
-  serverIP = (char*)inet_ntoa(*(struct in_addr *)*server->h_addr_list);
+  serverIP = inet_ntoa(*(struct in_addr *)*server->h_addr_list);
   memset((char *) &serAdd, '\0', sizeof(serAdd));
   serAdd.sin_family = AF_INET;
-  // FIXME: inet_addr() is obsolete.
   serAdd.sin_addr.s_addr = inet_addr(serverIP);
-#ifdef NDEBUG
-  fprintf(f1, "Debugging: utilSocket.c: serverIP: %d, inet_addr: %d\n",
-	 serverIP,   serAdd.sin_addr.s_addr);
-#endif
   serAdd.sin_port = htons(portNo);
   //////////////////////////////////////////////////////
   // establish connection
@@ -649,6 +628,7 @@ if (*sockfd < 0 ){
 			  *curSimTim,
 			  dblValWri, intValWri, booValWri, 
 			  &buffer, &bufLen);
+  
   if (retVal != 0 ){
     fprintf(stderr, "ERROR: Failed to allocate memory for buffer before writing to socket.\n");
     fprintf(stderr, "       retVal : %d\n",  retVal);
@@ -696,14 +676,19 @@ if (*sockfd < 0 ){
 }
 
 /////////////////////////////////////////////////////////////////
-/// Writes an error flag to the socket stream.
+/// Writes a message flag to the socket stream.
 ///
-/// This method should be used by clients if they experience an
-/// error and need to terminate the socket connection.
+/// This method should be used by clients if they need to send
+/// a flag to the BCVTB.
+/// A typical invocation would send flaWri=+1 if the simulation
+/// reached the end time, or flaWri=-1 if the simulation 
+/// needs to terminate due to an error.
+///
+///\deprecated Use \c sendclientmessage instead
 ///
 ///\param sockfd Socket file descripter
-///\param flaWri should be set to a negative value.
-int sendclienterror(const int *sockfd, const int *flaWri){
+///\param flaWri Flag to be sent to the BCVTB
+int sendclientmessage(const int *sockfd, const int *flaWri){
   int zI=0;
   double zD = 0;
   if ( *sockfd >= 0 ){
@@ -832,7 +817,6 @@ int exchangewithsocket(const int *sockfd,
   fprintf(f1, "*************************.\n", *simTimWri);
   fprintf(f1, "Writing to socket at time = %e\n", *simTimWri);
 #endif
-
   retVal = writetosocket(sockfd, flaWri, 
 			 nDblWri, nIntWri, nBooWri,
 			 simTimWri,
@@ -895,7 +879,9 @@ int main( int argc, const char* argv[] )
 
   //    save_append(buffer, toAdd, &bufLen);
     fprintf(stderr, "main: buffer        = %s.\n", buffer);
-    fprintf(stderr, "main: string length = %d.\n", strlen(buffer));
+    fprintf(stderr, "main: string length = %zx.\n", strlen(buffer));
   }
   printf( "\nEnd of program\n\n" );
 }
+
+

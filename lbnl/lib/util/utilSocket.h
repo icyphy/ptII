@@ -96,9 +96,14 @@ derivative works thereof, in binary and source code form.
 /// the method \c establishclientsocket()
 /// once, and then call the method 
 /// \c exchangewithsocket() in each time step.
+/// At the end of the simulation, a client should call
+/// \c closeipc() to close the socket connection.
+/// These three functions are the only functions that are
+/// needed to interface a client to the BCVTB.
 ///
 /// \sa establishclientsocket
 /// \sa exchangewithsocket
+/// \sa closeipc
 ///
 ///////////////////////////////////////////////////////
 #ifndef _UTILSOCKET_H_
@@ -110,11 +115,12 @@ derivative works thereof, in binary and source code form.
 //#include <winsock2.h>
 //#include <ws2tcpip.h> // this gives compile error due to bug in .h file
 #else
-#include <sys/socket.h>
-#include <netinet/in.h>
-#include <netdb.h> 
-// Include arpa/inet.h so that inet_ntoa is defined for 64bit linux.
+// Include arpa/inet.h so that inet_ntoa is defined for 64bit linux
+// and on Mac OS X 10.6.1 Snow Leopard
 #include <arpa/inet.h>
+#include <sys/socket.h>
+//#include <netinet/in.h>
+#include <netdb.h> 
 #endif
 
 #include <stdio.h>
@@ -251,19 +257,38 @@ int writetosocket(const int *sockfd,
 		  double *curSimTim,
 		  double dblValWri[], int intValWri[], int booValWri[]);
 
+
+/////////////////////////////////////////////////////////////////
+/// Writes a message flag to the socket stream.
+///
+/// This method should be used by clients if they need to send
+/// a flag to the BCVTB.
+/// A typical invocation would send flaWri=+1 if the simulation
+/// reached the end time, or flaWri=-1 if the simulation 
+/// needs to terminate due to an error.
+///
+///
+///\param sockfd Socket file descripter
+///\param flaWri Flag to be sent to the BCVTB
+int sendclientmessage(const int *sockfd, const int *flaWri);
+
 /////////////////////////////////////////////////////////////////
 /// Writes an error flag to the socket stream.
 ///
 /// This method should be used by clients if they experience an
 /// error and need to terminate the socket connection.
 ///
+///\deprecated Use \c sendclientmessage instead
+///
 ///\param sockfd Socket file descripter
 ///\param flaWri should be set to a negative value.
-int sendclienterror(const int *sockfd, const int *flaWri);
+int sendclienterror(const int *sockfd, const int *flaWri){
+    return sendclientmessage(sockfd, flaWri);
+}
 
 /////////////////////////////////////////////////////////////////
 /// Reads data from the socket.
-///
+//
 /// Clients can call this method to exchange data through the socket.
 ///
 ///\param sockfd Socket file descripter
@@ -322,3 +347,4 @@ int exchangewithsocket(const int *sockfd,
 int closeipc(int* sockfd);
 
 #endif /* _UTILSOCKET_H_ */
+

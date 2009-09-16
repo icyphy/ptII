@@ -5,7 +5,7 @@
 Copyright Notice
 ----------------
 
-Building Controls Virtual Test Bed (BCVTB) Copyright (c) 2008-2009, The
+Building Controls Virtual Test Bed (BCVTB) Copyright (c) 2008, The
 Regents of the University of California, through Lawrence Berkeley
 National Laboratory (subject to receipt of any required approvals from
 the U.S. Dept. of Energy). All rights reserved.
@@ -31,7 +31,7 @@ and to permit others to do so.
 Modified BSD License agreement
 ------------------------------
 
-Building Controls Virtual Test Bed (BCVTB) Copyright (c) 2008-2009, The
+Building Controls Virtual Test Bed (BCVTB) Copyright (c) 2008, The
 Regents of the University of California, through Lawrence Berkeley
 National Laboratory (subject to receipt of any required approvals from
 the U.S. Dept. of Energy).  All rights reserved.
@@ -76,131 +76,286 @@ derivative works thereof, in binary and source code form.
 ********************************************************************
 */
 
-///////////////////////////////////////////////////////
-/// \file   utilXml.h
+///////////////////////////////////////////////////////////
+/// \file    utilXml.h
+/// \brief   Methods for getting xml values 
+///          using the expat libray
 ///
-/// \brief  Methods for parsing XML files.
-///
-/// \author Michael Wetter,
-///         Simulation Research Group, 
-///         LBNL,
-///         MWetter@lbl.gov
-///
-/// \date   2008-02-11
+/// \author  Rui Zhang
+///          Carnegie Mellon University
+///          ruiz@cmu.edu
+/// \date    2009-08-11
 ///
 /// \version $Id$
+/// 
+/// This file provides methods to get general xml values \c getxmlvalue
+/// using simple xpath expressions
+/// values will be in the same order as they are in the xml file
 ///
-/// This file provides methods that allow clients to
-/// parse XML files needed by the BCVTB.
-/// Clients typically call \c getsocketportnumber()
-/// to obtain the socket port number, and then
-/// call utilClient::establishclientsocket() 
-/// to connect to the BSD socket.
-/// The methods \c getnumberofxmlvalues() and
-/// \c getxmlvalues() can be used by clients to obtain xml values
-/// from a file. There are also wrappers to these functions
-/// with the same name but a suffix \c 'f' appended.
-/// These functions are easier to use with Fortran
-/// clients because their string parameters have a different
-/// format.
+/// This file also provides methods to get the EnergyPlus \c getepvariables.
+/// The variables returned will be in the same order as they are in the 
+/// configuration file.
+/// \sa getxmlvalue()
+/// \sa getxmlvaluesf()
+/// \sa getepvariables()
 ///
-///////////////////////////////////////////////////////
-#ifndef _UTILXML_H_
-#define _UTILXML_H_
-
-#ifdef _MSC_VER // Microsoft compiler
-#include <windows.h>
-#endif
+//////////////////////////////////////////////////////////
 
 #include <stdio.h>
+//#include <stdlib.h>
 #include <string.h>
-#include <stdlib.h>
-#include <assert.h>
-#include <libxml/xmlmemory.h>
-#include <libxml/parser.h>
-#include <libxml/tree.h>
-#include <libxml/xpath.h>
-#include <libxml/xpathInternals.h>
+#include <expat.h>
+//#include <errno.h>
 
-#include "defines.h"
+#if defined(__amigaos__) && defined(__USE_INLINE__)
+#include <proto/expat.h>
+#endif
 
-/////////////////////////////////////////////////////////////////////
-/// Executes an XPath expression.
-///
-/// \param filename the name of the xml file.
-/// \param xpathExpr the xpath expression to evaluate.
-/// \param atrNam the attribute name.
-/// \param res the value of the attributes will be stored in this argument.
-/// \param size the number of elements found.
-/// \return 0 if successful, or a negative integer if an error occurred.
-int parsexpath(const char *const filename, 
-	       const xmlChar* xpathExpr, 
-	       const char *const atrNam,
-	       char *const res[],
-	       int* size);
-/////////////////////////////////////////////////////////////////////
-/// Gets the value of an xml element specified by an XPath expression.
-///
-/// This methods is a wrapper for \c getxmlvalues. 
-/// It and can be used if only one attribute value is needed.
-///
-/// \param docname the name of the xml file.
-/// \param xpathExpr the xpath expression to evaluate.
-/// \param atrNam the attribute name.
-/// \param res the value of the attributes will be stored in this argument.
-/// \return 0 if successful, or a negative integer if an error occurred.
-int getxmlvalue(const char *const docname,
-		 const char* xpathExpr, 
-		 const char *const atrNam,
-		char *const res);
+#ifdef XML_LARGE_SIZE
+#if defined(XML_USE_MSC_EXTENSIONS) && _MSC_VER < 1400
+#define XML_FMT_INT_MOD "I64"
+#else
+#define XML_FMT_INT_MOD "ll"
+#endif
+#else
+#define XML_FMT_INT_MOD "l"
+#endif
 
-/////////////////////////////////////////////////////////////////////
-/// Gets the xml values for a given XPath expression.
-///
-/// This method is wrapper for \c getxmlvalues for Fortran
-/// programs. The only difference is the argument list, since
-/// const char *const arguments are hard to pass from F90.
-///
-/// \param docname the name of the xml file.
-/// \param xpathExpr the xpath expression to evaluate.
-/// \param atrNam the attribute name.
-/// \param nAtr the number of attributes to be obtained.
-/// \param res the value of the attributes will be stored in this argument.
-///          The terminating character is a semicolon (';')
-/// \param sizeOfRes the size of \c res, used to prevent buffer overflow
-/// \return 0 if successful, or a negative integer if an error occurred.
-int getxmlvaluesf(const char *const docname,
-		  const char* xpathExpr, 
-		  const char *const atrNam,
-		  const int* nAtr,
-		  char * res,
-		  const int sizeOfRes);
-/////////////////////////////////////////////////////////////////////
-/// Gets the number of xml values for a given XPath expression.
-///
-/// This method gets the number of xml values 
-/// that are found by evaluating the XPath expression \c xpathExpr
-///
-/// \param docname the name of the xml file.
-/// \param xpathExpr the xpath expression to evaluate.
-/// \return the number of attributes found if successful, or a negative integer if an error occurred.
-int getnumberofxmlvalues(const char *const docname,
-			 const char* xpathExpr);
 
-/////////////////////////////////////////////////////////////////////
-/// Gets the xml values for a given XPath expression.
-///
-/// This method gets the xml values 
-/// that are found by evaluating the XPath expression \c xpathExpr
-///
-/// \param docname the name of the xml file.
-/// \param xpathExpr the xpath expression to evaluate.
-/// \param atrNam the attribute name.
-/// \param res the value of the attributes will be stored in this argument.
-/// \return 0 if successful, or a negative integer if an error occurred.
-int getxmlvalues(const char *const docname,
-		 const char* xpathExpr, 
-		 const char *const atrNam,
-		 char *const res[]);
+#define BUFFSIZE        8192
 
-#endif /* _UTILXML_H_ */
+char Buff[BUFFSIZE]; ///< Local buffer for reading in the xml file
+
+////////////////////////////////////////////////////////////////
+///\struct A simple stack structure to keep track of the parent elements
+////////////////////////////////////////////////////////////////  
+typedef struct Stack{
+  char** head;
+  int top;
+  int cur;
+} Stack;
+
+
+Stack expStk; ///< Variables for getxmlvalue function
+
+char* att; ///< Local global variable for function \c getxmlvalue
+char* vals;  ///< Local global variable for function \c getxmlvalue
+int*  numVals; ///< Local global variable for function \c getxmlvalue
+int PARSEVALUE; ///< flag for parsing xml values 1 if parse, 0 if not parse
+int ERROR_STATUS; ///< flag for xml element handler error status settings
+
+////////////////////////////////////////////////////////////////
+/// local global variables for function \c getepvariables
+////////////////////////////////////////////////////////////////
+char *  outputVarsName; ///< the string pointer to the parsed output variable names  
+char *  outputVarsType; ///< the string pointer to the parsed output variable types
+int  *  numOutputVars;  ///< the integer pointer to the number of output variables
+char *  inputVars;      ///< the string pointer to the input variables
+int  *  numInputVars;   ///< the integer pointer to the number of input variables
+int  *  inputVarsType;  ///< the ineger array to store the types of each input variables
+char**  inputKeys;      ///< the string array to store the types of input variable types
+int     numInputKeys;   ///< the number of input variable types
+int     source;         ///< flag for function /c getepvariables 0=EnergyPlus, 1=Ptolemy
+const int *   strLen;         ///< the length of string parsed to this function
+
+////////////////////////////////////////////////////////////////
+/// Call back functions that will be used by the expat xml parser.
+///
+///
+/// This function is designed for the function \c getepvariables
+/// to get input and output variables in the same order as they
+/// appear in the configuration file
+////////////////////////////////////////////////////////////////
+static void XMLCALL
+EPstart(void *data, const char *el, const char **attr);
+
+////////////////////////////////////////////////////////////////
+/// Call back functions that will be used by the expat xml parser
+///
+/// This function is designed for the function \c getepvariables
+/// to get input and output variables in the same order as they
+/// appear in the configuration file
+////////////////////////////////////////////////////////////////
+static void XMLCALL
+EPend(void *data, const char *el);
+
+
+////////////////////////////////////////////////////////////////
+///  This method frees the local memory allocated
+///   
+///\param strArr 1D string array to be freed
+///\param n the size of the 1D string array
+////////////////////////////////////////////////////////////////
+void freeResource(char** strArr, int n);
+
+
+////////////////////////////////////////////////////////////////
+///  This method will return the input and output variable for EnergyPlus
+///  in sequence
+///
+///\param fileName the variable configuration file name.
+///\param myOutputVarsName Array to store the output variable names found.
+///\param myOutputvarsType Array to store the output variable types found.
+///\param myNumOutputVars Integer holder to store number of output variables found.
+///\param myInputKeys Array to store the input variable keys.
+///\param myNumInputKeys Integer holder to store number of input variable keys.
+///\param myInputVars Array to store the name of input variables found.
+///\param myNumInputVars Integer holder to store number of input variables found.
+///\param myInputVarsType Integer array to store the corresponding input variable types in myInputVars.
+///\param myStrLen The length of the string that is passed to this function.
+///
+////////////////////////////////////////////////////////////////
+
+int getepvariables( char*  const fileName, 
+                    char*  const myOutputVarsName, 
+                    char*  const myOutputVarsType, 
+                    int*   const myNumOutputVars, 
+                    char*  const myInputKeys, 
+                    int*   const myNumInputKeys, 
+                    char*  const myInputVars, 
+                    int*   const myNumInputVars,
+                    int*   const myInputVarsType,
+                    int*   const myStrLen);
+
+////////////////////////////////////////////////////////////////
+/// Stack operation, this function will pop one element from stack
+/// and will free the resource unused
+////////////////////////////////////////////////////////////////
+int stackPop();
+
+////////////////////////////////////////////////////////////////
+/// Stack operation, will push one element into the stack
+/// and will allocate memory for the new element, hence is deep copy
+////////////////////////////////////////////////////////////////
+int stackPush(char* str);
+
+////////////////////////////////////////////////////////////////
+/// This is a general function that returns the value according to \c exp
+///
+/// \c exp mimics the xPath expression.
+/// Its format is //el1/../eln[@attr]
+/// which will return the \c attr value of \c eln, 
+/// where \c eln is the n-th child of \c el1
+///
+/// Example: //variable/EnergyPlus[@name] will return the name attributes of EnergyPlus
+/// which is equivalent to //EnergyPlus[@name]
+///
+///\param fileName the xml file name.  
+///\param exp the xPath expression.
+///\param myVals string to store the found values, semicolon separated.
+///\param mynumVals number of values found.
+///\param myStrLen length of the string that is passed.
+////////////////////////////////////////////////////////////////
+int 
+getxmlvalues(char* const fileName, 
+             char* const exp, 
+             char* const myVals, 
+             int*  const myNumVals,
+             int   const myStrLen);
+
+////////////////////////////////////////////////////////////////
+/// Call back functions that will be used by the expat xml parser
+//
+/// This function is used for \c getxmlvalues
+////////////////////////////////////////////////////////////////
+static void XMLCALL
+start(void *data, const char *el, const char **attr);
+
+////////////////////////////////////////////////////////////////
+/// Call back functions that will be used by the expat xml parser
+//
+/// This function is used for \c getxmlvalues
+////////////////////////////////////////////////////////////////
+static void XMLCALL
+end(void *data, const char *el);
+
+////////////////////////////////////////////////////////////////
+/// This method returns the number of xmlvalues given xPath expressions.
+/// This method will call the function \c getxmlvalues
+///
+/// \c exp mimics the xPath expression.
+/// Its format is //el1/../eln[@attr]
+/// which will return the \c attr value of \c eln, 
+/// where \c eln is the n-th child of \c el1
+///
+/// Example: //variable/EnergyPlus[@name] will return the name attributes of EnergyPlus
+/// which is equivalent to //EnergyPlus[@name]
+///
+///\param fileName the name of the xml file
+///\param exp the xPath expression
+////////////////////////////////////////////////////////////////
+int getnumberofxmlvalues( char* const fileName,
+			  char* const exp);
+
+////////////////////////////////////////////////////////////////
+/// This method returns the xmlvalues parsed given xPath expressions.
+/// This method will first perform a validation check with DTDValidator
+/// For compatibility with BCVTB 0.2 this function is mainly for E+ 
+/// to get the input and output variables in variables.cfg. Thus the 
+/// dtd file for the validity checking is the variables.dtd.
+/// Then the function calls \c getxmlvalues to get the variables
+/// and appends ";" at the end of the parsed string.
+///
+/// Return value: 0 normal; -1 error 
+///
+/// \c exp mimics the xPath expression.
+/// Its format is //el1/../eln[@attr]
+/// which will return the \c attr value of \c eln, 
+/// where \c eln is the n-th child of \c el1
+///
+/// Example: //variable/EnergyPlus[@name] will return the name attributes of EnergyPlus
+/// which is equivalent to //EnergyPlus[@name]
+///
+///\param fileName the xml file name;  
+///\param exp the xPath expression.
+///\param atrName the attribute name.
+///\param nAtt number of attribute values found.
+///\param str string to store the found values, semicolon separated.
+///\param strLen the string length allocated
+////////////////////////////////////////////////////////////////
+int getxmlvaluesf(char* const fileName,
+                  char* const exp,
+                  char* const atrName,
+                  int*  const nVal,
+                  char* const str,
+                  int* const strLen);
+
+////////////////////////////////////////////////////////////////
+/// This method returns one xmlvalue for a given xPath expressions.
+/// The function will call the function \c getxmlvalues to get the variables
+/// without ";" at the end of the parsed string
+///
+/// Return values: 0 normal; -1 error 
+///
+/// \c exp mimics the xPath expression.
+/// Its format is //el1/../eln[@attr]
+/// which will return the \c attr value of \c eln, 
+/// where \c eln is the n-th child of \c el1
+///
+/// Example: //variable/EnergyPlus[@name] will return the name attributes of EnergyPlus
+/// which is equivalent to //EnergyPlus[@name]
+///
+///\param fileName the xml file name.  
+///\param exp the xPath expression.
+///\param str string to store the found values, semicolon separated.
+///\param nVals number of values found.
+///\param strLen the string length allocated.
+////////////////////////////////////////////////////////////////
+int getxmlvalue(char* const fileName,
+                char* const exp,
+                char* const str,
+                int*  const nVals,
+                int   const strLen);
+
+////////////////////////////////////////////////////////////////
+/// This method checks the validity of the variables 
+/// configuration xml file for a given dtd file that is
+/// specified in the variables configuration file
+/// 
+/// Return values: -1 Error in the file
+///                 0 File is validate
+///
+///
+////////////////////////////////////////////////////////////////
+int check_variable_cfg_Validate(char* const fileName);
+
