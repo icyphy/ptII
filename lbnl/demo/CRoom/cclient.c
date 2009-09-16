@@ -194,7 +194,7 @@ int main(int argc, char *argv[]){
     /////////////////////////////////////////////////////////////
     // Check flags
     if (retVal < 0){
-      sendclienterror(&sockfd, &cliErrFla);
+      sendclientmessage(&sockfd, &cliErrFla);
       printf("Simulator received value %d when reading from socket. Exit simulation.\n", retVal);
       closeipc(&sockfd);
       exit((retVal)+100);
