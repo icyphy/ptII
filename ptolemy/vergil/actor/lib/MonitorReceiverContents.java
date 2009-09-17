@@ -167,7 +167,8 @@ public class MonitorReceiverContents extends SingletonAttribute {
                     // Request repaint on postfire() and wrapup().
                     public boolean postfire() {
                         ChangeRequest request = new ChangeRequest(this,
-                                "SetVariable change request", false /*Not a structural change, we only want to refresh the GUI*/
+                                "SetVariable change request", true /*Although this not a structural change in my point of view
+                                , we however for some reason need to specify it is, otherwise the GUI won't update.*/
                         ) {
                             protected void _execute()
                                     throws IllegalActionException {
