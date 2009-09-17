@@ -361,21 +361,29 @@ public class SystemCommand extends TypedAtomicActor {
         ArrayList<String> com = new ArrayList<String>();
         // Iterate over the list of command to replace all references to input port names.
         // Reference take the form $portName where portName is the name of the port.
+	// We call cutQuotationMarks(String) to remove the quotation marks that the Tokens
+	// may have. Otherwise, an entry programArguments=$fileName may be parsed to
+	// programArguments="$fileName" and commands such as cat $fileName may not find
+	// the file on Linux.
         for (Iterator itc = commandList.iterator(); itc.hasNext (); ) {
             String comIte = (String)itc.next();
+	    //	    System.err.println("SystemCommand 1: comIte=" + comIte);
             for (Map.Entry<String, Token> e : _tokenMap.entrySet()){
                 final String fin = '$' + e.getKey();
                 while ( comIte.contains(fin) )
-                    comIte = comIte.replace(fin, e.getValue().toString());
+                    comIte = comIte.replace(fin, 
+					    cutQuotationMarks(e.getValue().toString()));
             }
             // Replace $time and $iteration
             String fin = "$time";
             while (comIte.contains(fin))
                 comIte = comIte.replace(fin, 
-                        getDirector().getModelTime().toString());
+                        cutQuotationMarks(getDirector().getModelTime().toString()));
             fin = "$iteration";
             while (comIte.contains(fin))
-                comIte = comIte.replace(fin, new Integer(_iterationCount).toString());
+                comIte = comIte.replace(fin, 
+					new Integer(_iterationCount).toString());
+	    //	    System.err.println("SystemCommand: comIte=" + comIte);
             com.add(comIte);
         }
         // Set process arguments
