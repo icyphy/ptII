@@ -1,28 +1,25 @@
-/*  A extended base abstract class for a property solver.
-
- Copyright (c) 1998-2009 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
-
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
-
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
-
- PT_COPYRIGHT_VERSION_2
- COPYRIGHTENDKEY
+/*
+ * A extended base abstract class for a property solver.
+ * 
+ * Copyright (c) 1998-2009 The Regents of the University of California. All
+ * rights reserved. Permission is hereby granted, without written agreement and
+ * without license or royalty fees, to use, copy, modify, and distribute this
+ * software and its documentation for any purpose, provided that the above
+ * copyright notice and the following two paragraphs appear in all copies of
+ * this software.
+ * 
+ * IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR
+ * DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES ARISING OUT
+ * OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF THE UNIVERSITY OF
+ * CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ * 
+ * THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ * INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
+ * FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE PROVIDED HEREUNDER IS ON AN
+ * "AS IS" BASIS, AND THE UNIVERSITY OF CALIFORNIA HAS NO OBLIGATION TO PROVIDE
+ * MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+ * 
+ * PT_COPYRIGHT_VERSION_2 COPYRIGHTENDKEY
  */
 package ptolemy.data.properties;
 
@@ -58,24 +55,24 @@ import ptolemy.util.StringUtilities;
 ////PropertySolver
 
 /**
-A extended base abstract class for a property solver.
-
-@author Man-Kit Leung
-@version $Id$
-@since Ptolemy II 7.1
-@Pt.ProposedRating Red (mankit)
-@Pt.AcceptedRating Red (mankit)
+ * A extended base abstract class for a property solver.
+ * 
+ * @author Man-Kit Leung
+ * @version $Id$
+ * @since Ptolemy II 7.1
+ * @Pt.ProposedRating Red (mankit)
+ * @Pt.AcceptedRating Red (mankit)
  */
 public abstract class PropertySolver extends PropertySolverBase {
 
     /**
-     * Construct a PropertySolver with the specified container and
-     * name. If this is the first PropertySolver created in the model,
-     * the shared utility object will also be created.
+     * Construct a PropertySolver with the specified container and name. If this
+     * is the first PropertySolver created in the model, the shared utility
+     * object will also be created.
      * @param container The specified container.
      * @param name The specified name.
-     * @exception IllegalActionException If the PropertySolver is
-     * not of an acceptable attribute for the container.
+     * @exception IllegalActionException If the PropertySolver is not of an
+     * acceptable attribute for the container.
      * @exception NameDuplicationException If the name coincides with an
      * attribute already in the container.
      */
@@ -106,19 +103,23 @@ public abstract class PropertySolver extends PropertySolverBase {
     ///////////////////////////////////////////////////////////////////
     ////                   ports and parameters                    ////
 
-    /** The action mode of the solver (e.g. ANNOTATE, TRAINING,
-     * CLEAR, and etc.). */
+    /**
+     * The action mode of the solver (e.g. ANNOTATE, TRAINING, CLEAR, and etc.).
+     */
     public Parameter action;
 
-    /** A boolean parameter. If true and the solver is in training mode,
-     * made all the intermediate results persistent in MoML.
-     * Otherwise, only the results of the invoked solver is
-     * made persistent and the intermediate results are discarded. */
+    /**
+     * A boolean parameter. If true and the solver is in training mode, made all
+     * the intermediate results persistent in MoML. Otherwise, only the results
+     * of the invoked solver is made persistent and the intermediate results are
+     * discarded.
+     */
     public Parameter all;
 
-    /** A boolean parameter. If true, the solver looks for the manual
-     * annotated constraints in the model. Otherwise, these constraints
-     * have no effects in the resolution.
+    /**
+     * A boolean parameter. If true, the solver looks for the manual annotated
+     * constraints in the model. Otherwise, these constraints have no effects in
+     * the resolution.
      */
     public Parameter manualAnnotation;
 
@@ -166,25 +167,19 @@ public abstract class PropertySolver extends PropertySolverBase {
     }
 
     /**
-     * If the value of the highlight parameter is set to
-     * true, highlight the given property-able object with
-     * the specified color associated with the given
-     * property, if there exists any.
-     * If the value of the showText parameter is true,
-     * show the given property value for the given
-     * property-able object. If the property is not null,
-     * this looks for the _showInfo parameter in the
-     * property-able object. Create a new _showInfo
-     * StringParameter, if there does not already exists one.
-     * Set its value to the given property value. If the
-     * given property is null, this removes the _showInfo
-     * parameter from the property-able object.
-     * @exception IllegalActionException Thrown if an error
-     * occurs when creating or setting the value for the
-     * _showInfo parameter in the property-able object.
-     * Thrown if an error occurs when creating or setting
-     * the value for the highlightColor attribute in the
-     * property-able object.
+     * If the value of the highlight parameter is set to true, highlight the
+     * given property-able object with the specified color associated with the
+     * given property, if there exists any. If the value of the showText
+     * parameter is true, show the given property value for the given
+     * property-able object. If the property is not null, this looks for the
+     * _showInfo parameter in the property-able object. Create a new _showInfo
+     * StringParameter, if there does not already exists one. Set its value to
+     * the given property value. If the given property is null, this removes the
+     * _showInfo parameter from the property-able object.
+     * @exception IllegalActionException Thrown if an error occurs when creating
+     * or setting the value for the _showInfo parameter in the property-able
+     * object. Thrown if an error occurs when creating or setting the value for
+     * the highlightColor attribute in the property-able object.
      */
     public void displayProperties() throws IllegalActionException {
         // Do nothing if we are not in a mode that allows display.
@@ -286,8 +281,8 @@ public abstract class PropertySolver extends PropertySolverBase {
 
     /**
      * Increment the given field in the given statistics map by a given number.
-     * This is used for incrementing integer type statistics. If the given
-     * field does not exist, it starts the count of the field at zero.
+     * This is used for incrementing integer type statistics. If the given field
+     * does not exist, it starts the count of the field at zero.
      * @param map The statistics map.
      * @param field The field (key) to increment.
      * @param increment The increment amount.
@@ -302,8 +297,8 @@ public abstract class PropertySolver extends PropertySolverBase {
 
     /**
      * Invoke the solver directly.
-     * @return True if the invocation succeeds; otherwise false
-     *  which means an error has occurred during the process.
+     * @return True if the invocation succeeds; otherwise false which means an
+     * error has occurred during the process.
      */
     public boolean invokeSolver() {
         return invokeSolver(null);
@@ -312,8 +307,8 @@ public abstract class PropertySolver extends PropertySolverBase {
     /**
      * Invoke the solver from another component (e.g. model analyzer).
      * @param component The given component.
-     * @return True if the invocation succeeds; otherwise false
-     *  which means an error has occurred during the process.
+     * @return True if the invocation succeeds; otherwise false which means an
+     * error has occurred during the process.
      */
     public boolean invokeSolver(NamedObj component) {
         boolean success = false;
@@ -363,17 +358,17 @@ public abstract class PropertySolver extends PropertySolverBase {
 
     /** True if the solver is in resolution mode; otherwise false. */
     public boolean isResolve() {
-        return ((action.getExpression().equals(ANNOTATE)) || (action
-                .getExpression().equals(TRAINING)));
+        return action.getExpression().equals(ANNOTATE)
+                || action.getExpression().equals(TRAINING);
     }
 
     /**
-     * Return true if the specified property-able object is
-     * settable; otherwise false which means that its property
-     * has been set by PropertyHelper.setEquals().
+     * Return true if the specified property-able object is settable; otherwise
+     * false which means that its property has been set by
+     * PropertyHelper.setEquals().
      * @param object The specified property-able object.
-     * @return True if the specified property-able object is
-     * settable, otherwise false.
+     * @return True if the specified property-able object is settable, otherwise
+     * false.
      */
     public boolean isSettable(Object object) {
         return !_nonSettables.contains(object);
@@ -404,12 +399,12 @@ public abstract class PropertySolver extends PropertySolverBase {
     }
 
     /**
-     * Record the specified exception message as a trained exception.
-     * This make the trained exception persistent by creating or updating
-     * the trained exception attribute contained by this solver.
+     * Record the specified exception message as a trained exception. This make
+     * the trained exception persistent by creating or updating the trained
+     * exception attribute contained by this solver.
      * @param exceptionMessage The given exception message.
-     * @exception IllegalActionException Thrown if an error occurs when
-     *  creating or updating the trained exception attribute.
+     * @exception IllegalActionException Thrown if an error occurs when creating
+     * or updating the trained exception attribute.
      */
     public void recordTrainedException(String exceptionMessage)
             throws IllegalActionException {
@@ -428,9 +423,8 @@ public abstract class PropertySolver extends PropertySolverBase {
     }
 
     /**
-     * Reset the solver. This removes the internal states
-     * of the solver (e.g. previously recorded properties,
-     * statistics, and etc.).
+     * Reset the solver. This removes the internal states of the solver (e.g.
+     * previously recorded properties, statistics, and etc.).
      */
     public void reset() {
         super.reset();
@@ -440,7 +434,7 @@ public abstract class PropertySolver extends PropertySolverBase {
     }
 
     /**
-     *
+     * 
      */
     public void resolveProperties() throws KernelException {
         resolveProperties(_analyzer, false);
@@ -611,9 +605,8 @@ public abstract class PropertySolver extends PropertySolverBase {
     }
 
     /**
-     * Set the action mode of the solver. This sets the
-     * expression of the action parameter to the specified
-     * action value string.
+     * Set the action mode of the solver. This sets the expression of the action
+     * parameter to the specified action value string.
      * @param actionString The specified action value.
      * @return The previous value of the action parameter.
      */
@@ -673,7 +666,7 @@ public abstract class PropertySolver extends PropertySolverBase {
 
                     // Check if the previous and resolved properties are
                     // different.
-                    if ((previous == null && property != null)
+                    if (previous == null && property != null
                             || previous != null && !previous.equals(property)) {
 
                         if (_analyzer == null) {
@@ -735,13 +728,14 @@ public abstract class PropertySolver extends PropertySolverBase {
         actionParameter.addChoice(CLEAR_ANNOTATION);
     }
 
-    /** Add choices to the parameter where the choices are subdirectories
-     *  of the directoryPath.  DirectoryPaths in the file system and
-     *  in Jar URLs are handled.
-     *  @param parameter The parameter to be updated with the subdirectories
-     *  @param directoryPath The directory to be searched for subdirectories.
-     *  @exception IllegalActionException If there is a problem reading the
-     *  directory as a file or JAR URL.
+    /**
+     * Add choices to the parameter where the choices are subdirectories of the
+     * directoryPath. DirectoryPaths in the file system and in Jar URLs are
+     * handled.
+     * @param parameter The parameter to be updated with the subdirectories
+     * @param directoryPath The directory to be searched for subdirectories.
+     * @exception IllegalActionException If there is a problem reading the
+     * directory as a file or JAR URL.
      */
     protected void _addChoices(Parameter parameter, String directoryPath)
             throws IllegalActionException {
@@ -767,8 +761,8 @@ public abstract class PropertySolver extends PropertySolverBase {
                             "Failed to find directories in \"" + directoryPath
                                     + "\"");
                 } else {
-                    for (int i = 0; i < directories.length; i++) {
-                        String directoryName = directories[i].getName();
+                    for (File element : directories) {
+                        String directoryName = element.getName();
                         parameter.addChoice(directoryName);
                     }
                 }
@@ -884,9 +878,9 @@ public abstract class PropertySolver extends PropertySolverBase {
 
     /*
      * Return the string representation of the recorded statistics.
-     *
+     * 
      * @param separator The delimiter to separate the statistics fields.
-     *
+     * 
      * @return The string representation of the recorded statistics.
      */
     protected String _getStatsAsString(String separator) {
@@ -901,13 +895,13 @@ public abstract class PropertySolver extends PropertySolverBase {
      * Check the given property against the trained property recorded on the
      * given NamedObj. It also restore the trained property that is temporarily
      * cleared for regression testing.
-     *
+     * 
      * @param namedObj The given NamedObj.
-     *
+     * 
      * @param property The given resolved property.
-     *
-     * @exception PropertyResolutionException Thrown if there are errors restoring
-     * the trained property.
+     * 
+     * @exception PropertyResolutionException Thrown if there are errors
+     * restoring the trained property.
      */
     protected void _regressionTest(NamedObj namedObj, Property property)
             throws PropertyResolutionException {
@@ -928,9 +922,8 @@ public abstract class PropertySolver extends PropertySolverBase {
         // The first check is for singleton elements, and the equals()
         // comparison is necessary for "equivalent" elements, such as
         // those in the SetLattice usecase.
-        if ((previousProperty == null && property != null)
-                || (previousProperty != null && !previousProperty.toString()
-                        .equals(property.toString()))) {
+        if (previousProperty != property
+                && !previousProperty.toString().equals(property.toString())) {
 
             addErrors(_eol + "Property \"" + getUseCaseName()
                     + "\" resolution failed for " + namedObj.getFullName()
@@ -942,9 +935,9 @@ public abstract class PropertySolver extends PropertySolverBase {
     /*
      * Resolve the property values for the specified top-level entity. Print out
      * the name of the this solver. Sub-classes should overrides this method.
-     *
+     * 
      * @param analyzer The specified model analyzer.
-     *
+     * 
      * @exception IllegalActionException Not thrown in this base class.
      */
     protected void _resolveProperties(NamedObj analyzer) throws KernelException {
@@ -957,8 +950,10 @@ public abstract class PropertySolver extends PropertySolverBase {
     ///////////////////////////////////////////////////////////////////
     ////                    protected variables                    ////
 
-    /** The model analyzer, if the solver is created by one; otherwise,
-     * this is null. */
+    /**
+     * The model analyzer, if the solver is created by one; otherwise, this is
+     * null.
+     */
     protected NamedObj _analyzer = null;
 
     /**
@@ -966,8 +961,9 @@ public abstract class PropertySolver extends PropertySolverBase {
      */
     protected PropertyMoMLHandler _momlHandler;
 
-    /** True if the solver is invoked directly; otherwise, false which
-     * means it acts as an intermediate solver.
+    /**
+     * True if the solver is invoked directly; otherwise, false which means it
+     * acts as an intermediate solver.
      */
     protected boolean _isInvoked;
 
@@ -999,16 +995,16 @@ public abstract class PropertySolver extends PropertySolverBase {
     ////                        private methods                    ////
 
     /**
-     * Record as an error for the given property-able object and
-     * its resolved property. If the given property is null, it
-     * does nothing. If the given property is unacceptable, an error
-     * is recorded for the given property-able object and the property.
+     * Record as an error for the given property-able object and its resolved
+     * property. If the given property is null, it does nothing. If the given
+     * property is unacceptable, an error is recorded for the given
+     * property-able object and the property.
      */
     private void _recordUnacceptableSolution(Object propertyable,
             Property property) {
 
         // Check for unacceptable solution.
-        if ((property != null) && (!property.isAcceptableSolution())) {
+        if (property != null && !property.isAcceptableSolution()) {
             addErrors("Property \"" + property
                     + "\" is not an acceptable solution for " + propertyable
                     + "." + _eol);
@@ -1043,16 +1039,15 @@ public abstract class PropertySolver extends PropertySolverBase {
     ////                      private variables                    ////
 
     /**
-     * The record of the previously resolved properties. It is a map
-     * between the property-able objects and their resolved properties.
+     * The record of the previously resolved properties. It is a map between the
+     * property-able objects and their resolved properties.
      */
     private HashMap<Object, Property> _previousProperties = new HashMap<Object, Property>();
 
     /**
-     * The record of statistics for the resolution. It is a mapping
-     * between keys and values. To keep track of numerical data,
-     * by inserting an Integer or Long as value (See
-     * {@link #incrementStats(Object, long)}).
+     * The record of statistics for the resolution. It is a mapping between keys
+     * and values. To keep track of numerical data, by inserting an Integer or
+     * Long as value (See {@link #incrementStats(Object, long)}).
      */
     private Map<Object, Object> _stats = new LinkedHashMap<Object, Object>();
 
@@ -1083,19 +1078,21 @@ public abstract class PropertySolver extends PropertySolverBase {
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
 
-    /** Look for directories that do are not CVS or .svn.
+    /**
+     * Look for directories that do are not CVS or .svn.
      */
     static class DirectoryNameFilter implements FilenameFilter {
         // FindBugs suggests making this class static so as to decrease
         // the size of instances and avoid dangling references.
 
-        /** Return true if the specified file names a directory
-         *  that is not named "CVS" or ".svn".
-         *  @param directory the directory in which the potential
-         *  directory was found.
-         *  @param name the name of the directory or file.
-         *  @return true if the file is a directory that
-         *  contains a file called configuration.xml
+        /**
+         * Return true if the specified file names a directory that is not named
+         * "CVS" or ".svn".
+         * @param directory the directory in which the potential directory was
+         * found.
+         * @param name the name of the directory or file.
+         * @return true if the file is a directory that contains a file called
+         * configuration.xml
          */
         public boolean accept(File directory, String name) {
             try {

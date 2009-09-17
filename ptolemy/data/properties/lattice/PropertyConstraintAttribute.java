@@ -36,9 +36,10 @@ import ptolemy.kernel.util.NamedObj;
 public class PropertyConstraintAttribute extends PropertyAttribute {
 
     /**
-     * 
-     * @param container
-     * @param name
+     * Construct a PropertyConstraintAttribute with the giver container and
+     * name. Its expression is a property resolved by the constraint solver.
+     * @param container The container of this attribute.
+     * @param name The given of the attribute.
      * @exception IllegalActionException
      * @exception NameDuplicationException
      */
@@ -245,8 +246,8 @@ public class PropertyConstraintAttribute extends PropertyAttribute {
      * Parse the given expression for an arbitrary Property.
      * @param lattice The lattice.
      * @param expression The expression
-     * @return The LatticeProperty that corresponds with
-     * the lattice and expression.
+     * @return The LatticeProperty that corresponds with the lattice and
+     * expression.
      * @exception IllegalActionException If thrown by
      * {@link #_parseElementExpression(PropertyLattice, String)}
      */

@@ -75,6 +75,21 @@ public class LatticeProperty extends Property implements PropertyTerm {
     }
 
     /**
+     * Return true if the given object is equal to this lattice property. Two
+     * lattice properties are considered equal if they have the same name and
+     * are from the same lattice.
+     */
+    public boolean equals(Object object) {
+        if (object instanceof LatticeProperty) {
+            if (_name.equals(((LatticeProperty) object)._name)) {
+                return _lattice.getName().equals(
+                        ((LatticeProperty) object)._lattice.getName());
+            }
+        }
+        return false;
+    }
+
+    /**
      * Return the associated object of this property term. By default, a lattice
      * property is a constant property term. It has no associated object. This
      * method returns null.
