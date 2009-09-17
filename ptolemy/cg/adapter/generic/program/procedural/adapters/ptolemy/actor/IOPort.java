@@ -32,6 +32,7 @@ import ptolemy.cg.kernel.generic.PortCodeGenerator;
 import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
 import ptolemy.cg.kernel.generic.program.procedural.c.CCodeGenerator;
 import ptolemy.cg.kernel.generic.program.procedural.java.JavaCodeGenerator;
+import ptolemy.data.type.BaseType;
 import ptolemy.data.type.Type;
 import ptolemy.kernel.util.IllegalActionException;
 
@@ -96,14 +97,8 @@ public class IOPort extends NamedProgramCodeGeneratorAdapter implements
         String typeString = getCodeGenerator().codeGenType(type);
         // The component port is not connected to anything, so get should
         // always return something trivial;
-        if (getCodeGenerator() instanceof CCodeGenerator) {
-            return "$convert_Int_" + typeString + "(0)";
-        } else if (getCodeGenerator() instanceof JavaCodeGenerator) {
-            return "$convert_Integer_" + typeString + "(0)";
-        } else {
-            throw new IllegalActionException(getCodeGenerator(), 
-                    " $convert_int_xxx needs to be supported for this code generator.");
-        }
+        return "$convert_" + getCodeGenerator().codeGenType(BaseType.INT) + "_" +
+            typeString + "(0)";
     }
 
     /** 
