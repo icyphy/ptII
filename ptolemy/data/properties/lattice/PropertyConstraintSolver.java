@@ -338,7 +338,6 @@ public class PropertyConstraintSolver extends PropertySolver {
         _propertyTermManager = null;
         _trainedConstraints.clear();
         _lattice = null;
-        PropertyLattice.resetAll();
     }
 
     public void setLogMode(boolean isLogMode) {
