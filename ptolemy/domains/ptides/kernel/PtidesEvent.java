@@ -34,6 +34,7 @@ import ptolemy.actor.util.Time;
 import ptolemy.data.Token;
 import ptolemy.domains.de.kernel.DEEvent;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NamedObj;
 
 //////////////////////////////////////////////////////////////////////////
@@ -62,15 +63,18 @@ public class PtidesEvent extends DEEvent {
      *  @param timeStamp The time when the event occurs.
      *  @param microstep The phase of execution within a fixed time.
      *  @param depth The topological depth of the destination actor.
+     *  @param absoluteDeadline The absolute deadline of this pure event.
      *  @exception IllegalActionException If the actor has a priority parameter,
      *  but its value cannot be obtained, which should be an integer.
      */
-    public PtidesEvent(Actor actor, IOPort ioPort, Time timeStamp, int microstep, int depth) 
+    public PtidesEvent(Actor actor, IOPort ioPort, Time timeStamp, int microstep, 
+            int depth, Time absoluteDeadline) 
             throws IllegalActionException {
         super(actor, timeStamp, microstep, depth);
         _ioPort = ioPort;
         _channel = 0;
         _isPureEvent = true;
+        _absoluteDeadline = absoluteDeadline;
     }
 
     /** Construct a trigger event with the specified destination IO port,
@@ -134,6 +138,18 @@ public class PtidesEvent extends DEEvent {
     public final Receiver receiver() {
         return _receiver;
     }
+    
+    /** Return the relative deadline of this event
+     *  @return relative deadline if the event is not a pure event.
+     */
+    public final Time absoluteDeadline() {
+        if (!isPureEvent()) {
+            throw new InternalErrorException("Event is not a pure event, " +
+                    "in which case the absolute deadline should be obtained " +
+                    "from the destination port of the event.");
+        }
+        return _absoluteDeadline;
+    }
 
     /** Return the token.
      *  @return The token.
@@ -170,12 +186,17 @@ public class PtidesEvent extends DEEvent {
     /** The channel this event is destined to */
     private int _channel;
 
-    /** The token associated with this event. */
-    private Token _token;
+    /** Boolean indicating whether this event is a pure event */
+    private boolean _isPureEvent;
 
     /** The receiver this token is destined at. */
     private Receiver _receiver;
     
-    /** Boolean indicating whether this event is a pure event */
-    private boolean _isPureEvent;
+    /** The relative deadline of this event. This field is used only when the
+     *  event is a pure event.
+     */
+    private Time _absoluteDeadline;
+
+    /** The token associated with this event. */
+    private Token _token;    
 }

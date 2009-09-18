@@ -366,43 +366,6 @@ public class PtidesPreemptiveEDFDirector extends PtidesBasicDirector {
         }
     }
 
-    /** This method analyzes whether an event is safe to process by
-     *  checking against physical time, and see if the event is safe to process. If
-     *  this is true, the event is safe to process, otherwise it is not.
-     *
-     */
-    protected boolean _safeToProcess(PtidesEvent event)
-    	    throws IllegalActionException {
-        
-        IOPort port = event.ioPort();
-        if (port == null) {
-            if (!event.isPureEvent()) {
-                throw new IllegalActionException(port, "Event is expected" +
-                    "to be a pure event, however it is not.");
-            }
-            // port could be null only if the event is a pure event, and the pure
-            // event is not causally related to any input port. thus the event
-            // is always safe to process.
-            return true;
-        }
-        // port is an output port, this could only happen if it is the output port
-        // of a composite actor. Thus transferOutput should take care of this, and
-        // we say it's always safe to process.
-        if (port.isOutput()) {
-            return true;
-        }     
-        double minDelay = _getMinDelay(port, ((PtidesEvent) event).channel(), event.isPureEvent());
-        Time waitUntilPhysicalTime = event.timeStamp().subtract(
-                minDelay);
-        if (getPhysicalTime().subtract(waitUntilPhysicalTime)
-                .compareTo(_zero) >= 0) {
-            return true;
-        } else {
-            _setTimedInterrupt(waitUntilPhysicalTime);
-            return false;
-        }
-    }
-    
     /** Sets the relativeDeadline parameter for an input port
      * @param inputPort The port to set the parameter.
      * @param dependency The value of the relativeDeadline to be set.
