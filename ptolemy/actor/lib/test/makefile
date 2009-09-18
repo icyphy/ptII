@@ -51,6 +51,7 @@ TCL_SRCS = \
 JSRCS = \
 	RampNecessaryFiles.java \
 	RecorderGeneral.java \
+    ReturnNonZero.java \
 	SleepFireTwice.java \
 	TestOrderedMerge.java
 
