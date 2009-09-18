@@ -337,6 +337,8 @@ public class Exec extends LimitedFiringSource {
             }
         }
 
+        boolean alreadySentOutput = false;
+
         try {
 
             // Close the stdin of the subprocess.
@@ -386,6 +388,7 @@ public class Exec extends LimitedFiringSource {
                     } else {
                         error.send(0, new StringToken(errorString));
                         output.send(0, new StringToken(outputString));
+                        alreadySentOutput = true;
                     }
                 }
 
@@ -401,18 +404,23 @@ public class Exec extends LimitedFiringSource {
 
         }
 
-        String outputString = _outputGobbler.getAndReset();
-        String errorString = _errorGobbler.getAndReset();
+        // if we sent output when the return value was non-zero, do not send
+        // additional output. 
+        // see http://bugzilla.ecoinformatics.org/show_bug.cgi?id=4326
+        if (!alreadySentOutput) {
+            String outputString = _outputGobbler.getAndReset();
+            String errorString = _errorGobbler.getAndReset();
 
-        if (_debugging) {
-            _debug("Exec: Error: '" + errorString + "'");
-            _debug("Exec: Output: '" + outputString + "'");
+            if (_debugging) {
+                _debug("Exec: Error: '" + errorString + "'");
+                _debug("Exec: Output: '" + outputString + "'");
+            }
+
+            // We could have a parameter that if it was set
+            // we would throw an exception if there was any error data.
+            error.send(0, new StringToken(errorString));
+            output.send(0, new StringToken(outputString));
         }
-
-        // We could have a parameter that if it was set
-        // we would throw an exception if there was any error data.
-        error.send(0, new StringToken(errorString));
-        output.send(0, new StringToken(outputString));
     }
 
     /** Override the base class and terminate the process.
