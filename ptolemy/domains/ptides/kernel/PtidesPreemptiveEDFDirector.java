@@ -219,6 +219,20 @@ public class PtidesPreemptiveEDFDirector extends PtidesBasicDirector {
         }
     }
 
+    /** Check to see if the current actor is already firing, in which case we should not preempt.
+     *  @return whether the current actor is firing or no.
+     */
+    protected boolean _currentlyFiring(Actor actor) {
+        for (int index = 0; index < _currentlyExecutingStack.size(); index++) {
+            DoubleTimedEvent doubleTimedEvent = _currentlyExecutingStack.get(0);
+            List<PtidesEvent> executingEvents = (List<PtidesEvent>)doubleTimedEvent.contents;
+            if (actor == executingEvents.get(0).actor()) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
     /** Returns the event that was selected to preempt in _preemptExecutingActor.
      *  If no event was selected, return the event of smallest deadline that is
      *  safe to process.
@@ -272,7 +286,7 @@ public class PtidesPreemptiveEDFDirector extends PtidesBasicDirector {
             }
 
             // The event from queue needs to be safe to process AND has smaller deadline.
-            if (_safeToProcess(event)) {
+            if (_safeToProcess(event) && !_currentlyFiring(event.actor())) {
                 Time absNextDeadline = _getAbsoluteDeadline(event);
                 if (absNextDeadline.compareTo(smallestDeadline) < 0) {
                     smallestDeadline = absNextDeadline;
@@ -286,7 +300,8 @@ public class PtidesPreemptiveEDFDirector extends PtidesBasicDirector {
                         result = eventIndex;
                     } // else if they are equal, take the previous event.
                 }
-            }
+            } // if the actor is currently firing, or if it's not safe to process, we
+              // do not considering firing it.
         }
 
         if (_eventToProcess == null) {
