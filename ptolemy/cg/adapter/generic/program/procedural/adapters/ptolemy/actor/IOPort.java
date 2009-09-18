@@ -30,8 +30,6 @@ package ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.cg.kernel.generic.PortCodeGenerator;
 import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
-import ptolemy.cg.kernel.generic.program.procedural.c.CCodeGenerator;
-import ptolemy.cg.kernel.generic.program.procedural.java.JavaCodeGenerator;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.Type;
 import ptolemy.kernel.util.IllegalActionException;
