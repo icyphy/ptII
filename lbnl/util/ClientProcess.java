@@ -174,7 +174,7 @@ public class ClientProcess extends Thread {
       * subprocess has already terminated. If the subprocess has not yet terminated, 
       * the calling thread will be blocked until the subprocess exits.
       *
-      *@returns the exit value of the process. By convention, 0 indicates normal termination. 
+      *@return the exit value of the process. By convention, 0 indicates normal termination. 
       *@exception InterruptedException if the current thread is interrupted by another thread 
       *           while it is waiting, then the wait is ended and an InterruptedException is thrown.
       */
