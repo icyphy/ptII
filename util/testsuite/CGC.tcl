@@ -163,19 +163,21 @@ foreach file [glob auto/*.xml] {
     #CGC_test $file false
     CGC_test $file false $coverageArgs
 }
-
-if {![java::call ptolemy.actor.lib.jni.PointerToken is32Bit]} {
-    puts "Skipping 32bit tests because we are on a 64bit machine"
-} else {
-    foreach file [glob auto/32bit/*.xml] {
-	# Set NOINLINE in the environment to skip the inline tests:
-	# NOINLINE=true $(JTCLSH) $(ROOT)/util/testsuite/CGCNoInline.tcl
-	global env
-	if { [java::call System getenv NOINLINE] != {true} } {
-	    CGC_test $file true
+if [file isdirectory auto/32bit] {
+    if {![java::call ptolemy.actor.lib.jni.PointerToken is32Bit]} {
+	puts "Skipping auto/32bit tests because we are on a 64bit machine"
+    } else {
+	puts "Running auto/32bit tests"
+	foreach file [glob auto/32bit/*.xml] {
+	    # Set NOINLINE in the environment to skip the inline tests:
+	    # NOINLINE=true $(JTCLSH) $(ROOT)/util/testsuite/CGCNoInline.tcl
+	    global env
+	    if { [java::call System getenv NOINLINE] != {true} } {
+		CGC_test $file true
+	    }
+	    #CGC_test $file false
+	    CGC_test $file false $coverageArgs
 	}
-	#CGC_test $file false
-	CGC_test $file false $coverageArgs
     }
 }
 # Print out stats
