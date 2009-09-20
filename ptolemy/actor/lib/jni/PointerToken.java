@@ -303,31 +303,10 @@ public class PointerToken extends Token {
         }
     }
 
-    /** The Pointer type: the least upper bound of all the pointer
-     *  types.
-     */
-    public static final Type POINTER = new PointerType();
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
-
-    private static void _check32Bit() {
-	if (!_checked32Bit) {
-	    // Check only once if we are on a 32 bit platform.
-	    _checked32Bit = true;
-	    _is32Bit = _is32Bit();
-	}
-	if (!_is32Bit) {
-	    throw new RuntimeException("PointerTokens do not work "
-				       + "under 64bit JVMs, see "
-				       + "https://chess.eecs.berkeley.edu/bugzilla/show_bug.cgi?id=285");
-	}
-    }
-
     /** Return true if this is a 32bit JVM.
      *  @return true if this is a 32bit JVM.
      */
-    static boolean _is32Bit() {
+    public static boolean is32Bit() {
 	String dataModelProperty = StringUtilities.getProperty("sun.arch.data.model");
 	// FIXME: it is difficult to detect if we are under a
 	// 64bit JVM.  See
@@ -343,6 +322,28 @@ public class PointerToken extends Token {
 	return true;
     }
 
+
+
+    /** The Pointer type: the least upper bound of all the pointer
+     *  types.
+     */
+    public static final Type POINTER = new PointerType();
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+    private static void _check32Bit() {
+	if (!_checked32Bit) {
+	    // Check only once if we are on a 32 bit platform.
+	    _checked32Bit = true;
+	    _is32Bit = is32Bit();
+	}
+	if (!_is32Bit) {
+	    throw new RuntimeException("PointerTokens do not work "
+				       + "under 64bit JVMs, see "
+				       + "https://chess.eecs.berkeley.edu/bugzilla/show_bug.cgi?id=285");
+	}
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////

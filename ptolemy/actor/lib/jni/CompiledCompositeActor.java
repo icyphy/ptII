@@ -793,7 +793,7 @@ public class CompiledCompositeActor extends TypedCompositeActor {
         // irrespective of the actual class name.  We override that here.
         setClassName("ptolemy.codegen.c.actor.CompiledCompositeActor");
 
-        if (PointerToken._is32Bit() && !_pointerTypeInitialized) {
+        if (PointerToken.is32Bit() && !_pointerTypeInitialized) {
             Constants.add("pointer", new PointerToken());
             _pointerTypeInitialized = true;
         }
