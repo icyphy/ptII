@@ -886,14 +886,13 @@ TimedDirector {
         return wcet;
     }
 
-    private Actor _getErrorHandler()
-    {
+    private Actor _getErrorHandler() {
         Actor actor= null;
         boolean errorActorFound = false;
         CompositeActor localCompositeActor = (CompositeActor) (getContainer());
         List actorList;
         ListIterator actors ;
-        while (errorActorFound == false){
+        while (errorActorFound == false && localCompositeActor != null) {
             actorList = localCompositeActor.deepEntityList();
             actors = actorList.listIterator();
             while (actors.hasNext()  && !errorActorFound){
