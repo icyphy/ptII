@@ -891,9 +891,11 @@ public abstract class Top extends JFrame {
             }
         }
 
-        if (pdfPrintService == null) {
+        if (pdfPrintService == null || foundPDFPrinter == false) {
             throw new PrinterException("Could not find a printer with the "
-                    + "string \"PDF\" in its name.");
+                    + "string \"PDF\" in its name.  Currently, the -printPDF "
+                    + "facility requires a PDF printer such as the non-free "
+                    + "full version of Adobe Acrobat.");
         }
 
         PrinterJob job = PrinterJob.getPrinterJob();
