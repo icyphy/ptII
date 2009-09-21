@@ -55,7 +55,7 @@ import ptolemy.util.StringUtilities;
  An operation to add or change an attribute.
 
  @author Thomas Huining Feng
- @version $Id: AttributeOperation.java 54815 2009-06-30 05:18:27Z tfeng $
+ @version $Id$
  @since Ptolemy II 8.0
  @Pt.ProposedRating Yellow (tfeng)
  @Pt.AcceptedRating Red (tfeng)

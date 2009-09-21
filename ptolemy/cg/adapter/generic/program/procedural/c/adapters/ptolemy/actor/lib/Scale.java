@@ -39,7 +39,7 @@ import ptolemy.kernel.util.IllegalActionException;
  An adapter class for ptolemy.actor.lib.Scale.
 
  @author Gang Zhou
- @version $Id: Scale.java 53042 2009-04-10 20:31:21Z cxh $
+ @version $Id$
  @since Ptolemy II 6.0
  @Pt.ProposedRating Green (mankit)
  @Pt.AcceptedRating Green (cxh)

@@ -41,7 +41,7 @@ import ptolemy.kernel.util.NamedObj;
  A criterion to constrain the name of an object in the host model.
 
  @author Thomas Huining Feng
- @version $Id: NameCriterion.java 55115 2009-07-20 22:03:15Z cxh $
+ @version $Id$
  @since Ptolemy II 8.0
  @Pt.ProposedRating Yellow (tfeng)
  @Pt.AcceptedRating Red (tfeng)
