@@ -46,6 +46,6 @@ import ptolemy.data.properties.lattice.PropertyLattice;
 public class True extends LatticeProperty {
 
     public True(PropertyLattice lattice) {
-        super(lattice);
+        super(lattice, "True");
     }
 }

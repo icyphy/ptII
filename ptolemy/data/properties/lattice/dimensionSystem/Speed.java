@@ -50,6 +50,6 @@ public class Speed extends LatticeProperty {
      * @param lattice
      */
     public Speed(PropertyLattice lattice) {
-        super(lattice);
+        super(lattice, "Speed");
     }
 }

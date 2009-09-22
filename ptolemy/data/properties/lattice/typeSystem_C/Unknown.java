@@ -48,7 +48,7 @@ import ptolemy.data.properties.lattice.TypeProperty;
 public class Unknown extends LatticeProperty implements TypeProperty {
 
     public Unknown(PropertyLattice lattice) {
-        super(lattice);
+        super(lattice, "Unknown");
     }
 
     public Token getMaxValue() {

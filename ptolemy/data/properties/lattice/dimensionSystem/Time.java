@@ -50,6 +50,6 @@ public class Time extends LatticeProperty {
      * @param lattice
      */
     public Time(PropertyLattice lattice) {
-        super(lattice);
+        super(lattice, "Time");
     }
 }

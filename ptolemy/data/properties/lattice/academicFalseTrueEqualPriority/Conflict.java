@@ -50,7 +50,7 @@ public class Conflict extends LatticeProperty {
      * @param lattice The given lattice.
      */
     public Conflict(PropertyLattice lattice) {
-        super(lattice);
+        super(lattice, "Conflict");
     }
 
     public boolean isAcceptableSolution() {

@@ -50,7 +50,7 @@ public class Top extends LatticeProperty {
      * @param lattice
      */
     public Top(PropertyLattice lattice) {
-        super(lattice);
+        super(lattice, "Top");
     }
 
     public boolean isAcceptableSolution() {

@@ -78,12 +78,23 @@ public class LatticeProperty extends Property implements PropertyTerm {
      * Return true if the given object is equal to this lattice property. Two
      * lattice properties are considered equal if they have the same name and
      * are from the same lattice.
+     * 
+     * Any instantiated LatticeProperty objects should use the
+     * LatticeProperty(Lattice lattice, String name) constructor so that
+     * the LatticeProperty's _name member is set to a value.
+     * Any subclasses of LatticeProperty should call this constructor in their
+     * constructor so that the property's _name is set correctly.
+     * If this is not done, then _name will be set to the empty string and
+     * will not have the correct value needed when the equals() method tests for
+     * equality between two LatticeProperty objects. 
      */
     public boolean equals(Object object) {
-        if (object instanceof LatticeProperty) {
-            if (_name.equals(((LatticeProperty) object)._name)) {
-                return _lattice.getName().equals(
-                        ((LatticeProperty) object)._lattice.getName());
+        if (object != null) {
+            if (object instanceof LatticeProperty) {
+                if (_name.equals(((LatticeProperty) object)._name)) {
+                    return _lattice.getName().equals(
+                            ((LatticeProperty) object)._lattice.getName());
+                }
             }
         }
         return false;

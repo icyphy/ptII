@@ -50,6 +50,6 @@ public class PowerSet extends LatticeProperty {
      * @param lattice
      */
     public PowerSet(PropertyLattice lattice) {
-        super(lattice);
+        super(lattice, "PowerSet");
     }
 }

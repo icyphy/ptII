@@ -46,6 +46,6 @@ import ptolemy.data.properties.lattice.PropertyLattice;
 public class Image extends LatticeProperty {
 
     public Image(PropertyLattice lattice) {
-        super(lattice);
+        super(lattice, "Image");
     }
 }

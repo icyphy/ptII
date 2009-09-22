@@ -51,7 +51,7 @@ import ptolemy.kernel.util.IllegalActionException;
 public class Float extends LatticeProperty implements TypeProperty {
 
     public Float(PropertyLattice lattice) {
-        super(lattice);
+        super(lattice, "Float");
     }
 
     public Token getMaxValue() {

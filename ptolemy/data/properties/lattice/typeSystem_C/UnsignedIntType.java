@@ -52,7 +52,14 @@ public abstract class UnsignedIntType extends LatticeProperty implements
         TypeProperty {
 
     public UnsignedIntType(PropertyLattice lattice) {
-        super(lattice);
+        super(lattice, "UnsignedIntType");
+    }
+    
+    // 09/21/09 - Charles Shelton
+    // Additional constructor needed for subclasses that inherit from UnsignedIntType
+    // so that they can also set their name member when declared.
+    public UnsignedIntType(PropertyLattice lattice, String name) {
+        super(lattice, name);
     }
 
     public abstract short getNumberBits();

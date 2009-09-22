@@ -50,6 +50,6 @@ public class EmptySet extends LatticeProperty {
      * @param lattice
      */
     public EmptySet(PropertyLattice lattice) {
-        super(lattice);
+        super(lattice, "EmptySet");
     }
 }

@@ -46,6 +46,6 @@ import ptolemy.data.properties.lattice.PropertyLattice;
 public class RGBImage extends LatticeProperty {
 
     public RGBImage(PropertyLattice lattice) {
-        super(lattice);
+        super(lattice, "RGBImage");
     }
 }

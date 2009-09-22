@@ -49,7 +49,7 @@ import ptolemy.domains.dde.kernel.NullToken;
 public class Void extends LatticeProperty implements TypeProperty {
 
     public Void(PropertyLattice lattice) {
-        super(lattice);
+        super(lattice, "Void");
     }
 
     public Token getMaxValue() {

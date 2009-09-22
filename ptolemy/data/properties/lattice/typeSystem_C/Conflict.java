@@ -48,7 +48,7 @@ import ptolemy.data.properties.lattice.TypeProperty;
 public class Conflict extends LatticeProperty implements TypeProperty {
 
     public Conflict(PropertyLattice lattice) {
-        super(lattice);
+        super(lattice, "Conflict");
     }
 
     public Token getMaxValue() {

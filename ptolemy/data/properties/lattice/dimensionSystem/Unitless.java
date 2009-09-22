@@ -50,7 +50,7 @@ public class Unitless extends LatticeProperty {
      * @param lattice
      */
     public Unitless(PropertyLattice lattice) {
-        super(lattice);
+        super(lattice, "Unitless");
     }
 
     public boolean isAcceptableSolution() {

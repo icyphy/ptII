@@ -50,6 +50,6 @@ public class Position extends LatticeProperty {
      * @param lattice
      */
     public Position(PropertyLattice lattice) {
-        super(lattice);
+        super(lattice, "Position");
     }
 }

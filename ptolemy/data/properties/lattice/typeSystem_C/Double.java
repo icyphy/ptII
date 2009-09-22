@@ -51,7 +51,7 @@ import ptolemy.kernel.util.IllegalActionException;
 public class Double extends LatticeProperty implements TypeProperty {
 
     public Double(PropertyLattice lattice) {
-        super(lattice);
+        super(lattice, "Double");
     }
 
     public Token getMaxValue() {

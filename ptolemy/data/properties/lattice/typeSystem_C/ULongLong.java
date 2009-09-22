@@ -45,7 +45,7 @@ import ptolemy.data.properties.lattice.PropertyLattice;
 public class ULongLong extends UnsignedIntType {
 
     public ULongLong(PropertyLattice lattice) {
-        super(lattice);
+        super(lattice, "ULongLong");
     }
 
     public short getNumberBits() {

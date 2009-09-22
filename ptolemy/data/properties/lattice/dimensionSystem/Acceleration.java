@@ -46,6 +46,6 @@ import ptolemy.data.properties.lattice.PropertyLattice;
 public class Acceleration extends LatticeProperty {
 
     public Acceleration(PropertyLattice lattice) {
-        super(lattice);
+        super(lattice, "Acceleration");
     }
 }

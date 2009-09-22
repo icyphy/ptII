@@ -45,7 +45,7 @@ import ptolemy.data.properties.lattice.PropertyLattice;
 public class UChar extends UnsignedIntType {
 
     public UChar(PropertyLattice lattice) {
-        super(lattice);
+        super(lattice, "UChar");
     }
 
     public short getNumberBits() {

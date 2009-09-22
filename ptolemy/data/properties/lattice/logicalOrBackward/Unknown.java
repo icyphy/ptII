@@ -50,7 +50,7 @@ public class Unknown extends LatticeProperty {
      * @param lattice
      */
     public Unknown(PropertyLattice lattice) {
-        super(lattice);
+        super(lattice, "Unknown");
     }
 
     public boolean isAcceptableSolution() {

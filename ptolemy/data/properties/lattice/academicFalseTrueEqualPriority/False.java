@@ -50,6 +50,6 @@ public class False extends LatticeProperty {
      * @param lattice The given lattice.
      */
     public False(PropertyLattice lattice) {
-        super(lattice);
+        super(lattice, "False");
     }
 }

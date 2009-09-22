@@ -52,7 +52,14 @@ public abstract class SignedIntType extends LatticeProperty implements
         TypeProperty {
 
     public SignedIntType(PropertyLattice lattice) {
-        super(lattice);
+        super(lattice, "SignedIntType");
+    }
+    
+    // 09/21/09 - Charles Shelton
+    // Additional constructor needed for subclasses that inherit from SignedIntType
+    // so that they can also set their name member when declared.
+    public SignedIntType(PropertyLattice lattice, String name) {
+        super(lattice, name);
     }
 
     public abstract short getNumberBits();

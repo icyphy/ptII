@@ -50,6 +50,6 @@ public class C extends LatticeProperty {
      * @param lattice
      */
     public C(PropertyLattice lattice) {
-        super(lattice);
+        super(lattice, "C");
     }
 }

@@ -45,7 +45,7 @@ import ptolemy.data.properties.lattice.PropertyLattice;
 public class Long extends SignedIntType {
 
     public Long(PropertyLattice lattice) {
-        super(lattice);
+        super(lattice, "Long");
     }
 
     public short getNumberBits() {

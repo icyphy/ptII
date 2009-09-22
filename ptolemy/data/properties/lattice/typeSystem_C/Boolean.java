@@ -49,7 +49,7 @@ import ptolemy.data.properties.lattice.TypeProperty;
 public class Boolean extends LatticeProperty implements TypeProperty {
 
     public Boolean(PropertyLattice lattice) {
-        super(lattice);
+        super(lattice, "Boolean");
     }
 
     public Token getMaxValue() {

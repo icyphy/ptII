@@ -46,6 +46,6 @@ import ptolemy.data.properties.lattice.PropertyLattice;
 public class GrayScaleImage extends LatticeProperty {
 
     public GrayScaleImage(PropertyLattice lattice) {
-        super(lattice);
+        super(lattice, "GrayScaleImage");
     }
 }

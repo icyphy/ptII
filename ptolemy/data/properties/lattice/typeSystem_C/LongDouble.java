@@ -51,7 +51,7 @@ import ptolemy.kernel.util.IllegalActionException;
 public class LongDouble extends LatticeProperty implements TypeProperty {
 
     public LongDouble(PropertyLattice lattice) {
-        super(lattice);
+        super(lattice, "LongDouble");
     }
 
     // FIXME: Is there a java representation for the C long double type?
