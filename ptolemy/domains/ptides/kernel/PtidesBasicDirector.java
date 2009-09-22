@@ -471,14 +471,19 @@ public class PtidesBasicDirector extends DEDirector {
      *   it or if there is no executive director.
      */
     public void initialize() throws IllegalActionException {
-        super.initialize();
         _currentlyExecutingStack = new Stack<DoubleTimedEvent>();
         _realTimeInputEventQueue = new PriorityQueue<RealTimeEvent>();
         _realTimeOutputEventQueue = new PriorityQueue<RealTimeEvent>();
         _lastConsumedTag = new HashMap<NamedObj, Tag>();
         _physicalTimeExecutionStarted = null;
+        
+        _lastAbsoluteDeadline = null;
+        _lastDependency = null;
+        _lastExecutingActor = null;
+        _lastSourcePort = null;
+        _lastTimestamp = null;
 
-        // _calculateModelTimeOffsets();
+        super.initialize();
 
         NamedObj container = getContainer();
         if (!(container instanceof Actor)) {
@@ -2152,6 +2157,12 @@ public class PtidesBasicDirector extends DEDirector {
      *  @see #_saveEventInformation(List)
      */
     private Time _absoluteDeadlineForPureEvent(Time nextTimestamp) {
+        // This could happen during initialization, and a modal model calls fireAt() in order
+        // to be initialized. In which case we give it the highest priority because it is
+        // an initialization event.
+        if (_lastTimestamp == null || _lastDependency == null) {
+            return Time.NEGATIVE_INFINITY;
+        }
         Time timeDiff = (nextTimestamp.subtract(_lastTimestamp)).subtract(_lastDependency.timeValue());
         // if the difference between the new timestamp and the old timestamp is 
         // less than the minimum model time delay, then the absolute deadline is
