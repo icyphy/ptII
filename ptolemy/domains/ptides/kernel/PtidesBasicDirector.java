@@ -102,6 +102,11 @@ public class PtidesBasicDirector extends DEDirector {
     public PtidesBasicDirector(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
+        
+//        for (Actor actor : (List<Actor>)((CompositeActor)getContainer()).deepEntityList()) {
+//            // this will update the causality interface of the contained actors.
+//            actor.getDirector().getCausalityInterface();
+//        }
 
         animateExecution = new Parameter(this, "animateExecution");
         animateExecution.setExpression("false");
@@ -527,7 +532,11 @@ public class PtidesBasicDirector extends DEDirector {
         super.preinitialize();
         // Initialize an event queue.
         _eventQueue = new PtidesListEventQueue();
+                
+//        ((CausalityInterfaceForComposites)getCausalityInterface()).invalidate();
+//        ((CausalityInterfaceForComposites)getCausalityInterface()).checkForCycles();
         _calculateMinDelayOffsets();
+        
         // In Ptides, we should never stop when queue is empty...
         stopWhenQueueIsEmpty.setExpression("false");
         _checkSensorActuatorNetworkConsistency();
@@ -666,6 +675,12 @@ public class PtidesBasicDirector extends DEDirector {
      *  @exception IllegalActionException
      */
     protected void _calculateMinDelayOffsets() throws IllegalActionException {
+        
+        // A set that keeps track of all the actors that have been traversed to. At the end of
+        // the traversal, if some actor is not visited, that means that actor is a source in
+        // the ptides director. Since we currently do not support sources within PTIDES directors,
+        // we throw an exception if sources are found.
+        Set visitedActors = new HashSet<Actor>();
 
         _clearMinDelayOffsets();
 
@@ -731,6 +746,10 @@ public class PtidesBasicDirector extends DEDirector {
                 IOPort port = (IOPort) portDependency.port;
                 SuperdenseDependency prevDependency = (SuperdenseDependency) portDependency.dependency;
                 Actor actor = (Actor) port.getContainer();
+                // if this actor has not been visited before, add it to the visitedActor set. 
+                if (!visitedActors.contains(actor)) {
+                    visitedActors.add(actor);
+                }
                 if (port.isInput() && port.isOutput()) {
                     throw new IllegalActionException(
                             "the causality analysis cannot deal with"
@@ -838,6 +857,8 @@ public class PtidesBasicDirector extends DEDirector {
             }
             portDelays = localPortDelays;
         }
+        
+        _checkEventSource(visitedActors);
 
         // inputModelTimeDelays is the delays as calculated through shortest path algorithm. Now we
         // need to use these delays to calculate the minDelay, which is calculated as follows:
@@ -2253,6 +2274,22 @@ public class PtidesBasicDirector extends DEDirector {
             }
         }
         return smallestDependency.timeValue();
+    }
+    
+    /** check to see if there are event sources inside of the ptides director. Currently the PTIDES
+     *  director does not support uch event sources inside PTIDES.
+     *  @throws IllegalActionException 
+     */
+    private void _checkEventSource(Set visitedActors) throws IllegalActionException {
+        for (Actor actor : (List<Actor>)((CompositeActor)getContainer()).deepEntityList()) {
+            if (!visitedActors.contains(actor)) {
+                throw new IllegalActionException(actor, "This actor is an event sources. i.e., " +
+                		"it can spontaneously produce events. This actor is not allowed " +
+                		"in the PTIDES director. Instead, it should be placed " +
+                		"outside in the containing DE director, and feeds its data " +
+                		"into the PTIDES director.");
+            }
+        }
     }
 
     /** This function is called when an pure event is produced. Given an actor, we need
