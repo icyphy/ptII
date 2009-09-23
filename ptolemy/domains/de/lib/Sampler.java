@@ -35,6 +35,7 @@ import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.graph.Inequality;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -126,6 +127,8 @@ public class Sampler extends DETransformer {
     public TypedIOPort trigger;
 
     /** The value that is output when no input has yet been received.
+     *  If this is changed during execution, then the output will match
+     *  the new value until another input is received.
      *  The type should be the same as the input port.
      *  @see #typeConstraints()
      */
@@ -133,6 +136,28 @@ public class Sampler extends DETransformer {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+    
+    /** If the <i>initialValue</i> parameter is the argument, then
+     *  reset the current output to match the new value.
+     *  @param attribute The attribute that changed.
+     *  @exception IllegalActionException If the change is not acceptable
+     *   to this container (not thrown in this base class).
+     */
+    public void attributeChanged(Attribute attribute) throws IllegalActionException {
+        if (attribute == initialValue) {
+            if (initialValue.getToken() != null) {
+                _lastInputs = new Token[input.getWidth()];
+
+                for (int i = 0; i < input.getWidth(); i++) {
+                    _lastInputs[i] = initialValue.getToken();
+                }
+            } else {
+                _lastInputs = null;
+            }
+        } else {
+            super.attributeChanged(attribute);
+        }
+    }
 
     /** Clone the actor into the specified workspace. This calls the
      *  base class and then sets the ports.
@@ -228,7 +253,7 @@ public class Sampler extends DETransformer {
     /** Clear the cached input tokens.
      *  @exception IllegalActionException If there is no director.
      */
-    public void preinitialize() throws IllegalActionException {
+    public void initialize() throws IllegalActionException {
         if (initialValue.getToken() != null) {
             _lastInputs = new Token[input.getWidth()];
 
@@ -239,7 +264,7 @@ public class Sampler extends DETransformer {
             _lastInputs = null;
         }
 
-        super.preinitialize();
+        super.initialize();
     }
 
     /** Override the method in the base class so that the type
