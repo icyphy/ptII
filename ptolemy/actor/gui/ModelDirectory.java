@@ -28,14 +28,18 @@ package ptolemy.actor.gui;
 
 import java.util.Iterator;
 import java.util.List;
+import java.net.URI;
+import java.net.URL;
 
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.attributes.URIAttribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.StringAttribute;
+import ptolemy.moml.MoMLParser;
 
 //////////////////////////////////////////////////////////////////////////
 //// ModelDirectory
@@ -126,6 +130,8 @@ public class ModelDirectory extends CompositeEntity {
 
         if (remainingEntities.size() == 0) {
             try {
+                // This clause gets called when File->Exit is invoked.
+                _purgeConfigurationURL();
                 setContainer(null);
             } catch (KernelException ex) {
                 throw new InternalErrorException("Cannot remove directory!");
@@ -138,6 +144,8 @@ public class ModelDirectory extends CompositeEntity {
                 if (remaining instanceof PtolemyEffigy) {
                     if (((PtolemyEffigy) remaining).getModel() instanceof Configuration) {
                         try {
+                            // This clause gets called when the window is closed.
+                            _purgeConfigurationURL();
                             setContainer(null);
                         } catch (KernelException ex) {
                             throw new InternalErrorException(
@@ -175,6 +183,37 @@ public class ModelDirectory extends CompositeEntity {
                     }
                 } catch (KernelException ex) {
                     throw new InternalErrorException("Cannot remove directory!");
+                }
+            }
+        }
+    }
+
+    /** If the configuration is present, then purge the model record
+     * of the configuration.  This is done so that if we re-read the configuration.xml
+     * file, then we get the ModelDirectory.
+     * This came up with applets that bring up a separate window from
+     * the browser.  To reproduce:
+     * <ol>
+     * <li> point your browser at a Ptolemy applet demo.</li>
+     * <li> The toplevel applet window containing the demo comes up.</li>
+     * <li> Close the toplevel applet window.</li>
+     * <li> Reload the browser page.</li>
+     * </ol>
+     * Formerly, we were seeing exceptions about missing directory.
+     */
+    private void _purgeConfigurationURL () {
+        if (getContainer() != null) {
+            List attributes = getContainer().attributeList(URIAttribute.class);
+            if (attributes.size() > 0) {
+                // The entity has a URI, which was probably
+                // inserted by MoMLParser.
+                URL url = null;
+                try {
+                    url = ((URIAttribute) attributes.get(0)).getURL();
+                    System.out.println("ModelDirectory: purging " + url);
+                    MoMLParser.purgeModelRecord(url);
+                } catch (Exception ex) {
+                    throw new InternalErrorException("Cannot purge " + url);
                 }
             }
         }

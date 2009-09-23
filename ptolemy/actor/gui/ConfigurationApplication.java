@@ -405,8 +405,12 @@ public class ConfigurationApplication implements ExecutionListener {
         MoMLParser parser = new MoMLParser();
         parser.reset();
 
-        Configuration configuration = (Configuration) parser.parse(
-                specificationURL, specificationURL);
+        Configuration configuration = null;
+        try {configuration = (Configuration) parser.parse(
+                    specificationURL, specificationURL);
+        } catch(Exception ex) {
+            ex.printStackTrace();
+        }
 
         // If the toplevel model is a configuration containing a directory,
         // then create an effigy for the configuration itself, and put it
@@ -1023,7 +1027,6 @@ public class ConfigurationApplication implements ExecutionListener {
                     if (_configuration != null) {
                         ModelDirectory directory = (ModelDirectory) _configuration
                                 .getEntity("directory");
-
                         if (directory == null) {
                             throw new InternalErrorException(
                                     "No model directory!");
