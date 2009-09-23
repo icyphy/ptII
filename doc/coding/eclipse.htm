@@ -966,5 +966,55 @@ Eclipse bogus entry in the start menu and then create a shortcut,
 change Start in property and then pin that shortcut to my start menu.
 
 
+<h2>Instructions for adding an actor in Eclipse</h2>
+Based on text by Mehran Meschian.
+<p>In this example, we copy <code>ptolemy/actor/lib/Ramp.java</code> and create a new actor
+called <code>Ramp2</code>
+<ol>
+<li> Open Eclipse and choose the work space that you have your Ptolemy project there (mine is PtII 7.0.1)
+<li> Open the PtII7.0.1 folder in eclipse and then open  Ptolemy -&gt; actor -&gt; lib -&gt; string
+<li> In string folder copy the java class (our simple actor)
+<li> Rename the java file to Bmh and debug the errors that come because of this renaming.
+<li> At the first line of the java codes add:     package ptolemy.actor.lib.string;
+
+<li> When there is no more error Run the java file and you should see a Bmh.class file in the tree as well (In the string branch). For now close the GUI window that opened after running.
+
+<li>	In the same place that Bmh.java and Bmh.class files exist, there is a string.xml file. Open it.
+<li>	At the top of the eclipse console, you should see two options: Design & Source. Click on Source to see the content of the xml <li>.	Add the following bold and red text to the location in the xml file. Then save and run the xml file:
+<pre>
+&lt;property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon"&gt;
+          &lt;property name="attributeName" value="function"/&gt;
+          &lt;property name="displayWidth" value="11"/&gt;
+        &lt;/property&gt;
+      &lt;/entity&gt;
+
+      &lt;entity name="Bmh" class="ptolemy.actor.lib.string.Bmh"&gt;
+       &lt;doc&gt;Boyer Moore Horspool&lt;/doc&gt;
+      &lt;/entity&gt;
+
+      &lt;entity name="StringIndexOf" class="ptolemy.actor.lib.string.StringIndexOf"&gt;
+       &lt;doc&gt;Output the length of an input string&lt;/doc&gt;
+      &lt;/entity&gt;
+</pre>
+<li>	Again in the same tree there is makefile. Open and add the following bold and red text to the location and save and run:
+<pre>
+PTDIST =        $(PTPACKAGE)$(PTVERSION)
+PTCLASSJAR = 	$(PTPACKAGE).jar
+
+# Keep this list alphabetized.
+JSRCS = \
+        Bmh.java \
+	StringCompare.java \
+	StringFunction.java \
+	StringIndexOf.java \
+	StringLength.java \
+	StringMatches.java \
+</pre>
+<li>	Now, back to your Bmh.java and run it again. You should see the welcome window of Vergil.
+<li>	Now in the window, go to file- &gt; New -&gt; Graph editor. You should see a new window of graph editor.
+<li>	Go to Graph -&gt; instantiate Entity. Then type Ptolemy.actor.lib.string.Bmh in the class name and you will see our Bmh actor in the window.
+<li>	Right click on the actor and choose Save Actor in Library. Now if you open the User Library (left side) you can see the Bmh actor there.
+<li>	In the case after all of these steps it doesn't work, restart your eclipse and make sure you have saved your xml file and there are Bmh.java and Bmh.class there. If again it doesn't work, there should be something wrong regarding your Ptolemy installation in eclipse. Hope not!!
+
 </body>
 </html>
