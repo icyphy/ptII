@@ -463,6 +463,13 @@ public class PtidesBasicDirector extends DEDirector {
 
         // Since we are now actually stopping the firing, we can set this false.
         _stopFireRequested = false;
+        
+        // At the end of firing, clear the private variables used to keep track of
+        // the consumed event.
+        _lastAbsoluteDeadline = null;
+        _lastDependency = null;
+        _lastSourcePort = null;
+        _lastTimestamp = null;
 
         if (_debugging) {
             _debug("PtidesBasicDirector fired!");
@@ -680,13 +687,13 @@ public class PtidesBasicDirector extends DEDirector {
         // the traversal, if some actor is not visited, that means that actor is a source in
         // the ptides director. Since we currently do not support sources within PTIDES directors,
         // we throw an exception if sources are found.
-        Set visitedActors = new HashSet<Actor>();
+        _visitedActors = new HashSet<Actor>();
 
         _clearMinDelayOffsets();
 
         // A map that saves a dependency for a port channel pair. This dependency is later used to
         // calculate minDelay.
-        Map inputModelTimeDelays = new HashMap<IOPort, Map<Integer, SuperdenseDependency>>();
+        _inputModelTimeDelays = new HashMap<IOPort, Map<Integer, SuperdenseDependency>>();
 
         // NOTE: In portDelays and localPortDelays, which saves the corresponding model time delays
         // for real-time ports to a particular port, we act as if each starting input port (which
@@ -701,16 +708,16 @@ public class PtidesBasicDirector extends DEDirector {
         // FIXME: If there are composite actors within the top level composite actor,
         // does this algorithm work?
         // initialize all port model delays to infinity.
-        HashMap portDelays = new HashMap<IOPort, SuperdenseDependency>();
+        _portDelays = new HashMap<IOPort, SuperdenseDependency>();
         for (Actor actor : (List<Actor>) (((TypedCompositeActor) getContainer())
                 .deepEntityList())) {
             for (TypedIOPort inputPort : (List<TypedIOPort>) (actor
                     .inputPortList())) {
-                portDelays.put(inputPort, SuperdenseDependency.OPLUS_IDENTITY);
+                _portDelays.put(inputPort, SuperdenseDependency.OPLUS_IDENTITY);
             }
             for (TypedIOPort outputPort : (List<TypedIOPort>) (actor
                     .outputPortList())) {
-                portDelays.put(outputPort, SuperdenseDependency.OPLUS_IDENTITY);
+                _portDelays.put(outputPort, SuperdenseDependency.OPLUS_IDENTITY);
             }
         }
 
@@ -725,140 +732,44 @@ public class PtidesBasicDirector extends DEDirector {
             } else {
                 startDelay = SuperdenseDependency.valueOf(-_getRealTimeDelay(inputPort), 0);
             }
-            portDelays.put(inputPort, startDelay);
+            _portDelays.put(inputPort, startDelay);
         }
         // Now start from each sensor (input port at the top level), traverse through all
         // ports.
         for (TypedIOPort startPort : (List<TypedIOPort>) (((TypedCompositeActor) getContainer())
                 .inputPortList())) {
-            // Setup a local priority queue to store all reached ports
-            HashMap localPortDelays = new HashMap<IOPort, SuperdenseDependency>(
-                    portDelays);
-
-            PriorityQueue distQueue = new PriorityQueue<PortDependency>();
-            distQueue.add(new PortDependency(startPort,
-                    (SuperdenseDependency) localPortDelays.get(startPort)));
-
-            // Dijkstra's algorithm to find all shortest time delays.
-            while (!distQueue.isEmpty()) {
-                PortDependency portDependency = (PortDependency) distQueue
-                        .remove();
-                IOPort port = (IOPort) portDependency.port;
-                SuperdenseDependency prevDependency = (SuperdenseDependency) portDependency.dependency;
-                Actor actor = (Actor) port.getContainer();
-                // if this actor has not been visited before, add it to the visitedActor set. 
-                if (!visitedActors.contains(actor)) {
-                    visitedActors.add(actor);
-                }
-                if (port.isInput() && port.isOutput()) {
-                    throw new IllegalActionException(
-                            "the causality analysis cannot deal with"
-                                    + "port that are both input and output");
-                }
-                // we do not want to traverse to the outside of the platform.
-                if (actor != getContainer()) {
-                    if (port.isInput()) {
-                        Collection<IOPort> outputs = _finiteDependentPorts(port);
-                        for (IOPort outputPort : outputs) {
-                            SuperdenseDependency minimumDelay = (SuperdenseDependency) _getDependency(
-                                    port, outputPort);
-                            // FIXME: what do we do with the microstep portion of the dependency?
-                            // need to make sure we did not visit this port before.
-                            SuperdenseDependency modelTime = (SuperdenseDependency) prevDependency
-                                    .oTimes(minimumDelay);
-                            if (((SuperdenseDependency) localPortDelays
-                                    .get(outputPort)).compareTo(modelTime) > 0) {
-                                localPortDelays.put(outputPort, modelTime);
-                                distQueue.add(new PortDependency(outputPort,
-                                        modelTime));
-                            }
-                        }
-                    } else { // port is an output port
-                        // For each receiving port channel pair, add the dependency in inputModelTimeDelays.
-                        // We do not need to check whether there already exists a dependency because if
-                        // a dependency already exists for that pair, that dependency must have a greater
-                        // value, meaning it should be replaced. This is because the output port that
-                        // led to that pair would not be in distQueue if it the dependency was smaller.
-                        Receiver[][] remoteReceivers = port
-                                .getRemoteReceivers();
-                        if (remoteReceivers != null) {
-                            for (int i = 0; i < remoteReceivers.length; i++) {
-                                if (remoteReceivers[0] != null) {
-                                    for (int j = 0; j < remoteReceivers[i].length; j++) {
-                                        IOPort sinkPort = remoteReceivers[i][j]
-                                                                             .getContainer();
-                                        int channel = sinkPort
-                                        .getChannelForReceiver(remoteReceivers[i][j]);
-                                        // we do not want to traverse to the outside of the platform.
-                                        if (sinkPort.getContainer() != getContainer()) {
-                                            // for this port channel pair, add the dependency.
-                                            Map<Integer, SuperdenseDependency> channelDependency = (Map<Integer, SuperdenseDependency>) inputModelTimeDelays
-                                            .get(sinkPort);
-                                            if (channelDependency == null) {
-                                                channelDependency = new HashMap<Integer, SuperdenseDependency>();
-                                            }
-                                            channelDependency.put(Integer
-                                                    .valueOf(channel), prevDependency);
-                                            inputModelTimeDelays.put(sinkPort,
-                                                    channelDependency);
-                                            // After updating dependencies, we need to decide whether we should keep traversing
-                                            // the graph.
-                                            if (((SuperdenseDependency) localPortDelays
-                                                    .get(sinkPort))
-                                                    .compareTo(prevDependency) > 0) {
-                                                localPortDelays.put(sinkPort,
-                                                        prevDependency);
-                                                distQueue.add(new PortDependency(
-                                                        sinkPort, prevDependency));
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                } else if (port == startPort) {
-                    // The (almost) same code (except for getting receivers) is used if the
-                    // port is a startPort or an output port.
-                    // This does not support input/output port, should it?
-                    Receiver[][] deepReceivers = port.deepGetReceivers();
-                    for (int i = 0; i < deepReceivers.length; i++) {
-                        for (int j = 0; j < deepReceivers[i].length; j++) {
-                            IOPort sinkPort = deepReceivers[i][j]
-                                    .getContainer();
-                            int channel = sinkPort
-                                    .getChannelForReceiver(deepReceivers[i][j]);
-                            // we do not want to traverse to the outside of the deepReceivers.
-                            if (sinkPort.getContainer() != getContainer()) {
-                                // for this port channel pair, add the dependency.
-                                Map<Integer, SuperdenseDependency> channelDependency = (Map<Integer, SuperdenseDependency>) inputModelTimeDelays
-                                        .get(sinkPort);
+            _traverseToCalcMinDelay(startPort);
+        }
+        
+        // for all unvisited actors, the sink port that's connected to its output ports
+        // should be annotated with dependency SuperdenseDependency.OPLUS_IDENTITY,
+        // because events arriving at these ports are always safe to process.
+        for (Actor actor : (List<Actor>)((CompositeActor)getContainer()).deepEntityList()) {
+            if (!_visitedActors.contains(actor)) {
+                for (IOPort port : (List<IOPort>)actor.outputPortList()) {
+                    Receiver[][] remoteReceivers = port.getRemoteReceivers();
+                    for (int i = 0; i < remoteReceivers.length; i++) {
+                        if (remoteReceivers[0] != null) {
+                            for (int j = 0; j < remoteReceivers[i].length; j++) {
+                                Receiver receiver = remoteReceivers[i][j];
+                                IOPort receivePort = receiver.getContainer();
+                                int channel = receivePort.getChannelForReceiver(receiver);
+                                Map<Integer, SuperdenseDependency> channelDependency = 
+                                    (Map<Integer, SuperdenseDependency>) _inputModelTimeDelays
+                                        .get(receivePort);
                                 if (channelDependency == null) {
                                     channelDependency = new HashMap<Integer, SuperdenseDependency>();
                                 }
                                 channelDependency.put(Integer.valueOf(channel),
-                                        prevDependency);
-                                inputModelTimeDelays.put(sinkPort,
+                                        SuperdenseDependency.OPLUS_IDENTITY);
+                                _inputModelTimeDelays.put(receivePort,
                                         channelDependency);
-                                // After updating dependencies, we need to decide whether we should keep traversing
-                                // the graph.
-                                if (((SuperdenseDependency) localPortDelays
-                                        .get(sinkPort))
-                                        .compareTo(prevDependency) > 0) {
-                                    localPortDelays.put(sinkPort,
-                                            prevDependency);
-                                    distQueue.add(new PortDependency(sinkPort,
-                                            prevDependency));
-                                }
                             }
                         }
                     }
                 }
             }
-            portDelays = localPortDelays;
         }
-        
-        _checkEventSource(visitedActors);
 
         // inputModelTimeDelays is the delays as calculated through shortest path algorithm. Now we
         // need to use these delays to calculate the minDelay, which is calculated as follows:
@@ -868,14 +779,13 @@ public class PtidesBasicDirector extends DEDirector {
         // If this smallest value does not exist, then the event arriving at this port channel pair
         // is always safe to process, thus minDelay does not change (it was by default set to
         // double.POSITIVE_INFINITY.
-        for (IOPort inputPort : (Set<IOPort>) inputModelTimeDelays.keySet()) {
-            Map<Integer, SuperdenseDependency> channelDependency = (Map<Integer, SuperdenseDependency>) inputModelTimeDelays
-                    .get(inputPort);
-            //            Map<Integer, SuperdenseDependency> minDelays = new HashMap<Integer, SuperdenseDependency>();
+        for (IOPort inputPort : (Set<IOPort>) _inputModelTimeDelays.keySet()) {
+            Map<Integer, SuperdenseDependency> channelDependency = 
+                (Map<Integer, SuperdenseDependency>) _inputModelTimeDelays.get(inputPort);
             double[] minDelays = new double[channelDependency.size()];
             for (Integer portChannelMinDelay : channelDependency.keySet()) {
                 minDelays[portChannelMinDelay.intValue()] = _calculateMinDelayForPortChannel(
-                        inputPort, portChannelMinDelay, inputModelTimeDelays);
+                        inputPort, portChannelMinDelay);
             }
             _setMinDelay(inputPort, minDelays);
         }
@@ -1258,14 +1168,16 @@ public class PtidesBasicDirector extends DEDirector {
      *  @return executionTime parameter
      *  @exception IllegalActionException
      */
-    protected static double _getExecutionTime(IOPort port)
+    protected static double _getExecutionTime(IOPort port, Actor actor)
             throws IllegalActionException {
-        Double result = PtidesActorProperties.getExecutionTime(port);
+        Double result = null;
+        if (port != null) {
+            result = PtidesActorProperties.getExecutionTime(port);
+        }
         if (result != null) {
             return result;
         } else {
-            return PtidesActorProperties.getExecutionTime((Actor) port
-                    .getContainer());
+            return PtidesActorProperties.getExecutionTime(actor);
         }
     }
 
@@ -1505,7 +1417,9 @@ public class PtidesBasicDirector extends DEDirector {
         IOPort ioPort = eventFromQueue.ioPort();
         if (ioPort == null) {
             List<IOPort> inPortList = eventFromQueue.actor().inputPortList();
-            ioPort = inPortList.get(0);
+            if (inPortList.size() > 0) {
+                ioPort = inPortList.get(0);
+            }
         }
           
         // If the firing of this event triggered another pure event, we need to calculate the
@@ -1514,7 +1428,7 @@ public class PtidesBasicDirector extends DEDirector {
         // which we save here.
         _saveEventInformation(eventsToProcess);
         
-        Time executionTime = new Time(this, _getExecutionTime(ioPort));
+        Time executionTime = new Time(this, _getExecutionTime(ioPort, actorToFire));
 
         if (executionTime.compareTo(_zero) == 0) {
             // If execution time is zero, return the actor.
@@ -2243,14 +2157,12 @@ public class PtidesBasicDirector extends DEDirector {
      *  @exception IllegalActionException
      */
     private double _calculateMinDelayForPortChannel(IOPort inputPort,
-            Integer channel,
-            Map<IOPort, Map<Integer, SuperdenseDependency>> inputModelTimeDelays)
-            throws IllegalActionException {
+            Integer channel) throws IllegalActionException {
         SuperdenseDependency smallestDependency = SuperdenseDependency.OPLUS_IDENTITY;
         // for each port that's in the same equivalence class as the input port,
         for (IOPort port : (Collection<IOPort>) _finiteEquivalentPorts(inputPort)) {
             Map<Integer, SuperdenseDependency> channelDependency = 
-                (Map<Integer, SuperdenseDependency>) inputModelTimeDelays.get(port);
+                (Map<Integer, SuperdenseDependency>) _inputModelTimeDelays.get(port);
             if (channelDependency != null) {
                 for (Integer integer : channelDependency.keySet()) {
                     if (((BooleanToken) actorsReceiveEventsInTimestampOrder.getToken()).booleanValue()) {
@@ -2276,22 +2188,6 @@ public class PtidesBasicDirector extends DEDirector {
         return smallestDependency.timeValue();
     }
     
-    /** check to see if there are event sources inside of the ptides director. Currently the PTIDES
-     *  director does not support uch event sources inside PTIDES.
-     *  @throws IllegalActionException 
-     */
-    private void _checkEventSource(Set visitedActors) throws IllegalActionException {
-        for (Actor actor : (List<Actor>)((CompositeActor)getContainer()).deepEntityList()) {
-            if (!visitedActors.contains(actor)) {
-                throw new IllegalActionException(actor, "This actor is an event sources. i.e., " +
-                		"it can spontaneously produce events. This actor is not allowed " +
-                		"in the PTIDES director. Instead, it should be placed " +
-                		"outside in the containing DE director, and feeds its data " +
-                		"into the PTIDES director.");
-            }
-        }
-    }
-
     /** This function is called when an pure event is produced. Given an actor, we need
      *  to return whether the pure event is causally related to a set of input ports.
      *  If it does, return one input port from that equivalence class, otherwise, return
@@ -2463,9 +2359,147 @@ public class PtidesBasicDirector extends DEDirector {
         }
         return false;
     }
+    
+    /** Starting from the startPort, traverse the graph to calculate the minDelay offset.
+     *  @throws IllegalActionException 
+     */
+    private void _traverseToCalcMinDelay(IOPort startPort) throws IllegalActionException {
+        // Setup a local priority queue to store all reached ports
+        HashMap localPortDelays = new HashMap<IOPort, SuperdenseDependency>(
+                _portDelays);
+
+        PriorityQueue distQueue = new PriorityQueue<PortDependency>();
+        distQueue.add(new PortDependency(startPort,
+                (SuperdenseDependency) localPortDelays.get(startPort)));
+
+        // Dijkstra's algorithm to find all shortest time delays.
+        while (!distQueue.isEmpty()) {
+            PortDependency portDependency = (PortDependency) distQueue
+                    .remove();
+            IOPort port = (IOPort) portDependency.port;
+            SuperdenseDependency prevDependency = (SuperdenseDependency) portDependency.dependency;
+            Actor actor = (Actor) port.getContainer();
+            // if this actor has not been visited before, add it to the visitedActor set. 
+            if (!_visitedActors.contains(actor)) {
+                _visitedActors.add(actor);
+            }
+            if (port.isInput() && port.isOutput()) {
+                throw new IllegalActionException(
+                        "the causality analysis cannot deal with"
+                                + "port that are both input and output");
+            }
+            // we do not want to traverse to the outside of the platform.
+            if (actor != getContainer()) {
+                if (port.isInput()) {
+                    Collection<IOPort> outputs = _finiteDependentPorts(port);
+                    for (IOPort outputPort : outputs) {
+                        SuperdenseDependency minimumDelay = (SuperdenseDependency) _getDependency(
+                                port, outputPort);
+                        // FIXME: what do we do with the microstep portion of the dependency?
+                        // need to make sure we did not visit this port before.
+                        SuperdenseDependency modelTime = (SuperdenseDependency) prevDependency
+                                .oTimes(minimumDelay);
+                        if (((SuperdenseDependency) localPortDelays
+                                .get(outputPort)).compareTo(modelTime) > 0) {
+                            localPortDelays.put(outputPort, modelTime);
+                            distQueue.add(new PortDependency(outputPort,
+                                    modelTime));
+                        }
+                    }
+                } else { // port is an output port
+                    // For each receiving port channel pair, add the dependency in inputModelTimeDelays.
+                    // We do not need to check whether there already exists a dependency because if
+                    // a dependency already exists for that pair, that dependency must have a greater
+                    // value, meaning it should be replaced. This is because the output port that
+                    // led to that pair would not be in distQueue if it the dependency was smaller.
+                    Receiver[][] remoteReceivers = port
+                            .getRemoteReceivers();
+                    if (remoteReceivers != null) {
+                        for (int i = 0; i < remoteReceivers.length; i++) {
+                            if (remoteReceivers[0] != null) {
+                                for (int j = 0; j < remoteReceivers[i].length; j++) {
+                                    IOPort sinkPort = remoteReceivers[i][j]
+                                                                         .getContainer();
+                                    int channel = sinkPort
+                                    .getChannelForReceiver(remoteReceivers[i][j]);
+                                    // we do not want to traverse to the outside of the platform.
+                                    if (sinkPort.getContainer() != getContainer()) {
+                                        // for this port channel pair, add the dependency.
+                                        Map<Integer, SuperdenseDependency> channelDependency = 
+                                            (Map<Integer, SuperdenseDependency>) _inputModelTimeDelays
+                                        .get(sinkPort);
+                                        if (channelDependency == null) {
+                                            channelDependency = new HashMap<Integer, SuperdenseDependency>();
+                                        }
+                                        channelDependency.put(Integer
+                                                .valueOf(channel), prevDependency);
+                                        _inputModelTimeDelays.put(sinkPort,
+                                                channelDependency);
+                                        // After updating dependencies, we need to decide whether we should keep traversing
+                                        // the graph.
+                                        if (((SuperdenseDependency) localPortDelays
+                                                .get(sinkPort))
+                                                .compareTo(prevDependency) > 0) {
+                                            localPortDelays.put(sinkPort,
+                                                    prevDependency);
+                                            distQueue.add(new PortDependency(
+                                                    sinkPort, prevDependency));
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            } else if (port == startPort) {
+                // The (almost) same code (except for getting receivers) is used if the
+                // port is a startPort or an output port.
+                // This does not support input/output port, should it?
+                Receiver[][] deepReceivers = port.deepGetReceivers();
+                for (int i = 0; i < deepReceivers.length; i++) {
+                    for (int j = 0; j < deepReceivers[i].length; j++) {
+                        IOPort sinkPort = deepReceivers[i][j]
+                                .getContainer();
+                        int channel = sinkPort
+                                .getChannelForReceiver(deepReceivers[i][j]);
+                        // we do not want to traverse to the outside of the deepReceivers.
+                        if (sinkPort.getContainer() != getContainer()) {
+                            // for this port channel pair, add the dependency.
+                            Map<Integer, SuperdenseDependency> channelDependency = 
+                                (Map<Integer, SuperdenseDependency>) _inputModelTimeDelays
+                                    .get(sinkPort);
+                            if (channelDependency == null) {
+                                channelDependency = new HashMap<Integer, SuperdenseDependency>();
+                            }
+                            channelDependency.put(Integer.valueOf(channel),
+                                    prevDependency);
+                            _inputModelTimeDelays.put(sinkPort,
+                                    channelDependency);
+                            // After updating dependencies, we need to decide whether we should keep traversing
+                            // the graph.
+                            if (((SuperdenseDependency) localPortDelays
+                                    .get(sinkPort))
+                                    .compareTo(prevDependency) > 0) {
+                                localPortDelays.put(sinkPort,
+                                        prevDependency);
+                                distQueue.add(new PortDependency(sinkPort,
+                                        prevDependency));
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        _portDelays = localPortDelays;
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                     private variables                     ////
+    
+    /** Maps input ports to model time delays. These model time delays are then used
+     *  to calculate the minDelay parameter, which is used for safe to process analysis.
+     */
+    private Map _inputModelTimeDelays;
     
     /** The absolute deadline of the last executing event.
      */
@@ -2502,6 +2536,10 @@ public class PtidesBasicDirector extends DEDirector {
      *  last resumed execution.
      */
     private Time _physicalTimeExecutionStarted;
+    
+    /** Maps ports to dependencies. Used to determine minDelay parameter
+     */
+    private Map _portDelays;
 
     /** a sorted queue of RealTimeEvents that buffer events before they are sent to the output.
      */
@@ -2511,6 +2549,10 @@ public class PtidesBasicDirector extends DEDirector {
      *  the platform, but are not yet visible to the platform (because of real time delay d_o)
      */
     private PriorityQueue _realTimeInputEventQueue;
+    
+    /** A set that keeps track of visited actors during minDelay calculation.
+     */
+    private Set _visitedActors;
 
     ///////////////////////////////////////////////////////////////////
     ////                     inner classes                         ////
