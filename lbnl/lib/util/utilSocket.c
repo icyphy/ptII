@@ -236,7 +236,7 @@ int getIntCheckError(const char *nptr, char **endptr, const int base,
     if (strlen(nptr) < 1) {
         fprintf(stderr, "strtol() was called with a string of length less than 1. This can occur when no data is read.\n");
     } else {
-        fprintf(stderr, "strtol was called with strtol(%s, %x, %d)\n", nptr, endptr, base);
+        fprintf(stderr, "strtol was called with strtol(%s, %s, %d)\n", nptr, *endptr, base);
     }
     return EXIT_FAILURE;
   }
