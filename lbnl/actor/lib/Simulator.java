@@ -481,6 +481,7 @@ public class Simulator extends SDFTransformer {
             com.add(st.nextToken());
         }
         cliPro = new ClientProcess();
+	cliPro.redirectErrorStream(true);
         cliPro.setProcessArguments(com, worDir);
         File slf = simulationLogFile.asFile();
         try {
