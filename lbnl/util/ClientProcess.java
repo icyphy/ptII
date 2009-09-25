@@ -111,6 +111,14 @@ public class ClientProcess extends Thread {
         stdErr = new StringBuilder();
     }
 
+    /** Redirects the standard error stream to the standard output stream
+     *
+     *@param flag if true, redirects the standard error stream to the standard output stream
+     */
+    public void redirectErrorStream(boolean flag){
+	redErrStr = flag;
+    }
+
     /** Sets the simulation log file.
      *  @param simLogFil The log file.
      */
@@ -130,7 +138,7 @@ public class ClientProcess extends Thread {
         try {
             proSta = false;
             pb.directory(worDir);
-            pb.redirectErrorStream(true);
+	    pb.redirectErrorStream(redErrStr);
             // FIXME: should we call simPro.exitValue() and destroy() 
             simPro = pb.start();
             proSta = true;
@@ -313,7 +321,7 @@ public class ClientProcess extends Thread {
                         }
                         pwLogFil.println(line);
                         pwLogFil.flush();
-                        stdOut.append(line);
+                        stdErr.append(line);
                     }
                 } catch (java.io.IOException e) {
                     e.printStackTrace();
@@ -414,6 +422,9 @@ public class ClientProcess extends Thread {
     protected PrintOutput priStdOut;
     /** The thread that captures the standard error stream. */
     protected PrintStderr priStdErr;
+
+    /** Flag, if true, redirects the standard error stream to the standard output stream */
+    protected boolean redErrStr;
 
     /** Main method for testing.
      *  @param args  Commands to pass to the client process.
