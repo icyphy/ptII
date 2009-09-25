@@ -1,7 +1,8 @@
-# Makefile for Building Controls Virtual Test Bed
+# Makefile for Building Controls Virtual Test Bed C language Room demo 
 #
-# @Version: $Id$
-# @Author: Christopher Brooks (makefile only)
+# @Authors: Christopher Hylands (makefile only)
+#
+# @Version: $Id: makefile 55744 2009-09-20 15:40:10Z cxh $
 #
 # @Copyright (c) 2009 The Regents of the University of California.
 # All rights reserved.
@@ -28,50 +29,71 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		lbnl/demo
+ME =		lbnl/demo/SystemCommand
 
-# Keep these alphabetical please.
-# Names should be well-formed java identifiers:
-# - Initial Capitalization
-# - CamelCase
-# - No dashes
-# - Underbars are not preferred
-DIRS = 		CRoom MatlabRoom SystemCommand
+# Root of the Java directory
+ROOT =		../../..
 
-
-# Root of Ptolemy II directory
-ROOT =		../..
+CLASSPATH =	$(ROOT)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	demo
-PTCLASSJAR =
+PTPACKAGE = 	SystemCommand
+PTCLASSJAR = 	$(PTPACKAGE).jar
 
-# Include the .class files from these jars in PTCLASSALLJAR
-PTCLASSALLJARS = \
-	CRoom/CRoom.jar \
-	MatlabRoom/MatlabRoom.jar \
-	SystemCommand/SystemCommand.jar
+JSRCS = \
+	Simulate.java
 
-PTCLASSALLJAR = $(PTPACKAGE).jar
+# Have meaning of life last so that make demo shows it on top.
+MODELS= \
+	SystemCommand.xml
+
+OTHER_FILES_TO_BE_JARED = \
+	$(MODELS) \
+	Simulate.java Simulate.class
+
+
+EXTRA_SRCS = \
+	$(JSRCS) \
+	$(OTHER_FILES_TO_BE_JARED) \
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES = 	$(DIRS)
+MISC_FILES = 
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make realclean removes OPTIONAL_FILES
-OPTIONAL_FILES = \
-	doc
+OPTIONAL_FILES = 
 
-all: suball
+JCLASS = $(JSRCS:%.java=%.class)
 
-install: jclass jars
+# KRUFT is used by make clean
+KRUFT = simulation.log outputX1.txt outputX2.txt Simulate.class
 
-demo: subdemo
+# Don't include all or install rules here, we want the user
+# to run 'make demos' to run the tests.
+all: 
+	@echo "To run all the demos, run 'make demo'"
 
-# Get the rest of the rules
+install: all jars
+
+# Run the demo in all its different formats
+demo: jars demo_vergil
+
+demo_vergil: 
+	CLASSPATH=.; \
+	PATH="`pwd`:$(PTII)/lib:$(PATH)"; export PATH; \
+	LD_LIBRARY_PATH="`pwd`:$(PTII)/lib:$(LD_LIBRARY_PATH)"; export LD_LIBRARY_PATH; \
+	DYLD_LIBRARY_PATH="`pwd`:$(PTII)/lib:$(DYLD_LIBRARY_PATH)"; export DYLD_LIBRARY_PATH; \
+	"$(PTII)/bin/vergil" \
+		$(MODELS)
+
+# PTCC is set in $PTII/mk/ptII.mk
+# See also ptolemy/matlab/makefile
+SHARED_LIBRARY = $(PTJNI_SHAREDLIBRARY_PREFIX)$(SHAREDBASE).$(PTJNI_SHAREDLIBRARY_SUFFIX)
+
+
 include $(ROOT)/mk/ptcommon.mk
