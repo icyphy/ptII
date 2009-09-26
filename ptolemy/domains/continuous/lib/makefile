@@ -57,6 +57,7 @@ JSRCS = \
 	ZeroOrderHold.java
 
 OTHER_FILES_TO_BE_JARED = \
+	ContinuousTimeDelayIcon.xml \
 	ContinuousSinewave.xml \
 	continuousentities.xml \
 	dynamics.xml \
