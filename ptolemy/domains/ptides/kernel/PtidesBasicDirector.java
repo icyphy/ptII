@@ -2152,7 +2152,6 @@ public class PtidesBasicDirector extends DEDirector {
     /** For a particular input port channel pair, find the min delay.
      *  @param inputPort The input port to find min delay for.
      *  @param channel The channel at this input port.
-     *  @param inputModelTimeDelays Port channel pairs with associated dependency.
      *  @return The min delay associated with this port channel pair.
      *  @exception IllegalActionException
      */
@@ -2271,7 +2270,6 @@ public class PtidesBasicDirector extends DEDirector {
      *  the source port of the last firing event, the timestamp, absolute deadline,
      *  and the minimum model time delay of the last executing event. These information
      *  is used to calculate the absolute deadline of the produced pure event.
-     *  @see #_absoluteDeadlineForPureEvent()
      *  @param eventsToProcess
      *  @throws IllegalActionException
      */
