@@ -268,7 +268,7 @@ as arguments of a system command.</text></svg></configure>
     <entity name="SystemCommand" class="lbnl.actor.lib.SystemCommand">
         <property name="programName" class="ptolemy.data.expr.FileParameter" value="java">
         </property>
-        <property name="programArguments" class="ptolemy.data.expr.Parameter" value="&quot;Simulate $time $X1 $X2&quot;">
+        <property name="programArguments" class="ptolemy.data.expr.Parameter" value="&quot;-cp ../../.. lbnl.demo.SystemCommand.Simulate $time $X1 $X2&quot;">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[330.0, 290.0]">
         </property>
