@@ -202,6 +202,9 @@ public class TimeDelay extends Transformer {
         // be produced at the current time before the current input
         // arrives, that token is produced. While the current input
         // is delayed to the next available firing at the current time.
+        //
+        // If we observe events in the queue that have expired,
+        // discard them here.
         Time currentTime = getDirector().getModelTime();
         _currentOutput = null;
 
