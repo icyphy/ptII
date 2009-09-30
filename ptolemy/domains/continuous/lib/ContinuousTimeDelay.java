@@ -212,17 +212,17 @@ public class ContinuousTimeDelay extends Transformer {
         }
     }
 
-    /**
-     * Generate output for this actor, either by using the initial value (during
-     * transient behavior), or finding or interpolating the delayed signal from
-     * input buffers.
+    /*
+     * Consume input (if available) and produce output for this actor, either
+     * by using the initial value (during transient behavior), or finding or
+     * interpolating the delayed signal from input buffers.
      * 
      * The goal is to determine the input signal at the current time less delay.
-     * We refer to this point as the center point. If the center point occurs during
-     * the transient period of this actor and an initial value is present, then
-     * output the initial value. Otherwise, if the input buffer contains the
-     * center point, we simply output the recorded token and discard it from the
-     * input buffer.
+     * We refer to this point as the center point. If the center point occurs
+     * during the transient period of this actor and an initial value is
+     * present, then output the initial value. Otherwise, if the input buffer
+     * contains the center point, we simply output the recorded token and
+     * discard it from the input buffer.
      * 
      * If the center point was not recorded in the input buffer, then find the
      * most recent event that occurred before the center point, and label it the
@@ -241,9 +241,6 @@ public class ContinuousTimeDelay extends Transformer {
      * and is output on a refire at the same physical time. The left point is
      * ignored.
      * 
-     * Input is not consumed in the fire() method; only values from the input
-     * buffer are considered.
-     * 
      * @exception IllegalActionException
      */
     public void fire() throws IllegalActionException {
@@ -255,7 +252,23 @@ public class ContinuousTimeDelay extends Transformer {
         TimedEvent rightEvent = null;
         _currentOutput = null;
         
-         // Discard expired input events that will never be considered
+        // Consume input; if input is absent, do not add an event to the output queue,
+        // as it will force the scheduler to fire this actor to produce an absent output.
+        // Otherwise, the solver step size is prevented from increasing as delayed
+        // absent events are present everywhere in the signal. This would result in
+        // monotonically decreasing solver step size that quickly converges to the minimum
+        // allowed step size, effectively bypassing the solver logic and slowing simulation.
+        if(input.hasToken(0)){
+            Token inputToken = input.get(0);
+            if(!inputToken.equals(AbsentToken.ABSENT)){
+                _inputBuffer.put(new TimedEvent(currentTime, inputToken));
+            }
+            else{
+                inputToken = null;
+            }
+        }
+
+        // Discard expired input events that will never be considered
         // by the solver. These are events that have timestamps before
         // the current time less delay.
         while(_inputBuffer.size() > 0){
@@ -290,8 +303,8 @@ public class ContinuousTimeDelay extends Transformer {
             _inputBuffer.take();
         }
         // If the current time is less than the delay time, output the initial value
-        else if(rightEvent != null && currentTime.compareTo(new Time(getDirector(), _delay)) < 0){
-            _currentOutput = (Token)rightEvent.contents;
+        else if(currentTime.compareTo(new Time(getDirector(), _delay)) < 0){
+            _currentOutput = initialOutput.getToken();
         }
         // If the center point is during the transient delay period, output initial value
         // If the current time is equal to the center time (delay=0), but the event was
@@ -338,32 +351,10 @@ public class ContinuousTimeDelay extends Transformer {
         // left continuity of an input signal.
     }
 
-    /** Process the current input and place in the input buffer. Refire
-     *  the actor in the case of simultaneous events or zero delay.
+    /** Schedule the next output event.
      *  @exception IllegalActionException 
      */
     public boolean postfire() throws IllegalActionException {
-        Time currentTime = getDirector().getModelTime();
-        Time centerTime = currentTime.subtract(_delay);
-        
-        Token inputToken = null;
-
-        // Consume input; if input is absent, do not add an event to the output queue,
-        // as it will force the scheduler to fire this actor to produce an absent output.
-        // Otherwise, the solver step size is prevented from increasing as delayed
-        // absent events are present everywhere in the signal. This would result in
-        // monotonically decreasing solver step size that quickly converges to the minimum
-        // allowed step size, effectively bypassing the solver logic and slowing simulation.
-        if(input.hasToken(0)){
-            inputToken = input.get(0);
-            if(!inputToken.equals(AbsentToken.ABSENT)){
-                _inputBuffer.put(new TimedEvent(currentTime, inputToken));
-            }
-            else{
-                inputToken = null;
-            }
-        }
-
         // Schedule the next output event. This event may fire at the same
         // physical time in the case of zero delay or simultaneous events.
         if(_inputBuffer.size() > 0){
@@ -388,13 +379,14 @@ public class ContinuousTimeDelay extends Transformer {
      *  @exception IllegalActionException If the superclass throws it.
      */
     public boolean isStrict(){
-        //FIXME: Strictness depends on presence of an initial value; is this implemented correctly?
-        try {
+        //FIXME: Does strictness depend on presence of an initial value?
+        return true;
+        /*try {
             Token t = initialOutput.getToken(); 
             return t == null;
         } catch (IllegalActionException e) {
             return true;
-        }
+        }*/
     }
     
     ///////////////////////////////////////////////////////////////////
