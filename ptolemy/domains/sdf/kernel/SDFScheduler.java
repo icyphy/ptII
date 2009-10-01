@@ -1689,7 +1689,7 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
                             + "\nNote that there are many reasons why a graph cannot be "
                             + "scheduled:\n"
                             + "* SDF Graphs with feedback loops should have an actor "
-                            + "with a delay in the loop, such as VariableDelay."
+                            + "with a delay in the loop, such as a SampleDelay."
                             + "* The SDF director has an \"allowDisconnectedGraphs\""
                             + "parameter, which, when true, permits disconnected "
                             + "SDF graphs.\n"
