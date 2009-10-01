@@ -378,6 +378,10 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
             Iterator vergilJarFileNames = vergilJarFiles.iterator();
             while (vergilJarFileNames.hasNext()) {
                 String jarFileName = (String) vergilJarFileNames.next();
+                if (modelJarFiles.contains(jarFileName)) {
+                    continue;
+                }
+
 
                 if (jarFilesResults.length() > 0) {
                     jarFilesResults.append(",");
@@ -615,19 +619,13 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
                 CodeGeneratorUtilities.substitute(_templateDirectory
                         + "modelJnlp.htm.in", _substituteMap, _outputDirectory
                         + "/" + _sanitizedModelName + ".htm");
-            } else {
-                if (!(new File(_outputDirectory + File.separator
+            }
+            if (!(new File(_outputDirectory + File.separator
                         + _sanitizedModelName + "Vergil.htm").exists())) {
-                    CodeGeneratorUtilities.substitute(_templateDirectory
-                            + "modelJnlp.htm.in", _substituteMap,
-                            _outputDirectory + "/" + _sanitizedModelName
-                                    + "Vergil.htm");
-                } else {
-                    CodeGeneratorUtilities.substitute(_templateDirectory
-                            + "modelJnlp.htm.in", _substituteMap,
-                            _outputDirectory + "/" + _sanitizedModelName
-                                    + "JNLP.htm");
-                }
+                CodeGeneratorUtilities.substitute(_templateDirectory
+                        + "modelVergil.htm.in", _substituteMap,
+                        _outputDirectory + "/" + _sanitizedModelName
+                        + "Vergil.htm");
             }
             CodeGeneratorUtilities.substitute(_templateDirectory
                     + "model.jnlp.in", _substituteMap, jnlpSourceFileName);
@@ -1331,16 +1329,19 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
         // list of directories.  Instead, we get the primary offenders.
         jarFilesThatHaveBeenRequired.add("ptolemy/actor/actor.jar");
         jarFilesThatHaveBeenRequired.add("ptolemy/actor/lib/lib.jar");
-        jarFilesThatHaveBeenRequired.add("ptolemy/ptolemy.jar");
+        jarFilesThatHaveBeenRequired.add("ptolemy/data/data.jar");
         jarFilesThatHaveBeenRequired.add("ptolemy/kernel/kernel.jar");
+        jarFilesThatHaveBeenRequired.add("ptolemy/ptolemy.jar");
 
         boolean fixJarFiles = _copyJarFiles(classMap,
                 jarFilesThatHaveBeenRequired);
 
         jarFilesThatHaveBeenRequired.remove("ptolemy/actor/actor.jar");
         jarFilesThatHaveBeenRequired.remove("ptolemy/actor/lib/lib.jar");
-        jarFilesThatHaveBeenRequired.remove("ptolemy/ptolemy.jar");
+        jarFilesThatHaveBeenRequired.remove("ptolemy/data/data.jar");
         jarFilesThatHaveBeenRequired.remove("ptolemy/kernel/kernel.jar");
+        jarFilesThatHaveBeenRequired.remove("ptolemy/ptolemy.jar");
+
 
         File potentialDomainJarFile = new File(_ptIIJarsPath, _domainJar);
 
@@ -1564,6 +1565,7 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
             try {
                 fileInputStream = new FileInputStream(keystorePropertiesFileName);
                 properties.load(fileInputStream);
+                keystoreFileName = properties.getProperty("keystoreFileName");
                 storePassword = properties.getProperty("storePassword");
                 keyPassword = properties.getProperty("keyPassword");
                 alias = properties.getProperty("alias");
@@ -1581,7 +1583,9 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
         }
 
         System.out.println("About to sign \"" + jarFileName
-                + "\" and create \"" + signedJarFileName + "\"");
+                + "\" and create \"" + signedJarFileName + "\""
+                + " using keystore: \"" + keystoreFileName + "\""
+                + " and alias: \"" + alias + "\""); 
         File signedJarFile = new File(signedJarFileName);
         File parent = signedJarFile.getParentFile();
         if (parent != null) {

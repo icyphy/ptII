@@ -807,3 +807,33 @@ maven:
 			fi ; \
 		done ; \
 	fi
+
+####################################
+# Create jnlps using copernicus.  See doc/books/design/modal/makefile
+# EXAMPLE_MODELS should contain the model files names
+jnlps:
+	@if [ "x$(EXAMPLE_MODELS)" != "x" ]; then \
+		echo "<html>" > index.htm; \
+		echo "<head>" >> index.htm; \
+		echo "<title>$(ME) Models</title>" >> index.htm; \
+		echo "</head>" >> index.htm; \
+		echo "<!--#include virtual=\"/ssi/toppremenu.htm\" -->" >> index.htm; \
+		echo "<!--#include virtual=\"toc.htm\" -->" >> index.htm; \
+		echo "<!--#include virtual=\"/ssi/toppostmenu.htm\" -->" >> index.htm; \
+		echo "<h2>Models</h2>" >> index.htm; \
+		echo "<ul>" >> index.htm; \
+		echo "<div id=\"menu\">" > toc.htm; \
+		echo "<ul>" >> toc.htm; \
+		echo "<li><a href=\"/index.htm\">Home</a></li>" >> toc.htm; \
+		echo "<h2>Demos</h2>" >> toc.htm; \
+		set $(EXAMPLE_MODELS); \
+		for x do \
+			(cd $(ROOT); $(MAKE) JNLP_MODEL=`basename $$x .xml` JNLP_MODEL_DIRECTORY=$(ME) book_dist_update); \
+			echo "<li> <a href=\"`basename $$x .xml`.htm\">`basename $$x .xml`</a></li>" >> index.htm; \
+			echo "<li> <a href=\"`basename $$x .xml`.htm\">`basename $$x .xml`</a></li>" >> toc.htm; \
+		done; \
+		echo "</ul>" >> index.htm; \
+		echo "<!--#include virtual=\"/ssi/bottom.htm\" -->" >> index.htm; \
+		echo "</div><!-- /#menu -->" >> toc.htm; \
+	fi;
+	chmod a+x index.htm

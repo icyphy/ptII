@@ -570,7 +570,7 @@ ALL_JNLP_JARS = \
 # To use Web Start, we have to sign the jars.
 KEYDNAME = "CN=Claudius Ptolemaus, OU=Your Project, O=Your University, L=Your Town, S=Your State, C=US "
 KEYSTORE = ptKeystore
-KEYALIAS = claudius
+KEYALIAS = ptolemy
 # The password should not be stored in a makefile, for production
 # purposes, run something like:
 #
@@ -963,15 +963,19 @@ $(JAR_DIST_DIR): $(NATIVE_SIGNED_LIB_JARS)
 # Jarfiles used by applet code generation
 CODEGEN_DOMAIN_JARS = \
 	ptolemy/domains/ci/ci.jar \
+	ptolemy/domains/continuous/continuous.jar \
 	ptolemy/domains/ct/ct.jar \
 	ptolemy/domains/ddf/ddf.jar \
 	ptolemy/domains/de/de.jar \
 	ptolemy/domains/fsm/fsm.jar \
 	ptolemy/domains/gr/gr.jar \
 	ptolemy/domains/hdf/hdf.jar \
+	ptolemy/domains/modal/modal.jar \
 	ptolemy/domains/pn/pn.jar \
 	ptolemy/domains/sdf/sdf.jar \
-	ptolemy/domains/wireless/wireless.jar
+	ptolemy/domains/sr/sr.jar \
+	ptolemy/domains/wireless/wireless.jar \
+	ptolemy/vergil/vergilApplet.jar 
 
 UNJAR_JARS = \
 	ptolemy/actor/gui/jnlp/jnlp.jar \
@@ -1066,11 +1070,12 @@ jnlp_dist_1:
 		KEYALIAS="$(KEYALIAS2)" \
 		PTII_LOCALURL="$(DIST_URL)" jnlp_sign
 
+WEBSERVER=bennett
 jnlp_dist_update:
 	tar -cf - $(SIGNED_DIR) $(JNLPS) \
 		$(OTHER_FILES_TO_BE_DISTED) | \
-		ssh bennett "cd $(DIST_DIR); gtar -xvpf -"
-	scp doc/webStartHelp.htm bennett:$(DIST_DIR)
+		ssh $(WEBSERVER) "cd $(DIST_DIR); gtar -xvpf -"
+	scp doc/webStartHelp.htm $(WEBSERVER):$(DIST_DIR)
 
 jnlp_dist_nightly:
 	gmake STOREPASSWORD="-storepass `cat $(HOME)/.certpw`" KEYSTORE=/users/ptII/adm/certs/ptkeystore KEYPASSWORD="-keypass `cat $(HOME)/.certpw`" KEYSTORE2=/users/ptII/adm/certs/ptkeystore jnlp_dist
@@ -1078,8 +1083,8 @@ jnlp_dist_nightly:
 # Used to update gr and codeDoc.jar
 DIST_JAR=/export/home/pt0/ptweb/ptolemyII/ptII8.0/$(PTVERSION)
 update_gr_codeDoc:
-	scp ptolemy/domains/gr/gr.jar bennett:$(DIST_JAR)/ptolemy/domains/gr
-	ssh bennett "cd $(DIST_JAR)/doc; jar -xf ../../jnlp-$(PTVERSION)/signed/doc/codeDoc.jar"
+	scp ptolemy/domains/gr/gr.jar $(WEBSERVER):$(DIST_JAR)/ptolemy/domains/gr
+	ssh $(WEBSERVER) "cd $(DIST_JAR)/doc; jar -xf ../../jnlp-$(PTVERSION)/signed/doc/codeDoc.jar"
 
 APPLET_FILES_TO_BE_UPDATED = \
 	$(CODEGEN_DOMAIN_JARS) \
@@ -1087,16 +1092,16 @@ APPLET_FILES_TO_BE_UPDATED = \
 	ptolemy/gui/demo/*.class
 
 update_applet_files:
-	tar -cf - $(APPLET_FILES_TO_BE_UPDATED) | ssh bennett "cd $(DIST_JAR); gtar -xvf -"
-	ssh bennett "cd $(DIST_JAR)/doc; jar -xf codeDoc.jar; mv doc/codeDoc .; rmdir doc"
+	tar -cf - $(APPLET_FILES_TO_BE_UPDATED) | ssh $(WEBSERVER) "cd $(DIST_JAR); gtar -xvf -"
+	ssh $(WEBSERVER) "cd $(DIST_JAR)/doc; jar -xf codeDoc.jar; mv doc/codeDoc .; rmdir doc"
 
 #make KEYALIAS=ptolemy STOREPASSWORD="-storepass xxx" KEYPASSWORD="-keypass xxx" KEYSTORE=ptkeystore PTII_LOCALURL=http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII4.0/jnlp-4.0 jnlp_sign
 
 jnlp_dist_update_remote:
-	scp doc/webStartHelp.htm bennett:$(DIST_DIR)
+	scp doc/webStartHelp.htm $(WEBSERVER):$(DIST_DIR)
 	tar -cf - $(SIGNED_DIR) $(JNLPS) \
 		$(OTHER_FILES_TO_BE_DISTED) | \
-		ssh bennett "cd $(DIST_DIR); tar -xpf -"
+		ssh $(WEBSERVER) "cd $(DIST_DIR); tar -xpf -"
 
 
 sign_jar_dist: 
@@ -1105,7 +1110,7 @@ sign_jar_dist:
 		"$(JARFILE)" "$(KEYALIAS2)"
 
 sign_jar_dist_update_remote: sign_jar_dist
-	scp $(JARFILE) bennett:$(DIST_DIR)/$(JARFILE)
+	scp $(JARFILE) $(WEBSERVER):$(DIST_DIR)/$(JARFILE)
 
 ################################################################
 ################################################################
@@ -1445,3 +1450,110 @@ osgi_demo_test:
 	ptolemy/util/util.jar \
 	ptolemy/domains/demo/demo.jar \
 	ptolemy/domains/domains.jar
+
+################################################################################
+# Rules used to to create jnlp files for doc/books
+#
+# To build the complete set of signed jars, you will need access to
+# our key, which is in /users/ptII/adm/certs/ptkeystore on $(WEBSERVER)
+# 1. To build all the jars and copy them to the webserver:
+# make KEYSTORE=/users/ptII/adm/certs/ptkeystore KEYALIAS=ptolemy STOREPASSWORD="-storepass xxxxxx" KEYPASSWORD="-keypass xxxxxx" DIST_BASE=ptolemyII/ptII8.0/jnlp-books jnlp_dist
+# This will create /export/home/pt0/ptweb/ptolemyII/ptII8.0/jnlp-books
+#
+# 2. Set up ptII/ptKeystore.properties to contain the path to the keystore,
+# the passwords and the alias.  This file is used by copernicus to create signed jars.
+#
+# 3. Clean up any previous work
+# make book_real_clean
+#
+# 3. To create a JNLP file for one model and upload it
+# make JNLP_MODEL=ExtendedFSM JNLP_MODEL_DIRECTORY=doc/books/design/modal KEYSTORE=/users/ptII/adm/certs/ptkeystore KEYALIAS=ptolemy STOREPASSWORD="-storepass xxxxxx" KEYPASSWORD="-keypass xxxxx" DIST_BASE=ptolemyII/ptII8.0/jnlp-books book_dist_update
+
+
+# The name of the model, without the .xml extension.
+JNLP_MODEL =		CapriciousThermostat
+
+# The path, relative from ptII that contains the model.
+JNLP_MODEL_DIRECTORY =	doc/books/design/modal
+
+################################################################### 
+# For jnlp files, you should not need to modify anything below here
+################################################################### 
+
+# The .xml file that contains the model, relative to $PTII.
+JNLP_MODEL_FILE =	$(JNLP_MODEL_DIRECTORY)/$(JNLP_MODEL).xml
+
+# The .jnlp file that is produced by $PTII/bin/copernicus.
+JNLP_FILE =		$(JNLP_MODEL_DIRECTORY)/$(JNLP_MODEL).jnlp
+
+# The main .htm file that is produced by $PTII/bin/copernicus
+JNLP_HTM =		$(JNLP_MODEL_DIRECTORY)/$(JNLP_MODEL).htm
+
+# The main .htm file that is produced by $PTII/bin/copernicus
+JNLP_VERGIL_HTM =		$(JNLP_MODEL_DIRECTORY)/$(JNLP_MODEL)Vergil.htm
+
+# A fixed version of the .jnlp file that has the URL updated.
+JNLP_FILE_FIXED	=	$(JNLP_FILE).fixed
+
+# The signed jar file to be created that contains a copy of the .jnlp file
+JNLP_JAR =		$(JNLP_MODEL_DIRECTORY)/signed_$(JNLP_MODEL).jar
+
+
+# Create the .jnlp file by running copernicus on the .xml file that contains the model.
+$(JNLP_FILE): $(JNLP_MODEL_FILE)
+	(cd $(JNLP_MODEL_DIRECTORY); $(PTII)/bin/copernicus -codeGenerator applet -run false -targetPath $(JNLP_MODEL_DIRECTORY) $(JNLP_MODEL).xml)
+
+# Shortcut to create the jnlp file.  Try "make book"
+book: $(JNLP_FILE_FIXED)
+book_clean:
+	rm -f $(JNLP_FILE_FIXED) 
+book_real_clean:
+	rm -f $(JNLP_FILE_FIXED) $(JNLP_FILE)
+
+# Fix the jnlp file by substituting in the proper URL
+$(JNLP_FILE_FIXED): $(JNLP_FILE)
+	# Fix the JNLP File
+	sed -e "s@<jnlp codebase=\".*\"@<jnlp codebase=\"$(DIST_URL)\"@" \
+	    -e "s@\(^ *href=\"\).*\(/[^/]*\)@\1$(DIST_URL)/$(JNLP_MODEL_DIRECTORY)\2@" \
+	    $(JNLP_FILE) > $(JNLP_FILE_FIXED)
+	-diff $(JNLP_FILE) $(JNLP_FILE_FIXED)
+	# Updating the jar file with the fixed JNLP file
+	rm -rf tmpjar
+	mkdir tmpjar
+	(cd tmpjar; \
+		"$(JAR)" -xvf ../$(JNLP_JAR); \
+		rm -rf JNLP-INF META-INF; \
+		mkdir JNLP-INF; \
+		cp ../$@ JNLP-INF/APPLICATION.JNLP; \
+		"$(JAR)" -cvf ../$(JNLP_JAR) .)
+	rm -rf tmpjar
+	# Signing the jar file
+	"$(JARSIGNER)" \
+		-keystore "$(KEYSTORE)" \
+		$(STOREPASSWORD) \
+		$(KEYPASSWORD) \
+		$(JNLP_JAR) "$(KEYALIAS)"
+	"$(JARSIGNER)" -verify -verbose -certs $(JNLP_JAR)
+
+
+# We have two sets (!) of jar files: unsigned for applets and signed for JNLP Web Start
+#
+# Set #1: Update applet jar files
+book_dist_applet_update: $(JNLP_FILE_FIXED)
+	APPLET_JARS=`grep jar $(JNLP_FILE_FIXED) | awk -F \" '{print $$2}' | grep -v signed_ | sed  's@signed/@@'`; \
+	tar -cf - $$APPLET_JARS | \
+		ssh $(WEBSERVER) "cd $(DIST_DIR); gtar -xvpf -"
+
+# Set #2: Update jnlp jar files.  Usually don't need to run this as make ... jnlp_dist will do it.
+book_dist_jnlp_update: $(JNLP_FILE_FIXED)
+	JNLP_JARS=`grep jar $(JNLP_FILE_FIXED) | awk -F \" '{print $$2}' | grep -v signed_`; \
+	tar -cf - $$JNLP_JARS | \
+		ssh $(WEBSERVER) "cd $(DIST_DIR); gtar -xvpf -"
+
+# Update the website.
+book_dist_update: $(JNLP_FILE_FIXED)
+	pwd
+	tar -cf - $(JNLP_MODEL_FILE) $(JNLP_JAR) $(JNLP_FILE_FIXED) $(JNLP_HTM) $(JNLP_VERGIL_HTM) doc/deployJava.js doc/deployJava.txt | \
+		ssh $(WEBSERVER) "cd $(DIST_DIR); gtar -xvpf -"
+	ssh $(WEBSERVER) "cd $(DIST_DIR); mv $(JNLP_FILE_FIXED) $(JNLP_FILE)"
+	ssh $(WEBSERVER) "chmod a+x $(DIST_DIR)/$(JNLP_HTM)"

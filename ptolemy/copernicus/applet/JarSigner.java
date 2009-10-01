@@ -42,6 +42,7 @@ import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
 import java.security.spec.DSAPrivateKeySpec;
 import java.security.spec.KeySpec;
+import java.security.spec.RSAPrivateKeySpec;
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.Map;
@@ -176,8 +177,14 @@ public class JarSigner {
                         + "\" from keystore \"" + keystoreFileName + "\"");
             }
             KeyFactory keyFactory = KeyFactory.getInstance(key.getAlgorithm());
-            KeySpec keySpec = keyFactory.getKeySpec(key,
-                    DSAPrivateKeySpec.class);
+            KeySpec keySpec = null;
+            try {
+                keySpec = keyFactory.getKeySpec(key,
+                        DSAPrivateKeySpec.class);
+            } catch (java.security.spec.InvalidKeySpecException ex) {
+                keySpec = keyFactory.getKeySpec(key,
+                        RSAPrivateKeySpec.class);
+            }
             PrivateKey privateKey = keyFactory.generatePrivate(keySpec);
             JarSigner jarSigner = new JarSigner("ptolemy", privateKey,
                     certChain);

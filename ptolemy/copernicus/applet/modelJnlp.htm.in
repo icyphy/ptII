@@ -6,35 +6,30 @@
 <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
 <link href="@codeBase@/doc/default.css" rel="stylesheet" type="text/css">
 <TITLE>@sanitizedModelName@</TITLE>
-</HEAD>
-<BODY>
+<!--#include virtual="/ssi/toppremenu.htm" -->
+<!--#include virtual="toc.htm" -->
+<!--#include virtual="/ssi/toppostmenu.htm" -->
+<!-- /HEAD -->
+<!-- BODY -->
 <H1>@sanitizedModelName@</H1>
 <P>
-The @sanitizedModelName@ model shown using Vergil, the Ptolemy II schematic editor:
-
-<CENTER>
-<!-- PT JNLP APPLET CONVERTER -->
-<!-- We use both the older applet style and the JDK1.6.0_10 and later
-     JNLP Applets.  In this way, we can support pre-JDK1.6.0_10 installs.
-     See https://jdk6.dev.java.net/plugin2/jnlp/ -->
-<APPLET 
-   code = "ptolemy.vergil.VergilApplet"
-   codebase = "@codeBase@"
-   archive = "@modelJarFiles@,@vergilJarFiles@"
-   width = "@appletWidth@"
-   height = "@appletHeight@"
-   >
-  <PARAM name="jnlp_href" value="@targetPath@@sanitizedModelName@.jnlp">
-  <PARAM NAME = "commandLineArguments" VALUE = "@configurationName@ @targetPath@@sanitizedModelName@.xml">
-  <PARAM NAME = "NAME" VALUE = "@sanitizedModelName@" >
-  <PARAM NAME = "background" VALUE = "#ffffff" >
-  <PARAM NAME = "controls" VALUE = "buttons" >
-  <PARAM NAME = "orientation" VALUE = "vertical" > \
-  <PARAM NAME = "modelURL" VALUE = "@sanitizedModelName@.xml" > \
-  <a href="@sanitizedModelName@.xml">MoML specification for this model.</a> \
-</APPLET>
-<!-- /PT JNLP APPLET CONVERTER -->
-</CENTER>
+@sanitizedModelName@ is available in two formats:
+<ul>
+  <li> As a Web Start Application: 
+<!-- PT DEPLOYJAVA CONVERTER -->
+<!-- See http://blogs.sun.com/thejavatutorials/entry/deployment_toolkit_101 -->
+<script src="@codeBase@/doc/deployJava.js"></script>
+<script >
+    var dir = location.href.substring(0,location.href.lastIndexOf('/')+1);
+    var url = dir + "@sanitizedModelName@.jnlp";
+    deployJava.createWebStartLaunchButton(url, '1.6.0');
+</script>
+<!-- /PT DEPLOYJAVA CONVERTER -->
+  <li> As a <a href="@sanitizedModelName@Vergil.htm">applet</a>.
+</ul>  
+The Java Web Start version is preferred, though browsers with versions of Java
+earlier than Java 1.6.0_13 may only work with the applet version.
 </p>
-</BODY>
-</HTML>
+<!-- /BODY -->
+<!-- /HTML -->
+<!--#include virtual="/ssi/bottom.htm" -->
