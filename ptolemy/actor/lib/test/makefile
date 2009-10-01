@@ -49,9 +49,11 @@ TCL_SRCS = \
 	testDefs.tcl
 
 JSRCS = \
+	LoopTest2.java \
 	RampNecessaryFiles.java \
 	RecorderGeneral.java \
 	ReturnNonZero.java \
+	SearchTest.java \
 	SleepFireTwice.java \
 	TestOrderedMerge.java
 
