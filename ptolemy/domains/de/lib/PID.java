@@ -141,12 +141,15 @@ public class PID extends DETransformer {
         if (input.hasToken(0)) {
             Time  currentTime = getDirector().getModelTime(); 
             Token currentToken = input.get(0);
-            Token outputComponents = new DoubleToken(0.0);
             
             _currentInput = new TimedEvent(currentTime, currentToken);
             
             //Add proportional component to controller output
-            outputComponents = currentToken.multiply(Kp.getToken());
+            Token outputComponents = currentToken.multiply(Kp.getToken());
+            
+            if(_debugging){
+                _debug("read input " + _currentInput);
+            }
             
             //If a previous input was given, then add integral and derivative components
             if(_lastInput != null){
@@ -154,10 +157,18 @@ public class PID extends DETransformer {
                 Time  lastTime = _lastInput.timeStamp;
                 Token timeGap = new DoubleToken(currentTime.subtract(lastTime).getDoubleValue());
                 
+                //FIXME: if timeGap==0, then have discontinuity; then if derivative parameter
+                // is nonzero, then throw an exception. OR decide if the derivative should just
+                // be zero.
+                //
+                // Should this actor be fired twice with the same input token, then the derivative
+                // is 0/0 but the value has not changed. This behavior should be captured.
+                // (e.g. NaN should not be an output of this actor, is infinity ok?)
+                
                 //Calculate integral component and accumulate
                 _accumulated = _accumulated.add(currentToken.add(lastToken)
                         .multiply(timeGap)
-                        .divide(new DoubleToken(2)));
+                        .multiply(new DoubleToken(0.5)));
 
                 //Add integral component to controller output
                 outputComponents = outputComponents.add(_accumulated.multiply(Ki.getToken()));
