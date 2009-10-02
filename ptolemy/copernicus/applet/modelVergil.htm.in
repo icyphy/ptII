@@ -14,7 +14,7 @@
 <!--#include virtual="/ssi/toppostmenu.htm" -->
 
 <H1>@sanitizedModelName@</H1>
-
+@documentation@
 
 <P>
  <!-- All of the controls of the applet should be visible when the

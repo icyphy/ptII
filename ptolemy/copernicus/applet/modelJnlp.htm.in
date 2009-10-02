@@ -12,6 +12,7 @@
 <!-- /HEAD -->
 <!-- BODY -->
 <H1>@sanitizedModelName@</H1>
+@documentation@
 <P>
 @sanitizedModelName@ is available in two formats:
 <ul>
@@ -30,6 +31,7 @@
 The Java Web Start version is preferred, though browsers with versions of Java
 earlier than Java 1.6.0_13 may only work with the applet version.
 </p>
+
 <!-- /BODY -->
 <!-- /HTML -->
 <!--#include virtual="/ssi/bottom.htm" -->

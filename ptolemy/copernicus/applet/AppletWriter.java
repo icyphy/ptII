@@ -65,9 +65,11 @@ import ptolemy.data.RecordToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.expr.StringParameter;
 import ptolemy.data.expr.UtilityFunctions;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.moml.MoMLParser;
@@ -75,6 +77,7 @@ import ptolemy.moml.filter.BackwardCompatibility;
 import ptolemy.moml.filter.RemoveGraphicalClasses;
 import ptolemy.util.ClassUtilities;
 import ptolemy.util.StringUtilities;
+import ptolemy.vergil.basic.DocAttribute;
 import soot.HasPhaseOptions;
 import soot.PhaseOptions;
 import soot.SceneTransformer;
@@ -482,6 +485,19 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
         // Add 200 to the applet height to include the control panels.
         appletHeight += 200;
 
+        // Get the DocAttribute, if any.
+        String documentation = "";
+        try {
+            Attribute docAttribute = _model.getAttribute("DocAttribute");
+            if (docAttribute != null) {
+                documentation = ((StringParameter) docAttribute.getAttribute("description")).stringValue();
+            }
+        } catch (Exception ex) {
+            System.out.println("Failed to get DocAttribute, using defaults: "
+                    + ex.getMessage());
+            ex.printStackTrace();
+        }
+
         // Set up the HashMap we will use when we read in files like
         // model.htm.in and search for strings like @codebase@ and
         // substitute in the value of _codeBase.
@@ -490,6 +506,7 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
         _substituteMap.put("@appletWidth@", Integer.toString(appletWidth));
         _substituteMap.put("@codeBase@", _codeBase);
         _substituteMap.put("@configurationName@", _configurationName);
+        _substituteMap.put("@documentation@", documentation);
         _substituteMap.put("@jnlpJars@", _jnlpJars);
         _substituteMap.put("@modelJarFiles@", _modelJarFiles);
         _substituteMap.put("@outputDirectory@", _outputDirectory);
