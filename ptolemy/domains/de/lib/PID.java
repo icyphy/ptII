@@ -31,11 +31,11 @@ import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.util.Time;
 import ptolemy.actor.util.TimedEvent;
 import ptolemy.data.DoubleToken;
-import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.Typeable;
 import ptolemy.data.type.BaseType.DoubleType;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
@@ -61,18 +61,22 @@ import ptolemy.kernel.util.Workspace;
  derivative component of the output, <i>Kd</i> is the derivative gain, and
  <i>dt</i> is the time differential between input events events x[n] and x[n-1].
  <p>
- The output <i>y</i> of this actor is the sum of the three gains; if only one
- input symbol has been received, only proportional control is available, so
+ The output of this actor is constrained to be a double, and input must be castable 
+ to a double. If the input signal is not continuous and the derivative constant
+ is nonzero, then this actor will throw an as the derivative will be either infinite
+ or undefined. If the derivative constant is zero, then this actor may recive
+ discontinuous input.
  <p>
  y[0]=Kp*x[0]
  <br>y[n] = yp[n] + yi[n] + yd[n]
  <br>y[n] = Kp*x[n] + Ki*sum{x=1}{n}{(x[n]+x[n-1])/2*dt[n]} + Kd*(x[n]-x[n-1]/dt[n])
  <p>
- The output type of this actor is forced to be double.
- <p>
  In postfire(), if an event is present on the <i>reset</i> port, this
  actor resets to its initial state, where integral and derivative components
  of output will not be present until two subsequent inputs have been consumed.
+ This is useful if the input signal is switched on and off, in which case the
+ time gap between events becomes large and would otherwise effect the value of
+ the integral. 
  <p>
  @author Jeff C. Jensen
  @version $Id: PID.java 39805 2005-10-28 20:19:33Z cxh $
@@ -93,8 +97,8 @@ public class PID extends DETransformer {
         super(container, name);
         reset = new TypedIOPort(this, "reset", true, false);
         reset.setMultiport(true);
-        output.setTypeAtLeast(input);
-        output.setWidthEquals(input, false);
+        input.setTypeAtMost(DoubleType.DOUBLE);
+        output.setTypeEquals(DoubleType.DOUBLE);
         Kp = new Parameter(this, "Kp");
         Kp.setExpression("1.0");
         Ki = new Parameter(this, "Ki");
@@ -114,9 +118,7 @@ public class PID extends DETransformer {
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         PID newObject = (PID) super.clone(workspace);
-
         newObject.output.setTypeAtLeast((Typeable) DoubleType.DOUBLE);
-        newObject.output.setWidthEquals(newObject.input, false);
 
         // This is not strictly needed (since it is always recreated
         // in preinitialize) but it is safer.
@@ -125,6 +127,35 @@ public class PID extends DETransformer {
         newObject._accumulated = new DoubleToken(0.0);
 
         return newObject;
+    }
+    
+    /** If the attribute is <i>Kp</i>, <i>Ki</i>, or <i>Kd</i> then ensure
+     *  that the value is numeric.
+     *  @param attribute The attribute that changed.
+     *  @exception IllegalActionException If the value is non-numeric.
+     */
+    public void attributeChanged(Attribute attribute) throws IllegalActionException {
+        if (attribute == Kp || attribute == Ki || attribute == Kd) {
+                try {
+                    Parameter value = (Parameter)attribute;
+                    if(value.getToken() == null || ((DoubleToken)value.getToken()).isNil()){
+                        throw new IllegalActionException(this, "Must have a numeric value for gains.");
+                    }
+                } catch (ClassCastException e) {
+                    throw new IllegalActionException(this, "Gain values must be castable to a double.");
+                }
+        } else {
+            super.attributeChanged(attribute);
+        }
+    }
+
+    /** Reset to indicate that no input has yet been seen.
+     *  @exception IllegalActionException If the parent class throws it.
+     */
+    public void initialize() throws IllegalActionException {
+        super.initialize();
+        _lastInput = null;
+        _accumulated = new DoubleToken(0.0); 
     }
 
     /** Consume at most one token from the <i>input</i> port and output
@@ -140,57 +171,51 @@ public class PID extends DETransformer {
         //Consume input, generate output only if input provided
         if (input.hasToken(0)) {
             Time  currentTime = getDirector().getModelTime(); 
-            Token currentToken = input.get(0);
-            
+            DoubleToken currentToken = (DoubleToken)input.get(0);
             _currentInput = new TimedEvent(currentTime, currentToken);
-            
+
             //Add proportional component to controller output
-            Token outputComponents = currentToken.multiply(Kp.getToken());
-            
-            if(_debugging){
-                _debug("read input " + _currentInput);
-            }
-            
+            DoubleToken currentOutput = (DoubleToken)currentToken.multiply(Kp.getToken());
+
             //If a previous input was given, then add integral and derivative components
             if(_lastInput != null){
-                Token lastToken = (Token)_lastInput.contents;
+                DoubleToken lastToken = (DoubleToken)_lastInput.contents;
                 Time  lastTime = _lastInput.timeStamp;
-                Token timeGap = new DoubleToken(currentTime.subtract(lastTime).getDoubleValue());
+                DoubleToken timeGap = new DoubleToken(currentTime.subtract(lastTime).getDoubleValue());
                 
-                //FIXME: if timeGap==0, then have discontinuity; then if derivative parameter
-                // is nonzero, then throw an exception. OR decide if the derivative should just
-                // be zero.
-                //
-                // Should this actor be fired twice with the same input token, then the derivative
-                // is 0/0 but the value has not changed. This behavior should be captured.
-                // (e.g. NaN should not be an output of this actor, is infinity ok?)
-                
-                //Calculate integral component and accumulate
-                _accumulated = _accumulated.add(currentToken.add(lastToken)
-                        .multiply(timeGap)
-                        .multiply(new DoubleToken(0.5)));
-
-                //Add integral component to controller output
-                outputComponents = outputComponents.add(_accumulated.multiply(Ki.getToken()));
-                
-                //Add derivative component to controller output
-                outputComponents = outputComponents.add(
-                        currentToken.subtract(lastToken)
-                                    .divide(timeGap)
-                                    .multiply(Kd.getToken()));
+                //If the timeGap is zero, then we have received a simultaneous event. If the
+                // value of the input has not changed, then we can ignore this input, as a control
+                // signal was already generated. However if the value has changed, then the signal
+                // is discontinuous and we should throw an exception unless derivative control
+                // is disabled (Kd=0).
+                if(timeGap.equals(0)){
+                    if(!Kd.equals(0) && !currentToken.equals(lastToken)){
+                        throw new IllegalActionException("PID controller recevied discontinuous input.");
+                    }
+                }
+                // Otherwise, the signal is continuous and we add integral and derivative components
+                else{
+                    if(!Ki.equals(0)){
+                        //Calculate integral component and accumulate
+                        _accumulated = (DoubleToken) _accumulated.add(currentToken.add(lastToken)
+                                .multiply(timeGap)
+                                .multiply(new DoubleToken(0.5)));
+                        //Add integral component to controller output
+                        currentOutput = (DoubleToken) currentOutput.add(_accumulated.multiply(Ki.getToken()));
+                    }
+                    
+                    //Add derivative component to controller output
+                    if(!Kd.equals(0)){
+                        currentOutput = (DoubleToken) currentOutput.add(
+                                currentToken.subtract(lastToken)
+                                            .divide(timeGap)
+                                            .multiply(Kd.getToken()));
+                    }
+                }
             }
             
-            output.broadcast(outputComponents);
+            output.broadcast(currentOutput);
         }
-    }
-
-    /** Reset to indicate that no input has yet been seen.
-     *  @exception IllegalActionException If the parent class throws it.
-     */
-    public void initialize() throws IllegalActionException {
-        super.initialize();
-        _lastInput = null;
-        _accumulated = (Token)(new DoubleToken(0.0)); 
     }
 
     /** Record the most recent input as the latest input. If a reset
@@ -208,7 +233,7 @@ public class PID extends DETransformer {
                 _currentInput = null;
                 
                 //Reset accumulation
-                _accumulated = (Token)(new DoubleToken(0.0)); 
+                _accumulated = new DoubleToken(0.0); 
             }
         }
         _lastInput = _currentInput;
@@ -244,5 +269,5 @@ public class PID extends DETransformer {
 
     private TimedEvent _lastInput;
     
-    private Token _accumulated;
+    private DoubleToken _accumulated;
 }
