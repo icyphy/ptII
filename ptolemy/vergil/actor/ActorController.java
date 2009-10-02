@@ -68,6 +68,7 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.util.MessageHandler;
+import ptolemy.util.StringUtilities;
 import ptolemy.vergil.basic.BasicGraphController;
 import ptolemy.vergil.basic.BasicGraphFrame;
 import ptolemy.vergil.debugger.BreakpointDialogFactory;
@@ -771,16 +772,23 @@ public abstract class ActorController extends AttributeController {
     private class LookInsideAction extends FigureAction {
         public LookInsideAction() {
             super("Open Actor");
-
-            // For some inexplicable reason, the I key doesn't work here.
-            // Use L, which used to be used for layout.
-            // Avoid Control_O, which is open file.
-            putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
-                    KeyEvent.VK_L, Toolkit.getDefaultToolkit()
-                            .getMenuShortcutKeyMask()));
+            
+            // If we are in an applet, so Control-L or Command-L will
+            // be caught by the browser as "Open Location", so we don't
+            // supply Control-L or Command-L as a shortcut under applets.
+            if (!StringUtilities.inApplet()) {
+                // For some inexplicable reason, the I key doesn't work here.
+                // Use L, which used to be used for layout.
+                // Avoid Control_O, which is open file.
+                putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
+                                KeyEvent.VK_L, Toolkit.getDefaultToolkit()
+                                .getMenuShortcutKeyMask()));
+            }
         }
 
         public void actionPerformed(ActionEvent event) {
+            new Exception("ActorController.actionPerformed() " + event).printStackTrace();
+                    
             if (_configuration == null) {
                 MessageHandler.error("Cannot open an actor "
                         + "without a configuration.");

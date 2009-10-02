@@ -613,6 +613,16 @@ public abstract class Top extends JFrame {
                 new JMenuItem("Close", KeyEvent.VK_C),
                 new JMenuItem("Exit", KeyEvent.VK_X), };
 
+        if (StringUtilities.inApplet()) {
+            // If we are in an applet, disable certain menu items.
+            fileMenuItems[0].setEnabled(false);
+            fileMenuItems[2].setEnabled(false);
+            fileMenuItems[3].setEnabled(false);
+            fileMenuItems[4].setEnabled(false);
+            fileMenuItems[5].setEnabled(false);
+            return fileMenuItems;
+        }
+
         // Open button = ctrl-o.
         fileMenuItems[0].setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O,
                 Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
