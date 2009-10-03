@@ -204,6 +204,7 @@ public class ContinuousTimeDelay extends Transformer {
         _currentOutput = null;
         _inputBuffer = new CalendarQueue(new TimedEvent.TimeComparator());
         _discarded = null;
+        _nextFireAt = new Time(getDirector(), 0);
 
         //Place the initial token in the input buffer
         if(initialToken != null){
@@ -258,7 +259,7 @@ public class ContinuousTimeDelay extends Transformer {
         // absent events are present everywhere in the signal. This would result in
         // monotonically decreasing solver step size that quickly converges to the minimum
         // allowed step size, effectively bypassing the solver logic and slowing simulation.
-        if(input.hasToken(0)){
+        if(input.isKnown(0) && input.hasToken(0)){
             Token inputToken = input.get(0);
             if(!inputToken.equals(AbsentToken.ABSENT)){
                 _inputBuffer.put(new TimedEvent(currentTime, inputToken));
@@ -300,17 +301,16 @@ public class ContinuousTimeDelay extends Transformer {
         // and remove the event from the input queue to prevent refiring
         if(rightEvent != null && rightEvent.timeStamp.equals(centerTime)){
             _currentOutput = (Token)rightEvent.contents;
-            _inputBuffer.take();
+            _discarded = (TimedEvent) _inputBuffer.take();
         }
         // If the current time is less than the delay time, output the initial value
         else if(currentTime.compareTo(new Time(getDirector(), _delay)) < 0){
             _currentOutput = initialOutput.getToken();
         }
-        // If the center point is during the transient delay period, output initial value
         // If the current time is equal to the center time (delay=0), but the event was
         // not on the input queue, then we have not read the input. Output nothing now,
         // and postFire() will read the input and request a refiring at the current time;
-        // this will lead the director to increase its microstep.
+        // this will force the director to increase its microstep.
         else if(currentTime.equals(centerTime)){
             //Do nothing
         }
@@ -322,6 +322,7 @@ public class ContinuousTimeDelay extends Transformer {
             }
             // If we have a left point but no right point, we assume the value has not changed.
             else{
+                //FIXME: Is this the best solution?
                 _currentOutput = (Token) leftEvent.contents;
             }
         }
@@ -329,10 +330,11 @@ public class ContinuousTimeDelay extends Transformer {
         // and do not have a left point (e.g. no initial value). We cannot generate output.
         
         // Produce output
-        if(_currentOutput != null){
+        if(_currentOutput != null && !output.isKnown(0)){
             output.send(0, _currentOutput);
-            //In the case where we have refired in order to output a token with an increased
-            // microstep, we should discard this token from the input buffer.
+            // In the case where delay is zero (currentTime = centerTime) we have refired in
+            // order to output a token with an increased microstep. After this token is sent,
+            // it needs to be removed from the input buffer.
             if(currentTime.equals(centerTime)){
                 _discarded = (TimedEvent)_inputBuffer.take();
             }
@@ -359,7 +361,16 @@ public class ContinuousTimeDelay extends Transformer {
         // physical time in the case of zero delay or simultaneous events.
         if(_inputBuffer.size() > 0){
             TimedEvent nextEvent = (TimedEvent)_inputBuffer.get();
-            getDirector().fireAt(this, nextEvent.timeStamp.add(_delay));
+            Time nextOutputTime = nextEvent.timeStamp.add(_delay);
+            Time currentTime = getDirector().getModelTime();
+
+            // If the next output time is now, then there are additional tokens to output at the
+            // current physical time, so a refire is requested. If the next output time is in the
+            // future, first ensure we have not already scheduled this actor to fire. 
+            if(nextOutputTime.equals(currentTime) || !nextOutputTime.equals(_nextFireAt)){
+                getDirector().fireAt(this, nextOutputTime);
+                _nextFireAt = nextOutputTime;
+            }
         }
 
         return super.postfire();
@@ -379,14 +390,14 @@ public class ContinuousTimeDelay extends Transformer {
      *  @exception IllegalActionException If the superclass throws it.
      */
     public boolean isStrict(){
-        //FIXME: Does strictness depend on presence of an initial value?
-        return true;
-        /*try {
+//        //FIXME: Does strictness depend on presence of an initial value?
+  //      return false;
+        try {
             Token t = initialOutput.getToken(); 
             return t == null;
         } catch (IllegalActionException e) {
             return true;
-        }*/
+        }
     }
     
     ///////////////////////////////////////////////////////////////////
@@ -429,6 +440,11 @@ public class ContinuousTimeDelay extends Transformer {
     
     /** Holds the most recently discarded event from the input buffer. */
     protected TimedEvent _discarded;
+    
+    /** Records the next scheduled fireAt() call, so that we do not request more than
+     *  one fireAt() call for a given input event. 
+     */
+    protected Time _nextFireAt;
 
     /** A causality marker to store information about how pure events are causally
      *  related to trigger events.
