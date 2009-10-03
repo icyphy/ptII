@@ -32,7 +32,6 @@ import ptolemy.actor.util.Time;
 import ptolemy.actor.util.TimedEvent;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.expr.Parameter;
-import ptolemy.data.type.Typeable;
 import ptolemy.data.type.BaseType.DoubleType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
@@ -76,7 +75,7 @@ import ptolemy.kernel.util.Workspace;
  of output will not be present until two subsequent inputs have been consumed.
  This is useful if the input signal is switched on and off, in which case the
  time gap between events becomes large and would otherwise effect the value of
- the integral. 
+ the derivative (for one sample) and the integral.
  <p>
  @author Jeff C. Jensen
  @version $Id: PID.java 39805 2005-10-28 20:19:33Z cxh $
@@ -118,7 +117,9 @@ public class PID extends DETransformer {
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         PID newObject = (PID) super.clone(workspace);
-        newObject.output.setTypeAtLeast((Typeable) DoubleType.DOUBLE);
+
+        newObject.input.setTypeAtMost(DoubleType.DOUBLE);
+        newObject.output.setTypeEquals(DoubleType.DOUBLE);
 
         // This is not strictly needed (since it is always recreated
         // in preinitialize) but it is safer.
@@ -254,13 +255,15 @@ public class PID extends DETransformer {
     public Parameter Kp;
     
     /** Integral gain of the controller. Default value is 0.0,
-     *  which effectively disables integral control.
+     *  which disables integral control.
      * */
     public Parameter Ki;
     
-    /** Derivative gain of the controller. Default value is 0.0,
-     *  which effectively disables derivative control.
-     * */
+    /** Derivative gain of the controller. Default value is 0.0, which disables
+     *  derivative control. If Kd=0.0, this actor can receive discontinuous
+     *  signals as input; otherwise, if Kd is nonzero and a discontinuous signal
+     *  is received, an exception will be thrown.
+     */
     public Parameter Kd;
     
     ///////////////////////////////////////////////////////////////////

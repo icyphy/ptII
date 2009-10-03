@@ -43,21 +43,23 @@ import ptolemy.kernel.util.Workspace;
 //////////////////////////////////////////////////////////////////////////
 //// Integrator
 
-/**
- Output the discrete integral of the input. Inputs are multiplied by the time
- gap from the previous input and accumulated. Output is not generated
- until two inputs have been consumed.
- <p>
- The output type of this actor is forced to be double.
- <p>
- In postfire(), if an event is present on the <i>reset</i> port, this
- actor resets to its initial state, and will not output until two
- subsequent inputs have been consumed.
- <p>
- The integrator performs linear interpolation between input events,
- where the output of the integrator follows the equation
- y[n] = y[n-1] + (x[n-1] + x[n])*dt/2 where <i>dt</i> is the time
- differential between events.
+/** Output the discrete integral of the input. Inputs are multiplied by the time
+ *  gap from the previous input and accumulated. Output is not generated
+ *   until two inputs have been consumed.
+ *  <p>
+ *  The output type of this actor is forced to be double.
+ *  <p>
+ *  In postfire(), if an event is present on the <i>reset</i> port, this
+ *  actor resets to its initial state, and will not output until two
+ *  subsequent inputs have been consumed.  This is useful if the input signal is
+ *  switched on and off, in which case the time gap between events becomes large
+ *  and would otherwise effect the value of the integral.
+ *  <p>
+ *  The integrator performs linear interpolation between input events,
+ *  where the output of the integrator follows the equation
+ *  y[n] = y[n-1] + (x[n-1] + x[n])*dt/2 where <i>dt</i> is the time
+ *  differential between events. This equates to the trapezoidal method of
+ *  approximating a Riemann integral.
 
  @author Jeff C. Jensen
  @version $Id: Integrator.java 39805 2005-10-28 20:19:33Z cxh $

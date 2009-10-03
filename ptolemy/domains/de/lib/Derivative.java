@@ -31,8 +31,6 @@ import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.util.Time;
 import ptolemy.actor.util.TimedEvent;
 import ptolemy.data.DoubleToken;
-import ptolemy.data.Token;
-import ptolemy.data.type.Typeable;
 import ptolemy.data.type.BaseType.DoubleType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
@@ -47,12 +45,16 @@ import ptolemy.kernel.util.Workspace;
  where <i>dt<i> is the time gap between input events. Output is not generated
  until two inputs have been consumed.
  <p>
- The output type of this actor is forced to be double.
+ The output of this actor is constrained to be a double, and input must be castable 
+ to a double. If the input signal is not continuous, the derivative will be either
+ infinite or undefined and an exception is thrown.
  <p>
  In postfire(), if an event is present on the <i>reset</i> port, this
  actor resets to its initial state, and will not output until two
- subsequent inputs have been consumed.
-
+ subsequent inputs have been consumed.  This is useful if the input signal is
+ switched on and off, in which case the time gap between events becomes large
+ and would otherwise effect the value of the derivative for one sample.
+ <p>
  @author Jeff C. Jensen
  @version $Id: Derivative.java 39805 2005-10-28 20:19:33Z cxh $
  @since Ptolemy II 8.1
@@ -72,8 +74,8 @@ public class Derivative extends DETransformer {
         super(container, name);
         reset = new TypedIOPort(this, "reset", true, false);
         reset.setMultiport(true);
-        output.setTypeAtLeast(input);
-        output.setWidthEquals(input, false);
+        input.setTypeAtMost(DoubleType.DOUBLE);
+        output.setTypeEquals(DoubleType.DOUBLE);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -89,8 +91,8 @@ public class Derivative extends DETransformer {
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         Derivative newObject = (Derivative) super.clone(workspace);
 
-        newObject.output.setTypeAtLeast((Typeable) DoubleType.DOUBLE);
-        newObject.output.setWidthEquals(newObject.input, false);
+        newObject.input.setTypeAtMost(DoubleType.DOUBLE);
+        newObject.output.setTypeEquals(DoubleType.DOUBLE);
 
         // This is not strictly needed (since it is always recreated
         // in preinitialize) but it is safer.
@@ -111,13 +113,21 @@ public class Derivative extends DETransformer {
         super.fire();
         if (input.hasToken(0)) {
             Time  currentTime = getDirector().getModelTime();
-            Token currentToken = input.get(0);
+            DoubleToken currentToken = (DoubleToken)input.get(0);
             _currentInput = new TimedEvent(currentTime, currentToken);
-
+            
             if (_lastInput != null) {
-                Token lastToken = (Token)_lastInput.contents;
                 Time  lastTime = _lastInput.timeStamp;
-                Token timeGap = new DoubleToken(currentTime.subtract(lastTime).getDoubleValue());
+                DoubleToken lastToken = (DoubleToken)_lastInput.contents;
+                DoubleToken timeGap = new DoubleToken(currentTime.subtract(lastTime).getDoubleValue());
+                
+                //If the timeGap is zero, then we have received a simultaneous event. If the
+                // value of the input has not changed, then we can ignore this input, as a control
+                // signal was already generated. However if the value has changed, then the signal
+                // is discontinuous and an exception will be thrown.
+                if(timeGap.equals(0) && !currentToken.equals(lastToken)){
+                    throw new IllegalActionException("Derivative received discontinuous input.");
+                }
                 
                 output.broadcast(currentToken.subtract(lastToken).divide(timeGap));
             }
@@ -130,6 +140,7 @@ public class Derivative extends DETransformer {
     public void initialize() throws IllegalActionException {
         super.initialize();
         _lastInput = null;
+        _currentInput = null;
     }
 
     /** Record the most recent input as the latest input. If a reset
