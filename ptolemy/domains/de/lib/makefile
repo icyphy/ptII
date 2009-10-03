@@ -49,13 +49,16 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
 	AverageOverTime.java \
+	Derivative.java \
 	DETransformer.java \
 	EventButton.java \
 	EventFilter.java \
 	getCurrentMicrostep.java \
 	Inhibit.java \
+	Integrator.java \
 	Merge.java \
 	NonInterruptibleTimer.java \
+	PID.java \
 	Previous.java \
 	Queue.java \
 	Register.java \
@@ -75,7 +78,10 @@ JSRCS = \
 
 OTHER_FILES_TO_BE_JARED = \
 	deentities.xml \
+	DerivativeIcon.xml \
+	IntegratorIcon.xml \
 	NonInterruptibleTimerIcon.xml \
+	PIDicon.xml \
 	QueueIcon.xml \
 	ServerIcon.xml \
 	SharedQueueIcon.xml \
