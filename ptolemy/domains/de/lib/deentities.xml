@@ -17,10 +17,22 @@
 <entity name="EventFilter" class="ptolemy.domains.de.lib.EventFilter">
 </entity>
 
+<entity name="Derivative" class="ptolemy.domains.de.lib.Derivative">
+<doc>Discrete derivative.</doc>
+</entity>
+
 <entity name="Inhibit" class="ptolemy.domains.de.lib.Inhibit">
 </entity>
 
+<entity name="Integrator" class="ptolemy.domains.de.lib.Integrator">
+<doc>Discrete integrator.</doc>
+</entity>
+
 <entity name="Merge" class="ptolemy.domains.de.lib.Merge">
+</entity>
+
+<entity name="PID" class="ptolemy.domains.de.lib.PID">
+<doc>Discrete proportional, integral, and derivative controller.</doc>
 </entity>
 
 <entity name="Previous" class="ptolemy.domains.de.lib.Previous">
