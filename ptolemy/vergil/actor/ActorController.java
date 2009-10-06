@@ -787,8 +787,6 @@ public abstract class ActorController extends AttributeController {
         }
 
         public void actionPerformed(ActionEvent event) {
-            new Exception("ActorController.actionPerformed() " + event).printStackTrace();
-                    
             if (_configuration == null) {
                 MessageHandler.error("Cannot open an actor "
                         + "without a configuration.");
