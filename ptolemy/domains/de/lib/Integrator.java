@@ -64,7 +64,7 @@ import ptolemy.kernel.util.Workspace;
  @author Jeff C. Jensen
  @version $Id: Integrator.java 39805 2005-10-28 20:19:33Z cxh $
  @since Ptolemy II 8.1
- @see ptolemy.actor.lib.Integrator
+ @see ptolemy.actor.lib.Accumulator
  */
 public class Integrator extends DETransformer {
     /** Construct an actor with the given container and name.

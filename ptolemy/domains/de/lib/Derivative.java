@@ -56,9 +56,9 @@ import ptolemy.kernel.util.Workspace;
  and would otherwise effect the value of the derivative for one sample.
  <p>
  @author Jeff C. Jensen
- @version $Id: Derivative.java 39805 2005-10-28 20:19:33Z cxh $
+ @version $Id$
  @since Ptolemy II 8.1
- @see ptolemy.actor.lib.Derivative
+ @see ptolemy.actor.lib.Differential
  */
 public class Derivative extends DETransformer {
     /** Construct an actor with the given container and name.
