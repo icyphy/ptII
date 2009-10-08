@@ -47,6 +47,9 @@ set header {<?xml version="1.0" standalone="no"?>
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">}
 
 
+# Note that there are a number of tests for ConvertToLazy
+# in $PTII/ptolemy/actor/lib/test/performance/PubSubLazy.tcl
+
 ######################################################################
 ####
 #
@@ -63,8 +66,9 @@ test ConvertToLazy-1.1 {Convert a test model} {
     $toplevel setManager $manager
     $manager execute
 
-    regexp LazyTypedCompositeActor $moml_1
-} {1}
+    list [regexp LazyTypedCompositeActor $moml_1] \
+	[regexp configure $moml_1]
+} {1 1}
 
 test ConvertToLazy-2.1 {Only convert composites with 1000 deep entities} {
     $parser1 reset

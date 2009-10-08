@@ -98,7 +98,19 @@ public class ConvertToLazy implements ChangeListener {
             TypedCompositeActor toplevel = (TypedCompositeActor) parser.parse(
                     null, new File(xmlFileName).toURI().toURL());
             convert(toplevel, threshold);
+
+            // We export and then reparse and then export again so
+            // that the resulting MoML has the <configure>
+            // ...</configure> blocks.  If just exportMoML, then the moml will
+            // not have the <configure> ...</configure> blocks because the
+            // LazyTypedCompositeActor._exportMoMLContents() method is not
+            // called.  See ConvertToLazy-1.1 in test/ConvertToLazy.tcl
+            // where we check that the moml has "configure" in it.
+            String moml = toplevel.exportMoML();
+            parser.resetAll();
+            toplevel = (TypedCompositeActor) parser.parse(moml);
             System.out.println(toplevel.exportMoML());
+                
         } finally {
             MoMLParser.setMoMLFilters(oldFilters);
         }
