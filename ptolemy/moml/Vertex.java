@@ -136,7 +136,7 @@ public class Vertex extends Location {
 
         output.write(_getIndentPrefix(depth) + "<" + _elementName + " name=\""
                 + name // + "\" class=\""
-                // + getMoMLInfo().className
+                // + getClassName()
                 + "\"" + valueTerm + ">\n");
         _exportMoMLContents(output, depth + 1);
         output.write(_getIndentPrefix(depth) + "</" + _elementName + ">\n");

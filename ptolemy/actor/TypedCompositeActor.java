@@ -66,7 +66,7 @@ import ptolemy.kernel.util.Workspace;
  too will be identified as a TypedCompositeActor. To change this in a
  derived class, put the following line in the constructor
  <pre>
- getMoMLInfo().className = "<i>full class name</i>";
+ setClassName(<i>full class name</i>");
  </pre>
  If you do this, you will probably also want to override _exportMoMLContents()
  to not generate a description of the contents of the composite, since

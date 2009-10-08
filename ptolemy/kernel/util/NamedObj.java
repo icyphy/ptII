@@ -830,10 +830,9 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
 
     /** Write a MoML description of this object with the specified
      *  indentation depth and with the specified name substituting
-     *  for the name of this object.  The XML element name, class
-     *  attribute, and source attribute are determined by the instance
-     *  of MoMLInfo returned by getMoMLInfo(). The description has the
-     *  form:
+     *  for the name of this object.  The class name is determined
+     *  by {@link #getClassName()}, the source is determined by
+     *  {@link #getSource()}. The description has the form:
      *  <pre>
      *      &lt;<i>element</i> name="<i>name</i>" class="<i>classname</i>" source="<i>source</i>"&gt;&gt;
      *          <i>body, determined by _exportMoMLContents()</i>
