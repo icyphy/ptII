@@ -44,6 +44,7 @@ include $(CONFIG)
 # Tcl sources that are part of the testing infrastructure
 TCL_SRCS = \
 	PubSubAgg.tcl \
+	PubSubLazy.tcl \
 	Publisher2.tcl \
 	PublisherCommon.tcl \
 	testDefs.tcl

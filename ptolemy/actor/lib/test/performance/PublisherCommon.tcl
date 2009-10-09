@@ -297,8 +297,8 @@ proc createHierarchichalPubSubModel {container numberOfPubSubsPerLevel levelNumb
     }
 }
 
+proc pubSubAggBase {numberOfSubsPerLevel levels} {
 
-proc pubSubAggModel {numberOfSubsPerLevel levels} {
     global pubCount 
     set pubCount 0
     set e0 [sdfModel 5]
@@ -321,6 +321,11 @@ proc pubSubAggModel {numberOfSubsPerLevel levels} {
     $e0 connect \
 	[java::field [java::cast ptolemy.actor.lib.Subscriber $subscriptionAggregator] output] \
 	[java::field [java::cast ptolemy.actor.lib.Sink $recorder] input]
+    return $e0
+}
+
+proc pubSubAggModel {numberOfSubsPerLevel levels} {
+    set e0 [pubSubAggBase $numberOfSubsPerLevel $levels]
     set filename "pubSubAgg_${numberOfSubsPerLevel}_${levels}.xml"
     set fd [open $filename w]
     puts $fd [$e0 exportMoML]
@@ -328,7 +333,39 @@ proc pubSubAggModel {numberOfSubsPerLevel levels} {
     puts "Created $filename, containing [[$e0 deepOpaqueEntityList] size] actors"
     
     [$e0 getManager] execute
+    set recorder [java::cast ptolemy.actor.lib.Recorder [$e0 getEntity "recorder"]]
+    return [list [enumToTokenValues [$recorder getRecord 0]]]
+} 
 
+
+proc pubSubAggLazyModel {numberOfSubsPerLevel levels} {
+    set e0 [pubSubAggBase $numberOfSubsPerLevel $levels]
+    set filename "pubSubAgg_${numberOfSubsPerLevel}_${levels}.xml"
+    set fd [open $filename w]
+    puts $fd [$e0 exportMoML]
+    close $fd
+    puts "Created $filename, containing [[$e0 deepOpaqueEntityList] size] actors"
+    
+    jdkCapture {
+	java::new ptolemy.moml.ConvertToLazy $filename 0
+    } moml2
+
+    set filename "pubSubAggLazy_${numberOfSubsPerLevel}_${levels}.xml"
+    set fd [open $filename w]
+    puts $fd $moml2
+    close $fd
+
+    set parser [java::new ptolemy.moml.MoMLParser]
+    $parser resetAll
+
+    set e1 [java::cast ptolemy.actor.TypedCompositeActor [$parser parse $moml2]]
+
+    
+
+    set manager [java::new ptolemy.actor.Manager [$e1 workspace] "myManager"]
+    $e1 setManager $manager
+    [$e1 getManager] execute
+    set recorder [java::cast ptolemy.actor.lib.Recorder [$e1 getEntity "recorder"]]
     return [list [enumToTokenValues [$recorder getRecord 0]]]
 } 
 
