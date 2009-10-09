@@ -56,7 +56,8 @@ JSRCS = \
 	Equals.java \
 	IsPresent.java \
 	LogicFunction.java \
-	LogicalNot.java
+	LogicalNot.java \
+	TrueGate.java
 
 OTHER_FILES_TO_BE_JARED = \
 	logic.xml

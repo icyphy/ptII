@@ -57,6 +57,10 @@
         <property name="attributeName" value="function"/>
     </property>
   </entity>
+  
+  <entity name="TrueGate" class="ptolemy.actor.lib.logic.TrueGate">
+  </entity>
+  
 
       </group>
     ?>

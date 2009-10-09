@@ -35,11 +35,12 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
 //////////////////////////////////////////////////////////////////////////
-//// IsPresent
+//// TrueGate
 
 /**
- On each firing, output true if the input is present and false otherwise.
- The type of the output port is boolean, and the input is general.
+ On each firing, output true if the input is present and true.
+ Otherwise, output nothing.
+ The type of the input and output ports is boolean.
  The width of the input is expected to match the width of the output.
  Note that the utility of this actor varies by domain.  In PN, for
  example, the input is always present (by definition). In SDF, it is
@@ -53,7 +54,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  @Pt.ProposedRating Yellow (eal)
  @Pt.AcceptedRating Red (eal)
  */
-public class IsPresent extends Transformer {
+public class TrueGate extends Transformer {
     /** Construct an actor in the specified container with the specified
      *  name.
      *  @param container The container.
@@ -63,10 +64,10 @@ public class IsPresent extends Transformer {
      *  @exception NameDuplicationException If the name coincides with
      *   an actor already in the container.
      */
-    public IsPresent(CompositeEntity container, String name)
+    public TrueGate(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        input.setTypeEquals(BaseType.GENERAL);
+        input.setTypeEquals(BaseType.BOOLEAN);
         input.setMultiport(true);
         output.setTypeEquals(BaseType.BOOLEAN);
         output.setMultiport(true);
@@ -74,9 +75,9 @@ public class IsPresent extends Transformer {
         input.setWidthEquals(output, true);
 
         _attachText("_iconDescription", "<svg>\n"
-                + "<rect x=\"-15\" y=\"-15\" " + "width=\"30\" height=\"30\" "
-                + "style=\"fill:white\"/>\n" + "<text x=\"-4\" y=\"8\""
-                + "style=\"font-size:24\">?</text>\n" + "</svg>\n");
+                + "<rect x=\"-15\" y=\"-15\" " + "width=\"40\" height=\"30\" "
+                + "style=\"fill:white\"/>\n" + "<text x=\"-10\" y=\"4\""
+                + "style=\"font-size:14\">true?</text>\n" + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -94,14 +95,10 @@ public class IsPresent extends Transformer {
         for (int i = 0; i < input.getWidth(); i++) {
             if (input.hasToken(i)) {
                 // Consume the token.
-                input.get(i);
+                boolean inputValue = ((BooleanToken)input.get(i)).booleanValue()     ;
 
-                if (i < outputWidth) {
+                if (i < outputWidth && inputValue) {
                     output.send(i, BooleanToken.TRUE);
-                }
-            } else {
-                if (i < outputWidth) {
-                    output.send(i, BooleanToken.FALSE);
                 }
             }
         }
