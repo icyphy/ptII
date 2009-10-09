@@ -5,18 +5,18 @@
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
-        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="5.0">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="8.0">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{70.0, 45.0}">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={4, 22, 621, 799}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={187, 100, 749, 723}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[408, 689]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[536, 613]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{204.0, 344.5}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{268.0, 306.5}">
     </property>
     <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.05, 0.3, 0.45, 0.55}">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -65,7 +65,7 @@
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Modal activation of DiscreteClock:">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{125.0, 300.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[125.0, 300.0]">
         </property>
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -74,16 +74,10 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[125.0, 190.0]">
         </property>
     </property>
-    <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This demonstrates a spontaneous event generator&#10;(a DiscreteClock) inside a modal model. It shows that&#10;the local time inside the mode does not advance while&#10;the mode is inactive, so the output of the clock is&#10;identical to what it would have been outside the modal&#10;model, except that gaps are inserted for the time when&#10;the clock is inactive.">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, 475.0]">
-        </property>
-    </property>
     <entity name="ModalClock" class="ptolemy.domains.modal.modal.ModalModel">
         <property name="_tableauFactory" class="ptolemy.vergil.modal.modal.ModalTableauFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[185.0, 365.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 365.0]">
         </property>
         <port name="out" class="ptolemy.domains.modal.modal.ModalPort">
             <property name="output"/>
@@ -130,7 +124,7 @@
                 </property>
                 <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{105.0, 200.0}">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, 200.0]">
                 </property>
             </entity>
             <entity name="inactive" class="ptolemy.domains.modal.kernel.State">
@@ -166,12 +160,10 @@
         </entity>
         <entity name="clocking" class="ptolemy.domains.modal.modal.Refinement">
             <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
-                <property name="stopTime" class="ptolemy.data.expr.Parameter" value="Infinity">
-                </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 45.0]">
                 </property>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={77, 370, 813, 510}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={504, 390, 813, 510}, maximized=false}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
             </property>
@@ -189,9 +181,7 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 110.0]">
                 </property>
             </port>
-            <entity name="DiscreteClockInside" class="ptolemy.actor.lib.DiscreteClock">
-                <property name="stopTime" class="ptolemy.data.expr.Parameter" value="Infinity">
-                </property>
+            <entity name="DiscreteClock2" class="ptolemy.actor.lib.DiscreteClock">
                 <property name="period" class="ptolemy.actor.parameters.PortParameter" value="1.0">
                 </property>
                 <property name="offsets" class="ptolemy.data.expr.Parameter" value="offsets">
@@ -202,44 +192,10 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 110.0]">
                 </property>
             </entity>
-            <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
-                <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
-                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={623, 724, 527, 176}, maximized=false}">
-                </property>
-                <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[527, 132]">
-                </property>
-                <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
-                </property>
-                <property name="disconnectGraphOnAbsentValue" class="ptolemy.data.expr.Parameter" value="true">
-                </property>
-                <property name="useLocalTime" class="ptolemy.data.expr.Parameter" value="true">
-                </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 190.0]">
-                </property>
-                <configure>
-<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
-"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
-<plot>
-<title>Inside active mode using local time</title>
-<xLabel>time</xLabel>
-<yLabel></yLabel>
-<xRange min="0.0" max="5.0"/>
-<yRange min="0.0" max="4.5"/>
-<noGrid/>
-<default connected="no" marks="dots" stems="yes"/>
-</plot>?>
-                </configure>
-            </entity>
-            <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-                <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
-                </property>
-                <vertex name="vertex1" value="{155.0, 110.0}">
-                </vertex>
+            <relation name="relation" class="ptolemy.actor.TypedIORelation">
             </relation>
-            <link port="out" relation="relation2"/>
-            <link port="DiscreteClockInside.output" relation="relation2"/>
-            <link port="TimedPlotter.input" relation="relation2"/>
+            <link port="out" relation="relation"/>
+            <link port="DiscreteClock2.output" relation="relation"/>
         </entity>
         <relation name="outRelation" class="ptolemy.actor.TypedIORelation">
             <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
@@ -255,33 +211,6 @@
         <link port="_Controller.control" relation="controlRelation"/>
         <link port="clocking.out" relation="outRelation"/>
         <link port="clocking.control" relation="controlRelation"/>
-    </entity>
-    <entity name="TimedPlotter3" class="ptolemy.actor.lib.gui.TimedPlotter">
-        <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={624, 378, 529, 178}, maximized=false}">
-        </property>
-        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[529, 134]">
-        </property>
-        <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
-        </property>
-        <property name="disconnectGraphOnAbsentValue" class="ptolemy.data.expr.Parameter" value="true">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[280.0, 365.0]">
-        </property>
-        <configure>
-<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
-"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
-<plot>
-<title>Output of ModalClock</title>
-<xLabel>time</xLabel>
-<yLabel></yLabel>
-<xRange min="0.0" max="5.0"/>
-<yRange min="0.0" max="4.5"/>
-<noGrid/>
-<default connected="no" marks="dots" stems="yes"/>
-</plot>?>
-        </configure>
     </entity>
     <entity name="Control Clock" class="ptolemy.actor.lib.DiscreteClock">
         <property name="period" class="ptolemy.actor.parameters.PortParameter" value="1.5">
@@ -302,33 +231,6 @@
         <doc>Create periodic timed events.</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 145.0]">
         </property>
-    </entity>
-    <entity name="TimedPlotter1" class="ptolemy.actor.lib.gui.TimedPlotter">
-        <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={624, 22, 527, 176}, maximized=false}">
-        </property>
-        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[527, 132]">
-        </property>
-        <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
-        </property>
-        <property name="disconnectGraphOnAbsentValue" class="ptolemy.data.expr.Parameter" value="true">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{280.0, 145.0}">
-        </property>
-        <configure>
-<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
-"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
-<plot>
-<title>Non-Modal Reference</title>
-<xLabel>time</xLabel>
-<yLabel></yLabel>
-<xRange min="0.0" max="5.0"/>
-<yRange min="0.0" max="4.5"/>
-<noGrid/>
-<default connected="no" marks="dots" stems="yes"/>
-</plot>?>
-        </configure>
     </entity>
     <entity name="ModalFilter" class="ptolemy.domains.modal.modal.ModalModel">
         <property name="_tableauFactory" class="ptolemy.vergil.modal.modal.ModalTableauFactory">
@@ -512,64 +414,67 @@
         <link port="filtering.clock" relation="clockRelation"/>
         <link port="filtering.control" relation="controlRelation"/>
     </entity>
-    <entity name="TimedPlotter2" class="ptolemy.actor.lib.gui.TimedPlotter">
-        <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="false">
+    <entity name="CurrentTime" class="ptolemy.actor.lib.CurrentTime">
+        <doc>Output the current time.</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[315.0, 145.0]">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={624, 200, 528, 176}, maximized=false}">
-        </property>
-        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[528, 132]">
-        </property>
-        <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
-        </property>
-        <property name="disconnectGraphOnAbsentValue" class="ptolemy.data.expr.Parameter" value="true">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[280.0, 250.0]">
-        </property>
-        <configure>
-<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
-"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
-<plot>
-<title>Output of ModalFilter</title>
-<xLabel>time</xLabel>
-<yLabel></yLabel>
-<xRange min="0.0" max="5.0"/>
-<yRange min="0.0" max="4.5"/>
-<noGrid/>
-<default connected="no" marks="dots" stems="yes"/>
-</plot>?>
-        </configure>
     </entity>
-    <entity name="ControlPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
-        <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="false">
+    <entity name="Test2" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.05, 0.3, 0.45, 0.55, 1.05, 1.3, 1.45, 1.55, 2.05, 2.3, 2.45, 2.55, 3.05, 3.3, 3.45, 3.55, 4.05, 4.3, 4.45, 4.55, 5.05, 5.3, 5.45, 5.55, 6.05, 6.3, 6.45, 6.55, 7.05, 7.3, 7.45, 7.55}">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={623, 558, 527, 176}, maximized=false}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 115.0]">
         </property>
-        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[527, 132]">
-        </property>
-        <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
-        </property>
-        <property name="disconnectGraphOnAbsentValue" class="ptolemy.data.expr.Parameter" value="true">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[183.58480072021484, 443.8750457763672]">
-        </property>
-        <configure>
-<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
-"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
-<plot>
-<title>Control Clock</title>
-<xLabel>time</xLabel>
-<yLabel></yLabel>
-<xRange min="0.0" max="5.0"/>
-<yRange min="0.0" max="1.5"/>
-<noGrid/>
-<default connected="no" marks="dots" stems="yes"/>
-</plot>?>
-        </configure>
     </entity>
-    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-    </relation>
+    <entity name="CurrentTime2" class="ptolemy.actor.lib.CurrentTime">
+        <doc>Output the current time.</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[315.0, 250.0]">
+        </property>
+    </entity>
+    <entity name="CurrentTime3" class="ptolemy.actor.lib.CurrentTime">
+        <doc>Output the current time.</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[335.0, 365.0]">
+        </property>
+    </entity>
+    <entity name="Test" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[435.0, 190.0]">
+        </property>
+    </entity>
+    <entity name="Test3" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.05, 0.3, 0.45, 0.55, 1.05, 1.3, 1.45, 3.05, 3.3, 3.45, 3.55, 4.05, 4.3, 4.45, 6.05, 6.3, 6.45, 6.55, 7.05, 7.3, 7.45}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[450.0, 250.0]">
+        </property>
+    </entity>
+    <entity name="Test4" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1, 2, 3, 4, 1, 2, 3, 1, 2, 3, 4, 1, 2, 3, 1, 2, 3, 4, 1, 2, 3}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[345.0, 310.0]">
+        </property>
+    </entity>
+    <entity name="Test5" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.05, 0.3, 0.45, 0.55, 1.05, 1.3, 1.45, 3.0, 3.5, 3.75, 3.9, 4.0, 4.5, 6.0, 6.15, 6.25, 6.75, 7.0, 7.15, 7.25}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 365.0]">
+        </property>
+    </entity>
+    <entity name="Test6" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[355.0, 445.0]">
+        </property>
+    </entity>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
@@ -582,15 +487,41 @@
         <vertex name="vertex1" value="[110.0, 365.0]">
         </vertex>
     </relation>
-    <link port="ModalClock.out" relation="relation2"/>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="{230.0, 250.0}">
+        </vertex>
+    </relation>
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="{225.0, 365.0}">
+        </vertex>
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="ModalClock.out" relation="relation7"/>
     <link port="ModalClock.control" relation="relation4"/>
-    <link port="TimedPlotter3.input" relation="relation2"/>
     <link port="Control Clock.output" relation="relation4"/>
     <link port="DiscreteClock1.output" relation="relation5"/>
-    <link port="TimedPlotter1.input" relation="relation5"/>
-    <link port="ModalFilter.out" relation="relation3"/>
+    <link port="ModalFilter.out" relation="relation6"/>
     <link port="ModalFilter.clock" relation="relation5"/>
     <link port="ModalFilter.control" relation="relation4"/>
-    <link port="TimedPlotter2.input" relation="relation3"/>
-    <link port="ControlPlotter.input" relation="relation4"/>
+    <link port="CurrentTime.output" relation="relation"/>
+    <link port="CurrentTime.trigger" relation="relation5"/>
+    <link port="Test2.input" relation="relation"/>
+    <link port="CurrentTime2.output" relation="relation2"/>
+    <link port="CurrentTime2.trigger" relation="relation6"/>
+    <link port="CurrentTime3.output" relation="relation3"/>
+    <link port="CurrentTime3.trigger" relation="relation7"/>
+    <link port="Test.input" relation="relation5"/>
+    <link port="Test3.input" relation="relation2"/>
+    <link port="Test4.input" relation="relation6"/>
+    <link port="Test5.input" relation="relation3"/>
+    <link port="Test6.input" relation="relation7"/>
 </entity>
