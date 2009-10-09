@@ -2391,7 +2391,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
             String castType, String refType) throws IllegalActionException {
 
         if (castType == null || refType == null || castType.equals(refType)) {
-            if (castType == null && refType.equals("Token") 
+            if (castType == null && (refType != null && refType.equals("Token") )
                     && (expression.equals("true") || expression.equals("false"))) {
                 // FIXME: is this right?  It is needed by the Case actor in
                 // $PTII/bin/ptcg $PTII/ptolemy/codegen/c/actor/lib/hoc/test/auto/Case5.xml
