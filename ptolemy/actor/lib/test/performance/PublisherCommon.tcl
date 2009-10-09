@@ -338,13 +338,28 @@ proc pubSubAggModel {numberOfSubsPerLevel levels} {
 } 
 
 
+proc lazyStats {e0} {
+    set lazyTypedCompositeCount 0
+    set entityList [$e0 allCompositeEntityList] 
+    set iterator [$entityList iterator]
+    while {[$iterator hasNext]} {
+	set entity [java::cast ptolemy.kernel.util.NamedObj [$iterator next]]
+	#puts "[$entity getFullName] [$entity getClassName] [[$entity getClass] getName]"
+	if {[java::instanceof $entity ptolemy.actor.LazyTypedCompositeActor]} {
+	    incr lazyTypedCompositeCount
+	}
+    }
+    return "containing [[$e0 deepOpaqueEntityList] size] actors, $lazyTypedCompositeCount LazyTypedCompositeActors"
+}
+
 proc pubSubAggLazyModel {numberOfSubsPerLevel levels} {
     set e0 [pubSubAggBase $numberOfSubsPerLevel $levels]
     set filename "pubSubAgg_${numberOfSubsPerLevel}_${levels}.xml"
     set fd [open $filename w]
     puts $fd [$e0 exportMoML]
     close $fd
-    puts "Created $filename, containing [[$e0 deepOpaqueEntityList] size] actors"
+    puts "Created $filename, [lazyStats $e0]"
+
     
     jdkCapture {
 	java::new ptolemy.moml.ConvertToLazy $filename 0
@@ -360,7 +375,7 @@ proc pubSubAggLazyModel {numberOfSubsPerLevel levels} {
 
     set e1 [java::cast ptolemy.actor.TypedCompositeActor [$parser parse $moml2]]
 
-    
+    puts "Created $filename, [lazyStats $e1]"
 
     set manager [java::new ptolemy.actor.Manager [$e1 workspace] "myManager"]
     $e1 setManager $manager
