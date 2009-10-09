@@ -28,7 +28,7 @@
 */
 package ptolemy.domains.modal.kernel;
 
-import ptolemy.actor.Actor;
+import ptolemy.actor.TypedActor;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.IllegalActionException;
@@ -46,7 +46,7 @@ import ptolemy.kernel.util.IllegalActionException;
  @Pt.ProposedRating Red (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
-public interface RefinementActor extends Actor {
+public interface RefinementActor extends TypedActor {
 
     /** Return the state (or event, which subclasses state) that this actor
      *  refines.

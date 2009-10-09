@@ -79,6 +79,7 @@ JSRCS = \
 	RelationType.java \
 	State.java \
 	StateEvent.java \
+	Suspendable.java \
 	Transition.java
 
 OTHER_FILES_TO_BE_JARED = \

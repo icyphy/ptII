@@ -46,7 +46,6 @@ import ptolemy.actor.IORelation;
 import ptolemy.actor.Initializable;
 import ptolemy.actor.Manager;
 import ptolemy.actor.Receiver;
-import ptolemy.actor.SuperdenseTimeDirector;
 import ptolemy.actor.TypedActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.util.BooleanDependency;
@@ -54,7 +53,6 @@ import ptolemy.actor.util.CausalityInterface;
 import ptolemy.actor.util.DefaultCausalityInterface;
 import ptolemy.actor.util.Dependency;
 import ptolemy.actor.util.ExplicitChangeContext;
-import ptolemy.actor.util.Time;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.ObjectToken;
@@ -307,6 +305,12 @@ public class FSMActor extends CompositeEntity implements TypedActor,
      *  can be evaluated.
      *  Execute the output actions contained by the returned
      *  transition before returning.
+     *  <p>
+     *  After calling this method, you can call foundUnknown()
+     *  to determine whether any guard expressions or output value
+     *  expressions on a transition whose guard evaluates to true
+     *  were found in the specified transition list that
+     *  referred to input ports that are not currently known.
      *  @param transitionList A list of transitions.
      *  @return An enabled transition, or null if none is enabled.
      *  @exception IllegalActionException If there is more than one
@@ -385,6 +389,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
 
                 result = (Transition) enabledTransitions.get(randomChoice);
                 if (_referencedInputPortsByOutputKnown(result)) {
+                    _foundUnknown = true;
                     break;
                 } else {
                     // Cannot make this choice.
@@ -406,7 +411,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
                 action.execute();
             }
             
-            // If the current state has no refinement and there
+            // If the current state has no refinement and there are
             // outputs that remain unknown, make them absent.
             if (_currentState.getRefinement() == null) {
                 List<IOPort> outputs = outputPortList();
@@ -419,7 +424,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
                 }
             }
         }
-        // Commit to this transition even if it cannot be
+        // Commit to this transition.
         _lastChosenTransition = result;
 
         return result;
@@ -493,6 +498,11 @@ public class FSMActor extends CompositeEntity implements TypedActor,
      *  transitions. This includes all transitions whose guards can
      *  can be evaluated and evaluate to true, plus, if all guards can
      *  be evaluated and evaluate to false, all default transitions.
+     *  <p>
+     *  After calling this method, you can call foundUnknown()
+     *  to determine whether any guard expressions
+     *  were found in the specified transition list that
+     *  referred to input ports that are not currently known.
      *  @param transitionList A list of transitions.
      *  @return A list of enabled transition.
      *  @exception IllegalActionException If the guard expression of any
@@ -505,7 +515,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
 
         Iterator transitionRelations = transitionList.iterator();
 
-        boolean foundUnknown = false;
+        _foundUnknown = false;
         while (transitionRelations.hasNext() && !_stopRequested) {
             Transition transition = (Transition) transitionRelations.next();
             if (transition.isDefault()) {
@@ -513,7 +523,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
                     defaultTransitions.add(transition);
                 }
             } else {
-                foundUnknown = foundUnknown || !_referencedInputPortsByGuardKnown(transition);
+                _foundUnknown = _foundUnknown || !_referencedInputPortsByGuardKnown(transition);
                 // Try to evaluate the guard whether the inputs are known
                 // or not. An unknown input might be in a part of the
                 // guard expression that is not evaluated, e.g. if the
@@ -523,14 +533,25 @@ public class FSMActor extends CompositeEntity implements TypedActor,
                         enabledTransitions.add(transition);
                     }
                 } catch (RuntimeException ex) {
-                    if (!foundUnknown) {
-                        // All referenced inputs are known, so the exception is real.
-                        throw ex;
+                    // If an exception occurs, it could be because there are unknown
+                    // inputs. But it could also be because of an expression like
+                    // (in == value), where in is an input port whose status is
+                    // known to be absent. In that case, we want to interpret
+                    // the guard as false.
+                    if (!_foundUnknown) {
+                        // All referenced inputs are known.
+                        // Check whether some are absent.
+                        if (_referencedInputPortValuesByGuardPresent(transition)) {
+                            // All referenced input values are to ports with present status.
+                            throw ex;                            
+                        }
                     }
                 } catch (IllegalActionException ex) {
-                    if (!foundUnknown) {
-                        // All referenced inputs are known, so the exception is real.
-                        throw ex;
+                    // See comments above.
+                    if (!_foundUnknown) {
+                        if (_referencedInputPortValuesByGuardPresent(transition)) {
+                            throw ex;
+                        }
                     }
                 }
             }
@@ -540,23 +561,20 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         // enabled transition is actually taken. This method simply returns
         // all enabled transitions.
         if (enabledTransitions.size() > 0) {
+            if (_debugging) {
+                _debug("Enabled transitions: " + enabledTransitions);
+            }
             return enabledTransitions;
         } else {
             // No enabled transitions. Check for default transitions.
             // Default transitions cannot become enabled until all
             // guard expressions can be evaluated.
-            if (!foundUnknown) {
-                // If there is no default transition,
-                // the current state has no refinement, and there
-                // outputs that remain unknown, make them absent.
-                if (defaultTransitions.size() == 0 && _currentState.getRefinement() == null) {
-                    List<IOPort> outputs = outputPortList();
-                    for (IOPort port : outputs) {
-                        for (int channel = 0; channel < port.getWidth(); channel++) {
-                            if (!port.isKnown(channel)) {
-                                port.sendClear(channel);
-                            }
-                        }
+            if (!_foundUnknown) {
+                if (_debugging) {
+                    if (defaultTransitions.size() > 0) {
+                        _debug("Enabled default transitions: " + defaultTransitions);
+                    } else {
+                        _debug("No enabled transitions.");
                     }
                 }
                 return defaultTransitions;
@@ -565,6 +583,9 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         // No enabled transitions were found, but some are not yet
         // known to disabled, so we cannot return a transition (even the
         // default transition).
+        if (_debugging) {
+            _debug("No enabled transitions.");
+        }
         return new LinkedList();
     }
 
@@ -621,28 +642,39 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         // NOTE: this method is not called in the FSMDirector class.
         readInputs();
         List transitionList = _currentState.outgoingPort.linkedRelationList();
-        chooseTransition(transitionList);
-    }
-
-    /** Notify the refinements of the current state, if any,
-     *  that a {@link Director#fireAt(Actor,Time)}
-     *  request was skipped, and that current time has passed the
-     *  requested time. A director calls this method when in a modal
-     *  model it was inactive at the time of the request, and it
-     *  became active again after the time of the request had
-     *  expired. This base class delegates the current state refinements,
-     *  if there are any.
-     *  @param time The time of the request that was skipped.
-     *  @exception IllegalActionException If skipping the request
-     *   is not acceptable to a refinement.
-     */
-    public void fireAtSkipped(Time time) throws IllegalActionException {
-        Actor[] actors = _currentState.getRefinement();
-        if (actors != null) {
-            for (int i = 0; i < actors.length; i++) {
-                actors[i].fireAtSkipped(time);
+        Transition chosenTransition = chooseTransition(transitionList);
+        
+        // If no transition was chosen, all relevant inputs are
+        // known, and the current state has no refinement, then send
+        // clear on all outputs.
+        if (chosenTransition == null && !foundUnknown() && _currentState.getRefinement() == null) {
+            List<IOPort> outputs = outputPortList();
+            for (IOPort port : outputs) {
+                for (int channel = 0; channel < port.getWidth(); channel++) {
+                    if (!port.isKnown(channel)) {
+                        port.sendClear(channel);
+                    }
+                }
             }
         }
+    }
+    
+    /** Return true if the most recent call to enabledTransition()
+     *  or chooseTransition() found guard expressions or output value
+     *  expressions that could not be evaluated due to unknown inputs.
+     *  Specifically, after calling {@see #enabledTransitions(List)},
+     *  call this method to see whether there were guard expressions
+     *  in the specified list that could not be evaluated. After
+     *  calling {@see #chooseTransition(List)}, call this to
+     *  determine whether any guard expressions or output value
+     *  expressions on a transition whose guard evaluates to true
+     *  were found in the specified transition list that
+     *  referred to input ports that are not currently known.
+     *  @return True If guards or output value expressions could
+     *   not be evaluated.
+     */
+    public boolean foundUnknown() {
+        return _foundUnknown;
     }
 
     /** Return a causality interface for this actor. This
@@ -1693,6 +1725,12 @@ public class FSMActor extends CompositeEntity implements TypedActor,
                     } else {
                         actors[i].initialize();
                     }
+                /* NOTE: The following is no longer correct because
+                 * the destination state director will have as its current
+                 * local time whatever it was when it was last suspended,
+                 * or the initial value if hasn't run before. This is
+                 * the correct value upon creation of version 3 of the
+                 * modal model time semantics.  EAL 9/17/09.
                 } else {
                     // Set current time of the director of the destination
                     // refinement before executing actions because there may
@@ -1713,6 +1751,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
                         ((SuperdenseTimeDirector) destinationDirector)
                                 .setIndex(index);
                     }
+                    */
                 }
             }
         }
@@ -2163,31 +2202,32 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         }
     }
 
-    /** Given a transition, find any input ports
-     *  referenced in the guard expressions of the
-     *  transitions, and if any of those input ports has status
-     *  unknown, return false.
-     *  FIXME: bogus:
-     *  Also, if the port identifier does
-     *  not end with "_isPresent", then return false if port
-     *  identifier with "_isPresent" appended is false. There is no data on
-     *  the port "in" then the identifier "in" will be undefined, or worse,
-     *  will resolve to the port object itself.
-     *  Otherwise, return true.
-     *  These are the input ports whose status must be known
-     *  for this transition to be enabled.
+    /** Given a transition, return false if the guard includes any
+     *  reference to an input port value and that input port is known
+     *  to be absent, or any reference to an input port whose status
+     *  is unknown. Otherwise, return true.  A reference to
+     *  an input port with "_isPresent" appended is not considered.
+     *  Note that you have to be very careful using this.
+     *  E.g., if the guard expression is (!in_isPresent || in == 1)
+     *  then this method would return false when in is absent, even
+     *  though the guard can be evaluated and evaluates to true.
+     *  Thus, the correct usage is to attempt first to evaluate the
+     *  guard, and only if the evaluation fails, then use this method
+     *  to determine whether the cause is the absence of input.
      *  @param transition A transition
-     *  @return A set of input ports.
+     *  @return False if the guard includes references to values of input
+     *   ports that are absent.
      *  @exception IllegalActionException If the guard expression cannot
      *   be parsed.
      */
-    private boolean _referencedInputPortsByGuardKnown(Transition transition)
+    private boolean _referencedInputPortValuesByGuardPresent(Transition transition)
             throws IllegalActionException {
 
-        // FIXME: This method is wrong!
-        // E.g., if the guard expression is (!in_isPresent || in == 1)
-        // then this method will return false when in is absent!
-        // The next method below may also be wrong!
+        // If the port identifier does
+        // not end with "_isPresent", then return false if port
+        // identifier with "_isPresent" appended is false. There is no data on
+        // the port "in" then the identifier "in" will be undefined, or worse,
+        //  will resolve to the port object itself.
 
         String string = transition.getGuardExpression();
         if (string.trim().equals("")) {
@@ -2209,12 +2249,12 @@ public class FSMActor extends CompositeEntity implements TypedActor,
                     if (!((IOPort) port).isKnown(channel)) {
                         return false;
                     }
-                    /* FIXME: bogus? */
                     if (!name.endsWith("_isPresent")) {
                         Token token = scope.get(port.getName() + "_" + channel
                                 + "_isPresent");
                         if (!(token instanceof BooleanToken)
                                 || !((BooleanToken) token).booleanValue()) {
+                            // isPresent symbol is either undefined or false..
                             return false;
                         }
                     }
@@ -2223,13 +2263,59 @@ public class FSMActor extends CompositeEntity implements TypedActor,
                     if (!((IOPort) port).isKnown()) {
                         return false;
                     }
-                    /* FIXME: bogus? */
                     if (!name.endsWith("_isPresent")) {
                         Token token = scope.get(port.getName() + "_isPresent");
                         if (!(token instanceof BooleanToken)
                                 || !((BooleanToken) token).booleanValue()) {
                             return false;
                         }
+                    }
+                }
+            }
+        }
+        return true;
+    }
+
+    /** Given a transition, find any input ports
+     *  referenced in the guard expressions of the
+     *  transition, and if any of those input ports has status
+     *  unknown, return false.
+     *  Otherwise, return true.
+     *  These are the input ports whose status must be known
+     *  for this transition to be enabled.
+     *  @param transition A transition
+     *  @return True if all input ports referenced by the guard on
+     *   the transition have known status.
+     *  @exception IllegalActionException If the guard expression cannot
+     *   be parsed.
+     */
+    private boolean _referencedInputPortsByGuardKnown(Transition transition)
+            throws IllegalActionException {
+
+        String string = transition.getGuardExpression();
+        if (string.trim().equals("")) {
+            return true;
+        }
+        PtParser parser = new PtParser();
+        ASTPtRootNode parseTree = parser.generateParseTree(string);
+        ParseTreeFreeVariableCollector variableCollector = new ParseTreeFreeVariableCollector();
+        ParserScope scope = getPortScope();
+        // Get a set of free variable names.
+        Set<String> nameSet = variableCollector.collectFreeVariables(parseTree,
+                scope);
+
+        for (String name : nameSet) {
+            Port port = _getPortForIdentifier(name);
+            if (port instanceof IOPort) {
+                int channel = _getChannelForIdentifier(name);
+                if (channel >= 0) {
+                    if (!((IOPort) port).isKnown(channel)) {
+                        return false;
+                    }
+                } else {
+                    // No specified channel.
+                    if (!((IOPort) port).isKnown()) {
+                        return false;
                     }
                 }
             }
@@ -2281,7 +2367,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
                         // Port status is known, but the referenced
                         // identifier may be undefined (e.g. "in" when
                         // in is absent).
-                        /* FIXME: Bogus. Could be in a part of the
+                        /* NOTE: Bogus. Could be in a part of the
                          * output that will not be evaluated.
                         if (scope.get(name) == null) {
                             return false;
@@ -2456,6 +2542,13 @@ public class FSMActor extends CompositeEntity implements TypedActor,
     // channel is connected to an output port of the refinement of the
     // current state.
     private Map _currentConnectionMap = null;
+    
+    /** A flag indicating that unknown inputs were referenced in guards
+     *  and/or output value expressions (when guards evaluate to true)
+     *  in the most recently called enabledTransition() or
+     *  chooseTransition().
+     */
+    private boolean _foundUnknown = false;
 
     /** A map that associates each identifier with the unique port that that
      *  identifier describes.  This map is used to detect port names that result
