@@ -40,7 +40,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
-//// Differential
+//// PID
 
 /**
  Generate PID output for a given input. The output is the sum of a proportional
@@ -61,9 +61,9 @@ import ptolemy.kernel.util.Workspace;
  <i>dt</i> is the time differential between input events events x[n] and x[n-1].
  <p>
  The output of this actor is constrained to be a double, and input must be castable 
- to a double. If the input signal is not continuous and the derivative constant
- is nonzero, then this actor will throw an as the derivative will be either infinite
- or undefined. If the derivative constant is zero, then this actor may recive
+ to a double. If the input signal is not left-continuous and the derivative constant
+ is nonzero, then this actor will throw an exception as the derivative will be either infinite
+ or undefined. If the derivative constant is zero, then this actor may recieve
  discontinuous input.
  <p>
  y[0]=Kp*x[0]

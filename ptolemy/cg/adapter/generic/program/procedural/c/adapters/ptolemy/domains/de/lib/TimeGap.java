@@ -1,4 +1,4 @@
-/* An adapter class for ptolemy.domains.de.lib.Register
+/* An adapter class for ptolemy.domains.de.lib.TimeGap
 
  Copyright (c) 2006-2009 The Regents of the University of California.
  All rights reserved.
@@ -28,19 +28,19 @@
 package ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.de.lib;
 
 //////////////////////////////////////////////////////////////////////////
-//// Register
+//// TimeGap
 
 /**
- A adapter class for ptolemy.domains.de.lib.Register.
+ A adapter class for ptolemy.domains.de.lib.TimeGap.
 
  @author Jeff C. Jensen
  */
-public class Register extends ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.de.lib.Register {
+public class TimeGap extends ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.de.lib.TimeGap {
     /**
-     *  Construct a Register adapter.
+     *  Construct a TimeGap adapter.
      *  @param actor The given ptolemy.actor.lib.TimeGap actor.
      */
-    public Register(ptolemy.domains.de.lib.Register actor) {
+    public TimeGap(ptolemy.domains.de.lib.TimeGap actor) {
         super(actor);
     }
 }

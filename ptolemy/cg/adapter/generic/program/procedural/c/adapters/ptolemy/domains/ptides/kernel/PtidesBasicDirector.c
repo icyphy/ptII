@@ -13,13 +13,13 @@
 
 /* structures */
 typedef struct {
-	uint32 secs;
-	uint32 nsecs;
+    uint32 secs;
+    uint32 nsecs;
 } Time;
 
 typedef struct {
     Time timestamp;
-    int microstep;
+    uint microstep;
 } Tag;
 
 typedef struct event {
@@ -33,7 +33,7 @@ typedef struct event {
     Tag tag;
     uint32 depth;
     void (*fireMethod)();
-	
+
     struct event** sinkEvent;
     Time deadline;
     Time offsetTime;
@@ -91,7 +91,8 @@ static Tag executingModelTag[MAX_EVENTS];
 static int numStackedModelTag;
 
 static Time lastTimerInterruptTime;
-uint32 secs;
+volatile uint32 _secs = 0;
+volatile uint32 _quarterSecs = 0;
 
 // actuator queue
 // Head points to the head of the array.
@@ -141,8 +142,8 @@ int compareEvents(Event* event1, Event* event2) {
 
 void addEvent(Event* newEvent) {
     // now add event to the deadline queue
-	Event *compare_deadline;
-	Event *before_deadline;
+    Event *compare_deadline;
+    Event *before_deadline;
 
     disableInterrupts();
 
@@ -153,11 +154,11 @@ void addEvent(Event* newEvent) {
         // We've reached the end of the queue.
         if (compare_deadline == NULL) {
             break;
-		} else if (compareEvents(newEvent, compare_deadline) <= 0) {
+        } else if (compareEvents(newEvent, compare_deadline) <= 0) {
             break;
-		} else {
-		    before_deadline = compare_deadline;
-		    compare_deadline = compare_deadline->nextEvent;
+        } else {
+            before_deadline = compare_deadline;
+            compare_deadline = compare_deadline->nextEvent;
         }
     }
 
@@ -168,33 +169,33 @@ void addEvent(Event* newEvent) {
         before_deadline->nextEvent = newEvent;
     }
 
-	#ifdef LCD_DEBUG
-	//sprintf(str,"addedEvent: %d",addeventcount);
-	//RIT128x96x4StringDraw(str,   12,80,15);
-	#endif
+#ifdef LCD_DEBUG
+    //sprintf(str,"addedEvent: %d",addeventcount);
+    //RIT128x96x4StringDraw(str,   12,80,15);
+#endif
 
-	enableInterrupts();
+    enableInterrupts();
 }
 
 Event* peekEvent(unsigned int peekingIndex) {
-	int i;
-	Event* deadline = DEADLINE_QUEUE_HEAD;
-	
-	if (deadline == NULL) {
-		return NULL;
+    int i;
+    Event* deadline = DEADLINE_QUEUE_HEAD;
+
+    if (deadline == NULL) {
+        return NULL;
     } else {
-		for (i = 0; i < peekingIndex; i++) 
-		{
-			deadline = deadline->nextEvent;
-		}
+        for (i = 0; i < peekingIndex; i++) 
+        {
+            deadline = deadline->nextEvent;
+        }
     }
-	return deadline;
+    return deadline;
 }
 
 int notSameTag(const Event* event1, const Event* event2) {
     if (timeCompare(event1->tag.timestamp, event2->tag.timestamp) == EQUAL
-            && event1->tag.microstep == event2->tag.microstep) {
-        return false;
+        && event1->tag.microstep == event2->tag.microstep) {
+            return false;
     } else {
         return true;
     }
@@ -211,20 +212,20 @@ int sameDestination(const Event* event1, const Event* event2) {
 void removeAndPropagateSameTagEvents(int peekingIndex) {
     int i;
     Event* event = DEADLINE_QUEUE_HEAD;
-	Event* prevEvent = NULL;
-	Event* refEvent = NULL;
-	
+    Event* prevEvent = NULL;
+    Event* refEvent = NULL;
+
     if (peekingIndex == 0) {
-		DEADLINE_QUEUE_HEAD = event->nextEvent;
-	} else {
+        DEADLINE_QUEUE_HEAD = event->nextEvent;
+    } else {
         for (i = 0; i < peekingIndex; i++) {
-		    prevEvent = event;
+            prevEvent = event;
             event = event->nextEvent;
         }
-	}
+    }
     // propagate data, and remove it from the event queue.
     propagateDataToken(event);
-	prevEvent->nextEvent = event->nextEvent;
+    prevEvent->nextEvent = event->nextEvent;
     refEvent = event;
     // Now find the next event see we should process it at the same time.
     while (true) {
@@ -245,137 +246,148 @@ void removeAndPropagateSameTagEvents(int peekingIndex) {
 }
 
 Event* newEvent(void) {
-	// counter counts the number of times we loop around the memory.
-	int counter = 0;
-	while (eventMemory[locationCounter].inUse != MAX_EVENTS + 1) {  
-	   if (counter++ == MAX_EVENTS) {  // if you've run out of memory just stop
-			die("ran out of memory");
-	   }
-	   locationCounter++;
-	   // make it circular
-	   locationCounter%=MAX_EVENTS;
-	}
-//	RIT128x96x4StringDraw(itoa(locationCounter,10), 0,0,15);
-	eventMemory[locationCounter].inUse=locationCounter;
-	return &eventMemory[locationCounter];
+    // counter counts the number of times we loop around the memory.
+    int counter = 0;
+    while (eventMemory[locationCounter].inUse != MAX_EVENTS + 1) {  
+        if (counter++ == MAX_EVENTS) {  // if you've run out of memory just stop
+            die("ran out of memory");
+        }
+        locationCounter++;
+        // make it circular
+        locationCounter%=MAX_EVENTS;
+    }
+    //      RIT128x96x4StringDraw(itoa(locationCounter,10), 0,0,15);
+    eventMemory[locationCounter].inUse=locationCounter;
+    return &eventMemory[locationCounter];
 }
 
 void freeEvent(Event* thisEvent) {
-	eventMemory[thisEvent->inUse].inUse = MAX_EVENTS+1;
+    eventMemory[thisEvent->inUse].inUse = MAX_EVENTS+1;
 }
 
 /* time manipulation */
-
 void timeAdd(const Time time1, const Time time2, Time* timeSum) {
-	timeSum->secs = time1.secs + time2.secs;
-	timeSum->nsecs = time1.nsecs + time2.nsecs;
-	if (timeSum->nsecs > 1000000000) {
-		timeSum->nsecs -= 1000000000;
-		timeSum->secs++;
-	}
+    timeSum->secs = time1.secs + time2.secs;
+    timeSum->nsecs = time1.nsecs + time2.nsecs;
+    if (timeSum->nsecs > 1000000000) {
+        timeSum->nsecs -= 1000000000;
+        timeSum->secs++;
+    }
 }
+
+/* compare two time values
+ * 
+ */
 int timeCompare(const Time time1, const Time time2) {
-	if (time1.secs < time2.secs) {
-		return -1;
-	} else if (time1.secs == time2.secs && time1.nsecs < time2.nsecs) {
-		return -1;
-	} else if (time1.secs == time2.secs && time1.nsecs == time2.nsecs) {
-		return 0;
-	}
-	return 1;	
+    if (time1.secs < time2.secs) {
+        return LESS;
+    } else if (time1.secs == time2.secs && time1.nsecs < time2.nsecs) {
+        return LESS;
+    } else if (time1.secs == time2.secs && time1.nsecs == time2.nsecs) {
+        return EQUAL;
+    }
+    return MORE;       
 }
+
+/* set the value of a time variable to a reference time
+ * 
+ */
 void timeSet(const Time refTime, Time* time) {
-	time->secs = refTime.secs;
-	time->nsecs = refTime.nsecs;
+    time->secs = refTime.secs;
+    time->nsecs = refTime.nsecs;
 }
+
+/* subtract two time values
+ * 
+ */
 int timeSub(const Time time1, const Time time2, Time* timeSub) {
-	if (timeCompare(time1, time2) == -1) {
-		return -1;
-	}
-	timeSub->secs = time1.secs - time2.secs;
-	if (time1.nsecs < time2.nsecs) {
-		timeSub->secs--;
-		timeSub->nsecs = time1.nsecs + 1000000000 - time2.nsecs;
-	} else {
-		timeSub->nsecs = time1.nsecs - time2.nsecs;
-	}
+    if (timeCompare(time1, time2) == -1) {
+        return -1;
+    }
+    timeSub->secs = time1.secs - time2.secs;
+    if (time1.nsecs < time2.nsecs) {
+        timeSub->secs--;
+        timeSub->nsecs = time1.nsecs + 1000000000 - time2.nsecs;
+    } else {
+        timeSub->nsecs = time1.nsecs - time2.nsecs;
+    }
     return 1;
 }
 
 /* event processing */
 
 void processEvents() {
-	// peekingPoint keeps track which event to peek at.
-	int peekingIndex = 0;
-	// keeps track of how many events in the event queue cannot be processed because their
-	// buffer has been blocked.
-	Event* event;
-	int whilecount = 0;
-	Time processTime;
-	Time physicalTime;
+    // peekingPoint keeps track which event to peek at.
+    int peekingIndex = 0;
+    // keeps track of how many events in the event queue cannot be processed because their
+    // buffer has been blocked.
+    Event* event;
+    int whilecount = 0;
+    Time processTime;
+    Time physicalTime;
 
-	disableInterrupts();
+    disableInterrupts();
 
     while (true) {
-	    event = peekEvent(peekingIndex);
+        event = peekEvent(peekingIndex);
         if (event == NULL) {
             break;
         }
         // If event queue is not empty, keep going.
-		whilecount++;
-		#ifdef LCD_DEBUG
-		debugMessageNumber("wc = ", whilecount);
-		#endif
-        
-		if (higherPriority(event) == TRUE) {
-	        safeToProcess(event, &processTime);
+        whilecount++;
+#ifdef LCD_DEBUG
+        debugMessageNumber("wc = ", whilecount);
+#endif
 
-			#ifdef LCD_DEBUG
-		    //debugMessageNumber("hpwc=", whilecount);
-			#endif
-			getRealTime(&physicalTime);
+        if (higherPriority(event) == TRUE) {
+            safeToProcess(event, &processTime);
+
+#ifdef LCD_DEBUG
+            //debugMessageNumber("hpwc=", whilecount);
+#endif
+            getRealTime(&physicalTime);
 
             if (timeCompare(physicalTime, processTime) >= 0) {
                 // We have decided to process this event, thus we let the rest
                 // of the system know this decision by queuing the priority, and
                 // setting the tag of this event.
-				queuePriority(event);
+                queuePriority(event);
                 removeAndPropagateSameTagEvents(peekingIndex);
                 setCurrentModelTag(event);
                 enableInterrupts();
                 // Execute the event. During
                 // this process more events may
                 // be posted to the queue.
-				
+
                 fireActor(event);
-				// After an actor fires, we not sure which event is safe to process,
-				// so we start examine the queue again start from the beginning.
-				peekingIndex = 0;
-				disableInterrupts();
+                // After an actor fires, we not sure which event is safe to process,
+                // so we start examine the queue again start from the beginning.
+                peekingIndex = 0;
+                disableInterrupts();
             } else {
                 // Set timed interrupt to run
                 // the event at the top of the
                 // event queue when physical time
                 // has passed for it to be
                 // safe to process
-				if (timeCompare(processTime, lastTimerInterruptTime) == LESS) {
+                if (timeCompare(processTime, lastTimerInterruptTime) == LESS) {
                     lastTimerInterruptTime = processTime;
- 					setTimedInterrupt(&processTime);
-				}
-				// this event is not safe to process, we look at the next one.
-				peekingIndex++;
+                    setTimedInterrupt(&processTime);
+                }
+                // this event is not safe to process, we look at the next one.
+                peekingIndex++;
                 //break;
 
             }// end !(curentPhysicalTime >= processTime)
-		} else {
-			// This is the only place for us to break out of the while loop. The only other possibility
-			// is that we have looked all all events in the queue, and none of them are safe to process.
-			#ifdef LCD_DEBUG
-		    debugMessageNumber("endwc=", peekingIndex);
-			#endif
-			break;
-		}//end EVENT_QUEUE_HEAD != NULL
-	}
+        } else {
+            // This is the only place for us to break out of the while loop. The only other possibility
+            // is that we have looked all all events in the queue, and none of them are safe to process.
+#ifdef LCD_DEBUG
+            debugMessageNumber("endwc=", peekingIndex);
+#endif
+            break;
+        }//end EVENT_QUEUE_HEAD != NULL
+    }
 
     // restore the last executing stacked model tag.
     if (numStackedModelTag > 0) {
@@ -383,55 +395,51 @@ void processEvents() {
         currentMicrostep = executingModelTag[numStackedModelTag].microstep;
         timeSet(executingModelTag[numStackedModelTag].timestamp, &currentModelTime);
     }
-	// This implies within the while loop, if all events cannot be processed, 
-	// we need to go through the entire event queue before another event can come in.
-	enableInterrupts();
-	// if all events are blocked because buffers are full
-	// if (numBufferBlocked != 0 && numBufferBlocked == peekingIndex) 
-	#ifdef LCD_DEBUG
-	//debugMessage("ret PE()");
-	#endif
-	
-	restoreStack();
-	while (TRUE) {
-    }
+    // This implies within the while loop, if all events cannot be processed, 
+    // we need to go through the entire event queue before another event can come in.
+    enableInterrupts();
+    // if all events are blocked because buffers are full
+    // if (numBufferBlocked != 0 && numBufferBlocked == peekingIndex) 
+#ifdef LCD_DEBUG
+    //debugMessage("ret PE()");
+#endif
+
+    restoreStack();
+    for(;;);
 }
 
 /* 
- * fire_actor checks if static timing analysis is needed.
- * if it is, static timing analysis is called, and returns
- * if it's not, firing method of the actor specified by the event is called
- */
+* fire_actor checks if static timing analysis is needed.
+* if it is, static timing analysis is called, and returns
+* if it's not, firing method of the actor specified by the event is called
+*/
 void fireActor(Event* currentEvent) {
+    if (currentEvent->fireMethod != NULL){
+        enableInterrupts();
+        (currentEvent->fireMethod)();
+    } else {
+        die("no such method, cannot fire\n");
+    }
 
-	if (currentEvent->fireMethod != NULL) 
-	{
-
-	enableInterrupts();
-		(currentEvent->fireMethod)();
-	} else {
-		die("no such method, cannot fire\n");
-	}
-
-	freeEvent(currentEvent);
-	numStackedDeadline--;
+    freeEvent(currentEvent);
+    numStackedDeadline--;
 }
 
 /* determines whether the event to fire this current actor is of higher priority than
- * whatever even that's currently being executed.
- */																	  
+* whatever even that's currently being executed.
+*/                                                                    
 unsigned int higherPriority(Event* event) {
     int i;
-	if (numStackedDeadline == 0) {
-		// there are no events on the stack, so it's always true.
-		return TRUE;
-	} else if (timeCompare(executingDeadlines[numStackedDeadline], event->deadline) == LESS) {
-		#ifdef LCD_DEBUG
+    if (numStackedDeadline == 0) {
+        // there are no events on the stack, so it's always true.
+        return TRUE;
+    } else if (timeCompare(executingDeadlines[numStackedDeadline], event->deadline) == LESS) {
+#ifdef LCD_DEBUG
         debugMessageNumber("exDe secs=", executingDeadlines[numStackedDeadline].secs);
         debugMessageNumber("exDe nsecs=", executingDeadlines[numStackedDeadline].nsecs); 
-		#endif
-		return FALSE;
-	} else {
+#endif
+        return FALSE;
+    } else {
         // check for all actors that are currently firing, and make sure we
         // don't fire an actor that's already firing.
         for (i = 0; i < numStackedDeadline; i++) {
@@ -439,78 +447,78 @@ unsigned int higherPriority(Event* event) {
                 return FALSE;
             }
         }
-		return TRUE;
-	}
+        return TRUE;
+    }
 }
 
 /*
- * Add the priority of the current event into queue
- * Set the firing flag of the actor, indicate that the actor is currenting being fired.
- */
+* Add the priority of the current event into queue
+* Set the firing flag of the actor, indicate that the actor is currenting being fired.
+*/
 void queuePriority(Event* event) {
-	numStackedDeadline++;
+    numStackedDeadline++;
     if (numStackedDeadline == MAX_EVENTS) {
         die("numStackedDeadline exceeds MAX_EVENTS");
     }
-	executingDeadlines[numStackedDeadline] = event->deadline;
-	executingActors[numStackedDeadline] = event->fireMethod;
+    executingDeadlines[numStackedDeadline] = event->deadline;
+    executingActors[numStackedDeadline] = event->fireMethod;
 }
 
 /*
- * set the current model time.
- */
+* set the current model time.
+*/
 void setCurrentModelTag(Event* currentEvent) {
     timeSet(currentEvent->tag.timestamp, &currentModelTime);
     currentMicrostep = currentEvent->tag.microstep;
 }
 
 /*
- * propagate the data token to the downstream input port Event pointer.
- */
+* propagate the data token to the downstream input port Event pointer.
+*/
 void propagateDataToken(Event* currentEvent){
     *(currentEvent->sinkEvent) = currentEvent;
 }
 
 /* 
- * Static timing analysis is called to set the timestamp of the event by a 
- * specific amount in order to fire the event at an instance that ensures 
- * all events are exectued in order.
- * In this analysis, the clock event can be executed when real time exceeds
- * tau - model_delay3
- */
+* Static timing analysis is called to set the timestamp of the event by a 
+* specific amount in order to fire the event at an instance that ensures 
+* all events are exectued in order.
+* In this analysis, the clock event can be executed when real time exceeds
+* tau - model_delay3
+*/
 void safeToProcess(Event* thisEvent, Time* safeTimestamp) {
 
-	//   safeTimestamp = physical time - offset;
-	
-//   	unsigned int safeThroughPropagation = TRUE;
+    //   safeTimestamp = physical time - offset;
+
+    //      unsigned int safeThroughPropagation = TRUE;
 
     //FIXME: we only check the first event in the event queue.
     /*
-	while (inputPort != NULL) {
-		if (inputPort != thisEvent->atPort) {
-			if (timeCompare(&(inputPort->modelTime), &(thisEvent->tag.timestamp)) == LESS) {
-				safeThroughPropagation = FALSE;
-				break;
-			}
-		}
-		inputPort = inputPort->next;
-	}*/
+    while (inputPort != NULL) {
+    if (inputPort != thisEvent->atPort) {
+    if (timeCompare(&(inputPort->modelTime), &(thisEvent->tag.timestamp)) == LESS) {
+    safeThroughPropagation = FALSE;
+    break;
+    }
+    }
+    inputPort = inputPort->next;
+    }*/
 
 
-//	if (safeThroughPropagation == TRUE) {
-//		timeSet(safeTimestamp, &ZERO_TIME);
-//	} else {
-		// if (thisEvent->tag.timestamp = MAX_LONG_LONG) {
-		// 	safeTimestamp = 0; //always safe
-		// } else {
-		timeSub(thisEvent->tag.timestamp, thisEvent->offsetTime, safeTimestamp);
-		// }
-//	}
+    //      if (safeThroughPropagation == TRUE) {
+    //          timeSet(safeTimestamp, &ZERO_TIME);
+    //      } else {
+    // if (thisEvent->tag.timestamp = MAX_LONG_LONG) {
+    //      safeTimestamp = 0; //always safe
+    // } else {
+    timeSub(thisEvent->tag.timestamp, thisEvent->offsetTime, safeTimestamp);
+    // }
+    //      }
 
-		#ifdef LCD_DEBUG
-		//sprintf(str, "STP=%d", safeTimestamp->secs);
-		//RIT128x96x4StringDraw(str, 0,40,15);
-		#endif
+#ifdef LCD_DEBUG
+    //sprintf(str, "STP=%d", safeTimestamp->secs);
+    //RIT128x96x4StringDraw(str, 0,40,15);
+#endif
 }
 /**/
 
@@ -526,16 +534,21 @@ initializePISystem();
 void initializeEvents(void) {
     // no event initialization is needed here... for now.
 }
+
+/* initialize global variables
+ */
 void initializeMemory() {
-	int i;
-	locationCounter = 0;
-	secs = 0;
-						  
-	for(i = 0; i < MAX_EVENTS; i++) {
-	    // event is "freed and can be returned by newEvent"
-		eventMemory[i].inUse = MAX_EVENTS + 1; 
-	}
+    int i;
+    locationCounter = 0;
+    _secs = 0;
+    _quarter_secs = 0;
+
+    for(i = 0; i < MAX_EVENTS; i++) {
+        // event is "freed and can be returned by newEvent"
+        eventMemory[i].inUse = MAX_EVENTS + 1; 
+    }
 }
+
 void initializePISystem() {
     timeSet(MAX_TIME, &lastTimerInterruptTime);
 }

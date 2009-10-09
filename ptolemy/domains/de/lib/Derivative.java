@@ -42,11 +42,11 @@ import ptolemy.kernel.util.Workspace;
 
 /**
  Output the discrete derivative of the input, y[n] = (x[n] - x[n-1])/dt,
- where <i>dt<i> is the time gap between input events. Output is not generated
+ where <i>dt</i> is the time gap between input events. Output is not generated
  until two inputs have been consumed.
  <p>
  The output of this actor is constrained to be a double, and input must be castable 
- to a double. If the input signal is not continuous, the derivative will be either
+ to a double. If the input signal is not left-continuous, the derivative will be either
  infinite or undefined and an exception is thrown.
  <p>
  In postfire(), if an event is present on the <i>reset</i> port, this
@@ -56,7 +56,7 @@ import ptolemy.kernel.util.Workspace;
  and would otherwise effect the value of the derivative for one sample.
  <p>
  @author Jeff C. Jensen
- @version $Id$
+ @version $Id: Derivative.java$
  @since Ptolemy II 8.1
  @see ptolemy.actor.lib.Differential
  */

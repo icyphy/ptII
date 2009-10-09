@@ -12,13 +12,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-280.0, 220.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={84, 45, 1280, 685}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-14, 20, 1023, 641}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1057, 571]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[800, 527]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{136.85101010101, 391.4411300505051}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{56.3186553030303, 402.9845328282828}">
     </property>
     <property name="discDefaultRate" class="ptolemy.data.expr.Parameter" value="4 * encoderTicksPerRevolution">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -61,7 +61,7 @@
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Simulate a ball (&quot;particle&quot;) dropping towards a rotating disc. The disc has a&#10;hole (door) at one end that will allow the particle to &quot;tunnel&quot; through if the&#10;disc is properly aligned (zero rotation) at the time of impact.&#10;&#10;Particle drops are detected by a photosensor, which reports the time at which the&#10;particle was detected, as well as its initial velocity. The controller adjusts the&#10;speed of the disc to ensure the door is directly below the particle at the time of&#10;impact.&#10;&#10;Following the initial particle drop, the next particle will drop after a fixed&#10;delay. Between particle drops, the disc should return to its default speed.&#10;&#10;All units used in this model are SI (meters, seconds), except for rotation&#10;which is in units of encoder units, parameterized by encoderTicksPerRevolution.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, 195.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, 190.0]">
         </property>
     </property>
     <property name="dropSensorAltitude" class="ptolemy.data.expr.Parameter" value="10.0">
@@ -189,7 +189,7 @@
     <entity name="Dynamics Model" class="ptolemy.actor.TypedCompositeActor">
         <property name="_location" class="ptolemy.kernel.util.Location" value="{50.0, 510.0}">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={197, 351, 929, 464}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={56, 179, 929, 464}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[706, 350]">
         </property>
@@ -207,9 +207,9 @@
         </property>
         <property name="initialStates" class="ptolemy.data.expr.Parameter" value="[0,0,0]">
         </property>
-        <port name="dropPulse" class="ptolemy.actor.TypedIOPort">
+        <port name="photoPulse" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, 155.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{105.0, 150.0}">
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
@@ -390,7 +390,7 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[-205.0, 250.0]">
                 </property>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 234, 1066, 464}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 284, 1036, 464}, maximized=false}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[843, 274]">
             </property>
@@ -630,16 +630,16 @@
             <link relation1="node2" relation2="relation2"/>
         </entity>
         <entity name="DiscreteClock" class="ptolemy.actor.lib.DiscreteClock">
-            <property name="period" class="ptolemy.actor.parameters.PortParameter" value="dropSensorImpactDelay">
+            <property name="period" class="ptolemy.actor.parameters.PortParameter" value="5*dropSensorImpactDelay">
             </property>
             <property name="offsets" class="ptolemy.data.expr.Parameter" value="{dropSensorImpactDelay}">
             </property>
             <doc>Create periodic timed events.</doc>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[-135.0, 155.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[-135.0, 150.0]">
             </property>
         </entity>
         <entity name="Particle Plant" class="ptolemy.actor.TypedCompositeActor">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[-25.0, 150.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{-25.0, 150.0}">
             </property>
             <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
                 <property name="text" class="ptolemy.kernel.util.StringAttribute" value="When triggered, generate two photo pulses that correspond to the physical times&#10;a ball passes through two photodetectors separated by a fixed distance.&#10;&#10;Introduce a random delay between photo events, which will randomize the initial&#10;velocity of the particle in motion.">
@@ -647,7 +647,7 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{170.0, 65.0}">
                 </property>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={308, 193, 823, 514}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={201, 193, 823, 514}, maximized=false}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
             </property>
@@ -814,7 +814,7 @@
         </relation>
         <relation name="relation5" class="ptolemy.actor.TypedIORelation">
         </relation>
-        <link port="dropPulse" relation="relation2"/>
+        <link port="photoPulse" relation="relation2"/>
         <link port="encoderPulse" relation="relation4"/>
         <link port="particleTrigger" relation="relation5"/>
         <link port="controlSignal" relation="relation3"/>
@@ -836,7 +836,7 @@
     <entity name="Controller" class="ptolemy.actor.TypedCompositeActor">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, 510.0]">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={3, 135, 1161, 724}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-93, 11, 1036, 724}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[938, 610]">
         </property>
@@ -894,7 +894,7 @@
         <entity name="Decoder" class="ptolemy.actor.TypedCompositeActor">
             <property name="_location" class="ptolemy.kernel.util.Location" value="[245.0, 150.0]">
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={77, 236, 702, 589}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={87, 22, 702, 589}, maximized=false}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[479, 475]">
             </property>
@@ -1522,7 +1522,7 @@
             <entity name="Trajectory Planner" class="ptolemy.actor.TypedCompositeActor">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{85.0, 100.0}">
                 </property>
-                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={202, 230, 1096, 550}, maximized=false}">
+                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-11, 114, 1036, 550}, maximized=false}">
                 </property>
                 <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[873, 436]">
                 </property>
@@ -1601,7 +1601,7 @@
                         <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 40.0]">
                         </property>
                     </property>
-                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={327, 61, 937, 485}, maximized=false}">
+                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={87, 61, 937, 485}, maximized=false}">
                     </property>
                     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[714, 371]">
                     </property>
@@ -1707,7 +1707,7 @@
                             <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
                             </property>
                         </property>
-                        <property name="_location" class="ptolemy.kernel.util.Location" value="[310.0, 170.0]">
+                        <property name="_location" class="ptolemy.kernel.util.Location" value="{310.0, 170.0}">
                         </property>
                         <port name="timeToImpact" class="ptolemy.actor.TypedIOPort">
                             <property name="input"/>
@@ -2093,7 +2093,7 @@
     </relation>
     <relation name="relation9" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <link port="Dynamics Model.dropPulse" relation="relation2"/>
+    <link port="Dynamics Model.photoPulse" relation="relation2"/>
     <link port="Dynamics Model.encoderPulse" relation="relation7"/>
     <link port="Dynamics Model.particleTrigger" relation="relation"/>
     <link port="Dynamics Model.controlSignal" relation="relation5"/>
