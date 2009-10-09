@@ -659,6 +659,28 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         }
     }
     
+    /** Notify the refinements of the current state, if any,
+     *  that a {@link Director#fireAt(Actor,Time)}
+     *  request was skipped, and that current time has passed the
+     *  requested time. A director calls this method when in a modal
+     *  model it was inactive at the time of the request, and it
+     *  became active again after the time of the request had
+     *  expired. This base class delegates the current state refinements,
+     *  if there are any.
+     *  @param time The time of the request that was skipped.
+     *  @exception IllegalActionException If skipping the request
+     *   is not acceptable to a refinement.
+     */
+    public void fireAtSkipped(ptolemy.actor.util.Time time) throws IllegalActionException {
+        Actor[] actors = _currentState.getRefinement();
+        if (actors != null) {
+            for (int i = 0; i < actors.length; i++) {
+                actors[i].fireAtSkipped(time);
+            }
+        }
+    }
+						
+
     /** Return true if the most recent call to enabledTransition()
      *  or chooseTransition() found guard expressions or output value
      *  expressions that could not be evaluated due to unknown inputs.
