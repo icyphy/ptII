@@ -433,7 +433,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                 MoMLFilter filter = (MoMLFilter) filters.next();
                 filteredValue = filter.filterAttributeValue(_current,
                         currentElement, name, filteredValue,
-                        _xmlFile != null ? _xmlFile.toString() : null);
+                        _xmlFileName);
             }
 
             // Sometimes the value we pass in is null, so we only
@@ -721,8 +721,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
             while (filters.hasNext()) {
                 MoMLFilter filter = (MoMLFilter) filters.next();
                 filter.filterEndElement(_current, elementName,
-                        _currentCharData, _xmlFile != null ? _xmlFile
-                                .toString() : null);
+                        _currentCharData, _xmlFileName);
             }
         }
 
@@ -1252,7 +1251,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
      *  @see #purgeAllModelRecords()
      */
     public NamedObj parse(URL base, URL input) throws Exception {
-        _xmlFile = input;
+        _setXmlFile(input);
 
         try {
             if (_imports == null) {
@@ -1312,7 +1311,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                 }
             }
         } finally {
-            _xmlFile = null;
+            _setXmlFile(null);
         }
     }
 
@@ -1413,14 +1412,14 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
 
                 if (_xmlFile == null) {
                     xmlFileWasNull = true;
-                    _xmlFile = new URL(base.toExternalForm());
+                    _setXmlFile(new URL(base.toExternalForm()));
                 }
 
                 try {
                     _xmlParser.parse(base.toExternalForm(), null, buffered);
                 } finally {
                     if (xmlFileWasNull) {
-                        _xmlFile = null;
+                        _setXmlFile(null);
                     }
                 }
             }
@@ -4718,7 +4717,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
         // Wireless SmartParking.xml had this problem because
         // LotSensor.xml has backward compat changes
         boolean modified = isModified();
-        parser._xmlFile = fileNameToURL(file, base);
+        parser._setXmlFile(fileNameToURL(file, base));
 
         try {
             NamedObj toplevel = parser.parse(parser._xmlFile, parser._xmlFile);
@@ -4753,7 +4752,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
             // Parse operation cancelled.
             return null;
         } finally {
-            parser._xmlFile = previousXmlFile;
+            parser._setXmlFile(previousXmlFile);
             setModified(modified);
         }
     }
@@ -5917,7 +5916,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
      */
     private NamedObj _parse(MoMLParser parser, URL base, String source)
             throws Exception {
-        _xmlFile = fileNameToURL(source, base);
+        _setXmlFile(fileNameToURL(source, base));
 
         InputStream input = null;
 
@@ -5943,7 +5942,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                 }
             }
 
-            _xmlFile = null;
+            _setXmlFile(null);
         }
     }
 
@@ -6911,6 +6910,16 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
         return result;
     }
 
+    /** Store the value of the file being read.  We do this for performance
+     *  reasons because URL.toString() is expensive.  For large models,
+     *  caching results in a 2x speed-up in opening time under Mac OS X.
+     */
+    private void _setXmlFile(URL xmlFile) {
+        _xmlFile = xmlFile;
+        _xmlFileName = _xmlFile != null
+                ? _xmlFile.toString() : null;
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
     // Remote xmlFiles that the user approved of when the security concern
@@ -7086,8 +7095,13 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
     // The workspace for this model.
     private Workspace _workspace;
 
-    // The XML file being read, if any.
+    /** The XML file being read, if any.  Do not set _xmlFile directly,
+     *  instead call _setXmlFile().
+     */ 
     private URL _xmlFile = null;
+
+    /** The name of the XMLFile, which we cache for performance reasons. */
+    private String _xmlFileName = null;
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
