@@ -154,7 +154,7 @@ public class Publisher extends TypedAtomicActor {
                         try {
                             ((CompositeActor) container).registerPublisherPort(newValue, output);
                             if (!(_channel == null || _channel.trim().equals(""))) {                            
-                                ((CompositeActor) container).unregisterPublisherPort(_channel);
+                                ((CompositeActor) container).unregisterPublisherPort(_channel, output);
                             }
                         } catch (NameDuplicationException e) {
                             throw new IllegalActionException(this, e, "Can't add published port.");
@@ -239,7 +239,7 @@ public class Publisher extends TypedAtomicActor {
         if (container == null && !(_channel == null || _channel.trim().equals(""))) {
             NamedObj previousContainer = getContainer();
             if (previousContainer instanceof CompositeActor) {
-                ((CompositeActor) previousContainer).unregisterPublisherPort(_channel);
+                ((CompositeActor) previousContainer).unregisterPublisherPort(_channel, output);
             }
         }
         

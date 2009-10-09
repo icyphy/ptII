@@ -38,6 +38,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
@@ -161,7 +162,7 @@ will simply result in the expression failing to evaluate.
 
 
  @author Bert Rodiers, Dai Bui
- @version $Id: $
+ @version $Id$
  @since Ptolemy II 8.1
  @Pt.ProposedRating Red (rodiers)
  @Pt.AcceptedRating Red (rodiers)
@@ -640,7 +641,7 @@ public class ModularCompiledSDFTypedCompositeActor extends LazyTypedCompositeAct
             ++_creatingPubSub;
             
             if (_publisherRelations != null && _publisherRelations.containsKey(name)) {
-                IOPort port = _publishedPorts.get(name);
+                IOPort port = _getPublishedPort(name);
                 if (port != null && port.getContainer() == null) {
                     // The user deleted the port.
                     port.setContainer(this);
@@ -880,9 +881,14 @@ public class ModularCompiledSDFTypedCompositeActor extends LazyTypedCompositeAct
                 }
                 _publisherRelations.put(name, relation);
                 if (_publishedPorts == null) {
-                    _publishedPorts = new HashMap<String, IOPort>();
+                    _publishedPorts = new HashMap<String, List<IOPort>>();
                 }
-                _publishedPorts.put(name, stubPort);
+                List<IOPort> portList = _publishedPorts.get(name);
+                if (portList == null) {
+                    portList = new LinkedList<IOPort>();
+                    _publishedPorts.put(name, portList);    
+                }
+                portList.add(stubPort);
                 
                 if (container instanceof CompositeActor) {
                     ((CompositeActor) container).registerPublisherPort(name, stubPort);
@@ -972,15 +978,16 @@ public class ModularCompiledSDFTypedCompositeActor extends LazyTypedCompositeAct
      *  @param name The name is being used in the matching process
      *          to match publisher and subscriber. This will be the port
      *          that should be removed
+     *  @param publisherPort The publisher port.
      */
-    public void unregisterPublisherPort(String name) {
+    public void unregisterPublisherPort(String name, IOPort publisherPort) {
         try {
             ++_creatingPubSub;
             NamedObj container = getContainer();
             if (container != null) {
                 if (_publishedPorts != null) {                
                     try {
-                        _publishedPorts.get(name).setContainer(null); // Remove stubPort
+                        _getPublishedPort(name).setContainer(null); // Remove stubPort
                     } catch (IllegalActionException e) {
                         // Should not happen.
                         throw new IllegalStateException(e);
@@ -989,9 +996,9 @@ public class ModularCompiledSDFTypedCompositeActor extends LazyTypedCompositeAct
                         throw new IllegalStateException(e);
                     }
                 }
-                super.unregisterPublisherPort(name);
+                super.unregisterPublisherPort(name, publisherPort);
                 if (container instanceof CompositeActor) {
-                    ((CompositeActor) container).unregisterPublisherPort(name);
+                    ((CompositeActor) container).unregisterPublisherPort(name, publisherPort);
                 }
             }
         } finally {
@@ -1207,8 +1214,8 @@ public class ModularCompiledSDFTypedCompositeActor extends LazyTypedCompositeAct
                 }
             }
         } else if (publisher) {
-            for (Map.Entry<String, IOPort> element : _publishedPorts.entrySet()) {
-                if (element.getValue() == port) {
+            for (Entry<String, List<IOPort>> element : _publishedPorts.entrySet()) {
+                if (element.getValue().contains(port)) {
                     return element.getKey();
                 }
             }                

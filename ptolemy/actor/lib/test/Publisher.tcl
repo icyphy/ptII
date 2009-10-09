@@ -234,8 +234,11 @@ test Publisher-2.1 {Instantiate twice a class that has a publisher} {
 
     catch {$manager execute} errMsg
     list $errMsg
-} {{ptolemy.kernel.util.IllegalActionException: There is already a publisher using channel "channel1": .PublisherSubscriberInClass.Instance2OfCompositeActor.Publisher
-  in .PublisherSubscriberInClass.Instance1OfCompositeActor.Publisher}}
+} {{ptolemy.kernel.util.IllegalActionException: Can't link Subscriber with Publisher.
+  in .PublisherSubscriberInClass.Instance1OfCompositeActor.Subscriber
+Because:
+We have multiple publishers with name channel1.
+  in .PublisherSubscriberInClass}}
 
 
 

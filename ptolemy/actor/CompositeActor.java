@@ -985,10 +985,7 @@ public class CompositeActor extends CompositeEntity implements Actor,
                 ? _publisherRelations.get(name) : null;
 
             if (relation == null) {
-                IOPort publishedPort = _publishedPorts.get(name);
-                if (publishedPort == null) {
-                    throw new IllegalActionException(this, "Can't find the publisher for " + name + ".");
-                }
+                IOPort publishedPort = _getPublishedPort(name);
                 try {
                     relation = new TypedIORelation(this, this
                                     .uniqueName("publisherRelation"));
@@ -1417,10 +1414,6 @@ public class CompositeActor extends CompositeEntity implements Actor,
      *          be added.
      */
     public void registerPublisherPort(String name, IOPort port) throws NameDuplicationException, IllegalActionException {
-        if (_publishedPorts!= null && _publishedPorts.containsKey(name)) {
-            throw new NameDuplicationException(this, port,
-                    "There is already a published port with name " + name);
-        }
         NamedObj container = getContainer();
         if (!isOpaque() && container instanceof CompositeActor) {
             // Published ports are not propagated if this actor
@@ -1428,9 +1421,14 @@ public class CompositeActor extends CompositeEntity implements Actor,
             ((CompositeActor) container).registerPublisherPort(name, port);
         } else {
             if (_publishedPorts == null) {
-                _publishedPorts = new HashMap<String, IOPort>();
+                _publishedPorts = new HashMap<String, List<IOPort>>();
             }
-            _publishedPorts.put(name, port);            
+            List<IOPort> portList = _publishedPorts.get(name);
+            if (portList == null) {
+                portList = new LinkedList<IOPort>();
+                _publishedPorts.put(name, portList);    
+            }
+            portList.add(port);
         }
     }
 
@@ -1801,7 +1799,7 @@ public class CompositeActor extends CompositeEntity implements Actor,
      *  will look for publishers during the preinitialization phase.
      *  @param pattern The pattern is being used in the matching process
      *          to match publisher and subscriber.
-     *  @param subscriberPort The subscribed port. 
+     *  @param subscriberPort The subscribed port.
      *  @exception NameDuplicationException If there are name conflicts
      *          as a result of the added relations or ports. 
      *  @exception IllegalActionException If the published port cannot be found.
@@ -1835,16 +1833,21 @@ public class CompositeActor extends CompositeEntity implements Actor,
      *  @param name The name is being used in the matching process
      *          to match publisher and subscriber. This will be the port
      *          that should be removed
+     *  @param publisherPort The publisher port.
      */
-    public void unregisterPublisherPort(String name) {
+    public void unregisterPublisherPort(String name, IOPort publisherPort) {
         NamedObj container = getContainer();
         if (!isOpaque() && container instanceof CompositeActor) {
             // Published ports are not propagated if this actor
             // is opaque.
-            ((CompositeActor) container).unregisterPublisherPort(name);
+            ((CompositeActor) container).unregisterPublisherPort(name, publisherPort);
         } else {
             if (_publishedPorts != null) {
-                _publishedPorts.remove(name);
+                List<IOPort> ports = _publishedPorts.get(name);
+                ports.remove(publisherPort);
+                if (ports.isEmpty()) {
+                    _publishedPorts.remove(name);
+                }
             }
             if (_publisherRelations != null) {
                 IORelation relation = _publisherRelations.get(name);
@@ -2040,6 +2043,31 @@ public class CompositeActor extends CompositeEntity implements Actor,
             director.requestInitialization((Actor) entity);
         }
     }
+    
+
+    /** Get the published port with name name.
+     *  @param name The name of the published port.
+     *  @return The port of the publisher that has name nname.
+     *  @exception IllegalActionException If the publisher can't be found.
+     *  @exception NameDuplicationException If there are multiple publishers with the same name.
+     */
+    final protected IOPort _getPublishedPort(String name)
+            throws IllegalActionException, NameDuplicationException {
+        if (_publishedPorts == null) {
+            throw new IllegalActionException(this, "Can't find the publisher for " + name + ".");
+        }
+
+        List<IOPort> publishedPorts = _publishedPorts.get(name);
+        if (publishedPorts == null || publishedPorts.size() == 0) {
+            throw new IllegalActionException(this, "Can't find the publisher for " + name + ".");
+        } else if (publishedPorts.size() > 1) {
+            throw new NameDuplicationException(this, 
+                "We have multiple publishers with name " + name +".");
+        }
+        IOPort publishedPort = publishedPorts.get(0);
+        return publishedPort;
+    }
+
 
     /** Set the local director for execution of this CompositeActor.
      *  This should not be called be directly.  Instead, call setContainer()
@@ -2140,7 +2168,7 @@ public class CompositeActor extends CompositeEntity implements Actor,
     protected boolean _notifyingActorFiring = false;
     
     /** Keep track of all published ports accessable in this container.*/
-    protected Map<String, IOPort> _publishedPorts;
+    protected Map<String, List<IOPort>> _publishedPorts;
  
     /** Keep track of all relations with published ports accessable in this container.*/
     protected Map<String, IORelation> _publisherRelations;
