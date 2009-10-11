@@ -158,13 +158,48 @@ public class StringUtilities {
      *  @return A new string with special characters replaced.
      */
     public static String escapeForXML(String string) {
-        string = substitute(string, "&", "&amp;");
-        string = substitute(string, "\"", "&quot;");
-        string = substitute(string, "<", "&lt;");
-        string = substitute(string, ">", "&gt;");
-        string = substitute(string, "\n", "&#10;");
-        string = substitute(string, "\r", "&#13;"); // Carriage return
-        return string;
+        // This method gets called quite a bit when parsing large
+        // files, so rather than calling substitute() many times,
+        // we combine all the loops in one pass.
+        StringBuffer buffer = new StringBuffer(string);
+        int i = 0;
+        int length = string.length();
+        while (i < length) {
+                switch (buffer.charAt(i)) {
+                case '\n':
+                    buffer.deleteCharAt(i);
+                    buffer.insert(i, "&#10;");
+                    length = buffer.length();
+                    break;
+                case '\r':
+                    buffer.deleteCharAt(i);
+                    buffer.insert(i, "&#13;");
+                    length = buffer.length();
+                    break;
+                case '"':
+                    buffer.deleteCharAt(i);
+                    buffer.insert(i, "&quot;");
+                    length = buffer.length();
+                    break;
+                case '&':
+                    buffer.deleteCharAt(i);
+                    buffer.insert(i, "&amp;");
+                    length = buffer.length();
+                    break;
+                case '<':
+                    buffer.deleteCharAt(i);
+                    buffer.insert(i, "&lt;");
+                    length = buffer.length();
+                    break;
+                case '>':
+                    buffer.deleteCharAt(i);
+                    buffer.insert(i, "&gt;");
+                    length = buffer.length();
+                    break;
+                }
+                i++;
+        }
+        return buffer.toString();
     }
 
     /** Given a string, return a string that when fed to the
