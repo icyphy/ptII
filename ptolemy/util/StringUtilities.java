@@ -169,32 +169,32 @@ public class StringUtilities {
                 case '\n':
                     buffer.deleteCharAt(i);
                     buffer.insert(i, "&#10;");
-                    length = buffer.length();
+                    length += 4;
                     break;
                 case '\r':
                     buffer.deleteCharAt(i);
                     buffer.insert(i, "&#13;");
-                    length = buffer.length();
+                    length += 4;
                     break;
                 case '"':
                     buffer.deleteCharAt(i);
                     buffer.insert(i, "&quot;");
-                    length = buffer.length();
+                    length += 5;
                     break;
                 case '&':
                     buffer.deleteCharAt(i);
                     buffer.insert(i, "&amp;");
-                    length = buffer.length();
+                    length += 4;
                     break;
                 case '<':
                     buffer.deleteCharAt(i);
                     buffer.insert(i, "&lt;");
-                    length = buffer.length();
+                    length += 3;
                     break;
                 case '>':
                     buffer.deleteCharAt(i);
                     buffer.insert(i, "&gt;");
-                    length = buffer.length();
+                    length += 3;
                     break;
                 }
                 i++;
