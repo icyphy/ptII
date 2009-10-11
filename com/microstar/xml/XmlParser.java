@@ -2189,8 +2189,27 @@ public class XmlParser {
      */
     void dataBufferAppend(char c) {
         // Expand buffer if necessary.
-        dataBuffer = (char[]) extendArray(dataBuffer, dataBuffer.length,
-                dataBufferPos);
+        if (dataBufferPos >= dataBuffer.length) {
+
+            // dataBufferAppend() gets called alot, so instead of
+            // calling extendArray() here, we optimize the heck out of this
+            // code.
+            //dataBuffer = (char[]) extendArray(dataBuffer, dataBuffer.length,
+            //        dataBufferPos);
+
+            final int currentSize = dataBuffer.length;
+            int newSize = currentSize * 2;
+
+            if (newSize <= dataBufferPos) {
+                newSize = dataBufferPos + 1;
+            }
+
+            // Dwight Richards pointed out that newSize was ignored (11/03)
+            char [] newArray = new char[newSize];
+
+            System.arraycopy(dataBuffer, 0, newArray, 0, currentSize);
+            dataBuffer = newArray;
+        }
         dataBuffer[dataBufferPos++] = c;
     }
 
