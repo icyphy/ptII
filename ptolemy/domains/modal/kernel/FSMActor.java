@@ -687,7 +687,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
      *  Specifically, after calling {@see #enabledTransitions(List)},
      *  call this method to see whether there were guard expressions
      *  in the specified list that could not be evaluated. After
-     *  calling {@see #chooseTransition(List)}, call this to
+     *  calling {@link #chooseTransition(List)}, call this to
      *  determine whether any guard expressions or output value
      *  expressions on a transition whose guard evaluates to true
      *  were found in the specified transition list that
