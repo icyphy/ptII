@@ -1570,7 +1570,7 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
 
         String storePassword = "this.is.the.storePassword,change.it";
         String keyPassword = "this.is.the.keyPassword,change.it";
-        String alias = "claudius";
+        String alias = "ptolemy";
 
         String keystorePropertiesFileName = StringUtilities
                 .getProperty("ptolemy.ptII.dir")
@@ -1582,7 +1582,10 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
             try {
                 fileInputStream = new FileInputStream(keystorePropertiesFileName);
                 properties.load(fileInputStream);
-                keystoreFileName = properties.getProperty("keystoreFileName");
+		String property = null;
+		if ((property = properties.getProperty("keystoreFileName")) != null) {
+		    keystoreFileName = property;
+		}
                 storePassword = properties.getProperty("storePassword");
                 keyPassword = properties.getProperty("keyPassword");
                 alias = properties.getProperty("alias");

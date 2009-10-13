@@ -116,7 +116,7 @@ public class JarSigner {
         char[] keyPassword = { 't', 'h', 'i', 's', '.', 'i', 's', '.', 't',
                 'h', 'e', '.', 'k', 'e', 'y', 'P', 'a', 's', 's', 'w', 'o',
                 'r', 'd', ',', 'c', 'h', 'a', 'n', 'g', 'e', '.', 'i', 't' };
-        String alias = "claudius";
+        String alias = "ptolemy";
 
         try {
             sign(args[0], args[1], keystoreFileName, alias, storePassword,
