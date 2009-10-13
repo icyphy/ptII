@@ -377,9 +377,10 @@ public class DFUtilities {
      *  @param rate The rate value.
      *  @exception IllegalActionException If the rate is a negative integer,
      *  or the rate can not be set.
-     *  @see #getRate
+     *  @return The rate parameter.
+     *  @see #getRate(IOPort)
      */
-    public static void setRate(Port port, String name, int rate)
+    public static Variable setRate(Port port, String name, int rate)
             throws IllegalActionException {
         if (rate < 0) {
             throw new IllegalActionException("Negative rate is not allowed: "
@@ -401,6 +402,7 @@ public class DFUtilities {
                 throw new InternalErrorException(port, ex, "Should not occur");
             }
         }
+        return parameter;
     }
 
     /** If a variable with the given name does not exist, then create
