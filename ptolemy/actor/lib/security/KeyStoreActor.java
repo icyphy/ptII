@@ -199,7 +199,7 @@ public class KeyStoreActor extends TypedAtomicActor {
         super(container, name);
 
         alias = new StringParameter(this, "alias");
-        alias.setExpression("claudius");
+        alias.setExpression("ptolemy");
 
         createFileOrURLIfNecessary = new Parameter(this,
                 "createFileOrURLIfNecessary");
@@ -251,7 +251,7 @@ public class KeyStoreActor extends TypedAtomicActor {
     ////                     ports and parameters                  ////
 
     /** The alias of the certificate that we are looking for.
-     *  The default alias is the String "claudius"
+     *  The default alias is the String "ptolemy"
      */
     public StringParameter alias;
 
