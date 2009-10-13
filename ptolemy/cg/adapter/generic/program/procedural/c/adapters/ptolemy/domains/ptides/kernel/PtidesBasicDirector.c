@@ -19,7 +19,7 @@ typedef struct {
 
 typedef struct {
     Time timestamp;
-    uint microstep;
+    uint16 microstep;
 } Tag;
 
 typedef struct event {
@@ -275,9 +275,7 @@ void timeAdd(const Time time1, const Time time2, Time* timeSum) {
     }
 }
 
-/* compare two time values
- * 
- */
+//compare two time values
 int timeCompare(const Time time1, const Time time2) {
     if (time1.secs < time2.secs) {
         return LESS;
@@ -541,7 +539,7 @@ void initializeMemory() {
     int i;
     locationCounter = 0;
     _secs = 0;
-    _quarter_secs = 0;
+    _quarterSecs = 0;
 
     for(i = 0; i < MAX_EVENTS; i++) {
         // event is "freed and can be returned by newEvent"
