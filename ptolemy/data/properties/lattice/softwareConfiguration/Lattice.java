@@ -61,10 +61,11 @@ public class Lattice extends PropertyLattice {
         addNodeWeight(CONFLICT);
         addNodeWeight(CONFIGURED);
         addNodeWeight(NOTCONFIGURED);
-        addNodeWeight(NOTSPECIFIED);
         
-        addEdge(NOTSPECIFIED, CONFIGURED);
-        addEdge(NOTSPECIFIED, NOTCONFIGURED);
+        //addNodeWeight(NOTSPECIFIED);
+        
+        //        addEdge(NOTSPECIFIED, CONFIGURED);
+        //        addEdge(NOTSPECIFIED, NOTCONFIGURED);
         addEdge(CONFIGURED, CONFLICT);
         addEdge(NOTCONFIGURED, CONFLICT);
         
@@ -81,5 +82,5 @@ public class Lattice extends PropertyLattice {
     private Property CONFLICT = new Conflict(this);
     private Property CONFIGURED = new Configured(this);
     private Property NOTCONFIGURED = new NotConfigured(this);
-    private Property NOTSPECIFIED = new NotSpecified(this);
+    //    private Property NOTSPECIFIED = new NotSpecified(this);
 }

@@ -53,6 +53,8 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 PTCLASSALLJARS =
 
 JSRCS = \
+	SWconfig_Backward_CS.java \
+	SWconfig_Forward_CS.java \
 	ExampleSet_CS.java \
 	LogicalAND_Forward_CS.java \
 	LogicalAND_OR_Value_CS.java \

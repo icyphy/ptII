@@ -40,6 +40,7 @@ DIRS = \
 	logicalAND \
 	logicalOrBackward \
 	namingSetLattice \
+	softwareConfiguration \
 	typeSystem_C
 
 # Root of the Ptolemy II directory
@@ -67,6 +68,7 @@ PTCLASSALLJARS = \
 	logicalAND/logicalAND.jar \
 	logicalOrBackward/logicalOrBackward.jar \
 	namingSetLattice/namingSetLattice.jar \
+	softwareConfiguration/softwareConfiguration.jar \
 	typeSystem_C/typeSystem_C.jar
 
 JSRCS = \
