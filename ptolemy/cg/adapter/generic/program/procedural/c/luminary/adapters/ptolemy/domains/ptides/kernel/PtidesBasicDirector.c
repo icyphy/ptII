@@ -7,9 +7,8 @@
 #define RIGHT           GPIO_PIN_3 /* PE3 */
 #define BUTTON         (UP | DOWN | LEFT | RIGHT)
 
-/* Common Type Definitions
- */
-typedef unsigned long long      uint64
+/* Common Type Definitions */
+typedef unsigned long long      uint64;
 typedef unsigned long           uint32;
 typedef unsigned int            uint16;
 typedef unsigned char           uint8;
@@ -19,8 +18,7 @@ typedef signed long             int32;
 typedef signed int              int16;
 typedef signed char             int8;
 
-/* Hardware library includes.
- * */
+/* Hardware library includes. */
 #include "hw_ints.h"
 #include "hw_memmap.h"
 #include "hw_types.h"
@@ -35,8 +33,7 @@ typedef signed char             int8;
 #include "hw_nvic.h"
 #include "ethernet.h"
 
-/* PtidyOS includes 
- * */
+/* PtidyOS includes */
 #include "statics.h"
 #include "globals.h"
 
@@ -149,19 +146,18 @@ void exit(int zero) {
         die("program exit?");
 }
 
-/* Convert processor cycle count to nanoseconds.
- * This method assumes a fixed processor speed
- * of 50 MHz
- * */
+// Convert processor cycle count to nanoseconds.
+// This method assumes a fixed processor speed
+// of 50 MHz
+//
 uint32 convertCyclesToNsecs(uint32 cycles) {
         // nsecs = cycles * 20 = ((cycles * 4) + 1) * 4
         return ((cycles << 2) + cycles) << 2;
 }
 
-/* Convert nanoseconds to processor cycles.
- * This method assumes a fixed processor speed
- * of 50 MHz
- * */
+// Convert nanoseconds to processor cycles.
+// This method assumes a fixed processor speed
+// of 50 MHz
 uint32 convertNsecsToCycles(uint32 nsecs) {
         return nsecs / 20;
         // FIXME: Is there a way to make it less expensive?
@@ -186,21 +182,17 @@ void die(char *mess) {
         return;
 }
 
-/* Disable all interrupts 
- * */
+// Disable all interrupts 
 void disableInterrupts(void) {
         IntMasterDisable();
 }
 
-/* Enable all interrupts 
- * */
+// Enable all interrupts 
 void enableInterrupts(void) {
         IntMasterEnable();
 }
 
-/* Return the real physical time.
- * 
- * */
+// Return the real physical time.
 void getRealTime(Time* physicalTime) {
         uint32 tick1;
         uint32 tick2;
@@ -285,8 +277,7 @@ void SysTickHandler(void) {
 
 $super.FuncBlock();
 
-/* Actuators use timer1.
-*/
+// Actuators use timer1.
 void setActuationInterrupt(int actuatorToActuate) {
         // If timer already running
         // check if need to reload the interrupt value.
@@ -550,8 +541,7 @@ void initializeInterrupts(void) {
 /*** wrapupPDBlock() ***/
 /**/
 
-/*** assemblyFileBlock($externs, $GPIOAHandler, $GPIOBHandler, $GPIOCHandler, 
- $GPIODHandler, $GPIOEHandler, $GPIOFHandler, $GPIOGHandler, $GPIOHHandler) ***/
+/*** assemblyFileBlock($externs, $GPIOAHandler, $GPIOBHandler, $GPIOCHandler, $GPIODHandler, $GPIOEHandler, $GPIOFHandler, $GPIOGHandler, $GPIOHHandler) ***/
 ;******************************************************************************
 ;
 ; startup_rvmdk.S - Startup code for use with Keil's uVision.
