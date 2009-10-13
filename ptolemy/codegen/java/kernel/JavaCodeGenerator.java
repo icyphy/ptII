@@ -43,6 +43,7 @@ import java.util.Set;
 import java.util.StringTokenizer;
 
 import ptolemy.actor.Actor;
+import ptolemy.actor.Director;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.lib.jni.PointerToken;
 import ptolemy.codegen.kernel.ActorCodeGenerator;
@@ -51,12 +52,14 @@ import ptolemy.codegen.kernel.CodeGeneratorHelper;
 import ptolemy.codegen.kernel.CodeGeneratorUtilities;
 import ptolemy.codegen.kernel.CodeStream;
 import ptolemy.data.BooleanToken;
+import ptolemy.data.IntToken;
 import ptolemy.data.expr.Variable;
 import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.MatrixType;
 import ptolemy.data.type.Type;
 import ptolemy.kernel.attributes.URIAttribute;
+import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -289,8 +292,12 @@ public class JavaCodeGenerator extends CodeGenerator {
     public String generateMainExitCode() throws IllegalActionException {
 
         if (isTopLevel()) {
-            return _INDENT1 + "System.exit(0);" + _eol + "}" + _eol + "}"
-                    + _eol;
+            String commentExit = "";
+            if (_iterations() <= 0) {
+                commentExit = "//";
+            }
+            return _INDENT1 + commentExit + "System.exit(0);" + _eol + "}"
+                + _eol + "}" + _eol;
         } else {
             return _INDENT1 + "return tokensToAllOutputPorts;" + _eol + "}"
                     + _eol + "}" + _eol;
@@ -697,7 +704,11 @@ public class JavaCodeGenerator extends CodeGenerator {
      */
     public String generateWrapupProcedureName() throws IllegalActionException {
 
-        return _INDENT1 + "wrapup();" + _eol;
+        String commentWrapup = "";
+        if (_iterations() <= 0) {
+            commentWrapup = "//";
+        }
+        return _INDENT1 + commentWrapup + "wrapup();" + _eol;
     }
 
     /** Split a long function body into multiple functions.
@@ -1364,6 +1375,18 @@ public class JavaCodeGenerator extends CodeGenerator {
             buffer.append((String) iterator.next());
         }
         return buffer.toString();
+    }
+
+    /** Return the value of the iterations parameter of the director, if any. */
+    private int _iterations() throws IllegalActionException {
+        Director director = ((ptolemy.actor.CompositeActor)getComponent()).getDirector();
+        if (director != null) {
+            Attribute iterations = director.getAttribute("iterations");
+            if (iterations != null) {
+                return ((IntToken) ((Variable) iterations).getToken()).intValue();
+            }
+        }
+        return -1;
     }
 
     /** Add called functions to the set of overloaded functions for
