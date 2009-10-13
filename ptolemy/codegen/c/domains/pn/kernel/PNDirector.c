@@ -24,6 +24,10 @@
 /**/
 
 /*** declareBufferHeader($name, $dirHeader, $capacity, $index) ***/
+// generate $declarePNStruct()
+// The above comment is necessary in this code block
+// to ensure the "declarePNStruct" code block is generated
+// before this code block.
     static struct pnBufferHeader $name = {
         // Only partial initialization.
         0,                                              // writeCount
