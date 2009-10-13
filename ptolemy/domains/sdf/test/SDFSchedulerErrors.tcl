@@ -95,7 +95,7 @@ test SDFSchedulerErrors-2.1 {} {
 } {{ptolemy.actor.sched.NotSchedulableException: Actors remain that cannot be scheduled!
 
 Note that there are many reasons why a graph cannot be scheduled:
-* SDF Graphs with feedback loops should have an actor with a delay in the loop, such as VariableDelay.* The SDF director has an "allowDisconnectedGraphs"parameter, which, when true, permits disconnected SDF graphs.
+* SDF Graphs with feedback loops should have an actor with a delay in the loop, such as a SampleDelay.* The SDF director has an "allowDisconnectedGraphs"parameter, which, when true, permits disconnected SDF graphs.
 * The token consumption rate and production rates might be mismatched.  Usually, actors produce one token or consume one token on a port.  To produce or consume multiple tokens per firing, add a "tokenConsumptionRate" or "tokenConsumptionRate" parameter to the appropriate port.
 For details, see the SDF chapter in Volume Three of the Ptolemy II design doc at http://ptolemy.eecs.berkeley.edu/ptolemyII/designdoc.htm
 Unscheduled actors:
