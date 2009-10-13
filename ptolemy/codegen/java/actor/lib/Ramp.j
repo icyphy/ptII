@@ -16,7 +16,7 @@ $actorSymbol(state) = $val(($type)init);
 /**/
 
 /***StringInitBlock***/
-$actorSymbol(state) = strdup($val((String)init));
+$actorSymbol(state) = $val((String)init);
 /**/
 
 /***IntegerFireBlock***/
@@ -35,10 +35,8 @@ $actorSymbol(state) |= $ref((Boolean)step);
 /**/
 
 /***StringFireBlock***/
-$ref(output) = (char*) realloc($ref(output), sizeof(char) * (strlen($actorSymbol(state)) + 1) );
-strcpy($ref(output), $actorSymbol(state));
-$actorSymbol(state) = (char*) realloc($actorSymbol(state), sizeof(char) * (strlen($actorSymbol(state)) + strlen($ref((String)step)) + 1) );
-strcat($actorSymbol(state),  $ref((String)step));
+$ref(output) = $actorSymbol(state);
+$actorSymbol(state) = $actorSymbol(state) + $ref((String)step);
 /**/
 
 /***TokenFireBlock***/
