@@ -389,7 +389,13 @@ public class SystemCommand extends TypedAtomicActor {
         // Set process arguments
         cliPro.setProcessArguments(com, worDir);
 
-        // Set simulation log file
+        // Set simulation log file.
+	// The call to System.gc() is required on Windows: If this actor is called multiple times
+	// on Windows using vmware fusion and vmware workstation, then the simulation log file 
+	// exists but cannot be deleted. Calling System.gc() releases the resources which allows
+	// Java to delete the file. See also http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=6266377
+	// This error does not happen on Linux and on Mac OS X.
+	System.gc();
         File slf = simulationLogFile.asFile();
         try {
             if (slf.exists()) {
