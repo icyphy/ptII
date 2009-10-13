@@ -99,7 +99,7 @@ public class Integrator extends DETransformer {
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         Integrator newObject = (Integrator) super.clone(workspace);
 
-        newObject.output.setTypeAtLeast((Typeable) DoubleType.DOUBLE);
+        newObject.output.setTypeAtLeast(newObject.input);
         newObject.output.setWidthEquals(newObject.input, false);
 
         // This is not strictly needed (since it is always recreated
