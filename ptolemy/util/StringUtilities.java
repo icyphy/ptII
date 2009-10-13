@@ -161,6 +161,9 @@ public class StringUtilities {
         // This method gets called quite a bit when parsing large
         // files, so rather than calling substitute() many times,
         // we combine all the loops in one pass.
+	if (string == null) {
+	    return null;
+	}
         StringBuffer buffer = new StringBuffer(string);
         int i = 0;
         int length = string.length();
