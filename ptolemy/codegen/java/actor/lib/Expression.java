@@ -91,6 +91,14 @@ public class Expression extends JavaCodeGeneratorHelper {
 
         //code.append(processCode("    $ref(output)." + portType + "Port = ("
         //        + _javaParseTreeCodeGenerator.generateFireCode()) + ");" + _eol);
+        if (_javaParseTreeCodeGenerator == null) {
+            throw new NullPointerException("_javaParseTreeCodeGenerator is null? "
+                                           + " This can happen if there is an odd order of execution");
+        }
+        if (_javaParseTreeCodeGenerator.generateFireCode() == null) {
+            throw new NullPointerException("calling generateFireCode on " 	
+                    + _javaParseTreeCodeGenerator + " returned null");
+        }
         code.append(processCode("    $ref(output) = "
                 + _javaParseTreeCodeGenerator.generateFireCode())
                 + ";" + _eol);
@@ -172,7 +180,6 @@ public class Expression extends JavaCodeGeneratorHelper {
      *  error in processing the specified code block(s).
      */
     public Set getSharedCode() throws IllegalActionException {
-
         _javaParseTreeCodeGenerator = new JavaParseTreeCodeGenerator();
 
         Set codeBlocks = super.getSharedCode();

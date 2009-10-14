@@ -192,6 +192,20 @@ public class JavaCodeGenerator extends CodeGenerator {
         return code.toString();
     }
 
+    /** Return the closing entry code, if any.
+     *  @return the closing entry code.
+     */   
+    public String generateClosingEntryCode() {
+        return "public void doWrapup() throws Exception { " + _eol;
+    }
+
+    /** Return the closing exit code, if any.
+     *  @return the closing exit code.
+     */   
+    public String generateClosingExitCode() {
+        return "}" + _eol;
+    }
+
     /** Generate the initialization procedure entry point.
      *  @return a string for the initialization procedure entry point.
      *  @exception IllegalActionException Not thrown in this base class.
@@ -215,7 +229,8 @@ public class JavaCodeGenerator extends CodeGenerator {
      */
     public String generateInitializeProcedureName()
             throws IllegalActionException {
-        return _INDENT1 + "initialize();" + _eol;
+        //return _INDENT1 + "initialize();" + _eol;
+        return "// Don't call initialize() here, it is called in main.";
     }
 
     /** Generate line number information.  In this class, lines
@@ -246,14 +261,27 @@ public class JavaCodeGenerator extends CodeGenerator {
         // If the container is in the top level, we are generating code
         // for the whole model.
         if (isTopLevel()) {
+//             mainEntryCode
+//                     .append(_eol
+//                             + _eol
+//                             + "public static void main(String [] args) throws Exception {"
+//                             + _eol + _sanitizedModelName + " model = new "
+//                             + _sanitizedModelName + "();" + _eol
+//                             + "model.run();" + _eol + "}" + _eol
+//                             + "public void run() throws Exception {" + _eol);
+
             mainEntryCode
                     .append(_eol
                             + _eol
                             + "public static void main(String [] args) throws Exception {"
                             + _eol + _sanitizedModelName + " model = new "
                             + _sanitizedModelName + "();" + _eol
-                            + "model.run();" + _eol + "}" + _eol
-                            + "public void run() throws Exception {" + _eol);
+                            + "model.initialize();" + _eol
+                            + "model.execute();" + _eol
+                            + "model.doWrapup();" + _eol
+                            + "System.exit(0);" + _eol
+                            + "}" + _eol);
+
 
             String targetValue = target.getExpression();
             if (!targetValue.equals(_DEFAULT_TARGET)) {
@@ -292,12 +320,7 @@ public class JavaCodeGenerator extends CodeGenerator {
     public String generateMainExitCode() throws IllegalActionException {
 
         if (isTopLevel()) {
-            String commentExit = "";
-            if (_iterations() <= 0) {
-                commentExit = "//";
-            }
-            return _INDENT1 + commentExit + "System.exit(0);" + _eol + "}"
-                + _eol + "}" + _eol;
+            return "}";
         } else {
             return _INDENT1 + "return tokensToAllOutputPorts;" + _eol + "}"
                     + _eol + "}" + _eol;
@@ -708,7 +731,7 @@ public class JavaCodeGenerator extends CodeGenerator {
         if (_iterations() <= 0) {
             commentWrapup = "//";
         }
-        return _INDENT1 + commentWrapup + "wrapup();" + _eol;
+        return commentWrapup + "wrapup();" + _eol;
     }
 
     /** Split a long function body into multiple functions.

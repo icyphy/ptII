@@ -410,6 +410,8 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
             fireFunctionCode = generateFireFunctionCode();
         }
         String wrapupCode = generateWrapupCode();
+        String closingEntryCode = generateClosingEntryCode();
+        String closingExitCode = generateClosingExitCode();
 
         // Generating variable declarations needs to happen after buffer
         // sizes are set(?).
@@ -514,12 +516,18 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         // If the container is in the top level, we are generating code
         // for the whole model.
         if (isTopLevel()) {
+            if (containsCode(closingEntryCode)) {
+                code.append(closingEntryCode);
+            }
             if (((BooleanToken) measureTime.getToken()).booleanValue()) {
                 code.append(_printExecutionTime());
             }
             if (containsCode(wrapupCode)) {
                 code.append(wrapupProcedureName);
             }
+            //if (containsCode(closingExitCode)) {
+                code.append(closingExitCode);
+                //}
         }
 
         code.append(mainExitCode);
@@ -780,6 +788,21 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
             returnValue = _generateCode(code);
         }
         return returnValue;
+    }
+
+    /** Return the closing entry code, if any.
+     *  @return the closing entry code.
+     */   
+    public String generateClosingEntryCode() {
+        return comment("closing entry code");
+    }
+
+
+    /** Return the closing exit code, if any.
+     *  @return the closing exit code.
+     */   
+    public String generateClosingExitCode() {
+        return comment("closing exit code");
     }
 
     /** Return the copyright for this code.
@@ -1982,6 +2005,9 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      *  white space or comments
      */
     public static boolean containsCode(String code) {
+        if (code == null) {
+            return false;
+        }
         return (code.replaceAll("/\\*[^*]*\\*/", "")
                 .replaceAll("[ \t\n\r]", "").length() > 0);
     }
