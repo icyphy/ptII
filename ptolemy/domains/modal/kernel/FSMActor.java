@@ -684,7 +684,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
     /** Return true if the most recent call to enabledTransition()
      *  or chooseTransition() found guard expressions or output value
      *  expressions that could not be evaluated due to unknown inputs.
-     *  Specifically, after calling {@see #enabledTransitions(List)},
+     *  Specifically, after calling {@link #enabledTransitions(List)},
      *  call this method to see whether there were guard expressions
      *  in the specified list that could not be evaluated. After
      *  calling {@link #chooseTransition(List)}, call this to
