@@ -47,6 +47,8 @@ PTPACKAGE =     softwareConfiguration
 
 PTCLASSJAR =
 
+PTCLASSALLJAR = $(PTPACKAGE).jar
+
 PTCLASSALLJARS = \
 	actor/actor.jar \
 	data/data.jar \
