@@ -10,13 +10,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 40.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={157, 243, 1092, 733}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={157, 243, 1092, 870}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[877, 620]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[877, 753]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.8">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{497.9121621621621, 343.777027027027}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{497.9121621621621, 426.902027027027}">
     </property>
     <property name="faultStartTime" class="ptolemy.data.expr.Parameter" value="50.0">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -217,10 +217,10 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{55.0, 605.0}">
         </property>
-        <property name="PropertyResolutionExceptionMessage" class="ptolemy.kernel.util.StringAttribute" value="[Property &quot;NotSpecified&quot; is not an acceptable solution for PtArrayConstructNode:false:null:null.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for PtArrayConstructNode:true:null:null.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for PtLeafNode:false:null:null:Infinity.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for PtLeafNode:false:null:null:Infinity.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for PtLeafNode:false:null:null:Infinity.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for PtLeafNode:false:null:null:currentTime.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for PtLeafNode:false:null:null:faultStartTime.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for PtLeafNode:false:null:null:faultStopTime.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for PtLeafNode:false:null:null:faultStopTime.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for PtLeafNode:false:null:null:initialPosition.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for PtLeafNode:false:null:null:initialPosition.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for PtLeafNode:false:null:null:initialSpeed.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for PtLeafNode:false:null:null:initialSpeed.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for PtLeafNode:false:null:null:jitterAmplitude.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for PtLeafNode:false:null:null:jitterPeriod.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for PtLeafNode:false:null:null:nominalSpeed.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for PtLeafNode:false:null:null:pi.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for PtLeafNode:false:null:null:previousPosition.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for PtLeafNode:false:null:null:previousSpeed.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for PtLeafNode:false:null:null:previousTime.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for PtLeafNode:false:null:null:timeConstant.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for PtLeafNode:false:null:null:timeConstant.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for PtLeafNode:true:null:&quot;sin&quot;:null.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for PtLeafNode:true:null:0.0:null.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for PtLeafNode:true:null:0.0:null.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for PtLeafNode:true:null:0.0:null.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for PtLeafNode:true:null:0.0:null.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for PtLeafNode:true:null:0.0:null.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for PtLeafNode:true:null:0.0:null.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for PtLeafNode:true:null:0.0:null.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for PtLeafNode:true:null:0.1:null.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for PtLeafNode:true:null:0:null.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for PtLeafNode:true:null:0:null.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for PtLeafNode:true:null:0:null.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for PtLeafNode:true:null:0:null.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for PtLeafNode:true:null:1.0:null.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for PtLeafNode:true:null:1.0:null.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for PtLeafNode:true:null:10.0:null.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for PtLeafNode:true:null:10.0:null.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for PtLeafNode:true:null:10.0:null.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for PtLeafNode:true:null:10.0:null.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for PtLeafNode:true:null:1609.344:null.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for PtLeafNode:true:null:1:null.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for PtLeafNode:true:null:1:null.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for PtLeafNode:true:null:1:null.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for PtLeafNode:true:null:2:null.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for PtLeafNode:true:null:30:null.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for PtLeafNode:true:null:3600:null.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for PtLeafNode:true:null:50.0:null.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for PtLeafNode:true:null:50:null.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for PtLeafNode:true:null:55:null.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for PtLeafNode:true:null:65:null.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for PtLeafNode:true:null:70.0:null.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for PtLeafNode:true:null:false:null.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for PtLeafNode:true:null:false:null.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for PtLeafNode:true:null:false:null.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for PtLeafNode:true:null:false:null.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for PtLeafNode:true:null:false:null.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for PtLeafNode:true:null:true:null.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for PtLeafNode:true:null:true:null.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for PtLeafNode:true:null:true:null.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for PtLeafNode:true:null:true:null.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for PtLeafNode:true:null:true:null.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for PtLeafNode:true:null:true:null.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for PtLeafNode:true:null:true:null.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for PtLeafNode:true:null:true:null.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for PtProductNode:false:null:null.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for PtProductNode:false:null:null.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for PtProductNode:true:null:null.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for PtSumNode:false:null:null.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for PtSumNode:false:null:null.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for PtSumNode:false:null:null.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for PtUnaryNode:true:null:null.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.actor.TypedIOPort {.CarTrackingSoSYM.DiscreteClock.output}.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.actor.TypedIOPort {.CarTrackingSoSYM.DiscreteClock.start}.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.actor.TypedIOPort {.CarTrackingSoSYM.DiscreteClock.stop}.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.actor.TypedIOPort {.CarTrackingSoSYM.DiscreteClock.trigger}.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.actor.TypedIOPort {.CarTrackingSoSYM.FollowingCar.BooleanToAnything.input}.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.actor.TypedIOPort {.CarTrackingSoSYM.FollowingCar.BooleanToAnything.output}.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.actor.TypedIOPort {.CarTrackingSoSYM.FollowingCar.Car Model.Const.output}.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.actor.TypedIOPort {.CarTrackingSoSYM.FollowingCar.Car Model.Const.trigger}.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.actor.TypedIOPort {.CarTrackingSoSYM.FollowingCar.Car Model.Integrator.derivative}.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.actor.TypedIOPort {.CarTrackingSoSYM.FollowingCar.Car Model.Integrator.impulse}.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.actor.TypedIOPort {.CarTrackingSoSYM.FollowingCar.Car Model.Integrator.state}.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.actor.TypedIOPort {.CarTrackingSoSYM.FollowingCar.Car Model.Integrator2.derivative}.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.actor.TypedIOPort {.CarTrackingSoSYM.FollowingCar.Car Model.Integrator2.impulse}.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.actor.TypedIOPort {.CarTrackingSoSYM.FollowingCar.Car Model.Integrator2.state}.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.actor.TypedIOPort {.CarTrackingSoSYM.FollowingCar.Car Model.MultiplyDivide4.divide}.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.actor.TypedIOPort {.CarTrackingSoSYM.FollowingCar.Car Model.MultiplyDivide4.multiply}.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.actor.TypedIOPort {.CarTrackingSoSYM.FollowingCar.Car Model.MultiplyDivide4.output}.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.actor.TypedIOPort {.CarTrackingSoSYM.FollowingCar.Car Model.Subtract.minus}.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.actor.TypedIOPort {.CarTrackingSoSYM.FollowingCar.Car Model.Subtract.output}.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.actor.TypedIOPort {.CarTrackingSoSYM.FollowingCar.Car Model.Subtract.plus}.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.actor.TypedIOPort {.CarTrackingSoSYM.FollowingCar.Car Model.acceleration}.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.actor.TypedIOPort {.CarTrackingSoSYM.FollowingCar.Car Model.desiredSpeed}.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.actor.TypedIOPort {.CarTrackingSoSYM.FollowingCar.Car Model.position}.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.actor.TypedIOPort {.CarTrackingSoSYM.FollowingCar.Car Model.speed}.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.actor.TypedIOPort {.CarTrackingSoSYM.FollowingCar.FaultDetector.Comparator.left}.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.actor.TypedIOPort {.CarTrackingSoSYM.FollowingCar.FaultDetector.Comparator.output}.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.actor.TypedIOPort {.CarTrackingSoSYM.FollowingCar.FaultDetector.Comparator.right}.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.actor.TypedIOPort {.CarTrackingSoSYM.FollowingCar.FaultDetector.Estimate Current Position.currentTime}.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.actor.TypedIOPort {.CarTrackingSoSYM.FollowingCar.FaultDetector.Estimate Current Position.output}.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.actor.TypedIOPort {.CarTrackingSoSYM.FollowingCar.FaultDetector.Estimate Current Position.previousPosition}.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.actor.TypedIOPort {.CarTrackingSoSYM.FollowingCar.FaultDetector.Estimate Current Position.previousSpeed}.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.actor.TypedIOPort {.CarTrackingSoSYM.FollowingCar.FaultDetector.Estimate Current Position.previousTime}.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.actor.TypedIOPort {.CarTrackingSoSYM.FollowingCar.FaultDetector.LogicalNot.input}.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.actor.TypedIOPort {.CarTrackingSoSYM.FollowingCar.FaultDetector.LogicalNot.output}.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.actor.TypedIOPort {.CarTrackingSoSYM.FollowingCar.FaultDetector.Pre.input}.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.actor.TypedIOPort {.CarTrackingSoSYM.FollowingCar.FaultDetector.Pre.output}.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.actor.TypedIOPort {.CarTrackingSoSYM.FollowingCar.FaultDetector.Pre2.input}.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.actor.TypedIOPort {.CarTrackingSoSYM.FollowingCar.FaultDetector.Pre2.output}.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.actor.TypedIOPort {.CarTrackingSoSYM.FollowingCar.FaultDetector.Pre3.input}.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.actor.TypedIOPort {.CarTrackingSoSYM.FollowingCar.FaultDetector.Pre3.output}.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.actor.TypedIOPort {.CarTrackingSoSYM.FollowingCar.FaultDetector.RecordDisassembler.acceleration}.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.actor.TypedIOPort {.CarTrackingSoSYM.FollowingCar.FaultDetector.RecordDisassembler.input}.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.actor.TypedIOPort {.CarTrackingSoSYM.FollowingCar.FaultDetector.RecordDisassembler.position}.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.actor.TypedIOPort {.CarTrackingSoSYM.FollowingCar.FaultDetector.RecordDisassembler.speed}.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.actor.TypedIOPort {.CarTrackingSoSYM.FollowingCar.FaultDetector.RecordDisassembler.time}.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.actor.TypedIOPort {.CarTrackingSoSYM.FollowingCar.FaultDetector.fault}.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.actor.TypedIOPort {.CarTrackingSoSYM.FollowingCar.FaultDetector.port_11}.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.actor.TypedIOPort {.CarTrackingSoSYM.FollowingCar.ModalModel.faulty.Const.output}.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.actor.TypedIOPort {.CarTrackingSoSYM.FollowingCar.ModalModel.faulty.Const.trigger}.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.actor.TypedIOPort {.CarTrackingSoSYM.FollowingCar.ModalModel.faulty.RecordDisassembler.acceleration}.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.actor.TypedIOPort {.CarTrackingSoSYM.FollowingCar.ModalModel.faulty.RecordDisassembler.input}.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.actor.TypedIOPort {.CarTrackingSoSYM.FollowingCar.ModalModel.faulty.RecordDisassembler.position}.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.actor.TypedIOPort {.CarTrackingSoSYM.FollowingCar.ModalModel.faulty.RecordDisassembler.speed}.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.actor.TypedIOPort {.CarTrackingSoSYM.FollowingCar.ModalModel.faulty.RecordDisassembler.time}.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.actor.TypedIOPort {.CarTrackingSoSYM.FollowingCar.ModalModel.normal.Minimum.channelNumber}.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.actor.TypedIOPort {.CarTrackingSoSYM.FollowingCar.ModalModel.normal.Minimum.input}.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.actor.TypedIOPort {.CarTrackingSoSYM.FollowingCar.ModalModel.normal.Minimum.minimumValue}.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.actor.TypedIOPort {.CarTrackingSoSYM.FollowingCar.ModalModel.normal.RecordDisassembler.acceleration}.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.actor.TypedIOPort {.CarTrackingSoSYM.FollowingCar.ModalModel.normal.RecordDisassembler.input}.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.actor.TypedIOPort {.CarTrackingSoSYM.FollowingCar.ModalModel.normal.RecordDisassembler.position}.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.actor.TypedIOPort {.CarTrackingSoSYM.FollowingCar.ModalModel.normal.RecordDisassembler.speed}.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.actor.TypedIOPort {.CarTrackingSoSYM.FollowingCar.ModalModel.normal.RecordDisassembler.time}.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.actor.TypedIOPort {.CarTrackingSoSYM.FollowingCar.TimedPlotter.input}.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.actor.TypedIOPort {.CarTrackingSoSYM.FollowingCar.ZeroOrderHold.input}.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.actor.TypedIOPort {.CarTrackingSoSYM.FollowingCar.ZeroOrderHold.output}.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.actor.TypedIOPort {.CarTrackingSoSYM.FollowingCar.acceleration}.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.actor.TypedIOPort {.CarTrackingSoSYM.FollowingCar.driverDesiredSpeed}.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.actor.TypedIOPort {.CarTrackingSoSYM.FollowingCar.position}.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.actor.TypedIOPort {.CarTrackingSoSYM.FollowingCar.speed}.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.actor.TypedIOPort {.CarTrackingSoSYM.TimedPlotter.input}.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.actor.parameters.ParameterPort {.CarTrackingSoSYM.DiscreteClock.period}.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.actor.parameters.ParameterPort {.CarTrackingSoSYM.FollowingCar.Car Model.Integrator.initialState}.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.actor.parameters.ParameterPort {.CarTrackingSoSYM.FollowingCar.Car Model.Integrator2.initialState}.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.actor.parameters.PortParameter {.CarTrackingSoSYM.Car Model.Integrator.initialState} 0.0.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.actor.parameters.PortParameter {.CarTrackingSoSYM.Car Model.Integrator2.initialState} 10.0.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.actor.parameters.PortParameter {.CarTrackingSoSYM.DiscreteClock.period} 71.0.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.actor.parameters.PortParameter {.CarTrackingSoSYM.FollowingCar.Car Model.Integrator.initialState} 0.0.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.actor.parameters.PortParameter {.CarTrackingSoSYM.FollowingCar.Car Model.Integrator2.initialState} 0.0.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.data.expr.Parameter {.CarTrackingSoSYM.Car Model.Const.value} 10.0.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.data.expr.Parameter {.CarTrackingSoSYM.Car Model.initialPosition} 10.0.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.data.expr.Parameter {.CarTrackingSoSYM.Car Model.initialSpeed} 0.0.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.data.expr.Parameter {.CarTrackingSoSYM.Car Model.timeConstant} 10.0.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.data.expr.Parameter {.CarTrackingSoSYM.CurrentTime.stopTime} Infinity.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.data.expr.Parameter {.CarTrackingSoSYM.DiscreteClock.numberOfCycles} 1.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.data.expr.Parameter {.CarTrackingSoSYM.DiscreteClock.offsets} {50.0, 70.0}.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.data.expr.Parameter {.CarTrackingSoSYM.DiscreteClock.stopTime} Infinity.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.data.expr.Parameter {.CarTrackingSoSYM.DiscreteClock.values} {true, false}.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.data.expr.Parameter {.CarTrackingSoSYM.DriverSimulator.Const.value} 55.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.data.expr.Parameter {.CarTrackingSoSYM.DriverSimulator.CurrentTime2.stopTime} Infinity.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.data.expr.Parameter {.CarTrackingSoSYM.DriverSimulator.JitterPeriod.value} 50.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.data.expr.Parameter {.CarTrackingSoSYM.DriverSimulator.Scale.factor} 30.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.data.expr.Parameter {.CarTrackingSoSYM.DriverSimulator.Scale.scaleOnLeft} true.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.data.expr.Parameter {.CarTrackingSoSYM.DriverSimulator.Scale2.factor} 6.2831853071796.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.data.expr.Parameter {.CarTrackingSoSYM.DriverSimulator.Scale2.scaleOnLeft} true.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.data.expr.Parameter {.CarTrackingSoSYM.DriverSimulator.UnitConversion.Scale.factor} 6.2137119223733E-4.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.data.expr.Parameter {.CarTrackingSoSYM.DriverSimulator.UnitConversion.Scale.scaleOnLeft} true.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.data.expr.Parameter {.CarTrackingSoSYM.DriverSimulator.UnitConversion.Scale2.factor} 3600.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.data.expr.Parameter {.CarTrackingSoSYM.DriverSimulator.UnitConversion.Scale2.scaleOnLeft} true.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.data.expr.Parameter {.CarTrackingSoSYM.DriverSimulator.jitterAmplitude} 30.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.data.expr.Parameter {.CarTrackingSoSYM.DriverSimulator.jitterPeriod} 50.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.data.expr.Parameter {.CarTrackingSoSYM.DriverSimulator.nominalSpeed} 55.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.data.expr.Parameter {.CarTrackingSoSYM.FollowingCar.BooleanToAnything.falseValue} 0.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.data.expr.Parameter {.CarTrackingSoSYM.FollowingCar.BooleanToAnything.trueValue} 1.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.data.expr.Parameter {.CarTrackingSoSYM.FollowingCar.Car Model.Const.value} 10.0.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.data.expr.Parameter {.CarTrackingSoSYM.FollowingCar.Car Model.initialPosition} 0.0.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.data.expr.Parameter {.CarTrackingSoSYM.FollowingCar.Car Model.initialSpeed} 0.0.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.data.expr.Parameter {.CarTrackingSoSYM.FollowingCar.Car Model.timeConstant} 10.0.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.data.expr.Parameter {.CarTrackingSoSYM.FollowingCar.FaultDetector.Comparator.tolerance} 1.0.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.data.expr.Parameter {.CarTrackingSoSYM.FollowingCar.FaultDetector.Pre.initialValue} 0.0.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.data.expr.Parameter {.CarTrackingSoSYM.FollowingCar.FaultDetector.Pre2.initialValue} 0.0.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.data.expr.Parameter {.CarTrackingSoSYM.FollowingCar.FaultDetector.Pre3.initialValue} 0.0.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.data.expr.Parameter {.CarTrackingSoSYM.FollowingCar.ModalModel.faulty.Const.value} 0.0.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.data.expr.Parameter {.CarTrackingSoSYM.FollowingCar.TimedPlotter.automaticRescale} false.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.data.expr.Parameter {.CarTrackingSoSYM.FollowingCar.TimedPlotter.disconnectGraphOnAbsentValue} false.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.data.expr.Parameter {.CarTrackingSoSYM.FollowingCar.TimedPlotter.fillOnWrapup} true.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.data.expr.Parameter {.CarTrackingSoSYM.FollowingCar.TimedPlotter.startingDataset} 0.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.data.expr.Parameter {.CarTrackingSoSYM.FollowingCar.ZeroOrderHold.defaultValue} 0.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.data.expr.Parameter {.CarTrackingSoSYM.NetworkModel.faulty.Const.value} -10.0.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.data.expr.Parameter {.CarTrackingSoSYM.PeriodicSampler.samplePeriod} 0.1.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.data.expr.Parameter {.CarTrackingSoSYM.TimedPlotter.automaticRescale} false.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.data.expr.Parameter {.CarTrackingSoSYM.TimedPlotter.disconnectGraphOnAbsentValue} false.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.data.expr.Parameter {.CarTrackingSoSYM.TimedPlotter.fillOnWrapup} true.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.data.expr.Parameter {.CarTrackingSoSYM.TimedPlotter.startingDataset} 0.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.data.expr.Parameter {.CarTrackingSoSYM.driverDesiredSpeed.value} 65.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.data.expr.Parameter {.CarTrackingSoSYM.faultStartTime} 50.0.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.data.expr.Parameter {.CarTrackingSoSYM.faultStopTime} 70.0.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.data.expr.Parameter {.CarTrackingSoSYM.isACCPresent} true.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.data.expr.StringParameter {.CarTrackingSoSYM.DriverSimulator.Sin.function} &quot;sin&quot;.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.domains.modal.modal.ModalPort {.CarTrackingSoSYM.FollowingCar.ModalModel.desiredSpeed}.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.domains.modal.modal.ModalPort {.CarTrackingSoSYM.FollowingCar.ModalModel.driverDesiredSpeed}.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.domains.modal.modal.ModalPort {.CarTrackingSoSYM.FollowingCar.ModalModel.fault}.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.domains.modal.modal.ModalPort {.CarTrackingSoSYM.FollowingCar.ModalModel.packetIn}.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.domains.modal.modal.ModalPort {.CarTrackingSoSYM.NetworkModel.fault}.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.domains.modal.modal.RefinementPort {.CarTrackingSoSYM.FollowingCar.ModalModel._Controller.driverDesiredSpeed}.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.domains.modal.modal.RefinementPort {.CarTrackingSoSYM.FollowingCar.ModalModel._Controller.fault}.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.domains.modal.modal.RefinementPort {.CarTrackingSoSYM.FollowingCar.ModalModel._Controller.packetIn}.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.domains.modal.modal.RefinementPort {.CarTrackingSoSYM.FollowingCar.ModalModel.faulty.desiredSpeed}.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.domains.modal.modal.RefinementPort {.CarTrackingSoSYM.FollowingCar.ModalModel.faulty.driverDesiredSpeed}.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.domains.modal.modal.RefinementPort {.CarTrackingSoSYM.FollowingCar.ModalModel.faulty.fault}.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.domains.modal.modal.RefinementPort {.CarTrackingSoSYM.FollowingCar.ModalModel.faulty.packetIn}.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.domains.modal.modal.RefinementPort {.CarTrackingSoSYM.FollowingCar.ModalModel.noACC.desiredSpeed}.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.domains.modal.modal.RefinementPort {.CarTrackingSoSYM.FollowingCar.ModalModel.noACC.driverDesiredSpeed}.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.domains.modal.modal.RefinementPort {.CarTrackingSoSYM.FollowingCar.ModalModel.noACC.fault}.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.domains.modal.modal.RefinementPort {.CarTrackingSoSYM.FollowingCar.ModalModel.noACC.packetIn}.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.domains.modal.modal.RefinementPort {.CarTrackingSoSYM.FollowingCar.ModalModel.normal.desiredSpeed}.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.domains.modal.modal.RefinementPort {.CarTrackingSoSYM.FollowingCar.ModalModel.normal.driverDesiredSpeed}.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.domains.modal.modal.RefinementPort {.CarTrackingSoSYM.FollowingCar.ModalModel.normal.fault}.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.domains.modal.modal.RefinementPort {.CarTrackingSoSYM.FollowingCar.ModalModel.normal.packetIn}.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.domains.modal.modal.RefinementPort {.CarTrackingSoSYM.NetworkModel._Controller.fault}.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.domains.modal.modal.RefinementPort {.CarTrackingSoSYM.NetworkModel._Controller.packetIn}.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.domains.modal.modal.RefinementPort {.CarTrackingSoSYM.NetworkModel.faulty.fault}.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.domains.modal.modal.RefinementPort {.CarTrackingSoSYM.NetworkModel.normal.fault}.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.kernel.util.StringAttribute {.CarTrackingSoSYM.FollowingCar.FaultDetector.Estimate Current Position.expression}.&#10;]&#10;  in .CarTrackingSoSYM.SWBackwardConfigurationSolver">
+        <property name="PropertyResolutionExceptionMessage" class="ptolemy.kernel.util.StringAttribute" value="[Property &quot;NotSpecified&quot; is not an acceptable solution for PtArrayConstructNode:false:null:null.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for PtArrayConstructNode:true:null:null.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for PtLeafNode:false:null:null:Infinity.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for PtLeafNode:false:null:null:Infinity.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for PtLeafNode:false:null:null:Infinity.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for PtLeafNode:false:null:null:currentTime.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for PtLeafNode:false:null:null:faultStartTime.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for PtLeafNode:false:null:null:faultStopTime.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for PtLeafNode:false:null:null:faultStopTime.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for PtLeafNode:false:null:null:initialPosition.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for PtLeafNode:false:null:null:initialPosition.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for PtLeafNode:false:null:null:initialSpeed.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for PtLeafNode:false:null:null:initialSpeed.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for PtLeafNode:false:null:null:isACCPresent.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for PtLeafNode:false:null:null:jitterAmplitude.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for PtLeafNode:false:null:null:jitterPeriod.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for PtLeafNode:false:null:null:nominalSpeed.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for PtLeafNode:false:null:null:pi.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for PtLeafNode:false:null:null:previousPosition.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for PtLeafNode:false:null:null:previousSpeed.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for PtLeafNode:false:null:null:previousTime.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for PtLeafNode:false:null:null:timeConstant.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for PtLeafNode:false:null:null:timeConstant.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for PtLeafNode:true:null:&quot;sin&quot;:null.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for PtLeafNode:true:null:0.0:null.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for PtLeafNode:true:null:0.0:null.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for PtLeafNode:true:null:0.0:null.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for PtLeafNode:true:null:0.0:null.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for PtLeafNode:true:null:0.0:null.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for PtLeafNode:true:null:0.0:null.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for PtLeafNode:true:null:0.0:null.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for PtLeafNode:true:null:0.1:null.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for PtLeafNode:true:null:0:null.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for PtLeafNode:true:null:0:null.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for PtLeafNode:true:null:0:null.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for PtLeafNode:true:null:0:null.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for PtLeafNode:true:null:1.0:null.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for PtLeafNode:true:null:1.0:null.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for PtLeafNode:true:null:10.0:null.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for PtLeafNode:true:null:10.0:null.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for PtLeafNode:true:null:10.0:null.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for PtLeafNode:true:null:10.0:null.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for PtLeafNode:true:null:1609.344:null.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for PtLeafNode:true:null:1:null.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for PtLeafNode:true:null:1:null.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for PtLeafNode:true:null:1:null.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for PtLeafNode:true:null:2:null.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for PtLeafNode:true:null:30:null.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for PtLeafNode:true:null:3600:null.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for PtLeafNode:true:null:50.0:null.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for PtLeafNode:true:null:50:null.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for PtLeafNode:true:null:55:null.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for PtLeafNode:true:null:65:null.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for PtLeafNode:true:null:70.0:null.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for PtLeafNode:true:null:false:null.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for PtLeafNode:true:null:false:null.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for PtLeafNode:true:null:false:null.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for PtLeafNode:true:null:false:null.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for PtLeafNode:true:null:false:null.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for PtLeafNode:true:null:false:null.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for PtLeafNode:true:null:true:null.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for PtLeafNode:true:null:true:null.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for PtLeafNode:true:null:true:null.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for PtLeafNode:true:null:true:null.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for PtLeafNode:true:null:true:null.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for PtLeafNode:true:null:true:null.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for PtLeafNode:true:null:true:null.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for PtProductNode:false:null:null.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for PtProductNode:false:null:null.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for PtProductNode:true:null:null.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for PtSumNode:false:null:null.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for PtSumNode:false:null:null.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for PtSumNode:false:null:null.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for PtUnaryNode:true:null:null.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.actor.TypedIOPort {.CarTrackingSoSYM.DiscreteClock.output}.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.actor.TypedIOPort {.CarTrackingSoSYM.DiscreteClock.start}.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.actor.TypedIOPort {.CarTrackingSoSYM.DiscreteClock.stop}.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.actor.TypedIOPort {.CarTrackingSoSYM.DiscreteClock.trigger}.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.actor.TypedIOPort {.CarTrackingSoSYM.FollowingCar.BooleanSelect.falseInput}.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.actor.TypedIOPort {.CarTrackingSoSYM.FollowingCar.BooleanSelect.trueInput}.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.actor.TypedIOPort {.CarTrackingSoSYM.FollowingCar.BooleanToAnything.input}.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.actor.TypedIOPort {.CarTrackingSoSYM.FollowingCar.BooleanToAnything.output}.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.actor.TypedIOPort {.CarTrackingSoSYM.FollowingCar.FaultDetector.Comparator.left}.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.actor.TypedIOPort {.CarTrackingSoSYM.FollowingCar.FaultDetector.Comparator.output}.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.actor.TypedIOPort {.CarTrackingSoSYM.FollowingCar.FaultDetector.Comparator.right}.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.actor.TypedIOPort {.CarTrackingSoSYM.FollowingCar.FaultDetector.Estimate Current Position.currentTime}.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.actor.TypedIOPort {.CarTrackingSoSYM.FollowingCar.FaultDetector.Estimate Current Position.output}.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.actor.TypedIOPort {.CarTrackingSoSYM.FollowingCar.FaultDetector.Estimate Current Position.previousPosition}.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.actor.TypedIOPort {.CarTrackingSoSYM.FollowingCar.FaultDetector.Estimate Current Position.previousSpeed}.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.actor.TypedIOPort {.CarTrackingSoSYM.FollowingCar.FaultDetector.Estimate Current Position.previousTime}.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.actor.TypedIOPort {.CarTrackingSoSYM.FollowingCar.FaultDetector.LogicalNot.input}.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.actor.TypedIOPort {.CarTrackingSoSYM.FollowingCar.FaultDetector.LogicalNot.output}.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.actor.TypedIOPort {.CarTrackingSoSYM.FollowingCar.FaultDetector.Pre.input}.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.actor.TypedIOPort {.CarTrackingSoSYM.FollowingCar.FaultDetector.Pre.output}.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.actor.TypedIOPort {.CarTrackingSoSYM.FollowingCar.FaultDetector.Pre2.input}.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.actor.TypedIOPort {.CarTrackingSoSYM.FollowingCar.FaultDetector.Pre2.output}.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.actor.TypedIOPort {.CarTrackingSoSYM.FollowingCar.FaultDetector.Pre3.input}.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.actor.TypedIOPort {.CarTrackingSoSYM.FollowingCar.FaultDetector.Pre3.output}.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.actor.TypedIOPort {.CarTrackingSoSYM.FollowingCar.FaultDetector.RecordDisassembler.acceleration}.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.actor.TypedIOPort {.CarTrackingSoSYM.FollowingCar.FaultDetector.RecordDisassembler.input}.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.actor.TypedIOPort {.CarTrackingSoSYM.FollowingCar.FaultDetector.RecordDisassembler.position}.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.actor.TypedIOPort {.CarTrackingSoSYM.FollowingCar.FaultDetector.RecordDisassembler.speed}.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.actor.TypedIOPort {.CarTrackingSoSYM.FollowingCar.FaultDetector.RecordDisassembler.time}.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.actor.TypedIOPort {.CarTrackingSoSYM.FollowingCar.FaultDetector.fault}.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.actor.TypedIOPort {.CarTrackingSoSYM.FollowingCar.FaultDetector.port_11}.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.actor.TypedIOPort {.CarTrackingSoSYM.FollowingCar.ModalModel.faulty.Const.output}.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.actor.TypedIOPort {.CarTrackingSoSYM.FollowingCar.ModalModel.faulty.Const.trigger}.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.actor.TypedIOPort {.CarTrackingSoSYM.FollowingCar.ModalModel.faulty.RecordDisassembler.acceleration}.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.actor.TypedIOPort {.CarTrackingSoSYM.FollowingCar.ModalModel.faulty.RecordDisassembler.input}.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.actor.TypedIOPort {.CarTrackingSoSYM.FollowingCar.ModalModel.faulty.RecordDisassembler.position}.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.actor.TypedIOPort {.CarTrackingSoSYM.FollowingCar.ModalModel.faulty.RecordDisassembler.speed}.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.actor.TypedIOPort {.CarTrackingSoSYM.FollowingCar.ModalModel.faulty.RecordDisassembler.time}.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.actor.TypedIOPort {.CarTrackingSoSYM.FollowingCar.ModalModel.normal.Minimum.channelNumber}.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.actor.TypedIOPort {.CarTrackingSoSYM.FollowingCar.ModalModel.normal.Minimum.input}.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.actor.TypedIOPort {.CarTrackingSoSYM.FollowingCar.ModalModel.normal.Minimum.minimumValue}.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.actor.TypedIOPort {.CarTrackingSoSYM.FollowingCar.ModalModel.normal.RecordDisassembler.acceleration}.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.actor.TypedIOPort {.CarTrackingSoSYM.FollowingCar.ModalModel.normal.RecordDisassembler.input}.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.actor.TypedIOPort {.CarTrackingSoSYM.FollowingCar.ModalModel.normal.RecordDisassembler.position}.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.actor.TypedIOPort {.CarTrackingSoSYM.FollowingCar.ModalModel.normal.RecordDisassembler.speed}.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.actor.TypedIOPort {.CarTrackingSoSYM.FollowingCar.ModalModel.normal.RecordDisassembler.time}.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.actor.TypedIOPort {.CarTrackingSoSYM.FollowingCar.TimedPlotter.input}.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.actor.TypedIOPort {.CarTrackingSoSYM.FollowingCar.driverDesiredSpeed}.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.actor.TypedIOPort {.CarTrackingSoSYM.TimedPlotter.input}.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.actor.parameters.ParameterPort {.CarTrackingSoSYM.DiscreteClock.period}.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.actor.parameters.PortParameter {.CarTrackingSoSYM.Car Model.Integrator.initialState} 0.0.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.actor.parameters.PortParameter {.CarTrackingSoSYM.Car Model.Integrator2.initialState} 10.0.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.actor.parameters.PortParameter {.CarTrackingSoSYM.DiscreteClock.period} 71.0.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.actor.parameters.PortParameter {.CarTrackingSoSYM.FollowingCar.Car Model.Integrator.initialState} 0.0.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.actor.parameters.PortParameter {.CarTrackingSoSYM.FollowingCar.Car Model.Integrator2.initialState} 0.0.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.data.expr.Parameter {.CarTrackingSoSYM.Car Model.Const.value} 10.0.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.data.expr.Parameter {.CarTrackingSoSYM.Car Model.initialPosition} 10.0.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.data.expr.Parameter {.CarTrackingSoSYM.Car Model.initialSpeed} 0.0.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.data.expr.Parameter {.CarTrackingSoSYM.Car Model.timeConstant} 10.0.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.data.expr.Parameter {.CarTrackingSoSYM.CurrentTime.stopTime} Infinity.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.data.expr.Parameter {.CarTrackingSoSYM.DiscreteClock.numberOfCycles} 1.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.data.expr.Parameter {.CarTrackingSoSYM.DiscreteClock.offsets} {50.0, 70.0}.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.data.expr.Parameter {.CarTrackingSoSYM.DiscreteClock.stopTime} Infinity.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.data.expr.Parameter {.CarTrackingSoSYM.DiscreteClock.values} {true, false}.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.data.expr.Parameter {.CarTrackingSoSYM.DriverSimulator.Const.value} 55.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.data.expr.Parameter {.CarTrackingSoSYM.DriverSimulator.CurrentTime2.stopTime} Infinity.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.data.expr.Parameter {.CarTrackingSoSYM.DriverSimulator.JitterPeriod.value} 50.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.data.expr.Parameter {.CarTrackingSoSYM.DriverSimulator.Scale.factor} 30.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.data.expr.Parameter {.CarTrackingSoSYM.DriverSimulator.Scale.scaleOnLeft} true.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.data.expr.Parameter {.CarTrackingSoSYM.DriverSimulator.Scale2.factor} 6.2831853071796.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.data.expr.Parameter {.CarTrackingSoSYM.DriverSimulator.Scale2.scaleOnLeft} true.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.data.expr.Parameter {.CarTrackingSoSYM.DriverSimulator.UnitConversion.Scale.factor} 6.2137119223733E-4.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.data.expr.Parameter {.CarTrackingSoSYM.DriverSimulator.UnitConversion.Scale.scaleOnLeft} true.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.data.expr.Parameter {.CarTrackingSoSYM.DriverSimulator.UnitConversion.Scale2.factor} 3600.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.data.expr.Parameter {.CarTrackingSoSYM.DriverSimulator.UnitConversion.Scale2.scaleOnLeft} true.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.data.expr.Parameter {.CarTrackingSoSYM.DriverSimulator.jitterAmplitude} 30.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.data.expr.Parameter {.CarTrackingSoSYM.DriverSimulator.jitterPeriod} 50.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.data.expr.Parameter {.CarTrackingSoSYM.DriverSimulator.nominalSpeed} 55.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.data.expr.Parameter {.CarTrackingSoSYM.FollowingCar.BooleanToAnything.falseValue} 0.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.data.expr.Parameter {.CarTrackingSoSYM.FollowingCar.BooleanToAnything.trueValue} 1.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.data.expr.Parameter {.CarTrackingSoSYM.FollowingCar.Car Model.Const.value} 10.0.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.data.expr.Parameter {.CarTrackingSoSYM.FollowingCar.Car Model.initialPosition} 0.0.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.data.expr.Parameter {.CarTrackingSoSYM.FollowingCar.Car Model.initialSpeed} 0.0.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.data.expr.Parameter {.CarTrackingSoSYM.FollowingCar.Car Model.timeConstant} 10.0.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.data.expr.Parameter {.CarTrackingSoSYM.FollowingCar.FaultDetector.Comparator.tolerance} 1.0.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.data.expr.Parameter {.CarTrackingSoSYM.FollowingCar.FaultDetector.Pre.initialValue} 0.0.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.data.expr.Parameter {.CarTrackingSoSYM.FollowingCar.FaultDetector.Pre2.initialValue} 0.0.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.data.expr.Parameter {.CarTrackingSoSYM.FollowingCar.FaultDetector.Pre3.initialValue} 0.0.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.data.expr.Parameter {.CarTrackingSoSYM.FollowingCar.ModalModel.faulty.Const.value} 0.0.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.data.expr.Parameter {.CarTrackingSoSYM.FollowingCar.TimedPlotter.automaticRescale} false.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.data.expr.Parameter {.CarTrackingSoSYM.FollowingCar.TimedPlotter.disconnectGraphOnAbsentValue} false.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.data.expr.Parameter {.CarTrackingSoSYM.FollowingCar.TimedPlotter.fillOnWrapup} true.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.data.expr.Parameter {.CarTrackingSoSYM.FollowingCar.TimedPlotter.startingDataset} 0.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.data.expr.Parameter {.CarTrackingSoSYM.FollowingCar.ZeroOrderHold.defaultValue} 0.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.data.expr.Parameter {.CarTrackingSoSYM.NetworkModel.faulty.Const.value} -10.0.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.data.expr.Parameter {.CarTrackingSoSYM.PeriodicSampler.samplePeriod} 0.1.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.data.expr.Parameter {.CarTrackingSoSYM.TimedPlotter.automaticRescale} false.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.data.expr.Parameter {.CarTrackingSoSYM.TimedPlotter.disconnectGraphOnAbsentValue} false.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.data.expr.Parameter {.CarTrackingSoSYM.TimedPlotter.fillOnWrapup} true.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.data.expr.Parameter {.CarTrackingSoSYM.TimedPlotter.startingDataset} 0.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.data.expr.Parameter {.CarTrackingSoSYM.driverDesiredSpeed.value} 65.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.data.expr.Parameter {.CarTrackingSoSYM.faultStartTime} 50.0.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.data.expr.Parameter {.CarTrackingSoSYM.faultStopTime} 70.0.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.data.expr.Parameter {.CarTrackingSoSYM.isACCPresent} false.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.data.expr.StringParameter {.CarTrackingSoSYM.DriverSimulator.Sin.function} &quot;sin&quot;.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.domains.modal.modal.ModalPort {.CarTrackingSoSYM.FollowingCar.ModalModel.desiredSpeed}.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.domains.modal.modal.ModalPort {.CarTrackingSoSYM.FollowingCar.ModalModel.driverDesiredSpeed}.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.domains.modal.modal.ModalPort {.CarTrackingSoSYM.FollowingCar.ModalModel.fault}.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.domains.modal.modal.ModalPort {.CarTrackingSoSYM.FollowingCar.ModalModel.packetIn}.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.domains.modal.modal.ModalPort {.CarTrackingSoSYM.NetworkModel.fault}.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.domains.modal.modal.RefinementPort {.CarTrackingSoSYM.FollowingCar.ModalModel._Controller.driverDesiredSpeed}.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.domains.modal.modal.RefinementPort {.CarTrackingSoSYM.FollowingCar.ModalModel._Controller.fault}.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.domains.modal.modal.RefinementPort {.CarTrackingSoSYM.FollowingCar.ModalModel._Controller.packetIn}.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.domains.modal.modal.RefinementPort {.CarTrackingSoSYM.FollowingCar.ModalModel.faulty.desiredSpeed}.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.domains.modal.modal.RefinementPort {.CarTrackingSoSYM.FollowingCar.ModalModel.faulty.driverDesiredSpeed}.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.domains.modal.modal.RefinementPort {.CarTrackingSoSYM.FollowingCar.ModalModel.faulty.fault}.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.domains.modal.modal.RefinementPort {.CarTrackingSoSYM.FollowingCar.ModalModel.faulty.packetIn}.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.domains.modal.modal.RefinementPort {.CarTrackingSoSYM.FollowingCar.ModalModel.normal.desiredSpeed}.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.domains.modal.modal.RefinementPort {.CarTrackingSoSYM.FollowingCar.ModalModel.normal.driverDesiredSpeed}.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.domains.modal.modal.RefinementPort {.CarTrackingSoSYM.FollowingCar.ModalModel.normal.fault}.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.domains.modal.modal.RefinementPort {.CarTrackingSoSYM.FollowingCar.ModalModel.normal.packetIn}.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.domains.modal.modal.RefinementPort {.CarTrackingSoSYM.NetworkModel._Controller.fault}.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.domains.modal.modal.RefinementPort {.CarTrackingSoSYM.NetworkModel._Controller.packetIn}.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.domains.modal.modal.RefinementPort {.CarTrackingSoSYM.NetworkModel.faulty.fault}.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.domains.modal.modal.RefinementPort {.CarTrackingSoSYM.NetworkModel.normal.fault}.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.kernel.util.StringAttribute {.CarTrackingSoSYM.FollowingCar.Expression.expression}.&#10;, Property &quot;NotSpecified&quot; is not an acceptable solution for ptolemy.kernel.util.StringAttribute {.CarTrackingSoSYM.FollowingCar.FaultDetector.Estimate Current Position.expression}.&#10;]&#10;  in .CarTrackingSoSYM.SWBackwardConfigurationSolver">
         </property>
     </property>
-    <property name="isACCPresent" class="ptolemy.data.expr.Parameter" value="true">
+    <property name="isACCPresent" class="ptolemy.data.expr.Parameter" value="false">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -297,7 +297,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 620.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 635.0]">
         </property>
     </property>
     <property name="SWForwardConfigurationSolver::constraint2" class="ptolemy.data.properties.AnnotationAttribute" value="FollowingCar.packetIn &gt;= NotConfigured">
@@ -312,7 +312,115 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 635.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 655.0]">
+        </property>
+    </property>
+    <property name="Annotation7" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The driverDesiredSpeed is always Configured.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[265.0, 510.0]">
+        </property>
+    </property>
+    <property name="Annotation8" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="packetIn is Configured if isACCPresent is true.&#10;packetIn is NotConfigured if isACCPresent is false.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[265.0, 585.0]">
+        </property>
+    </property>
+    <property name="Annotation9" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The outputs acceleration, speed, and position of the FollowingCar are Configured">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[260.0, 675.0]">
+        </property>
+    </property>
+    <property name="SWBackwardConfigurationSolver::constraint3" class="ptolemy.data.properties.AnnotationAttribute" value="FollowingCar.acceleration &gt;= Configured">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg><text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text></svg></configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 705.0]">
+        </property>
+    </property>
+    <property name="SWBackwardConfigurationSolver::constraint4" class="ptolemy.data.properties.AnnotationAttribute" value="FollowingCar.speed &gt;= Configured">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg><text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text></svg></configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 720.0]">
+        </property>
+    </property>
+    <property name="SWBackwardConfigurationSolver::constraint5" class="ptolemy.data.properties.AnnotationAttribute" value="FollowingCar.position &gt;= Configured">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg><text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text></svg></configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 735.0]">
+        </property>
+    </property>
+    <property name="SWForwardConfigurationSolver::constraint3" class="ptolemy.data.properties.AnnotationAttribute" value="FollowingCar.acceleration &gt;= Configured">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg><text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text></svg></configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 765.0]">
+        </property>
+    </property>
+    <property name="SWForwardConfigurationSolver::constraint4" class="ptolemy.data.properties.AnnotationAttribute" value="FollowingCar.speed &gt;= Configured">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg><text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text></svg></configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 780.0]">
+        </property>
+    </property>
+    <property name="SWForwardConfigurationSolver::constraint" class="ptolemy.data.properties.AnnotationAttribute" value="FollowingCar.position &gt;= Configured">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg><text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text></svg></configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 795.0]">
         </property>
     </property>
     <entity name="Car Model" class="ptolemy.actor.TypedCompositeActor">
@@ -516,6 +624,8 @@
     <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
         </property>
+        <property name="automaticRescale" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
         <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="Leading Car, Following Car">
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={516, 420, 508, 348}, maximized=false}">
@@ -523,6 +633,8 @@
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
         </property>
         <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="disconnectGraphOnAbsentValue" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[375.0, 460.0]">
         </property>
@@ -853,6 +965,8 @@
         <link port="faulty.fault" relation="faultRelation"/>
     </entity>
     <entity name="CurrentTime" class="ptolemy.actor.lib.CurrentTime">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="Infinity">
+        </property>
         <doc>Output the current time.</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[255.0, 130.0]">
         </property>
@@ -888,15 +1002,15 @@
         </property>
     </entity>
     <entity name="FollowingCar" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[750.0, 345.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{750.0, 345.0}">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={91, 285, 1100, 521}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={22, 155, 1100, 642}, maximized=false}">
         </property>
-        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[885, 404]">
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[885, 525]">
         </property>
         <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
         </property>
-        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{442.5, 202.0}">
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{258.2042297979798, 281.1166351010101}">
         </property>
         <port name="packetIn" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -909,32 +1023,32 @@
             <property name="output"/>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[610.0, 45.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[655.0, 95.0]">
             </property>
         </port>
         <port name="speed" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[610.0, 85.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[655.0, 135.0]">
             </property>
         </port>
         <port name="position" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[610.0, 125.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[655.0, 175.0]">
             </property>
         </port>
         <port name="driverDesiredSpeed" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 195.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 190.0]">
             </property>
         </port>
         <entity name="FaultDetector" class="ptolemy.actor.TypedCompositeActor">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[165.0, 145.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[140.0, 130.0]">
             </property>
             <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 195, 1036, 500}, maximized=false}">
             </property>
@@ -1133,11 +1247,19 @@
             <link port="LogicalNot.output" relation="relation10"/>
         </entity>
         <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
+            <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <property name="automaticRescale" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
             <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={386, 164, 508, 348}, maximized=false}">
             </property>
             <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[395.0, 240.0]">
+            <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="disconnectGraphOnAbsentValue" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[375.0, 310.0]">
             </property>
             <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
@@ -1152,13 +1274,17 @@
             </configure>
         </entity>
         <entity name="BooleanToAnything" class="ptolemy.actor.lib.conversions.BooleanToAnything">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{290, 215}">
+            <property name="falseValue" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="trueValue" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 285.0]">
             </property>
         </entity>
         <entity name="ModalModel" class="ptolemy.domains.modal.modal.ModalModel">
             <property name="_tableauFactory" class="ptolemy.vergil.modal.modal.ModalTableauFactory">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[265.0, 80.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[265.0, 90.0]">
             </property>
             <port name="packetIn" class="ptolemy.domains.modal.modal.ModalPort">
                 <property name="input"/>
@@ -1218,7 +1344,7 @@
                 <entity name="normal" class="ptolemy.domains.modal.kernel.State">
                     <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="normal">
                     </property>
-                    <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="false">
+                    <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">
                     </property>
                     <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                     </property>
@@ -1235,26 +1361,6 @@
                     <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
                     </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="{285, 195}">
-                    </property>
-                </entity>
-                <entity name="init" class="ptolemy.domains.modal.kernel.State">
-                    <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">
-                    </property>
-                    <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
-                    </property>
-                    <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
-                    </property>
-                    <property name="_location" class="ptolemy.kernel.util.Location" value="[140.0, 60.0]">
-                    </property>
-                </entity>
-                <entity name="noACC" class="ptolemy.domains.modal.kernel.State">
-                    <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="noACC">
-                    </property>
-                    <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
-                    </property>
-                    <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
-                    </property>
-                    <property name="_location" class="ptolemy.kernel.util.Location" value="[285.0, 60.0]">
                     </property>
                 </entity>
                 <relation name="relation" class="ptolemy.domains.modal.kernel.Transition">
@@ -1293,30 +1399,10 @@
                     <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
                     </property>
                 </relation>
-                <relation name="relation3" class="ptolemy.domains.modal.kernel.Transition">
-                    <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="isACCPresent">
-                    </property>
-                    <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6283185307179586">
-                    </property>
-                    <property name="gamma" class="ptolemy.data.expr.Parameter" value="1.6151192728216928">
-                    </property>
-                </relation>
-                <relation name="relation4" class="ptolemy.domains.modal.kernel.Transition">
-                    <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="!isACCPresent">
-                    </property>
-                    <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6283185307179586">
-                    </property>
-                    <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.06558705775031189">
-                    </property>
-                </relation>
                 <link port="normal.incomingPort" relation="relation2"/>
-                <link port="normal.incomingPort" relation="relation3"/>
                 <link port="normal.outgoingPort" relation="relation"/>
                 <link port="faulty.incomingPort" relation="relation"/>
                 <link port="faulty.outgoingPort" relation="relation2"/>
-                <link port="init.outgoingPort" relation="relation3"/>
-                <link port="init.outgoingPort" relation="relation4"/>
-                <link port="noACC.incomingPort" relation="relation4"/>
             </entity>
             <entity name="normal" class="ptolemy.domains.modal.modal.Refinement">
                 <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
@@ -1375,7 +1461,7 @@
                     </port>
                 </entity>
                 <entity name="Minimum" class="ptolemy.actor.lib.Minimum">
-                    <property name="_location" class="ptolemy.kernel.util.Location" value="[275.0, 240.0]">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[275.0, 255.0]">
                     </property>
                 </entity>
                 <relation name="relation" class="ptolemy.actor.TypedIORelation">
@@ -1504,38 +1590,6 @@
                 <link port="RecordDisassembler.input" relation="relation"/>
                 <link port="RecordDisassembler.speed" relation="relation3"/>
             </entity>
-            <entity name="noACC" class="ptolemy.domains.modal.modal.Refinement">
-                <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-                    <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Set the desired speed to&#10;the driver's desired speed">
-                    </property>
-                    <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 130.0]">
-                    </property>
-                </property>
-                <port name="packetIn" class="ptolemy.domains.modal.modal.RefinementPort">
-                    <property name="input"/>
-                    <property name="_location" class="ptolemy.kernel.util.Location" value="{20.0, 200.0}">
-                    </property>
-                </port>
-                <port name="desiredSpeed" class="ptolemy.domains.modal.modal.RefinementPort">
-                    <property name="output"/>
-                    <property name="_location" class="ptolemy.kernel.util.Location" value="[395.0, 200.0]">
-                    </property>
-                </port>
-                <port name="fault" class="ptolemy.domains.modal.modal.RefinementPort">
-                    <property name="input"/>
-                    <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 325.0]">
-                    </property>
-                </port>
-                <port name="driverDesiredSpeed" class="ptolemy.domains.modal.modal.RefinementPort">
-                    <property name="input"/>
-                    <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 255.0]">
-                    </property>
-                </port>
-                <relation name="relation" class="ptolemy.actor.TypedIORelation">
-                </relation>
-                <link port="desiredSpeed" relation="relation"/>
-                <link port="driverDesiredSpeed" relation="relation"/>
-            </entity>
             <relation name="packetInRelation" class="ptolemy.actor.TypedIORelation">
                 <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
                 </property>
@@ -1568,13 +1622,9 @@
             <link port="faulty.desiredSpeed" relation="desiredSpeedRelation"/>
             <link port="faulty.fault" relation="faultRelation"/>
             <link port="faulty.driverDesiredSpeed" relation="driverDesiredSpeedRelation"/>
-            <link port="noACC.packetIn" relation="packetInRelation"/>
-            <link port="noACC.desiredSpeed" relation="desiredSpeedRelation"/>
-            <link port="noACC.fault" relation="faultRelation"/>
-            <link port="noACC.driverDesiredSpeed" relation="driverDesiredSpeedRelation"/>
         </entity>
         <entity name="Car Model" class="ptolemy.actor.TypedCompositeActor">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{485.0, 80.0}">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[530.0, 130.0]">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[619, 409]">
             </property>
@@ -1770,7 +1820,27 @@
             <link port="Integrator.state" relation="relation"/>
         </entity>
         <entity name="ZeroOrderHold" class="ptolemy.domains.continuous.lib.ZeroOrderHold">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[365.0, 126.25]">
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[410.0, 205.0]">
+            </property>
+        </entity>
+        <entity name="BooleanSelect" class="ptolemy.actor.lib.BooleanSelect">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[330.0, 180.0]">
+            </property>
+        </entity>
+        <entity name="Expression" class="ptolemy.actor.lib.Expression">
+            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="isACCPresent">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                </property>
+                <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[270.7548065185547, 232.0770492553711]">
             </property>
         </entity>
         <relation name="relation2" class="ptolemy.actor.TypedIORelation">
@@ -1782,7 +1852,7 @@
                 <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
                 </property>
             </property>
-            <vertex name="vertex1" value="[240.0, 145.0]">
+            <vertex name="vertex1" value="[215.0, 130.0]">
             </vertex>
         </relation>
         <relation name="relation" class="ptolemy.actor.TypedIORelation">
@@ -1803,17 +1873,19 @@
             <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
             </property>
         </relation>
-        <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-            <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
-            </property>
-        </relation>
         <relation name="relation8" class="ptolemy.actor.TypedIORelation">
             <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
             </property>
         </relation>
         <relation name="relation9" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" value="[80.0, 90.0]">
+            <vertex name="vertex1" value="[200.0, 190.0]">
             </vertex>
+        </relation>
+        <relation name="relation10" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation11" class="ptolemy.actor.TypedIORelation">
         </relation>
         <link port="packetIn" relation="relation"/>
         <link port="acceleration" relation="relation5"/>
@@ -1826,7 +1898,7 @@
         <link port="BooleanToAnything.input" relation="relation3"/>
         <link port="BooleanToAnything.output" relation="relation2"/>
         <link port="ModalModel.packetIn" relation="relation"/>
-        <link port="ModalModel.desiredSpeed" relation="relation4"/>
+        <link port="ModalModel.desiredSpeed" relation="relation10"/>
         <link port="ModalModel.fault" relation="relation3"/>
         <link port="ModalModel.driverDesiredSpeed" relation="relation9"/>
         <link port="Car Model.desiredSpeed" relation="relation8"/>
@@ -1835,6 +1907,11 @@
         <link port="Car Model.position" relation="relation7"/>
         <link port="ZeroOrderHold.input" relation="relation4"/>
         <link port="ZeroOrderHold.output" relation="relation8"/>
+        <link port="BooleanSelect.trueInput" relation="relation10"/>
+        <link port="BooleanSelect.falseInput" relation="relation9"/>
+        <link port="BooleanSelect.control" relation="relation11"/>
+        <link port="BooleanSelect.output" relation="relation4"/>
+        <link port="Expression.output" relation="relation11"/>
     </entity>
     <entity name="DriverSimulator" class="ptolemy.actor.TypedCompositeActor">
         <property name="_location" class="ptolemy.kernel.util.Location" value="{35.0, 160.0}">
@@ -2145,6 +2222,8 @@
             <entity name="Scale" class="ptolemy.actor.lib.Scale">
                 <property name="factor" class="ptolemy.data.expr.Parameter" value="1/1609.344">
                 </property>
+                <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
                 <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
                     <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
                     </property>
@@ -2154,6 +2233,8 @@
             </entity>
             <entity name="Scale2" class="ptolemy.actor.lib.Scale">
                 <property name="factor" class="ptolemy.data.expr.Parameter" value="3600">
+                </property>
+                <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
                     <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
