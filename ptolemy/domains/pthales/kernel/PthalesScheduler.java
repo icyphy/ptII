@@ -1,4 +1,4 @@
-package ptolemy.domains.ptales.kernel;
+package ptolemy.domains.pthales.kernel;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -33,9 +33,9 @@ import ptolemy.kernel.util.NameDuplicationException;
  * @author eal
  *
  */
-public class PtalesScheduler extends SDFScheduler {
+public class PthalesScheduler extends SDFScheduler {
 
-    public PtalesScheduler(Director container, String name)
+    public PthalesScheduler(Director container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
@@ -43,7 +43,7 @@ public class PtalesScheduler extends SDFScheduler {
     protected Schedule _getSchedule() throws IllegalActionException,
             NotSchedulableException {
         // Context of this scheduler.
-        PtalesDirector director = (PtalesDirector) getContainer();
+        PthalesDirector director = (PthalesDirector) getContainer();
         CompositeActor compositeActor = (CompositeActor) (director
                 .getContainer());
         List<Actor> actors = compositeActor.deepEntityList();
@@ -228,7 +228,7 @@ public class PtalesScheduler extends SDFScheduler {
                     for (Receiver[] receiverss : receivers) {
                         if (receiverss != null && receiverss.length > 0) {
                             for (Receiver receiver : receiverss) {
-                                ((PtalesReceiver)receiver).setReadPattern(spec, counts, dimensions);
+                                ((PthalesReceiver)receiver).setReadPattern(spec, counts, dimensions);
                             }
                         }
                     }
@@ -244,7 +244,7 @@ public class PtalesScheduler extends SDFScheduler {
                     for (Receiver[] receiverss : receivers) {
                         if (receiverss != null && receiverss.length > 0) {
                             for (Receiver receiver : receiverss) {
-                                ((PtalesReceiver)receiver).setWritePattern(spec);
+                                ((PthalesReceiver)receiver).setWritePattern(spec, dimensions);
                             }
                         }
                     }
@@ -420,7 +420,7 @@ public class PtalesScheduler extends SDFScheduler {
         portRate.setToken(new IntToken(rate.intValue()));
     }
 
-    private static String _RATE_SPEC_NAME = "_ptalesRateSpec";
+    private static String _RATE_SPEC_NAME = "_pthalesRateSpec";
     
     private static Integer _ONE = new Integer(1);
 }
