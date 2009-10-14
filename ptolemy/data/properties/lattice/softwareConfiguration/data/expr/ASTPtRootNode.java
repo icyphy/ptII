@@ -25,7 +25,7 @@
  COPYRIGHTENDKEY
 
  */
-package ptolemy.data.properties.lattice.softwareConfiguration_EDC.data.expr;
+package ptolemy.data.properties.lattice.softwareConfiguration.data.expr;
 
 import ptolemy.data.properties.lattice.PropertyConstraintASTNodeHelper;
 import ptolemy.data.properties.lattice.PropertyConstraintSolver;

@@ -10,13 +10,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 40.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={157, 243, 1092, 743}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={157, 243, 1092, 733}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[877, 626]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[877, 620]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.8">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{352.2837837837838, 432.4864864864865}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{497.9121621621621, 343.777027027027}">
     </property>
     <property name="faultStartTime" class="ptolemy.data.expr.Parameter" value="50.0">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -123,7 +123,7 @@
         </property>
     </property>
     <property name="DimensionSystemSolver" class="ptolemy.data.properties.lattice.PropertyConstraintSolver">
-        <property name="action" class="ptolemy.actor.parameters.SharedParameter" value="CLEAR">
+        <property name="action" class="ptolemy.actor.parameters.SharedParameter" value="ANNOTATE">
         </property>
         <property name="PropertyMoMLHandler" class="ptolemy.data.properties.PropertyMoMLHandler">
             <property name="showText" class="ptolemy.data.expr.Parameter" value="true">
@@ -193,7 +193,7 @@
         </property>
     </property>
     <property name="SWForwardConfigurationSolver" class="ptolemy.data.properties.configuredSolvers.lattice.SWconfig_Forward_CS">
-        <property name="action" class="ptolemy.actor.parameters.SharedParameter" value="CLEAR">
+        <property name="action" class="ptolemy.actor.parameters.SharedParameter" value="ANNOTATE">
         </property>
         <property name="PropertyMoMLHandler" class="ptolemy.data.properties.PropertyMoMLHandler">
             <property name="showText" class="ptolemy.data.expr.Parameter" value="true">
