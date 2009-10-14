@@ -97,12 +97,17 @@ demo_vergil: $(CCLIENT)
 	"$(PTII)/bin/vergil" \
 		$(MODELS)
 
-# PTCC is set in $PTII/mk/ptII.mk
-# See also ptolemy/matlab/makefile
+
+# Name and location of shared library.
+SHAREDBASE =	bcvtb
 SHARED_LIBRARY = $(PTJNI_SHAREDLIBRARY_PREFIX)$(SHAREDBASE).$(PTJNI_SHAREDLIBRARY_SUFFIX)
 
-$(CCLIENT): cclient.c
+# PTCC is set in $PTII/mk/ptII.mk
+# See also ptolemy/matlab/makefile
+$(CCLIENT): cclient.c ../../lib/util/$(SHARED_LIBRARY)
 	$(PTCC) -g -o $@ -I../../lib -I../../lib/util $^ -L../../lib/util -lbcvtb
 
+../../lib/util/$(SHARED_LIBRARY):
+	(cd ../../lib/util; $(MAKE))
 
 include $(ROOT)/mk/ptcommon.mk
