@@ -370,6 +370,11 @@ DATAPROPERTIESPACKAGES = \
 	ptolemy.data.properties.lattice.logicalOrBackward.kernel \
 	ptolemy.data.properties.lattice.namingSetLattice \
 	ptolemy.data.properties.lattice.namingSetLattice.actor \
+	ptolemy.data.properties.lattice.softwareConfiguration \
+	ptolemy.data.properties.lattice.softwareConfiguration.actor \
+	ptolemy.data.properties.lattice.softwareConfiguration.data.expr \
+	ptolemy.data.properties.lattice.softwareConfiguration.domains.fsm.kernel \
+	ptolemy.data.properties.lattice.softwareConfiguration.domains.modal.kernel \
 	ptolemy.data.properties.lattice.typeSystem_C \
 	ptolemy.data.properties.lattice.typeSystem_C.actor \
 	ptolemy.data.properties.lattice.typeSystem_C.actor.lib \
@@ -465,6 +470,7 @@ HYVISUALPACKAGES = \
 	ptolemy.domains.modal.kernel \
 	ptolemy.domains.modal.kernel.ia \
 	ptolemy.domains.modal.modal \
+	ptolemy.domains.pthales.kernel \
 	ptolemy.domains.sdf.kernel \
 	ptolemy.domains.sdf.lib \
 	ptolemy.domains.sdf.lib.vq \
