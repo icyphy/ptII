@@ -106,9 +106,9 @@ public class Integrator extends PropertyConstraintHelper {
                 return _lattice.getElement("SPEED");
             }
 
-            // Interesting case: the integral of time is a constant.
-            if (inputProperty == _lattice.getElement("TIME")) {
-                return _lattice.getElement("UNITLESS");
+            // Interesting case: the integral of unitless value gives a time.
+            if (inputProperty == _lattice.getElement("UNITLESS")) {
+                return _lattice.getElement("TIME");
             }
 
             if (inputProperty == null
