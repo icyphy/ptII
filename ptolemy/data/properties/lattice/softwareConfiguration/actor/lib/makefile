@@ -1,6 +1,6 @@
-# Makefile for Java Ptolemy Data Properties Lattice SoftwareConfiguration Actor
+# Makefile for Java Ptolemy Data Properties Lattice SoftwareConfiguration Actor Lib
 #
-# @Authors: Man-Kit Leung, based on a file by Christopher Brooks
+# @Authors: Christopher Brooks
 #
 # $Id$
 #
@@ -29,12 +29,12 @@
 #                       PT_COPYRIGHT_VERSION_2
 #                       COPYRIGHTENDKEY
 
-ME =        ptolemy/data/properties/lattice/softwareConfiguration/actor
+ME =        ptolemy/data/properties/lattice/softwareConfiguration/actor/lib
 
-DIRS =      lib
+DIRS =
 
 # Root of the Ptolemy II directory
-ROOT =      ../../../../../..
+ROOT =      ../../../../../../..
 
 CLASSPATH = $(ROOT)
 
@@ -43,17 +43,18 @@ CONFIG =    $(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE =     actor
+PTPACKAGE =     lib
 
-PTCLASSJAR =
+PTCLASSJAR =	$(PTPACKAGE).jar
 
-PTCLASSALLJARS = \
-    lib/lib.jar
+# PTCLASSALLJARS = \
+#     lib/lib.jar
 
-PTCLASSALLJAR = $(PTPACKAGE).jar
+# PTCLASSALLJAR = $(PTPACKAGE).jar
 
 JSRCS = \
-    AtomicActor.java
+	BooleanSelect.java
+
 
 EXTRA_SRCS =    $(JSRCS)
 
@@ -64,7 +65,8 @@ MISC_FILES =    $(DIRS)
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-    doc
+	doc \
+	'BooleanSelect$$FunctionTerm.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

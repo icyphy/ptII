@@ -36,6 +36,7 @@ DIRS = \
 	academicFalseTrueSet \
 	dimensionSystem \
 	exampleSetLattice \
+	generic \
 	imageOntology \
 	logicalAND \
 	logicalOrBackward \

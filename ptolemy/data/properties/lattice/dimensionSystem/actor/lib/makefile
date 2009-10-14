@@ -57,6 +57,7 @@ JSRCS = \
 	CurrentTime.java \
 	DiscreteClock.java \
 	Expression.java \
+	Minimum.java \
 	MultiplyDivide.java \
 	RecordAssembler.java \
 	RecordDisassembler.java \
@@ -76,6 +77,8 @@ OPTIONAL_FILES = \
 	'MultiplyDivide$$DivideFunctionTerm.class' \
 	'MultiplyDivide$$FunctionTerm.class' \
 	'MultiplyDivide$$MultiplyFunctionTerm.class' \
+	'RecordDisassembler$$1.class' \
+	'RecordDisassembler$$PortFunction.class' \
 	'Scale$$InputFunctionTerm.class' \
 	'Scale$$OutputFunctionTerm.class'
 

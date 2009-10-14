@@ -31,7 +31,8 @@
 ME =		ptolemy/data/properties/demo
 
 # Keep these alphabetical please.
-DIRS = 		CarTracking ConstNonconst LogicalAND LogicalOrBackward RegressionTest Sinewave Workflow
+DIRS = CarTracking ConstNonconst LogicalAND LogicalOrBackward	\
+	NaomiConfigurer RegressionTest Sinewave Workflow
 
 # Root of Ptolemy II directory
 ROOT =		../../../..
@@ -50,6 +51,7 @@ PTCLASSALLJARS = \
 	ConstNonconst/ConstNonconst.jar \
 	LogicalAND/LogicalAND.jar \
 	LogicalOrBackward/LogicalOrBackward.jar \
+	NaomiConfigurer.java/NaomiConfigurer.java \
 	RegressionTest/RegressionTest.jar \
 	Sinewave/Sinewave.jar \
 	Workflow/Workflow.jar

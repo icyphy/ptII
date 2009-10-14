@@ -1,4 +1,4 @@
-# Makefile for Java Ptolemy Data Properties Lattice SoftwareConfiguration Actor
+# Makefile for Java Ptolemy Data Properties Lattice SoftwareConfiguration Kernel
 #
 # @Authors: Man-Kit Leung, based on a file by Christopher Brooks
 #
@@ -29,9 +29,9 @@
 #                       PT_COPYRIGHT_VERSION_2
 #                       COPYRIGHTENDKEY
 
-ME =        ptolemy/data/properties/lattice/softwareConfiguration/actor
+ME =        ptolemy/data/properties/lattice/softwareConfiguration/kernel
 
-DIRS =      lib
+DIRS =      
 
 # Root of the Ptolemy II directory
 ROOT =      ../../../../../..
@@ -43,17 +43,16 @@ CONFIG =    $(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE =     actor
+PTPACKAGE =     kernel
 
 PTCLASSJAR =
 
-PTCLASSALLJARS = \
-    lib/lib.jar
+PTCLASSALLJARS =
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
 JSRCS = \
-    AtomicActor.java
+    CompositeEntity.java
 
 EXTRA_SRCS =    $(JSRCS)
 
