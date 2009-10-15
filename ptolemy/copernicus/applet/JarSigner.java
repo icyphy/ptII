@@ -182,11 +182,12 @@ public class JarSigner {
                 keySpec = keyFactory.getKeySpec(key,
                         DSAPrivateKeySpec.class);
             } catch (java.security.spec.InvalidKeySpecException ex) {
+                System.out.println("Using RSA");
                 keySpec = keyFactory.getKeySpec(key,
                         RSAPrivateKeySpec.class);
             }
             PrivateKey privateKey = keyFactory.generatePrivate(keySpec);
-            JarSigner jarSigner = new JarSigner("ptolemy", privateKey,
+            JarSigner jarSigner = new JarSigner(alias, privateKey,
                     certChain);
 
             JarFile jarFile = null;
