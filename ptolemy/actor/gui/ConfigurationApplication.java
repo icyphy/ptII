@@ -1010,9 +1010,13 @@ public class ConfigurationApplication implements ExecutionListener {
                             File inFile = new File(arg);
                             inURL = inFile.toURI().toURL();
                         } catch (Exception ex2) {
-                            // FIXME: This is a fall back for relative filenames,
-                            // I'm not sure if it will ever be called.
-                            inURL = new URL(new URL("file://./"), arg);
+                            if (StringUtilities.inApplet()) {
+                                inURL = new URL(arg);
+                            } else {
+                                // FIXME: This is a fall back for relative filenames,
+                                // I'm not sure if it will ever be called.
+                                inURL = new URL(new URL("file://./"), arg);
+                            }
                         }
                     }
 
