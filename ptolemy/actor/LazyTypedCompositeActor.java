@@ -135,6 +135,8 @@ import ptolemy.util.StringUtilities;
  you could do that anyway.  An attempt to make such references
  will simply result in the expression failing to evaluate.
 
+ <p>
+ To convert a preexisting model, see ptolemy.moml.ConvertToLazy.
 
  @author Christopher Brooks and Edward A. Lee
  @version $Id$
