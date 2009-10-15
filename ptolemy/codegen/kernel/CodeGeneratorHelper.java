@@ -344,7 +344,10 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
     public String generateFireFunctionCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
         code.append(_eol + "void " + generateName(getComponent())
-                + _getFireFunctionArguments() + " {" + _eol);
+                + _getFireFunctionArguments()
+                /*+ _codeGenerator.comment(getClass().getName() + ".generateFireFunctionCode()")*/
+                + " {" + _eol);
+
         code.append(_generateFireCode());
         code.append(generateTypeConvertFireCode());
         code.append("}" + _eol);
