@@ -195,11 +195,27 @@ public class TypedCompositeActor extends JavaCodeGeneratorHelper {
         CompositeActor compositeActor = (CompositeActor) getComponent();
         ptolemy.actor.Director director = compositeActor.getDirector();
         Director directorHelper = (Director) _getHelper(director);
+        //code.append(_codeGenerator.comment(getClass().getName() + ".generateFireFunctionCode() start")); 
         code.append(directorHelper.generateFireFunctionCode());
-        if (!(compositeActor instanceof ptolemy.actor.lib.embeddedJava.CompiledCompositeActor && ((BooleanToken) _codeGenerator.generateEmbeddedCode
-                .getToken()).booleanValue())) {
-            code.append(super.generateFireFunctionCode());
+
+//         code.append(_codeGenerator.comment("TCA: instanceof CCA: "
+//                         + (compositeActor instanceof ptolemy.actor.lib.embeddedJava.CompiledCompositeActor)
+//                         + " "
+//                         + ((BooleanToken) _codeGenerator.generateEmbeddedCode.getToken()).booleanValue()
+//                         + " " + _codeGenerator.isTopLevel()));
+
+        if (!(compositeActor instanceof ptolemy.actor.lib.embeddedJava.CompiledCompositeActor
+                        && ((BooleanToken) _codeGenerator.generateEmbeddedCode.getToken()).booleanValue())) {
+            if (!_codeGenerator.isTopLevel()) {
+                code.append(super.generateFireFunctionCode());
+            } else {
+                if (compositeActor instanceof ptolemy.actor.lib.embeddedJava.CompiledCompositeActor) {
+                    code.append(super.generateFireFunctionCode());
+                }
+                code.append(_codeGenerator.comment("Skipping creating top level here, thus avoiding duplicated code.")); 
+            }
         }
+        //code.append(_codeGenerator.comment(getClass().getName() + ".generateFireFunctionCode() end")); 
         return processCode(code.toString());
     }
 
