@@ -51,7 +51,7 @@ PTCLASSALLJARS = \
 	ConstNonconst/ConstNonconst.jar \
 	LogicalAND/LogicalAND.jar \
 	LogicalOrBackward/LogicalOrBackward.jar \
-	NaomiConfigurer.java/NaomiConfigurer.java \
+	NaomiConfigurer/NaomiConfigurer.jar \
 	RegressionTest/RegressionTest.jar \
 	Sinewave/Sinewave.jar \
 	Workflow/Workflow.jar
