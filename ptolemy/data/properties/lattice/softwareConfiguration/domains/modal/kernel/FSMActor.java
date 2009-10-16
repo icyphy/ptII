@@ -27,7 +27,6 @@
  */
 package ptolemy.data.properties.lattice.softwareConfiguration.domains.modal.kernel;
 
-import ptolemy.data.properties.lattice.PropertyConstraintFSMHelper;
 import ptolemy.data.properties.lattice.PropertyConstraintModalFSMHelper;
 import ptolemy.data.properties.lattice.PropertyConstraintSolver;
 import ptolemy.kernel.util.IllegalActionException;

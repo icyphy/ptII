@@ -28,15 +28,14 @@
 package ptolemy.domains.giotto.lib;
 
 
+import ptolemy.actor.TypedAtomicActor;
+import ptolemy.data.expr.StringParameter;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.ModelErrorHandler;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.StringAttribute;
-import ptolemy.actor.TypedAtomicActor;
-import ptolemy.data.expr.StringParameter;
-import ptolemy.kernel.util.ModelErrorHandler;
 
 /**
 This error actor enables the user to specify how an error is handled in 

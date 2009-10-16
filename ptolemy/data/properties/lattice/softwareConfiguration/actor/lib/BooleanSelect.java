@@ -33,7 +33,6 @@ import ptolemy.actor.TypedIOPort;
 import ptolemy.data.properties.Property;
 import ptolemy.data.properties.lattice.MonotonicFunction;
 import ptolemy.data.properties.lattice.PropertyConstraintSolver;
-import ptolemy.data.properties.lattice.PropertyConstraintHelper.Inequality;
 import ptolemy.data.properties.lattice.softwareConfiguration.actor.AtomicActor;
 import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.util.IllegalActionException;

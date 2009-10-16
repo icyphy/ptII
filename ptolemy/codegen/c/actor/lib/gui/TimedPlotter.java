@@ -32,7 +32,6 @@ package ptolemy.codegen.c.actor.lib.gui;
 
 import java.util.ArrayList;
 
-import ptolemy.codegen.c.kernel.CCodeGeneratorHelper;
 import ptolemy.kernel.util.IllegalActionException;
 
 //////////////////////////////////////////////////////////////////////////

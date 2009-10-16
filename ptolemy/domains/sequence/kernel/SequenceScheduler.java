@@ -37,16 +37,15 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
-
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.lib.TestExceptionHandler;
-import ptolemy.domains.sequence.lib.ControlActor;
 import ptolemy.actor.sched.NotSchedulableException;
 import ptolemy.actor.sched.Scheduler;
+import ptolemy.domains.sequence.lib.ControlActor;
 import ptolemy.graph.DirectedAcyclicGraph;
 import ptolemy.graph.DirectedGraph;
 import ptolemy.graph.Edge;

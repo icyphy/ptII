@@ -1,8 +1,8 @@
 package lbnl.demo.SystemCommand;
 
 import java.io.FileOutputStream;
-import java.io.PrintStream;
 import java.io.IOException;
+import java.io.PrintStream;
 
 /** Class that will be called by the SystemCommand actor using
   * a system call to the java virtual machine.

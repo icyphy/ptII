@@ -27,14 +27,9 @@
  */
 package ptolemy.data.expr;
 
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.Iterator;
-import java.util.Set;
-import java.util.StringTokenizer;
 
 import ptolemy.data.ActorToken;
-import ptolemy.data.StringToken;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;

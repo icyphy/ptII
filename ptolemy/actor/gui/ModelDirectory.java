@@ -26,10 +26,9 @@
  */
 package ptolemy.actor.gui;
 
+import java.net.URL;
 import java.util.Iterator;
 import java.util.List;
-import java.net.URI;
-import java.net.URL;
 
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
