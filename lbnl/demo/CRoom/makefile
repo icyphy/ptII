@@ -105,7 +105,7 @@ SHARED_LIBRARY = $(PTJNI_SHAREDLIBRARY_PREFIX)$(SHAREDBASE).$(PTJNI_SHAREDLIBRAR
 # PTCC is set in $PTII/mk/ptII.mk
 # See also ptolemy/matlab/makefile
 $(CCLIENT): cclient.c ../../lib/util/$(SHARED_LIBRARY)
-	$(PTCC) -g -o $@ -I../../lib -I../../lib/util -L$(prefix)/lbnl/lib/util -lbcvtb
+	$(PTCC) -g -o $@ -I../../lib -I../../lib/util cclient.c -L$(prefix)/lbnl/lib/util -lbcvtb
 
 ../../lib/util/$(SHARED_LIBRARY):
 	(cd ../../lib/util; $(MAKE))
