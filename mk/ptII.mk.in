@@ -141,10 +141,10 @@ WABA_DIR = @WABA_DIR@
 LEJOS_DIR = @LEJOS_DIR@
 
 # Set to the directory that contains xpat.h and used in $PTII/lbnl/lib/util
-LIBXPAT_INCLUDE_DIR = @LIBXPAT_INCLUDE_DIR@
+LIBEXPAT_INCLUDE_DIR = @LIBEXPAT_INCLUDE_DIR@
 
 # Set to the directory that contains libxpat and used in $PTII/lbnl/lib/util
-LIBXPAT_LIB_DIR = @LIBXPAT_LIB_DIR@
+LIBEXPAT_LIB_DIR = @LIBEXPAT_LIB_DIR@
 
 ########## You should not have to change anything below this line ######
 
@@ -607,7 +607,7 @@ PTLEGO_DIR =	@PTLEGO_DIR@
 PTLEJOS_DIR =	@PTLEJOS_DIR@
 
 # Set to util and used in $PTII/lbnl/lib/util/makefile if libxpat was found
-PTLIBXPAT_DIR =	@PTLIBXPAT_DIR@ 
+PTLIBEXPAT_DIR =	@PTLIBEXPAT_DIR@
 
 # Set to gcc or cl and used in
 # $PTII/ptolemy/matlab/makefile if the Matlab was found.

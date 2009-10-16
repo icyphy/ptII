@@ -4167,7 +4167,7 @@ else
        fi
     fi
     AC_MSG_CHECKING([for expat.h])
-    AC_ARG_WITH(expat-include, [  --with-expat-include=DIR       use libxml/expat.h from DIR
+    AC_ARG_WITH(expat-include, [  --with-expat-include=DIR       use expat.h from DIR
                           defaults to /usr/include],
 	LIBEXPAT_INCLUDE_DIR=$withval,
 	LIBEXPAT_INCLUDE_DIR=/usr/include)
@@ -4179,13 +4179,13 @@ else
        dirs="$PTII/vendors/libexpat /usr/local/include /usr/include"
        for dir in $dirs
        do
-           if test -f "$dir/libxml/expat.h"; then
+           if test -f "$dir/expat.h"; then
                LIBEXPAT_INCLUDE_DIR=$dir
-	       PT_MSG_RESULT([$LIBEXPAT_INCLUDE_DIR/libxml/expat.h])
+	       PT_MSG_RESULT([$LIBEXPAT_INCLUDE_DIR/expat.h])
            fi
        done
-       if test ! -f "$LIBEXPAT_INCLUDE_DIR/libxml/expat.h"; then
-           AC_MSG_WARN([Failed to find libxml/expat.h
+       if test ! -f "$LIBEXPAT_INCLUDE_DIR/expat.h"; then
+           AC_MSG_WARN([Failed to find expat.h
     Checked the following directories:
     $dirs
     The LBNL Simulation facility in \$PTII/lbnl/lib/util requires libexpat.
@@ -4194,7 +4194,7 @@ else
    fi
 fi
 
-if test -f "$LIBEXPAT_INCLUDE_DIR/libxml/expat.h"; then
+if test -f "$LIBEXPAT_INCLUDE_DIR/expat.h"; then
    if test -f "$LIBEXPAT_LIB_DIR/libexpat.${PTJNI_SHAREDLIBRARY_SUFFIX}" -o -f "$LIBEXPAT_LIB_DIR/libexpat.${PTJNI_SHAREDLIBRARY_SUFFIX}.a"; then
       # Used in $PTII/lbnl/lib/util/makefile
       PTLIBEXPAT_DIR=util
@@ -4360,10 +4360,10 @@ AC_SUBST(KVM_DIR)
 # $PTII/vendors/lejos
 AC_SUBST(LEJOS_DIR)
 
-# Set to the directory that contains libxml/expat.h and used in $PTII/lbnl/lib/util
+# Set to the directory that contains expat.h and used in $PTII/lbnl/lib/util
 AC_SUBST(LIBEXPAT_INCLUDE_DIR)
 
-# Set to the directory that contains libxml  and used in $PTII/lbnl/lib/util
+# Set to the directory that contains libexpat.{so,dylib,dll} and used in $PTII/lbnl/lib/util
 AC_SUBST(LIBEXPAT_LIB_DIR)
 
 # The major type of OS we are running under.
