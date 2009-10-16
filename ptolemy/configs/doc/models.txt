@@ -256,6 +256,8 @@ $CLASSPATH/ptolemy/domains/ptera/demo/CarWash/CarWash_DE.xml
 $CLASSPATH/ptolemy/domains/ptera/demo/CarWash/CarWash.xml
 $CLASSPATH/ptolemy/domains/ptera/demo/SimultaneousCarWash/SimultaneousCarWash.xml
 $CLASSPATH/ptolemy/domains/ptera/demo/TrafficLight/TrafficLight.xml
+$CLASSPATH/ptolemy/domains/pthales/demo/FFT/FFT.xml
+$CLASSPATH/ptolemy/domains/pthales/demo/HelloWorld/HelloWorld.xml
 $CLASSPATH/ptolemy/domains/rendezvous/demo/Barrier/Barrier.xml
 $CLASSPATH/ptolemy/domains/rendezvous/demo/ResourcePool/ResourcePool.xml
 $CLASSPATH/ptolemy/domains/rendezvous/demo/Sequencing/Sequencing.xml
