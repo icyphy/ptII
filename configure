@@ -717,8 +717,8 @@ KIELER_JAR
 KVM_CLASSES
 KVM_DIR
 LEJOS_DIR
-LIBXML2_INCLUDE_DIR
-LIBXML2_LIB_DIR
+LIBEXPAT_INCLUDE_DIR
+LIBEXPAT_LIB_DIR
 MAJOR_OS_NAME
 MATLAB_DIR
 MATLAB_LIBDIR
@@ -798,7 +798,7 @@ PTKVM_DIR
 PTLBNL_DIR
 PTLEGO_DIR
 PTLEJOS_DIR
-PTLIBXML2_DIR
+PTLIBEXPAT_DIR
 PTMATLAB_CC_FLAGS
 PTMATLAB_DIR
 PTMATLAB_LD_ARGS
@@ -1505,8 +1505,8 @@ Optional Packages:
                           defaults to \$PTII/vendors/misc/waba/wabasdk
   --with-X10=DIR       use X10 from DIR,
                               defaults to \$PTII/vendors/misc/x10
-  --with-xml2-include=DIR       use libxml/xpath.h from DIR
-                          defaults to \$PTII/vendors/gc/gc/include
+  --with-expat-include=DIR       use libxml/expat.h from DIR
+                          defaults to /usr/include
 
 Some influential environment variables:
   CC          C compiler command
@@ -10648,25 +10648,25 @@ else
 fi
 
 #--------------------------------------------------------------------
-#       libxml2 is used by the lbnl simulation interface in ptII/lbnl
+#       libexpat is used by the lbnl simulation interface in ptII/lbnl
 #--------------------------------------------------------------------
 
-# The include and lib dirs for libxml2
-LIBXML2_INCLUDE_DIR=
-LIBXML2_LIB_DIR=
+# The include and lib dirs for libexpat
+LIBEXPAT_INCLUDE_DIR=
+LIBEXPAT_LIB_DIR=
 
-# PTLIBXML2_DIR is set util if LIBXML2_INCLUDE_DIR and LIBXML2_LIB_DIR are set
-PTLIBXML2_DIR=
+# PTLIBEXPAT_DIR is set util if LIBEXPAT_INCLUDE_DIR and LIBEXPAT_LIB_DIR are set
+PTLIBEXPAT_DIR=
 
-# PTLBNL_DIR is set to lbnl if LIBXML2_INCLUDE_DIR and LIBXML2_LIB_DIR are set
+# PTLBNL_DIR is set to lbnl if LIBEXPAT_INCLUDE_DIR and LIBEXPAT_LIB_DIR are set
 PTLBNL_DIR=
 
-LIBXML2_USER_DIR=$PTII/lbnl/lib/util
-if test ! -d "$LIBXML2_USER_DIR"; then
-    if test "${PTVERBOSE:-none}" != "none"; then { echo "$as_me:$LINENO: result: $LIBXML2_USER_DIR is not present,
-    so we need not find libxml2." >&5
-echo "${ECHO_T}$LIBXML2_USER_DIR is not present,
-    so we need not find libxml2." >&6; }; fi
+LIBEXPAT_USER_DIR=$PTII/lbnl/lib/util
+if test ! -d "$LIBEXPAT_USER_DIR"; then
+    if test "${PTVERBOSE:-none}" != "none"; then { echo "$as_me:$LINENO: result: $LIBEXPAT_USER_DIR is not present,
+    so we need not find libexpat." >&5
+echo "${ECHO_T}$LIBEXPAT_USER_DIR is not present,
+    so we need not find libexpat." >&6; }; fi
 else
     # Extract the first word of "gcc", so it can be a program name with args.
 set dummy gcc; ac_word=$2
@@ -10757,90 +10757,90 @@ echo "${ECHO_T}ok" >&6; }; else { echo "$as_me:$LINENO: result: $PTCC" >&5
 echo "${ECHO_T}$PTCC" >&6; }; fi
         else
             { echo "$as_me:$LINENO: WARNING: Failed to find gcc or cc, so we will
-    not be able use LIBXML2 in $LIBXML2_USER_DIR" >&5
+    not be able use LIBEXPAT in $LIBEXPAT_USER_DIR" >&5
 echo "$as_me: WARNING: Failed to find gcc or cc, so we will
-    not be able use LIBXML2 in $LIBXML2_USER_DIR" >&2;};
+    not be able use LIBEXPAT in $LIBEXPAT_USER_DIR" >&2;};
         fi
     fi
 
     if test "${PTCC:-none}" != "none"; then
-       { echo "$as_me:$LINENO: checking for libxml2" >&5
-echo $ECHO_N "checking for libxml2... $ECHO_C" >&6; }
+       { echo "$as_me:$LINENO: checking for libexpat" >&5
+echo $ECHO_N "checking for libexpat... $ECHO_C" >&6; }
        # FIXME: This will not work if $PTII has spaces
-       dirs="$PTII/vendors/libxml2 /usr/local/lib /usr/lib"
+       dirs="$PTII/vendors/libexpat /usr/local/lib /usr/lib"
        for dir in $dirs
        do
-           if test -f "$dir/libxml2.${PTJNI_SHAREDLIBRARY_SUFFIX}"; then
+           if test -f "$dir/libexpat.${PTJNI_SHAREDLIBRARY_SUFFIX}"; then
                if test "${PTVERBOSE:-none}" = "none"; then { echo "$as_me:$LINENO: result: ok" >&5
-echo "${ECHO_T}ok" >&6; }; else { echo "$as_me:$LINENO: result: $dir/libxml2.${PTJNI_SHAREDLIBRARY_SUFFIX}" >&5
-echo "${ECHO_T}$dir/libxml2.${PTJNI_SHAREDLIBRARY_SUFFIX}" >&6; }; fi
-	       LIBXML2_LIB_DIR=$dir
+echo "${ECHO_T}ok" >&6; }; else { echo "$as_me:$LINENO: result: $dir/libexpat.${PTJNI_SHAREDLIBRARY_SUFFIX}" >&5
+echo "${ECHO_T}$dir/libexpat.${PTJNI_SHAREDLIBRARY_SUFFIX}" >&6; }; fi
+	       LIBEXPAT_LIB_DIR=$dir
 	       break;
            fi
-	   # Cygwin has /usr/lib/libxml2.dll.a
-           if test -f "$dir/libxml2.${PTJNI_SHAREDLIBRARY_SUFFIX}.a"; then
+	   # Cygwin has /usr/lib/libexpat.dll.a
+           if test -f "$dir/libexpat.${PTJNI_SHAREDLIBRARY_SUFFIX}.a"; then
                if test "${PTVERBOSE:-none}" = "none"; then { echo "$as_me:$LINENO: result: ok" >&5
-echo "${ECHO_T}ok" >&6; }; else { echo "$as_me:$LINENO: result: $dir/libxml2.${PTJNI_SHAREDLIBRARY_SUFFIX}.a" >&5
-echo "${ECHO_T}$dir/libxml2.${PTJNI_SHAREDLIBRARY_SUFFIX}.a" >&6; }; fi
-	       LIBXML2_LIB_DIR=$dir
+echo "${ECHO_T}ok" >&6; }; else { echo "$as_me:$LINENO: result: $dir/libexpat.${PTJNI_SHAREDLIBRARY_SUFFIX}.a" >&5
+echo "${ECHO_T}$dir/libexpat.${PTJNI_SHAREDLIBRARY_SUFFIX}.a" >&6; }; fi
+	       LIBEXPAT_LIB_DIR=$dir
 	       break;
            fi
        done
-       if test ! -d "$LIBXML2_LIB_DIR"; then
-           { echo "$as_me:$LINENO: WARNING: Failed to find libxml2.${PTJNI_SHAREDLIBRARY_SUFFIX}
-    The LBNL Simulation facility in \$PTII/lbnl/lib/util requires libxml2.
+       if test ! -d "$LIBEXPAT_LIB_DIR"; then
+           { echo "$as_me:$LINENO: WARNING: Failed to find libexpat.${PTJNI_SHAREDLIBRARY_SUFFIX}
+    The LBNL Simulation facility in \$PTII/lbnl/lib/util requires libexpat.
     However, Ptolemy will run without this facility." >&5
-echo "$as_me: WARNING: Failed to find libxml2.${PTJNI_SHAREDLIBRARY_SUFFIX}
-    The LBNL Simulation facility in \$PTII/lbnl/lib/util requires libxml2.
+echo "$as_me: WARNING: Failed to find libexpat.${PTJNI_SHAREDLIBRARY_SUFFIX}
+    The LBNL Simulation facility in \$PTII/lbnl/lib/util requires libexpat.
     However, Ptolemy will run without this facility." >&2;}
        fi
     fi
-    { echo "$as_me:$LINENO: checking for libxml/xpath.h" >&5
-echo $ECHO_N "checking for libxml/xpath.h... $ECHO_C" >&6; }
+    { echo "$as_me:$LINENO: checking for expat.h" >&5
+echo $ECHO_N "checking for expat.h... $ECHO_C" >&6; }
 
-# Check whether --with-xml2-include was given.
-if test "${with_xml2_include+set}" = set; then
-  withval=$with_xml2_include; LIBXML2_INCLUDE_DIR=$withval
+# Check whether --with-expat-include was given.
+if test "${with_expat_include+set}" = set; then
+  withval=$with_expat_include; LIBEXPAT_INCLUDE_DIR=$withval
 else
-  LIBXML2_INCLUDE_DIR=/usr/include/libxml2
+  LIBEXPAT_INCLUDE_DIR=/usr/include
 fi
 
 
-    if test -f "$LIBXML2_INCLUDE_DIR/libxml/xpath.h"; then
+    if test -f "$LIBEXPAT_INCLUDE_DIR/expat.h"; then
        if test "${PTVERBOSE:-none}" = "none"; then { echo "$as_me:$LINENO: result: ok" >&5
-echo "${ECHO_T}ok" >&6; }; else { echo "$as_me:$LINENO: result: $LIBXML2_INCLUDE_DIR/libxml/xpath.h" >&5
-echo "${ECHO_T}$LIBXML2_INCLUDE_DIR/libxml/xpath.h" >&6; }; fi
+echo "${ECHO_T}ok" >&6; }; else { echo "$as_me:$LINENO: result: $LIBEXPAT_INCLUDE_DIR/expat.h" >&5
+echo "${ECHO_T}$LIBEXPAT_INCLUDE_DIR/expat.h" >&6; }; fi
     else
        # FIXME: This will not work if $PTII has spaces
-       dirs="$PTII/vendors/libxml2 /usr/local/include /usr/include"
+       dirs="$PTII/vendors/libexpat /usr/local/include /usr/include"
        for dir in $dirs
        do
-           if test -f "$dir/libxml/xpath.h"; then
-               LIBXML2_INCLUDE_DIR=$dir
+           if test -f "$dir/libxml/expat.h"; then
+               LIBEXPAT_INCLUDE_DIR=$dir
 	       if test "${PTVERBOSE:-none}" = "none"; then { echo "$as_me:$LINENO: result: ok" >&5
-echo "${ECHO_T}ok" >&6; }; else { echo "$as_me:$LINENO: result: $LIBXML2_INCLUDE_DIR/libxml/xpath.h" >&5
-echo "${ECHO_T}$LIBXML2_INCLUDE_DIR/libxml/xpath.h" >&6; }; fi
+echo "${ECHO_T}ok" >&6; }; else { echo "$as_me:$LINENO: result: $LIBEXPAT_INCLUDE_DIR/libxml/expat.h" >&5
+echo "${ECHO_T}$LIBEXPAT_INCLUDE_DIR/libxml/expat.h" >&6; }; fi
            fi
        done
-       if test ! -f "$LIBXML2_INCLUDE_DIR/libxml/xpath.h"; then
-           { echo "$as_me:$LINENO: WARNING: Failed to find libxml/xpath.h
+       if test ! -f "$LIBEXPAT_INCLUDE_DIR/libxml/expat.h"; then
+           { echo "$as_me:$LINENO: WARNING: Failed to find libxml/expat.h
     Checked the following directories:
     $dirs
-    The LBNL Simulation facility in \$PTII/lbnl/lib/util requires libxml2.
+    The LBNL Simulation facility in \$PTII/lbnl/lib/util requires libexpat.
     However, Ptolemy will run without this facility." >&5
-echo "$as_me: WARNING: Failed to find libxml/xpath.h
+echo "$as_me: WARNING: Failed to find libxml/expat.h
     Checked the following directories:
     $dirs
-    The LBNL Simulation facility in \$PTII/lbnl/lib/util requires libxml2.
+    The LBNL Simulation facility in \$PTII/lbnl/lib/util requires libexpat.
     However, Ptolemy will run without this facility." >&2;}
        fi
    fi
 fi
 
-if test -f "$LIBXML2_INCLUDE_DIR/libxml/xpath.h"; then
-   if test -f "$LIBXML2_LIB_DIR/libxml2.${PTJNI_SHAREDLIBRARY_SUFFIX}" -o -f "$LIBXML2_LIB_DIR/libxml2.${PTJNI_SHAREDLIBRARY_SUFFIX}.a"; then
+if test -f "$LIBEXPAT_INCLUDE_DIR/libxml/expat.h"; then
+   if test -f "$LIBEXPAT_LIB_DIR/libexpat.${PTJNI_SHAREDLIBRARY_SUFFIX}" -o -f "$LIBEXPAT_LIB_DIR/libexpat.${PTJNI_SHAREDLIBRARY_SUFFIX}.a"; then
       # Used in $PTII/lbnl/lib/util/makefile
-      PTLIBXML2_DIR=util
+      PTLIBEXPAT_DIR=util
       # Used in $PTII/makefile
       PTLBNL_DIR=lbnl
    fi
@@ -11003,7 +11003,7 @@ fi
 # $PTII/vendors/lejos
 
 
-# Set to the directory that contains libxml/xpath.h and used in $PTII/lbnl/lib/util
+# Set to the directory that contains libxml/expat.h and used in $PTII/lbnl/lib/util
 
 
 # Set to the directory that contains libxml  and used in $PTII/lbnl/lib/util
@@ -11290,7 +11290,7 @@ fi
 # $PTII/ptolemy/apps/makefile if kvm was found
 
 
-# Set to lbnl and used in $PTII/makefile if libxml2 was found.
+# Set to lbnl and used in $PTII/makefile if libexpat was found.
 
 
 # Set to lego and used in
@@ -11302,7 +11302,7 @@ fi
 # and Legos was found
 
 
-# Set to util and used in $PTII/lbnl/lib/util/makefile if libxml2 was found
+# Set to util and used in $PTII/lbnl/lib/util/makefile if libexpat was found
 
 
 # Set to gcc or cl and used in
@@ -12253,8 +12253,8 @@ KIELER_JAR!$KIELER_JAR$ac_delim
 KVM_CLASSES!$KVM_CLASSES$ac_delim
 KVM_DIR!$KVM_DIR$ac_delim
 LEJOS_DIR!$LEJOS_DIR$ac_delim
-LIBXML2_INCLUDE_DIR!$LIBXML2_INCLUDE_DIR$ac_delim
-LIBXML2_LIB_DIR!$LIBXML2_LIB_DIR$ac_delim
+LIBEXPAT_INCLUDE_DIR!$LIBEXPAT_INCLUDE_DIR$ac_delim
+LIBEXPAT_LIB_DIR!$LIBEXPAT_LIB_DIR$ac_delim
 MAJOR_OS_NAME!$MAJOR_OS_NAME$ac_delim
 MATLAB_DIR!$MATLAB_DIR$ac_delim
 MATLAB_LIBDIR!$MATLAB_LIBDIR$ac_delim
@@ -12334,7 +12334,7 @@ PTKVM_DIR!$PTKVM_DIR$ac_delim
 PTLBNL_DIR!$PTLBNL_DIR$ac_delim
 PTLEGO_DIR!$PTLEGO_DIR$ac_delim
 PTLEJOS_DIR!$PTLEJOS_DIR$ac_delim
-PTLIBXML2_DIR!$PTLIBXML2_DIR$ac_delim
+PTLIBEXPAT_DIR!$PTLIBEXPAT_DIR$ac_delim
 PTMATLAB_CC_FLAGS!$PTMATLAB_CC_FLAGS$ac_delim
 PTMATLAB_DIR!$PTMATLAB_DIR$ac_delim
 PTMATLAB_LD_ARGS!$PTMATLAB_LD_ARGS$ac_delim
