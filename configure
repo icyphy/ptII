@@ -1505,7 +1505,7 @@ Optional Packages:
                           defaults to \$PTII/vendors/misc/waba/wabasdk
   --with-X10=DIR       use X10 from DIR,
                               defaults to \$PTII/vendors/misc/x10
-  --with-expat-include=DIR       use libxml/expat.h from DIR
+  --with-expat-include=DIR       use expat.h from DIR
                           defaults to /usr/include
 
 Some influential environment variables:
@@ -10815,20 +10815,20 @@ echo "${ECHO_T}$LIBEXPAT_INCLUDE_DIR/expat.h" >&6; }; fi
        dirs="$PTII/vendors/libexpat /usr/local/include /usr/include"
        for dir in $dirs
        do
-           if test -f "$dir/libxml/expat.h"; then
+           if test -f "$dir/expat.h"; then
                LIBEXPAT_INCLUDE_DIR=$dir
 	       if test "${PTVERBOSE:-none}" = "none"; then { echo "$as_me:$LINENO: result: ok" >&5
-echo "${ECHO_T}ok" >&6; }; else { echo "$as_me:$LINENO: result: $LIBEXPAT_INCLUDE_DIR/libxml/expat.h" >&5
-echo "${ECHO_T}$LIBEXPAT_INCLUDE_DIR/libxml/expat.h" >&6; }; fi
+echo "${ECHO_T}ok" >&6; }; else { echo "$as_me:$LINENO: result: $LIBEXPAT_INCLUDE_DIR/expat.h" >&5
+echo "${ECHO_T}$LIBEXPAT_INCLUDE_DIR/expat.h" >&6; }; fi
            fi
        done
-       if test ! -f "$LIBEXPAT_INCLUDE_DIR/libxml/expat.h"; then
-           { echo "$as_me:$LINENO: WARNING: Failed to find libxml/expat.h
+       if test ! -f "$LIBEXPAT_INCLUDE_DIR/expat.h"; then
+           { echo "$as_me:$LINENO: WARNING: Failed to find expat.h
     Checked the following directories:
     $dirs
     The LBNL Simulation facility in \$PTII/lbnl/lib/util requires libexpat.
     However, Ptolemy will run without this facility." >&5
-echo "$as_me: WARNING: Failed to find libxml/expat.h
+echo "$as_me: WARNING: Failed to find expat.h
     Checked the following directories:
     $dirs
     The LBNL Simulation facility in \$PTII/lbnl/lib/util requires libexpat.
@@ -10837,7 +10837,7 @@ echo "$as_me: WARNING: Failed to find libxml/expat.h
    fi
 fi
 
-if test -f "$LIBEXPAT_INCLUDE_DIR/libxml/expat.h"; then
+if test -f "$LIBEXPAT_INCLUDE_DIR/expat.h"; then
    if test -f "$LIBEXPAT_LIB_DIR/libexpat.${PTJNI_SHAREDLIBRARY_SUFFIX}" -o -f "$LIBEXPAT_LIB_DIR/libexpat.${PTJNI_SHAREDLIBRARY_SUFFIX}.a"; then
       # Used in $PTII/lbnl/lib/util/makefile
       PTLIBEXPAT_DIR=util
@@ -11003,10 +11003,10 @@ fi
 # $PTII/vendors/lejos
 
 
-# Set to the directory that contains libxml/expat.h and used in $PTII/lbnl/lib/util
+# Set to the directory that contains expat.h and used in $PTII/lbnl/lib/util
 
 
-# Set to the directory that contains libxml  and used in $PTII/lbnl/lib/util
+# Set to the directory that contains libexpat.{so,dylib,dll} and used in $PTII/lbnl/lib/util
 
 
 # The major type of OS we are running under.
