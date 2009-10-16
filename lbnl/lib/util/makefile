@@ -112,7 +112,7 @@ $(PTLIB): $(CSRCS) $(HSRCS)
 		$(C_DEBUG) \
 		$(PTJNI_SHAREDLIBRARY_LDFLAG)\
 		-o $@ \
-		-I.. -L/usr/lib -lexpat \
+		-I.. -I $(LIBXPAT_INCLUDE_DIR) -L$(LIBXPAT_LIB_DIR) -lexpat \
 		$(CSRCS)
 
 $(PTPACKAGE_NATIVE_JAR): $(PTLIB)

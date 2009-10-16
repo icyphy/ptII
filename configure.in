@@ -4112,23 +4112,23 @@ else
 fi 
 
 #--------------------------------------------------------------------
-#       libxml2 is used by the lbnl simulation interface in ptII/lbnl
+#       libexpat is used by the lbnl simulation interface in ptII/lbnl
 #--------------------------------------------------------------------
 
-# The include and lib dirs for libxml2
-LIBXML2_INCLUDE_DIR=
-LIBXML2_LIB_DIR=
+# The include and lib dirs for libexpat
+LIBEXPAT_INCLUDE_DIR=
+LIBEXPAT_LIB_DIR=
 
-# PTLIBXML2_DIR is set util if LIBXML2_INCLUDE_DIR and LIBXML2_LIB_DIR are set
-PTLIBXML2_DIR=
+# PTLIBEXPAT_DIR is set util if LIBEXPAT_INCLUDE_DIR and LIBEXPAT_LIB_DIR are set
+PTLIBEXPAT_DIR=
 
-# PTLBNL_DIR is set to lbnl if LIBXML2_INCLUDE_DIR and LIBXML2_LIB_DIR are set
+# PTLBNL_DIR is set to lbnl if LIBEXPAT_INCLUDE_DIR and LIBEXPAT_LIB_DIR are set
 PTLBNL_DIR=
 
-LIBXML2_USER_DIR=$PTII/lbnl/lib/util
-if test ! -d "$LIBXML2_USER_DIR"; then
-    PT_MSG_STATUS([$LIBXML2_USER_DIR is not present,
-    so we need not find libxml2.])
+LIBEXPAT_USER_DIR=$PTII/lbnl/lib/util
+if test ! -d "$LIBEXPAT_USER_DIR"; then
+    PT_MSG_STATUS([$LIBEXPAT_USER_DIR is not present,
+    so we need not find libexpat.])
 else
     AC_PATH_PROG(PTCC, gcc)
     if test "${PTCC:-none}" = "none"; then
@@ -4138,66 +4138,66 @@ else
             PT_MSG_RESULT([$PTCC])
         else    
             AC_MSG_WARN([Failed to find gcc or cc, so we will
-    not be able use LIBXML2 in $LIBXML2_USER_DIR]);
+    not be able use LIBEXPAT in $LIBEXPAT_USER_DIR]);
         fi
     fi
 
     if test "${PTCC:-none}" != "none"; then
-       AC_MSG_CHECKING([for libxml2])
+       AC_MSG_CHECKING([for libexpat])
        # FIXME: This will not work if $PTII has spaces
-       dirs="$PTII/vendors/libxml2 /usr/local/lib /usr/lib"
+       dirs="$PTII/vendors/libexpat /usr/local/lib /usr/lib"
        for dir in $dirs
        do
-           if test -f "$dir/libxml2.${PTJNI_SHAREDLIBRARY_SUFFIX}"; then
-               PT_MSG_RESULT([$dir/libxml2.${PTJNI_SHAREDLIBRARY_SUFFIX}])
-	       LIBXML2_LIB_DIR=$dir
+           if test -f "$dir/libexpat.${PTJNI_SHAREDLIBRARY_SUFFIX}"; then
+               PT_MSG_RESULT([$dir/libexpat.${PTJNI_SHAREDLIBRARY_SUFFIX}])
+	       LIBEXPAT_LIB_DIR=$dir
 	       break;
            fi
-	   # Cygwin has /usr/lib/libxml2.dll.a
-           if test -f "$dir/libxml2.${PTJNI_SHAREDLIBRARY_SUFFIX}.a"; then
-               PT_MSG_RESULT([$dir/libxml2.${PTJNI_SHAREDLIBRARY_SUFFIX}.a])
-	       LIBXML2_LIB_DIR=$dir
+	   # Cygwin has /usr/lib/libexpat.dll.a
+           if test -f "$dir/libexpat.${PTJNI_SHAREDLIBRARY_SUFFIX}.a"; then
+               PT_MSG_RESULT([$dir/libexpat.${PTJNI_SHAREDLIBRARY_SUFFIX}.a])
+	       LIBEXPAT_LIB_DIR=$dir
 	       break;
            fi
        done
-       if test ! -d "$LIBXML2_LIB_DIR"; then
-           AC_MSG_WARN([Failed to find libxml2.${PTJNI_SHAREDLIBRARY_SUFFIX}
-    The LBNL Simulation facility in \$PTII/lbnl/lib/util requires libxml2.
+       if test ! -d "$LIBEXPAT_LIB_DIR"; then
+           AC_MSG_WARN([Failed to find libexpat.${PTJNI_SHAREDLIBRARY_SUFFIX}
+    The LBNL Simulation facility in \$PTII/lbnl/lib/util requires libexpat.
     However, Ptolemy will run without this facility.])
        fi
     fi
-    AC_MSG_CHECKING([for libxml/xpath.h])
-    AC_ARG_WITH(xml2-include, [  --with-xml2-include=DIR       use libxml/xpath.h from DIR
-                          defaults to \$PTII/vendors/gc/gc/include],
-	LIBXML2_INCLUDE_DIR=$withval,
-	LIBXML2_INCLUDE_DIR=/usr/include/libxml2)
+    AC_MSG_CHECKING([for expat.h])
+    AC_ARG_WITH(expat-include, [  --with-expat-include=DIR       use libxml/expat.h from DIR
+                          defaults to /usr/include],
+	LIBEXPAT_INCLUDE_DIR=$withval,
+	LIBEXPAT_INCLUDE_DIR=/usr/include)
 
-    if test -f "$LIBXML2_INCLUDE_DIR/libxml/xpath.h"; then
-       PT_MSG_RESULT([$LIBXML2_INCLUDE_DIR/libxml/xpath.h])
+    if test -f "$LIBEXPAT_INCLUDE_DIR/expat.h"; then
+       PT_MSG_RESULT([$LIBEXPAT_INCLUDE_DIR/expat.h])
     else 
        # FIXME: This will not work if $PTII has spaces
-       dirs="$PTII/vendors/libxml2 /usr/local/include /usr/include"
+       dirs="$PTII/vendors/libexpat /usr/local/include /usr/include"
        for dir in $dirs
        do
-           if test -f "$dir/libxml/xpath.h"; then
-               LIBXML2_INCLUDE_DIR=$dir
-	       PT_MSG_RESULT([$LIBXML2_INCLUDE_DIR/libxml/xpath.h])
+           if test -f "$dir/libxml/expat.h"; then
+               LIBEXPAT_INCLUDE_DIR=$dir
+	       PT_MSG_RESULT([$LIBEXPAT_INCLUDE_DIR/libxml/expat.h])
            fi
        done
-       if test ! -f "$LIBXML2_INCLUDE_DIR/libxml/xpath.h"; then
-           AC_MSG_WARN([Failed to find libxml/xpath.h
+       if test ! -f "$LIBEXPAT_INCLUDE_DIR/libxml/expat.h"; then
+           AC_MSG_WARN([Failed to find libxml/expat.h
     Checked the following directories:
     $dirs
-    The LBNL Simulation facility in \$PTII/lbnl/lib/util requires libxml2.
+    The LBNL Simulation facility in \$PTII/lbnl/lib/util requires libexpat.
     However, Ptolemy will run without this facility.])
        fi
    fi
 fi
 
-if test -f "$LIBXML2_INCLUDE_DIR/libxml/xpath.h"; then
-   if test -f "$LIBXML2_LIB_DIR/libxml2.${PTJNI_SHAREDLIBRARY_SUFFIX}" -o -f "$LIBXML2_LIB_DIR/libxml2.${PTJNI_SHAREDLIBRARY_SUFFIX}.a"; then
+if test -f "$LIBEXPAT_INCLUDE_DIR/libxml/expat.h"; then
+   if test -f "$LIBEXPAT_LIB_DIR/libexpat.${PTJNI_SHAREDLIBRARY_SUFFIX}" -o -f "$LIBEXPAT_LIB_DIR/libexpat.${PTJNI_SHAREDLIBRARY_SUFFIX}.a"; then
       # Used in $PTII/lbnl/lib/util/makefile
-      PTLIBXML2_DIR=util
+      PTLIBEXPAT_DIR=util
       # Used in $PTII/makefile
       PTLBNL_DIR=lbnl
    fi
@@ -4360,11 +4360,11 @@ AC_SUBST(KVM_DIR)
 # $PTII/vendors/lejos
 AC_SUBST(LEJOS_DIR)
 
-# Set to the directory that contains libxml/xpath.h and used in $PTII/lbnl/lib/util
-AC_SUBST(LIBXML2_INCLUDE_DIR)
+# Set to the directory that contains libxml/expat.h and used in $PTII/lbnl/lib/util
+AC_SUBST(LIBEXPAT_INCLUDE_DIR)
 
 # Set to the directory that contains libxml  and used in $PTII/lbnl/lib/util
-AC_SUBST(LIBXML2_LIB_DIR)
+AC_SUBST(LIBEXPAT_LIB_DIR)
 
 # The major type of OS we are running under.
 # Under all forms Windows, this should be Windows; ynder Linux: Linux, etc.
@@ -4647,7 +4647,7 @@ AC_SUBST(PTKIELER_DIR)
 # $PTII/ptolemy/apps/makefile if kvm was found
 AC_SUBST(PTKVM_DIR)
 
-# Set to lbnl and used in $PTII/makefile if libxml2 was found.
+# Set to lbnl and used in $PTII/makefile if libexpat was found.
 AC_SUBST(PTLBNL_DIR)
 
 # Set to lego and used in
@@ -4659,8 +4659,8 @@ AC_SUBST(PTLEGO_DIR)
 # and Legos was found
 AC_SUBST(PTLEJOS_DIR)
 
-# Set to util and used in $PTII/lbnl/lib/util/makefile if libxml2 was found
-AC_SUBST(PTLIBXML2_DIR)
+# Set to util and used in $PTII/lbnl/lib/util/makefile if libexpat was found
+AC_SUBST(PTLIBEXPAT_DIR)
 
 # Set to gcc or cl and used in
 # $PTII/ptolemy/matlab/makefile if the Matlab was found.
