@@ -133,6 +133,7 @@ public class JavaCodeGenerator extends CodeGenerator {
         //return ptolemyType.replace("Int", "Integer").replace("Integerger", "Integer").replace("Array", "Token");
     }
 
+    
     /** Generate the function table.  In this base class return
      *  the empty string.
      *  @param types An array of types.
