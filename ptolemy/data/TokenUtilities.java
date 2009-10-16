@@ -28,6 +28,7 @@
 package ptolemy.data;
 
 import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 
 //////////////////////////////////////////////////////////////////////////
 //// TokenUtilities
@@ -55,7 +56,7 @@ public class TokenUtilities {
      *  numbers, such as one half, will get rounded to display nicely.
      */
     public static final DecimalFormat regularFormat = new DecimalFormat(
-            "####0.0############");
+            "####0.0############", new DecimalFormatSymbols(java.util.Locale.US));
 
     // Note: This used to be new DecimalFormat("0.0############E0##"),
     // but compiling with gcj resulted in the following error:
@@ -68,5 +69,5 @@ public class TokenUtilities {
      *  are very large, or very small.
      */
     public static final DecimalFormat exponentialFormat = new DecimalFormat(
-            "0.0############E0");
+            "0.0############E0", new DecimalFormatSymbols(java.util.Locale.US));
 }
