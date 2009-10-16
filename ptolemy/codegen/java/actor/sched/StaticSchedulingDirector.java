@@ -283,6 +283,11 @@ public class StaticSchedulingDirector extends Director {
                                         + " so we track current time."));
                 variableDeclarations.append("double _currentTime = 0;" + _eol);
             }
+            variableDeclarations.append(_eol
+                    + _codeGenerator
+                            .comment("Provide the period attribute as constant."));
+            variableDeclarations.append("public final static double PERIOD = "
+                    + periodValue + ";" + _eol);
         }
 
         return variableDeclarations.toString();
