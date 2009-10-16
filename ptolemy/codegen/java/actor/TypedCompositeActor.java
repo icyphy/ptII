@@ -202,8 +202,14 @@ public class TypedCompositeActor extends JavaCodeGeneratorHelper {
 //                         + (compositeActor instanceof ptolemy.actor.lib.embeddedJava.CompiledCompositeActor)
 //                         + " "
 //                         + ((BooleanToken) _codeGenerator.generateEmbeddedCode.getToken()).booleanValue()
-//                         + " " + _codeGenerator.isTopLevel()));
+//                         + " " + _codeGenerator.isTopLevel()
+//                         + " " + (compositeActor.getContainer() == null)
+//                         + " " + (compositeActor.getContainer() == null ?
+//                                 "top" : compositeActor.getContainer().getContainer() == null)
+//                                            ));
 
+        // FIXME: this seems really strange that we have to have
+        // so many conditionals.
         if (!(compositeActor instanceof ptolemy.actor.lib.embeddedJava.CompiledCompositeActor
                         && ((BooleanToken) _codeGenerator.generateEmbeddedCode.getToken()).booleanValue())) {
             if (!_codeGenerator.isTopLevel()) {
@@ -211,8 +217,17 @@ public class TypedCompositeActor extends JavaCodeGeneratorHelper {
             } else {
                 if (compositeActor instanceof ptolemy.actor.lib.embeddedJava.CompiledCompositeActor) {
                     code.append(super.generateFireFunctionCode());
+                } else {
+                    if ((compositeActor.getContainer() != null 
+                                    && compositeActor.getContainer().getContainer() == null)) {
+                        // Needed by
+                        // ptolemy/codegen/java/domains/sdf/lib/test/auto/SampleDelay5.xml
+                        code.append(super.generateFireFunctionCode());
+                    } else {
+                        code.append(_codeGenerator.comment("Skipping creating top level here, thus avoiding duplicated code.")); 
+                    }
                 }
-                code.append(_codeGenerator.comment("Skipping creating top level here, thus avoiding duplicated code.")); 
+
             }
         }
         //code.append(_codeGenerator.comment(getClass().getName() + ".generateFireFunctionCode() end")); 
