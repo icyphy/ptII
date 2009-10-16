@@ -1,10 +1,40 @@
+/* A scheduler for multidimensional dataflow.
+
+ Copyright (c) 1998-2009 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
+
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
+
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
+
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
+
+ */
+
 package ptolemy.domains.pthales.kernel;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
@@ -21,10 +51,10 @@ import ptolemy.data.Token;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.data.expr.Variable;
 import ptolemy.domains.sdf.kernel.SDFScheduler;
-import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.NamedObj;
 
 /** 
  *  FIXME: To do:
@@ -39,6 +69,9 @@ public class PthalesScheduler extends SDFScheduler {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                      protected methods                    ////
 
     protected Schedule _getSchedule() throws IllegalActionException,
             NotSchedulableException {
@@ -75,131 +108,115 @@ public class PthalesScheduler extends SDFScheduler {
         // up by port name and dimension name.
         // NOTE: We use a LinkedHashMap because we
         // need to keep track of the order dimensions are given
-        // in each port. 4 | x, 2 | y is not the same spec
-        // as 2 | y, 4 | x, but our data structures below do not
-        // distinguish between the two.
-        Map<IOPort,LinkedHashMap<String,Integer>> inputSpecs = new HashMap<IOPort,LinkedHashMap<String,Integer>>();
-        Map<IOPort,LinkedHashMap<String,Integer>> outputSpecs = new HashMap<IOPort,LinkedHashMap<String,Integer>>();
-        LinkedHashSet<String> dimensions = new LinkedHashSet<String>();
+        // in each port. x = 4, y = 2 is not the same spec
+        // as y = 2, x = 4.
+        ////////////// The repetitions parameter, by Actor.
+        Map<Actor,LinkedHashMap<String,Integer[]>> repetitionsSpecs
+                = new HashMap<Actor,LinkedHashMap<String,Integer[]>>();
+        ////////////// The size specification, by port.
+        Map<IOPort,LinkedHashMap<String,Integer[]>> sizeSpecs
+                = new HashMap<IOPort,LinkedHashMap<String,Integer[]>>();
+        ////////////// The pattern specification, by port.
+        Map<IOPort,LinkedHashMap<String,Integer[]>> patternSpecs
+                = new HashMap<IOPort,LinkedHashMap<String,Integer[]>>();
+        ////////////// The SDF rate variable, by port.
         Map<IOPort,Variable> portRates = new HashMap<IOPort,Variable>();
+        
+        // Iterate over the actors.
         for (Actor actor : actors) {
-            // First do the input ports.
-            List<IOPort> ports = actor.inputPortList();
-            for (IOPort port : ports) {
-                _recordRates(inputSpecs, dimensions, port);
-                _createPortRateParameter(portRates, port, "tokenConsumptionRate");
+            // First get the repetitions parameter.
+            LinkedHashMap<String,Integer[]> repetitionsSpec
+                    = _recordActorSpec(repetitionsSpecs, _REPETITIONS, actor);
+            if (repetitionsSpec == null) {
+                throw new IllegalActionException(actor,
+                        actor.getFullName()
+                        + " does not have a "
+                        + _REPETITIONS
+                        + " parameter.");
+            }
+            // Create an ordered list of the dimensions communicated on this link.
+            List<String> dimensions = new LinkedList<String>();
+            for (Entry<String,Integer[]> entry : repetitionsSpec.entrySet()) {
+                dimensions.add(entry.getKey());
             }
             // Next do the output ports.
-            ports = actor.outputPortList();
+            List<IOPort> ports = actor.outputPortList();
             for (IOPort port : ports) {
-                _recordRates(outputSpecs, dimensions, port);
+                LinkedHashMap<String,Integer[]> sizeSpec
+                        = _recordPortSpec(sizeSpecs, _SIZE, port);
+                if (sizeSpec == null) {
+                    throw new IllegalActionException(port,
+                            port.getFullName()
+                            + " does not have a "
+                            + _SIZE
+                            + " spec.");
+                }
+                LinkedHashMap<String,Integer[]> patternSpec
+                        = _recordPortSpec(patternSpecs, _PATTERN, port);
                 _createPortRateParameter(portRates, port, "tokenProductionRate");
-            }
-        }
-        if (_debugging) {
-            _debug("Total set of dimensions is: " + dimensions);
-        }
-        
-        // Calculate repetition rates by dimension for each actor.
-        Map<Actor,Map<String,Integer>> firingCounts = new HashMap<Actor,Map<String,Integer>>();
-        for (String dimension : dimensions) {
-            for (Actor actor : actors) {
-                // First do the input ports.
-                List<IOPort> ports = actor.inputPortList();
-                for (IOPort port : ports) {
-                    Map<String,Integer> spec = inputSpecs.get(port);
-                    _setPortRateForSDFScheduler(portRates, dimension, port, spec);
+                
+                // Now we need to set capacities of each of the receivers.
+                // Notify the destination receivers of the write pattern.
+                Receiver[][] receivers = port.getRemoteReceivers();
+                if (receivers != null && receivers.length > 0) {
+                    for (Receiver[] receiverss : receivers) {
+                        if (receiverss != null && receiverss.length > 0) {
+                            for (Receiver receiver : receiverss) {
+                                ((PthalesReceiver)receiver).setWritePattern(
+                                        patternSpec, sizeSpec, dimensions);
+                            }
+                        }
+                    }
                 }
-                // Next do the output ports.
-                ports = actor.outputPortList();
-                for (IOPort port : ports) {
-                    Map<String,Integer> spec = outputSpecs.get(port);
-                    _setPortRateForSDFScheduler(portRates, dimension, port, spec);
+
+                // Calculate the total amount of data produced by this output port.
+                int blockSize = 1;
+                if (patternSpec != null) {
+                    for (Entry<String,Integer[]> entry : patternSpec.entrySet()) {
+                        Integer[] dimensionSpec = entry.getValue();
+                        if (dimensionSpec != null) {
+                            blockSize *= dimensionSpec[0].intValue();
+                        }
+                    }
+                }
+                
+                // Check that the multidimensional declared production rate
+                // is consistent with the SDF declared rate, if
+                // there originally was one in the port, and throw an exception
+                // if not.
+                Integer declaredRate = originalDeclaredPortRates.get(port);
+                if (declaredRate != null && declaredRate.intValue() != blockSize) {
+                    Attribute rateSpec = port.getAttribute(_PATTERN);
+                    if (rateSpec instanceof StringParameter) {
+                        String multidimensionalSpec = ((StringParameter)rateSpec).stringValue();
+                        throw new IllegalActionException(port,
+                                "The declared rate "
+                                + declaredRate
+                                + " of port "
+                                + port.getName()
+                                + " is not equal to the declared multidimensional rate "
+                                + multidimensionalSpec);
+                    }
                 }
             }
-            // Now we have set the production consumption rates for all port.
-            // Call the scheduler. As a side effect, it will set repetition
-            // rates for each actor.
-            // Since confusing debug output about intermediate schedules
-            // will be produced here, we temporarily disable debugging.
-            boolean isDebugging = _debugging;
-            _debugging = false;
-            try {
-                super._getSchedule();
-            } catch (IllegalActionException ex) {
-                // Before doing anything further, restore the original rate parameters.
-                // Otherwise, the model ends up in an inconsistent
-                // state, and re-running it becomes difficult.
-                _restoreOriginalPortRates(actors, originalDeclaredPortRates, portRates);
-                throw ex;
-            } catch (NotSchedulableException ex) {
-                // Before doing anything further, restore the original rate parameters.
-                // Otherwise, the model ends up in an inconsistent
-                // state, and re-running it becomes difficult.
-                _restoreOriginalPortRates(actors, originalDeclaredPortRates, portRates);
-                throw ex;
-            } finally {
-                _debugging = isDebugging;
-            }
+            // FIXME: Need to do the input ports of the container of this director,
+            // treating them as output ports, in order to support hierarchical nestings
+            // of this director inside other models.
             
-            // Store the resulting firing counts for this dimension for each actor.
-            for (Actor actor : actors) {
-                Map<String,Integer> dimensionToFiringCount = firingCounts.get(actor);
-                if (dimensionToFiringCount == null) {
-                    dimensionToFiringCount = new HashMap<String,Integer>();
-                    firingCounts.put(actor, dimensionToFiringCount);
-                }
-                dimensionToFiringCount.put(dimension, _getFiringCount((Entity)actor));
-            }
-        }
-        if (_debugging) {
-            for (Actor actor : actors) {
-                _debug("* Firing counts for actor "
-                        + actor.getFullName()
-                        + firingCounts.get(actor).toString());
-            }
-        }
-
-        // Before doing anything further, restore the original rate parameters.
-        // Otherwise, if an exception occurs, the model ends up in an inconsistent
-        // state, and re-running it becomes difficult.
-        _restoreOriginalPortRates(actors, originalDeclaredPortRates, portRates);
-
-        // Populate the schedule with a subclass of Firing
-        // that keeps track of the dimensions for the firing.
-        // FIXME: Brute force technique here assumes an acyclic graph.
-        Schedule schedule = new Schedule();
-        CausalityInterfaceForComposites causality 
-                = (CausalityInterfaceForComposites) compositeActor
-                .getCausalityInterface();
-        List<Actor> sortedActors = causality.topologicalSort();
-        for (Actor actor : sortedActors) {
-            Firing firing = new Firing(actor);
-            int iterationCount = 1;
-            Map<String,Integer> counts = firingCounts.get(actor);
-            for (String dimension : counts.keySet()) {
-                Integer count = counts.get(dimension);
-                // This should never be null, but just in case, check...
-                if (count != null) {
-                    iterationCount *= count.intValue();
-                }
-            }
-            firing.setIterationCount(iterationCount);
-            schedule.add(firing);
-                        
-            // Now we need to set capacities of each of the receivers.
-            // Start with the input ports.
-            List<IOPort> ports = actor.inputPortList();
+            // Next do the input ports.
+            ports = actor.inputPortList();
             for (IOPort port : ports) {
+                LinkedHashMap<String,Integer[]> patternSpec = _recordPortSpec(patternSpecs, _PATTERN, port);
+                _createPortRateParameter(portRates, port, "tokenConsumptionRate");
+                
                 // Calculate the total amount of data (blockSize) produced by
                 // a firing on this port.
-                LinkedHashMap<String,Integer> spec = inputSpecs.get(port);
                 int blockSize = 1;
-                if (spec != null) {
-                    for (String dimension : spec.keySet()) {
-                        Integer dimensionSpec = spec.get(dimension);
+                if (patternSpec != null) {
+                    for (Entry<String,Integer[]> entry : patternSpec.entrySet()) {
+                        Integer[] dimensionSpec = entry.getValue();
                         if (dimensionSpec != null) {
-                            blockSize *= dimensionSpec.intValue();
+                            blockSize *= dimensionSpec[0].intValue();
                         }
                     }
                 }
@@ -210,7 +227,7 @@ public class PthalesScheduler extends SDFScheduler {
                 // if not.
                 Integer declaredRate = originalDeclaredPortRates.get(port);
                 if (declaredRate != null && declaredRate.intValue() != blockSize) {
-                    Attribute rateSpec = port.getAttribute(_RATE_SPEC_NAME);
+                    Attribute rateSpec = port.getAttribute(_PATTERN);
                     if (rateSpec instanceof StringParameter) {
                         String multidimensionalSpec = ((StringParameter)rateSpec).stringValue();
                         throw new IllegalActionException(port,
@@ -228,60 +245,45 @@ public class PthalesScheduler extends SDFScheduler {
                     for (Receiver[] receiverss : receivers) {
                         if (receiverss != null && receiverss.length > 0) {
                             for (Receiver receiver : receiverss) {
-                                ((PthalesReceiver)receiver).setReadPattern(spec, counts, dimensions);
+                                // FIXME: Is the cast to LinkedHashSet safe?
+                                // Depends on the Java implementation of LinkedHashMap.
+                                ((PthalesReceiver)receiver).setReadPattern(patternSpec);
                             }
                         }
-                    }
-                }
-            }
-            // Set production pattern of each of the receivers.
-            ports = actor.outputPortList();
-            for (IOPort port : ports) {
-                LinkedHashMap<String,Integer> spec = outputSpecs.get(port);
-                // Notify the destination receivers of the write pattern.
-                Receiver[][] receivers = port.getRemoteReceivers();
-                if (receivers != null && receivers.length > 0) {
-                    for (Receiver[] receiverss : receivers) {
-                        if (receiverss != null && receiverss.length > 0) {
-                            for (Receiver receiver : receiverss) {
-                                ((PthalesReceiver)receiver).setWritePattern(spec, dimensions);
-                            }
-                        }
-                    }
-                }
-
-                int blockSize = 1;
-                if (spec != null) {
-                    for (String dimension : spec.keySet()) {
-                        Integer dimensionSpec = spec.get(dimension);
-                        if (dimensionSpec != null) {
-                            blockSize *= dimensionSpec.intValue();
-                        }
-                    }
-                }
-                
-                // Check that the multidimensional declared production rate
-                // is consistent with the SDF declared rate, if
-                // there originally was one in the port, and throw an exception
-                // if not.
-                Integer declaredRate = originalDeclaredPortRates.get(port);
-                if (declaredRate != null && declaredRate.intValue() != blockSize) {
-                    Attribute rateSpec = port.getAttribute(_RATE_SPEC_NAME);
-                    if (rateSpec instanceof StringParameter) {
-                        String multidimensionalSpec = ((StringParameter)rateSpec).stringValue();
-                        throw new IllegalActionException(port,
-                                "The declared rate "
-                                + declaredRate
-                                + " of port "
-                                + port.getName()
-                                + " is not equal to the declared multidimensional rate "
-                                + multidimensionalSpec);
                     }
                 }
             }
         }
+        
+        // Populate the schedule with a subclass of Firing
+        // that keeps track of the dimensions for the firing.
+        // FIXME: Brute force technique here assumes an acyclic graph.
+        // It executes all firings of upstream actors before any firing
+        // of a downstream actor.
+        Schedule schedule = new Schedule();
+        CausalityInterfaceForComposites causality 
+                = (CausalityInterfaceForComposites) compositeActor
+                .getCausalityInterface();
+        List<Actor> sortedActors = causality.topologicalSort();
+        for (Actor actor : sortedActors) {
+            Firing firing = new Firing(actor);
+            int iterationCount = 1;
+            LinkedHashMap<String,Integer[]> counts = repetitionsSpecs.get(actor);
+            for (String dimension : counts.keySet()) {
+                Integer[] count = counts.get(dimension);
+                // This should never be null, but just in case, check...
+                if (count != null && count.length > 0 && count[0] != null) {
+                    iterationCount *= count[0].intValue();
+                }
+            }
+            firing.setIterationCount(iterationCount);
+            schedule.add(firing);
+        }
         return schedule;
     }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                        private methods                    ////
 
     /** If the specified port has the specified rate parameter, then
      *  record that parameter in the portRates data structure. Otherwise,
@@ -322,105 +324,125 @@ public class PthalesScheduler extends SDFScheduler {
         return result;
     }
 
-    /**
-     * 
-     * @param port
-     * @return
-     * @throws IllegalActionException
+    /** Return a data structure giving the dimension data contained by a
+     *  parameter with the specified name in the specified port or actor.
+     *  The dimension data is indexed by dimension name and contains two
+     *  integers, a value and a stride, in that order.
+     *  @param name The name of the parameter
+     *  @param object The port or actor.
+     *  @return The dimension data, or null if the parameter does not exist.
+     *  @throws IllegalActionException If the parameter cannot be evaluated.
      */
-    private LinkedHashMap<String,Integer> _getRates(IOPort port) throws IllegalActionException {
-        LinkedHashMap<String,Integer> result = new LinkedHashMap<String,Integer>();
-        Attribute rateSpec = port.getAttribute(_RATE_SPEC_NAME);
-        if (rateSpec instanceof StringParameter) {
-            String spec = ((StringParameter)rateSpec).stringValue();
-            // FIXME: What exactly is the syntax to expect here?
-            // I'm assuming this:
-            //    rate1 | dimensionName2 , rate2 | dimensionName2
+    private LinkedHashMap<String,Integer[]> _parseSpec(
+            String name, NamedObj object) throws IllegalActionException {
+        LinkedHashMap<String,Integer[]> result = new LinkedHashMap<String,Integer[]>();
+        Attribute attribute = object.getAttribute(name);
+        if (attribute instanceof StringParameter) {
+            String spec = ((StringParameter)attribute).stringValue();
             // FIXME: Handle syntax errors.
             String[] subSpecs = spec.split(",");
             for (String subSpec : subSpecs) {
                 if (subSpec.trim().length() > 0) {
-                    String[] subSubSpecs = subSpec.split("\\|");
-                    result.put(subSubSpecs[1].trim(), new Integer(subSubSpecs[0].trim()));
+                    String[] subSubSpecs = subSpec.split("=");
+                    Integer[] values = new Integer[2];
+                    if (subSubSpecs[1].contains(".")) {
+                        // A stride is given.
+                        String[] strideSpec = subSubSpecs[1].split(".");
+                        values[0] = new Integer(strideSpec[0].trim());
+                        values[1] = new Integer(strideSpec[1].trim());
+                    } else {
+                        values[0] = new Integer(subSubSpecs[1].trim());
+                        values[1] = _ONE;
+                    }
+                    result.put(subSubSpecs[0].trim(), values);
                 }
             }
         }
         return result;
     }
     
-    /**
-     * @param inputSpecs
-     * @param dimensions
-     * @param port
-     * @throws IllegalActionException
+    /** Populate the specified data structure with the dimension data obtained from
+     *  a parameter with the specified name in the specified port
+     *  @param returnedSpec The data structure to populate.
+     *  @param name The name of the specification.
+     *  @param actor The actor.
+     *  @return The entry that is put in the data structure, or null if none is found.
+     *  @throws IllegalActionException If the parameter cannot be evaluated.
      */
-    private void _recordRates(Map<IOPort, LinkedHashMap<String, Integer>> inputSpecs,
-            LinkedHashSet<String> dimensions, IOPort port) throws IllegalActionException {
-        LinkedHashMap<String,Integer> spec = _getRates(port);
-        if (spec.size() > 0) {
-            inputSpecs.put(port, spec);
-            dimensions.addAll(spec.keySet());
+    private LinkedHashMap<String,Integer[]> _recordActorSpec(
+            Map<Actor, LinkedHashMap<String, Integer[]>> returnedSpec,
+            String name,
+            Actor actor)
+            throws IllegalActionException {
+        LinkedHashMap<String,Integer[]> spec = _parseSpec(name, (NamedObj)actor);
+        if (spec != null && spec.size() > 0) {
+            returnedSpec.put(actor, spec);
             if (_debugging) {
                 for (String dimension : spec.keySet()) {
-                    String direction = " consumes ";
-                    if (port.isOutput()) {
-                        direction = " produces ";
-                    }
-                    _debug("--- " + port.getFullName() 
-                            + direction
+                    _debug("--- " + actor.getFullName() 
+                            + " has "
+                            + name
+                            + " with value "
                             + spec.get(dimension)
                             + " in dimension "
                             + dimension);
                 }
             }
+            return spec;
         }
+        return null;
     }
-    
-    /** Restore the original port rates for the specifies actors from the
-     *  values given in the table using the specified port rate parameters.
-     *  @param actors The actors.
-     *  @param originalDeclaredPortRates The table of original rates, by port.
-     *  @param portRates A table of rate parameters, by port.
-     *  @throws IllegalActionException If setting the rate parameter fails.
+
+    /** Populate the specified data structure with the dimension data obtained from
+     *  a parameter with the specified name in the specified port
+     *  @param returnedSpec The data structure to populate.
+     *  @param name The name of the specification.
+     *  @param port The port
+     *  @return The entry that is put in the data structure, or null if none is found.
+     *  @throws IllegalActionException If the parameter cannot be evaluated.
      */
-    private void _restoreOriginalPortRates(List<Actor> actors,
-            Map<IOPort, Integer> originalDeclaredPortRates,
-            Map<IOPort, Variable> portRates) throws IllegalActionException {
-        for (Actor actor : actors) {
-            List<IOPort> ports = ((Entity)actor).portList();
-            for (IOPort port : ports) {
-                Integer declaredRate = originalDeclaredPortRates.get(port);
-                Variable rateParameter = portRates.get(port);
-                if (rateParameter != null) {
-                    rateParameter.setToken(new IntToken(declaredRate.intValue()));
+    private LinkedHashMap<String,Integer[]> _recordPortSpec(
+            Map<IOPort, LinkedHashMap<String, Integer[]>> returnedSpec,
+            String name,
+            IOPort port)
+            throws IllegalActionException {
+        LinkedHashMap<String,Integer[]> spec = _parseSpec(name, port);
+        if (spec != null && spec.size() > 0) {
+            returnedSpec.put(port, spec);
+            if (_debugging) {
+                for (String dimension : spec.keySet()) {
+                    _debug("--- " + port.getFullName() 
+                            + " has "
+                            + name
+                            + " with value "
+                            + spec.get(dimension)
+                            + " in dimension "
+                            + dimension);
                 }
             }
+            return spec;
         }
+        return null;
     }
 
-    /** Temporarily set the port rate for the specified port so that
-     *  the SDF scheduler can solve the balance equations for the specified dimension.
-     *  @param portRates A table of rate parameters by port.
-     *  @param dimension The dimension for which to set the rate.
-     *  @param port The port.
-     *  @param spec A table of rates for the port by dimension.
-     *  @throws IllegalActionException If setting the rate parameter fails.
-     */
-    private void _setPortRateForSDFScheduler(Map<IOPort, Variable> portRates,
-            String dimension, IOPort port, Map<String, Integer> spec)
-            throws IllegalActionException {
-        Integer rate = null;
-        if (spec != null) {
-            rate = spec.get(dimension);
-        }
-        if (rate == null) {
-            rate = _ONE;
-        }
-        Variable portRate = portRates.get(port);
-        portRate.setToken(new IntToken(rate.intValue()));
-    }
+    ///////////////////////////////////////////////////////////////////
+    ////                      private variables                    ////
 
-    private static String _RATE_SPEC_NAME = "_pthalesRateSpec";
+    /** The name of the offset parameter. */
+    private static String _OFFSET = "offset";
+
+    /** The name of the pattern parameter. */
+    private static String _PATTERN = "pattern";
     
+    /** The name of the repetitions parameter. */
+    private static String _REPETITIONS = "repetitions";
+
+    /** The name of the size parameter. */
+    private static String _SIZE = "size";
+    
+    /** The name of the tiling parameter. */
+    private static String _TILING = "tiling";
+
+
     private static Integer _ONE = new Integer(1);
 }

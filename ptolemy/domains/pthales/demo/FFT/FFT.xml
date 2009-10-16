@@ -154,7 +154,7 @@
         </property>
         <port name="out" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_pthalesRateSpec" class="ptolemy.data.expr.StringParameter" value="$produceColumns | x, $produceRows | y">
+            <property name="pattern" class="ptolemy.data.expr.StringParameter" value="x = $produceColumns, y = $produceRows">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[915.0, 230.0]">
             </property>
@@ -224,7 +224,7 @@
             </port>
         </entity>
         <entity name="Expression3" class="ptolemy.actor.lib.Expression">
-            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="(((column &lt; -sizeOfSquare/2)&#10;  || (column &gt;= sizeOfSquare/2))&#10;|| ((row &lt; -sizeOfSquare/2)&#10;  || (row &gt;= sizeOfSquare/2)))&#10;  ? 0 : 1">
+            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="(((column &lt; -sizeOfSquare/2)&#10;  || (column &gt;= sizeOfSquare/2))&#10;|| ((row &lt; -sizeOfSquare/2)&#10;  || (row &gt;= sizeOfSquare/2)))&#10;  ? 0.0 : 1.0">
                 <property name="style" class="ptolemy.actor.gui.style.TextStyle">
                     <property name="height" class="ptolemy.data.expr.Parameter" value="10">
                     </property>
@@ -343,7 +343,7 @@
             <property name="multiport"/>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{20.0, 200.0}">
             </property>
-            <property name="_pthalesRateSpec" class="ptolemy.data.expr.StringParameter" value="$columns | x, $rows | y">
+            <property name="pattern" class="ptolemy.data.expr.StringParameter" value="x = $columns, y = $rows">
             </property>
         </port>
         <entity name="SequenceToMatrix" class="ptolemy.domains.sdf.lib.SequenceToMatrix">
@@ -361,7 +361,7 @@
         <entity name="ImageDisplay" class="ptolemy.actor.lib.image.ImageDisplay">
             <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1098, 518, 128, 172}, maximized=false}">
             </property>
-            <property name="_pictureSize" class="ptolemy.actor.gui.SizeAttribute" value="[128, 16]">
+            <property name="_pictureSize" class="ptolemy.actor.gui.SizeAttribute" value="[128, 128]">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[630.0, 200.0]">
             </property>
@@ -458,14 +458,14 @@
             <property name="input"/>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{20.0, 200.0}">
             </property>
-            <property name="_pthalesRateSpec" class="ptolemy.data.expr.StringParameter" value="$produceColumns | x, 1 | y">
+            <property name="pattern" class="ptolemy.data.expr.StringParameter" value="x = $produceColumns, y = 1">
             </property>
         </port>
         <port name="out" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[305.0, 200.0]">
             </property>
-            <property name="_pthalesRateSpec" class="ptolemy.data.expr.StringParameter" value="$produceColumns | x, 1 | y">
+            <property name="pattern" class="ptolemy.data.expr.StringParameter" value="x = $produceColumns, y = 1">
             </property>
         </port>
         <entity name="FFT" class="ptolemy.domains.sdf.lib.FFT">
@@ -502,14 +502,14 @@
             <property name="input"/>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{20.0, 200.0}">
             </property>
-            <property name="_pthalesRateSpec" class="ptolemy.data.expr.StringParameter" value="1| x, $produceRows | y">
+            <property name="pattern" class="ptolemy.data.expr.StringParameter" value="x = 1, y = $produceRows">
             </property>
         </port>
         <port name="out" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[305.0, 200.0]">
             </property>
-            <property name="_pthalesRateSpec" class="ptolemy.data.expr.StringParameter" value="1| x, $produceRows | y">
+            <property name="pattern" class="ptolemy.data.expr.StringParameter" value="x = 1, y = $produceRows">
             </property>
         </port>
         <entity name="FFT" class="ptolemy.domains.sdf.lib.FFT">
@@ -587,7 +587,7 @@
             <property name="multiport"/>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{20.0, 200.0}">
             </property>
-            <property name="_pthalesRateSpec" class="ptolemy.data.expr.StringParameter" value="$columns | x, $rows | y">
+            <property name="pattern" class="ptolemy.data.expr.StringParameter" value="x = $columns, y = $rows">
             </property>
         </port>
         <entity name="SequenceToMatrix" class="ptolemy.domains.sdf.lib.SequenceToMatrix">
@@ -603,9 +603,9 @@
             </property>
         </entity>
         <entity name="ImageDisplay" class="ptolemy.actor.lib.image.ImageDisplay">
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1098, 518, 128, 44}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1098, 518, 128, 172}, maximized=false}">
             </property>
-            <property name="_pictureSize" class="ptolemy.actor.gui.SizeAttribute" value="[128, 16]">
+            <property name="_pictureSize" class="ptolemy.actor.gui.SizeAttribute" value="[128, 128]">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[630.0, 200.0]">
             </property>

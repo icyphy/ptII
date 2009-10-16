@@ -14,7 +14,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 45.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={15, 250, 813, 510}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={216, 304, 813, 510}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
     </property>
@@ -67,7 +67,7 @@
         </property>
     </property>
     <entity name="Source" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 185.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 180.0]">
         </property>
         <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
             <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="outputsPerFiring">
@@ -102,11 +102,15 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[155.0, 45.0]">
             </property>
         </property>
+        <property name="repetitions" class="ptolemy.data.expr.StringParameter" value="x = 2, y = 1">
+        </property>
         <port name="out" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_pthalesRateSpec" class="ptolemy.data.expr.StringParameter" value="$produceColumns | x, $produceRows | y">
+            <property name="pattern" class="ptolemy.data.expr.StringParameter" value="x = $produceColumns, y = $produceRows">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[340.0, 180.0]">
+            </property>
+            <property name="size" class="ptolemy.data.expr.StringParameter" value="x = 4, y = 4">
             </property>
         </port>
         <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
@@ -174,12 +178,14 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[195.0, 65.0]">
             </property>
         </property>
+        <property name="repetitions" class="ptolemy.data.expr.StringParameter" value="x = 1, y = 1">
+        </property>
         <port name="port_0" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{20.0, 200.0}">
             </property>
-            <property name="_pthalesRateSpec" class="ptolemy.data.expr.StringParameter" value="$columns | x, $rows | y">
+            <property name="pattern" class="ptolemy.data.expr.StringParameter" value="x = $columns, y = $rows">
             </property>
         </port>
         <entity name="MatrixViewer" class="ptolemy.actor.lib.gui.MatrixViewer">

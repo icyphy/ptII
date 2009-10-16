@@ -24,7 +24,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[145.0, 15.0]">
         </property>
     </property>
-    <property name="producePattern" class="ptolemy.data.expr.StringParameter" value="4 | x, 2 | y">
+    <property name="producePattern" class="ptolemy.data.expr.StringParameter" value="x = 4, y = 2">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -43,7 +43,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[150.0, 70.0]">
         </property>
     </property>
-    <property name="consumePattern" class="ptolemy.data.expr.StringParameter" value="3 | z">
+    <property name="consumePattern" class="ptolemy.data.expr.StringParameter" value="z = 3">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -79,11 +79,15 @@
         </property>
         <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
         </property>
+        <property name="repetitions" class="ptolemy.data.expr.StringParameter" value="x = 1, y = 1, z = 3">
+        </property>
         <port name="out" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_pthalesRateSpec" class="ptolemy.data.expr.StringParameter" value="$producePattern">
+            <property name="pattern" class="ptolemy.data.expr.StringParameter" value="$producePattern">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[340.0, 180.0]">
+            </property>
+            <property name="size" class="ptolemy.data.expr.StringParameter" value="x = 4, y = 2, z = 3">
             </property>
         </port>
         <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
@@ -113,12 +117,14 @@
         </property>
         <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
         </property>
+        <property name="repetitions" class="ptolemy.data.expr.StringParameter" value="x = 4, y = 2, z = 1">
+        </property>
         <port name="port_0" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{20.0, 200.0}">
             </property>
-            <property name="_pthalesRateSpec" class="ptolemy.data.expr.StringParameter" value="$consumePattern">
+            <property name="pattern" class="ptolemy.data.expr.StringParameter" value="$consumePattern">
             </property>
         </port>
         <entity name="Test" class="ptolemy.actor.lib.Test">

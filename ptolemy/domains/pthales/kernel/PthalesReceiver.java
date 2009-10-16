@@ -1,11 +1,37 @@
+/* A receiver for multidimensional dataflow.
+
+ Copyright (c) 1998-2009 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
+
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
+
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
+
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
+
+ */
+
 package ptolemy.domains.pthales.kernel;
 
 import java.util.HashSet;
 import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.Map.Entry;
 
@@ -181,33 +207,93 @@ public class PthalesReceiver extends SDFReceiver {
 
     /** Specify the pattern in which data is read from the receiver.
      *  A side effect of this method is to set the capacity of the receiver.
+     *  This must be called after setWritePattern().
      *  @param readSpec Number of tokens read per firing by dimension.
      *  @param firingCounts Firing counts by dimension.
      *  @param dimensions List of all the dimensions in the system.
      *  @throws IllegalActionException If setting the capacity fails.
      */
     public void setReadPattern(
-            LinkedHashMap<String,Integer> readSpec, 
-            Map<String,Integer> firingCounts,
-            LinkedHashSet<String> dimensions) 
+            LinkedHashMap<String,Integer[]> readSpec)
             throws IllegalActionException {
-        if (dimensions.size() > _NUMBER_OF_DIMENSIONS) {
-            throw new IllegalActionException(getContainer(),
-                    "FIXME: Number of dimensions must be "
-                    + _NUMBER_OF_DIMENSIONS
-                    + " or fewer, for now.");
+        // FIXME: Ignoring stride for now.
+        
+        // If the _dimensions have not been set, then this receiver
+        // is not connected to a sender, and there is nothing to do.
+        if (_dimensions == null) {
+            return;
         }
+        
+        // First set defaults for any unspecified dimensions.
         int i = 0;
-        for(String dimension : dimensions) {
-            Integer size = readSpec.get(dimension);
+        for(String dimension : _dimensions) {
+            Integer[] size = readSpec.get(dimension);
             if (size == null) {
-                size = _ONE;
+                size = new Integer[2];
+                size[0] = _ONE;
+                size[1] = _ONE;
             }
-            if (size.intValue() <= 0) {
+            if (size[0].intValue() <= 0) {
                 throw new IllegalActionException(getContainer(),
                         "Dimension size is required to be strictly greater than zero.");                
             }
-            _sizes[i] = size.intValue() * firingCounts.get(dimension).intValue();
+            i++;
+        }
+
+        // Fill in the read pattern. This is an array of pairs,
+        // where each pair gives first the dimension number to read and
+        // then the number of tokens to read in that dimension.
+        i = 0;
+        Set<Integer> dimensionsCovered = new HashSet<Integer>();
+        for (Entry<String,Integer[]> entry : readSpec.entrySet()) {
+            int dimensionNumber = _indexOf(entry.getKey(), _dimensions);
+            dimensionsCovered.add(new Integer(dimensionNumber));
+            _readPattern[i][0] = dimensionNumber;
+            _readPattern[i][1] = entry.getValue()[0].intValue();
+            i++;
+        }
+        // The readSpec may not have covered all the dimensions,
+        // so we have to cover them here.
+        for (int dimensionNumber = 0; dimensionNumber < _NUMBER_OF_DIMENSIONS; dimensionNumber++) {
+            if (!dimensionsCovered.contains(dimensionNumber)) {
+                _readPattern[i][0] = dimensionNumber;
+                _readPattern[i][1] = 1;
+                i++;
+            }
+        }
+    }
+    
+    /** Specify the pattern in which data is written to the receiver.
+     *  This must be called before setReadPattern().
+     *  @param writeSpec Number of tokens written per firing by dimension.
+     *  @throws IllegalActionException If a non-positive dimension value is given.
+     */
+    public void setWritePattern(
+            LinkedHashMap<String,Integer[]> writeSpec,
+            LinkedHashMap<String,Integer[]> sizeSpec,
+            List<String> dimensions) 
+            throws IllegalActionException {
+        int i = 0;
+        // FIXME: Ignoring stride for now.
+        
+        _dimensions = dimensions;
+        
+        // First set defaults for any unspecified dimensions.
+        for(String dimension : dimensions) {
+            Integer[] size = writeSpec.get(dimension);
+            if (size == null) {
+                size = new Integer[2];
+                size[0] = _ONE;
+                size[1] = _ONE;
+            }
+            if (size[0].intValue() <= 0) {
+                throw new IllegalActionException(getContainer(),
+                        "Dimension size is required to be strictly greater than zero.");                
+            }
+            
+            // Also set the size spec.
+            _sizes[i] = sizeSpec.get(dimension)[0].intValue();
+
             i++;
         }
         // In case there are fewer dimensions than supported,
@@ -225,60 +311,17 @@ public class PthalesReceiver extends SDFReceiver {
                 || _buffer[0][0][0].length < _sizes[3]) {
             _buffer = new Token[_sizes[0]][_sizes[1]][_sizes[2]][_sizes[3]];
         }
-        
-        // Next, fill in the read pattern. This is an array of pairs,
-        // where each pair gives first the dimension number to read and
-        // then the number of tokens to read in that dimension.
-        i = 0;
-        Set<Integer> dimensionsCovered = new HashSet<Integer>();
-        for (Entry<String,Integer> entry : readSpec.entrySet()) {
-            int dimensionNumber = _indexOf(entry.getKey(), dimensions);
-            dimensionsCovered.add(new Integer(dimensionNumber));
-            _readPattern[i][0] = dimensionNumber;
-            _readPattern[i][1] = entry.getValue().intValue();
-            i++;
-        }
-        // The readSpec may not have covered all the dimensions,
-        // so we have to cover them here.
-        for (int dimensionNumber = 0; dimensionNumber < _NUMBER_OF_DIMENSIONS; dimensionNumber++) {
-            if (!dimensionsCovered.contains(dimensionNumber)) {
-                _readPattern[i][0] = dimensionNumber;
-                _readPattern[i][1] = 1;
-                i++;
-            }
-        }
-    }
-    
-    /** Specify the pattern in which data is written to the receiver.
-     *  @param writeSpec Number of tokens written per firing by dimension.
-     *  @throws IllegalActionException If a non-positive dimension value is given.
-     */
-    public void setWritePattern(
-            LinkedHashMap<String,Integer> writeSpec,
-            LinkedHashSet<String> dimensions) 
-            throws IllegalActionException {
-        int i = 0;
-        for(String dimension : dimensions) {
-            Integer size = writeSpec.get(dimension);
-            if (size == null) {
-                size = _ONE;
-            }
-            if (size.intValue() <= 0) {
-                throw new IllegalActionException(getContainer(),
-                        "Dimension size is required to be strictly greater than zero.");                
-            }
-            i++;
-        }
+
         // Next, fill in the write pattern. This is an array of pairs,
         // where each pair gives first the dimension number to read and
         // then the number of tokens to read in that dimension.
         i = 0;
         Set<Integer> dimensionsCovered = new HashSet<Integer>();
-        for (Entry<String,Integer> entry : writeSpec.entrySet()) {
+        for (Entry<String,Integer[]> entry : writeSpec.entrySet()) {
             int dimensionNumber = _indexOf(entry.getKey(), dimensions);
             dimensionsCovered.add(new Integer(dimensionNumber));
             _writePattern[i][0] = dimensionNumber;
-            _writePattern[i][1] = entry.getValue().intValue();
+            _writePattern[i][1] = entry.getValue()[0].intValue();
             i++;
         }
         // The writeSpec may not have covered all the dimensions,
@@ -363,12 +406,10 @@ public class PthalesReceiver extends SDFReceiver {
                 pointer[d]++;
                 if (pointer[d] - base[d] >= pattern[1][1]) {
                     pointer[d] = base[d];
-                    _check(pointer, d);
                     d = pattern[2][0];
                     pointer[d]++;
                     if (pointer[d] - base[d] >= pattern[2][1]) {
                         pointer[d] = base[d];
-                        _check(pointer, d);
                         d = pattern[3][0];
                         pointer[d]++;
                         if (pointer[d] - base[d] >= pattern[3][1]) {
@@ -410,7 +451,7 @@ public class PthalesReceiver extends SDFReceiver {
      *  @param set The set.
      * @throws IllegalActionException If the entry is not in the set.
      */
-    private int _indexOf(String entry, LinkedHashSet<String> set) throws IllegalActionException {
+    private int _indexOf(String entry, List<String> set) throws IllegalActionException {
         int result = 0;
         for (String setMember : set) {
             if (entry.equals(setMember)) {
@@ -427,6 +468,9 @@ public class PthalesReceiver extends SDFReceiver {
 
     ///////////////////////////////////////////////////////////////////
     ////                      private variables                    ////
+    
+    /** The dimensions relevant to this receiver. */
+    private List<String> _dimensions;
     
     /** Number of dimensions supported. */
     private static int _NUMBER_OF_DIMENSIONS = 4;
