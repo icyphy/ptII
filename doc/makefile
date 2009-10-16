@@ -372,9 +372,11 @@ DATAPROPERTIESPACKAGES = \
 	ptolemy.data.properties.lattice.namingSetLattice.actor \
 	ptolemy.data.properties.lattice.softwareConfiguration \
 	ptolemy.data.properties.lattice.softwareConfiguration.actor \
+	ptolemy.data.properties.lattice.softwareConfiguration.actor.lib \
 	ptolemy.data.properties.lattice.softwareConfiguration.data.expr \
 	ptolemy.data.properties.lattice.softwareConfiguration.domains.fsm.kernel \
 	ptolemy.data.properties.lattice.softwareConfiguration.domains.modal.kernel \
+	ptolemy.data.properties.lattice.softwareConfiguration.kernel \
 	ptolemy.data.properties.lattice.typeSystem_C \
 	ptolemy.data.properties.lattice.typeSystem_C.actor \
 	ptolemy.data.properties.lattice.typeSystem_C.actor.lib \
