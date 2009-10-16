@@ -212,6 +212,7 @@ void top() {
 /* main entry code */
 /* The firing of the director. */
 /* The postfire of the director. */
+/* closing exit code */
 /* main exit code */
 }}
 
