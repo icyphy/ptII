@@ -1,6 +1,6 @@
 /* Watch dog output for JOP.
 
- Copyright (c) 1997-2008 The Regents of the University of California.
+ Copyright (c) 2009 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -27,8 +27,6 @@
  */
 package ptolemy.actor.lib.jopio;
 
-import ptolemy.actor.TypedAtomicActor;
-import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.lib.Sink;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.type.BaseType;
@@ -72,12 +70,6 @@ public class JopWatchDog extends Sink {
         input.setTypeEquals(BaseType.BOOLEAN);
         input.setMultiport(false);
 
-        _attachText("_iconDescription", "<svg>\n"
-                + "<rect x=\"-20\" y=\"-20\" " + "width=\"40\" height=\"40\" "
-                + "style=\"fill:white\"/>\n" + "<text x=\"-13\" y=\"-5\" "
-                + "style=\"font-size:18\">\n" + "+ \n" + "</text>\n"
-                + "<text x=\"-13\" y=\"7\" " + "style=\"font-size:18\">\n"
-                + "_ \n" + "</text>\n" + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////
