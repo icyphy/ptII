@@ -50,7 +50,11 @@ import ptolemy.plot.Plot;
  from the Ptolemy plot package as a public member.  Data at the input, which
  can consist of any number of channels, are plotted on this instance.
  Each channel is plotted as a separate data set.
- The horizontal axis represents time.
+ The horizontal axis represents time, which by default is the global
+ time of the model (the model time of the top-level director).
+ Setting <i>useLocalTime</i> to true changes this to use the
+ local time of the input port, which is (in most domains) the model
+ time of the local director.
 
  @author  Edward A. Lee, Contributor: Bert Rodiers
  @version $Id$
@@ -79,6 +83,9 @@ public class TimedPlotter extends Plotter implements TimedActor {
         input.setMultiport(true);
         input.setTypeEquals(BaseType.DOUBLE);
 
+        useLocalTime = new Parameter(this, "useLocalTime");
+        useLocalTime.setTypeEquals(BaseType.BOOLEAN);
+        useLocalTime.setExpression("false");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -94,6 +101,15 @@ public class TimedPlotter extends Plotter implements TimedActor {
 
     /** Input port, which has type DoubleToken. */
     public TypedIOPort input;
+    
+    /** If true, use the model time reported by the input port,
+     *  which is normally the model time of the local director.
+     *  If false (the default), use the model time reported by
+     *  the top-level director. Local time may differ
+     *  from global time inside modal models and certain domains
+     *  that manipulate time.
+     */
+    public Parameter useLocalTime;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -145,7 +161,12 @@ public class TimedPlotter extends Plotter implements TimedActor {
 
         for (int i = width - 1; i >= 0; i--) {
             if (input.hasToken(i)) {
-                currentTimeValue = input.getModelTime(i).getDoubleValue();
+                boolean localTime = ((BooleanToken)useLocalTime.getToken()).booleanValue();
+                if (localTime) {
+                    currentTimeValue = input.getModelTime(i).getDoubleValue();
+                } else {
+                    currentTimeValue = getDirector().getGlobalTime().getDoubleValue();
+                }
 
                 DoubleToken currentToken = (DoubleToken) input.get(i);
                 double currentValue = currentToken.doubleValue();
