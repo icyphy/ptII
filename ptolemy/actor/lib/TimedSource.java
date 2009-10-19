@@ -30,6 +30,7 @@ package ptolemy.actor.lib;
 import ptolemy.actor.Director;
 import ptolemy.actor.TimedActor;
 import ptolemy.actor.util.Time;
+import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
@@ -77,6 +78,10 @@ public class TimedSource extends Source implements TimedActor {
         stopTime = new Parameter(this, "stopTime");
         stopTime.setExpression("Infinity");
         stopTime.setTypeEquals(BaseType.DOUBLE);
+        
+        stopTimeIsLocal = new Parameter(this, "stopTimeIsLocal");
+        stopTimeIsLocal.setTypeEquals(BaseType.BOOLEAN);
+        stopTimeIsLocal.setExpression("false");
 
         _attachText("_iconDescription", "<svg>\n"
                 + "<rect x=\"-20\" y=\"-20\" " + "width=\"40\" height=\"40\" "
@@ -101,6 +106,14 @@ public class TimedSource extends Source implements TimedActor {
      *  having been exceeded).
      */
     public Parameter stopTime;
+    
+    /** If true, use the local time to compare against the <i>stopTime</i>
+     *  parameter, rather than the global time. Local time may differ
+     *  from global time inside modal models and certain domains
+     *  that manipulate time. This is a boolean that defaults
+     *  to false.
+     */
+    public Parameter stopTimeIsLocal;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -124,7 +137,13 @@ public class TimedSource extends Source implements TimedActor {
                 Director director = getDirector();
 
                 if (director != null) {
-                    Time currentTime = director.getModelTime();
+                    Time currentTime;
+                    boolean localTime = ((BooleanToken)stopTimeIsLocal.getToken()).booleanValue();
+                    if (localTime) {
+                        currentTime = director.getModelTime();
+                    } else {
+                        currentTime = director.getGlobalTime();
+                    }
 
                     if (newStopTime.compareTo(currentTime) > 0) {
                         // NOTE: Do not throw an exception if the director ignores this
@@ -134,7 +153,9 @@ public class TimedSource extends Source implements TimedActor {
                         director.fireAt(this, newStopTime);
                     } else {
                         throw new IllegalActionException(this, "The stop time "
-                                + "is earlier than the current time.");
+                                + newStopTime
+                                + "is earlier than the current time "
+                                + currentTime);
                     }
                 }
 
@@ -178,7 +199,13 @@ public class TimedSource extends Source implements TimedActor {
                 .doubleValue();
         _stopTime = new Time(getDirector(), stopTimeValue);
 
-        Time currentTime = director.getModelTime();
+        Time currentTime;
+        boolean localTime = ((BooleanToken)stopTimeIsLocal.getToken()).booleanValue();
+        if (localTime) {
+            currentTime = director.getModelTime();
+        } else {
+            currentTime = director.getGlobalTime();
+        }
 
         if (!_stopTime.isInfinite() && (_stopTime.compareTo(currentTime) > 0)) {
             // NOTE: Do not throw an exception if the director ignores this
@@ -198,7 +225,13 @@ public class TimedSource extends Source implements TimedActor {
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public boolean postfire() throws IllegalActionException {
-        Time currentTime = getDirector().getModelTime();
+        Time currentTime;
+        boolean localTime = ((BooleanToken)stopTimeIsLocal.getToken()).booleanValue();
+        if (localTime) {
+            currentTime = getDirector().getModelTime();
+        } else {
+            currentTime = getDirector().getGlobalTime();
+        }
 
         if (currentTime.compareTo(_stopTime) >= 0) {
             return false;
@@ -207,6 +240,26 @@ public class TimedSource extends Source implements TimedActor {
         return true;
     }
 
+    /** Return false if the current time is greater than or equal to
+     *  the <i>stopTime</i> parameter value.
+     *  Otherwise, return what the superclass returns.
+     *  @exception IllegalActionException Not thrown in this base class.
+     */
+    public boolean prefire() throws IllegalActionException {
+        Boolean result = super.prefire();
+        Time currentTime;
+        boolean localTime = ((BooleanToken)stopTimeIsLocal.getToken()).booleanValue();
+        if (localTime) {
+            currentTime = getDirector().getModelTime();
+        } else {
+            currentTime = getDirector().getGlobalTime();
+        }
+        if (currentTime.compareTo(_stopTime) >= 0) {
+            return false;
+        }
+        return result;
+    }
+    
     /** Override the base class to reset a flag that indicates that the
      *  model is executing. This method is invoked exactly once per execution
      *  of an application.  None of the other action methods should be

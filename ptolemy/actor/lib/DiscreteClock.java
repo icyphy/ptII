@@ -27,13 +27,13 @@
  */
 package ptolemy.actor.lib;
 
-import ptolemy.actor.Actor;
 import ptolemy.actor.Director;
 import ptolemy.actor.SuperdenseTimeDirector;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.parameters.PortParameter;
 import ptolemy.actor.util.Time;
 import ptolemy.data.ArrayToken;
+import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
@@ -80,32 +80,24 @@ import ptolemy.kernel.util.Workspace;
  it will produce outputs with value 1 at all times
  <i>n</i> + 0.1, outputs with value 2 at all times
  <i>n</i> + 0.2, and outputs with value 3 at all times
- <i>n</i> + 0.3.
+ <i>n</i> + 0.3, for all non-negative integers <i>n</i>.
  <p>
- If the actor becomes inactive due to being in a modal model,
- then it resumes producing the sequence as early
- as it can upon becoming active again. Specifically,
- if the actor is not fired at a time it expects to produce
-an output event, then it will produce that output event at the
-earliest possible time after the expected time.
-That earliest possible time is the current model time
- when its fireAtSkipped() method is called by the director.
- For example, if with the above <i>values</i> and
- <i>offsets</i> the actor is inactive from time 0.15 to time 0.25,
- it will have missed the output with value 2 that should have been produced
- at time 0.2. It will produce that output value 2 at time 0.25, and resume
- as if nothing had happened (except that time will be shifted).
- Specifically, it will produce the output 3 at time 0.35, and
- will begin the next period at time 1.05. The time between events
- remains exactly as specified by <i>values</i> and
- <i>offsets</i>, except when the actor is inactive at a time
- it expected to produce an output.
+ If the actor is not fired by the enclosing director at the time
+ of the next expected output, then it will stop producing outputs.
+ This should not occur. If it does, it is a bug in the director.
  <p>
  If the director that this is used with supports superdense time
- (like DE, Continuous), then the outputs are produced at index zero normally,
- unless two or more offsets have the same value. In that case, each output
+ (like DE, Continuous), then the outputs are normally produced at microstep
+ index 1. The reason for producing outputs at index 1 
+ is to maintain continuity in continuous-time models.
+ Specifically, if the signal is absent prior to an output time,
+ then it should be absent at index 0 of the time at which it will
+ produce the next output. There are two exceptions. If
+ two or more offsets have the same value, then each output
  at the same time is produced at superdense time index one greater
- than the previous output. Also, the very first output may be produced
+ than the previous output. Also, if an expected output has not been
+ produced by the expected index, then it will be produced at the
+ next available index. E.g., the very first output may be produced
  at a superdense index greater than zero if the director's index is
  greater than zero when this actor is initialized. This can happen,
  for example, if this clock is in a refinement in a modal model,
@@ -315,84 +307,115 @@ public class DiscreteClock extends TimedSource {
      *   than the period, or if there is no director.
      */
     public void fire() throws IllegalActionException {
-        // Cannot call super.fire() because it consumes
-        // trigger inputs.
-        if (_debugging) {
-            Director director = getDirector();
-            Time currentTime = director.getModelTime();
-            int currentIndex = 0;
-            if (director instanceof SuperdenseTimeDirector) {
-                currentIndex = ((SuperdenseTimeDirector) director).getIndex();
+        // Check the start input, to see whether everything needs to
+        // be reinitialized.
+        if (start.numberOfSources() > 0) {
+            if (start.hasToken(0)) {
+                if (_debugging) {
+                    _debug("Received a start input.");
+                }
+                start.get(0);
+                // Restart everything.
+                initialize();
+                _enabled = true;
             }
-            _debug("Called fire() at time (" + currentTime + ", "
-                    + currentIndex + ")");
-            if (_enabled && _triggered) {
-                _debug("Sending output data: " + _getValue(_phase));
+        }
+        // Check stop
+        if (stop.numberOfSources() > 0) {
+            if (stop.hasToken(0)) {
+                if (_debugging) {
+                    _debug("Received a stop input.");
+                }
+                stop.get(0);
+                _enabled = false;
             }
         }
 
-        if (_enabled && _triggered) {
-            output.send(0, _getValue(_phase));
+        // Update the period from the port parameter, if appropriate.
+        period.update();
+        
+        // Check for a trigger input.
+        // Have to consume all trigger inputs.
+        if (trigger.numberOfSources() > 0) {
+            // Have to consume all trigger inputs.
+            for (int i = 0; i < trigger.getWidth(); i++) {
+                if (trigger.isKnown(i) && trigger.hasToken(i)) {
+                    trigger.get(i);
+                    _triggered = true;
+                    if (_debugging) {
+                        _debug("Received a trigger input. Enabling an output.");
+                    }
+                }
+            }
         }
-    }
-
-    /** Notify this actor that a {@link Director#fireAt(Actor,Time)}
-     *  request was skipped, and that current time has passed the
-     *  requested time. A director calls this method when in a modal
-     *  model it was inactive at the time of the request, and it
-     *  became active again after the time of the request had
-     *  expired. This method extends the currently active period
-     *  by the amount of time that this actor was inactive, which
-     *  is the current time minus the argument time, and requests
-     *  an immediate firing to produce the next output.
-     *  @param time The time of the request that was skipped.
-     *  @exception IllegalActionException If skipping the request
-     *   is not acceptable to the actor.
-     */
-    public void fireAtSkipped(Time time) throws IllegalActionException {
-        // If the time skipped does not match our expected next firing time,
-        // then this report is probably not intended for us. (The Continuous
-        // director broadcasts these reports to all actors since it doesn't
-        // keep track of which actors registered a breakpoint).
-        if (!time.equals(_nextOutputTime)) {
-            return;
-        }
+        
+        // See whether it is time to produce an output.
         Director director = getDirector();
         Time currentTime = director.getModelTime();
+        int currentIndex = 0;
+        if (director instanceof SuperdenseTimeDirector) {
+            currentIndex = ((SuperdenseTimeDirector) director).getIndex();
+        }
         if (_debugging) {
-            _debug("At time "
-                    + currentTime
-                    + " director reports skipping a requested firing at time "
-                    + time);
+            _debug("Called fire() at time (" + currentTime + ", "
+                    + currentIndex + ")");
         }
-        int comparison = currentTime.compareTo(time);
-        if (comparison < 0) {
-            throw new IllegalActionException(this, director,
-                    "Director indicates that a fireAt() request at time "
-                    + time
-                    + " was skipped, but current time has only advanced to "
-                    + currentTime);
-        } else if (comparison > 0) {
-            // Current time is ahead of the skipped time.
-            // If current time is also ahead of the _nextOutputTime,
-            // then we need to adjust the _nextOutputTime.
-            // It may not be ahead because fireAtSkipped() may
-            // get called multiple times in one inactive interval.
-            if (currentTime.compareTo(_nextOutputTime) > 0) {
-                Time difference = currentTime.subtract(time);
-                _nextOutputTime = currentTime;
-                _cycleStartTime = _cycleStartTime.add(difference);
-                director.fireAtCurrentTime(this);
+        int comparison = _nextOutputTime.compareTo(currentTime);
+        if (comparison > 0) {
+            // If it is too early to produce an output.
+            // This is safe because we have made a fireAt() call for
+            // the next output time.
+            if (_debugging) {
+                _debug("Too early to produce output.");
             }
+            return;
+        } else if (comparison == 0) {
+            // It is the right time to produce an output. Check
+            // the index.
+            if (director instanceof SuperdenseTimeDirector) {
+                if (_nextOutputIndex > currentIndex) {
+                    // We have not yet reached the requisite index.
+                    // Request another firing at the current time.
+                    _fireAt(currentTime);
+                    if (_debugging) {
+                        _debug("Time is right to produce output, but microstep is too early.");
+                    }
+                    return;
+                }
+            }
+            // At this point, the time matches the next output, and
+            // the index either matches or exceeds the index for the next output,
+            // or the director does not support superdense time.
+            if (!_triggered) {
+                if (_debugging) {
+                    _debug("No trigger yet. Skipping phase.");
+                }
+                // Pretend we produced an output so that posfire() will
+                // skip to the next phase.
+                _outputProduced = true;
+                return;
+            }
+            // Ready to fire.
+            if (_enabled) {
+                if (_debugging) {
+                    _debug("Sending output data: " + _getValue(_phase));
+                }
+                output.send(0, _getValue(_phase));
+                _outputProduced = true;
+            } else if (_debugging) {
+                _debug("Not sending output because start input has not arrived.");
+            }
+            return;
         }
-        // If current time is equal to the time skipped, then
-        // we can safely ignore this report from the director.
-        // The director is reporting that it has passed our requested
-        // superdense time index, but in such cases we go ahead
-        // and produce an output, so there is no problem.
-        // All we have to do is request a refiring at the current time.
-        director.fireAtCurrentTime(this);
-   }
+        // If we get here, then current time has passed our
+        // expected next firing time.  This should not occur.
+        throw new IllegalActionException(this, getDirector(),
+                "Director failed to fire this actor at the requested time "
+                + _nextOutputTime
+                + " Current time is "
+                + currentTime
+                + ". Perhaps the director is incompatible with DiscreteClock?");
+    }
 
     /** Override the base class to initialize the index.
      *  @exception IllegalActionException If the parent class throws it,
@@ -410,27 +433,15 @@ public class DiscreteClock extends TimedSource {
         _cycleCount = 0;
         _phase = 0;
         _nextOutputTime = _cycleStartTime.add(_offsets[_phase]);
-        _nextOutputIndex = 0;
+        _nextOutputIndex = 1;
         _enabled = true;
+        _outputProduced = false;
 
         // Enable without a trigger input on the first firing.
         _triggered = true;
 
         if (_debugging) {
             _debug("In intialize, requesting firing at time " + _nextOutputTime);
-        }
-        // The enclosing superdense time index may have already passed zero,
-        // in which case a requested firing at the current time is already in the past.
-        // Adjust the _nextOutputIndex to ensure the first output is produced.
-        Director director = getDirector();
-        if (director instanceof SuperdenseTimeDirector) {
-            if (_offsets[_phase] == 0.0) {
-                _nextOutputIndex = ((SuperdenseTimeDirector) director)
-                        .getIndex();
-            }
-        }
-
-        if (_debugging) {
             _debug("Requesting a refiring at " + _nextOutputTime
                     + ", with index " + _nextOutputIndex);
         }
@@ -450,37 +461,38 @@ public class DiscreteClock extends TimedSource {
      */
     public boolean postfire() throws IllegalActionException {
         boolean result = super.postfire();
-        _skipToNextPhase();
-
-        if (_debugging) {
-            _debug("Postfiring. Requesting refiring at (" + _nextOutputTime
-                    + ", " + _nextOutputIndex + ")");
-        }
-
-        if (trigger.numberOfSources() > 0) {
-            _triggered = false;
+        if (_outputProduced) {
+            _skipToNextPhase();
+            _outputProduced = false;
+            if (_debugging) {
+                _debug("Postfiring. Requesting refiring at (" + _nextOutputTime
+                        + ", " + _nextOutputIndex + ")");
+            }
+            if (trigger.numberOfSources() > 0) {
+                _triggered = false;
+                if (_debugging) {
+                    _debug("Trigger input is connected. Wait for the next trigger before producing an output.");
+                }
+            }
+        } else if (_debugging) {
+            _debug("Postfiring, but not requesting a firing since we've already requested it.");
         }
         return result;
     }
 
-    /** Check that the length of the <i>values</i> and
+    /** Return true if current time has not exceeded the
+     *  stopTime.
+     *  Check that the length of the <i>values</i> and
      *  <i>offsets</i> parameters are the same and return true
      *  if it is time to produce an output.
-     *  @return True.
+     *  @return True if current time is less than or equal to the
+     *   stop time.
      *  @exception IllegalActionException If the <i>values</i> and
      *   <i>offsets</i> parameters do not have the same length.
      */
     public boolean prefire() throws IllegalActionException {
-        Director director = getDirector();
-        Time currentTime = director.getModelTime();
-        int currentIndex = 0;
-        if (director instanceof SuperdenseTimeDirector) {
-            currentIndex = ((SuperdenseTimeDirector) director).getIndex();
-        }
-        if (_debugging) {
-            _debug("Called prefire() at time (" + currentTime + ", "
-                    + currentIndex + ")");
-        }
+        // Cannot call super.prefire() because it consumes trigger
+        // inputs.
         // Check the length of the values and offsets arrays.
         // This is done here because it cannot be done in
         // attributeChanged(), since the two parameters are set
@@ -492,102 +504,23 @@ public class DiscreteClock extends TimedSource {
             throw new IllegalActionException(this,
                     "Values and offsets vectors do not have the same length.");
         }
-
-        // Check the start input, to see whether everything needs to
-        // be reset. This must be done in prefire() because if we need
-        // to reinitialize, this will affect what prefire() returns.
-        if (start.isOutsideConnected()) {
-            if (start.hasToken(0)) {
-                if (_debugging) {
-                    _debug("Received a start input.");
-                }
-                start.get(0);
-                // Restart everything.
-                initialize();
-                _enabled = true;
-            }
+        Time currentTime;
+        boolean localTime = ((BooleanToken)stopTimeIsLocal.getToken()).booleanValue();
+        if (localTime) {
+            currentTime = getDirector().getModelTime();
+        } else {
+            currentTime = getDirector().getGlobalTime();
         }
-        // Check stop
-        if (stop.isOutsideConnected()) {
-            if (stop.hasToken(0)) {
-                if (_debugging) {
-                    _debug("Received a stop input.");
-                }
-                stop.get(0);
-                _enabled = false;
-            }
-        }
-
-        // Update the period from the port parameter, if appropriate.
-        period.update();
-
-        // Check the trigger input, if it is connected.
-        // Make sure to read all channels from the trigger input.
-        if (trigger.numberOfSources() > 0) {
-            for (int i = 0; i < trigger.getWidth(); i++) {
-                if (trigger.isKnown(i) && trigger.hasToken(i)) {
-                    trigger.get(i);
-                    _triggered = true;
-                }
-            }
-        }
-
-        // See whether it is time to produce an output.
-        int comparison = _nextOutputTime.compareTo(currentTime);
-        if (comparison > 0) {
-            // If it is too early to produce an output, return false.
-            // This is safe because we have made a fireAt() call for
-            // the next output time.
+        if (currentTime.compareTo(getModelStopTime()) >= 0) {
             if (_debugging) {
-                _debug("Prefire returns false. Too early to produce output.");
+                _debug("Called prefire, which returns false because time exceeds stopTime.");
             }
             return false;
-        } else if (comparison == 0) {
-            // It is the right time to produce an output. Check
-            // the index.
-            if (director instanceof SuperdenseTimeDirector) {
-                if (_nextOutputIndex > currentIndex) {
-                    // We have not yet reached the requisite index.
-                    // Request another firing at the current time.
-                    _fireAt(currentTime);
-                    if (_debugging) {
-                        _debug("Requesting firing at the current time. "
-                                + "Prefire returns false. Index is "
-                                + "too early to produce output.");
-                    }
-                    return false;
-                }
-            }
-            // At this point, the time matches the next output, and either
-            // the index either matches or exceeds the index for the next output,
-            // or the director does not support superdense time.
-            // It could exceed it if we are in a modal
-            // model and our mode was not active when that time came.
-            // We agree to fire, since the semantics is to produce
-            // the next output as soon as possible.
-            if (!_triggered) {
-                if (_debugging) {
-                    _debug("Prefire returns false. No trigger yet. Skipping phase.");
-                }
-                _skipToNextPhase();
-                return false;
-            }
-            // Ready to fire.
-            if (_debugging) {
-                _debug("Prefire returns true. Time and index match next output.");
-            }
-            return true;
         }
-        // If we get here, then current time has passed our
-        // expected next firing time.  This can occur if we were
-        // in a modal model.
-        throw new IllegalActionException(this, getDirector(),
-                "Director failed to fire this actor at the requested time "
-                + _nextOutputTime
-                + " and also failed to call fireAtSkipped()."
-                + " Perhaps the director is incompatible with DiscreteClock?");
-        // If we get here, then current time matches the next firing time,
-        // but we have passed the superdense index at which we expected to fire.
+        if (_debugging) {
+            _debug("Called prefire, which returns true.");
+        }
+        return true;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -659,6 +592,7 @@ public class DiscreteClock extends TimedSource {
             _nextOutputIndex++;
         } else {
             _nextOutputTime = nextOutputTime;
+            _nextOutputIndex = 1;
         }
         _fireAt(_nextOutputTime);
     }
@@ -666,6 +600,11 @@ public class DiscreteClock extends TimedSource {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
+    /** Indicator that an output was produced and hence we should
+     *  skip to the next phase in postfire.
+     */
+    private boolean _outputProduced;
+    
     /** Indicator of whether trigger inputs have arrived
      *  since the last output.
      */

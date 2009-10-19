@@ -27,7 +27,6 @@
  */
 package ptolemy.actor.lib;
 
-import ptolemy.actor.Actor;
 import ptolemy.actor.Director;
 import ptolemy.actor.TimedActor;
 import ptolemy.actor.util.Time;
@@ -69,13 +68,8 @@ import ptolemy.kernel.util.Workspace;
  event, as if the time for that event had arrived.
  <p>
  If this actor is inactive at the time at which it would have
- otherwise produced an output (e.g., if it is in a ModalModel
- state refinement and that state is inactive), then the next
- event will be produced a random amount of time after it
- becomes active again (specifically, a random amount of time
- after fireAtSkipped() is called by the director).
- This strategy is valid because of the memoryless property
- of a Poisson process.
+ otherwise produced an output, then it will stop producing outputs.
+ This should not happen.
 
  @author Edward A. Lee
  @version $Id$
@@ -239,66 +233,6 @@ public class PoissonClock extends RandomSource implements TimedActor {
         output.send(0, _getValue(_nextOutputIndex));
     }
     
-    /** Notify this actor that a {@link Director#fireAt(Actor,Time)}
-     *  request was skipped, and that current time has passed the
-     *  requested time. A director calls this method when in a modal
-     *  model it was inactive at the time of the request, and it
-     *  became active again after the time of the request had
-     *  expired. This method identifies the next time at which
-     *  a firing should occur, and calls fireAt() with that time
-     *  argument. Because of the memoryless property of the Poisson
-     *  process, that next time is simply the current time plus
-     *  an exponential random variable.
-     *  @param time The time of the request that was skipped.
-     *  @exception IllegalActionException If skipping the request
-     *   is not acceptable to the actor.
-     */
-    public void fireAtSkipped(Time time) throws IllegalActionException {
-        // If the time skipped does not match our expected next firing time,
-        // then this report is probably not intended for us. (The Continuous
-        // director broadcasts these reports to all actors since it doesn't
-        // keep track of which actors registered a breakpoint).
-        if (!time.equals(_nextFiringTime)) {
-            return;
-        }
-        Director director = getDirector();
-        Time currentTime = director.getModelTime();
-        int comparison = currentTime.compareTo(time);
-        if (comparison < 0) {
-            throw new IllegalActionException(this, director,
-                    "Director indicates that a fireAt() request at time "
-                    + time
-                    + " was skipped, but current time has only advanced to "
-                    + currentTime);
-        } else if (comparison > 0) {
-            // Current time is ahead of the skipped time.
-            // If current time is also ahead of the _nextFiringTime,
-            // then we need to generate a new _nextFiringTime.
-            // It may not be ahead because fireAtSkipped() may
-            // get called multiple times in one inactive interval.
-            if (currentTime.compareTo(_nextFiringTime) > 0) {
-                _generateRandomNumber();
-                _nextFiringTime = currentTime.add(_current);
-                _fireAt(_nextFiringTime);
-                if (_debugging) {
-                    _debug("At time "
-                            + currentTime
-                            + ", director reports that requested firing at time "
-                            + time
-                            + " was skipped. Generating new firing request for time "
-                            + _nextFiringTime);
-                }
-            }
-        }
-        // If current time is equal to the time skipped, then
-        // we can safely ignore this report from the director.
-        // The director is reporting that it has passed our requested
-        // superdense time index, but in such cases we go ahead
-        // and produce an output, so there is no problem.
-        // All we have to do is request a refiring at the current time.
-        director.fireAtCurrentTime(this);
-    }
-
     /** Get the stop time.
      *  @return The stop time.
      *  @deprecated As of Ptolemy II 4.1, replaced by

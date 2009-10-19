@@ -27,7 +27,9 @@
  */
 package ptolemy.actor.lib;
 
+import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
+import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
@@ -62,7 +64,23 @@ public class CurrentTime extends TimedSource {
 
         // set the type constraints.
         output.setTypeEquals(BaseType.DOUBLE);
+
+        useLocalTime = new Parameter(this, "useLocalTime");
+        useLocalTime.setTypeEquals(BaseType.BOOLEAN);
+        useLocalTime.setExpression("false");
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         parameters                        ////
+    
+    /** If true, use the model time reported by the input port,
+     *  which is normally the model time of the local director.
+     *  If false (the default), use the model time reported by
+     *  the top-level director. Local time may differ
+     *  from global time inside modal models and certain domains
+     *  that manipulate time. 
+     */
+    public Parameter useLocalTime;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -88,8 +106,14 @@ public class CurrentTime extends TimedSource {
             // output the current time (that is associated with the token).
             for (int i = 0; i < trigger.getWidth(); i++) {
                 if (trigger.hasToken(i)) {
-                    currentTimeValue = Math.min(currentTimeValue, trigger
-                            .getModelTime(i).getDoubleValue());
+                    boolean localTime = ((BooleanToken)useLocalTime.getToken()).booleanValue();
+                    if (localTime) {
+                        currentTimeValue = Math.min(currentTimeValue, trigger
+                                .getModelTime(i).getDoubleValue());
+                    } else {
+                        currentTimeValue = Math.min(currentTimeValue, getDirector()
+                                .getGlobalTime().getDoubleValue());
+                    }
 
                     // Do not consume the token... It will be consumed
                     // in the superclass fire().
@@ -99,7 +123,12 @@ public class CurrentTime extends TimedSource {
             }
         } else {
             // Trigger port is not connected.
-            currentTimeValue = getDirector().getModelTime().getDoubleValue();
+            boolean localTime = ((BooleanToken)useLocalTime.getToken()).booleanValue();
+            if (localTime) {
+                currentTimeValue = getDirector().getModelTime().getDoubleValue();
+            } else {
+                currentTimeValue = getDirector().getGlobalTime().getDoubleValue();
+            }
             output.send(0, new DoubleToken(currentTimeValue));
         }
 

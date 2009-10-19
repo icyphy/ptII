@@ -50,12 +50,16 @@ import ptolemy.kernel.util.Workspace;
 
 /**
  This actor delays the input by a specified amount of time. It is designed
- to be used in timed domains such as DE and Continuous. It can also be used
+ to be used in timed domains such as DE. It can also be used
  in other domains, such as SR and SDF, but this will only be useful if the
  delay value is a multiple of the period of those directors. The amount
  of the time is required to be non-negative and has a default value 1.0.
  The input and output types are unconstrained, except that the output type
- must be the same as that of the input.
+ must be the same as that of the input. It can be used in the Continuous
+ domain, but it is really only useful to delay purely discrete signals.
+ Because of the way variable-step-size ODE solvers work, the TimeDelay
+ actor has the side effect of forcing the solver to use very small step
+ sizes, which slows down a simulation.
  <p>
  This actor keeps a local FIFO queue to store all received but not processed
  inputs. The behavior of this actor on each firing is to read a token from
@@ -80,7 +84,7 @@ import ptolemy.kernel.util.Workspace;
  Occasionally, this actor is useful with the
  delay parameter set to 0.0.  The time stamp of the output will
  equal that of the input, but there is a "microstep" delay.
- The continuous domain in Ptolemy II has a "super dense" model
+ Several Ptolemy II domains use a "super dense" model
  of time, meaning that a signal from one actor to another can
  contain multiple events with the same time stamp. These events
  are "simultaneous," but nonetheless
@@ -207,6 +211,11 @@ public class TimeDelay extends Transformer {
         // discard them here.
         Time currentTime = getDirector().getModelTime();
         _currentOutput = null;
+        
+        if(_delayedOutputTokens.size() == 0) {
+            output.sendClear(0);
+            return;
+        }
 
         while (_delayedOutputTokens.size() > 0) {
             TimedEvent earliestEvent = (TimedEvent) _delayedOutputTokens.get();
@@ -219,6 +228,7 @@ public class TimeDelay extends Transformer {
                 break;
             } else if (comparison > 0) {
                 // It is not yet time to produce an output.
+                output.sendClear(0);
                 break;
             }
             // If we get here, then we have passed the time of the delayed
@@ -235,6 +245,14 @@ public class TimeDelay extends Transformer {
         _currentOutput = null;
         _delayedOutputTokens = new CalendarQueue(
                 new TimedEvent.TimeComparator());
+    }
+    
+    /** Return false indicating that this actor can be fired even if
+     *  the inputs are unknown.
+     *  @return False.
+     */
+    public boolean isStrict() {
+        return false;
     }
 
     /** Process the current input if it has not been processed. Schedule
