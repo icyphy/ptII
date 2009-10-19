@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="LevelCrossingDetector" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={30, 22, 917, 598}, maximized=false}">
     </property>
@@ -404,6 +404,8 @@ detectors.</text></svg></configure>
         </property>
     </entity>
     <entity name="ZeroOrderHold" class="ptolemy.domains.continuous.lib.ZeroOrderHold">
+        <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 175.0]">
         </property>
     </entity>
@@ -469,7 +471,7 @@ detectors.</text></svg></configure>
         </property>
     </entity>
     <entity name="NonStrictTest2" class="ptolemy.actor.lib.NonStrictTest">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.5, 1.0, 2.5, 3.0, 4.5, 5.0, 6.5, 7.0, 8.5, 9.0}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1.0, 2.5, 3.0, 4.5, 5.0, 6.5, 7.0, 8.5, 9.0}">
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
@@ -539,9 +541,11 @@ detectors.</text></svg></configure>
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
     </relation>
-    <relation name="relation12" class="ptolemy.actor.TypedIORelation">
+    <relation name="relation13" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
+        <vertex name="vertex1" value="{300.0, 410.0}">
+        </vertex>
     </relation>
     <link port="Const.output" relation="relation10"/>
     <link port="CurrentTime.output" relation="relation7"/>
@@ -551,7 +555,7 @@ detectors.</text></svg></configure>
     <link port="LevelCrossingDetector3.trigger" relation="relation4"/>
     <link port="LevelCrossingDetector4.output" relation="relation5"/>
     <link port="LevelCrossingDetector4.trigger" relation="relation"/>
-    <link port="LevelCrossingDetector5.output" relation="relation12"/>
+    <link port="LevelCrossingDetector5.output" relation="relation13"/>
     <link port="LevelCrossingDetector5.trigger" relation="relation6"/>
     <link port="ZeroOrderHold.input" relation="relation8"/>
     <link port="ZeroOrderHold.output" relation="relation4"/>
@@ -565,6 +569,6 @@ detectors.</text></svg></configure>
     <link port="CurrentTime2.trigger" relation="relation5"/>
     <link port="NonStrictTest2.input" relation="relation3"/>
     <link port="CurrentTime3.output" relation="relation11"/>
-    <link port="CurrentTime3.trigger" relation="relation12"/>
+    <link port="CurrentTime3.trigger" relation="relation13"/>
     <link port="NonStrictTest3.input" relation="relation11"/>
 </entity>

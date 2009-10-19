@@ -38,9 +38,10 @@ import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.parameters.ParameterPort;
 import ptolemy.actor.parameters.PortParameter;
 import ptolemy.actor.util.BooleanDependency;
-import ptolemy.actor.util.BreakCausalityInterface;
 import ptolemy.actor.util.CausalityInterface;
+import ptolemy.actor.util.DefaultCausalityInterface;
 import ptolemy.actor.util.Dependency;
+import ptolemy.actor.util.Time;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
@@ -78,22 +79,28 @@ import ptolemy.kernel.util.StringAttribute;
  execution an input token is provided on the port, then the state of
  the integrator will be reset at that time to the value of the
  token. The default value of the parameter is 0.0.
- This will occur one microstep after the input is provided.
 
  <P> An integrator also has an input port named <i>impulse</i>.  When
  present, a token at the <i>impulse</i> input port is interpreted as
- the weight of a Dirac delta function.  It cause an
- increment or decrement to the state one microstep after
+ the weight of a Dirac delta function.  It causes an
+ increment or decrement to the state at the time of
  the arrival of the value.  If both <i>impulse</i> and
  <i>initialState</i> have data on the same microstep,
  then <i>initialState</i> dominates.
+ 
+ <P> Note that both <i>impulse</i> and <i>reset</i> expect to
+ receive discrete inputs. To preserve continuity, this means
+ that those inputs should be present only when the solver
+ step size is zero.
+ If this assumption is violated, then this actor will throw
+ an exception.
 
  <P> An integrator can generate an output (its current state) before
  the derivative input is known, and hence can be used in feedback
- loops like that above without creating a causality loop.  The
- <i>impulse</i> and <i>initialState</i> inputs ports must be known,
- however, before an output can be produced.  The effect of data at
- these inputs on the output is instantaneous.
+ loops like that above without creating a causality loop.  Since
+ <i>impulse</i> and <i>initialState</i> inputs affect the output
+ immediately, using them in feedback loops may require inclusion
+ of a TimeDelay actor.
 
  <P> For different ODE solving methods, the functionality of an
  integrator may be different. The delegation and strategy design
@@ -102,7 +109,7 @@ import ptolemy.kernel.util.StringAttribute;
  integrators delegate to the concrete ODE solvers.
 
  <P> An integrator can possibly have several auxiliary variables for
- the the ODE solvers to use. The ODE solver class provides the number
+ the ODE solvers to use. The ODE solver class provides the number
  of variables needed for that particular solver.  The auxiliary
  variables can be set and get by setAuxVariables() and
  getAuxVariables() methods.
@@ -202,7 +209,7 @@ public class ContinuousIntegrator extends TypedAtomicActor implements
      *  unknown, then simply return, leaving the output unknown. Note
      *  that the signals provided at these two ports are required to
      *  be purely discrete.  This is enforced by throwing an exception
-     *  if the current step size is greater than zero when they have
+     *  if the current microstep is zero when they have
      *  input data.
      *  @exception IllegalActionException If the input is infinite or
      *   not a number, or if thrown by the solver,
@@ -212,80 +219,97 @@ public class ContinuousIntegrator extends TypedAtomicActor implements
     public void fire() throws IllegalActionException {
         ContinuousDirector dir = (ContinuousDirector) getDirector();
         double stepSize = dir.getCurrentStepSize();
+        int microstep = dir.getIndex();
 
         if (_debugging) {
-            _debug("Fire at time " + dir.getModelTime() + " with step size "
+            Time currentTime = dir.getModelTime();
+            _debug("Fire at time " + currentTime
+                    + " and microstep "
+                    + microstep
+                    + " with step size "
                     + stepSize);
         }
-
-        // The state at the current model time depends on the inputs
-        // from both impulse and initialState ports on the previous
-        // microstep.
-        if (_impulsePending) {
-            if (stepSize != 0.0) {
-                throw new IllegalActionException(this,
-                        "Signal at the impulse port is not purely discrete.");
-            }
-            double currentState = getState() + _impulseValue;
-            setTentativeState(currentState);
+        // First handle the impulse input.
+        if (impulse.getWidth() > 0 && impulse.hasToken(0)) {
+            double impulseValue = ((DoubleToken) impulse.get(0)).doubleValue();
             if (_debugging) {
-                _debug("-- Due to impulse input in the previous microstep, set state to "
-                        + currentState);
+                _debug("-- impulse input received with value " + impulseValue);
+            }
+            if (impulseValue != 0.0) {
+                if (microstep == 0) {
+                    throw new IllegalActionException(this,
+                            "Signal at the impulse port is not purely discrete.");
+                }
+                double currentState = getState() + impulseValue;
+                setTentativeState(currentState);
+                if (_debugging) {
+                    _debug("-- Due to impulse input, set state to " + currentState);
+                }
+            }
+        }
+        // Next handle the initialState port.
+        ParameterPort initialStatePort = initialState.getPort();
+        if (initialStatePort.getWidth() > 0 && initialStatePort.hasToken(0)) {
+            double initialValue = ((DoubleToken) initialStatePort.get(0)).doubleValue();
+            if (_debugging) {
+                _debug("-- initialState input received with value " + initialValue);
+            }
+            if (microstep == 0.0) {
+                throw new IllegalActionException(this,
+                        "Signal at the initialState port is not purely discrete.");
+            }
+            setTentativeState(initialValue);
+            if (_debugging) {
+                _debug("-- Due to initialState input, set state to " + initialValue);
             }
         }
 
-        // The input from the initialState port overwrites the input from
-        // the impulse port.
-        if (_initialStatePending) {
-            if (stepSize != 0.0) {
-                throw new IllegalActionException(this,
-                        "Signal at the initial state port is not purely discrete.");
-            }
-            double currentState = _initialStateValue;
-            setTentativeState(currentState);
-            if (_debugging) {
-                _debug("-- Due to initialState input in the previous microstep, set state to "
-                        + currentState);
-            }
-        }
-
-        // Prefire() resets receivers, also each firing of this actor
-        // changes the _tentativeState variable, therefore the
-        // following statements may broadcast the newly calculated
-        // _tentativeState at a wrong time.  For example, an opaque
-        // composite actor containing an integrator is scheduled to
-        // run multiple times during the same round.
-
-        // Since prefire() can be called any number of times, and the
-        // semantics of prefire() requires the results not to be
-        // affected by the numbers of callings. Therefore, the
-        // following statements do not work.
-
-        //        if (!state.isKnown()) {
-        //            state.broadcast(new DoubleToken(getTentativeState()));
-        //        }
-        // Instead, we use the round number to guard the outputs.
+        // Produce the current _tentativeState as output, if it
+        // has not already been produced.
         if (!state.isKnown()) {
+            double tentativeOutput = getTentativeState();
+            // If the round has not updated since the last output, then
+            // just produce the same output as last time.
+            int currentRound = dir._getODESolver()._getRound();
+            if (_lastRound == currentRound) {
+                tentativeOutput = _lastOutput;
+            }
+
+            if (_debugging) {
+                _debug("** Sending output " + tentativeOutput);
+            }
+            _lastOutput = tentativeOutput;
+            state.broadcast(new DoubleToken(tentativeOutput));
+        }
+
+        // The _tentativeSate is committed only in postfire(),
+        // but multiple rounds will occur before postfire() is called.
+        // At each round, this fire() method may be called multiple
+        // times, and we want to make sure that the integration step
+        // only runs once in the step.
+        if (derivative.isKnown() && derivative.hasToken(0)) {
             int currentRound = dir._getODESolver()._getRound();
             if (_lastRound < currentRound) {
+                // This is the first fire() in a new round
+                // where the derivative input is known and present.
+                // Update the tentative state. Note that we will
+                // have already produced an output, and so we
+                // will not read the updated _tentativeState
+                // again in subsequent invocations of fire()
+                // in this round. So it is safe to update
+                // _tentativeState.
                 _lastRound = currentRound;
-                _lastRoundOutput = getTentativeState();
-            }
-            state.broadcast(new DoubleToken(_lastRoundOutput));
-        }
-
-        if (derivative.isKnown() && derivative.hasToken(0)) {
-            double currentDerivative = getDerivative();
-            if (Double.isNaN(currentDerivative)
-                    || Double.isInfinite(currentDerivative)) {
-                throw new IllegalActionException(this,
-                        "The provided derivative input is invalid: "
-                                + currentDerivative);
-            }
-            if (stepSize > 0.0) {
-                // The following method changes the tentative state but
-                // should not expose the tentative state.
-                dir._getODESolver().integratorIntegrate(this);
+                double currentDerivative = getDerivative();
+                if (Double.isNaN(currentDerivative)
+                        || Double.isInfinite(currentDerivative)) {
+                    throw new IllegalActionException(this,
+                            "The provided derivative input is invalid: "
+                                    + currentDerivative);
+                }
+                if (stepSize > 0.0) {
+                    // The following method changes the tentative state.
+                    dir._getODESolver().integratorIntegrate(this);
+                }
             }
         }
     }
@@ -373,9 +397,6 @@ public class ContinuousIntegrator extends TypedAtomicActor implements
         _lastRound = -1;
         _tentativeState = ((DoubleToken) initialState.getToken()).doubleValue();
         _state = _tentativeState;
-        _lastRoundOutput = _tentativeState;
-        _impulsePending = false;
-        _initialStatePending = false;
 
         if (_debugging) {
             _debug("Initialize: initial state = " + _tentativeState);
@@ -421,40 +442,25 @@ public class ContinuousIntegrator extends TypedAtomicActor implements
         if (_debugging) {
             _debug("Postfire called");
         }
-
-        _impulsePending = false;
-        for (int i = 0; i < impulse.getWidth(); i++) {
-            _impulseValue = 0.0;
-            if (impulse.hasToken(i)) {
-                _impulsePending = true;
-                _impulseValue += ((DoubleToken) impulse.get(i)).doubleValue();
-                getDirector().fireAtCurrentTime(this);
-                if (_debugging) {
-                    _debug("-- impulse input found. State adjustment in next microstep: "
-                            + _impulseValue);
-                }
-            }
-        }
-        _initialStatePending = false;
-        ParameterPort initialStatePort = initialState.getPort();
-        for (int i = 0; i < initialStatePort.getWidth(); i++) {
-            _initialStateValue = 0.0;
-            if (initialStatePort.hasToken(i)) {
-                _initialStatePending = true;
-                _initialStateValue += ((DoubleToken) initialStatePort.get(i))
-                        .doubleValue();
-                getDirector().fireAtCurrentTime(this);
-                if (_debugging) {
-                    _debug("-- initialState input found. State in next microstep: "
-                            + _initialStateValue);
-                }
-            }
-        }
         _state = _tentativeState;
         if (_debugging) {
             _debug("-- Committing the state: " + _state);
         }
         return true;
+    }
+    
+    /** If either the <i>impulse</i> or <i>initialState</i> input is unknown,
+     *  then return false. Otherwise, return true.
+     *  @return True If the actor is ready to fire.
+     *  @throws IllegalActionException If the superclass throws it.
+     */
+    public boolean prefire() throws IllegalActionException {
+        boolean result = super.prefire();
+        if ((impulse.getWidth() == 0 || impulse.isKnown(0))
+                && (initialState.getPort().getWidth() == 0 || initialState.getPort().isKnown(0))) {
+            return result;
+        }
+        return false;
     }
 
     /** Return the suggested next step size. This method delegates to
@@ -537,23 +543,11 @@ public class ContinuousIntegrator extends TypedAtomicActor implements
     /** The custom causality interface. */
     private CausalityInterface _causalityInterface;
 
-    /** Indicator that an impulse input arrived in the previous microstep. */
-    private boolean _impulsePending;
-
-    /** Value of the impulse from the previous microstep. */
-    private double _impulseValue;
-
-    /** Indicator that an initial state input arrived in the previous microstep. */
-    private boolean _initialStatePending;
-
-    /** Value of the impulse from the previous microstep. */
-    private double _initialStateValue;
-
+    /** The last output produced in the same round. */
+    private double _lastOutput;
+    
     /** The last round this integrator is fired. */
     private int _lastRound;
-
-    /** The output of last round this integrator is fired. */
-    private double _lastRoundOutput;
 
     /** The state of the integrator. */
     private double _state;
@@ -570,15 +564,20 @@ public class ContinuousIntegrator extends TypedAtomicActor implements
     ////                         inner classes                     ////
 
     /** Custom causality interface that fine tunes the equivalent ports
-     *  and removes the dependence of the output on any of the inputs.
+     *  and removes the dependence of the state output on the derivative
+     *  input. Ensure that only the impulse and initialState inputs are
+     *  equivalent (the base class will make all ports equivalent because
+     *  the initialState input is a ParameterPort).
      */
-    private class IntegratorCausalityInterface extends BreakCausalityInterface {
+    private class IntegratorCausalityInterface extends DefaultCausalityInterface {
         public IntegratorCausalityInterface(Actor actor,
                 Dependency defaultDependency) {
             super(actor, defaultDependency);
             _derivativeEquivalents.add(derivative);
             _otherEquivalents.add(impulse);
             _otherEquivalents.add(initialState.getPort());
+            
+            removeDependency(derivative, state);
         }
 
         /** Override the base class to declare that the

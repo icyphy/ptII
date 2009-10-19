@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="hierarchicalModalModel2" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={75, 36, 810, 460}, maximized=false}">
     </property>
@@ -27,7 +27,7 @@
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This demo shows how the multiple layers of hierarchical &#10;modal model is supported by Continuous domain.&#10;&#10;Look inside the modal model to see the internal structure.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[210.0, 30.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 10.0]">
         </property>
     </property>
     <entity name="ModalModel" class="ptolemy.domains.modal.modal.ModalModel">
@@ -35,7 +35,7 @@
         </property>
         <property name="_tableauFactory" class="ptolemy.vergil.modal.modal.ModalTableauFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[195.0, 155.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[195.0, 160.0]">
         </property>
         <port name="output" class="ptolemy.domains.modal.modal.ModalPort">
             <property name="output"/>
@@ -78,7 +78,7 @@ to another. Then delete this annotation.</text>
                 </property>
                 <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[215.0, 180.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{215.0, 180.0}">
                 </property>
             </entity>
         </entity>
@@ -133,7 +133,7 @@ to another. Then delete this annotation.</text>
         <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory"></property></entity></entity>
       </configure>
                     </property>
-                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={444, 412, 813, 511}, maximized=false}">
+                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={426, 330, 813, 511}, maximized=false}">
                     </property>
                     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
                     </property>
@@ -286,7 +286,7 @@ to another. Then delete this annotation.</text>
                         </property>
                     </entity>
                     <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
-                        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 0.1, 1.1, 2.00005, 0.0, 0.1, 1.1, 2.1, 2.99995}">
+                        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 0.0, 0.1, 1.1, 2.00005, 0.0, 0.0, 0.1, 1.1, 2.1, 2.99995, 2.99995}">
                         </property>
                         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
                         </property>
@@ -333,13 +333,19 @@ to another. Then delete this annotation.</text>
         <link port="state.output" relation="outputRelation"/>
     </entity>
     <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{-1.0, 0.0, 0.1, 1.1, 2.00005, 0.0, 0.1, 1.1, 2.1, 2.99995}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{-1.0, 0.0, 0.0, 0.1, 1.1, 2.00005, 0.0, 0.0, 0.1, 1.1, 2.1, 2.99995, 2.99995}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[335.0, 155.0]">
         </property>
     </entity>
-    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="{265.0, 155.0}">
+        </vertex>
     </relation>
-    <link port="ModalModel.output" relation="relation"/>
-    <link port="NonStrictTest.input" relation="relation"/>
+    <link port="ModalModel.output" relation="relation2"/>
+    <link port="NonStrictTest.input" relation="relation2"/>
 </entity>

@@ -49,11 +49,13 @@ import ptolemy.kernel.util.Workspace;
 
 /**
  This actor outputs a set of events at a discrete set of time points.
- It can be used to generate impulses in Continuous models.
+ It can be used to generate impulses in Continuous models. Events are
+ produced at superdense time index 1 or greater in order to ensure
+ that the output is piecewise continuous.
  <p>
  This actor only generates predictable events and that is why it does not
  implement the ContinuousStepSizeControlActor interface. This actor requests a
- refiring at its initialize method to produce events. During its postfire
+ refiring in its initialize() method to produce events. During its postfire()
  method, it requests further firings to produce more events if necessary.
 
  @author Haiyang Zheng
@@ -206,7 +208,7 @@ public class EventSource extends TypedAtomicActor {
      *  @exception IllegalActionException If the event cannot be sent.
      */
     public void fire() throws IllegalActionException {
-        if (_readyToFire) {
+        if (_readyToFire == _TIME_RIGHT) {
             super.fire();
             output.send(0, ((ArrayToken) values.getToken()).getElement(_phase));
         }
@@ -220,13 +222,9 @@ public class EventSource extends TypedAtomicActor {
      */
     public synchronized void initialize() throws IllegalActionException {
         super.initialize();
-
-        FixedPointDirector director = (FixedPointDirector) getDirector();
-
-        _cycleStartTime = director.getModelTime();
-        _nextOutputIndex = 0;
+        _cycleStartTime = getDirector().getModelTime();
+        _nextOutputIndex = 1;
         _phase = 0;
-        _readyToFire = true;
 
         // Schedule the first firing.
         _nextOutputTime = _cycleStartTime.add(_offsets[0]);
@@ -241,10 +239,14 @@ public class EventSource extends TypedAtomicActor {
      *   agree to fire the actor at the specified time.
      */
     public boolean postfire() throws IllegalActionException {
-        if (!_readyToFire) {
+        if (_readyToFire == _TIME_NOT_RIGHT) {
+            return true;
+        } else if (_readyToFire == _TIME_RIGHT_INDEX_EARLY) {
+            // Request a refiring at the current time.
+            _fireAt(getDirector().getModelTime());
             return true;
         }
-
+        // Advance to the next phase.
         double periodValue = ((DoubleToken) period.getToken()).doubleValue();
 
         // Increment to the next phase.
@@ -273,9 +275,15 @@ public class EventSource extends TypedAtomicActor {
      */
     public boolean prefire() throws IllegalActionException {
         FixedPointDirector director = (FixedPointDirector) getDirector();
-        boolean rightIndex = _nextOutputIndex == director.getIndex();
-        boolean rightTime = (director.getModelTime().compareTo(_nextOutputTime) == 0);
-        _readyToFire = rightIndex && rightTime;
+        if (director.getModelTime().compareTo(_nextOutputTime) == 0) {
+            if (_nextOutputIndex <= director.getIndex()) {
+                _readyToFire = _TIME_RIGHT;
+            } else {
+                _readyToFire = _TIME_RIGHT_INDEX_EARLY;
+            }
+        } else {
+            _readyToFire = _TIME_NOT_RIGHT;
+        }
         return super.prefire();
     }
 
@@ -299,6 +307,9 @@ public class EventSource extends TypedAtomicActor {
     /** The next time point when the output should be emitted. */
     private transient Time _nextOutputTime;
 
-    /** The flag indicating whether this actor is ready to fire. */
-    private transient boolean _readyToFire;
+    /** The flag indicating whether the time is right to produce output. */
+    private transient int _readyToFire;
+    private static final int _TIME_RIGHT = 0;    
+    private static final int _TIME_RIGHT_INDEX_EARLY = 1;
+    private static final int _TIME_NOT_RIGHT = 2;
 }

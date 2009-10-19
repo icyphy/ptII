@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="ModalTransitionGuardWithResetUsingPreemptiveTransition" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
     <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="15.0">
@@ -12,19 +12,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[115.0, 50.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={75, 137, 815, 518}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={75, 137, 813, 510}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
-    </property>
-    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="By using preemptive transition, a state does not have to be&#10;associated with a refinement.&#10;&#10;The number of outputs may be different from a model using refinements.&#10;Compare this model to the ModalTransitionGuardWithReset.xml model and&#10;ModalTransitionGuardWithResetUsingPreemptiveTransition 2.xml mode.">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 105.0]">
-        </property>
     </property>
     <entity name="ModalModel" class="ptolemy.domains.modal.modal.ModalModel">
         <property name="_tableauFactory" class="ptolemy.vergil.modal.modal.ModalTableauFactory">
@@ -35,26 +29,18 @@
             <property name="output"/>
         </port>
         <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
-            <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute" value="init">
-            </property>
             <property name="_library" class="ptolemy.moml.LibraryAttribute">
                 <configure>
         <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory"></property></entity></entity>
       </configure>
             </property>
-            <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-                <property name="text" class="ptolemy.kernel.util.StringAttribute" value="By using preemptive transition, a state does not have to be&#10;associated with a refinement.&#10;&#10;There is not output action associated with the preemptive transition,&#10;therefore, the first output is an absence.&#10;&#10;The number of outputs may be different from a model using refinements.">
-                </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 20.0]">
-                </property>
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={335, 219, 770, 461}, maximized=false}">
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={552, 341, 772, 415}, maximized=false}">
-            </property>
-            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[557, 297]">
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[557, 350]">
             </property>
             <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
             </property>
-            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{278.5, 148.5}">
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{278.5, 175.0}">
             </property>
             <port name="out" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
@@ -65,15 +51,17 @@
             <entity name="state" class="ptolemy.domains.modal.kernel.State">
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="state">
                 </property>
+                <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
                 <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[210.0, 215.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{210.0, 215.0}">
                 </property>
             </entity>
             <entity name="init" class="ptolemy.domains.modal.kernel.State">
-                <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
+                <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
@@ -196,7 +184,7 @@
         <link port="state.out" relation="outRelation"/>
     </entity>
     <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{ 0.0, 0.1, 1.1, 2.1, 3.1, 4.1, 5.00005, 0.0, 0.1, 1.1, 2.1, 3.1, 4.1, 5.00005, 0.0, 0.1, 1.1, 2.1, 3.1, 4.1, 4.9999}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 0.0, 0.1, 1.1, 2.1, 3.1, 4.1, 5.00005, 0.0, 0.1, 1.1, 2.1, 3.1, 4.1, 5.00005, 0.0, 0.1, 1.1, 2.1, 3.1, 4.1, 4.9999, 4.9999}">
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>

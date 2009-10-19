@@ -27,7 +27,6 @@
  */
 package ptolemy.domains.continuous.lib;
 
-import ptolemy.actor.Actor;
 import ptolemy.actor.Director;
 import ptolemy.actor.lib.Transformer;
 import ptolemy.actor.util.Time;
@@ -50,30 +49,19 @@ import ptolemy.kernel.util.Workspace;
  0.1.  Specifically, if the actor is initialized at time <i>t</i> and the sample
  period is <i>T</i>, then the output will have the value of the input
  at times <i>t</i> + <i>nT</i>, for all natural numbers <i>n</i>.
- This sampler will send to the output <i>all</i> input events that occur
- at a sample time.
- <p>
- If the enclosing director implements the SuperdenseTimeDirector
- interface, then an output is produced only if the current index
- of the director is 0. Thus, this sampler produces on its output
- the <i>initial value</i> of the input at times <i>t</i> + <i>nT</i>.
- If the input is absent at those times, then the output will be
- absent.
- <p>
- If this actor is used inside a ModalModel, then its behavior may
- seem a bit subtle, but it exactly matches the explanation above.
- If, for example, you enter a mode that contains this actor at
- time <i>t</i> + <i>nT</i>, and this actor is inside the
- refinement of that mode, then it will not normally produce
- an output at that time because the mode refinement of the
- destination state does not get fired until the next larger
- index, which will be greater than zero. It will produce
- its first output at time <i>t</i> + (<i>n</i>+1)<i>T</i>.
- FIXME: What if the enclosing director does not support superdense time?
+ This sampler will send to the output the first non-absent input event that occur
+ at a sample time. It produces it one microstep later than that input event.
+ This ensures that the output at microstep 0 is always absent, thus
+ ensuring continuity from the left. That is, the input is absent prior
+ to the sample time, so continuity requires that it be absent at
+ microstep 0 at the sample time. Moreover, this ensures that the
+ sampler outputs the initial value of the input at the sample time.
  <p>
  This actor has multiport inputs and outputs. Signals in
  each input channel are sampled and produced to corresponding output
- channel.
+ channel. When there are multiple inputs, the first non-absent input
+ from each channel is read, and the output is produced at the first
+ microstep after the last of the inputs became non-absent.
 
  @author Edward A. Lee
  @version $Id$
@@ -152,65 +140,22 @@ public class PeriodicSampler extends Transformer {
      */
     public void fire() throws IllegalActionException {
         super.fire();
-        if (hasCurrentEvent()) {
-            for (int i = 0; i < Math.min(input.getWidth(), output.getWidth()); i++) {
-                if (input.hasToken(i)) {
-                    Token token = input.get(i);
-                    output.send(i, token);
-
-                    if (_debugging) {
-                        _debug("Output: " + token + " to channel " + i
-                                + ", at: " + getDirector().getModelTime());
-                    }
+        if (_inputIsComplete) {
+            for (int i = 0; i < _recordedInputs.length; i++) {
+                if (_debugging) {
+                    _debug("Sending output value "
+                            + _recordedInputs[i]
+                            + " on channel "
+                            + i);
+                }
+                if (_recordedInputs[i] != null) {
+                    output.send(i, _recordedInputs[i]);
+                } else {
+                    output.sendClear(i);
                 }
             }
+            _outputProduced = true;
         }
-    }
-
-    /** Notify this actor that a {@link Director#fireAt(Actor,Time)}
-     *  request was skipped, and that current time has passed the
-     *  requested time. A director calls this method when in a modal
-     *  model it was inactive at the time of the request, and it
-     *  became active again after the time of the request had
-     *  expired. This base class identifies the next time at which
-     *  a firing should occur, and calls fireAt() with that time
-     *  argument.
-     *  @param time The time of the request that was skipped.
-     *  @exception IllegalActionException If skipping the request
-     *   is not acceptable to the actor.
-     */
-    public void fireAtSkipped(Time time) throws IllegalActionException {
-        Time currentTime = getDirector().getModelTime();
-        double samplePeriodValue = ((DoubleToken) samplePeriod.getToken())
-                .doubleValue();
-        while (_nextSamplingTime.compareTo(currentTime) < 0) {
-            _nextSamplingTime = _nextSamplingTime.add(samplePeriodValue);
-        }
-        if (_debugging) {
-            _debug("Request refiring at " + _nextSamplingTime);
-        }
-        _fireAt(_nextSamplingTime);
-    }
-
-    /** Return true if there is a current event. In other words, the current
-     *  time is one of the sampling times.
-     *  @return If there is a discrete event to emit.
-     */
-    public boolean hasCurrentEvent() {
-        Director director = getDirector();
-
-        if (director.getModelTime().compareTo(_nextSamplingTime) == 0) {
-            _hasCurrentEvent = true;
-
-            if (_debugging && _verbose) {
-                _debug(getFullName(), " has an event at: "
-                        + director.getModelTime() + ".");
-            }
-        } else {
-            _hasCurrentEvent = false;
-        }
-
-        return _hasCurrentEvent;
     }
 
     /** Set the next sampling time as the start time (i.e. the current time).
@@ -221,6 +166,8 @@ public class PeriodicSampler extends Transformer {
     public void initialize() throws IllegalActionException {
         super.initialize();
         _nextSamplingTime = getDirector().getModelTime();
+        _outputProduced = false;
+        _inputIsComplete = false;
     }
 
     /** Set the next sampling time and return true.
@@ -228,14 +175,39 @@ public class PeriodicSampler extends Transformer {
      *  @exception IllegalActionException If the superclass throws it.
      */
     public boolean postfire() throws IllegalActionException {
-        if (hasCurrentEvent()) {
+        Director director = getDirector();
+        if (director.getModelTime().compareTo(_nextSamplingTime) == 0) {
+            // Read and record the input.
+            int width = Math.min(input.getWidth(), output.getWidth());
+            if (_recordedInputs == null || _recordedInputs.length != width) {
+                _recordedInputs = new Token[width];
+            }
+            // Set a flag so the next fire() will produce the output.
+            _inputIsComplete = true;
+            for (int i = 0; i < width; i++) {
+                if (input.hasToken(i)) {
+                    _recordedInputs[i] = input.get(i);
+                    if (_debugging) {
+                        _debug("Read input value " 
+                                + _recordedInputs[i] 
+                                + " at time "
+                                + director.getModelTime());
+                    }
+                }
+            }
+            // To ensure we read only the initial value of the input signal,
+            // increment the next sampling time now.
             double samplePeriodValue = ((DoubleToken) samplePeriod.getToken())
                     .doubleValue();
             _nextSamplingTime = _nextSamplingTime.add(samplePeriodValue);
+
             if (_debugging) {
-                _debug("Request refiring at " + _nextSamplingTime);
+                _debug("Request refiring at current time and at " + _nextSamplingTime);
             }
+            _fireAt(director.getModelTime());
             _fireAt(_nextSamplingTime);
+        } else {
+            _inputIsComplete = false;
         }
         return super.postfire();
     }
@@ -254,12 +226,16 @@ public class PeriodicSampler extends Transformer {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    // flag indicating if there is a current event.
-    // NOTE: this variable should be only used inside the hasCurrentEvent
-    // method. Other methods can only access the status of this variable
-    // via the hasCurrentEvent method.
-    private boolean _hasCurrentEvent = false;
 
-    // the next sampling time.
+    /** Flag indicating that the record of inputs is complete. */
+    private boolean _inputIsComplete;
+    
+    /** The next sampling time. */
     private Time _nextSamplingTime;
+    
+    /** Flag indicating that an output was produced in the current iteration. */
+    private boolean _outputProduced;
+    
+    /** The recorded input data. */
+    private Token[] _recordedInputs;
 }

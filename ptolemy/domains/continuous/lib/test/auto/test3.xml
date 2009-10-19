@@ -2,10 +2,10 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="test3" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
     <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
-        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="10000">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="10">
         </property>
         <property name="maxStepSize" class="ptolemy.data.expr.Parameter" value="100">
         </property>
@@ -53,11 +53,11 @@
         </property>
     </entity>
     <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value=" concatenate(repeat(4, 0), repeat(100, -2))">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 0.0, 0.0, 0.0, -2.0, -2.0, -2.0, -2.0, -2.0}">
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[455.0, 205.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{455.0, 205.0}">
         </property>
     </entity>
     <entity name="DiscreteClock" class="ptolemy.actor.lib.DiscreteClock">
@@ -84,11 +84,13 @@
         <vertex name="vertex1" value="[290.0, 280.0]">
         </vertex>
     </relation>
-    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-    </relation>
-    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="{400.0, 205.0}">
+        </vertex>
     </relation>
     <link port="Integrator.impulse" relation="relation6"/>
     <link port="Integrator.derivative" relation="relation"/>
@@ -97,7 +99,7 @@
     <link port="Const.output" relation="relation"/>
     <link port="AddSubtract.plus" relation="relation2"/>
     <link port="AddSubtract.minus" relation="relation5"/>
-    <link port="AddSubtract.output" relation="relation4"/>
-    <link port="NonStrictTest.input" relation="relation4"/>
+    <link port="AddSubtract.output" relation="relation3"/>
+    <link port="NonStrictTest.input" relation="relation3"/>
     <link port="DiscreteClock.output" relation="relation6"/>
 </entity>

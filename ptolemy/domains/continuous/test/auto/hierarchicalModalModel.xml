@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="hierarchicalModalModel" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={23, 22, 733, 462}, maximized=false}">
     </property>
@@ -13,7 +13,7 @@
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{260.0, 176.0}">
     </property>
     <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
-        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="5">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="6">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[125.0, 65.0]">
         </property>
@@ -130,7 +130,7 @@ state of the integrator.</text></svg></configure>
         <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory"></property></entity></entity>
       </configure>
                     </property>
-                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={313, 194, 813, 511}, maximized=false}">
+                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={593, 414, 813, 511}, maximized=false}">
                     </property>
                     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
                     </property>
@@ -252,7 +252,7 @@ state of the integrator.</text></svg></configure>
                     <link port="state3.incomingPort" relation="relation3"/>
                 </entity>
                 <entity name="state" class="ptolemy.domains.modal.modal.Refinement">
-                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={110, 56, 813, 510}, maximized=false}">
+                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={439, 112, 813, 510}, maximized=false}">
                     </property>
                     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
                     </property>
@@ -313,11 +313,11 @@ state of the integrator.</text></svg></configure>
                         </property>
                     </entity>
                     <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
-                        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 0.0, -1.0, -0.9, 0.1, 1.1, 2.1, 3.1, 4.0, 0.0}">
+                        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 0.0, -1.0, -1.0, -0.9, 0.1, 1.1, 2.1, 3.1, 4.00005, 0.0, 0.0, 0.1, 0.99995, 0.99995}">
                         </property>
                         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
                         </property>
-                        <property name="_location" class="ptolemy.kernel.util.Location" value="[360.0, 125.0]">
+                        <property name="_location" class="ptolemy.kernel.util.Location" value="{360.0, 125.0}">
                         </property>
                     </entity>
                     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
@@ -360,13 +360,19 @@ state of the integrator.</text></svg></configure>
         <link port="state.output" relation="outputRelation"/>
     </entity>
     <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 0.0, -1.0, -0.9, 0.1, 1.1, 2.1, 3.1, 4.0, 0.0}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 0.0, -1.0, -1.0, -0.9, 0.1, 1.1, 2.1, 3.1, 4.00005, 0.0, 0.0, 0.1, 0.99995, 0.99995}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{355.0, 165.0}">
         </property>
     </entity>
-    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="{275.0, 155.0}">
+        </vertex>
     </relation>
-    <link port="ModalModel.output" relation="relation2"/>
-    <link port="NonStrictTest.input" relation="relation2"/>
+    <link port="ModalModel.output" relation="relation"/>
+    <link port="NonStrictTest.input" relation="relation"/>
 </entity>

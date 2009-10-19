@@ -27,14 +27,17 @@
  */
 package ptolemy.domains.continuous.lib;
 
+import java.util.Set;
+
 import ptolemy.actor.lib.Transformer;
-import ptolemy.data.IntToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
+import ptolemy.domains.continuous.kernel.ContinuousDirector;
+import ptolemy.graph.Inequality;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
 //// ZeroOrderHold
@@ -43,12 +46,11 @@ import ptolemy.kernel.util.Workspace;
  Convert discrete events at the input to a continuous-time
  signal at the output by holding the value of the discrete
  event until the next discrete event arrives. Specifically,
- on each firing, produce the currently recorded value,
- which is <i>defaultValue</i> initially. If an input is
- present, then record the value of the input (after producing
- the output), and request a refiring at the current time.
- This actor thus introduces a microstep delay in superdense
- time.
+ on each firing, if an input is present, then record the
+ value of the input. Then produce the recorded value.
+ This actor will throw an exception if the input is not
+ purely discrete. Specifically, this means that when the input
+ is present, the step size of the solver has to be 0.0.
 
  @author Edward A. Lee, Haiyang Zheng
  @version $Id$
@@ -72,10 +74,8 @@ public class ZeroOrderHold extends Transformer {
     public ZeroOrderHold(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        defaultValue = new Parameter(this, "defaultValue", new IntToken(0));
-        output.setTypeAtLeast(input);
-        output.setTypeAtLeast(defaultValue);
-
+        defaultValue = new Parameter(this, "defaultValue");
+        
         _attachText("_iconDescription", "<svg>\n"
                 + "<rect x=\"-30\" y=\"-20\" " + "width=\"60\" height=\"40\" "
                 + "style=\"fill:white\"/>\n"
@@ -88,8 +88,8 @@ public class ZeroOrderHold extends Transformer {
     ////                     ports and parameters                       ////
 
     /** Default output before any input has received.
-     *  The default is an integer with value 0, but any
-     *  type is acceptable.
+     *  The default is empty, indicating
+     *  that no output is produced until an input is received.
      *  The type of the output is set to at least the type of
      *  this parameter (and also at least the type of the input).
      */
@@ -98,26 +98,36 @@ public class ZeroOrderHold extends Transformer {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Clone the actor into the specified workspace.
-     *  @param workspace The workspace for the new object.
-     *  @return A new actor.
-     *  @exception CloneNotSupportedException If a derived class has
-     *   an attribute that cannot be cloned.
-     */
-    public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        ZeroOrderHold newObject = (ZeroOrderHold) super.clone(workspace);
-        newObject.output.setTypeAtLeast(newObject.input);
-        newObject.output.setTypeAtLeast(newObject.defaultValue);
-        return newObject;
-    }
-
     /** Output the latest token consumed from the consumeCurrentEvents()
      *  call.
      *  @exception IllegalActionException If the token cannot be sent.
      */
     public void fire() throws IllegalActionException {
         super.fire();
-        output.send(0, _lastToken);
+        
+        if (input.hasToken(0)) {
+            ContinuousDirector dir = (ContinuousDirector) getDirector();
+            double stepSize = dir.getCurrentStepSize();
+            if (stepSize != 0.0) {
+                throw new IllegalActionException(this,
+                        "Signal at the input port is not purely discrete.");
+            }
+            _lastToken = input.get(0);
+            if (_debugging) {
+                _debug("Input value " + _lastToken + " read at time "
+                        + dir.getModelTime() + " and microstep "
+                        + dir.getIndex());
+            }
+        }
+        if (_lastToken != null) {
+            output.send(0, _lastToken);
+            if (_debugging) {
+                ContinuousDirector dir = (ContinuousDirector) getDirector();
+                _debug("Output value " + _lastToken + " sent at time "
+                        + dir.getModelTime() + " and microstep "
+                        + dir.getIndex());
+            }
+        }
     }
 
     /** Initialize token. If there is no input, the initial token is
@@ -128,29 +138,34 @@ public class ZeroOrderHold extends Transformer {
         super.initialize();
         _lastToken = defaultValue.getToken();
     }
-
-    /** Return false to indicate that this actor can produce outputs without
-     *  knowing the inputs.
-     *  @return false.
+    
+    /** Override the method in the base class so that the type
+     *  constraint for the <i>initialValue</i> parameter will be set
+     *  if it contains a value.
+     *  @return a list of Inequality objects.
+     *  @see ptolemy.graph.Inequality
      */
-    public boolean isStrict() {
-        return false;
-    }
+    public Set<Inequality> typeConstraints() {
+        Set<Inequality> typeConstraints = super.typeConstraints();
 
-    /** If there is an input, record it and request a refiring at the
-     *  current time.
-     *  @exception IllegalActionException If the refiring request fails.
-     */
-    public boolean postfire() throws IllegalActionException {
-        super.postfire();
-        if (input.isKnown() && input.hasToken(0)) {
-            _lastToken = input.get(0);
-            if (_debugging) {
-                _debug("Reading an input " + _lastToken.toString());
+        try {
+            if (defaultValue.getToken() != null) {
+                Inequality ineq = new Inequality(defaultValue.getTypeTerm(),
+                        output.getTypeTerm());
+                typeConstraints.add(ineq);
             }
-            _fireAt(getDirector().getModelTime());
+
+            Inequality ineq2 = new Inequality(input.getTypeTerm(), output
+                    .getTypeTerm());
+            typeConstraints.add(ineq2);
+        } catch (IllegalActionException ex) {
+            // Errors in the initialValue parameter should
+            // already have been caught in getAttribute() method
+            // of the base class.
+            throw new InternalErrorException("Bad defaultValue value!\n" + ex);
         }
-        return true;
+
+        return typeConstraints;
     }
 
     ///////////////////////////////////////////////////////////////////

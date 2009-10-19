@@ -172,9 +172,10 @@ public class ExplicitRK23Solver extends ContinuousODESolver {
         double newh = 5.0 * h;
 
         if (error > tolerance) {
-            newh = h
-                    * Math.max(0.5, 0.8 * Math.pow((tolerance / error),
-                            1.0 / _ORDER));
+            newh = 0.8 * Math.pow((tolerance / error), 1.0 / _ORDER);
+            if (newh > h) {
+                newh = 0.5 * h;
+            }
         }
 
         if (_isDebugging()) {

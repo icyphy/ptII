@@ -36,11 +36,8 @@ import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.QuasiTransparentDirector;
-import ptolemy.actor.SuperdenseTimeDirector;
 import ptolemy.actor.TimedDirector;
-import ptolemy.actor.sched.Firing;
 import ptolemy.actor.sched.FixedPointDirector;
-import ptolemy.actor.sched.Schedule;
 import ptolemy.actor.util.BooleanDependency;
 import ptolemy.actor.util.Dependency;
 import ptolemy.actor.util.GeneralComparator;
@@ -52,6 +49,7 @@ import ptolemy.data.IntToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.data.type.BaseType;
+import ptolemy.domains.modal.kernel.Suspendable;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -208,7 +206,7 @@ All Continuous files need this.
  */
 public class ContinuousDirector extends FixedPointDirector implements
         TimedDirector, ContinuousStatefulComponent,
-        ContinuousStepSizeController {
+        ContinuousStepSizeController, Suspendable {
 
     /** Construct a director in the given container with the given name.
      *  The container argument must not be null, or a NullPointerException
@@ -227,6 +225,7 @@ public class ContinuousDirector extends FixedPointDirector implements
         super(container, name);
         _initParameters();
         setScheduler(new ContinuousScheduler(this, "scheduler"));
+        _zeroTime = new Time(this, 0.0);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -289,6 +288,16 @@ public class ContinuousDirector extends FixedPointDirector implements
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** Return the accumulated time that the actor has been suspended
+     *  since the last call to initialize(), or null if it has never
+     *  been suspended.
+     *  @return The total time between calls to suspend and subsequent
+     *   calls to resume, or null if the actor has not been suspended.
+     */
+    public Time accumulatedSuspendTime() {
+        return _accumulatedSuspendTime;
+    }
 
     /** React to a change in an attribute. If the changed attribute
      *  matches a parameter of the director, then the corresponding
@@ -400,6 +409,34 @@ public class ContinuousDirector extends FixedPointDirector implements
         }
 
         _resetAllReceivers();
+        
+        // If there is an enclosing director, we know it is not a ContinuousDirector
+        // because we would have returned above if it were. Inputs from any
+        // enclosing domain that is not continuous are discrete, so we should
+        // not read them if the current superdense index is 0. This would
+        // violate the piecewise continuity constraint.
+        if (!_redoingSolverIteration && _index == 0 && _isEmbedded()) {
+            // Check the input ports to see if any has an input. If
+            // it does, set the current step size to zero and execute
+            // one round without the input. The input will be read at
+            // the next superdense time index.
+            List<IOPort> ports = ((Actor)getContainer()).inputPortList();
+            for (IOPort port : ports) {
+                for (int i = 0; i < port.getWidth(); i++) {
+                    if (port.isKnown(i) && port.hasToken(i)) {
+                        // There is an input. Do a zero step-size iteration.
+                        _currentStepSize = 0.0;
+                        _ODESolver._reset();
+                        // Before firing, we need to send clear to all inside
+                        // ports, since we aren't transferring the inputs.
+                        _sendClearInside();
+                        super.fire();
+                        _transferOutputsToEnvironment();
+                        return;
+                    }
+                }
+            }
+        }
 
         // If there are external inputs and there is no enclosing continuous
         // director, then those external inputs are to be understood as discrete
@@ -453,15 +490,7 @@ public class ContinuousDirector extends FixedPointDirector implements
                     // _transferInputsToInside() because if we are redoing
                     // the solver iteration then there are inputs available,
                     // but they should not be consumed yet.
-                    CompositeActor container = (CompositeActor) getContainer();
-                    Iterator inports = container.inputPortList().iterator();
-                    while (inports.hasNext()) {
-                        IOPort port = (IOPort) inports.next();
-                        int insideWidth = port.getWidthInside();
-                        for (int i = 0; i < insideWidth; i++) {
-                            port.sendClearInside(i);
-                        }
-                    }
+                    _sendClearInside();
     
                     super.fire();
                     // Outputs should only be produced on the first iteration of
@@ -548,6 +577,22 @@ public class ContinuousDirector extends FixedPointDirector implements
         }
     }
 
+    /** Set all receivers on the inside of input ports to
+     *  absent.
+     *  @throws IllegalActionException If the sendClear fails.
+     */
+    private void _sendClearInside() throws IllegalActionException {
+        CompositeActor container = (CompositeActor) getContainer();
+        Iterator inports = container.inputPortList().iterator();
+        while (inports.hasNext()) {
+            IOPort port = (IOPort) inports.next();
+            int insideWidth = port.getWidthInside();
+            for (int i = 0; i < insideWidth; i++) {
+                port.sendClearInside(i);
+            }
+        }
+    }
+
     /** Handle firing requests from the contained actors by registering
      *  breakpoints. If the specified time is earlier than the current time,
      *  then request a firing at the current time.
@@ -598,21 +643,6 @@ public class ContinuousDirector extends FixedPointDirector implements
             }
             return time;
         }
-    }
-
-    /** Notify all actors under control of this director, in schedule
-     *  order, that a {@link Director#fireAt(Actor,Time)}
-     *  request was skipped, and that current time has passed the
-     *  requested time. An executive director calls this method when in a modal
-     *  model it was inactive at the time of the request, and it
-     *  became active again after the time of the request had
-     *  expired.
-     *  @param time The time of the request that was skipped.
-     *  @exception IllegalActionException If skipping the request
-     *   is not acceptable to a refinement.
-     */
-    public void fireAtSkipped(Time time) throws IllegalActionException {
-        _fireAtSkipped(time);
     }
 
     /** Return the current integration step size.
@@ -745,6 +775,9 @@ public class ContinuousDirector extends FixedPointDirector implements
         _postfireReturns = true;
         _isInitializing = false;
         _redoingSolverIteration = false;
+        
+        _accumulatedSuspendTime = _zeroTime;
+        _lastSuspendTime = null;
     }
 
     /** Return true if all step size control actors agree that the current
@@ -949,6 +982,26 @@ public class ContinuousDirector extends FixedPointDirector implements
         return refinedStep;
     }
 
+    /** Resume the actor at the specified time. If the actor has not
+     *  been suspended since the last call to initialize(), then this
+     *  has no effect.
+     *  @throws IllegalActionException If the fireAt() request throws it.
+     */
+    public void resume(Time time) throws IllegalActionException {
+        if (_lastSuspendTime != null) {
+            if (_accumulatedSuspendTime == null) {
+                _accumulatedSuspendTime = time.subtract(_lastSuspendTime);
+            } else {
+                _accumulatedSuspendTime
+                        = _accumulatedSuspendTime.add(time.subtract(_lastSuspendTime));                
+            }
+            _lastSuspendTime = null;
+        }
+        // Request a firing at the current time to ensure that
+        // we restart here.
+        fireAt(null, _currentTime);
+    }
+
     /** Roll back all actors that implement ContinuousStatefulComponent
      *  to committed state, and set local model time to the start
      *  of the integration period.
@@ -975,11 +1028,7 @@ public class ContinuousDirector extends FixedPointDirector implements
     /** Set a new value to the current time of the model. This overrides
      *  the base class to allow time to move backwards (to support rollback)
      *  and to discard any breakpoints in the breakpoint table that are
-     *  in the past relative to the specified time. This method is called,
-     *  for example, in a modal model when we take a transition into
-     *  a composite with this director, where time has elapsed since we
-     *  were last executing this composite. The right thing to do is
-     *  discard any missed breakpoints.
+     *  in the past relative to the specified time.
      *  This overrides the setCurrentTime() in the Director base class.
      *  Although this method is public, actors should never call it.
      *  @param newTime The new current simulation time.
@@ -987,29 +1036,40 @@ public class ContinuousDirector extends FixedPointDirector implements
      *   relative to the time of local committed state.
      */
     public final void setModelTime(Time newTime) throws IllegalActionException {
+        if (_ignoreSetTime) {
+            return;
+        }
         // This method is final for performance reason.
         if (_debugging) {
             _debug("** Environment is setting current time to " + newTime);
         }
         int comparison = newTime.compareTo(_currentTime);
         if (comparison > 0) {
-            // New time is ahead of the current local time,
-            // then we must be inside a modal model and have been
-            // disabled for some interval.
-            // If there is a commit pending, then that commit is invalid.
+            // New time is ahead of the current local time.
+            // This should not happen.
+            throw new IllegalActionException(this,
+                    "ContinuousDirector expected to be invoked at time "
+                    + _currentTime
+                    + ", but instead its time is being set to "
+                    + newTime);
+            // NOTE: An alternative would be invalidate a pending commit
+            // and discard intermediate breakpoints.
+            // Code is below.
+            /*
             if (_commitIsPending) {
                 _commitIsPending = false;
                 rollBackToCommittedState();
             }
             _currentTime = newTime;
             _iterationBeginTime = _currentTime;
-            _discardBreakpointsBefore(_currentTime, 0);
+            _handleBreakpointsBefore(_currentTime, 0);
             // Set the step size to 0.0, which will ensure that any
             // actors (like plotters) are postfired at the new model time.
             // This also reinitializes the adaptive step size calculation,
             // which is probably reasonable since things may have
             // changed significantly.
             _currentStepSize = 0.0;
+            */
         } else if (comparison < 0) {
             // The new time is behind the current time.
             // This is legal only if we have a commit pending.
@@ -1071,6 +1131,7 @@ public class ContinuousDirector extends FixedPointDirector implements
      */
     public double suggestedStepSize() throws IllegalActionException {
         double suggestedStep = _initStepSize;
+        
         if (_currentStepSize != 0.0) {
             // Increase the current step size, then ask the step-size control
             // actors for their suggestions and choose the minimum.
@@ -1111,29 +1172,31 @@ public class ContinuousDirector extends FixedPointDirector implements
         if (suggestedStep > _maxStepSize) {
             suggestedStep = _maxStepSize;
         }
-        // Make sure time does not pass the next breakpoint.
+        
+        // If there are breakpoints, set the suggested step size as the
+        // time to the next breakpoint, if it is less than the value
+        // so far.
         if (!_breakpoints.isEmpty()) {
             SuperdenseTime nextBreakpoint = (SuperdenseTime) _breakpoints
                     .first();
-            if (_debugging) {
-                _debug("---- The first breakpoint is at " + nextBreakpoint);
-            }
             Time breakpointTime = nextBreakpoint.timestamp();
             double result = breakpointTime.subtract(getModelTime())
                     .getDoubleValue();
+            if (result < 0.0) {
+                throw new InternalErrorException(
+                        "Missed a breakpoint at time " + breakpointTime
+                                + ". Current time is " + getModelTime());
+            }
             if (result < suggestedStep) {
-                if (result < 0.0) {
-                    throw new InternalErrorException(
-                            "Missed a breakpoint at time " + breakpointTime
-                                    + ". Current time is " + getModelTime());
-                }
                 suggestedStep = result;
                 if (_debugging) {
-                    _debug("----- Revising step size due to breakpoint to "
+                    _debug("----- The first breakpoint is at " + nextBreakpoint);
+                    _debug("----- Revising suggested step size due to breakpoint to "
                             + suggestedStep);
                 }
             }
         }
+
         // Next ensure the selected step size does not take us
         // past the stop time.
         // NOTE: This test could possibly be eliminated by
@@ -1150,6 +1213,16 @@ public class ContinuousDirector extends FixedPointDirector implements
             }
         }
         return suggestedStep;
+    }
+
+    /** Resume the actor at the specified time. If the actor has not
+     *  been suspended since the last call to initialize(), then this
+     *  has no effect.
+     *  @throws IllegalActionException If the suspend cannot be completed.
+     */
+    public void suspend(Time time) throws IllegalActionException {
+        resume(time);
+        _lastSuspendTime = time;
     }
 
     /** Override the base class to do nothing. The fire() method of
@@ -1286,8 +1359,9 @@ public class ContinuousDirector extends FixedPointDirector implements
      *  it checks the current step of the solver.
      *  @return True if either the solver is not doing a multi-step
      *   solution or it is at the last step of the multi-step solution.
+     *  @throws IllegalActionException If the Time class throws it.
      */
-    protected boolean _isIntermediateStep() {
+    protected boolean _isIntermediateStep() throws IllegalActionException {
         ContinuousDirector enclosingDirector = _enclosingContinuousDirector();
         if (enclosingDirector != null) {
             return enclosingDirector._isIntermediateStep();
@@ -1318,13 +1392,35 @@ public class ContinuousDirector extends FixedPointDirector implements
     ////                         private methods                   ////
 
     /** Commit the current state by postfiring the actors under the
-     *  control of this director.
+     *  control of this director. Also, set the current time, index,
+     *  and step size for the next iteration. If the current step size
+     *  is 0.0, then this just increments the index. Otherwise, it sets
+     *  the index to 0.
      *  @return True if it is OK to fire again.
      */
     private boolean _commit() throws IllegalActionException {
         if (_debugging) {
             _debug("Committing the current states at " + _currentTime);
         }
+        
+        // If current time matches a time on the breakpoint table
+        // with the current index, then remove that breakpoint because we have
+        // just completed execution of that iteration. Only do this, however,
+        // if the current step size is 0.0, since breakpoints should be dealt
+        // with always with step size 0.0
+        if (_currentStepSize == 0.0 && !_breakpoints.isEmpty()) {
+            SuperdenseTime nextBreakpoint = (SuperdenseTime) _breakpoints
+                    .first();
+            Time breakpointTime = nextBreakpoint.timestamp();
+            int comparison = breakpointTime.compareTo(_currentTime);
+            if (comparison == 0 && nextBreakpoint.index() <= _index) {
+                if (_debugging) {
+                    _debug("Removing breakpoint at " + nextBreakpoint);
+                }
+                _breakpoints.removeFirst();
+            }
+        }
+
         // Postfire the contained actors.
         // This must be done before refining the step size and
         // before updating _index because the actors may call fireAt()
@@ -1334,28 +1430,6 @@ public class ContinuousDirector extends FixedPointDirector implements
         // FIXME: This also resets all receivers, which is redundant since in this
         // director, resetting receivers is handled by fire(). Efficiency concern?
         _postfireReturns = super.postfire();
-
-        // Correct for the above incrementing of the index.
-        _index--;
-
-        // If current time matches a time on the breakpoint table
-        // with the current index, then remove that breakpoint because we have
-        // just completed execution of that iteration.
-        if (!_breakpoints.isEmpty()) {
-            SuperdenseTime nextBreakpoint = (SuperdenseTime) _breakpoints
-                    .first();
-            Time breakpointTime = nextBreakpoint.timestamp();
-            int comparison = breakpointTime.compareTo(_currentTime);
-            // NOTE: _index was incremented by super.postfire!
-            // So we have to subtract one to remove a breakpoint
-            // matching the iteration we just completed.
-            if (comparison == 0 && nextBreakpoint.index() == _index - 1) {
-                if (_debugging) {
-                    _debug("Removing breakpoint at " + nextBreakpoint);
-                }
-                _breakpoints.removeFirst();
-            }
-        }
 
         // If the current time is equal to the stop time, return false.
         // Check, however, to make sure that the breakpoints table
@@ -1375,17 +1449,16 @@ public class ContinuousDirector extends FixedPointDirector implements
             }
         }
 
+        // Update the index. Note that this must happen before
+        // we refine the step size because the updated value gives
+        // the step size for the _next_ iteration.
+        if (_currentStepSize != 0.0) {
+            _index = 0;
+        }
+
         // Set the suggested step size for next integration step by polling
         // the contained actors and examining the breakpoint table.
         _setCurrentStepSize(suggestedStepSize());
-
-        // Update the index. Note that this must happen after
-        // we refine the step size.
-        if (_currentStepSize == 0.0) {
-            _index++;
-        } else {
-            _index = 0;
-        }
 
         // Set the start time of the current iteration.
         // The iterationBegintime will be used for roll back when the current
@@ -1394,33 +1467,6 @@ public class ContinuousDirector extends FixedPointDirector implements
         _iterationBeginIndex = _index;
 
         return _postfireReturns;
-    }
-
-    /** Discard all breakpoints on the breakpoint table that are earlier
-     *  than the specified time.
-     *  @param time The time.
-     *  @param index The superdense time index.
-     */
-    private void _discardBreakpointsBefore(Time time, int index)
-            throws IllegalActionException {
-        while (!_breakpoints.isEmpty()) {
-            SuperdenseTime nextBreakpoint = (SuperdenseTime) _breakpoints
-                    .first();
-            Time breakpointTime = nextBreakpoint.timestamp();
-            int comparison = breakpointTime.compareTo(time);
-            if (comparison > 0
-                    || (comparison == 0 && nextBreakpoint.index() > index)) {
-                // Next breakpoint is in the future.
-                break;
-            } else {
-                if (_debugging) {
-                    _debug(">>>> Discarding a breakpoint from the breakpoint table: "
-                            + nextBreakpoint);
-                }
-                _fireAtSkipped(breakpointTime);
-                _breakpoints.removeFirst();
-            }
-        }
     }
 
     /** Return the enclosing continuous director, or null if there
@@ -1453,29 +1499,48 @@ public class ContinuousDirector extends FixedPointDirector implements
         return _enclosingContinuousDirector;
     }
 
-    /** Notify all actors being executed that the specified time has
-     *  been skipped, in case they have called fireAt() and are expecting
-     *  to be fired at that time. The actors are notified in schedule order.
-     *  @param skippedTime The time that was skipped.
-     *  @exception IllegalActionException If there is a problem obtaining
-     *   the schedule.
+    /** Throw an exception if there are any breakpoints in the breakpoint
+     *  table before the specified time.
+     *  @param time The time.
+     *  @param index The superdense time index.
+     *  @throws IllegalActionException If there are any breakpoints in the
+     *   breakpoint table earlier than the specified time.
      */
-    private void _fireAtSkipped(Time skippedTime) throws IllegalActionException {
-        // Since we don't know what actors may have missed a
-        // fireAt() request, we need to notify all of them of
-        // the skipped event. Use the schedule to not incur
-        // the cost of constructing the deep contained
-        // entity list (although it may be cached, so it
-        // may be a non issue).
-        Schedule schedule = getScheduler().getSchedule();
-        Iterator firingIterator = schedule.firingIterator();
-        while (firingIterator.hasNext() && !_stopRequested) {
-            Actor actor = ((Firing) firingIterator.next()).getActor();
-            // Do not notify actors that will not be fired again.
-            if (!_actorsFinishedExecution.contains(actor)) {
-                actor.fireAtSkipped(skippedTime);
+    private void _handleBreakpointsBefore(Time time, int index)
+            throws IllegalActionException {
+        if (!_breakpoints.isEmpty()) {
+            SuperdenseTime nextBreakpoint = (SuperdenseTime) _breakpoints
+                    .first();
+            Time breakpointTime = nextBreakpoint.timestamp();
+            if (breakpointTime.compareTo(time) < 0) {
+                throw new IllegalActionException(this,
+                        "ContinuousDirector expected to be fired at time "
+                        + breakpointTime
+                        + " but instead is being fired at time "
+                        + time);
             }
         }
+        // NOTE: An alternative would be to discard breakpoints earlier
+        // than the specified time. The code for doing that is below.
+        /*
+        while (!_breakpoints.isEmpty()) {
+            SuperdenseTime nextBreakpoint = (SuperdenseTime) _breakpoints
+                    .first();
+            Time breakpointTime = nextBreakpoint.timestamp();
+            int comparison = breakpointTime.compareTo(time);
+            if (comparison > 0
+                    || (comparison == 0 && nextBreakpoint.index() > index)) {
+                // Next breakpoint is in the future.
+                break;
+            } else {
+                if (_debugging) {
+                    _debug(">>>> Discarding a breakpoint from the breakpoint table: "
+                            + nextBreakpoint);
+                }
+                _breakpoints.removeFirst();
+            }
+        }
+        */
     }
 
     /** Initialize the local variables of this ContinuousDirector. Create or
@@ -1531,64 +1596,16 @@ public class ContinuousDirector extends FixedPointDirector implements
      *  @return True if it is OK to fire again.
      */
     private boolean _postfireAtTopLevel() throws IllegalActionException {
-        // If current time matches a time on the breakpoint table
-        // with the current index, then remove that breakpoint because we have
-        // just completed execution of that iteration.
-        if (!_breakpoints.isEmpty()) {
-            SuperdenseTime nextBreakpoint = (SuperdenseTime) _breakpoints
-                    .first();
-            Time breakpointTime = nextBreakpoint.timestamp();
-            int comparison = breakpointTime.compareTo(_currentTime);
-            if (comparison == 0 && nextBreakpoint.index() == _index) {
-                if (_debugging) {
-                    _debug("-- Removing breakpoint at " + nextBreakpoint);
-                }
-                _breakpoints.removeFirst();
-            }
+        // Commit the current state and postfire all actors.
+        boolean result = _commit();
+        // The above call will increment the index if the current step
+        // size is zero, and set it to zero otherwise. At the top level,
+        // we want to set it to 1, not zero because we just committed
+        // the index 0 iteration for the current time. The next iteration
+        // should run with index 1.
+        if (_index == 0) {
+            _index++;
         }
-        // Postfire the contained actors.
-        // This must be done before refining the step size and
-        // before updating _index because the actors may call fireAt()
-        // in their postfire() method, which will insert breakpoints,
-        // which will affect the next step size.
-        // This has to be done after removing the current time from
-        // the breakpoint table because it increments the _index.
-        boolean result = super.postfire();
-
-        // If the current time is equal to the stop time, return false.
-        // Check, however, to make sure that the breakpoints table
-        // does not contain the current model time, which would mean
-        // that more events may be generated at this time.
-        // If the index of the breakpoint is the same as the current
-        // index, then we have executed it.  This must be called
-        // after postfire() of the controlled actors is called, because
-        // they may call fireAt(), which inserts events in the breakpoint
-        // table.
-        if (_currentTime.equals(_stopTime)) {
-            SuperdenseTime nextBreakpoint = (SuperdenseTime) _breakpoints
-                    .first();
-            if (nextBreakpoint == null
-                    || nextBreakpoint.timestamp().compareTo(_currentTime) > 0) {
-                return false;
-            }
-        }
-
-        // Set the suggested step size for next integration step by polling
-        // the contained actors and examining the breakpoint table.
-        _setCurrentStepSize(suggestedStepSize());
-
-        // If the step size is non-zero, set the index for the next iteration
-        // to zero. Note the the superclass has already incremented the index.
-        if (_currentStepSize != 0.0) {
-            _index = 0;
-        }
-
-        // Set the start time of the current iteration.
-        // The iterationBegintime will be used for roll back when the current
-        // step size is incorrect.
-        _iterationBeginTime = _currentTime;
-        _iterationBeginIndex = _index;
-
         return result;
     }
 
@@ -1598,26 +1615,12 @@ public class ContinuousDirector extends FixedPointDirector implements
      */
     private boolean _postfireWithEnclosingContinuousDirector()
             throws IllegalActionException {
-        boolean postfireResult = true;
-        if (_currentTime.equals(_stopTime)) {
-            // Reached the stop time. Assume that the execution will end.
-            postfireResult = false;
-            // If there is no pending breakpoint
-            // happening at the current time with a bigger index,
-            // return false to indicate no firing is necessary.
-            if (_breakpoints.size() > 0) {
-                SuperdenseTime nextBreakpoint = (SuperdenseTime) _breakpoints
-                        .first();
-                Time breakpointTime = nextBreakpoint.timestamp();
-                if (breakpointTime.equals(_currentTime)) {
-                    postfireResult = true;
-                }
-            }
-        }
-        postfireResult = _commit() && postfireResult;
-        // request a refiring at a future time,
-        // the current time + suggested step size
-        if (_currentStepSize == 0) {
+        boolean postfireResult = _commit();
+        
+        // Request a refiring at the current time if the
+        // next step size has been set to 0.0, and at the
+        // next breakpoint time otherwise.
+        if (_currentStepSize == 0.0) {
             _fireContainerAt(_currentTime);
         } else if (_breakpoints.size() > 0) {
             // Request a firing at the time of the first breakpoint.
@@ -1640,7 +1643,18 @@ public class ContinuousDirector extends FixedPointDirector implements
         if (_commitIsPending) {
             _commitIsPending = false;
             _fireContainerAt(_currentTime);
-            return _commit();
+
+            // Commit the current state and postfire all actors.
+            boolean result = _commit();
+            // The above call will increment the index if the current step
+            // size is zero, and set it to zero otherwise. At the top level,
+            // we want to set it to 1, not zero because we just committed
+            // the index 0 iteration for the current time. The next iteration
+            // should run with index 1.
+            if (_index == 0) {
+                _index++;
+            }
+            return result;
         }
         Director enclosingDirector = ((Actor) getContainer())
                 .getExecutiveDirector();
@@ -1655,6 +1669,8 @@ public class ContinuousDirector extends FixedPointDirector implements
             // The following will throw an exception if the enclosing director
             // does not respect the fireAt() request exactly.
             _fireContainerAt(_currentTime);
+            // When that firing occurs, we want the index to be 0.
+            _index = 0;
             _commitIsPending = true;
             if (_debugging) {
                 _debug("postfire() requests refiring at time " + _currentTime
@@ -1662,26 +1678,27 @@ public class ContinuousDirector extends FixedPointDirector implements
             }
             return true;
         } else {
+            // Current time is less than or equal to the environment time.
             // NOTE: It is, in theory, impossible for local current time to
             // be less than the environment time because the prefire() method
             // would have thrown an exception. Hence, current time must match
             // the environment time.
-            if (!_commitIsPending) {
-                // Request a refiring at the current time.
-                // The reason for this is that local time has not advanced,
-                // so we can't be sure of any interval of future time over which
-                // we will not produce an event. Only when the step size is
-                // greater than zero, as we have speculatively executed into
-                // the future, can we allow the enclosing director to advance time.
-                // The following will throw an exception if the enclosing director
-                // does not respect the fireAt() request exactly.
-                // However, it could be that the current iteration is actually
-                // a deferred commit, in which case local time has advanced
-                // and we don't need to request a refiring at the current time.
-                _fireContainerAt(_currentTime);
-            }
-            _commitIsPending = false;
 
+            // Request a refiring at the current time.
+            // The reason for this is that local time has not advanced,
+            // so we can't be sure of any interval of future time over which
+            // we will not produce an event. Only when the step size is
+            // greater than zero, as we have speculatively executed into
+            // the future, can we allow the enclosing director to advance time.
+            // The following will throw an exception if the enclosing director
+            // does not respect the fireAt() request exactly.
+            // However, it could be that the current iteration is actually
+            // a deferred commit, in which case local time has advanced
+            // and we don't need to request a refiring at the current time.
+            _fireContainerAt(_currentTime);
+            
+            // The following call will increment the index if the current step
+            // size is zero, and set it to zero otherwise. At the top level,
             return _commit();
         }
     }
@@ -1697,13 +1714,15 @@ public class ContinuousDirector extends FixedPointDirector implements
                     .first();
             Time breakpointTime = nextBreakpoint.timestamp();
             int comparison = breakpointTime.compareTo(_currentTime);
-            if (comparison < 0
-                    || (comparison == 0 && nextBreakpoint.index() < _index)) {
+            // Note that we don't compare the superdense time of the breakpoint
+            // because it is not important. It was created, probably, with
+            // fireAt(), which does not take a superdense time index.
+            if (comparison < 0) {
                 // At the top level, we should not have missed a breakpoint.
                 throw new IllegalActionException(this,
                         "Missed a breakpoint time at " + breakpointTime
                                 + ", with index " + nextBreakpoint.index());
-            } else if (comparison == 0 && nextBreakpoint.index() == _index) {
+            } else if (comparison == 0 && nextBreakpoint.index() <= _index) {
                 if (_debugging) {
                     _debug("-- The current superdense time is a breakpoint, "
                             + nextBreakpoint + ", which is removed.");
@@ -1728,17 +1747,32 @@ public class ContinuousDirector extends FixedPointDirector implements
      */
     private boolean _prefireWithEnclosingContinuousDirector()
             throws IllegalActionException {
+        // Call the super.prefire() method, which will synchronize time to the outside time.
+        // That time may get modified below to align not with the immediate outside time,
+        // but rather with the time of the enclosing continuous director, modified as
+        // needed by accumulated suspend time. As a consequence, we set a flag to
+        // ignore the time that is set.
+        boolean result = true;
+        try {
+            _ignoreSetTime = true;
+            result = super.prefire();
+        } finally {
+            _ignoreSetTime = false;
+        }
+
         // Set the time and step size to match that of the enclosing director.
         ContinuousDirector enclosingDirector = _enclosingContinuousDirector();
         _currentStepSize = enclosingDirector._currentStepSize;
-        _currentTime = enclosingDirector._currentTime;
+        _currentTime = enclosingDirector._currentTime.subtract(_accumulatedSuspendTime);
         if (_debugging) {
             _debug("-- Setting current time to match enclosing ContinuousDirector: "
                     + _currentTime);
         }
-        _index = enclosingDirector._index;
-        _iterationBeginTime = enclosingDirector._iterationBeginTime;
-        _iterationBeginIndex = enclosingDirector._index;
+        // Probably shouldn't make the index match that of the environment!
+        // There may have been suspensions happening. So what should the index be?
+        // _index = enclosingDirector._index;
+        _iterationBeginTime = enclosingDirector._iterationBeginTime.subtract(_accumulatedSuspendTime);
+        _iterationBeginIndex = enclosingDirector._iterationBeginIndex;
 
         // If we have passed the stop time, then return false.
         // This can occur if we are inside a modal model and were not
@@ -1751,16 +1785,10 @@ public class ContinuousDirector extends FixedPointDirector implements
             return false;
         }
 
-        // Update the breakpoint table to not include any entries earlier
-        // than or equal to the iteration begin time. Note that we may have missed
-        // some breakpoints if we are inside a modal model and were not
-        // active during the time of those breakpoints.
-        _discardBreakpointsBefore(_iterationBeginTime, _index);
+        // Handle breakpoint entries earlier
+        // than or equal to the iteration begin time.
+        _handleBreakpointsBefore(_iterationBeginTime, _index);
 
-        // Call the super.prefire() method to synchronized to the outside time.
-        // by setting the current time. Note that this is also done at the very
-        // beginning of this method.
-        boolean result = super.prefire();
         // Initialize everything for the fixedpoint iteration.
         // NOTE: This is done in fire(), and anyway, should not be done
         // if there is commit pending.
@@ -1782,12 +1810,13 @@ public class ContinuousDirector extends FixedPointDirector implements
         Director executiveDirector = ((Actor) container).getExecutiveDirector();
 
         // Check the enclosing model time against the local model time.
+        // Note that time has already been automatically adjusted with the
+        // accumulated suspend time.
         Time outTime = executiveDirector.getModelTime();
         int localTimeExceedsOutsideTime = _currentTime.compareTo(outTime);
         if (localTimeExceedsOutsideTime > 0) {
             ///////////////////////////////////////////////////////////////
             // First case: Local current time exceeds that of the environment.
-            // We need to roll back. Make sure this is allowable.
             if (!_commitIsPending) {
                 throw new IllegalActionException(this, "The model time of "
                         + container.getFullName()
@@ -1797,7 +1826,7 @@ public class ContinuousDirector extends FixedPointDirector implements
                         + _currentTime);
             }
             // If we get here, local time exceeds the environment time
-            // and we have speculatively executed up to that local time.
+            // and we have speculatively executed past that local time.
             // But now, we cannot commit that execution because an unexpected
             // event has occurred.  Instead, we have to re-do the integration
             // with a smaller step size that brings us up to the current
@@ -1806,6 +1835,10 @@ public class ContinuousDirector extends FixedPointDirector implements
             // step with a larger step size was successful and produced
             // no events, then an integration step with this now smaller
             // step size will also be successful and produce no events.
+            // FIXME: This property is not true in general. E.g., we
+            // might have missed a level crossing with a larger step
+            // size that we won't miss with the smaller one! What
+            // to do about this?
             _currentStepSize = outTime.subtract(_iterationBeginTime)
                     .getDoubleValue();
             // If the step size is now negative, then we are trying
@@ -1838,18 +1871,24 @@ public class ContinuousDirector extends FixedPointDirector implements
             // step. This microstep will simply do the commit that is pending,
             // producing any outputs previously computed in the speculative
             // execution. It will then request a refiring at the current time.
+            // FIXME: Why set the current step size to zero?
             _currentStepSize = 0.0;
             // If the enclosing director implements SuperdenseTimeDirector,
-            // then get the current index from it.
+            // then we used to get the current index from it.
+            // However, we can't really trust the outside director to have
+            // incremented the index, and it would incorrect to execute
+            // without increment it. So we use our own index.
+            /*
             if (executiveDirector instanceof SuperdenseTimeDirector) {
                 _index = ((SuperdenseTimeDirector) executiveDirector).getIndex();
             }
+            */
             return true;
         } else if (localTimeExceedsOutsideTime < 0) {
             ///////////////////////////////////////////////////////////////
             // Third case:
             // Local current time is behind environment time.
-            // This could have happened if
+            // This should not happen. This used to happen if
             // we are inside a modal model and have been
             // disabled at the time that the commit
             // would be effective. We should cancel any pending commit.
@@ -1885,26 +1924,37 @@ public class ContinuousDirector extends FixedPointDirector implements
                 }
             }
             // If the enclosing director implements SuperdenseTimeDirector,
-            // then get the current index from it.
+            // then we used to get the current index from it.
+            // But we can't trust the enclosing director to do the right
+            // thing with the index. It becomes too fragile.
+            /*
             if (executiveDirector instanceof SuperdenseTimeDirector) {
                 _index = ((SuperdenseTimeDirector) executiveDirector).getIndex();
             }
+            */
         }
 
         // If the current time and index match the first entry in the breakpoint
-        // table, then remove that entry.
+        // table, then remove that entry. An index is deemed to match if
+        // the breakpoint index is less than or equal to the current time index.
         if (!_breakpoints.isEmpty()) {
             SuperdenseTime nextBreakpoint = (SuperdenseTime) _breakpoints
                     .first();
             Time breakpointTime = nextBreakpoint.timestamp();
             localTimeExceedsOutsideTime = breakpointTime
                     .compareTo(_currentTime);
-            // Remove any breakpoints from the table that are now in the past.
-            // In theory, this should only happen if we are inside a modal model
-            // and we were not active at the time of the breakpoint. In such a
-            // case, the right thing to do is to ignore the breakpoint,
-            // except that we need to notify actors of fact that the breakpoint
-            // is being skipped.
+            if (localTimeExceedsOutsideTime < 0) {
+                throw new IllegalActionException(this,
+                        "ContinuousDirector expected to be fired at time "
+                        + breakpointTime
+                        + " but instead is being fired at time "
+                        + _currentTime);
+            }
+
+            // NOTE: An alternative would be
+            // to remove any breakpoints from the table that are now in the past.
+            // In theory, this should not happen. The code for doing that is below.
+            /*
             while (localTimeExceedsOutsideTime < 0
                     || (localTimeExceedsOutsideTime == 0 && nextBreakpoint
                             .index() < _index)) {
@@ -1912,7 +1962,6 @@ public class ContinuousDirector extends FixedPointDirector implements
                     _debug("Remove a breakpoint that we missed: "
                             + breakpointTime);
                 }
-                _fireAtSkipped(breakpointTime);
                 _breakpoints.removeFirst();
                 if (_breakpoints.isEmpty()) {
                     break;
@@ -1922,8 +1971,9 @@ public class ContinuousDirector extends FixedPointDirector implements
                 localTimeExceedsOutsideTime = breakpointTime
                         .compareTo(_currentTime);
             }
+            */
             if (localTimeExceedsOutsideTime == 0
-                    && nextBreakpoint.index() == _index) {
+                    && nextBreakpoint.index() <= _index) {
                 if (_debugging) {
                     _debug("-- The current superdense time is a breakpoint, "
                             + nextBreakpoint + ", which is removed.");
@@ -2058,6 +2108,11 @@ public class ContinuousDirector extends FixedPointDirector implements
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
+    /** The accumulated suspend time relative to an eclosing ContinuousDirector,
+     *  calculated as a side effect of calling _enclosingContinuousDirector().
+     */
+    private Time _accumulatedSuspendTime;
+    
     /** A table for breakpoints. */
     private TotallyOrderedSet _breakpoints;
 
@@ -2077,6 +2132,9 @@ public class ContinuousDirector extends FixedPointDirector implements
 
     /** The error tolerance for state resolution. */
     private double _errorTolerance;
+    
+    /** Flag to temporarily ignore the setModelTime() calls. */
+    private boolean _ignoreSetTime = false;
 
     /** A cache of the value of initStepSize. */
     private double _initStepSize;
@@ -2091,6 +2149,13 @@ public class ContinuousDirector extends FixedPointDirector implements
 
     /** The current time at the start of the current integration step. */
     private Time _iterationBeginTime;
+    
+    /** The environment time when this refinement was last suspended
+     *  (that is, the enclosing state was exited). This is null if
+     *  the actor has not been suspended since initialize() or
+     *  resume() has been called more recently than suspend().
+     */
+    private Time _lastSuspendTime;
 
     /** The maximum iterations for implicit ODE solver to resolve states. */
     private int _maxIterations;
@@ -2130,4 +2195,7 @@ public class ContinuousDirector extends FixedPointDirector implements
     /** The local flag variable indicating whether the we have tried
      *  the time resolution as the integration step size. */
     private boolean _triedTheMinimumStepSize = false;
+    
+    /** Time with value 0.0. */
+    private Time _zeroTime;
 }

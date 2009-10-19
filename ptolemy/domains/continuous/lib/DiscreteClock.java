@@ -39,7 +39,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  intervals.
 
  <p>This actor is identical to {@link ptolemy.actor.lib.DiscreteClock},
- except that for backward compatibility the default valus of the parameters
+ except that for backward compatibility the default values of the parameters
  are changed to
  <ul>
  <li> period: 2.0
