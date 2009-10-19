@@ -454,7 +454,7 @@ HYVISUALPACKAGES = \
 	ptolemy.actor.lib.embeddedJava \
 	ptolemy.actor.lib.image \
 	ptolemy.actor.lib.io \
-	ptolemy.actor.lib.jopio
+	ptolemy.actor.lib.jopio \
 	ptolemy.actor.lib.logic \
 	ptolemy.actor.lib.security \
 	ptolemy.actor.lib.string \
