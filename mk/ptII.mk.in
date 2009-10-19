@@ -213,6 +213,9 @@ JFLAGS = 	$(JDEBUG) $(JOPTIMIZE)
 # The javadoc binary, used to create html documentation of java classes.
 JAVADOC = 	@JAVADOC@
 
+# The javah binary, used by jni for matlab.
+JAVAH =		@JAVAH@
+
 # The javaws command is used to test Webstart JNLP files.
 JAVAWS =	@JAVAWS@
 

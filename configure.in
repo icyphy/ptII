@@ -2758,6 +2758,12 @@ else
         fi
     fi
 
+    AC_PATH_PROG(JAVAH, javah)
+    # Under MacOS X, JAVAH might be a link
+    if test ! -e "$JAVAH"; then
+        AC_MSG_WARN([ Failed to find javah at '$JAVAH', perhaps Java is not installed?])
+    fi
+
     AC_MSG_CHECKING([for the proper JNI architecture])
     case "`uname -s`" in
         CYGWIN_ME-*) PTJNI_ARCHITECTURE=win32;;
@@ -3187,21 +3193,27 @@ changequote([, ])dnl
 		        fi
 		    fi
 
-
-		    AC_MSG_CHECKING([for gcc])
-		    AC_PATH_PROG(PTCC, gcc)
-		    if test "${PTCC:-none}" != "none"; then
-		        PTMATLAB_CC=$PTCC
-		        PTMATLAB_DIR=matlab
-	            else    
-			AC_MSG_WARN([Failed to find gcc])
-			AC_PATH_PROG(PTCC, cc)
-			if test "${PTCC:-none}" != "none"; then
+		    # Under MacOS X, JAVAH might be a link
+		    if test ! -e "$JAVAH"; then
+		        AC_MSG_WARN([Failed to find javah at '$JAVAH',
+    perhaps the JDK is not installed?
+    We will not be able to compile the Matlab interface in ptolemy/matlab]);
+                    else
+		        AC_MSG_CHECKING([for gcc])
+		        AC_PATH_PROG(PTCC, gcc)
+		        if test "${PTCC:-none}" != "none"; then
 		            PTMATLAB_CC=$PTCC
-			    PTMATLAB_DIR=matlab
-			else	
-			    AC_MSG_WARN([Failed to find gcc or cc, so we will
+		            PTMATLAB_DIR=matlab
+	                else    
+			    AC_MSG_WARN([Failed to find gcc])
+			    AC_PATH_PROG(PTCC, cc)
+			    if test "${PTCC:-none}" != "none"; then
+		                PTMATLAB_CC=$PTCC
+			        PTMATLAB_DIR=matlab
+			    else	
+			        AC_MSG_WARN([Failed to find gcc or cc, so we will
     not be able to compile the Matlab interface in ptolemy/matlab]);
+                            fi
 			fi
 		    fi
                 fi
@@ -4288,6 +4300,9 @@ AC_SUBST(JAVACC_DIR)
 
 # The javadoc binary, used to create html documentation of java classes.
 AC_SUBST(JAVADOC)
+
+# The javah binary, used by jni for matlab.
+AC_SUBST(JAVAH)
 
 # The javaws command is used to test Webstart JNLP files.
 AC_SUBST(JAVAWS)
