@@ -679,6 +679,7 @@ ac_ct_CXX
 PTJYTHON
 PTJYTHON_BAT
 JJTREE
+JAVAH
 MATLAB
 PTMATLAB_CC
 CALTROP_DIR
@@ -8714,6 +8715,52 @@ echo "$as_me: WARNING: Failed to find gcc or cc, so we will
         fi
     fi
 
+    # Extract the first word of "javah", so it can be a program name with args.
+set dummy javah; ac_word=$2
+{ echo "$as_me:$LINENO: checking for $ac_word" >&5
+echo $ECHO_N "checking for $ac_word... $ECHO_C" >&6; }
+if test "${ac_cv_path_JAVAH+set}" = set; then
+  echo $ECHO_N "(cached) $ECHO_C" >&6
+else
+  case $JAVAH in
+  [\\/]* | ?:[\\/]*)
+  ac_cv_path_JAVAH="$JAVAH" # Let the user override the test with a path.
+  ;;
+  *)
+  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+  for ac_exec_ext in '' $ac_executable_extensions; do
+  if { test -f "$as_dir/$ac_word$ac_exec_ext" && $as_test_x "$as_dir/$ac_word$ac_exec_ext"; }; then
+    ac_cv_path_JAVAH="$as_dir/$ac_word$ac_exec_ext"
+    echo "$as_me:$LINENO: found $as_dir/$ac_word$ac_exec_ext" >&5
+    break 2
+  fi
+done
+done
+IFS=$as_save_IFS
+
+  ;;
+esac
+fi
+JAVAH=$ac_cv_path_JAVAH
+if test -n "$JAVAH"; then
+  { echo "$as_me:$LINENO: result: $JAVAH" >&5
+echo "${ECHO_T}$JAVAH" >&6; }
+else
+  { echo "$as_me:$LINENO: result: no" >&5
+echo "${ECHO_T}no" >&6; }
+fi
+
+
+    # Under MacOS X, JAVAH might be a link
+    if test ! -e "$JAVAH"; then
+        { echo "$as_me:$LINENO: WARNING:  Failed to find javah at '$JAVAH', perhaps Java is not installed?" >&5
+echo "$as_me: WARNING:  Failed to find javah at '$JAVAH', perhaps Java is not installed?" >&2;}
+    fi
+
     { echo "$as_me:$LINENO: checking for the proper JNI architecture" >&5
 echo $ECHO_N "checking for the proper JNI architecture... $ECHO_C" >&6; }
     case "`uname -s`" in
@@ -9367,10 +9414,18 @@ echo "$as_me: WARNING: Failed to find MSVC cl or GNU gcc, so we will
 		        fi
 		    fi
 
-
-		    { echo "$as_me:$LINENO: checking for gcc" >&5
+		    # Under MacOS X, JAVAH might be a link
+		    if test ! -e "$JAVAH"; then
+		        { echo "$as_me:$LINENO: WARNING: Failed to find javah at '$JAVAH',
+    perhaps the JDK is not installed?
+    We will not be able to compile the Matlab interface in ptolemy/matlab" >&5
+echo "$as_me: WARNING: Failed to find javah at '$JAVAH',
+    perhaps the JDK is not installed?
+    We will not be able to compile the Matlab interface in ptolemy/matlab" >&2;};
+                    else
+		        { echo "$as_me:$LINENO: checking for gcc" >&5
 echo $ECHO_N "checking for gcc... $ECHO_C" >&6; }
-		    # Extract the first word of "gcc", so it can be a program name with args.
+		        # Extract the first word of "gcc", so it can be a program name with args.
 set dummy gcc; ac_word=$2
 { echo "$as_me:$LINENO: checking for $ac_word" >&5
 echo $ECHO_N "checking for $ac_word... $ECHO_C" >&6; }
@@ -9410,13 +9465,13 @@ echo "${ECHO_T}no" >&6; }
 fi
 
 
-		    if test "${PTCC:-none}" != "none"; then
-		        PTMATLAB_CC=$PTCC
-		        PTMATLAB_DIR=matlab
-	            else
-			{ echo "$as_me:$LINENO: WARNING: Failed to find gcc" >&5
+		        if test "${PTCC:-none}" != "none"; then
+		            PTMATLAB_CC=$PTCC
+		            PTMATLAB_DIR=matlab
+	                else
+			    { echo "$as_me:$LINENO: WARNING: Failed to find gcc" >&5
 echo "$as_me: WARNING: Failed to find gcc" >&2;}
-			# Extract the first word of "cc", so it can be a program name with args.
+			    # Extract the first word of "cc", so it can be a program name with args.
 set dummy cc; ac_word=$2
 { echo "$as_me:$LINENO: checking for $ac_word" >&5
 echo $ECHO_N "checking for $ac_word... $ECHO_C" >&6; }
@@ -9456,14 +9511,15 @@ echo "${ECHO_T}no" >&6; }
 fi
 
 
-			if test "${PTCC:-none}" != "none"; then
-		            PTMATLAB_CC=$PTCC
-			    PTMATLAB_DIR=matlab
-			else
-			    { echo "$as_me:$LINENO: WARNING: Failed to find gcc or cc, so we will
+			    if test "${PTCC:-none}" != "none"; then
+		                PTMATLAB_CC=$PTCC
+			        PTMATLAB_DIR=matlab
+			    else
+			        { echo "$as_me:$LINENO: WARNING: Failed to find gcc or cc, so we will
     not be able to compile the Matlab interface in ptolemy/matlab" >&5
 echo "$as_me: WARNING: Failed to find gcc or cc, so we will
     not be able to compile the Matlab interface in ptolemy/matlab" >&2;};
+                            fi
 			fi
 		    fi
                 fi
@@ -10932,6 +10988,9 @@ fi
 # The javadoc binary, used to create html documentation of java classes.
 
 
+# The javah binary, used by jni for matlab.
+
+
 # The javaws command is used to test Webstart JNLP files.
 
 
@@ -12174,6 +12233,7 @@ ac_ct_CXX!$ac_ct_CXX$ac_delim
 PTJYTHON!$PTJYTHON$ac_delim
 PTJYTHON_BAT!$PTJYTHON_BAT$ac_delim
 JJTREE!$JJTREE$ac_delim
+JAVAH!$JAVAH$ac_delim
 MATLAB!$MATLAB$ac_delim
 PTMATLAB_CC!$PTMATLAB_CC$ac_delim
 CALTROP_DIR!$CALTROP_DIR$ac_delim
@@ -12205,7 +12265,6 @@ JTCLSH!$JTCLSH$ac_delim
 JTREE!$JTREE$ac_delim
 JVERSION!$JVERSION$ac_delim
 JMF_JARS!$JMF_JARS$ac_delim
-JODE_CLASSES!$JODE_CLASSES$ac_delim
 _ACEOF
 
   if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 97; then
@@ -12247,6 +12306,7 @@ _ACEOF
 ac_delim='%!_!# '
 for ac_last_try in false false false false false :; do
   cat >conf$$subs.sed <<_ACEOF
+JODE_CLASSES!$JODE_CLASSES$ac_delim
 JYTHON_DIR!$JYTHON_DIR$ac_delim
 JXTA_DIR!$JXTA_DIR$ac_delim
 KIELER_JAR!$KIELER_JAR$ac_delim
@@ -12343,7 +12403,6 @@ PTPDFRENDERER_DIR!$PTPDFRENDERER_DIR$ac_delim
 PTPDFRENDERER_JAR!$PTPDFRENDERER_JAR$ac_delim
 PTPSDF_DIR!$PTPSDF_DIR$ac_delim
 PTSVG_DIR!$PTSVG_DIR$ac_delim
-PTSVG_JAR!$PTSVG_JAR$ac_delim
 _ACEOF
 
   if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 97; then
@@ -12385,6 +12444,7 @@ _ACEOF
 ac_delim='%!_!# '
 for ac_last_try in false false false false false :; do
   cat >conf$$subs.sed <<_ACEOF
+PTSVG_JAR!$PTSVG_JAR$ac_delim
 PTPTALON_DIR!$PTPTALON_DIR$ac_delim
 PTPTALON_PACKAGES!$PTPTALON_PACKAGES$ac_delim
 ANTLR_DIR!$ANTLR_DIR$ac_delim
@@ -12424,7 +12484,7 @@ LIBOBJS!$LIBOBJS$ac_delim
 LTLIBOBJS!$LTLIBOBJS$ac_delim
 _ACEOF
 
-  if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 37; then
+  if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 38; then
     break
   elif $ac_last_try; then
     { { echo "$as_me:$LINENO: error: could not make $CONFIG_STATUS" >&5
