@@ -27,10 +27,6 @@
 
 package ptolemy.actor.util;
 
-import java.util.HashSet;
-import java.util.Set;
-import java.util.TreeMap;
-
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
@@ -102,12 +98,10 @@ public class PeriodicDirectorHelper {
             if (container != null) {
                 Director executiveDirector = container.getExecutiveDirector();
                 if (executiveDirector != null) {
-                    recordPendingFireAt(actor, time);
                     return executiveDirector.fireAt(container, time);
                 }
             }
             // All subsequent firings will be at the current time.
-            recordPendingFireAt(actor, currentTime);
             return currentTime;
         }
         // Now we know the period is not 0.0.
@@ -124,26 +118,22 @@ public class PeriodicDirectorHelper {
         if (container != null) {
             Manager manager = ((CompositeActor) container).getManager();
             if (manager.getState().equals(Manager.INITIALIZING)) {
-                recordPendingFireAt(actor, currentTime);
                 return currentTime;
             }
         }
         if (time.isInfinite() || currentTime.compareTo(time) > 0) {
             // Either the requested time is infinite or it is in the past.
             Time result = currentTime.add(periodValue);
-            recordPendingFireAt(actor, result);
             return result;
         }
         Time futureTime = currentTime;
         while (time.compareTo(futureTime) > 0) {
             futureTime = futureTime.add(periodValue);
             if (futureTime.equals(time)) {
-                recordPendingFireAt(actor, time);
                 return time;
             }
         }
         Time result = futureTime;
-        recordPendingFireAt(actor, result);
         return result;
     }
     
@@ -221,24 +211,80 @@ public class PeriodicDirectorHelper {
         // catch up.
         double periodValue = _director.periodValue();
         if (periodValue > 0.0) {
-            Actor container = (Actor) _director.getContainer();
-            Director executiveDirector = container.getExecutiveDirector();
-            // If we are at the top level, then this check is not necessary
-            // since presumably we will be assured that current time matches
-            // the period.
-            if (executiveDirector != null) {
-                // Not at the top level.
-                Time enclosingTime = executiveDirector.getModelTime();
-                int comparison = _nextFiringTime.compareTo(enclosingTime);
+            Time enclosingTime = ((Director)_director).getModelTime();
+            int comparison = _nextFiringTime.compareTo(enclosingTime);
+            if (comparison == 0) {
+                // The enclosing time matches the time we expect to fire.
+                // Note that we agree to fire whatever the superdense time
+                // index is because the meaning of <i>period</i> is that
+                // we will fire at any multiple of the period.
+                return true;
+                // NOTE: An alternative would be to not agree to fire
+                // if the index is not zero, but request
+                // a refiring at the next multiple of the period.
+                // If the enclosing director supports superdense time, then
+                // make sure we are at index zero before agreeing to fire.
+                // The code to do that is below.
+                /*
+                if (executiveDirector instanceof SuperdenseTimeDirector) {
+                    int index = ((SuperdenseTimeDirector) executiveDirector)
+                            .getIndex();
+                    if (index > 0) {
+                        // If the index is not zero, do not agree to fire, but request
+                        // a refiring at the next multiple of the period.
+                        _nextFiringTime = _nextFiringTime.add(periodValue);
+                        _fireContainerAt(_nextFiringTime);
+                        return false;
+                    }
+                    return true;
+                }
+                */
+            } else if (comparison > 0) {
+                // Enclosing time has not yet reached our expected firing time.
+                // No need to call fireAt(), since presumably we already
+                // did that in postfire().
+                return false;
+            } else {
+                // Enclosing time has exceeded our expected firing time.
+                // This should not happen with an enclosing director with
+                // full support for fireAt(). The enclosing director
+                // could be another periodic director. In this case,
+                // we should just increase the next firing time.
+                while (comparison < 0) {
+                    _nextFiringTime = _nextFiringTime.add(periodValue);
+                    comparison = _nextFiringTime.compareTo(enclosingTime);
+                }
                 if (comparison == 0) {
-                    // The enclosing time matches the time we expect to fire.
+                    return true;
+                } else {
+                    Director executive = ((Actor)_director.getContainer()).getExecutiveDirector();
+                    if (executive != null) {
+                        executive.fireAt((Actor)_director.getContainer(), _nextFiringTime);
+                    }
+                    return false;
+                }
+                // An alternative would be to throw an exception.
+                /*
+                throw new IllegalActionException(_director,
+                        "Director expected to be fired at time "
+                        + _nextFiringTime
+                        + " but instead is being fired at time "
+                        + enclosingTime);
+                */
+                // NOTE: An alternative would be to catch up. The code
+                // to do that is here.
+                /*
+                while (_nextFiringTime.compareTo(enclosingTime) < 0) {
+                    _nextFiringTime = _nextFiringTime.add(periodValue);
+                }
+                if (_nextFiringTime.compareTo(enclosingTime) == 0) {
+                    // The caught up time matches a multiple of the period.
                     // If the enclosing director supports superdense time, then
                     // make sure we are at index zero before agreeing to fire.
                     if (executiveDirector instanceof SuperdenseTimeDirector) {
                         int index = ((SuperdenseTimeDirector) executiveDirector)
                                 .getIndex();
                         if (index == 0) {
-                            updatePendingFireAts(enclosingTime);
                             return true;
                         }
                         // If the index is not zero, do not agree to fire, but request
@@ -247,95 +293,24 @@ public class PeriodicDirectorHelper {
                         _fireContainerAt(_nextFiringTime);
                         return false;
                     }
-                } else if (comparison > 0) {
-                    // Enclosing time has not yet reached our expected firing time.
-                    // No need to call fireAt(), since presumably we already
-                    // did that in postfire().
-                    return false;
+                    // If the enclosing director does not support superdense time,
+                    // then agree to fire.
+                    return true;
                 } else {
-                    // Enclosing time has exceeded our expected firing time.
-                    // We must have been dormant in a modal model.
-                    // Catch up.
-                    while (_nextFiringTime.compareTo(enclosingTime) < 0) {
-                        // FIXME: Any enclosed actors that called fireAt() need
-                        // to be notified if their requested time has been
-                        // skipped by calling fireAtSkipped.
-                        _nextFiringTime = _nextFiringTime.add(periodValue);
-                    }
-                    if (_nextFiringTime.compareTo(enclosingTime) == 0) {
-                        // The caught up time matches a multiple of the period.
-                        // If the enclosing director supports superdense time, then
-                        // make sure we are at index zero before agreeing to fire.
-                        if (executiveDirector instanceof SuperdenseTimeDirector) {
-                            int index = ((SuperdenseTimeDirector) executiveDirector)
-                                    .getIndex();
-                            if (index == 0) {
-                                updatePendingFireAts(enclosingTime);
-                                return true;
-                            }
-                            // If the index is not zero, do not agree to fire, but request
-                            // a refiring at the next multiple of the period.
-                            _nextFiringTime = _nextFiringTime.add(periodValue);
-                            _fireContainerAt(_nextFiringTime);
-                            return false;
-                        }
-                        // If the enclosing director does not support superdense time,
-                        // then agree to fire.
-                        updatePendingFireAts(enclosingTime);
-                        return true;
-                    } else {
-                        // NOTE: The following throws an exception if the time
-                        // requested cannot be honored by the enclosed director
-                        // Presumably, if the user set the period, he or she wanted
-                        // that behavior.
-                        _fireContainerAt(_nextFiringTime);
-                        return false;
-                    }
+                    // NOTE: The following throws an exception if the time
+                    // requested cannot be honored by the enclosed director
+                    // Presumably, if the user set the period, he or she wanted
+                    // that behavior.
+                    _fireContainerAt(_nextFiringTime);
+                    return false;
                 }
+                */
             }
         }
-        // If period is zero, then just return the superclass result.
-        updatePendingFireAts(((Director)_director).getModelTime());
+        // If period is zero, then just return true.
         return true;
     }
 
-    /** Record a pending fireAt().
-     *  @param actor The actor requesting a firing.
-     *  @param time The time returned by fireAt().
-     */
-    public void recordPendingFireAt(Actor actor, Time time) {
-        if (_pendingFireAts == null) {
-            _pendingFireAts = new TreeMap<Time, Set<Actor>>();
-        }
-        Set<Actor> pending = _pendingFireAts.get(time);
-        if (pending == null) {
-            pending = new HashSet<Actor>();
-        }
-        pending.add(actor);
-    }
-
-    /** Notify any actors expecting fireAt() calls if the time
-     *  they were told they would fire is in the past compared
-     *  to the argument. Remove all pending fireAt() records
-     *  up to and including the specified time.
-     *  @param time The time returned by fireAt().
-     *  @throws IllegalActionException If a notified actor throws it.
-     */
-    public void updatePendingFireAts(Time time) throws IllegalActionException {
-        if (_pendingFireAts != null && !_pendingFireAts.isEmpty()) {
-            Time firstKey = _pendingFireAts.firstKey();
-            while(firstKey != null && firstKey.compareTo(time) < 0) {
-                Set<Actor> actors = _pendingFireAts.remove(firstKey);
-                if (actors != null) {
-                    for (Actor actor : actors) {
-                        actor.fireAtSkipped(firstKey);
-                    }
-                }
-            }
-            _pendingFireAts.remove(time);
-        }
-    }
-    
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
@@ -385,7 +360,4 @@ public class PeriodicDirectorHelper {
     
     /** The expected next firing time. */
     private Time _nextFiringTime;
-
-    /** Pending fireAt() calls, in case we have to call fireAtSkipped(). */
-    private TreeMap<Time, Set<Actor>> _pendingFireAts;
 }
