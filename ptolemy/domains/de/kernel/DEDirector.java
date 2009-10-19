@@ -802,23 +802,6 @@ public class DEDirector extends Director implements SuperdenseTimeDirector,
             throws IllegalActionException {
         fireAt(actor, time.add(getModelTime()));
     }
-
-    /** Request a refiring at the current time. When that refiring
-     *  occurs, this director will identify events on the local event
-     *  queue that have been skipped, and will notify the destination
-     *  actors of those events that a {@link Director#fireAt(Actor,Time)}
-     *  request was skipped, and that current time has passed the
-     *  requested time. An executive director calls this method when in a modal
-     *  model it was inactive at the time of the request, and it
-     *  became active again after the time of the request had
-     *  expired.
-     *  @param time The time of the request that was skipped.
-     *  @exception IllegalActionException If skipping the request
-     *   is not acceptable to a refinement.
-     */
-    public void fireAtSkipped(Time time) throws IllegalActionException {
-        fireAtCurrentTime((Actor) getContainer());
-    }
     
     /** Get the current microstep.
      *  @return microstep of the current time.
@@ -1069,6 +1052,9 @@ public class DEDirector extends Director implements SuperdenseTimeDirector,
         // the stop time.
         if (_noMoreActorsToFire
                 && (stop || (getModelTime().compareTo(getModelStopTime()) == 0))) {
+            if (_debugging) {
+                _debug("No more actors to fire and time to stop.");
+            }
             _exceedStopTime = true;
             result = false;
         } else if (_exceedStopTime) {
@@ -1176,45 +1162,47 @@ public class DEDirector extends Director implements SuperdenseTimeDirector,
         // whether this director is ready to fire.
         Time modelTime = getModelTime();
         Time nextEventTime = Time.POSITIVE_INFINITY;
-        int nextEventIndex = Integer.MAX_VALUE;
 
         if (!_eventQueue.isEmpty()) {
             DEEvent nextEvent = _eventQueue.get();
             nextEventTime = nextEvent.timeStamp();
-            nextEventIndex = nextEvent.microstep();
         }
 
         // If the model time is larger (later) than the first event
-        // in the queue, catch up with the current model time by discarding
-        // the old events, calling fireAtSkipped() on each of the destination
-        // actors for those events if the events are pure event.
-        // This can occur, for example, if we are in a
-        // modal model and this director was in an inactive mode before
-        // we reached the time of the event.
-        // This consumes events that are the past in superdense time
-        // as well those in the past in real time.
-        while (modelTime.compareTo(nextEventTime) > 0
-                || (modelTime.compareTo(nextEventTime) == 0 && getIndex() > nextEventIndex)) {
+        // in the queue, then
+        // catch up with the current model time by discarding
+        // the old events. Do not, however, discard events whose
+        // index but not time has passed.
+        while (modelTime.compareTo(nextEventTime) > 0) {
             DEEvent skippedEvent = _eventQueue.take();
             if (_debugging) {
-                _debug("Skipping event at time (" + nextEventTime + ", "
-                        + nextEventIndex + ") destined for actor "
+                _debug("Skipping event at time (" + nextEventTime 
+                        + ") destined for actor "
                         + skippedEvent.actor().getFullName());
             }
-            if (skippedEvent.ioPort() == null) {
-                // Event is a pure event.
-                skippedEvent.actor().fireAtSkipped(skippedEvent.timeStamp());
-            }
-
             if (!_eventQueue.isEmpty()) {
                 DEEvent nextEvent = _eventQueue.get();
                 nextEventTime = nextEvent.timeStamp();
-                nextEventIndex = nextEvent.microstep();
             } else {
                 nextEventTime = Time.POSITIVE_INFINITY;
-                nextEventIndex = Integer.MAX_VALUE;
             }
         }
+        // NOTE: An alternative would be to throw an exception. This means that the
+        // enclosing director is breaking the fireAt() contract, since
+        // it presumably returned a value indicating it would do the
+        // firing and then failed to do it. However, we don't do that
+        // because the old style of modal models (in the fsm domain)
+        // will result in this exception being thrown. The
+        // code to do that is below.
+        /*
+        if (modelTime.compareTo(nextEventTime) > 0) {
+            throw new IllegalActionException(this,
+                    "DEDirector expected to be fired at time "
+                    + nextEventTime
+                    + " but instead is being fired at time "
+                    + modelTime);
+        }
+        */
 
         // If model time is strictly less than the next event time,
         // then there are no events on the event queue with this
@@ -1238,6 +1226,12 @@ public class DEDirector extends Director implements SuperdenseTimeDirector,
                 }
             }
 
+            /* The following is no longer correct.
+             * We need to ensure that postfire() is invoked so that fireAt()
+             * gets called. Although fireAt() should have already been called
+             * for pending events in the event queue, it may need to be done again
+             * because we may have been suspending when the resulting fire occurred.
+             * EAL 9/18/09
             if (!hasInput) {
                 // If there is no internal event, it is not the correct
                 // time to fire.
@@ -1246,6 +1240,7 @@ public class DEDirector extends Director implements SuperdenseTimeDirector,
                 // For example, a DE model in a Giotto model.
                 result = false;
             }
+            */
         }
 
         if (_debugging) {
