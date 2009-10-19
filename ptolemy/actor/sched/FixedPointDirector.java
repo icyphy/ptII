@@ -398,10 +398,17 @@ public class FixedPointDirector extends StaticSchedulingDirector implements
         }
 
         boolean needMoreIterations = true;
+        // If no actors were fired, this director used to return
+        // false in postfire. However, this is not correct because there
+        // may be actors that are using time to decide whether to fire
+        // and, in addition, this may be embedded, in which case future
+        // events will trigger firings.
+        /*
         int numberOfActors = getScheduler().getSchedule().size();
         if ((numberOfActors > 0) && (_actorsFired.size() == 0)) {
             needMoreIterations = false;
         }
+        */
 
         Iterator actors = _actorsFired.iterator();
         while (actors.hasNext() && !_stopRequested) {
