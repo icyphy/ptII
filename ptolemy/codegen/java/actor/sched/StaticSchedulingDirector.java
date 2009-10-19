@@ -51,7 +51,7 @@ import ptolemy.kernel.util.NamedObj;
 
 /**
  Code generator helper associated with the StaticSchedulingDirector class.
- This classis also associated with a code generator.
+ This class is also associated with a code generator.
 
  @author Gang Zhou
  @version $Id$
@@ -183,6 +183,7 @@ public class StaticSchedulingDirector extends Director {
      *  @exception IllegalActionException If something goes wrong.
      */
     public String generateMainLoop() throws IllegalActionException {
+
         // Need a leading _eol here or else the execute decl. gets stripped out.
         StringBuffer code = new StringBuffer(
                 _eol + "public void execute() throws Exception {" + _eol);
@@ -283,11 +284,16 @@ public class StaticSchedulingDirector extends Director {
                                         + " so we track current time."));
                 variableDeclarations.append("double _currentTime = 0;" + _eol);
             }
-            variableDeclarations.append(_eol
-                    + _codeGenerator
-                            .comment("Provide the period attribute as constant."));
-            variableDeclarations.append("public final static double PERIOD = "
-                    + periodValue + ";" + _eol);
+            ptolemy.actor.sched.StaticSchedulingDirector director = (ptolemy.actor.sched.StaticSchedulingDirector) getComponent();
+            // Print period only if it is the containing actor is the top level.
+            // FIXME: should this test also be applied to the other code?
+            if (director.getContainer().getContainer()==null) {
+                variableDeclarations.append(_eol
+                        + _codeGenerator
+                                .comment("Provide the period attribute as constant."));
+                variableDeclarations.append("public final static double PERIOD = "
+                        + periodValue + ";" + _eol);
+            }
         }
 
         return variableDeclarations.toString();
