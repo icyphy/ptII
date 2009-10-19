@@ -156,7 +156,7 @@ test FixedPointReceiver-2.2 {Check put and get and hasToken with more than 1 tok
     # Now put another token, which will fail
     catch {$receiver {put ptolemy.data.Token} $token2} result2
     list $result1 $result2
-} {{ptolemy.kernel.util.InvalidStateException: hasToken(int) called on FixedPointReceiver with unknown status.} {ptolemy.kernel.util.IllegalActionException: Cannot put a token with a different value into a receiver with present status.}}
+} {{ptolemy.kernel.util.InvalidStateException: hasToken(int) called on FixedPointReceiver with unknown status.} {ptolemy.kernel.util.IllegalActionException: Cannot put a token with a different value "bar" into a receiver with alread established value "foo"}}
 
 
 test FixedPointReceiver-2.3 {check hasToken in an unknown status} {
