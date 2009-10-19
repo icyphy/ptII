@@ -276,6 +276,7 @@ CODEGENPACKAGES = \
 	ptolemy.codegen.java.actor.lib.embeddedJava \
 	ptolemy.codegen.java.actor.lib.gui \
 	ptolemy.codegen.java.actor.lib.hoc \
+	ptolemy.codegen.java.actor.lib.jopio \
 	ptolemy.codegen.java.actor.lib.logic \
 	ptolemy.codegen.java.actor.lib.string \
 	ptolemy.codegen.java.actor.parameters \
@@ -453,6 +454,7 @@ HYVISUALPACKAGES = \
 	ptolemy.actor.lib.embeddedJava \
 	ptolemy.actor.lib.image \
 	ptolemy.actor.lib.io \
+	ptolemy.actor.lib.jopio
 	ptolemy.actor.lib.logic \
 	ptolemy.actor.lib.security \
 	ptolemy.actor.lib.string \

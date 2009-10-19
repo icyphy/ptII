@@ -34,7 +34,8 @@
 ME =		ptolemy/codegen/java/actor/lib
 
 # PTCOLT_DIR is set to colt if colt was found
-DIRS =		comm $(PTCOLT_DIR) conversions embeddedJava gui hoc io javasound jni \
+DIRS =		comm $(PTCOLT_DIR) conversions embeddedJava gui hoc io \
+		javasound jni jopio \
 		logic string test tutorial
 
 # Root of the Java directory
@@ -57,14 +58,15 @@ PTCLASSALLJARS = \
 	colt/colt.jar \
 	conversions/conversions.jar \
 	embeddedJava/embeddedJava.jar \
+	gui/gui.jar \
 	hoc/hoc.jar \
+	jopio/jopio.jar \
 	logic/logic.jar \
 	string/string.jar
 
 
 OLD_PTCLASSALLJARS = \
 	comm/comm.jar \
-	gui/gui.jar \
 	io/io.jar \
 	javasound/javasound.jar \
 	jni/jni.jar \
@@ -290,7 +292,7 @@ EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
 # Don't include demo or DIRS here, or else 'make sources' will run 'make demo'
-MISC_FILES = colt conversions embeddedJava gui hoc test logic string
+MISC_FILES = colt conversions embeddedJava gui hoc test logic jopio string
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
