@@ -57,7 +57,8 @@ ME =		ptolemy/actor/lib
 # $PTII/configure looks for X10 and sets PTX10_DIR in
 # $PTII/mk/ptII.mk if it was found.  Otherwise, PTX10_DIR is empty.
 
-DIRS = 		conversions embeddedJava gui logic hoc image javasound jni net io xslt \
+DIRS = 		conversions embeddedJava gui logic hoc image \
+		javasound jni jopio net io xslt \
 		test comm security string tutorial vhdl video \
 		$(PTCOLT_DIR) $(PTDATABASE_DIR) $(PTJAI_DIR) \
 		$(PTJMF_DIR) $(PTJOYSTICK_DIR) \
@@ -99,6 +100,7 @@ PTCLASSALLJARS = \
 	gui/gui.jar \
 	javasound/javasound.jar \
 	jni/jni.jar \
+	jopio/jopio.jar \
 	net/net.jar \
 	security/security.jar \
 	vhdl/vhdl.jar \
