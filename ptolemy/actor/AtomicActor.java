@@ -36,7 +36,6 @@ import ptolemy.actor.util.BooleanDependency;
 import ptolemy.actor.util.CausalityInterface;
 import ptolemy.actor.util.DefaultCausalityInterface;
 import ptolemy.actor.util.Dependency;
-import ptolemy.actor.util.Time;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Port;
@@ -273,19 +272,6 @@ public class AtomicActor extends ComponentEntity implements Actor,
         if (_debugging) {
             _debug("Called fire()");
         }
-    }
-
-    /** Notify this actor that a {@link Director#fireAt(Actor,Time)}
-     *  request was skipped, and that current time has passed the
-     *  requested time. A director calls this method when in a modal
-     *  model it was inactive at the time of the request, and it
-     *  became active again after the time of the request had
-     *  expired. This base class does nothing.
-     *  @param time The time of the request that was skipped.
-     *  @exception IllegalActionException If skipping the request
-     *   is not acceptable to the actor.
-     */
-    public void fireAtSkipped(Time time) throws IllegalActionException {
     }
 
     /** Return a causality interface for this actor. In this base class,

@@ -49,7 +49,6 @@ import ptolemy.actor.util.BooleanDependency;
 import ptolemy.actor.util.CausalityInterface;
 import ptolemy.actor.util.CausalityInterfaceForComposites;
 import ptolemy.actor.util.Dependency;
-import ptolemy.actor.util.Time;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.ComponentEntity;
@@ -506,23 +505,6 @@ public class CompositeActor extends CompositeEntity implements Actor,
         getDirector().createSchedule();
     }
 
-    /** Notify this actor that a {@link Director#fireAt(Actor,Time)}
-     *  request was skipped, and that current time has passed the
-     *  requested time. A director calls this method when in a modal
-     *  model it was inactive at the time of the request, and it
-     *  became active again after the time of the request had
-     *  expired. This base class delegates the call to the director,
-     *  if this actor is opaque, and otherwise does nothing.
-     *  @param time The time of the request that was skipped.
-     *  @exception IllegalActionException If skipping the request
-     *   is not acceptable to the actor.
-     */
-    public void fireAtSkipped(Time time) throws IllegalActionException {
-        if (isOpaque()) {
-            getDirector().fireAtSkipped(time);
-        }
-    }
-
     /** Return a causality interface for this actor. This returns an
      *  instance of {@link CausalityInterfaceForComposites}.
      *  If this is called multiple times, the same object is returned each
@@ -532,6 +514,16 @@ public class CompositeActor extends CompositeEntity implements Actor,
      *   and output ports.
      */
     public CausalityInterface getCausalityInterface() {
+        // FIXME: Although this director may not have changed, a director
+        // higher in the hierarchy may have changed. The base class Director
+        // delegates up the hierarchy to decide what kind of Dependency to use,
+        // so if a director higher in the hierarchy has changed, then we really
+        // need to recreate the causality interface.
+        // However, it doesn't seem to work to use the workspace version to
+        // replace the causality interface! The reason seems to be that
+        // if we do that, the causality interface gets recreated _after_
+        // actors have had preinitialize() called, which is when they prune
+        // their input/output dependencies.
         Director director = getDirector();
         if (_causalityInterface != null
                 && _causalityInterfaceDirector == director) {

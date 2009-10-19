@@ -381,20 +381,6 @@ public class Director extends Attribute implements Executable {
      *  to throw an exception if it is not acceptable for the time
      *  to differ from the requested time.
      *  <p>
-     *  Even in derived classes, there is no guarantee that the
-     *  actor will be fired at the time returned by this method.
-     *  In particular, that time might be larger than the stop
-     *  time of the model. Moreover, in a modal model, this director
-     *  may not be active at the time of the requested firing.
-     *  In this latter case, if the director becomes active after
-     *  the requested time, it is required to detect that it missed
-     *  the requested firing, and call the method
-     *  {@link Actor#fireAtSkipped(Time)} to notify the actor that
-     *  the requested firing was skipped. It is required to do this
-     *  before it again fires the actor.
-     *  This base class does not do that because it ignores
-     *  all fireAt() requests.
-     *  <p>
      *  Note that it is not correct behavior for a director to override
      *  this method to simply fire the specified actor. The actor needs
      *  to be fired as part of the regular execution cycle of that director,
@@ -453,20 +439,6 @@ public class Director extends Attribute implements Executable {
         return fireAt(actor, getModelTime());
     }
 
-    /** Notify this director that a {@link Director#fireAt(Actor,Time)}
-     *  request made of the executive director
-     *  was skipped, and that current time has passed the
-     *  requested time. An executive director calls this method when in a modal
-     *  model it was inactive at the time of the request, and it
-     *  became active again after the time of the request had
-     *  expired. This base class does nothing.
-     *  @param time The time of the request that was skipped.
-     *  @exception IllegalActionException If skipping the request
-     *   is not acceptable to the actor.
-     */
-    public void fireAtSkipped(Time time) throws IllegalActionException {
-    }
-
     /** Return a causality interface for the composite actor that
      *  contains this director. This base class returns an
      *  instance of {@link CausalityInterfaceForComposites}, but
@@ -502,6 +474,23 @@ public class Director extends Attribute implements Executable {
      */
     public double getErrorTolerance() {
         return 0.0;
+    }
+    
+    /** Return the global time for this model. The global time is
+     *  defined to be the value returned by the @link{#getModelTime()}
+     *  method of the top-level director in the model.
+     *  @return The time of the top-level director in the model.
+     * @throws IllegalActionException If the top level is not an Actor.
+     */
+    public Time getGlobalTime() throws IllegalActionException {
+        NamedObj toplevel = toplevel();
+        if (!(toplevel instanceof Actor)) {
+            throw new IllegalActionException(this,
+                    "Cannot get a global time because the top level is not an actor."
+                    + " It is "
+                    + toplevel);
+        }
+        return (((Actor)toplevel).getDirector()).getModelTime();
     }
 
     /** Return the next time of interest in the model being executed by
