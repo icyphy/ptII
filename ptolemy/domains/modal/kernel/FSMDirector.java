@@ -305,12 +305,12 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
         _transitionRefinementsToPostfire.clear();
         _lastChosenTransition = null;
         FSMActor controller = getController();
-        controller.readInputs();
         State currentState = controller.currentState();
         if (_debugging) {
             _debug("*** Firing " + getFullName(), " at time " + getModelTime());
             _debug("Current state is:", currentState.getName());
         }
+        controller.readInputs();
 
         List<Transition> enabledPreemptiveTransitions = controller
                 .enabledTransitions(currentState.preemptiveTransitionList());
@@ -350,6 +350,13 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
             setModelTime(environmentTime);
             
             controller.readOutputsFromRefinement();
+            return;
+        }
+        
+        // If some preemptive transition guards could not be evaluated due to unknown
+        // inputs, then return now. It is not correct to execute the refinements until
+        // we know that all preemptive transitions are not enabled.
+        if (controller.foundUnknown()) {
             return;
         }
 
