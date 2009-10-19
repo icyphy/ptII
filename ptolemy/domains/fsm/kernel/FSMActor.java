@@ -70,6 +70,7 @@ import ptolemy.data.type.HasTypeConstraints;
 import ptolemy.data.type.ObjectType;
 import ptolemy.data.type.Type;
 import ptolemy.data.type.Typeable;
+import ptolemy.domains.modal.kernel.Suspendable;
 import ptolemy.domains.ptera.kernel.PteraModalModel;
 import ptolemy.graph.Inequality;
 import ptolemy.graph.InequalityTerm;
@@ -476,27 +477,6 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         readInputs();
         List transitionList = _currentState.outgoingPort.linkedRelationList();
         chooseTransition(transitionList);
-    }
-
-    /** Notify the refinements of the current state, if any,
-     *  that a {@link Director#fireAt(Actor,Time)}
-     *  request was skipped, and that current time has passed the
-     *  requested time. A director calls this method when in a modal
-     *  model it was inactive at the time of the request, and it
-     *  became active again after the time of the request had
-     *  expired. This base class delegates the current state refinements,
-     *  if there are any.
-     *  @param time The time of the request that was skipped.
-     *  @exception IllegalActionException If skipping the request
-     *   is not acceptable to a refinement.
-     */
-    public void fireAtSkipped(Time time) throws IllegalActionException {
-        Actor[] actors = _currentState.getRefinement();
-        if (actors != null) {
-            for (int i = 0; i < actors.length; i++) {
-                actors[i].fireAtSkipped(time);
-            }
-        }
     }
 
     /** Return a causality interface for this actor. This
@@ -1489,8 +1469,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
                 .getRefinement();
         if (actors != null) {
             for (int i = 0; i < actors.length; ++i) {
-                actors[i].getDirector().setModelTime(
-                        getExecutiveDirector().getModelTime());
+                _setTimeForRefinement(actors[i]);
             }
         }
 
@@ -1988,6 +1967,29 @@ public class FSMActor extends CompositeEntity implements TypedActor,
             throws IllegalActionException {
         _setIdentifierToPort(name, inputPort);
         _inputTokenMap.put(name, token);
+    }
+
+    /** If the specified refinement implements Suspendable, then set its
+     *  current time equal to the current environment time minus the refinement's
+     *  total accumulated suspension time. Otherwise, set current time to
+     *  match that of the environment. If there is no environment, do nothing.
+     *  @param refinement The refinement.
+     *  @throws IllegalActionException If setModelTime() throws it.
+     */
+    private void _setTimeForRefinement(Actor refinement)
+            throws IllegalActionException {
+        Time environmentTime = getExecutiveDirector().getModelTime();
+        Director director = refinement.getDirector();
+        if (refinement instanceof Suspendable) {
+            // Adjust current time to be the environment time minus
+            // the accumulated suspended time of the refinement.
+            Time suspendedTime = ((Suspendable)refinement).accumulatedSuspendTime();
+            if (suspendedTime != null) {
+                director.setModelTime(environmentTime.subtract(suspendedTime));
+                return;
+            }
+        }
+        director.setModelTime(environmentTime);
     }
 
     ///////////////////////////////////////////////////////////////////
