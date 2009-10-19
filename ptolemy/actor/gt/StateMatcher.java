@@ -37,7 +37,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
-import ptolemy.actor.Actor;
 import ptolemy.actor.Director;
 import ptolemy.actor.Initializable;
 import ptolemy.actor.Manager;
@@ -49,7 +48,6 @@ import ptolemy.actor.util.BooleanDependency;
 import ptolemy.actor.util.CausalityInterface;
 import ptolemy.actor.util.DefaultCausalityInterface;
 import ptolemy.actor.util.Dependency;
-import ptolemy.actor.util.Time;
 import ptolemy.domains.modal.kernel.State;
 import ptolemy.graph.Inequality;
 import ptolemy.kernel.CompositeEntity;
@@ -148,19 +146,6 @@ public class StateMatcher extends State implements GTEntity, TypedActor,
      *  @exception IllegalActionException Not thrown in this class.
      */
     public void fire() throws IllegalActionException {
-    }
-
-    /** Notify this actor that a {@link Director#fireAt(Actor,Time)}
-     *  request was skipped, and that current time has passed the
-     *  requested time. A director calls this method when in a modal
-     *  model it was inactive at the time of the request, and it
-     *  became active again after the time of the request had
-     *  expired. This base class does nothing.
-     *  @param time The time of the request that was skipped.
-     *  @exception IllegalActionException If skipping the request
-     *   is not acceptable to the actor.
-     */
-    public void fireAtSkipped(Time time) throws IllegalActionException {
     }
 
     /** Return a causality interface for this actor. In this base class,
