@@ -611,8 +611,9 @@ public class SDFDirector extends StaticSchedulingDirector implements PeriodicDir
      */
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
-        createSchedule(); // Undid this change temporarily since the move of createReceivers breaks HDF
+        createSchedule();
     }
+    
     /** Return false if the system has finished executing, either by
      *  reaching the iteration limit, or having an actor in the system return
      *  false in postfire.  Increment the number of iterations.
