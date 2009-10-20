@@ -248,6 +248,9 @@ public class Subscriber extends TypedAtomicActor {
         // number when we set _updatedLinks.  However, this could
         // result in poor performance.
 
+        if (_channel == null) {
+            throw new IllegalActionException(this, "The channel name was null?");
+        }
         _updateLinks();
     
         // Call super.preinitialize() after updating links so that

@@ -74,7 +74,7 @@ test SubscriptionAggregator-1.2 {Change one actor} {
     $manager execute
 } {}
 
-test SubscriptionAggregator-2.0 {No Publisher} {
+test SubscriptionAggregator-2.0 {Null channel, no Publisher} {
     set e0 [sdfModel 5]
     set subAgg [java::new ptolemy.actor.lib.SubscriptionAggregator $e0 subagg]
     set rec [java::new ptolemy.actor.lib.Recorder $e0 rec]
@@ -84,8 +84,18 @@ test SubscriptionAggregator-2.0 {No Publisher} {
             [java::field [java::cast ptolemy.actor.lib.Sink $rec] input]]] setWidth 1
     catch {[$e0 getManager] execute} errMsg
     list $errMsg
-} {{ptolemy.kernel.util.IllegalActionException: Subscriber has no matching Publisher, channel was "channel1" which evaluated to "channel1".
+} {{ptolemy.kernel.util.IllegalActionException: The channel name was null?
   in .top.subagg}}
+
+test SubscriptionAggregator-2.1 {No Publisher} {
+    # Uses 2.0 above
+    set channel [getParameter $subAgg channel]
+    $channel setExpression "channel13"
+    $subAgg attributeChanged $channel
+    catch {[$e0 getManager] execute} errMsg
+    list $errMsg
+} {{ptolemy.kernel.util.IllegalActionException: No Publishers were found adjacent to or below .top.subagg
+  in .top}}
 
 test SubscriptionAggregator-3.0 {Debugging messages} {
     set e3 [sdfModel 5]

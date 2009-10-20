@@ -1038,6 +1038,9 @@ public class CompositeActor extends CompositeEntity implements Actor,
                         linkToPublishedPort(name, subscriberPort);
                     }
                 }
+            } else {
+                throw new IllegalActionException(this, "No Publishers were found adjacent to or "
+                        + "below " + subscriberPort.getContainer().getFullName());
             }
         }
     }
