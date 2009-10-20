@@ -209,8 +209,6 @@ public class PthalesReceiver extends SDFReceiver {
      *  A side effect of this method is to set the capacity of the receiver.
      *  This must be called after setWritePattern().
      *  @param readSpec Number of tokens read per firing by dimension.
-     *  @param firingCounts Firing counts by dimension.
-     *  @param dimensions List of all the dimensions in the system.
      *  @throws IllegalActionException If setting the capacity fails.
      */
     public void setReadPattern(
