@@ -1,4 +1,4 @@
-/* Watch dog output for JOP.
+/* Low-level input port for JOP.
 
  Copyright (c) 2009 The Regents of the University of California.
  All rights reserved.
@@ -27,25 +27,24 @@
  */
 package ptolemy.actor.lib.jopio;
 
-import ptolemy.actor.lib.Sink;
-import ptolemy.data.BooleanToken;
+import ptolemy.actor.lib.Source;
+import ptolemy.data.IntToken;
+import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
-//// JopWatchDog
+//// JopReadPort
 
 /**
  <p>
- Watch dog output for the Java processor JOP (see http://www.jopdesign.com).
- The watch dog has to be triggered at least all 1.6 seconds. Best is to trigger
- it once a second, which gives a calming blinking at 0.5 Hz.
+ Read low-level I/O port on the Java processor JOP (see http://www.jopdesign.com).
  <p>
- In the simulation the watch dog LED is just printed to standard out with
- '*' and 'o'.
+ In the simulation just dummy values are returned (the simulated us counter).
 
  @author Martin Schoeberl
  @version $Id$
@@ -53,7 +52,8 @@ import ptolemy.kernel.util.Workspace;
  @Pt.ProposedRating Red (mschoebe)
  @Pt.AcceptedRating Red (mschoebe)
  */
-public class JopWatchDog extends Sink {
+public class JopReadPort extends Source {
+
     /** Construct an actor in the specified container with the specified
      *  name.
      *  @param container The container.
@@ -63,25 +63,46 @@ public class JopWatchDog extends Sink {
      *  @exception NameDuplicationException If the name coincides with
      *   an actor already in the container.
      */
-    public JopWatchDog(CompositeEntity container, String name)
+    public JopReadPort(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-//        trigger = new TypedIOPort(this, "trigger", true, false);
-        input.setTypeEquals(BaseType.BOOLEAN);
-        input.setMultiport(false);
+        output.setTypeEquals(BaseType.INT);
+        output.setMultiport(false);
+        
+        portAddress = new Parameter(this, "portAddress");
+        // use the us counter as default
+        portAddress.setExpression("-127");
+        portAddress.setTypeEquals(BaseType.INT);
+
 
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** Trigger the watch dog LED to toggle.
+    /** The address of the I/O port. Has to be in an allowed range.
      */
-//    public TypedIOPort trigger;
+    public Parameter portAddress;
 
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** The <i>portAddress</i> has to be in a valid range.
+     */
+    public void attributeChanged(Attribute attribute)
+            throws IllegalActionException {
+        if (attribute == portAddress) {
+            int addr = ((IntToken) portAddress.getToken())
+                    .intValue();
+
+            if (addr > 0) {
+                throw new IllegalActionException(this, "Illegal port address");
+            }
+        } else {
+            super.attributeChanged(attribute);
+        }
+    }
 
     /** Override the base class to set type constraints on the ports.
      *  @param workspace The workspace into which to clone.
@@ -90,40 +111,37 @@ public class JopWatchDog extends Sink {
      *   an attribute that cannot be cloned.
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        JopWatchDog newObject = (JopWatchDog) super.clone(workspace);
-        newObject.input.setTypeEquals(BaseType.BOOLEAN);
+        JopReadPort newObject = (JopReadPort) super.clone(workspace);
+        newObject.output.setTypeEquals(BaseType.INT);
         return newObject;
     }
 
-    /** If there is at least one token on the input ports, toggle
-     * or set the watch dog LED. A token on the <i>input</i> port sets the LED
-     * according to the boolean value. A token on the <i>trigger</i> port
-     * toggles the LED.
+    /** Read the input port on the first invocation of fire() in the
+     * current iteration and send the value on each fire().
      *
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
         super.fire();
-        _last_val = _val;
-        
-//        if (trigger.hasToken(0)) {
-//            trigger.get(0);
-//            _last_val = !_val;
-//        }
-        if (input.hasToken(0)) {
-            _last_val = ((BooleanToken) input.get(0)).booleanValue();
+        if (_firstFire) {
+            // read the value - simulate the us counter on JOP
+            // at address -127
+            int v = ((int) System.currentTimeMillis())*1000; 
+            // I would like a _val.set() to avoid garbage
+            _val = new IntToken(v);
+            _firstFire = false;
         }
+        output.send(0, _val);
     }
     
     /** Record the most recent input for the watch dog value.
      *  @exception IllegalActionException If the base class throws it.
      */
     public boolean postfire() throws IllegalActionException {
-        _val = _last_val;
-        System.out.print(_val ? '*' : 'o');
+        _firstFire = true;
         return super.postfire();
     }
 
-    private boolean _last_val;
-    private boolean _val;
+    private boolean _firstFire = true;
+    private IntToken _val = new IntToken(0);
 }
