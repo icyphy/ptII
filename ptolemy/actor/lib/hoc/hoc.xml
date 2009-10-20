@@ -84,8 +84,9 @@
          </property>
       </entity>
 
-      <entity name="PtalonActor" class="ptolemy.actor.ptalon.PtalonActor"/>
-
+      <!-- Ptalon is in a separate file from ptolemy/actor/lib/hoc/hoc.xml
+           so that we can include hoc.xml in a small version of Ptolemy without
+	   requiring Ptalon and antlr -->
 
       <!-- RealTimeComposite was removed from this file, it has largely been replaced by 
            ThreadedComposite -->

@@ -72,7 +72,8 @@ JSRCS = \
 	Tester.java
 
 OTHER_FILES_TO_BE_JARED = \
-	ptalon-copyright.html
+	ptalon-copyright.html \
+	ptalon.jar
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED) \
 	PtalonLexer.smap \

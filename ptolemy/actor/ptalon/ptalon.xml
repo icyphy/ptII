@@ -1,0 +1,19 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="HigherOrderActors" class="ptolemy.moml.EntityLibrary">
+  <configure>
+    <?moml
+      <group>
+      <doc>Higher-Order Computation Infrastructure.</doc>
+
+      <!-- Ptalon is in a separate file from ptolemy/actor/lib/hoc/hoc.xml
+           so that we can include hoc.xml in a small version of Ptolemy without
+	   requiring Ptalon and antlr -->
+      <entity name="PtalonActor" class="ptolemy.actor.ptalon.PtalonActor"/>
+      </group>
+    ?>
+  </configure>
+</entity>
+
+
