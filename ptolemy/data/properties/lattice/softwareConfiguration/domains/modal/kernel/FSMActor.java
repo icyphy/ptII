@@ -1,6 +1,6 @@
 /* A helper class for ptolemy.actor.AtomicActor.
 
- Copyright (c) 2006 The Regents of the University of California.
+ Copyright (c) 2009 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -50,14 +50,13 @@ public class FSMActor extends PropertyConstraintModalFSMHelper {
      * helper class for any ActomicActor that does not have a
      * specific defined helper class. Default actor constraints
      * are set for this helper. 
+     * @param solver The given solver.
      * @param actor The given ActomicActor.
-     * @param lattice The staticDynamic lattice.
      * @throws IllegalActionException 
      */
     public FSMActor(PropertyConstraintSolver solver, 
             ptolemy.domains.modal.kernel.FSMActor actor)
             throws IllegalActionException {
-        
         super(solver, actor);
     }
 }
