@@ -23,6 +23,22 @@
 				<!--FIXME: It is better if there is a way to instantiate this in the PropertySolver base class. -->
 				<property name="PropertyDisplayActions" class="ptolemy.data.properties.gui.PropertyDisplayActions"/>
 			</property>
+			<property name="DimensionSystemSolver" class="ptolemy.data.properties.configuredSolvers.lattice.DimensionSystem_CS">
+				<!--FIXME: It is better if there is a way to instantiate this in the PropertySolver base class. -->
+				<property name="PropertyDisplayActions" class="ptolemy.data.properties.gui.PropertyDisplayActions"/>
+			</property>
+			<property name="SWForwardConfigurationSolver" class="ptolemy.data.properties.configuredSolvers.lattice.SWconfig_Forward_CS">
+				<!--FIXME: It is better if there is a way to instantiate this in the PropertySolver base class. -->
+				<property name="PropertyDisplayActions" class="ptolemy.data.properties.gui.PropertyDisplayActions"/>
+			</property>
+			<property name="SWBackwardConfigurationSolver" class="ptolemy.data.properties.configuredSolvers.lattice.SWconfig_Backward_CS">
+				<!--FIXME: It is better if there is a way to instantiate this in the PropertySolver base class. -->
+				<property name="PropertyDisplayActions" class="ptolemy.data.properties.gui.PropertyDisplayActions"/>
+			</property>
+			<property name="SWBidirectionalConfigurationSolver" class="ptolemy.data.properties.configuredSolvers.lattice.SWconfig_Bidirectional_CS">
+				<!--FIXME: It is better if there is a way to instantiate this in the PropertySolver base class. -->
+				<property name="PropertyDisplayActions" class="ptolemy.data.properties.gui.PropertyDisplayActions"/>
+			</property>
   	  	</group>
  	  ?>
     </configure>
