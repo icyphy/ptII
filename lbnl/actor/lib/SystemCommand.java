@@ -302,11 +302,9 @@ public class SystemCommand extends TypedAtomicActor {
      */
     private void _initializeSimulation() throws IllegalActionException {
         //////////////////////////////////////////////////////////////	
-        // If porNo > 0, write client configuration file.
-        // Else we assume there is already such a file provided by the user
-        // Working directory
-        worDir = cutQuotationMarks(workingDirectory
-                .getExpression());
+        worDir = Simulator.resolveDirectory(getContainer(), 
+                cutQuotationMarks(workingDirectory.getExpression()));
+
         //////////////////////////////////////////////////////////////	
         // Initialize the simulation process
         // Get the command as a File in case it has $CLASSPATH in it.
@@ -519,7 +517,7 @@ public class SystemCommand extends TypedAtomicActor {
      */
     protected ArrayList<String> commandList;
 
-    /** The working directory of the subprocess. */
+    /** Working directory of the subprocess. */
     protected String worDir;
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////

@@ -99,6 +99,8 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
+import ptolemy.kernel.attributes.URIAttribute;
+import ptolemy.kernel.util.NamedObj;
 
 /**
  * Actor that calls a simulation program of a dynamic system 
@@ -372,11 +374,9 @@ public class Simulator extends SDFTransformer {
         super.preinitialize();
 
         // Working directory
-        String worDir = cutQuotationMarks(workingDirectory.getExpression());
-        // If directory is not set, set it to current directory.
-        if (worDir.length() == 0) {
-            worDir = ".";
-        }
+        worDir = Simulator.resolveDirectory(getContainer(), 
+                cutQuotationMarks(workingDirectory.getExpression()));
+
         // Verify that directory exist
         if (!new File(worDir).isDirectory()) {
             String em = "Error: Working directory does not exist." + LS
@@ -462,7 +462,6 @@ public class Simulator extends SDFTransformer {
 	if ( commandFile.isDirectory() )
 	    return commandFile.getName(); 
 	
-	
 	String comArg = commandFile.toString();
 	// Get the absolute file name. Otherwise, invoking a command
 	// like ../cclient will not work
@@ -482,18 +481,48 @@ public class Simulator extends SDFTransformer {
 	return comArg;
     }
 
+    /** Get the MoML file
+     *
+     *@param namedObj A named object, typically the container of the model
+     *@return the MoMOL file
+     *@exception IllegalActionException If an attribute is found with the name "_uri" 
+     *           that is not an instance of the URIAttribute class
+     */
+    public static File getMoMLFile(final NamedObj namedObj) 
+            throws IllegalActionException{
+        URIAttribute modelURI = (URIAttribute) namedObj.getAttribute("_uri", URIAttribute.class);
+        return new File(modelURI.getURI());
+    }
+
+    /** Resolve the working string.
+     *
+     *  This method adds the path of the MoML file to its argument if
+     *  the argument is a relative directory.
+     *
+     *@param namedObj A named object, typically the container of the model
+     *@param prgramName Name of program that starts the simulation.
+     *@exception IllegalActionException If an attribute is found with the name "_uri" 
+     *           that is not an instance of the URIAttribute class
+     */
+    public static String resolveDirectory(final NamedObj namedObj, final String dir) 
+            throws IllegalActionException {
+        if ( new File(dir).isAbsolute() )
+            return dir;
+        String chi = new String(dir);
+        if (chi.length() == 0) {
+            chi = ".";
+        }
+        final File fil = new File(getMoMLFile(namedObj).getParent(), chi);
+        chi = fil.getPath();
+        return chi;
+    }
+    
     /** Start the simulation program.
      *
      *  @exception IllegalActionException If the simulation process arguments
      *                           are invalid.
      */
     private void _startSimulation() throws IllegalActionException {
-        //////////////////////////////////////////////////////////////	
-        // If porNo > 0, write client configuration file.
-        // Else we assume there is already such a file provided by the user
-        // Working directory
-        final String worDir = cutQuotationMarks(workingDirectory
-                .getExpression());
         //////////////////////////////////////////////////////////////	
         // Construct the argument list for the process builder
         List<String> com = new ArrayList<String>();
@@ -665,6 +694,9 @@ public class Simulator extends SDFTransformer {
 
     /** Working directory of the simulation. */
     protected FileParameter workingDirectory;
+
+    /** Working directory of the subprocess. */
+    protected String worDir;
 
     /** Output tokens. */
     protected DoubleMatrixToken outTok;
