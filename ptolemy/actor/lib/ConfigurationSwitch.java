@@ -66,7 +66,7 @@ import ptolemy.kernel.util.Workspace;
 
  @author Charles Shelton
  @version $Id: ConfigurationSwitch.java 54721 2009-06-26 22:32:23Z cxh $
- @since Ptolemy II 2.0
+ @since Ptolemy II 8.1
  @Pt.ProposedRating Green (cshelton)
  @Pt.AcceptedRating Red (cshelton)
  */

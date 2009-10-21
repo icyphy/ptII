@@ -40,7 +40,7 @@ import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.util.IllegalActionException;
 
 //////////////////////////////////////////////////////////////////////////
-//// BooleanSelect
+//// ConfigurationSwitch
 
 /**
  A helper class for ptolemy.actor.lib.ConfgiurationSwitch.
@@ -75,15 +75,12 @@ public class ConfigurationSwitch extends AtomicActor {
         // No relation between the data inputs and the output
         // (because, maybe only one of them is used.  In this case
         // the other one can be anything.)
-        //setAtLeast(actor.selector, actor.output);
         
         if (actor.selector != null) {
             if (((BooleanToken) actor.selector.getToken()).booleanValue()) {
                 setAtLeast(actor.trueOutput, actor.input);
-                //setAtLeast(actor.falseInput, _lattice.getElement("NotConfigured"));
             } else {
                 setAtLeast(actor.falseOutput, actor.input);
-                //setAtLeast(actor.falseInput, _lattice.getElement("NotConfigured"));
             }        
         }
         
@@ -122,19 +119,11 @@ public class ConfigurationSwitch extends AtomicActor {
 
             Property trueOutputProperty = getSolver().getProperty(_trueOutput);
             Property falseOutputProperty = getSolver().getProperty(_falseOutput);
-            //controlProperty = getSolver().getProperty(_control);
             
             // Rules for backward solver are implemented here
-            // If control property is null, return NotSpecified
-            // If control is NotConfigured, then output is at least NotConfigured
-            // (interpreted as, the whole BooleanSelect actor is not configured)
-            // If contol is Conflict, then the output is at least Conflict
-            // (interpreted as, there is a problem with the BooleanSelect actor)
-            // Otherwise,
-            // If at least one input is Configured, then the output is at least Configured
-            // (here we assume that the BooleanSelect is using the Configured input -
-            //  an improvement would be to see if the control is Configured and Const,
-            //  and then use 
+            // If control parameter is null, return NotSpecified
+            // If the control parameter is set to a value, then set the input to the property
+            // from the selected output (either trueOutput or falseOutput).
 
             if (_control != null) {
                 if (((BooleanToken) _control.getToken()).booleanValue()) {
