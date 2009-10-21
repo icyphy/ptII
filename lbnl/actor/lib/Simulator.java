@@ -433,6 +433,55 @@ public class Simulator extends SDFTransformer {
         }
     }
 
+    /** Resolve the command string.
+     *
+     *  This method replaces $CLASSPATH, relative file names and adds .exe
+     *  to the command (under Windows)
+     *
+     *  @param prgramName Name of program that starts the simulation.
+
+     *  @exception IllegalActionException If the simulation process arguments
+     *                           are invalid.
+     */
+    public static String resolveCommandName(final File programName) 
+	throws IllegalActionException {
+        File commandFile = programName;
+
+	// If we are under Windows, look for the .exe
+	if ( System.getProperty("os.version").startsWith("Windows") ){
+	    File winComFil = new File(commandFile.toString() + ".exe");
+	    if (winComFil.exists()) {
+		commandFile = winComFil;
+	    }
+	}
+
+	// Remove the path if the argument points to a directory.
+	// This fixes the problem if the argument is matlab, and the
+	// user runs vergil from a directory that has a subdirectory 
+	// called matlab.
+	if ( commandFile.isDirectory() )
+	    return commandFile.getName(); 
+	
+	
+	String comArg = commandFile.toString();
+	// Get the absolute file name. Otherwise, invoking a command
+	// like ../cclient will not work
+	commandFile = new File(comArg);
+	if (commandFile.exists() && !commandFile.isDirectory() ) {
+	    try {
+		comArg = commandFile.getCanonicalPath();
+	    } catch (java.io.IOException exc) {
+		String em = "Error: Could not get canonical path for '"
+		    + comArg + "'.";
+		throw new IllegalActionException(em);
+	    }
+	}
+	else
+	    comArg = commandFile.getName();
+	    
+	return comArg;
+    }
+
     /** Start the simulation program.
      *
      *  @exception IllegalActionException If the simulation process arguments
@@ -446,36 +495,17 @@ public class Simulator extends SDFTransformer {
         final String worDir = cutQuotationMarks(workingDirectory
                 .getExpression());
         //////////////////////////////////////////////////////////////	
-        // start the simulation process
-        // Get the command as a File in case it has $CLASSPATH in it.
-        File commandFile = programName.asFile();
-        final String comArg;
-        if (commandFile.exists()) {
-            // Maybe the user specified $CLASSPATH/lbnl/demo/CRoom/client
-            comArg = commandFile.toString();
-        } else {
-            // If we are under Windows, look for the .exe
-            commandFile = new File(commandFile.toString() + ".exe");
-            if (commandFile.exists()) {
-                // Maybe the user specified $CLASSPATH/lbnl/demo/CRoom/client
-                comArg = commandFile.toString();
-            } else {
-                // Maybe the user specfied "matlab"
-                comArg = programName.getExpression();
-            }
-        }
-        final String argLin = cutQuotationMarks(programArguments.getExpression());
+        // Construct the argument list for the process builder
         List<String> com = new ArrayList<String>();
-	/* mwetter: 
-	   Disabled section. Otherwise, C:\Program Files\xyz is parsed to
-                    two tokens ("C:\Program" and "Files\xyz") in which case
-                    the process builder would try to launch C:\Program
-	  StringTokenizer st = new StringTokenizer(comArg);
-	  while (st.hasMoreTokens()) {
-            com.add(st.nextToken());
-        }
-	*/
-	com.add(comArg);
+
+        // Process the program name
+        // Maybe the user specified $CLASSPATH/lbnl/demo/CRoom/client
+	com.add( Simulator.resolveCommandName( programName.asFile() ));
+
+	// Process program arguments
+        final String argLin = cutQuotationMarks(programArguments.getExpression());
+
+
         StringTokenizer st = new StringTokenizer(argLin);
         while (st.hasMoreTokens()) {
             com.add(st.nextToken());

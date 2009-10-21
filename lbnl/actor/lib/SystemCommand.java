@@ -348,7 +348,7 @@ public class SystemCommand extends TypedAtomicActor {
     /** Starts the simulation program.
      *
      *@exception IllegalActionException If the simulation process arguments
-     *                           are invalid.
+     *                                  are invalid.
      */
     private void _startSimulation() 
             throws IllegalActionException{
@@ -361,7 +361,6 @@ public class SystemCommand extends TypedAtomicActor {
 	// the file on Linux.
         for (Iterator itc = commandList.iterator(); itc.hasNext (); ) {
             String comIte = (String)itc.next();
-	    //	    System.err.println("SystemCommand 1: comIte=" + comIte);
             for (Map.Entry<String, Token> e : _tokenMap.entrySet()){
                 final String fin = '$' + e.getKey();
                 while ( comIte.contains(fin) )
@@ -377,9 +376,13 @@ public class SystemCommand extends TypedAtomicActor {
             while (comIte.contains(fin))
                 comIte = comIte.replace(fin, 
 					new Integer(_iterationCount).toString());
-	    //	    System.err.println("SystemCommand: comIte=" + comIte);
             com.add(comIte);
         }
+	///////////////////////////////
+	// Resolve the command in case it is a relative file name or in case
+	// it has CLASSPATH or relative file names in it.
+	com.set(0, Simulator.resolveCommandName( new File(com.get(0))));
+
         // Set process arguments
         cliPro.setProcessArguments(com, worDir);
 

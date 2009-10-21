@@ -356,27 +356,11 @@ public class ClientProcess extends Thread {
     public void setProcessArguments(List<String> cmdarray, String dir)
             throws IllegalActionException {
         cmdArr = new ArrayList<String>();
-        for (int i = 0; i < cmdarray.size(); i++) {
-            if (i == 0) {
-                // The first item is the command. If it points to a file
-                // then we get the absolute file name. Otherwise, invoking a command
-                // like ../cclient will not work.
-                String s = cmdarray.get(i);
-                File f = new File(s);
-                if (f.exists()) {
-                    try {
-                        s = f.getCanonicalPath();
-                    } catch (java.io.IOException exc) {
-                        String em = "Error: Could not get canonical path for '"
-                                + s + "'.";
-                        throw new IllegalActionException(em);
-                    }
-                }
-                cmdArr.add(s);
-            } else {
-                cmdArr.add(cmdarray.get(i));
-            }
-        }
+	// Note: Earlier versions resolved the path name. This has been moved
+	// to the calling program, as the calling program already implements
+	// some file and path name checking.
+        for (int i = 0; i < cmdarray.size(); i++)
+	    cmdArr.add(cmdarray.get(i));
 
         if (dir.equalsIgnoreCase(".")) {
             worDir = new File(System.getProperty("user.dir"));
