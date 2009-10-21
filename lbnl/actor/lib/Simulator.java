@@ -439,7 +439,6 @@ public class Simulator extends SDFTransformer {
      *  to the command (under Windows)
      *
      *  @param prgramName Name of program that starts the simulation.
-
      *  @exception IllegalActionException If the simulation process arguments
      *                           are invalid.
      */
@@ -448,11 +447,10 @@ public class Simulator extends SDFTransformer {
         File commandFile = programName;
 
 	// If we are under Windows, look for the .exe
-	if ( System.getProperty("os.version").startsWith("Windows") ){
+	if ( System.getProperty("os.name").startsWith("Windows") ){
 	    File winComFil = new File(commandFile.toString() + ".exe");
-	    if (winComFil.exists()) {
+	    if (winComFil.exists())
 		commandFile = winComFil;
-	    }
 	}
 
 	// Remove the path if the argument points to a directory.
@@ -529,7 +527,7 @@ public class Simulator extends SDFTransformer {
 
         // Process the program name
         // Maybe the user specified $CLASSPATH/lbnl/demo/CRoom/client
-	com.add( Simulator.resolveCommandName( programName.asFile() ));
+	com.add( Simulator.resolveCommandName(programName.asFile() ));
 
 	// Process program arguments
         final String argLin = cutQuotationMarks(programArguments.getExpression());

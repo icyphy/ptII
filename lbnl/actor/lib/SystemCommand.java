@@ -379,7 +379,7 @@ public class SystemCommand extends TypedAtomicActor {
 	///////////////////////////////
 	// Resolve the command in case it is a relative file name or in case
 	// it has CLASSPATH or relative file names in it.
-	com.set(0, Simulator.resolveCommandName( new File(com.get(0))));
+	com.set(0, Simulator.resolveCommandName(new File(com.get(0))));
 
         // Set process arguments
         cliPro.setProcessArguments(com, worDir);
