@@ -727,7 +727,15 @@ public class PortConfigurerDialog extends PtolemyDialog implements
             // errors in this change request, since, in theory, it
             // will just work. Will someone report the error if one
             // occurs? I hope so...
-            getTarget().requestChange(request);
+            _applyChangeRequestFailed = false;
+            try {
+                getTarget().requestChange(request);
+            } catch (Throwable throwable) {
+                MessageHandler.error("Failed to apply changes",
+                        new InternalErrorException(getTarget(), throwable, moml.toString()));
+                _applyChangeRequestFailed = true;
+                return false;
+            }
             _populateActualPorts();
         }
 
@@ -782,10 +790,14 @@ public class PortConfigurerDialog extends PtolemyDialog implements
         // The button semantics are
         // Add - Add a new port.
         if (button.equals("Apply")) {
-            _apply();
-        } else if (button.equals("Commit")) {
             if (_apply()) {
                 _cancel();
+            }
+        } else if (button.equals("Commit")) {
+            if (_apply()) {
+                if (_applyChangeRequestFailed) {
+                    _cancel();
+                }
             }
         } else if (button.equals("Add")) {
             _portTableModel.addNewPort();
@@ -2154,6 +2166,9 @@ public class PortConfigurerDialog extends PtolemyDialog implements
 
     /** The various buttons. */
     private JButton _addButton;
+
+    /** True if the change request in _apply() failed */
+    private boolean _applyChangeRequestFailed;
 
     /** The various buttons. */
     private JButton _removeButton;
