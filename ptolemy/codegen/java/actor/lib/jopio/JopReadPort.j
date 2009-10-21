@@ -10,6 +10,6 @@ if (_firstFire) {
 }
 /**/
 
-/*** PostFireBlock ***/
+/*** postfireBlock ***/
 _firstFire = true;
 /**/

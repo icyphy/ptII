@@ -50,7 +50,9 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
 JSRCS = \
+	JopReadPort.java \
 	JopWatchDog.java \
+	JopWritePort.java
 
 OTHER_FILES_TO_BE_JARED = \
 	JopWatchDogIcon.xml

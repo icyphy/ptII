@@ -50,10 +50,14 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
 JSRCS = \
-	JopWatchDog.java
+	JopReadPort.java \
+	JopWatchDog.java \
+	JopWritePort.java
 
 OTHER_FILES_TO_BE_JARED = \
-	JopWatchDog.j
+	JopReadPort.j \
+	JopWatchDog.j \
+	JopWritePort.j
 
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
