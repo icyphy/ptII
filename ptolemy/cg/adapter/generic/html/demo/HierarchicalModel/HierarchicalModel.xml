@@ -8,7 +8,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{140, 45}">
         </property>
     </property>
-    <property name="HTMLCodeGenerator" class="ptolemy.cg.kernel.generic.program.html.HTMLCodeGenerator">
+    <property name="HTMLCodeGenerator" class="ptolemy.cg.kernel.generic.html.HTMLCodeGenerator">
         <property name="inline" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <property name="padBuffers" class="ptolemy.data.expr.Parameter" value="false">
