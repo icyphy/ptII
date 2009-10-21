@@ -1952,8 +1952,12 @@ public class PortConfigurerDialog extends PtolemyDialog implements
             }
 
             if (!foundActualPort) {
-                throw new InternalErrorException("Port stored in _ports "
-                        + "not found in actual target.");
+                throw new InternalErrorException(
+                        "Port \"" + portName + "\"stored in _ports "
+                        + "not found in \"" + getTarget().getFullName() + "\". "
+                        + "This can occur when two port names are being swapped. "
+                        + "The workaround when swapping A and B is to first set A to C, then C to A, then C to B. "
+                        + "See http://bugzilla.ecoinformatics.org/show_bug.cgi?id=4478");
             }
         }
     }
