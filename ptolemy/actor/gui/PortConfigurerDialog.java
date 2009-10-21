@@ -412,8 +412,10 @@ public class PortConfigurerDialog extends PtolemyDialog implements
                     portsToBeRemoved.add(actualPort);
                 }
             } else {
-                throw new InternalErrorException("The target portList contains"
-                        + " an object that is not of type Port.");
+                Exception exception = new InternalErrorException("The target portList contains"
+                        + " an object \"" + candidate + "\"that is not of type Port.");
+
+                MessageHandler.error("Internal Error while removing a port.", exception);
             }
         }
 
@@ -1952,12 +1954,13 @@ public class PortConfigurerDialog extends PtolemyDialog implements
             }
 
             if (!foundActualPort) {
-                throw new InternalErrorException(
+                Exception exception = new InternalErrorException(
                         "Port \"" + portName + "\"stored in _ports "
                         + "not found in \"" + getTarget().getFullName() + "\". "
                         + "This can occur when two port names are being swapped. "
                         + "The workaround when swapping A and B is to first set A to C, then C to A, then C to B. "
                         + "See http://bugzilla.ecoinformatics.org/show_bug.cgi?id=4478");
+                MessageHandler.error("Failed to find \"" + portName + "\",", exception);
             }
         }
     }
