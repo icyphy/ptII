@@ -968,7 +968,7 @@ public class CompositeActor extends CompositeEntity implements Actor,
      */
     public void linkToPublishedPort(String name, IOPort subscriberPort) throws IllegalActionException, NameDuplicationException {
         NamedObj container = getContainer();
-        if (!isOpaque() && container instanceof CompositeActor) {
+        if (!isOpaque() && container instanceof CompositeActor && !((CompositeActor)container).isClassDefinition()) {
             // Published ports are not propagated if this actor
             // is opaque.
             ((CompositeActor) container).linkToPublishedPort(name, subscriberPort);
@@ -1026,7 +1026,7 @@ public class CompositeActor extends CompositeEntity implements Actor,
      */
     public void linkToPublishedPort(Pattern pattern, TypedIOPort subscriberPort) throws IllegalActionException, NameDuplicationException {
         NamedObj container = getContainer();
-        if (!isOpaque() && container instanceof CompositeActor) {
+        if (!isOpaque() && container instanceof CompositeActor && !((CompositeActor)container).isClassDefinition()) {
             // Published ports are not propagated if this actor
             // is opaque.
             ((CompositeActor) container).linkToPublishedPort(pattern, subscriberPort);
@@ -1410,7 +1410,7 @@ public class CompositeActor extends CompositeEntity implements Actor,
      */
     public void registerPublisherPort(String name, IOPort port) throws NameDuplicationException, IllegalActionException {
         NamedObj container = getContainer();
-        if (!isOpaque() && container instanceof CompositeActor) {
+        if (!isOpaque() && container instanceof CompositeActor && !((CompositeActor)container).isClassDefinition()) {
             // Published ports are not propagated if this actor
             // is opaque.
             ((CompositeActor) container).registerPublisherPort(name, port);
@@ -1762,7 +1762,7 @@ public class CompositeActor extends CompositeEntity implements Actor,
      */
     public void unlinkToPublishedPort(String name, IOPort subscriberPort) throws IllegalActionException {
         NamedObj container = getContainer();
-        if (!isOpaque() && container instanceof CompositeActor) {
+        if (!isOpaque() && container instanceof CompositeActor && !((CompositeActor)container).isClassDefinition()) {
             // Published ports are not propagated if this actor
             // is opaque.
             ((CompositeActor) container).unlinkToPublishedPort(name, subscriberPort);
@@ -1801,7 +1801,7 @@ public class CompositeActor extends CompositeEntity implements Actor,
      */
     public void unlinkToPublishedPort(Pattern pattern, TypedIOPort subscriberPort) throws IllegalActionException {
         NamedObj container = getContainer();
-        if (!isOpaque() && container instanceof CompositeActor) {
+        if (!isOpaque() && container instanceof CompositeActor && !((CompositeActor)container).isClassDefinition()) {
             // Published ports are not propagated if this actor
             // is opaque.
             ((CompositeActor) container).unlinkToPublishedPort(pattern, subscriberPort);
@@ -1832,7 +1832,7 @@ public class CompositeActor extends CompositeEntity implements Actor,
      */
     public void unregisterPublisherPort(String name, IOPort publisherPort) {
         NamedObj container = getContainer();
-        if (!isOpaque() && container instanceof CompositeActor) {
+        if (!isOpaque() && container instanceof CompositeActor && !((CompositeActor)container).isClassDefinition()) {
             // Published ports are not propagated if this actor
             // is opaque.
             ((CompositeActor) container).unregisterPublisherPort(name, publisherPort);
