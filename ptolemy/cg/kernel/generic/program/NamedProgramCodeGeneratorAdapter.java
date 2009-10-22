@@ -58,8 +58,9 @@ import ptolemy.util.StringUtilities;
 ///////////////////////////////////////////////////////////////////////
 ////NamedProgramCodeGeneratorAdapter
 
+//FIXME: Overhaul comments.
+
 /**
-* FIXME: Overhaul comments.
 * Base class for code generator adapter.
 *
 * <p>Subclasses should override generateFireCode(),

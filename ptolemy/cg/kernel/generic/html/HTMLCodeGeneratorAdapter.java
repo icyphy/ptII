@@ -27,6 +27,7 @@
  */
 package ptolemy.cg.kernel.generic.html;
 
+import ptolemy.cg.kernel.generic.CodeGeneratorAdapter;
 import ptolemy.cg.kernel.generic.GenericCodeGenerator;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
@@ -58,7 +59,7 @@ import ptolemy.util.StringUtilities;
 * @Pt.ProposedRating Yellow (rodiers)
 * @Pt.AcceptedRating Yellow (rodiers)
 */
-public abstract class HTMLCodeGeneratorAdapter {
+public abstract class HTMLCodeGeneratorAdapter extends CodeGeneratorAdapter {
 
     /** Construct the code generator adapter associated
      *  with the given component.

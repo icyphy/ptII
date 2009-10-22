@@ -84,9 +84,18 @@ public class Director extends HTMLCodeGeneratorAdapter {
         while (actors.hasNext()) {
             code.append("<li>");
             Actor actor = (Actor) actors.next();
-            NamedProgramCodeGeneratorAdapter adapter = (NamedProgramCodeGeneratorAdapter) getCodeGenerator()
-                    .getAdapter(actor);
-            code.append(adapter.generateFireCode());
+            HTMLCodeGeneratorAdapter adapter = null;
+            Object object = getCodeGenerator().getAdapter(actor);
+            try {
+                adapter = (HTMLCodeGeneratorAdapter) object;
+            } catch (ClassCastException ex) {
+                throw new IllegalActionException(getComponent(), ex,
+                    "Failed to cast " + object
+                    + " of class " + object.getClass().getName()
+                    + " to " + HTMLCodeGeneratorAdapter.class.getName() + ".");
+
+            }
+            code.append(adapter.generateHTML());
             code.append("</li>");
         }
         return code.toString();

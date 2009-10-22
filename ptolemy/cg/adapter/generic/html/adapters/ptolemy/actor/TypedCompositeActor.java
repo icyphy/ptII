@@ -27,7 +27,7 @@
  */
 package ptolemy.cg.adapter.generic.html.adapters.ptolemy.actor;
 
-import ptolemy.cg.adapter.generic.adapters.ptolemy.actor.Director;
+import ptolemy.cg.adapter.generic.html.adapters.ptolemy.actor.Director;
 import ptolemy.cg.kernel.generic.html.HTMLCodeGeneratorAdapter;
 import ptolemy.kernel.util.IllegalActionException;
 
@@ -61,10 +61,18 @@ public class TypedCompositeActor extends HTMLCodeGeneratorAdapter {
         code.append(getComponent().getName() + " contains: ");
         code.append("<ul>" + _eol);
 
-        Director directorAdapter = (Director) getCodeGenerator().getAdapter(
+        Object director = getCodeGenerator().getAdapter(
                 ((ptolemy.actor.CompositeActor) getComponent()).getDirector());
-
-        code.append(directorAdapter.generateFireCode());
+        Director directorAdapter = null;
+        try {
+            directorAdapter = (Director) director;
+        } catch (ClassCastException ex) {
+            throw new IllegalActionException(getComponent(), ex,
+                    "Failed to cast " + director
+                    + " of class " + director.getClass().getName()
+                    + " to " + Director.class.getName() + ".");
+        }
+        code.append(directorAdapter.generateHTML());
 
         code.append("</ul>" + _eol);
         return /*processCode(code.toString())*/code.toString();
