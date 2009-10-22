@@ -88,7 +88,7 @@ public class ConfigurationSwitch extends TypedAtomicActor {
         input.setMultiport(true);
 
         // Default selector value to false
-        selector = new Parameter(this, "selectorValue", new BooleanToken(false));
+        selector = new Parameter(this, "selector", new BooleanToken(false));
         selector.setTypeEquals(BaseType.BOOLEAN);
         trueOutput = new TypedIOPort(this, "trueOutput", false, true);
         falseOutput = new TypedIOPort(this, "falseOutput", false, true);
