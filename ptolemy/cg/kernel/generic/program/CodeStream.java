@@ -1230,7 +1230,7 @@ public class CodeStream {
             }
             String parameterName = "";
             try {
-                _checkParameterName(parameters.get(i));
+                parameterName = _checkParameterName(parameters.get(i));
             } catch (ClassCastException ex) {
                 throw new IllegalActionException(null, ex,
                         "Failed to cast " + parameters.get(i)
