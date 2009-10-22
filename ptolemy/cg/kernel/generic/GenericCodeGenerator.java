@@ -142,15 +142,17 @@ public abstract class GenericCodeGenerator extends Attribute implements
 
     /** The directory in which to put the generated code.
      *  This is a file parameter that must specify a directory.
-     *  The default is $HOME/cg/
+     *  The default is "<code>$HOME/cg/</code>".
      */
     public FileParameter codeDirectory;
 
     /** The name of the package(s) in which to look for adapter
-     *  classes. The string can either be just
-     *  one package, such as "generic.program.procedural.java"
-     *  or a list of packages, such as "generic.program.procedural.java.target1; generic.program.procedural.java.target2"
-     *  The adapter is first searched in the first package.
+     *  classes. The string can either be just one package, such as
+     *  "generic.program.procedural.java" or a list of semicolon ';'
+     *  or asterix '*' separated list of Java packages, such as
+     *  <code>"generic.program.procedural.java.target1;
+     *  generic.program.procedural.java.target2"</code>.The adapter is first
+     *  searched in the first package.
      */
     public StringParameter generatorPackageList;
 
@@ -1192,16 +1194,26 @@ public abstract class GenericCodeGenerator extends Attribute implements
     private String _outputFileExtension;
 
 
-    /** Parse the generatorPackageList parameter. */
+    /** Parse the generatorPackageList parameter. 
+     *  The <i>generatorPackageList</i> parameter is assumed to be
+     *  a semicolon ';' or asterix '*' separated list of Java packages
+     *  to be searched for packages.
+     */
     class GeneratorPackageListParser {
+        /** Create a package list parser. */
         public GeneratorPackageListParser() {
         }
 
+        /** Return the list of generator packages.
+         *  @return the list of generator packages.
+         */  
         public List<String> generatorPackages() throws IllegalActionException {
             _updateGeneratorPackageList();
             return _generatorPackages;
         }
 
+        /** Update the internal list of generator packages.
+         */   
         private void _updateGeneratorPackageList()
                 throws IllegalActionException {
             String packageList = generatorPackageList.stringValue();
@@ -1209,6 +1221,7 @@ public abstract class GenericCodeGenerator extends Attribute implements
             _generatorPackages = Arrays.asList(packages);
         }
 
+        /** The list of generator packages. */
         private List<String> _generatorPackages;
     }
 
