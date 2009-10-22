@@ -1,10 +1,10 @@
-# Makefile for the Java classes used to test CGC actors
+# Makefile for the Java classes used to test HTML Code Generator
 #
 # @Authors: Christopher Brooks
 #
 # @Version: $Id$
 #
-# @Copyright (c) 2005-2009 The Regents of the University of California.
+# @Copyright (c) 2009 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -32,10 +32,10 @@
 # Location of this directory, relative to the Ptolemy II directory
 ME =		ptolemy/cg/kernel/generic/test
 
-DIRS = 		actor domains
+DIRS =
 
 # Root of the Ptolemy II directory
-ROOT =		../../../../..
+ROOT =		../../../../../..
 
 CLASSPATH =	$(ROOT)
 
@@ -47,13 +47,12 @@ include $(CONFIG)
 TCL_SRCS = \
 	testDefs.tcl
 
-JSRCS = \
-	TestGenericCodeGenerator.java
+JSRCS =
+
 
 # Non-graphical Java tests written in Tcl
 JSIMPLE_TESTS = \
-	GenericCodeGenerator.tcl
-
+	HTMLCodeGenerator.tcl
 
 # Graphical Java tests that use Tcl.
 # If there are no tests, we use a dummy file so that the script that builds
@@ -66,9 +65,7 @@ EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) $(JSIMPLE_TESTS) #$(JGRAPHICAL_TESTS)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =	alljtests.tcl \
-	actor \
-	domains
+MISC_FILES =	alljtests.tcl
 
 #	auto
 

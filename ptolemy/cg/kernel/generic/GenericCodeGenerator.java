@@ -83,26 +83,22 @@ import ptolemy.util.StringUtilities;
  */
 public abstract class GenericCodeGenerator extends Attribute implements
         Decorator {
-
     // Note: If you add publicly settable parameters, update
     // _commandFlags or _commandOptions.
 
-    /** Create a new instance of the code generator.
+    /** Create a new instance of the code generator.  The file
+     *  extension is set to the last package of the <i>generatePackage</i>
+     *  parameter.
      *  @param container The container.
      *  @param name The name of the code generator.
-     *  @param outputFileExtension The extension of the output file.
-     *   (for example c in case of C and java in case of Java)
      *  @exception IllegalActionException If the super class throws the
      *   exception or error occurs when setting the file path.
      *  @exception NameDuplicationException If the super class throws the
      *   exception or an error occurs when setting the file path.
      */
-    public GenericCodeGenerator(NamedObj container, String name,
-            String outputFileExtension) throws IllegalActionException,
+    public GenericCodeGenerator(NamedObj container, String name) throws IllegalActionException,
             NameDuplicationException {
         super(container, name);
-        _outputFileExtension = outputFileExtension;
-        
         // Note: If you add publicly settable parameters, update
         // _commandFlags or _commandOptions.
 
@@ -114,6 +110,8 @@ public abstract class GenericCodeGenerator extends Attribute implements
         codeDirectory.setBaseDirectory(codeDirectory.asFile().toURI());
         new Parameter(codeDirectory, "allowFiles", BooleanToken.FALSE);
         new Parameter(codeDirectory, "allowDirectories", BooleanToken.TRUE);
+
+        generatorPackage = new StringParameter(this, "generatorPackage");
 
         generatorPackageList = new StringParameter(this, "generatorPackageList");
 
@@ -127,6 +125,8 @@ public abstract class GenericCodeGenerator extends Attribute implements
                 + "style=\"font-size:12; font-family:SansSerif; fill:white\">"
                 + "Double click to\ngenerate code.</text></svg>");
 
+        _outputFileExtension = _getOutputFileExtension();
+
         _model = (CompositeEntity) getContainer();
 
         //_generatorPackageListParser._updateGeneratorPackageList();
@@ -135,6 +135,26 @@ public abstract class GenericCodeGenerator extends Attribute implements
         // This attribute could be put in the MoML in the library instead
         // of here in the Java code.
         new CodeGeneratorGUIFactory(this, "_codeGeneratorGUIFactory");
+
+    }
+
+    /** Create a new instance of the code generator.
+     *  @param container The container.
+     *  @param name The name of the code generator.
+     *  @param outputFileExtension The extension of the output file.
+     *   (for example c in case of C and java in case of Java)
+     *  @exception IllegalActionException If the super class throws the
+     *   exception or error occurs when setting the file path.
+     *  @exception NameDuplicationException If the super class throws the
+     *   exception or an error occurs when setting the file path.
+     *  @deprecated Set <i>generatorPackage</i> and use @{link #GenericCodeGenerator(container, name)
+     *  instead.
+     */
+    public GenericCodeGenerator(NamedObj container, String name,
+            String outputFileExtension) throws IllegalActionException,
+            NameDuplicationException {
+        this(container, name);
+        _outputFileExtension = outputFileExtension;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -145,6 +165,13 @@ public abstract class GenericCodeGenerator extends Attribute implements
      *  The default is "<code>$HOME/cg/</code>".
      */
     public FileParameter codeDirectory;
+
+    /** The name of the package in which to look for helper class
+     *  code generators. The default value of this parameter
+     *  is the empty string.  Derived classes may set this parameter
+     *  to values like "ptolemy.cg.kernel.generic.html".
+     */
+    public StringParameter generatorPackage;
 
     /** The name of the package(s) in which to look for adapter
      *  classes. The string can either be just one package, such as
@@ -185,13 +212,29 @@ public abstract class GenericCodeGenerator extends Attribute implements
     }
 
     /** Return a formatted comment containing the
-     *  specified string.
+     *  specified string.  In this base class, the empty
+     *  string is returned.
      *  @param comment The string to put in the comment.
      *  @return A formatted comment.
      */
     public String comment(String comment) {
         return "";
     }
+
+   /** Return the decorated attributes for the target NamedObj.
+    *  @param target The NamedObj that will be decorated.
+    *  @return A list of decorated attributes for the target NamedObj. 
+    */
+   public DecoratedAttributes createDecoratedAttributes(NamedObj target) throws IllegalActionException, NameDuplicationException{
+       CodeGeneratorAdapter adapter;
+       try {
+           adapter = _getAdapter(target);
+       } catch (IllegalActionException e) {
+           // If no adapter, return empty list
+           return new DecoratedAttributesImplementation(target, this);
+       }           
+       return adapter.createDecoratedAttributes(target, this);
+   }    
 
     /** Generate code and write it to the file specified by the
      *  <i>codeDirectory</i> parameter.
@@ -217,6 +260,8 @@ public abstract class GenericCodeGenerator extends Attribute implements
     public int generateCode(StringBuffer code) throws KernelException {
 
         int returnValue = -1;
+
+        _sanitizedModelName = CodeGeneratorAdapter.generateName(_model);
 
         // If the container is in the top level, we are generating code
         // for the whole model. We have to make sure there is a manager,
@@ -260,7 +305,170 @@ public abstract class GenericCodeGenerator extends Attribute implements
         return returnValue;
     }
 
+    /** Generate code for a model.
+     *  @param args An array of Strings, each element names a MoML file
+     *  containing a model.
+     *  @return The return value of the last subprocess that was run
+     *  to compile or run the model.  Return -1 if called  with no arguments.
+     *  Return -2 if no CodeGenerator was created.
+     *  @exception Exception If any error occurs.
+     */
+    public static int generateCode(String[] args) throws Exception {
+        try {
+            if (args.length == 0) {
+                System.err
+                        .println("Usage: java -classpath $PTII "
+                        + "ptolemy.codegen.kernel.CodeGenerator model.xml "
+                                + "[model.xml . . .]"
+                                + _eol
+                        + "  The arguments name MoML files containing models."
+                        + "  Use -help to get a full list of command line arguments.");
+                return -1;
+            }
+
+            GenericCodeGenerator codeGenerator = null;
+
+            // See MoMLSimpleApplication for similar code
+            MoMLParser parser = new MoMLParser();
+            MoMLParser.setMoMLFilters(BackwardCompatibility.allFilters());
+            // Don't remove graphical classes here, it means
+            // we can't generate code for plotters etc using $PTII/bin/ptcg
+            //MoMLParser.addMoMLFilter(new RemoveGraphicalClasses());
+
+            // Reset the list each time we parse a parameter set.
+            // Otherwise two calls to this method will share params!
+            _parameterNames = new LinkedList<String>();
+            _parameterValues = new LinkedList<String>();
+            for (int i = 0; i < args.length; i++) {
+                if (parseArg(args[i])) {
+                    continue;
+                }
+                if (args[i].trim().startsWith("-")) {
+                    if (i >= (args.length - 1)) {
+                        throw new IllegalActionException("t set "
+                                + "parameter " + args[i] + " when no value is "
+                                + "given.");
+                    }
+
+                    // Save in case this is a parameter name and value.
+                    _parameterNames.add(args[i].substring(1));
+                    _parameterValues.add(args[i + 1]);
+                    i++;
+                    continue;
+                }
+                // Note: the code below uses explicit try catch blocks
+                // so we can provide very clear error messages about what
+                // failed to the end user.  The alternative is to wrap the
+                // entire body in one try/catch block and say
+                // "Code generation failed for foo", which is not clear.
+                URL modelURL;
+
+                try {
+                    modelURL = new File(args[i]).toURI().toURL();
+                } catch (Exception ex) {
+                    throw new Exception("Could not open \"" + args[i] + "\"",
+                            ex);
+                }
+
+                CompositeActor toplevel = null;
+
+                try {
+                    try {
+                        // Reset the parser and reload so that if
+                        // we run the model and then generate code,
+                        // we get the same results when generating code.
+                        // If we don't do this, then the nightly tests
+                        // fail because the results don't match.
+                        parser.reset();
+                        MoMLParser.purgeModelRecord(modelURL);
+                        toplevel = (CompositeActor) parser
+                        .parse(null, modelURL);
+                    } catch (Exception ex) {
+                        throw new Exception("Failed to parse \"" + args[i]
+                                                                        + "\"", ex);
+                    }
+
+                    // Get all instances of this class contained in the model
+                    List<GenericCodeGenerator> codeGenerators = toplevel
+                    .attributeList(GenericCodeGenerator.class);
+
+                    // If the user called this with -generatorPackage ptolemy.codegen.java,
+                    // the process that argument.  This is a bit hacky, but works.
+                    String generatorPackageValue = "ptolemy.codegen.c";
+                    int parameterIndex = -1;
+                    if ((parameterIndex = _parameterNames
+                            .indexOf("generatorPackage")) != -1) {
+                        generatorPackageValue = _parameterValues
+                                .get(parameterIndex);
+                    }
+                    Class<?> generatorClass = _getCodeGeneratorClass(generatorPackageValue);
+
+                    if (codeGenerators.size() != 0) {
+                        // Get the last CodeGenerator in the list, maybe
+                        // it was added last?
+                        for (Object object : (List<GenericCodeGenerator>) codeGenerators) {
+                            //if (object instanceof CCodeGenerator) {
+                            if (generatorClass.isInstance(object)) {
+                                codeGenerator = (GenericCodeGenerator) object;
+                                break;
+                            }
+                        }
+                    }
+
+                    if (codeGenerators.size() == 0 || codeGenerator == null) {
+                        // Add a codeGenerator
+                        Constructor<?> codeGeneratorConstructor = generatorClass
+                                .getConstructor(new Class[] { NamedObj.class,
+                                    String.class});
+                        codeGenerator = (GenericCodeGenerator) codeGeneratorConstructor
+                                .newInstance(new Object[] { toplevel,
+                                "CodeGenerator_AutoAdded"});
+                    }
+
+                    codeGenerator._updateParameters(toplevel);
+                    Attribute generateEmbeddedCode = codeGenerator
+                            .getAttribute("generateEmbeddedCode");
+                    if (generateEmbeddedCode instanceof Parameter) {
+                        ((Parameter) generateEmbeddedCode)
+                                .setExpression("false");
+                    }
+
+                    try {
+                        codeGenerator.generateCode();
+                    } catch (KernelException ex) {
+                        throw new Exception("Failed to generate code for \""
+                                + args[i] + "\"", ex);
+                    }
+                } finally {
+                    // Destroy the top level so that we avoid
+                    // problems with running the model after generating code
+                    if (toplevel != null) {
+                        toplevel.setContainer(null);
+                    }
+                }
+            }
+            if (codeGenerator != null) {
+                ExecuteCommands executeCommands = codeGenerator.getExecuteCommands();
+                if (executeCommands != null) {
+                    return executeCommands.getLastSubprocessReturnCode();
+                } else {
+                    // Everything ok, but no commands were executed, perhaps
+                    // only code was generated?
+                    return 0;
+                }
+            }
+            return -2;
+        } catch (Throwable ex) {
+            MoMLApplication.throwArgsException(ex, args);
+        }
+        return -1;
+    }
+
+
     /** Return the copyright for this code.
+     *  In this base class, the empty string is returned.
+     *  In derived classes, the standard Ptolemy copyright is 
+     *  returned within a comment.
      *  @return The copyright.
      */
     public String generateCopyright() {
@@ -334,21 +542,6 @@ public abstract class GenericCodeGenerator extends Attribute implements
         return getContainer();
     }
     
-   /** Return the decorated attributes for the target NamedObj.
-    *  @param target The NamedObj that will be decorated.
-    *  @return A list of decorated attributes for the target NamedObj. 
-    */
-   public DecoratedAttributes createDecoratedAttributes(NamedObj target) throws IllegalActionException, NameDuplicationException{
-       CodeGeneratorAdapter adapter;
-       try {
-           adapter = _getAdapter(target);
-       } catch (IllegalActionException e) {
-           // If no adapter, return empty list
-           return new DecoratedAttributesImplementation(target, this);
-       }           
-       return adapter.createDecoratedAttributes(target, this);
-   }    
-
     /** Get the command executor, which can be either non-graphical
      *  or graphical.  The initial default is non-graphical, which
      *  means that stderr and stdout from subcommands is written
@@ -589,6 +782,9 @@ public abstract class GenericCodeGenerator extends Attribute implements
      *  the string value of the generatorPackage parameter.
      */
     protected String _getOutputFilename() throws IllegalActionException {
+        if (_outputFileExtension == null) {
+            _outputFileExtension = _getOutputFileExtension();
+        }
         return _sanitizedModelName + "." + _outputFileExtension;
     }
 
@@ -703,11 +899,6 @@ public abstract class GenericCodeGenerator extends Attribute implements
      */
     protected String _writeCode(StringBuffer code)
             throws IllegalActionException {
-        // FIXME: ChacoCodeGenerator and VHDLCodeGenerator use this method directly.
-        //             Is this what we want?
-
-        // This method is private so that the body of the caller shorter.
-
         String codeFileName = _getOutputFilename();
 
         // Check if needs to overwrite.
@@ -807,6 +998,27 @@ public abstract class GenericCodeGenerator extends Attribute implements
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
+    /** Return the file extension for generated files.  The file
+     *  extension is set to the last package of the
+     *  <i>generatePackage</i> parameter.  For example, if 
+     *  <i>generatePackage</i> is set to 
+     *  ptolemy.cg.kernel.generic.html", then the extension will
+     *  be ".html".  In this base class, the output file extension 
+     *  @return The file extension.
+     *  @exception IllegalActionException If getting the value of the
+     *  <i>generatorPackage</i> parameter throws it.
+     */
+    private String _getOutputFileExtension() throws IllegalActionException {
+        String packageValue = generatorPackage.stringValue();
+
+        if (packageValue.indexOf(".") == -1) {
+            return "";
+        }
+        String outputFileExtension = packageValue
+                .substring(packageValue.lastIndexOf("."));
+        return outputFileExtension;
+    }
+
     /** Set the parameters in the model stored in _parameterNames
      *  to the values given by _parameterValues. Those lists are
      *  populated by command line arguments.
@@ -866,165 +1078,6 @@ public abstract class GenericCodeGenerator extends Attribute implements
                 }
             }
         }
-    }
-
-    /** Generate code for a model.
-     *  @param args An array of Strings, each element names a MoML file
-     *  containing a model.
-     *  @return The return value of the last subprocess that was run
-     *  to compile or run the model.  Return -1 if called  with no arguments.
-     *  Return -2 if no CodeGenerator was created.
-     *  @exception Exception If any error occurs.
-     */
-    private static int generateCode(String[] args) throws Exception {
-        try {
-            if (args.length == 0) {
-                System.err
-                        .println("Usage: java -classpath $PTII "
-                        + "ptolemy.codegen.kernel.CodeGenerator model.xml "
-                                + "[model.xml . . .]"
-                                + _eol
-                        + "  The arguments name MoML files containing models."
-                        + "  Use -help to get a full list of command line arguments.");
-                return -1;
-            }
-
-            GenericCodeGenerator codeGenerator = null;
-
-            // See MoMLSimpleApplication for similar code
-            MoMLParser parser = new MoMLParser();
-            MoMLParser.setMoMLFilters(BackwardCompatibility.allFilters());
-            // Don't remove graphical classes here, it means
-            // we can't generate code for plotters etc using $PTII/bin/ptcg
-            //MoMLParser.addMoMLFilter(new RemoveGraphicalClasses());
-
-            // Reset the list each time we parse a parameter set.
-            // Otherwise two calls to this method will share params!
-            _parameterNames = new LinkedList<String>();
-            _parameterValues = new LinkedList<String>();
-            for (int i = 0; i < args.length; i++) {
-                if (parseArg(args[i])) {
-                    continue;
-                }
-                if (args[i].trim().startsWith("-")) {
-                    if (i >= (args.length - 1)) {
-                        throw new IllegalActionException("t set "
-                                + "parameter " + args[i] + " when no value is "
-                                + "given.");
-                    }
-
-                    // Save in case this is a parameter name and value.
-                    _parameterNames.add(args[i].substring(1));
-                    _parameterValues.add(args[i + 1]);
-                    i++;
-                    continue;
-                }
-                // Note: the code below uses explicit try catch blocks
-                // so we can provide very clear error messages about what
-                // failed to the end user.  The alternative is to wrap the
-                // entire body in one try/catch block and say
-                // "Code generation failed for foo", which is not clear.
-                URL modelURL;
-
-                try {
-                    modelURL = new File(args[i]).toURI().toURL();
-                } catch (Exception ex) {
-                    throw new Exception("Could not open \"" + args[i] + "\"",
-                            ex);
-                }
-
-                CompositeActor toplevel = null;
-
-                try {
-                    try {
-                        // Reset the parser and reload so that if
-                        // we run the model and then generate code,
-                        // we get the same results when generating code.
-                        // If we don't do this, then the nightly tests
-                        // fail because the results don't match.
-                        parser.reset();
-                        MoMLParser.purgeModelRecord(modelURL);
-                        toplevel = (CompositeActor) parser
-                        .parse(null, modelURL);
-                    } catch (Exception ex) {
-                        throw new Exception("Failed to parse \"" + args[i]
-                                                                        + "\"", ex);
-                    }
-
-                    // Get all instances of this class contained in the model
-                    List<GenericCodeGenerator> codeGenerators = toplevel
-                    .attributeList(GenericCodeGenerator.class);
-
-                    // If the user called this with -generatorPackage ptolemy.codegen.java,
-                    // the process that argument.  This is a bit hacky, but works.
-                    String generatorPackageValue = "ptolemy.codegen.c";
-                    int parameterIndex = -1;
-                    if ((parameterIndex = _parameterNames
-                            .indexOf("generatorPackage")) != -1) {
-                        generatorPackageValue = _parameterValues
-                                .get(parameterIndex);
-                    }
-                    Class<?> generatorClass = _getCodeGeneratorClass(generatorPackageValue);
-
-                    if (codeGenerators.size() != 0) {
-                        // Get the last CodeGenerator in the list, maybe
-                        // it was added last?
-                        for (Object object : (List<GenericCodeGenerator>) codeGenerators) {
-                            //if (object instanceof CCodeGenerator) {
-                            if (generatorClass.isInstance(object)) {
-                                codeGenerator = (GenericCodeGenerator) object;
-                                break;
-                            }
-                        }
-                    }
-
-                    if (codeGenerators.size() == 0 || codeGenerator == null) {
-                        // Add a codeGenerator
-                        Constructor<?> codeGeneratorConstructor = generatorClass
-                                .getConstructor(new Class[] { NamedObj.class,
-                                    String.class});
-                        codeGenerator = (GenericCodeGenerator) codeGeneratorConstructor
-                                .newInstance(new Object[] { toplevel,
-                                "CodeGenerator_AutoAdded"});
-                    }
-
-                    codeGenerator._updateParameters(toplevel);
-                    Attribute generateEmbeddedCode = codeGenerator
-                            .getAttribute("generateEmbeddedCode");
-                    if (generateEmbeddedCode instanceof Parameter) {
-                        ((Parameter) generateEmbeddedCode)
-                                .setExpression("false");
-                    }
-
-                    try {
-                        codeGenerator.generateCode();
-                    } catch (KernelException ex) {
-                        throw new Exception("Failed to generate code for \""
-                                + args[i] + "\"", ex);
-                    }
-                } finally {
-                    // Destroy the top level so that we avoid
-                    // problems with running the model after generating code
-                    if (toplevel != null) {
-                        toplevel.setContainer(null);
-                    }
-                }
-            }
-            if (codeGenerator != null) {
-                ExecuteCommands executeCommands = codeGenerator.getExecuteCommands();
-                if (executeCommands != null) {
-                    return executeCommands.getLastSubprocessReturnCode();
-                } else {
-                    // Everything ok, but no commands were executed, perhaps
-                    // only code was generated?
-                    return 0;
-                }
-            }
-            return -2;
-        } catch (Throwable ex) {
-            MoMLApplication.throwArgsException(ex, args);
-        }
-        return -1;
     }
 
     /** Parse a command-line argument. This method recognized -help
@@ -1167,6 +1220,8 @@ public abstract class GenericCodeGenerator extends Attribute implements
         //    { "-compileTarget",
         // "     <target to be run, defaults to empty string>" },
         //{ "-generateComment", "   true|false (default: true)" },
+        { "-generatorPackage"," <Java package of code generator, defaults to ptolemy.c>" },
+        { "-generatorPackage"," <Semicolon or * separated list of Java packages to be searched for adapters>"},
         { "-generatorPackageList"," <Semicolon or * separated list of Java packages to be searched for adapters>"},
         //{ "-inline", "            true|false (default: false)" },
         //{ "-measureTime", "       true|false (default: false)" },
@@ -1188,11 +1243,14 @@ public abstract class GenericCodeGenerator extends Attribute implements
     /** List of parameter values seen on the command line. */
     private static List<String> _parameterValues;
 
-    /** The extension of the output file.
-     *   (for example c in case of C and java in case of Java)
+    /** The extension of the output file.  (for example c in case of C
+     *   and java in case of Java). The file extension is set to the
+     *   last package of the <i>generatePackage</i> parameter.  For
+     *   example, if <i>generatePackage</i> is set to
+     *   ptolemy.cg.kernel.generic.html", then the extension will be
+     *   ".html".
      */
     private String _outputFileExtension;
-
 
     /** Parse the generatorPackageList parameter. 
      *  The <i>generatorPackageList</i> parameter is assumed to be
@@ -1224,5 +1282,4 @@ public abstract class GenericCodeGenerator extends Attribute implements
         /** The list of generator packages. */
         private List<String> _generatorPackages;
     }
-
 }

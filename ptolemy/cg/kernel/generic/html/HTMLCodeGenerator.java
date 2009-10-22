@@ -37,17 +37,22 @@ import ptolemy.kernel.util.NamedObj;
 //////////////////////////////////////////////////////////////////////////
 ////HTMLCodeGenerator
 
-/** Base class for HTML code generator.
-*
-*  @author Man-Kit Leung, Bert Rodiers
-*  @version $Id$
-*  @since Ptolemy II 7.1
-*  @Pt.ProposedRating red (rodiers)
-*  @Pt.AcceptedRating red (rodiers)
+/** Generate a HTML description of a model.
+ *  <p>To generate an HTML version of a model, use:  
+ *  <pre>
+ java -classpath $PTII ptolemy.cg.kernel.generic.html.HTMLCodeGenerator -generatorPackage ptolemy.cg.kernel.generic.html -generatorPackageList generic.html adapter/generic/html/demo/HierarchicalModel/HierarchicalModel.xml
+ * </pre>
+ *  @author Man-Kit Leung, Bert Rodiers
+ *  @version $Id$
+ *  @since Ptolemy II 7.1
+ *  @Pt.ProposedRating red (rodiers)
+ *  @Pt.AcceptedRating red (rodiers)
 */
 public class HTMLCodeGenerator extends GenericCodeGenerator {
 
     /** Create a new instance of the HTMLCodeGenerator.
+     *  The value of the <i>generatorPackageList</i> parameter of the
+     *  base class is set to <i>generic.html</code>
      *  @param container The container.
      *  @param name The name of the HTMLCodeGenerator.
      *  @exception IllegalActionException If the super class throws the
@@ -62,25 +67,33 @@ public class HTMLCodeGenerator extends GenericCodeGenerator {
         generatorPackageList.setExpression("generic.html");
     }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                     parameters                            ////
+    /** Return a formatted comment containing the specified string. In
+     *  this base class, the comments is a HTML-style comment, which
+     *  begins with "<!--" and ends with "-->" followed by the platform
+     *  dependent end of line character(s): under Unix: "\n", under
+     *  Windows: "\n\r". Subclasses may override this produce comments
+     *  that match the code generation language.
+     *  @param comment The string to put in the comment.
+     *  @return A formatted comment.
+     */
+    public String comment(String comment) {
+        return "<!-- " + comment + " -->" + _eol;
+    }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
+    ////                         protected methods                 ////
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected methods                   ////
-
-    /** Generate code and append it to the given string buffer.
-     *  Write the code to the directory specified by the codeDirectory
+    /** Generate HTML and append it to the given string buffer.
+     *  Write the code to the directory specified by the <i>codeDirectory</i>
      *  parameter.  The file name is a sanitized version of the model
      *  name with a suffix that is based on last package name of the
      *  <i>generatorPackage</i> parameter.  Thus if the
      *  <i>codeDirectory</i> is <code>$HOME</code>, the name of the
      *  model is <code>Foo</code> and the <i>generatorPackage</i>
-     *  is <code>ptolemy.codegen.c</code>, then the file that is
-     *  written will be <code>$HOME/Foo.c</code>
-     *  This method is the main entry point.
+     *  is <code>ptolemy.cg.kernel.generic.html</code>, then the file that is
+     *  written will be <code>$HOME/Foo.html</code>
+     *  This method is the main entry point to generate code.
+     *
      *  @param code The given string buffer.
      *  @return The return value of the last subprocess that was executed.
      *  or -1 if no commands were executed.
@@ -88,7 +101,6 @@ public class HTMLCodeGenerator extends GenericCodeGenerator {
      *   or write-to-file throw any exception.
      */
     protected int _generateCode(StringBuffer code) throws KernelException {
-        ;
         // FIXME: We should put in some default html version info.
         // e.g. <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
         // <html xmlns="http://www.w3.org/1999/xhtml"xml:lang="en" lang="en" dir="ltr">
@@ -118,21 +130,4 @@ public class HTMLCodeGenerator extends GenericCodeGenerator {
     protected Class<?> _getAdapterClassFilter() {
         return HTMLCodeGeneratorAdapter.class;
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
-
-    /** Return a formatted comment containing the specified string. In
-     *  this base class, the comments is a HTML-style comment, which
-     *  begins with "<!--" and ends with "-->" followed by the platform
-     *  dependent end of line character(s): under Unix: "\n", under
-     *  Windows: "\n\r". Subclasses may override this produce comments
-     *  that match the code generation language.
-     *  @param comment The string to put in the comment.
-     *  @return A formatted comment.
-     */
-    protected String _formatComment(String comment) {
-        return "<!-- " + comment + " -->" + _eol;
-    }
-
 }
