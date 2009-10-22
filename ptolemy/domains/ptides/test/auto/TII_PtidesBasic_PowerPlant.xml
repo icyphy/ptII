@@ -16,7 +16,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 45.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1523, 32, 947, 631}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={333, 32, 947, 631}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[733, 518]">
     </property>
@@ -111,7 +111,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[165.0, 30.0]">
             </property>
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={242, 281, 934, 497}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={242, 281, 935, 500}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[721, 387]">
         </property>
@@ -252,7 +252,7 @@
         <display name="Supervisory Control"/>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[135.0, 235.0]">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 229, 1104, 667}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={25, 130, 1105, 670}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[891, 557]">
         </property>
@@ -401,7 +401,7 @@
     <entity name="Local Control" class="ptolemy.actor.TypedCompositeActor">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, 215.0]">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1401, 125, 943, 582}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={337, 125, 943, 582}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[729, 469]">
         </property>
@@ -1571,6 +1571,8 @@ The controller runs at least every tick of the local clock.</text></svg></config
             </port>
         </entity>
         <entity name="CurrentTime2" class="ptolemy.actor.lib.CurrentTime">
+            <property name="useLocalTime" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
             <doc>Output the current time.</doc>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[260.0, -15.0]">
             </property>
@@ -1608,6 +1610,8 @@ The controller runs at least every tick of the local clock.</text></svg></config
             </port>
         </entity>
         <entity name="CurrentTime" class="ptolemy.actor.lib.CurrentTime">
+            <property name="useLocalTime" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
             <doc>Output the current time.</doc>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[505.0, -80.0]">
             </property>
@@ -1645,6 +1649,8 @@ The controller runs at least every tick of the local clock.</text></svg></config
             </port>
         </entity>
         <entity name="CurrentTime3" class="ptolemy.actor.lib.CurrentTime">
+            <property name="useLocalTime" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
             <doc>Output the current time.</doc>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[505.0, 25.0]">
             </property>
@@ -1682,6 +1688,8 @@ The controller runs at least every tick of the local clock.</text></svg></config
             </port>
         </entity>
         <entity name="CurrentTime4" class="ptolemy.actor.lib.CurrentTime">
+            <property name="useLocalTime" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
             <doc>Output the current time.</doc>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[340.0, 305.0]">
             </property>
@@ -1719,6 +1727,8 @@ The controller runs at least every tick of the local clock.</text></svg></config
             </port>
         </entity>
         <entity name="CurrentTime5" class="ptolemy.actor.lib.CurrentTime">
+            <property name="useLocalTime" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
             <doc>Output the current time.</doc>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[530.0, 250.0]">
             </property>
@@ -1756,6 +1766,8 @@ The controller runs at least every tick of the local clock.</text></svg></config
             </port>
         </entity>
         <entity name="CurrentTime6" class="ptolemy.actor.lib.CurrentTime">
+            <property name="useLocalTime" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
             <doc>Output the current time.</doc>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[455.0, 100.0]">
             </property>
@@ -1793,6 +1805,8 @@ The controller runs at least every tick of the local clock.</text></svg></config
             </port>
         </entity>
         <entity name="CurrentTime7" class="ptolemy.actor.lib.CurrentTime">
+            <property name="useLocalTime" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
             <doc>Output the current time.</doc>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[435.0, 150.0]">
             </property>
@@ -1830,6 +1844,8 @@ The controller runs at least every tick of the local clock.</text></svg></config
             </port>
         </entity>
         <entity name="CurrentTime8" class="ptolemy.actor.lib.CurrentTime">
+            <property name="useLocalTime" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
             <doc>Output the current time.</doc>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[385.0, 200.0]">
             </property>

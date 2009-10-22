@@ -16,18 +16,18 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[250.0, 90.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1452, 201, 988, 756}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={292, 44, 988, 756}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[774, 643]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.9402332945845">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.8321341864906">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{273.5999744201915, 394.2020378581181}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{327.0692235492807, 423.24658203125}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The system consist of 3 independent power supplies. The output voltage, maximum current, and&#10;the delay between startup and actual turn-on and shutdown and actual shutdown can be adjusted &#10;via parameters. The supplies all monitor their output current and if the maximum current is &#10;exceeded they will send a fault indication to the network and will themselves initiate a local&#10;shutdown.&#10;&#10;The loads can be adjusted for resistance (default is 100 ohms) and for a time at which the load&#10;current doubles. This may be used to simulate a fault if the doubling of current exceeds the &#10;maximum supply current.&#10;&#10;The supervisor can issue 2 startup commands at parameterized times, and a single fault command&#10;at a parameterized time.&#10;&#10;The bridge models the multicast behavior of the network (but not network timing).&#10;&#10;The plot actors monitor the voltage of all power supplies and the current of supply #1. The event&#10;monitor displays the internal state of supply #1 and the startup, shutdown, fault command events&#10;from the supervisor and the fault indication input to supply #1.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{5, 530}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-60.0, 515.0]">
         </property>
     </property>
     <entity name="CompositeActorPowerSupply" class="ptolemy.actor.TypedCompositeActor">
@@ -313,7 +313,7 @@ actors to enable timed sequencing of a set of power supplies.</text></svg></conf
         <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory"></property></entity></entity>
       </configure>
                     </property>
-                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={117, 50, 831, 607}, maximized=false}">
+                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={225, 98, 830, 604}, maximized=false}">
                     </property>
                     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[616, 490]">
                     </property>
@@ -582,7 +582,7 @@ actors to enable timed sequencing of a set of power supplies.</text></svg></conf
                     <link port="Const.output" relation="relation"/>
                 </entity>
                 <entity name="powerup" class="ptolemy.domains.modal.modal.Refinement">
-                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={118, 162, 815, 517}, maximized=false}">
+                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={118, 162, 814, 513}, maximized=false}">
                     </property>
                     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
                     </property>
@@ -638,6 +638,8 @@ actors to enable timed sequencing of a set of power supplies.</text></svg></conf
                     </port>
                     <port name="triggerRequest" class="ptolemy.domains.modal.modal.RefinementPort">
                         <property name="output"/>
+                        <property name="_location" class="ptolemy.kernel.util.Location" value="{580.0, 200.0}">
+                        </property>
                     </port>
                     <entity name="TimedDelay" class="ptolemy.domains.de.lib.TimedDelay">
                         <property name="delay" class="ptolemy.data.expr.Parameter" value="upDelay">
@@ -674,7 +676,7 @@ actors to enable timed sequencing of a set of power supplies.</text></svg></conf
                     <link port="Const.trigger" relation="relation3"/>
                 </entity>
                 <entity name="shutdown" class="ptolemy.domains.modal.modal.Refinement">
-                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={168, 189, 815, 517}, maximized=false}">
+                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={168, 189, 814, 513}, maximized=false}">
                     </property>
                     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
                     </property>
@@ -730,6 +732,8 @@ actors to enable timed sequencing of a set of power supplies.</text></svg></conf
                     </port>
                     <port name="triggerRequest" class="ptolemy.domains.modal.modal.RefinementPort">
                         <property name="output"/>
+                        <property name="_location" class="ptolemy.kernel.util.Location" value="{580.0, 200.0}">
+                        </property>
                     </port>
                     <entity name="Const" class="ptolemy.actor.lib.Const">
                         <property name="value" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -1143,7 +1147,7 @@ actors to enable timed sequencing of a set of power supplies.</text></svg></conf
                     <property name="_location" class="ptolemy.kernel.util.Location" value="{-40.0, -35.0}">
                     </property>
                 </property>
-                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={85, 44, 865, 643}, maximized=false}">
+                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={85, 44, 864, 639}, maximized=false}">
                 </property>
                 <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[650, 526]">
                 </property>
@@ -1603,7 +1607,7 @@ actors to enable timed sequencing of a set of power supplies.</text></svg></conf
         <display name="Load 1"/>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[435.0, 260.0]">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={61, 197, 953, 517}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={61, 197, 952, 513}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[738, 400]">
         </property>
@@ -2059,13 +2063,13 @@ actors to enable timed sequencing of a set of power supplies.</text></svg></conf
         <display name="Event Monitor"/>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{100.0, 85.0}">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1426, 346, 814, 513}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={466, 287, 814, 513}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
         </property>
         <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.9606364216293">
         </property>
-        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{319.29296875, 329.8046875}">
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{319.2929687500001, 329.8046875000001}">
         </property>
         <property name="Ptides Basic Director" class="ptolemy.domains.ptides.kernel.PtidesBasicDirector">
             <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 150.0]">
@@ -2181,6 +2185,8 @@ actors to enable timed sequencing of a set of power supplies.</text></svg></conf
             </port>
         </entity>
         <entity name="CurrentTime" class="ptolemy.actor.lib.CurrentTime">
+            <property name="useLocalTime" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
             <doc>Output the current time.</doc>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[395.0, 200.0]">
             </property>
@@ -2220,6 +2226,8 @@ actors to enable timed sequencing of a set of power supplies.</text></svg></conf
             </port>
         </entity>
         <entity name="CurrentTime2" class="ptolemy.actor.lib.CurrentTime">
+            <property name="useLocalTime" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
             <doc>Output the current time.</doc>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[370.0, 280.0]">
             </property>
@@ -2257,6 +2265,8 @@ actors to enable timed sequencing of a set of power supplies.</text></svg></conf
             </port>
         </entity>
         <entity name="CurrentTime3" class="ptolemy.actor.lib.CurrentTime">
+            <property name="useLocalTime" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
             <doc>Output the current time.</doc>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[370.0, 365.0]">
             </property>
@@ -2294,6 +2304,8 @@ actors to enable timed sequencing of a set of power supplies.</text></svg></conf
             </port>
         </entity>
         <entity name="CurrentTime4" class="ptolemy.actor.lib.CurrentTime">
+            <property name="useLocalTime" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
             <doc>Output the current time.</doc>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[325.0, 455.0]">
             </property>
@@ -3615,7 +3627,7 @@ actors to enable timed sequencing of a set of power supplies.</text></svg></conf
             <display name="Circuit Model"/>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[510.0, 195.0]">
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={18, 158, 934, 517}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={25, 158, 933, 513}, maximized=false}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[719, 400]">
             </property>
@@ -3758,7 +3770,7 @@ actors to enable timed sequencing of a set of power supplies.</text></svg></conf
                     <property name="_location" class="ptolemy.kernel.util.Location" value="{-40.0, -35.0}">
                     </property>
                 </property>
-                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={85, 44, 865, 643}, maximized=false}">
+                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={85, 44, 864, 639}, maximized=false}">
                 </property>
                 <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[650, 526]">
                 </property>
@@ -4493,7 +4505,7 @@ actors to enable timed sequencing of a set of power supplies.</text></svg></conf
         <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory"></property></entity></entity>
       </configure>
                     </property>
-                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={117, 50, 831, 607}, maximized=false}">
+                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={225, 98, 830, 604}, maximized=false}">
                     </property>
                     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[616, 490]">
                     </property>
@@ -4762,7 +4774,7 @@ actors to enable timed sequencing of a set of power supplies.</text></svg></conf
                     <link port="Const.output" relation="relation"/>
                 </entity>
                 <entity name="powerup" class="ptolemy.domains.modal.modal.Refinement">
-                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={118, 162, 815, 517}, maximized=false}">
+                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={118, 162, 814, 513}, maximized=false}">
                     </property>
                     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
                     </property>
@@ -4818,6 +4830,8 @@ actors to enable timed sequencing of a set of power supplies.</text></svg></conf
                     </port>
                     <port name="triggerRequest" class="ptolemy.domains.modal.modal.RefinementPort">
                         <property name="output"/>
+                        <property name="_location" class="ptolemy.kernel.util.Location" value="{580.0, 200.0}">
+                        </property>
                     </port>
                     <entity name="TimedDelay" class="ptolemy.domains.de.lib.TimedDelay">
                         <property name="delay" class="ptolemy.data.expr.Parameter" value="upDelay">
@@ -5180,7 +5194,7 @@ actors to enable timed sequencing of a set of power supplies.</text></svg></conf
             <display name="Circuit Model"/>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[510.0, 195.0]">
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={18, 158, 934, 517}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={25, 158, 933, 513}, maximized=false}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[719, 400]">
             </property>
@@ -5323,7 +5337,7 @@ actors to enable timed sequencing of a set of power supplies.</text></svg></conf
                     <property name="_location" class="ptolemy.kernel.util.Location" value="{-40.0, -35.0}">
                     </property>
                 </property>
-                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={85, 44, 865, 643}, maximized=false}">
+                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={85, 44, 864, 639}, maximized=false}">
                 </property>
                 <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[650, 526]">
                 </property>
@@ -6366,11 +6380,11 @@ actors to enable timed sequencing of a set of power supplies.</text></svg></conf
         <link port="CurrentTime.trigger" relation="relation7"/>
     </entity>
     <entity name="Test" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{-8.6681809397058E-5, 1.7336361879412E-5, 1.3869089503529E-5, 1.1095271602823E-5, 8.8762172822587E-6, 7.100973825807E-6, 5.6807790606456E-6, 4.5446232485165E-6, 3.6356985988132E-6, 2.9085588790505E-6, 2.3268471032404E-6, 1.8614776825923E-6, 1.4891821460739E-6, 1.1913457168591E-6, 9.5307657348728E-7, 7.6246125878982E-7, 6.0996900703186E-7, 4.8797520562549E-7, 3.9038016450039E-7, 3.1230413160031E-7, 2.4984330528025E-7, 1.998746442242E-7, 1.5989971537936E-7, 1.2791977230349E-7, 1.0233581784279E-7, 8.1868654274232E-8, 6.5494923419386E-8, 5.2395938735509E-8, 4.1916750988407E-8, 3.3533400790726E-8, 2.682672063258E-8, 2.1461376506064E-8, 1.7169101204851E-8, 1.3735280963881E-8, 1.0988224771105E-8, 8.7905798168839E-9, 7.0324638535072E-9, 5.6259710828057E-9, 4.5007768662446E-9, 3.6006214929957E-9, 0.0300000028805, 0.0540000023044, 0.0732000018435, 0.0885600014748, 0.1008480011799, 0.1106784009439, 0.1185427207551, 0.1248341766041, 0.1298673412833, 0.1338938730266, 0.1371150984213, 0.139692078737, 0.1417536629896, 0.1434029303917, 0.1447223443134, 0.1457778754507, 0.1466223003606, 0.1472978402884, 0.1478382722308, 0.1482706177846, 0.1486164942277, 0.1488931953821, 0.1491145563057, 0.1492916450446, 0.1494333160357, 0.1495466528285, 0.1496373222628, 0.1497098578103, 0.1497678862482, 0.1498143089986, 0.1498514471989, 0.1498811577591, 0.1499049262073, 0.1499239409658, 0.1499391527726, 0.1499513222181, 0.1499610577745, 0.1499688462196, 0.1499750769757, 0.1499800615805, 0.1499840492644, 0.1499872394115, 0.1499897915292, 0.1499918332234, 0.1499934665787, 0.149994773263, 0.1499958186104, 0.1499966548883, 0.1499973239106, 0.1499978591285, 0.1199982873028, 0.0959986298422, 0.0767989038738, 0.061439123099, 0.0491512984792, 0.0393210387834, 0.0314568310267, 0.0251654648214, 0.0201323718571, 0.0161058974857, 0.0128847179885, 0.0103077743908, 0.0082462195127, 0.0065969756101, 0.0052775804881, 0.0042220643905, 0.0033776515124, 0.0027021212099, 0.0021616969679, 0.0017293575743, 0.0013834860595, 0.0011067888476, 8.8543107806336E-4, 7.0834486245069E-4, 5.6667588996055E-4, 4.5334071196844E-4, 3.6267256957475E-4, 2.901380556598E-4, 2.3211044452784E-4, 1.8568835562227E-4, 1.4855068449782E-4, 1.1884054759826E-4, 9.5072438078604E-5, 7.6057950462883E-5, 6.0846360370307E-5, 4.8677088296245E-5, 3.8941670636996E-5, 3.1153336509597E-5, 2.4922669207678E-5, 1.9938135366142E-5, 1.5950508292914E-5, 1.2760406634331E-5, 1.0208325307465E-5, 8.1666602459718E-6, 6.5333281967774E-6, 5.2266625574219E-6, 4.1813300459376E-6, 3.34506403675E-6, 2.6760512294E-6, 2.14084098352E-6, 0.0300017126728, 0.1080027402765, 0.1464021922212, 0.1771217537769, 0.2016974030215, 0.2213579224172, 0.2370863379338, 0.249669070347, 0.2597352562776, 0.2677882050221, 0.2742305640177, 0.2793844512141, 0.2835075609713, 0.2868060487771, 0.2294448390216, 0.1835558712173, 0.1468446969739, 0.1174757575791, 0.0939806060633, 0.0751844848506, 0.0601475878805, 0.0481180703044, 0.0384944562435, 0.0307955649948, 0.0246364519958, 0.0197091615967, 0.0157673292773, 0.0126138634219, 0.0100910907375, 0.00807287259, 0.006458298072, 0.0051666384576, 0.0041333107661, 0.0033066486129, 0.0026453188903, 0.0021162551122, 0.0016930040898, 0.0013544032718, 0.0010835226175, 8.6681809397058E-4}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{-8.6681809397058E-5, -6.9345447517646E-5, -5.5476358014117E-5, -4.4381086411294E-5, -3.5504869129035E-5, -2.8403895303228E-5, -2.2723116242582E-5, -1.8178492994066E-5, -1.4542794395253E-5, -1.1634235516202E-5, -9.3073884129617E-6, -7.4459107303694E-6, -5.9567285842955E-6, -4.7653828674364E-6, -3.8123062939491E-6, -3.0498450351593E-6, -2.4398760281274E-6, -1.951900822502E-6, -1.5615206580016E-6, -1.2492165264012E-6, -9.99373221121E-7, -7.994985768968E-7, -6.3959886151744E-7, -5.1167908921395E-7, -4.0934327137116E-7, -3.2747461709693E-7, -2.6197969367754E-7, -2.0958375494203E-7, -1.6766700395363E-7, -1.341336031629E-7, -1.0730688253032E-7, -8.5845506024257E-8, -6.8676404819406E-8, -5.4941123855525E-8, -4.395289908442E-8, -3.5162319267536E-8, -2.8129855414029E-8, -2.2503884331223E-8, -1.8003107464978E-8, -1.4402485971983E-8, 0.029999988478, 0.0539999907824, 0.0731999926259, 0.0885599941007, 0.1008479952806, 0.1106783962245, 0.1185427169796, 0.1248341735837, 0.1298673388669, 0.1338938710935, 0.1371150968748, 0.1396920774999, 0.1417536619999, 0.1434029295999, 0.1447223436799, 0.1457778749439, 0.1466222999552, 0.1472978399641, 0.1478382719713, 0.148270617577, 0.1486164940616, 0.1488931952493, 0.1491145561994, 0.1492916449596, 0.1494333159676, 0.1495466527741, 0.1496373222193, 0.1497098577754, 0.1497678862203, 0.1498143089763, 0.149851447181, 0.1498811577448, 0.1499049261959, 0.1499239409567, 0.1499391527653, 0.1499513222123, 0.1499610577698, 0.1499688462159, 0.1499750769727, 0.1499800615781, 0.1499840492625, 0.14998723941, 0.149989791528, 0.1499918332224, 0.1499934665779, 0.1499947732623, 0.1499958186099, 0.1499966548879, 0.1499973239103, 0.1499978591283, 0.1199982873026, 0.0959986298421, 0.0767989038737, 0.0614391230989, 0.0491512984791, 0.0393210387833, 0.0314568310267, 0.0251654648213, 0.0201323718571, 0.0161058974856, 0.0128847179885, 0.0103077743908, 0.0082462195127, 0.0065969756101, 0.0052775804881, 0.0042220643905, 0.0033776515124, 0.0027021212099, 0.0021616969679, 0.0017293575743, 0.0013834860595, 0.0011067888476, 8.8543107806184E-4, 7.0834486244948E-4, 5.6667588995958E-4, 4.5334071196766E-4, 3.6267256957413E-4, 2.9013805565931E-4, 2.3211044452744E-4, 1.8568835562196E-4, 1.4855068449756E-4, 1.1884054759805E-4, 9.5072438078441E-5, 7.6057950462753E-5, 6.0846360370202E-5, 4.8677088296162E-5, 3.8941670636929E-5, 3.1153336509544E-5, 2.4922669207635E-5, 1.9938135366108E-5, 1.5950508292886E-5, 1.2760406634309E-5, 1.0208325307447E-5, 8.1666602459578E-6, 6.5333281967662E-6, 5.226662557413E-6, 4.1813300459304E-6, 3.3450640367443E-6, 2.6760512293955E-6, 2.1408409835164E-6, 0.0300017126728, 0.1080027402765, 0.1464021922212, 0.1771217537769, 0.2016974030215, 0.2213579224172, 0.2370863379338, 0.249669070347, 0.2597352562776, 0.2677882050221, 0.2742305640177, 0.2793844512141, 0.2835075609713, 0.2868060487771, 0.2294448390216, 0.1835558712173, 0.1468446969739, 0.1174757575791, 0.0939806060633, 0.0751844848506, 0.0601475878805, 0.0481180703044, 0.0384944562435, 0.0307955649948, 0.0246364519958, 0.0197091615967, 0.0157673292773, 0.0126138634219, 0.0100910907375, 0.00807287259, 0.006458298072, 0.0051666384576, 0.0041333107661, 0.0033066486129, 0.0026453188903, 0.0021162551122, 0.0016930040898, 0.0013544032718, 0.0010835226175, 8.6681809397058E-4}">
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[495.0, 120.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[485.0, 130.0]">
         </property>
     </entity>
     <entity name="CurrentTime" class="ptolemy.actor.lib.CurrentTime">
@@ -6385,11 +6399,11 @@ actors to enable timed sequencing of a set of power supplies.</text></svg></conf
         </property>
     </entity>
     <entity name="Test3" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{-0.0086681809397, 0.0017336361879, 0.0013869089504, 0.0011095271603, 8.8762172822587E-4, 7.100973825807E-4, 5.6807790606456E-4, 4.5446232485165E-4, 3.6356985988132E-4, 2.9085588790505E-4, 2.3268471032404E-4, 1.8614776825923E-4, 1.4891821460739E-4, 1.1913457168591E-4, 9.5307657348728E-5, 7.6246125878982E-5, 6.0996900703186E-5, 4.8797520562549E-5, 3.9038016450039E-5, 3.1230413160031E-5, 2.4984330528025E-5, 1.998746442242E-5, 1.5989971537936E-5, 1.2791977230349E-5, 1.0233581784279E-5, 8.1868654274232E-6, 6.5494923419386E-6, 5.2395938735509E-6, 4.1916750988407E-6, 3.3533400790726E-6, 2.682672063258E-6, 2.1461376506064E-6, 1.7169101204851E-6, 1.3735280963881E-6, 1.0988224771105E-6, 8.7905798168839E-7, 7.0324638535072E-7, 5.6259710828057E-7, 4.5007768662446E-7, 3.6006214929957E-7, 3.0000002880497, 5.4000002304398, 7.3200001843518, 8.8560001474815, 10.0848001179852, 11.0678400943881, 11.8542720755105, 12.4834176604084, 12.9867341283267, 13.3893873026614, 13.7115098421291, 13.9692078737033, 14.1753662989626, 14.3402930391701, 14.4722344313361, 14.5777875450689, 14.6622300360551, 14.7297840288441, 14.7838272230753, 14.8270617784602, 14.8616494227682, 14.8893195382145, 14.9114556305716, 14.9291645044573, 14.9433316035658, 14.9546652828527, 14.9637322262821, 14.9709857810257, 14.9767886248206, 14.9814308998565, 14.9851447198852, 14.9881157759081, 14.9904926207265, 14.9923940965812, 14.993915277265, 14.995132221812, 14.9961057774496, 14.9968846219597, 14.9975076975677, 14.9980061580542, 14.9984049264433, 14.9987239411547, 14.9989791529237, 14.999183322339, 14.9993466578712, 14.999477326297, 14.9995818610376, 14.9996654888301, 14.999732391064, 14.9997859128512, 11.999828730281, 9.5998629842248, 7.6798903873798, 6.1439123099039, 4.9151298479231, 3.9321038783385, 3.1456831026708, 2.5165464821366, 2.0132371857093, 1.6105897485674, 1.288471798854, 1.0307774390832, 0.8246219512665, 0.6596975610132, 0.5277580488106, 0.4222064390485, 0.3377651512388, 0.270212120991, 0.2161696967928, 0.1729357574343, 0.1383486059474, 0.1106788847579, 0.0885431078063, 0.0708344862451, 0.0566675889961, 0.0453340711968, 0.0362672569575, 0.029013805566, 0.0232110444528, 0.0185688355622, 0.0148550684498, 0.0118840547598, 0.0095072438079, 0.0076057950463, 0.006084636037, 0.0048677088296, 0.0038941670637, 0.003115333651, 0.0024922669208, 0.0019938135366, 0.0015950508293, 0.0012760406634, 0.0010208325307, 8.1666602459718E-4, 6.5333281967774E-4, 5.2266625574219E-4, 4.1813300459376E-4, 3.34506403675E-4, 2.6760512294E-4, 2.14084098352E-4, 3.0001712672787, 5.4001370138229, 7.3201096110584, 8.8560876888467, 10.0848701510773, 11.0678961208619, 11.8543168966895, 12.4834535173516, 12.9867628138813, 13.389410251105, 13.711528200884, 13.9692225607072, 14.1753780485658, 14.3403024388526, 11.4722419510821, 9.1777935608657, 7.3422348486925, 5.873787878954, 4.6990303031632, 3.7592242425306, 3.0073793940245, 2.4059035152196, 1.9247228121757, 1.5397782497405, 1.2318225997924, 0.9854580798339, 0.7883664638671, 0.6306931710937, 0.504554536875, 0.4036436295, 0.3229149036, 0.25833192288, 0.206665538304, 0.1653324306432, 0.1322659445146, 0.1058127556116, 0.0846502044893, 0.0677201635915, 0.0541761308732, 0.0433409046985}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{-0.0086681809397, -0.0069345447518, -0.0055476358014, -0.0044381086411, -0.0035504869129, -0.0028403895303, -0.0022723116243, -0.0018178492994, -0.0014542794395, -0.0011634235516, -9.3073884129617E-4, -7.4459107303694E-4, -5.9567285842955E-4, -4.7653828674364E-4, -3.8123062939491E-4, -3.0498450351593E-4, -2.4398760281274E-4, -1.951900822502E-4, -1.5615206580016E-4, -1.2492165264012E-4, -9.99373221121E-5, -7.994985768968E-5, -6.3959886151744E-5, -5.1167908921395E-5, -4.0934327137116E-5, -3.2747461709693E-5, -2.6197969367754E-5, -2.0958375494203E-5, -1.6766700395363E-5, -1.341336031629E-5, -1.0730688253032E-5, -8.5845506024257E-6, -6.8676404819406E-6, -5.4941123855525E-6, -4.395289908442E-6, -3.5162319267536E-6, -2.8129855414029E-6, -2.2503884331223E-6, -1.8003107464978E-6, -1.4402485971983E-6, 2.9999988478011, 5.3999990782409, 7.3199992625927, 8.8559994100742, 10.0847995280593, 11.0678396224475, 11.854271697958, 12.4834173583664, 12.9867338866931, 13.3893871093545, 13.7115096874836, 13.9692077499869, 14.1753661999895, 14.3402929599916, 14.4722343679933, 14.5777874943946, 14.6622299955157, 14.7297839964126, 14.78382719713, 14.827061757704, 14.8616494061632, 14.8893195249306, 14.9114556199445, 14.9291644959556, 14.9433315967645, 14.9546652774116, 14.9637322219293, 14.9709857775434, 14.9767886220347, 14.9814308976278, 14.9851447181022, 14.9881157744818, 14.9904926195854, 14.9923940956683, 14.9939152765347, 14.9951322212277, 14.9961057769822, 14.9968846215858, 14.9975076972686, 14.9980061578149, 14.9984049262519, 14.9987239410015, 14.9989791528012, 14.999183322241, 14.9993466577928, 14.9994773262342, 14.9995818609874, 14.9996654887899, 14.9997323910319, 14.9997859128255, 11.9998287302604, 9.5998629842083, 7.6798903873667, 6.1439123098933, 4.9151298479147, 3.9321038783317, 3.1456831026654, 2.5165464821323, 2.0132371857058, 1.6105897485647, 1.2884717988517, 1.0307774390814, 0.8246219512651, 0.6596975610121, 0.5277580488097, 0.4222064390477, 0.3377651512382, 0.2702121209906, 0.2161696967924, 0.172935757434, 0.1383486059472, 0.1106788847577, 0.0885431078062, 0.0708344862449, 0.056667588996, 0.0453340711968, 0.0362672569574, 0.0290138055659, 0.0232110444527, 0.0185688355622, 0.0148550684498, 0.0118840547598, 0.0095072438078, 0.0076057950463, 0.006084636037, 0.0048677088296, 0.0038941670637, 0.003115333651, 0.0024922669208, 0.0019938135366, 0.0015950508293, 0.0012760406634, 0.0010208325307, 8.1666602459578E-4, 6.5333281967662E-4, 5.226662557413E-4, 4.1813300459304E-4, 3.3450640367443E-4, 2.6760512293955E-4, 2.1408409835164E-4, 3.0001712672787, 5.4001370138229, 7.3201096110584, 8.8560876888467, 10.0848701510773, 11.0678961208619, 11.8543168966895, 12.4834535173516, 12.9867628138813, 13.389410251105, 13.711528200884, 13.9692225607072, 14.1753780485658, 14.3403024388526, 11.4722419510821, 9.1777935608657, 7.3422348486925, 5.873787878954, 4.6990303031632, 3.7592242425306, 3.0073793940245, 2.4059035152196, 1.9247228121757, 1.5397782497405, 1.2318225997924, 0.9854580798339, 0.7883664638671, 0.6306931710937, 0.504554536875, 0.4036436295, 0.3229149036, 0.25833192288, 0.206665538304, 0.1653324306432, 0.1322659445146, 0.1058127556116, 0.0846502044893, 0.0677201635915, 0.0541761308732, 0.0433409046985}">
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[555.0, 230.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[560.0, 235.0]">
         </property>
     </entity>
     <entity name="CurrentTime2" class="ptolemy.actor.lib.CurrentTime">
@@ -6404,11 +6418,11 @@ actors to enable timed sequencing of a set of power supplies.</text></svg></conf
         </property>
     </entity>
     <entity name="Test5" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{-0.0073242570824, 0.0014648514165, 0.0011718811332, 9.3750490655347E-4, 7.5000392524277E-4, 6.0000314019422E-4, 4.8000251215537E-4, 3.840020097243E-4, 3.0720160777944E-4, 2.4576128622355E-4, 1.9660902897884E-4, 1.5728722318307E-4, 1.2582977854646E-4, 1.0066382283717E-4, 8.0531058269733E-5, 6.4424846615787E-5, 5.1539877292629E-5, 4.1231901834104E-5, 3.2985521467283E-5, 2.6388417173826E-5, 2.1110733739061E-5, 1.6888586991249E-5, 1.3510869592999E-5, 1.0808695674399E-5, 8.6469565395194E-6, 6.9175652316155E-6, 5.5340521852924E-6, 4.4272417482339E-6, 3.5417933985871E-6, 2.8334347188697E-6, 2.2667477750958E-6, 1.8133982200766E-6, 1.4507185760613E-6, 1.160574860849E-6, 9.2845988867923E-7, 7.4276791094338E-7, 1.0000005942143, 1.8000004753715, 2.4400003802972, 2.9520003042377, 3.3616002433902, 3.6892801947122, 3.9514241557697, 4.1611393246158, 4.3289114596926, 4.4631291677541, 4.5705033342033, 4.6564026673626, 4.7251221338901, 4.7800977071121, 4.8240781656897, 4.8592625325517, 4.8874100260414, 4.9099280208331, 4.9279424166665, 4.9423539333332, 4.9538831466666, 4.9631065173332, 4.9704852138666, 4.9763881710933, 4.9811105368746, 4.9848884294997, 4.9879107435998, 4.9903285948798, 4.9922628759038, 4.9938103007231, 4.9950482405785, 4.9960385924628, 4.9968308739702, 4.9974646991762, 4.9979717593409, 4.9983774074728, 4.9987019259782, 4.9989615407826, 4.999169232626, 4.9993353861008, 4.9994683088807, 4.9995746471045, 4.9996597176836, 4.9997277741469, 4.9997822193175, 4.999825775454, 4.9998606203632, 4.9998884962906, 4.9999107970325, 4.999928637626, 4.9999429101008, 4.9999543280806, 4.9999634624645, 4.9999707699716, 4.9999766159773, 4.9999812927818, 4.9999850342255, 4.9999880273804, 3.9999904219043, 3.1999923375234, 2.5599938700187, 2.047995096015, 1.638396076812, 1.3107168614496, 1.0485734891597, 0.8388587913277, 0.6710870330622, 0.5368696264498, 0.4294957011598, 0.3435965609278, 0.2748772487423, 0.2199017989938, 0.1759214391951, 0.140737151356, 0.1125897210848, 0.0900717768679, 0.0720574214943, 0.0576459371954, 0.0461167497563, 0.0368933998051, 0.0295147198441, 0.0236117758753, 0.0188894207002, 0.0151115365602, 0.0120892292481, 0.0096713833985, 0.0077371067188, 0.006189685375, 0.0049517483, 0.00396139864, 0.003169118912, 0.0025352951296, 0.0020282361037, 0.001622588883, 0.0012980711064, 0.0010384568851, 8.3076550807292E-4, 6.6461240645834E-4, 5.3168992516667E-4, 4.2535194013334E-4, 1.0003402815521, 1.8002722252417, 2.4402177801933, 2.9521742241547, 3.3617393793237, 3.689391503459, 3.9515132027672, 4.1612105622138, 4.328968449771, 4.4631747598168, 4.5705398078534, 4.6564318462828, 4.7251454770262, 4.780116381621, 4.8240931052968, 4.8592744842374, 4.8874195873899, 4.9099356699119, 4.9279485359296, 4.9423588287436, 4.9538870629949, 4.9631096503959, 3.9704877203167, 3.1763901762534, 2.5411121410027, 2.0328897128022, 1.6263117702417, 1.3010494161934, 1.0408395329547, 0.8326716263638, 0.666137301091, 0.5329098408728, 0.4263278726983, 0.3410622981586, 0.2728498385269, 0.2182798708215, 0.1746238966572, 0.1396991173258, 0.1117592938606, 0.0894074350885, 0.0715259480708, 0.0572207584566, 0.0457766067653, 0.0366212854122}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{-0.0073242570824, -0.005859405666, -0.0046875245328, -0.0037500196262, -0.003000015701, -0.0024000125608, -0.0019200100486, -0.0015360080389, -0.0012288064311, -9.8304514489421E-4, -7.8643611591537E-4, -6.2914889273229E-4, -5.0331911418583E-4, -4.0265529134867E-4, -3.2212423307893E-4, -2.5769938646315E-4, -2.0615950917052E-4, -1.6492760733641E-4, -1.3194208586913E-4, -1.055536686953E-4, -8.4442934956244E-5, -6.7554347964995E-5, -5.4043478371996E-5, -4.3234782697597E-5, -3.4587826158078E-5, -2.7670260926462E-5, -2.213620874117E-5, -1.7708966992936E-5, -1.4167173594349E-5, -1.1333738875479E-5, -9.0669911003831E-6, -7.2535928803065E-6, -5.8028743042452E-6, -4.6422994433961E-6, -3.7138395547169E-6, -2.9710716437735E-6, 0.9999976231427, 1.7999980985141, 2.4399984788113, 2.9519987830491, 3.3615990264392, 3.6892792211514, 3.9514233769211, 4.1611387015369, 4.3289109612295, 4.4631287689836, 4.5705030151869, 4.6564024121495, 4.7251219297196, 4.7800975437757, 4.8240780350206, 4.8592624280164, 4.8874099424132, 4.9099279539305, 4.9279423631444, 4.9423538905155, 4.9538831124124, 4.9631064899299, 4.970485191944, 4.9763881535552, 4.9811105228441, 4.9848884182753, 4.9879107346202, 4.9903285876962, 4.992262870157, 4.9938102961256, 4.9950482369005, 4.9960385895204, 4.9968308716163, 4.997464697293, 4.9979717578344, 4.9983774062675, 4.998701925014, 4.9989615400112, 4.999169232009, 4.9993353856072, 4.9994683084857, 4.9995746467886, 4.9996597174309, 4.9997277739447, 4.9997822191558, 4.9998257753246, 4.9998606202597, 4.9998884962078, 4.9999107969662, 4.999928637573, 4.9999429100584, 4.9999543280467, 4.9999634624374, 4.9999707699499, 4.9999766159599, 4.9999812927679, 4.9999850342143, 4.9999880273715, 3.9999904218972, 3.1999923375177, 2.5599938700142, 2.0479950960114, 1.6383960768091, 1.3107168614473, 1.0485734891578, 0.8388587913263, 0.671087033061, 0.5368696264488, 0.429495701159, 0.3435965609272, 0.2748772487418, 0.2199017989934, 0.1759214391947, 0.1407371513558, 0.1125897210846, 0.0900717768677, 0.0720574214942, 0.0576459371953, 0.0461167497563, 0.036893399805, 0.029514719844, 0.0236117758752, 0.0188894207002, 0.0151115365601, 0.0120892292481, 0.0096713833985, 0.0077371067188, 0.006189685375, 0.0049517483, 0.00396139864, 0.003169118912, 0.0025352951296, 0.0020282361037, 0.001622588883, 0.0012980711064, 0.0010384568851, 8.3076550807144E-4, 6.6461240645716E-4, 5.3168992516572E-4, 4.2535194013258E-4, 1.0003402815521, 1.8002722252417, 2.4402177801933, 2.9521742241547, 3.3617393793237, 3.689391503459, 3.9515132027672, 4.1612105622138, 4.328968449771, 4.4631747598168, 4.5705398078534, 4.6564318462828, 4.7251454770262, 4.780116381621, 4.8240931052968, 4.8592744842374, 4.8874195873899, 4.9099356699119, 4.9279485359296, 4.9423588287436, 4.9538870629949, 4.9631096503959, 3.9704877203167, 3.1763901762534, 2.5411121410027, 2.0328897128022, 1.6263117702417, 1.3010494161934, 1.0408395329547, 0.8326716263638, 0.666137301091, 0.5329098408728, 0.4263278726983, 0.3410622981586, 0.2728498385269, 0.2182798708215, 0.1746238966572, 0.1396991173258, 0.1117592938606, 0.0894074350885, 0.0715259480708, 0.0572207584566, 0.0457766067653, 0.0366212854122}">
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[590.0, 355.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[590.0, 360.0]">
         </property>
     </entity>
     <entity name="CurrentTime3" class="ptolemy.actor.lib.CurrentTime">
@@ -6423,11 +6437,11 @@ actors to enable timed sequencing of a set of power supplies.</text></svg></conf
         </property>
     </entity>
     <entity name="Test7" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0071968436288, -0.0014393687258, -0.0011514949806, -9.2119598449153E-4, -7.3695678759322E-4, -5.8956543007458E-4, -4.7165234405966E-4, -3.7732187524773E-4, -3.0185750019818E-4, -2.4148600015855E-4, -1.9318880012684E-4, -1.5455104010147E-4, -1.2364083208118E-4, -9.8912665664941E-5, -7.9130132531953E-5, -6.3304106025562E-5, -5.064328482045E-5, -4.051462785636E-5, -3.2411702285088E-5, -2.592936182807E-5, -2.0743489462456E-5, -1.6594791569965E-5, -1.3275833255972E-5, -1.0620666604778E-5, -8.4965332838221E-6, -6.7972266270576E-6, -5.4377813016461E-6, -4.3502250413169E-6, -3.4801800330535E-6, -2.7841440264428E-6, -2.2273152211542E-6, -1.7818521769234E-6, -0.4000014254817, -0.7200011403854, -0.9760009123083, -1.1808007298467, -1.3446405838773, -1.4757124671019, -1.5805699736815, -1.6644559789452, -1.7315647831562, -1.7852518265249, -1.8282014612199, -1.8625611689759, -1.8900489351808, -1.9120391481446, -1.9296313185157, -1.9437050548125, -1.95496404385, -1.96397123508, -1.971176988064, -1.9769415904512, -1.981553272361, -1.9852426178888, -1.988194094311, -1.9905552754488, -1.9924442203591, -1.9939553762872, -1.9951643010298, -1.9961314408238, -1.9969051526591, -1.9975241221273, -1.9980192977018, -1.9984154381614, -1.9987323505292, -1.9989858804233, -1.9991887043387, -1.9993509634709, -1.9994807707767, -1.9995846166214, -1.9996676932971, -1.9997341546377, -1.9997873237102, -1.9998298589681, -1.9998638871745, -1.9998911097396, -1.9999128877917, -1.9999303102333, -1.9999442481867, -1.9999553985493, -1.9999643188395, -1.9999714550716, -1.9999771640573, -1.9999817312458, -1.9999853849966, -1.9999883079973, -1.9999906463979, -1.9999925171183, -1.9999940136946, -1.9999952109557, -1.9999961687646, -1.9999969350116, -1.9999975480093, -1.9999980384075, -1.999998430726, -1.9999987445808, -1.9999989956646, -1.9999991965317, -1.5999993572254, -1.2799994857803, -1.0239995886242, -0.8191996708994, -0.6553597367195, -0.5242877893756, -0.4194302315005, -0.3355441852004, -0.2684353481603, -0.2147482785282, -0.1717986228226, -0.1374388982581, -0.1099511186065, -0.0879608948852, -0.0703687159081, -0.0562949727265, -0.0450359781812, -0.036028782545, -0.028823026036, -0.0230584208288, -0.018446736663, -0.0147573893304, -0.0118059114643, -0.0094447291715, -0.0075557833372, -0.0060446266697, -0.0048357013358, -0.0038685610686, -0.0030948488549, -0.0024758790839, -0.0019807032671, -0.0015845626137, -0.001267650091, -0.0010141200728, -0.4008112960582, -0.7206490368466, -0.9765192294773, -1.1812153835818, -1.3449723068654, -1.4759778454924, -1.5807822763939, -1.6646258211151, -1.7317006568921, -1.7853605255137, -1.8282884204109, -1.8626307363287, -1.890104589063, -1.9120836712504, -1.9296669370003, -1.9437335496003, -1.9549868396802, -1.9639894717442, -1.9711915773953, -1.9769532619163, -1.981562609533, -1.9852500876264, -1.9882000701011, -1.9905600560809, -1.9924480448647, -1.9939584358918, -1.9951667487134, -1.9961333989707, -1.9969067191766, -1.9975253753413, -1.598020300273, -1.2784162402184, -1.0227329921747, -0.8181863937398, -0.6545491149918, -0.5236392919935, -0.4189114335948, -0.3351291468758, -0.2681033175007, -0.2144826540005, -0.1715861232004, -0.1372688985603, -0.1098151188483, -0.0878520950786, -0.0702816760629, -0.0562253408503, -0.0449802726803, -0.0359842181442}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0071968436288, 0.0057574749031, 0.0046059799225, 0.003684783938, 0.0029478271504, 0.0023582617203, 0.0018866093762, 0.001509287501, 0.0012074300008, 9.6594400063419E-4, 7.7275520050735E-4, 6.1820416040588E-4, 4.945633283247E-4, 3.9565066265976E-4, 3.1652053012781E-4, 2.5321642410225E-4, 2.025731392818E-4, 1.6205851142544E-4, 1.2964680914035E-4, 1.0371744731228E-4, 8.2973957849825E-5, 6.637916627986E-5, 5.3103333023888E-5, 4.248266641911E-5, 3.3986133135288E-5, 2.7188906508231E-5, 2.1751125206584E-5, 1.7400900165268E-5, 1.3920720132214E-5, 1.1136576105771E-5, 8.909260884617E-6, 7.1274087076936E-6, -0.399994298073, -0.7199954384584, -0.9759963507667, -1.1807970806134, -1.3446376644907, -1.4757101315926, -1.5805681052741, -1.6644544842192, -1.7315635873754, -1.7852508699003, -1.8282006959203, -1.8625605567362, -1.890048445389, -1.9120387563112, -1.9296310050489, -1.9437048040391, -1.9549638432313, -1.9639710745851, -1.971176859668, -1.9769414877344, -1.9815531901875, -1.98524255215, -1.98819404172, -1.990555233376, -1.9924441867008, -1.9939553493607, -1.9951642794885, -1.9961314235908, -1.9969051388727, -1.9975241110981, -1.9980192888785, -1.9984154311028, -1.9987323448822, -1.9989858759058, -1.9991887007246, -1.9993509605797, -1.9994807684638, -1.999584614771, -1.9996676918168, -1.9997341534534, -1.9997873227628, -1.9998298582102, -1.9998638865682, -1.9998911092545, -1.9999128874036, -1.9999303099229, -1.9999442479383, -1.9999553983507, -1.9999643186805, -1.9999714549444, -1.9999771639555, -1.9999817311644, -1.9999853849315, -1.9999883079452, -1.9999906463562, -1.999992517085, -1.999994013668, -1.9999952109344, -1.9999961687475, -1.999996934998, -1.9999975479984, -1.9999980383987, -1.999998430719, -1.9999987445752, -1.9999989956601, -1.9999991965281, -1.5999993572225, -1.279999485778, -1.0239995886224, -0.8191996708979, -0.6553597367183, -0.5242877893747, -0.4194302314997, -0.3355441851998, -0.2684353481598, -0.2147482785279, -0.1717986228223, -0.1374388982578, -0.1099511186063, -0.087960894885, -0.070368715908, -0.0562949727264, -0.0450359781811, -0.0360287825449, -0.0288230260359, -0.0230584208287, -0.018446736663, -0.0147573893304, -0.0118059114643, -0.0094447291715, -0.0075557833372, -0.0060446266697, -0.0048357013358, -0.0038685610686, -0.0030948488549, -0.0024758790839, -0.0019807032671, -0.0015845626137, -0.001267650091, -0.0010141200728, -0.4008112960582, -0.7206490368466, -0.9765192294773, -1.1812153835818, -1.3449723068654, -1.4759778454924, -1.5807822763939, -1.6646258211151, -1.7317006568921, -1.7853605255137, -1.8282884204109, -1.8626307363287, -1.890104589063, -1.9120836712504, -1.9296669370003, -1.9437335496003, -1.9549868396802, -1.9639894717442, -1.9711915773953, -1.9769532619163, -1.981562609533, -1.9852500876264, -1.9882000701011, -1.9905600560809, -1.9924480448647, -1.9939584358918, -1.9951667487134, -1.9961333989707, -1.9969067191766, -1.9975253753413, -1.598020300273, -1.2784162402184, -1.0227329921747, -0.8181863937398, -0.6545491149918, -0.5236392919935, -0.4189114335948, -0.3351291468758, -0.2681033175007, -0.2144826540005, -0.1715861232004, -0.1372688985603, -0.1098151188483, -0.0878520950786, -0.0702816760629, -0.0562253408503, -0.0449802726803, -0.0359842181442}">
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[600.0, 480.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[600.0, 490.0]">
         </property>
     </entity>
     <entity name="CurrentTime4" class="ptolemy.actor.lib.CurrentTime">
