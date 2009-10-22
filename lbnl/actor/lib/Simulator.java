@@ -217,34 +217,58 @@ public class Simulator extends SDFTransformer {
      */
     public void fire() throws IllegalActionException {
         super.fire();
+
         // Check the input port for a token.
         if (input.hasToken(0)) {
-            if (!firstFire && server.getClientFlag() == 0) {
+            if (server.getClientFlag() == 0) {
                 // If clientflag is non-zero, do not read anymore
                 _writeToServer();
                 // before the read happens, the client program will advance one time step
                 _readFromServer();
                 if (server.getClientFlag() == 0) {
-                    // make sure that time is synchronized.
-                    final double simTimRea = server
-                            .getSimulationTimeReadFromClient();
-                    final double simTim = getDirector().getModelTime()
-                            .getDoubleValue();
-
-                    if (Math.abs(simTim - simTimRea) > 0.0001) {
-                        final String em = "Simulation time of "
-                                + this.getFullName() + " is not synchronized."
-                                + LS + "Time in Ptolemy = " + simTim + LS
-                                + "Time in client  = " + simTimRea;
-                        throw new IllegalActionException(this, em);
-                    }
-
+		    // Get values sent by simulator
                     double[] dblRea = server.getDoubleArray();
                     outTok = new DoubleMatrixToken(dblRea, dblRea.length, 1);
-                }
-            } else { // Either client is down or this is the first time step. Consume token
+		    
+		    // Make sure that simulation times are synchronized
+		    final double simTimRea = server.getSimulationTimeReadFromClient();
+		    final double simTim = getDirector().getModelTime().getDoubleValue();
+		    if ( firstFire )
+			firstFire = false;
+		    else{
+			if (Math.abs((simTimRea - simTimReaPre)-(simTim - simTimPre)) > 0.0001) {
+			    final String em = "Simulation time of "
+				+ this.getFullName() + " is not synchronized."
+				+ LS + "Time step in Ptolemy = " + (simTim - simTimPre) + LS
+				+ "Time step in client  = " + (simTimRea - simTimReaPre) + LS 
+				+ "Time in client = " + simTimRea;
+			    throw new IllegalActionException(this, em);
+			}
+		    }
+		    // Store simulation time
+		    simTimReaPre = simTimRea;
+		    simTimPre    = simTim;
+		}
+		
+            } else { // Either client is down or this is the first time step.
+		if ( clientTerminated ){
+		    // Client terminated in last call, but Ptolemy keeps doing a
+		    // (at least one) more time step. Hence we issue a warning.
+		    // Start a new thread for the warning window so that the simulation can continue.
+		    if ( warWin == null ){
+			warWin = new Thread(new WarningWindow(terminationMessage));
+			warWin.start();
+			System.err.println("*** " + terminationMessage);
+		    }
+		}
+		// Consume token
                 input.get(0);
-                firstFire = false;
+		final double simTimRea = server.getSimulationTimeReadFromClient();
+		final double simTim = getDirector().getModelTime().getDoubleValue();
+		// Store simulation time
+		simTimReaPre = simTimRea;
+		simTimPre    = simTim;
+	    
             }
         }
         //////////////////////////////////////////////////////
@@ -259,6 +283,7 @@ public class Simulator extends SDFTransformer {
      * writing to the server.
      */
     private void _writeToServer() throws IllegalActionException {
+
         //////////////////////////////////////////////////////
         // Write data to server
         dblWri = _getDoubleArray(input.get(0));
@@ -291,24 +316,26 @@ public class Simulator extends SDFTransformer {
             int fla = server.getClientFlag();
             if (fla < 0) {
                 final String em = "Error: Client " + this.getFullName()
-                        + " terminated communication by sending flag = " + fla
-                        + " at time "
-                        + getDirector().getModelTime().getDoubleValue() + ".";
+		    + " terminated communication by sending flag = " + fla
+		    + " at time "
+		    + getDirector().getModelTime().getDoubleValue() + ".";
                 throw new IllegalActionException(this, em);
             }
             if (fla > 0) {
-                final String msg = "Warning: "
-                        + this.getFullName()
-                        + " terminated communication by sending flag = "
-                        + fla
-                        + " at time "
-                        + getDirector().getModelTime().getDoubleValue()
-                        + "."
-                        + LS
-                        + "Simulation will continue withouth updated values from client program.";
-                // Start a new thread for the warning window so that the simulation can continue.
-                new Thread(new WarningWindow(msg)).start();
-                System.err.println("*** " + msg);
+		// Client reached its final time. If this is also the last
+		// step from Ptolemy, then we don't want to issue a warning.
+		// Hence, we store the information, and if there is one more
+		// step from Ptolemy, then we issue a warning.
+		clientTerminated = true;
+		terminationMessage = "Warning: "
+		    + this.getFullName()
+		    + " terminated communication by sending flag = "
+		    + fla
+		    + " at time "
+		    + getDirector().getModelTime().getDoubleValue()
+		    + "."
+		    + LS
+		    + "Simulation will continue withouth updated values from client program.";
             }
         } catch (java.net.SocketTimeoutException e) {
             String em = "SocketTimeoutException while reading from client in "
@@ -352,8 +379,7 @@ public class Simulator extends SDFTransformer {
             ; // do nothing here
             throw new IllegalActionException(this, e, em);
         } catch (java.io.IOException e) {
-            String em = "IOException while reading from server: " + LS
-                    + e.getMessage();
+            String em = "IOException while reading from server.";
             try {
                 server.close();
             } catch (java.io.IOException e2) {
@@ -372,6 +398,12 @@ public class Simulator extends SDFTransformer {
      */
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
+
+	// Flag that indicates whether the client terminated,
+	// and thread for the warning window that is used in such a situation
+	clientTerminated = false;
+	terminationMessage = "";
+	warWin = null;
 
         // Working directory
         worDir = Simulator.resolveDirectory(getContainer(), 
@@ -431,6 +463,9 @@ public class Simulator extends SDFTransformer {
         } catch (java.io.IOException e) {
             throw new IllegalActionException(this, e, e.toString());
         }
+        ////////////////////////////////////////////////////////////// 	
+	// Start the simulation
+        _startSimulation();
     }
 
     /** Resolve the command string.
@@ -584,7 +619,6 @@ public class Simulator extends SDFTransformer {
         tokTim = getDirector().getModelTime().getDoubleValue();
         firstFire = true;
 
-        _startSimulation();
         //////////////////////////////////////////////////////////////	
         // New code since 2008-01-05
         // Send initial output token. See also domains/sdf/lib/SampleDelay.java
@@ -651,17 +685,30 @@ public class Simulator extends SDFTransformer {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         protected members                   ////
-
-    // FIXME: Ports and Parameters are usually public and the
-    // names of the variable should match the assigned name, otherwise
-    // there are problems with cloning.
-
+    ////                         ports and parameters              ////
     /** Arguments of program that starts the simulation. */
-    protected Parameter programArguments;
+    public Parameter programArguments;
 
     /** Name of program that starts the simulation. */
-    protected FileParameter programName;
+    public FileParameter programName;
+
+    /** Port number for BSD socket (used if non-negative). */
+    public Parameter socketPortNumber;
+
+    /** File name to which this actor writes the simulation log. */
+    public FileParameter simulationLogFile;
+
+    /** File name to which this actor writes the socket configuration. */
+    public FileParameter socketConfigurationFile;
+
+    /** Socket time out in milliseconds. */
+    public Parameter socketTimeout;
+
+    /** Working directory of the simulation. */
+    public FileParameter workingDirectory;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected members                 ////
 
     /** Double values that were written to the socket. */
     protected double[] dblWri;
@@ -669,35 +716,36 @@ public class Simulator extends SDFTransformer {
     /** Thread that runs the simulation. */
     protected ClientProcess cliPro;
 
-    /** Port number for BSD socket (used if non-negative). */
-    protected Parameter socketPortNumber;
-
     /** Port number that is actually used for BSD socket. */
     protected int porNo;
 
     /** Server used for data exchange. */
     protected Server server;
 
-    /** File name to which this actor writes the simulation log. */
-    protected FileParameter simulationLogFile;
-
     /** Process that runs the simulation. */
     protected Process simProJav;
-
-    /** File name to which this actor writes the socket configuration. */
-    protected FileParameter socketConfigurationFile;
-
-    /** Socket time out in milliseconds. */
-    protected Parameter socketTimeout;
-
-    /** Working directory of the simulation. */
-    protected FileParameter workingDirectory;
 
     /** Working directory of the subprocess. */
     protected String worDir;
 
     /** Output tokens. */
     protected DoubleMatrixToken outTok;
+
+    /** Ptolemy's time at the last call of the fire method */
+    protected double simTimPre;
+
+    /** Time read from the simulation program at the last call of the fire method */
+    protected double simTimReaPre;
+
+    /** Flag, set to true when the clients terminates the communication */
+    protected boolean clientTerminated;
+
+    /** Thread that is used if a warning window need to be shown */
+    protected Thread warWin;
+
+    /** Message that will be displayed in the warning window when the client terminated,
+	but Ptolemy continues with the simulation */
+    protected String terminationMessage;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
