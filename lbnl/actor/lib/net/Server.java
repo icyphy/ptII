@@ -216,6 +216,13 @@ public class Server {
                 .getInputStream());
         final BufferedReader d = new BufferedReader(inpStrRea);
         final String line = d.readLine();
+	if ( line == null ){
+	    final String em = "Client did not send any new values." + LS +
+		"It appears that it terminated without sending" + LS + 
+		"an error message to the server." + LS +
+		"Check log files of client program for possible errors.";
+	    throw new IOException(em);
+	}
         ////////////////////////////////////////////////////
         // get elements from the line
         String[] ele = line.split(" ");
@@ -299,4 +306,8 @@ public class Server {
 
     /** The version number of the socket implementation. */
     protected int verNo = 1;
+
+    /** System dependent line separator */
+    private final static String LS = System.getProperty("line.separator");
+
 }
