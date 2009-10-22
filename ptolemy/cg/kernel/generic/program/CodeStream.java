@@ -560,6 +560,12 @@ public class CodeStream {
             IllegalActionException {
         selfTest();
 
+        if (args.length < 1) {
+            throw new IllegalActionException("Called main() with no arguments.\n"
+                    + "Usage: java -classpath $PTII ptolemy.cg.kernel.generic.program.CodeStream foo.c\n");
+        }
+
+
         try {
             CodeStream code = new CodeStream(args[0], null);
 
@@ -1213,8 +1219,25 @@ public class CodeStream {
         for (int i = 0; i < arguments.size(); i++) {
 
             //String replaceString = arguments.get(i).toString();
-            String replaceString = _checkArgumentName(arguments.get(i));
-            String parameterName = _checkParameterName(parameters.get(i));
+            String replaceString = "";
+            try {
+                replaceString = _checkArgumentName(arguments.get(i));
+            } catch (ClassCastException ex) {
+                throw new IllegalActionException(null, ex,
+                        "Failed to cast " + arguments.get(i)
+                        + " which is a " + arguments.get(i).getClass().getName()
+                        + " to a String.");
+            }
+            String parameterName = "";
+            try {
+                _checkParameterName(parameters.get(i));
+            } catch (ClassCastException ex) {
+                throw new IllegalActionException(null, ex,
+                        "Failed to cast " + parameters.get(i)
+                        + " which is a " + parameters.get(i).getClass().getName()
+                        + " to a String.");
+            }
+
             try {
                 codeBlock = new StringBuffer(codeBlock.toString().replaceAll(
                         parameterName, replaceString));
