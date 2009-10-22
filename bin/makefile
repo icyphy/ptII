@@ -64,7 +64,7 @@ SHELL_FILES = \
 	moml \
 	obfuscate \
 	ptcg \
-	ptjg \
+	ptcodegen \
 	ptexecute \
 	ptjacl \
 	ptjaclapp \
