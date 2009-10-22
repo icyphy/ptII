@@ -17,19 +17,35 @@ the resulting file.
 <li><a href="#Simple Demo">Simple Demo</a>
 <li><a href="#Limitations">Limitations</a>
 <li><a href="#FAQ">FAQ</a>
-<li><a href="../../doc/codegen.htm">Ptolemy II Design Doc Codegen Chapter</a>
 </ul>
 
 <h2><a name="Simple Demo">Simple Demo</a></h2>
 <ol>
 <li>
-Open <a href="demo/Ramp/Ramp.xml"><code>$PTII/ptolemy/codegen/demo/Ramp/Ramp.xml</code></a>
-<li> Click on the StaticSchedulingCodeGeneratorIcon.
+Open <a href="adapter/generic/html/demo/HierarchicalModel/HierarchicalModel.xmll"><code>$PTII/ptolemy/cg/adapter/generic/html/demo/HierarchicalModel/HierarchicalModel.xml</code></a>
+<li> Click on the HTMLCodeGenerator icon.
 <li> A dialog box will appear, click on "Generate"
-<li> The code will be generated, compiled, run and the results displayed.
+<li> An HTML description of the model will be generated and displayed
 </ol>
 
+<h2><a name="Java Command Line Demo">Java Command Line Demo</a></h2>
+To generate Java code for a simple model, run:
+<pre>
+ptcg -generatorPackage ptolemy.cg.kernel.generic.program.procedural.java /Users/cxh/ptII/ptolemy/cg/kernel/generic/program/procedural/java/test/Display.xml 
+</pre>
+or
+<pre>
+java -classpath $PTII ptolemy.cg.kernel.generic.GenericCodeGenerator -generatorPackage ptolemy.cg.kernel.generic.program.procedural.java $PTII/ptolemy/cg/kernel/generic/program/procedural/java/test/Display.xml
+</pre>
+
+
+<p>
+<br><b>FIXME: Not updated below here</b>
+<br><b>FIXME: Not updated below here</b>
+<br><b>FIXME: Not updated below here</b>
+
 <a href="../configs/codegen/demos.htm">Other Codegen Demonstrations</a>
+
 
 <h2><a name="Limitations">Limitations</a></h2>
 This is a highly preliminary code generator facility, with many 
