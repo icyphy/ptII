@@ -5,6 +5,7 @@
   <configure>
      <?moml
       <group>
+        <input source="ptolemy/cg/cg.xml"/>
         <input source="ptolemy/codegen/codegen.xml"/>
 	<input source="ptolemy/verification/verification.xml"/> 
       </group>
