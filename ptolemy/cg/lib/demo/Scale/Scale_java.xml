@@ -10,7 +10,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{90, 35}">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={32, 107, 815, 507}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={32, 107, 813, 510}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
     </property>
@@ -43,7 +43,7 @@
         </property>
         <property name="overwriteFiles" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="embeddedCode" class="ptolemy.kernel.util.StringAttribute" value="/***preinitBlock***/&#10;/**/&#10;&#10;/***initBlock***/&#10;/**/&#10;&#10;/***fireBlock***/&#10;// The following is ordinary Java code, except for&#10;// the macro references to the input and output&#10;// ports.&#10;$ref(output) = 2 * $ref(input);&#10;/**/&#10;&#10;/***wrapupBlock***/&#10;/**/&#10;&#10;">
+        <property name="embeddedCode" class="ptolemy.kernel.util.StringAttribute" value="/***preinitBlock***/&#10;/**/&#10;&#10;/***initBlock***/&#10;/**/&#10;&#10;/***fireBlock***/&#10;// The following is ordinary Java code, except for&#10;// the macro references to the input and output&#10;// ports.&#10;$put(output, 2 * $get(input));&#10;/**/&#10;&#10;/***wrapupBlock***/&#10;/**/&#10;&#10;">
         </property>
         <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="embeddedCode">
@@ -52,6 +52,34 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[245.0, 105.0]">
         </property>
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="false">
+        </property>
+        <property name="CodeGenerator_AutoAdded" class="ptolemy.cg.kernel.generic.program.procedural.java.JavaCodeGenerator">
+            <property name="codeDirectory" class="ptolemy.data.expr.FileParameter" value="$HOME/cg/">
+                <property name="allowFiles" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="allowDirectories" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+            </property>
+            <property name="generatorPackage" class="ptolemy.data.expr.StringParameter" value="">
+            </property>
+            <property name="generatorPackageList" class="ptolemy.data.expr.StringParameter" value="generic.program.procedural.java">
+            </property>
+            <property name="overwriteFiles" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <property name="_codeGeneratorGUIFactory" class="ptolemy.cg.gui.CodeGeneratorGUIFactory">
+            </property>
+            <property name="generateComment" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <property name="inline" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="measureTime" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="run" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <property name="compile" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <property name="generateEmbeddedCode" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -66,7 +94,7 @@
         </property>
     </entity>
     <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={346, 268, 332, 232}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={346, 268, 324, 228}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[324, 184]">
         </property>
