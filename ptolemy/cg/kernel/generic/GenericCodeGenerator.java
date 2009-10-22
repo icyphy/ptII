@@ -142,7 +142,7 @@ public abstract class GenericCodeGenerator extends Attribute implements
 
     /** The directory in which to put the generated code.
      *  This is a file parameter that must specify a directory.
-     *  The default is $HOME/codegen.
+     *  The default is $HOME/cg/
      */
     public FileParameter codeDirectory;
 
@@ -1158,25 +1158,22 @@ public abstract class GenericCodeGenerator extends Attribute implements
 
     /** The command-line options that take arguments. */
     private static String[][] _commandOptions = {
-        { "-allowDynamicMultiportReferences",
-        "        true|false (default: false)" },
-        {
-            "-codeDirectory",
-        "<directory in which to put code (default: $HOME/codegen. Other values: $CWD, $HOME, $PTII, $TMPDIR)>" },
-        { "-compile", "           true|false (default: true)" },
-            { "-compileTarget",
-                    "     <target to be run, defaults to empty string>" },
-        { "-generateComment", "   true|false (default: true)" },
-        { "-generatorPackageList",
-          "  <Semicolon or * separated list of Java packages to be searched for adapters>"},
-        { "-inline", "            true|false (default: false)" },
-        { "-measureTime", "       true|false (default: false)" },
-        { "-overwriteFiles", "    true|false (default: true)" },
-        { "-padBuffers", "        true|false (default: true)" },
-        { "-run", "               true|false (default: true)" },
-        { "-sourceLineBinding", " true|false (default: false)" },
-        { "-target", "            <target name, defaults to false>" },
-        { "-<parameter name>", "  <parameter value>" } };
+        //{ "-allowDynamicMultiportReferences",
+        //  "        true|false (default: false)" },
+        { "-codeDirectory", "        <directory in which to put code (default: $HOME/cg/. Other values: $CWD, $HOME, $PTII, $TMPDIR)>" },
+        // { "-compile", "           true|false (default: true)" },
+        //    { "-compileTarget",
+        // "     <target to be run, defaults to empty string>" },
+        //{ "-generateComment", "   true|false (default: true)" },
+        { "-generatorPackageList"," <Semicolon or * separated list of Java packages to be searched for adapters>"},
+        //{ "-inline", "            true|false (default: false)" },
+        //{ "-measureTime", "       true|false (default: false)" },
+        //{ "-overwriteFiles", "    true|false (default: true)" },
+        //{ "-padBuffers", "        true|false (default: true)" },
+        //{ "-run", "               true|false (default: true)" },
+        //{ "-sourceLineBinding", " true|false (default: false)" },
+        //{ "-target", "            <target name, defaults to false>" },
+        { "-<parameter name>","     <parameter value>" } };
 
     /** The form of the command line. */
     private static final String _commandTemplate = "ptcg [ options ] [file ...]";
@@ -1194,6 +1191,8 @@ public abstract class GenericCodeGenerator extends Attribute implements
      */
     private String _outputFileExtension;
 
+
+    /** Parse the generatorPackageList parameter. */
     class GeneratorPackageListParser {
         public GeneratorPackageListParser() {
         }
