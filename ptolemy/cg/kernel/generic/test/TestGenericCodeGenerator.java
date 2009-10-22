@@ -58,4 +58,18 @@ public class TestGenericCodeGenerator extends GenericCodeGenerator {
             NameDuplicationException {
         super(container, name);
     }
+
+    /** Return a formatted comment containing the
+     *  specified string.  In this class, the comment
+     *  starts with "&lt;TGCF" and ends with
+     *  "TGCF&gt;" to denote that the base class
+     *  removes comments, but that we want to test
+     *  the infrastructure that creates comments.
+     *  @param comment The string to put in the comment.
+     *  @return A formatted comment.
+     */
+    public String comment(String comment) {
+        return "<TGCF" + comment + "TGCF>";
+    }
+
 }
