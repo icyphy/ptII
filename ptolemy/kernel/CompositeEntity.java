@@ -1723,12 +1723,14 @@ public class CompositeEntity extends ComponentEntity {
             try {
                 workspace().getWriteAccess();
                 // Converting from an instance to a class.
+                super.setClassDefinition(isClass);
                 _unlinkLevelCrossingLinksToOutside(this);
             } finally {
                 workspace().doneWriting();
             }
+        } else {
+            super.setClassDefinition(isClass);
         }
-        super.setClassDefinition(isClass);
     }
 
     /** Override the base class so that if the argument is null, all
