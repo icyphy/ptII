@@ -55,8 +55,6 @@ import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.Type;
-import ptolemy.domains.sdf.kernel.SDFDirector;
-import ptolemy.domains.sdf.kernel.SDFScheduler;
 import ptolemy.domains.sdf.lib.SampleDelay;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
@@ -186,7 +184,7 @@ import ptolemy.kernel.util.Workspace;
  @see ptolemy.domains.dt.kernel.DTReceiver
  @see ptolemy.domains.sdf.kernel.SDFDirector
  @see ptolemy.domains.sdf.kernel.SDFReceiver
- @see ptolemy.domains.sdf.kernel.SDFScheduler
+ @see ptolemy.domains.sdf.kernel.SDFDTScheduler
 
  @author C. Fong
  @version $Id$
@@ -194,7 +192,7 @@ import ptolemy.kernel.util.Workspace;
  @Pt.ProposedRating Yellow (chf)
  @Pt.AcceptedRating Yellow (vogel)
  */
-public class DTDirector extends SDFDirector implements TimedDirector {
+public class DTDirector extends SDFDTDirector implements TimedDirector {
     /** Construct a director in the default workspace with an empty string
      *  as its name. The director is added to the list of objects in
      *  the workspace. Increment the version number of the workspace.
@@ -280,7 +278,7 @@ public class DTDirector extends SDFDirector implements TimedDirector {
 
         // FIXME: this portion of code is currently commented out
         // because super.fire() is called. However, there are problems
-        // with prefire return false in SDFDirector.fire()
+        // with prefire return false in SDFDTDirector.fire()
         /*
          _debugViewSchedule();
 
@@ -614,23 +612,23 @@ public class DTDirector extends SDFDirector implements TimedDirector {
     }
 
     /** Override the base class to ensure that the scheduler is an
-     *  SDFScheduler and that its <i>constrainBufferSizes</i>
+     *  SDFDTScheduler and that its <i>constrainBufferSizes</i>
      *  parameter is set to false.
      *  @param scheduler The scheduler that this director will use.
      *  @exception IllegalActionException If the scheduler is not
-     *   an instance of SDFScheduler.
+     *   an instance of SDFDTScheduler.
      *  @exception NameDuplicationException Not thrown in this base class,
      *   but derived classes may throw it if the scheduler is not compatible.
      */
     public void setScheduler(Scheduler scheduler)
             throws IllegalActionException, NameDuplicationException {
-        if (!(scheduler instanceof SDFScheduler)) {
+        if (!(scheduler instanceof SDFDTScheduler)) {
             throw new IllegalActionException(this,
-                    "Scheduler is required to be an instance of SDFScheduler");
+                    "Scheduler is required to be an instance of SDFDTScheduler");
         }
 
         // FIXME: Instead, should fix the buffer sizes calculation.
-        ((SDFScheduler) scheduler).constrainBufferSizes.setExpression("false");
+        ((SDFDTScheduler) scheduler).constrainBufferSizes.setExpression("false");
     }
 
     /** Override the base class method to make sure that enough tokens
@@ -743,7 +741,7 @@ public class DTDirector extends SDFDirector implements TimedDirector {
      *  @exception IllegalActionException If the scheduler is null
      */
     private void _buildActorTable() throws IllegalActionException {
-        SDFScheduler currentScheduler = (SDFScheduler) getScheduler();
+        SDFDTScheduler currentScheduler = (SDFDTScheduler) getScheduler();
 
         CompositeActor container = (CompositeActor) getContainer();
 
