@@ -169,17 +169,23 @@ public abstract class GenericCodeGenerator extends Attribute implements
     /** The name of the package in which to look for helper class
      *  code generators. The default value of this parameter
      *  is the empty string.  Derived classes may set this parameter
-     *  to values like "ptolemy.cg.kernel.generic.html".
+     *  to values like <code>ptolemy.cg.kernel.generic.html</code>.
      */
     public StringParameter generatorPackage;
 
     /** The name of the package(s) in which to look for adapter
      *  classes. The string can either be just one package, such as
-     *  "generic.program.procedural.java" or a list of semicolon ';'
-     *  or asterix '*' separated list of Java packages, such as
-     *  <code>"generic.program.procedural.java.target1;
-     *  generic.program.procedural.java.target2"</code>.The adapter is first
-     *  searched in the first package.
+     *  "generic.program.procedural.java" or a list of semicolon ';' ,
+     *  colon ':', space ' ' or asterix '*' separated list of Java
+     *  packages, such as
+     *  <code>generic.program.procedural.java.target1:generic.program.procedural.java.target2</code>.
+     *  The adapter is first searched in the first package.
+     *  Adapters are looked up by class name, where the class name
+     *  consists of "ptolemy.cg.adapter" + the package name
+     *  from this list + "adapters.".  Thus, if generatorPackageList
+     *  is set to <code>generic.program.procedural.java</code>, then the
+     *  <code>ptolemy.cg.adapter.<b>generic.program.procedural.java</b>.adapters.</code>
+     *  package will be searched.
      */
     public StringParameter generatorPackageList;
 
@@ -314,11 +320,12 @@ public abstract class GenericCodeGenerator extends Attribute implements
      *  @exception Exception If any error occurs.
      */
     public static int generateCode(String[] args) throws Exception {
+        URL modelURL = null;
         try {
             if (args.length == 0) {
                 System.err
                         .println("Usage: java -classpath $PTII "
-                        + "ptolemy.codegen.kernel.CodeGenerator model.xml "
+                        + "ptolemy.cg.kernel.generic.GenericCodeGenerator model.xml "
                                 + "[model.xml . . .]"
                                 + _eol
                         + "  The arguments name MoML files containing models."
@@ -361,7 +368,6 @@ public abstract class GenericCodeGenerator extends Attribute implements
                 // failed to the end user.  The alternative is to wrap the
                 // entire body in one try/catch block and say
                 // "Code generation failed for foo", which is not clear.
-                URL modelURL;
 
                 try {
                     modelURL = new File(args[i]).toURI().toURL();
@@ -447,6 +453,10 @@ public abstract class GenericCodeGenerator extends Attribute implements
                     }
                 }
             }
+            if (modelURL == null) {
+                throw new IllegalArgumentException("No model was read?");
+            }
+
             if (codeGenerator != null) {
                 ExecuteCommands executeCommands = codeGenerator.getExecuteCommands();
                 if (executeCommands != null) {
@@ -669,7 +679,6 @@ public abstract class GenericCodeGenerator extends Attribute implements
      */
     final protected CodeGeneratorAdapter _getAdapter(Object object)
             throws IllegalActionException {
-        //_debugging = true;
         if (_debugging) {
             _debug("GenerateCodeGenerator._getAdapter(" + object + ")");
         }
@@ -1135,8 +1144,10 @@ public abstract class GenericCodeGenerator extends Attribute implements
                 .lastIndexOf("."));
         String capitalizedLanguage = language.substring(1, 2).toUpperCase()
                 + language.substring(2);
-        String codeGeneratorClassName = generatorPackageValue
+        String codeGeneratorClassName = generatorPackageValue + "." 
                 + capitalizedLanguage + "CodeGenerator";
+        System.out.println("GCG: language: " + language);
+
         Class<?> result = null;
         try {
             result = Class.forName(codeGeneratorClassName);
@@ -1277,7 +1288,7 @@ public abstract class GenericCodeGenerator extends Attribute implements
         private void _updateGeneratorPackageList()
                 throws IllegalActionException {
             String packageList = generatorPackageList.stringValue();
-            String[] packages = packageList.split("; *");
+            String[] packages = packageList.split(";: *");
             _generatorPackages = Arrays.asList(packages);
         }
 
