@@ -142,6 +142,8 @@ JSRCS = \
 	ClockSensor.java \
 	Commutator.java \
 	ComputeHistogram.java \
+	ConfigurationSelect.java \
+	ConfigurationSwitch.java \
 	Const.java \
 	Counter.java \
 	CurrentTime.java \
