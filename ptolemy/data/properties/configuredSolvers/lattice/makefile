@@ -53,7 +53,9 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 PTCLASSALLJARS =
 
 JSRCS = \
+	DimensionSystem_CS.java \
 	SWconfig_Backward_CS.java \
+	SWconfig_Bidirectional_CS.java \
 	SWconfig_Forward_CS.java \
 	ExampleSet_CS.java \
 	LogicalAND_Forward_CS.java \

@@ -53,8 +53,9 @@ PTCLASSJAR =	$(PTPACKAGE).jar
 # PTCLASSALLJAR = $(PTPACKAGE).jar
 
 JSRCS = \
-	BooleanSelect.java
-
+	BooleanSelect.java \
+	ConfigurationSelect.java \
+	ConfigurationSwitch.java
 
 EXTRA_SRCS =    $(JSRCS)
 
