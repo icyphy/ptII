@@ -1,4 +1,4 @@
-/* A code generation helper class for actor.lib.jopio.WatchDog
+/* A code generation helper class for actor.lib.jopio.JopSerialWrite.
 
  @Copyright (c) 2009 The Regents of the University of California.
  All rights reserved.
@@ -33,7 +33,7 @@ import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
 import ptolemy.kernel.util.IllegalActionException;
 
 /**
- * A code generation helper class for ptolemy.actor.lib.jopio.JopWatchDog.
+ * A code generation helper class for ptolemy.actor.lib.jopio.JopWritePort.
  *
  * @author Martin Schoeberl
  * @version $Id$
@@ -41,12 +41,12 @@ import ptolemy.kernel.util.IllegalActionException;
  * @Pt.ProposedRating Red (mschoebe)
  * @Pt.AcceptedRating Red (mschoebe)
  */
-public class JopReadPort extends NamedProgramCodeGeneratorAdapter {
+public class JopSerialWrite extends NamedProgramCodeGeneratorAdapter {
     /**
-     * Construct a JopWatchDog helper.
+     * Construct a JopWritePort helper.
      * @param actor The associated actor.
      */
-    public JopReadPort(ptolemy.actor.lib.jopio.JopReadPort actor) {
+    public JopSerialWrite(ptolemy.actor.lib.jopio.JopSerialWrite actor) {
         super(actor);
     }
 
@@ -62,9 +62,9 @@ public class JopReadPort extends NamedProgramCodeGeneratorAdapter {
         StringBuffer code = new StringBuffer();
         code.append(super._generateFireCode());
 
-        ptolemy.actor.lib.jopio.JopReadPort actor = (ptolemy.actor.lib.jopio.JopReadPort) getComponent();
+        ptolemy.actor.lib.jopio.JopSerialWrite actor = (ptolemy.actor.lib.jopio.JopSerialWrite) getComponent();
 
-        String type = getCodeGenerator().codeGenType(actor.output.getType());
+        String type = getCodeGenerator().codeGenType(actor.input.getType());
         if (!getCodeGenerator().isPrimitive(type)) {
             throw new IllegalActionException("must be primitive");
         }

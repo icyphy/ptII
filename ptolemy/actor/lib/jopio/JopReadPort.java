@@ -134,7 +134,7 @@ public class JopReadPort extends Source {
         output.send(0, _val);
     }
     
-    /** Record the most recent input for the watch dog value.
+    /** Enable read on the next invokation of fire().
      *  @exception IllegalActionException If the base class throws it.
      */
     public boolean postfire() throws IllegalActionException {

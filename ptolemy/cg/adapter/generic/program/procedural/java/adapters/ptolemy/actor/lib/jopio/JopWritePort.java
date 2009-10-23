@@ -30,7 +30,6 @@ package ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.acto
 import java.util.ArrayList;
 
 import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
-import ptolemy.codegen.java.kernel.JavaCodeGeneratorHelper;
 import ptolemy.kernel.util.IllegalActionException;
 
 /**

@@ -1,4 +1,4 @@
-/* Low-level output for JOP.
+/* Serail port read for JOP.
 
  Copyright (c) 2009 The Regents of the University of California.
  All rights reserved.
@@ -27,7 +27,7 @@
  */
 package ptolemy.actor.lib.jopio;
 
-import ptolemy.actor.lib.Sink;
+import ptolemy.actor.lib.Source;
 import ptolemy.data.IntToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
@@ -38,13 +38,13 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
-//// JopWritePort
+//// JopSerialRead
 
 /**
  <p>
- Write to a low-level I/O port on the Java processor JOP (see http://www.jopdesign.com).
+ Read serail port on the Java processor JOP (see http://www.jopdesign.com).
  <p>
- In the simulation the values are just printed to stdout.
+ In the simulation just dummy values are returned (the simulated us counter).
 
  @author Martin Schoeberl
  @version $Id$
@@ -52,7 +52,8 @@ import ptolemy.kernel.util.Workspace;
  @Pt.ProposedRating Red (mschoebe)
  @Pt.AcceptedRating Red (mschoebe)
  */
-public class JopWritePort extends Sink {
+public class JopSerialRead extends Source {
+
     /** Construct an actor in the specified container with the specified
      *  name.
      *  @param container The container.
@@ -62,45 +63,18 @@ public class JopWritePort extends Sink {
      *  @exception NameDuplicationException If the name coincides with
      *   an actor already in the container.
      */
-    public JopWritePort(CompositeEntity container, String name)
+    public JopSerialRead(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        input.setTypeEquals(BaseType.INT);
-        input.setMultiport(false);
-
-        portAddress = new Parameter(this, "portAddress");
-        // use the watch dog LED as default
-        portAddress.setExpression("-125");
-        portAddress.setTypeEquals(BaseType.INT);
-
+        output.setTypeEquals(BaseType.INT);
+        output.setMultiport(false);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** The address of the I/O port. Has to be in an allowed range.
-     */
-    public Parameter portAddress;
-
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
-    /** The <i>portAddress</i> has to be in a valid range.
-     */
-    public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
-        if (attribute == portAddress) {
-            int addr = ((IntToken) portAddress.getToken())
-                    .intValue();
-
-            if (addr > 0) {
-                throw new IllegalActionException(this, "Illegal port address");
-            }
-        } else {
-            super.attributeChanged(attribute);
-        }
-    }
 
     /** Override the base class to set type constraints on the ports.
      *  @param workspace The workspace into which to clone.
@@ -109,33 +83,39 @@ public class JopWritePort extends Sink {
      *   an attribute that cannot be cloned.
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        JopWritePort newObject = (JopWritePort) super.clone(workspace);
-        newObject.input.setTypeEquals(BaseType.INT);
+        JopSerialRead newObject = (JopSerialRead) super.clone(workspace);
+        newObject.output.setTypeEquals(BaseType.INT);
         return newObject;
     }
 
-    /** If there is at least one token on the input ports save it for
-     * output in postfire().
+    /** Read the input port on the first invocation of fire() in the
+     * current iteration and send the value on each fire().
      *
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
+        
+        String hello = "Hello World! ";
         super.fire();
-        _last_val = _val;
-        if (input.hasToken(0)) {
-            _last_val = ((IntToken) input.get(0)).intValue();
+        if (_firstFire) {
+            int v = (int) hello.charAt(_cnt);
+            _cnt++;
+            if (_cnt>=hello.length()) _cnt = 0;
+            _val = new IntToken(v);
+            _firstFire = false;
         }
+        output.send(0, _val);
     }
     
-    /** Record the most recent token for the output value.
+    /** Enable read on the next invokation of fire().
      *  @exception IllegalActionException If the base class throws it.
      */
     public boolean postfire() throws IllegalActionException {
-        _val = _last_val;
-        System.out.print(_val);
+        _firstFire = true;
         return super.postfire();
     }
 
-    private int _last_val;
-    private int _val;
+    private boolean _firstFire = true;
+    private IntToken _val = new IntToken(0);
+    private int _cnt;
 }
