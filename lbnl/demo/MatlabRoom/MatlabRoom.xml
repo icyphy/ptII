@@ -110,7 +110,7 @@ This is for illustration purposes only and not needed by the above model.</text>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 70.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={90, 78, 1105, 784}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={404, 120, 1109, 792}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[892, 674]">
     </property>
@@ -265,7 +265,7 @@ T_{k+1}. The control action is computed in Ptolemy II.</text></svg></configure>
         </property>
         <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="TRoo1,  TRoo2, 10*y1, 10*y2">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={872, 382, 558, 435}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={872, 382, 568, 445}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[558, 391]">
         </property>
@@ -318,7 +318,7 @@ T_{k+1}. The control action is computed in Ptolemy II.</text></svg></configure>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{35.0, 55.0}">
             </property>
         </property>
-        <property name="yIni" class="ptolemy.data.expr.Parameter" value="0">
+        <property name="yIni" class="ptolemy.data.expr.Parameter" value="[0; 0]">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
