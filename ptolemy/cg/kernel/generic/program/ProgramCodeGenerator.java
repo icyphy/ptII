@@ -257,6 +257,9 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
      *  white space or comments
      */
     public static boolean containsCode(String code) {
+        if (code == null) {
+            return false;
+        }
         return (code.replaceAll("/\\*[^*]*\\*/", "")
                 .replaceAll("[ \t\n\r]", "").length() > 0);
     }
@@ -278,6 +281,23 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
         code.append(adapter.generateInitializeCode());
         return code.toString();
     }
+    
+    /** Return the closing entry code, if any.
+     *  @return the closing entry code.
+     */   
+    public String generateClosingEntryCode() {
+        return comment("closing entry code");
+    }
+
+
+    /** Return the closing exit code, if any.
+     *  @return the closing exit code.
+     */   
+    public String generateClosingExitCode() {
+        return comment("closing exit code");
+    }
+
+
 
     /** Generate the initialization procedure entry point.
      *  @return a string for the initialization procedure entry point.
@@ -877,6 +897,9 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
             fireFunctionCode = generateFireFunctionCode();
         }
         String wrapupCode = generateWrapupCode();
+        String closingEntryCode = generateClosingEntryCode();
+        String closingExitCode = generateClosingExitCode();
+
 
         // Generating variable declarations needs to happen after buffer
         // sizes are set(?).
@@ -977,9 +1000,18 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
         // If the container is in the top level, we are generating code
         // for the whole model.
         if (_isTopLevel()) {
+            if (containsCode(closingEntryCode)) {
+                code.append(closingEntryCode);
+            }
+            if (((BooleanToken) measureTime.getToken()).booleanValue()) {
+                code.append(_printExecutionTime());
+            }
             if (containsCode(wrapupCode)) {
                 code.append(wrapupProcedureName);
             }
+            //if (containsCode(closingExitCode)) {
+                code.append(closingExitCode);
+                //}
         }
 
         code.append(mainExitCode);

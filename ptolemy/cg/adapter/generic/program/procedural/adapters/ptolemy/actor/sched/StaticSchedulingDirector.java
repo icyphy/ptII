@@ -212,7 +212,9 @@ public class StaticSchedulingDirector extends Director {
      *  @exception IllegalActionException If something goes wrong.
      */
     public String generateMainLoop() throws IllegalActionException {
-        StringBuffer code = new StringBuffer();
+        // Need a leading _eol here or else the execute decl. gets stripped out.
+        StringBuffer code = new StringBuffer(
+                _eol + "public void execute() throws Exception {" + _eol);
 
         Attribute iterations = _director.getAttribute("iterations");
         if (iterations == null) {
@@ -230,6 +232,11 @@ public class StaticSchedulingDirector extends Director {
                         + "; iteration ++) {" + _eol);
             }
         }
+
+        code.append("run();" + _eol 
+                + "}" + _eol
+                + "}" + _eol
+                + _eol + "public void run() throws Exception {" + _eol);
 
         code.append(generateFireCode());
 
@@ -255,9 +262,9 @@ public class StaticSchedulingDirector extends Director {
             if (periodValue != 0.0) {
                 code.append("_currentTime += " + periodValue + ";" + _eol);
             }
-            code.append("}" + _eol);
         }
 
+        code.append("}" + _eol);
         return code.toString();
     }
 

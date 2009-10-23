@@ -279,6 +279,21 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
         return code.toString();
     }
 
+    /** Return the closing entry code, if any.
+     *  @return the closing entry code.
+     */   
+    public String generateClosingEntryCode() {
+        return "public void doWrapup() throws Exception { " + _eol;
+    }
+
+    /** Return the closing exit code, if any.
+     *  @return the closing exit code.
+     */   
+    public String generateClosingExitCode() {
+        return "}" + _eol;
+    }
+
+
     /** Generate the initialization procedure entry point.
      *  @return a string for the initialization procedure entry point.
      *  @exception IllegalActionException Not thrown in this base class.
@@ -302,7 +317,8 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
      */
     public String generateInitializeProcedureName()
             throws IllegalActionException {
-        return INDENT1 + "initialize();" + _eol;
+        //return _INDENT1 + "initialize();" + _eol;
+        return "// Don't call initialize() here, it is called in main.";
     }
 
     /** Generate line number information.  In this class, lines
@@ -333,14 +349,28 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
         // If the container is in the top level, we are generating code
         // for the whole model.
         if (_isTopLevel()) {
+//          mainEntryCode
+//          .append(_eol
+//                  + _eol
+//                  + "public static void main(String [] args) throws Exception {"
+//                  + _eol + _sanitizedModelName + " model = new "
+//                  + _sanitizedModelName + "();" + _eol
+//                  + "model.run();" + _eol + "}" + _eol
+//                  + "public void run() throws Exception {" + _eol);
+
             mainEntryCode
-                    .append(_eol
-                            + _eol
-                            + "public static void main(String [] args) throws Exception {"
-                            + _eol + _sanitizedModelName + " model = new "
-                            + _sanitizedModelName + "();" + _eol
-                            + "model.run();" + _eol + "}" + _eol
-                            + "public void run() throws Exception {" + _eol);
+            .append(_eol
+                 + _eol
+                 + "public static void main(String [] args) throws Exception {"
+                 + _eol + _sanitizedModelName + " model = new "
+                 + _sanitizedModelName + "();" + _eol
+                 + "model.initialize();" + _eol
+                 + "model.execute();" + _eol
+                 + "model.doWrapup();" + _eol
+                 + "System.exit(0);" + _eol
+                 + "}" + _eol);
+
+
         } else {
             mainEntryCode.append(_eol + _eol + "public Object[] " + _eol
                     + "fire (" + _eol);
@@ -371,7 +401,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
     public String generateMainExitCode() throws IllegalActionException {
 
         if (_isTopLevel()) {
-            return INDENT1 + "System.exit(0);" + _eol + "}" + _eol + "}" + _eol;
+            return "}";
         } else {
             if (_model instanceof CompositeActor && ((CompositeActor) _model).outputPortList().isEmpty()) { 
                 return INDENT1 + "return null;" + _eol + "}"
@@ -746,7 +776,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
      */
     public String generateWrapupProcedureName() throws IllegalActionException {
 
-        return INDENT1 + "wrapup();" + _eol;
+        return "wrapup();" + _eol;
     }
     
 
