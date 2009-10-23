@@ -65,7 +65,7 @@ import ptolemy.kernel.util.Workspace;
  see whether input tokens are available.
 
  @author Charles Shelton
- @version $Id: ConfigurationSwitch.java 54721 2009-06-26 22:32:23Z cxh $
+ @version $Id$
  @since Ptolemy II 8.1
  @Pt.ProposedRating Green (cshelton)
  @Pt.AcceptedRating Red (cshelton)

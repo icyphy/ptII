@@ -76,7 +76,7 @@ import ptolemy.kernel.util.Workspace;
  to use.
 
  @author Charles Shelton
- @version $Id: ConfigurationSelect.java 53042 2009-04-10 20:31:21Z cxh $
+ @version $Id$
  @since Ptolemy II 8.1
  @Pt.ProposedRating Green (cshelton)
  @Pt.AcceptedRating Red (cshelton)
