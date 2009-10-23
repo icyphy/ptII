@@ -1,4 +1,4 @@
-/* Split a stream into two according to a boolean control parameter.
+/* Split a stream into two according to a boolean selector parameter.
 
  Copyright (c) 1997-2009 The Regents of the University of California.
  All rights reserved.
@@ -44,7 +44,7 @@ import ptolemy.kernel.util.Workspace;
 
 /**
  Split an input stream onto two output ports depending on a
- boolean control parameter.  The value of the <i>selector</i> parameter specifies the
+ boolean selector parameter.  The value of the <i>selector</i> parameter specifies the
  output port that should be written to in this and subsequent iterations. If no <i>selector</i>
  parameter value is provided, then the inputs are routed to the <i>falseOutput</i> port.
  In each iteration, at most one token on each channel of the <i>input</i> port
@@ -90,6 +90,7 @@ public class ConfigurationSwitch extends TypedAtomicActor {
         // Default selector value to false
         selector = new Parameter(this, "selector", new BooleanToken(false));
         selector.setTypeEquals(BaseType.BOOLEAN);
+
         trueOutput = new TypedIOPort(this, "trueOutput", false, true);
         falseOutput = new TypedIOPort(this, "falseOutput", false, true);
         trueOutput.setTypeAtLeast(input);
@@ -113,7 +114,7 @@ public class ConfigurationSwitch extends TypedAtomicActor {
     ////                     ports and parameters                  ////
 
     /** Parameter that selects one of the two input ports.  The type is
-     *  BooleanToken.
+     *  BooleanToken that defaults to false.
      */
     public Parameter selector;
 
@@ -176,7 +177,7 @@ public class ConfigurationSwitch extends TypedAtomicActor {
     }
 
     /** Read a token from each input port.  If the token from the
-     *  <i>control</i> input is true, then output the token consumed from the
+     *  <i>selector</i> input is true, then output the token consumed from the
      *  <i>input</i> port on the <i>trueOutput</i> port,
      *  otherwise output the token on the <i>falseOutput</i> port.
      *

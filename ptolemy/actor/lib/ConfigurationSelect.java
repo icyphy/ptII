@@ -144,7 +144,7 @@ public class ConfigurationSelect extends TypedAtomicActor {
     public TypedIOPort falseInput;
 
     /** Parameter that selects one of the two input ports.  The type is
-     *  BooleanToken.
+     *  BooleanToken that defaults to false.
      */
     public Parameter selector;
 
@@ -239,7 +239,7 @@ public class ConfigurationSelect extends TypedAtomicActor {
     }
 
     /** Initialize this actor so that the <i>falseInput</i> is read
-     *  from until a token arrives on the <i>control</i> input.
+     *  from until a token arrives on the <i>selector</i> input.
      *  @exception IllegalActionException If the parent class throws it.
      */
     public void initialize() throws IllegalActionException {
@@ -273,10 +273,10 @@ public class ConfigurationSelect extends TypedAtomicActor {
         return super.postfire();
     }
 
-    /** If the mode is to read a control token, then return true
-     *  if the <i>control</i> input has a token. Otherwise, return
+    /** If the mode is to read a selector token, then return true
+     *  if the <i>selector</i> input has a token. Otherwise, return
      *  true if every channel of the input port specified by the most
-     *  recently read control input has a token.
+     *  recently read selector input has a token.
      *  @return False if there are not enough tokens to fire.
      *  @exception IllegalActionException If there is no director.
      */
