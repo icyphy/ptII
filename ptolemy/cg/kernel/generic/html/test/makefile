@@ -78,7 +78,12 @@ JCLASS =	$(JSRCS:%.java=%.class)
 # Don't include all or install rules here, we want the user
 # to run 'make tests' to run the tests.
 
-tests:: $(EXTRA_SRCS) jclass test_java test_jsimple
+TYPEDCOMPOSITEACTOR_CLASS = $(PTII)/ptolemy/cg/adapter/generic/html/adapters/ptolemy/actor/TypedCompositeActor.class
+
+tests:: $(EXTRA_SRCS) $(TYPEDCOMPOSITEACTOR_CLASS) jclass test_java test_jsimple
+
+$(TYPEDCOMPOSITEACTOR_CLASS): $(PTII)/ptolemy/cg/adapter/generic/html/adapters/ptolemy/actor/TypedCompositeActor.java
+	(cd $(PTII)/ptolemy/cg/adapter/generic/html/adapters/ptolemy/actor; $(MAKE))
 
 test_java: jclass
 
