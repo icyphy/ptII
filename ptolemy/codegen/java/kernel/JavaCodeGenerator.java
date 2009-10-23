@@ -94,6 +94,11 @@ public class JavaCodeGenerator extends CodeGenerator {
         super(container, name);
 
         generatorPackage.setExpression("ptolemy.codegen.java");
+        // A list of the primitive types supported by the code generator.
+        // FIXME: we should not have to set these each time, but
+        // JavaCodeGenerator uses Integer, and CCodeGenerator uses Int
+        _primitiveTypes = Arrays.asList(new String[] { "Integer", "Double",
+                "String", "Long", "Boolean", "UnsignedByte", "Pointer" });
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -1467,13 +1472,6 @@ public class JavaCodeGenerator extends CodeGenerator {
      *  We use one method so as to reduce code size.
      */
     private static Set _scalarDeleteTypes;
-
-    /** A list of the primitive types supported by the code generator.
-     */
-    static {
-        _primitiveTypes = Arrays.asList(new String[] { "Integer", "Double",
-                "String", "Long", "Boolean", "UnsignedByte", "Pointer" });
-    }
 
     static {
         _unsupportedTypeFunctions = new HashSet();

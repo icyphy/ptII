@@ -34,6 +34,7 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -102,6 +103,11 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         sourceLineBinding.setExpression("false");
 
         generatorPackageList.setExpression("generic.program.procedural.c");
+
+        // FIXME: we should not have to set these each time, but
+        // JavaCodeGenerator uses Integer, and CCodeGenerator uses Int
+        _primitiveTypes = Arrays.asList(new String[] { "Int", "Double",
+                "String", "Long", "Boolean", "UnsignedByte", "Pointer" });
     }
 
     ///////////////////////////////////////////////////////////////////

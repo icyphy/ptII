@@ -32,6 +32,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -87,6 +88,11 @@ public class CCodeGenerator extends CodeGenerator {
         super(container, name);
 
         generatorPackage.setExpression("ptolemy.codegen.c");
+
+        // FIXME: we should not have to set these each time, but
+        // JavaCodeGenerator uses Integer, and CCodeGenerator uses Int
+        _primitiveTypes = Arrays.asList(new String[] { "Int", "Double",
+                "String", "Long", "Boolean", "UnsignedByte", "Pointer" });
     }
 
     ///////////////////////////////////////////////////////////////////
