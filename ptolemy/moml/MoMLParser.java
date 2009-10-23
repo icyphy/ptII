@@ -4072,10 +4072,11 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                     if (derived.getEntity(entityName) != null) {
                         throw new IllegalActionException(
                                 container,
-                                "Cannot create entity because a subclass or instance "
-                                        + "contains an entity with the same name: "
-                                        + derived.getEntity(entityName)
-                                                .getFullName());
+                                "Cannot create entity named \"" + entityName
+                                        + "\" because a subclass or instance in \""
+                                        + container.getFullName() 
+                                        + "\" contains an entity with the same name \""
+                                        + derived.getEntity(entityName).getFullName() + "\".");
                     }
                 }
             }
