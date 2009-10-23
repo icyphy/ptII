@@ -198,6 +198,7 @@ CGPACKAGES = \
 	ptolemy.cg.adapter.generic.program.procedural.c.luminary.adapters.ptolemy.domains.ptides.lib.luminary \
 	ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.actor.lib \
 	ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.actor.lib.gui \
+	ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.actor.lib.jopio \
 	ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.cg.lib \
 	ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.domains.sdf.kernel \
 	ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.domains.sdf.lib \
@@ -212,6 +213,7 @@ CGPACKAGES = \
 	ptolemy.cg.kernel.generic.program.procedural.c.ptidyos \
 	ptolemy.cg.kernel.generic.program.procedural.java \
 	ptolemy.cg.kernel.generic.program.procedural.java.modular \
+	ptolemy.cg.kernel.generic.test.actor \
 	ptolemy.cg.lib
 
 # Codegen packages.  Use this command to update:
