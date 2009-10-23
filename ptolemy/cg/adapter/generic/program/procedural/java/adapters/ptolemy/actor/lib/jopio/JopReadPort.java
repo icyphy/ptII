@@ -29,6 +29,7 @@ package ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.acto
 
 import java.util.ArrayList;
 
+import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
 import ptolemy.codegen.java.kernel.JavaCodeGeneratorHelper;
 import ptolemy.kernel.util.IllegalActionException;
 
@@ -41,7 +42,7 @@ import ptolemy.kernel.util.IllegalActionException;
  * @Pt.ProposedRating Red (mschoebe)
  * @Pt.AcceptedRating Red (mschoebe)
  */
-public class JopReadPort extends JavaCodeGeneratorHelper {
+public class JopReadPort extends NamedProgramCodeGeneratorAdapter {
     /**
      * Construct a JopWatchDog helper.
      * @param actor The associated actor.
@@ -64,15 +65,16 @@ public class JopReadPort extends JavaCodeGeneratorHelper {
 
         ptolemy.actor.lib.jopio.JopReadPort actor = (ptolemy.actor.lib.jopio.JopReadPort) getComponent();
 
-        String type = codeGenType(actor.output.getType());
-        if (!isPrimitive(type)) {
+        String type = getCodeGenerator().codeGenType(actor.output.getType());
+        if (!getCodeGenerator().isPrimitive(type)) {
             throw new IllegalActionException("must be primitive");
         }
 
         ArrayList args = new ArrayList();
 
-        args.add(Integer.valueOf(0));
-        code.append(_generateBlockCode("FireBlock", args));
+//        args.add(Integer.valueOf(0));
+        args.add("0");
+        code.append(_templateParser.generateBlockCode("FireBlock", args));
 
         return code.toString();
     }

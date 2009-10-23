@@ -1,15 +1,16 @@
 /***preinitBlock***/
-boolean _firstFire = true;
+boolean $actorSymbol(firstFire) = true;
 /**/
 
 /*** FireBlock($channel) ***/
-if (_firstFire) {
+if ($actorSymbol(firstFire)) {
     // read the value
-    $ref(output) = com.jopdesign.sys.Native.rdMem($ref((Integer)portAddress));
-    _firstFire = false;
+    $put(output, com.jopdesign.sys.Native.rdMem($param(portAddress)));
+    $actorSymbol(firstFire) = false;
 }
+// do we have to consume the token on a following fire?
 /**/
 
 /*** postfireBlock ***/
-_firstFire = true;
+$actorSymbol(firstFire) = true;
 /**/

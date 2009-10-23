@@ -78,19 +78,4 @@ public class JopWritePort extends NamedProgramCodeGeneratorAdapter {
 
         return code.toString();
     }
-    
-    /**
-     * Generate the postfire code.
-     * 
-     * @return The generated postfire code.
-     * @exception IllegalActionException If thrown while appending to the the
-     * block or processing the macros.
-     */
-    public String generatePostfireCode() throws IllegalActionException {
-        StringBuffer code = new StringBuffer();
-        code.append(super.generatePostfireCode());
-        code.append(_templateParser.generateBlockCode("PostFireBlock", new ArrayList()));
-        return processCode(code.toString());
-    }
-
 }

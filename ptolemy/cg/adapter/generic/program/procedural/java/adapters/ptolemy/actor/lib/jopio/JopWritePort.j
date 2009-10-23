@@ -1,15 +1,15 @@
 /***preinitBlock***/
-int _val = 0;
-int _last_val;
+int $actorSymbol(val) = 0;
+int $actorSymbol(lastVal);
 /**/
 
 /*** FireBlock($channel) ***/
-_last_val = _val;
+$actorSymbol(lastVal) = $actorSymbol(val);
 // no check on available input token here - so above assignment is useless
-_last_val = $get(input#$channel);
+$actorSymbol(lastVal) = $get(input#$channel);
 /**/
 
-/*** PostFireBlock ***/
-_val = _last_val;
-com.jopdesign.sys.Native.wrMem(_val, $param(portAddress));
+/*** postfireBlock ***/
+$actorSymbol(val) = $actorSymbol(lastVal);
+com.jopdesign.sys.Native.wrMem($actorSymbol(val), $param(portAddress));
 /**/
