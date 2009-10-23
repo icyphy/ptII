@@ -51,6 +51,8 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 # Keep this list alphabetized.
 JSRCS = \
 	JopReadPort.java \
+	JopSerialRead.java \
+	JopSerialWrite.java \
 	JopWatchDog.java \
 	JopWritePort.java
 

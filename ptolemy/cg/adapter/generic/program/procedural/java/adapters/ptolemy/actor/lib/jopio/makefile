@@ -31,7 +31,6 @@
 # 						COPYRIGHTENDKEY
 ##########################################################################
 
-ME =		ptolemy/codegen/java/actor/lib/jopio
 ME =		ptolemy/cg/adapter/generic/program/procedural/java/adapters/ptolemy/actor/lib/jopio
 
 DIRS =		test
@@ -52,11 +51,15 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 # Keep this list alphabetized.
 JSRCS = \
 	JopReadPort.java \
+	JopSerialRead.java \
+	JopSerialWrite.java \
 	JopWatchDog.java \
 	JopWritePort.java
 
 OTHER_FILES_TO_BE_JARED = \
 	JopReadPort.j \
+	JopSerialRead.j \
+	JopSerialWrite.j \
 	JopWatchDog.j \
 	JopWritePort.j
 
