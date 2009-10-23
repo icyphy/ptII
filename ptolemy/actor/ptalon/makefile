@@ -73,7 +73,7 @@ JSRCS = \
 
 OTHER_FILES_TO_BE_JARED = \
 	ptalon-copyright.html \
-	ptalon.jar
+	ptalon.xml
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED) \
 	PtalonLexer.smap \

@@ -33,7 +33,7 @@
 
 ME =		ptolemy/actor/lib/jopio
 
-DIRS = 		test
+DIRS = 		#test
 
 # Root of the Java directory
 ROOT =		../../../..
