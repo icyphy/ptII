@@ -403,7 +403,10 @@ public class SDFDirector extends StaticSchedulingDirector implements PeriodicDir
      *  period.
      */
     public Time fireAt(Actor actor, Time time) throws IllegalActionException {
-        return _periodicDirectorHelper.fireAt(actor, time);
+        if (_periodicDirectorHelper != null) {
+            return _periodicDirectorHelper.fireAt(actor, time);
+        }
+        return super.fireAt(actor, time);
     }
     
     /** Initialize the actors associated with this director and then
@@ -418,10 +421,12 @@ public class SDFDirector extends StaticSchedulingDirector implements PeriodicDir
      */
     public void initialize() throws IllegalActionException {
 
-            super.initialize();
+        super.initialize();
         _iterationCount = 0;
 
-        _periodicDirectorHelper.initialize();
+        if (_periodicDirectorHelper != null) {
+            _periodicDirectorHelper.initialize();
+        }
 
         CompositeActor container = (CompositeActor) getContainer();
 
@@ -555,7 +560,7 @@ public class SDFDirector extends StaticSchedulingDirector implements PeriodicDir
 
         // Refuse to fire if the period is greater than zero and the current
         // time is not a multiple of the period.
-        if (!_periodicDirectorHelper.prefire()) {
+        if (_periodicDirectorHelper != null && !_periodicDirectorHelper.prefire()) {
             return false;
         }
 
@@ -640,7 +645,9 @@ public class SDFDirector extends StaticSchedulingDirector implements PeriodicDir
         }
 
         boolean result = super.postfire();
-        _periodicDirectorHelper.postfire();
+        if (_periodicDirectorHelper != null) {
+            _periodicDirectorHelper.postfire();
+        }
         return result;
     }
 
@@ -806,6 +813,9 @@ public class SDFDirector extends StaticSchedulingDirector implements PeriodicDir
     /** The iteration count. */
     protected int _iterationCount = 0;
 
+    /** Helper class supporting the <i>period</i> parameter. */
+    protected PeriodicDirectorHelper _periodicDirectorHelper;
+
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
@@ -850,6 +860,7 @@ public class SDFDirector extends StaticSchedulingDirector implements PeriodicDir
         scheduler.constrainBufferSizes.setExpression("constrainBufferSizes");
         setScheduler(scheduler);
         
+        // Subclasses may set this to null and handle this themselves.
         _periodicDirectorHelper = new PeriodicDirectorHelper(this);
     }
 
@@ -861,9 +872,6 @@ public class SDFDirector extends StaticSchedulingDirector implements PeriodicDir
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
-    /** Helper class supporting the <i>period</i> parameter. */
-    private PeriodicDirectorHelper _periodicDirectorHelper;
 
     /** The real time at which the model begins executing. */
     private long _realStartTime = 0L;
