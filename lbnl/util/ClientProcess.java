@@ -258,7 +258,17 @@ public class ClientProcess extends Thread {
         Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
         // Set the window to the bottom left corner, where it gets less in the way
         // compared to the top left corner.
-        locY = Math.max(0, screenSize.height - dY);
+
+
+	// Move window up on Mac and Windows so that it does not overlap with taskbar
+	final String osName = System.getProperty("os.name").toLowerCase();
+	int dLocY = 0;
+	if (osName.indexOf("windows") > -1)
+	    dLocY = 20;
+	if (osName.indexOf("mac") > -1)
+	    dLocY = 20;
+
+        locY = Math.max(0, screenSize.height - dY - dLocY);
     }
 
 
@@ -298,24 +308,32 @@ public class ClientProcess extends Thread {
                 stdAre = new JTextArea();
                 stdScrPan = new JScrollPane(stdAre);
                 if ( showConsoleWindow ){
+		    // If locY < 0, then this is the first call to any instance of
+		    // ClientProcess, hence we reset the window position.
+		    if ( locY < 0 )
+			resetWindowLocation();
+
+		    stdFra.setLocation(30, locY);
+		    // Move the location up so that the window of another simulation
+		    // does not overlap
+		    // Move window up on Windows so that it does not overlap with taskbar
+		    final String osName = System.getProperty("os.name").toLowerCase();
+		    if (osName.indexOf("linux") > -1)
+			locY -= (dY+22);
+		    else if (osName.indexOf("mac") > -1)
+			locY -= (dY+22);
+		    else
+			locY -= dY;
+
+		    
                     stdAre.setEditable(false);
                     stdScrPan.setVerticalScrollBarPolicy(
                             JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
                     stdFra.add(stdScrPan);
                     stdFra.setVisible(true);
                 }
-                // If locY < 0, then this is the first call to any instance of
-                // ClientProcess, hence we reset the window position.
-                if ( locY < 0 )
-                    resetWindowLocation();
-                stdFra.setLocation(60, locY);
-                // Move the location up so that the window of another simulation
-                // does not overlap
 
-		if (System.getProperty("os.name").toLowerCase().indexOf("linux") > -1)
-		    locY -= (dY+22);
-		else
-		    locY -= dY;
+
             }
         }
 
