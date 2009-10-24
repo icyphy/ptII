@@ -176,6 +176,10 @@ public class SystemCommand extends TypedAtomicActor {
         new Parameter(simulationLogFile, "allowFiles", BooleanToken.TRUE);
         new Parameter(simulationLogFile, "allowDirectories", BooleanToken.FALSE);
 
+        showConsoleWindow = new Parameter(this, "showConsoleWindow");
+        showConsoleWindow.setTypeEquals(BaseType.BOOLEAN);
+        showConsoleWindow.setToken(BooleanToken.TRUE);
+
         output.setTypeEquals(BaseType.STRING);
         error.setTypeEquals(BaseType.STRING);
         exitValue.setTypeEquals(BaseType.INT);
@@ -202,6 +206,10 @@ public class SystemCommand extends TypedAtomicActor {
     /** Working directory of the simulation. */
     public FileParameter workingDirectory;
 
+    /** If <i>true</i> (the default), a window will be created that 
+        shows the console output. */
+    public Parameter showConsoleWindow;
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -224,6 +232,9 @@ public class SystemCommand extends TypedAtomicActor {
                 .getAttribute("simulationLogFile");
         newObject.workingDirectory = (FileParameter) newObject
                 .getAttribute("workingDirectory");
+        newObject.showConsoleWindow = (Parameter) newObject
+                .getAttribute("showConsoleWindow");
+  
         newObject._iterationCount = 1;
         newObject._tokenMap = null;
 
@@ -340,7 +351,13 @@ public class SystemCommand extends TypedAtomicActor {
         while (st.hasMoreTokens()) {
             commandList.add(st.nextToken());
         }
-        cliPro = new ClientProcess();
+        // Close the window that contains the console output.
+        // This is needed if a simulation is started multiple times.
+        // Otherwise, each new run would make a new window.
+        if ( cliPro != null )
+            cliPro.disposeWindow();
+        cliPro = new ClientProcess(this.getFullName());
+        cliPro.showConsoleWindow( ((BooleanToken)(showConsoleWindow.getToken())).booleanValue() );
     }
 
     /** Starts the simulation program.
@@ -487,6 +504,9 @@ public class SystemCommand extends TypedAtomicActor {
      */
     public void wrapup() throws IllegalActionException {
         super.wrapup();
+        // Reset position of window that shows console output so that for the next
+        // simulation, the window will be placed on top of the screen again
+        ClientProcess.resetWindowLocation();
     }
 
     /** Cut the leading and terminating quotation marks if present.

@@ -159,6 +159,10 @@ public class Simulator extends SDFTransformer {
         socketTimeout.setExpression("5000");
         socketTimeout.setTypeEquals(BaseType.INT);
 
+        showConsoleWindow = new Parameter(this, "showConsoleWindow");
+        showConsoleWindow.setTypeEquals(BaseType.BOOLEAN);
+        showConsoleWindow.setToken(BooleanToken.TRUE);
+
         // expert settings
         socketPortNumber = new Parameter(this, "socketPortNumber");
         socketPortNumber.setDisplayName("socketPortNumber (used if non-negative)");
@@ -176,7 +180,6 @@ public class Simulator extends SDFTransformer {
         // we produce one (DOUBLE_MATRIX) token as the initial output
         output_tokenInitProduction.setExpression("1");
     }
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -205,6 +208,8 @@ public class Simulator extends SDFTransformer {
                 .getAttribute("socketTimeout");
         newObject.workingDirectory = (FileParameter) newObject
                 .getAttribute("workingDirectory");
+        newObject.showConsoleWindow = (Parameter) newObject
+                .getAttribute("showConsoleWindow");
 
         return newObject;
     }
@@ -404,7 +409,7 @@ public class Simulator extends SDFTransformer {
 	clientTerminated = false;
 	terminationMessage = "";
 	warWin = null;
-
+       
         // Working directory
         worDir = Simulator.resolveDirectory(getContainer(), 
                 cutQuotationMarks(workingDirectory.getExpression()));
@@ -572,9 +577,17 @@ public class Simulator extends SDFTransformer {
         while (st.hasMoreTokens()) {
             com.add(st.nextToken());
         }
-        cliPro = new ClientProcess();
+        // Close the window that contains the console output.
+        // This is needed if a simulation is started multiple times.
+        // Otherwise, each new run would make a new window.
+        if ( cliPro != null )
+            cliPro.disposeWindow();
+
+        cliPro = new ClientProcess(this.getFullName());
 	cliPro.redirectErrorStream(true);
         cliPro.setProcessArguments(com, worDir);
+        cliPro.showConsoleWindow( ((BooleanToken)(showConsoleWindow.getToken())).booleanValue() );
+
         File slf = simulationLogFile.asFile();
         try {
             if (slf.exists()) {
@@ -644,6 +657,9 @@ public class Simulator extends SDFTransformer {
         } catch (java.io.IOException e) {
             throw new IllegalActionException(this, e, e.getMessage());
         }
+        // Reset position of window that shows console output so that for the next
+        // simulation, the window will be placed on top of the screen again
+        ClientProcess.resetWindowLocation();
     }
 
     /** Cut the leading and terminating quotation marks if present.
@@ -706,6 +722,10 @@ public class Simulator extends SDFTransformer {
 
     /** Working directory of the simulation. */
     public FileParameter workingDirectory;
+
+    /** If <i>true</i> (the default), a window will be created that 
+        shows the console output. */
+    public Parameter showConsoleWindow;
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected members                 ////

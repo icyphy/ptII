@@ -88,6 +88,15 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.JFrame;
+import javax.swing.JTextArea;
+import javax.swing.JScrollPane;
+import javax.swing.ImageIcon;
+import java.awt.Dimension;
+import java.awt.Toolkit;
+import java.awt.Rectangle;
+import java.awt.Image;
+
 import ptolemy.kernel.util.IllegalActionException;
 
 /**
@@ -102,13 +111,31 @@ public class ClientProcess extends Thread {
 
     private final static String LS = System.getProperty("line.separator");
 
-    /** Create a ClientProcess. */
-    public ClientProcess() {
+    /** Create a ClientProcess. 
+     *@param modelName name of the model, used for display only
+     **/
+    public ClientProcess(final String modelName) {
         super();
         proSta = false;
         errMes = null;
         stdOut = new StringBuilder();
         stdErr = new StringBuilder();
+        modNam = modelName;
+        showConsoleWindow = true;
+    }
+
+    /** Set a flag that determines whether the console window will be displayed
+     *
+     *@param showWindow Set to false to avoid the console window to be shown
+     */
+    public void showConsoleWindow(boolean showWindow){
+        showConsoleWindow = showWindow;
+    }
+
+    /** Disposes the window that displays the console output */
+    public void disposeWindow(){
+        if ( stdFra != null )
+            stdFra.dispose();
     }
 
     /** Redirects the standard error stream to the standard output stream
@@ -142,7 +169,7 @@ public class ClientProcess extends Thread {
             // FIXME: should we call simPro.exitValue() and destroy() 
             simPro = pb.start();
             proSta = true;
-            priStdOut = new PrintOutput();
+            priStdOut = new PrintOutput(cmdArr.get(0));
             priStdErr = new PrintStderr();
             priStdOut.start();
             priStdErr.start();
@@ -220,11 +247,76 @@ public class ClientProcess extends Thread {
 	return simPro.exitValue();
     }
 
+    
+    /** Reset the position of the window that shows the console output.
+     *
+     * This function is typically called by actors in the <i>wrapUp()</i> method
+     * so that for the next simulation, the window will be placed at the
+     * same position again as in the previous simulation
+     */
+    public static void resetWindowLocation(){
+        Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
+        // Set the window to the bottom left corner, where it gets less in the way
+        // compared to the top left corner.
+        locY = Math.max(0, screenSize.height - dY);
+    }
+
+
+    /** Frame that contains the console output of the simulation */
+    protected JFrame stdFra;
+
+    /** Text area that contains the console output of the simulation */
+    protected JTextArea stdAre;
+
+    /** Scroll pane  that contains the text area for the console ouput */
+
+    protected JScrollPane stdScrPan;
+    /** Y location of window that displays the console output.
+     *
+     * This data member is static so that windows can be placed above each 
+     * other if multiple simulations are used
+     */
+    public static int locY = -1;
+
+    /** Default height of window */
+    protected static final int dY = 200;
+
     /////////////////////////////////////////////////////////////////////
     /** Inner class to print any output of the process to the console. */
     private class PrintOutput extends Thread {
-        public PrintOutput() {
+
+        /** Construct an object that starts a simulation
+         *@param programName Name of the program, used for output display only. 
+         *
+         */
+        public PrintOutput(final String programName) {
             stdOut = new StringBuilder();
+            if ( showConsoleWindow && stdFra == null ){
+                stdFra = new JFrame("Output of " + modNam);
+                stdFra.setDefaultLookAndFeelDecorated(true);
+                stdFra.setSize(600, dY);
+                stdAre = new JTextArea();
+                stdScrPan = new JScrollPane(stdAre);
+                if ( showConsoleWindow ){
+                    stdAre.setEditable(false);
+                    stdScrPan.setVerticalScrollBarPolicy(
+                            JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+                    stdFra.add(stdScrPan);
+                    stdFra.setVisible(true);
+                }
+                // If locY < 0, then this is the first call to any instance of
+                // ClientProcess, hence we reset the window position.
+                if ( locY < 0 )
+                    resetWindowLocation();
+                stdFra.setLocation(60, locY);
+                // Move the location up so that the window of another simulation
+                // does not overlap
+
+		if (System.getProperty("os.name").toLowerCase().indexOf("linux") > -1)
+		    locY -= (dY+22);
+		else
+		    locY -= dY;
+            }
         }
 
         /** Runs the process. */
@@ -258,6 +350,12 @@ public class ClientProcess extends Thread {
                         pwLogFil.println(line);
                         pwLogFil.flush();
                         stdOut.append(line + LS);
+                        if ( showConsoleWindow ){
+                            stdAre.append(line + LS);
+                            //scroll to bottom of text area
+                            stdAre.scrollRectToVisible(
+                                    new Rectangle(0,stdAre.getHeight()-2,1,1));
+                        }
                     }
                 } catch (java.io.IOException e) {
                     e.printStackTrace();
@@ -390,6 +488,12 @@ public class ClientProcess extends Thread {
     /** Process for the simulation */
     protected Process simPro;
 
+    /** Name of the model */
+    protected String modNam;
+
+    /** Flag, if true, then the console output will be displayed in a JFrame */
+    protected boolean showConsoleWindow;
+
     /** Flag that is set to <code>true</code> if the process started without throwing an exception */
     protected boolean proSta;
 
@@ -416,7 +520,7 @@ public class ClientProcess extends Thread {
      *  of the program file cannot be obtained.
      */
     public static void main(String args[]) throws IllegalActionException {
-        ClientProcess c = new ClientProcess();
+        ClientProcess c = new ClientProcess("Test");
         List<String> com = new ArrayList<String>();
         for (int i = 0; i < args.length; i++) {
             com.add(args[i]);
