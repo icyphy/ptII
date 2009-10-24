@@ -372,6 +372,10 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
                     if (_debugging) {
                         _debug("Fire state refinement:",  stateRefinements[i].getName());
                     }
+                    // FIXME: If the state refinement is an FSMActor, then the following
+                    // fire() method doesn't do the right thing. That fire() method does
+                    // much less than this fire() method, and in particular, does not
+                    // invoke refinements!
                     stateRefinements[i].fire();
                     _stateRefinementsToPostfire.add(stateRefinements[i]);
                 }
@@ -873,7 +877,9 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
             _setTimeForRefinement(stateRefinement);
             if (!stateRefinement.postfire()) {
                 _disabledActors.add(stateRefinement);
-                result = false;
+                // It is not correct for the modal model to return false
+                // just because the refinement doesn't want to be fired anymore.
+                // result = false;
             }
             setModelTime(environmentTime);
             if (_lastChosenTransition != null && stateRefinement instanceof Suspendable) {
@@ -908,7 +914,9 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
             // FIXME: What to set time to?
             if (!transitionRefinement.postfire()) {
                 _disabledActors.add(transitionRefinement);
-                result = false;
+                // It is not correct for the modal model to return false
+                // just because the refinement doesn't want to be fired anymore.
+                // result = false;
             }
         }
         
@@ -1239,6 +1247,15 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
         }
 
         return (Receiver[][]) _currentLocalReceiverMap.get(port);
+    }
+    
+    /** If the specified actor is currently enabled (because it
+     *  previously returned false from postfire), then re-enable it.
+     *  This is called by FSMActor upon taking a reset transition.
+     *  @param actor The actor to re-enable.
+     */
+    protected void _enableActor(Actor actor) {
+        _disabledActors.remove(actor);
     }
 
     /** Return the last chosen transition.

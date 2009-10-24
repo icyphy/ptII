@@ -639,7 +639,11 @@ public class FSMActor extends CompositeEntity implements TypedActor,
      *   transition enabled.
      */
     public void fire() throws IllegalActionException {
-        // NOTE: this method is not called in the FSMDirector class.
+        // NOTE: this method is not called in the FSMDirector class,
+        // except when a state refinement is itself an FSMActor.
+        // FIXME: In the latter case, this method doesn't do the
+        // right thing!  It needs to do everything that the FSMDirector's
+        // fire() method does.
         readInputs();
         List transitionList = _currentState.outgoingPort.linkedRelationList();
         Transition chosenTransition = chooseTransition(transitionList);
@@ -947,6 +951,9 @@ public class FSMActor extends CompositeEntity implements TypedActor,
                 initializable.initialize();
             }
         }
+        
+        _reachedFinalState = false;
+        _newIteration = true;
 
         // Even though reset() is called in preinitialize(),
         // we have to call it again because if a reset transition is
@@ -1722,6 +1729,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
                         } finally {
                             ((FSMDirector) executiveDirector)._indexOffset = 0;
                         }
+                        ((FSMDirector) executiveDirector)._enableActor(actors[i]);
                     } else {
                         actors[i].initialize();
                     }
