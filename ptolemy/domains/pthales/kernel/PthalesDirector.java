@@ -39,6 +39,10 @@ import ptolemy.kernel.util.NameDuplicationException;
 // They should not be strings, and they need not be parsed.
 // Moreover, record types provide nice support for merging in defaults, etc.
 
+// FIXME: The value of the size parameter could optionally be inferred
+// if there is no torroidal wrap around desired.  Perhaps there should
+// be parameter indicating to do such inference.
+
 /** 
  * A director for multidimensional dataflow.
  * This is based on Array-OL, as described by:
