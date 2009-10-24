@@ -869,6 +869,8 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
         if (_debugging) {
             _debug("*** postfire called at time: ", getModelTime().toString());
         }
+        FSMActor controller = getController();
+
         Time environmentTime = _getEnvironmentTime();
         for (Actor stateRefinement : _stateRefinementsToPostfire) {
             if (_debugging) {
@@ -882,9 +884,14 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
                 // result = false;
             }
             setModelTime(environmentTime);
+        }
+        // Suspend all refinements of the current state, whether they were fired
+        // or not. This is important because if a preemptive transition was taken,
+        // then the refinement was not fired, but it should still be suspended.
+        for (Actor stateRefinement : controller.currentState().getRefinement()) {
             if (_lastChosenTransition != null && stateRefinement instanceof Suspendable) {
                 ((Suspendable)stateRefinement).suspend(environmentTime);
-            }
+            }            
         }
 
         // Notify all the refinements of the destination state that they are being
@@ -903,7 +910,6 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
             }
         }
 
-        FSMActor controller = getController();
         result &= controller.postfire();
 
         for (Actor transitionRefinement : _transitionRefinementsToPostfire) {
