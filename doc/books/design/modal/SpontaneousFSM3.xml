@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="SpontaneousFSM" class="ptolemy.actor.TypedCompositeActor">
+<entity name="SpontaneousFSM3" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
@@ -10,13 +10,27 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{70.0, 45.0}">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={493, 278, 860, 517}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={152, 354, 911, 540}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[647, 407]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[698, 430]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{323.5, 203.5}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{349.0, 215.0}">
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.4,0.4,0.4,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Edward A. Lee">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 275.0]">
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Every 2.5 time units, the ModalModel switches between&#10;producing regularly spaced and irregularly spaced events&#10;in time. Within each mode, time stands still while the mode&#10;is inactive. This variant uses a preemptive transition.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 195.0]">
+        </property>
     </property>
     <entity name="ModalModel" class="ptolemy.domains.modal.modal.ModalModel">
         <property name="_tableauFactory" class="ptolemy.vergil.modal.modal.ModalTableauFactory">
@@ -47,6 +61,12 @@
             </property>
             <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
             </property>
+            <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+                <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Whenever an input event is provided, this modal&#10;model switches between producing regularly spaced&#10;events and irregularly spaced events in time.">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 155.0]">
+                </property>
+            </property>
             <port name="in" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 95.0]">
@@ -67,7 +87,7 @@
                 </property>
                 <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[89.0, 97.1278114318849]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 100.0]">
                 </property>
             </entity>
             <entity name="irregular" class="ptolemy.domains.modal.kernel.State">
@@ -77,7 +97,7 @@
                 </property>
                 <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{190.0, 100.0}">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[189.0, 97.1278114318849]">
                 </property>
             </entity>
             <relation name="relation" class="ptolemy.domains.modal.kernel.Transition">
@@ -87,9 +107,11 @@
                 </property>
                 <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6283185307179586">
                 </property>
-                <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.10724497575271577">
+                <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.080404131137139">
                 </property>
                 <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="preemptive" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
             </relation>
             <relation name="relation2" class="ptolemy.domains.modal.kernel.Transition">
@@ -122,6 +144,12 @@
             </property>
             <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
             </property>
+            <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+                <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This mode refinement produces regularly spaced events,&#10;one time unit apart.">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 160.0]">
+                </property>
+            </property>
             <port name="in" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 95.0]">
@@ -133,7 +161,7 @@
                 </property>
             </port>
             <entity name="DiscreteClock" class="ptolemy.actor.lib.DiscreteClock">
-                <property name="period" class="ptolemy.actor.parameters.PortParameter" value="0.2">
+                <property name="period" class="ptolemy.actor.parameters.PortParameter" value="1.0">
                 </property>
                 <doc>Create periodic timed events.</doc>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{100.0, 95.0}">
@@ -157,6 +185,12 @@
             </property>
             <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
             </property>
+            <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+                <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This mode refinement produces irregularly-spaced events&#10;according to a Poisson process.">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 140.0]">
+                </property>
+            </property>
             <port name="in" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 95.0]">
@@ -168,11 +202,11 @@
                 </property>
             </port>
             <entity name="PoissonClock" class="ptolemy.actor.lib.PoissonClock">
-                <property name="seed" class="ptolemy.actor.parameters.SharedParameter" value="1L">
+                <property name="seed" class="ptolemy.actor.parameters.SharedParameter" value="0L">
                 </property>
                 <property name="resetOnEachRun" class="ptolemy.actor.parameters.SharedParameter" value="true">
                 </property>
-                <property name="meanTime" class="ptolemy.data.expr.Parameter" value="0.2">
+                <property name="meanTime" class="ptolemy.data.expr.Parameter" value="1.0">
                 </property>
                 <property name="values" class="ptolemy.data.expr.Parameter" value="{2}">
                 </property>
@@ -201,47 +235,46 @@
         <link port="irregular.in" relation="inRelation"/>
         <link port="irregular.out" relation="outRelation"/>
     </entity>
+    <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
+        <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={823, 55, 518, 224}, maximized=false}">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[518, 180]">
+        </property>
+        <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="disconnectGraphOnAbsentValue" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[315.0, 130.0]">
+        </property>
+        <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>Spontaneous Modal Model</title>
+<xLabel>time</xLabel>
+<yLabel></yLabel>
+<xRange min="0.0" max="10.0"/>
+<yRange min="0.0" max="2.0"/>
+<noGrid/>
+<default connected="no" marks="dots" stems="yes"/>
+</plot>?>
+        </configure>
+    </entity>
     <entity name="DiscreteClock" class="ptolemy.actor.lib.DiscreteClock">
-        <property name="period" class="ptolemy.actor.parameters.PortParameter" value="2.0">
+        <property name="period" class="ptolemy.actor.parameters.PortParameter" value="2.5">
         </property>
         <doc>Create periodic timed events.</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{45.0, 130.0}">
         </property>
     </entity>
-    <entity name="Test" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2}">
-        </property>
-        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{355.0, 110.0}">
-        </property>
-    </entity>
-    <entity name="Test2" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 0.0, 0.0649811971, 0.1084963461, 0.2513490695, 0.3684220881, 0.5693357081, 0.58105404, 1.0818558536, 1.7529160529, 2.2, 2.4, 2.6, 2.8, 3.0, 3.2, 3.4, 3.6, 3.8, 4.0, 4.0349510043, 4.3145210082, 4.5168094348, 4.9919562848, 5.0790155451, 5.1807764831, 5.2611481873, 5.3373799458, 5.6309330577, 5.9855294247, 6.2, 6.4, 6.6, 6.8, 7.0, 7.2, 7.4, 7.6, 7.8, 8.0, 8.3617039279, 8.6311972868, 8.7495031513, 8.8015966068, 9.0762683549, 9.4105347154, 9.4251401992, 9.6525720478, 9.8184085299, 9.9930992308}">
-        </property>
-        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{380.0, 205.0}">
-        </property>
-    </entity>
-    <entity name="CurrentTime" class="ptolemy.actor.lib.CurrentTime">
-        <doc>Output the current time.</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{295.0, 200.0}">
-        </property>
-    </entity>
-    <relation name="relation" class="ptolemy.actor.TypedIORelation">
-    </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="{255.0, 145.0}">
-        </vertex>
     </relation>
-    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
     <link port="ModalModel.in" relation="relation"/>
     <link port="ModalModel.out" relation="relation2"/>
+    <link port="TimedPlotter.input" relation="relation2"/>
     <link port="DiscreteClock.output" relation="relation"/>
-    <link port="Test.input" relation="relation2"/>
-    <link port="Test2.input" relation="relation3"/>
-    <link port="CurrentTime.output" relation="relation3"/>
-    <link port="CurrentTime.trigger" relation="relation2"/>
 </entity>

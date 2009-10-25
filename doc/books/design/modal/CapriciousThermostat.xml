@@ -4,7 +4,7 @@
 <entity name="CapriciousThermostat" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[586, 350]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[592, 385]">
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[104, 127]">
     </property>
@@ -84,21 +84,11 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, 55.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={11, 191, 799, 460}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={24, 278, 805, 495}, maximized=false}">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{293.0, 175.0}">
-    </property>
-    <property name="LocalPreferences" class="ptolemy.actor.gui.PtolemyPreferences">
-        <property name="backgroundColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,1.0,1.0,1.0}">
-            <display name="Background Color"/>
-        </property>
-        <property name="_showParameters" class="ptolemy.data.expr.StringParameter" value="Overridden parameters only">
-            <display name="Show parameters"/>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[480.0, 325.0]">
-        </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{296.0, 192.5}">
     </property>
     <property name="coolingRate" class="ptolemy.data.expr.Parameter" value="-0.05">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -142,6 +132,20 @@
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="200">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 35.0]">
+        </property>
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This variant illustrates the use of nondeterminate transitions in an FSM to model&#10;a defective thermostat that nondeterministically switches from heating to cooling.&#10;Open the FSMActor to see the FSM.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{25.0, 235.0}">
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.4,0.4,0.4,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Edward A. Lee">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{30.0, 350.0}">
         </property>
     </property>
     <entity name="Temperature Model" class="ptolemy.actor.TypedCompositeActor">
@@ -233,6 +237,12 @@
         <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
         </property>
         <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+        </property>
+        <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="When the current state is heating, both outgoing&#10;transitions are enabled. One will be chosen nondeterministically.&#10;As a consequence, the thermostat does not stay in the heating&#10;state for very long, whereas it can stay in the cooling state&#10;for a while.">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{30.0, 250.0}">
+            </property>
         </property>
         <port name="temperature" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -351,7 +361,7 @@
 <xLabel>time</xLabel>
 <yLabel>temperature</yLabel>
 <xRange min="0.0" max="199.0"/>
-<yRange min="14.520936824628162" max="18.75405340914185"/>
+<yRange min="14.458499951559014" max="19.5397573254968"/>
 </plot>?>
         </configure>
     </entity>

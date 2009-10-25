@@ -20,13 +20,29 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 35.0]">
         </property>
     </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This example illustrates an FSM with a final state, which&#10;stops the execution. When the final state is reached, the&#10;SDFDirector will halt execution because the FSMActor&#10;will no longer produce outputs. Open the FSMActor to&#10;see how it is implemented.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 155.0]">
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.4,0.4,0.4,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Edward A. Lee">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 270.0]">
+        </property>
+    </property>
     <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
+        <property name="init" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
         <doc>Create a sequence of tokens with increasing value</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 110.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{65.0, 110.0}">
         </property>
     </entity>
     <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={584, 496, 496, 244}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={580, 496, 496, 244}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[496, 200]">
         </property>
@@ -60,13 +76,19 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 40.0]">
             </property>
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={313, 194, 813, 511}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={573, 164, 813, 511}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
         </property>
         <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
         </property>
         <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+        </property>
+        <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This extended FSM uses the count variable to count&#10;the first five inputs. While it is counting, it copies&#10;any inputs to the output. When the count reaches&#10;five, it transitions to the final state and outputs 0.&#10;The transition to the final state indicates to the&#10;enclosing director that the FSMActor does not want&#10;to be fired again. The SDFDirector reacts to this&#10;by halting the execution of the model. Other&#10;directors will react differently. Many directors&#10;will continue to execute the model, but avoid&#10;firing the FSMActor.">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 195.0]">
+            </property>
         </property>
         <port name="in" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -105,7 +127,7 @@
             </property>
             <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="out = in">
             </property>
-            <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute" value="count = 0">
+            <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute" value="count = 1">
             </property>
             <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6283185307179586">
             </property>
@@ -115,7 +137,7 @@
         <relation name="relation2" class="ptolemy.domains.modal.kernel.Transition">
             <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="count &gt;= 5">
             </property>
-            <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="out = 5">
+            <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="out = 0">
             </property>
             <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6283185307179586">
             </property>

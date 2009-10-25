@@ -4,7 +4,7 @@
 <entity name="HysteresisWithDefault" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[586, 350]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[583, 378]">
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[104, 127]">
     </property>
@@ -84,21 +84,11 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, 55.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={13, 237, 799, 460}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={2, 398, 796, 488}, maximized=false}">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{293.0, 175.0}">
-    </property>
-    <property name="LocalPreferences" class="ptolemy.actor.gui.PtolemyPreferences">
-        <property name="backgroundColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,1.0,1.0,1.0}">
-            <display name="Background Color"/>
-        </property>
-        <property name="_showParameters" class="ptolemy.data.expr.StringParameter" value="Overridden parameters only">
-            <display name="Show parameters"/>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[480.0, 325.0]">
-        </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{291.5, 189.0}">
     </property>
     <property name="coolingRate" class="ptolemy.data.expr.Parameter" value="-0.05">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -142,6 +132,20 @@
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="200">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 35.0]">
+        </property>
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This variant illustrates the use of finite state machines (FSMs) with&#10;default transitions to model systems with hysteresis. The TemperatureModel&#10;takes heat as input and produces temperature as output. The FSMActor&#10;models a simple thermostat that turns the heat on and off.&#10;When the heat is off, a negative heating rate is provided to model&#10;cooling.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{15.0, 225.0}">
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.4,0.4,0.4,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Edward A. Lee">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{20.0, 340.0}">
         </property>
     </property>
     <entity name="Temperature Model" class="ptolemy.actor.TypedCompositeActor">
@@ -234,6 +238,12 @@
         </property>
         <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
         </property>
+        <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This state machine models hysteresis in a simple thermostat&#10;using default transitions. Each time it gets a temperature &#10;input, it produces a heat output depending on its current&#10;state and the value of the input, and possible takes a&#10;transition to the other state.">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 235.0]">
+            </property>
+        </property>
         <port name="temperature" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
@@ -293,8 +303,6 @@
             </property>
         </relation>
         <relation name="relation4" class="ptolemy.domains.modal.kernel.Transition">
-            <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute">
-            </property>
             <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="heat = coolingRate">
             </property>
             <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="2.304477848756624">

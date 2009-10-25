@@ -21,7 +21,7 @@
     <entity name="ModalModel" class="ptolemy.domains.modal.modal.ModalModel">
         <property name="_tableauFactory" class="ptolemy.vergil.modal.modal.ModalTableauFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[175.0, 130.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{175.0, 130.0}">
         </property>
         <port name="in" class="ptolemy.domains.modal.modal.ModalPort">
             <property name="input"/>
@@ -211,15 +211,15 @@
         </property>
     </entity>
     <entity name="Test" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2}">
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[355.0, 105.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{355.0, 105.0}">
         </property>
     </entity>
     <entity name="Test2" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 0.0, 0.18702394, 0.2487167781, 0.3032880236, 0.5050706803, 0.978713861, 1.0322344757, 1.2678335419, 1.5498178094, 1.5716581386, 1.746610181, 1.74835985, 2.0, 2.2, 2.4, 2.6, 2.8, 3.0, 3.2, 3.4, 3.6, 3.8, 4.0, 4.0, 4.18702394, 4.2487167781, 4.3032880236, 4.5050706803, 4.978713861, 5.0322344757, 5.2678335419, 5.5498178094, 5.5716581386, 5.746610181, 5.74835985, 6.0, 6.2, 6.4, 6.6, 6.8, 7.0, 7.2, 7.4, 7.6, 7.8, 8.0, 8.0, 8.18702394, 8.2487167781, 8.3032880236, 8.5050706803, 8.978713861, 9.0322344757, 9.2678335419, 9.5498178094, 9.5716581386, 9.746610181, 9.74835985, 10.0}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 0.0, 0.18702394, 0.2487167781, 0.3032880236, 0.5050706803, 0.978713861, 1.0322344757, 1.2678335419, 1.5498178094, 1.5716581386, 1.746610181, 1.74835985, 2.2, 2.4, 2.6, 2.8, 3.0, 3.2, 3.4, 3.6, 3.8, 4.0, 4.0, 4.18702394, 4.2487167781, 4.3032880236, 4.5050706803, 4.978713861, 5.0322344757, 5.2678335419, 5.5498178094, 5.5716581386, 5.746610181, 5.74835985, 6.2, 6.4, 6.6, 6.8, 7.0, 7.2, 7.4, 7.6, 7.8, 8.0, 8.0, 8.18702394, 8.2487167781, 8.3032880236, 8.5050706803, 8.978713861, 9.0322344757, 9.2678335419, 9.5498178094, 9.5716581386, 9.746610181, 9.74835985}">
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>

@@ -460,7 +460,7 @@
         </property>
     </entity>
     <entity name="Test5" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.05, 0.3, 0.45, 0.55, 1.05, 1.3, 1.45, 3.0, 3.5, 3.75, 3.9, 4.0, 4.5, 6.0, 6.15, 6.25, 6.75, 7.0, 7.15, 7.25}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.05, 0.3, 0.45, 0.55, 1.05, 1.3, 1.45, 3.05, 3.55, 3.8, 3.95, 4.05, 6.05, 6.3, 6.45, 6.55, 7.05, 7.3, 7.45}">
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
@@ -468,7 +468,7 @@
         </property>
     </entity>
     <entity name="Test6" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3}">
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>

@@ -59,9 +59,17 @@
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This example illustrates a simple&#10;modal model. There are two modes,&#10;clean and noisy. In the clean mode,&#10;the modal model passes inputs to&#10;output unchanged. In the noisy mode&#10;it adds Gaussian noise to the signal.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This example illustrates a simple modal model. There are two modes,&#10;clean and noisy. In the clean mode, the modal model passes inputs to&#10;output unchanged. In the noisy mode it adds Gaussian noise to the signal.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[315.0, 230.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 245.0]">
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.4,0.4,0.4,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Edward A. Lee">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 310.0]">
         </property>
     </property>
     <entity name="Modal Model" class="ptolemy.domains.fsm.modal.ModalModel">
@@ -168,7 +176,7 @@
             <link port="noisy.outgoingPort" relation="relation2"/>
         </entity>
         <entity name="clean" class="ptolemy.domains.fsm.modal.Refinement">
-            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[576, 190]">
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[576, 350]">
             </property>
             <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[104, 127]">
             </property>
@@ -176,23 +184,22 @@
             </property>
             <property name="sampleRate" class="ptolemy.data.expr.Parameter" value="24000.0">
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={540, 435, 789, 300}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={540, 435, 789, 460}, maximized=false}">
             </property>
             <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
             </property>
-            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{288.0, 95.0}">
-            </property>
-            <property name="LocalPreferences" class="ptolemy.actor.gui.PtolemyPreferences">
-                <property name="_showParameters" class="ptolemy.data.expr.StringParameter" value="Overridden parameters only">
-                    <display name="Show parameters"/>
-                </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{480.0, 300.0}">
-                </property>
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{288.0, 175.0}">
             </property>
             <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
                 <property name="period" class="ptolemy.data.expr.Parameter" value="1.0/sampleRate">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 40.0]">
+                </property>
+            </property>
+            <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+                <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This mode refinement passed input values&#10;directly to the output unmodified, thus modeling&#10;a clean communication channel.">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 180.0]">
                 </property>
             </property>
             <port name="signal" class="ptolemy.domains.fsm.modal.RefinementPort">
@@ -228,7 +235,7 @@
             </property>
             <property name="initialPhase" class="ptolemy.data.expr.Parameter" value="5462.978297177959">
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={92, 330, 819, 326}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={92, 330, 813, 510}, maximized=false}">
             </property>
             <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
             </property>
@@ -236,17 +243,16 @@
             </property>
             <property name="sampleRate" class="ptolemy.data.expr.Parameter" value="24000.0">
             </property>
-            <property name="LocalPreferences" class="ptolemy.actor.gui.PtolemyPreferences">
-                <property name="_showParameters" class="ptolemy.data.expr.StringParameter" value="Overridden parameters only">
-                    <display name="Show parameters"/>
-                </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{490.0, 310.0}">
-                </property>
-            </property>
             <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
                 <property name="period" class="ptolemy.data.expr.Parameter" value="1.0/sampleRate">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 35.0]">
+                </property>
+            </property>
+            <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+                <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This mode refinement adds noise to the input&#10;values, thus modeling a noisy communication channel.">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 215.0]">
                 </property>
             </property>
             <port name="signal" class="ptolemy.domains.fsm.modal.RefinementPort">
@@ -356,13 +362,6 @@
     <entity name="Signal Source" class="ptolemy.actor.TypedCompositeActor">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 115.0]">
         </property>
-        <property name="LocalPreferences" class="ptolemy.actor.gui.PtolemyPreferences">
-            <property name="_showParameters" class="ptolemy.data.expr.StringParameter" value="Overridden parameters only">
-                <display name="Show parameters"/>
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{470.0, 290.0}">
-            </property>
-        </property>
         <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
             <property name="period" class="ptolemy.data.expr.Parameter" value="1/sampleRate">
             </property>
@@ -371,11 +370,11 @@
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={313, 195, 799, 460}, maximized=false}">
         </property>
-        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[586, 181]">
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[586, 350]">
         </property>
         <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
         </property>
-        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{293.0, 90.5}">
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{293.0, 175.0}">
         </property>
         <property name="sampleRate" class="ptolemy.data.expr.Parameter" value="24000.0">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -413,6 +412,12 @@
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{245.0, 55.0}">
+            </property>
+        </property>
+        <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This composite produces samples of a sine wave&#10;with the specified frequency at the specified sample rate.">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 155.0]">
             </property>
         </property>
         <port name="out" class="ptolemy.actor.TypedIOPort">

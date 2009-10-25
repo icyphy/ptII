@@ -18,20 +18,18 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[77.5, 40.0]">
         </property>
     </property>
-    <property name="LocalPreferences" class="ptolemy.actor.gui.PtolemyPreferences">
-        <property name="backgroundColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,1.0,1.0,1.0}">
-            <display name="Background Color"/>
-        </property>
-        <property name="_showParameters" class="ptolemy.data.expr.StringParameter" value="None">
-            <display name="Show parameters"/>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[545.0, 365.0]">
-        </property>
-    </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model illustrates that FSM actors are non-strict, in that&#10;they do not need to know all their inputs in order to produce&#10;outputs. The dialog between these two FSMs could not occur&#10;if they were strict.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 190.0]">
+        </property>
+    </property>
+    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.4,0.4,0.4,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Edward A. Lee">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 280.0]">
         </property>
     </property>
     <entity name="FSMActor1" class="ptolemy.domains.modal.kernel.FSMActor">
@@ -149,7 +147,7 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[412.5, 120.0]">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={253, 390, 813, 511}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={313, 194, 813, 511}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
         </property>
@@ -272,8 +270,16 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[267.5, 140.0]">
         </property>
     </entity>
+    <entity name="Display" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={732, 356, 484, 208}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[484, 164]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[510.0, 160.0]">
+        </property>
+    </entity>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[127.5, 160.0]">
+        <vertex name="vertex1" value="[460.0, 160.0]">
         </vertex>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
@@ -300,4 +306,5 @@
     <link port="NonStrictDelay1.output" relation="relation"/>
     <link port="NonStrictDelay2.input" relation="relation2"/>
     <link port="NonStrictDelay2.output" relation="relation3"/>
+    <link port="Display.input" relation="relation4"/>
 </entity>
