@@ -58,7 +58,6 @@ EXAMPLE_MODELS = \
 	ModalModel.xml \
 	ModalModelExample.xml \
 	SpontaneousFSM.xml \
-	Thermostat_NoHysteresis.xml \
 	TimedFSM.xml
 
 OTHER_FILES_TO_BE_JARED = $(EXAMPLE_MODELS) \
