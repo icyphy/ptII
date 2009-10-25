@@ -30,9 +30,9 @@ import java.util.List;
 
 import ptolemy.actor.Director;
 import ptolemy.actor.TypedActor;
+import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.util.Time;
-import ptolemy.domains.ct.kernel.CTCompositeActor;
 import ptolemy.domains.modal.kernel.ContainmentExtender;
 import ptolemy.domains.modal.kernel.RefinementActor;
 import ptolemy.domains.modal.kernel.State;
@@ -67,7 +67,7 @@ import ptolemy.kernel.util.NamedObj;
  @Pt.ProposedRating Red (eal)
  @Pt.AcceptedRating Red (reviewmoderator)
  */
-public class Refinement extends CTCompositeActor implements RefinementActor, Suspendable {
+public class Refinement extends TypedCompositeActor implements RefinementActor, Suspendable {
     /** Construct a modal controller with a name and a container.
      *  The container argument must not be null, or a
      *  NullPointerException will be thrown.
