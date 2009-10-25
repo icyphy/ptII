@@ -888,10 +888,13 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
         // Suspend all refinements of the current state, whether they were fired
         // or not. This is important because if a preemptive transition was taken,
         // then the refinement was not fired, but it should still be suspended.
-        for (Actor stateRefinement : controller.currentState().getRefinement()) {
-            if (_lastChosenTransition != null && stateRefinement instanceof Suspendable) {
-                ((Suspendable)stateRefinement).suspend(environmentTime);
-            }            
+        Actor[] refinements = controller.currentState().getRefinement();
+        if (refinements != null) {
+            for (Actor stateRefinement : refinements) {
+                if (_lastChosenTransition != null && stateRefinement instanceof Suspendable) {
+                    ((Suspendable)stateRefinement).suspend(environmentTime);
+                }            
+            }
         }
 
         // Notify all the refinements of the destination state that they are being
