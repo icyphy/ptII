@@ -55,9 +55,13 @@ EXAMPLE_MODELS = \
 	Hysteresis.xml \
 	HysteresisWithDefault.xml \
 	ModalClocks.xml \
+	ModalDelay.xml \
 	ModalModel.xml \
 	ModalModelExample.xml \
+	ResetFinal.xml \
 	SpontaneousFSM.xml \
+	SpontaneousFSM2.xml \
+	SpontaneousFSM3.xml \
 	TimedFSM.xml
 
 OTHER_FILES_TO_BE_JARED = $(EXAMPLE_MODELS) \
@@ -74,7 +78,11 @@ MISC_FILES =	$(DIRS)
 OPTIONAL_FILES =
 
 all: jclass
+
+# To build all the jnlp files, run 'make jnlps'.
+# See the jnlps rule in ptII/mk/ptcommon.mk and the book rule in ptII/mk/jnlp.mk"
 install: jclass jars
+
 
 # We don't include common.mk since we don't use the compiler here
 include $(ROOT)/mk/ptno-compile.mk

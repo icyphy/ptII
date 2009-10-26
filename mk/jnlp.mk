@@ -1457,17 +1457,23 @@ osgi_demo_test:
 # To build the complete set of signed jars, you will need access to
 # our key, which is in /users/ptII/adm/certs/ptkeystore on $(WEBSERVER)
 # 1. To build all the jars and copy them to the webserver:
-# make KEYSTORE=/users/ptII/adm/certs/ptkeystore KEYALIAS=ptolemy STOREPASSWORD="-storepass xxxxxx" KEYPASSWORD="-keypass xxxxxx" DIST_BASE=ptolemyII/ptII8.0/jnlp-books jnlp_dist
+#   cd $PTII
+#   rm -rf signed
+#   make KEYSTORE=/users/ptII/adm/certs/ptkeystore KEYALIAS=ptolemy STOREPASSWORD="-storepass xxxxxx" KEYPASSWORD="-keypass xxxxxx" DIST_BASE=ptolemyII/ptII8.0/jnlp-books jnlp_dist
 # This will create /export/home/pt0/ptweb/ptolemyII/ptII8.0/jnlp-books
 #
 # 2. Set up ptII/ptKeystore.properties to contain the path to the keystore,
 # the passwords and the alias.  This file is used by copernicus to create signed jars.
 #
-# 3. Clean up any previous work
-# make book_real_clean
+# 3. Clean up any previous work for a model
+#   make book_real_clean JNLP_MODEL=ExtendedFSM
 #
-# 3. To create a JNLP file for one model and upload it
-# make JNLP_MODEL=ExtendedFSM JNLP_MODEL_DIRECTORY=doc/books/design/modal KEYSTORE=/users/ptII/adm/certs/ptkeystore KEYALIAS=ptolemy STOREPASSWORD="-storepass xxxxxx" KEYPASSWORD="-keypass xxxxx" DIST_BASE=ptolemyII/ptII8.0/jnlp-books book_dist_update
+# 4. To create a JNLP file for one model and upload it
+#   make JNLP_MODEL=ExtendedFSM JNLP_MODEL_DIRECTORY=doc/books/design/modal KEYSTORE=/users/ptII/adm/certs/ptkeystore KEYALIAS=ptolemy STOREPASSWORD="-storepass xxxxxx" KEYPASSWORD="-keypass xxxxx" DIST_BASE=ptolemyII/ptII8.0/jnlp-books book_dist_update
+#
+# 5. To create JNLP files for all the models listed in the $(EXAMPLE_MODELS) makefile variable:
+#   cd $PTII/doc/books/design/modal
+#   make JNLP_MODEL=ExtendedFSM JNLP_MODEL_DIRECTORY=doc/books/design/modal KEYSTORE=/users/ptII/adm/certs/ptkeystore KEYALIAS=ptolemy STOREPASSWORD="-storepass xxxxxx" KEYPASSWORD="-keypass xxxxx" DIST_BASE=ptolemyII/ptII8.0/jnlp-books jnlps
 
 
 # The name of the model, without the .xml extension.
@@ -1551,9 +1557,15 @@ book_dist_jnlp_update: $(JNLP_FILE_FIXED)
 		ssh $(WEBSERVER) "cd $(DIST_DIR); gtar -xvpf -"
 
 # Update the website.
+
+# Files to be updated, including the .htm files
+JNLP_FILES_TO_BE_UPDATED =  $(JNLP_MODEL_FILE) $(JNLP_JAR) $(JNLP_FILE_FIXED) $(JNLP_HTM) $(JNLP_VERGIL_HTM) doc/deployJava.js doc/deployJava.txt
+# Files to be updated, not including the .htm files
+#JNLP_FILES_TO_BE_UPDATED =  $(JNLP_MODEL_FILE) $(JNLP_JAR) $(JNLP_FILE_FIXED) doc/deployJava.js doc/deployJava.txt
+
 book_dist_update: $(JNLP_FILE_FIXED)
 	pwd
-	tar -cf - $(JNLP_MODEL_FILE) $(JNLP_JAR) $(JNLP_FILE_FIXED) $(JNLP_HTM) $(JNLP_VERGIL_HTM) doc/deployJava.js doc/deployJava.txt | \
+	tar -cf - $(JNLP_FILES_TO_BE_UPDATED) | \
 		ssh $(WEBSERVER) "cd $(DIST_DIR); gtar -xvpf -"
 	ssh $(WEBSERVER) "cd $(DIST_DIR); mv $(JNLP_FILE_FIXED) $(JNLP_FILE)"
-	ssh $(WEBSERVER) "chmod a+x $(DIST_DIR)/$(JNLP_HTM)"
+	ssh $(WEBSERVER) "chmod a+x $(DIST_DIR)/$(JNLP_HTM) $(DIST_DIR)/$(JNLP_VERGIL_HTM)"

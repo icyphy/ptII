@@ -77,6 +77,7 @@ import ptolemy.moml.filter.BackwardCompatibility;
 import ptolemy.moml.filter.RemoveGraphicalClasses;
 import ptolemy.util.ClassUtilities;
 import ptolemy.util.StringUtilities;
+import ptolemy.vergil.kernel.attributes.TextAttribute;
 import soot.HasPhaseOptions;
 import soot.PhaseOptions;
 import soot.SceneTransformer;
@@ -490,6 +491,20 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
             Attribute docAttribute = _model.getAttribute("DocAttribute");
             if (docAttribute != null) {
                 documentation = ((StringParameter) docAttribute.getAttribute("description")).stringValue();
+            }
+            System.out.println("documentation from DocAttribute: '" + documentation + "'");
+            if (documentation.length() == 0) {
+                System.out.println("documentation length is 0");
+                // Loop through all the TextAttributes and set the documentation to the longest one.
+                Iterator attributes = _model.attributeList(TextAttribute.class).iterator();
+                while (attributes.hasNext()) {
+                    Attribute annotationAttribute = (TextAttribute)attributes.next();
+                    System.out.println("documentation : " + annotationAttribute);
+                    String annotationText = ((StringParameter) annotationAttribute.getAttribute("text")).stringValue();
+                    if (annotationText.length() > documentation.length()) {
+                        documentation = annotationText;
+                    }
+                }
             }
         } catch (Exception ex) {
             System.out.println("Failed to get DocAttribute, using defaults: "
