@@ -72,6 +72,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.StringAttribute;
 import ptolemy.moml.MoMLParser;
 import ptolemy.moml.filter.BackwardCompatibility;
 import ptolemy.moml.filter.RemoveGraphicalClasses;
@@ -488,24 +489,8 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
         // Get the DocAttribute, if any.
         String documentation = "";
         try {
-            Attribute docAttribute = _model.getAttribute("DocAttribute");
-            if (docAttribute != null) {
-                documentation = ((StringParameter) docAttribute.getAttribute("description")).stringValue();
-            }
-            System.out.println("documentation from DocAttribute: '" + documentation + "'");
-            if (documentation.length() == 0) {
-                System.out.println("documentation length is 0");
-                // Loop through all the TextAttributes and set the documentation to the longest one.
-                Iterator attributes = _model.attributeList(TextAttribute.class).iterator();
-                while (attributes.hasNext()) {
-                    Attribute annotationAttribute = (TextAttribute)attributes.next();
-                    System.out.println("documentation : " + annotationAttribute);
-                    String annotationText = ((StringParameter) annotationAttribute.getAttribute("text")).stringValue();
-                    if (annotationText.length() > documentation.length()) {
-                        documentation = annotationText;
-                    }
-                }
-            }
+            URL modelPathURL = new URL(_modelPath);
+            documentation = _getToplevelDocumentation(modelPathURL);
         } catch (Exception ex) {
             System.out.println("Failed to get DocAttribute, using defaults: "
                     + ex.getMessage());
@@ -1236,6 +1221,65 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
                 }
             }
         }
+    }
+
+    /** Get the top level documentation.  We reparse the model
+     *  because the filters will have removed the DocAttribute and the Annotations   
+     *  @return the value DocAttribute.description or the longest
+     *  Annotation.text if there is no DocAttribute
+     */   
+    private static String _getToplevelDocumentation(URL modelPathURL) throws Exception {
+        String documentation = "";
+
+        // Create a parser.
+        MoMLParser parser = new MoMLParser();
+
+        // Since we strip out the graphical information in
+        // Copernicus.readInModel(), we need to reread the original
+        // model so that we can find the documentation.
+
+        // So, we do reset here.  If we don't, then we get the old
+        // model that was parsed in Copernicus.readInModel()
+        parser.reset();
+        MoMLParser.purgeAllModelRecords();
+
+        // Get the old filters, save them, add our own
+        // filters, use them, remove our filters,
+        // and then readd the old filters in the finally clause.
+        List oldFilters = MoMLParser.getMoMLFilters();
+        MoMLParser.setMoMLFilters(null);
+
+        // Parse the model and get the name of the model.
+        try {
+            // Handle Backward Compatibility.
+            MoMLParser.addMoMLFilters(BackwardCompatibility.allFilters());
+
+
+            // Parse the model.
+            CompositeActor toplevel = null;
+            toplevel = (CompositeActor) parser
+                    .parse(modelPathURL, modelPathURL);
+            Attribute docAttribute = toplevel.getAttribute("DocAttribute");
+            if (docAttribute != null) {
+                documentation = ((StringParameter) docAttribute.getAttribute("description")).stringValue();
+            }
+            if (documentation.length() == 0) {
+                // Loop through all the TextAttributes and set the documentation to the longest one.
+                Iterator attributes = toplevel.attributeList(TextAttribute.class).iterator();
+                while (attributes.hasNext()) {
+                    Attribute annotationAttribute = (TextAttribute)attributes.next();
+                    String annotationText = ((StringAttribute) annotationAttribute.getAttribute("text")).getExpression();
+                    if (annotationText.length() > documentation.length()) {
+                        documentation = annotationText;
+                    }
+                }
+            }
+        } finally {
+            MoMLParser.setMoMLFilters(oldFilters);
+            parser.reset();
+            MoMLParser.purgeAllModelRecords();
+        }
+        return documentation;
     }
 
     /** Return the file size as a JNLP file attribute
