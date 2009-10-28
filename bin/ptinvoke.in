@@ -813,6 +813,7 @@ and run:
 	help="This command generates C code for a given model using the ptolemy.cg code generator \
             For example: \
             $commandname [commonOptions] [ptcgSpecificOption] $PTII/ptolemy/codegen/demo/Butterfly/Butterfly.xml\
+            $commandname -generatorPackage ptolemy.cg.kernel.generic.program.procedural.java $PTII/ptolemy/cg/kernel/generic/program/procedural/java/test/Display.xml \
             $commandname -generatorPackage ptolemy.cg.kernel.generic.html -generatorPackageList generic.html $PTII/ptolemy/cg/adapter/generic/html/demo/HierarchicalModel/HierarchicalModel.xml"
 	invokeHelp="Usage: $commandname [commonOptions] [ptcgSpecificOption] model.xml [model2.xml . . .]"          
 	javastartupclass=ptolemy.cg.kernel.generic.GenericCodeGenerator
