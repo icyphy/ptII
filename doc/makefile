@@ -69,6 +69,8 @@ UI_FILES_TO_BE_JARED = \
 	codegen.htm \
 	copernicus.htm \
 	default.css \
+	deployJava.txt \
+	deployJava.js \
 	expressions.htm \
 	expressionsa2.htm \
 	expressionsa3.htm \
