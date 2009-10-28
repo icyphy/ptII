@@ -3991,14 +3991,42 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                     CompositeEntity derived = (CompositeEntity) derivedObjects
                             .next();
 
+                    // The following call, if derived is lazy, will trigger
+                    // its expansion. However, derived may contain an instance
+                    // of the same class we are now trying to define, so
+                    // the populate will delegate to this class definition,
+                    // which will result in the class getting defined,
+                    // and the collidingEntity being non-null.
+                    // Entity collidingEntity = derived.getEntity(entityName);
+                    // Hence, we have to scroll through the list of entities
+                    // lazily, avoiding populating.
                     if (derived.getEntity(entityName) != null) {
                         throw new IllegalActionException(
                                 container,
-                                "Cannot create entity because a subclass or instance "
-                                        + "contains an entity with the same name: "
-                                        + derived.getEntity(entityName)
-                                                .getFullName());
+                                "Cannot create entity named \"" + entityName
+                                + "\" because a subclass or instance in \""
+                                + container.getFullName() 
+                                + "\" contains an entity with the same name \""
+                                + derived.getEntity(entityName).getFullName()
+                                + "\".  Note that this can happen when actor oriented class "
+                                + "definitions are LazyTypedCompositeActors.");
                     }
+
+                    // Here's a possible solution to the above
+                    // See actor/lib/test/auto/LazyAOCTestLazy.xml and LazyAOCTestNonLazy.xml
+//                     List<ComponentEntity> possibleCollidingEntities = derived.lazyEntityList();
+//                     for (ComponentEntity possibleCollidingEntity : possibleCollidingEntities) {
+//                         if (possibleCollidingEntity.getName().equals(entityName)) {
+//                             previous = _searchForEntity(entityName, _current);
+//                             throw new IllegalActionException(
+//                                     container,
+//                                     "Cannot create entity named \"" + entityName
+//                                             + "\" because a subclass or instance in \""
+//                                             + container.getFullName() 
+//                                             + "\" contains an entity with the same name \""
+//                                             + derived.getEntity(entityName).getFullName() + "\".");
+//                         }
+//                     }
                 }
 
                 _checkClass(_current, CompositeEntity.class,
@@ -4069,15 +4097,41 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                     CompositeEntity derived = (CompositeEntity) derivedObjects
                             .next();
 
+                    // The following call, if derived is lazy, will trigger
+                    // its expansion. However, derived may contain an instance
+                    // of the same class we are now trying to define, so
+                    // the populate will delegate to this class definition,
+                    // which will result in the class getting defined,
+                    // and the collidingEntity being non-null.
+                    // Entity collidingEntity = derived.getEntity(entityName);
+                    // Hence, we have to scroll through the list of entities
+                    // lazily, avoiding populating.
                     if (derived.getEntity(entityName) != null) {
                         throw new IllegalActionException(
                                 container,
                                 "Cannot create entity named \"" + entityName
-                                        + "\" because a subclass or instance in \""
-                                        + container.getFullName() 
-                                        + "\" contains an entity with the same name \""
-                                        + derived.getEntity(entityName).getFullName() + "\".");
+                                + "\" because a subclass or instance in \""
+                                + container.getFullName() 
+                                + "\" contains an entity with the same name \""
+                                + derived.getEntity(entityName).getFullName()
+                                + "\".  Note that this can happen when actor oriented class "
+                                + "definitions are LazyTypedCompositeActors.");
                     }
+                    // Here's a possible solution to the above
+                    // See actor/lib/test/auto/LazyAOCTestLazy.xml and LazyAOCTestNonLazy.xml
+//                     List<ComponentEntity> possibleCollidingEntities = derived.lazyEntityList();
+//                     for (ComponentEntity possibleCollidingEntity : possibleCollidingEntities) {
+//                         if (possibleCollidingEntity.getName().equals(entityName)) {
+//                             previous = _searchForEntity(entityName, _current);
+//                             throw new IllegalActionException(
+//                                     container,
+//                                     "Cannot create entity named \"" + entityName
+//                                             + "\" because a subclass or instance in \""
+//                                             + container.getFullName() 
+//                                             + "\" contains an entity with the same name \""
+//                                             + derived.getEntity(entityName).getFullName() + "\".");
+//                         }
+//                     }
                 }
             }
 
