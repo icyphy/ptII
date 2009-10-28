@@ -1,0 +1,15 @@
+TransparentForTest is {
+	inport[] lunResponse;
+
+	actor merge = ptolemy.domains.de.lib.Merge;
+	
+	port reference lunResponseLines;
+	relation lunResponseLine;
+	merge(input := lunResponseLines,
+		output := lunResponseLine);
+		
+	for i initially [[0]] [[i < 10]] {
+		this(lunResponseLines := lunResponse);
+	} next [[i + 1]]
+
+}

@@ -1,0 +1,6 @@
+NestedActor is {
+	actor expression = ptalonActor:sdc.test.ActorWithConnections;
+
+	expression();
+
+}

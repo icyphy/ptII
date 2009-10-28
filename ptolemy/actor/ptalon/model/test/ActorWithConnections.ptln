@@ -1,0 +1,18 @@
+ActorWithRelations is {
+	actor expression = ptolemy.actor.lib.Expression;
+
+	inport in;
+
+	relation r;
+
+	outport out;
+
+	expression(x := in,
+		output := r,
+		expression := [[x * x]]);
+	expression(x := r,
+		output := out, 
+		expression := [[x * x]]);
+
+
+}

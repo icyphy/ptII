@@ -1,0 +1,4 @@
+Foo is {
+	parameter p;
+	inport x[[p]];
+}
