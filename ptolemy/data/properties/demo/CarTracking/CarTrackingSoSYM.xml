@@ -10,13 +10,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 40.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={213, 8, 1109, 833}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={240, 17, 1109, 797}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[894, 720]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[894, 684]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.8">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{536.2364864864865, 413.7972972972973}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{475.3828124999999, 337.8416982323232}">
     </property>
     <property name="faultStartTime" class="ptolemy.data.expr.Parameter" value="50.0">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -119,11 +119,11 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[505.0, 405.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[500.0, -50.0]">
         </property>
     </property>
     <property name="PropertyRemover" class="ptolemy.data.properties.PropertyRemover">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 770.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 610.0]">
         </property>
     </property>
     <property name="ConstNonconstSolver" class="ptolemy.data.properties.configuredSolvers.lattice.LogicalAND_Forward_CS">
@@ -136,7 +136,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{55.0, 455.0}">
         </property>
     </property>
-    <property name="SWForwardConfigurationSolver" class="ptolemy.data.properties.configuredSolvers.lattice.SWconfig_Forward_CS">
+    <property name="SWConfigurationSolver" class="ptolemy.data.properties.configuredSolvers.lattice.SWconfig_Bidirectional_CS">
         <property name="action" class="ptolemy.actor.parameters.SharedParameter" value="ANNOTATE">
         </property>
         <property name="PropertyMoMLHandler" class="ptolemy.data.properties.PropertyMoMLHandler">
@@ -147,31 +147,7 @@
         </property>
         <property name="PropertyDisplayActions" class="ptolemy.data.properties.gui.PropertyDisplayActions">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{55.0, 540.0}">
-        </property>
-    </property>
-    <property name="SWBackwardConfigurationSolver" class="ptolemy.data.properties.configuredSolvers.lattice.SWconfig_Backward_CS">
-        <property name="PropertyMoMLHandler" class="ptolemy.data.properties.PropertyMoMLHandler">
-            <property name="showText" class="ptolemy.data.expr.Parameter" value="true">
-            </property>
-        </property>
-        <property name="manualAnnotation" class="ptolemy.data.expr.Parameter" value="true">
-        </property>
-        <property name="PropertyDisplayActions" class="ptolemy.data.properties.gui.PropertyDisplayActions">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 610.0]">
-        </property>
-    </property>
-    <property name="SWBidirectionalConfigurationSolver" class="ptolemy.data.properties.configuredSolvers.lattice.SWconfig_Bidirectional_CS">
-        <property name="PropertyMoMLHandler" class="ptolemy.data.properties.PropertyMoMLHandler">
-            <property name="showText" class="ptolemy.data.expr.Parameter" value="true">
-            </property>
-        </property>
-        <property name="manualAnnotation" class="ptolemy.data.expr.Parameter" value="true">
-        </property>
-        <property name="PropertyDisplayActions" class="ptolemy.data.properties.gui.PropertyDisplayActions">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 680.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{55.0, 530.0}">
         </property>
     </property>
     <property name="DimensionSystemSolver::constraint" class="ptolemy.data.properties.AnnotationAttribute" value="driverDesiredSpeed.output &gt;= Speed">
@@ -189,275 +165,12 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[465.0, 450.0]">
         </property>
     </property>
-    <property name="SWBackwardConfigurationSolver::constraint1" class="ptolemy.data.properties.AnnotationAttribute" value="driverDesiredSpeed.output &gt;= Configured">
-        <display name="SWBackwardConfigurationSolver::constraint"/>
-        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-        </property>
-        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
-            </property>
-        </property>
-        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure><svg><text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text></svg></configure>
-        </property>
-        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[265.0, 530.0]">
-        </property>
-    </property>
-    <property name="SWBidirectionalConfigurationSolver::constraint1" class="ptolemy.data.properties.AnnotationAttribute" value="driverDesiredSpeed.output &gt;= Configured">
-        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-        </property>
-        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
-            </property>
-        </property>
-        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure><svg><text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text></svg></configure>
-        </property>
-        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[265.0, 560.0]">
-        </property>
-    </property>
-    <property name="SWBackwardConfigurationSolver::constraint2" class="ptolemy.data.properties.AnnotationAttribute" value="FollowingCar.packetIn &gt;= NotConfigured">
-        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-        </property>
-        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
-            </property>
-        </property>
-        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure><svg><text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text></svg></configure>
-        </property>
-        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[265.0, 630.0]">
-        </property>
-    </property>
-    <property name="SWForwardConfigurationSolver::constraint2" class="ptolemy.data.properties.AnnotationAttribute" value="FollowingCar.packetIn &gt;= NotConfigured">
-        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-        </property>
-        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
-            </property>
-        </property>
-        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure><svg><text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text></svg></configure>
-        </property>
-        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[265.0, 650.0]">
-        </property>
-    </property>
-    <property name="Annotation7" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The driverDesiredSpeed is always Configured.">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[260.0, 495.0]">
-        </property>
-    </property>
-    <property name="Annotation8" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="packetIn is Configured if isACCPresent is true.&#10;packetIn is NotConfigured if isACCPresent is false.">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[260.0, 580.0]">
-        </property>
-    </property>
-    <property name="Annotation9" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The outputs acceleration, speed, and position of the FollowingCar are Configured">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[255.0, 690.0]">
-        </property>
-    </property>
-    <property name="SWBackwardConfigurationSolver::constraint3" class="ptolemy.data.properties.AnnotationAttribute" value="FollowingCar.acceleration &gt;= Configured">
-        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-        </property>
-        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
-            </property>
-        </property>
-        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure><svg><text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text></svg></configure>
-        </property>
-        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[265.0, 720.0]">
-        </property>
-    </property>
-    <property name="SWBackwardConfigurationSolver::constraint4" class="ptolemy.data.properties.AnnotationAttribute" value="FollowingCar.speed &gt;= Configured">
-        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-        </property>
-        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
-            </property>
-        </property>
-        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure><svg><text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text></svg></configure>
-        </property>
-        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[265.0, 735.0]">
-        </property>
-    </property>
-    <property name="SWBackwardConfigurationSolver::constraint5" class="ptolemy.data.properties.AnnotationAttribute" value="FollowingCar.position &gt;= Configured">
-        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-        </property>
-        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
-            </property>
-        </property>
-        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure><svg><text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text></svg></configure>
-        </property>
-        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[265.0, 750.0]">
-        </property>
-    </property>
-    <property name="SWForwardConfigurationSolver::constraint3" class="ptolemy.data.properties.AnnotationAttribute" value="FollowingCar.acceleration &gt;= Configured">
-        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-        </property>
-        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
-            </property>
-        </property>
-        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure><svg><text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text></svg></configure>
-        </property>
-        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[265.0, 780.0]">
-        </property>
-    </property>
-    <property name="SWForwardConfigurationSolver::constraint4" class="ptolemy.data.properties.AnnotationAttribute" value="FollowingCar.speed &gt;= Configured">
-        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-        </property>
-        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
-            </property>
-        </property>
-        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure><svg><text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text></svg></configure>
-        </property>
-        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[265.0, 795.0]">
-        </property>
-    </property>
-    <property name="SWForwardConfigurationSolver::constraint" class="ptolemy.data.properties.AnnotationAttribute" value="FollowingCar.position &gt;= Configured">
-        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-        </property>
-        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
-            </property>
-        </property>
-        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure><svg><text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text></svg></configure>
-        </property>
-        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[265.0, 810.0]">
-        </property>
-    </property>
-    <property name="SWForwardConfigurationSolver::constraint6" class="ptolemy.data.properties.AnnotationAttribute" value="driverDesiredSpeed.output &gt;= Configured">
-        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-        </property>
-        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
-            </property>
-        </property>
-        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure><svg><text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text></svg></configure>
-        </property>
-        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[265.0, 545.0]">
-        </property>
-    </property>
-    <property name="SWBidirectionalConfigurationSolver::constraint7" class="ptolemy.data.properties.AnnotationAttribute" value="FollowingCar.acceleration &gt;= Configured">
-        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-        </property>
-        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
-            </property>
-        </property>
-        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure><svg><text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text></svg></configure>
-        </property>
-        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[265.0, 840.0]">
-        </property>
-    </property>
-    <property name="SWBidirectionalConfigurationSolver::constraint9" class="ptolemy.data.properties.AnnotationAttribute" value="FollowingCar.speed &gt;= Configured">
-        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-        </property>
-        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
-            </property>
-        </property>
-        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure><svg><text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text></svg></configure>
-        </property>
-        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[265.0, 855.0]">
-        </property>
-    </property>
-    <property name="SWBidirectionalConfigurationSolver::constraint10" class="ptolemy.data.properties.AnnotationAttribute" value="FollowingCar.position &gt;= Configured">
-        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-        </property>
-        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
-            </property>
-        </property>
-        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure><svg><text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text></svg></configure>
-        </property>
-        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[265.0, 870.0]">
-        </property>
-    </property>
-    <property name="SWBidirectionalConfigurationSolver::constraint11" class="ptolemy.data.properties.AnnotationAttribute" value="FollowingCar.packetIn &gt;= NotConfigured">
-        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-        </property>
-        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
-            </property>
-        </property>
-        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure><svg><text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text></svg></configure>
-        </property>
-        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[265.0, 670.0]">
-        </property>
-    </property>
     <property name="DimensionSystemSolver" class="ptolemy.data.properties.configuredSolvers.lattice.DimensionSystem_CS">
         <property name="manualAnnotation" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <property name="PropertyDisplayActions" class="ptolemy.data.properties.gui.PropertyDisplayActions">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 385.0]">
-        </property>
-    </property>
-    <property name="isACCPresent" class="ptolemy.data.expr.Parameter" value="false">
-        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-        </property>
-        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
-            </property>
-        </property>
-        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure>
-      <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
-      </svg>
-    </configure>
-        </property>
-        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[150.0, 55.0]">
         </property>
     </property>
     <entity name="Car Model" class="ptolemy.actor.TypedCompositeActor">
@@ -1049,13 +762,131 @@
     <entity name="FollowingCar" class="ptolemy.actor.TypedCompositeActor">
         <property name="_location" class="ptolemy.kernel.util.Location" value="{750.0, 345.0}">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={111, 26, 1152, 612}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={232, 43, 1163, 773}, maximized=false}">
         </property>
-        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[812, 525]">
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[948, 666]">
         </property>
         <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
         </property>
-        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{273.9128787878788, 241.1903409090909}">
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{348.703125, 300.4900568181818}">
+        </property>
+        <property name="SWConfigurationSolver::constraint" class="ptolemy.data.properties.AnnotationAttribute" value="driverDesiredSpeed &gt;= Configured">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure><svg><text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text></svg></configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[-60.0, 495.0]">
+            </property>
+        </property>
+        <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The driverDesiredSpeed is always Configured.">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[-70.0, 460.0]">
+            </property>
+        </property>
+        <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="packetIn is Configured if isACCPresent is true.&#10;packetIn is NotConfigured if isACCPresent is false.">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[-65.0, 385.0]">
+            </property>
+        </property>
+        <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The outputs acceleration, speed, and position of the FollowingCar are always Configured.">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[-70.0, 515.0]">
+            </property>
+        </property>
+        <property name="SWConfigurationSolver::constraint2" class="ptolemy.data.properties.AnnotationAttribute" value="acceleration &gt;= Configured">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure><svg><text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text></svg></configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[-60.0, 550.0]">
+            </property>
+        </property>
+        <property name="SWConfigurationSolver::constraint3" class="ptolemy.data.properties.AnnotationAttribute" value="speed &gt;= Configured">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure><svg><text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text></svg></configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[-60.0, 565.0]">
+            </property>
+        </property>
+        <property name="SWConfigurationSolver::constraint4" class="ptolemy.data.properties.AnnotationAttribute" value="position &gt;= Configured">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure><svg><text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text></svg></configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[-60.0, 580.0]">
+            </property>
+        </property>
+        <property name="SWConfigurationSolver::constraint5" class="ptolemy.data.properties.AnnotationAttribute" value="packetIn &gt;= NotConfigured">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure><svg><text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text></svg></configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[-60.0, 435.0]">
+            </property>
+        </property>
+        <property name="isACCPresent" class="ptolemy.data.expr.Parameter" value="false">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[-55.0, 370.0]">
+            </property>
+        </property>
+        <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The ACCPresent parameter indicates whether or not the adaptive cruise control (ACC) is installed.">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[-65.0, 340.0]">
+            </property>
         </property>
         <port name="packetIn" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -1872,28 +1703,28 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[465.0, 85.0]">
             </property>
         </entity>
-        <entity name="ConfigurationSelect" class="ptolemy.actor.lib.ConfigurationSelect">
-            <property name="selectorValue" class="ptolemy.data.expr.Parameter" value="isACCPresent">
+        <entity name="ConfigurationSwitch" class="ptolemy.actor.lib.ConfigurationSwitch">
+            <property name="selector" class="ptolemy.data.expr.Parameter" value="isACCPresent">
                 <property name="style" class="ptolemy.actor.gui.style.LineStyle">
                 </property>
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
-                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="selectorValue">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="selector">
                 </property>
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[430.0, 200.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, 200.0]">
             </property>
         </entity>
-        <entity name="ConfigurationSwitch" class="ptolemy.actor.lib.ConfigurationSwitch">
-            <property name="selectorValue" class="ptolemy.data.expr.Parameter" value="isACCPresent">
+        <entity name="ConfigurationSelect" class="ptolemy.actor.lib.ConfigurationSelect">
+            <property name="selector" class="ptolemy.data.expr.Parameter" value="isACCPresent">
                 <property name="style" class="ptolemy.actor.gui.style.LineStyle">
                 </property>
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
-                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="selectorValue">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="selector">
                 </property>
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[125.0, 200.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[395.0, 200.0]">
             </property>
         </entity>
         <relation name="relation2" class="ptolemy.actor.TypedIORelation">
@@ -1930,13 +1761,13 @@
             <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
             </property>
         </relation>
-        <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-        </relation>
-        <relation name="relation9" class="ptolemy.actor.TypedIORelation">
-        </relation>
         <relation name="relation10" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="relation11" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation9" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="relation12" class="ptolemy.actor.TypedIORelation">
         </relation>
@@ -1944,7 +1775,7 @@
         <link port="acceleration" relation="relation5"/>
         <link port="speed" relation="relation6"/>
         <link port="position" relation="relation7"/>
-        <link port="driverDesiredSpeed" relation="relation12"/>
+        <link port="driverDesiredSpeed" relation="relation10"/>
         <link port="FaultDetector.port_11" relation="relation"/>
         <link port="FaultDetector.fault" relation="relation3"/>
         <link port="TimedPlotter.input" relation="relation2"/>
@@ -1960,12 +1791,12 @@
         <link port="Car Model.position" relation="relation7"/>
         <link port="ZeroOrderHold.input" relation="relation4"/>
         <link port="ZeroOrderHold.output" relation="relation8"/>
-        <link port="ConfigurationSelect.trueInput" relation="relation9"/>
-        <link port="ConfigurationSelect.falseInput" relation="relation10"/>
-        <link port="ConfigurationSelect.output" relation="relation4"/>
-        <link port="ConfigurationSwitch.input" relation="relation12"/>
+        <link port="ConfigurationSwitch.input" relation="relation10"/>
         <link port="ConfigurationSwitch.trueOutput" relation="relation11"/>
-        <link port="ConfigurationSwitch.falseOutput" relation="relation10"/>
+        <link port="ConfigurationSwitch.falseOutput" relation="relation12"/>
+        <link port="ConfigurationSelect.trueInput" relation="relation9"/>
+        <link port="ConfigurationSelect.falseInput" relation="relation12"/>
+        <link port="ConfigurationSelect.output" relation="relation4"/>
     </entity>
     <entity name="DriverSimulator" class="ptolemy.actor.TypedCompositeActor">
         <property name="_location" class="ptolemy.kernel.util.Location" value="{35.0, 160.0}">
@@ -1976,7 +1807,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[-115.0, 65.0]">
             </property>
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 41, 1036, 645}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 41, 1036, 635}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[821, 528]">
         </property>

@@ -71,20 +71,20 @@ public class ConfigurationSwitch extends AtomicActor {
         setAtLeast(actor.input, new FunctionTerm(actor.trueOutput, actor.falseOutput, actor.selector));
         
         // Rules for forward solver are implemented here
-        // Control input is at least the output 
-        // No relation between the data inputs and the output
-        // (because, maybe only one of them is used.  In this case
-        // the other one can be anything.)
+        // Whichever output is selected is set to at least the input
+        // The other output is set to NotConfigured
         
         if (actor.selector != null) {
             if (((BooleanToken) actor.selector.getToken()).booleanValue()) {
                 setAtLeast(actor.trueOutput, actor.input);
+                setAtLeast(actor.falseOutput, _lattice.getElement("NotConfigured"));
             } else {
                 setAtLeast(actor.falseOutput, actor.input);
+                setAtLeast(actor.trueOutput, _lattice.getElement("NotConfigured"));
             }        
         }
         
-        // Output is determined by function below ("forward solver" rules)
+        // Input is determined by function below ("backward solver" rules)
         // Hopefully the forward solver + backward solver rules form a 
         // monotonic function when combined - I think they do.
 

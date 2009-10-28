@@ -71,10 +71,8 @@ public class ConfigurationSelect extends AtomicActor {
         setAtLeast(actor.output, new FunctionTerm(actor.trueInput, actor.falseInput, actor.selector));
         
         // Rules for backward solver are implemented here
-        // Control input is at least the output 
-        // No relation between the data inputs and the output
-        // (because, maybe only one of them is used.  In this case
-        // the other one can be anything.)
+        // The selected input is at least the output 
+        // No relation between the unselected input and the output
         
         if (actor.selector != null) {
             if (((BooleanToken) actor.selector.getToken()).booleanValue()) {

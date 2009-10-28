@@ -11,19 +11,19 @@
 	<entity name="BooleanSelect" class="ptolemy.actor.lib.BooleanSelect"/>
 	<entity name="BooleanSwitch" class="ptolemy.actor.lib.BooleanSwitch"/>
 	<entity name="ConfigurationSelect" class="ptolemy.actor.lib.ConfigurationSelect">
-		<property name="selectorValue">
+		<property name="selector">
         	<property name="style" class="ptolemy.actor.gui.style.LineStyle"/>
      	</property>
     	<property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
-        	<property name="attributeName" value="selectorValue"/>
+        	<property name="attributeName" value="selector"/>
     	</property>
 	</entity>
 	<entity name="ConfigurationSwitch" class="ptolemy.actor.lib.ConfigurationSwitch">
-		<property name="selectorValue">
+		<property name="selector">
         	<property name="style" class="ptolemy.actor.gui.style.LineStyle"/>
      	</property>
     	<property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
-        	<property name="attributeName" value="selectorValue"/>
+        	<property name="attributeName" value="selector"/>
     	</property>
 	</entity>
 	<entity name="CountTrues" class="ptolemy.domains.sdf.lib.CountTrues"/>
