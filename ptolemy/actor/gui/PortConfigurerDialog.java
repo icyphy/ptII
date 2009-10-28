@@ -795,9 +795,7 @@ public class PortConfigurerDialog extends PtolemyDialog implements
             }
         } else if (button.equals("Commit")) {
             if (_apply()) {
-                if (_applyChangeRequestFailed) {
-                    _cancel();
-                }
+                _cancel();
             }
         } else if (button.equals("Add")) {
             _portTableModel.addNewPort();
