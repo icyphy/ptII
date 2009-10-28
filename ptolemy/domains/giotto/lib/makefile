@@ -46,8 +46,8 @@ include $(CONFIG)
 PTPACKAGE = 	lib
 PTCLASSJAR =	$(PTPACKAGE).jar
 
-OTHER_FILES_TO_BE_JARED = \
-	
+OTHER_FILES_TO_BE_JARED =
+
 # Files that are not compiled, such as .tcl and .itcl files.
 EXTRA_SRCS = \
 	$(JSRCS) \
