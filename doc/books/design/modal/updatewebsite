@@ -2,6 +2,10 @@
 # $Id$
 # Update the website
 # Usage: updatewebsite jnlpfile url
+#
+# This script is not really used.
+# To build all the jnlp files and update the website, run 'make jnlps'.
+# See the jnlps rule in ptII/mk/ptcommon.mk and the book rule in ptII/mk/jnlp.mk"
 
 if [ $# -ne 2 ]; then
    echo "Usage: $0 jnlpfile remotedir"
