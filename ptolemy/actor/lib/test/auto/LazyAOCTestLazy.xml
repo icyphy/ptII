@@ -26,7 +26,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 110.0]">
         </property>
     </property>
-    <class name="MyInnerClass" extends="ptolemy.actor.LazyTypedCompositeActor">
+    <class name="MyInnerClass" extends="ptolemy.actor.TypedCompositeActor">
         <property name="MyCategory" class="ptolemy.data.expr.StringParameter" value="">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
@@ -48,34 +48,22 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 55.0]">
         </property>
-        <configure>
-            <group>
-                <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
-                    <property name="_location" class="ptolemy.kernel.util.Location" value="{288.0400390625, 125.234375}">
-                    </property>
-                </entity>
-            </group>
-        </configure>
+        <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{288.0400390625, 125.234375}">
+            </property>
+        </entity>
     </class>
-    <class name="MyClass" extends="ptolemy.actor.LazyTypedCompositeActor">
+    <class name="MyClass" extends="ptolemy.actor.TypedCompositeActor">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 55.0]">
         </property>
-        <configure>
-            <group>
-                <entity name="Foo_Bar" class="MyInnerClass">
-                    <property name="MyCategory" class="ptolemy.data.expr.StringParameter" value="Foo_Bar">
-                    </property>
-                    <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 205.0]">
-                    </property>
-                    <configure>
-                        <group>
-                        </group>
-                    </configure>
-                </entity>
-            </group>
-        </configure>
+        <entity name="Foo_Bar" class="MyInnerClass">
+            <property name="MyCategory" class="ptolemy.data.expr.StringParameter" value="Foo_Bar">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 205.0]">
+            </property>
+        </entity>
     </class>
-    <class name="MyOuterClass" extends="ptolemy.actor.LazyTypedCompositeActor">
+    <class name="MyOuterClass" extends="ptolemy.actor.TypedCompositeActor">
         <property name="myGroup" class="ptolemy.data.expr.StringParameter" value="Temp">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
@@ -97,29 +85,17 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[395.0, 55.0]">
         </property>
-        <configure>
-            <group>
-                <entity name="MyClassInstance" class="MyClass">
-                    <property name="_location" class="ptolemy.kernel.util.Location" value="{284.6357421875, 126.283203125}">
-                    </property>
-                    <configure>
-                        <group>
-                            <entity name="MyTypecComposite" class="ptolemy.actor.LazyTypedCompositeActor">
-                                <property name="MyParameterPort" class="ptolemy.actor.parameters.PortParameter" value="0.02">
-                                </property>
-                                <port name="MyParameterPort" class="ptolemy.actor.parameters.ParameterPort">
-                                    <property name="input"/>
-                                </port>
-                                <configure>
-                                    <group>
-                                    </group>
-                                </configure>
-                            </entity>
-                        </group>
-                    </configure>
-                </entity>
-            </group>
-        </configure>
+        <entity name="MyClassInstance" class="MyClass">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{284.6357421875, 126.283203125}">
+            </property>
+            <entity name="MyTypecComposite" class="ptolemy.actor.TypedCompositeActor">
+                <property name="MyParameterPort" class="ptolemy.actor.parameters.PortParameter" value="0.02">
+                </property>
+                <port name="MyParameterPort" class="ptolemy.actor.parameters.ParameterPort">
+                    <property name="input"/>
+                </port>
+            </entity>
+        </entity>
     </class>
     <entity name="MyComposite" class="ptolemy.actor.LazyTypedCompositeActor">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[500.0, 55.0]">
@@ -144,54 +120,30 @@
                                 </property>
                                 <property name="_location" class="ptolemy.kernel.util.Location" value="{285.0, 125.0}">
                                 </property>
-                                <configure>
-                                    <group>
-                                        <entity name="MyClassInstance" class="MyClass">
-                                            <configure>
-                                                <group>
-                                                    <entity name="MyTypecComposite" class="ptolemy.actor.LazyTypedCompositeActor">
-                                                        <port name="MyParameterPort" class="ptolemy.actor.parameters.ParameterPort">
-                                                            <property name="input"/>
-                                                            <property name="_location" class="ptolemy.kernel.util.Location" value="{-375.0, 225.0}">
-                                                            </property>
-                                                        </port>
-                                                        <configure>
-                                                            <group>
-                                                            </group>
-                                                        </configure>
-                                                    </entity>
-                                                </group>
-                                            </configure>
-                                        </entity>
-                                    </group>
-                                </configure>
+                                <entity name="MyClassInstance" class="MyClass">
+                                    <entity name="MyTypecComposite" class="ptolemy.actor.TypedCompositeActor">
+                                        <port name="MyParameterPort" class="ptolemy.actor.parameters.ParameterPort">
+                                            <property name="input"/>
+                                            <property name="_location" class="ptolemy.kernel.util.Location" value="{-375.0, 225.0}">
+                                            </property>
+                                        </port>
+                                    </entity>
+                                </entity>
                             </entity>
                             <entity name="MyOuterClassInstance2" class="MyOuterClass">
                                 <property name="myGroup" class="ptolemy.data.expr.StringParameter" value="MyOuterClass2">
                                 </property>
                                 <property name="_location" class="ptolemy.kernel.util.Location" value="{288.4599609375, 286.283203125}">
                                 </property>
-                                <configure>
-                                    <group>
-                                        <entity name="MyClassInstance" class="MyClass">
-                                            <configure>
-                                                <group>
-                                                    <entity name="MyTypecComposite" class="ptolemy.actor.LazyTypedCompositeActor">
-                                                        <port name="MyParameterPort" class="ptolemy.actor.parameters.ParameterPort">
-                                                            <property name="input"/>
-                                                            <property name="_location" class="ptolemy.kernel.util.Location" value="{-375.0, 225.0}">
-                                                            </property>
-                                                        </port>
-                                                        <configure>
-                                                            <group>
-                                                            </group>
-                                                        </configure>
-                                                    </entity>
-                                                </group>
-                                            </configure>
-                                        </entity>
-                                    </group>
-                                </configure>
+                                <entity name="MyClassInstance" class="MyClass">
+                                    <entity name="MyTypecComposite" class="ptolemy.actor.TypedCompositeActor">
+                                        <port name="MyParameterPort" class="ptolemy.actor.parameters.ParameterPort">
+                                            <property name="input"/>
+                                            <property name="_location" class="ptolemy.kernel.util.Location" value="{-375.0, 225.0}">
+                                            </property>
+                                        </port>
+                                    </entity>
+                                </entity>
                             </entity>
                         </group>
                     </configure>

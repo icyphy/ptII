@@ -813,6 +813,31 @@ public class LazyTypedCompositeActor extends TypedCompositeActor implements
         return super.relationList();
     }
 
+    /** Specify whether this object is a class definition.
+     *  This method is write synchronized on the workspace.
+     *  @param isClass True to make this object a class definition, false
+     *   to make it an instance.
+     *  @exception IllegalActionException If there are subclasses and/or
+     *   instances and the argument is false.
+     *  @see #isClassDefinition()
+     *  @see Instantiable
+     */
+    public void setClassDefinition(boolean isClass)
+            throws IllegalActionException {
+        try {
+            // Get write access in case things change and
+            // because super.setClassDefinition() gets write access.
+            workspace().getWriteAccess();
+            if (isClass ) {
+                setClassName("ptolemy.actor.TypedCompositeActor");
+                populate();
+            }
+            super.setClassDefinition(isClass);
+        } finally {
+            workspace().doneWriting();
+        }
+    }
+
     /** Return a name that is guaranteed to not be the name of
      *  any contained attribute, port, class, entity, or relation.
      *  In this implementation, the argument
