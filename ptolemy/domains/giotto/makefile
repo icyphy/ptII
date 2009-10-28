@@ -50,8 +50,9 @@ PTCLASSJAR =
 
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
+                cgc/cgc.jar \
 		kernel/kernel.jar \
-                cgc/cgc.jar
+		lib/lib.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
