@@ -29,7 +29,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
-import javax.swing.filechooser.FileNameExtensionFilter;
+//FileNameExtensionFilter is not found in Java 1.5
+//import javax.swing.filechooser.FileNameExtensionFilter;
 
 import ptolemy.actor.ptalon.model.PtalonModel;
 import ptolemy.data.expr.Parameter;
@@ -61,7 +62,8 @@ public class PtalonDialog extends JDialog implements ActionListener,
 		JPanel panel = new JPanel();
 		panel.setLayout(new BorderLayout());
 		_codeArea = new JTextArea();
-		_codeArea.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 12));
+                //FIXME: Font.MONOSPACED does not exist under 1.5
+		//_codeArea.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 12));
 		_codeArea.setMargin(new Insets(6, 6, 6, 6));
 		_codeArea.setTabSize(3);
 		_codeArea.setText(_model.getCode());
@@ -145,9 +147,10 @@ public class PtalonDialog extends JDialog implements ActionListener,
 			}
 		} else if ("open".equals(e.getActionCommand())) {
 			JFileChooser chooser = new JFileChooser();
-			FileNameExtensionFilter filter = new FileNameExtensionFilter(
-					"Ptalon files", "ptln");
-			chooser.setFileFilter(filter);
+//FileNameExtensionFilter is not found in Java 1.5
+//			FileNameExtensionFilter filter = new FileNameExtensionFilter(
+//					"Ptalon files", "ptln");
+//			chooser.setFileFilter(filter);
 			if (_model.getFile() != null) {
 				chooser.setCurrentDirectory(_model.getFile().getParentFile());
 			} else {
@@ -212,9 +215,10 @@ public class PtalonDialog extends JDialog implements ActionListener,
 		}
 
 		JFileChooser chooser = new JFileChooser();
-		FileNameExtensionFilter filter = new FileNameExtensionFilter(
-				"Ptalon files", "ptln");
-		chooser.setFileFilter(filter);
+//FileNameExtensionFilter is not found in Java 1.5
+// 		FileNameExtensionFilter filter = new FileNameExtensionFilter(
+// 				"Ptalon files", "ptln");
+// 		chooser.setFileFilter(filter);
 		chooser.setCurrentDirectory(file);
 		if (chooser.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
 			_save(chooser.getSelectedFile());
