@@ -117,12 +117,18 @@ public class SubscriptionAggregator extends Subscriber {
                 _addOperation = false;
             }
         } else if (attribute == channel) {            
-            NamedObj container = getContainer();
-            if (container instanceof CompositeActor && !(_channel == null || _channel.trim().equals(""))) {
-                ((CompositeActor) container).unlinkToPublishedPort(_channelPattern, input);
-            }            
-            super.attributeChanged(attribute);
-            _channelPattern = Pattern.compile(_channel);
+            String newValue = channel.stringValue();
+            if (!newValue.equals(_channel)) {
+                NamedObj container = getContainer();
+                if (container instanceof CompositeActor && !(_channel == null || _channel.trim().equals(""))) {
+                    ((CompositeActor) container).unlinkToPublishedPort(_channelPattern, input);
+                }            
+                _channel = newValue;
+                // Don't call super here because super.attributeChanged() tries to unlink _channel
+                // as a non-regular expression string, which seems wrong.
+                super.attributeChanged(attribute);
+                _channelPattern = Pattern.compile(_channel);
+            }
         } else {
             super.attributeChanged(attribute);
         }
@@ -156,8 +162,8 @@ public class SubscriptionAggregator extends Subscriber {
         if (width == 0) {
             throw new IllegalActionException(this,
                     "SubscriptionAggregator has no matching Publisher, "
-                            + "channel was \"" + channel.getExpression()
-                            + "\".");
+                    + "channel was \"" + channel.getExpression()
+                    + "\".");
         }
         Token result = null;
         for (int i = 0; i < width; i++) {
