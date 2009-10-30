@@ -81,6 +81,8 @@
         </port>
     </entity>
     <entity name="CurrentTime8" class="ptolemy.actor.lib.CurrentTime">
+        <property name="useLocalTime" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="263.0, 263.0">
         </property>
     </entity>
@@ -195,6 +197,8 @@
         <link port="3__1.output" relation="relation6"/>
     </entity>
     <entity name="CurrentTime1" class="ptolemy.actor.lib.CurrentTime">
+        <property name="useLocalTime" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="390.0, 64.0">
         </property>
     </entity>

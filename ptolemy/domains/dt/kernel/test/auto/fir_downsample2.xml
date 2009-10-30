@@ -2,15 +2,13 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="fir_downsample2" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="2.1-devel-2">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 375]">
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 140]">
     </property>
     <property name="DT" class="ptolemy.domains.dt.kernel.DTDirector">
-        <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
-        </property>
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="10">
         </property>
         <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
@@ -19,6 +17,12 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="90.0, 44.0">
         </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={311, 207, 817, 485}, maximized=false}">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{302.0, 187.5}">
     </property>
     <entity name="Pulse" class="ptolemy.actor.lib.Pulse">
         <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
@@ -31,13 +35,6 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="155.0, 172.0">
         </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-        <port name="trigger" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
     </entity>
     <entity name="FIR" class="ptolemy.domains.sdf.lib.FIR">
         <property name="decimation" class="ptolemy.data.expr.Parameter" value="4">
@@ -50,24 +47,6 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="294.0, 172.0">
         </property>
-        <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
-            <property name="input"/>
-            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="4">
-            </property>
-            <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
-            </property>
-            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="0">
-            </property>
-        </port>
-        <port name="output" class="ptolemy.domains.sdf.kernel.SDFIOPort">
-            <property name="output"/>
-            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
-            </property>
-            <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
-            </property>
-            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="1">
-            </property>
-        </port>
     </entity>
     <entity name="Test" class="ptolemy.actor.lib.Test">
         <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0,7.0,8.0,10.0,12.0,11.0,7.0,8.0,10.0,12.0}">
@@ -76,10 +55,6 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="508.0, 131.0">
         </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
     </entity>
     <entity name="Test2" class="ptolemy.actor.lib.Test">
         <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0,1.0,2.0,3.0,4.0,5.0,6.0,7.0,8.0,9.0}">
@@ -88,27 +63,24 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="514.0, 196.0">
         </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
     </entity>
     <entity name="CurrentTime" class="ptolemy.actor.lib.CurrentTime">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="405.0, 194.0">
+        <property name="useLocalTime" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-        <port name="trigger" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{405.0, 190.0}">
+        </property>
     </entity>
     <relation name="Copy1:relation" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
         <vertex name="vertex1" value="357.0, 136.0">
         </vertex>
     </relation>
