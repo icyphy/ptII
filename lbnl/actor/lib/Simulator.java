@@ -478,7 +478,7 @@ public class Simulator extends SDFTransformer {
      *  This method replaces $CLASSPATH, relative file names and adds .exe
      *  to the command (under Windows)
      *
-     *  @param prgramName Name of program that starts the simulation.
+     *  @param programName Name of program that starts the simulation.
      *  @exception IllegalActionException If the simulation process arguments
      *                           are invalid.
      */
@@ -538,7 +538,7 @@ public class Simulator extends SDFTransformer {
      *  the argument is a relative directory.
      *
      *@param namedObj A named object, typically the container of the model
-     *@param prgramName Name of program that starts the simulation.
+     *@param programName Name of program that starts the simulation.
      *@exception IllegalActionException If an attribute is found with the name "_uri" 
      *           that is not an instance of the URIAttribute class
      */
