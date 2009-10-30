@@ -30,7 +30,6 @@ package ptolemy.domains.pthales.kernel;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -119,6 +118,9 @@ public class PthalesScheduler extends SDFScheduler {
         ////////////// The pattern specification, by port.
         Map<IOPort,LinkedHashMap<String,Integer[]>> patternSpecs
                 = new HashMap<IOPort,LinkedHashMap<String,Integer[]>>();
+        ////////////// The tiling specification, by port.
+        Map<IOPort,LinkedHashMap<String,Integer[]>> tilingSpecs
+                = new HashMap<IOPort,LinkedHashMap<String,Integer[]>>();
         ////////////// The SDF rate variable, by port.
         Map<IOPort,Variable> portRates = new HashMap<IOPort,Variable>();
         
@@ -153,6 +155,10 @@ public class PthalesScheduler extends SDFScheduler {
                 }
                 LinkedHashMap<String,Integer[]> patternSpec
                         = _recordPortSpec(patternSpecs, _PATTERN, port);
+                // FIXME: The following method looks for a stride as well,
+                // which does not make sense for a tiling spec.
+                LinkedHashMap<String,Integer[]> tilingSpec
+                        = _recordPortSpec(tilingSpecs, _TILING, port);
                 _createPortRateParameter(portRates, port, "tokenProductionRate");
                 
                 // Now we need to set capacities of each of the receivers.
@@ -163,7 +169,7 @@ public class PthalesScheduler extends SDFScheduler {
                         if (receiverss != null && receiverss.length > 0) {
                             for (Receiver receiver : receiverss) {
                                 ((PthalesReceiver)receiver).setWritePattern(
-                                        patternSpec, sizeSpec, dimensions);
+                                        patternSpec, tilingSpec, sizeSpec, dimensions);
                             }
                         }
                     }
@@ -206,7 +212,12 @@ public class PthalesScheduler extends SDFScheduler {
             // Next do the input ports.
             ports = actor.inputPortList();
             for (IOPort port : ports) {
-                LinkedHashMap<String,Integer[]> patternSpec = _recordPortSpec(patternSpecs, _PATTERN, port);
+                LinkedHashMap<String,Integer[]> patternSpec 
+                        = _recordPortSpec(patternSpecs, _PATTERN, port);
+                // FIXME: The following method looks for a stride as well,
+                // which does not make sense for a tiling spec.
+                LinkedHashMap<String,Integer[]> tilingSpec
+                        = _recordPortSpec(tilingSpecs, _TILING, port);
                 _createPortRateParameter(portRates, port, "tokenConsumptionRate");
                 
                 // Calculate the total amount of data (blockSize) produced by
@@ -247,7 +258,7 @@ public class PthalesScheduler extends SDFScheduler {
                             for (Receiver receiver : receiverss) {
                                 // FIXME: Is the cast to LinkedHashSet safe?
                                 // Depends on the Java implementation of LinkedHashMap.
-                                ((PthalesReceiver)receiver).setReadPattern(patternSpec);
+                                ((PthalesReceiver)receiver).setReadPattern(patternSpec, tilingSpec);
                             }
                         }
                     }
@@ -394,7 +405,11 @@ public class PthalesScheduler extends SDFScheduler {
     }
 
     /** Populate the specified data structure with the dimension data obtained from
-     *  a parameter with the specified name in the specified port
+     *  a parameter with the specified name in the specified port.
+     *  The resulting data structure is indexed by dimension, and has for each
+     *  dimension two integers, stored as an array of Integer.
+     *  If the named parameter has the string "x = n.m", where n and m are integers,
+     *  then "x" becomes the dimension name and n and m are the two integers.
      *  @param returnedSpec The data structure to populate.
      *  @param name The name of the specification.
      *  @param port The port

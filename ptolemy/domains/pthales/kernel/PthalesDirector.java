@@ -82,7 +82,34 @@ import ptolemy.kernel.util.NameDuplicationException;
  * 
  * <li> <i>pattern</i>: This is a parameter of each port that
  * specifies the shape of the array produced or consumed on that
- * port. If a stride is given, then the pattern may have gaps
+ * port. Moreover, if an actor reads from or writes to the port
+ * sequentially (using get() and send() methods), then the pattern
+ * specifies the order in which the array is filled.
+ * For example, if you send tokens with values 1, 2, 3, 4, 5, 6
+ * using a pattern x=3, y=2, then the array is filled as
+ * follows:
+ * <table>
+ * <tr> <td> x </td> <td> y </td> <td> value </td></tr>
+ * <tr> <td> 0 </td> <td> 0 </td> <td> 1 </td></tr>
+ * <tr> <td> 1 </td> <td> 0 </td> <td> 2 </td></tr>
+ * <tr> <td> 2 </td> <td> 0 </td> <td> 3 </td></tr>
+ * <tr> <td> 0 </td> <td> 1 </td> <td> 4 </td></tr>
+ * <tr> <td> 1 </td> <td> 1 </td> <td> 5 </td></tr>
+ * <tr> <td> 2 </td> <td> 1 </td> <td> 6 </td></tr>
+ * </table>
+ * If on the other hand you specify a pattern
+ * y=2, x=3, then an array of the same shape is used,
+ * but it is now filled as follows:
+ * <table>
+ * <tr> <td> x </td> <td> y </td> <td> value </td></tr>
+ * <tr> <td> 0 </td> <td> 0 </td> <td> 1 </td></tr>
+ * <tr> <td> 0 </td> <td> 1 </td> <td> 2 </td></tr>
+ * <tr> <td> 1 </td> <td> 0 </td> <td> 3 </td></tr>
+ * <tr> <td> 1 </td> <td> 1 </td> <td> 4 </td></tr>
+ * <tr> <td> 2 </td> <td> 0 </td> <td> 5 </td></tr>
+ * <tr> <td> 2 </td> <td> 1 </td> <td> 6 </td></tr>
+ * </table>
+ * If a stride is given, then the pattern may have gaps
  * in it. For example, "x = 2.2" specifies that two values
  * are produced in the x dimension, and that they are separated
  * by one value that is not produced. Values that are not
@@ -92,7 +119,8 @@ import ptolemy.kernel.util.NameDuplicationException;
  *
  * <li> <i>tiling</i>: This parameter gives the increment of the
  * base location in each dimension for each successive iteration
- * of the actor.
+ * of the actor. This is a property of an output or an input
+ * port of an actor.
  * 
  * </ol>
  * 

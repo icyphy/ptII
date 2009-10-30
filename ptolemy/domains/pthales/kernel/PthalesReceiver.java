@@ -209,10 +209,12 @@ public class PthalesReceiver extends SDFReceiver {
      *  A side effect of this method is to set the capacity of the receiver.
      *  This must be called after setWritePattern().
      *  @param readSpec Number of tokens read per firing by dimension.
+     *  @param tilingSpec Increment of index for each firing by dimension.
      *  @throws IllegalActionException If setting the capacity fails.
      */
     public void setReadPattern(
-            LinkedHashMap<String,Integer[]> readSpec)
+            LinkedHashMap<String,Integer[]> readSpec,
+            LinkedHashMap<String,Integer[]> tilingSpec)
             throws IllegalActionException {
         // FIXME: Ignoring stride for now.
         
@@ -222,32 +224,34 @@ public class PthalesReceiver extends SDFReceiver {
             return;
         }
         
-        // First set defaults for any unspecified dimensions.
-        int i = 0;
+        // First check for errors.
         for(String dimension : _dimensions) {
             Integer[] size = readSpec.get(dimension);
-            if (size == null) {
-                size = new Integer[2];
-                size[0] = _ONE;
-                size[1] = _ONE;
-            }
-            if (size[0].intValue() <= 0) {
+            if (size != null && size[0].intValue() <= 0) {
                 throw new IllegalActionException(getContainer(),
                         "Dimension size is required to be strictly greater than zero.");                
             }
-            i++;
         }
 
         // Fill in the read pattern. This is an array of pairs,
         // where each pair gives first the dimension number to read and
         // then the number of tokens to read in that dimension.
-        i = 0;
+        int i = 0;
         Set<Integer> dimensionsCovered = new HashSet<Integer>();
         for (Entry<String,Integer[]> entry : readSpec.entrySet()) {
             int dimensionNumber = _indexOf(entry.getKey(), _dimensions);
             dimensionsCovered.add(new Integer(dimensionNumber));
             _readPattern[i][0] = dimensionNumber;
             _readPattern[i][1] = entry.getValue()[0].intValue();
+            // Default tiling matches the pattern size.
+            _readPattern[i][2] = _readPattern[i][1];
+            if (tilingSpec != null) {
+                String dimensionName = entry.getKey();
+                Integer[] tiling = tilingSpec.get(dimensionName);
+                if (tiling != null) {
+                    _readPattern[i][2] = tiling[0].intValue();
+                }
+            }
             i++;
         }
         // The readSpec may not have covered all the dimensions,
@@ -256,6 +260,15 @@ public class PthalesReceiver extends SDFReceiver {
             if (!dimensionsCovered.contains(dimensionNumber)) {
                 _readPattern[i][0] = dimensionNumber;
                 _readPattern[i][1] = 1;
+                // Default tiling matches the pattern size.
+                _readPattern[i][2] = _readPattern[i][1];
+                if (tilingSpec != null) {
+                    String dimensionName = _dimensions.get(dimensionNumber);
+                    Integer[] tiling = tilingSpec.get(dimensionName);
+                    if (tiling != null) {
+                        _readPattern[i][2] = tiling[0].intValue();
+                    }
+                }
                 i++;
             }
         }
@@ -264,10 +277,14 @@ public class PthalesReceiver extends SDFReceiver {
     /** Specify the pattern in which data is written to the receiver.
      *  This must be called before setReadPattern().
      *  @param writeSpec Number of tokens written per firing by dimension.
+     *  @param tilingSpec Increment of index for each firing by dimension.
+     *  @param sizeSpec The size of the array buffer by dimension.
+     *  @param dimensions A list of all the dimensions communicated on this link.
      *  @throws IllegalActionException If a non-positive dimension value is given.
      */
     public void setWritePattern(
             LinkedHashMap<String,Integer[]> writeSpec,
+            LinkedHashMap<String,Integer[]> tilingSpec,
             LinkedHashMap<String,Integer[]> sizeSpec,
             List<String> dimensions) 
             throws IllegalActionException {
@@ -278,24 +295,33 @@ public class PthalesReceiver extends SDFReceiver {
         
         // First set defaults for any unspecified dimensions.
         for(String dimension : dimensions) {
+            // Do some error checking. 
             Integer[] size = writeSpec.get(dimension);
-            if (size == null) {
-                size = new Integer[2];
-                size[0] = _ONE;
-                size[1] = _ONE;
-            }
-            if (size[0].intValue() <= 0) {
+            if (size != null && size[0].intValue() <= 0) {
                 throw new IllegalActionException(getContainer(),
                         "Dimension size is required to be strictly greater than zero.");                
             }
+            if (tilingSpec != null) {
+                Integer[] tiling = tilingSpec.get(dimension);
+                if (tiling != null && tiling[0].intValue() <= 0) {
+                    throw new IllegalActionException(getContainer(),
+                            "Tiling is required to be strictly greater than zero.");                
+                }
+            }
             
-            // Also set the size spec.
+            // Also set the overall buffer size spec.
+            if (sizeSpec.get(dimension) == null) {
+                throw new IllegalActionException(getContainer(),
+                        "Size specification does not include "
+                        + dimension
+                        + ", which is included in the repetitions parameter of the sending actor.");
+            }
             _sizes[i] = sizeSpec.get(dimension)[0].intValue();
 
             i++;
         }
         // In case there are fewer dimensions than supported,
-        // fill in the remaining dimensions with ones.
+        // fill in the remaining dimensions with buffer sizes of ones.
         while (i < _NUMBER_OF_DIMENSIONS) {
             _sizes[i] = 1;
             i++;
@@ -310,16 +336,29 @@ public class PthalesReceiver extends SDFReceiver {
             _buffer = new Token[_sizes[0]][_sizes[1]][_sizes[2]][_sizes[3]];
         }
 
-        // Next, fill in the write pattern. This is an array of pairs,
-        // where each pair gives first the dimension number to read and
-        // then the number of tokens to read in that dimension.
+        // Next, fill in the write pattern. This is an array of triples,
+        // where each triple gives first the dimension number to read and
+        // then the number of tokens to read in that dimension, and finally
+        // the amount to increment in that dimension (the tiling) after each
+        // firing.
         i = 0;
         Set<Integer> dimensionsCovered = new HashSet<Integer>();
         for (Entry<String,Integer[]> entry : writeSpec.entrySet()) {
+            // The index of the dimension name (entry.getKey()) in the dimensions list
+            // is the dimension number.
             int dimensionNumber = _indexOf(entry.getKey(), dimensions);
             dimensionsCovered.add(new Integer(dimensionNumber));
             _writePattern[i][0] = dimensionNumber;
             _writePattern[i][1] = entry.getValue()[0].intValue();
+            // Default tiling matches the pattern size.
+            _writePattern[i][2] = _writePattern[i][1];
+            if (tilingSpec != null) {
+                String dimensionName = entry.getKey();
+                Integer[] tiling = tilingSpec.get(dimensionName);
+                if (tiling != null) {
+                    _writePattern[i][2] = tiling[0].intValue();
+                }
+            }
             i++;
         }
         // The writeSpec may not have covered all the dimensions,
@@ -328,10 +367,18 @@ public class PthalesReceiver extends SDFReceiver {
             if (!dimensionsCovered.contains(dimensionNumber)) {
                 _writePattern[i][0] = dimensionNumber;
                 _writePattern[i][1] = 1;
+                // Default tiling matches the pattern size.
+                _writePattern[i][2] = _writePattern[i][1];
+                if (tilingSpec != null) {
+                    String dimensionName = dimensions.get(dimensionNumber);
+                    Integer[] tiling = tilingSpec.get(dimensionName);
+                    if (tiling != null) {
+                        _writePattern[i][2] = tiling[0].intValue();
+                    }
+                }
                 i++;
             }
         }
-
     }
     
     ///////////////////////////////////////////////////////////////////
@@ -354,11 +401,11 @@ public class PthalesReceiver extends SDFReceiver {
     /** Base of the current block being read. */
     protected int[] _readBase = new int[_NUMBER_OF_DIMENSIONS];
 
-    /** Read pattern, as an array of pairs, where each pair gives
+    /** Read pattern, as an array of triples, where each triple gives
      *  the dimension number first, then the number of tokens to
-     *  read in that dimension.
+     *  read in that dimension, then the tiling increment in that dimension.
      */
-    protected int[][] _readPattern = new int[_NUMBER_OF_DIMENSIONS][2];
+    protected int[][] _readPattern = new int[_NUMBER_OF_DIMENSIONS][3];
 
     /** Current read pointer into the buffer. */
     protected int[] _readPointer = new int[_NUMBER_OF_DIMENSIONS];
@@ -369,11 +416,12 @@ public class PthalesReceiver extends SDFReceiver {
     /** Base of the current block being read. */
     protected int[] _writeBase = new int[_NUMBER_OF_DIMENSIONS];
 
-    /** Read pattern, as an array of pairs, where each pair gives
+    /** Read pattern, as an array of triples, where each triple gives
      *  the dimension number first, then the number of tokens to
-     *  read in that dimension.
+     *  read in that dimension, then the tiling increment in that
+     *  dimension.
      */
-    protected int[][] _writePattern = new int[_NUMBER_OF_DIMENSIONS][2];
+    protected int[][] _writePattern = new int[_NUMBER_OF_DIMENSIONS][3];
 
     /** Current write pointer into the buffer. */
     protected int[] _writePointer = new int[_NUMBER_OF_DIMENSIONS];
@@ -417,7 +465,11 @@ public class PthalesReceiver extends SDFReceiver {
                                 int increment = 1;
                                 for (int k = 0; k < _NUMBER_OF_DIMENSIONS; k++) {
                                     if (pattern[k][0] == j) {
-                                        increment = pattern[k][1];
+                                        // pattern[k][1] here is the size in dimension
+                                        // k of the pattern. The increment we want is
+                                        // given by the tiling parameter of the port, which
+                                        // is stored as pattern[k][2].
+                                        increment = pattern[k][2];
                                         break;
                                     }
                                 }
