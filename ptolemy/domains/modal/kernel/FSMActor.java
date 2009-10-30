@@ -1798,13 +1798,18 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         boolean stateDependent = ((BooleanToken) stateDependentCausality
                 .getToken()).booleanValue();
         if (stateDependent && stateChanged) {
+            // The third argument indicates that this is not a structural
+            // change, and therefore should not trigger a prompt to save
+            // on closing the model.
             ChangeRequest request = new ChangeRequest(this,
-                    "Invalidate schedule") {
+                    "Invalidate schedule", false) {
                 protected void _execute() {
                     // Indicate to the director that the current schedule is invalid.
                     getDirector().invalidateSchedule();
                 }
             };
+            // This is also required to prevent a prompt to save on close.
+            request.setPersistent(false);
             requestChange(request);
         }
 
