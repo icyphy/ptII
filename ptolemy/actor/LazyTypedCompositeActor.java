@@ -820,7 +820,7 @@ public class LazyTypedCompositeActor extends TypedCompositeActor implements
      *  @exception IllegalActionException If there are subclasses and/or
      *   instances and the argument is false.
      *  @see #isClassDefinition()
-     *  @see Instantiable
+     *  @see ptolemy.kernel.util.Instantiable
      */
     public void setClassDefinition(boolean isClass)
             throws IllegalActionException {
