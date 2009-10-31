@@ -27,6 +27,7 @@
  */
 package ptolemy.vergil.modal.modal;
 
+import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -50,6 +51,7 @@ import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.util.MessageHandler;
+import ptolemy.vergil.basic.BasicGraphController;
 import ptolemy.vergil.modal.FSMGraphController;
 import ptolemy.vergil.modal.StateController;
 import ptolemy.vergil.toolbox.FigureAction;
@@ -192,10 +194,13 @@ public class HierarchicalStateController extends StateController {
                 query.set("Class", firstExtenderDescription);
             }
 
-            // FIXME: Need a frame owner for first arg.
-            // Perhaps calling getController(), which returns a GraphController
-            // will be a good start.
-            ComponentDialog dialog = new ComponentDialog(null,
+            // Need a frame owner for first arg. for the dialog constructor.
+            Frame owner = null;
+            GraphController controller = getController();
+            if (controller instanceof BasicGraphController) {
+                owner = ((BasicGraphController)controller).getFrame();
+            }
+            ComponentDialog dialog = new ComponentDialog(owner,
                     "Specify Refinement", query);
 
             if (!dialog.buttonPressed().equals("OK")) {
