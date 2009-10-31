@@ -10,22 +10,8 @@
 	        class="ptolemy.actor.lib.BooleanMultiplexor"/>
 	<entity name="BooleanSelect" class="ptolemy.actor.lib.BooleanSelect"/>
 	<entity name="BooleanSwitch" class="ptolemy.actor.lib.BooleanSwitch"/>
-	<entity name="ConfigurationSelect" class="ptolemy.actor.lib.ConfigurationSelect">
-		<property name="selector">
-        	<property name="style" class="ptolemy.actor.gui.style.LineStyle"/>
-     	</property>
-    	<property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
-        	<property name="attributeName" value="selector"/>
-    	</property>
-	</entity>
-	<entity name="ConfigurationSwitch" class="ptolemy.actor.lib.ConfigurationSwitch">
-		<property name="selector">
-        	<property name="style" class="ptolemy.actor.gui.style.LineStyle"/>
-     	</property>
-    	<property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
-        	<property name="attributeName" value="selector"/>
-    	</property>
-	</entity>
+	<entity name="ConfigurationSelect" class="ptolemy.actor.lib.ConfigurationSelect"/>
+	<entity name="ConfigurationSwitch" class="ptolemy.actor.lib.ConfigurationSwitch"/>
 	<entity name="CountTrues" class="ptolemy.domains.sdf.lib.CountTrues"/>
       </group>
     ?>
