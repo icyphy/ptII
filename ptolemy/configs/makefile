@@ -98,6 +98,7 @@ OTHER_FILES_TO_BE_JARED = \
 	runConfiguration.xml \
 	runPanelConfiguration.xml \
 	runWelcomeWindow.xml \
+	sdfRefinements.xml \
 	utilitiesLibrary.xml \
 	utilityAnalysis.xml \
 	utilityColorAttribute.xml \

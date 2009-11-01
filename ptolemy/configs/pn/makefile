@@ -69,7 +69,6 @@ OTHER_FILES_TO_BE_JARED = \
 	intro.htm \
 	io.xml \
 	pnEffigies.xml \
-	pnRefinements.xml \
 	sinks.xml \
 	sources.xml \
 	welcomeWindow.xml

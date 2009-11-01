@@ -1,0 +1,26 @@
+<group>
+  <!-- An entity giving default state refinements for modal models. -->
+  <entity name="_stateRefinements" class="ptolemy.kernel.CompositeEntity">
+    <entity name="Default Refinement" class="ptolemy.domains.modal.modal.Refinement"/>
+    <entity name="State Machine Refinement" class="ptolemy.domains.modal.modal.ModalRefinement">
+      <property name="_tableauFactory" class="ptolemy.vergil.modal.modal.ModalTableauFactory"/>
+      <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
+        <property name="_library" class="ptolemy.moml.LibraryAttribute">
+          <configure>
+            <entity name="state library" class="ptolemy.kernel.CompositeEntity">
+              <input source="ptolemy/configs/basicUtilities.xml"/>
+              <entity name="state" class="ptolemy.domains.modal.kernel.State">
+                <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory"/>
+              </entity>
+            </entity>
+          </configure>
+        </property>
+      </entity>
+    </entity>
+  </entity>
+
+  <!-- An entity giving default transition refinements for modal models. -->
+  <entity name="_transitionRefinements" class="ptolemy.kernel.CompositeEntity">
+    <entity name="Default Refinement" class="ptolemy.domains.modal.modal.Refinement"/>
+  </entity>
+</group>

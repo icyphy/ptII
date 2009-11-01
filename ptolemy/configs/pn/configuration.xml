@@ -25,8 +25,8 @@
   <entity name="directory" class="ptolemy.actor.gui.ModelDirectory">
   </entity>
 
-  <!-- Modal models have refinements with SDF directors in them -->
-  <input source="ptolemy/configs/pn/pnRefinements.xml"/>
+  <!-- The state and transition refinements. Use SDF director version. -->
+  <input source="ptolemy/configs/sdfRefinements.xml"/>
 
   <!-- The list of effigy factories, which defines what goes in  -->
   <!-- the New menu, and also what sorts of files can be opened. -->

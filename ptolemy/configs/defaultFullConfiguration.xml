@@ -14,8 +14,10 @@
 
   <!-- The directory of open models, each represented by an effigy. -->
   <!-- Note that this begins empty. -->
-  <entity name="directory" class="ptolemy.actor.gui.ModelDirectory">
-  </entity>
+  <entity name="directory" class="ptolemy.actor.gui.ModelDirectory"/>
+
+  <!-- The state and transition refinements. -->
+  <input source="ptolemy/configs/defaultRefinements.xml"/>
 
   <!-- Specify the name of the class that initialized the application. -->
   <property name="_applicationInitializer"
