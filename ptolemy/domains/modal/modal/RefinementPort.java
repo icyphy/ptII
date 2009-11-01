@@ -409,18 +409,23 @@ public class RefinementPort extends TypedIOPort {
         try {
             _workspace.getWriteAccess();
 
-            if (_mirrorDisable || (getContainer() == null)) {
-                // Have already called the super class.
-                // This time, process the request.
+            if (_mirrorDisable || oldContainer == null) {
+                // Mirroring changes from above, or there
+                // is no pre-existing above.
                 super.setContainer(container);
             } else {
+                // Not mirroring changes from above.
+                // Delegate upwards in the hierarchy.
                 _mirrorDisable = true;
 
-                boolean success = false;
-
                 if (oldContainer != null) {
+                    // This port previously had a container.
+                    // Remove any mirror ports from their container.
+                    // This will result the container calling this
+                    // setContainer() method with a null argument,
+                    // thus removing this port from its container.
                     Nameable modal = oldContainer.getContainer();
-
+                    boolean success = false;
                     if (modal instanceof ModalModel) {
                         Port port = ((ModalModel) modal).getPort(getName());
 
@@ -429,9 +434,14 @@ public class RefinementPort extends TypedIOPort {
                             success = true;
                         }
                     }
-                }
-
-                if (!success) {
+                    if (!success) {
+                        // There was no mirror port above in the hierarchy,
+                        // so do this directly.
+                        super.setContainer(container);
+                    }
+                } else {
+                    // This port did not previously have a container.
+                    // Hence we can't delegate up the hierarchy.
                     super.setContainer(container);
                 }
             }

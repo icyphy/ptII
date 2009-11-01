@@ -182,19 +182,15 @@ public class Refinement extends TypedCompositeActor implements RefinementActor, 
         try {
             _workspace.getWriteAccess();
             
-            if (_mirrorDisable || (getContainer() == null)) {
-                // Have already called newPort() in the container.
-                // This time, process the request.
+            ModalModel container = (ModalModel) getContainer();
+
+            if (_mirrorDisable || container == null) {
+                // We are mirroring a change above in the hierarchy
+                // (or there is no above in the hierarchy),
+                // so we should not mirror this change upwards.
                 RefinementPort port = new RefinementPort(this, name);
 
-                // NOTE: Changed RefinementPort so mirroring
-                // is enabled by default. This means mirroring
-                // will occur during MoML parsing, but this
-                // is harmless. EAL 12/04.
-                // port._mirrorDisable = false;
                 // Create the appropriate links.
-                ModalModel container = (ModalModel) getContainer();
-
                 if (container != null) {
                     String relationName = name + "Relation";
                     Relation relation = container.getRelation(relationName);
@@ -211,8 +207,11 @@ public class Refinement extends TypedCompositeActor implements RefinementActor, 
 
                 return port;
             } else {
-                _mirrorDisable = true;
-                ((ModalModel) getContainer()).newPort(name);
+                // We originated the change or it originated from below,
+                // so we delegate upwards. The container will set
+                // our _mirrorDisable to true and call our newPort(),
+                // resulting in the code above executing.
+                container.newPort(name);
                 return getPort(name);
             }
         } catch (IllegalActionException ex) {
@@ -270,10 +269,12 @@ public class Refinement extends TypedCompositeActor implements RefinementActor, 
     /** Control whether adding a port should be mirrored in the modal
      *  model and the mode controller.
      *  This is added to allow control by the UI.
-     *  @param disable True if mirroring should not occur.
+     *  @param disable 0 if mirroring should occur, -1
+     *   if mirroring should not occur downwards in the hierarchy,
+     *   1 if mirroring should not occur upwards in the hierarchy.
      */
-    public void setMirrorDisable(boolean disable) {
-        _mirrorDisable = disable;
+    public void setMirrorDisable(int disable) {
+        _mirrorDisable = disable != 0;
     }
 
     ///////////////////////////////////////////////////////////////////

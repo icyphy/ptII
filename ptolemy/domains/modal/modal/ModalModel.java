@@ -41,6 +41,7 @@ import ptolemy.data.expr.StringParameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.domains.modal.kernel.FSMActor;
 import ptolemy.domains.modal.kernel.FSMDirector;
+import ptolemy.domains.modal.kernel.RefinementActor;
 import ptolemy.domains.modal.kernel.State;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
@@ -393,38 +394,13 @@ public class ModalModel extends TypedCompositeActor implements ChangeListener {
             while (entities.hasNext()) {
                 Entity entity = (Entity) entities.next();
 
-                if (entity instanceof ModalController) {
+                if (entity instanceof RefinementActor) {
                     if (entity.getPort(name) == null) {
                         try {
-                            ((ModalController) entity)._mirrorDisable = true;
-
-                            /*Port newPort = */entity.newPort(name);
-
-                            /* No longer needed since Yuhong modified
-                             * the type system to allow UNKNOWN. EAL
-                             if (newPort instanceof TypedIOPort) {
-                             ((TypedIOPort)newPort).setTypeSameAs(port);
-                             }
-                             */
+                            ((RefinementActor) entity).setMirrorDisable(1);
+                            entity.newPort(name);
                         } finally {
-                            ((ModalController) entity)._mirrorDisable = false;
-                        }
-                    }
-                } else if (entity instanceof Refinement) {
-                    if (entity.getPort(name) == null) {
-                        try {
-                            ((Refinement) entity)._mirrorDisable = true;
-
-                            /*Port newPort = */entity.newPort(name);
-
-                            /* No longer needed since Yuhong modified
-                             * the type system to allow UNKNOWN. EAL
-                             if (newPort instanceof TypedIOPort) {
-                             ((TypedIOPort)newPort).setTypeSameAs(port);
-                             }
-                             */
-                        } finally {
-                            ((Refinement) entity)._mirrorDisable = false;
+                            ((RefinementActor) entity).setMirrorDisable(0);
                         }
                     }
                 }

@@ -48,17 +48,7 @@ import ptolemy.kernel.util.IllegalActionException;
  */
 public interface RefinementActor extends TypedActor {
 
-    /** Return the state (or event, which subclasses state) that this actor
-     *  refines.
-     *
-     *  @return The state or event that this actor refines.
-     *  @exception IllegalActionException If thrown while trying to find the
-     *  refined state or event.
-     */
-    public State getRefinedState() throws IllegalActionException;
-
     /** Create a refinement for the given state.
-     *
      *  @param state The state that will contain the new refinement.
      *  @param name The name of the composite entity that stores the refinement.
      *  @param template The template used to create the refinement, or null if
@@ -74,4 +64,20 @@ public interface RefinementActor extends TypedActor {
     public void addRefinement(State state, String name, Entity template,
             String className, Configuration configuration)
             throws IllegalActionException;
+    
+    /** Return the state (or event, which subclasses state) that this actor
+     *  refines.
+     *  @return The state or event that this actor refines.
+     *  @exception IllegalActionException If thrown while trying to find the
+     *  refined state or event.
+     */
+    public State getRefinedState() throws IllegalActionException;
+
+    /** Control whether adding a port should be mirrored in the modal
+     *  model and the mode controller.
+     *  @param disable 0 if mirroring should occur, -1
+     *   if mirroring should not occur downwards in the hierarchy,
+     *   1 if mirroring should not occur upwards in the hierarchy.
+     */
+    public void setMirrorDisable(int disable);
 }
