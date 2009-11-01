@@ -30,6 +30,7 @@
  */
 package ptolemy.vergil.modal.modal;
 
+import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.util.Iterator;
 import java.util.List;
@@ -38,10 +39,9 @@ import java.util.StringTokenizer;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedActor;
 import ptolemy.actor.gui.Configuration;
+import ptolemy.domains.modal.kernel.RefinementActor;
 import ptolemy.domains.modal.kernel.State;
 import ptolemy.domains.modal.kernel.Transition;
-import ptolemy.domains.modal.modal.ModalController;
-import ptolemy.domains.modal.modal.Refinement;
 import ptolemy.domains.modal.modal.RefinementPort;
 import ptolemy.gui.ComponentDialog;
 import ptolemy.gui.Query;
@@ -52,6 +52,7 @@ import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.util.MessageHandler;
+import ptolemy.vergil.basic.BasicGraphController;
 import ptolemy.vergil.modal.FSMGraphController;
 import ptolemy.vergil.modal.TransitionController;
 import ptolemy.vergil.toolbox.FigureAction;
@@ -162,10 +163,13 @@ public class ModalTransitionController extends TransitionController {
                     .addChoice("Class", "Class", choiceNames, choiceNames[0],
                             true);
 
-            // FIXME: Need a frame owner for first arg.
-            // Perhaps calling getController(), which returns a GraphController
-            // will be a good start.
-            ComponentDialog dialog = new ComponentDialog(null,
+            // Need a frame owner for first arg. for the dialog constructor.
+            Frame owner = null;
+            GraphController controller = getController();
+            if (controller instanceof BasicGraphController) {
+                owner = ((BasicGraphController)controller).getFrame();
+            }
+            ComponentDialog dialog = new ComponentDialog(owner,
                     "Specify Refinement", query);
 
             if (!dialog.buttonPressed().equals("OK")) {
@@ -223,6 +227,7 @@ public class ModalTransitionController extends TransitionController {
                     // the MoML because we have set protected variables
                     // in the refinement to prevent it from trying to again
                     // mirror the changes in the container.
+                    // The following gets the newly created entity.
                     Entity entity = container.getEntity(newName);
 
                     // Get the initial port configuration from the container.
@@ -232,12 +237,10 @@ public class ModalTransitionController extends TransitionController {
                         Port port = (Port) ports.next();
 
                         try {
-                            // NOTE: This is awkward.
-                            if (entity instanceof Refinement) {
-                                ((Refinement) entity).setMirrorDisable(true);
-                            } else if (entity instanceof ModalController) {
-                                ((ModalController) entity)
-                                        .setMirrorDisable(true);
+                            if (entity instanceof RefinementActor) {
+                                // Prevent the newly created entity from creating
+                                // ports in its container.
+                                ((RefinementActor) entity).setMirrorDisable(1);
                             }
 
                             Port newPort = entity.newPort(port.getName());
@@ -277,12 +280,8 @@ public class ModalTransitionController extends TransitionController {
                                 }
                             }
                         } finally {
-                            // NOTE: This is awkward.
-                            if (entity instanceof Refinement) {
-                                ((Refinement) entity).setMirrorDisable(false);
-                            } else if (entity instanceof ModalController) {
-                                ((ModalController) entity)
-                                        .setMirrorDisable(false);
+                            if (entity instanceof RefinementActor) {
+                                ((RefinementActor) entity).setMirrorDisable(0);
                             }
                         }
                     }
