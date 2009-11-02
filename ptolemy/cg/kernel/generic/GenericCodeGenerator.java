@@ -1166,7 +1166,10 @@ public abstract class GenericCodeGenerator extends Attribute implements
                         + oldCodeGeneratorClassName + "\" and \"" 
                         + codeGeneratorClassName
                         + "\", generatorPackage parameter was \""
-                        + generatorPackageValue + "\".");
+                        + generatorPackageValue + "\". "
+                        + "Common values are ptolemy.cg.kernel.generic.program.procedural.c, "
+                        + "ptolemy.cg.kernel.generic.html, or "
+                        + "ptolemy.cg.kernel.generic.program.procedural.java");
             }
         }
         return result;
