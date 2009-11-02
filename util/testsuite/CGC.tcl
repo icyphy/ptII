@@ -1,4 +1,4 @@
-# Run CGC on all the models in auto
+# Generate C code for all the models in the auto directory by using the ptolemy/codegen code generator
 #
 # @Author: Christopher Brooks
 #

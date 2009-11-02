@@ -1,6 +1,6 @@
 # Run "auto" tests
 #
-# @Author: Bert Rodiers
+# @Author: Christopher Brooks
 #
 # @Version: $Id$
 #
@@ -48,7 +48,7 @@ set oldIsRunningNightlyBuild \
      "ptolemy.ptII.isRunningNightlyBuild"]
 java::call System setProperty "ptolemy.ptII.isRunningNightlyBuild" ""
 
-proc test_java_cg {model} {
+proc test_c_cg {model} {
     global PTII	
     set relativeFilename \
 	    [java::call ptolemy.util.StringUtilities substituteFilePrefix \
@@ -64,7 +64,7 @@ proc test_java_cg {model} {
 	$parser purgeAllModelRecords
 
 	set args [java::new {String[]} 3 \
-		  [list "-generatorPackage" "ptolemy.cg.kernel.generic.program.procedural.java" $model]]
+		  [list "-generatorPackage" "ptolemy.cg.kernel.generic.program.procedural.c" $model]]
 
 	set timeout 60000
 	puts "JavaCGAuto.tcl: Setting watchdog for [expr {$timeout / 1000}]\
@@ -85,7 +85,7 @@ proc test_java_cg {model} {
 }
 
 foreach file [glob auto/*.xml] {
-    test_java_cg $file
+    test_c_cg $file
 }
 
 # Reset the isRunningNightlyBuild property

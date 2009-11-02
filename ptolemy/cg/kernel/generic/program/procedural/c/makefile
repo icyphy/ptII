@@ -33,7 +33,7 @@
 
 ME =		ptolemy/cg/kernel/generic/program/procedural/c
 
-DIRS =		ptidyos type
+DIRS =		ptidyos type test
 
 # Root of the Java directory
 ROOT =		../../../../../../..
