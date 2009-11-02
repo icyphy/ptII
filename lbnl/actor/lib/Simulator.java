@@ -390,7 +390,15 @@ public class Simulator extends SDFTransformer {
             } catch (java.io.IOException e2) {
             }
             ; // do nothing here
-            throw new IllegalActionException(this, e, em);
+	    // If the client sent a termination flag, then clientTerminated=true
+	    // In this case, the client may have closed the socket connection, and
+	    // hence we don't throw an IOException, but rather issue a warning 
+	    // in case that Ptolemy proceeds with its iterations.
+	    // Without the check (!clientTerminated), an IOException is thrown
+	    // on Windows (but not on Mac or Linux) from the actor that connects 
+	    // to EnergyPlus.
+	    if ( ! clientTerminated )
+		throw new IllegalActionException(this, e, em);
         }
     }
 
@@ -588,6 +596,14 @@ public class Simulator extends SDFTransformer {
         cliPro.setProcessArguments(com, worDir);
         cliPro.showConsoleWindow( ((BooleanToken)(showConsoleWindow.getToken())).booleanValue() );
 
+        // Set simulation log file.
+	// The call to System.gc() is required on Windows: If this actor is called multiple times
+	// on Windows using vmware fusion and vmware workstation, then the simulation log file 
+	// exists but cannot be deleted. Calling System.gc() releases the resources which allows
+	// Java to delete the file. See also http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=6266377
+	// This error does not happen on Linux and on Mac OS X.
+	System.gc();
+
         File slf = simulationLogFile.asFile();
         try {
             if (slf.exists()) {
@@ -655,7 +671,8 @@ public class Simulator extends SDFTransformer {
             // Close the server.
             server.close();
         } catch (java.io.IOException e) {
-            throw new IllegalActionException(this, e, e.getMessage());
+	    if ( ! clientTerminated )
+		throw new IllegalActionException(this, e, e.getMessage());
         }
         // Reset position of window that shows console output so that for the next
         // simulation, the window will be placed on top of the screen again
