@@ -36,7 +36,7 @@ A decorator is a class that decorates other NamedObj
 with extra attributes that are specific to both the decorator
 and the NamedObj.
 
-A NamedObj can contain DecoratedAttributes. These are attributes that are
+<p>A NamedObj can contain DecoratedAttributes. These are attributes that are
 added by another NamedObj, called a decorator to this NamedObj.
 An example is for example a code generator. This one has specific attributes
 for for example the generated code of the director in a model. These attributes
@@ -45,6 +45,8 @@ These attributes are stored seperately and can be retrieved by using
 {@link NamedObj#getDecoratorAttributes(Decorator)} or
 {@link NamedObj#getDecoratorAttributes(Decorator)}.
 
+<p>For a description of a decorator pattern, see
+<a href="http://en.wikipedia.org/wiki/Decorator_pattern">http://en.wikipedia.org/wiki/Decorator_pattern</a>.
 
 @author Bert Rodiers
 @version $Id$
