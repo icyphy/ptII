@@ -48,7 +48,10 @@ TCL_SRCS = \
 JSRCS =
 
 # Non-graphical Java tests written in Tcl
-JSIMPLE_TESTS = auto.tcl
+# If there are no tests, we use a dummy file so that the script that builds
+# alljtests.tcl works.  If you add a test, be sure to add
+# $(JSIMPLE_TESTS) to EXTRA_SRCS
+JSIMPLE_TESTS = dummy.tcl
 
 # Graphical Java tests that use Tcl.
 # If there are no tests, we use a dummy file so that the script that builds
@@ -57,12 +60,7 @@ JSIMPLE_TESTS = auto.tcl
 JGRAPHICAL_TESTS = \
 	dummy.tcl
 
-EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) $(JSIMPLE_TESTS) \
-	Display.xml \
-	Multirate1.xml \
-	Multirate2.xml \
-	Multirate3.xml \
-	Repeat.xml
+EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) #$(JSIMPLE_TESTS)
 
 #$(JGRAPHICAL_TESTS)
 
@@ -97,7 +95,8 @@ $(RAMP_CLASS):
         fi
 
 # These tests do not require a graphics terminal, but do use Jacl and Java
-test_jsimple: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) $(RAMP_CLASS) alljtests.tcl
+test_jsimple: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) $(RAMP_CLASS) \
+		alljtests.tcl test_auto test_java_cg
 	$(JTCLSH) alljtests.tcl
 
 # 'make clean' removes $(KRUFT)

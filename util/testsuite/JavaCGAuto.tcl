@@ -48,56 +48,45 @@ set oldIsRunningNightlyBuild \
      "ptolemy.ptII.isRunningNightlyBuild"]
 java::call System setProperty "ptolemy.ptII.isRunningNightlyBuild" ""
 
+proc test_java_cg {model} {
+    global PTII	
+    set relativeFilename \
+	    [java::call ptolemy.util.StringUtilities substituteFilePrefix \
+	    $PTII $model {$PTII}]
+    puts "------------------ Java ptolemy/cg testing $relativeFilename"
+    test "Auto" "Automatic Java ptolemy/cg test in file $relativeFilename" {
+	# Remove files from ~/cg so as to force building
+	foreach classFile [glob -nocomplain [java::call System getProperty "user.home"]/cg/*.class] { file delete -force $classFile}
+	foreach javaFile [glob -nocomplain [java::call System getProperty "user.home"]/cg/*.java] { file delete -force $javaFile}
+	foreach mkFile [glob -nocomplain [java::call System getProperty "user.home"]/cg/*.mk] { file delete -force $mkFile}
+	set parser [java::new ptolemy.moml.MoMLParser]
+	$parser reset
+	$parser purgeAllModelRecords
 
-proc test_cg {model} {
-    set codeGeneratorPath "ptolemy.cg.kernel.generic.program.procedural.java.JavaCodeGenerator"
-    set workspace [java::new ptolemy.kernel.util.Workspace "workspace"]
-    set parser [java::new ptolemy.moml.MoMLParser $workspace]
-    $parser reset
-    $parser purgeAllModelRecords
-    $parser setMoMLFilters [java::null]
-    $parser addMoMLFilters \
-	    [java::call ptolemy.moml.filter.BackwardCompatibility allFilters]
-	
-	# We don't want to remove graphical classes since we also want to test these.
-    # $parser addMoMLFilter [java::new \
-	#     ptolemy.moml.filter.RemoveGraphicalClasses]
-	
-    set model1_0 \
-	 [java::cast ptolemy.actor.TypedCompositeActor [$parser parseFile $model]]
-    set manager [java::new ptolemy.actor.Manager $workspace "manager"]
-    $model1_0 setManager $manager
-    #$manager execute
+	set args [java::new {String[]} 3 \
+		  [list "-generatorPackage" "ptolemy.cg.kernel.generic.program.procedural.java" $model]]
 
-    # Get the corrrectValues parameter, which should be {}
-    set codeGenerator [java::cast ptolemy.cg.kernel.generic.GenericCodeGenerator [[$model1_0 attributeList [java::call java.lang.Class forName $codeGeneratorPath]] get 0]]
+	set timeout 60000
+	puts "JavaCGAuto.tcl: Setting watchdog for [expr {$timeout / 1000}]\
+                  seconds at [clock format [clock seconds]]"
+	set watchDog [java::new util.testsuite.WatchDog $timeout]
 
-    list [$codeGenerator generateCode]
+	set returnValue 0
+	if [catch {set returnValue \
+		       [java::call ptolemy.cg.kernel.generic.GenericCodeGenerator \
+			    generateCode $args]} errMsg] {
+	    $watchDog cancel
+	    error "$errMsg\n[jdkStackTrace]"
+	} else {
+	    $watchDog cancel
+	}
+	list $returnValue
+    } {0}
 }
 
-######################################################################
-#### 
-#
-test Auto-1.0 {Testing Repeat} {
-	test_cg Repeat.xml
-} {0}
-
-test Auto-2.0 {Testing Display} {
-	test_cg Display.xml
-} {0}
-
-
-test Auto-3.0 {Testing Multirate1} {
-	test_cg Multirate1.xml
-} {0}
-
-test Auto-4.0 {Testing Multirate2} {
-	test_cg Multirate2.xml
-} {0}
-
-test Auto-5.0 {Testing Multirate3} {
-	test_cg Multirate3.xml
-} {0}
+foreach file [glob auto/*.xml] {
+    test_java_cg $file
+}
 
 # Reset the isRunningNightlyBuild property
 java::call System setProperty "ptolemy.ptII.isRunningNightlyBuild" \

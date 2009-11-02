@@ -47,6 +47,7 @@ JSRCS = \
 
 TCL_SRCS = \
 	CGC.tcl \
+	JavaCGAuto.tcl \
 	auto.tcl \
 	codegen.tcl \
 	description.tcl \
