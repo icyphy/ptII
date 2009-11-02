@@ -169,7 +169,9 @@ public abstract class GenericCodeGenerator extends Attribute implements
     /** The name of the package in which to look for helper class
      *  code generators. The default value of this parameter
      *  is the empty string.  Derived classes may set this parameter
-     *  to values like <code>ptolemy.cg.kernel.generic.html</code>.
+     *  to values like <code>ptolemy.cg.kernel.generic.program.procedural.c</code>.
+     *  <code>ptolemy.cg.kernel.generic.html</code>,
+     *  or <code>ptolemy.cg.kernel.generic.program.procedural.java</code>.
      */
     public StringParameter generatorPackage;
 
@@ -400,7 +402,7 @@ public abstract class GenericCodeGenerator extends Attribute implements
 
                     // If the user called this with -generatorPackage ptolemy.codegen.java,
                     // the process that argument.  This is a bit hacky, but works.
-                    String generatorPackageValue = "ptolemy.codegen.c";
+                    String generatorPackageValue = "ptolemy.cg.kernel.generic.program.procedural.c";
                     int parameterIndex = -1;
                     if ((parameterIndex = _parameterNames
                             .indexOf("generatorPackage")) != -1) {
