@@ -85,7 +85,7 @@ consistently.
 recognizing common design patterns in the models in a static analysis,
 replacing exiting design patterns with more efficient ones, and
 reusing design patterns by incorporating them into new models.
-<!-- FIXME: need more about design patterns, including links to models (see ptolemy/actor/designs) -->
+<!-- FIXME: need more about design patterns, including links to models (see ptolemy/actor/designs) --> 
 <h4>References</h4>
 <ul>
 <li>Thomas Huining Feng, "<a href="http://www.eecs.berkeley.edu/Pubs/TechRpts/2009/EECS-2009-77.html#in_browser" target="_top">Model Transformation with Hierarchical Discrete-Event Control</a>," Ph.D. Dissertation, EECS Department, University of California, Berkeley. UCB/EECS-2009-77. May 2009.
@@ -182,7 +182,7 @@ causality interfaces for actor networks as described in the paper
 
 <p>Causality interfaces represent dependencies between input and output
 ports of an actor and can be used to perform scheduling or static
-analysis on actor models.
+analysis on actor models.  
 
 <p>This substantial new work helps address performance problems in
 large Discrete Event (DE) models.  The new work provides
@@ -194,7 +194,7 @@ below illustrates the improvement.
   <tr>
    <th># of actors</th>
    <th>Total execution time before</th>
-   <th>Total execution time after</th>
+   <th>Total execution time after</th>   
   </tr>
   <tr>
     <td>100</td>
@@ -205,7 +205,7 @@ below illustrates the improvement.
     <td>600</td>
    <td>149 sec.</td>
    <td>0.7 sec.</td>
- </tr>
+ </tr>    
 </table>
 
 <p>    One of the challenges in complex, heterogeneous models is that
@@ -221,6 +221,7 @@ below illustrates the improvement.
    the extent is sufficient for the application, then the models are
    compatibly composed. Otherwise, they are not, and the model is
    marked defective.
+<h4>Causality Analysis Demonstrations</h4>
 <ul>
 <li><a href="ptdoc:ptolemy.actor.util.BooleanDependency">BooleanDependency</a>
 <li><a href="ptdoc:ptolemy.actor.util.BreakCausalityInterface">BreakCausalityInterface</a>
@@ -260,7 +261,7 @@ Rendezvous, for which there does not appear to be reasonable semantic
 model of such an interaction). Modal models are also cleanly supported
 with the Continuous domain, enabling hybrid system modeling with a
 rigorous semantics. The Continuous domain is expected to eventually
-replace CT.</p>
+replace CT.</p> 
 
 <h4>New Continuous and Modal Demonstrations</h4>
 <h5>Continuous</h5>
@@ -296,7 +297,7 @@ ACM, 114-123, 2007.
 
 <h3><a name="propertySystem">Property System</h3>
 
-<p>The property system is designed the help model builders to extract
+<p>The property system is designed the help model builders to extract 
 semantical information from a model. The information is often specific
 to some particular domain of knowledge. Thus, the analysis to infer this information
 requires the customizations specified by the model builder. The Ptolemy II property system allows
@@ -306,75 +307,78 @@ of these values in a model.
 
 
 <p>The property system is a generalization of the Ptolemy II type system.
-We consider each port as a taggable object that can be tagged with property
+We consider each port as a taggable object that can be tagged with property 
 values. Given a specific ontology, the tool assigns one unique property value to
 each taggable object. To use the analysis tool, we pass to it as input a
-property lattice, a set of inequality constraints and solver parameters. The
+property lattice, a set of inequality constraints and solver parameters. The 
 bproperty lattice defines the relationships and concepts within a
 particular ontology. The tool provides an simple editor for constructing,
-naming, and storing such lattices as persistent objects that can be reused
-across multiple models. The set of inequality constraints is specified
-through property adapters which are actor-specific objects. The property solver
-instantiates the adaptor objects required in the model and gathers from them
-the set of constraints. The solver parameters allow configuration of the
-solving strategy and the default constraints used by the solver if the
+naming, and storing such lattices as persistent objects that can be reused 
+across multiple models. The set of inequality constraints is specified 
+through property adapters which are actor-specific objects. The property solver 
+instantiates the adaptor objects required in the model and gathers from them 
+the set of constraints. The solver parameters allow configuration of the 
+solving strategy and the default constraints used by the solver if the 
 adaptors do not override them.
 
 
-<p>A property lattice is complete partial order (CPO) data structure. It consists
-of properties and their relationships. A property is an element in the lattice,
-and a relationship between two concepts is represented by a directed edge that
-connects them. For example, a simple type lattice models the representation
-relationship between different data types. Each child element is fully
-expressible by its parent if there is an edge connecting
-the two. For example, a edge going from Int to Double specifies that Int can be
-converted losslessly to Double. An element may have multiple parents and children
-as long as there is an unique least upper bound (LUB) element and a greatest
+<p>A property lattice is complete partial order (CPO) data structure. It consists 
+of properties and their relationships. A property is an element in the lattice, 
+and a relationship between two concepts is represented by a directed edge that 
+connects them. For example, a simple type lattice models the representation 
+relationship between different data types. Each child element is fully 
+expressible by its parent if there is an edge connecting 
+the two. For example, a edge going from Int to Double specifies that Int can be 
+converted losslessly to Double. An element may have multiple parents and children 
+as long as there is an unique least upper bound (LUB) element and a greatest 
 lower bound (GLB) element for every subset of elements.
 
 
-<p>The lattice specification can be generalized and used to specify a variety of
+<p>The lattice specification can be generalized and used to specify a variety of 
 other relationships as well. For example, we can use a linear lattice to model
-the relationship between signal behaviors,
+the relationship between signal behaviors, 
 where we have Unknown (Bottom) -> Const -> Nonconst (Top).
-From an analysis perspective, their relationship is a subset relationship where
-the parent contains more information than its child. These information are combined
-during the analysis. In this case, every signal starts off with the property value
-Unknown (the bottom value) which describes a signal to carry no known values. As
-we traverse the model, we may discover more information. A signals may become
-<i>Const</i> after we learn that it carries one known value, while tagging a signal with
-<i>Nonconst</i> means it carries many values throughout its lifetime. The containment
-relationship is a special case of the inheritance relationship popular in software
+From an analysis perspective, their relationship is a subset relationship where 
+the parent contains more information than its child. These information are combined 
+during the analysis. In this case, every signal starts off with the property value 
+Unknown (the bottom value) which describes a signal to carry no known values. As 
+we traverse the model, we may discover more information. A signals may become 
+<i>Const</i> after we learn that it carries one known value, while tagging a signal with 
+<i>Nonconst</i> means it carries many values throughout its lifetime. The containment 
+relationship is a special case of the inheritance relationship popular in software 
 modeling.
 
 
-<p>The inference algorithm solves for the least solution that satisfies a set of
-inequality constraints defined over a lattice. It
-scales linearly with respects to the number of inequality constraints. The
-inference solver systematically initializes and repeatedly updates property
-variables until it finds a fixed-point solution. The process is equivalent to
-performing fixed-point evaluation on a monotonic function. Thus, solution
-uniqueness is guaranteed. In addition, the algorithm is decideable if we
+<p>The inference algorithm solves for the least solution that satisfies a set of 
+inequality constraints defined over a lattice. It 
+scales linearly with respects to the number of inequality constraints. The 
+inference solver systematically initializes and repeatedly updates property 
+variables until it finds a fixed-point solution. The process is equivalent to 
+performing fixed-point evaluation on a monotonic function. Thus, solution 
+uniqueness is guaranteed. In addition, the algorithm is decideable if we 
 restrict to using finite property lattices.
 
 
-<p>An inequality constraint describes the relationship between properties of taggable
-objects. The inference engine infers the unspecified properties based on the set
-of the constraints specific to the model. The meaning of these constraints is
-coupled with the ontology definition. For example, in the type system lattice, a
-constraint is used to express sub-typing relationship (e.g. Actor A's output type
-is greater than or equal to its input type). A constraint is used to constrain the
-value of a property variable, the property of a taggable object. We can add a
-constraint to any taggable object through the PropertyConstraintHelper public interface
+<p>An inequality constraint describes the relationship between properties of taggable 
+objects. The inference engine infers the unspecified properties based on the set 
+of the constraints specific to the model. The meaning of these constraints is 
+coupled with the ontology definition. For example, in the type system lattice, a 
+constraint is used to express sub-typing relationship (e.g. Actor A's output type 
+is greater than or equal to its input type). A constraint is used to constrain the 
+value of a property variable, the property of a taggable object. We can add a 
+constraint to any taggable object through the PropertyConstraintHelper public interface 
 which provides the <i>setEquals()</i> and <i>setAtLeast()</i> methods.
 
 <h4>Property System Demonstrations</h4>
 <ul>
 <li> <a href="../../../ptolemy/data/properties/demo/CarTracking/CarTracking.xml">CarTracking</a> (Simple dimension analysis)</li>
+<li> <a href="../../../ptolemy/data/properties/demo/CarTracking/CarTrackingSoSYM.xml">CarTrackingSoSYM</a> (Simple dimension analysis)</li>
 <li> <a href="../../../ptolemy/data/properties/demo/ConstNonconst/ConstNonconst.xml">ConstNonconst</a> (Constant propagation)</li>
 <li> <a href="../../../ptolemy/data/properties/demo/LogicalAND/LogicalAND.xml">LogicalAND</a> </li>
 <li> <a href="../../../ptolemy/data/properties/demo/LogicalOrBackward/LogicalOrBackward.xml">LogicalOrBackward</a> </li>
+<li> <a href="../../../ptolemy/data/properties/demo/LogicalOrBackward/LogicalOrBackward.xml">NaomiConfigurer</a> </li>
 <li> <a href="../../../ptolemy/data/properties/demo/RegressionTest/RegressionTest.xml">RegressionTest</a> (With the ModelAnalysis workflow actor)</li>
+<li> <a href="../../../ptolemy/data/properties/lattice/imageOntology/demo/SimpleImageAnnotation/SimpleImageAnnotation.xml">SimpleImageAnnotation</a></li>
 <li> <a href="../../../ptolemy/data/properties/demo/Sinewave/Sinewave.xml">Sinewave</a> (With custom PropertyLattice)</li>
 <li> <a href="../../../ptolemy/data/properties/demo/Workflow/Workflow.xml">Workflow</a> (Workflow combined with GT)</li>
 </ul>
@@ -415,8 +419,8 @@ A non unique solution is treated as a error. </p>
 <li> <i>New model generators for verification</i>.
 <p> This release contains capabilities to generate, from Ptolemy models, other types of models,
 suitable for formal verification. In particular, the <i>Formal Model Converter</i> component
-(developed by Chihhong Patrick Cheng) allows to generate models compatible with the SMV or NuSMV
-model-checkers, from Ptolemy models in the SR domain (and models compatible with RED 7.0 from Ptolemy DE models). Also, the <i>RTMaudeCodeGenerator</i> component
+(developed by Chihhong Patrick Cheng) allows to generate models compatible with the SMV or NuSMV 
+model-checkers, from Ptolemy models in the SR domain. Also, the <i>RTMaudeCodeGenerator</i> component
 (developed by Kyungmin Bae) allows to generate models compatible with the Real Time Maude tool,
 from Ptolemy models in the DE domain.
 </p>
@@ -486,7 +490,7 @@ LazyTypedCompositeActor is a replacement for TypedCompositeActor that does lazy 
  <li><a href="ptdoc:ptolemy.kernel.util.LazyComposite">LazyComposite</a>
  <li><a href="ptdoc:ptolemy.actor.LazyTypedCompositeActor">LazyTypedCompositeActor</a>
  <li><a href="ptdoc:ptolemy.moml.filter.LazyTypedCompositeActorChanges">LazyTypedCompositeActorChanges</a> - a MoMLFilter that may be used to convert models to use LazyTypedCompositeActor
- <li><a href="ptdoc:ptolemy.moml.ConvertToLazy">ConvertToLazy</a> - A class that converts models to use LazyTypedCompositeActor
+ <li><a href="ptdoc:ptolemy.moml.ConvertToLazy">ConvertToLazy</a> - A class that converts models to use LazyTypedCompositeActor 
 </ul>
 (Edward A. Lee, Christopher Brooks)
 </li>
@@ -528,7 +532,7 @@ controlled, on the Mac look in <code>~/Documents/Java Printing.pdf</code>.
 <h3>Process Network (PN)</h3>
 <ul>
 <li><a href="../../domains/pn/demo/Stack/Stack.xml">Stack</a>
-</ul>
+</ul>  
 
 <h3>Synchronous Dataflow (SDF)</h3>
 <ul>
@@ -538,10 +542,10 @@ controlled, on the Mac look in <code>~/Documents/Java Printing.pdf</code>.
 </ul>
 <h3>Synchronous/Reactive (SR) </h3>
 <ul>
-<li><a href="../../verification/demo/iRobotHillClimbing/iRobotCreateVerification.xml">iRobot Hill Climbing</a> (Requires NuSMV, see the <a href="../../verification/README.html">Verification documentation)
+<li><a href="../../verification/demo/iRobotHillClimbing/iRobotCreateVerification.xml">iRobot Hill Climbing</a> (Requires NuSMV, see the <a href="../../verification/README.html">Verification documentation</a>)
 <li><a href="../../actor/lib/hoc/demo/ThreadedComposite/MulticoreExecution.xml">MulticoreExecution</a>
-<li><a href="../../verification/demo/RailroadControl/RailroadControl.xml">Railroad System</a> (Requires NuSMV, see the <a href="../../verification/README.html">Verification documentation)
-<li><a href="../../verification/demo/SimpleTrafficLight/SimpleTrafficLight.xml">Simple Traffic Light</a> (Requires NuSMV, see the <a href="../../verification/README.html">Verification documentation)
+<li><a href="../../verification/demo/RailroadControl/RailroadControl.xml">Railroad System</a> (Requires NuSMV, see the <a href="../../verification/README.html">Verification documentation</a>)
+<li><a href="../../verification/demo/SimpleTrafficLight/SimpleTrafficLight.xml">Simple Traffic Light</a> (Requires NuSMV, see the <a href="../../verification/README.html">Verification documentation</a>)
 </ul>
 
 <h3><a name="pnCodegen">PN Code Generation</a></h3>
@@ -568,7 +572,7 @@ controlled, on the Mac look in <code>~/Documents/Java Printing.pdf</code>.
 <ul>
 <li><a href="../../domains/wireless/demo/Intersections/Intersections.xml">Intersections</a>
 <li><a href="../../domains/wireless/demo/Zigbee/Zigbee.xml">Zigbee</a>
-</ul>
+</ul>  
 
 See also the <a href="completeDemos.htm">Complete Demonstrations</a> page.
 
@@ -627,12 +631,12 @@ See also the <a href="completeDemos.htm">Complete Demonstrations</a> page.
   <li><a href="../../../doc/codeDoc/ptolemy/codegen/java/kernel/package-summary.html">ptolemy.codegen.java.kernel</a>
   <li><a href="../../../doc/codeDoc/ptolemy/codegen/java/domains/sdf/kernel/package-summary.html">ptolemy.codegen.java.domains.sdf.kernel</a>
   <li><a href="../../../doc/codeDoc/ptolemy/codegen/java/domains/sdf/lib/package-summary.html">ptolemy.codegen.java.domains.sdf.lib</a>
-  </ul>
+  </ul> 
 </ul>
 
 </ul>
 
-<li><i>New Parameter:</i>
+<li><i>New Parameter:</i> 
 <ul>
 <li><a href="ptdoc:ptolemy.actor.parameters.Priority">Priority</a>
 </ul>
@@ -716,7 +720,7 @@ Ptera.
       <a href="../../data/type/demo/Objects/Objects.xml">Objects demo</a>.
   </ul>
 
-<li>ptolemy.domains.fsm
+<li>ptolemy.domains.fsm  
   <ul>
     <li><a href="ptdoc:ptolemy.domains.fsm.kernel.ConfigurableEntity">ConfigurableEntity</a>
     <li><a href="ptdoc:ptolemy.domains.fsm.kernel.Configurer">Configurer</a>
@@ -725,7 +729,7 @@ Ptera.
     <li><a href="ptdoc:ptolemy.domains.fsm.kernel.RefinementActor">RefinementActor</a>
   </ul>
 
-<li>ptolemy.domains.modal
+<li>ptolemy.domains.modal  
   <ul>
     <li><a href="ptdoc:ptolemy.domains.fsm.modal.MirrorCausalityInterface">MirrorCausalityInterface</a>
     <li><a href="ptdoc:ptolemy.domains.fsm.modal.RefinementExtender">RefinementExtender</a>
@@ -733,7 +737,7 @@ Ptera.
     <li><a href="ptdoc:ptolemy.gui.PtGUIUtilities">PtGUIUtilities</a>
   </ul>
 
-<li>ptolemy.gui
+<li>ptolemy.gui  
   <ul>
     <li><a href="ptdoc:ptolemy.gui.QueryChooser">QueryChooser</a>
     <li><a href="ptdoc:ptolemy.gui.QueryChooserHelper">QueryChooserHelper</a>
@@ -789,7 +793,7 @@ For the current list of bugs, see <a href="http://chess.eecs.berkeley.edu/ptexte
    container of the objects being linked is responsible for
    producing the MoML description of the link. This ensures
    that when the MoML is encountered for creating the link,
-   that both objects being linked have already been created.
+   that both objects being linked have already been created. 
 
   <li>Various classes were moved to make the dependencies between packages cleaner.  In general, the
   <a href="ptdoc:ptolemy.moml.filter.ClassChanges">ptolemy.moml.filter.ClassChanges</a> to handle the changes
@@ -804,12 +808,12 @@ For the current list of bugs, see <a href="http://chess.eecs.berkeley.edu/ptexte
    <td><a href="ptdoc:ptolemy.vergil.basic.DependencyHighlighter">ptolemy.vergil.basic.DependencyHighlighter</a></td>
   <tr>
 
-  </tr>
+  </tr> 
     <td>ptolemy.actor.lib.CodegenActor</td>
     <td><a href="ptdoc:ptolemy.actor.lib.jni.CodegenActor">ptolemy.actor.lib.jni.CodegenActor</a></td>
   <tr>
 
-  </tr>
+  </tr> 
     <tr>ptolemy.actor.lib.gui.LEDMatrix</td>
     <td><a href="ptdoc:ptolemy.vergil.actor.lib.LEDMatrix">ptolemy.vergil.actor.lib.LEDMatrix</a></td>
   <tr>
@@ -817,22 +821,22 @@ For the current list of bugs, see <a href="http://chess.eecs.berkeley.edu/ptexte
   <tr>
    <td>ptolemy.actor.lib.gui.ModelDisplay</td>
    <td><a href="ptdoc:ptolemy.vergil.actor.lib.ModelDisplay">ptolemy.vergil.actor.lib.ModelDisplay</a></td>
-  </tr>
+  </tr> 
 
   <tr>
    <td>ptolemy.codegen.c.actor.lib.CodegenActor was moved to</td>
    <td><a href="ptdoc:ptolemy.actor.lib.jni.CodegenActor">ptolemy.actor.lib.jni.CodegenActor</a></td>
   <tr>
 
-  </tr>
+  </tr> 
     <td>ptolemy.codegen.c.actor.lib.gui.LEDMatrix</td>
     <td><a href="ptdoc:ptolemy.codegen.c.vergil.actor.lib.LEDMatrix">ptolemy.codegen.c.vergil.actor.lib.LEDMatrix</a></td>
   <tr>
 
-  </tr>
+  </tr> 
     <td>ptolemy.codegen.kernel.Director</td>
     <td><a href="ptdoc:ptolemy.codegen.actor.Director">ptolemy.codegen.actor.Director</a></td>
-  </tr>
+  </tr> 
 
   <tr>
    <td>ptolemy.domains.curriculum.DependencyHighlighter was moved to</td>
@@ -867,8 +871,8 @@ For the current list of bugs, see <a href="http://chess.eecs.berkeley.edu/ptexte
   <tr>
   <td></td>
   <td></td>
-</tr>
-</table>
+</tr> 
+</table>   
 
 <li> Various classes were moved out of ptolemy.data.unit to ptolemy.moml.unit
 
