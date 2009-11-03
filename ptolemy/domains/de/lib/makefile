@@ -53,7 +53,8 @@ JSRCS = \
 	DETransformer.java \
 	EventButton.java \
 	EventFilter.java \
-	getCurrentMicrostep.java \
+	EventFrequency.java \
+	GetCurrentMicrostep.java \
 	Inhibit.java \
 	Integrator.java \
 	Merge.java \
@@ -66,6 +67,7 @@ JSRCS = \
 	Server.java \
 	SharedQueue.java \
 	SingleEvent.java \
+	SuppressSimultaneousEvents.java \
 	TestActorPortDepth.java \
 	TimeCompare.java \
 	TimeGap.java \
@@ -79,9 +81,13 @@ JSRCS = \
 OTHER_FILES_TO_BE_JARED = \
 	deentities.xml \
 	DerivativeIcon.xml \
+	DerivativeIcon.gif \
+	EventFrequencyIcon.xml \
+	IntegratorIcon.gif \
 	IntegratorIcon.xml \
 	NonInterruptibleTimerIcon.xml \
 	PIDicon.xml \
+	PIDicon.gif \
 	QueueIcon.xml \
 	ServerIcon.xml \
 	SharedQueueIcon.xml \
