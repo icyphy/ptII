@@ -590,13 +590,23 @@ all.itcl: makefile
 test_auto:
 	$(JTCLSH) $(ROOT)/util/testsuite/auto.tcl
 
-# Run C codegen on all the xml files in the auto subdirectory.
+# Run C ptolemy/codegen on all the xml files in the auto subdirectory.
 test_codegen:
 	$(JTCLSH) $(ROOT)/util/testsuite/CGC.tcl
 
-# Run Java codegen on all the xml files in the auto subdirectory.
+# Run Java ptolemy/codegen on all the xml files in the auto subdirectory.
 test_java_codegen:
 	$(JTCLSH) $(ROOT)/util/testsuite/JavaGC.tcl
+
+
+# Run C ptolemy/cg on all the xml files in the auto subdirectory.
+test_c_cg:
+	$(JTCLSH) $(ROOT)/util/testsuite/CCGAuto.tcl
+
+# Run C ptolemy/cg on all the xml files in the auto subdirectory.
+test_java_cg:
+	$(JTCLSH) $(ROOT)/util/testsuite/JavaCGAuto.tcl
+
 
 test_properties:
 	$(JTCLSH) $(ROOT)/util/testsuite/properties.tcl
