@@ -546,7 +546,7 @@ public class Simulator extends SDFTransformer {
      *  the argument is a relative directory.
      *
      *@param namedObj A named object, typically the container of the model
-     *@param programName Name of program that starts the simulation.
+     *@param dir The directory to be resolved.
      *@exception IllegalActionException If an attribute is found with the name "_uri" 
      *           that is not an instance of the URIAttribute class
      */
