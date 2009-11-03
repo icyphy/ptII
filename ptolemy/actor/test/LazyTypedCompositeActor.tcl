@@ -149,3 +149,19 @@ test LazyTypedCompositeActor-12.1 {deepConnectedIn(out)Ports} {
     <link port="E4.P5" relation="R3"/>
 </entity>
 }}
+
+test LazyTypedCompositeActor-12.1 {deepConnectedIn(out)Ports} {
+    # Create objects
+    set e0 [java::new ptolemy.actor.LazyTypedCompositeActor]
+    $e0 setClassDefinition true
+    $e0 exportMoML
+} {<?xml version="1.0" standalone="no"?>
+<!DOCTYPE class PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<class name="" extends="ptolemy.actor.TypedCompositeActor">
+    <configure>
+        <group>
+        </group>
+    </configure>
+</class>
+}
