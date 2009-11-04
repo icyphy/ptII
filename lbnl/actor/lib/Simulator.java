@@ -425,7 +425,6 @@ public class Simulator extends SDFTransformer {
 
 	// Check if we run in headless mode
 	isHeadless = StringUtilities.getProperty("ptolemy.ptII.isHeadless").equals("true");
-
         // Working directory
         worDir = Simulator.resolveDirectory(getContainer(), 
                 cutQuotationMarks(workingDirectory.getExpression()));
@@ -683,9 +682,12 @@ public class Simulator extends SDFTransformer {
 	    if ( ! clientTerminated )
 		throw new IllegalActionException(this, e, e.getMessage());
         }
-        // Reset position of window that shows console output so that for the next
-        // simulation, the window will be placed on top of the screen again
-        ClientProcess.resetWindowLocation();
+	if (!isHeadless) {
+	    // Reset position of window that shows console output so
+	    // that for the next simulation, the window will be placed
+	    // on top of the screen again
+	    ClientProcess.resetWindowLocation();
+	}
     }
 
     /** Cut the leading and terminating quotation marks if present.
