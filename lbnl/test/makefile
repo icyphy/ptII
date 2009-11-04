@@ -95,6 +95,9 @@ install:
 # PtolemyII-wide test definitions.
 KERNEL_TESTDEFS = $(ROOT)/util/testsuite/testDefs.tcl
 
+# Cause lbnl/actor/lib/{Simulator,SystemCommand}.java to go headless
+JTCLSHFLAGS=-Dptolemy.ptII.isHeadless=true
+
 # These tests do not require a graphics terminal, but do use Jacl and Java
 test_jsimple: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljtests.tcl test_auto_path
 	$(JTCLSH) alljtests.tcl
@@ -105,5 +108,6 @@ test_auto_path:
 	LD_LIBRARY_PATH="`pwd`:$(PTII)/lbnl/lib/util:$(PTII)/lib:$(LD_LIBRARY_PATH)"; export LD_LIBRARY_PATH; \
 	DYLD_LIBRARY_PATH="`pwd`:$(PTII)/lbnl/lib/util:$(PTII)/lib:$(DYLD_LIBRARY_PATH)"; export DYLD_LIBRARY_PATH; \
 	$(JTCLSH) $(ROOT)/util/testsuite/auto.tcl
+
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
