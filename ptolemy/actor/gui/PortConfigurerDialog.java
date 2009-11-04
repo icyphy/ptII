@@ -791,10 +791,16 @@ public class PortConfigurerDialog extends PtolemyDialog implements
         // Add - Add a new port.
         if (button.equals("Apply")) {
             if (_apply()) {
-                _cancel();
+                if (_applyChangeRequestFailed) {
+                    // If the change request fails, the close the dialog,
+                    // as there are problems which we cannot recover from.
+                    // See http://bugzilla.ecoinformatics.org/show_bug.cgi?id=4478
+                    _cancel();
+                }
             }
         } else if (button.equals("Commit")) {
             if (_apply()) {
+                // We always close the window after commit.
                 _cancel();
             }
         } else if (button.equals("Add")) {
