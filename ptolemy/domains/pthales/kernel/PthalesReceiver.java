@@ -263,10 +263,15 @@ public class PthalesReceiver extends SDFReceiver {
                 // Default tiling matches the pattern size.
                 _readPattern[i][2] = _readPattern[i][1];
                 if (tilingSpec != null) {
-                    String dimensionName = _dimensions.get(dimensionNumber);
-                    Integer[] tiling = tilingSpec.get(dimensionName);
-                    if (tiling != null) {
-                        _readPattern[i][2] = tiling[0].intValue();
+                    if (dimensionNumber < _dimensions.size()) {
+                        String dimensionName = _dimensions.get(dimensionNumber);
+                        Integer[] tiling = tilingSpec.get(dimensionName);
+                        if (tiling != null) {
+                            _readPattern[i][2] = tiling[0].intValue();
+                        }
+                    } else {
+                        // This dimension is not mentioned.
+                        _readPattern[i][2] = 1;
                     }
                 }
                 i++;
