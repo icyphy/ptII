@@ -1,6 +1,5 @@
-/*
- * PropertyConstraintAttribute.java 53044 2009-04-10 21:47:49Z cxh $
- * 
+/*  A property constraint attribute.
+ *
  * Copyright (c) 2007-2009 The Regents of the University of California. All
  * rights reserved.
  * 
@@ -33,10 +32,19 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 
+/**
+ A property constraint attribute.
+
+ @author Man-kit (Jackie) Leung.
+ @version $Id$
+ @since Ptolemy II 8.0
+ @Pt.ProposedRating Red (cxh)
+ @Pt.AcceptedRating Red (cxh)
+ */
 public class PropertyConstraintAttribute extends PropertyAttribute {
 
     /**
-     * Construct a PropertyConstraintAttribute with the giver container and
+     * Construct a PropertyConstraintAttribute with the given container and
      * name. Its expression is a property resolved by the constraint solver.
      * @param container The container of this attribute.
      * @param name The given of the attribute.
@@ -222,7 +230,8 @@ public class PropertyConstraintAttribute extends PropertyAttribute {
      * Return a property in the specified lattice that is identified by the
      * given expression. Return null if the expression is case-insensitively
      * equivalent to "nil".
-     * @param lattice The specified lattice.
+     * @param lattice The specified lattice. If the expression is not NIL, then
+     *   the lattice must not be null. 
      * @param expression The expression string.
      * @return A property in the specified lattice, or null if the expression is
      * equal "nil".
@@ -237,6 +246,10 @@ public class PropertyConstraintAttribute extends PropertyAttribute {
         String fieldName = expression.toUpperCase();
 
         if (!fieldName.equalsIgnoreCase("NIL")) {
+            if (lattice == null) {
+                throw new IllegalActionException("The lattice was null?"
+                        + " The expression was \"" + expression + "\"");
+            }
             return lattice.getElement(fieldName);
         }
         return null;
