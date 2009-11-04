@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="PublisherSubscriberChannelVariablesLazyAOC2" class="ptolemy.actor.TypedCompositeActor">
+<entity name="PublisherSubscriberChannelVariablesAOC2" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={155, 80, 813, 510}, maximized=false}">
@@ -80,16 +80,14 @@
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model fails because of LazyTypedCompositeActors.&#10;The master Actor Oriented Class contains a Publisher&#10;with channel $channel1.$subchannel, which should&#10;match the Subscriber whos value is&#10;$channel1.$subchannel2 because $subchannel&#10;and $subchanne2 are the same value.&#10;If the master Actor Oriented Class is a&#10;TypedCompositeActor instead of a LazyTCA,&#10;then this works.&#10;&#10;If I look inside the master class, then&#10;the model works.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model used to fail because of LazyTypedCompositeActors.&#10;The master Actor Oriented Class contains a Publisher&#10;with channel $channel1.$subchannel, which should&#10;match the Subscriber whos value is&#10;$channel1.$subchannel2 because $subchannel&#10;and $subchanne2 are the same value.&#10;If the master Actor Oriented Class is a&#10;TypedCompositeActor instead of a LazyTCA,&#10;then this works.&#10;&#10;If I look inside the master class, then&#10;the model works.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[265.0, 15.0]">
         </property>
     </property>
-    <class name="MyLazyTypedCompositeActor" extends="ptolemy.actor.LazyTypedCompositeActor">
+    <class name="MyTypedCompositeActor" extends="ptolemy.actor.TypedCompositeActor">
         <property name="_location" class="ptolemy.kernel.util.Location" value="{60.0, 105.0}">
         </property>
-        <configure>
-            <group>
                 <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
                     <doc>Create a sequence of tokens with increasing value</doc>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 110.0]">
@@ -144,16 +142,10 @@
                 <link port="Ramp2.output" relation="relation2"/>
                 <link port="Publisher.input" relation="relation"/>
                 <link port="Publisher2.input" relation="relation2"/>
-            </group>
-        </configure>
     </class>
-    <class name="SubclassOfMyLazyTypedCompositeActor" extends="MyLazyTypedCompositeActor">
+    <class name="SubclassOfMyTypedCompositeActor" extends="MyTypedCompositeActor">
         <property name="_location" class="ptolemy.kernel.util.Location" value="{60.0, 170.0}">
         </property>
-        <configure>
-            <group>
-            </group>
-        </configure>
     </class>
     <entity name="Test" class="ptolemy.actor.lib.Test">
         <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0, 1, 2, 3, 4, 5, 6, 7, 8, 9}">
@@ -201,13 +193,9 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 350.0]">
         </property>
     </entity>
-    <entity name="InstanceOfSubclassOfMyLazyTypedCompositeActor" class="SubclassOfMyLazyTypedCompositeActor">
+    <entity name="InstanceOfSubclassOfMyTypedCompositeActor" class="SubclassOfMyTypedCompositeActor">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 240.0]">
         </property>
-        <configure>
-            <group>
-            </group>
-        </configure>
     </entity>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
