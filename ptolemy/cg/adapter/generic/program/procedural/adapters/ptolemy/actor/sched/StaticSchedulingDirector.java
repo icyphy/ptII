@@ -565,17 +565,6 @@ public class StaticSchedulingDirector extends Director {
                                         + " so we track current time."));
                 variableDeclarations.append("double _currentTime = 0;" + _eol);
             }
-            // Print period only if it is the containing actor is the top level.
-            // FIXME: should this test also be applied to the other code?
-            ptolemy.actor.sched.StaticSchedulingDirector director = (ptolemy.actor.sched.StaticSchedulingDirector) getComponent();
-            if (director.getContainer().getContainer()==null) {
-                variableDeclarations.append(_eol
-                        + getCodeGenerator().comment(
-                                "Provide the period attribute as constant."));
-                variableDeclarations.append("public final static double PERIOD = "
-                        + periodValue + ";" + _eol);
-            }
-
         }
 
         return variableDeclarations.toString();

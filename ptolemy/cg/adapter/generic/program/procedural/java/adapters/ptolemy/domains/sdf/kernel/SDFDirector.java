@@ -44,7 +44,9 @@ import ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapter;
 import ptolemy.cg.kernel.generic.program.procedural.java.JavaCodeGenerator;
 import ptolemy.cg.lib.CompiledCompositeActor;
 import ptolemy.data.BooleanToken;
+import ptolemy.data.DoubleToken;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.expr.Variable;
 import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.Type;
@@ -311,6 +313,35 @@ public class SDFDirector
         // The offset of the ports connected to the output port is
         // updated by outside director.
         _updatePortOffset(outputPort, code, rate);
+    }
+
+    /** Generate constant for the <i>period</i> parameter,
+     *  if there is one.
+     *  @return code The generated code.
+     *  @exception IllegalActionException If the adapter class for the model
+     *   director cannot be found.
+     */
+    public String generateVariableDeclaration() throws IllegalActionException {
+        StringBuffer variableDeclarations = new StringBuffer(super
+                .generateVariableDeclaration());
+        Attribute period = _director.getAttribute("period");
+        if (period != null) {
+            Double periodValue = ((DoubleToken) ((Variable) period).getToken())
+                    .doubleValue();
+            // Print period only if it is the containing actor is the top level.
+            // FIXME: should this test also be applied to the other code?
+            ptolemy.actor.sched.StaticSchedulingDirector director = (ptolemy.actor.sched.StaticSchedulingDirector) getComponent();
+            if (director.getContainer().getContainer()==null) {
+                variableDeclarations.append(_eol
+                        + getCodeGenerator().comment(
+                                "Provide the period attribute as constant."));
+                variableDeclarations.append("public final static double PERIOD = "
+                        + periodValue + ";" + _eol);
+            }
+
+        }
+
+        return variableDeclarations.toString();
     }
 
     /** Get the code generator associated with this adapter class.
