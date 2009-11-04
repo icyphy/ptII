@@ -100,6 +100,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
+import ptolemy.util.StringUtilities;
 
 /**
   Actor that calls a system command. 
@@ -289,6 +290,9 @@ public class SystemCommand extends TypedAtomicActor {
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
 
+	// Check if we run in headless mode
+	isHeadless = StringUtilities.getProperty("ptolemy.ptII.isHeadless").equals("true");
+
         // Working directory
         String workDire = cutQuotationMarks(workingDirectory.getExpression());
         // If directory is not set, set it to current directory.
@@ -357,7 +361,8 @@ public class SystemCommand extends TypedAtomicActor {
         if ( cliPro != null )
             cliPro.disposeWindow();
         cliPro = new ClientProcess(this.getFullName());
-        cliPro.showConsoleWindow( ((BooleanToken)(showConsoleWindow.getToken())).booleanValue() );
+	final boolean showConsole = ((BooleanToken)(showConsoleWindow.getToken())).booleanValue();
+        cliPro.showConsoleWindow( showConsole && (! isHeadless) );
     }
 
     /** Starts the simulation program.
@@ -539,6 +544,15 @@ public class SystemCommand extends TypedAtomicActor {
 
     /** Working directory of the subprocess. */
     protected String worDir;
+
+    /** Flag, set the <code>true</code> if Ptolemy is run without any graphical
+     *  interface
+     *
+     * If <code>isHeadless=true</code>, this actor will not open any windows for 
+     * reporting outputs or warnings.
+     */
+    protected boolean isHeadless;
+
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
     ///////////////////////////////////////////////////////////////////

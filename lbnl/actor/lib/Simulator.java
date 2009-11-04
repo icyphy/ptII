@@ -79,6 +79,8 @@ derivative works thereof, in binary and source code form.
 package lbnl.actor.lib;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
@@ -101,6 +103,7 @@ import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.kernel.attributes.URIAttribute;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.util.StringUtilities;
 
 /**
  * Actor that calls a simulation program of a dynamic system 
@@ -261,8 +264,10 @@ public class Simulator extends SDFTransformer {
 		    // (at least one) more time step. Hence we issue a warning.
 		    // Start a new thread for the warning window so that the simulation can continue.
 		    if ( warWin == null ){
-			warWin = new Thread(new WarningWindow(terminationMessage));
-			warWin.start();
+			if (!isHeadless){
+			    warWin = new Thread(new WarningWindow(terminationMessage));
+			    warWin.start();
+			}
 			System.err.println("*** " + terminationMessage);
 		    }
 		}
@@ -295,7 +300,7 @@ public class Simulator extends SDFTransformer {
         try {
             //	    	   		Thread.sleep(1000); // in milliseconds
             server.write(0, tokTim, dblWri);
-        } catch (java.io.IOException e) {
+        } catch (IOException e) {
             String em = "Error while writing to client: " + LS + e.getMessage();
             throw new IllegalActionException(this, em);
         }
@@ -370,7 +375,7 @@ public class Simulator extends SDFTransformer {
                 + "That directory contains the shared library used by the simulator.";
             try {
                 server.close();
-            } catch (java.io.IOException e2) {
+            } catch (IOException e2) {
             }
 	    // Check the exit value of the subprocess
 	    em += "\nClient subprocess exit value (should be 0): ";
@@ -383,11 +388,11 @@ public class Simulator extends SDFTransformer {
 	    }
             ; // do nothing here
             throw new IllegalActionException(this, e, em);
-        } catch (java.io.IOException e) {
+        } catch (IOException e) {
             String em = "IOException while reading from server.";
             try {
                 server.close();
-            } catch (java.io.IOException e2) {
+            } catch (IOException e2) {
             }
             ; // do nothing here
 	    // If the client sent a termination flag, then clientTerminated=true
@@ -417,7 +422,10 @@ public class Simulator extends SDFTransformer {
 	clientTerminated = false;
 	terminationMessage = "";
 	warWin = null;
-       
+
+	// Check if we run in headless mode
+	isHeadless = StringUtilities.getProperty("ptolemy.ptII.isHeadless").equals("true");
+
         // Working directory
         worDir = Simulator.resolveDirectory(getContainer(), 
                 cutQuotationMarks(workingDirectory.getExpression()));
@@ -451,12 +459,12 @@ public class Simulator extends SDFTransformer {
             }
             // get port number
             porNo = server.getLocalPort();
-        } catch (java.io.IOException e) {
+        } catch (IOException e) {
             // try to close server unless it is still a null pointer
             if (server != null) {
                 try {
                     server.close();
-                } catch (java.io.IOException e2) {
+                } catch (IOException e2) {
                 }
             }
             // throw original exception
@@ -468,12 +476,11 @@ public class Simulator extends SDFTransformer {
         try {
             xmlWri.write();
         }
-        //catch(InterruptedException e){}
-        catch (java.io.FileNotFoundException e) {
+        catch (FileNotFoundException e) {
             String em = "FileNotFoundException when trying to write '"
                     + new File(worDir, simCon).getAbsolutePath() + "'.";
             throw new IllegalActionException(this, e, em);
-        } catch (java.io.IOException e) {
+        } catch (IOException e) {
             throw new IllegalActionException(this, e, e.toString());
         }
         ////////////////////////////////////////////////////////////// 	
@@ -515,7 +522,7 @@ public class Simulator extends SDFTransformer {
 	if (commandFile.exists() && !commandFile.isDirectory() ) {
 	    try {
 		comArg = commandFile.getCanonicalPath();
-	    } catch (java.io.IOException exc) {
+	    } catch (IOException exc) {
 		String em = "Error: Could not get canonical path for '"
 		    + comArg + "'.";
 		throw new IllegalActionException(em);
@@ -594,7 +601,9 @@ public class Simulator extends SDFTransformer {
         cliPro = new ClientProcess(this.getFullName());
 	cliPro.redirectErrorStream(true);
         cliPro.setProcessArguments(com, worDir);
-        cliPro.showConsoleWindow( ((BooleanToken)(showConsoleWindow.getToken())).booleanValue() );
+	// Check if we run in headless mode
+	final boolean showConsole = ((BooleanToken)(showConsoleWindow.getToken())).booleanValue();
+        cliPro.showConsoleWindow( showConsole && (! isHeadless) );
 
         // Set simulation log file.
 	// The call to System.gc() is required on Windows: If this actor is called multiple times
@@ -670,7 +679,7 @@ public class Simulator extends SDFTransformer {
             server.write(1, tokTim, dblWri);
             // Close the server.
             server.close();
-        } catch (java.io.IOException e) {
+        } catch (IOException e) {
 	    if ( ! clientTerminated )
 		throw new IllegalActionException(this, e, e.getMessage());
         }
@@ -783,6 +792,14 @@ public class Simulator extends SDFTransformer {
     /** Message that will be displayed in the warning window when the client terminated,
 	but Ptolemy continues with the simulation */
     protected String terminationMessage;
+
+    /** Flag, set the <code>true</code> if Ptolemy is run without any graphical
+     *  interface
+     *
+     * If <code>isHeadless=true</code>, this actor will not open any windows for 
+     * reporting outputs or warnings.
+     */
+    protected boolean isHeadless;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
