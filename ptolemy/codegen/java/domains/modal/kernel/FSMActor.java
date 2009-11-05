@@ -47,9 +47,9 @@ import ptolemy.data.Token;
 import ptolemy.data.expr.ASTPtRootNode;
 import ptolemy.data.expr.PtParser;
 import ptolemy.data.expr.Variable;
-import ptolemy.domains.fsm.kernel.AbstractActionsAttribute;
-import ptolemy.domains.fsm.kernel.State;
-import ptolemy.domains.fsm.kernel.Transition;
+import ptolemy.domains.modal.kernel.AbstractActionsAttribute;
+import ptolemy.domains.modal.kernel.State;
+import ptolemy.domains.modal.kernel.Transition;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
 
@@ -61,7 +61,7 @@ import ptolemy.kernel.util.NamedObj;
 
  @author Gang Zhou
  @version $Id: FSMActor.java 54721 2009-06-26 22:32:23Z cxh $
- @since Ptolemy II 6.0
+ @since Ptolemy II 7.1
  @Pt.ProposedRating Red (zgang)
  @Pt.AcceptedRating Red (zgang)
  */
@@ -69,7 +69,7 @@ public class FSMActor extends JavaCodeGeneratorHelper {
     /** Construct the code generator helper associated with the given FSMActor.
      *  @param component The associated component.
      */
-    public FSMActor(ptolemy.domains.fsm.kernel.FSMActor component) {
+    public FSMActor(ptolemy.domains.modal.kernel.FSMActor component) {
         super(component);
     }
 
@@ -90,7 +90,7 @@ public class FSMActor extends JavaCodeGeneratorHelper {
         StringBuffer code = new StringBuffer();
         code.append(super._generateFireCode());
 
-        ptolemy.domains.fsm.kernel.FSMActor fsmActor = (ptolemy.domains.fsm.kernel.FSMActor) getComponent();
+        ptolemy.domains.modal.kernel.FSMActor fsmActor = (ptolemy.domains.modal.kernel.FSMActor) getComponent();
 
         // FIXME: not handling multirate inputs yet.
         // FIXME: how should we handle in-out ports?
@@ -125,7 +125,7 @@ public class FSMActor extends JavaCodeGeneratorHelper {
         StringBuffer codeBuffer = new StringBuffer();
         codeBuffer.append(super.generateInitializeCode());
 
-        ptolemy.domains.fsm.kernel.FSMActor fsmActor = (ptolemy.domains.fsm.kernel.FSMActor) getComponent();
+        ptolemy.domains.modal.kernel.FSMActor fsmActor = (ptolemy.domains.modal.kernel.FSMActor) getComponent();
         State initialState = fsmActor.getInitialState();
 
         _updateCurrentState(codeBuffer, initialState);
@@ -147,7 +147,7 @@ public class FSMActor extends JavaCodeGeneratorHelper {
         StringBuffer code = new StringBuffer();
         code.append(super.generatePreinitializeCode());
 
-        ptolemy.domains.fsm.kernel.FSMActor fsmActor = (ptolemy.domains.fsm.kernel.FSMActor) getComponent();
+        ptolemy.domains.modal.kernel.FSMActor fsmActor = (ptolemy.domains.modal.kernel.FSMActor) getComponent();
 
         ArrayList args = new ArrayList(2);
         int index = 0;
@@ -160,7 +160,7 @@ public class FSMActor extends JavaCodeGeneratorHelper {
         }
 
         // FIXME: Having this code here breaks the test cases under
-        // $PTII/codegen/c/domains/fsm/test/. This code is probably
+        // $PTII/codegen/c/domains/modal/test/. This code is probably
         // specific to a target (e.g. OpenRTOS or PRET), so it should
         // be moved into an subclass which overrides this method. The
         // subclass should be put under the target-specific packages.
@@ -199,7 +199,7 @@ public class FSMActor extends JavaCodeGeneratorHelper {
             throws IllegalActionException {
         StringBuffer codeBuffer = new StringBuffer();
 
-        ptolemy.domains.fsm.kernel.FSMActor fsmActor = (ptolemy.domains.fsm.kernel.FSMActor) getComponent();
+        ptolemy.domains.modal.kernel.FSMActor fsmActor = (ptolemy.domains.modal.kernel.FSMActor) getComponent();
 
         // The default value 1 of transitionFlag means the transition
         // will be taken. If no transition is actually taken, it will be
@@ -484,7 +484,7 @@ public class FSMActor extends JavaCodeGeneratorHelper {
                 // controller for an instance of MultirateFSMDirector.
 
                 Director director = fsmActor.getExecutiveDirector();
-                if (director instanceof ptolemy.domains.fsm.kernel.MultirateFSMDirector) {
+                if (director instanceof ptolemy.domains.modal.kernel.MultirateFSMDirector) {
                     MultirateFSMDirector directorHelper = (MultirateFSMDirector) _getHelper(director);
                     directorHelper._updateConfigurationNumber(codeBuffer,
                             destinationState);
@@ -511,7 +511,7 @@ public class FSMActor extends JavaCodeGeneratorHelper {
                 // MultirateFSMDirector.
 
                 Director director = fsmActor.getExecutiveDirector();
-                if (director instanceof ptolemy.domains.fsm.kernel.MultirateFSMDirector) {
+                if (director instanceof ptolemy.domains.modal.kernel.MultirateFSMDirector) {
                     MultirateFSMDirector directorHelper = (MultirateFSMDirector) _getHelper(director);
                     directorHelper
                             ._updateConfigurationNumber(codeBuffer, state);
@@ -707,7 +707,7 @@ public class FSMActor extends JavaCodeGeneratorHelper {
          */
         public ptolemy.data.type.Type getType(String name)
                 throws IllegalActionException {
-            return ((ptolemy.domains.fsm.kernel.FSMActor) getComponent())
+            return ((ptolemy.domains.modal.kernel.FSMActor) getComponent())
                     .getPortScope().getType(name);
         }
 
@@ -722,7 +722,7 @@ public class FSMActor extends JavaCodeGeneratorHelper {
          */
         public ptolemy.graph.InequalityTerm getTypeTerm(String name)
                 throws IllegalActionException {
-            return ((ptolemy.domains.fsm.kernel.FSMActor) getComponent())
+            return ((ptolemy.domains.modal.kernel.FSMActor) getComponent())
                     .getPortScope().getTypeTerm(name);
         }
 
@@ -732,7 +732,7 @@ public class FSMActor extends JavaCodeGeneratorHelper {
          *  the identifier set from associated component.
          */
         public Set identifierSet() throws IllegalActionException {
-            return ((ptolemy.domains.fsm.kernel.FSMActor) getComponent())
+            return ((ptolemy.domains.modal.kernel.FSMActor) getComponent())
                     .getPortScope().identifierSet();
         }
     }

@@ -36,7 +36,7 @@ import ptolemy.actor.util.DFUtilities;
 import ptolemy.codegen.actor.Director;
 import ptolemy.codegen.java.domains.modal.kernel.FSMActor.TransitionRetriever;
 import ptolemy.codegen.kernel.CodeGeneratorHelper;
-import ptolemy.domains.fsm.kernel.State;
+import ptolemy.domains.modal.kernel.State;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
@@ -49,7 +49,7 @@ import ptolemy.kernel.util.NamedObj;
 
  @author Gang Zhou
  @version $Id: FSMDirector.java 54721 2009-06-26 22:32:23Z cxh $
- @since Ptolemy II 6.0
+ @since Ptolemy II 7.1
  @Pt.ProposedRating Red (zgang)
  @Pt.AcceptedRating Red (zgang)
  */
@@ -57,9 +57,9 @@ public class FSMDirector extends Director {
 
     /** Construct the code generator helper associated with the given
      *  FSMDirector.
-     *  @param director The associated ptolemy.domains.fsm.kernel.FSMDirector
+     *  @param director The associated ptolemy.domains.modal.kernel.FSMDirector
      */
-    public FSMDirector(ptolemy.domains.fsm.kernel.FSMDirector director) {
+    public FSMDirector(ptolemy.domains.modal.kernel.FSMDirector director) {
         super(director);
     }
 
@@ -76,7 +76,7 @@ public class FSMDirector extends Director {
      *   an actor throws it while generating fire code for the actor.
      */
     public String generateFireCode() throws IllegalActionException {
-        ptolemy.domains.fsm.kernel.FSMActor controller = ((ptolemy.domains.fsm.kernel.FSMDirector) getComponent())
+        ptolemy.domains.modal.kernel.FSMActor controller = ((ptolemy.domains.modal.kernel.FSMDirector) getComponent())
                 .getController();
         FSMActor controllerHelper = (FSMActor) _getHelper(controller);
 
@@ -124,8 +124,8 @@ public class FSMDirector extends Director {
     protected void _generateRefinementCode(StringBuffer code)
             throws IllegalActionException {
 
-        ptolemy.domains.fsm.kernel.FSMDirector director = (ptolemy.domains.fsm.kernel.FSMDirector) getComponent();
-        ptolemy.domains.fsm.kernel.FSMActor controller = director
+        ptolemy.domains.modal.kernel.FSMDirector director = (ptolemy.domains.modal.kernel.FSMDirector) getComponent();
+        ptolemy.domains.modal.kernel.FSMActor controller = director
                 .getController();
         FSMActor controllerHelper = (FSMActor) _getHelper(controller);
 
@@ -219,7 +219,7 @@ public class FSMDirector extends Director {
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
             // modal controller is not used as a stand-alone actor.
-            if (((ptolemy.domains.fsm.kernel.FSMDirector) _director)
+            if (((ptolemy.domains.modal.kernel.FSMDirector) _director)
                     .getController() == actor) {
                 continue;
             }
@@ -230,14 +230,14 @@ public class FSMDirector extends Director {
     }
 
     // FIXME: Having this code here breaks the test cases under
-    // $PTII/codegen/c/domains/fsm/test/. This code is probably
+    // $PTII/codegen/c/domains/modal/test/. This code is probably
     // specific to a target (e.g. OpenRTOS or PRET), so it should
     // be moved into an subclass which overrides this method. The
     // subclass should be put under the target-specific packages.
     //    public String _generateActorCode() throws IllegalActionException{
     //        StringBuffer code = new StringBuffer();
-    //        ptolemy.domains.fsm.kernel.FSMDirector director = (ptolemy.domains.fsm.kernel.FSMDirector) getComponent();
-    //        ptolemy.domains.fsm.kernel.FSMActor controller = director
+    //        ptolemy.domains.modal.kernel.FSMDirector director = (ptolemy.domains.modal.kernel.FSMDirector) getComponent();
+    //        ptolemy.domains.modal.kernel.FSMActor controller = director
     //        .getController();
     //        //FSMActor controllerHelper = (FSMActor) _getHelper(controller);
     //

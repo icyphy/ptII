@@ -43,10 +43,10 @@ import ptolemy.codegen.kernel.ParseTreeCodeGenerator;
 import ptolemy.data.expr.ASTPtRootNode;
 import ptolemy.data.expr.PtParser;
 import ptolemy.data.expr.Variable;
-import ptolemy.domains.fsm.kernel.AbstractActionsAttribute;
-import ptolemy.domains.fsm.kernel.State;
-import ptolemy.domains.fsm.kernel.Transition;
-import ptolemy.domains.fsm.modal.Refinement;
+import ptolemy.domains.modal.kernel.AbstractActionsAttribute;
+import ptolemy.domains.modal.kernel.State;
+import ptolemy.domains.modal.kernel.Transition;
+import ptolemy.domains.modal.modal.Refinement;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
@@ -59,7 +59,7 @@ import ptolemy.kernel.util.NamedObj;
 
  @author Gang Zhou
  @version $Id: MultirateFSMDirector.java 54721 2009-06-26 22:32:23Z cxh $
- @since Ptolemy II 6.0
+ @since Ptolemy II 7.1
  @Pt.ProposedRating Red (zgang)
  @Pt.AcceptedRating Red (zgang)
  */
@@ -71,7 +71,7 @@ public class MultirateFSMDirector extends FSMDirector {
      *  @param director The associated component.
      */
     public MultirateFSMDirector(
-            ptolemy.domains.fsm.kernel.MultirateFSMDirector director) {
+            ptolemy.domains.modal.kernel.MultirateFSMDirector director) {
         super(director);
     }
 
@@ -104,7 +104,7 @@ public class MultirateFSMDirector extends FSMDirector {
         // generate code for refinements
         _generateRefinementCode(code);
 
-        ptolemy.domains.fsm.kernel.FSMActor controller = ((ptolemy.domains.fsm.kernel.FSMDirector) getComponent())
+        ptolemy.domains.modal.kernel.FSMActor controller = ((ptolemy.domains.modal.kernel.FSMDirector) getComponent())
                 .getController();
         FSMActor controllerHelper = (FSMActor) _getHelper(controller);
 
@@ -136,8 +136,8 @@ public class MultirateFSMDirector extends FSMDirector {
     public String generateInitializeCode() throws IllegalActionException {
         StringBuffer initializeCode = new StringBuffer();
 
-        ptolemy.domains.fsm.kernel.MultirateFSMDirector director = (ptolemy.domains.fsm.kernel.MultirateFSMDirector) getComponent();
-        ptolemy.domains.fsm.kernel.FSMActor controller = director
+        ptolemy.domains.modal.kernel.MultirateFSMDirector director = (ptolemy.domains.modal.kernel.MultirateFSMDirector) getComponent();
+        ptolemy.domains.modal.kernel.FSMActor controller = director
                 .getController();
         //FSMActor controllerHelper = (FSMActor) _getHelper(controller);
         State initialState = controller.getInitialState();
@@ -170,9 +170,9 @@ public class MultirateFSMDirector extends FSMDirector {
         StringBuffer code = new StringBuffer();
         code.append(super.generatePreinitializeCode());
 
-        ptolemy.domains.fsm.kernel.MultirateFSMDirector director = (ptolemy.domains.fsm.kernel.MultirateFSMDirector) getComponent();
+        ptolemy.domains.modal.kernel.MultirateFSMDirector director = (ptolemy.domains.modal.kernel.MultirateFSMDirector) getComponent();
         CompositeActor container = (CompositeActor) director.getContainer();
-        ptolemy.domains.fsm.kernel.FSMActor controller = director
+        ptolemy.domains.modal.kernel.FSMActor controller = director
                 .getController();
         ptolemy.codegen.c.actor.TypedCompositeActor containerHelper = (ptolemy.codegen.c.actor.TypedCompositeActor) _getHelper(container);
         code.append(containerHelper.processCode("static int "
@@ -272,9 +272,9 @@ public class MultirateFSMDirector extends FSMDirector {
 
         ptolemy.codegen.c.actor.TypedCompositeActor containerHelper = (ptolemy.codegen.c.actor.TypedCompositeActor) _getHelper(container);
 
-        ptolemy.domains.fsm.kernel.MultirateFSMDirector director = (ptolemy.domains.fsm.kernel.MultirateFSMDirector) getComponent();
+        ptolemy.domains.modal.kernel.MultirateFSMDirector director = (ptolemy.domains.modal.kernel.MultirateFSMDirector) getComponent();
 
-        ptolemy.domains.fsm.kernel.FSMActor controller = director
+        ptolemy.domains.modal.kernel.FSMActor controller = director
                 .getController();
 
         // Find the port number corresponding to the given input port.
@@ -635,8 +635,8 @@ public class MultirateFSMDirector extends FSMDirector {
             throws IllegalActionException {
         StringBuffer codeBuffer = new StringBuffer();
 
-        ptolemy.domains.fsm.kernel.MultirateFSMDirector director = (ptolemy.domains.fsm.kernel.MultirateFSMDirector) getComponent();
-        ptolemy.domains.fsm.kernel.FSMActor controller = director
+        ptolemy.domains.modal.kernel.MultirateFSMDirector director = (ptolemy.domains.modal.kernel.MultirateFSMDirector) getComponent();
+        ptolemy.domains.modal.kernel.FSMActor controller = director
                 .getController();
         FSMActor controllerHelper = (FSMActor) _getHelper(controller);
 
@@ -736,8 +736,8 @@ public class MultirateFSMDirector extends FSMDirector {
     protected void _updateConfigurationNumber(StringBuffer codeBuffer,
             State state) throws IllegalActionException {
 
-        ptolemy.domains.fsm.kernel.MultirateFSMDirector director = (ptolemy.domains.fsm.kernel.MultirateFSMDirector) getComponent();
-        ptolemy.domains.fsm.kernel.FSMActor controller = director
+        ptolemy.domains.modal.kernel.MultirateFSMDirector director = (ptolemy.domains.modal.kernel.MultirateFSMDirector) getComponent();
+        ptolemy.domains.modal.kernel.FSMActor controller = director
                 .getController();
         TypedCompositeActor containerHelper = (TypedCompositeActor) _getHelper(director
                 .getContainer());
@@ -798,11 +798,11 @@ public class MultirateFSMDirector extends FSMDirector {
             return;
         }
 
-        ptolemy.domains.fsm.kernel.MultirateFSMDirector director = (ptolemy.domains.fsm.kernel.MultirateFSMDirector) getComponent();
+        ptolemy.domains.modal.kernel.MultirateFSMDirector director = (ptolemy.domains.modal.kernel.MultirateFSMDirector) getComponent();
 
         CompositeActor container = (CompositeActor) director.getContainer();
 
-        ptolemy.domains.fsm.kernel.FSMActor controller = director
+        ptolemy.domains.modal.kernel.FSMActor controller = director
                 .getController();
 
         CodeGeneratorHelper refinementHelper = (CodeGeneratorHelper) _getHelper((NamedObj) refinement);
