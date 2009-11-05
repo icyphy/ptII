@@ -285,6 +285,7 @@ CODEGENPACKAGES = \
 	ptolemy.codegen.java.actor.lib.string \
 	ptolemy.codegen.java.actor.parameters \
 	ptolemy.codegen.java.actor.sched \
+	ptolemy.codegen.java.domains.modal.kernel \
 	ptolemy.codegen.java.domains.sdf.kernel \
 	ptolemy.codegen.java.domains.sdf.lib \
 	ptolemy.codegen.java.kernel \
