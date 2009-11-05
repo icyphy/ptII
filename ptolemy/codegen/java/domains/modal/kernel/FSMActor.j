@@ -1,10 +1,10 @@
 /***preinitBlock***/
 static int $actorSymbol(currentState);
-static unsigned char $actorSymbol(transitionFlag);
+static char $actorSymbol(transitionFlag);
 /**/
 
 /***defineState($state, $constant)***/
-#define $state $constant
+final static int $state = $constant;
 /**/
 
 /***updateCurrentState($state)***/
