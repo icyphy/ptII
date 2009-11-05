@@ -80,7 +80,6 @@ $CLASSPATH/ptolemy/data/properties/demo/ConstNonconst/ConstNonconst.xml
 $CLASSPATH/ptolemy/data/properties/demo/LogicalAND/LogicalAND.xml
 $CLASSPATH/ptolemy/data/properties/demo/LogicalOrBackward/LogicalOrBackward.xml
 $CLASSPATH/ptolemy/data/properties/demo/RegressionTest/RegressionTest.xml
-$CLASSPATH/ptolemy/data/properties/demo/Sinewave/Sinewave.xml
 $CLASSPATH/ptolemy/data/properties/demo/Workflow/Workflow.xml
 $CLASSPATH/ptolemy/data/properties/lattice/imageOntology/demo/SimpleImageAnnotation/SimpleImageAnnotation.xml
 $CLASSPATH/ptolemy/data/type/demo/Objects/Objects.xml
