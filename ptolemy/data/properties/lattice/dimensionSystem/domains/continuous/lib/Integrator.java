@@ -119,13 +119,6 @@ public class Integrator extends PropertyConstraintHelper {
             }
         }
 
-        public boolean isEffective() {
-            return true;
-        }
-
-        public void setEffective(boolean isEffective) {
-        }
-
         protected InequalityTerm[] _getDependentTerms() {
             return new InequalityTerm[] { getPropertyTerm(_derivative) };
         }
