@@ -199,8 +199,6 @@ public class ModularSDFCodeGenerator extends JavaCodeGenerator {
         
         _createDependencyGraph(container, firingVector, port2Junction, actorFirings);
         
-        //////
-        
         _deriveFiringFunctionDependency(container, firingVector, actorFirings);
                 
         _printGraph(actorFirings);
@@ -479,6 +477,9 @@ public class ModularSDFCodeGenerator extends JavaCodeGenerator {
             Collections.sort(firingClusters, clusterComparator);
         }
         
+        
+        //generate profile
+        
         StringBuffer esdf = new StringBuffer();
         
         esdf.append(INDENT1
@@ -618,6 +619,7 @@ public class ModularSDFCodeGenerator extends JavaCodeGenerator {
                 clustersGraph.append("\t" + "Cluster_" + index + " -> "  + "Cluster_" + firingClusters.indexOf(nextCluster) + "[style=dotted];" + _eol);
             }
         }
+        
         graph.append("}" + _eol);
         clustersGraph.append("}");
         

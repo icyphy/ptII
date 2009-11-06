@@ -30,6 +30,7 @@ package ptolemy.cg.lib;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.HashMap;
@@ -53,6 +54,8 @@ import ptolemy.actor.util.DFUtilities;
 import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
 import ptolemy.cg.kernel.generic.program.procedural.java.JavaCodeGenerator;
 import ptolemy.cg.kernel.generic.program.procedural.java.modular.ModularSDFCodeGenerator;
+import ptolemy.cg.lib.Profile.FiringFunction;
+import ptolemy.cg.lib.Profile.ProfileActor;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
@@ -324,12 +327,6 @@ public class ModularCompiledSDFTypedCompositeActor extends LazyTypedCompositeAct
         }
     }
 
-    /** Return the profile for this composite actor.
-     */
-    public Profile getProfile() {
-        return _getProfile();
-    }
-
     /** Get the ports belonging to this entity.
      *  The order is the order in which they became contained by this entity.
      *  This method is read-synchronized on the workspace.
@@ -449,7 +446,7 @@ public class ModularCompiledSDFTypedCompositeActor extends LazyTypedCompositeAct
 
                                 if (type == BaseType.INT) {
                                     if (rate > 1) {
-                                        Integer[] intTokens = new Integer[rate];
+                                        int[] intTokens = new int[rate];
                                         for (int k = 0; k < rate; k++) {
                                             intTokens[k] = ((IntToken) tokens[k])
                                                     .intValue();
@@ -461,7 +458,7 @@ public class ModularCompiledSDFTypedCompositeActor extends LazyTypedCompositeAct
                                 } else if (type == BaseType.DOUBLE) {
                                     if (rate > 1) {
                                         for (int k = 0; k < rate; k++) {
-                                            Double[] doubleTokens = new Double[rate];
+                                            double[] doubleTokens = new double[rate];
                                             doubleTokens[k] = ((DoubleToken) tokens[k])
                                                     .doubleValue();
                                             tokenHolder = doubleTokens;
@@ -471,7 +468,7 @@ public class ModularCompiledSDFTypedCompositeActor extends LazyTypedCompositeAct
                                     }
                                 } else if (type == BaseType.BOOLEAN) {
                                     if (rate > 1) {
-                                        Boolean[] booleanTokens = new Boolean[rate];
+                                        boolean[] booleanTokens = new boolean[rate];
                                         for (int k = 0; k < rate; k++) {
                                             booleanTokens[k] = ((BooleanToken) tokens[k])
                                                     .booleanValue();
@@ -646,6 +643,7 @@ public class ModularCompiledSDFTypedCompositeActor extends LazyTypedCompositeAct
             
             if (_publisherRelations != null && _publisherRelations.containsKey(name)) {
                 IOPort port = _getPublishedPort(name);
+
                 if (port != null && port.getContainer() == null) {
                     // The user deleted the port.
                     port.setContainer(this);
@@ -792,6 +790,11 @@ public class ModularCompiledSDFTypedCompositeActor extends LazyTypedCompositeAct
             if (!_addedSubscribersFromProfile) {
                 _addedSubscribersFromProfile = true;
                 if (profile != null) {
+                    for(FiringFunction firing: profile.firings()) {
+                        System.out.print(firing.firingIndex + ": ");
+                        System.out.println(firing.ports);
+                    }
+                    
                     List ports = new LinkedList(super.portList());
                     HashSet<String> portSet = new HashSet<String>();
                     for (Object port : ports) {
@@ -1029,6 +1032,49 @@ public class ModularCompiledSDFTypedCompositeActor extends LazyTypedCompositeAct
         }
     }
     
+    public Profile getProfile() {
+        if(_profile == null) {
+            String className = NamedProgramCodeGeneratorAdapter.generateName(this) + "_profile";        
+            Class<?> classInstance = null;
+
+            NamedObj toplevel = toplevel();
+            FileParameter path;
+            try {
+                path = new FileParameter(toplevel, toplevel.uniqueName("dummyParam"));
+                path.setExpression("$HOME/cg/");
+                URL url = path.asFile().toURI().toURL();
+                path.setContainer(null); //Remove the parameter again.
+                URL[] urls = new URL[] { url };
+
+                ClassLoader classLoader = new URLClassLoader(urls);
+                classInstance = classLoader.loadClass(className);
+                _profile = (Profile) (classInstance.newInstance());
+                
+            } catch (IllegalActionException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            } catch (NameDuplicationException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            } catch (MalformedURLException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            } catch (ClassNotFoundException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            } catch (InstantiationException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            } catch (IllegalAccessException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+            
+        }
+            
+        return _profile;
+    }
+    
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
@@ -1165,8 +1211,9 @@ public class ModularCompiledSDFTypedCompositeActor extends LazyTypedCompositeAct
     
     private void _generateCode() throws KernelException {
         _createCodeGenerator();
-        _codeGenerator.generateCode();
         _codeGenerator.createProfile();
+//        _codeGenerator.generateCode();
+      
     }
 
     private Profile _getProfile() {
