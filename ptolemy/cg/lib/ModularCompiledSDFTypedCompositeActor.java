@@ -324,6 +324,11 @@ public class ModularCompiledSDFTypedCompositeActor extends LazyTypedCompositeAct
         }
     }
 
+    /** Return the profile for this composite actor.
+     */
+    public Profile getProfile() {
+        return _getProfile();
+    }
 
     /** Get the ports belonging to this entity.
      *  The order is the order in which they became contained by this entity.
