@@ -27,7 +27,12 @@
  */
 package ptolemy.cg.lib;
 
+import java.net.URL;
+import java.net.URLClassLoader;
+import java.util.LinkedList;
 import java.util.List;
+
+import ptolemy.kernel.util.IllegalActionException;
 
 //////////////////////////////////////////////////////////////////////////
 ////Profile
@@ -54,6 +59,130 @@ abstract public class Profile {
      */
     abstract public List<Port> ports();
 
+    /** Return the list of firings in the graph.
+     *  @return A list with for each actor the information
+     *  necessary to interface the generated code.
+     */
+//    abstract public List<ProfileActor> actors() throws IllegalActionException;
+    abstract public List<FiringFunction> firings() throws IllegalActionException;
+
+    /** Return firing per iteration of the actor
+     * @return value of number of firings per iteration of the actor
+     */
+
+    /**
+     * 
+     */
+    static public class Connection {
+        public String actorName;
+        public String junctionName;
+    }
+    /**
+     * Profiled Junction
+     * @author dai
+     *  
+     */
+    static public class Junction {
+        public Junction(String putActor, String putActorPort,
+            String getActor, String getActorPort, int numTokens) {
+            _putActor = putActor;
+            numInitialTokens = numTokens;
+        }
+        
+        public String getPutActorName() {
+            return _putActor;
+        }
+        
+        public int numInitialTokens = 0;
+        private String _putActor = null;
+        
+    }
+
+    static public class FiringFunction {
+        public FiringFunction(int index) {
+            firingIndex = index;
+            ports = new LinkedList();
+            nextFiringFunctions = new LinkedList();
+            previousFiringFunctions = new LinkedList();
+            
+            nextIterationFirings = new LinkedList();
+            previousIterationFirings = new LinkedList();
+        }
+        
+        public List<FiringFunctionPort> ports;
+        
+        public List<Integer> nextFiringFunctions;
+        public List<Integer> previousFiringFunctions;
+        
+        public List<Integer> nextIterationFirings;
+        public List<Integer> previousIterationFirings;
+        
+        public int firingIndex;
+    }
+    
+    /**
+     * A class for actors in a graph information
+     */
+    static public class ProfileActor {
+        
+        public ProfileActor(String name, boolean original) throws IllegalActionException {
+            _name = new String(name);
+            _isOriginal = original;
+        }
+        /** Return if an actor is an original ptolemy actor or not
+         * @return true is the actor is an original ptolemy actor like Ramp,
+         * false if the actor is generated from some composite actor, thus it has profile
+         */
+        public boolean isOriginal() {
+            return _isOriginal;
+        }
+        
+        public String getName() {
+            return new String(_name);
+        }
+        
+        public Profile getProfile() throws IllegalActionException {
+            try{
+                if (_profile != null) {
+                    return _profile;
+                } else {
+                    String className = _name + "_profile";        
+                    Class<?> classInstance = null;
+    
+                    String home = System.getenv("HOME"); 
+                    URL url = new URL("file:"+home+"/cg/");
+                    
+                    ClassLoader classLoader = new URLClassLoader (new URL[] {url});
+                    
+                    classInstance = classLoader.loadClass(className);
+                    _profile = (Profile) (classInstance.newInstance());
+                }
+            } catch (Exception e) {
+                _profile = null;
+                throw new IllegalActionException("Cannot locate the profile of the actor: " + _name);
+            }
+            return _profile;
+        }
+        
+        Profile _profile = null;
+        
+        private String _name;
+        private boolean _isOriginal = true;
+    }
+    
+    static public class FiringFunctionPort {
+        public FiringFunctionPort(String portName, String externalPort, int portRate, boolean isInputPort) {
+            name = portName;
+            externalPortName = externalPort;
+            rate = portRate;
+            isInput = isInputPort;
+        }
+        public String name;     //name of the external port
+        public String externalPortName;
+        public int rate;
+        public boolean isInput;
+    }
+    
     /** A class contains the port information to
      * interface with modular code.
      */
@@ -64,6 +193,8 @@ abstract public class Profile {
          * @param publisher A flag that specifies whether it is a subscriber.
          * @param subscriber A flag that specifies whether it is a publisher.
          * @param width The width of the port. 
+         * @param rate The rate of the port
+         * @param type The code type of the port that can be mapped back to ptolemy type
          * @param input A flag that specifies whether the port is an input port.
          * @param output A flag that specifies whether the port is an output port.
          * @param pubSubChannelName The name
@@ -154,4 +285,7 @@ abstract public class Profile {
         /** The codegen type of the port */
         private int _type;
     }    
+    
+    
+    
 }
