@@ -138,6 +138,35 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
         //return ptolemyType.replace("Int", "Integer").replace("Integerger", "Integer").replace("Array", "Token");
     }
 
+    public String codeGenType2(Type type) {
+        String result = type == BaseType.INT ? "int"
+                : type == BaseType.LONG ? "long"
+                        : type == BaseType.STRING ? "String"
+                                : type == BaseType.DOUBLE ? "double"
+                                        : type == BaseType.BOOLEAN ? "boolean"
+                                                : type == BaseType.UNSIGNED_BYTE ? "unsigned byte"
+                                                        : type == PointerToken.POINTER ? "Pointer"
+                                                                : null;
+
+        if (result == null) {
+            if (type instanceof ArrayType) {
+                result = "Array";
+
+            } else if (type instanceof MatrixType) {
+                result = "Matrix";
+            }
+        }
+        if (result == null || result.length() == 0) {
+            System.out
+                    .println("Cannot resolved codegen type from Ptolemy type: "
+                            + type);
+        }
+        if (result == null) {
+            return null;
+        }
+        return result;
+    }
+    
     static public Short codeGenTypeValue(String type) throws IllegalActionException {
         Short typeReturn = -2;
         if (type.equals("Token")) {
