@@ -333,7 +333,7 @@ public class ModularCodeGenTypedCompositeActor extends LazyTypedCompositeActor {
 
                                 if (type == BaseType.INT) {
                                     if (rate > 1) {
-                                        Integer[] intTokens = new Integer[rate];
+                                        int[] intTokens = new int[rate];
                                         for (int k = 0; k < rate; k++) {
                                             intTokens[k] = ((IntToken) tokens[k])
                                                     .intValue();
@@ -345,7 +345,7 @@ public class ModularCodeGenTypedCompositeActor extends LazyTypedCompositeActor {
                                 } else if (type == BaseType.DOUBLE) {
                                     if (rate > 1) {
                                         for (int k = 0; k < rate; k++) {
-                                            Double[] doubleTokens = new Double[rate];
+                                            double[] doubleTokens = new double[rate];
                                             doubleTokens[k] = ((DoubleToken) tokens[k])
                                                     .doubleValue();
                                             tokenHolder = doubleTokens;
@@ -355,7 +355,7 @@ public class ModularCodeGenTypedCompositeActor extends LazyTypedCompositeActor {
                                     }
                                 } else if (type == BaseType.BOOLEAN) {
                                     if (rate > 1) {
-                                        Boolean[] booleanTokens = new Boolean[rate];
+                                        boolean[] booleanTokens = new boolean[rate];
                                         for (int k = 0; k < rate; k++) {
                                             booleanTokens[k] = ((BooleanToken) tokens[k])
                                                     .booleanValue();
