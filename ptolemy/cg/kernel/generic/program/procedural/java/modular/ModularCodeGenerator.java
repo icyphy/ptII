@@ -34,6 +34,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import ptolemy.actor.Actor;
+import ptolemy.actor.AtomicActor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.Manager;
@@ -42,7 +43,10 @@ import ptolemy.actor.util.DFUtilities;
 import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
 import ptolemy.cg.kernel.generic.program.procedural.java.JavaCodeGenerator;
 import ptolemy.cg.lib.ModularCodeGenTypedCompositeActor;
+import ptolemy.cg.lib.ModularCompiledSDFTypedCompositeActor;
 import ptolemy.cg.lib.Profile;
+import ptolemy.data.IntToken;
+import ptolemy.data.expr.Variable;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -106,11 +110,15 @@ public class ModularCodeGenerator extends JavaCodeGenerator {
         profileCode.append("import java.util.List;" + _eol);
         profileCode.append("import java.util.LinkedList;" + _eol);
         profileCode.append("import ptolemy.cg.lib.Profile;" + _eol);
+        profileCode.append("import ptolemy.kernel.util.IllegalActionException;" + _eol);
 
+       
         profileCode.append(_eol + "public class " + profileClassName + " extends Profile {"
                 + _eol);
         profileCode.append(INDENT1
                 + "public " + profileClassName + "() { }" + _eol);
+        
+        profileCode.append(createActorGraph());
         
         profileCode.append(INDENT1
                 + "public List<Profile.Port> ports() {" + _eol);
@@ -153,6 +161,29 @@ public class ModularCodeGenerator extends JavaCodeGenerator {
                         + lastSubprocessReturnCode + ", which is not 0:\n"
                         + executeCommands.buffer.toString());
         }
+    }
+    
+
+    public StringBuffer createActorGraph() {
+        StringBuffer actorGraph = new StringBuffer();
+        
+        actorGraph.append(INDENT1
+                + "public List<Profile.ProfileActor> actors() throws IllegalActionException {" + _eol);
+        actorGraph.append(INDENT2 + "List<Profile.ProfileActor> profiles = new LinkedList<Profile.ProfileActor>();" + _eol);
+        ModularCodeGenTypedCompositeActor model = (ModularCodeGenTypedCompositeActor) _model;
+        for (Object object : model.entityList()) {
+            
+            Actor actor = (Actor) object;
+            
+            actorGraph.append(INDENT2
+                    + "profiles.add(new Profile.ProfileActor(\"" + actor.getName() + "\", " 
+                    + (actor instanceof AtomicActor) + "));" + _eol);
+        }
+        
+        actorGraph.append(INDENT2 + "return profiles;" + _eol);
+        actorGraph.append(INDENT1 + "}" + _eol);
+        
+        return actorGraph;
     }
 
     /**
@@ -246,8 +277,8 @@ public class ModularCodeGenerator extends JavaCodeGenerator {
             while (inputPorts.hasNext()) {
                 TypedIOPort inputPort = (TypedIOPort) inputPorts.next();
 
-                String type = codeGenType(inputPort.getType());
-                if (!type.equals("Token") && !isPrimitive(type)) {
+                String type = codeGenType2(inputPort.getType());
+                if (!type.equals("Token") && !isPrimitive(codeGenType(inputPort.getType()))) {
                     type = "Token";
                 }
                 for (int i = 0; i < inputPort.getWidth(); i++) {
