@@ -124,7 +124,7 @@ public class ModularSDFCodeGenerator extends JavaCodeGenerator {
                 + _eol);
         profileCode.append(INDENT1
                 + "public " + profileClassName + "() { }" + _eol);
-        profileCode.append(createESDFGraph());
+        profileCode.append(createGraph());
         
         
         profileCode.append(INDENT1
@@ -175,7 +175,7 @@ public class ModularSDFCodeGenerator extends JavaCodeGenerator {
      * @throws IllegalActionException 
      * 
      */
-    public StringBuffer createESDFGraph() throws IllegalActionException {
+    public StringBuffer createGraph() throws IllegalActionException {
         
         CompositeActor container = (CompositeActor)getContainer();
         //solve the balance equation
@@ -186,469 +186,23 @@ public class ModularSDFCodeGenerator extends JavaCodeGenerator {
         Map<SimJunction, IOPort> junction2InputPort = new HashMap<SimJunction, IOPort>();
         Map<SimJunction, IOPort> junction2OutputPort = new HashMap<SimJunction, IOPort>();
         
-        //construct a ESDF graph for deadlock analysis
-        for(Iterator actors = container.deepEntityList().iterator(); actors.hasNext();) {
-            Actor actor = (Actor)actors.next();
-            if(! (actor instanceof SampleDelay))
-            {
-                for(Iterator ports = actor.outputPortList().iterator(); ports.hasNext();) {
-                    IOPort outputPort = (IOPort) ports.next();
-                    
-                    if(outputPort instanceof ParameterPort) {
-                        continue;   //FIXME
-                    }
-                    
-                    for(Iterator connectedPorts = outputPort.connectedPortList().iterator();
-                        connectedPorts.hasNext();) {
-                        IOPort connectedPort = (IOPort)connectedPorts.next();
-                        
-                        if(!connectedPort.isOutput() &&
-                                !(connectedPort.getContainer() instanceof SampleDelay)) { //only input ports, this exclude the output ports of the container
-                            //each connection has one junction 
-                            SimJunction junction = new SimJunction(connectedPort, outputPort, 0); //FIXME what is the number of initia tokens
-                            
-                            port2Junction.put((outputPort.hashCode() ^ connectedPort.hashCode()), junction);
-//                            port2Junction.put(connectedPort, junction);
-                            
-                            junction2InputPort.put(junction, connectedPort);
-                            junction2OutputPort.put(junction, outputPort);
-                        }
-                    }
-                }
-            } else {
-                IOPort sampleDelayOutputPort = ((SampleDelay)actor).output;
-                IOPort sampleDelayInputPort = ((SampleDelay)actor).input;
-                IOPort outputPort = _getConnectedOutputPort(sampleDelayInputPort);
-                if(outputPort == null)
-                    continue;
-                
-                ArrayToken tokens = (ArrayToken)((SampleDelay)actor).initialOutputs.getToken();
-                
-                for(Iterator connectedPorts = sampleDelayOutputPort.connectedPortList().iterator();
-                    connectedPorts.hasNext();) {
-                    IOPort connectedPort = (IOPort)connectedPorts.next();
-                    
-                    if(!connectedPort.isOutput()) { //only input ports, this exclude the output ports of the container
-                        
-                        
-                        //each connection has one junction 
-                        SimJunction junction = new SimJunction(connectedPort, outputPort, 
-                                tokens.length()); //FIXME what is the number of initial tokens
-                        
-                        port2Junction.put((outputPort.hashCode() ^ connectedPort.hashCode()), junction);
-                        
-                        junction2InputPort.put(junction, connectedPort);
-                        junction2OutputPort.put(junction, outputPort);
-                    }
-                }
-            }
-        }
+        _createExpandedGraph(container, port2Junction, junction2InputPort, junction2OutputPort);
         
         if(firingVector.containsKey(container))
             firingVector.remove(container);
         
-        //deadlock analysis
-        Map simFiringVector = new HashMap(firingVector);
-        boolean deadlocked = true;
-        
-        while(simFiringVector.size() > 0) {
-            
-            boolean fireLastIteration = false;
-            
-            LinkedList actorSet = new LinkedList(simFiringVector.keySet());
-            //pick an actor to fire
-            for(Iterator actors = actorSet.iterator(); actors.hasNext();) {
-                Actor actor = (Actor)actors.next();
-                
-                if(actor instanceof SampleDelay)
-                {
-                    simFiringVector.remove(actor);
-                    continue;
-                }
-                
-                if(! (actor instanceof ModularCompiledSDFTypedCompositeActor)) {
-                    boolean canFire = true;
-                    
-                    //check if we could fire this actor
-                    for(Iterator ports = actor.inputPortList().iterator(); ports.hasNext();) {
-                        IOPort inputPort = (IOPort) ports.next();
-                        
-                        IOPort connectedPort = _getConnectedOutputPort(inputPort);
-                        if(connectedPort == null)
-                            continue;
-                        
-                        SimJunction junction = (SimJunction) port2Junction.get(inputPort.hashCode() ^ 
-                                connectedPort.hashCode());
-                        
-                        //ports that are connected inside have junctions, we only check those ports
-                        if(junction !=  null) {
-                            if(junction.counter < DFUtilities.getTokenConsumptionRate(inputPort)) {
-                                canFire = false;    //do not have enough tokens at some port to fire
-                                break;
-                            }
-                        }
-                    }
-                    
-                    if(canFire) {
-                        
-                        //FIXME more complicated for other actors with different firing functions
-                        _fireActor(actor, port2Junction);
-                        
-                        Integer numFirings = ((Integer)simFiringVector.get(actor)).intValue() - 1;  //decrease number of firings
-                        
-                        if(numFirings <= 0) {
-                            simFiringVector.remove(actor);
-                        } else
-                            simFiringVector.put(actor, numFirings);
-                        
-                        fireLastIteration = true;   //mark that there is some actor that can fire, not deadlocked yet
-                    }
-                } else {
-
-                    //FIXME
-                    boolean canFire = true;
-                    
-                    //check if we could fire this actor
-                    for(Iterator ports = actor.inputPortList().iterator(); ports.hasNext();) {
-                        IOPort inputPort = (IOPort) ports.next();
-                        
-                        IOPort connectedPort = _getConnectedOutputPort(inputPort);
-                        if(connectedPort == null)
-                            continue;
-                        
-                        SimJunction junction = (SimJunction) port2Junction.get(inputPort.hashCode() ^ 
-                                connectedPort.hashCode());
-                        
-                        //ports that are connected inside have junctions, we only check those ports
-                        if(junction !=  null) {
-                            if(junction.counter < DFUtilities.getTokenConsumptionRate(inputPort)) {
-                                canFire = false;    //do not have enough tokens at some port to fire
-                                break;
-                            }
-                        }
-                    }
-                    
-                    if(canFire) {
-                        
-                        //FIXME more complicated for other actors with different firing functions
-                        _fireActor(actor, port2Junction);
-                        
-                        Integer numFirings = ((Integer)simFiringVector.get(actor)).intValue() - 1;  //decrease number of firings
-                        
-                        if(numFirings <= 0) {
-                            simFiringVector.remove(actor);
-                        } else
-                            simFiringVector.put(actor, numFirings);
-                        
-                        fireLastIteration = true;   //mark that there is some actor that can fire, not deadlocked yet
-                    }
-                }
-            }
-            
-            //check if deadlock happens
-            if(simFiringVector.size() == 0) {
-                deadlocked =  false;    //we can simulate
-                break;
-            } else if( !fireLastIteration ) {   //there are some actors left but none can fire -> deadlocked
-                deadlocked = true;
-                break;
-            }
-                
-        }
-        
-        if(deadlocked) {
+        if(!_deadlockAnalysis(firingVector, port2Junction))
             return null;
-        }
-        
-        //check if all junctions are in initial states after one firing iteration
-        for(Iterator junctions = port2Junction.values().iterator(); junctions.hasNext();) {
-            SimJunction junction = (SimJunction)junctions.next();
-            if(!junction.isInInitalState()) {
-                throw new IllegalActionException("Some junction is not in its initial state after one firing iteration");
-            }
-        }
         
         //unfolding the graph
-        
         List actorFirings = new LinkedList();
         
-        //create the dependency graph
-        for(Iterator actors = container.deepEntityList().iterator(); actors.hasNext();) {
-            Actor actor = (Actor) actors.next();
-            
-            if(actor instanceof SampleDelay)
-                continue;
-            
-            Integer numFirings = (Integer) firingVector.get(actor);
-            for(Iterator ports = actor.outputPortList().iterator(); ports.hasNext();) {
-                IOPort outputPort = (IOPort) ports.next();
-                
-                for(Iterator inputPorts = _getConnectedInputPorts(outputPort).iterator(); inputPorts.hasNext();) {
-                    IOPort connectedPort = (IOPort) inputPorts.next();
-                    
-                    SimJunction junction = (SimJunction) port2Junction.get(outputPort.hashCode() ^ connectedPort.hashCode());
-                    
-                    if(junction !=  null) {
-                        junction.reset();
-                        Actor nextActor = (Actor) connectedPort.getContainer();
-                        int nextActorNumFirings = (Integer) firingVector.get(nextActor);
-                        
-                        List<FiringFunction> currentActorFirings = null;
-                        List<FiringFunction> nextActorFirings = null;
-                        
-                        int numFireFunctions;
-                        int nextActorFireFunctions;
-                        
-                        if(actor instanceof ModularCompiledSDFTypedCompositeActor) {
-                            currentActorFirings = ((ModularCompiledSDFTypedCompositeActor)actor).getProfile().firings();
-                            numFireFunctions = currentActorFirings.size();
-                        } else
-                            numFireFunctions = 1;
-                        
-                        
-                        if(nextActor instanceof ModularCompiledSDFTypedCompositeActor) {
-                            nextActorFirings = ((ModularCompiledSDFTypedCompositeActor)nextActor).getProfile().firings();
-                            nextActorFireFunctions = nextActorFirings.size();
-                        } else {
-                            nextActorFireFunctions = 1;
-                        }
-                        
-                        int iterationCount = 1;
-                        int firingFunctionCount = 0;
-                        boolean firstConsumption = true;
-                        
-                        for(int i = 0; i <= numFirings; i++) {
-                            nextFiring:
-                            for(int j = 0; j < numFireFunctions; j++) {
-                                boolean fired = false;
-                                if(i > 0) {
-                                    if(actor instanceof ModularCompiledSDFTypedCompositeActor) {
-                                        for(FiringFunctionPort port:currentActorFirings.get(j).ports) {
-                                            if(port.externalPortName.equals(outputPort.getName())) {
-                                                junction.counter += port.rate;
-                                                fired = true;
-                                                break;
-                                            }
-                                        }
-                                            
-                                    } else {
-                                        //normal actor
-                                        junction.counter += DFUtilities.getTokenProductionRate(outputPort);
-                                        fired = true;
-                                    }
-                                } else {
-                                    
-                                  //check the backward dependency
-                                    if(junction.counter > 0 && firstConsumption) {
-                                        //get the last fire function that put tokens into the junction
-                                        int lastFireFunction = numFireFunctions-1;
-                                        if(actor instanceof ModularCompiledSDFTypedCompositeActor) {
-                                            FOUND_FUNCTION:
-                                            for( int k = numFireFunctions-1; k >= 0 ; k--) {
-                                                for(FiringFunctionPort port:currentActorFirings.get(k).ports) {
-                                                    if(port.externalPortName.equals(outputPort.getName())) {
-                                                        lastFireFunction = k;
-                                                        break FOUND_FUNCTION;
-                                                    }
-                                                }
-                                            }
-                                        }
-                                        
-                                        int firstFireFunction = 0;
-                                        
-                                        if(nextActor instanceof ModularCompiledSDFTypedCompositeActor) {
-                                            FOUND_NEXT_ACTOR_FUNCTION:
-                                            for(int n = 0; n < numFireFunctions; n++) {
-                                                for(FiringFunctionPort port:nextActorFirings.get(n).ports) {
-                                                    if(port.externalPortName.equals(outputPort.getName())) {
-                                                        firstFireFunction = n;
-                                                        break FOUND_NEXT_ACTOR_FUNCTION;
-                                                    }
-                                                }
-                                            }
-                                        }
-                                        
-                                        Firing previousIterationFiring = _getFiring(actor, numFirings, lastFireFunction, actorFirings);
-                                        if(previousIterationFiring == null)
-                                        {
-                                            previousIterationFiring = new Firing(actor, numFirings, lastFireFunction);
-                                            actorFirings.add(previousIterationFiring);
-                                        }
-                                        
-                                        Firing nextIterationFiring = _getFiring(nextActor, 1, firstFireFunction, actorFirings);
-                                        if(nextIterationFiring == null)
-                                        {
-                                            nextIterationFiring = new Firing(nextActor, 1, firstFireFunction);
-                                            actorFirings.add(nextIterationFiring);
-                                        }
-                                        
-                                        previousIterationFiring.nextIterationFirings.add(nextIterationFiring);
-                                        nextIterationFiring.previousIterationFirings.add(previousIterationFiring);
-                                        
-                                        firstConsumption = false;
-                                    }
-                                    
-                                    fired = true;
-                                }
-                                
-                                if(fired) {
-                                    
-                                    Firing currentFiring = null;
-                                    
-                                    if(i > 0) {
-                                        currentFiring = _getFiring(actor, i, j, actorFirings);
-                                        if(currentFiring == null)
-                                        {
-                                            currentFiring = new Firing(actor, i, j);
-                                            actorFirings.add(currentFiring);
-                                        }
-                                    }
-                                    
-                                    //next actor consumes tokens
-                                    while(iterationCount <= nextActorNumFirings) {
-                                        while(firingFunctionCount < nextActorFireFunctions) {
-                                            boolean nextActorFired = false;
-                                            //try to consume some tokens
-                                            if(nextActor instanceof ModularCompiledSDFTypedCompositeActor) {
-                                                for(FiringFunctionPort port:nextActorFirings.get(firingFunctionCount).ports) {
-                                                    if(port.externalPortName.equals(connectedPort.getName())) {
-                                                        
-                                                        if(junction.counter >= port.rate) {
-                                                            junction.counter -= port.rate;
-                                                            nextActorFired = true;
-                                                        } else {
-                                                            continue nextFiring;
-                                                        }
-                                                        break;
-                                                    }
-                                                }
-                                            } else {
-                                                if(junction.counter >= DFUtilities.getTokenConsumptionRate(connectedPort)) {
-                                                    junction.counter -= DFUtilities.getTokenConsumptionRate(connectedPort);
-                                                    nextActorFired = true;
-                                                } else{
-                                                    continue nextFiring;
-                                                }
-                                            }
-                                            
-                                            if(nextActorFired && currentFiring != null) {
-                                                Firing nextFiring = _getFiring(nextActor, iterationCount, firingFunctionCount, actorFirings);
-                                                if(nextFiring == null)
-                                                {
-                                                    nextFiring = new Firing(nextActor, iterationCount, firingFunctionCount);
-                                                    actorFirings.add(nextFiring);
-                                                }
-                                                
-                                                currentFiring.nextActorFirings.add(nextFiring);
-                                                nextFiring.previousActorFirings.add(currentFiring);
-                                            }
-                                            
-                                            firingFunctionCount++;
-                                        }
-                                        
-                                        if(firingFunctionCount >= nextActorFireFunctions)
-                                            firingFunctionCount = 0;
-                                        
-                                        iterationCount++;
-                                    }
-                                    
-                                    if(iterationCount >nextActorNumFirings)
-                                        break;
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
+        _createDependencyGraph(container, firingVector, port2Junction, actorFirings);
         
-        //dependency between firing of each actor
-       for(Iterator actors = container.deepEntityList().iterator(); actors.hasNext();) {
-            Actor actor = (Actor) actors.next();
-            
-            if(actor instanceof SampleDelay)
-                continue;
-            
-            Integer numFiring = (Integer) firingVector.get(actor);
-            for(int i = 1; i <= numFiring; i++) {
-                if(actor instanceof ModularCompiledSDFTypedCompositeActor) {
-                    List<FiringFunction> actorFiringFunctions = ((ModularCompiledSDFTypedCompositeActor)actor).getProfile().firings();
-                    int numFireFunctions = actorFiringFunctions.size();
-                    
-                    for(int j = 0; j < numFireFunctions; j++) {
-                        Firing firing = _getFiring(actor, i, j, actorFirings);
-                        if(firing == null)
-                        {
-                            firing = new Firing(actor, i, j);
-                            actorFirings.add(firing);
-                        }
-                        
-                        for(Integer index :actorFiringFunctions.get(j).previousFiringFunctions) {
-                            Firing previousFiring = _getFiring(actor, i, index, actorFirings);
-                            
-                            if(previousFiring == null)
-                            {
-                                previousFiring = new Firing(actor, i, index);
-                                actorFirings.add(previousFiring);
-                            }
-                            firing.previousActorFirings.add(previousFiring);
-                            previousFiring.nextActorFirings.add(firing);
-                        }
-                        
-                        for(Integer index :actorFiringFunctions.get(j).nextFiringFunctions) {
-                            Firing nextFiring = _getFiring(actor, i, index, actorFirings);
-                            
-                            if(nextFiring == null)
-                            {
-                                nextFiring = new Firing(actor, i, index);
-                                actorFirings.add(nextFiring);
-                            }
-                            
-                            firing.nextActorFirings.add(nextFiring);
-                            nextFiring.previousActorFirings.add(firing);
-                        }
-                        
-                        if( i > 1) {
-                            for(Integer index : actorFiringFunctions.get(firing.firingFunction).previousIterationFirings) {
-                                Firing previousFiring = _getFiring(actor, i-1, index, actorFirings);
-                                
-                                if(previousFiring == null)
-                                {
-                                    previousFiring = new Firing(actor, i-1, index);
-                                    actorFirings.add(previousFiring);
-                                }
-                                
-                                firing.previousActorFirings.add(previousFiring);
-                                previousFiring.nextActorFirings.add(firing);
-                            }
-                        }
-                    }
-                } else {
-                    if( i > 1)
-                    {
-                        Firing firing = _getFiring(actor, i, 0, actorFirings);
-                        
-                        if(firing == null)
-                        {
-                            firing = new Firing(actor, i, 0);
-                            actorFirings.add(firing);
-                        }
-                        
-                        Firing previousFiring = _getFiring(actor, i-1, 0, actorFirings);
-                        if(previousFiring == null)
-                        {
-                            previousFiring = new Firing(actor, i-1, 0);
-                            actorFirings.add(previousFiring);
-                        }
-                        
-                        firing.previousActorFirings.add(previousFiring);
-                        previousFiring.nextActorFirings.add(firing);
-                    }
-                }
-            }
-                
-        }
+        //////
         
+        _deriveFiringFunctionDependency(container, firingVector, actorFirings);
+                
         _printGraph(actorFirings);
 
         //find output actors (produce external tokens)
@@ -787,6 +341,7 @@ public class ModularSDFCodeGenerator extends JavaCodeGenerator {
         List<FiringCluster> firingClusters = new LinkedList();
         
         Set clusters = new HashSet();
+        
         //create clusters of actors
         for(Iterator firings = clusteredOutputs.keySet().iterator(); firings.hasNext();) {
             Set inputFirings = (Set) firings.next();
@@ -1005,10 +560,8 @@ public class ModularSDFCodeGenerator extends JavaCodeGenerator {
         
         //draw cluster graphs
         StringBuffer graph = new StringBuffer();
-        StringBuffer clustersGraph = new StringBuffer();
         
         graph.append("digraph G {" + _eol + "\tcompound=true;" + _eol);
-        clustersGraph.append("digraph G {" + _eol);
         
         for(Iterator firings = actorFirings.iterator(); firings.hasNext();) {
             Firing firing = (Firing) firings.next();
@@ -1020,12 +573,12 @@ public class ModularSDFCodeGenerator extends JavaCodeGenerator {
                         + nextFiring.firingFunction + ";" + _eol);
             }
             
-            for(Iterator nextFirings = firing.nextIterationFirings.iterator(); nextFirings.hasNext();) {
-                Firing nextFiring = (Firing) nextFirings.next();
-                graph.append("\t" + firing.actor.getName() + "_" + firing.firingIndex + "_" + firing.firingFunction 
-                        + " -> "+ nextFiring.actor.getName() + "_" + nextFiring.firingIndex + "_" 
-                        + nextFiring.firingFunction + "[style=dotted];" + _eol);
-            }
+//            for(Iterator nextFirings = firing.nextIterationFirings.iterator(); nextFirings.hasNext();) {
+//                Firing nextFiring = (Firing) nextFirings.next();
+//                graph.append("\t" + firing.actor.getName() + "_" + firing.firingIndex + "_" + firing.firingFunction 
+//                        + " -> "+ nextFiring.actor.getName() + "_" + nextFiring.firingIndex + "_" 
+//                        + nextFiring.firingFunction + "[style=dotted];" + _eol);
+//            }
         }
         
         for(FiringCluster cluster:firingClusters) {
@@ -1036,6 +589,10 @@ public class ModularSDFCodeGenerator extends JavaCodeGenerator {
             }
             graph.append("\t}" + _eol);
         }
+        
+        StringBuffer clustersGraph = new StringBuffer();
+        
+        clustersGraph.append("digraph clusteredG {" + _eol);
         
         for(FiringCluster cluster:firingClusters) { 
             
@@ -1211,6 +768,509 @@ public class ModularSDFCodeGenerator extends JavaCodeGenerator {
             }
         }
     }
+    
+    //////////////////////////////////////////////////////////////////////
+    /// private methods
+    private void _createDependencyGraph(CompositeActor container, Map firingVector, 
+            Map port2Junction, List actorFirings) throws IllegalActionException {
+      //create the dependency graph
+        for(Iterator actors = container.deepEntityList().iterator(); actors.hasNext();) {
+            Actor actor = (Actor) actors.next();
+            
+            if(actor instanceof SampleDelay)
+                continue;
+            
+            Integer numFirings = (Integer) firingVector.get(actor);
+            for(Iterator ports = actor.outputPortList().iterator(); ports.hasNext();) {
+                IOPort outputPort = (IOPort) ports.next();
+                
+                for(Iterator inputPorts = _getConnectedInputPorts(outputPort).iterator(); inputPorts.hasNext();) {
+                    IOPort connectedPort = (IOPort) inputPorts.next();
+                    
+                    SimJunction junction = (SimJunction) port2Junction.get(outputPort.hashCode() ^ connectedPort.hashCode());
+                    
+                    if(junction !=  null) {
+                        junction.reset();
+                        Actor nextActor = (Actor) connectedPort.getContainer();
+                        int nextActorNumFirings = (Integer) firingVector.get(nextActor);
+                        
+                        List<FiringFunction> currentActorFirings = null;
+                        List<FiringFunction> nextActorFirings = null;
+                        
+                        int numFireFunctions;
+                        int nextActorFireFunctions;
+                        
+                        if(actor instanceof ModularCompiledSDFTypedCompositeActor) {
+                            currentActorFirings = ((ModularCompiledSDFTypedCompositeActor)actor).getProfile().firings();
+                            numFireFunctions = currentActorFirings.size();
+                        } else
+                            numFireFunctions = 1;
+                        
+                        
+                        if(nextActor instanceof ModularCompiledSDFTypedCompositeActor) {
+                            nextActorFirings = ((ModularCompiledSDFTypedCompositeActor)nextActor).getProfile().firings();
+                            nextActorFireFunctions = nextActorFirings.size();
+                        } else {
+                            nextActorFireFunctions = 1;
+                        }
+                        
+                        int iterationCount = 1;
+                        int firingFunctionCount = 0;
+                        boolean firstConsumption = true;
+                        
+                        for(int i = 0; i <= numFirings; i++) {
+                            nextFiring:
+                            for(int j = 0; j < numFireFunctions; j++) {
+                                boolean fired = false;
+                                if(i > 0) {
+                                    if(actor instanceof ModularCompiledSDFTypedCompositeActor) {
+                                        for(FiringFunctionPort port:currentActorFirings.get(j).ports) {
+                                            if(port.externalPortName.equals(outputPort.getName())) {
+                                                junction.counter += port.rate;
+                                                fired = true;
+                                                break;
+                                            }
+                                        }
+                                            
+                                    } else {
+                                        //normal actor
+                                        junction.counter += DFUtilities.getTokenProductionRate(outputPort);
+                                        fired = true;
+                                    }
+                                } else {
+                                    
+                                    //check the backward dependency
+                                    if(junction.counter > 0 && firstConsumption) {
+                                        //get the last fire function that put tokens into the junction
+                                        int lastFireFunction = numFireFunctions-1;
+                                        if(actor instanceof ModularCompiledSDFTypedCompositeActor) {
+                                            FOUND_FUNCTION:
+                                            for( int k = numFireFunctions-1; k >= 0 ; k--) {
+                                                for(FiringFunctionPort port:currentActorFirings.get(k).ports) {
+                                                    if(port.externalPortName.equals(outputPort.getName())) {
+                                                        lastFireFunction = k;
+                                                        break FOUND_FUNCTION;
+                                                    }
+                                                }
+                                            }
+                                        }
+                                        
+                                        int firstFireFunction = 0;
+                                        
+                                        if(nextActor instanceof ModularCompiledSDFTypedCompositeActor) {
+                                            FOUND_NEXT_ACTOR_FUNCTION:
+                                            for(int n = 0; n < numFireFunctions; n++) {
+                                                for(FiringFunctionPort port:nextActorFirings.get(n).ports) {
+                                                    if(port.externalPortName.equals(outputPort.getName())) {
+                                                        firstFireFunction = n;
+                                                        break FOUND_NEXT_ACTOR_FUNCTION;
+                                                    }
+                                                }
+                                            }
+                                        }
+                                        
+                                        Firing previousIterationFiring = _getFiring(actor, numFirings, lastFireFunction, actorFirings);
+                                        if(previousIterationFiring == null)
+                                        {
+                                            previousIterationFiring = new Firing(actor, numFirings, lastFireFunction);
+                                            actorFirings.add(previousIterationFiring);
+                                        }
+                                        
+                                        Firing nextIterationFiring = _getFiring(nextActor, 1, firstFireFunction, actorFirings);
+                                        if(nextIterationFiring == null)
+                                        {
+                                            nextIterationFiring = new Firing(nextActor, 1, firstFireFunction);
+                                            actorFirings.add(nextIterationFiring);
+                                        }
+                                        
+                                        previousIterationFiring.nextIterationFirings.add(nextIterationFiring);
+                                        nextIterationFiring.previousIterationFirings.add(previousIterationFiring);
+                                        
+                                        firstConsumption = false;
+                                    }
+                                    
+                                    //backward dependency to the firing of the previous iteration
+                                    Firing previousIterationFiring = _getFiring(actor, numFirings, j, actorFirings);
+                                    if(previousIterationFiring == null)
+                                    {
+                                        previousIterationFiring = new Firing(actor, numFirings, j);
+                                        actorFirings.add(previousIterationFiring);
+                                    }
+                                    
+                                    Firing nextIterationFiring = _getFiring(actor, 1, j, actorFirings);
+                                    if(nextIterationFiring == null)
+                                    {
+                                        nextIterationFiring = new Firing(actor, 1, j);
+                                        actorFirings.add(nextIterationFiring);
+                                    }
+                                    
+                                    previousIterationFiring.nextIterationFirings.add(nextIterationFiring);
+                                    nextIterationFiring.previousIterationFirings.add(previousIterationFiring);
+                                    
+                                    fired = true;
+                                }
+                                
+                                if(fired) {
+                                    
+                                    Firing currentFiring = null;
+                                    
+                                    if(i > 0) {
+                                        currentFiring = _getFiring(actor, i, j, actorFirings);
+                                        if(currentFiring == null)
+                                        {
+                                            currentFiring = new Firing(actor, i, j);
+                                            actorFirings.add(currentFiring);
+                                        }
+                                    }
+                                    
+                                    //next actor consumes tokens
+                                    while(iterationCount <= nextActorNumFirings) {
+                                        while(firingFunctionCount < nextActorFireFunctions) {
+                                            boolean nextActorFired = false;
+                                            //try to consume some tokens
+                                            if(nextActor instanceof ModularCompiledSDFTypedCompositeActor) {
+                                                for(FiringFunctionPort port:nextActorFirings.get(firingFunctionCount).ports) {
+                                                    if(port.externalPortName.equals(connectedPort.getName())) {
+                                                        
+                                                        if(junction.counter >= port.rate) {
+                                                            junction.counter -= port.rate;
+                                                            nextActorFired = true;
+                                                        } else {
+                                                            continue nextFiring;
+                                                        }
+                                                        break;
+                                                    }
+                                                }
+                                            } else {
+                                                if(junction.counter >= DFUtilities.getTokenConsumptionRate(connectedPort)) {
+                                                    junction.counter -= DFUtilities.getTokenConsumptionRate(connectedPort);
+                                                    nextActorFired = true;
+                                                } else{
+                                                    continue nextFiring;
+                                                }
+                                            }
+                                            
+                                            if(nextActorFired && currentFiring != null) {
+                                                Firing nextFiring = _getFiring(nextActor, iterationCount, firingFunctionCount, actorFirings);
+                                                if(nextFiring == null)
+                                                {
+                                                    nextFiring = new Firing(nextActor, iterationCount, firingFunctionCount);
+                                                    actorFirings.add(nextFiring);
+                                                }
+                                                
+                                                currentFiring.nextActorFirings.add(nextFiring);
+                                                nextFiring.previousActorFirings.add(currentFiring);
+                                            }
+                                            
+                                            firingFunctionCount++;
+                                        }
+                                        
+                                        if(firingFunctionCount >= nextActorFireFunctions)
+                                            firingFunctionCount = 0;
+                                        
+                                        iterationCount++;
+                                    }
+                                    
+                                    if(iterationCount >nextActorNumFirings)
+                                        break;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    
+    private void _createExpandedGraph(CompositeActor container, Map port2Junction, 
+            Map junction2InputPort, Map junction2OutputPort) throws IllegalActionException {
+      //construct a extended graph for deadlock analysis
+        for(Iterator actors = container.deepEntityList().iterator(); actors.hasNext();) {
+            Actor actor = (Actor)actors.next();
+            if(! (actor instanceof SampleDelay))
+            {
+                for(Iterator ports = actor.outputPortList().iterator(); ports.hasNext();) {
+                    IOPort outputPort = (IOPort) ports.next();
+                    
+                    if(outputPort instanceof ParameterPort) {
+                        continue;   //FIXME
+                    }
+                    
+                    for(Iterator connectedPorts = outputPort.connectedPortList().iterator();
+                        connectedPorts.hasNext();) {
+                        IOPort connectedPort = (IOPort)connectedPorts.next();
+                        
+                        if(!connectedPort.isOutput() &&
+                                !(connectedPort.getContainer() instanceof SampleDelay)) { //only input ports, this exclude the output ports of the container
+                            //each connection has one junction 
+                            SimJunction junction = new SimJunction(connectedPort, outputPort, 0); //FIXME what is the number of initial tokens
+                            
+                            port2Junction.put((outputPort.hashCode() ^ connectedPort.hashCode()), junction);
+//                            port2Junction.put(connectedPort, junction);
+                            
+                            junction2InputPort.put(junction, connectedPort);
+                            junction2OutputPort.put(junction, outputPort);
+                        }
+                    }
+                }
+            } else {
+                IOPort sampleDelayOutputPort = ((SampleDelay)actor).output;
+                IOPort sampleDelayInputPort = ((SampleDelay)actor).input;
+                IOPort outputPort = _getConnectedOutputPort(sampleDelayInputPort);
+                if(outputPort == null)
+                    continue;
+                
+                ArrayToken tokens = (ArrayToken)((SampleDelay)actor).initialOutputs.getToken();
+                
+                for(Iterator connectedPorts = sampleDelayOutputPort.connectedPortList().iterator();
+                    connectedPorts.hasNext();) {
+                    IOPort connectedPort = (IOPort)connectedPorts.next();
+                    
+                    if(!connectedPort.isOutput()) { //only input ports, this exclude the output ports of the container
+                        
+                        
+                        //each connection has one junction 
+                        SimJunction junction = new SimJunction(connectedPort, outputPort, 
+                                tokens.length()); //FIXME what is the number of initial tokens
+                        
+                        port2Junction.put((outputPort.hashCode() ^ connectedPort.hashCode()), junction);
+                        
+                        junction2InputPort.put(junction, connectedPort);
+                        junction2OutputPort.put(junction, outputPort);
+                    }
+                }
+            }
+        }
+    }
+    
+    private boolean _deadlockAnalysis(Map firingVector, Map port2Junction ) throws IllegalActionException {
+      //deadlock analysis
+        Map simFiringVector = new HashMap(firingVector);
+        boolean deadlocked = true;
+        
+        while(simFiringVector.size() > 0) {
+            
+            boolean fireLastIteration = false;
+            
+            LinkedList actorSet = new LinkedList(simFiringVector.keySet());
+            //pick an actor to fire
+            for(Iterator actors = actorSet.iterator(); actors.hasNext();) {
+                Actor actor = (Actor)actors.next();
+                
+                if(actor instanceof SampleDelay)
+                {
+                    simFiringVector.remove(actor);
+                    continue;
+                }
+                
+                if(! (actor instanceof ModularCompiledSDFTypedCompositeActor)) {
+                    boolean canFire = true;
+                    
+                    //check if we could fire this actor
+                    for(Iterator ports = actor.inputPortList().iterator(); ports.hasNext();) {
+                        IOPort inputPort = (IOPort) ports.next();
+                        
+                        IOPort connectedPort = _getConnectedOutputPort(inputPort);
+                        if(connectedPort == null)
+                            continue;
+                        
+                        SimJunction junction = (SimJunction) port2Junction.get(inputPort.hashCode() ^ 
+                                connectedPort.hashCode());
+                        
+                        //ports that are connected inside have junctions, we only check those ports
+                        if(junction !=  null) {
+                            if(junction.counter < DFUtilities.getTokenConsumptionRate(inputPort)) {
+                                canFire = false;    //do not have enough tokens at some port to fire
+                                break;
+                            }
+                        }
+                    }
+                    
+                    if(canFire) {
+                        
+                        //FIXME more complicated for other actors with different firing functions
+                        _fireActor(actor, port2Junction);
+                        
+                        Integer numFirings = ((Integer)simFiringVector.get(actor)).intValue() - 1;  //decrease number of firings
+                        
+                        if(numFirings <= 0) {
+                            simFiringVector.remove(actor);
+                        } else
+                            simFiringVector.put(actor, numFirings);
+                        
+                        fireLastIteration = true;   //mark that there is some actor that can fire, not deadlocked yet
+                    }
+                } else {
+
+                    //FIXME
+                    boolean canFire = true;
+                    
+                    //check if we could fire this actor
+                    for(Iterator ports = actor.inputPortList().iterator(); ports.hasNext();) {
+                        IOPort inputPort = (IOPort) ports.next();
+                        
+                        IOPort connectedPort = _getConnectedOutputPort(inputPort);
+                        if(connectedPort == null)
+                            continue;
+                        
+                        SimJunction junction = (SimJunction) port2Junction.get(inputPort.hashCode() ^ 
+                                connectedPort.hashCode());
+                        
+                        //ports that are connected inside have junctions, we only check those ports
+                        if(junction !=  null) {
+                            if(junction.counter < DFUtilities.getTokenConsumptionRate(inputPort)) {
+                                canFire = false;    //do not have enough tokens at some port to fire
+                                break;
+                            }
+                        }
+                    }
+                    
+                    if(canFire) {
+                        
+                        //FIXME more complicated for other actors with different firing functions
+                        _fireActor(actor, port2Junction);
+                        
+                        Integer numFirings = ((Integer)simFiringVector.get(actor)).intValue() - 1;  //decrease number of firings
+                        
+                        if(numFirings <= 0) {
+                            simFiringVector.remove(actor);
+                        } else
+                            simFiringVector.put(actor, numFirings);
+                        
+                        fireLastIteration = true;   //mark that there is some actor that can fire, not deadlocked yet
+                    }
+                }
+            }
+            
+            //check if deadlock happens
+            if(simFiringVector.size() == 0) {
+                deadlocked =  false;    //we can simulate
+                break;
+            } else if( !fireLastIteration ) {   //there are some actors left but none can fire -> deadlocked
+                deadlocked = true;
+                break;
+            }
+                
+        }
+        
+        if(deadlocked) {
+            return false;
+        }
+        
+        //check if all junctions are in initial states after one firing iteration
+        for(Iterator junctions = port2Junction.values().iterator(); junctions.hasNext();) {
+            SimJunction junction = (SimJunction)junctions.next();
+            if(!junction.isInInitalState()) {
+                throw new IllegalActionException("Some junction is not in its initial state after one firing iteration");
+            }
+        }
+        return true;
+    }
+    
+    private void _deriveFiringFunctionDependency(CompositeActor container, Map firingVector,
+            List actorFirings) throws IllegalActionException {
+      //dependency between firing of each actor
+        for(Iterator actors = container.deepEntityList().iterator(); actors.hasNext();) {
+             Actor actor = (Actor) actors.next();
+             
+             if(actor instanceof SampleDelay)
+                 continue;
+             
+             Integer numFiring = (Integer) firingVector.get(actor);
+             for(int i = 1; i <= numFiring; i++) {
+                 if(actor instanceof ModularCompiledSDFTypedCompositeActor) {
+                     List<FiringFunction> actorFiringFunctions = ((ModularCompiledSDFTypedCompositeActor)actor).getProfile().firings();
+                     int numFireFunctions = actorFiringFunctions.size();
+                     
+                     for(int j = 0; j < numFireFunctions; j++) {
+                         Firing firing = _getFiring(actor, i, j, actorFirings);
+                         if(firing == null)
+                         {
+                             firing = new Firing(actor, i, j);
+                             actorFirings.add(firing);
+                         }
+                         
+                         for(Integer index :actorFiringFunctions.get(j).previousFiringFunctions) {
+                             Firing previousFiring = _getFiring(actor, i, index, actorFirings);
+                             
+                             if(previousFiring == null)
+                             {
+                                 previousFiring = new Firing(actor, i, index);
+                                 actorFirings.add(previousFiring);
+                             }
+                             firing.previousActorFirings.add(previousFiring);
+                             previousFiring.nextActorFirings.add(firing);
+                         }
+                         
+                         for(Integer index :actorFiringFunctions.get(j).nextFiringFunctions) {
+                             Firing nextFiring = _getFiring(actor, i, index, actorFirings);
+                             
+                             if(nextFiring == null)
+                             {
+                                 nextFiring = new Firing(actor, i, index);
+                                 actorFirings.add(nextFiring);
+                             }
+                             
+                             firing.nextActorFirings.add(nextFiring);
+                             nextFiring.previousActorFirings.add(firing);
+                         }
+                         
+                         if( i > 1) {
+                             for(Integer index : actorFiringFunctions.get(firing.firingFunction).previousIterationFirings) {
+                                 Firing previousFiring = _getFiring(actor, i-1, index, actorFirings);
+                                 
+                                 if(previousFiring == null)
+                                 {
+                                     previousFiring = new Firing(actor, i-1, index);
+                                     actorFirings.add(previousFiring);
+                                 }
+                                 
+                                 firing.previousActorFirings.add(previousFiring);
+                                 previousFiring.nextActorFirings.add(firing);
+                             }
+                         }
+                         
+                         //dependency between firings of one function
+                         if(i > 1) {
+                             Firing previousFiring = _getFiring(actor, i-1, j, actorFirings);
+                             if(previousFiring == null)
+                             {
+                                 previousFiring = new Firing(actor, i-1, j);
+                                 actorFirings.add(previousFiring);
+                             }
+                             
+                             firing.previousActorFirings.add(previousFiring);
+                             previousFiring.nextActorFirings.add(firing);
+                         }
+                     }
+                 } else {
+                     if( i > 1)
+                     {
+                         Firing firing = _getFiring(actor, i, 0, actorFirings);
+                         
+                         if(firing == null)
+                         {
+                             firing = new Firing(actor, i, 0);
+                             actorFirings.add(firing);
+                         }
+                         
+                         Firing previousFiring = _getFiring(actor, i-1, 0, actorFirings);
+                         if(previousFiring == null)
+                         {
+                             previousFiring = new Firing(actor, i-1, 0);
+                             actorFirings.add(previousFiring);
+                         }
+                         
+                         firing.previousActorFirings.add(previousFiring);
+                         previousFiring.nextActorFirings.add(firing);
+                     }
+                 }
+             }
+                 
+         }
+    }
+    
     
     private void _fireActor(Actor actor, Map port2Junction) throws IllegalActionException {
         //check if we could fire this actor
@@ -1436,7 +1496,7 @@ public class ModularSDFCodeGenerator extends JavaCodeGenerator {
             }
         }
         
-        System.out.println("digraph G {");
+        System.out.println("digraph G1 {");
         for(Iterator firings = firingList.iterator(); firings.hasNext();) {
             Firing firing = (Firing) firings.next();
             
