@@ -1399,6 +1399,7 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/caltrop \
 	$(REMOTE1PTIIDIST)/ptolemy/caltrop/util \
 	$(REMOTE1PTIIDIST)/ptolemy/data/properties/ \
+	$(REMOTE1PTIIDIST)/ptolemy/data/properties/lattice \
 	$(REMOTE1PTIIDIST)/ptolemy/data/properties/lattice/exampleSetLattice \
 	$(REMOTE1PTIIDIST)/ptolemy/data/properties/lattice/logicalAND \
 	$(REMOTE1PTIIDIST)/ptolemy/data/properties/lattice/logicalOrBackward \

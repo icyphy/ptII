@@ -42,6 +42,7 @@ DIRS = \
 	logicalOrBackward \
 	namingSetLattice \
 	softwareConfiguration \
+	test \
 	typeSystem_C
 
 # Root of the Ptolemy II directory
