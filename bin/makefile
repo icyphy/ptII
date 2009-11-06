@@ -1,6 +1,6 @@
 # Makefile for scripts that invoke Ptolemy II Java classes
 #
-# @Author: Christopher Hylands
+# @Author: Christopher Hylands 
 #
 # @Version: $Id$
 #
