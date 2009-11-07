@@ -480,20 +480,37 @@ public class PropertyConstraintSolver extends PropertySolver {
                         .stringValue()),
                 _getConstraintType(expressionASTNodeConstraintType
                         .stringValue()));
+        
+        // Collect and solve type constraints.
+        List<Inequality> constraintList = toplevelHelper.constraintList();
 
+        _resolveProperties(toplevel, toplevelHelper, constraintList);
+    }
+
+    /** Resolve the properties of the given top-level container,
+     * subject to the given constraint list.
+     * 
+     * @param toplevel The top-level container
+     * @param toplevelHelper Must be toplevel.getHelper()
+     * @param constraintList The constraint list that we are solving
+     * @throws TypeConflictException If an unacceptable solution is reached
+     * @throws PropertyResolutionException If constraints are unsatisfiable
+     */
+    protected void _resolveProperties(NamedObj toplevel,
+            PropertyConstraintHelper toplevelHelper,
+            List<Inequality> constraintList) throws TypeConflictException,
+            PropertyResolutionException {
         Writer writer = null;
 
+        List<Inequality> conflicts = new LinkedList<Inequality>();
+        List<Inequality> unacceptable = new LinkedList<Inequality>();
+        
         try {
-            List<Inequality> conflicts = new LinkedList<Inequality>();
-            List<Inequality> unacceptable = new LinkedList<Inequality>();
-
             // Check declared properties across all connections.
             //List propertyConflicts = topLevel._checkDeclaredProperties();
             //conflicts.addAll(propertyConflicts);
 
-            // Collect and solve type constraints.
-            List<Inequality> constraintList = toplevelHelper.constraintList();
-
+          
             /*
              * // FIXME: this is the iterative approach. List constraintList =
              * new ArrayList(); Iterator helpers =
@@ -518,9 +535,7 @@ public class PropertyConstraintSolver extends PropertySolver {
                 // ptolemy.graph.InequalitySolver solver = new ptolemy.graph.InequalitySolver(cpo);
                 InequalitySolver solver = new InequalitySolver(cpo, this);
 
-                Iterator constraints = constraintList.iterator();
-
-                solver.addInequalities(constraints);
+                solver.addInequalities(constraintList.iterator());
                 _constraintManager.setConstraints(constraintList);
 
                 //              BEGIN CHANGE Thomas, 04/10/2008
@@ -965,7 +980,7 @@ public class PropertyConstraintSolver extends PropertySolver {
      * @return The constraint type.
      * @exception IllegalActionException
      */
-    private ConstraintType _getConstraintType(String typeValue)
+    protected static ConstraintType _getConstraintType(String typeValue)
             throws IllegalActionException {
         boolean isEquals = typeValue.contains("==");
         boolean isSrc = typeValue.startsWith("src")

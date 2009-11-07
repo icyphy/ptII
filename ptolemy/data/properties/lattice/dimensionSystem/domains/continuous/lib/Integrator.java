@@ -43,7 +43,7 @@ import ptolemy.kernel.util.IllegalActionException;
 /**
  A helper class for ptolemy.domains.continuous.lib.Integrator.
 
- @author Man-Kit Leung
+ @author Man-Kit Leung, Ben Lickly
  @version $Id$
  @since Ptolemy II 7.1
  @Pt.ProposedRating Red (mankit)
@@ -65,10 +65,10 @@ public class Integrator extends PropertyConstraintHelper {
     }
 
     public List<Inequality> constraintList() throws IllegalActionException {
-        ptolemy.domains.continuous.lib.Integrator actor = (ptolemy.domains.continuous.lib.Integrator) getComponent();
+        ptolemy.domains.continuous.lib.Integrator actor =
+          (ptolemy.domains.continuous.lib.Integrator) getComponent();
 
-        // TODO: write a monotonic function.
-        setAtLeast(actor.state, new FunctionTerm(actor.derivative));
+        setAtLeast(actor.state, new StateOfDerivative(actor.derivative));
         setSameAs(actor.state, actor.initialState);
 
         return super.constraintList();
@@ -76,14 +76,14 @@ public class Integrator extends PropertyConstraintHelper {
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
-    // This class implements a monotonic function of the input port
-    // type. The result of the function is the same as the input type
-    // if is not Complex; otherwise, the result is Double.
-    private class FunctionTerm extends MonotonicFunction {
+    // This class implements a monotonic function that takes in the
+    // input property of the integrator (the derivative) and returns
+    // the output property (the state).
+    private class StateOfDerivative extends MonotonicFunction {
 
         TypedIOPort _derivative;
 
-        public FunctionTerm(TypedIOPort derivative) {
+        public StateOfDerivative(TypedIOPort derivative) {
             _derivative = derivative;
         }
 

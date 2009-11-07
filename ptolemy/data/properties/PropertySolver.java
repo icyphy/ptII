@@ -469,6 +469,8 @@ public abstract class PropertySolver extends PropertySolverBase {
     public boolean resolveProperties(NamedObj analyzer, boolean isInvoked)
             throws KernelException {
 
+        System.out.println("In resolveProperties of PropertySolver");
+        
         boolean success = true;
 
         boolean noException = true;

@@ -75,6 +75,7 @@ PTCLASSALLJARS = \
 
 JSRCS = \
 	ConstraintManager.java \
+	DeltaConstraintSolver.java \
 	InequalitySolver.java \
 	LatticeProperty.java \
 	MeetFunction.java \

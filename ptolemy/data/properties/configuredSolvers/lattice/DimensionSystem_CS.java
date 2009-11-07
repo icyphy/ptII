@@ -26,6 +26,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 package ptolemy.data.properties.configuredSolvers.lattice;
 
 import ptolemy.actor.gui.ColorAttribute;
+import ptolemy.data.properties.lattice.DeltaConstraintSolver;
 import ptolemy.data.properties.lattice.PropertyConstraintSolver;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -33,7 +34,7 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.StringAttribute;
 
-public class DimensionSystem_CS extends PropertyConstraintSolver {
+public class DimensionSystem_CS extends DeltaConstraintSolver {
 
     public DimensionSystem_CS(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
