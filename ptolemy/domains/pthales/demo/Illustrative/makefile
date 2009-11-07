@@ -1,7 +1,8 @@
-# Makefile for PtolemyII PTHALES Domain
+# Makefile for Ptolemy II pthales AdaptiveBeamForming  demo
 #
-# @Version: $Id$
-# @Author: Christopher Hylands
+# @Authors: Christopher Hylands (makefile only)
+#
+# @Version: $Id: makefile 56090 2009-11-05 16:59:28Z cxh $
 #
 # @Copyright (c) 2009 The Regents of the University of California.
 # All rights reserved.
@@ -28,47 +29,57 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/domains/pthales/demo
+ME =		ptolemy/domains/pthales/demo/Illustrative
 
-# Keep these alphabetical please.
-DIRS =		AdaptiveBeamForming FFT HelloWorld Illustrative
+# Root of the Java directory
+ROOT =		../../../../..
 
-# Root of Ptolemy II directory
-ROOT =		../../../..
+CLASSPATH =	$(ROOT)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	demo
-PTCLASSJAR =
+PTPACKAGE = 	Illustrative
+PTCLASSJAR = 	$(PTPACKAGE).jar
 
-# Include the .class files from these jars in PTCLASSALLJAR
-PTCLASSALLJARS = \
-	AdaptiveBeamForming/AdaptiveBeamForming.jar \
-	FFT/FFT.jar \
-	HelloWorld/HelloWorld.jar \
-	Illustrative/Illustrative.jar
+JSRCS =
 
-PTCLASSALLJAR = $(PTPACKAGE).jar
+OTHER_FILES_TO_BE_JARED = \
+	$(JSRCS) \
+	Illustrative.xml
+
+EXTRA_SRCS = \
+	$(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES = 	$(DIRS) \
-	index.htm
+MISC_FILES = $(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	doc
 
+JCLASS = $(JSRCS:%.java=%.class)
+
+# Don't include all or install rules here, we want the user
+# to run 'make demos' to run the tests.
 all: jclass
 	@echo "To run all the demos, run 'make demo'"
 
-install: jclass jars
+install: all $(PTCLASSJAR)
 
-demo: subdemo
+demo: demo_applet demo_ptolemy demo_vergil
+demo_applet:
+	CLASSPATH="$(CLASSPATH)" appletviewer Illustrative.htm
+
+demo_ptolemy:
+	"$(PTII)/bin/ptolemy" Illustrative.xml
+
+demo_vergil:
+	"$(PTII)/bin/vergil" Illustrative.xml
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
