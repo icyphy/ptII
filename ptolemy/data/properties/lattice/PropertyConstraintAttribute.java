@@ -281,9 +281,13 @@ public class PropertyConstraintAttribute extends PropertyAttribute {
                 String fieldExpression = fieldExpressions.get(i);
                 String[] labelAndProperty = fieldExpression.split("=", 2);
 
-                labels[i] = labelAndProperty[0];
+                // 11/09/09 Charles Shelton - added trim() method call to remove
+                // extra whitespace characters.
+                // Labels were getting set with an extra space in the name,
+                // which was causing regression tests with record properties to fail.                
+                labels[i] = labelAndProperty[0].trim();
                 fieldProperties[i] = _parsePropertyExpression(lattice,
-                        labelAndProperty[1]);
+                        labelAndProperty[1].trim());
             }
             return new RecordProperty(lattice, labels, fieldProperties);
         }
