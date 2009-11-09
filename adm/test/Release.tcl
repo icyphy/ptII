@@ -116,7 +116,8 @@ test release-3.1 {Run svn status and look for files that should be checked in.  
 
     cd "$PTII"
     set result [exec svn status]
-    set result1 {M      lib/matlab.jar
+    set result1 \
+{M       lib/matlab.jar
 ?       ptolemy/matlab/META-INF}
     if { $result == $result1 } {
 	puts "Result was:\n$result\nWhich is ok"
