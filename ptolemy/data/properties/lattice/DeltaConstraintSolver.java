@@ -73,10 +73,10 @@ public class DeltaConstraintSolver extends PropertyConstraintSolver {
         _resolveProperties(toplevel, toplevelHelper, testList);
 //            checkResolutionErrors();
           
-        if(!checkForErrors())
-        {
-            return;
-        }
+//         if(!checkForErrors())
+//         {
+//             return;
+//         }
         
         int blockSize = errorList.size()/2;
         
@@ -91,13 +91,13 @@ WHILE_LOOP:
                 testList.removeAll(tmpSet);
                 if(testList.size() > 0) {
                     _resolveProperties(toplevel, toplevelHelper, testList);
-                    if(checkForErrors()) {
+                    //                    if(checkForErrors()) {
                         errorList = testList;
                         if(blockSize > errorList.size())
                             blockSize =  errorList.size()/2;
                         
                         continue WHILE_LOOP;
-                    }
+                        //                    }
                 }
                
             }
