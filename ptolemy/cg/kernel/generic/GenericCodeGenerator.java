@@ -565,6 +565,22 @@ public abstract class GenericCodeGenerator extends Attribute implements
         return _executeCommands;
     }
 
+    /**
+     * Return the visibility signature for run() and execute() (for Java)
+     * @return
+     */
+    public String getMethodVisibiliyString() {
+        return "";
+    }
+    
+    /**
+     * Return the exception signature (for Java)
+     * @return
+     */
+    public String getMethodExceptionString() {
+        return "";
+    }
+
     /** Generate code for a model.
      *  <p>For example:
      *  <pre>

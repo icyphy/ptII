@@ -210,6 +210,20 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         }
     }
 
+    /** Return the closing entry code, if any.
+     *  @return the closing entry code.
+     */   
+    public String generateClosingEntryCode() {
+        return "void doWrapup() { " + _eol;
+    }
+
+    /** Return the closing exit code, if any.
+     *  @return the closing exit code.
+     */   
+    public String generateClosingExitCode() {
+        return "}" + _eol;
+    }
+
     /** Generate the initialization procedure exit point.
      *  @return a string for the initialization procedure exit point.
      *  @exception IllegalActionException Not thrown in this base class.
@@ -224,7 +238,8 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
      */
     public String generateInitializeProcedureName()
             throws IllegalActionException {
-        return INDENT1 + "initialize();" + _eol;
+        // return INDENT1 + "initialize();" + _eol;
+        return "// Don't call initialize() here, it is called in main.";
     }
 
     /** Generate line number information.  In this class, lines
@@ -254,6 +269,11 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         // If the container is in the top level, we are generating code
         // for the whole model.
         if (_isTopLevel()) {
+            // add some function declarations
+            mainEntryCode.append("void run();" + _eol
+                    + "void execute();" + _eol
+                    + "void doWrapup();" + _eol);
+                    
             mainEntryCode.append(_eol + _eol
                     + "int main(int argc, char *argv[]) {" + _eol);
             //String targetValue = target.getExpression();
@@ -263,6 +283,14 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
             //                mainEntryCode.append("//FIXME: CCodeGenerator hack" + _eol
             //                        + "init();" + _eol);
             //            }
+
+            mainEntryCode
+            .append(_eol
+                 + "initialize();" + _eol
+                 + "execute();" + _eol
+                 + "doWrapup();" + _eol
+                 + "exit(0);" + _eol
+                 + "}" + _eol);
 
         } else {
             // If the container is not in the top level, we are generating code
@@ -289,7 +317,8 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
      */
     public String generateMainExitCode() throws IllegalActionException {
         if (_isTopLevel()) {
-            return INDENT1 + "exit(0);" + _eol + "}" + _eol;
+            // return INDENT1 + "exit(0);" + _eol + "}" + _eol;
+            return _eol;
         } else {
             return INDENT1 + "return tokensToAllOutputPorts;" + _eol + "}"
                     + _eol;

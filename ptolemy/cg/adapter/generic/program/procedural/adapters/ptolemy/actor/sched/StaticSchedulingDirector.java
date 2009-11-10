@@ -214,7 +214,10 @@ public class StaticSchedulingDirector extends Director {
     public String generateMainLoop() throws IllegalActionException {
         // Need a leading _eol here or else the execute decl. gets stripped out.
         StringBuffer code = new StringBuffer(
-                _eol + "public void execute() throws Exception {" + _eol);
+                _eol + getCodeGenerator().getMethodVisibiliyString() +
+                " void execute() " +
+                getCodeGenerator().getMethodExceptionString() +
+                " {" + _eol);
 
         Attribute iterations = _director.getAttribute("iterations");
         if (iterations == null) {
@@ -236,7 +239,10 @@ public class StaticSchedulingDirector extends Director {
         code.append("run();" + _eol 
                 + "}" + _eol
                 + "}" + _eol
-                + _eol + "public void run() throws Exception {" + _eol);
+                + _eol + getCodeGenerator().getMethodVisibiliyString() +
+                " void run() " +
+                getCodeGenerator().getMethodExceptionString() +
+                " {" + _eol);
 
         code.append(generateFireCode());
 
@@ -291,7 +297,7 @@ public class StaticSchedulingDirector extends Director {
 
         return code.toString();
     }
-
+    
     /** Return the reference to the specified parameter or port of the
      *  associated actor. For a parameter, the returned string is in
      *  the form "fullName_parameterName". For a port, the returned string

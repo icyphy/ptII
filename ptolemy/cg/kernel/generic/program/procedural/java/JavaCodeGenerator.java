@@ -813,6 +813,22 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
         return "wrapup();" + _eol;
     }
     
+    /**
+     * Return the return signature for run() and execute()
+     * @return
+     */
+    public String getMethodReturnString() {
+        return "public ";
+    }
+    
+    /**
+     * Return the exception signature (for Java)
+     * @return
+     */
+    public String getMethodExceptionString() {
+        return " throws Exception";
+    }
+
 
     /** Add called functions to the set of overloaded functions for
      *  later use.
