@@ -566,16 +566,16 @@ public abstract class GenericCodeGenerator extends Attribute implements
     }
 
     /**
-     * Return the visibility signature for run() and execute() (for Java)
-     * @return
+     * Return the visibility signature for run() and execute() (for Java).
+     * @return The visibility signature, empty string for C.
      */
     public String getMethodVisibiliyString() {
         return "";
     }
     
     /**
-     * Return the exception signature (for Java)
-     * @return
+     * Return the exception signature (for Java).
+     * @return The exception signature, empty string for C.
      */
     public String getMethodExceptionString() {
         return "";

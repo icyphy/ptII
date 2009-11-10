@@ -815,15 +815,15 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
     
     /**
      * Return the return signature for run() and execute()
-     * @return
+     * @return The visibility signature.
      */
-    public String getMethodReturnString() {
+    public String getMethodVisibiliyString() {
         return "public ";
     }
     
     /**
      * Return the exception signature (for Java)
-     * @return
+     * @return The exception signature.
      */
     public String getMethodExceptionString() {
         return " throws Exception";
