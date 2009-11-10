@@ -68,23 +68,15 @@ public class DeltaConstraintSolver extends PropertyConstraintSolver {
         //   }
         // }
         List<Inequality> testList = errorList;
-        boolean exception = false;
         
-        try {
             //modify the list of constraints
-           _resolveProperties(toplevel, toplevelHelper, testList);
-           checkResolutionErrors();
-        } catch (TypeConflictException ex) {
-            System.err.println("Found TypeConflictException in DeltaConstraintSolver");
-            throw ex;
-        } catch (PropertyResolutionException ex) {
-            System.err.println("Found PropertyResolutionException in DeltaConstraintSolver");
-            //              blockSize /= 2;
-            exception = true;
-        }
+        _resolveProperties(toplevel, toplevelHelper, testList);
+//            checkResolutionErrors();
           
-        if(!exception)
+        if(!checkForErrors())
+        {
             return;
+        }
         
         int blockSize = errorList.size()/2;
         
@@ -92,35 +84,30 @@ WHILE_LOOP:
         while(blockSize >= 1) {
             
             for(int i = 0;  i < errorList.size(); i += blockSize) {
-                try {
                   //modify the list of constraints
                     
-                    Set<Inequality> tmpSet = new HashSet(errorList.subList(i, Math.min(errorList.size(), i+blockSize)));
-                    testList = new LinkedList(errorList);
-                    testList.removeAll(tmpSet);
-                    if(testList.size() > 0) {
-                        _resolveProperties(toplevel, toplevelHelper, testList);
-                        checkResolutionErrors();
+                Set<Inequality> tmpSet = new HashSet(errorList.subList(i, Math.min(errorList.size(), i+blockSize)));
+                testList = new LinkedList(errorList);
+                testList.removeAll(tmpSet);
+                if(testList.size() > 0) {
+                    _resolveProperties(toplevel, toplevelHelper, testList);
+                    if(checkForErrors()) {
+                        errorList = testList;
+                        if(blockSize > errorList.size())
+                            blockSize =  errorList.size()/2;
+                        
+                        continue WHILE_LOOP;
                     }
-                } catch (TypeConflictException ex) {
-                    System.err.println("Found TypeConflictException in DeltaConstraintSolver");
-                    throw ex;
-                } catch (PropertyResolutionException ex) {
-                    System.err.println("Found PropertyResolutionException in DeltaConstraintSolver");
-        //            throw ex;  
-                    
-                    errorList = testList;
-//                    blockSize /= 2;
-                    
-                    continue WHILE_LOOP;
                 }
+               
             }
             
             blockSize /= 2;
+            System.err.println("Blocksize " + blockSize);
         }
         
         System.out.println(errorList);
-        
+        _resolveProperties(toplevel, toplevelHelper, errorList);
     }
 
 }
