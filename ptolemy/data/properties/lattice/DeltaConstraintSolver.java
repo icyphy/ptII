@@ -5,8 +5,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
-import ptolemy.actor.TypeConflictException;
-import ptolemy.data.properties.PropertyResolutionException;
 import ptolemy.data.properties.lattice.PropertyConstraintHelper.Inequality;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.KernelException;
@@ -73,10 +71,10 @@ public class DeltaConstraintSolver extends PropertyConstraintSolver {
         _resolveProperties(toplevel, toplevelHelper, testList);
 //            checkResolutionErrors();
           
-//         if(!checkForErrors())
-//         {
-//             return;
-//         }
+         if(!checkForErrors())
+         {
+             return;
+         }
         
         int blockSize = errorList.size()/2;
         
@@ -91,13 +89,13 @@ WHILE_LOOP:
                 testList.removeAll(tmpSet);
                 if(testList.size() > 0) {
                     _resolveProperties(toplevel, toplevelHelper, testList);
-                    //                    if(checkForErrors()) {
+                    if(checkForErrors()) {
                         errorList = testList;
                         if(blockSize > errorList.size())
                             blockSize =  errorList.size()/2;
                         
                         continue WHILE_LOOP;
-                        //                    }
+                    }
                 }
                
             }
