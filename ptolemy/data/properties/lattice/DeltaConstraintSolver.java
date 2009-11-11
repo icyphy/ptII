@@ -28,10 +28,8 @@ COPYRIGHTENDKEY
 
 package ptolemy.data.properties.lattice;
 
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Set;
 
 import ptolemy.actor.TypeConflictException;
 import ptolemy.data.properties.PropertyResolutionException;
@@ -62,6 +60,66 @@ public class DeltaConstraintSolver extends PropertyConstraintSolver {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         // TODO Auto-generated constructor stub
+    }
+
+    /** Iterate on the given list of constraints to find a minimal
+     * subset that still contains an error.
+     *
+     * This can be done efficiently in a manner similar to binary search.
+     * The pseudocode is as follows:
+       <pre>
+       errorList = constraintList
+       size = errorList.size()/2
+       while (size >= 1):
+         for (testList of size size in errorList):
+           (i.e. errorlist[0:size] , errorlist[size+1, 2*size], ...)
+           if _resolveProperties(errorList - testList) == error:
+              errorList = errorList - testList;
+              size = errorList.size()/2
+              continue while loop;
+         size = size/2;
+       </pre>
+     * @param toplevel
+     * @param toplevelHelper
+     * @param constraintList A list of constraints that causes an error
+     * @throws TypeConflictException
+     * @throws PropertyResolutionException
+     * @throws IllegalActionException
+     */
+    private void _doDeltaIteration(NamedObj toplevel,
+            PropertyConstraintHelper toplevelHelper,
+            List<Inequality> constraintList) throws TypeConflictException,
+            PropertyResolutionException, IllegalActionException {
+
+        List<Inequality> errorList = constraintList;
+        int blockSize = errorList.size()/2;
+
+        WHILE_LOOP: while(blockSize >= 1) {
+
+            for(int i = 0; i < errorList.size(); i += blockSize) {
+
+                //modify the list of constraints
+                List<Inequality> testList =
+                  new LinkedList<Inequality>(errorList);
+                testList.removeAll(errorList.subList(
+                        i, Math.min(errorList.size(), i+blockSize)));
+
+                if(testList.size() > 0) {
+                    _resolveProperties(toplevel, toplevelHelper, testList);
+                    if(checkForErrors()) {
+                        errorList = testList;
+                        blockSize = errorList.size()/2;
+                        continue WHILE_LOOP;
+                    }
+                }
+            }
+
+            blockSize /= 2;
+            System.err.println("Blocksize " + blockSize);
+        }
+
+        System.out.println(errorList);
+        _resolveProperties(toplevel, toplevelHelper, errorList);
     }
 
     /**
@@ -102,68 +160,6 @@ public class DeltaConstraintSolver extends PropertyConstraintSolver {
             _doDeltaIteration(toplevel, toplevelHelper, constraintList);
         }
 
-    }
-
-    /** Iterate on the given list of constraints to find a minimal
-     * subset that still contains an error.
-     *
-     * This can be done efficiently in a manner similar to binary search.
-     * The pseudocode is as follows:
-       <pre>
-       errorList = constraintList
-       size = errorList.size()/2
-       while (size >= 1):
-         for (testList of size size in errorList):
-           (i.e. errorlist[0:size] , errorlist[size+1, 2*size], ...)
-           if _resolveProperties(errorList - testList) == error:
-              errorList = errorList - testList;
-              size = errorList.size()/2
-              continue while loop;
-         size = size/2;
-       </pre>
-     * @param toplevel
-     * @param toplevelHelper
-     * @param constraintList A list of constraints that causes an error
-     * @throws TypeConflictException
-     * @throws PropertyResolutionException
-     * @throws IllegalActionException
-     */
-    private void _doDeltaIteration(NamedObj toplevel,
-            PropertyConstraintHelper toplevelHelper,
-            List<Inequality> constraintList) throws TypeConflictException,
-            PropertyResolutionException, IllegalActionException {
-
-        List<Inequality> errorList = constraintList;
-        int blockSize = errorList.size()/2;
-
-        WHILE_LOOP: while(blockSize >= 1) {
-
-            for(int i = 0;  i < errorList.size(); i += blockSize) {
-
-                //modify the list of constraints
-                Set<Inequality> tmpSet = new HashSet<Inequality>(
-                        errorList.subList(i,
-                                Math.min(errorList.size(), i+blockSize)));
-                List<Inequality> testList =
-                  new LinkedList<Inequality>(errorList);
-                testList.removeAll(tmpSet);
-
-                if(testList.size() > 0) {
-                    _resolveProperties(toplevel, toplevelHelper, testList);
-                    if(checkForErrors()) {
-                        errorList = testList;
-                        blockSize = errorList.size()/2;
-                        continue WHILE_LOOP;
-                    }
-                }
-            }
-
-            blockSize /= 2;
-            System.err.println("Blocksize " + blockSize);
-        }
-
-        System.out.println(errorList);
-        _resolveProperties(toplevel, toplevelHelper, errorList);
     }
 
 }
