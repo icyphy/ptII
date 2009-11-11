@@ -914,52 +914,52 @@ public class NamedProgramCodeGeneratorAdapter extends ProgramCodeGeneratorAdapte
         return processCode(statements.toString());
     }
     
-    /** Given a port and channel number, create a Channel that sends
-     *  data to the specified port and channel number.
-     *  @param port The port.
-     *  @param channelNumber The channel number of the port.
-     *  @return the source channel.
-     *  @exception IllegalActionException If there is a problem getting
-     *  information about the receivers or constructing the new Channel.
-     *  FIXME: ONLY USED BY PN 
-     */
-    private static ProgramCodeGeneratorAdapter.Channel _getSourceChannel(IOPort port, int channelNumber)
-            throws IllegalActionException {
-        Receiver[][] receivers = null;
-    
-        if (port.isInput()) {
-            receivers = port.getReceivers();
-        } else if (port.isOutput()) {
-            if (port.getContainer() instanceof CompositeActor) {
-                receivers = port.getInsideReceivers();
-            } else {
-                // This port is the source port, so we only
-                // need to make a new Channel. We assume that
-                // the given channelNumber is valid.
-                return new ProgramCodeGeneratorAdapter.Channel(port, channelNumber);
-            }
-        } else {
-            assert false;
-        }
-    
-        List<IOPort> sourcePorts = port.sourcePortList();
-        sourcePorts.addAll(port.insideSourcePortList());
-    
-        for (IOPort sourcePort : sourcePorts) {
-            try {
-                ProgramCodeGeneratorAdapter.Channel source = new ProgramCodeGeneratorAdapter.Channel(sourcePort, sourcePort
-                        .getChannelForReceiver(receivers[channelNumber][0]));
-    
-                if (source != null) {
-                    return source;
-                }
-            } catch (IllegalActionException ex) {
-    
-            }
-        }
-        return null;
-    }
-    
+//    /** Given a port and channel number, create a Channel that sends
+//     *  data to the specified port and channel number.
+//     *  @param port The port.
+//     *  @param channelNumber The channel number of the port.
+//     *  @return the source channel.
+//     *  @exception IllegalActionException If there is a problem getting
+//     *  information about the receivers or constructing the new Channel.
+//     *  FIXME: ONLY USED BY PN 
+//     */
+//    private static ProgramCodeGeneratorAdapter.Channel _getSourceChannel(IOPort port, int channelNumber)
+//            throws IllegalActionException {
+//        Receiver[][] receivers = null;
+//    
+//        if (port.isInput()) {
+//            receivers = port.getReceivers();
+//        } else if (port.isOutput()) {
+//            if (port.getContainer() instanceof CompositeActor) {
+//                receivers = port.getInsideReceivers();
+//            } else {
+//                // This port is the source port, so we only
+//                // need to make a new Channel. We assume that
+//                // the given channelNumber is valid.
+//                return new ProgramCodeGeneratorAdapter.Channel(port, channelNumber);
+//            }
+//        } else {
+//            assert false;
+//        }
+//    
+//        List<IOPort> sourcePorts = port.sourcePortList();
+//        sourcePorts.addAll(port.insideSourcePortList());
+//    
+//        for (IOPort sourcePort : sourcePorts) {
+//            try {
+//                ProgramCodeGeneratorAdapter.Channel source = new ProgramCodeGeneratorAdapter.Channel(sourcePort, sourcePort
+//                        .getChannelForReceiver(receivers[channelNumber][0]));
+//    
+//                if (source != null) {
+//                    return source;
+//                }
+//            } catch (IllegalActionException ex) {
+//    
+//            }
+//        }
+//        return null;
+//    }
+//    
     /**
      * Mark the given connection between the source and the sink channels
      * as type conversion required.

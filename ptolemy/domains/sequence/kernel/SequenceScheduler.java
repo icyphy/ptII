@@ -904,37 +904,6 @@ public class SequenceScheduler extends Scheduler {
         }        
     }
 
-    /** From original SequenceDirector - copied directly 
-     * Check if the actorNode is a Sequenced Actor node 
-     * @param sequencedActorGraphNodes
-     * @param node
-     * @return true if node is a Sequenced Actor node
-     * FIXME:  Replace this check with a check of the hashtable to improve performance
-     */
-    private boolean isSequencedGraphNode(List<Node> sequencedActorGraphNodes, Node node) {
-
-        for ( Node graphNode  : sequencedActorGraphNodes ) {
-            if ( graphNode.getWeight().equals(node.getWeight())){
-                return true;
-            }
-        }
-        return false;
-    }
-    
-    /** From original SequenceDirector - copied directly
-     * Remove all the out going directed edges of a Sequenced Actor node 
-     * @param graph
-     * @param node
-     */
-    private void removeEdges(DirectedGraph graph, Node node) {
-
-        List edgeList = (List)graph.outputEdges(node); 
-        for ( int i=0; i < graph.outputEdgeCount(node);i++){
-            Edge edge = (Edge)edgeList.get(i);
-            _actorGraph.removeEdge(edge);
-        }
-    }  
-
     /** From original SequenceDirector - copied directly
      *  Find all the nodes that can be reached backward from the
      *  specified node.

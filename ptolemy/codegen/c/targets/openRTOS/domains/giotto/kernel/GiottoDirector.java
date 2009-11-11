@@ -831,18 +831,6 @@ ptolemy.codegen.c.domains.giotto.kernel.GiottoDirector {
         return depth; 
     }
 
-
-
-    private String _generateVariableDeclarations(Actor actor) {
-        // TODO Auto-generated method stub
-        StringBuffer code= new StringBuffer();
-        // input variables
-        // output variables
-
-        return code.toString();
-
-    }
-
     protected String _generateBlockCode(String blockName, List args)
     throws IllegalActionException {
         return _codeStream.getCodeBlock(blockName, args);        
@@ -1457,14 +1445,6 @@ ptolemy.codegen.c.domains.giotto.kernel.GiottoDirector {
          return code.toString();
      }
 
-
-     private void _generateTransferInputsCode(IOPort source,StringBuffer code) throws IllegalActionException{
-     }
-
-     private void _generateTransferOutputsCode(IOPort source,StringBuffer code) throws IllegalActionException{
-
-     }
-
      /**
       * This function simply overwrites the base class function
       * @exception IllegalActionException Not thrown in this base class.
@@ -1626,21 +1606,6 @@ ptolemy.codegen.c.domains.giotto.kernel.GiottoDirector {
 
          return portFullName;
      }
-
-
-
-     /**
-      * Generate the thread function name for a given actor.
-      * 
-      * @param actor
-      *            The given actor.
-      * @return A unique label for the actor thread function.
-      */
-     private String _getActorThreadLabel(Actor actor) {
-         return CodeGeneratorHelper.generateName((NamedObj) actor)
-         + "_ThreadFunction";
-     }
-
 
      /**
       * Determines the frequeny of the actor passed in as a parameter
