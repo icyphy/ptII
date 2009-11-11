@@ -34,7 +34,6 @@ import java.util.Map;
 import java.util.StringTokenizer;
 
 import ptolemy.actor.Actor;
-import ptolemy.actor.CompositeActor;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.TypedIOPort;
@@ -55,7 +54,6 @@ import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.Variable;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.DecoratedAttributesImplementation;
-import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.DecoratedAttributes;
 import ptolemy.kernel.util.IllegalActionException;

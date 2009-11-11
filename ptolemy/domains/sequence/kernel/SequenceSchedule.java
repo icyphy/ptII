@@ -33,7 +33,6 @@ import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.TreeSet;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.TypedIOPort;
@@ -528,54 +527,54 @@ public class SequenceSchedule extends Schedule {
         }
                 
         
-        /** Generate a list of actors that have not been fired yet.
-         *  
-         *  This function is designed to be called by the director after an 
-         *  iteration has been completed, to report the list of actors that
-         *  were not fired during that iteration.
-         *  
-         *  However, it can also be called at any time to report the list
-         *  of actors that have not been fired yet.
-         *  
-         *  Note that this function checks the whole model, and not just the
-         *  actors that are used in an individual process.
-         *  
-         *  @return List of actors that have not been fired
-         */
-        public List unfiredActors()
-        {
-            ArrayList<Actor> theUnfiredActors = new ArrayList();
-            
-            // First, construct a sorted set of fired actors from the schedule
-            // Note that we only include firings up to the current schedule position
-            // (firings after that have been scheduled but not fired)
-            // FIXME:  Does this work?  Are actors comparable in order to use them
-            // in a TreeSet?  Otherwise might have to use just the names
-            TreeSet firedActors = new TreeSet();
-            
-            for (int i = 0; i < _schedulePosition; i++)
-            {
-                // The _schedule for a SequenceSchedule only contains firings
-                Firing f = (Firing) _schedule.get(i);
-                firedActors.add(f.getActor());
-            }
-            
-            // FIXME:  What behavior do we want here?
-            // Currently, just checks for unfired actors that are supposed to be fired
-            // by this schedule (e.g., within the same process)
-            // using _sequencedActorToSubgraph
-            // FIXME:  Change once dag is different
-            
-            for (Actor key: _sequencedActorsToSubgraph.keySet())
-            {
-                if (!firedActors.contains(key))
-                {
-                    theUnfiredActors.add(key);
-                }
-            }
-           
-            return theUnfiredActors; 
-        }
+//        /** Generate a list of actors that have not been fired yet.
+//         *  
+//         *  This function is designed to be called by the director after an 
+//         *  iteration has been completed, to report the list of actors that
+//         *  were not fired during that iteration.
+//         *  
+//         *  However, it can also be called at any time to report the list
+//         *  of actors that have not been fired yet.
+//         *  
+//         *  Note that this function checks the whole model, and not just the
+//         *  actors that are used in an individual process.
+//         *  
+//         *  @return List of actors that have not been fired
+//         */
+//        public List unfiredActors()
+//        {
+//            ArrayList<Actor> theUnfiredActors = new ArrayList();
+//            
+//            // First, construct a sorted set of fired actors from the schedule
+//            // Note that we only include firings up to the current schedule position
+//            // (firings after that have been scheduled but not fired)
+//            // FIXME:  Does this work?  Are actors comparable in order to use them
+//            // in a TreeSet?  Otherwise might have to use just the names
+//            TreeSet firedActors = new TreeSet();
+//            
+//            for (int i = 0; i < _schedulePosition; i++)
+//            {
+//                // The _schedule for a SequenceSchedule only contains firings
+//                Firing f = (Firing) _schedule.get(i);
+//                firedActors.add(f.getActor());
+//            }
+//            
+//            // FIXME:  What behavior do we want here?
+//            // Currently, just checks for unfired actors that are supposed to be fired
+//            // by this schedule (e.g., within the same process)
+//            // using _sequencedActorToSubgraph
+//            // FIXME:  Change once dag is different
+//            
+//            for (Actor key: _sequencedActorsToSubgraph.keySet())
+//            {
+//                if (!firedActors.contains(key))
+//                {
+//                    theUnfiredActors.add(key);
+//                }
+//            }
+//           
+//            return theUnfiredActors; 
+//        }
         
         
         /**  Finds the branch actors for a control actor

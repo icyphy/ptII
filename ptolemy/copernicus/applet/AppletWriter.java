@@ -1879,7 +1879,6 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
         byte buffer[] = new byte[1024];
         while ((inputEntry = jarInputStream.getNextJarEntry()) != null) {
             // Don't copy any entries that we have already added.
-            boolean skip = false;
             if (entriesAdded.contains(inputEntry.getName())
                     || inputEntry.getName().startsWith("META-INF")) {
                 continue;

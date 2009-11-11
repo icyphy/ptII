@@ -1362,12 +1362,6 @@ public class TemplateParser {
      *  parsed expressions in target language.
      */
     private class VariableScope extends ModelScope {
-        /** Construct a scope consisting of the variables of the containing
-         *  actor and its containers and their scope-extending attributes.
-         */
-        public VariableScope() {
-            _variable = null;
-        }
 
         /** Construct a scope consisting of the variables of the container
          *  of the given instance of Variable and its containers and their

@@ -529,7 +529,4 @@ public class PthalesReceiver extends SDFReceiver {
     
     /** Number of dimensions supported. */
     private static int _NUMBER_OF_DIMENSIONS = 4;
-
-    /** Value one. */
-    private static Integer _ONE = new Integer(1);
 }

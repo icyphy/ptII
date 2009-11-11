@@ -443,9 +443,6 @@ public class PthalesScheduler extends SDFScheduler {
     ///////////////////////////////////////////////////////////////////
     ////                      private variables                    ////
 
-    /** The name of the offset parameter. */
-    private static String _OFFSET = "offset";
-
     /** The name of the pattern parameter. */
     private static String _PATTERN = "pattern";
     

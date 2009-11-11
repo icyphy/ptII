@@ -195,7 +195,6 @@ public class GiottoScheduler extends Scheduler {
         ListIterator actorListIterator = actorList.listIterator();
 
         int i = 0;
-        int biggestFrequency = _candidateFrequencies[_candidateFrequencies.length - 1];
 
         while (actorListIterator.hasNext()) {
             Actor actor = (Actor) actorListIterator.next();
@@ -302,13 +301,13 @@ public class GiottoScheduler extends Scheduler {
     ////                         private variables                 ////
     // This is a list of frequencies that can be used to calculate
     // _unitTimeIncrement accurately.
-    private static int[] _candidateFrequencies = new int[] { 1, 2, 4, 5, 8, 10,
-        16, 20, 25, 32, 40, 50, 64, 80, 100, 125, 128, 160, 200, 250, 256,
-        320, 400, 500, 512, 625, 640, 800, 1000, 1024, 1250, 1280, 1600,
-        2000, 2048, 2500, 2560, 3125, 3200, 4000, 4096, 5000, 5120, 6250,
-        6400, 8000, 8192, 10000, 10240, 12500, 12800, 15625, 16000, 16384,
-        20000, 20480, 25000, 25600, 31250, 32000, 32768, 40000, 40960,
-        50000, 51200, 62500, 64000, 65536, 78125, 80000, 81920, 100000 };
+//    private static int[] _candidateFrequencies = new int[] { 1, 2, 4, 5, 8, 10,
+//        16, 20, 25, 32, 40, 50, 64, 80, 100, 125, 128, 160, 200, 250, 256,
+//        320, 400, 500, 512, 625, 640, 800, 1000, 1024, 1250, 1280, 1600,
+//        2000, 2048, 2500, 2560, 3125, 3200, 4000, 4096, 5000, 5120, 6250,
+//        6400, 8000, 8192, 10000, 10240, 12500, 12800, 15625, 16000, 16384,
+//        20000, 20480, 25000, 25600, 31250, 32000, 32768, 40000, 40960,
+//        50000, 51200, 62500, 64000, 65536, 78125, 80000, 81920, 100000 };
 
     private int _giottoSchedulerTime = 0;
 

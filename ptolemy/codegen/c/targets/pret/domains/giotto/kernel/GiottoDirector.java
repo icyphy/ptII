@@ -327,10 +327,10 @@ public class GiottoDirector extends
                 + " was not defined.  Using default value of 1000.\"" + _eol
                 + "#define " + driverBound + " 1000" + _eol + "#endif" + _eol);
         // for
-        String index = CodeGeneratorHelper.generateName((NamedObj) actor)
-                + "_frequency";
-       
-                code.append("DEADBRANCH0(" + cycles + "-" + driverBound
+        //String index = CodeGeneratorHelper.generateName((NamedObj) actor)
+        //        + "_frequency";
+
+        code.append("DEADBRANCH0(" + cycles + "-" + driverBound
                 + "); // period - driver_wcet" + _eol + _getActorName(actor)
                 + "_driver_in();//read inputs from ports deterministically"
                 + _eol);
@@ -344,7 +344,7 @@ public class GiottoDirector extends
                 + "_driver_out(); // output values to ports deterministically"
                 + _eol);
         //code.append("}" + _eol); // end of for loop
-code.append(_eol);
+        code.append(_eol);
         code.append("#endif /* THREAD_" + threadID + "*/\n");
         threadID++;
         if (actor instanceof CompositeActor) {
@@ -748,8 +748,6 @@ code.append(_eol);
             String srcReference = "";
             String temp = "";
             StringBuffer transferIn = new StringBuffer();
-            StringBuffer transferOut = new StringBuffer();
-            String output = "";
             int i = 0; //sink index counter
             int j = 0; // src index counter
             CodeGeneratorHelper myHelper;

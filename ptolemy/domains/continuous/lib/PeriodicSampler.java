@@ -154,7 +154,6 @@ public class PeriodicSampler extends Transformer {
                     output.sendClear(i);
                 }
             }
-            _outputProduced = true;
         }
     }
 
@@ -166,7 +165,6 @@ public class PeriodicSampler extends Transformer {
     public void initialize() throws IllegalActionException {
         super.initialize();
         _nextSamplingTime = getDirector().getModelTime();
-        _outputProduced = false;
         _inputIsComplete = false;
     }
 
@@ -232,9 +230,6 @@ public class PeriodicSampler extends Transformer {
     
     /** The next sampling time. */
     private Time _nextSamplingTime;
-    
-    /** Flag indicating that an output was produced in the current iteration. */
-    private boolean _outputProduced;
     
     /** The recorded input data. */
     private Token[] _recordedInputs;
