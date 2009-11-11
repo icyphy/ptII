@@ -27,7 +27,6 @@ package ptolemy.data.properties.configuredSolvers.lattice;
 
 import ptolemy.actor.gui.ColorAttribute;
 import ptolemy.data.properties.lattice.DeltaConstraintSolver;
-import ptolemy.data.properties.lattice.PropertyConstraintSolver;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;

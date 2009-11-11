@@ -27,7 +27,6 @@
  */
 package ptolemy.cg.adapter.generic.html.adapters.ptolemy.actor;
 
-import ptolemy.cg.adapter.generic.html.adapters.ptolemy.actor.Director;
 import ptolemy.cg.kernel.generic.html.HTMLCodeGeneratorAdapter;
 import ptolemy.kernel.util.IllegalActionException;
 

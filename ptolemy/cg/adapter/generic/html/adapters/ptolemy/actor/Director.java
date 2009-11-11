@@ -33,7 +33,6 @@ import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.cg.kernel.generic.GenericCodeGenerator;
 import ptolemy.cg.kernel.generic.html.HTMLCodeGeneratorAdapter;
-import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
 import ptolemy.kernel.util.IllegalActionException;
 
 ////Director

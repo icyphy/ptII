@@ -55,7 +55,6 @@ import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
 import ptolemy.cg.kernel.generic.program.procedural.java.JavaCodeGenerator;
 import ptolemy.cg.kernel.generic.program.procedural.java.modular.ModularSDFCodeGenerator;
 import ptolemy.cg.lib.Profile.FiringFunction;
-import ptolemy.cg.lib.Profile.ProfileActor;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;

@@ -2,7 +2,6 @@ package ptolemy.actor.ptalon.model.controls;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.Frame;
 import java.awt.HeadlessException;
 import java.awt.Insets;
@@ -29,13 +28,10 @@ import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
-//FileNameExtensionFilter is not found in Java 1.5
-//import javax.swing.filechooser.FileNameExtensionFilter;
 
 import ptolemy.actor.ptalon.model.PtalonModel;
 import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.Settable;
 import ptolemy.util.StringUtilities;
 
 public class PtalonDialog extends JDialog implements ActionListener,

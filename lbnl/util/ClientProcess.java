@@ -78,6 +78,8 @@ derivative works thereof, in binary and source code form.
 
 package lbnl.util;
 
+import java.awt.Dimension;
+import java.awt.Rectangle;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -89,13 +91,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JFrame;
-import javax.swing.JTextArea;
 import javax.swing.JScrollPane;
-import javax.swing.ImageIcon;
-import java.awt.Dimension;
-import java.awt.Toolkit;
-import java.awt.Rectangle;
-import java.awt.Image;
+import javax.swing.JTextArea;
 
 import ptolemy.kernel.util.IllegalActionException;
 
