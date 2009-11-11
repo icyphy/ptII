@@ -300,7 +300,7 @@ public class ClientProcess extends Thread {
             stdOut = new StringBuilder();
             if ( showConsoleWindow && stdFra == null ){
                 stdFra = new JFrame("Output of " + modNam);
-                stdFra.setDefaultLookAndFeelDecorated(true);
+                JFrame.setDefaultLookAndFeelDecorated(true);
                 stdFra.setSize(600, dY);
                 stdAre = new JTextArea();
                 stdScrPan = new JScrollPane(stdAre);
