@@ -1788,7 +1788,7 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
                     try {
                         inputStream = new FileInputStream(jarFile);
                         jarInputStream = new JarInputStream(inputStream);
-                        jarFileNames = _updateJar(jarOutputStream,
+                        /*jarFileNames =*/ _updateJar(jarOutputStream,
                                 jarInputStream, jarFileNames);
                     } finally {
                         if (inputStream != null) {
