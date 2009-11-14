@@ -298,7 +298,7 @@ public class DynamicAttributeOperation extends Operation {
      *  @exception ValidationException If some elements are invalid.
      */
     public void validate() throws ValidationException {
-        if (_attributeName.equals("")) {
+        if (_attributeName.toString().equals("")) {
             throw new ValidationException("Name must not be empty.");
         }
 

@@ -197,7 +197,7 @@ public class PID extends DETransformer {
                 }
                 // Otherwise, the signal is continuous and we add integral and derivative components
                 else{
-                    if(!Ki.equals(0)){
+                    if(!Ki.getExpression().equals(0)){
                         //Calculate integral component and accumulate
                         _accumulated = (DoubleToken) _accumulated.add(currentToken.add(lastToken)
                                 .multiply(timeGap)

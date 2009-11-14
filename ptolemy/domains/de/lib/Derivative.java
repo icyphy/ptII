@@ -125,7 +125,7 @@ public class Derivative extends DETransformer {
                 // value of the input has not changed, then we can ignore this input, as a control
                 // signal was already generated. However if the value has changed, then the signal
                 // is discontinuous and an exception will be thrown.
-                if(timeGap.equals(0) && !currentToken.equals(lastToken)){
+                if (timeGap.doubleValue() == 0 && !currentToken.equals(lastToken)){
                     throw new IllegalActionException("Derivative received discontinuous input.");
                 }
                 

@@ -170,7 +170,7 @@ public class CCodeGenerator extends CodeGenerator {
             // "function declaration isn't a prototype
             if (!_hasPlaceable()) {
                 return _eol + _eol + "void initialize(void) {" + _eol;
-            } else if(_hasPlaceable()&&target.equals("posix")){
+            } else if(_hasPlaceable() && target.getExpression().equals("posix")){
                 return _eol + _eol + "#ifdef __MAC_OS_X_VERSION_10_0" + _eol
                 + "void initialize(void * options) {" + _eol
                 + "#else" + _eol
@@ -205,7 +205,7 @@ public class CCodeGenerator extends CodeGenerator {
      */
     public String generateInitializeProcedureName()
             throws IllegalActionException {
-        if (_hasPlaceable()&&target.equals("posix")) {
+        if (_hasPlaceable() && target.getExpression().equals("posix")) {
             return "    initialize(options);" + _eol
                 + "#else" + _eol
                 + "     initialize();" + _eol
@@ -245,7 +245,7 @@ public class CCodeGenerator extends CodeGenerator {
             mainEntryCode.append(_eol + _eol
                     + "int main(int argc, char *argv[]) {" + _eol);
           
-             if (_hasPlaceable()&& target.equals("posix")) {
+            if (_hasPlaceable()&& target.getExpression().equals("posix")) {
                 mainEntryCode.append(_eol + _eol
                     + "#ifdef __MAC_OS_X_VERSION_10_0" + _eol
                     + "    CFRunLoopSourceContext sourceContext;" + _eol
@@ -320,15 +320,6 @@ public class CCodeGenerator extends CodeGenerator {
                     + "} " + _eol
                     + "static void* startupJava(void *options) {    " + _eol);
             }
-
-            //String targetValue = target.getExpression();
-
-            // FIXME: why do we need this?
-            //            if (!targetValue.equals(_DEFAULT_TARGET)) {
-            //                mainEntryCode.append("//FIXME: CCodeGenerator hack" + _eol
-            //                        + "init();" + _eol);
-            //            }
-
         } else {
             // If the container is not in the top level, we are generating code
             // for the Java and C co-simulation.
