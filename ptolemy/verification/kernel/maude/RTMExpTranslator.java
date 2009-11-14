@@ -350,6 +350,8 @@ public class RTMExpTranslator extends AbstractParseTreeVisitor {
 
     private static String _toRational(double f) {
         double base = 1.0;
+        // Findebugs: FE Test for floating point equality.
+        // This looks ok, as this loop will run at least once.
         while (Math.ceil(f * base) != f * base) {
             base = base * 10.0;
         }
