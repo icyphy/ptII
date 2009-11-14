@@ -101,8 +101,8 @@ import javax.media.opengl.GL;
  
     public void keyPressed(KeyEvent e) {
         if(e.getKeyCode() == KeyEvent.VK_ESCAPE) {
-            JavaDia.bQuit = true;
-            JavaDia.displayT = null;
+            JavaDia.quit = true;
+            JavaDia.displayThread = null;
             System.exit(0);
         }
     }
