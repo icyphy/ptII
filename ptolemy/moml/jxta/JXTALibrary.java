@@ -768,38 +768,48 @@ public class JXTALibrary extends EntityLibrary implements ChangeListener,
         }
 
         try {
-            actStream = new FileInputStream(_configDir + "/" + ActorFile);
-        } catch (java.io.IOException ex) {
-            System.out.println("failed to read/parse pipe " + "advertisement"
-                    + ex.getMessage());
-        }
+            try {
+                actStream = new FileInputStream(_configDir + "/" + ActorFile);
+            } catch (java.io.IOException ex) {
+                System.out.println("failed to read/parse pipe " + "advertisement"
+                        + ex.getMessage());
+            }
 
-        // create the pipe message
-        Message msg = _pipeSvc.createMessage();
+            // create the pipe message
+            Message msg = _pipeSvc.createMessage();
 
-        //msg.setString(_TAG, data);
-        //byte[] buff = new byte[MAXBUFF];
-        //int size = actStream.read(buff);
-        //actStream.close();
-        //if (size < MAXBUFF) {
-        try {
-            MessageElement msgelm = msg
+            //msg.setString(_TAG, data);
+            //byte[] buff = new byte[MAXBUFF];
+            //int size = actStream.read(buff);
+            //actStream.close();
+            //if (size < MAXBUFF) {
+            try {
+                MessageElement msgelm = msg
                     .newMessageElement(_TAG, null, actStream);
-            msg.addElement(msgelm);
-        } catch (java.io.IOException e) {
-            // go try again;
-        }
+                msg.addElement(msgelm);
+            } catch (java.io.IOException e) {
+                // go try again;
+            }
 
-        try {
-            // send the message to the service pipe
-            _outputPipe.send(msg);
-            System.out.println(ActorName + "file sent out to remote peer.");
-        } catch (java.io.IOException ex) {
-            System.out.println("failed to send message to remote peer "
-                    + ex.getMessage());
+            try {
+                // send the message to the service pipe
+                _outputPipe.send(msg);
+                System.out.println(ActorName + "file sent out to remote peer.");
+            } catch (java.io.IOException ex) {
+                System.out.println("failed to send message to remote peer "
+                        + ex.getMessage());
+            }
+        } finally {
+            if (actStream != null) {
+                try {
+                    actStream.close();
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            }
         }
     }
-
+ 
     private boolean _startJxta() {
         try {
             _netPeerGroup = PeerGroupFactory.newNetPeerGroup();

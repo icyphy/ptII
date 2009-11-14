@@ -195,33 +195,45 @@ public class ComponentDef implements Comparable<Object> {
     @SuppressWarnings("unchecked")
     public static List<ComponentDef> createComponentDefs() {
         List<ComponentDef> components = new ArrayList<ComponentDef>();
-        InputStream paletteStream = ComponentDef.class
-                .getResourceAsStream("components.xml");
-        if (paletteStream == null) {
-            paletteStream = getCompFile();
-        }
-        if (paletteStream == null) {
-            return components;
-        }
-
-        Document dataDocument = null;
-
+        InputStream paletteStream = null;
         try {
-            DocumentBuilder documentBuilder = DocumentBuilderFactory
-                    .newInstance().newDocumentBuilder();
-            dataDocument = documentBuilder.parse(paletteStream);
-            Node paletteNode = dataDocument.getDocumentElement();
-            Node[] componentNodes = getNodesNamed(paletteNode, "component");
-
-            for (int index = 0; index < componentNodes.length; index++) {
-                Node componentNode = componentNodes[index];
-                components.add(new ComponentDef(componentNode));
+            paletteStream = ComponentDef.class
+                .getResourceAsStream("components.xml");
+            if (paletteStream == null) {
+                paletteStream = getCompFile();
             }
-        } catch (Exception e) {
-            throw new RuntimeException("Unable to create DocumentBuilder", e);
-        }
+            if (paletteStream == null) {
+                return components;
+            }
 
-        Collections.sort(components);
+            Document dataDocument = null;
+
+            try {
+                DocumentBuilder documentBuilder = DocumentBuilderFactory
+                    .newInstance().newDocumentBuilder();
+                dataDocument = documentBuilder.parse(paletteStream);
+                Node paletteNode = dataDocument.getDocumentElement();
+                Node[] componentNodes = getNodesNamed(paletteNode, "component");
+
+                for (int index = 0; index < componentNodes.length; index++) {
+                    Node componentNode = componentNodes[index];
+                    components.add(new ComponentDef(componentNode));
+                }
+            } catch (Exception e) {
+                throw new RuntimeException("Unable to create DocumentBuilder", e);
+            }
+
+            Collections.sort(components);
+        } finally {
+            if (paletteStream != null) {
+                try {
+                    paletteStream.close();
+                } catch (Exception ex) {
+                    throw new RuntimeException("Failed to close paletteStream "
+                            + paletteStream, ex);
+                }
+            }
+        }
         return components;
     }
 
