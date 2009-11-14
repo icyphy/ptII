@@ -519,8 +519,7 @@ public class PtolemyModelUtil {
         // need to request a MoML Change for a particular NamedObj and not the
         // top level element
         // so we need multiple requests here
-        MoMLChangeRequest request = new MoMLChangeRequest(obj, obj, moml
-                .toString());
+        MoMLChangeRequest request = new MoMLChangeRequest(obj, obj, moml);
         request.setUndoable(false);
         obj.requestChange(request);
     }
@@ -544,8 +543,7 @@ public class PtolemyModelUtil {
         // and not the
         // top level element
         // so we need multiple requests here
-        MoMLChangeRequest request = new MoMLChangeRequest(vertex, relation,
-                moml.toString());
+        MoMLChangeRequest request = new MoMLChangeRequest(vertex, relation, moml);
         request.setUndoable(true);
         relation.requestChange(request);
     }
