@@ -358,7 +358,9 @@ public class PthalesScheduler extends SDFScheduler {
                     Integer[] values = new Integer[2];
                     if (subSubSpecs[1].contains(".")) {
                         // A stride is given.
-                        String[] strideSpec = subSubSpecs[1].split(".");
+                        // String.split() splits on a regex, so to split on ".",
+                        // we use backquotes.
+                        String[] strideSpec = subSubSpecs[1].split("\\.");
                         values[0] = new Integer(strideSpec[0].trim());
                         values[1] = new Integer(strideSpec[1].trim());
                     } else {
