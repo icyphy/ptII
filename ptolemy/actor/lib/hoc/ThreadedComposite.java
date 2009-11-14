@@ -559,6 +559,10 @@ public class ThreadedComposite extends MirrorComposite {
             if (environmentTime.equals(nextOutputTime)) {
                 // There is an output to be produced.
                 // First, remove that time from the pending outputs queue.
+
+                // FIXME: FindBugs "RV: Base use of return value from method,
+                // Method ignores return value." java.util.Queue.poll() returns 
+                // the value, which is ignored.
                 _outputTimes.poll();
                 // First, wait (if necessary) for output
                 // to be produced.

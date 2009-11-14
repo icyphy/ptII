@@ -755,6 +755,8 @@ public class SMVUtility {
                                         String rValue = null;
                                         boolean isTrue = false;
                                         try {
+                                            // FIXME: FindBugs RV: Base use of return value from method,
+                                            // Method ignores return value.  What does this code do?
                                             rValue = characterOfSubGuard[1]
                                                     .trim();
                                         } catch (Exception ex) {
@@ -1156,6 +1158,8 @@ public class SMVUtility {
                                     // exists.
                                     boolean isTrue = false;
                                     try {
+                                        // FIXME: FindBugs RV: Base use of return value from method,
+                                        // Method ignores return value.  What does this code do?
                                         characterOfSubGuard[1].trim();
                                     } catch (Exception ex) {
                                         isTrue = true;

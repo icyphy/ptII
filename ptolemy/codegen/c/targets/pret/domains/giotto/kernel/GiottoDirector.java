@@ -1134,7 +1134,7 @@ public class GiottoDirector extends
             sourceType = Character.toUpperCase(tc) + sourceType.substring(1);
             tc = sinkType.charAt(0);
             sinkType = Character.toUpperCase(tc) + sinkType.substring(1);
-            sinkType.replace(tc, Character.toUpperCase(tc));
+            sinkType = sinkType.replace(tc, Character.toUpperCase(tc));
             return sourceType + "to" + sinkType;
         }
     }

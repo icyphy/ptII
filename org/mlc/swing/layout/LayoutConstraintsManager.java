@@ -318,7 +318,7 @@ public class LayoutConstraintsManager {
                             int end = propertyXml.lastIndexOf("</void>");
                             String xmlWithoutDec = propertyXml.substring(
                                     voidEnd + 1, end);
-                            xmlWithoutDec.trim();
+                            xmlWithoutDec = xmlWithoutDec.trim();
                             String indented = "          "
                                     + xmlWithoutDec.replaceAll("\n",
                                             "\n        ");
