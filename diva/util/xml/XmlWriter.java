@@ -68,26 +68,31 @@ public class XmlWriter extends LoggableOp {
      * will be thrown.
      */
     public void write(XmlDocument document) throws IOException {
-        Writer out;
-        URL url = document.getURL();
+        Writer out = null;
+        try {
+            URL url = document.getURL();
 
-        if (url != null) {
-            if (!url.getProtocol().equals("file")) {
-                throw new IOException("XmlWriter can only write to file:/ URLs");
-            }
+            if (url != null) {
+                if (!url.getProtocol().equals("file")) {
+                    throw new IOException("XmlWriter can only write to file:/ URLs");
+                }
 
-            out = new FileWriter(url.getFile());
-        } else {
-            File file = document.getFile();
-
-            if (file != null) {
-                out = new FileWriter(file);
+                out = new FileWriter(url.getFile());
             } else {
-                throw new IOException("XmlDocument has no URL or File");
+                File file = document.getFile();
+
+                if (file != null) {
+                    out = new FileWriter(file);
+                } else {
+                    throw new IOException("XmlDocument has no URL or File");
+                }
+            }
+            write(document, out);
+        } finally {
+            if (out != null) {
+                out.close();
             }
         }
-
-        write(document, out);
     }
 
     /** Write the given XmlDocument to a given Writer. If an error

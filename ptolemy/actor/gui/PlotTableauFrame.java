@@ -313,8 +313,15 @@ public class PlotTableauFrame extends TableauFrame implements Printable {
      *  @exception IOException If the write fails.
      */
     protected void _writeFile(File file) throws IOException {
-        FileOutputStream fout = new FileOutputStream(file);
-        plot.write(fout);
+        FileOutputStream out = null;
+        try {
+            out = new FileOutputStream(file);
+            plot.write(out);
+        } finally {
+            if (out != null) {
+                out.close();
+            }
+        }
     }
 
     ///////////////////////////////////////////////////////////////////

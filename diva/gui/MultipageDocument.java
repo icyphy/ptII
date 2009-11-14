@@ -132,7 +132,15 @@ public abstract class MultipageDocument extends AbstractDocument {
 
         String filename = getFile().getName();
         System.out.println("Parsing " + filename);
-        _parser.parse(new FileReader(filename), getMultipageModel());
+        FileReader fileReader = null;
+        try { 
+            fileReader = new FileReader(filename);
+            _parser.parse(fileReader, getMultipageModel());
+        } finally {
+            if (fileReader != null) {
+                    fileReader.close();
+            }
+        }
     }
 
     /** Save the document to the current file.
@@ -157,10 +165,16 @@ public abstract class MultipageDocument extends AbstractDocument {
         String filename = file.getName();
         _title = filename;
 
-        FileWriter out = new FileWriter(file);
-        _writer.write(getMultipageModel(), out);
-        out.flush();
-        out.close();
+        FileWriter out = null;
+        try { 
+            out = new FileWriter(file);
+            _writer.write(getMultipageModel(), out);
+            out.flush();
+        } finally {
+            if (out != null) {
+                out.close();
+            }
+        }
     }
 
     /** Throw an exception, as save to URLs is not supported.

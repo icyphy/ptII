@@ -102,6 +102,8 @@ public class FileWriter extends ptolemy.actor.lib.Writer {
                     } else {
                         java.io.FileWriter writer = new java.io.FileWriter(
                                 newFilename);
+                        // Findbugs warns about the writer being created but
+                        // not closed.
                         setWriter(writer);
                     }
                 }

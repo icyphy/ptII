@@ -297,6 +297,7 @@ public class DatabaseManager extends TypedAtomicActor {
      */
     public ArrayToken executeQuery(String sql) throws IllegalActionException {
         PreparedStatement statement = null;
+        ResultSet rset = null;
         ArrayList<RecordToken> matches = new ArrayList<RecordToken>();
         try {
             Connection connection = getConnection();
@@ -310,7 +311,7 @@ public class DatabaseManager extends TypedAtomicActor {
             statement = connection.prepareStatement(sql);
 
             // Perform the query.
-            ResultSet rset = statement.executeQuery();
+            rset = statement.executeQuery();
             ResultSetMetaData metaData = rset.getMetaData();
             int columnCount = metaData.getColumnCount();
             // For each matching row, construct a record token.
@@ -337,6 +338,14 @@ public class DatabaseManager extends TypedAtomicActor {
                     // Not much to do here.
                 }
             }
+            if (rset != null) {
+                try {
+                    rset.close();
+                } catch (SQLException e1) {
+                    // Not much to do here.
+                }
+            }
+
         }
         int numberOfMatches = matches.size();
         ArrayToken result;

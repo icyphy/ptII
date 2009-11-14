@@ -400,14 +400,20 @@ public class Copernicus {
         File temporaryFile = File.createTempFile("ptCopernicus", ".xml");
         temporaryFile.deleteOnExit();
 
-        FileWriter writer = new FileWriter(temporaryFile);
-        String header = "<class name=\"Temp\" extends=\"ptolemy.actor.TypedCompositeActor\">\n";
-        writer.write(header, 0, header.length());
-        namedObj.exportMoML(writer, 1, GENERATOR_NAME);
+        FileWriter writer = null;
+        try { 
+            writer = new FileWriter(temporaryFile);
+            String header = "<class name=\"Temp\" extends=\"ptolemy.actor.TypedCompositeActor\">\n";
+            writer.write(header, 0, header.length());
+            namedObj.exportMoML(writer, 1, GENERATOR_NAME);
 
-        String footer = "</class>\n";
-        writer.write(footer, 0, footer.length());
-        writer.close();
+            String footer = "</class>\n";
+            writer.write(footer, 0, footer.length());
+        } finally { 
+            if (writer != null) {
+                writer.close();
+            }
+        }
 
         // Substitute backslashes here because setting a parameter to include
         // backslashes causes problems.

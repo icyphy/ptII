@@ -119,8 +119,15 @@ public class XmlReader extends LoggableOp {
                         0, 0);
             }
 
-            FileReader in = new FileReader(file);
-            parse(document, in);
+            FileReader in = null;
+            try {
+                in = new FileReader(file);
+                parse(document, in);
+            } finally {
+                if (in != null) {
+                    in.close();
+                }
+            }
         }
     }
 

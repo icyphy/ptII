@@ -113,15 +113,24 @@ public class TwoPlotExample extends JFrame {
 
         File file = new File(".", "data.plt");
 
+        FileInputStream input = null;
         try {
             rightPlot.clear(true);
-            rightPlot.read(new FileInputStream(file));
+            input = new FileInputStream(file);
+            rightPlot.read(input);
         } catch (FileNotFoundException ex) {
             System.err.println("File not found: " + file + " : " + ex);
         } catch (IOException ex) {
             System.err.println("Error reading input: " + file + " : " + ex);
+        } finally {
+            if (input != null) {
+                try {
+                    input.close();
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            }
         }
-
         // Override the title in the file.
         rightPlot.setTitle("Right Plot");
 

@@ -397,10 +397,12 @@ public class PlotFrame extends JFrame {
             setTitle(_file.getName());
             _directory = fileDialog.getCurrentDirectory();
 
+            FileInputStream input = null;
             try {
                 plot.clear(true);
+                input = new FileInputStream(_file);
                 _read(new URL("file", null, _directory.getAbsolutePath()),
-                        new FileInputStream(_file));
+                        input);
                 plot.repaint();
             } catch (FileNotFoundException ex) {
                 JOptionPane.showMessageDialog(this, "File not found:\n"
@@ -410,6 +412,15 @@ public class PlotFrame extends JFrame {
                 JOptionPane.showMessageDialog(this, "Error reading input:\n"
                         + ex.toString(), "Ptolemy Plot Error",
                         JOptionPane.WARNING_MESSAGE);
+            } finally {
+                if (input != null) {
+                    try {
+                        input.close();
+                    } catch (Exception ex) {
+                        // Ignore this, but print anyway.
+                        ex.printStackTrace();
+                    }
+                }
             }
         }
     }
@@ -546,13 +557,23 @@ public class PlotFrame extends JFrame {
      */
     protected void _save() {
         if (_file != null) {
+            FileOutputStream output = null;
             try {
-                FileOutputStream fout = new FileOutputStream(_file);
-                plot.write(fout);
+                output = new FileOutputStream(_file);
+                plot.write(output);
             } catch (IOException ex) {
                 JOptionPane.showMessageDialog(this, "Error writing file:\n"
                         + ex.toString(), "Ptolemy Plot Error",
                         JOptionPane.WARNING_MESSAGE);
+            } finally {
+                if (output != null) {
+                    try {
+                        output.close();
+                    } catch (Exception ex) {
+                        // Ignore, but print anyway.
+                        ex.printStackTrace();
+                    }
+                }
             }
         } else {
             _saveAs();
