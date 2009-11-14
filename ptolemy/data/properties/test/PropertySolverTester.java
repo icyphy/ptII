@@ -193,10 +193,8 @@ public class PropertySolverTester {
 
                 // Destroy the top level so that we avoid
                 // problems with running the model after generating code
-                if (toplevel != null) {
-                    toplevel.setContainer(null);
-                    toplevel = null;
-                }
+                toplevel.setContainer(null);
+                toplevel = null;
 
                 // ==========================================================
                 System.gc();

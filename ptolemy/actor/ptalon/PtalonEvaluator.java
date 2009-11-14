@@ -211,20 +211,28 @@ public class PtalonEvaluator extends AbstractPtalonEvaluator {
                     MoMLParser momlParser = null;
 
                     // Check to see whether there is a parser...
-                    if (context != null) {
-                        momlParser = ParserAttribute.getParser(context);
-                        momlParser.reset();
-                    }
 
-                    if (momlParser == null) {
-                        // There is no previously associated parser
-                        // (can only happen if context is null).
-                        momlParser = new MoMLParser();
-                    }
+//                     if (context != null) {
+//                         momlParser = ParserAttribute.getParser(context);
+//                         momlParser.reset();
+//                     }
+//
+//                     if (momlParser == null) {
+//                         // There is no previously associated parser
+//                         // (can only happen if context is null).
+//                         momlParser = new MoMLParser();
+//                     }
+//
+//                     if (context != null) {
+//                         momlParser.setContext(context);
+//                     }
 
-                    if (context != null) {
-                        momlParser.setContext(context);
-                    }
+                    // FindBugs "Redundant comparison to null
+                    // At this point, _actor was already dereferenced,
+                    // so it must be non-null
+                    momlParser = ParserAttribute.getParser(context);
+                    momlParser.reset();
+                    momlParser.setContext(context);
 
                     // MoML description for actor declaration.
                     String description = "<entity name =\"" + uniqueName
@@ -232,10 +240,12 @@ public class PtalonEvaluator extends AbstractPtalonEvaluator {
                     momlParser.parse(null, description);
 
                     ComponentEntity entity = null;
-                    if (_actor != null) {
-                        entity = _actor.getEntity(uniqueName);
-                    }
-                    if (_actor == null || entity == null) {
+                    // FIXME: reading this code indicates that _actor 
+                    // is dereferenced above, so it will be non-null.
+                    //if (_actor != null) {
+                    entity = _actor.getEntity(uniqueName);
+                    //}
+                    if (/*_actor == null ||*/ entity == null) {
                         throw new PtalonRuntimeException(
                                 "Could not create new actor.");
                     }

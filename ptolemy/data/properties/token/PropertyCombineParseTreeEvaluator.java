@@ -68,7 +68,7 @@ public class PropertyCombineParseTreeEvaluator extends ParseTreeEvaluator {
                 PropertyToken propertyToken = (PropertyToken) propertyAttribute
                         .getProperty();
 
-                if ((propertyAttribute != null) && (propertyToken != null)) {
+                if ((propertyToken != null)) {
                     _evaluatedChildToken = propertyToken.getToken();
                 } else {
                     _evaluatedChildToken = new StringToken(Token.NIL.toString());
