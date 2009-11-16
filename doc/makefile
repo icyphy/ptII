@@ -1197,7 +1197,7 @@ doccheck/index.html:
 #
 
 # Location of the FindBugs sources
-FINDBUGS=../vendors/findbugs-1.3.8
+FINDBUGS=../vendors/findbugs-1.3.9
 
 # findbugs.xml is special to findbugs, if we use findbugs.xml, we get:
 # Warning: could not load plugin file:/c:/cxh/ptII/vendors/findbugs-1.3.1/plugin/coreplugin.jar: java.security.PrivilegedActionException: edu.umd.cs.findbugs.PluginException: Couldn't parse "findbugs.xml"
@@ -1216,7 +1216,7 @@ ptII.fb:
 		done; \
 	fi
 
-FINDBUGS_ARGS = -maxHeap 1500 -experimental -effort:max -textui -exclude findbugs-exclude.xml -project ptII.fb
+FINDBUGS_ARGS = -maxHeap 2000 -experimental -effort:max -textui -exclude findbugs-exclude.xml -project ptII.fb
 
 findbugs.htm:  ptII.fb findbugs-exclude.xml makefile
 	@if [ -f "$(FINDBUGS)/bin/findbugs" ]; then \
