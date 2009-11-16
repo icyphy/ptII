@@ -979,7 +979,10 @@ chkallpackages:
 	(cd ..; ls -dl `echo "$(ALLPACKAGES)" | sed 's/\*.java//g' | sed 's@\.@/@g'`) > /dev/null
 
 # Command to check to see if package.html exists
-# Try "make chkpackagehtml | $PTII/adm/bin/mkpackagehtml"
+# Try make chkpackagehtml > /tmp/s
+#  $PTII/adm/bin/mkpackagehtml `cat /tmp/s`
+#  svn add `egrep '(README.txt|package.html)' /tmp/s | awk '{print $2}'`
+#  svn commit -m "Added package.html and README.txt" `egrep '(README.txt|package.html)' /tmp/s | awk '{print $2}'`
 chkpackagehtml:
 	@(cd ..; $(PTII)/adm/bin/chkpackagehtml `echo "$(ALLPACKAGES)" | sed 's/\*.java//g'`)
 
