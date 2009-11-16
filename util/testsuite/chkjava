@@ -213,14 +213,14 @@ do
         fi
 
         # Check for lines with trailing spaces
-        results=`egrep '[         ]+$' $file`
+        results=`egrep '[ ]+$' $file`
         if [ "x$results" != "x" ]; then
             echo "$file: contains trailing spaces or trailing tabs, run rmtrailingspace to fix this"
             echo "$results"
         fi
 
         # Check for lines with tabs
-        results=`egrep '[        ]' $file`
+        results=`egrep '[	]' $file`
         if [ "x$results" != "x" ]; then
             echo "$file: contains tabs, run rmtabs to fix this"
             echo "$results"
@@ -343,7 +343,7 @@ do
         fi
 
         # 19) Warn if there is no trailing newline
-        results=`tail -1 $file | od -bv | tail -2 |head -1 | grep '012$'`
+        results=`tail -1 $file | od -bv | tail -2 |head -1 | grep '012[ ]*$'`
         if [ "x$results" = "x" ]; then
                 echo "$file: does not have a trailing newline"
         fi
