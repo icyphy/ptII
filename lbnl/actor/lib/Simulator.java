@@ -493,6 +493,7 @@ public class Simulator extends SDFTransformer {
      *  to the command (under Windows)
      *
      *  @param programName Name of program that starts the simulation.
+     *  @return The command line string.
      *  @exception IllegalActionException If the simulation process arguments
      *                           are invalid.
      */
@@ -533,7 +534,7 @@ public class Simulator extends SDFTransformer {
 	return comArg;
     }
 
-    /** Get the MoML file
+    /** Get the MoML file.
      *
      *@param namedObj A named object, typically the container of the model
      *@return the MoMOL file
@@ -551,9 +552,10 @@ public class Simulator extends SDFTransformer {
      *  This method adds the path of the MoML file to its argument if
      *  the argument is a relative directory.
      *
-     *@param namedObj A named object, typically the container of the model
-     *@param dir The directory to be resolved.
-     *@exception IllegalActionException If an attribute is found with the name "_uri" 
+     *  @param namedObj A named object, typically the container of the model
+     *  @param dir The directory to be resolved.
+     *  @return The resolved working string.
+     *  @exception IllegalActionException If an attribute is found with the name "_uri" 
      *           that is not an instance of the URIAttribute class
      */
     public static String resolveDirectory(final NamedObj namedObj, final String dir) 
@@ -779,24 +781,24 @@ public class Simulator extends SDFTransformer {
     /** Output tokens. */
     protected DoubleMatrixToken outTok;
 
-    /** Ptolemy's time at the last call of the fire method */
+    /** Ptolemy's time at the last call of the fire method. */
     protected double simTimPre;
 
-    /** Time read from the simulation program at the last call of the fire method */
+    /** Time read from the simulation program at the last call of the fire method. */
     protected double simTimReaPre;
 
-    /** Flag, set to true when the clients terminates the communication */
+    /** Flag, set to true when the clients terminates the communication. */
     protected boolean clientTerminated;
 
-    /** Thread that is used if a warning window need to be shown */
+    /** Thread that is used if a warning window need to be shown. */
     protected Thread warWin;
 
     /** Message that will be displayed in the warning window when the client terminated,
-	but Ptolemy continues with the simulation */
+	but Ptolemy continues with the simulation. */
     protected String terminationMessage;
 
     /** Flag, set the <code>true</code> if Ptolemy is run without any graphical
-     *  interface
+     *  interface.
      *
      * If <code>isHeadless=true</code>, this actor will not open any windows for 
      * reporting outputs or warnings.

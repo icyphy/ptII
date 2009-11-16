@@ -269,15 +269,16 @@ public class ClientProcess extends Thread {
     }
 
 
-    /** Frame that contains the console output of the simulation */
+    /** Frame that contains the console output of the simulation. */
     protected JFrame stdFra;
 
-    /** Text area that contains the console output of the simulation */
+    /** Text area that contains the console output of the simulation. */
     protected JTextArea stdAre;
 
-    /** Scroll pane  that contains the text area for the console ouput */
+    /** Scroll pane  that contains the text area for the console ouput. */
 
     protected JScrollPane stdScrPan;
+
     /** Y location of window that displays the console output.
      *
      * This data member is static so that windows can be placed above each 
@@ -285,7 +286,7 @@ public class ClientProcess extends Thread {
      */
     public static int locY = -1;
 
-    /** Default height of window */
+    /** Default height of window. */
     protected static final int dY = 200;
 
     /////////////////////////////////////////////////////////////////////
@@ -293,7 +294,7 @@ public class ClientProcess extends Thread {
     private class PrintOutput extends Thread {
 
         /** Construct an object that starts a simulation
-         *@param programName Name of the program, used for output display only. 
+         *  @param programName Name of the program, used for output display only. 
          *
          */
         public PrintOutput(final String programName) {
@@ -506,31 +507,33 @@ public class ClientProcess extends Thread {
         }
     }
 
-    /** Array containing the command to call and its arguments */
+    /** Array containing the command to call and its arguments. */
     protected List<String> cmdArr;
 
-    /** Working directory of the subprocess, or null if the subprocess should inherit the working directory of the current process */
+    /** Working directory of the subprocess, or null if the subprocess
+     * should inherit the working directory of the current process.
+     */
     protected File worDir;
 
-    /** Log file where simulation output will be written to */
+    /** Log file to which simulation output will be written. */
     protected File logFil;
 
-    /** Flag, if <code>true</code>, then the output will be written to System.out */
+    /** Flag, if <code>true</code>, then the output will be written to System.out. */
     protected boolean logToSysOut;
 
-    /** Process for the simulation */
+    /** Process for the simulation. */
     protected Process simPro;
 
-    /** Name of the model */
+    /** Name of the model. */
     protected String modNam;
 
-    /** Flag, if true, then the console output will be displayed in a JFrame */
+    /** Flag, if true, then the console output will be displayed in a JFrame. */
     protected boolean showConsoleWindow;
 
-    /** Flag that is set to <code>true</code> if the process started without throwing an exception */
+    /** Flag that is set to <code>true</code> if the process started without throwing an exception. */
     protected boolean proSta;
 
-    /** Error message if <code>proSta=true</code> or null pointer otherwise */
+    /** Error message if <code>proSta=true</code> or null pointer otherwise. */
     protected String errMes;
 
     /** String that contains the standard output stream. */
@@ -541,10 +544,11 @@ public class ClientProcess extends Thread {
 
     /** The thread that captures the standard output stream. */
     protected PrintOutput priStdOut;
+
     /** The thread that captures the standard error stream. */
     protected PrintStderr priStdErr;
 
-    /** Flag, if true, redirects the standard error stream to the standard output stream */
+    /** Flag, if true, redirects the standard error stream to the standard output stream. */
     protected boolean redErrStr;
 
     /** Main method for testing.
