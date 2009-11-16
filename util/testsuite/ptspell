@@ -76,7 +76,14 @@ else
 	    SPELLCMD=$ASPELL
 	    # First line of ptlocaldict must be
 	    # personal_ws-1.1 en 719
-	    SPELLARGS="list --personal=$LOCALFILE"
+	    SPELLARGS="-C --run-together-limit=10 -a list --personal=$LOCALFILE --repl=$PTII/util/testsuite/aspell.en.prepl"
+	    cat ${1+"$@"} | $SPELLCMD $SPELLARGS | \
+		awk '{if ($1 == "&") {print $2}}' | \
+		sed -e 's/\([a-z]\)\([A-Z]\)/\1 \2/g' | \
+                $SPELLCMD $SPELLARGS | \
+		awk '{if ($1 == "&") {print $2}}' | \
+		sort | uniq
+	    exit $?
 	else
 	    echo "$0: could not find ispell, spell or aspell"
 	    exit 2
