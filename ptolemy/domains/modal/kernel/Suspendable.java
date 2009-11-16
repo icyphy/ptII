@@ -30,6 +30,14 @@ import ptolemy.actor.Executable;
 import ptolemy.actor.util.Time;
 import ptolemy.kernel.util.IllegalActionException;
 
+/** An interface for actors that can be suspended and resumed.
+
+ @author Edward A. Lee
+ @version $Id$
+ @since Ptolemy II 8.1
+ @Pt.ProposedRating red (eal)
+ @Pt.AcceptedRating red (eal)
+ */
 public interface Suspendable extends Executable {
     
     /** Return the accumulated time that the actor has been suspended
