@@ -1032,11 +1032,18 @@ public class CompositeActor extends CompositeEntity implements Actor,
             ((CompositeActor) container).linkToPublishedPort(pattern, subscriberPort);
         } else {
             if (_publishedPorts != null) {
+                boolean matched = false;
                 for (String name : _publishedPorts.keySet()) {
                     Matcher matcher = pattern.matcher(name);
+                    //System.out.println("Match " + name);
                     if (matcher.matches()) {
+                        matched = true;
                         linkToPublishedPort(name, subscriberPort);
                     }
+                }
+                if (!matched) {
+                    throw new IllegalActionException(this, "Failed to find a publisher to match \""
+                            + pattern + "\"");
                 }
             } else {
                 throw new IllegalActionException(this, "No Publishers were found adjacent to or "
