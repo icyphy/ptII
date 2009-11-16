@@ -1671,7 +1671,7 @@ remote1findbugs:
 	@echo "$@ `date`"
 	@echo "`uptime`"
 	(cd $(REMOTE1PTIIDIST)/doc; rm -rf findbugs.*; \
-		PTII=$(REMOTE1PTIIDIST) $(MAKE) -k findbugs)
+		PTII=$(REMOTE1PTIIDIST) $(MAKE) -k PTII=$(REMOTE1PTIIDIST) findbugs)
 
 # Build jnlp installers
 remote1jnlp:
