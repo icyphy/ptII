@@ -1,6 +1,8 @@
 <FindBugsFilter>
     <!-- ApplianceTest etc. are part of the x10 sources in vendors/ -->
     <Match classregex="ApplianceTest"/>
+    <Match classregex="DocTest"/>
+    <Match classregex="IDTest"/>
     <Match classregex="LightTest"/>
     <Match classregex="MasterTest"/>
     <Match classregex="X10SerialServer"/>
@@ -17,9 +19,12 @@
     <Match classregex="com.izforge.*"/>
     <Match classregex="com.jgoodies.*"/>
     <Match classregex="com.mysql.*"/>
+    <Match classregex="com.oroinc.*"/>
     <Match classregex="com.sun.*"/>
     <Match classregex="com.ziclix.*"/>
     <Match classregex="cryptix.*"/>
+    <Match classregex="dependenceAnalyzer.*"/>
+    <Match classregex="de.cau.cs.*"/>
     <Match classregex="edu.cornell.*"/>
     <Match classregex="edu.umd.*"/>
     <Match classregex="gnu.*"/>
@@ -57,8 +62,10 @@
     <Match classregex="scm.*"/>
     <Match classregex="soot.*"/>
     <Match classregex="sun.net.*"/>
+    <Match classregex="text.*"/>
     <Match classregex="tcl.*"/>
     <Match classregex="test.*"/>
+    <Match classregex="util.ClassnameFilterList"/>
     <Match classregex="vendors.vr.*"/>
     <Match classregex="vm.*"/>
     <Match classregex="xjava.*"/>
