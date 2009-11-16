@@ -695,6 +695,8 @@ PTWABA_DIR =	@PTWABA_DIR@
 # Set to x10 and used in
 # $PTII/ptolemy/apps/superb/makefile if the X10 jar files were found
 PTX10_DIR =	@PTX10_DIR@
+# The location of X10 interface library, defaults to $PTII/vendors/misc/x10
+X10_DIR =	@X10_DIR@
 X10_JAR =       @X10_CLASSES@
 
 # Ptolemy II packages that use the X10 facilty.
