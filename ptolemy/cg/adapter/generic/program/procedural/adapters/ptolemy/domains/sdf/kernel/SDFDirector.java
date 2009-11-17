@@ -51,6 +51,7 @@ import ptolemy.data.type.Type;
 import ptolemy.domains.sdf.kernel.SDFReceiver;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NamedObj;
 
 //////////////////////////////////////////////////////////////////
@@ -658,6 +659,11 @@ public class SDFDirector extends StaticSchedulingDirector {
                     if (inline) {
                         Variable firings = (Variable) ((NamedObj) actor)
                                 .getAttribute("firingsPerIteration");
+                        if (firings == null) {
+                            throw new InternalErrorException(actor, null,
+                                    "Actor " + actor.getFullName() +
+                                    "does not have a firingsPerIteration attribute?");
+                        }
                         int firingsPerIteration = ((IntToken) firings
                                 .getToken()).intValue();
                         readTokens = DFUtilities.getRate(inputPort)
