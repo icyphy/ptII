@@ -63,15 +63,15 @@ public class DeltaConstraintSolver extends PropertyConstraintSolver {
         // TODO Auto-generated constructor stub
     }
     
-    public boolean checkForErrors() throws IllegalActionException {
-//        try {
-//            this.checkResolutionErrors();
-//        } catch (PropertyResolutionException ex){
-//            //_resolvedProperties.clear();
-//            _momlHandler.clearProperties();
-//            return true;
-//        }
-//        return false;
+    /** Determine if there were errors in the last property resolution.
+     * 
+     * Unlike checkResolutionErorrs, this method does not record the
+     * errors found and has no side-effects.
+     * 
+     * @return True if errors are found
+     * @throws IllegalActionException
+     */
+    public boolean errorsExist() throws IllegalActionException {
         boolean ret = false;
         for (Object propertyable : getAllPropertyables()) {
             Property property = getProperty(propertyable);
@@ -128,7 +128,7 @@ public class DeltaConstraintSolver extends PropertyConstraintSolver {
                 if (testList.size() > 0) {
                     _resolvedProperties.clear();
                     _resolveProperties(toplevel, toplevelHelper, testList);
-                    if (checkForErrors()) {
+                    if (errorsExist()) {
                         errorList = testList;
                         blockSize = errorList.size()/2;//Math.min(errorList.size()/2, blockSize);
                         continue WHILE_LOOP;
@@ -178,7 +178,7 @@ public class DeltaConstraintSolver extends PropertyConstraintSolver {
         List<Inequality> constraintList = toplevelHelper.constraintList();
 
         _resolveProperties(toplevel, toplevelHelper, constraintList);
-        if (checkForErrors()) {
+        if (errorsExist()) {
             //Only do delta iteration when an error is found.
             _doDeltaIteration(toplevel, toplevelHelper, constraintList);
         }
