@@ -72,18 +72,16 @@ public class DeltaConstraintSolver extends PropertyConstraintSolver {
      * errors found and has no side-effects.
      * 
      * @return True if errors are found
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      */
     public boolean errorsExist() throws IllegalActionException {
-        boolean ret = false;
         for (Object propertyable : getAllPropertyables()) {
             Property property = getProperty(propertyable);
             if (property != null && !property.isAcceptableSolution()) {
-                
-                ret = true;
+                return true;
             }
         }
-        return ret;
+        return false;
     }
 
     ///////////////////////////////////////////////////////////////////
