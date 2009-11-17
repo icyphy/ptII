@@ -62,7 +62,10 @@ public class DeltaConstraintSolver extends PropertyConstraintSolver {
         super(container, name);
         // TODO Auto-generated constructor stub
     }
-    
+
+    ///////////////////////////////////////////////////////////////////
+    ////                        public methods                     ////
+
     /** Determine if there were errors in the last property resolution.
      * 
      * Unlike checkResolutionErorrs, this method does not record the
@@ -82,6 +85,52 @@ public class DeltaConstraintSolver extends PropertyConstraintSolver {
         }
         return ret;
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                        protected methods                  ////
+
+    /**
+     * Resolve the property values for the toplevel entity that contains this
+     * solver, given the model analyzer that invokes this.
+     * @param analyzer The given model analyzer.
+     */
+    protected void _resolveProperties(NamedObj analyzer)
+            throws KernelException {
+
+        NamedObj toplevel = _toplevel();
+        PropertyConstraintHelper toplevelHelper =
+          (PropertyConstraintHelper) getHelper(toplevel);
+
+        toplevelHelper.reinitialize();
+
+        toplevelHelper
+                ._addDefaultConstraints(_getConstraintType(actorConstraintType
+                        .stringValue()));
+
+        // FIXME: have to generate the connection every time
+        // because the model structure can changed.
+        // (i.e. adding or removing connections.)
+        toplevelHelper._setConnectionConstraintType(
+                _getConstraintType(connectionConstraintType.stringValue()),
+                _getConstraintType(compositeConnectionConstraintType
+                        .stringValue()), _getConstraintType(fsmConstraintType
+                        .stringValue()),
+                _getConstraintType(expressionASTNodeConstraintType
+                        .stringValue()));
+
+        // Collect and solve type constraints.
+        List<Inequality> constraintList = toplevelHelper.constraintList();
+
+        _resolveProperties(toplevel, toplevelHelper, constraintList);
+        if (errorsExist()) {
+            //Only do delta iteration when an error is found.
+            _doDeltaIteration(toplevel, toplevelHelper, constraintList);
+        }
+
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                        private methods                    ////
 
     /** Iterate on the given list of constraints to find a minimal
      * subset that still contains an error.
@@ -143,46 +192,6 @@ public class DeltaConstraintSolver extends PropertyConstraintSolver {
         System.out.println(errorList);
         _resolvedProperties.clear();
         _resolveProperties(toplevel, toplevelHelper, errorList);
-    }
-
-    /**
-     * Resolve the property values for the toplevel entity that contains this
-     * solver, given the model analyzer that invokes this.
-     * @param analyzer The given model analyzer.
-     */
-    protected void _resolveProperties(NamedObj analyzer)
-            throws KernelException {
-
-        NamedObj toplevel = _toplevel();
-        PropertyConstraintHelper toplevelHelper =
-          (PropertyConstraintHelper) getHelper(toplevel);
-
-        toplevelHelper.reinitialize();
-
-        toplevelHelper
-                ._addDefaultConstraints(_getConstraintType(actorConstraintType
-                        .stringValue()));
-
-        // FIXME: have to generate the connection every time
-        // because the model structure can changed.
-        // (i.e. adding or removing connections.)
-        toplevelHelper._setConnectionConstraintType(
-                _getConstraintType(connectionConstraintType.stringValue()),
-                _getConstraintType(compositeConnectionConstraintType
-                        .stringValue()), _getConstraintType(fsmConstraintType
-                        .stringValue()),
-                _getConstraintType(expressionASTNodeConstraintType
-                        .stringValue()));
-
-        // Collect and solve type constraints.
-        List<Inequality> constraintList = toplevelHelper.constraintList();
-
-        _resolveProperties(toplevel, toplevelHelper, constraintList);
-        if (errorsExist()) {
-            //Only do delta iteration when an error is found.
-            _doDeltaIteration(toplevel, toplevelHelper, constraintList);
-        }
-
     }
 
 }
