@@ -96,22 +96,23 @@ public class MeetFunction extends MonotonicFunction {
     }
 
     public String toString() {
-        String result = "meet(";
+        StringBuffer result = new StringBuffer("meet(");
 
         for (PropertyTerm term : _terms) {
             if (term.isEffective()) {
-                result += term;
+                result.append(term);
                 break;
             }
         }
 
         for (PropertyTerm term : _terms) {
             if (term.isEffective()) {
-                result += " /\\ " + term;
+                result.append(" /\\ " + term);
             }
         }
 
-        return result + ")";
+        result.append(")");
+        return result.toString();
     }
 
     public boolean isEffective() {

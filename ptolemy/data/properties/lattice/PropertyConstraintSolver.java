@@ -802,20 +802,20 @@ public class PropertyConstraintSolver extends PropertySolver {
     }
 
     private void _checkMissingConstraints() {
-        String errorMessage = _eol + "Property \"" + getUseCaseName()
-                + "\" resolution failed." + _eol;
+        StringBuffer errorMessage = new StringBuffer(_eol + "Property \"" + getUseCaseName()
+                + "\" resolution failed." + _eol);
 
         boolean hasError = false;
 
         for (String trainedValue : _trainedConstraints) {
-            errorMessage += "    Missing constraint: \"" + trainedValue + "\"."
-                    + _eol;
+            errorMessage.append("    Missing constraint: \"" + trainedValue + "\"."
+                    + _eol);
 
             hasError = true;
         }
 
         if (hasError) {
-            getSharedUtilities().addErrors(errorMessage);
+            getSharedUtilities().addErrors(errorMessage.toString());
         }
     }
 

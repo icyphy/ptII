@@ -331,8 +331,6 @@ public class PropertyMoMLHandler extends Attribute {
         if (property != null) {
             propertyString = property.toString();
 
-        } else if (getContainer() instanceof PropertyTokenSolver) {
-            propertyString = "";//Token.NIL.toString();
         } else {
             propertyString = "";
         }
@@ -404,11 +402,6 @@ public class PropertyMoMLHandler extends Attribute {
         if (property != null) {
             propertyString = property.toString();
 
-        } else if (getContainer() instanceof PropertyTokenSolver) {
-            // FIXME: If we set propertyString to NIL, then
-            // we will have nils everywhere when we don't
-            // have any resolved properties.
-            propertyString = ""; //Token.NIL.toString();
         } else {
             propertyString = "";
         }
