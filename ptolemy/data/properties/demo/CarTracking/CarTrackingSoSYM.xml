@@ -10,13 +10,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 40.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 1107, 794}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={212, 89, 1109, 791}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[894, 684]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[894, 678]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.9601611008558">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{467.546875, 315.3962811975671}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{467.546875, 312.271805526426}">
     </property>
     <property name="faultStartTime" class="ptolemy.data.expr.Parameter" value="50.0">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -36,6 +36,8 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[150.0, 5.0]">
         </property>
+        <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+        </property>
     </property>
     <property name="faultStopTime" class="ptolemy.data.expr.Parameter" value="70.0">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -54,6 +56,8 @@
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[150.0, 30.0]">
+        </property>
+        <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -149,6 +153,8 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{55.0, 530.0}">
         </property>
+        <property name="PropertyResolutionExceptionMessage" class="ptolemy.kernel.util.StringAttribute" value="[Property &quot;Conflict&quot; is not an acceptable solution for ptolemy.actor.TypedIOPort {.CarTrackingSoSYM.FollowingCar.position}.&#10;]&#10;  in .CarTrackingSoSYM.SWConfigurationSolver">
+        </property>
     </property>
     <property name="DimensionSystemSolver::constraint" class="ptolemy.data.properties.AnnotationAttribute" value="driverDesiredSpeed.output &gt;= Speed">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -212,6 +218,8 @@
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[180.0, 20.0]">
             </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+            </property>
         </property>
         <property name="initialSpeed" class="ptolemy.data.expr.Parameter" value="0.0">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -231,6 +239,8 @@
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[180.0, 40.0]">
             </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+            </property>
         </property>
         <property name="timeConstant" class="ptolemy.data.expr.Parameter" value="10.0">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -249,6 +259,8 @@
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[315.0, 20.0]">
+            </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
             </property>
         </property>
         <property name="DimensionSystemSolver::constraint" class="ptolemy.data.properties.AnnotationAttribute" value="timeConstant &gt;= Time">
@@ -272,12 +284,16 @@
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+            </property>
         </port>
         <port name="acceleration" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[495.0, 105.0]">
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
             </property>
         </port>
         <port name="speed" class="ptolemy.actor.TypedIOPort">
@@ -286,6 +302,8 @@
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+            </property>
         </port>
         <port name="position" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -293,17 +311,59 @@
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
+            <property name="lattice::softwareConfiguration" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="NotConfigured">
+            </property>
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.2,1.0,1.0}">
+            </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="NotConfigured">
+            </property>
         </port>
         <entity name="Subtract" class="ptolemy.actor.lib.AddSubtract">
             <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 95.0]">
             </property>
+            <port name="plus" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="multiport"/>
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+                </property>
+            </port>
+            <port name="minus" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="multiport"/>
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+                </property>
+            </port>
+            <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+                </property>
+            </port>
         </entity>
         <entity name="MultiplyDivide4" class="ptolemy.actor.lib.MultiplyDivide">
             <property name="_location" class="ptolemy.kernel.util.Location" value="[190.0, 105.0]">
             </property>
+            <port name="multiply" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="multiport"/>
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+                </property>
+            </port>
+            <port name="divide" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="multiport"/>
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+                </property>
+            </port>
+            <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+                </property>
+            </port>
         </entity>
         <entity name="Const" class="ptolemy.actor.lib.Const">
             <property name="value" class="ptolemy.data.expr.Parameter" value="timeConstant">
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+                </property>
             </property>
             <doc>Create a constant sequence</doc>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[110.0, 145.0]">
@@ -314,18 +374,73 @@
                 <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
                 </property>
             </property>
+            <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+                </property>
+            </port>
+            <port name="trigger" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="multiport"/>
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+                </property>
+            </port>
         </entity>
         <entity name="Integrator2" class="ptolemy.domains.continuous.lib.Integrator">
             <property name="initialState" class="ptolemy.actor.parameters.PortParameter" value="initialPosition">
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+                </property>
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[395.0, 230.0]">
             </property>
+            <port name="impulse" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+                </property>
+            </port>
+            <port name="derivative" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+                </property>
+            </port>
+            <port name="state" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+                </property>
+            </port>
+            <port name="initialState" class="ptolemy.actor.parameters.ParameterPort">
+                <property name="input"/>
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+                </property>
+            </port>
         </entity>
         <entity name="Integrator" class="ptolemy.domains.continuous.lib.Integrator">
             <property name="initialState" class="ptolemy.actor.parameters.PortParameter" value="initialSpeed">
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+                </property>
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{300.0, 150.0}">
             </property>
+            <port name="impulse" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+                </property>
+            </port>
+            <port name="derivative" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+                </property>
+            </port>
+            <port name="state" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+                </property>
+            </port>
+            <port name="initialState" class="ptolemy.actor.parameters.ParameterPort">
+                <property name="input"/>
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+                </property>
+            </port>
         </entity>
         <relation name="relation" class="ptolemy.actor.TypedIORelation">
             <vertex name="vertex1" value="[350.0, 190.0]">
@@ -373,19 +488,57 @@
     </entity>
     <entity name="DiscreteClock" class="ptolemy.domains.continuous.lib.DiscreteClock">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="100.0">
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+            </property>
         </property>
         <property name="stopTimeIsLocal" class="ptolemy.data.expr.Parameter" value="false">
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+            </property>
         </property>
         <property name="period" class="ptolemy.actor.parameters.PortParameter" value="faultStopTime + 1.0">
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+            </property>
         </property>
         <property name="offsets" class="ptolemy.data.expr.Parameter" value="{faultStartTime, faultStopTime}">
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+            </property>
         </property>
         <property name="values" class="ptolemy.data.expr.Parameter" value="{true, false}">
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+            </property>
         </property>
         <property name="numberOfCycles" class="ptolemy.data.expr.Parameter" value="1">
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+            </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[335.0, 330.0]">
         </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+            </property>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+            </property>
+        </port>
+        <port name="period" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+            </property>
+        </port>
+        <port name="start" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+            </property>
+        </port>
+        <port name="stop" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+            </property>
+        </port>
     </entity>
     <entity name="NetworkModel" class="ptolemy.domains.modal.modal.ModalModel">
         <property name="_tableauFactory" class="ptolemy.vergil.modal.modal.ModalTableauFactory">
@@ -396,10 +549,22 @@
             <property name="input"/>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
+            <property name="lattice::softwareConfiguration" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="NotConfigured">
+            </property>
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.2,1.0,1.0}">
+            </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="NotConfigured">
+            </property>
         </port>
         <port name="packetOut" class="ptolemy.domains.modal.modal.ModalPort">
             <property name="output"/>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="lattice::softwareConfiguration" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="NotConfigured">
+            </property>
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.2,1.0,1.0}">
+            </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="NotConfigured">
             </property>
         </port>
         <port name="fault" class="ptolemy.domains.modal.modal.ModalPort">
@@ -407,6 +572,8 @@
             <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="SOUTH">
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
             </property>
         </port>
         <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
@@ -427,16 +594,22 @@
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{20.0, 200.0}">
                 </property>
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+                </property>
             </port>
             <port name="packetOut" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[395.0, 200.0]">
                 </property>
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+                </property>
             </port>
             <port name="fault" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 325.0]">
+                </property>
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
                 </property>
             </port>
             <entity name="normal" class="ptolemy.domains.modal.kernel.State">
@@ -465,6 +638,8 @@
                 <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
                 </property>
                 <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="fault_isPresent &amp;&amp; fault">
+                    <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+                    </property>
                 </property>
                 <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6283185307179586">
                 </property>
@@ -483,6 +658,8 @@
                 <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
                 </property>
                 <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="fault_isPresent &amp;&amp; !fault">
+                    <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+                    </property>
                 </property>
                 <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6283185307179586">
                 </property>
@@ -511,15 +688,21 @@
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 180.0]">
                 </property>
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+                </property>
             </port>
             <port name="packetOut" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[415.0, 185.0]">
                 </property>
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+                </property>
             </port>
             <port name="fault" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 380.0]">
+                </property>
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
                 </property>
             </port>
             <relation name="relation" class="ptolemy.actor.TypedIORelation">
@@ -546,19 +729,35 @@
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 120.0]">
                 </property>
+                <property name="lattice::softwareConfiguration" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="NotConfigured">
+                </property>
+                <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.2,1.0,1.0}">
+                </property>
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="NotConfigured">
+                </property>
             </port>
             <port name="packetOut" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[325.0, 145.0]">
+                </property>
+                <property name="lattice::softwareConfiguration" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="NotConfigured">
+                </property>
+                <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.2,1.0,1.0}">
+                </property>
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="NotConfigured">
                 </property>
             </port>
             <port name="fault" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 190.0]">
                 </property>
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+                </property>
             </port>
             <entity name="Const" class="ptolemy.actor.lib.Const">
                 <property name="value" class="ptolemy.data.expr.Parameter" value="-10.0">
+                    <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+                    </property>
                 </property>
                 <doc>Create a constant sequence.</doc>
                 <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
@@ -569,28 +768,60 @@
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 195.0]">
                 </property>
+                <port name="output" class="ptolemy.actor.TypedIOPort">
+                    <property name="output"/>
+                    <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+                    </property>
+                </port>
+                <port name="trigger" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                    <property name="multiport"/>
+                    <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+                    </property>
+                </port>
             </entity>
             <entity name="RecordAssembler" class="ptolemy.actor.lib.RecordAssembler">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[265.0, 100.0]">
                 </property>
+                <port name="output" class="ptolemy.actor.TypedIOPort">
+                    <property name="output"/>
+                    <property name="lattice::softwareConfiguration" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="NotConfigured">
+                    </property>
+                    <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.2,1.0,1.0}">
+                    </property>
+                    <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="NotConfigured">
+                    </property>
+                </port>
                 <port name="time" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                    </property>
+                    <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
                     </property>
                 </port>
                 <port name="acceleration" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                     </property>
+                    <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+                    </property>
                 </port>
                 <port name="speed" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                     </property>
+                    <property name="lattice::softwareConfiguration" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="NotConfigured">
+                    </property>
+                    <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.2,1.0,1.0}">
+                    </property>
+                    <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="NotConfigured">
+                    </property>
                 </port>
                 <port name="position" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                    </property>
+                    <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
                     </property>
                 </port>
             </entity>
@@ -598,24 +829,45 @@
                 <display name="RecordDisassembler&#10;."/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 100.0]">
                 </property>
+                <port name="input" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                    <property name="lattice::softwareConfiguration" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="NotConfigured">
+                    </property>
+                    <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.2,1.0,1.0}">
+                    </property>
+                    <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="NotConfigured">
+                    </property>
+                </port>
                 <port name="time" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                     <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                    </property>
+                    <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
                     </property>
                 </port>
                 <port name="acceleration" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                     <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                     </property>
+                    <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+                    </property>
                 </port>
                 <port name="speed" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                     <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                     </property>
+                    <property name="lattice::softwareConfiguration" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="NotConfigured">
+                    </property>
+                    <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.2,1.0,1.0}">
+                    </property>
+                    <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="NotConfigured">
+                    </property>
                 </port>
                 <port name="position" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                     <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                    </property>
+                    <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
                     </property>
                 </port>
             </entity>
@@ -687,49 +939,109 @@
     </entity>
     <entity name="CurrentTime" class="ptolemy.actor.lib.CurrentTime">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="Infinity">
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+            </property>
         </property>
         <property name="stopTimeIsLocal" class="ptolemy.data.expr.Parameter" value="false">
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+            </property>
         </property>
         <property name="useLocalTime" class="ptolemy.data.expr.Parameter" value="false">
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+            </property>
         </property>
         <doc>Output the current time.</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[255.0, 130.0]">
         </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+            </property>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+            </property>
+        </port>
     </entity>
     <entity name="RecordAssembler" class="ptolemy.actor.lib.RecordAssembler">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, 165.0]">
         </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="lattice::softwareConfiguration" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="NotConfigured">
+            </property>
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.2,1.0,1.0}">
+            </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="NotConfigured">
+            </property>
+        </port>
         <port name="time" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
             </property>
         </port>
         <port name="acceleration" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+            </property>
         </port>
         <port name="speed" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
             </property>
         </port>
         <port name="position" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
+            <property name="lattice::softwareConfiguration" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="NotConfigured">
+            </property>
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.2,1.0,1.0}">
+            </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="NotConfigured">
+            </property>
         </port>
     </entity>
     <entity name="PeriodicSampler" class="ptolemy.domains.continuous.lib.PeriodicSampler">
         <property name="samplePeriod" class="ptolemy.data.expr.Parameter" value="0.1">
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+            </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[450.0, 235.0]">
         </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+            <property name="lattice::softwareConfiguration" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="NotConfigured">
+            </property>
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.2,1.0,1.0}">
+            </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="NotConfigured">
+            </property>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="multiport"/>
+            <property name="lattice::softwareConfiguration" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="NotConfigured">
+            </property>
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.2,1.0,1.0}">
+            </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="NotConfigured">
+            </property>
+        </port>
     </entity>
     <entity name="FollowingCar" class="ptolemy.actor.TypedCompositeActor">
         <property name="_location" class="ptolemy.kernel.util.Location" value="{750.0, 345.0}">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={155, 124, 1161, 776}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={155, 124, 1163, 773}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[948, 666]">
         </property>
@@ -809,7 +1121,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[-55.0, 510.0]">
             </property>
         </property>
-        <property name="isACCPresent" class="ptolemy.data.expr.Parameter" value="true">
+        <property name="isACCPresent" class="ptolemy.data.expr.Parameter" value="false">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -826,6 +1138,8 @@
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{-55.0, 370.0}">
+            </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
             </property>
         </property>
         <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -846,12 +1160,20 @@
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[-50.0, 110.0]">
             </property>
+            <property name="lattice::softwareConfiguration" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="NotConfigured">
+            </property>
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.2,1.0,1.0}">
+            </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="NotConfigured">
+            </property>
         </port>
         <port name="acceleration" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[690.0, 245.0]">
+            </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
             </property>
         </port>
         <port name="speed" class="ptolemy.actor.TypedIOPort">
@@ -860,6 +1182,8 @@
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[690.0, 285.0]">
             </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+            </property>
         </port>
         <port name="position" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -867,12 +1191,20 @@
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[690.0, 325.0]">
             </property>
+            <property name="lattice::softwareConfiguration" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="Conflict">
+            </property>
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.0,1.0}">
+            </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Conflict">
+            </property>
         </port>
         <port name="driverDesiredSpeed" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[-45.0, 265.0]">
+            </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
             </property>
         </port>
         <entity name="FaultDetector" class="ptolemy.actor.TypedCompositeActor">
@@ -890,48 +1222,89 @@
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{20.0, 200.0}">
                 </property>
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+                </property>
             </port>
             <port name="fault" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[720.0, 325.0]">
+                </property>
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
                 </property>
             </port>
             <entity name="RecordDisassembler" class="ptolemy.actor.lib.RecordDisassembler">
                 <display name="RecordDisassembler&#10;."/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[115.0, 180.0]">
                 </property>
+                <port name="input" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                    <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+                    </property>
+                </port>
                 <port name="time" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                     <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                    </property>
+                    <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
                     </property>
                 </port>
                 <port name="acceleration" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                     <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                     </property>
+                    <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+                    </property>
                 </port>
                 <port name="speed" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                     <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                    </property>
+                    <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
                     </property>
                 </port>
                 <port name="position" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                     <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                     </property>
+                    <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+                    </property>
                 </port>
             </entity>
             <entity name="Pre" class="ptolemy.domains.sr.lib.Pre">
                 <property name="initialValue" class="ptolemy.data.expr.Parameter" value="0.0">
+                    <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+                    </property>
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[305.0, 130.0]">
                 </property>
+                <port name="input" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                    <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+                    </property>
+                </port>
+                <port name="output" class="ptolemy.actor.TypedIOPort">
+                    <property name="output"/>
+                    <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+                    </property>
+                </port>
             </entity>
             <entity name="Pre2" class="ptolemy.domains.sr.lib.Pre">
                 <property name="initialValue" class="ptolemy.data.expr.Parameter" value="0.0">
+                    <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+                    </property>
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[290.0, 220.0]">
                 </property>
+                <port name="input" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                    <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+                    </property>
+                </port>
+                <port name="output" class="ptolemy.actor.TypedIOPort">
+                    <property name="output"/>
+                    <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+                    </property>
+                </port>
             </entity>
             <entity name="Estimate Current Position" class="ptolemy.actor.lib.Expression">
                 <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="previousPosition &#10;  + (currentTime - previousTime)&#10;  * previousSpeed">
@@ -940,6 +1313,8 @@
                         </property>
                         <property name="width" class="ptolemy.data.expr.Parameter" value="30">
                         </property>
+                    </property>
+                    <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
                     </property>
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
@@ -954,32 +1329,57 @@
                 </property>
                 <property name="_expertMode" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
+                <port name="output" class="ptolemy.actor.TypedIOPort">
+                    <property name="output"/>
+                    <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+                    </property>
+                </port>
                 <port name="currentTime" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                    </property>
+                    <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
                     </property>
                 </port>
                 <port name="previousTime" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                     </property>
+                    <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+                    </property>
                 </port>
                 <port name="previousSpeed" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                    </property>
+                    <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
                     </property>
                 </port>
                 <port name="previousPosition" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                     </property>
+                    <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+                    </property>
                 </port>
             </entity>
             <entity name="Pre3" class="ptolemy.domains.sr.lib.Pre">
                 <property name="initialValue" class="ptolemy.data.expr.Parameter" value="0.0">
+                    <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+                    </property>
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[290.0, 275.0]">
                 </property>
+                <port name="input" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                    <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+                    </property>
+                </port>
+                <port name="output" class="ptolemy.actor.TypedIOPort">
+                    <property name="output"/>
+                    <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+                    </property>
+                </port>
             </entity>
             <entity name="Comparator" class="ptolemy.actor.lib.logic.Comparator">
                 <property name="comparison" class="ptolemy.kernel.util.StringAttribute" value="==">
@@ -997,6 +1397,8 @@
                     </property>
                 </property>
                 <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0">
+                    <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+                    </property>
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
                     <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="comparison">
@@ -1004,10 +1406,35 @@
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[480.0, 325.0]">
                 </property>
+                <port name="left" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                    <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+                    </property>
+                </port>
+                <port name="right" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                    <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+                    </property>
+                </port>
+                <port name="output" class="ptolemy.actor.TypedIOPort">
+                    <property name="output"/>
+                    <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+                    </property>
+                </port>
             </entity>
             <entity name="LogicalNot" class="ptolemy.actor.lib.logic.LogicalNot">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[595.0, 325.0]">
                 </property>
+                <port name="input" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                    <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+                    </property>
+                </port>
+                <port name="output" class="ptolemy.actor.TypedIOPort">
+                    <property name="output"/>
+                    <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+                    </property>
+                </port>
             </entity>
             <relation name="relation3" class="ptolemy.actor.TypedIORelation">
                 <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
@@ -1076,21 +1503,37 @@
         </entity>
         <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
             <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+                </property>
             </property>
             <property name="automaticRescale" class="ptolemy.data.expr.Parameter" value="false">
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+                </property>
             </property>
             <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={742, 22, 500, 344}, maximized=false}">
             </property>
             <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
             </property>
             <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+                </property>
             </property>
             <property name="disconnectGraphOnAbsentValue" class="ptolemy.data.expr.Parameter" value="false">
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+                </property>
             </property>
             <property name="useLocalTime" class="ptolemy.data.expr.Parameter" value="false">
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+                </property>
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[410.0, 195.0]">
             </property>
+            <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="multiport"/>
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+                </property>
+            </port>
             <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
@@ -1105,11 +1548,25 @@
         </entity>
         <entity name="BooleanToAnything" class="ptolemy.actor.lib.conversions.BooleanToAnything">
             <property name="falseValue" class="ptolemy.data.expr.Parameter" value="0">
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+                </property>
             </property>
             <property name="trueValue" class="ptolemy.data.expr.Parameter" value="1">
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+                </property>
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[320.0, 170.0]">
             </property>
+            <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+                </property>
+            </port>
+            <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+                </property>
+            </port>
         </entity>
         <entity name="ModalModel" class="ptolemy.domains.modal.modal.ModalModel">
             <property name="_tableauFactory" class="ptolemy.vergil.modal.modal.ModalTableauFactory">
@@ -1120,10 +1577,18 @@
                 <property name="input"/>
                 <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
+                <property name="lattice::softwareConfiguration" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="NotConfigured">
+                </property>
+                <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.2,1.0,1.0}">
+                </property>
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="NotConfigured">
+                </property>
             </port>
             <port name="desiredSpeed" class="ptolemy.domains.modal.modal.ModalPort">
                 <property name="output"/>
                 <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
                 </property>
             </port>
             <port name="fault" class="ptolemy.domains.modal.modal.ModalPort">
@@ -1132,10 +1597,18 @@
                 </property>
                 <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+                </property>
             </port>
             <port name="driverDesiredSpeed" class="ptolemy.domains.modal.modal.ModalPort">
                 <property name="input"/>
                 <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+                <property name="lattice::softwareConfiguration" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="NotConfigured">
+                </property>
+                <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.2,1.0,1.0}">
+                </property>
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="NotConfigured">
                 </property>
             </port>
             <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
@@ -1156,21 +1629,29 @@
                     <property name="input"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="{20.0, 200.0}">
                     </property>
+                    <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+                    </property>
                 </port>
                 <port name="desiredSpeed" class="ptolemy.domains.modal.modal.RefinementPort">
                     <property name="input"/>
                     <property name="output"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[395.0, 200.0]">
                     </property>
+                    <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+                    </property>
                 </port>
                 <port name="fault" class="ptolemy.domains.modal.modal.RefinementPort">
                     <property name="input"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 325.0]">
                     </property>
+                    <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+                    </property>
                 </port>
                 <port name="driverDesiredSpeed" class="ptolemy.domains.modal.modal.RefinementPort">
                     <property name="input"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 255.0]">
+                    </property>
+                    <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
                     </property>
                 </port>
                 <entity name="normal" class="ptolemy.domains.modal.kernel.State">
@@ -1199,6 +1680,8 @@
                     <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
                     </property>
                     <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="fault_isPresent &amp;&amp; fault">
+                        <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+                        </property>
                     </property>
                     <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6283185307179586">
                     </property>
@@ -1217,6 +1700,8 @@
                     <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
                     </property>
                     <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="fault_isPresent &amp;&amp; !fault">
+                        <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+                        </property>
                     </property>
                     <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6283185307179586">
                     </property>
@@ -1251,50 +1736,109 @@
                     <property name="input"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 180.0]">
                     </property>
+                    <property name="lattice::softwareConfiguration" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="NotConfigured">
+                    </property>
+                    <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.2,1.0,1.0}">
+                    </property>
+                    <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="NotConfigured">
+                    </property>
                 </port>
                 <port name="desiredSpeed" class="ptolemy.domains.modal.modal.RefinementPort">
                     <property name="output"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[415.0, 195.0]">
+                    </property>
+                    <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
                     </property>
                 </port>
                 <port name="fault" class="ptolemy.domains.modal.modal.RefinementPort">
                     <property name="input"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 380.0]">
                     </property>
+                    <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+                    </property>
                 </port>
                 <port name="driverDesiredSpeed" class="ptolemy.domains.modal.modal.RefinementPort">
                     <property name="input"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 255.0]">
+                    </property>
+                    <property name="lattice::softwareConfiguration" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="NotConfigured">
+                    </property>
+                    <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.2,1.0,1.0}">
+                    </property>
+                    <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="NotConfigured">
                     </property>
                 </port>
                 <entity name="RecordDisassembler" class="ptolemy.actor.lib.RecordDisassembler">
                     <display name="RecordDisassembler&#10;."/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[110.0, 165.0]">
                     </property>
+                    <port name="input" class="ptolemy.actor.TypedIOPort">
+                        <property name="input"/>
+                        <property name="lattice::softwareConfiguration" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="NotConfigured">
+                        </property>
+                        <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.2,1.0,1.0}">
+                        </property>
+                        <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="NotConfigured">
+                        </property>
+                    </port>
                     <port name="time" class="ptolemy.actor.TypedIOPort">
                         <property name="output"/>
                         <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                        </property>
+                        <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
                         </property>
                     </port>
                     <port name="acceleration" class="ptolemy.actor.TypedIOPort">
                         <property name="output"/>
                         <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                         </property>
+                        <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+                        </property>
                     </port>
                     <port name="speed" class="ptolemy.actor.TypedIOPort">
                         <property name="output"/>
                         <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                        </property>
+                        <property name="lattice::softwareConfiguration" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="NotConfigured">
+                        </property>
+                        <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.2,1.0,1.0}">
+                        </property>
+                        <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="NotConfigured">
                         </property>
                     </port>
                     <port name="position" class="ptolemy.actor.TypedIOPort">
                         <property name="output"/>
                         <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                         </property>
+                        <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+                        </property>
                     </port>
                 </entity>
                 <entity name="Minimum" class="ptolemy.actor.lib.Minimum">
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[275.0, 255.0]">
                     </property>
+                    <port name="input" class="ptolemy.actor.TypedIOPort">
+                        <property name="input"/>
+                        <property name="multiport"/>
+                        <property name="lattice::softwareConfiguration" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="NotConfigured">
+                        </property>
+                        <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.2,1.0,1.0}">
+                        </property>
+                        <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="NotConfigured">
+                        </property>
+                    </port>
+                    <port name="minimumValue" class="ptolemy.actor.TypedIOPort">
+                        <property name="output"/>
+                        <property name="multiport"/>
+                        <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+                        </property>
+                    </port>
+                    <port name="channelNumber" class="ptolemy.actor.TypedIOPort">
+                        <property name="output"/>
+                        <property name="multiport"/>
+                        <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+                        </property>
+                    </port>
                 </entity>
                 <relation name="relation" class="ptolemy.actor.TypedIORelation">
                     <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
@@ -1351,24 +1895,34 @@
                     <property name="input"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 120.0]">
                     </property>
+                    <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+                    </property>
                 </port>
                 <port name="desiredSpeed" class="ptolemy.domains.modal.modal.RefinementPort">
                     <property name="output"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[325.0, 145.0]">
+                    </property>
+                    <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
                     </property>
                 </port>
                 <port name="fault" class="ptolemy.domains.modal.modal.RefinementPort">
                     <property name="input"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 190.0]">
                     </property>
+                    <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+                    </property>
                 </port>
                 <port name="driverDesiredSpeed" class="ptolemy.domains.modal.modal.RefinementPort">
                     <property name="input"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 235.0]">
                     </property>
+                    <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+                    </property>
                 </port>
                 <entity name="Const" class="ptolemy.actor.lib.Const">
                     <property name="value" class="ptolemy.data.expr.Parameter" value="0.0">
+                        <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+                        </property>
                     </property>
                     <doc>Create a constant sequence.</doc>
                     <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
@@ -1379,29 +1933,53 @@
                     </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[195.0, 175.0]">
                     </property>
+                    <port name="output" class="ptolemy.actor.TypedIOPort">
+                        <property name="output"/>
+                        <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+                        </property>
+                    </port>
+                    <port name="trigger" class="ptolemy.actor.TypedIOPort">
+                        <property name="input"/>
+                        <property name="multiport"/>
+                        <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+                        </property>
+                    </port>
                 </entity>
                 <entity name="RecordDisassembler" class="ptolemy.actor.lib.RecordDisassembler">
                     <display name="RecordDisassembler&#10;."/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 100.0]">
                     </property>
+                    <port name="input" class="ptolemy.actor.TypedIOPort">
+                        <property name="input"/>
+                        <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+                        </property>
+                    </port>
                     <port name="time" class="ptolemy.actor.TypedIOPort">
                         <property name="output"/>
                         <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                        </property>
+                        <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
                         </property>
                     </port>
                     <port name="acceleration" class="ptolemy.actor.TypedIOPort">
                         <property name="output"/>
                         <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                         </property>
+                        <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+                        </property>
                     </port>
                     <port name="speed" class="ptolemy.actor.TypedIOPort">
                         <property name="output"/>
                         <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                         </property>
+                        <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+                        </property>
                     </port>
                     <port name="position" class="ptolemy.actor.TypedIOPort">
                         <property name="output"/>
                         <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                        </property>
+                        <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
                         </property>
                     </port>
                 </entity>
@@ -1494,6 +2072,8 @@
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[180.0, 20.0]">
                 </property>
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+                </property>
             </property>
             <property name="initialSpeed" class="ptolemy.data.expr.Parameter" value="0.0">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -1513,6 +2093,8 @@
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[180.0, 40.0]">
                 </property>
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+                </property>
             </property>
             <property name="timeConstant" class="ptolemy.data.expr.Parameter" value="10.0">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -1531,6 +2113,8 @@
                 <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[320.0, 20.0]">
+                </property>
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
                 </property>
             </property>
             <property name="DimensionSystemSolver::constraint" class="ptolemy.data.properties.AnnotationAttribute" value="timeConstant &gt;= Time">
@@ -1554,12 +2138,16 @@
                 </property>
                 <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+                </property>
             </port>
             <port name="acceleration" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[495.0, 105.0]">
                 </property>
                 <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
                 </property>
             </port>
             <port name="speed" class="ptolemy.actor.TypedIOPort">
@@ -1568,6 +2156,8 @@
                 </property>
                 <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+                </property>
             </port>
             <port name="position" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
@@ -1575,17 +2165,55 @@
                 </property>
                 <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+                </property>
             </port>
             <entity name="Subtract" class="ptolemy.actor.lib.AddSubtract">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 95.0]">
                 </property>
+                <port name="plus" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                    <property name="multiport"/>
+                    <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+                    </property>
+                </port>
+                <port name="minus" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                    <property name="multiport"/>
+                    <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+                    </property>
+                </port>
+                <port name="output" class="ptolemy.actor.TypedIOPort">
+                    <property name="output"/>
+                    <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+                    </property>
+                </port>
             </entity>
             <entity name="MultiplyDivide4" class="ptolemy.actor.lib.MultiplyDivide">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[210.0, 105.0]">
                 </property>
+                <port name="multiply" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                    <property name="multiport"/>
+                    <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+                    </property>
+                </port>
+                <port name="divide" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                    <property name="multiport"/>
+                    <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+                    </property>
+                </port>
+                <port name="output" class="ptolemy.actor.TypedIOPort">
+                    <property name="output"/>
+                    <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+                    </property>
+                </port>
             </entity>
             <entity name="Const" class="ptolemy.actor.lib.Const">
                 <property name="value" class="ptolemy.data.expr.Parameter" value="timeConstant">
+                    <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+                    </property>
                 </property>
                 <doc>Create a constant sequence</doc>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[115.0, 145.0]">
@@ -1596,18 +2224,73 @@
                     <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
                     </property>
                 </property>
+                <port name="output" class="ptolemy.actor.TypedIOPort">
+                    <property name="output"/>
+                    <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+                    </property>
+                </port>
+                <port name="trigger" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                    <property name="multiport"/>
+                    <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+                    </property>
+                </port>
             </entity>
             <entity name="Integrator2" class="ptolemy.domains.continuous.lib.Integrator">
                 <property name="initialState" class="ptolemy.actor.parameters.PortParameter" value="initialPosition">
+                    <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+                    </property>
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[395.0, 230.0]">
                 </property>
+                <port name="impulse" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                    <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+                    </property>
+                </port>
+                <port name="derivative" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                    <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+                    </property>
+                </port>
+                <port name="state" class="ptolemy.actor.TypedIOPort">
+                    <property name="output"/>
+                    <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+                    </property>
+                </port>
+                <port name="initialState" class="ptolemy.actor.parameters.ParameterPort">
+                    <property name="input"/>
+                    <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+                    </property>
+                </port>
             </entity>
             <entity name="Integrator" class="ptolemy.domains.continuous.lib.Integrator">
                 <property name="initialState" class="ptolemy.actor.parameters.PortParameter" value="initialSpeed">
+                    <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+                    </property>
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{300.0, 150.0}">
                 </property>
+                <port name="impulse" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                    <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+                    </property>
+                </port>
+                <port name="derivative" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                    <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+                    </property>
+                </port>
+                <port name="state" class="ptolemy.actor.TypedIOPort">
+                    <property name="output"/>
+                    <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+                    </property>
+                </port>
+                <port name="initialState" class="ptolemy.actor.parameters.ParameterPort">
+                    <property name="input"/>
+                    <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+                    </property>
+                </port>
             </entity>
             <relation name="relation" class="ptolemy.actor.TypedIORelation">
                 <vertex name="vertex1" value="[350.0, 190.0]">
@@ -1653,25 +2336,81 @@
         </entity>
         <entity name="ZeroOrderHold" class="ptolemy.domains.continuous.lib.ZeroOrderHold">
             <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="0">
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+                </property>
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[410.0, 285.0]">
             </property>
+            <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+                </property>
+            </port>
+            <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+                </property>
+            </port>
         </entity>
         <entity name="ConfigurationSwitch" class="ptolemy.actor.lib.ConfigurationSwitch">
             <property name="selector" class="ptolemy.data.expr.Parameter" value="isACCPresent">
                 <property name="style" class="ptolemy.actor.gui.style.LineStyle">
                 </property>
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+                </property>
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 265.0]">
             </property>
+            <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="multiport"/>
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+                </property>
+            </port>
+            <port name="trueOutput" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+                <property name="multiport"/>
+                <property name="lattice::softwareConfiguration" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="NotConfigured">
+                </property>
+                <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.2,1.0,1.0}">
+                </property>
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="NotConfigured">
+                </property>
+            </port>
+            <port name="falseOutput" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+                <property name="multiport"/>
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+                </property>
+            </port>
         </entity>
         <entity name="ConfigurationSelect" class="ptolemy.actor.lib.ConfigurationSelect">
             <property name="selector" class="ptolemy.data.expr.Parameter" value="isACCPresent">
                 <property name="style" class="ptolemy.actor.gui.style.LineStyle">
                 </property>
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+                </property>
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[305.0, 265.0]">
             </property>
+            <port name="trueInput" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="multiport"/>
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+                </property>
+            </port>
+            <port name="falseInput" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="multiport"/>
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+                </property>
+            </port>
+            <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+                <property name="multiport"/>
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+                </property>
+            </port>
         </entity>
         <relation name="relation2" class="ptolemy.actor.TypedIORelation">
             <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
@@ -1787,6 +2526,8 @@
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 55.0]">
             </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+            </property>
         </property>
         <property name="DimensionSystemSolver::constraint2" class="ptolemy.data.properties.AnnotationAttribute" value="jitterAmplitude &gt;= Speed">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -1836,6 +2577,8 @@
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 80.0]">
             </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+            </property>
         </property>
         <property name="nominalSpeed" class="ptolemy.data.expr.Parameter" value="45">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -1854,6 +2597,8 @@
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 105.0]">
+            </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
             </property>
         </property>
         <property name="DimensionSystemSolver::constraint4" class="ptolemy.data.properties.AnnotationAttribute" value="Scale2.factor &gt;= Unitless">
@@ -1890,10 +2635,14 @@
             <property name="output"/>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[660.0, 215.0]">
             </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+            </property>
         </port>
         <entity name="Const" class="ptolemy.actor.lib.Const">
             <display name="Const&#10;Nominal Speed&#10;in miles per hour"/>
             <property name="value" class="ptolemy.data.expr.Parameter" value="nominalSpeed">
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+                </property>
             </property>
             <doc>Create a constant sequence</doc>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 105.0]">
@@ -1904,6 +2653,17 @@
                 <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
                 </property>
             </property>
+            <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+                </property>
+            </port>
+            <port name="trigger" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="multiport"/>
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+                </property>
+            </port>
         </entity>
         <entity name="Sin" class="ptolemy.actor.lib.TrigFunction">
             <property name="function" class="ptolemy.data.expr.StringParameter" value="sin">
@@ -1921,6 +2681,8 @@
                     <property name="tan" class="ptolemy.kernel.util.StringAttribute" value="tan">
                     </property>
                 </property>
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+                </property>
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[230.0, 190.0]">
             </property>
@@ -1930,30 +2692,75 @@
                 <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
                 </property>
             </property>
+            <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+                </property>
+            </port>
+            <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+                </property>
+            </port>
         </entity>
         <entity name="Add2" class="ptolemy.actor.lib.AddSubtract">
             <property name="_location" class="ptolemy.kernel.util.Location" value="[470.0, 200.0]">
             </property>
+            <port name="plus" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="multiport"/>
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+                </property>
+            </port>
+            <port name="minus" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="multiport"/>
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+                </property>
+            </port>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
                 <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
+                </property>
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
                 </property>
             </port>
         </entity>
         <entity name="CurrentTime2" class="ptolemy.actor.lib.CurrentTime">
             <property name="stopTime" class="ptolemy.data.expr.Parameter" value="Infinity">
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+                </property>
             </property>
             <property name="stopTimeIsLocal" class="ptolemy.data.expr.Parameter" value="false">
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+                </property>
             </property>
             <property name="useLocalTime" class="ptolemy.data.expr.Parameter" value="false">
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+                </property>
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[-100.0, 160.0]">
             </property>
+            <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+                </property>
+            </port>
+            <port name="trigger" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="multiport"/>
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+                </property>
+            </port>
         </entity>
         <entity name="Scale" class="ptolemy.actor.lib.Scale">
             <property name="factor" class="ptolemy.data.expr.Parameter" value="jitterAmplitude">
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+                </property>
             </property>
             <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+                </property>
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
                 <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
@@ -1961,11 +2768,25 @@
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[340.0, 225.0]">
             </property>
+            <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+                </property>
+            </port>
+            <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+                </property>
+            </port>
         </entity>
         <entity name="Scale2" class="ptolemy.actor.lib.Scale">
             <property name="factor" class="ptolemy.data.expr.Parameter" value="2*pi">
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+                </property>
             </property>
             <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+                </property>
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
                 <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
@@ -1973,13 +2794,42 @@
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 160.0]">
             </property>
+            <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+                </property>
+            </port>
+            <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+                </property>
+            </port>
         </entity>
         <entity name="MultiplyDivide" class="ptolemy.actor.lib.MultiplyDivide">
             <property name="_location" class="ptolemy.kernel.util.Location" value="{100.0, 210.0}">
             </property>
+            <port name="multiply" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="multiport"/>
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+                </property>
+            </port>
+            <port name="divide" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="multiport"/>
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+                </property>
+            </port>
+            <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+                </property>
+            </port>
         </entity>
         <entity name="JitterPeriod" class="ptolemy.actor.lib.Const">
             <property name="value" class="ptolemy.data.expr.Parameter" value="jitterPeriod">
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+                </property>
             </property>
             <doc>Create a constant sequence</doc>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[-60.0, 220.0]">
@@ -1990,6 +2840,17 @@
                 <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
                 </property>
             </property>
+            <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+                </property>
+            </port>
+            <port name="trigger" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="multiport"/>
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+                </property>
+            </port>
         </entity>
         <entity name="UnitConversion" class="ptolemy.actor.TypedCompositeActor">
             <property name="_location" class="ptolemy.kernel.util.Location" value="[575.0, 215.0]">
@@ -2048,16 +2909,24 @@
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[520.0, 185.0]">
                 </property>
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+                </property>
             </port>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 185.0]">
                 </property>
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+                </property>
             </port>
             <entity name="Scale" class="ptolemy.actor.lib.Scale">
                 <property name="factor" class="ptolemy.data.expr.Parameter" value="1/1609.344">
+                    <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+                    </property>
                 </property>
                 <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
+                    <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+                    </property>
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
                     <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
@@ -2065,11 +2934,25 @@
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{210.0, 185.0}">
                 </property>
+                <port name="input" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                    <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+                    </property>
+                </port>
+                <port name="output" class="ptolemy.actor.TypedIOPort">
+                    <property name="output"/>
+                    <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+                    </property>
+                </port>
             </entity>
             <entity name="Scale2" class="ptolemy.actor.lib.Scale">
                 <property name="factor" class="ptolemy.data.expr.Parameter" value="3600">
+                    <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+                    </property>
                 </property>
                 <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
+                    <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+                    </property>
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
                     <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
@@ -2077,6 +2960,16 @@
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[360.0, 185.0]">
                 </property>
+                <port name="input" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                    <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+                    </property>
+                </port>
+                <port name="output" class="ptolemy.actor.TypedIOPort">
+                    <property name="output"/>
+                    <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+                    </property>
+                </port>
             </entity>
             <relation name="relation" class="ptolemy.actor.TypedIORelation">
                 <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
@@ -2148,6 +3041,8 @@
     </entity>
     <entity name="driverDesiredSpeed" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="60">
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+            </property>
         </property>
         <doc>Create a constant sequence.</doc>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
@@ -2158,11 +3053,26 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[395.0, 390.0]">
         </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+            </property>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+            </property>
+        </port>
     </entity>
     <entity name="TimedPlotter2" class="ptolemy.actor.lib.gui.TimedPlotter">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+            </property>
         </property>
         <property name="automaticRescale" class="ptolemy.data.expr.Parameter" value="false">
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+            </property>
         </property>
         <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="Following Car, Leading Car">
         </property>
@@ -2171,15 +3081,31 @@
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
         </property>
         <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+            </property>
         </property>
         <property name="disconnectGraphOnAbsentValue" class="ptolemy.data.expr.Parameter" value="false">
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+            </property>
         </property>
         <property name="useLocalTime" class="ptolemy.data.expr.Parameter" value="false">
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+            </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[870.0, 425.0]">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
         </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+            <property name="lattice::softwareConfiguration" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="NotConfigured">
+            </property>
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.2,1.0,1.0}">
+            </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="NotConfigured">
+            </property>
+        </port>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
@@ -2194,9 +3120,23 @@
     </entity>
     <entity name="PeriodicSampler2" class="ptolemy.domains.continuous.lib.PeriodicSampler">
         <property name="samplePeriod" class="ptolemy.data.expr.Parameter" value="0.1">
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+            </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[645.0, 390.0]">
         </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+            </property>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="multiport"/>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+            </property>
+        </port>
     </entity>
     <entity name="UnitConversion" class="ptolemy.actor.TypedCompositeActor">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[535.0, 390.0]">
@@ -2255,16 +3195,24 @@
             <property name="output"/>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[520.0, 185.0]">
             </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+            </property>
         </port>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 185.0]">
             </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+            </property>
         </port>
         <entity name="Scale" class="ptolemy.actor.lib.Scale">
             <property name="factor" class="ptolemy.data.expr.Parameter" value="1/1609.344">
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+                </property>
             </property>
             <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+                </property>
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
                 <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
@@ -2272,11 +3220,25 @@
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{210.0, 185.0}">
             </property>
+            <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+                </property>
+            </port>
+            <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+                </property>
+            </port>
         </entity>
         <entity name="Scale2" class="ptolemy.actor.lib.Scale">
             <property name="factor" class="ptolemy.data.expr.Parameter" value="3600">
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+                </property>
             </property>
             <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+                </property>
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
                 <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
@@ -2284,6 +3246,16 @@
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[360.0, 185.0]">
             </property>
+            <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+                </property>
+            </port>
+            <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+                </property>
+            </port>
         </entity>
         <relation name="relation" class="ptolemy.actor.TypedIORelation">
             <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
