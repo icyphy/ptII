@@ -57,6 +57,7 @@ import ptolemy.kernel.DecoratedAttributesImplementation;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.DecoratedAttributes;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 
@@ -1236,7 +1237,7 @@ public class StaticSchedulingDirector extends Director {
                      sinkChannelNumber) + " + "
                      + channelAndOffset[1] + ")%" + divisor;
                      */
-
+                    result = "[" + temp + "]";
                 } else {
                     // FIXME: We haven't check if modulo is 0. But this
                     // should never happen. For offsets that need to be
@@ -1249,18 +1250,26 @@ public class StaticSchedulingDirector extends Director {
                     //              temp = MpiPNDirector.generateFreeSlots(_port, channel) +
                     //              "[" + MpiPNDirector.generatePortHeader(_port, channel) + ".current]";
                     //              } else
-                    if (padBuffers) {
-                        int modulo = getBufferSize(channel) - 1;
-                        temp = "(" + offsetObject.toString() + " + "
-                                + offsetString + ")&" + modulo;
+                    if (offsetObject == null) {
+                        result = getCodeGenerator().comment(_port.getFullName() + " Getting offset for channel " +
+                                channel + " returned null?" +
+                                "This can happen if there are problems with Profile.firing().");
+
                     } else {
-                        int modulo = getBufferSize(channel);
-                        temp = "(" + offsetObject.toString() + " + "
+                        if (padBuffers) {
+                            int modulo = getBufferSize(channel) - 1;
+                            temp = "(" + offsetObject.toString() + " + "
+                                + offsetString + ")&" + modulo;
+                        } else {
+                            int modulo = getBufferSize(channel);
+                            temp = "(" + offsetObject.toString() + " + "
                                 + offsetString + ")%" + modulo;
+                        }
+                        result = "[" + temp + "]";
                     }
                 }
 
-                result = "[" + temp + "]";
+
 
             } else {
                 // Did not specify offset, so the receiver buffer
