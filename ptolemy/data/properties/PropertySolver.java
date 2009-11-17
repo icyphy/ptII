@@ -166,18 +166,6 @@ public abstract class PropertySolver extends PropertySolverBase {
         checkErrors();
     }
 
-    public boolean checkForErrors() throws IllegalActionException {
-        boolean ret = false;
-        for (Object propertyable : getAllPropertyables()) {
-            Property property = getProperty(propertyable);
-            if (property != null && !property.isAcceptableSolution()) {
-                clearResolvedProperty(propertyable);
-                ret = true;
-            }
-        }
-        return ret;
-    }
-    
     /**
      * If the value of the highlight parameter is set to true, highlight the
      * given property-able object with the specified color associated with the
@@ -1023,7 +1011,6 @@ public abstract class PropertySolver extends PropertySolverBase {
             addErrors("Property \"" + property
                     + "\" is not an acceptable solution for " + propertyable
                     + "." + _eol);
-            clearResolvedProperty(propertyable);
         }
     }
     

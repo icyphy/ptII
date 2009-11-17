@@ -32,6 +32,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import ptolemy.actor.TypeConflictException;
+import ptolemy.data.properties.Property;
 import ptolemy.data.properties.PropertyResolutionException;
 import ptolemy.data.properties.lattice.PropertyConstraintHelper.Inequality;
 import ptolemy.kernel.util.IllegalActionException;
@@ -60,6 +61,27 @@ public class DeltaConstraintSolver extends PropertyConstraintSolver {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         // TODO Auto-generated constructor stub
+    }
+    
+    public boolean checkForErrors() throws IllegalActionException {
+//        try {
+//            this.checkResolutionErrors();
+//        } catch (PropertyResolutionException ex){
+//            //_resolvedProperties.clear();
+//            _momlHandler.clearProperties();
+//            return true;
+//        }
+//        return false;
+        boolean ret = false;
+        for (Object propertyable : getAllPropertyables()) {
+            Property property = getProperty(propertyable);
+            if (property != null && !property.isAcceptableSolution()) {
+                
+                ret = true;
+            }
+            clearResolvedProperty(propertyable);
+        }
+        return ret;
     }
 
     /** Iterate on the given list of constraints to find a minimal
@@ -108,7 +130,7 @@ public class DeltaConstraintSolver extends PropertyConstraintSolver {
                     _resolveProperties(toplevel, toplevelHelper, testList);
                     if (checkForErrors()) {
                         errorList = testList;
-                        blockSize = errorList.size()/2;
+                        blockSize = errorList.size()/2;//Math.min(errorList.size()/2, blockSize);
                         continue WHILE_LOOP;
                     }
                 }
@@ -156,10 +178,9 @@ public class DeltaConstraintSolver extends PropertyConstraintSolver {
 
         _resolveProperties(toplevel, toplevelHelper, constraintList);
         if (checkForErrors()) {
-            // Only do delta iteration when an error is found.
+            //Only do delta iteration when an error is found.
             _doDeltaIteration(toplevel, toplevelHelper, constraintList);
         }
-
     }
 
 }
