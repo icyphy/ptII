@@ -161,23 +161,76 @@ public class ModularCodeGenerator extends JavaCodeGenerator {
     }
     
 
-    public StringBuffer createActorGraph() {
+    public StringBuffer createActorGraph() throws IllegalActionException {
         StringBuffer actorGraph = new StringBuffer();
         
         actorGraph.append(INDENT1
-                + "public List<Profile.ProfileActor> actors() throws IllegalActionException {" + _eol);
-        actorGraph.append(INDENT2 + "List<Profile.ProfileActor> profiles = new LinkedList<Profile.ProfileActor>();" + _eol);
+                + "public List<Profile.FiringFunction> firings() throws IllegalActionException {" + _eol);
+        actorGraph.append(INDENT2 + "List<Profile.FiringFunction> firingFunctions = new LinkedList<Profile.FiringFunction>();" + _eol);
+        actorGraph.append(INDENT2
+                + "FiringFunction firingFunction;" + _eol + _eol);
+        int index = 0;
         ModularCodeGenTypedCompositeActor model = (ModularCodeGenTypedCompositeActor) _model;
         for (Object object : model.entityList()) {
             
             Actor actor = (Actor) object;
             
-            actorGraph.append(INDENT2
-                    + "profiles.add(new Profile.ProfileActor(\"" + actor.getName() + "\", " 
-                    + (actor instanceof AtomicActor) + "));" + _eol);
+            StringBuffer firingFunction = new StringBuffer();
+            firingFunction.append(INDENT2
+                    + "firingFunction = new Profile.FiringFunction(" + index++ + ");" + _eol);
+            String externalPortName;
+
+            // Add ports name and rate
+            CompositeActor container = (CompositeActor)getContainer();
+            boolean appendFiringFunction = false;
+            Iterator inputPorts = actor.inputPortList().iterator();
+            while (inputPorts.hasNext()) {
+                IOPort inputPort = (IOPort)(inputPorts.next());
+                externalPortName = "";
+                for (Object connectedPort: inputPort.connectedPortList()) {
+                    if (container.portList().contains(connectedPort)) {
+                        externalPortName = ((IOPort)connectedPort).getName();
+                        break;
+                    }
+                }
+                
+                if (!externalPortName.equals("")) {
+                    appendFiringFunction = true;
+                    firingFunction.append(INDENT2
+                        + "firingFunction.ports.add(new FiringFunctionPort(\"" + inputPort.getName() 
+                        + "\",\"" + externalPortName
+                        + "\"," + DFUtilities.getTokenConsumptionRate(inputPort) + "," + inputPort.isInput() + "));" + _eol);
+                }
+            }
+
+            Iterator outputPorts = actor.outputPortList().iterator();
+            while (outputPorts.hasNext()) {
+                IOPort outputPort = (IOPort)(outputPorts.next());
+                externalPortName = "";
+                for (Object connectedPort: outputPort.connectedPortList()) {
+                    if (container.portList().contains(connectedPort)) {
+                        externalPortName = ((IOPort)connectedPort).getName();
+                        break;
+                    }
+                }
+                
+                if (externalPortName != "") {
+                    appendFiringFunction = true;
+                    firingFunction.append(INDENT2
+                        + "firingFunction.ports.add(new FiringFunctionPort(\"" + outputPort.getName()
+                        + "\",\"" + externalPortName
+                        + "\"," + DFUtilities.getTokenProductionRate(outputPort) + "," + outputPort.isInput() + "));" + _eol);
+                }
+            }
+            firingFunction.append(INDENT2
+                    + "firingFunctions.add(firingFunction);" + _eol + _eol);
+            if (appendFiringFunction) {
+                actorGraph.append(firingFunction);
+            }
+
         }
         
-        actorGraph.append(INDENT2 + "return profiles;" + _eol);
+        actorGraph.append(INDENT2 + "return firingFunctions;" + _eol);
         actorGraph.append(INDENT1 + "}" + _eol);
         
         return actorGraph;
