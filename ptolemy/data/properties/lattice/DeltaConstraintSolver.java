@@ -94,9 +94,9 @@ public class DeltaConstraintSolver extends PropertyConstraintSolver {
         List<Inequality> errorList = constraintList;
         int blockSize = errorList.size()/2;
 
-        WHILE_LOOP: while(blockSize >= 1) {
+        WHILE_LOOP: while (blockSize >= 1) {
 
-            for(int i = 0; i < errorList.size(); i += blockSize) {
+            for (int i = 0; i < errorList.size(); i += blockSize) {
 
                 //modify the list of constraints
                 List<Inequality> testList =
@@ -104,9 +104,9 @@ public class DeltaConstraintSolver extends PropertyConstraintSolver {
                 testList.removeAll(errorList.subList(
                         i, Math.min(errorList.size(), i+blockSize)));
 
-                if(testList.size() > 0) {
+                if (testList.size() > 0) {
                     _resolveProperties(toplevel, toplevelHelper, testList);
-                    if(checkForErrors()) {
+                    if (checkForErrors()) {
                         errorList = testList;
                         blockSize = errorList.size()/2;
                         continue WHILE_LOOP;
@@ -155,7 +155,7 @@ public class DeltaConstraintSolver extends PropertyConstraintSolver {
         List<Inequality> constraintList = toplevelHelper.constraintList();
 
         _resolveProperties(toplevel, toplevelHelper, constraintList);
-        if(checkForErrors()) {
+        if (checkForErrors()) {
             // Only do delta iteration when an error is found.
             _doDeltaIteration(toplevel, toplevelHelper, constraintList);
         }
