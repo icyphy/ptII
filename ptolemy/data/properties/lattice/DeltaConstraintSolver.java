@@ -79,7 +79,6 @@ public class DeltaConstraintSolver extends PropertyConstraintSolver {
                 
                 ret = true;
             }
-            clearResolvedProperty(propertyable);
         }
         return ret;
     }
@@ -127,6 +126,7 @@ public class DeltaConstraintSolver extends PropertyConstraintSolver {
                         i, Math.min(errorList.size(), i+blockSize)));
 
                 if (testList.size() > 0) {
+                    _resolvedProperties.clear();
                     _resolveProperties(toplevel, toplevelHelper, testList);
                     if (checkForErrors()) {
                         errorList = testList;
@@ -141,6 +141,7 @@ public class DeltaConstraintSolver extends PropertyConstraintSolver {
         }
 
         System.out.println(errorList);
+        _resolvedProperties.clear();
         _resolveProperties(toplevel, toplevelHelper, errorList);
     }
 
@@ -181,6 +182,7 @@ public class DeltaConstraintSolver extends PropertyConstraintSolver {
             //Only do delta iteration when an error is found.
             _doDeltaIteration(toplevel, toplevelHelper, constraintList);
         }
+
     }
 
 }
