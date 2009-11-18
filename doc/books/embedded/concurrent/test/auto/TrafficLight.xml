@@ -1,0 +1,477 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="TrafficLight" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
+    </property>
+    <property name="SR Director" class="ptolemy.domains.sr.kernel.SRDirector">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="period" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 40.0]">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={188, 466, 990, 501}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[777, 391]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{388.5, 195.5}">
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="If the light goes&#10;green, then in the&#10;next step there should&#10;be no car. This delay&#10;ensures that.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 190.0]">
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model composes two FSMs synchronously. The CarGenerator nondeterministically&#10;may make a car appear if the input is absent. The Traffic light moves to green if a car is&#10;present, then yellow, then red. The Animator simply animates the result. Open the actors&#10;to see how they are implemented.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[130.0, 5.0]">
+        </property>
+    </property>
+    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.4,0.4,0.4,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Edward A. Lee">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 280.0]">
+        </property>
+    </property>
+    <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="If you remove the NonStrictDelay, and close the feedback loop again,&#10;no car will ever appear. Why?  See the text.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, 280.0]">
+        </property>
+    </property>
+    <entity name="CarGenerator" class="ptolemy.domains.modal.modal.ModalModel">
+        <property name="_tableauFactory" class="ptolemy.vergil.modal.modal.ModalTableauFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 180.0]">
+        </property>
+        <port name="sigG" class="ptolemy.domains.modal.modal.ModalPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="isCar" class="ptolemy.domains.modal.modal.ModalPort">
+            <property name="output"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
+            <property name="_library" class="ptolemy.moml.LibraryAttribute">
+                <configure>
+        <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory"></property></entity></entity>
+      </configure>
+            </property>
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={313, 194, 813, 511}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            </property>
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+            </property>
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+            </property>
+            <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+                <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
+                </property>
+                <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
+                </property>
+                <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The syntax for transitions is not exactly the same in Ptolemy II as&#10;in the text (there are good reasons for this). Consequently, in this&#10;diagram, on each transition, the first line of the annotation shows&#10;the syntax used in the text. The remaining lines give the Ptolemy II&#10;syntax.">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 245.0]">
+                </property>
+            </property>
+            <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+                <property name="text" class="ptolemy.kernel.util.StringAttribute" value="In the noCar state, if the input is absent, then nondeterministically&#10;choose between stuttering or making a car appear and transitioning&#10;to the car state. In the car state, if the input is present, then transition&#10;back to the noCar state.">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 150.0]">
+                </property>
+            </property>
+            <port name="sigG" class="ptolemy.domains.modal.modal.RefinementPort">
+                <property name="input"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[18.31500244140625, 102.3518149406567]">
+                </property>
+            </port>
+            <port name="isCar" class="ptolemy.domains.modal.modal.RefinementPort">
+                <property name="input"/>
+                <property name="output"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[513.3150024414062, 97.3518149406567]">
+                </property>
+            </port>
+            <entity name="noCar" class="ptolemy.domains.modal.kernel.State">
+                <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[173.31500244140625, 72.3518149406567]">
+                </property>
+            </entity>
+            <entity name="car" class="ptolemy.domains.modal.kernel.State">
+                <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="false">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[308.31500244140625, 72.3518149406567]">
+                </property>
+                <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
+                    <property name="rectangle" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                        <property name="_location" class="ptolemy.kernel.util.Location" value="-14.0, 12.0">
+                        </property>
+                        <property name="lineWidth" class="ptolemy.data.expr.Parameter" value="2.0">
+                        </property>
+                        <property name="width" class="ptolemy.data.expr.Parameter" value="32.0">
+                        </property>
+                        <property name="height" class="ptolemy.data.expr.Parameter" value="18.0">
+                        </property>
+                        <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
+                        </property>
+                        <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 1.0, 1.0}">
+                        </property>
+                        <property name="rounding" class="ptolemy.data.expr.Parameter" value="20.0">
+                        </property>
+                    </property>
+                </property>
+            </entity>
+            <relation name="relation" class="ptolemy.domains.modal.kernel.Transition">
+                <property name="annotation" class="ptolemy.data.expr.StringParameter" value="!sigG / isCar">
+                </property>
+                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="!sigG_isPresent">
+                </property>
+                <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="isCar = true">
+                </property>
+                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.32744738378535676">
+                </property>
+                <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.018102091333165378">
+                </property>
+                <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+            </relation>
+            <relation name="relation2" class="ptolemy.domains.modal.kernel.Transition">
+                <property name="annotation" class="ptolemy.data.expr.StringParameter" value="/ isCar">
+                </property>
+                <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="isCar = true">
+                </property>
+                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="2.3881493333710764">
+                </property>
+                <property name="gamma" class="ptolemy.data.expr.Parameter" value="-1.6161065262681849">
+                </property>
+                <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+            </relation>
+            <relation name="relation4" class="ptolemy.domains.modal.kernel.Transition">
+                <property name="annotation" class="ptolemy.data.expr.StringParameter" value="sigG /">
+                </property>
+                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="sigG_isPresent">
+                </property>
+                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.3425064735768016">
+                </property>
+                <property name="gamma" class="ptolemy.data.expr.Parameter" value="3.1034484071662725">
+                </property>
+            </relation>
+            <relation name="relation3" class="ptolemy.domains.modal.kernel.Transition">
+                <property name="annotation" class="ptolemy.data.expr.StringParameter" value="true /">
+                </property>
+                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
+                </property>
+                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="2.5152366788120197">
+                </property>
+                <property name="gamma" class="ptolemy.data.expr.Parameter" value="1.5380552820948359">
+                </property>
+                <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+            </relation>
+            <link port="noCar.incomingPort" relation="relation4"/>
+            <link port="noCar.incomingPort" relation="relation3"/>
+            <link port="noCar.outgoingPort" relation="relation"/>
+            <link port="noCar.outgoingPort" relation="relation3"/>
+            <link port="car.incomingPort" relation="relation"/>
+            <link port="car.incomingPort" relation="relation2"/>
+            <link port="car.outgoingPort" relation="relation2"/>
+            <link port="car.outgoingPort" relation="relation4"/>
+        </entity>
+        <relation name="sigGRelation" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+            </property>
+        </relation>
+        <relation name="isCarRelation" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+            </property>
+        </relation>
+        <link port="sigG" relation="sigGRelation"/>
+        <link port="isCar" relation="isCarRelation"/>
+        <link port="_Controller.sigG" relation="sigGRelation"/>
+        <link port="_Controller.isCar" relation="isCarRelation"/>
+    </entity>
+    <entity name="TrafficLight" class="ptolemy.domains.modal.modal.ModalModel">
+        <property name="_tableauFactory" class="ptolemy.vergil.modal.modal.ModalTableauFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[305.0, 145.0]">
+        </property>
+        <port name="sigG" class="ptolemy.domains.modal.modal.ModalPort">
+            <property name="output"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="isCar" class="ptolemy.domains.modal.modal.ModalPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="sigR" class="ptolemy.domains.modal.modal.ModalPort">
+            <property name="output"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="sigY" class="ptolemy.domains.modal.modal.ModalPort">
+            <property name="output"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
+            <property name="_library" class="ptolemy.moml.LibraryAttribute">
+                <configure>
+        <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory"></property></entity></entity>
+      </configure>
+            </property>
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1, 22, 876, 663}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[663, 552]">
+            </property>
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+            </property>
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{331.5, 276.0}">
+            </property>
+            <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+                <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
+                </property>
+                <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
+                </property>
+                <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The syntax for transitions is not exactly the same in Ptolemy II as&#10;in the text (there are good reasons for this). Consequently, in this&#10;diagram, on each transition, the first line of the annotation shows&#10;the syntax used in the text. The remaining lines give the Ptolemy II&#10;syntax.">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 390.0]">
+                </property>
+            </property>
+            <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+                <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Remain in the red state until a car appears. When that happens, change the light&#10;to green and transition to the green state.&#10;&#10;Here, we assume that the timeR, timeY, and timeY inputs referenced in the text&#10;are always present. Consequently, this state machine will be in the green and&#10;yellow states only for exactly one tick, and the transition from red to green&#10;will happen in the same tick that a car appears.">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 255.0]">
+                </property>
+            </property>
+            <port name="sigG" class="ptolemy.domains.modal.modal.RefinementPort">
+                <property name="input"/>
+                <property name="output"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[480.0, 85.0]">
+                </property>
+            </port>
+            <port name="isCar" class="ptolemy.domains.modal.modal.RefinementPort">
+                <property name="input"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[36.41284647790371, 196.14834911638556]">
+                </property>
+            </port>
+            <port name="sigR" class="ptolemy.domains.modal.modal.RefinementPort">
+                <property name="input"/>
+                <property name="output"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[480.0, 130.0]">
+                </property>
+            </port>
+            <port name="sigY" class="ptolemy.domains.modal.modal.RefinementPort">
+                <property name="input"/>
+                <property name="output"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[480.0, 170.0]">
+                </property>
+            </port>
+            <entity name="red" class="ptolemy.domains.modal.kernel.State">
+                <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[171.26771632043287, 115.12892359737253]">
+                </property>
+            </entity>
+            <entity name="green" class="ptolemy.domains.modal.kernel.State">
+                <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[286.2677163204329, 50.128923597372534]">
+                </property>
+            </entity>
+            <entity name="yellow" class="ptolemy.domains.modal.kernel.State">
+                <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[281.2677163204329, 185.12892359737253]">
+                </property>
+            </entity>
+            <relation name="relation" class="ptolemy.domains.modal.kernel.Transition">
+                <property name="annotation" class="ptolemy.data.expr.StringParameter" value="timeR &amp;&amp; isCar / sigG">
+                </property>
+                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="isCar_isPresent">
+                </property>
+                <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="sigG = true">
+                </property>
+                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.3384905907504921">
+                </property>
+                <property name="gamma" class="ptolemy.data.expr.Parameter" value="-0.5471319829847505">
+                </property>
+            </relation>
+            <relation name="relation2" class="ptolemy.domains.modal.kernel.Transition">
+                <property name="annotation" class="ptolemy.data.expr.StringParameter" value="/ sigG">
+                </property>
+                <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="sigG = true">
+                </property>
+                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="2.416459459472877">
+                </property>
+                <property name="gamma" class="ptolemy.data.expr.Parameter" value="-1.9390477763803065">
+                </property>
+                <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+            </relation>
+            <relation name="relation3" class="ptolemy.domains.modal.kernel.Transition">
+                <property name="annotation" class="ptolemy.data.expr.StringParameter" value="timeG / sigY">
+                </property>
+                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
+                </property>
+                <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="sigY = true">
+                </property>
+                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.572302531322966">
+                </property>
+                <property name="gamma" class="ptolemy.data.expr.Parameter" value="1.534294344758757">
+                </property>
+            </relation>
+            <relation name="relation4" class="ptolemy.domains.modal.kernel.Transition">
+                <property name="annotation" class="ptolemy.data.expr.StringParameter" value="/ sigY">
+                </property>
+                <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="sigY = true">
+                </property>
+                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="2.3868223920983205">
+                </property>
+                <property name="gamma" class="ptolemy.data.expr.Parameter" value="-1.2709179217002338">
+                </property>
+                <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+            </relation>
+            <relation name="relation5" class="ptolemy.domains.modal.kernel.Transition">
+                <property name="annotation" class="ptolemy.data.expr.StringParameter" value="timeY /sigR">
+                </property>
+                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
+                </property>
+                <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="sigR = true">
+                </property>
+                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.3925380366995919">
+                </property>
+                <property name="gamma" class="ptolemy.data.expr.Parameter" value="-2.554903321370053">
+                </property>
+            </relation>
+            <relation name="relation6" class="ptolemy.domains.modal.kernel.Transition">
+                <property name="annotation" class="ptolemy.data.expr.StringParameter" value="/ sigR">
+                </property>
+                <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="sigR = true">
+                </property>
+                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="2.453249961062291">
+                </property>
+                <property name="gamma" class="ptolemy.data.expr.Parameter" value="1.6056151079903778">
+                </property>
+                <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+            </relation>
+            <link port="red.incomingPort" relation="relation5"/>
+            <link port="red.incomingPort" relation="relation6"/>
+            <link port="red.outgoingPort" relation="relation"/>
+            <link port="red.outgoingPort" relation="relation6"/>
+            <link port="green.incomingPort" relation="relation"/>
+            <link port="green.incomingPort" relation="relation2"/>
+            <link port="green.outgoingPort" relation="relation2"/>
+            <link port="green.outgoingPort" relation="relation3"/>
+            <link port="yellow.incomingPort" relation="relation3"/>
+            <link port="yellow.incomingPort" relation="relation4"/>
+            <link port="yellow.outgoingPort" relation="relation4"/>
+            <link port="yellow.outgoingPort" relation="relation5"/>
+        </entity>
+        <relation name="sigGRelation" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+            </property>
+        </relation>
+        <relation name="isCarRelation" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+            </property>
+        </relation>
+        <relation name="sigRRelation" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+            </property>
+        </relation>
+        <relation name="sigYRelation" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+            </property>
+        </relation>
+        <link port="sigG" relation="sigGRelation"/>
+        <link port="isCar" relation="isCarRelation"/>
+        <link port="sigR" relation="sigRRelation"/>
+        <link port="sigY" relation="sigYRelation"/>
+        <link port="_Controller.sigG" relation="sigGRelation"/>
+        <link port="_Controller.isCar" relation="isCarRelation"/>
+        <link port="_Controller.sigR" relation="sigRRelation"/>
+        <link port="_Controller.sigY" relation="sigYRelation"/>
+    </entity>
+    <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{false, false, false, false, false, false, false, false, false, false}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[475.0, 190.0]">
+        </property>
+    </entity>
+    <entity name="Default" class="ptolemy.domains.sr.lib.Default">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[305.0, 210.0]">
+        </property>
+    </entity>
+    <entity name="Const" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[265.0, 260.0]">
+        </property>
+    </entity>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[365.0, 85.0]">
+        </vertex>
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[245.0, 180.0]">
+        </vertex>
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="CarGenerator.sigG" relation="relation2"/>
+    <link port="CarGenerator.isCar" relation="relation6"/>
+    <link port="TrafficLight.sigG" relation="relation2"/>
+    <link port="TrafficLight.isCar" relation="relation6"/>
+    <link port="NonStrictTest.input" relation="relation3"/>
+    <link port="Default.preferred" relation="relation6"/>
+    <link port="Default.alternate" relation="relation"/>
+    <link port="Default.output" relation="relation3"/>
+    <link port="Const.output" relation="relation"/>
+</entity>
