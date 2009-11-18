@@ -29,20 +29,25 @@
 # 						COPYRIGHTENDKEY
 ##########################################################################
 
-ME =		doc/books
+ME =		doc/books/embedded
 
 # Sub directories to run make in.
-DIRS =		design embedded
+DIRS =		concurrent
 
 # Root of Ptolemy II directory
-ROOT =		../..
+ROOT =		../../..
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 PTPACKAGE = 	books
-PTCLASSJAR = $(PTPACKAGE).jar
+PTCLASSJAR =
+
+# Include the .class files from these jars in PTCLASSALLJAR
+PTCLASSALLJARS = \
+	modal/modal.jar \
+	time/time.jar
 
 OTHER_FILES_TO_BE_JARED =
 

@@ -1,4 +1,4 @@
-# Makefile for the Ptolemy II books
+# Makefile for the Ptolemy II embedded book chapter concurrent
 #
 # Version: $Id$
 # Makefile Author: Christopher Brooks
@@ -29,26 +29,29 @@
 # 						COPYRIGHTENDKEY
 ##########################################################################
 
-ME =		doc/books
+ME =		doc/books/embedded/concurrent
 
 # Sub directories to run make in.
-DIRS =		design embedded
+# Don't include src directory, since we don't ship it with the release
+DIRS =		test
 
 # Root of Ptolemy II directory
-ROOT =		../..
+ROOT =		../../../..
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
-PTPACKAGE = 	books
-PTCLASSJAR = $(PTPACKAGE).jar
+PTPACKAGE = 	modal
+PTCLASSJAR = 	$(PTPACKAGE).jar
 
-OTHER_FILES_TO_BE_JARED =
+EXAMPLE_MODELS = \
+	TrafficLight.xml
+
+OTHER_FILES_TO_BE_JARED = $(EXAMPLE_MODELS) \
+	solutions.txt
 
 EXTRA_SRCS = $(OTHER_FILES_TO_BE_JARED)
-
-KRUFT =
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
@@ -58,8 +61,12 @@ MISC_FILES =	$(DIRS)
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES =
 
-all: suball
-install: all jars
+all: jclass
+
+# To build all the jnlp files, run 'make jnlps'.
+# See the jnlps rule in ptII/mk/ptcommon.mk and the book rule in ptII/mk/jnlp.mk"
+install: jclass jars
+
 
 # We don't include common.mk since we don't use the compiler here
 include $(ROOT)/mk/ptno-compile.mk
