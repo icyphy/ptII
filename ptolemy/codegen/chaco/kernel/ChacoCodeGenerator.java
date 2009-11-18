@@ -705,14 +705,14 @@ public class ChacoCodeGenerator extends CodeGenerator {
             out = new BufferedWriter(fstream);
             out.write(code);
         } catch (Exception ex) {//Catch exception if any
-            throw IllegalActionException(getContainer(), ex, "Failed to write to "
+            throw new IllegalActionException(getContainer(), ex, "Failed to write to "
                     + _codeFileName);
         } finally {
             if (out != null) {
                 try {
                     out.close();
                 } catch (Exception ex) {
-                    throw IllegalActionException(getContainer(), ex, "Failed to close "
+                    throw new IllegalActionException(getContainer(), ex, "Failed to close "
                     + _codeFileName);
                 }
             }
