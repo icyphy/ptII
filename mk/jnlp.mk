@@ -1480,7 +1480,8 @@ osgi_demo_test:
 JNLP_MODEL =		CapriciousThermostat
 
 # The path, relative from ptII that contains the model.
-JNLP_MODEL_DIRECTORY =	doc/books/design/modal
+#JNLP_MODEL_DIRECTORY =	doc/books/design/modal
+JNLP_MODEL_DIRECTORY =  doc/books/embedded/concurrent/
 
 ################################################################### 
 # For jnlp files, you should not need to modify anything below here

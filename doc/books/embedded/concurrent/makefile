@@ -42,14 +42,13 @@ ROOT =		../../../..
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
-PTPACKAGE = 	modal
+PTPACKAGE = 	concurrent
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 EXAMPLE_MODELS = \
 	TrafficLight.xml
 
-OTHER_FILES_TO_BE_JARED = $(EXAMPLE_MODELS) \
-	solutions.txt
+OTHER_FILES_TO_BE_JARED = $(EXAMPLE_MODELS)
 
 EXTRA_SRCS = $(OTHER_FILES_TO_BE_JARED)
 
@@ -65,6 +64,7 @@ all: jclass
 
 # To build all the jnlp files, run 'make jnlps'.
 # See the jnlps rule in ptII/mk/ptcommon.mk and the book rule in ptII/mk/jnlp.mk"
+# make JNLP_MODEL_DIRECTORY=doc/books/embedded/concurrent KEYSTORE=/users/ptII/adm/certs/ptkeystore KEYALIAS=ptolemy STOREPASSWORD="-storepass xxxxxxxx" KEYPASSWORD="-keypass xxxxxx" DIST_BASE=ptolemyII/ptII8.0/jnlp-books jnlps
 install: jclass jars
 
 

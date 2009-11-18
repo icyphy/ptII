@@ -834,7 +834,8 @@ jnlps:
 		echo "<ul>" >> index.htm; \
 		echo "<div id=\"menu\">" > toc.htm; \
 		echo "<ul>" >> toc.htm; \
-		echo "<li><a href=\"/index.htm\">Home</a></li>" >> toc.htm; \
+		echo "<li><a href=\"/index.htm\">Ptolemy Home</a></li>" >> toc.htm; \
+		echo "<li><a href=\"index.htm\">Demo Home</a></li>" >> toc.htm; \
 		echo "<h2>Demos</h2>" >> toc.htm; \
 		set $(EXAMPLE_MODELS); \
 		for x do \
