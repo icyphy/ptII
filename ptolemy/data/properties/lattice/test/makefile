@@ -49,7 +49,8 @@ JSRCS =
 
 # Non-graphical Java tests written in Tcl
 JSIMPLE_TESTS = \
-	InequalitySolver.tcl
+	InequalitySolver.tcl \
+	LatticeProperty.tcl
 
 # Graphical Java tests.
 # If there are no tests, we use a dummy file so that the script that builds
