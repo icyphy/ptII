@@ -1,6 +1,6 @@
-/*
+/* Thrown when a property regression test fails.
 
- Copyright (c) 1997-2009 The Regents of the University of California.
+ Copyright (c) 2008-2009 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -27,16 +27,41 @@
  */
 package ptolemy.data.properties;
 
+//////////////////////////////////////////////////////////////////////////
+//// PropertyFailedRegressionTestException
+
+/**
+ Thrown when a property regression test fails.
+
+ @author Man-kit (Jackie) Leung, Christopher Brooks
+ @version $Id$
+ @since Ptolemy II 8.0
+ @Pt.ProposedRating Yellow (cxh)
+ @Pt.AcceptedRating Red (cxh)
+ */
 public class PropertyFailedRegressionTestException extends
         PropertyResolutionException {
 
+    /** Construct an exception that includes the PropertySolver that 
+     *  that was involved.
+     *  
+     *  @param solver The PropertySolver.
+     *  @param detail The message.
+     */
     public PropertyFailedRegressionTestException(PropertySolver solver,
             String detail) {
         super(solver, detail);
     }
 
-    /**
-     *
+    /** Construct an exception that includes the PropertySolver that 
+     *  that was involved and the cause.
+     *  @param solver The PropertySolver.
+     *  @param cause The cause of this exception, or null if the cause
+     *  is not known or nonexistent
+     *  @param detail The message.
      */
-    private static final long serialVersionUID = -4802109619270551937L;
+    public PropertyFailedRegressionTestException(PropertySolver solver,
+            Throwable cause, String detail) {
+        super(solver, cause, detail);
+    }
 }

@@ -1,6 +1,6 @@
-/*
+/*  Thrown when a property fails to resolve.
 
- Copyright (c) 1997-2009 The Regents of the University of California.
+ Copyright (c) 2008-2009 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -30,18 +30,92 @@ package ptolemy.data.properties;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.Nameable;
 
+//////////////////////////////////////////////////////////////////////////
+//// PropertyResolutionException
+
+/**
+ Thrown when a property fails to resolve.
+
+ @author Man-kit (Jackie) Leung, Christopher Brooks
+ @version $Id$
+ @since Ptolemy II 8.0
+ @Pt.ProposedRating Yellow (cxh)
+ @Pt.AcceptedRating Red (cxh)
+ */
 public class PropertyResolutionException extends IllegalActionException {
 
+    /** Construct an exception that includes the PropertySolver that 
+     *  that was involved.
+     *  
+     *  @param solver The PropertySolver, which must not be null.
+     *  @param detail The message.
+     */
+    public PropertyResolutionException(PropertySolverBase solver, String detail) {
+        this(solver, null, null, detail);
+    }
+
+
+    /** Construct an exception that includes the PropertySolver that 
+     *  that was involved.
+     *  
+     *  @param solver The PropertySolver, which must not be null.
+     *  @param cause The cause of this exception, or null if the cause
+     *  is not known or nonexistent
+     *  @deprecated Use {@link #PropertyResolutionException(PropertySolverBase, Throwable, String}
+     *  instead because exceptions should include information about why
+     *  the exception was thrown instead of just rethrowing.
+     */
+    public PropertyResolutionException(PropertySolverBase solver,
+            Throwable cause) {
+        this(solver, null, cause, "");
+    }
+
+    /** Construct an exception that includes the PropertySolver that 
+     *  that was involved and the cause.
+     *  @param solver The PropertySolver, which must not be null.
+     *  @param cause The cause of this exception, or null if the cause
+     *  is not known or nonexistent
+     *  @param detail The message.
+     */
+    public PropertyResolutionException(PropertySolverBase solver,
+            Throwable cause, String detail) {
+        this(solver, null, cause, detail);
+    }
+
+    /** Construct an exception that includes the PropertySolver that 
+     *  that was involved and the cause.
+     *  @param solver The PropertySolver, which must not be null.
+     *  @param nameable The Nameable object that was involved.
+     *  @param detail The message.
+     */
     public PropertyResolutionException(PropertySolverBase solver,
             Nameable nameable, String detail) {
         this(solver, nameable, null, detail);
     }
 
+    /** Construct an exception that includes the PropertySolver that 
+     *  that was involved and the cause.
+     *  @param solver The PropertySolver, which must not be null.
+     *  @param nameable The Nameable object that was involved.
+     *  @param cause The cause of this exception, or null if the cause
+     *  is not known or nonexistent
+     *  @deprecated Use {@link #PropertyResolutionException(PropertySolverBase, Nameable, Throwable, String}
+     *  instead because exceptions should include information about why
+     *  the exception was thrown instead of just rethrowing.
+     */
     public PropertyResolutionException(PropertySolverBase solver,
             Nameable nameable, Throwable cause) {
         this(solver, nameable, cause, "");
     }
 
+    /** Construct an exception that includes the PropertySolver that 
+     *  that was involved, the Nameable and the cause.
+     *  @param solver The PropertySolver, which must not be null.
+     *  @param nameable The Nameable object that was involved.
+     *  @param cause The cause of this exception, or null if the cause
+     *  is not known or nonexistent
+     *  @param detail The message.
+     */
     public PropertyResolutionException(PropertySolverBase solver,
             Nameable nameable, Throwable cause, String detail) {
         super(solver, nameable, cause, detail);
@@ -51,23 +125,20 @@ public class PropertyResolutionException extends IllegalActionException {
         _solver = solver;
     }
 
-    public PropertyResolutionException(PropertySolverBase solver, String detail) {
-        this(solver, null, null, detail);
-    }
-
-    public PropertyResolutionException(PropertySolverBase solver,
-            Throwable cause) {
-        this(solver, null, cause, "");
-    }
-
-    public PropertyResolutionException(PropertySolverBase solver,
-            Throwable cause, String detail) {
-        this(solver, null, cause, detail);
-    }
-
+    /** Return the PropertySolver with which this exception was
+     *  constructed.
+     *  @return the solver with which this exception was constructed.
+     *  Guaranteed to be non-null.
+     */
     public PropertySolverBase getSolver() {
         return _solver;
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    /** The PropertySolver with which this exception was constructed.
+     *  Guaranteed to be non-null.
+     */
     private PropertySolverBase _solver;
 }
