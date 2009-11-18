@@ -21,7 +21,9 @@ USER_CC_FLAGS =
 @modelName@: @modelName@.c
 	gcc -Wall -D__int64="long long" $(CC_FLAGS) $(USER_CC_FLAGS) -g @modelName@.c $(PTCGINCLUDES) -o @modelName@ -lm $(PTCGLIBRARIES)
 
-# default target when "make" is run w/o arguments
+run: @modelName@
+	./@modelName@
+
 all: @modelName@.rom
 
 AVR_OPT =  -O2

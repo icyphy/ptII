@@ -160,6 +160,7 @@ lss: $(TARGET).lss
 sym: $(TARGET).sym
 
 # Program the device.  
+run: upload
 upload: $(TARGET).hex
 	$(AVRDUDE) $(AVRDUDE_FLAGS) $(AVRDUDE_WRITE_FLASH)
 

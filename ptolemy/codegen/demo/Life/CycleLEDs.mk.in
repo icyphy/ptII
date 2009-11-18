@@ -45,6 +45,7 @@ clean:
 	rm -f *.o *.rom *.elf *.map *~
 
 # command to program chip (invoked by running "make install")
+run: install
 install:
 	uisp -v=1 -dprog=stk500 -dserial=/dev/cu.USA19H1b1P1.1 -dpart=ATmega16 --erase --upload --verify if="@modelName@.rom"
 

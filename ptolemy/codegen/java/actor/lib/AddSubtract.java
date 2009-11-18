@@ -133,7 +133,6 @@ public class AddSubtract extends JavaCodeGeneratorHelper {
                     + _codeGenerator.comment("preinitialize "
                             + generateSimpleName(getComponent())));
         }
-
         _codeStream.appendCodeBlock("preinitBlock", args);
 
         return processCode(_codeStream.toString());

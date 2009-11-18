@@ -996,12 +996,18 @@ public class CCodeGenerator extends CodeGenerator {
 
         if (isTopLevel()) {
             if (((BooleanToken) run.getToken()).booleanValue()) {
-                String command = codeDirectory.stringValue()
+                if (target.getExpression().equals("mpi")) {
+                    // FIXME: Under the mpi target, we run "make run".
+                    // This should be generalized.
+                    commands.add("make -f " + _sanitizedModelName + ".mk run");
+                } else {
+                    String command = codeDirectory.stringValue()
                         + ((!codeDirectory.stringValue().endsWith("/") && !codeDirectory
-                                .stringValue().endsWith("\\")) ? "/" : "")
+                                        .stringValue().endsWith("\\")) ? "/" : "")
                         + _sanitizedModelName;
 
-                commands.add("\"" + command.replace('\\', '/') + "\"");
+                    commands.add("\"" + command.replace('\\', '/') + "\"");
+                }
             }
         }
 
@@ -1356,6 +1362,7 @@ public class CCodeGenerator extends CodeGenerator {
             Iterator templates = templateList.iterator();
             while (templates.hasNext()) {
                 makefileTemplateName = (String) templates.next();
+                System.out.println("Checking for " + makefileTemplateName);
                 try {
                     makefileTemplateReader = CodeGeneratorUtilities
                             .openAsFileOrURL(makefileTemplateName);

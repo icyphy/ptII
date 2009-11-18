@@ -12,11 +12,11 @@
 # To compile using this makefile after substitution, run:
 #    make -f @modelName@.mk
 
-PTCGLIBRARIES = @PTCGLibraries@
-PTCGINCLUDES = @PTCGIncludes@
+PTCGLIBRARIES = 
+PTCGINCLUDES = 
 
 # Mac OS X, need when we call the plotter from generated C code. 
-PTJNI_PLATFORM_LDFLAG = 	@PTJNI_PLATFORM_LDFLAG@
+PTJNI_PLATFORM_LDFLAG = 	 
 
 # Under Windows, to create a binary that does not pop up a console window,
 # compile with: make -f @modelName@.mk CC_FLAGS=-mwindows
@@ -46,17 +46,19 @@ WARNING_CC_FLAGS = -Wall
 # We need -lm so we can get floor() for ftoi() 
 # We need -D__int64="long long" when invoking jni interface under cygwin
 @modelName@: @modelName@.c
-	@PTCGCompiler@ -D__int64="long long" $(WARNING_CC_FLAGS) $(CC_FLAGS) $(USER_CC_FLAGS) $(DEBUG) @modelName@.c $(PTCGINCLUDES) -o @modelName@ -lm $(PTCGLIBRARIES) $(PTJNI_PLATFORM_LDFLAG)
+	mpicc @modelName@.c $(CC_FLAGS) $(USER_CC_FLAGS) $(PTCGINCLUDES) -o @modelName@ 
 
+# Run the output.  See http://www.mcs.anl.gov/research/projects/mpi/www/www1/mpirun.html
+NUMBER_OF_CORES = 2
 run:
-	@modelName@
+	mpirun -np $(NUMBER_OF_CORES) @modelName@
 
 # Rule to compile with different optimizers
 O_FLAGS=-O0 -O -Os -O2 -O3
 optimize:
 	for O_FLAG in $(O_FLAGS); do \
 	    echo "Compiling with $$O_FLAG"; \
-	    time @PTCGCompiler@ $$O_FLAG -D__int64="long long" $(CC_FLAGS) $(USER_CC_FLAGS) $(DEBUG) @modelName@.c $(PTCGINCLUDES) -o @modelName@_$$O_FLAG -lm $(PTCGLIBRARIES); \
+	    time mpicc $$O_FLAG -D__int64="long long" $(CC_FLAGS) $(USER_CC_FLAGS) $(DEBUG) @modelName@.c $(PTCGINCLUDES) -o @modelName@_$$O_FLAG -lm $(PTCGLIBRARIES); \
 	    cp @modelName@_$${O_FLAG}.exe @modelName@_$${O_FLAG}_stripped.exe; \
 	    strip @modelName@_$${O_FLAG}_stripped.exe; \
 	    ls -l @modelName@_$${O_FLAG}.exe @modelName@_$${O_FLAG}_stripped.exe; \

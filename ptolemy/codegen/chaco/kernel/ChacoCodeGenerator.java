@@ -698,15 +698,24 @@ public class ChacoCodeGenerator extends CodeGenerator {
 
     protected void _writeChacoInputFile(String code)
             throws IllegalActionException {
+        BufferedWriter out = null;
         try {
             // Create file 
             FileWriter fstream = new FileWriter(_codeFileName);
-            BufferedWriter out = new BufferedWriter(fstream);
+            out = new BufferedWriter(fstream);
             out.write(code);
-            //Close the output stream
-            out.close();
-        } catch (Exception e) {//Catch exception if any
-            System.err.println("Error: " + e.getMessage());
+        } catch (Exception ex) {//Catch exception if any
+            throw IllegalActionException(getContainer(), ex, "Failed to write to "
+                    + _codeFileName);
+        } finally {
+            if (out != null) {
+                try {
+                    out.close();
+                } catch (Exception ex) {
+                    throw IllegalActionException(getContainer(), ex, "Failed to close "
+                    + _codeFileName);
+                }
+            }
         }
     }
 
