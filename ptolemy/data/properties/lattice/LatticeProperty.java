@@ -1,7 +1,7 @@
 /**
  * The base class for a lattice property.
  * 
- * Copyright (c) 2007-2009 The Regents of the University of California. All
+ * Copyright (c) 1997-2009 The Regents of the University of California. All
  * rights reserved. Permission is hereby granted, without written agreement and
  * without license or royalty fees, to use, copy, modify, and distribute this
  * software and its documentation for any purpose, provided that the above
@@ -44,7 +44,7 @@ import ptolemy.kernel.util.IllegalActionException;
  * @Pt.ProposedRating Red (mankit)
  * @Pt.AcceptedRating Red (mankit)
  */
-public class LatticeProperty extends Property implements PropertyTerm, Cloneable {
+public class LatticeProperty extends Property implements PropertyTerm {
 
     /**
      * Create a new lattice property associated with the given lattice.
@@ -66,7 +66,7 @@ public class LatticeProperty extends Property implements PropertyTerm, Cloneable
     }
 
     /**
-     * Return this LatticeProperty.
+     * Return a copy of this LatticeProperty.
      * @return The clone.
      * @exception CloneNotSupportedException Not thrown in this base class.
      */
@@ -144,14 +144,6 @@ public class LatticeProperty extends Property implements PropertyTerm, Cloneable
      */
     public InequalityTerm[] getVariables() {
         return new InequalityTerm[0];
-    }
-
-    /** Return a hash code value for this LatticeProperty.
-     *  This method returns the hashCode of the {@link #_lattice}.   
-     *  @return A hash code value for this LatticeProperty.
-     */
-    public int hashCode() {
-        return _lattice.hashCode();
     }
 
     /**

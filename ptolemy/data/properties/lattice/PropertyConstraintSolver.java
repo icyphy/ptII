@@ -1117,10 +1117,10 @@ public class PropertyConstraintSolver extends PropertySolver {
                     reader.close();
                 }
             }
-        } catch (IOException ex) {
-            throw new PropertyFailedRegressionTestException(this, ex,
+        } catch (Exception ex) {
+            throw new PropertyFailedRegressionTestException(this,
                     "Failed to open or read the constraint file \"" + filename
-                    + "\".");
+                            + "\".");
         }
     }
 
