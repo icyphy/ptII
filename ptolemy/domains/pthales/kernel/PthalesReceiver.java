@@ -123,7 +123,8 @@ public class PthalesReceiver extends SDFReceiver {
      *   to one of the ports (e.g., wrong type).
      */
     public void put(Token token) {
-        _buffer[_addressesOut[_posOut++]] = token;
+        if (_buffer != null)
+            _buffer[_addressesOut[_posOut++]] = token;
     }
 
     /** Get a token from this receiver.
@@ -131,8 +132,15 @@ public class PthalesReceiver extends SDFReceiver {
      *  @exception NoTokenException If there is no token.
      */
     public Token get() throws NoTokenException {
-        Token result =  _buffer[_addressesIn[_posIn++]];
-        return result;
+        if (_buffer != null)
+        {
+            Token result =  _buffer[_addressesIn[_posIn++]];
+            return result;
+        }
+        else {
+            throw new NoTokenException("Empty buffer in PthalesReceiver !");
+        }
+            
     }
 
     /** Put a portion of the specified token array into this receiver.
@@ -216,7 +224,8 @@ public class PthalesReceiver extends SDFReceiver {
 
         checkArray(baseSpec, patternSpec, tilingSpec, dimensions);
 
-        computeAddresses(true);
+        if (_buffer != null)
+            computeAddresses(true);
    }
 
     /** Specifies the output array that will be read by the receiver
