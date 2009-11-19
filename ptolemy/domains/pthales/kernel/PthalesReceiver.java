@@ -28,12 +28,10 @@
 
 package ptolemy.domains.pthales.kernel;
 
-import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Set;
-import java.util.Map.Entry;
 
 import ptolemy.actor.NoRoomException;
 import ptolemy.actor.NoTokenException;
@@ -41,9 +39,7 @@ import ptolemy.actor.Receiver;
 import ptolemy.data.Token;
 import ptolemy.domains.sdf.kernel.SDFReceiver;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.InternalErrorException;
 
-// FIXME: For now, support arrays up to four dimensions only.
 
 public class PthalesReceiver extends SDFReceiver {
 
@@ -70,16 +66,6 @@ public class PthalesReceiver extends SDFReceiver {
         return new LinkedList();
     }
 
-    /** Get a token from this receiver.
-     *  @return A token read from the receiver.
-     *  @exception NoTokenException If there is no token.
-     */
-    public Token get() throws NoTokenException {
-        Token result = _buffer[_readPointer[0]][_readPointer[1]][_readPointer[2]][_readPointer[3]];
-        _incrementReadPointer(1);
-        return result;
-    }
-
     /** Get an array of tokens from this receiver. The <i>numberOfTokens</i>
      *  argument specifies the number of tokens to get. In an implementation,
      *  the length of the returned array must be equal to
@@ -94,7 +80,7 @@ public class PthalesReceiver extends SDFReceiver {
         // FIXME: implement
         return null;
     }
-    
+
     /** Return true.
      *  @return True.
      */
@@ -137,8 +123,16 @@ public class PthalesReceiver extends SDFReceiver {
      *   to one of the ports (e.g., wrong type).
      */
     public void put(Token token) {
-        _buffer[_writePointer[0]][_writePointer[1]][_writePointer[2]][_writePointer[3]] = token;
-        _incrementWritePointer(1);
+        _buffer[_addressesOut[_posOut++]] = token;
+    }
+
+    /** Get a token from this receiver.
+     *  @return A token read from the receiver.
+     *  @exception NoTokenException If there is no token.
+     */
+    public Token get() throws NoTokenException {
+        Token result =  _buffer[_addressesIn[_posIn++]];
+        return result;
     }
 
     /** Put a portion of the specified token array into this receiver.
@@ -197,336 +191,256 @@ public class PthalesReceiver extends SDFReceiver {
      *   the domain.
      */
     public void reset() throws IllegalActionException {
-        for (int i = 0; i < _NUMBER_OF_DIMENSIONS; i++) {
-            _readBase[i] = 0;
-            _readPointer[i] = 0;
-            _writeBase[i] = 0;
-            _writePointer[i] = 0;
-        }
     }
 
-    /** Specify the pattern in which data is read from the receiver.
-     *  A side effect of this method is to set the capacity of the receiver.
-     *  This must be called after setWritePattern().
-     *  @param readSpec Number of tokens read per firing by dimension.
-     *  @param tilingSpec Increment of index for each firing by dimension.
-     *  @throws IllegalActionException If setting the capacity fails.
+    /** Specifies the input array that will read the buffer allocated as output.
+     * Here we only check that everything is correct, and computes addresses in output buffer.
+     * @param baseSpec : origins 
+     * @param patternSpec : fitting of the array
+     * @param tilingSpec : paving of the array
+     * @param repetitionsSpec
+     * @param dimensions : dimensions contained in the array
+     * @throws IllegalActionException
      */
-    public void setReadPattern(
-            LinkedHashMap<String,Integer[]> readSpec,
-            LinkedHashMap<String,Integer[]> tilingSpec)
+    public void setInputArray(LinkedHashMap<String, Integer[]> baseSpec,
+            LinkedHashMap<String, Integer[]> patternSpec,
+            LinkedHashMap<String, Integer[]> tilingSpec,
+            Integer[] repetitionsSpec,
+            List<String> dimensions)
             throws IllegalActionException {
-        // FIXME: Ignoring stride for now.
-        
-        // If the _dimensions have not been set, then this receiver
-        // is not connected to a sender, and there is nothing to do.
-        if (_dimensions == null) {
-            return;
-        }
-        
-        // First check for errors.
-        for(String dimension : _dimensions) {
-            Integer[] size = readSpec.get(dimension);
-            if (size != null && size[0].intValue() <= 0) {
-                throw new IllegalActionException(getContainer(),
-                        "Dimension size is required to be strictly greater than zero.");                
-            }
-        }
 
-        // Fill in the read pattern. This is an array of pairs,
-        // where each pair gives first the dimension number to read and
-        // then the number of tokens to read in that dimension.
-        int i = 0;
-        Set<Integer> dimensionsCovered = new HashSet<Integer>();
-        for (Entry<String,Integer[]> entry : readSpec.entrySet()) {
-            int dimensionNumber = _indexOf(entry.getKey(), _dimensions);
-            dimensionsCovered.add(new Integer(dimensionNumber));
-            _readPattern[i][0] = dimensionNumber;
-            _readPattern[i][1] = entry.getValue()[0].intValue();
-            // Default tiling matches the pattern size.
-            _readPattern[i][2] = _readPattern[i][1];
-            if (tilingSpec != null) {
-                String dimensionName = entry.getKey();
-                Integer[] tiling = tilingSpec.get(dimensionName);
-                if (tiling != null) {
-                    _readPattern[i][2] = tiling[0].intValue();
-                }
-            }
-            i++;
-        }
-        // The readSpec may not have covered all the dimensions,
-        // so we have to cover them here.
-        for (int dimensionNumber = 0; dimensionNumber < _NUMBER_OF_DIMENSIONS; dimensionNumber++) {
-            if (!dimensionsCovered.contains(dimensionNumber)) {
-                _readPattern[i][0] = dimensionNumber;
-                _readPattern[i][1] = 1;
-                // Default tiling matches the pattern size.
-                _readPattern[i][2] = _readPattern[i][1];
-                if (tilingSpec != null) {
-                    if (dimensionNumber < _dimensions.size()) {
-                        String dimensionName = _dimensions.get(dimensionNumber);
-                        Integer[] tiling = tilingSpec.get(dimensionName);
-                        if (tiling != null) {
-                            _readPattern[i][2] = tiling[0].intValue();
-                        }
-                    } else {
-                        // This dimension is not mentioned.
-                        _readPattern[i][2] = 1;
-                    }
-                }
-                i++;
-            }
-        }
-    }
-    
-    /** Specify the pattern in which data is written to the receiver.
-     *  This must be called before setReadPattern().
-     *  @param writeSpec Number of tokens written per firing by dimension.
-     *  @param tilingSpec Increment of index for each firing by dimension.
-     *  @param sizeSpec The size of the array buffer by dimension.
-     *  @param dimensions A list of all the dimensions communicated on this link.
-     *  @throws IllegalActionException If a non-positive dimension value is given.
+        _base = baseSpec;
+        _pattern = patternSpec;
+        _tiling = tilingSpec;
+        _repetitions = repetitionsSpec;
+
+        checkArray(baseSpec, patternSpec, tilingSpec, dimensions);
+
+        computeAddresses(true);
+   }
+
+    /** Specifies the output array that will be read by the receiver
+     * It is the output array that determines the available size and dimensions
+     * for the receivers.
+     * This function allocates a buffer that is used as a memory would be (linear)
+     * @param baseSpec : origins 
+     * @param patternSpec : fitting of the array
+     * @param tilingSpec : paving of the array
+     * @param repetitionsSpec
+     * @param dimensions : dimensions contained in the array
+     * @throws IllegalActionException
      */
-    public void setWritePattern(
-            LinkedHashMap<String,Integer[]> writeSpec,
-            LinkedHashMap<String,Integer[]> tilingSpec,
-            LinkedHashMap<String,Integer[]> sizeSpec,
-            List<String> dimensions) 
+    public void setOutputArray(LinkedHashMap<String, Integer[]> baseSpec,
+            LinkedHashMap<String, Integer[]> patternSpec,
+            LinkedHashMap<String, Integer[]> tilingSpec, 
+            Integer[] repetitionsSpec,
+            List<String> dimensions)
             throws IllegalActionException {
-        int i = 0;
-        // FIXME: Ignoring stride for now.
-        
+
         _dimensions = dimensions;
+        _base = baseSpec;
+        _pattern = patternSpec;
+        _tiling = tilingSpec;
+        _repetitions = repetitionsSpec;
+
+        checkArray(baseSpec, patternSpec, tilingSpec, dimensions);
+
+        // Output determines array size needed as input cannot read which has not been written
         
+        // Sizes
+        // FIXME: works for "compacted sizes", maybe needs some modifications
+        int i = 0;
+        for (String dimension : dimensions) {
+ 
+            _sizes.put(dimension,patternSpec.get(dimension)[0].intValue()
+                    * patternSpec.get(dimension)[1].intValue() - 1
+                    + tilingSpec.get(dimension)[0].intValue());
+
+            i++;
+        }
+
+        // Total size of the array in "memory"
+        int finalSize = getDataSize();
+        if (_buffer == null || _buffer.length < getDataSize())
+            _buffer = new Token[finalSize];
+
+        //
+        computeAddresses(false);
+    }
+
+     /** check if the array is correct or not 
+     * @param baseSpec : origins 
+     * @param patternSpec : fitting of the array
+     * @param tilingSpec : paving of the array
+     * @param dimensions : dimensions contained in the array
+     * @throws IllegalActionException
+     */
+    public void checkArray(LinkedHashMap<String, Integer[]> baseSpec,
+            LinkedHashMap<String, Integer[]> patternSpec,
+            LinkedHashMap<String, Integer[]> tilingSpec, 
+            List<String> dimensions)
+            throws IllegalActionException {
+
         // First set defaults for any unspecified dimensions.
-        for(String dimension : dimensions) {
+        for (String dimension : dimensions) {
             // Do some error checking. 
-            Integer[] size = writeSpec.get(dimension);
-            if (size != null && size[0].intValue() <= 0) {
+            Integer size = patternSpec.get(dimension)[0];
+            if (size != null && size.intValue() <= 0) {
                 throw new IllegalActionException(getContainer(),
-                        "Dimension size is required to be strictly greater than zero.");                
+                        "Dimension size is required to be strictly greater than zero.");
             }
-            if (tilingSpec != null) {
-                Integer[] tiling = tilingSpec.get(dimension);
-                if (tiling != null && tiling[0].intValue() <= 0) {
-                    throw new IllegalActionException(getContainer(),
-                            "Tiling is required to be strictly greater than zero.");                
-                }
+            Integer tiling = tilingSpec.get(dimension)[0];
+            if (tiling != null && tiling.intValue() <= 0) {
+                throw new IllegalActionException(getContainer(),
+                        "Tiling is required to be strictly greater than zero.");
             }
-            
+
             // Also set the overall buffer size spec.
-            if (sizeSpec.get(dimension) == null) {
-                throw new IllegalActionException(getContainer(),
+            if (tilingSpec.get(dimension) == null) {
+                throw new IllegalActionException(
+                        getContainer(),
                         "Size specification does not include "
-                        + dimension
-                        + ", which is included in the repetitions parameter of the sending actor.");
-            }
-            _sizes[i] = sizeSpec.get(dimension)[0].intValue();
-
-            i++;
-        }
-        // In case there are fewer dimensions than supported,
-        // fill in the remaining dimensions with buffer sizes of ones.
-        while (i < _NUMBER_OF_DIMENSIONS) {
-            _sizes[i] = 1;
-            i++;
-        }
-        // Allocate the buffer, unless we already have a suitably sized
-        // buffer.
-        if (_buffer == null 
-                || _buffer.length < _sizes[0]
-                || _buffer[0].length < _sizes[1]
-                || _buffer[0][0].length < _sizes[2]
-                || _buffer[0][0][0].length < _sizes[3]) {
-            _buffer = new Token[_sizes[0]][_sizes[1]][_sizes[2]][_sizes[3]];
-        }
-
-        // Next, fill in the write pattern. This is an array of triples,
-        // where each triple gives first the dimension number to read and
-        // then the number of tokens to read in that dimension, and finally
-        // the amount to increment in that dimension (the tiling) after each
-        // firing.
-        i = 0;
-        Set<Integer> dimensionsCovered = new HashSet<Integer>();
-        for (Entry<String,Integer[]> entry : writeSpec.entrySet()) {
-            // The index of the dimension name (entry.getKey()) in the dimensions list
-            // is the dimension number.
-            int dimensionNumber = _indexOf(entry.getKey(), dimensions);
-            dimensionsCovered.add(new Integer(dimensionNumber));
-            _writePattern[i][0] = dimensionNumber;
-            _writePattern[i][1] = entry.getValue()[0].intValue();
-            // Default tiling matches the pattern size.
-            _writePattern[i][2] = _writePattern[i][1];
-            if (tilingSpec != null) {
-                String dimensionName = entry.getKey();
-                Integer[] tiling = tilingSpec.get(dimensionName);
-                if (tiling != null) {
-                    _writePattern[i][2] = tiling[0].intValue();
-                }
-            }
-            i++;
-        }
-        // The writeSpec may not have covered all the dimensions,
-        // so we have to cover them here.
-        for (int dimensionNumber = 0; dimensionNumber < _NUMBER_OF_DIMENSIONS; dimensionNumber++) {
-            if (!dimensionsCovered.contains(dimensionNumber)) {
-                _writePattern[i][0] = dimensionNumber;
-                _writePattern[i][1] = 1;
-                // Default tiling matches the pattern size.
-                _writePattern[i][2] = _writePattern[i][1];
-                if (tilingSpec != null) {
-                    String dimensionName = dimensions.get(dimensionNumber);
-                    Integer[] tiling = tilingSpec.get(dimensionName);
-                    if (tiling != null) {
-                        _writePattern[i][2] = tiling[0].intValue();
-                    }
-                }
-                i++;
+                                + dimension
+                                + ", which is included in the repetitions parameter of the sending actor.");
             }
         }
     }
-    
+
+    /** Returns the size of 
+     * the array once computed
+     */
+    int getDataSize() {
+        int blockSize = 1;
+        for (String dimension : _dimensions) {
+           blockSize *= _sizes.get(dimension);
+        }
+        return blockSize;
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                      protected methods                    ////
-    
-    protected void _incrementReadPointer(int amount) {
-        _incrementPointer(_readPointer, amount, _readPattern, _readBase);
-    }
-    
-    protected void _incrementWritePointer(int amount) {
-        _incrementPointer(_writePointer, amount, _writePattern, _writeBase);
-    }
 
     ///////////////////////////////////////////////////////////////////
     ////                      protected variables                  ////
 
+    int _posIn = 0;
+    int _posOut = 0;
+
     /** Buffer memory. */
-    protected Token[][][][] _buffer;
-    
-    /** Base of the current block being read. */
-    protected int[] _readBase = new int[_NUMBER_OF_DIMENSIONS];
+    protected Token[] _buffer = null;
 
-    /** Read pattern, as an array of triples, where each triple gives
-     *  the dimension number first, then the number of tokens to
-     *  read in that dimension, then the tiling increment in that dimension.
-     */
-    protected int[][] _readPattern = new int[_NUMBER_OF_DIMENSIONS][3];
+    /** addresses for input or output */
+    protected int[] _addressesOut = null;
+    protected int[] _addressesIn = null;
 
-    /** Current read pointer into the buffer. */
-    protected int[] _readPointer = new int[_NUMBER_OF_DIMENSIONS];
-    
-    /** Current size of the buffer. */
-    protected int[] _sizes = new int[_NUMBER_OF_DIMENSIONS];
-    
-    /** Base of the current block being read. */
-    protected int[] _writeBase = new int[_NUMBER_OF_DIMENSIONS];
+    /** Current sizes of the buffer. */
+    protected LinkedHashMap<String, Integer> _sizes = new LinkedHashMap<String, Integer>();
 
-    /** Read pattern, as an array of triples, where each triple gives
-     *  the dimension number first, then the number of tokens to
-     *  read in that dimension, then the tiling increment in that
-     *  dimension.
-     */
-    protected int[][] _writePattern = new int[_NUMBER_OF_DIMENSIONS][3];
+    /** parameters */
+    protected LinkedHashMap<String, Integer[]> _base = null;
+    protected LinkedHashMap<String, Integer[]> _pattern = null;
+    protected LinkedHashMap<String, Integer[]> _tiling = null;
+    protected Integer[] _repetitions = null;
 
-    /** Current write pointer into the buffer. */
-    protected int[] _writePointer = new int[_NUMBER_OF_DIMENSIONS];
-    
     ///////////////////////////////////////////////////////////////////
     ////                      private methods                      ////
 
-    private void _check(int[] pointer, int d) {
-        if (pointer[d] >= _sizes[d]) {
-            throw new InternalErrorException("Incremented pointer past the size in dimension " + d);
+    void computeAddresses(boolean input) {
+        // same number of addresses than buffer size (worst case)
+        int jumpPattern[] = new int[_buffer.length];
+       
+        // Position in buffer 
+         int pos = 0;
+         
+        // Pattern size, used for each repetition
+        int sizePattern = 1;
+        // repetition size
+        int sizeRepetition = 1;
+       
+        // size for pattern dimensions 
+        Iterator patternIterator = _pattern.keySet().iterator();
+        while (patternIterator.hasNext()) {
+            String dimPattern = (String) patternIterator.next();
+              sizePattern *=_pattern.get(dimPattern)[0];
         }
-    }
-    /** Increment the given pointer into the array.
-     *  @param pointer The pointer to increment.
-     *  @param amount The amount to increment the pointer by.
-     *  @param pattern The pattern for the write.
-     *  @param base The base of the current block being read or written.
-     */
-    private void _incrementPointer(int[] pointer, int amount, int[][] pattern, int[] base) {
-        // FIXME: This is a silly programming style.
-        // Should be structured and parameterized by _NUMBER_OF_DIMENSIONS.
-        for (int i = 0; i < amount; i++) {
-            int d = pattern[0][0];
-            pointer[d]++;
-            if (pointer[d] - base[d] >= pattern[0][1]) {
-                pointer[d] = base[d];
-                d = pattern[1][0];
-                pointer[d]++;
-                if (pointer[d] - base[d] >= pattern[1][1]) {
-                    pointer[d] = base[d];
-                    d = pattern[2][0];
-                    pointer[d]++;
-                    if (pointer[d] - base[d] >= pattern[2][1]) {
-                        pointer[d] = base[d];
-                        d = pattern[3][0];
-                        pointer[d]++;
-                        if (pointer[d] - base[d] >= pattern[3][1]) {
-                            // Need to move the base.
-                            for (int j = 0; j < _NUMBER_OF_DIMENSIONS; j++) {
-                                // Find the increment for dimension j given in pattern.
-                                int increment = 1;
-                                for (int k = 0; k < _NUMBER_OF_DIMENSIONS; k++) {
-                                    if (pattern[k][0] == j) {
-                                        // pattern[k][1] here is the size in dimension
-                                        // k of the pattern. The increment we want is
-                                        // given by the tiling parameter of the port, which
-                                        // is stored as pattern[k][2].
-                                        increment = pattern[k][2];
-                                        break;
-                                    }
-                                }
-                                base[j] += increment;
-                                if (base[j] >= _sizes[j]) {
-                                    base[j] = 0;
-                                } else {
-                                    // Base increment didn't overflow, so we are done.
-                                    break;
-                                }
-                            }
-                            // Copy the base into the pointer.
-                            for (int j = 0; j < _NUMBER_OF_DIMENSIONS; j++) {
-                                pointer[j] = base[j];
-                                _check(pointer, j);
-                            }
-                        }
+        
+        // size for tiling dimensions 
+        for (Integer repetition : _repetitions) {
+            // Dimension added to pattern list
+             sizeRepetition *=repetition;
+        }
+       
+        // address indexes
+        int dims[] = new int[_pattern.size()+1];
+        // address indexes
+        int reps[] = new int[_repetitions.length+1];
+        
+        // addresses creation
+        int jumpDim;
+        int jumpRep;
+        int previousSize;
+        
+        // Address jump for each dimension
+        LinkedHashMap<String, Integer> jumpAddr = new LinkedHashMap<String, Integer>();
+        for (int nDim = 0; nDim < _dimensions.size(); nDim++){
+            previousSize = 1;
+            for (int prev = 0; prev < nDim; prev++)
+            {
+                previousSize *= _sizes.get(_dimensions.get(prev));
+            }
+            jumpAddr.put(_dimensions.get(nDim),previousSize);
+        }
+      
+        // Temporary variables for computation
+        Integer origin = 0;
+        for (int nDim = 0; nDim < _dimensions.size(); nDim++){
+             origin += _base.get(_dimensions.get(nDim))[0]*jumpAddr.get(_dimensions.get(nDim));
+        }
+        
+        for (int rep  = 0; rep < sizeRepetition; rep++){
+            jumpRep = 0;
+            for (int nRep = 0; nRep < _repetitions.length; nRep++){
+                jumpRep += _tiling.get(_dimensions.get(nRep))[0]*reps[nRep]*jumpAddr.get(_dimensions.get(nRep));
+            }
+           
+            for (int dim  = 0; dim < sizePattern; dim++){
+                jumpDim = 0;
+                for (int nDim = 0; nDim < _pattern.size(); nDim++){
+                    jumpDim += _pattern.get(_dimensions.get(nDim))[1]*dims[nDim]*jumpAddr.get(_dimensions.get(nDim));
+                }
+                jumpPattern[pos] = origin + jumpDim + jumpRep;
+                pos++;
+                  
+                // pattern indexes update
+                dims[0]++;
+                for (int nDim = 0; nDim < _pattern.size(); nDim++){
+                    if (dims[nDim] == _pattern.get(_dimensions.get(nDim))[0])
+                    {
+                        dims[nDim] = 0;
+                        dims[nDim+1]++;
                     }
                 }
             }
-        }
-        for (int j = 0; j < _NUMBER_OF_DIMENSIONS; j++) {
-            _check(pointer, j);
-        }
-    }
-    
-    /** Return the index of the entry in the specified set.
-     *  @param entry The entry.
-     *  @param set The set.
-     * @throws IllegalActionException If the entry is not in the set.
-     */
-    private int _indexOf(String entry, List<String> set) throws IllegalActionException {
-        int result = 0;
-        for (String setMember : set) {
-            if (entry.equals(setMember)) {
-                return result;
+            // repetition indexes update
+            reps[0]++;
+            for (int nRep = 0; nRep < _repetitions.length; nRep++){
+                if (reps[nRep] == _repetitions[nRep])
+                {
+                    reps[nRep] = 0;
+                    reps[nRep+1]++;
+                }
             }
-            result++;
         }
-        throw new IllegalActionException(getContainer(),
-                "The dimension "
-                + entry
-                + " is not in the set of dimensions "
-                + set);
+        
+        if (input)
+            _addressesIn = jumpPattern;
+        else
+            _addressesOut = jumpPattern;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                      private variables                    ////
-    
+
     /** The dimensions relevant to this receiver. */
     private List<String> _dimensions;
-    
-    /** Number of dimensions supported. */
-    private static int _NUMBER_OF_DIMENSIONS = 4;
 }
