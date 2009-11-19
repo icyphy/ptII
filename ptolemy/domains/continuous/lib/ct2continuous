@@ -1,0 +1,83 @@
+#!/bin/sh
+# $Id$
+# Script to convert models from the ct domain to the continuous domain
+tmpfile=/tmp/ct2continuous.$$
+tmpfile2=/tmp/ct2continuous2.$$
+scriptfile=/tmp/ct2continuous.sh.$$
+
+for file in $@
+do
+	sed 's@domains.fsm@domains.modal@g' $file |
+	sed 's@domains.ct.kernel.CTCaseDirector@ptolemy.domains.continuous.kernel.ContinuousDirector@' | 
+	sed 's@domains.ct.kernel.CTDirector@ptolemy.domains.continuous.kernel.ContinuousDirector@' | 
+	sed 's@domains.ct.kernel.CTEmbeddedDirector@ptolemy.domains.continuous.kernel.ContinuousDirector@' | 
+	sed 's@domains.ct.kernel.CTGeneralDirector@ptolemy.domains.continuous.kernel.ContinuousDirector@' | 
+	sed 's@domains.ct.kernel.CTMixedSignalDirector@ptolemy.domains.continuous.kernel.ContinuousDirector@' | 
+	sed 's@domains.ct.kernel.CTMultiSolverDirector@ptolemy.domains.continuous.kernel.ContinuousDirector@' | 
+	sed 's@domains.ct.kernel.CTTransparentDirector@ptolemy.domains.continuous.kernel.ContinuousDirector@' | 
+	sed 's@domains.ct.kernel.HSFSMDirector@ptolemy.domains.continuous.kernel.HybridModalDirector@' | 
+	sed 's@domains.ct.kernel.HSModalDirector@ptolemy.domains.continuous.kernel.HybridModalDirector@' | 
+	sed 's@CT Director@Continuous Director@' |
+	sed 's@CTEmbedded Director@Continuous Director@' |
+	sed 's@domains.ct.lib.ContinuousClock@ptolemy.domains.continuous.lib.ContinuousClock@' |
+	sed 's@domains.ct.lib.ContinuousSinewavek@ptolemy.domains.continuous.lib.ContinuousSinewave@' |
+	sed 's@domains.ct.lib.CTPeriodicSolver@ptolemy.domains.continuous.lib.PeriodicSampler@' |
+	sed 's@domains.ct.lib.DiscreteClock@ptolemy.domains.continuous.lib.DiscreteClock@' |
+	sed 's@domains.ct.lib.EventSource@ptolemy.domains.continuous.lib.EventSource@' |
+	sed 's@domains.continuous.lib.Integratork@ptolemy.domains.continuous.lib.Integrator@' |
+	sed 's@domains.ct.lib.Integrator@ptolemy.domains.continuous.lib.Integrator@' |
+	sed 's@domains.ct.lib.LevelCrossingDetector@ptolemy.domains.continuous.lib.LevelCrossingDetector@' |
+	sed 's@domains.ct.lib.ZeroCrossingDetector@ptolemy.domains.continuous.lib.LevelCrossingDetector@' |
+	sed 's@domains.ct.lib.ZeroOrderHold@ptolemy.domains.continuous.lib.ZeroOrderHold@' |
+	cat > $tmpfile
+	
+	# Now, handle the Integrator Port Name change
+	echo "cat $tmpfile | " > $scriptfile 
+	cat $tmpfile |
+	awk '$0 ~ /class="ptolemy.domains.ct.lib.Integrator"/ {
+                split($0, f, "\"")
+                print "sed \"s@" f[2]".input@" f[2] ".derivative@\" |"
+                print "sed \"s@" f[2]".output@" f[2] ".state@\" |"
+            }' >> $scriptfile
+	echo "cat > $tmpfile2" >> $scriptfile
+
+	sh $scriptfile
+
+	# Now, remove the ODESolvers.  We look for a match for ODESolver
+	# and then toss input until we find </property> that has the same
+	# indent as the ODESolver line
+	cat $tmpfile2 |
+	awk '{
+                 if ($0 ~ /<property name="ODESolver"/) {
+                     noPrint = 1
+                     indentLength = index($0, "<property name=\"ODESolver\"")
+                 } 
+                 if (noPrint == 0) {
+                     print $0
+                 } else {
+                     if ($1 == "</property>" && index($0, "</property>") == indentLength) {
+                         noPrint = 0
+                     }
+                 }
+            }' > $tmpfile
+
+	# Now, remove the IntegratorIcons. 
+	cat $tmpfile |
+	awk '{
+                 if ($0 ~ /<property name="IntegratorIcon"/) {
+                     noPrint = 1
+                     indentLength = index($0, "<property name=\"IntegratorIcon\"")
+                 } 
+                 if (noPrint == 0) {
+                     print $0
+                 } else {
+                     if ($1 == "</property>" && index($0, "</property>") == indentLength) {
+                         noPrint = 0
+                     }
+                 }
+            }' > $tmpfile2
+
+	diff $tmpfile2 $file
+	mv $tmpfile2 $file
+done
+rm -f $tmpfile $tmpfile2 $scriptfile
