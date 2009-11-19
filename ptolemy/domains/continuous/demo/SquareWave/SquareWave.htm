@@ -1,0 +1,75 @@
+<!-- $Id: SquareWave.htm 54691 2009-06-26 16:31:53Z cxh $
+  @author: 
+-->
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<link href="../../../../../doc/default.css" rel="stylesheet" type="text/css">
+<title>CT domain demo - Square Wave Response</title>
+</HEAD>
+<BODY>
+
+<H1>CT domain demo - Square Wave Response </H1>
+
+
+<P>
+ <!-- All of the controls of the applet should be visible when the
+applet is displayed on a XGA screen-->
+<CENTER>
+<!-- The HTML below is for the Java Plugin.  The first
+     section is for IE, the second is for Netscape 4, the third for Mozilla 1.0
+     For information about applets and Ptolemy, see
+	http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/ptII/doc/coding/applets.htm
+     For information about java versions and applet tags, see:
+	http://java.sun.com/products/plugin/versions.html
+     We are currently using 1.4.2 because:
+        There is a bug under JDK1.4.1 XP with Radeon display cards
+        that causes XP to hang when exiting.  For details, see
+        http://developer.java.sun.com/developer/bugParade/bugs/4713003.html
+ -->
+<!-- PT JNLP APPLET CONVERTER -->
+<!-- We use both the older applet style and the JDK1.6.0_10 and later
+     JNLP Applets.  In this way, we can support pre-JDK1.6.0_10 installs.
+     See https://jdk6.dev.java.net/plugin2/jnlp/ -->
+<APPLET 
+   code = "ptolemy.vergil.VergilApplet"
+   codebase = "../../../../.."
+   archive = "ptolemy/domains/ct/demo/SquareWave/SquareWave.jar,ptolemy/data/data.jar,ptolemy/ptsupport.jar,ptolemy/domains/ct/ct.jar,lib/diva.jar,ptolemy/domains/modal/modal.jar,ptolemy/domains/fsm/fsm.jar,ptolemy/domains/ct/ct.jar,ptolemy/vergil/vergilApplet.jar"
+   width = "100"
+   height = "100"
+   >
+  <PARAM name="jnlp_href" value="ptolemy/domains/ct/demo/SquareWave/SquareWave.jnlp">
+  <PARAM NAME = "commandLineArguments" VALUE = "-ptinyViewer ptolemy/domains/ct/demo/SquareWave/SquareWave.xml">
+  <PARAM NAME = "NAME" VALUE = "SquareWave" >
+  <PARAM NAME = "background" VALUE = "#ffffff" >
+  <PARAM NAME = "controls" VALUE = "buttons" >
+  <PARAM NAME = "orientation" VALUE = "vertical" > \
+  <PARAM NAME = "modelURL" VALUE = "SquareWave.xml" > \
+  <a href="SquareWave.xml">MoML specification for this model.</a> \
+</APPLET>
+<!-- /PT JNLP APPLET CONVERTER -->
+</CENTER>
+<H2>Introduction</H2>
+This applet demonstrates the zero-state square wave response of causal
+linear continuous-time system (or, transfer functions).
+<p>
+The system is given by the parameters, which defaults to
+<pre>
+  numerator:[500.0]
+denominator:[1.0, 10.0, 1000.0]
+</pre>
+The numerator and the denominator parameters specifies the coefficients
+in the numerator and denominator polynomials in the descending powers of s.
+i.e. a's and b's in:
+<pre>
+    y(s)    b(1)*s^(m-1) + b(2)*s^(m-2) + ... + b(m)
+   ----- = -------------------------------------------
+    u(s)    a(1)*s^(n-1) + a(2)*s^(n-2) + ... + a(n)
+</pre>
+
+<p>
+You may choose different coefficients.
+
+</p>
+</BODY>
+</HTML>

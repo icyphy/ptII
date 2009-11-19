@@ -34,9 +34,13 @@ ME =		ptolemy/domains/continuous/demo
 # Root of the Java directory
 ROOT =		../../../..
 
-DIRS =		CarTracking ContinuousInsideDE \
+DIRS =		BouncingBall Brownian CTInsideDE CarTracking \
+		CartPendulum ComparedClocks ContinuousClock ContinuousInsideDE \
+		Corba Helicopter HierarchicalExecution HybridPlant Hysteresis \
 		LevelCrossingDetector LevelCrossingDetectorDetectsGlitches \
-		Lorenz NewtonsCradle Sinusoid Switch
+		Lorenz NewtonsCradle Pendulum3D SampledClocks Satellite \
+		SigmaDelta SinuBouncingBall Sinusoid Spontaneous SquareWave \
+		Starmac StickyMasses Switch Thermostat Transmission V2V
 
 CLASSPATH =	$(ROOT)
 
@@ -50,14 +54,37 @@ PTCLASSJAR =
 
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
+	BouncingBall/BouncingBall.jar \
+	Brownian/Brownian.jar \
+	CTInsideDE/CTInsideDE.jar \
 	CarTracking/CarTracking.jar \
+	CartPendulum/CartPendulum.jar \
+	ComparedClocks/ComparedClocks.jar \
+	ContinuousClock/ContinuousClock.jar \
 	ContinuousInsideDE/ContinuousInsideDE.jar \
-	Lorenz/Lorenz.jar \
+	Corba/Corba.jar \
+	Helicopter/Helicopter.jar \
+	HierarchicalExecution/HierarchicalExecution.jar \
+	HybridPlant/HybridPlant.jar \
+	Hysteresis/Hysteresis.jar \
 	LevelCrossingDetector/LevelCrossingDetector.jar \
 	LevelCrossingDetectorDetectsGlitches/LevelCrossingDetectorDetectsGlitches.jar \
+	Lorenz/Lorenz.jar \
 	NewtonsCradle/NewtonsCradle.jar \
+	Pendulum3D/Pendulum3D.jar \
+	SampledClocks/SampledClocks.jar \
+	Satellite/Satellite.jar \
+	SigmaDelta/SigmaDelta.jar \
+	SinuBouncingBall/SinuBouncingBall.jar \
 	Sinusoid/Sinusoid.jar \
-	Switch/Switch.jar 
+	Spontaneous/Spontaneous.jar \
+	SquareWave/SquareWave.jar \
+	Starmac/Starmac.jar \
+	StickyMasses/StickyMasses.jar \
+	Switch/Switch.jar \
+	Thermostat/Thermostat.jar \
+	Transmission/Transmission.jar \
+	V2V/V2V.jar
 
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
@@ -79,6 +106,12 @@ all: jclass
 install: jclass jars
 
 demo: subdemo
+
+echoCTDemos:
+	@echo "Brownian/*.xml CTInsideDE/*.xml CartPendulum/*.xml ComparedClocks/*.xml ContinuousClock/*.xml Corba/*.xml Helicopter/*.xml HierarchicalExecution/*.xml HybridPlant/*.xml Hysteresis/*.xml Pendulum3D/*.xml SampledClocks/*.xml Satellite/*.xml SigmaDelta/*.xml SinuBouncingBall/*.xml Spontaneous/*.xml SquareWave/*.xml Starmac/*.xml StickyMasses/*.xml Thermostat/*.xml Transmission/*.xml V2V/*.xml"
+
+echoCT:
+	@echo "Brownian/*.jnlp CTInsideDE/*.jnlp CartPendulum/*.jnlp ComparedClocks/*.jnlp ContinuousClock/*.jnlp Corba/*.jnlp Helicopter/*.jnlp HierarchicalExecution/*.jnlp HybridPlant/*.jnlp Hysteresis/*.jnlp Pendulum3D/*.jnlp SampledClocks/*.jnlp Satellite/*.jnlp SigmaDelta/*.jnlp SinuBouncingBall/*.jnlp Spontaneous/*.jnlp SquareWave/*.jnlp Starmac/*.jnlp StickyMasses/*.jnlp Thermostat/*.jnlp Transmission/*.jnlp V2V/*.jnlp"
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

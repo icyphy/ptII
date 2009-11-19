@@ -1,0 +1,127 @@
+<!-- $Id: Helicopter.htm 54444 2009-06-16 22:28:43Z cxh $
+  @author: 
+-->
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<link href="../../../../../doc/default.css" rel="stylesheet" type="text/css">
+<title>Hybrid system demo- 2D-Helicopter Control System</title>
+</HEAD>
+<BODY>
+
+<H1>2D-Helicopter Control System: A hierarchical hybrid control system</H1>
+
+
+<P>
+ <!-- All of the controls of the applet should be visible when the
+applet is displayed on a XGA screen-->
+<CENTER>
+<!-- The HTML below is for the Java Plugin.  The first
+     section is for IE, the second is for Netscape 4, the third for Mozilla 1.0
+     For information about applets and Ptolemy, see
+	http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/ptII/doc/coding/applets.htm
+     For information about java versions and applet tags, see:
+	http://java.sun.com/products/plugin/versions.html
+     We are currently using 1.4.2 because:
+        There is a bug under JDK1.4.1 XP with Radeon display cards
+        that causes XP to hang when exiting.  For details, see
+        http://developer.java.sun.com/developer/bugParade/bugs/4713003.html
+ -->
+<!-- HTML CONVERTER -->
+<SCRIPT LANGUAGE="JavaScript"><!--
+    var _info = navigator.userAgent; 
+    var _ns = false; 
+    var _ns6 = false;
+    var _ie = (_info.indexOf("MSIE") > 0 && _info.indexOf("Win") > 0 && _info.indexOf("Windows 3.1") < 0);
+//--></SCRIPT>
+    <COMMENT>
+        <SCRIPT LANGUAGE="JavaScript1.1"><!--
+        var _ns6 = (_info.indexOf("Mozilla/5") >= 0);
+        var _ns = (navigator.appName.indexOf("Netscape") >= 0 && ((_info.indexOf("Win") > 0     && _info.indexOf("Win16") < 0 && java.lang.System.getProperty("os.version").indexOf("3.5") < 0) || (_info.indexOf("Sun") > 0) || (_info.indexOf("Linux") > 0) || (_info.indexOf("AIX") > 0) || (_info.indexOf("OS/2") > 0) || (_info.indexOf("IRIX") > 0 )));
+//--></SCRIPT>
+    </COMMENT>
+
+<SCRIPT LANGUAGE="JavaScript"><!--
+    if (_ie == true) document.writeln('\
+        <OBJECT \
+            classid="clsid:8AD9C840-044E-11D1-B3E9-00805F499D93" \
+            width = "800" \
+            height = "925"  \
+            codebase="http://java.sun.com/products/plugin/autodl/jinstall-1_4_2-windows-i586.cab#Version=1,4,2"> \
+            <PARAM NAME = "code" \
+                   VALUE = "ptolemy.actor.gui.MoMLApplet" > \
+	    <PARAM NAME = "codebase"   VALUE = "../../../../.." > \
+	    <PARAM NAME = "archive" \
+                   VALUE = "ptolemy/domains/ct/ct.jar,ptolemy/ptsupport.jar,lib/diva.jar,ptolemy/domains/fsm/fsm.jar,ptolemy/domains/ct/demo/demo.jar,ptolemy/vergil/vergilApplet.jar" > \
+            <PARAM NAME = "type" \
+                   VALUE = "application/x-java-applet;version=1.4.2" > \
+            <PARAM NAME = "progressbar" VALUE = "true"> \
+            <PARAM NAME = "scriptable" VALUE = "false" > \
+            <PARAM NAME = "NAME" VALUE = "Helicopter" > \
+	    <PARAM NAME = "background" VALUE = "#ffffff" > \
+	    <PARAM NAME = "controls" VALUE = "buttons, directorParameters, topParameters" > \
+	    <PARAM NAME = "orientation" VALUE = "vertical" > \
+	    <PARAM NAME = "modelURL" VALUE = "Helicopter.xml" > \
+            <a href="Helicopter.xml">MoML specification for this model.</a> \
+        </OBJECT> \
+        ');
+    else if (_ns == true || _ns6 == true)
+         document.writeln('\
+        <COMMENT> \
+          <EMBED \
+            type = "application/x-java-applet;version=1.4.2" \
+            code = "ptolemy.actor.gui.MoMLApplet" \
+            codebase = "../../../../.." \
+            archive = "ptolemy/domains/ct/ct.jar,ptolemy/ptsupport.jar,lib/diva.jar,ptolemy/domains/fsm/fsm.jar,ptolemy/domains/ct/demo/demo.jar,ptolemy/vergil/vergilApplet.jar" \
+            width = "800" \
+            height = "925" \
+            NAME = "Helicopter" background = "#ffffff" controls = "buttons, directorParameters, topParameters" orientation = "vertical" modelURL = "Helicopter.xml"  \
+            progressbar = "true" \
+            scriptable = "false" \
+            pluginspage = "http://java.sun.com/j2se/1.4.2/download.html"> \
+              <NOEMBED> \
+              <a href="Helicopter.xml">MoML specification for this model.</a> \
+              </NOEMBED> \
+           </EMBED> \
+        <COMMENT> \
+        ');
+    else document.writeln('\
+        <APPLET \
+            code = "ptolemy.actor.gui.MoMLApplet" \
+            codebase = "../../../../.." \
+            archive = "ptolemy/domains/ct/ct.jar,ptolemy/ptsupport.jar,lib/diva.jar,ptolemy/domains/fsm/fsm.jar,ptolemy/domains/ct/demo/demo.jar,ptolemy/vergil/vergilApplet.jar" \
+            width = "800" \
+            height = "925" \
+            > \
+            <PARAM NAME = "NAME" VALUE = "Helicopter" > \
+	    <PARAM NAME = "background" VALUE = "#ffffff" > \
+	    <PARAM NAME = "controls" VALUE = "buttons, directorParameters, topParameters" > \
+	    <PARAM NAME = "orientation" VALUE = "vertical" > \
+	    <PARAM NAME = "modelURL" VALUE = "Helicopter.xml" > \
+            <a href="Helicopter.xml">MoML specification for this model.</a> \
+        </APPLET> \
+        ');
+//--></SCRIPT>
+<!-- /HTML CONVERTER -->
+</CENTER>
+This applet models a high-attitude take off motion of a helicopter with a modal controller. Only the motion along longitudinal and vertical axes is considered (so we call it a 2-D helicopter).
+<P>
+The x, z-axes of the spatial frame are pointing north and down. The body x-axis is defined from the center of gravity to the nose of the helicopter, and body z-axis is pointing down from the center of gravity (CG). The motion of the helicopter is controlled by the main rotor thrust, and the longitudinal tilt path angle.
+<P>
+Flight modes represent different modes of operation of the helicopter and they correspond to controlling different variables in the dynamic. We define the following flight modes: Hover, Cruise, Acc/ALH, Dec/ALH, Climb, and Descend, where ALH stands for "ALtitude Hold."
+<P>
+The control uses approximate feedback linearization and pole placement.
+The top level system looks like.
+<CENTER><img src="toplevel.gif"></CENTER>
+<P>
+The climb action consists of a sequence of flight modes. Inside the controller
+block is the FSM domain, where each FSM state represents a flight mode. Each
+flight mode is further refined into a continuous time controller. The model
+inside the controller is shown below.
+<CENTER><img src="modes.gif"></CENTER>
+<p>
+This applet is implemented in MoML, as shown in a 
+The <a href="HelicopterVergil.htm">Vergil block diagram</a>.
+</p>
+</BODY>
+</HTML>
