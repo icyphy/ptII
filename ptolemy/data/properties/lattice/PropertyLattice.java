@@ -64,6 +64,7 @@ public class PropertyLattice extends DirectedAcyclicGraph {
      * @return The constructed graph node in the lattice.
      */
     public Node addNodeWeight(Object weight) {
+        // The weight argument must be Object or else we get test failures
         _propertyMap.put(weight.toString().toUpperCase(),
                 (LatticeProperty) weight);
         return super.addNodeWeight(weight);
@@ -173,7 +174,7 @@ public class PropertyLattice extends DirectedAcyclicGraph {
 
     /**
      * Return the name of this lattice.
-     * @return The name of this lattice.
+     * @return The name of this lattice, which is the name of the package.
      */
     public String getName() {
         return toString();
@@ -398,11 +399,6 @@ public class PropertyLattice extends DirectedAcyclicGraph {
                 (Object) property2);
     }
 
-    public String toString() {
-        String name = getClass().getPackage().getName();
-        return name.substring(name.lastIndexOf('.') + 1);
-    }
-
     /**
      * Throw an exception. This operation is not supported since the property
      * lattice is infinite, this operation is not supported.
@@ -473,6 +469,14 @@ public class PropertyLattice extends DirectedAcyclicGraph {
      */
     public static void storeLattice(PropertyLattice lattice, String name) {
         _lattices.put(name, lattice);
+    }
+
+    /** Return the name of the package that contains this class.
+     *  @return the name of the package that contains this class.
+     */
+    public String toString() {
+         String name = getClass().getPackage().getName();
+         return name.substring(name.lastIndexOf('.') + 1);
     }
 
     ///////////////////////////////////////////////////////////////////
