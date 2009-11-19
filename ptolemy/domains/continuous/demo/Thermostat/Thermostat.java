@@ -25,7 +25,7 @@
  COPYRIGHTENDKEY
 
  */
-package ptolemy.domains.ct.demo.Thermostat;
+package ptolemy.domains.continuous.demo.Thermostat;
 
 import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedCompositeActor;

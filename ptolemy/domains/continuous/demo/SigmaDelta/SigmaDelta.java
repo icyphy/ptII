@@ -25,7 +25,7 @@
  COPYRIGHTENDKEY
 
  */
-package ptolemy.domains.ct.demo.SigmaDelta;
+package ptolemy.domains.continuous.demo.SigmaDelta;
 
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.TypedIOPort;
