@@ -12,7 +12,7 @@
     </property>
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{287.0, 262.5}">
     </property>
-    <property name="Continuous Director" class="ptolemy.ptolemy.domains.continuous.kernel.ContinuousDirector">
+    <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="20">
         </property>
         <property name="maxStepSize" class="ptolemy.data.expr.Parameter" value="0.1">
@@ -26,7 +26,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[440.0, 87.5]">
         </property>
     </property>
-    <property name="_documentation" class="ptolemy.data.expr.FileParameter" value="ptolemy/domains/ct/demo/SinuBouncingBall/sinu-ball.pdf">
+    <property name="_documentation" class="ptolemy.data.expr.FileParameter" value="ptolemy/domains/continuous/demo/SinuBouncingBall/sinu-ball.pdf">
     </property>
     <property name="lambda" class="ptolemy.data.expr.Parameter" value="0.9">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -340,7 +340,7 @@
             </property>
             <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{341.4587977706999, 337.4333325039806}">
             </property>
-            <property name="Continuous Director" class="ptolemy.ptolemy.domains.continuous.kernel.ContinuousDirector">
+            <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[360.0, 500.0]">
                 </property>
             </property>
@@ -513,19 +513,19 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[210.0, 190.0]">
                 </property>
             </port>
-            <entity name="x" class="ptolemy.ptolemy.ptolemy.domains.continuous.lib.Integrator">
+            <entity name="x" class="ptolemy.domains.continuous.lib.Integrator">
                 <property name="initialState" class="ptolemy.data.expr.Parameter" value="initialx">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[195.0, 360.0]">
                 </property>
             </entity>
-            <entity name="z_dot" class="ptolemy.ptolemy.ptolemy.domains.continuous.lib.Integrator">
+            <entity name="z_dot" class="ptolemy.domains.continuous.lib.Integrator">
                 <property name="initialState" class="ptolemy.data.expr.Parameter" value="initialz_dot">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[130.0, 250.0]">
                 </property>
             </entity>
-            <entity name="z" class="ptolemy.ptolemy.ptolemy.domains.continuous.lib.Integrator">
+            <entity name="z" class="ptolemy.domains.continuous.lib.Integrator">
                 <property name="initialState" class="ptolemy.data.expr.Parameter" value="initialz">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, 250.0]">
@@ -601,7 +601,7 @@
                     </property>
                 </property>
             </entity>
-            <entity name="x2" class="ptolemy.ptolemy.ptolemy.domains.continuous.lib.Integrator">
+            <entity name="x2" class="ptolemy.domains.continuous.lib.Integrator">
                 <property name="initialState" class="ptolemy.data.expr.Parameter" value="initialy">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[195.0, 430.0]">
@@ -620,7 +620,7 @@
                     </property>
                 </property>
             </entity>
-            <entity name="y_dot" class="ptolemy.ptolemy.ptolemy.domains.continuous.lib.Integrator">
+            <entity name="y_dot" class="ptolemy.domains.continuous.lib.Integrator">
                 <property name="initialState" class="ptolemy.data.expr.Parameter" value="initialy_dot">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[115.0, 430.0]">
@@ -756,7 +756,7 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, 170.0]">
                 </property>
             </property>
-            <property name="Continuous Director" class="ptolemy.ptolemy.domains.continuous.kernel.ContinuousDirector">
+            <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[770.0, 590.0]">
                 </property>
             </property>
@@ -923,25 +923,25 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 305.0]">
                 </property>
             </port>
-            <entity name="y_dot" class="ptolemy.ptolemy.ptolemy.domains.continuous.lib.Integrator">
+            <entity name="y_dot" class="ptolemy.domains.continuous.lib.Integrator">
                 <property name="initialState" class="ptolemy.data.expr.Parameter" value="initialy_dot">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[140.0, 390.0]">
                 </property>
             </entity>
-            <entity name="y" class="ptolemy.ptolemy.ptolemy.domains.continuous.lib.Integrator">
+            <entity name="y" class="ptolemy.domains.continuous.lib.Integrator">
                 <property name="initialState" class="ptolemy.data.expr.Parameter" value="initialy">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[340.0, 455.0]">
                 </property>
             </entity>
-            <entity name="z_dot" class="ptolemy.ptolemy.ptolemy.domains.continuous.lib.Integrator">
+            <entity name="z_dot" class="ptolemy.domains.continuous.lib.Integrator">
                 <property name="initialState" class="ptolemy.data.expr.Parameter" value="initialz_dot">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[145.0, 250.0]">
                 </property>
             </entity>
-            <entity name="z2" class="ptolemy.ptolemy.ptolemy.domains.continuous.lib.Integrator">
+            <entity name="z2" class="ptolemy.domains.continuous.lib.Integrator">
                 <property name="initialState" class="ptolemy.data.expr.Parameter" value="initialz">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[265.0, 250.0]">
@@ -1036,7 +1036,7 @@
                     </property>
                 </port>
             </entity>
-            <entity name="x" class="ptolemy.ptolemy.ptolemy.domains.continuous.lib.Integrator">
+            <entity name="x" class="ptolemy.domains.continuous.lib.Integrator">
                 <property name="initialState" class="ptolemy.data.expr.Parameter" value="initialx">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[295.0, 570.0]">

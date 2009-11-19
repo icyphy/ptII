@@ -8,27 +8,28 @@ scriptfile=/tmp/ct2continuous.sh.$$
 for file in $@
 do
 	sed 's@domains.fsm@domains.modal@g' $file |
-	sed 's@domains.ct.kernel.CTCaseDirector@ptolemy.domains.continuous.kernel.ContinuousDirector@' | 
-	sed 's@domains.ct.kernel.CTDirector@ptolemy.domains.continuous.kernel.ContinuousDirector@' | 
-	sed 's@domains.ct.kernel.CTEmbeddedDirector@ptolemy.domains.continuous.kernel.ContinuousDirector@' | 
-	sed 's@domains.ct.kernel.CTGeneralDirector@ptolemy.domains.continuous.kernel.ContinuousDirector@' | 
-	sed 's@domains.ct.kernel.CTMixedSignalDirector@ptolemy.domains.continuous.kernel.ContinuousDirector@' | 
-	sed 's@domains.ct.kernel.CTMultiSolverDirector@ptolemy.domains.continuous.kernel.ContinuousDirector@' | 
-	sed 's@domains.ct.kernel.CTTransparentDirector@ptolemy.domains.continuous.kernel.ContinuousDirector@' | 
-	sed 's@domains.ct.kernel.HSFSMDirector@ptolemy.domains.continuous.kernel.HybridModalDirector@' | 
-	sed 's@domains.ct.kernel.HSModalDirector@ptolemy.domains.continuous.kernel.HybridModalDirector@' | 
+	sed 's@domains.ct.kernel.CTCaseDirector@domains.continuous.kernel.ContinuousDirector@' | 
+	sed 's@domains.ct.kernel.CTDirector@domains.continuous.kernel.ContinuousDirector@' | 
+	sed 's@domains.ct.kernel.CTEmbeddedDirector@domains.continuous.kernel.ContinuousDirector@' | 
+	sed 's@domains.ct.kernel.CTGeneralDirector@domains.continuous.kernel.ContinuousDirector@' | 
+	sed 's@domains.ct.kernel.CTMixedSignalDirector@domains.continuous.kernel.ContinuousDirector@' | 
+	sed 's@domains.ct.kernel.CTMultiSolverDirector@domains.continuous.kernel.ContinuousDirector@' | 
+	sed 's@domains.ct.kernel.CTTransparentDirector@domains.continuous.kernel.ContinuousDirector@' | 
+	sed 's@domains.ct.kernel.HSFSMDirector@domains.continuous.kernel.HybridModalDirector@' | 
+	sed 's@domains.ct.kernel.HSModalDirector@domains.continuous.kernel.HybridModalDirector@' | 
 	sed 's@CT Director@Continuous Director@' |
+	sed 's@Continuous Time (CT) Solver@Continuous Director@' |
 	sed 's@CTEmbedded Director@Continuous Director@' |
-	sed 's@domains.ct.lib.ContinuousClock@ptolemy.domains.continuous.lib.ContinuousClock@' |
-	sed 's@domains.ct.lib.ContinuousSinewavek@ptolemy.domains.continuous.lib.ContinuousSinewave@' |
-	sed 's@domains.ct.lib.CTPeriodicSolver@ptolemy.domains.continuous.lib.PeriodicSampler@' |
-	sed 's@domains.ct.lib.DiscreteClock@ptolemy.domains.continuous.lib.DiscreteClock@' |
-	sed 's@domains.ct.lib.EventSource@ptolemy.domains.continuous.lib.EventSource@' |
-	sed 's@domains.continuous.lib.Integratork@ptolemy.domains.continuous.lib.Integrator@' |
-	sed 's@domains.ct.lib.Integrator@ptolemy.domains.continuous.lib.Integrator@' |
-	sed 's@domains.ct.lib.LevelCrossingDetector@ptolemy.domains.continuous.lib.LevelCrossingDetector@' |
-	sed 's@domains.ct.lib.ZeroCrossingDetector@ptolemy.domains.continuous.lib.LevelCrossingDetector@' |
-	sed 's@domains.ct.lib.ZeroOrderHold@ptolemy.domains.continuous.lib.ZeroOrderHold@' |
+	sed 's@Refinement Solver@Continuous Director@' |
+	sed 's@domains.ct.lib.ContinuousClock@domains.continuous.lib.ContinuousClock@' |
+	sed 's@domains.ct.lib.ContinuousSinewave@domains.continuous.lib.ContinuousSinewave@' |
+	sed 's@domains.ct.lib.CTPeriodicSampler@domains.continuous.lib.PeriodicSampler@' |
+	sed 's@domains.ct.lib.DiscreteClock@domains.continuous.lib.DiscreteClock@' |
+	sed 's@domains.ct.lib.EventSource@domains.continuous.lib.EventSource@' |
+	sed 's@domains.ct.lib.Integrator@domains.continuous.lib.Integrator@' |
+	sed 's@domains.ct.lib.LevelCrossingDetector@domains.continuous.lib.LevelCrossingDetector@' |
+	sed 's@domains.ct.lib.ZeroCrossingDetector@domains.continuous.lib.LevelCrossingDetector@' |
+	sed 's@domains.ct.lib.ZeroOrderHold@domains.continuous.lib.ZeroOrderHold@' |
 	cat > $tmpfile
 	
 	# Now, handle the Integrator Port Name change
@@ -77,7 +78,30 @@ do
                  }
             }' > $tmpfile2
 
-	diff $tmpfile2 $file
-	mv $tmpfile2 $file
+	# Now, remove the input and output ports for Integrator
+	cat $tmpfile2 |
+	awk '{
+                 if ($0 ~ /class="ptolemy.domains.continuous.lib.Integrator">/) {
+                     inIntegrator = 1
+                     indentLength = index($0, "<entity name=")
+                 } 
+                 if (inIntegrator && ($0 ~ /<port name="input"/ || $0 ~ /<port name="output"/)) {
+                     noPrint = 1
+                     portIndentLength = index($0, "<port name=")
+                 } 
+                 if (noPrint == 0) {
+                     print $0
+                 } else {
+                     if ($1 == "</port>" && index($0, "</port") == portIndentLength) {
+                         noPrint = 0
+                     }
+                 }
+                 if ($1 == "</entity>" && index($0, "</entity") == indentLength) {
+                     inIntegrator = 0
+                 }
+            }' > $tmpfile
+
+	diff $tmpfile $file
+	mv $tmpfile $file
 done
 rm -f $tmpfile $tmpfile2 $scriptfile

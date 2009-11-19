@@ -8,7 +8,7 @@
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[108, 13]">
     </property>
-    <property name="Continuous Director" class="ptolemy.ptolemy.domains.continuous.kernel.ContinuousDirector">
+    <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
         <property name="timeResolution" class="ptolemy.actor.parameters.SharedParameter" value="1.0E-10">
         </property>
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -106,21 +106,11 @@ of following the LeadingPlatoon.</text></svg></configure>
             <property name="_location" class="ptolemy.kernel.util.Location" value="60.0, 130.0">
             </property>
         </port>
-        <entity name="Integrator" class="ptolemy.ptolemy.ptolemy.domains.continuous.lib.Integrator">
+        <entity name="Integrator" class="ptolemy.domains.continuous.lib.Integrator">
             <property name="initialState" class="ptolemy.data.expr.Parameter" value="initialDistance">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[315.0, 180.0]">
             </property>
-            <port name="input" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
-                </property>
-            </port>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-                <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
-                </property>
-            </port>
         </entity>
         <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
             <property name="_location" class="ptolemy.kernel.util.Location" value="[215.0, 180.0]">
@@ -582,21 +572,11 @@ of following the LeadingPlatoon.</text></svg></configure>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[435.0, 175.0]">
                 </property>
             </port>
-            <entity name="Integrator" class="ptolemy.ptolemy.ptolemy.domains.continuous.lib.Integrator">
+            <entity name="Integrator" class="ptolemy.domains.continuous.lib.Integrator">
                 <property name="initialState" class="ptolemy.data.expr.Parameter" value="vInit">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[210.0, 175.0]">
                 </property>
-                <port name="input" class="ptolemy.actor.TypedIOPort">
-                    <property name="input"/>
-                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
-                    </property>
-                </port>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
-                    <property name="output"/>
-                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
-                    </property>
-                </port>
             </entity>
             <entity name="Limiter" class="ptolemy.actor.lib.Limiter">
                 <property name="bottom" class="ptolemy.data.expr.Parameter" value="vMin">
@@ -737,7 +717,7 @@ of following the LeadingPlatoon.</text></svg></configure>
                 </property>
                 <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[104, 127]">
                 </property>
-                <property name="Continuous Director" class="ptolemy.ptolemy.domains.continuous.kernel.ContinuousDirector">
+                <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
                     <property name="timeResolution" class="ptolemy.actor.parameters.SharedParameter" value="1.0E-10">
                     </property>
                     <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -838,21 +818,11 @@ of following the LeadingPlatoon.</text></svg></configure>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="185.0, 350.0">
                     </property>
                 </entity>
-                <entity name="1:Integrator" class="ptolemy.ptolemy.ptolemy.domains.continuous.lib.Integrator">
+                <entity name="1:Integrator" class="ptolemy.domains.continuous.lib.Integrator">
                     <property name="initialState" class="ptolemy.data.expr.Parameter" value="0.0">
                     </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="430.0, 290.0">
                     </property>
-                    <port name="input" class="ptolemy.actor.TypedIOPort">
-                        <property name="input"/>
-                        <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
-                        </property>
-                    </port>
-                    <port name="output" class="ptolemy.actor.TypedIOPort">
-                        <property name="output"/>
-                        <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
-                        </property>
-                    </port>
                 </entity>
                 <entity name="Scale4" class="ptolemy.actor.lib.Scale">
                     <property name="factor" class="ptolemy.data.expr.Parameter" value="- k32">
@@ -917,7 +887,7 @@ of following the LeadingPlatoon.</text></svg></configure>
                 </property>
                 <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[238, 198]">
                 </property>
-                <property name="Continuous Director" class="ptolemy.ptolemy.domains.continuous.kernel.ContinuousDirector">
+                <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
                     <property name="timeResolution" class="ptolemy.actor.parameters.SharedParameter" value="1.0E-10">
                     </property>
                     <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -959,21 +929,11 @@ of following the LeadingPlatoon.</text></svg></configure>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="540.0, 240.0">
                     </property>
                 </port>
-                <entity name="1:1:Integrator" class="ptolemy.ptolemy.ptolemy.domains.continuous.lib.Integrator">
+                <entity name="1:1:Integrator" class="ptolemy.domains.continuous.lib.Integrator">
                     <property name="initialState" class="ptolemy.data.expr.Parameter" value="0.0">
                     </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="430.0, 290.0">
                     </property>
-                    <port name="input" class="ptolemy.actor.TypedIOPort">
-                        <property name="input"/>
-                        <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
-                        </property>
-                    </port>
-                    <port name="output" class="ptolemy.actor.TypedIOPort">
-                        <property name="output"/>
-                        <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
-                        </property>
-                    </port>
                 </entity>
                 <entity name="1:Scale3" class="ptolemy.actor.lib.Scale">
                     <property name="factor" class="ptolemy.data.expr.Parameter" value="k11">
@@ -1196,21 +1156,11 @@ of following the LeadingPlatoon.</text></svg></configure>
             <property name="_location" class="ptolemy.kernel.util.Location" value="420.0, 175.0">
             </property>
         </entity>
-        <entity name="Integrator" class="ptolemy.ptolemy.ptolemy.domains.continuous.lib.Integrator">
+        <entity name="Integrator" class="ptolemy.domains.continuous.lib.Integrator">
             <property name="initialState" class="ptolemy.data.expr.Parameter" value="initialVelocity">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="335.0, 175.0">
             </property>
-            <port name="input" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
-                </property>
-            </port>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-                <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
-                </property>
-            </port>
         </entity>
         <entity name="1:Limiter" class="ptolemy.actor.lib.Limiter">
             <property name="bottom" class="ptolemy.data.expr.Parameter" value="aMin">
@@ -1220,7 +1170,7 @@ of following the LeadingPlatoon.</text></svg></configure>
             <property name="_location" class="ptolemy.kernel.util.Location" value="245.0, 175.0">
             </property>
         </entity>
-        <entity name="ContinuousSinewave" class="ptolemy.domains.ct.lib.ContinuousSinewave">
+        <entity name="ContinuousSinewave" class="ptolemy.domains.continuous.lib.ContinuousSinewave">
             <property name="magnitude" class="ptolemy.data.expr.Parameter" value="2.0">
             </property>
             <property name="frequency" class="ptolemy.actor.parameters.PortParameter" value="0.1">

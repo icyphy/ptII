@@ -2,19 +2,21 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="Satellite" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
-    <property name="Continuous Director" class="ptolemy.ptolemy.domains.continuous.kernel.ContinuousDirector">
+    <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="6.196129">
         </property>
         <property name="maxStepSize" class="ptolemy.data.expr.Parameter" value="1.0">
         </property>
         <property name="errorTolerance" class="ptolemy.data.expr.Parameter" value="1e-8">
         </property>
+        <property name="ODESolver" class="ptolemy.data.expr.StringParameter" value="ExplicitRK45Solver">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 45.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={17, 30, 839, 733}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={17, 30, 1052, 737}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[839, 627]">
     </property>
@@ -153,31 +155,31 @@
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.6,0.2,1.0}">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Note: Here we use the RK45Solver which&#10;has better performance than the &#10;RK23Solver.  To see the difference,&#10;double click on the CTDirector and change&#10;the ODESolver parameter.&#10;">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Note: Here we use the RK45Solver which&#10;has better performance than the &#10;RK23Solver.  To see the difference,&#10;double click on the ContinuousDirector&#10;and change the ODESolver parameter.&#10;">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[525.0, 300.0]">
         </property>
     </property>
-    <entity name="y1" class="ptolemy.ptolemy.ptolemy.domains.continuous.lib.Integrator">
-        <property name="initialState" class="ptolemy.data.expr.Parameter" value="initial_y1">
+    <entity name="y1" class="ptolemy.domains.continuous.lib.Integrator">
+        <property name="initialState" class="ptolemy.actor.parameters.PortParameter" value="initial_y1">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[361.5, 55.0]">
         </property>
     </entity>
-    <entity name="y2" class="ptolemy.ptolemy.ptolemy.domains.continuous.lib.Integrator">
-        <property name="initialState" class="ptolemy.data.expr.Parameter" value="initial_y2">
+    <entity name="y2" class="ptolemy.domains.continuous.lib.Integrator">
+        <property name="initialState" class="ptolemy.actor.parameters.PortParameter" value="initial_y2">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0185546875, 290.7257080078125]">
         </property>
     </entity>
-    <entity name="y3" class="ptolemy.ptolemy.ptolemy.domains.continuous.lib.Integrator">
-        <property name="initialState" class="ptolemy.data.expr.Parameter" value="initial_y3">
+    <entity name="y3" class="ptolemy.domains.continuous.lib.Integrator">
+        <property name="initialState" class="ptolemy.actor.parameters.PortParameter" value="initial_y3">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[181.5, 100.0]">
         </property>
     </entity>
-    <entity name="y4" class="ptolemy.ptolemy.ptolemy.domains.continuous.lib.Integrator">
-        <property name="initialState" class="ptolemy.data.expr.Parameter" value="initial_y4">
+    <entity name="y4" class="ptolemy.domains.continuous.lib.Integrator">
+        <property name="initialState" class="ptolemy.actor.parameters.PortParameter" value="initial_y4">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[180.0, 255.0]">
         </property>
@@ -261,7 +263,7 @@
         </port>
     </entity>
     <entity name="Trajectory" class="ptolemy.actor.lib.gui.XYPlotter">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={95, 66, 438, 347}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={54, 337, 438, 347}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[438, 303]">
         </property>
@@ -286,8 +288,8 @@
 <title>Satellite Trajectory</title>
 <xLabel></xLabel>
 <yLabel></yLabel>
-<xRange min="-1.2621151587183537" max="1.2"/>
-<yRange min="-0.6678441150454416" max="0.6679569743152095"/>
+<xRange min="-1.262453005393114" max="1.2"/>
+<yRange min="-0.6681192337613956" max="0.6681266069983635"/>
 </plot>?>
         </configure>
     </entity>

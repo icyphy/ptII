@@ -93,7 +93,7 @@
         </property>
         <property name="feedbackGain" class="ptolemy.data.expr.Parameter" value="feedbackGain">
         </property>
-        <property name="CTMixedSignalDirector" class="ptolemy.ptolemy.domains.continuous.kernel.ContinuousDirector">
+        <property name="CTMixedSignalDirector" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
             <property name="timeResolution" class="ptolemy.actor.parameters.SharedParameter" value="1.0E-10">
             </property>
             <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -155,7 +155,7 @@
                 </property>
             </property>
         </entity>
-        <entity name="ZeroOrderHold" class="ptolemy.ptolemy.domains.continuous.lib.ZeroOrderHold">
+        <entity name="ZeroOrderHold" class="ptolemy.domains.continuous.lib.ZeroOrderHold">
             <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="0">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="88.0, 169.0">
@@ -165,13 +165,13 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="310.0, 135.0">
             </property>
         </entity>
-        <entity name="Integrator1" class="ptolemy.ptolemy.ptolemy.domains.continuous.lib.Integrator">
+        <entity name="Integrator1" class="ptolemy.domains.continuous.lib.Integrator">
             <property name="initialState" class="ptolemy.data.expr.Parameter" value="0.0">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="380.0, 135.0">
             </property>
         </entity>
-        <entity name="Integrator2" class="ptolemy.ptolemy.ptolemy.domains.continuous.lib.Integrator">
+        <entity name="Integrator2" class="ptolemy.domains.continuous.lib.Integrator">
             <property name="initialState" class="ptolemy.data.expr.Parameter" value="0.0">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="500.0, 135.0">
@@ -268,7 +268,7 @@
 </plot>?>
             </configure>
         </entity>
-        <entity name="PeriodicSampler" class="ptolemy.domains.ct.lib.CTPeriodicSampler">
+        <entity name="PeriodicSampler" class="ptolemy.domains.continuous.lib.PeriodicSampler">
             <property name="samplePeriod" class="ptolemy.data.expr.Parameter" value="samplePeriod">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="615.0, 135.0">

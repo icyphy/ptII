@@ -4,7 +4,7 @@
 <entity name="Transmission" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
     </property>
-    <property name="Continuous Director" class="ptolemy.ptolemy.domains.continuous.kernel.ContinuousDirector">
+    <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
         <property name="timeResolution" class="ptolemy.actor.parameters.SharedParameter" value="1.0E-10">
         </property>
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -226,7 +226,7 @@
             <link port="init.outgoingPort" relation="relation2"/>
         </entity>
         <entity name="state" class="ptolemy.domains.modal.modal.Refinement">
-            <property name="Continuous Director" class="ptolemy.ptolemy.domains.continuous.kernel.ContinuousDirector">
+            <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
                 <property name="timeResolution" class="ptolemy.actor.parameters.SharedParameter" value="1.0E-10">
                 </property>
                 <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -318,37 +318,17 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="510.0, 345.0">
                 </property>
             </port>
-            <entity name="Integrator" class="ptolemy.ptolemy.ptolemy.domains.continuous.lib.Integrator">
+            <entity name="Integrator" class="ptolemy.domains.continuous.lib.Integrator">
                 <property name="initialState" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="425.0, 230.0">
                 </property>
-                <port name="input" class="ptolemy.actor.TypedIOPort">
-                    <property name="input"/>
-                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
-                    </property>
-                </port>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
-                    <property name="output"/>
-                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
-                    </property>
-                </port>
             </entity>
-            <entity name="Integrator2" class="ptolemy.ptolemy.ptolemy.domains.continuous.lib.Integrator">
+            <entity name="Integrator2" class="ptolemy.domains.continuous.lib.Integrator">
                 <property name="initialState" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="500.0, 275.0">
                 </property>
-                <port name="input" class="ptolemy.actor.TypedIOPort">
-                    <property name="input"/>
-                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
-                    </property>
-                </port>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
-                    <property name="output"/>
-                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
-                    </property>
-                </port>
             </entity>
             <entity name="Compute Acceleration" class="ptolemy.actor.lib.Expression">
                 <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="efficiencyFunction(rpm)*throttle*mass">
@@ -480,7 +460,7 @@
 </plot>?>
         </configure>
     </entity>
-    <entity name="Gear Shift" class="ptolemy.ptolemy.domains.continuous.lib.EventSource">
+    <entity name="Gear Shift" class="ptolemy.domains.continuous.lib.EventSource">
         <property name="period" class="ptolemy.data.expr.Parameter" value="2000">
         </property>
         <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.0, 20.0,40.0,60.0,90.0}">

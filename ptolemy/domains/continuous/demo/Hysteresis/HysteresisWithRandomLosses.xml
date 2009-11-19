@@ -4,7 +4,7 @@
 <entity name="HysteresisWithRandomLosses" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
     </property>
-    <property name="Continuous Director" class="ptolemy.ptolemy.domains.continuous.kernel.ContinuousDirector">
+    <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="300">
         </property>
         <property name="maxStepSize" class="ptolemy.data.expr.Parameter" value="0.1">
@@ -323,7 +323,7 @@ The transitions between states change the values of the constant output.</text><
             <link port="init.outgoingPort" relation="relation3"/>
         </entity>
         <entity name="constant" class="ptolemy.domains.modal.modal.Refinement">
-            <property name="Continuous Director" class="ptolemy.ptolemy.domains.continuous.kernel.ContinuousDirector">
+            <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 45.0]">
                 </property>
             </property>
@@ -394,7 +394,7 @@ The transitions between states change the values of the constant output.</text><
             <link port="Const.output" relation="relation"/>
         </entity>
         <entity name="ThresholdDetector" class="ptolemy.domains.modal.modal.Refinement">
-            <property name="Continuous Director" class="ptolemy.ptolemy.domains.continuous.kernel.ContinuousDirector">
+            <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 35.0]">
                 </property>
             </property>
@@ -459,7 +459,7 @@ The transitions between states change the values of the constant output.</text><
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[485.0, 140.0]">
                 </property>
             </port>
-            <entity name="LevelCrossingDetector" class="ptolemy.ptolemy.domains.continuous.lib.LevelCrossingDetector">
+            <entity name="LevelCrossingDetector" class="ptolemy.domains.continuous.lib.LevelCrossingDetector">
                 <property name="level" class="ptolemy.data.expr.Parameter" value="levelThreshold">
                 </property>
                 <property name="direction" class="ptolemy.data.expr.StringParameter" value="$direction">
@@ -516,7 +516,7 @@ The transitions between states change the values of the constant output.</text><
         <link port="ThresholdDetector.out" relation="outRelation"/>
         <link port="ThresholdDetector.fail" relation="failRelation"/>
     </entity>
-    <entity name="ContinuousSinewave" class="ptolemy.domains.ct.lib.ContinuousSinewave">
+    <entity name="ContinuousSinewave" class="ptolemy.domains.continuous.lib.ContinuousSinewave">
         <property name="frequency" class="ptolemy.actor.parameters.PortParameter" value="0.1">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[210.0, 145.0]">

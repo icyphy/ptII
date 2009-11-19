@@ -4,7 +4,7 @@
 <entity name="TriggeredContinuousClock" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
     </property>
-    <property name="Continuous Director" class="ptolemy.ptolemy.domains.continuous.kernel.ContinuousDirector">
+    <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="15">
         </property>
         <property name="initStepSize" class="ptolemy.data.expr.Parameter" value="0.5">
@@ -332,7 +332,7 @@
             <link port="state3.outgoingPort" relation="relation4"/>
         </entity>
         <entity name="state" class="ptolemy.domains.modal.modal.Refinement">
-            <property name="Continuous Director" class="ptolemy.ptolemy.domains.continuous.kernel.ContinuousDirector">
+            <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, 75.0]">
                 </property>
             </property>
@@ -397,7 +397,7 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 225.0]">
                 </property>
             </port>
-            <entity name="Integrator" class="ptolemy.ptolemy.ptolemy.domains.continuous.lib.Integrator">
+            <entity name="Integrator" class="ptolemy.domains.continuous.lib.Integrator">
                 <property name="initialState" class="ptolemy.data.expr.Parameter" value="startTime">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[230.0, 175.0]">
@@ -441,7 +441,7 @@
             <link port="Const2.output" relation="relation2"/>
         </entity>
         <entity name="init" class="ptolemy.domains.modal.modal.Refinement">
-            <property name="Continuous Director" class="ptolemy.ptolemy.domains.continuous.kernel.ContinuousDirector">
+            <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[180.0, 100.0]">
                 </property>
             </property>
@@ -533,7 +533,7 @@
 </plot>?>
         </configure>
     </entity>
-    <entity name="EventSource" class="ptolemy.ptolemy.domains.continuous.lib.EventSource">
+    <entity name="EventSource" class="ptolemy.domains.continuous.lib.EventSource">
         <property name="period" class="ptolemy.data.expr.Parameter" value="Infinity">
         </property>
         <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.5}">

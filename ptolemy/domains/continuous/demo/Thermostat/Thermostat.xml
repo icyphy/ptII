@@ -2,13 +2,15 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="Thermostat" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[554, 350]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[641, 353]">
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[104, 102]">
     </property>
-    <property name="Continuous Time (CT) Solver" class="ptolemy.ptolemy.domains.continuous.kernel.ContinuousDirector">
+    <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
+        <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
         <property name="timeResolution" class="ptolemy.actor.parameters.SharedParameter" value="1.0E-10">
         </property>
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -17,17 +19,15 @@
         </property>
         <property name="initStepSize" class="ptolemy.data.expr.Parameter" value="0.1">
         </property>
-        <property name="minStepSize" class="ptolemy.data.expr.Parameter" value="1.0E-5">
-        </property>
         <property name="maxStepSize" class="ptolemy.data.expr.Parameter" value="1.0">
         </property>
         <property name="maxIterations" class="ptolemy.data.expr.Parameter" value="20">
         </property>
         <property name="errorTolerance" class="ptolemy.data.expr.Parameter" value="1.0E-4">
         </property>
-        <property name="valueResolution" class="ptolemy.data.expr.Parameter" value="1.0E-6">
+        <property name="minStepSize" class="ptolemy.data.expr.Parameter" value="1.0E-5">
         </property>
-        <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
+        <property name="valueResolution" class="ptolemy.data.expr.Parameter" value="1.0E-6">
         </property>
         <property name="runAheadLength" class="ptolemy.data.expr.Parameter" value="0.1">
         </property>
@@ -58,7 +58,7 @@ taken.</text></svg></configure>
         <property name="_location" class="ptolemy.kernel.util.Location" value="195.0, 5.0">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={6, 0, 769, 468}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={6, 22, 854, 463}, maximized=false}">
     </property>
     <property name="annotation2" class="ptolemy.kernel.util.Attribute">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -104,10 +104,10 @@ see the modal behavior.</text></svg></configure>
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{277.0, 175.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{320.5, 176.5}">
     </property>
     <entity name="Thermostat" class="ptolemy.domains.modal.modal.ModalModel">
-        <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalTableauFactory">
+        <property name="_tableauFactory" class="ptolemy.vergil.modal.modal.ModalTableauFactory">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="65.0, 165.0">
         </property>
@@ -118,8 +118,6 @@ see the modal behavior.</text></svg></configure>
             <property name="output"/>
         </port>
         <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
-            <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute">
-            </property>
             <property name="_library" class="ptolemy.moml.LibraryAttribute">
                 <configure><entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property></entity></entity></configure>
             </property>
@@ -188,6 +186,8 @@ and "cooling" states have the same refinement.</text></svg></configure>
             </port>
             <entity name="cooling" class="ptolemy.domains.modal.kernel.State">
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="heating">
+                </property>
+                <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
@@ -264,7 +264,9 @@ and "cooling" states have the same refinement.</text></svg></configure>
             </property>
             <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[104, 127]">
             </property>
-            <property name="Refinement Solver" class="ptolemy.ptolemy.domains.continuous.kernel.ContinuousDirector">
+            <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
+                <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
                 <property name="timeResolution" class="ptolemy.actor.parameters.SharedParameter" value="1.0E-10">
                 </property>
                 <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -273,17 +275,15 @@ and "cooling" states have the same refinement.</text></svg></configure>
                 </property>
                 <property name="initStepSize" class="ptolemy.data.expr.Parameter" value="0.1">
                 </property>
-                <property name="minStepSize" class="ptolemy.data.expr.Parameter" value="1.0E-5">
-                </property>
                 <property name="maxStepSize" class="ptolemy.data.expr.Parameter" value="1.0">
                 </property>
                 <property name="maxIterations" class="ptolemy.data.expr.Parameter" value="20">
                 </property>
                 <property name="errorTolerance" class="ptolemy.data.expr.Parameter" value="1.0E-4">
                 </property>
-                <property name="valueResolution" class="ptolemy.data.expr.Parameter" value="1.0E-6">
+                <property name="minStepSize" class="ptolemy.data.expr.Parameter" value="1.0E-5">
                 </property>
-                <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
+                <property name="valueResolution" class="ptolemy.data.expr.Parameter" value="1.0E-6">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="70.0, 40.0">
                 </property>
@@ -324,26 +324,14 @@ event that triggers a transition out of this mode.</text></svg></configure>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="160.0, 115.0">
                 </property>
             </entity>
-            <entity name="Integrator" class="ptolemy.ptolemy.ptolemy.domains.continuous.lib.Integrator">
-                <property name="initialState" class="ptolemy.data.expr.Parameter" value="65.0">
+            <entity name="Integrator" class="ptolemy.domains.continuous.lib.Integrator">
+                <property name="initialState" class="ptolemy.actor.parameters.PortParameter" value="65.0">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="245.0, 115.0">
                 </property>
-                <port name="input" class="ptolemy.actor.TypedIOPort">
-                    <property name="input"/>
-                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
-                    </property>
-                </port>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
-                    <property name="output"/>
-                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
-                    </property>
-                </port>
             </entity>
-            <entity name="LevelCrossingDetector" class="ptolemy.ptolemy.domains.continuous.lib.LevelCrossingDetector">
+            <entity name="LevelCrossingDetector" class="ptolemy.domains.continuous.lib.LevelCrossingDetector">
                 <property name="level" class="ptolemy.data.expr.Parameter" value="70.0">
-                </property>
-                <property name="defaultEventValue" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
                 <property name="errorTolerance" class="ptolemy.data.expr.Parameter" value="1.0E-4">
                 </property>
@@ -352,6 +340,8 @@ event that triggers a transition out of this mode.</text></svg></configure>
                     </property>
                     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
                     </property>
+                </property>
+                <property name="defaultEventValue" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="400.0, 225.0">
                 </property>
@@ -435,7 +425,7 @@ event that triggers a transition out of this mode.</text></svg></configure>
     <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {460, 380, 508, 348}, maximized = false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={460, 380, 500, 344}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
         </property>
@@ -450,8 +440,8 @@ event that triggers a transition out of this mode.</text></svg></configure>
 <title>Temperature</title>
 <xLabel>Time</xLabel>
 <yLabel>Degrees</yLabel>
-<xRange min="0.0" max="20.0"/>
-<yRange min="65.0" max="80.0000824876088"/>
+<xRange min="-1.0" max="21.0"/>
+<yRange min="63.69999228074704" max="81.30009678755631"/>
 </plot>?>
         </configure>
     </entity>

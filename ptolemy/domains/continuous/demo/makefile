@@ -107,10 +107,7 @@ install: jclass jars
 demo: subdemo
 
 echoCTDemos:
-	@echo "Brownian/*.xml CTInsideDE/*.xml CartPendulum/*.xml ComparedClocks/*.xml ContinuousClock/*.xml Corba/*.xml Helicopter/*.xml HierarchicalExecution/*.xml HybridPlant/*.xml Hysteresis/*.xml Pendulum3D/*.xml SampledClocks/*.xml Satellite/*.xml SigmaDelta/*.xml SinuBouncingBall/*.xml Spontaneous/*.xml SquareWave/*.xml Starmac/*.xml StickyMasses/*.xml Thermostat/*.xml Transmission/*.xml V2V/*.xml"
-
-echoCT:
-	@echo "Brownian/*.jnlp CTInsideDE/*.jnlp CartPendulum/*.jnlp ComparedClocks/*.jnlp ContinuousClock/*.jnlp Corba/*.jnlp Helicopter/*.jnlp HierarchicalExecution/*.jnlp HybridPlant/*.jnlp Hysteresis/*.jnlp Pendulum3D/*.jnlp SampledClocks/*.jnlp Satellite/*.jnlp SigmaDelta/*.jnlp SinuBouncingBall/*.jnlp Spontaneous/*.jnlp SquareWave/*.jnlp Starmac/*.jnlp StickyMasses/*.jnlp Thermostat/*.jnlp Transmission/*.jnlp V2V/*.jnlp"
+	@echo "Brownian/*.xml CartPendulum/*.xml ComparedClocks/*.xml ContinuousClock/*.xml Corba/*.xml Helicopter/*.xml HierarchicalExecution/*.xml HybridPlant/*.xml Hysteresis/*.xml Pendulum3D/*.xml SampledClocks/*.xml Satellite/*.xml SigmaDelta/*.xml SinuBouncingBall/*.xml Spontaneous/*.xml SquareWave/*.xml Starmac/*.xml StickyMasses/*.xml Thermostat/*.xml Transmission/*.xml V2V/*.xml"
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

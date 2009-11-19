@@ -4,7 +4,7 @@
 <entity name="SampledClocks" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
     </property>
-    <property name="Continuous Time (CT) Solver" class="ptolemy.ptolemy.domains.continuous.kernel.ContinuousDirector">
+    <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
         <property name="timeResolution" class="ptolemy.actor.parameters.SharedParameter" value="1.0E-10">
         </property>
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -112,7 +112,7 @@
 </plot>?>
         </configure>
     </entity>
-    <entity name="ContinuousClock" class="ptolemy.ptolemy.domains.continuous.lib.ContinuousClock">
+    <entity name="ContinuousClock" class="ptolemy.domains.continuous.lib.ContinuousClock">
         <property name="period" class="ptolemy.data.expr.Parameter" value="0.5">
         </property>
         <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.0, 0.2}">
@@ -144,7 +144,7 @@
             </property>
         </port>
     </entity>
-    <entity name="PeriodicSampler2" class="ptolemy.domains.ct.lib.CTPeriodicSampler">
+    <entity name="PeriodicSampler2" class="ptolemy.domains.continuous.lib.PeriodicSampler">
         <property name="samplePeriod" class="ptolemy.data.expr.Parameter" value="samplePeriod">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[161.0, 105.5]">

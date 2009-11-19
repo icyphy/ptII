@@ -142,7 +142,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[395.0, 335.0]">
         </property>
     </property>
-    <property name="Continuous Director" class="ptolemy.ptolemy.domains.continuous.kernel.ContinuousDirector">
+    <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="50">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[90.0, 35.0]">
@@ -481,7 +481,7 @@
             </property>
             <property name="p1" class="ptolemy.data.expr.Parameter" value="1.5935242030212">
             </property>
-            <property name="Continuous Director" class="ptolemy.ptolemy.domains.continuous.kernel.ContinuousDirector">
+            <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{55, 45}">
                 </property>
             </property>
@@ -545,53 +545,23 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="90.0, 365.0">
                 </property>
             </entity>
-            <entity name="V2 integrator" class="ptolemy.ptolemy.ptolemy.domains.continuous.lib.Integrator">
+            <entity name="V2 integrator" class="ptolemy.domains.continuous.lib.Integrator">
                 <property name="initialState" class="ptolemy.data.expr.Parameter" value="v2">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="215.0, 245.0">
                 </property>
-                <port name="input" class="ptolemy.actor.TypedIOPort">
-                    <property name="input"/>
-                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
-                    </property>
-                </port>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
-                    <property name="output"/>
-                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
-                    </property>
-                </port>
             </entity>
-            <entity name="P1 integrator" class="ptolemy.ptolemy.ptolemy.domains.continuous.lib.Integrator">
+            <entity name="P1 integrator" class="ptolemy.domains.continuous.lib.Integrator">
                 <property name="initialState" class="ptolemy.data.expr.Parameter" value="p1">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="350.0, 140.0">
                 </property>
-                <port name="input" class="ptolemy.actor.TypedIOPort">
-                    <property name="input"/>
-                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
-                    </property>
-                </port>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
-                    <property name="output"/>
-                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
-                    </property>
-                </port>
             </entity>
-            <entity name="V1 integrator" class="ptolemy.ptolemy.ptolemy.domains.continuous.lib.Integrator">
+            <entity name="V1 integrator" class="ptolemy.domains.continuous.lib.Integrator">
                 <property name="initialState" class="ptolemy.data.expr.Parameter" value="v1">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="195.0, 140.0">
                 </property>
-                <port name="input" class="ptolemy.actor.TypedIOPort">
-                    <property name="input"/>
-                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
-                    </property>
-                </port>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
-                    <property name="output"/>
-                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
-                    </property>
-                </port>
             </entity>
             <entity name="Expression2" class="ptolemy.actor.lib.Expression">
                 <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="2.0*2.0 - 2.0*P2">
@@ -608,21 +578,11 @@
                     <property name="input"/>
                 </port>
             </entity>
-            <entity name="P2 integrator" class="ptolemy.ptolemy.ptolemy.domains.continuous.lib.Integrator">
+            <entity name="P2 integrator" class="ptolemy.domains.continuous.lib.Integrator">
                 <property name="initialState" class="ptolemy.data.expr.Parameter" value="p2">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="380.0, 245.0">
                 </property>
-                <port name="input" class="ptolemy.actor.TypedIOPort">
-                    <property name="input"/>
-                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
-                    </property>
-                </port>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
-                    <property name="output"/>
-                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
-                    </property>
-                </port>
             </entity>
             <entity name="Const" class="ptolemy.actor.lib.Const">
                 <property name="value" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -660,7 +620,7 @@
                     </property>
                 </port>
             </entity>
-            <entity name="ZeroCrossingDetector" class="ptolemy.ptolemy.domains.continuous.lib.LevelCrossingDetector">
+            <entity name="ZeroCrossingDetector" class="ptolemy.domains.continuous.lib.LevelCrossingDetector">
                 <property name="ZeroCrossingDetectorIcon" class="ptolemy.vergil.icon.EditorIcon">
                     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 125, 815, 518}, maximized=false}">
                     </property>
@@ -796,7 +756,7 @@
             </property>
             <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{314.5, 224.5}">
             </property>
-            <property name="Continuous Director" class="ptolemy.ptolemy.domains.continuous.kernel.ContinuousDirector">
+            <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{50, 55}">
                 </property>
             </property>
@@ -825,21 +785,11 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[195.0, 390.0]">
                 </property>
             </port>
-            <entity name="Stickiness integrator" class="ptolemy.ptolemy.ptolemy.domains.continuous.lib.Integrator">
+            <entity name="Stickiness integrator" class="ptolemy.domains.continuous.lib.Integrator">
                 <property name="initialState" class="ptolemy.data.expr.Parameter" value="stickiness">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="65.0, 415.0">
                 </property>
-                <port name="input" class="ptolemy.actor.TypedIOPort">
-                    <property name="input"/>
-                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
-                    </property>
-                </port>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
-                    <property name="output"/>
-                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
-                    </property>
-                </port>
             </entity>
             <entity name="Expression" class="ptolemy.actor.lib.Expression">
                 <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="(1.0*1.0 + 2.0*2.0 - (1.0+2.0)*P1)/2.0">
@@ -856,21 +806,11 @@
                     <property name="input"/>
                 </port>
             </entity>
-            <entity name="V1 integrator" class="ptolemy.ptolemy.ptolemy.domains.continuous.lib.Integrator">
+            <entity name="V1 integrator" class="ptolemy.domains.continuous.lib.Integrator">
                 <property name="initialState" class="ptolemy.data.expr.Parameter" value="v">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="65.0, 160.0">
                 </property>
-                <port name="input" class="ptolemy.actor.TypedIOPort">
-                    <property name="input"/>
-                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
-                    </property>
-                </port>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
-                    <property name="output"/>
-                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
-                    </property>
-                </port>
             </entity>
             <entity name="Expression2" class="ptolemy.actor.lib.Expression">
                 <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="1.0*1.0 - 2.0*2.0 - (1.0-2.0)*P1">
@@ -887,21 +827,11 @@
                     <property name="input"/>
                 </port>
             </entity>
-            <entity name="P1 integrator" class="ptolemy.ptolemy.ptolemy.domains.continuous.lib.Integrator">
+            <entity name="P1 integrator" class="ptolemy.domains.continuous.lib.Integrator">
                 <property name="initialState" class="ptolemy.data.expr.Parameter" value="p">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="155.0, 160.0">
                 </property>
-                <port name="input" class="ptolemy.actor.TypedIOPort">
-                    <property name="input"/>
-                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
-                    </property>
-                </port>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
-                    <property name="output"/>
-                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
-                    </property>
-                </port>
             </entity>
             <entity name="Gain" class="ptolemy.actor.lib.Scale">
                 <property name="factor" class="ptolemy.data.expr.Parameter" value="-1.0">

@@ -48,7 +48,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="60.0, 240.0">
         </property>
     </property>
-    <property name="Continuous Director" class="ptolemy.ptolemy.domains.continuous.kernel.ContinuousDirector">
+    <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
         <property name="timeResolution" class="ptolemy.actor.parameters.SharedParameter" value="1.0E-10">
         </property>
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -185,7 +185,7 @@ points.
 </plot>?>
         </configure>
     </entity>
-    <entity name="ContinuousClock" class="ptolemy.ptolemy.domains.continuous.lib.ContinuousClock">
+    <entity name="ContinuousClock" class="ptolemy.domains.continuous.lib.ContinuousClock">
         <property name="period" class="ptolemy.data.expr.Parameter" value="0.5">
         </property>
         <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.0, 0.2}">
@@ -244,7 +244,7 @@ points.
 </plot>?>
         </configure>
     </entity>
-    <entity name="ContinuousClock2" class="ptolemy.ptolemy.domains.continuous.lib.ContinuousClock">
+    <entity name="ContinuousClock2" class="ptolemy.domains.continuous.lib.ContinuousClock">
         <property name="period" class="ptolemy.data.expr.Parameter" value="0.5">
         </property>
         <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.1, 0.2}">

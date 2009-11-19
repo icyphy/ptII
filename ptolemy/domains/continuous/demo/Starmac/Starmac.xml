@@ -14,7 +14,7 @@
     </property>
     <property name="bob_radius" class="ptolemy.data.expr.Parameter" value="0.10">
     </property>
-    <property name="Continuous Director" class="ptolemy.ptolemy.domains.continuous.kernel.ContinuousDirector">
+    <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
         <property name="timeResolution" class="ptolemy.actor.parameters.SharedParameter" value="1E-6">
         </property>
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="10.0">
@@ -924,19 +924,9 @@ http://java3d.dev.java.net/</text></svg></configure>
                 </entity>
                 <entity name="OutputAdder" class="ptolemy.actor.lib.AddSubtract">
                 </entity>
-                <entity name="Integrator0" class="ptolemy.ptolemy.ptolemy.domains.continuous.lib.Integrator">
+                <entity name="Integrator0" class="ptolemy.domains.continuous.lib.Integrator">
                     <property name="initialState" class="ptolemy.data.expr.Parameter" value="0.0">
                     </property>
-                    <port name="input" class="ptolemy.actor.TypedIOPort">
-                        <property name="input"/>
-                        <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
-                        </property>
-                    </port>
-                    <port name="output" class="ptolemy.actor.TypedIOPort">
-                        <property name="output"/>
-                        <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
-                        </property>
-                    </port>
                 </entity>
                 <entity name="Feedback0" class="ptolemy.actor.lib.Scale">
                     <property name="factor" class="ptolemy.data.expr.Parameter" value="-10.0">
@@ -1836,19 +1826,9 @@ http://java3d.dev.java.net/</text></svg></configure>
                 </entity>
                 <entity name="OutputAdder" class="ptolemy.actor.lib.AddSubtract">
                 </entity>
-                <entity name="Integrator0" class="ptolemy.ptolemy.ptolemy.domains.continuous.lib.Integrator">
+                <entity name="Integrator0" class="ptolemy.domains.continuous.lib.Integrator">
                     <property name="initialState" class="ptolemy.data.expr.Parameter" value="0.0">
                     </property>
-                    <port name="input" class="ptolemy.actor.TypedIOPort">
-                        <property name="input"/>
-                        <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
-                        </property>
-                    </port>
-                    <port name="output" class="ptolemy.actor.TypedIOPort">
-                        <property name="output"/>
-                        <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
-                        </property>
-                    </port>
                 </entity>
                 <entity name="Feedback0" class="ptolemy.actor.lib.Scale">
                     <property name="factor" class="ptolemy.data.expr.Parameter" value="-10.0">
@@ -1917,19 +1897,9 @@ http://java3d.dev.java.net/</text></svg></configure>
                 </entity>
                 <entity name="OutputAdder" class="ptolemy.actor.lib.AddSubtract">
                 </entity>
-                <entity name="Integrator0" class="ptolemy.ptolemy.ptolemy.domains.continuous.lib.Integrator">
+                <entity name="Integrator0" class="ptolemy.domains.continuous.lib.Integrator">
                     <property name="initialState" class="ptolemy.data.expr.Parameter" value="0.0">
                     </property>
-                    <port name="input" class="ptolemy.actor.TypedIOPort">
-                        <property name="input"/>
-                        <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
-                        </property>
-                    </port>
-                    <port name="output" class="ptolemy.actor.TypedIOPort">
-                        <property name="output"/>
-                        <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
-                        </property>
-                    </port>
                 </entity>
                 <entity name="Feedback0" class="ptolemy.actor.lib.Scale">
                     <property name="factor" class="ptolemy.data.expr.Parameter" value="-10.0">
@@ -1998,19 +1968,9 @@ http://java3d.dev.java.net/</text></svg></configure>
                 </entity>
                 <entity name="OutputAdder" class="ptolemy.actor.lib.AddSubtract">
                 </entity>
-                <entity name="Integrator0" class="ptolemy.ptolemy.ptolemy.domains.continuous.lib.Integrator">
+                <entity name="Integrator0" class="ptolemy.domains.continuous.lib.Integrator">
                     <property name="initialState" class="ptolemy.data.expr.Parameter" value="0.0">
                     </property>
-                    <port name="input" class="ptolemy.actor.TypedIOPort">
-                        <property name="input"/>
-                        <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
-                        </property>
-                    </port>
-                    <port name="output" class="ptolemy.actor.TypedIOPort">
-                        <property name="output"/>
-                        <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
-                        </property>
-                    </port>
                 </entity>
                 <entity name="Feedback0" class="ptolemy.actor.lib.Scale">
                     <property name="factor" class="ptolemy.data.expr.Parameter" value="-10.0">
@@ -5503,31 +5463,31 @@ http://java3d.dev.java.net/</text></svg></configure>
                         </property>
                     </property>
                     <property name="image" class="ptolemy.vergil.kernel.attributes.ImageAttribute">
-                        <property name="source" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/domains/ct/lib/integral.gif">
+                        <property name="source" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/domains/continuous/lib/integral.gif">
                         </property>
                         <property name="_location" class="ptolemy.kernel.util.Location" value="[-4.0, -16.0]">
                         </property>
                     </property>
                 </property>
-                <port name="input" class="ptolemy.actor.TypedIOPort">
+                <port name="derivative" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 205.0]">
                     </property>
                 </port>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
+                <port name="state" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[510.0, 200.0]">
                     </property>
                 </port>
-                <entity name="Integrator" class="ptolemy.ptolemy.ptolemy.domains.continuous.lib.Integrator">
+                <entity name="Integrator" class="ptolemy.domains.continuous.lib.Integrator">
                     <property name="_location" class="ptolemy.kernel.util.Location" value="{270.0, 125.0}">
                     </property>
                 </entity>
-                <entity name="Integrator2" class="ptolemy.ptolemy.ptolemy.domains.continuous.lib.Integrator">
+                <entity name="Integrator2" class="ptolemy.domains.continuous.lib.Integrator">
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 195.0]">
                     </property>
                 </entity>
-                <entity name="Integrator3" class="ptolemy.ptolemy.ptolemy.domains.continuous.lib.Integrator">
+                <entity name="Integrator3" class="ptolemy.domains.continuous.lib.Integrator">
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 265.0]">
                     </property>
                 </entity>
@@ -5557,8 +5517,8 @@ http://java3d.dev.java.net/</text></svg></configure>
                 </relation>
                 <relation name="relation7" class="ptolemy.actor.TypedIORelation">
                 </relation>
-                <link port="input" relation="relation"/>
-                <link port="output" relation="relation6"/>
+                <link port="derivative" relation="relation"/>
+                <link port="state" relation="relation6"/>
                 <link port="Integrator.derivative" relation="relation11"/>
                 <link port="Integrator.state" relation="relation4"/>
                 <link port="Integrator2.derivative" relation="relation2"/>
@@ -5722,7 +5682,7 @@ http://java3d.dev.java.net/</text></svg></configure>
                         </property>
                     </property>
                     <property name="image" class="ptolemy.vergil.kernel.attributes.ImageAttribute">
-                        <property name="source" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/domains/ct/lib/integral.gif">
+                        <property name="source" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/domains/continuous/lib/integral.gif">
                         </property>
                         <property name="_location" class="ptolemy.kernel.util.Location" value="[-4.0, -16.0]">
                         </property>
@@ -5732,25 +5692,25 @@ http://java3d.dev.java.net/</text></svg></configure>
                     <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
                     </property>
                 </property>
-                <port name="input" class="ptolemy.actor.TypedIOPort">
+                <port name="derivative" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 205.0]">
                     </property>
                 </port>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
+                <port name="state" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[510.0, 200.0]">
                     </property>
                 </port>
-                <entity name="Integrator" class="ptolemy.ptolemy.ptolemy.domains.continuous.lib.Integrator">
+                <entity name="Integrator" class="ptolemy.domains.continuous.lib.Integrator">
                     <property name="_location" class="ptolemy.kernel.util.Location" value="{270.0, 125.0}">
                     </property>
                 </entity>
-                <entity name="Integrator2" class="ptolemy.ptolemy.ptolemy.domains.continuous.lib.Integrator">
+                <entity name="Integrator2" class="ptolemy.domains.continuous.lib.Integrator">
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 195.0]">
                     </property>
                 </entity>
-                <entity name="Integrator3" class="ptolemy.ptolemy.ptolemy.domains.continuous.lib.Integrator">
+                <entity name="Integrator3" class="ptolemy.domains.continuous.lib.Integrator">
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 265.0]">
                     </property>
                 </entity>
@@ -5780,8 +5740,8 @@ http://java3d.dev.java.net/</text></svg></configure>
                 </relation>
                 <relation name="relation7" class="ptolemy.actor.TypedIORelation">
                 </relation>
-                <link port="input" relation="relation"/>
-                <link port="output" relation="relation6"/>
+                <link port="derivative" relation="relation"/>
+                <link port="state" relation="relation6"/>
                 <link port="Integrator.derivative" relation="relation11"/>
                 <link port="Integrator.state" relation="relation4"/>
                 <link port="Integrator2.derivative" relation="relation2"/>
@@ -5824,7 +5784,7 @@ http://java3d.dev.java.net/</text></svg></configure>
                         </property>
                     </property>
                     <property name="image" class="ptolemy.vergil.kernel.attributes.ImageAttribute">
-                        <property name="source" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/domains/ct/lib/integral.gif">
+                        <property name="source" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/domains/continuous/lib/integral.gif">
                         </property>
                         <property name="_location" class="ptolemy.kernel.util.Location" value="[-4.0, -16.0]">
                         </property>
@@ -5834,25 +5794,25 @@ http://java3d.dev.java.net/</text></svg></configure>
                     <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
                     </property>
                 </property>
-                <port name="input" class="ptolemy.actor.TypedIOPort">
+                <port name="derivative" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 205.0]">
                     </property>
                 </port>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
+                <port name="state" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[510.0, 200.0]">
                     </property>
                 </port>
-                <entity name="Integrator" class="ptolemy.ptolemy.ptolemy.domains.continuous.lib.Integrator">
+                <entity name="Integrator" class="ptolemy.domains.continuous.lib.Integrator">
                     <property name="_location" class="ptolemy.kernel.util.Location" value="{270.0, 125.0}">
                     </property>
                 </entity>
-                <entity name="Integrator2" class="ptolemy.ptolemy.ptolemy.domains.continuous.lib.Integrator">
+                <entity name="Integrator2" class="ptolemy.domains.continuous.lib.Integrator">
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 195.0]">
                     </property>
                 </entity>
-                <entity name="Integrator3" class="ptolemy.ptolemy.ptolemy.domains.continuous.lib.Integrator">
+                <entity name="Integrator3" class="ptolemy.domains.continuous.lib.Integrator">
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 265.0]">
                     </property>
                 </entity>
@@ -5882,8 +5842,8 @@ http://java3d.dev.java.net/</text></svg></configure>
                 </relation>
                 <relation name="relation7" class="ptolemy.actor.TypedIORelation">
                 </relation>
-                <link port="input" relation="relation"/>
-                <link port="output" relation="relation6"/>
+                <link port="derivative" relation="relation"/>
+                <link port="state" relation="relation6"/>
                 <link port="Integrator.derivative" relation="relation11"/>
                 <link port="Integrator.state" relation="relation4"/>
                 <link port="Integrator2.derivative" relation="relation2"/>
@@ -5926,31 +5886,31 @@ http://java3d.dev.java.net/</text></svg></configure>
                         </property>
                     </property>
                     <property name="image" class="ptolemy.vergil.kernel.attributes.ImageAttribute">
-                        <property name="source" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/domains/ct/lib/integral.gif">
+                        <property name="source" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/domains/continuous/lib/integral.gif">
                         </property>
                         <property name="_location" class="ptolemy.kernel.util.Location" value="[-4.0, -16.0]">
                         </property>
                     </property>
                 </property>
-                <port name="input" class="ptolemy.actor.TypedIOPort">
+                <port name="derivative" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 205.0]">
                     </property>
                 </port>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
+                <port name="state" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[510.0, 200.0]">
                     </property>
                 </port>
-                <entity name="Integrator" class="ptolemy.ptolemy.ptolemy.domains.continuous.lib.Integrator">
+                <entity name="Integrator" class="ptolemy.domains.continuous.lib.Integrator">
                     <property name="_location" class="ptolemy.kernel.util.Location" value="{270.0, 125.0}">
                     </property>
                 </entity>
-                <entity name="Integrator2" class="ptolemy.ptolemy.ptolemy.domains.continuous.lib.Integrator">
+                <entity name="Integrator2" class="ptolemy.domains.continuous.lib.Integrator">
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 195.0]">
                     </property>
                 </entity>
-                <entity name="Integrator3" class="ptolemy.ptolemy.ptolemy.domains.continuous.lib.Integrator">
+                <entity name="Integrator3" class="ptolemy.domains.continuous.lib.Integrator">
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 265.0]">
                     </property>
                 </entity>
@@ -5980,8 +5940,8 @@ http://java3d.dev.java.net/</text></svg></configure>
                 </relation>
                 <relation name="relation7" class="ptolemy.actor.TypedIORelation">
                 </relation>
-                <link port="input" relation="relation"/>
-                <link port="output" relation="relation6"/>
+                <link port="derivative" relation="relation"/>
+                <link port="state" relation="relation6"/>
                 <link port="Integrator.derivative" relation="relation11"/>
                 <link port="Integrator.state" relation="relation4"/>
                 <link port="Integrator2.derivative" relation="relation2"/>
@@ -6123,8 +6083,8 @@ http://java3d.dev.java.net/</text></svg></configure>
             <link port="VectorIntegrator2.state" relation="relation9"/>
             <link port="VectorIntegrator3.derivative" relation="relation27"/>
             <link port="VectorIntegrator3.state" relation="relation14"/>
-            <link port="VectorIntegrator4.input" relation="relation21"/>
-            <link port="VectorIntegrator4.output" relation="relation4"/>
+            <link port="VectorIntegrator4.derivative" relation="relation21"/>
+            <link port="VectorIntegrator4.state" relation="relation4"/>
             <link relation1="relation9" relation2="relation12"/>
             <link relation1="relation11" relation2="relation12"/>
             <link relation1="relation12" relation2="relation17"/>
@@ -6476,11 +6436,11 @@ http://java3d.dev.java.net/</text></svg></configure>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[665.0, 305.0]">
         </property>
     </entity>
-    <entity name="PeriodicSampler" class="ptolemy.domains.ct.lib.CTPeriodicSampler">
+    <entity name="PeriodicSampler" class="ptolemy.domains.continuous.lib.PeriodicSampler">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[495.0, 180.0]">
         </property>
     </entity>
-    <entity name="PeriodicSampler2" class="ptolemy.domains.ct.lib.CTPeriodicSampler">
+    <entity name="PeriodicSampler2" class="ptolemy.domains.continuous.lib.PeriodicSampler">
         <property name="_location" class="ptolemy.kernel.util.Location" value="{495.0, 270.0}">
         </property>
     </entity>
@@ -10335,7 +10295,7 @@ http://java3d.dev.java.net/</text></svg></configure>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[666.0, 158.0]">
         </property>
     </entity>
-    <entity name="ZeroOrderHold" class="ptolemy.ptolemy.domains.continuous.lib.ZeroOrderHold">
+    <entity name="ZeroOrderHold" class="ptolemy.domains.continuous.lib.ZeroOrderHold">
         <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="[0;0;0;0]">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[202.5, 180.0]">

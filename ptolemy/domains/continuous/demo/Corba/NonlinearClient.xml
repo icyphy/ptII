@@ -4,7 +4,7 @@
 <entity name="nonlinearClient" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
     </property>
-    <property name="DIR" class="ptolemy.ptolemy.domains.continuous.kernel.ContinuousDirector">
+    <property name="DIR" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
         <property name="timeResolution" class="ptolemy.actor.parameters.SharedParameter" value="1.0E-10">
         </property>
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -46,37 +46,17 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="-45.0, 155.0">
         </property>
     </entity>
-    <entity name="Integrator1" class="ptolemy.ptolemy.ptolemy.domains.continuous.lib.Integrator">
+    <entity name="Integrator1" class="ptolemy.domains.continuous.lib.Integrator">
         <property name="initialState" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="20.0, 155.0">
         </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
-            </property>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
-            </property>
-        </port>
     </entity>
-    <entity name="Integrator2" class="ptolemy.ptolemy.ptolemy.domains.continuous.lib.Integrator">
+    <entity name="Integrator2" class="ptolemy.domains.continuous.lib.Integrator">
         <property name="initialState" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="130.0, 155.0">
         </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
-            </property>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
-            </property>
-        </port>
     </entity>
     <entity name="Gain1" class="ptolemy.actor.lib.Scale">
         <property name="factor" class="ptolemy.data.expr.Parameter" value="500.0">

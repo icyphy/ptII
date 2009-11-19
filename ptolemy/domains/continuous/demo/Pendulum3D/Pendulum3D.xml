@@ -12,7 +12,7 @@
     </property>
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{301.0, 251.5}">
     </property>
-    <property name="Continuous Director" class="ptolemy.ptolemy.domains.continuous.kernel.ContinuousDirector">
+    <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="35">
         </property>
         <property name="maxStepSize" class="ptolemy.data.expr.Parameter" value="0.1">
@@ -121,7 +121,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{455.0, 175.0}">
         </property>
     </property>
-    <property name="_documentation" class="ptolemy.data.expr.FileParameter" value="ptolemy/domains/ct/demo/Pendulum3D/pendulum.pdf">
+    <property name="_documentation" class="ptolemy.data.expr.FileParameter" value="ptolemy/domains/continuous/demo/Pendulum3D/pendulum.pdf">
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="An inverted pendulum in 3D">
@@ -568,7 +568,7 @@
             </property>
             <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{465.5000000000001, 345.2460220318238}">
             </property>
-            <property name="Continuous Director" class="ptolemy.ptolemy.domains.continuous.kernel.ContinuousDirector">
+            <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{615, 190}">
                 </property>
             </property>
@@ -651,13 +651,13 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 165.0]">
                 </property>
             </port>
-            <entity name="theta_dot" class="ptolemy.ptolemy.ptolemy.domains.continuous.lib.Integrator">
+            <entity name="theta_dot" class="ptolemy.domains.continuous.lib.Integrator">
                 <property name="initialState" class="ptolemy.data.expr.Parameter" value="initialTheta_dot">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[110.0, 350.0]">
                 </property>
             </entity>
-            <entity name="theta" class="ptolemy.ptolemy.ptolemy.domains.continuous.lib.Integrator">
+            <entity name="theta" class="ptolemy.domains.continuous.lib.Integrator">
                 <property name="initialState" class="ptolemy.data.expr.Parameter" value="initialTheta">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{235.0, 435.0}">
@@ -737,13 +737,13 @@
                     <property name="input"/>
                 </port>
             </entity>
-            <entity name="phi_dot" class="ptolemy.ptolemy.ptolemy.domains.continuous.lib.Integrator">
+            <entity name="phi_dot" class="ptolemy.domains.continuous.lib.Integrator">
                 <property name="initialState" class="ptolemy.data.expr.Parameter" value="initialPhi_dot">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[110.0, 200.0]">
                 </property>
             </entity>
-            <entity name="phi" class="ptolemy.ptolemy.ptolemy.domains.continuous.lib.Integrator">
+            <entity name="phi" class="ptolemy.domains.continuous.lib.Integrator">
                 <property name="initialState" class="ptolemy.data.expr.Parameter" value="initialPhi">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[215.0, 255.0]">

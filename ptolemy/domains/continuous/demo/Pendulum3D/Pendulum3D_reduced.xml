@@ -12,7 +12,7 @@
     </property>
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{455.4999999999996, 335.2460220318238}">
     </property>
-    <property name="Continuous Director" class="ptolemy.ptolemy.domains.continuous.kernel.ContinuousDirector">
+    <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="35">
         </property>
         <property name="maxStepSize" class="ptolemy.data.expr.Parameter" value="0.1">
@@ -538,7 +538,7 @@
             </property>
             <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{801.7056303549383, 595.0654834761181}">
             </property>
-            <property name="Continuous Director" class="ptolemy.ptolemy.domains.continuous.kernel.ContinuousDirector">
+            <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[865.0, 170.0]">
                 </property>
             </property>
@@ -619,13 +619,13 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 165.0]">
                 </property>
             </port>
-            <entity name="theta_dot" class="ptolemy.ptolemy.ptolemy.domains.continuous.lib.Integrator">
+            <entity name="theta_dot" class="ptolemy.domains.continuous.lib.Integrator">
                 <property name="initialState" class="ptolemy.data.expr.Parameter" value="initialTheta_dot">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[110.0, 350.0]">
                 </property>
             </entity>
-            <entity name="theta" class="ptolemy.ptolemy.ptolemy.domains.continuous.lib.Integrator">
+            <entity name="theta" class="ptolemy.domains.continuous.lib.Integrator">
                 <property name="initialState" class="ptolemy.data.expr.Parameter" value="initialTheta">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{235.0, 435.0}">
@@ -700,7 +700,7 @@
                     <property name="input"/>
                 </port>
             </entity>
-            <entity name="phi" class="ptolemy.ptolemy.ptolemy.domains.continuous.lib.Integrator">
+            <entity name="phi" class="ptolemy.domains.continuous.lib.Integrator">
                 <property name="initialState" class="ptolemy.data.expr.Parameter" value="initialPhi">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[215.0, 255.0]">
@@ -913,7 +913,7 @@
 </plot>?>
         </configure>
     </entity>
-    <entity name="PeriodicSampler" class="ptolemy.domains.ct.lib.CTPeriodicSampler">
+    <entity name="PeriodicSampler" class="ptolemy.domains.continuous.lib.PeriodicSampler">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[475.0, 330.0]">
         </property>
     </entity>

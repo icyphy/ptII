@@ -454,7 +454,7 @@
             </property>
             <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
             </property>
-            <property name="Continuous Director" class="ptolemy.ptolemy.domains.continuous.kernel.ContinuousDirector">
+            <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 40.0]">
                 </property>
             </property>
@@ -516,11 +516,11 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[90.0, 130.0]">
                 </property>
             </entity>
-            <entity name="RMBuffer" class="ptolemy.ptolemy.ptolemy.domains.continuous.lib.Integrator">
+            <entity name="RMBuffer" class="ptolemy.domains.continuous.lib.Integrator">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[290.0, 175.0]">
                 </property>
             </entity>
-            <entity name="Detect Empty Buffer" class="ptolemy.ptolemy.domains.continuous.lib.LevelCrossingDetector">
+            <entity name="Detect Empty Buffer" class="ptolemy.domains.continuous.lib.LevelCrossingDetector">
                 <property name="level" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
                 <property name="direction" class="ptolemy.data.expr.StringParameter" value="falling">
@@ -534,11 +534,11 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[395.0, 175.0]">
                 </property>
             </entity>
-            <entity name="Bottle" class="ptolemy.ptolemy.ptolemy.domains.continuous.lib.Integrator">
+            <entity name="Bottle" class="ptolemy.domains.continuous.lib.Integrator">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[290.0, 245.0]">
                 </property>
             </entity>
-            <entity name="Detect Full Bottle" class="ptolemy.ptolemy.domains.continuous.lib.LevelCrossingDetector">
+            <entity name="Detect Full Bottle" class="ptolemy.domains.continuous.lib.LevelCrossingDetector">
                 <property name="level" class="ptolemy.data.expr.Parameter" value="targetContainerLevel">
                 </property>
                 <property name="direction" class="ptolemy.data.expr.StringParameter" value="rising">
@@ -569,7 +569,7 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 245.0]">
                 </property>
             </entity>
-            <entity name="PeriodicSampler" class="ptolemy.domains.ct.lib.CTPeriodicSampler">
+            <entity name="PeriodicSampler" class="ptolemy.domains.continuous.lib.PeriodicSampler">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[395.0, 105.0]">
                 </property>
             </entity>
@@ -625,7 +625,7 @@
             <link port="Detect Empty Buffer.trigger" relation="relation2"/>
             <link port="Bottle.derivative" relation="relation7"/>
             <link port="Bottle.state" relation="relation8"/>
-            <link port="Detect Full Bottle.state" relation="relation3"/>
+            <link port="Detect Full Bottle.output" relation="relation3"/>
             <link port="Detect Full Bottle.trigger" relation="relation8"/>
             <link port="AddSubtract.plus" relation="relation6"/>
             <link port="AddSubtract.minus" relation="relation7"/>

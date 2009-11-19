@@ -4,7 +4,7 @@
 <entity name="HysteresisWithBernouliLosses" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
     </property>
-    <property name="Continuous Director" class="ptolemy.ptolemy.domains.continuous.kernel.ContinuousDirector">
+    <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="50.0">
         </property>
         <property name="maxStepSize" class="ptolemy.data.expr.Parameter" value="0.1">
@@ -279,7 +279,7 @@ determines whether the next state transition will succeed or fail.</text></svg><
             <link port="init.outgoingPort" relation="relation3"/>
         </entity>
         <entity name="constant" class="ptolemy.domains.modal.modal.Refinement">
-            <property name="Continuous Director" class="ptolemy.ptolemy.domains.continuous.kernel.ContinuousDirector">
+            <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 45.0]">
                 </property>
             </property>
@@ -361,7 +361,7 @@ determines whether the next state transition will succeed or fail.</text></svg><
             <link port="Bernoulli.output" relation="relation2"/>
         </entity>
         <entity name="init" class="ptolemy.domains.modal.modal.Refinement">
-            <property name="Continuous Director" class="ptolemy.ptolemy.domains.continuous.kernel.ContinuousDirector">
+            <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 40.0]">
                 </property>
             </property>
@@ -411,7 +411,7 @@ determines whether the next state transition will succeed or fail.</text></svg><
         <link port="init.out" relation="outRelation"/>
         <link port="init.fail" relation="failRelation"/>
     </entity>
-    <entity name="ContinuousSinewave" class="ptolemy.domains.ct.lib.ContinuousSinewave">
+    <entity name="ContinuousSinewave" class="ptolemy.domains.continuous.lib.ContinuousSinewave">
         <property name="frequency" class="ptolemy.actor.parameters.PortParameter" value="0.1">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 275.0]">
