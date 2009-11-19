@@ -36,7 +36,7 @@ ROOT =		../../../..
 
 DIRS =		BouncingBall Brownian CarTracking \
 		CartPendulum ComparedClocks ContinuousClock ContinuousInsideDE \
-		Corba Helicopter HierarchicalExecution HybridPlant Hysteresis \
+		HierarchicalExecution HybridPlant Hysteresis \
 		LevelCrossingDetector LevelCrossingDetectorDetectsGlitches \
 		Lorenz NewtonsCradle Pendulum3D SampledClocks Satellite \
 		SigmaDelta SinuBouncingBall Sinusoid Spontaneous SquareWave \
@@ -61,8 +61,6 @@ PTCLASSALLJARS = \
 	ComparedClocks/ComparedClocks.jar \
 	ContinuousClock/ContinuousClock.jar \
 	ContinuousInsideDE/ContinuousInsideDE.jar \
-	Corba/Corba.jar \
-	Helicopter/Helicopter.jar \
 	HierarchicalExecution/HierarchicalExecution.jar \
 	HybridPlant/HybridPlant.jar \
 	Hysteresis/Hysteresis.jar \
@@ -107,7 +105,7 @@ install: jclass jars
 demo: subdemo
 
 echoCTDemos:
-	@echo "Brownian/*.xml CartPendulum/*.xml ComparedClocks/*.xml ContinuousClock/*.xml Corba/*.xml Helicopter/*.xml HierarchicalExecution/*.xml HybridPlant/*.xml Hysteresis/*.xml Pendulum3D/*.xml SampledClocks/*.xml Satellite/*.xml SigmaDelta/*.xml SinuBouncingBall/*.xml Spontaneous/*.xml SquareWave/*.xml Starmac/*.xml StickyMasses/*.xml Thermostat/*.xml Transmission/*.xml V2V/*.xml"
+	@echo "Brownian/*.xml CartPendulum/*.xml ComparedClocks/*.xml ContinuousClock/*.xml HierarchicalExecution/*.xml HybridPlant/*.xml Hysteresis/*.xml Pendulum3D/*.xml SampledClocks/*.xml Satellite/*.xml SigmaDelta/*.xml SinuBouncingBall/*.xml Spontaneous/*.xml SquareWave/*.xml Starmac/*.xml StickyMasses/*.xml Thermostat/*.xml Transmission/*.xml V2V/*.xml"
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
