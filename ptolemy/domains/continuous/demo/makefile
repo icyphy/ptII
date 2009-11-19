@@ -34,7 +34,7 @@ ME =		ptolemy/domains/continuous/demo
 # Root of the Java directory
 ROOT =		../../../..
 
-DIRS =		BouncingBall Brownian CTInsideDE CarTracking \
+DIRS =		BouncingBall Brownian CarTracking \
 		CartPendulum ComparedClocks ContinuousClock ContinuousInsideDE \
 		Corba Helicopter HierarchicalExecution HybridPlant Hysteresis \
 		LevelCrossingDetector LevelCrossingDetectorDetectsGlitches \
@@ -56,7 +56,6 @@ PTCLASSJAR =
 PTCLASSALLJARS = \
 	BouncingBall/BouncingBall.jar \
 	Brownian/Brownian.jar \
-	CTInsideDE/CTInsideDE.jar \
 	CarTracking/CarTracking.jar \
 	CartPendulum/CartPendulum.jar \
 	ComparedClocks/ComparedClocks.jar \
