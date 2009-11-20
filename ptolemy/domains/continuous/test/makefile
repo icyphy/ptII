@@ -36,7 +36,7 @@ ME =		ptolemy/domains/continuous/test
 ROOT =		../../../..
 
 # auto/ScheduleCTCompositeActor3.xml needs this
-CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(DIVA_JAR)
+CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(DIVA_JAR)$(CLASSPATHSEPARATOR)$(PTCOLT_JARS)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
