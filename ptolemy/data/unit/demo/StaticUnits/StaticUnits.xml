@@ -4,7 +4,7 @@
 <entity name="StaticUnits" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
-    <property name="CT Director" class="ptolemy.domains.ct.kernel.CTMixedSignalDirector">
+    <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
         <property name="timeResolution" class="ptolemy.actor.parameters.SharedParameter" value="1.0E-10">
         </property>
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -24,16 +24,6 @@
         <property name="valueResolution" class="ptolemy.data.expr.Parameter" value="1.0E-6">
         </property>
         <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
-        <property name="ODESolver" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver&quot;">
-            <property name="style" class="ptolemy.actor.gui.style.EditableChoiceStyle">
-                <property name="choice0" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver&quot;">
-                </property>
-                <property name="choice1" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.BackwardEulerSolver&quot;">
-                </property>
-                <property name="choice2" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ForwardEulerSolver&quot;">
-                </property>
-            </property>
         </property>
         <property name="runAheadLength" class="ptolemy.data.expr.Parameter" value="0.1">
         </property>
@@ -150,7 +140,7 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[530.0, 265.0]">
         </property>
-        <port name="population" class="ptolemy.domains.fsm.modal.RefinementPort">
+        <port name="population" class="ptolemy.domains.modal.modal.RefinementPort">
             <property name="output"/>
             <property name="_location" class="ptolemy.kernel.util.Location" value="545.0, 165.00001017252606">
             </property>
@@ -193,21 +183,11 @@
                 </property>
             </port>
         </entity>
-        <entity name="Integrator" class="ptolemy.domains.ct.lib.Integrator">
+        <entity name="Integrator" class="ptolemy.domains.continuous.lib.Integrator">
             <property name="initialState" class="ptolemy.data.expr.Parameter" value="initPop">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="515.0, 250.0">
             </property>
-            <port name="input" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
-                </property>
-            </port>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-                <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
-                </property>
-            </port>
         </entity>
         <entity name="growth" class="ptolemy.actor.lib.Expression">
             <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="population*(growth+(1.0/(1.0+(VatTemp-optimalTemp))))">
@@ -258,8 +238,8 @@
         <link port="growthAddSubtract.output" relation="relation"/>
         <link port="Limit.output" relation="relation3"/>
         <link port="Limit.population" relation="relation2"/>
-        <link port="Integrator.input" relation="relation"/>
-        <link port="Integrator.output" relation="relation2"/>
+        <link port="Integrator.derivative" relation="relation"/>
+        <link port="Integrator.state" relation="relation2"/>
         <link port="growth.output" relation="relation4"/>
         <link port="growth.population" relation="relation2"/>
         <link port="growth.VatTemp" relation="relation5"/>
@@ -487,25 +467,15 @@
             </property>
         </port>
     </entity>
-    <entity name="Integrator" class="ptolemy.domains.ct.lib.Integrator">
+    <entity name="Integrator" class="ptolemy.domains.continuous.lib.Integrator">
         <property name="initialState" class="ptolemy.data.expr.Parameter" value="1.0">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[392.5, 132.5]">
         </property>
-        <property name="_unitConstraints" class="ptolemy.moml.unit.UnitAttribute" value="$output=$input second">
+        <property name="_unitConstraints" class="ptolemy.moml.unit.UnitAttribute" value="$state=$derivative second">
         </property>
         <property name="_explanation" class="ptolemy.kernel.util.StringAttribute">
         </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
-            </property>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
-            </property>
-        </port>
     </entity>
     <entity name="TempCW" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -597,8 +567,8 @@
     <link port="AddSubtract.plus" relation="relation"/>
     <link port="AddSubtract.minus" relation="relation2"/>
     <link port="AddSubtract.output" relation="relation3"/>
-    <link port="Integrator.input" relation="relation3"/>
-    <link port="Integrator.output" relation="relation4"/>
+    <link port="Integrator.derivative" relation="relation3"/>
+    <link port="Integrator.state" relation="relation4"/>
     <link port="TempCW.output" relation="relation6"/>
     <link port="flow.output" relation="relation7"/>
 </entity>

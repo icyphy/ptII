@@ -24,18 +24,22 @@ In order to illustrate these concepts, the Fermenter model, shown here, will be 
 <p>
 The purpose of this model is simulate the growth process in a fermenter.
 There are three
-submodels; 1) growth models the number of cells being produced as a
+submodels;
+<ol>
+  <li> growth models the number of cells being produced as a
 function of the current number of cells and the vat temperature,
-2) HeatProduction models the amount of heat produced (in calories) as
-a function of the amount of work done (in joules), and 3) HeatExchanger
+  <li> HeatProduction models the amount of heat produced (in calories) as
+a function of the amount of work done (in joules), and
+  <li> HeatExchanger
 models the removal of heat from the vat as a function of the rate at
 which water flows through the cooling jacket around the vat.
+</ol>
 </p>
 <h2>Port Units Specifications</h2>
 In order to see the units sepcifications on the ports of the actors
-the PortConfigurerDialog must be used.
-Right mouse click on the actor and select "Configure Ports".
-For example, applying the PortConfigurerDialog to the HeatExcnager actor shows
+right mouse click on the actor and selecting "Customize" -&gt; "Ports". 
+<p>For example, right clicking on the  HeatExchager actor and selecting "Customize" -&gt; "Ports"
+shows
 <p>
 <center>
 <img src="StaticUnits2.gif" alt="port configuration for Heat Exchanger">
@@ -49,10 +53,9 @@ the output port has units <b>calories/second</b>,
 and, the flow port has units <b>gallons/hour</b>.
 </p>
 <h2>Actor Units Specifications</h2>
-In order to see the units sepcifications on the actors
-the ConfigureUnitsDialog must be used.
-Right mouse click on the actor and select "Configure Units".
-For example, applying the ConfigurerUnitsDialog to the AddSubtract actor shows
+In order to see the units sepcifications on the actors,
+right mouse click on the actor and select "Configure" -&gt; "Units"
+<p>For example, right mouse clicking on the AddSubtract and selecting "Configure" -&gt; "Units" shows
 <p>
 <center>
 <img src="StaticUnits3.gif" alt="unit constraints for AddSubtract">
@@ -111,7 +114,7 @@ This is indicated in the results pane with the label
 <b>Inconsistent relation5 joule/population relation7 1/hour</b>.
 This is a shortened version of the results and indicates three properties
 <ul>
-<li>The soultion is inconsistent.
+<li>The solution is inconsistent.
 <li>To become consistent relation5 would need to be replaced with an actor that
 transforms the input by joule/population.
 <li>To become consistent relation7 would need to be replaced with an actor that
