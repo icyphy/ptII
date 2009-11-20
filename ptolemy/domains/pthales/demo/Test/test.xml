@@ -7,7 +7,7 @@
     <property name="PthalesDirector" class="ptolemy.domains.pthales.kernel.PthalesDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 45.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-85.0, -125.0]">
         </property>
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 0, 1412, 1062}, maximized=false}">
@@ -21,7 +21,7 @@
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Select Debug-&gt;Listen to Director to get messages&#10;when you run.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[145.0, 15.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[110.0, -145.0]">
         </property>
     </property>
     <property name="producePattern" class="ptolemy.data.expr.StringParameter" value="x = 8.1, y = 10.1">
@@ -218,6 +218,12 @@
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[340.0, 160.0]">
+        </property>
+    </property>
+    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Parameters to set in Pthales domain:&#10;- &quot;size&quot; of produced array in each output port (currently optional, and not used)&#10;- &quot;pattern&quot; of producing/consuming array in each port&#10;- &quot;tiling&quot; in each port&#10;- &quot;repetitions&quot; of each Pthales composite actor&#10;- &quot;vectorizationFactor&quot; of SDF director of each composite actor&#10;">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-85.0, -75.0]">
         </property>
     </property>
     <entity name="Source" class="ptolemy.actor.TypedCompositeActor">
