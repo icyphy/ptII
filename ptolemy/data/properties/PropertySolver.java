@@ -39,6 +39,7 @@ import ptolemy.data.expr.Parameter;
 import ptolemy.data.properties.lattice.PropertyConstraintAttribute;
 import ptolemy.data.properties.token.PropertyTokenAttribute;
 import ptolemy.data.type.BaseType;
+import ptolemy.domains.tester.lib.Testable;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
@@ -63,7 +64,7 @@ import ptolemy.util.StringUtilities;
  * @Pt.ProposedRating Red (mankit)
  * @Pt.AcceptedRating Red (mankit)
  */
-public abstract class PropertySolver extends PropertySolverBase {
+public abstract class PropertySolver extends PropertySolverBase implements Testable {
 
     /**
      * Construct a PropertySolver with the specified container and name. If this
@@ -173,7 +174,7 @@ public abstract class PropertySolver extends PropertySolverBase {
      * parameter is true, show the given property value for the given
      * property-able object. If the property is not null, this looks for the
      * _showInfo parameter in the property-able object. Create a new _showInfo
-     * StringParameter, if there does not already exists one. Set its value to
+     * StringParameter if one does not already exist. Set its value to
      * the given property value. If the given property is null, this removes the
      * _showInfo parameter from the property-able object.
      * @exception IllegalActionException Thrown if an error occurs when creating
@@ -387,6 +388,39 @@ public abstract class PropertySolver extends PropertySolverBase {
     /** True if the solver is in viewing mode; otherwise false. */
     public boolean isView() {
         return action.getExpression().equals(PropertySolver.VIEW);
+    }
+    
+    /** Run a test. This invokes the solver in TEST mode.
+     *  @throws IllegalActionException If the test fails.
+     */
+    public void test() throws IllegalActionException {
+        // FIXME: Brute force method here just sets the action to TEST.
+        // However, the TEST and TRAINING modes should be removed.
+        String previousAction = action.getExpression();
+        try {
+            action.setExpression(TEST);
+            invokeSolver();
+            resetAll();
+        } finally {
+            action.setExpression(previousAction);
+        }
+    }
+    
+    /** Train a test. This invokes the solver in TRAINING mode.
+     */
+    public void train() {
+        // FIXME: Brute force method here just sets the action to TRAINING.
+        // However, the TEST and TRAINING modes should be removed.
+        String previousAction = action.getExpression();
+        try {
+            workspace().getWriteAccess();
+            action.setExpression(TRAINING);
+            invokeSolver();
+            resetAll();
+        } finally {
+            action.setExpression(previousAction);
+            workspace().doneWriting();
+        }
     }
 
     /**

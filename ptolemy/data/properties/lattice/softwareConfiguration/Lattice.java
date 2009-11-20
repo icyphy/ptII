@@ -31,19 +31,11 @@ import ptolemy.data.properties.Property;
 import ptolemy.data.properties.lattice.PropertyLattice;
 
 //////////////////////////////////////////////////////////////////////////
-//// PropertyLattice
+//// Lattice
 
 /**
- Property hierarchy base class.
- Note that all public methods are synchronized.
- There are more than one instances of a property lattice.
- Although the property lattice is constructed once and then typically
- does not change during execution, the methods need to be synchronized
- because there are various data structures used to cache results that
- are expensive to compute. These data structures do change during
- execution. Multiple threads may be accessing the property lattice
- simultaneously and modifying these data structures. To ensure
- thread safety, the methods need to be synchronized.
+ Lattice representing whether propertyable components are configured or
+ not in a model. It has four elements. The bottom is NOT.
 
  @author Thomas Mandl, Man-Kit Leung, Edward A. Lee
  @version $Id$

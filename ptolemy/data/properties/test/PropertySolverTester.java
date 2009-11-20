@@ -41,7 +41,7 @@ import ptolemy.moml.filter.RemoveGraphicalClasses;
 import ptolemy.util.StringUtilities;
 
 //////////////////////////////////////////////////////////////////////////
-////TestPropertySolver
+//// PropertySolverTester
 
 /**
  * A extended base abstract class for a property solver.

@@ -33,10 +33,10 @@ import ptolemy.data.properties.lattice.PropertyLattice;
 
 
 //////////////////////////////////////////////////////////////////////////
-//// Property
+//// NotSpecified
 
 /**
- A base class representing a property.
+ A lattice element for the softwareConfiguration lattice.
 
  @author Thomas Mandl
  */

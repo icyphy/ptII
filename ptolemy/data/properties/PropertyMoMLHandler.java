@@ -385,7 +385,7 @@ public class PropertyMoMLHandler extends Attribute {
     }
 
     /**
-     * Return a MoML request string that create or update
+     * Return a MoML request string that creates or updates
      * the _showInfo attribute of the given property-able
      * object, according to the given property value.
      * If the given property is null, this would issue
@@ -409,16 +409,9 @@ public class PropertyMoMLHandler extends Attribute {
         StringParameter showAttribute = (StringParameter) propertyable
                 .getAttribute("_showInfo");
 
-        if (property == null && showAttribute != null) {
-            // Remove the showInfo attribute if we don't have
-            // any property to display.
-            request = "<deleteProperty name=\"_showInfo\"/>";
-
-        } else {
-            // Update the _showInfo attribute.
-            request = "<property name=\"_showInfo\" class=\"ptolemy.data.expr.StringParameter\" value=\""
-                    + propertyString + "\"/>";
-        }
+        // Update the _showInfo attribute.
+        request = "<property name=\"_showInfo\" class=\"ptolemy.data.expr.StringParameter\" value=\""
+                + propertyString + "\"/>";
 
         request = _completeHierarchyInMoML(propertyable, request);
         return request;

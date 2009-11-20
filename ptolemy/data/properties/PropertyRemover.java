@@ -90,7 +90,7 @@ public class PropertyRemover extends Attribute {
             protected void _execute() throws Exception {
             }
         });
-        PropertyLattice.resetAll();
+        // PropertyLattice.resetAll();
     }
 
     public void removeProperties(PropertyHelper helper)
