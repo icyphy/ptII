@@ -38,8 +38,8 @@ DIRS =		BouncingBall Brownian CarTracking \
 		CartPendulum ComparedClocks ContinuousClock ContinuousInsideDE \
 		HierarchicalExecution HybridPlant Hysteresis \
 		LevelCrossingDetector LevelCrossingDetectorDetectsGlitches \
-		Lorenz NewtonsCradle Pendulum3D SampledClocks Satellite \
-		SigmaDelta SinuBouncingBall Sinusoid Spontaneous SquareWave \
+		Lorenz NewtonsCradle Poisson Pendulum3D SampledClocks Satellite \
+		SigmaDelta SinuBouncingBall Sinusoid SquareWave \
 		Starmac StickyMasses Switch Thermostat Transmission V2V
 
 CLASSPATH =	$(ROOT)
@@ -69,12 +69,12 @@ PTCLASSALLJARS = \
 	Lorenz/Lorenz.jar \
 	NewtonsCradle/NewtonsCradle.jar \
 	Pendulum3D/Pendulum3D.jar \
+	Poisson/Poisson.jar \
 	SampledClocks/SampledClocks.jar \
 	Satellite/Satellite.jar \
 	SigmaDelta/SigmaDelta.jar \
 	SinuBouncingBall/SinuBouncingBall.jar \
 	Sinusoid/Sinusoid.jar \
-	Spontaneous/Spontaneous.jar \
 	SquareWave/SquareWave.jar \
 	Starmac/Starmac.jar \
 	StickyMasses/StickyMasses.jar \
@@ -105,7 +105,7 @@ install: jclass jars
 demo: subdemo
 
 echoCTDemos:
-	@echo "Brownian/*.xml CartPendulum/*.xml ComparedClocks/*.xml ContinuousClock/*.xml HierarchicalExecution/*.xml HybridPlant/*.xml Hysteresis/*.xml Pendulum3D/*.xml SampledClocks/*.xml Satellite/*.xml SigmaDelta/*.xml SinuBouncingBall/*.xml Spontaneous/*.xml SquareWave/*.xml Starmac/*.xml StickyMasses/*.xml Thermostat/*.xml Transmission/*.xml V2V/*.xml"
+	@echo "Brownian/*.xml CartPendulum/*.xml ComparedClocks/*.xml ContinuousClock/*.xml HierarchicalExecution/*.xml HybridPlant/*.xml Hysteresis/*.xml Pendulum3D/*.xml Poisson/*.xml SampledClocks/*.xml Satellite/*.xml SigmaDelta/*.xml SinuBouncingBall/*.xml SquareWave/*.xml Starmac/*.xml StickyMasses/*.xml Thermostat/*.xml Transmission/*.xml V2V/*.xml"
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

@@ -1,8 +1,8 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="DeterministicHybridPlant" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
+<entity name="HybridPlant" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="50.0">
@@ -172,13 +172,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[535.0, 115.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={174, 22, 838, 510}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={174, 22, 844, 535}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[625, 400]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[631, 425]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{312.5, 200.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{315.5, 212.5}">
     </property>
     <property name="Annotation7" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
@@ -202,8 +202,16 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 355.0]">
         </property>
     </property>
+    <property name="Annotation10" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model uses a Clock to simulate &#10;the deterministic arrival of events.&#10;Contrast this with the HybridPlant model which&#10;uses a PoissonClock to simulate a random&#10;arrival of events.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{215.0, 330.0}">
+        </property>
+    </property>
     <entity name="ModalModel" class="ptolemy.domains.modal.modal.ModalModel">
-        <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalTableauFactory">
+        <property name="_tableauFactory" class="ptolemy.vergil.modal.modal.ModalTableauFactory">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[355.0, 200.0]">
         </property>

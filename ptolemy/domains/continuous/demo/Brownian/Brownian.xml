@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="Brownian" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
     <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -25,13 +25,13 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Ye Zhou and Edward A. Lee">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 365.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 365.0]">
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Brownian motion is the integral of white noise.&#10;This model generates approximations of two&#10;Brownian motion random processes and plots the&#10;value of one vs. the other. This creates a&#10;random walk effect. White noise is approximated&#10;as a signal where any two samples are independent&#10;and identically distributed Gaussian random variables.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[290.0, 265.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[280.0, 265.0]">
         </property>
     </property>
     <entity name="Gaussian" class="ptolemy.actor.lib.Gaussian">
@@ -46,7 +46,7 @@
     <entity name="XYPlotter" class="ptolemy.actor.lib.gui.XYPlotter">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={517, 36, 508, 490}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={517, 36, 500, 479}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 435]">
         </property>
@@ -59,8 +59,8 @@
 <title>Brownian Motion</title>
 <xLabel></xLabel>
 <yLabel></yLabel>
-<xRange min="-1.0" max="1.0"/>
-<yRange min="-1.0" max="1.0"/>
+<xRange min="-0.2667765730644178" max="16.942202654284234"/>
+<yRange min="-8.796656752602773" max="3.393783331866959"/>
 <noGrid/>
 </plot>?>
         </configure>
@@ -75,7 +75,7 @@
         </property>
     </entity>
     <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={517, 527, 508, 245}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={517, 527, 500, 234}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 190]">
         </property>
@@ -89,12 +89,12 @@
 <xLabel></xLabel>
 <yLabel></yLabel>
 <xRange min="0.0" max="100.0"/>
-<yRange min="-0.0683275275138371" max="2.82544495939659"/>
+<yRange min="-0.2667765730644178" max="16.942202654284234"/>
 </plot>?>
         </configure>
     </entity>
     <entity name="TimedPlotter2" class="ptolemy.actor.lib.gui.TimedPlotter">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={4, 527, 508, 246}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={4, 527, 500, 235}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 191]">
         </property>
@@ -108,7 +108,7 @@
 <xLabel></xLabel>
 <yLabel></yLabel>
 <xRange min="0.0" max="100.0"/>
-<yRange min="-3.525005260397737" max="4.076060176833891"/>
+<yRange min="-1.7546717640363947" max="3.055257907535963"/>
 <noGrid/>
 </plot>?>
         </configure>

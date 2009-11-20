@@ -3,7 +3,7 @@
 #
 # @Version: $Id$
 #
-# @Copyright (c) 2006 The Regents of the University of California.
+# @Copyright (c) 2009 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -48,14 +48,14 @@ JSRCS =
 OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS) \
 	DEBugRefireIgnored.xml \
-	DeterministicHybridPlant.xml \
+	HybridPlant.xml \
 	RandomHybridPlant.xml
 
 
 EXTRA_SRCS = \
 	$(OTHER_FILES_TO_BE_JARED) \
-	DeterministicHybridPlant.htm \
-	DeterministicHybridPlant.jnlp \
+	HybridPlant.htm \
+	HybridPlant.jnlp \
 	RandomHybridPlant.htm \
 	RandomHybridPlant.jnlp
 

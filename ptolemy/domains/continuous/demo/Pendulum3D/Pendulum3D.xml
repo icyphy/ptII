@@ -2,9 +2,9 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="Pendulum3D" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={12, 99, 817, 610}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={12, 99, 815, 613}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[602, 503]">
     </property>
@@ -13,11 +13,11 @@
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{301.0, 251.5}">
     </property>
     <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
+        <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="35">
         </property>
         <property name="maxStepSize" class="ptolemy.data.expr.Parameter" value="0.1">
-        </property>
-        <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 60.0]">
         </property>
@@ -144,7 +144,7 @@
         </property>
     </property>
     <entity name="ModalModel" class="ptolemy.domains.modal.modal.ModalModel">
-        <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalTableauFactory">
+        <property name="_tableauFactory" class="ptolemy.vergil.modal.modal.ModalTableauFactory">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 145.0]">
         </property>
@@ -206,8 +206,6 @@
             </property>
         </port>
         <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
-            <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute">
-            </property>
             <property name="_library" class="ptolemy.moml.LibraryAttribute">
                 <configure>
         <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.kernel.util.Attribute"></property></entity></entity>
@@ -431,7 +429,7 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[695.0, 70.0]">
                 </property>
             </property>
-            <property name="initialPhi_dot" class="ptolemy.actor.parameters.PortParameter" value="0.0954914928417">
+            <property name="initialPhi_dot" class="ptolemy.actor.parameters.PortParameter" value="0.0954858823127">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
                 <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
@@ -652,13 +650,13 @@
                 </property>
             </port>
             <entity name="theta_dot" class="ptolemy.domains.continuous.lib.Integrator">
-                <property name="initialState" class="ptolemy.data.expr.Parameter" value="initialTheta_dot">
+                <property name="initialState" class="ptolemy.actor.parameters.PortParameter" value="initialTheta_dot">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[110.0, 350.0]">
                 </property>
             </entity>
             <entity name="theta" class="ptolemy.domains.continuous.lib.Integrator">
-                <property name="initialState" class="ptolemy.data.expr.Parameter" value="initialTheta">
+                <property name="initialState" class="ptolemy.actor.parameters.PortParameter" value="initialTheta">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{235.0, 435.0}">
                 </property>
@@ -738,13 +736,13 @@
                 </port>
             </entity>
             <entity name="phi_dot" class="ptolemy.domains.continuous.lib.Integrator">
-                <property name="initialState" class="ptolemy.data.expr.Parameter" value="initialPhi_dot">
+                <property name="initialState" class="ptolemy.actor.parameters.PortParameter" value="initialPhi_dot">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[110.0, 200.0]">
                 </property>
             </entity>
             <entity name="phi" class="ptolemy.domains.continuous.lib.Integrator">
-                <property name="initialState" class="ptolemy.data.expr.Parameter" value="initialPhi">
+                <property name="initialState" class="ptolemy.actor.parameters.PortParameter" value="initialPhi">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[215.0, 255.0]">
                 </property>
@@ -931,7 +929,7 @@
     <entity name="Displacement" class="ptolemy.actor.lib.gui.TimedPlotter">
         <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="x, y, z">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={597, 7, 425, 244}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={597, 22, 417, 233}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[417, 189]">
         </property>
@@ -945,14 +943,14 @@
 <xLabel></xLabel>
 <yLabel></yLabel>
 <xRange min="0.0" max="35.0"/>
-<yRange min="-9.999910996450742" max="9.783438908839338"/>
+<yRange min="-9.999951504062016" max="9.78252070111274"/>
 </plot>?>
         </configure>
     </entity>
     <entity name="Angles" class="ptolemy.actor.lib.gui.TimedPlotter">
         <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="phi, theta">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={596, 495, 426, 239}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={596, 495, 418, 228}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[418, 184]">
         </property>
@@ -964,14 +962,14 @@
 <plot>
 <title>Angles</title>
 <xRange min="0.0" max="35.0"/>
-<yRange min="0.3141592653589793" max="4.943002895053267"/>
+<yRange min="0.3141592653589793" max="4.942812906248699"/>
 </plot>?>
         </configure>
     </entity>
     <entity name="Angular Velocities" class="ptolemy.actor.lib.gui.TimedPlotter">
         <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="theta_dot, phi_dot">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={596, 252, 425, 241}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={596, 252, 417, 230}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[417, 186]">
         </property>
@@ -985,7 +983,7 @@
 <xLabel></xLabel>
 <yLabel></yLabel>
 <xRange min="0.0" max="35.0"/>
-<yRange min="-1.2569276911145555" max="1.3965863234606173"/>
+<yRange min="-1.256937377041055" max="1.3965970856011722"/>
 </plot>?>
         </configure>
     </entity>

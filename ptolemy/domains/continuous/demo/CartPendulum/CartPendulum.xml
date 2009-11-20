@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="CartPendulum" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={20, 51, 959, 560}, maximized=false}">
     </property>
@@ -13,11 +13,11 @@
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{373.0, 225.0}">
     </property>
     <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
+        <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="40">
         </property>
         <property name="maxStepSize" class="ptolemy.data.expr.Parameter" value="0.1">
-        </property>
-        <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 45.0]">
         </property>
@@ -119,7 +119,7 @@
         </property>
     </property>
     <entity name="ModalModel" class="ptolemy.domains.modal.modal.ModalModel">
-        <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalTableauFactory">
+        <property name="_tableauFactory" class="ptolemy.vergil.modal.modal.ModalTableauFactory">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[60.5, 145.0]">
         </property>
@@ -350,7 +350,7 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[420.0, 40.0]">
                 </property>
             </property>
-            <property name="initiald_dot" class="ptolemy.actor.parameters.PortParameter" value="0.1850936436837">
+            <property name="initiald_dot" class="ptolemy.actor.parameters.PortParameter" value="0.1850554527658">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
                 <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
@@ -417,7 +417,7 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[210.0, 40.0]">
                 </property>
             </property>
-            <property name="initialTheta_dot" class="ptolemy.actor.parameters.PortParameter" value="-0.0605245552568">
+            <property name="initialTheta_dot" class="ptolemy.actor.parameters.PortParameter" value="-0.0138006433726">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
                 <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
@@ -543,13 +543,13 @@
                 </property>
             </port>
             <entity name="theta_dot" class="ptolemy.domains.continuous.lib.Integrator">
-                <property name="initialState" class="ptolemy.data.expr.Parameter" value="initialTheta_dot">
+                <property name="initialState" class="ptolemy.actor.parameters.PortParameter" value="initialTheta_dot">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 305.0]">
                 </property>
             </entity>
             <entity name="theta" class="ptolemy.domains.continuous.lib.Integrator">
-                <property name="initialState" class="ptolemy.data.expr.Parameter" value="initialTheta">
+                <property name="initialState" class="ptolemy.actor.parameters.PortParameter" value="initialTheta">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[169.40087890625, 428.74755859375]">
                 </property>
@@ -621,13 +621,13 @@
                 </port>
             </entity>
             <entity name="di_dot" class="ptolemy.domains.continuous.lib.Integrator">
-                <property name="initialState" class="ptolemy.data.expr.Parameter" value="initiald_dot">
+                <property name="initialState" class="ptolemy.actor.parameters.PortParameter" value="initiald_dot">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 190.0]">
                 </property>
             </entity>
             <entity name="d" class="ptolemy.domains.continuous.lib.Integrator">
-                <property name="initialState" class="ptolemy.data.expr.Parameter" value="initiald">
+                <property name="initialState" class="ptolemy.actor.parameters.PortParameter" value="initiald">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[145.0, 250.0]">
                 </property>
@@ -754,7 +754,7 @@
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
             </property>
-            <property name="initiald" class="ptolemy.actor.parameters.PortParameter" value="1.2277831109342">
+            <property name="initiald" class="ptolemy.actor.parameters.PortParameter" value="1.2261960834868">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
                 <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
@@ -778,7 +778,7 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[580.0, 90.0]">
                 </property>
             </property>
-            <property name="initiald_dot" class="ptolemy.actor.parameters.PortParameter" value="0.1850945245969">
+            <property name="initiald_dot" class="ptolemy.actor.parameters.PortParameter" value="0.185055844756">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
                 <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
@@ -959,13 +959,13 @@
                 </property>
             </port>
             <entity name="theta_dot2" class="ptolemy.domains.continuous.lib.Integrator">
-                <property name="initialState" class="ptolemy.data.expr.Parameter" value="initialTheta_dot">
+                <property name="initialState" class="ptolemy.actor.parameters.PortParameter" value="initialTheta_dot">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 345.0]">
                 </property>
             </entity>
             <entity name="theta2" class="ptolemy.domains.continuous.lib.Integrator">
-                <property name="initialState" class="ptolemy.data.expr.Parameter" value="initialTheta">
+                <property name="initialState" class="ptolemy.actor.parameters.PortParameter" value="initialTheta">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[165.0, 430.0]">
                 </property>
@@ -1037,13 +1037,13 @@
                 </port>
             </entity>
             <entity name="di_dot" class="ptolemy.domains.continuous.lib.Integrator">
-                <property name="initialState" class="ptolemy.data.expr.Parameter" value="initiald_dot">
+                <property name="initialState" class="ptolemy.actor.parameters.PortParameter" value="initiald_dot">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 195.0]">
                 </property>
             </entity>
             <entity name="d2" class="ptolemy.domains.continuous.lib.Integrator">
-                <property name="initialState" class="ptolemy.data.expr.Parameter" value="initiald">
+                <property name="initialState" class="ptolemy.actor.parameters.PortParameter" value="initiald">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[150.0, 260.0]">
                 </property>
@@ -1190,7 +1190,7 @@
     <entity name="Positions" class="ptolemy.actor.lib.gui.TimedPlotter">
         <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="theta, x">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={596, 417, 428, 311}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={596, 417, 420, 300}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[420, 256]">
         </property>
@@ -1203,8 +1203,8 @@
 <title>Positions</title>
 <xLabel></xLabel>
 <yLabel></yLabel>
-<xRange min="0.0" max="29.2539552595"/>
-<yRange min="-3.8128973574538825" max="1.5708013196208532"/>
+<xRange min="0.0" max="40.0"/>
+<yRange min="-3.815404815612222" max="3.0383809017621144"/>
 </plot>?>
         </configure>
     </entity>

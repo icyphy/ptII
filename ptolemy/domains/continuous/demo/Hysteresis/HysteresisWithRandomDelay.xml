@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="HysteresisWithRandomDelay" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
     <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="20.0">
@@ -138,7 +138,7 @@
         </property>
     </property>
     <entity name="ModalModel" class="ptolemy.domains.modal.modal.ModalModel">
-        <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalTableauFactory">
+        <property name="_tableauFactory" class="ptolemy.vergil.modal.modal.ModalTableauFactory">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{195.0, 395.0}">
         </property>
@@ -439,7 +439,7 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 15.0]">
                 </property>
             </property>
-            <property name="time" class="ptolemy.data.expr.Parameter" value="0.7183726405078">
+            <property name="time" class="ptolemy.data.expr.Parameter" value="0.4825175844342">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -661,7 +661,7 @@
     <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
         <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="in, out, waitTime, high, low">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={515, 413, 508, 355}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={515, 413, 500, 344}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
         </property>

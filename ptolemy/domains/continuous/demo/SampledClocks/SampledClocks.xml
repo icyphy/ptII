@@ -2,9 +2,11 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="SampledClocks" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
     <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
+        <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
         <property name="timeResolution" class="ptolemy.actor.parameters.SharedParameter" value="1.0E-10">
         </property>
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -13,17 +15,15 @@
         </property>
         <property name="initStepSize" class="ptolemy.data.expr.Parameter" value="0.1">
         </property>
-        <property name="minStepSize" class="ptolemy.data.expr.Parameter" value="1.0E-5">
-        </property>
         <property name="maxStepSize" class="ptolemy.data.expr.Parameter" value="1.0">
         </property>
         <property name="maxIterations" class="ptolemy.data.expr.Parameter" value="20">
         </property>
         <property name="errorTolerance" class="ptolemy.data.expr.Parameter" value="1.0E-4">
         </property>
-        <property name="valueResolution" class="ptolemy.data.expr.Parameter" value="1.0E-6">
+        <property name="minStepSize" class="ptolemy.data.expr.Parameter" value="1.0E-5">
         </property>
-        <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
+        <property name="valueResolution" class="ptolemy.data.expr.Parameter" value="1.0E-6">
         </property>
         <property name="runAheadLength" class="ptolemy.data.expr.Parameter" value="0.1">
         </property>
@@ -90,7 +90,7 @@
     <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={511, 566, 508, 202}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={511, 566, 500, 191}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 147]">
         </property>
@@ -165,7 +165,7 @@
     <entity name="TimedPlotter2" class="ptolemy.actor.lib.gui.TimedPlotter">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={3, 561, 508, 206}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={3, 561, 500, 195}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 151]">
         </property>
@@ -190,7 +190,7 @@
     <entity name="TimedPlotter3" class="ptolemy.actor.lib.gui.TimedPlotter">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={510, 360, 508, 208}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={510, 360, 500, 197}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 153]">
         </property>
@@ -215,7 +215,7 @@
     <entity name="TimedPlotter4" class="ptolemy.actor.lib.gui.TimedPlotter">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={3, 362, 508, 206}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={3, 362, 500, 195}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 151]">
         </property>

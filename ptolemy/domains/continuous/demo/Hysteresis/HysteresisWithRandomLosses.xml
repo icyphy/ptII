@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="HysteresisWithRandomLosses" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
     <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="300">
@@ -148,7 +148,7 @@
         </property>
     </property>
     <entity name="ModalModel" class="ptolemy.domains.modal.modal.ModalModel">
-        <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalTableauFactory">
+        <property name="_tableauFactory" class="ptolemy.vergil.modal.modal.ModalTableauFactory">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[390.0, 215.0]">
         </property>
@@ -327,7 +327,7 @@ The transitions between states change the values of the constant output.</text><
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 45.0]">
                 </property>
             </property>
-            <property name="outputValue" class="ptolemy.data.expr.Parameter" value="-1.0">
+            <property name="outputValue" class="ptolemy.data.expr.Parameter" value="1.0">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -398,7 +398,7 @@ The transitions between states change the values of the constant output.</text><
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 35.0]">
                 </property>
             </property>
-            <property name="levelThreshold" class="ptolemy.data.expr.Parameter" value="0.5">
+            <property name="levelThreshold" class="ptolemy.data.expr.Parameter" value="-0.5">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -417,7 +417,7 @@ The transitions between states change the values of the constant output.</text><
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[175.0, 40.0]">
                 </property>
             </property>
-            <property name="direction" class="ptolemy.data.expr.Parameter" value="&quot;rising&quot;">
+            <property name="direction" class="ptolemy.data.expr.Parameter" value="&quot;falling&quot;">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">

@@ -26,7 +26,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[345.0, 15.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[370.0, 15.0]">
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -34,7 +34,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="jobs/minute">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[515.0, 5.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[540.0, 5.0]">
         </property>
     </property>
     <property name="setupTime" class="ptolemy.data.expr.Parameter" value="1.0">
@@ -53,7 +53,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[345.0, 35.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[370.0, 35.0]">
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -61,7 +61,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="minutes">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[515.0, 25.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[540.0, 25.0]">
         </property>
     </property>
     <property name="rawMaterialInflowRate" class="ptolemy.data.expr.Parameter" value="1.5">
@@ -80,7 +80,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[345.0, 55.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[370.0, 55.0]">
         </property>
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -88,7 +88,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="liters/minute">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[515.0, 45.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[540.0, 45.0]">
         </property>
     </property>
     <property name="maxInflowRate" class="ptolemy.data.expr.Parameter" value="2.0">
@@ -107,7 +107,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[345.0, 75.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[370.0, 75.0]">
         </property>
     </property>
     <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -115,7 +115,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="liters/minute">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[515.0, 65.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[540.0, 65.0]">
         </property>
     </property>
     <property name="targetContainerLevel" class="ptolemy.data.expr.Parameter" value="10.0">
@@ -134,7 +134,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[345.0, 95.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[370.0, 95.0]">
         </property>
     </property>
     <property name="Annotation5" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -142,7 +142,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="liters">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[515.0, 85.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[540.0, 85.0]">
         </property>
     </property>
     <property name="initialRawMaterialLevel" class="ptolemy.data.expr.Parameter" value="3.0">
@@ -161,7 +161,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[345.0, 115.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[370.0, 115.0]">
         </property>
     </property>
     <property name="Annotation6" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -169,16 +169,16 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="liters">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[515.0, 105.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[540.0, 105.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={287, 47, 838, 510}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={217, 304, 876, 511}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[625, 400]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[663, 401]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{312.5, 200.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{331.5, 200.5}">
     </property>
     <property name="Annotation8" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Hybrid model of a plant where a continuous flow&#10;of raw material is directed into bottles as the&#10;bottles (jobs) arrive. The top level is a discrete-&#10;event model with a modal continuous-time model&#10;inside. Model parameters are to the right.">
@@ -200,6 +200,14 @@
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Edward A. Lee">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 345.0]">
+        </property>
+    </property>
+    <property name="Annotation10" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model uses a PoissonClock to simulate &#10;the random arrival of events.&#10;Contrast this with the HybridPlant model which&#10;uses a Clock to simulate a deterministic arrival&#10;of events.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 320.0]">
         </property>
     </property>
     <entity name="ModalModel" class="ptolemy.domains.modal.modal.ModalModel">
