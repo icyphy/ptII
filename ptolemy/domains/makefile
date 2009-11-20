@@ -49,7 +49,7 @@ DOMAINS =	ci continuous csp ct curriculum \
 	        dde ddf de fsm hdf modal pn sdf dt \
 	        giotto petrinet rendezvous properties \
 		$(PTPSDF_DIR) ptera pthales ptides ptinyos $(PTSPACE_DIR) \
-		sequence sr tdl tm $(PTJAVA3D_DIR) $(PTGRO_DIR) wireless
+		sequence sr tdl tester tm $(PTJAVA3D_DIR) $(PTGRO_DIR) wireless
 
 DIRS =		$(DOMAINS) $(EXPERIMENTAL_DOMAINS)
 
@@ -86,6 +86,7 @@ PTAUXALLJARS = \
 		pthales/pthales.jar \
 		ptides/ptides.jar \
 		$(PTSPACEDOMAIN_JAR) \
+		tester/tester.jar \
 		tm/tm.jar \
 		wireless/wireless.jar
 

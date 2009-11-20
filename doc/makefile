@@ -665,6 +665,8 @@ ALLPACKAGES = \
 	ptolemy.domains.sr.lib \
 	ptolemy.domains.sr.lib.gui \
 	ptolemy.domains.tdl.kernel \
+	ptolemy.domains.tester.kernel \
+	ptolemy.domains.tester.lib \
 	ptolemy.domains.tm.kernel \
 	ptolemy.domains.tm.lib \
 	ptolemy.data \
