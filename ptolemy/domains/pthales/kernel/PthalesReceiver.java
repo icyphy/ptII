@@ -389,6 +389,13 @@ public class PthalesReceiver extends SDFReceiver {
         int jumpRep;
         int previousSize;
         
+        // Pattern order
+        String[] patternOrder = new String[_dimensions.size()];
+        _pattern.keySet().toArray(patternOrder);
+                     // tiling order 
+        String[] tilingOrder = new String[_dimensions.size()];
+        _tiling.keySet().toArray(tilingOrder);
+
         // Address jump for each dimension
         LinkedHashMap<String, Integer> jumpAddr = new LinkedHashMap<String, Integer>();
         for (int nDim = 0; nDim < _dimensions.size(); nDim++){
@@ -400,22 +407,23 @@ public class PthalesReceiver extends SDFReceiver {
             jumpAddr.put(_dimensions.get(nDim),previousSize);
         }
       
-        // Temporary variables for computation
+        // origin construction (order is not important)
         Integer origin = 0;
         for (int nDim = 0; nDim < _dimensions.size(); nDim++){
              origin += _base.get(_dimensions.get(nDim))[0]*jumpAddr.get(_dimensions.get(nDim));
         }
         
+        // Address construction  (order is important)
         for (int rep  = 0; rep < sizeRepetition; rep++){
             jumpRep = 0;
             for (int nRep = 0; nRep < _repetitions.length; nRep++){
-                jumpRep += _tiling.get(_dimensions.get(nRep))[0]*reps[nRep]*jumpAddr.get(_dimensions.get(nRep));
+                jumpRep += _tiling.get(tilingOrder[nRep])[0]*reps[nRep]*jumpAddr.get(tilingOrder[nRep]);
             }
            
             for (int dim  = 0; dim < sizePattern; dim++){
                 jumpDim = 0;
                 for (int nDim = 0; nDim < _pattern.size(); nDim++){
-                    jumpDim += _pattern.get(_dimensions.get(nDim))[1]*dims[nDim]*jumpAddr.get(_dimensions.get(nDim));
+                    jumpDim += _pattern.get(patternOrder[nDim])[1]*dims[nDim]*jumpAddr.get(patternOrder[nDim]);
                 }
                 jumpPattern[pos] = origin + jumpDim + jumpRep;
                 pos++;
