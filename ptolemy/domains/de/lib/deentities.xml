@@ -17,9 +17,6 @@
 <entity name="EventFilter" class="ptolemy.domains.de.lib.EventFilter">
 </entity>
 
-<entity name="EventFrequency" class="ptolemy.domains.de.lib.EventFrequency">
-</entity>
-
 <entity name="Derivative" class="ptolemy.domains.de.lib.Derivative">
 <doc>Discrete derivative.</doc>
 </entity>
