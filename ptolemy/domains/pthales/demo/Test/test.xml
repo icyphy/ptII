@@ -10,13 +10,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 45.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 0, 1608, 1178}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 0, 1412, 1062}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1393, 1061]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1197, 929]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{532.0675675675675, 362.6440033783784}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{434.0675675675675, 296.6440033783784}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Select Debug-&gt;Listen to Director to get messages&#10;when you run.">
@@ -63,7 +63,7 @@
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="scenario A:&#10;producer produces x=8,y=10 array&#10;consume pattern: x=2,y=2&#10;        Sink's input port: no tiling&#10;        Sink's repetitions: x=2,y=2&#10;result: {1, 2, 9, 10, 3, 4, 11, 12, 5, 6, 13, 14, 7, 8, 15, 16}&#10;&#10;A + modify consume pattern to: y=2,x=2&#10;{1, 9, 2, 10, 3, 11, 4, 12, 5, 13, 6, 14, 7, 15, 8, 16}&#10;&#10;A + modify repetitions to: x=2, y=1&#10;{1, 2, 9, 10, 3, 4, 11, 12}&#10;&#10;A + modify repetitions to: x=1, y=2&#10;{1, 2, 9, 10, 3, 4, 11, 12}   note: same as above&#10;&#10;A + add consumer tiling: x=1     note: make it a StringParameter&#10;{1, 2, 9, 10, 2, 3, 10, 11, 3, 4, 11, 12, 4, 5, 12, 13}&#10;&#10;A + add consumer tiling: y=1&#10;{1, 2, 9, 10, 3, 4, 11, 12, 5, 6, 13, 14, 7, 8, 15, 16}   THIS LOOKS STRANGE ...&#10;&#10;A + add consumer tiling: x=1,y=1&#10;{1, 2, 9, 10, 2, 3, 10, 11, 3, 4, 11, 12, 4, 5, 12, 13}  note: same as with tiling x=1&#10;&#10;A + add consumer tiling: y=1,x=1&#10;{1, 2, 9, 10, 2, 3, 10, 11, 3, 4, 11, 12, 4, 5, 12, 13}  note: same as above&#10;&#10;A + add consumer tiling: y=2,x=2&#10;{1, 2, 9, 10, 3, 4, 11, 12, 5, 6, 13, 14, 7, 8, 15, 16}  note: same as no tiling&#10;&#10;A + add consumer tiling: x=2,y=2&#10;{1, 2, 9, 10, 3, 4, 11, 12, 5, 6, 13, 14, 7, 8, 15, 16}  note: same as no tiling&#10;&#10;Previous + modify Sink's repetitions to x=3,y=3&#10;{1, 2, 9, 10, 3, 4, 11, 12, 5, 6, 13, 14, 7, 8, 15, 16, 17, 18, 25, 26, 19, 20, 27, 28, 21, 22, 29, 30, 23, 24, 31, 32, 33, 34, 41, 42}&#10;&#10;Previous + modify tiling to: x=1,y=1&#10;Exception: incremented pointer out of bounds.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Play with the &quot;repetitions&quot; parameters of actors (double-click on Source, Sink, Sink2),&#10;and the &quot;base&quot;, &quot;pattern&quot; and &quot;tiling&quot; parameters of their ports, to see how results change.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-65.0, 230.0]">
         </property>
