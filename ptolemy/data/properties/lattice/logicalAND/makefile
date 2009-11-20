@@ -55,8 +55,6 @@ PTCLASSALLJARS = \
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
-PTCLASSALLJAR = $(PTPACKAGE).jar
-
 JSRCS = \
     False.java \
     Lattice.java \
