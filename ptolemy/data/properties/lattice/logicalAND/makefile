@@ -60,8 +60,7 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 JSRCS = \
     False.java \
     Lattice.java \
-    True.java \
-    Unknown.java
+    True.java
 
 EXTRA_SRCS =    $(JSRCS)
 

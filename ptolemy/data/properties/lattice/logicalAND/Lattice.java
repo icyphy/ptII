@@ -25,6 +25,7 @@
 package ptolemy.data.properties.lattice.logicalAND;
 
 import ptolemy.data.properties.Property;
+import ptolemy.data.properties.lattice.LatticeProperty;
 import ptolemy.data.properties.lattice.PropertyLattice;
 import ptolemy.kernel.util.IllegalActionException;
 
@@ -61,6 +62,7 @@ public class Lattice extends PropertyLattice {
 
         addStructuredProperties(RECORD);
 
+        // If you aren't sure you have a lattice, uncomment this code.
         //if (!isLattice()) {
         //    throw new IllegalActionException("This ontology is not a lattice.");
         //}
@@ -72,16 +74,34 @@ public class Lattice extends PropertyLattice {
     /**
      * The lattice element named FALSE.
      */
+    // FIXME: PropertyConstraintSolver records too much training information.
+    // It has this line:
+    //                     + propertyTerm.getClass().getSuperclass().getSimpleName()
+    // which has the effect of forcing us to create a False class rather than just
+    // using LatticeProperty.  What we want to do is:
+    //
+    // private final Property FALSE = new LatticeProperty(this, "False");
+    //
+    // but instead we have to do is below. The fix is to figure out exactly
+    // what information SHOULD be exported by PropertConstraintSolver, and then
+    // retrain all the tests.
     private final Property FALSE = new False(this);
 
     /**
      * The lattice element named TRUE.
      */
+    // private final Property TRUE = new LatticeProperty(this, "True");
     private final Property TRUE = new True(this);
 
     /**
      * The lattice element named UNKNOWN.
      */
-    private final Property UNKNOWN = new Unknown(this);
-
+    private final Property UNKNOWN = new LatticeProperty(this, "Unknown") {
+        public boolean isAcceptableSolution() {
+            return false;
+        }
+        public boolean isConstant() {
+            return false;
+        }
+    };
 }
