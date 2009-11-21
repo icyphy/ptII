@@ -8,7 +8,7 @@
 			<entity name="GetCausalityInterface" class="ptolemy.actor.lib.GetCausalityInterface"/>
 			<entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest"/>
 			<entity name="Test" class="ptolemy.actor.lib.Test"/>
-			<entity name="TesterDirector" class="ptolemy.domains.tester.kernel.TesterDirector"/>
+			<property name="TesterDirector" class="ptolemy.domains.tester.kernel.TesterDirector"/>
 			<entity name="TestActorPortDepth" class="ptolemy.domains.de.lib.TestActorPortDepth"/>
 			<entity name="TestExceptionHandler" class="ptolemy.actor.lib.TestExceptionHandler"/>
 			<entity name="TypeTest" class="ptolemy.actor.lib.TypeTest"/>
