@@ -54,6 +54,7 @@ JSRCS = \
 	LevelCrossingDetector.java \
 	ContinuousMerge.java \
 	ContinuousTimeDelay.java \
+	ContinuousTransferFunction.java \
 	PeriodicSampler.java \
 	ZeroOrderHold.java
 

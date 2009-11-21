@@ -92,7 +92,7 @@
     </property>
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{247.0, 175.0}">
     </property>
-    <entity name="ContinuousTransferFunction" class="ptolemy.domains.ct.lib.ContinuousTransferFunction">
+    <entity name="ContinuousTransferFunction" class="ptolemy.domains.continuous.lib.ContinuousTransferFunction">
         <property name="numerator" class="ptolemy.data.expr.Parameter" value="{500.0}">
         </property>
         <property name="denominator" class="ptolemy.data.expr.Parameter" value="{1.0, 10.0, 1000.0}">

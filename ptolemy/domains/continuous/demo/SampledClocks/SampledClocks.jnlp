@@ -9,10 +9,10 @@
 -->
 <!-- jnlp codebase="file:/Users/cxh/ptII/"
      codebase="file:./../../../../../"
-      href="file:/Users/cxh/ptII/ptolemy/domains/ct/demo/SampledClocks/SampledClocks.jnlp" --> 
+      href="file:/Users/cxh/ptII/ptolemy/domains/continuous/demo/SampledClocks/SampledClocks.jnlp" --> 
 <jnlp
       codebase="file:./../../../../.." 
-      href="ptolemy/domains/ct/demo/SampledClocks/SampledClocks.jnlp">
+      href="ptolemy/domains/continuous/demo/SampledClocks/SampledClocks.jnlp">
   <information>
 	  <title>SampledClocks</title>
 	  <vendor>Ptolemy Project, UC Berkeley</vendor>
@@ -29,10 +29,10 @@
         <!-- Bump maximum heap size to 500Mb, use JVM Props. to confirm -->
   	<j2se version="1.5+" max-heap-size="500m" />
 	<!-- Start Jars -->
-        <jar href="ptolemy/domains/ct/demo/SampledClocks/signed_SampledClocks.jar"
+        <jar href="ptolemy/domains/continuous/demo/SampledClocks/signed_SampledClocks.jar"
              size="2645"
              main="true"/>
-        <jar href="signed/ptolemy/domains/ct/ct.jar"
+        <jar href="signed/ptolemy/domains/continuous/ct.jar"
              size="145024"
              download="eager"/>
         <jar href="signed/ptolemy/ptsupport.jar"
@@ -47,13 +47,13 @@
         <jar href="signed/ptolemy/domains/modal/modal.jar"
              size="156800"
              download="eager"/>
-        <jar href="signed/ptolemy/domains/ct/ct.jar"
+        <jar href="signed/ptolemy/domains/continuous/ct.jar"
              size="145024"
              download="eager"/>
         <jar href="signed/lib/diva.jar"
              size="509831"
              download="eager"/>
-        <jar href="signed/ptolemy/domains/fsm/fsm.jar"
+        <jar href="signed/ptolemy/domains.modal/fsm.jar"
              size="155950"
              download="eager"/>
         <jar href="signed/ptolemy/vergil/vergil.jar"

@@ -33,6 +33,7 @@ do
 	sed 's@Refinement Solver@Continuous Director@' |
 	sed 's@domains.ct.lib.ContinuousClock@domains.continuous.lib.ContinuousClock@' |
 	sed 's@domains.ct.lib.ContinuousSinewave@domains.continuous.lib.ContinuousSinewave@' |
+	sed 's@domains.ct.lib.ContinuousTransferFunction@domains.continuous.lib.ContinuousTransferFunction@' |
 	sed 's@domains.ct.lib.CTPeriodicSampler@domains.continuous.lib.PeriodicSampler@' |
 	sed 's@domains.ct.lib.DiscreteClock@domains.continuous.lib.DiscreteClock@' |
 	sed 's@domains.ct.lib.EventSource@domains.continuous.lib.EventSource@' |
@@ -49,6 +50,7 @@ do
 	sed 's@LevelCrossingDetector@LevelCrossingDetector@g' |
 	sed 's@ZeroCrossingDetector@LevelCrossingDetector@g' |
 	sed 's@ZeroOrderHold@ZeroOrderHold@g' |
+	sed 's@ptolemy/domains/ct@ptolemy/domains/continuous@g' |
 	cat > $tmpfile
 	
 	# Now, handle the Integrator Port Name change

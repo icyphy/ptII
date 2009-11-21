@@ -905,7 +905,7 @@ http://java3d.dev.java.net/</text></svg></configure>
                 <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
             </port>
-            <entity name="ContinuousTransferFunction" class="ptolemy.domains.ct.lib.ContinuousTransferFunction">
+            <entity name="ContinuousTransferFunction" class="ptolemy.domains.continuous.lib.ContinuousTransferFunction">
                 <property name="denominator" class="ptolemy.data.expr.Parameter" value="{(1.0/tau_motors), 1.0}">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 90.0]">
@@ -1817,7 +1817,7 @@ http://java3d.dev.java.net/</text></svg></configure>
                 <link port="Gaussian3.output" relation="relation3"/>
                 <link port="Gaussian4.output" relation="relation4"/>
             </entity>
-            <entity name="ContinuousTransferFunction5" class="ptolemy.domains.ct.lib.ContinuousTransferFunction">
+            <entity name="ContinuousTransferFunction5" class="ptolemy.domains.continuous.lib.ContinuousTransferFunction">
                 <property name="denominator" class="ptolemy.data.expr.Parameter" value="{(1.0/tau_motors), 1.0}">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, 210.0]">
@@ -1888,7 +1888,7 @@ http://java3d.dev.java.net/</text></svg></configure>
                 <link port="Feedforward0.input" relation="node0"/>
                 <link port="Feedforward0.output" relation="_R2"/>
             </entity>
-            <entity name="ContinuousTransferFunction6" class="ptolemy.domains.ct.lib.ContinuousTransferFunction">
+            <entity name="ContinuousTransferFunction6" class="ptolemy.domains.continuous.lib.ContinuousTransferFunction">
                 <property name="denominator" class="ptolemy.data.expr.Parameter" value="{(1.0/tau_motors), 1.0}">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 305.0]">
@@ -1959,7 +1959,7 @@ http://java3d.dev.java.net/</text></svg></configure>
                 <link port="Feedforward0.input" relation="node0"/>
                 <link port="Feedforward0.output" relation="_R2"/>
             </entity>
-            <entity name="ContinuousTransferFunction7" class="ptolemy.domains.ct.lib.ContinuousTransferFunction">
+            <entity name="ContinuousTransferFunction7" class="ptolemy.domains.continuous.lib.ContinuousTransferFunction">
                 <property name="denominator" class="ptolemy.data.expr.Parameter" value="{(1.0/tau_motors), 1.0}">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 405.0]">

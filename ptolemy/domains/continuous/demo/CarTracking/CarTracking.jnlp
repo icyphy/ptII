@@ -32,7 +32,7 @@
         <jar href="ptolemy/domains/continuous/demo/CarTracking/signed_CarTracking.jar"
              size="2782"
              main="true"/>
-        <jar href="signed/ptolemy/domains/ct/ct.jar"
+        <jar href="signed/ptolemy/domains/continuous/ct.jar"
              size="145024"
              download="eager"/>
         <jar href="signed/ptolemy/ptsupport.jar"
@@ -44,7 +44,7 @@
         <jar href="signed/ptolemy/data/data.jar"
              size="418380"
              download="eager"/>
-        <jar href="signed/ptolemy/domains/fsm/fsm.jar"
+        <jar href="signed/ptolemy/domains.modal/fsm.jar"
              size="155950"
              download="eager"/>
         <jar href="signed/ptolemy/domains/sdf/sdf.jar"
@@ -53,13 +53,13 @@
         <jar href="signed/ptolemy/domains/modal/modal.jar"
              size="156800"
              download="eager"/>
-        <jar href="signed/ptolemy/domains/ct/ct.jar"
+        <jar href="signed/ptolemy/domains/continuous/ct.jar"
              size="145024"
              download="eager"/>
         <jar href="signed/lib/diva.jar"
              size="509831"
              download="eager"/>
-        <jar href="signed/ptolemy/domains/fsm/fsm.jar"
+        <jar href="signed/ptolemy/domains.modal/fsm.jar"
              size="155950"
              download="eager"/>
         <jar href="signed/ptolemy/vergil/vergil.jar"

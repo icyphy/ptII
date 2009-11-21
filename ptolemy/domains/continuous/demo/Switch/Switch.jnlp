@@ -42,13 +42,13 @@
         <jar href="signed/ptolemy/domains/modal/modal.jar"
              size="156800"
              download="eager"/>
-        <jar href="signed/ptolemy/domains/ct/ct.jar"
+        <jar href="signed/ptolemy/domains/continuous/ct.jar"
              size="145024"
              download="eager"/>
         <jar href="signed/lib/diva.jar"
              size="509852"
              download="eager"/>
-        <jar href="signed/ptolemy/domains/fsm/fsm.jar"
+        <jar href="signed/ptolemy/domains.modal/fsm.jar"
              size="155951"
              download="eager"/>
         <jar href="signed/ptolemy/vergil/vergilApplet.jar"
