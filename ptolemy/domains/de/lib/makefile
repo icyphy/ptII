@@ -53,7 +53,6 @@ JSRCS = \
 	DETransformer.java \
 	EventButton.java \
 	EventFilter.java \
-	EventFrequency.java \
 	GetCurrentMicrostep.java \
 	Inhibit.java \
 	Integrator.java \
