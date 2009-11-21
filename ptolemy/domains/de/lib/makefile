@@ -81,7 +81,6 @@ OTHER_FILES_TO_BE_JARED = \
 	deentities.xml \
 	DerivativeIcon.xml \
 	DerivativeIcon.gif \
-	EventFrequencyIcon.xml \
 	IntegratorIcon.gif \
 	IntegratorIcon.xml \
 	NonInterruptibleTimerIcon.xml \
