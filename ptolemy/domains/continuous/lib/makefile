@@ -53,6 +53,7 @@ JSRCS = \
 	Integrator.java \
 	LevelCrossingDetector.java \
 	ContinuousMerge.java \
+	ContinuousTimeDelay.java \
 	PeriodicSampler.java \
 	ZeroOrderHold.java
 
@@ -61,7 +62,7 @@ OTHER_FILES_TO_BE_JARED = \
 	ContinuousClockIcon.xml \
 	ContinuousTimeDelayIcon.xml \
 	ContinuousSinewave.xml \
-	ct2continous \
+	ct2continuous \
 	continuousentities.xml \
 	dynamics.xml \
 	eventgenerators.xml \
