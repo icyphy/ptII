@@ -11,7 +11,7 @@
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model generates a Poisson process using the CT domain.&#10;The time between events is an exponential random variable.&#10;The model plots the events vs. time and a histogram of the&#10;time between events, which should be exponentially distributed.&#10;The method used here would tolerate time-varying rates, although&#10;that is not shown in this example.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model generates a Poisson process using the Continuous domain.&#10;The time between events is an exponential random variable.&#10;The model plots the events vs. time and a histogram of the&#10;time between events, which should be exponentially distributed.&#10;The method used here would tolerate time-varying rates, although&#10;that is not shown in this example.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[165.0, 20.0]">
         </property>

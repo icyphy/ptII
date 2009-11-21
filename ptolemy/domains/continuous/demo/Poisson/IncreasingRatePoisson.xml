@@ -11,7 +11,7 @@
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model is an example of a stochastic hybrid system.&#10;It generates a Poisson process with a linearly&#10;increasing rate using the CT domain. The model plots the&#10;events vs. time and a histogram of the time between events.&#10;The technique here was suggested by John Lygeros.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model is an example of a stochastic hybrid system.&#10;It generates a Poisson process with a linearly&#10;increasing rate using the Continuous domain. The model plots the&#10;events vs. time and a histogram of the time between events.&#10;The technique here was suggested by John Lygeros.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[190.0, 15.0]">
         </property>

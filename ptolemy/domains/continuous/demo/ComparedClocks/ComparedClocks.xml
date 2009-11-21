@@ -79,7 +79,7 @@
         </property>
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">This demo shows that different clocks generate 
-different signals in the CT domain. 
+different signals in the Continuous domain. 
 
 The clocks on the left side have the same period 
 of 0.5. The above two clocks have their offsets 

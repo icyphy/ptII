@@ -41,10 +41,10 @@ import ptolemy.actor.lib.gui.TimedPlotter;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.expr.Parameter;
-import ptolemy.domains.ct.kernel.CTMixedSignalDirector;
-import ptolemy.domains.ct.lib.CTPeriodicSampler;
-import ptolemy.domains.ct.lib.Integrator;
-import ptolemy.domains.ct.lib.ZeroOrderHold;
+import ptolemy.domains.continuous.kernel.ContinuousDirector;
+import ptolemy.domains.continuous.lib.PeriodicSampler;
+import ptolemy.domains.continuous.lib.Integrator;
+import ptolemy.domains.continuous.lib.ZeroOrderHold;
 import ptolemy.domains.de.kernel.DEDirector;
 import ptolemy.domains.de.lib.Sampler;
 import ptolemy.domains.sdf.lib.FIR;
@@ -112,7 +112,7 @@ public class SigmaDelta extends TypedCompositeActor {
         TypedIOPort subout = new TypedIOPort(ctsub, "Pout");
         subout.setOutput(true);
 
-        CTMixedSignalDirector ctdir = new CTMixedSignalDirector(ctsub,
+        ContinuousDirector ctdir = new ContinuousDirector(ctsub,
                 "CTEmbDir");
 
         //ctdir.addDebugListener(new StreamListener());
@@ -125,8 +125,8 @@ public class SigmaDelta extends TypedCompositeActor {
         ZeroOrderHold hold = new ZeroOrderHold(ctsub, "Hold");
         AddSubtract add1 = new AddSubtract(ctsub, "Add1");
 
-        Integrator intgl1 = new Integrator(ctsub, "Integrator1");
-        Integrator intgl2 = new Integrator(ctsub, "Integrator2");
+        Integrator integrator1 = new Integrator(ctsub, "Integrator1");
+        Integrator integrator2 = new Integrator(ctsub, "Integrator2");
         Scale scale0 = new Scale(ctsub, "Scale0");
         Scale scale1 = new Scale(ctsub, "Scale1");
         Scale scale2 = new Scale(ctsub, "Scale2");
@@ -144,7 +144,7 @@ public class SigmaDelta extends TypedCompositeActor {
         ctPlot.plot.addLegend(1, "Input");
         ctPlot.plot.addLegend(2, "Control");
 
-        CTPeriodicSampler ctSampler = new CTPeriodicSampler(ctsub,
+        PeriodicSampler ctSampler = new PeriodicSampler(ctsub,
                 "PeriodicSampler");
         ctSampler.samplePeriod.setExpression("samplePeriod");
 
@@ -154,10 +154,10 @@ public class SigmaDelta extends TypedCompositeActor {
 
         Relation cr0 = ctsub.connect(trigFunction.output, scale0.input, "CR0");
         ctsub.connect(scale0.output, add1.plus, "CR1");
-        ctsub.connect(add1.output, intgl1.input, "CR2");
+        ctsub.connect(add1.output, integrator1.derivative, "CR2");
 
-        Relation cr3 = ctsub.connect(intgl1.output, intgl2.input, "CR3");
-        Relation cr4 = ctsub.connect(intgl2.output, ctPlot.input, "CR4");
+        Relation cr3 = ctsub.connect(integrator1.state, integrator2.derivative, "CR3");
+        Relation cr4 = ctsub.connect(integrator2.state, ctPlot.input, "CR4");
         scale1.input.link(cr3);
         scale2.input.link(cr4);
         ctSampler.input.link(cr4);
@@ -225,10 +225,10 @@ public class SigmaDelta extends TypedCompositeActor {
         connect(sampler.output, dePlot.input);
         dePlot.input.link(dr3);
 
-        // CT Director parameters
+        // Continuous Director parameters
         ctdir.initStepSize.setToken(new DoubleToken(0.0001));
 
-        ctdir.minStepSize.setToken(new DoubleToken(1e-6));
+        //ctdir.minStepSize.setToken(new DoubleToken(1e-6));
 
         //StringToken token1 = new StringToken(
         //        "ptolemy.domains.ct.kernel.solver.BackwardEulerSolver");

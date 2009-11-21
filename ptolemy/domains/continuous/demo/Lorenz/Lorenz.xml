@@ -13,7 +13,7 @@
            <text x="20" style="font-size:14; font-family:sanserif; fill:blue" y="20">This model shows a nonlinear feedback
 system that exhibits chaotic behavior.
 It is modeled in continuous time. The
-CT director uses a sophisticated
+Continuous director uses a sophisticated
 ordinary differential equation solver
 to execute the model. This particular
 model is known as a Lorenz attractor.</text>

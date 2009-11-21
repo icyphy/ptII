@@ -39,14 +39,14 @@ import ptolemy.data.DoubleToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.type.BaseType;
 import ptolemy.domains.ct.kernel.CTCompositeActor;
-import ptolemy.domains.ct.kernel.CTEmbeddedDirector;
-import ptolemy.domains.ct.kernel.CTMultiSolverDirector;
-import ptolemy.domains.ct.kernel.HSFSMDirector;
-import ptolemy.domains.ct.lib.Integrator;
-import ptolemy.domains.ct.lib.ZeroCrossingDetector;
-import ptolemy.domains.fsm.kernel.FSMActor;
-import ptolemy.domains.fsm.kernel.State;
-import ptolemy.domains.fsm.kernel.Transition;
+import ptolemy.domains.continuous.kernel.ContinuousDirector;
+import ptolemy.domains.continuous.kernel.ContinuousDirector;
+import ptolemy.domains.continuous.kernel.HybridModalDirector;
+import ptolemy.domains.continuous.lib.Integrator;
+import ptolemy.domains.continuous.lib.LevelCrossingDetector;
+import ptolemy.domains.modal.kernel.FSMActor;
+import ptolemy.domains.modal.kernel.State;
+import ptolemy.domains.modal.kernel.Transition;
 import ptolemy.kernel.Relation;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -89,7 +89,7 @@ public class Thermostat extends TypedCompositeActor {
         setName("Thermostat");
 
         // the top level CT director
-        CTMultiSolverDirector topdir = new CTMultiSolverDirector(this,
+        ContinuousDirector topdir = new ContinuousDirector(this,
                 "CTTopLevelDirector");
 
         //StreamListener dbl = new StreamListener();
@@ -160,7 +160,7 @@ public class Thermostat extends TypedCompositeActor {
         ctrlSt.setInput(true);
 
         // the hybrid system director
-        HSFSMDirector hsdir = new HSFSMDirector(hs, "HSFSMDirector");
+        HybridModalDirector hsdir = new HybridModalDirector(hs, "HybridModalDirector");
 
         //hs.setDirector(hsdir);
         hsdir.controllerName.setExpression("Controller");
@@ -172,7 +172,7 @@ public class Thermostat extends TypedCompositeActor {
         Integrator ctIncI = new Integrator(ctInc, "Integrator");
 
         //ctIncI.addDebugListener(dbl);
-        ZeroCrossingDetector ctIncD = new ZeroCrossingDetector(ctInc, "ZD");
+        LevelCrossingDetector ctIncD = new LevelCrossingDetector(ctInc, "ZD");
 
         //ctIncD.addDebugListener(dbl);
         Expression ctIncGF = new Expression(ctInc, "EXPRESSION");
@@ -203,7 +203,7 @@ public class Thermostat extends TypedCompositeActor {
         // connect ctInc
         //ctInc.connect(ctIncIn, ctIncH.input);
         //ctInc.connect(ctIncH.output, ctIncI.input);
-        ctInc.connect(ctIncIn, ctIncI.input);
+        ctInc.connect(ctIncIn, ctIncI.derivative);
 
         Relation ctIncR2 = ctInc.newRelation("R2");
         ctIncGF.output.link(ctIncR2);
@@ -214,13 +214,13 @@ public class Thermostat extends TypedCompositeActor {
         //ctInc.connect(ctIncS.output, ctIncSt);
         TypedIORelation ctIncR1 = (TypedIORelation) ctInc
                 .newRelation("CTIncR1");
-        ctIncI.output.link(ctIncR1);
+        ctIncI.state.link(ctIncR1);
 
         //ctIncS.input.link(ctIncR1);
         ctIncGFi.link(ctIncR1);
         ctIncSt.link(ctIncR1);
 
-        CTEmbeddedDirector ctIncDir = new CTEmbeddedDirector(ctInc, "CTIncDir");
+        ContinuousDirector ctIncDir = new ContinuousDirector(ctInc, "CTIncDir");
 
         //ctIncDir.addDebugListener(dbl);
         CTCompositeActor ctDec = new CTCompositeActor(hs, "Decreasing");
@@ -229,7 +229,7 @@ public class Thermostat extends TypedCompositeActor {
         //ZeroOrderHold ctDecH = new ZeroOrderHold(ctDec, "Hold");
         Integrator ctDecI = new Integrator(ctDec, "Integrator");
         Scale ctGain = new Scale(ctDec, "Gain");
-        ZeroCrossingDetector ctDecD = new ZeroCrossingDetector(ctDec, "ZD");
+        LevelCrossingDetector ctDecD = new LevelCrossingDetector(ctDec, "ZD");
 
         Expression ctDecGF = new Expression(ctDec, "EXPRESSION");
         TypedIOPort ctDecGFi = (TypedIOPort) ctDecGF.newPort("in");
@@ -259,7 +259,7 @@ public class Thermostat extends TypedCompositeActor {
         //ctDec.connect(ctDecIn, ctDecH.input);
         //ctDec.connect(ctDecH.output, ctGain.input);
         ctDec.connect(ctDecIn, ctGain.input);
-        ctDec.connect(ctGain.output, ctDecI.input);
+        ctDec.connect(ctGain.output, ctDecI.derivative);
 
         Relation ctDecR2 = ctDec.newRelation("R2");
         ctDecGF.output.link(ctDecR2);
@@ -270,13 +270,13 @@ public class Thermostat extends TypedCompositeActor {
         //ctDec.connect(ctDecS.output, ctDecSt);
         TypedIORelation ctDecR1 = (TypedIORelation) ctDec
                 .newRelation("CTDecR1");
-        ctDecI.output.link(ctDecR1);
+        ctDecI.state.link(ctDecR1);
 
         //ctDecS.input.link(ctDecR1);
         ctDecGFi.link(ctDecR1);
         ctDecSt.link(ctDecR1);
 
-        CTEmbeddedDirector ctDecDir = new CTEmbeddedDirector(ctDec, "CTDecDir");
+        ContinuousDirector ctDecDir = new ContinuousDirector(ctDec, "CTDecDir");
 
         //ctDecDir.addDebugListener(dbl);
         ctrlInc.refinementName.setExpression("Increasing");
@@ -317,40 +317,40 @@ public class Thermostat extends TypedCompositeActor {
 
         // CT embedded director 1 parameters
         ctIncDir.initStepSize.setToken(new DoubleToken(0.01));
-        ctIncDir.minStepSize.setToken(new DoubleToken(1e-3));
+        //ctIncDir.minStepSize.setToken(new DoubleToken(1e-3));
         ctIncDir.maxStepSize.setToken(new DoubleToken(0.5));
 
-        StringToken tok = new StringToken(
-                "ptolemy.domains.ct.kernel.solver.DerivativeResolver");
-        ctIncDir.breakpointODESolver.setToken(tok);
+        //StringToken tok = new StringToken(
+        //        "ptolemy.domains.ct.kernel.solver.DerivativeResolver");
+        //ctIncDir.breakpointODESolver.setToken(tok);
 
         // Parameter dfsol = (Parameter)ctIncDir.getAttribute("ODESolver");
-        tok = new StringToken(
-                "ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver");
-        ctIncDir.ODESolver.setToken(tok);
+        //tok = new StringToken(
+        //        "ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver");
+        //ctIncDir.ODESolver.setToken(tok);
 
         // CT embedded director 2  parameters
         ctDecDir.initStepSize.setToken(new DoubleToken(0.01));
-        ctDecDir.minStepSize.setToken(new DoubleToken(1e-3));
+        //ctDecDir.minStepSize.setToken(new DoubleToken(1e-3));
         ctDecDir.maxStepSize.setToken(new DoubleToken(0.5));
 
-        tok = new StringToken(
-                "ptolemy.domains.ct.kernel.solver.DerivativeResolver");
-        ctDecDir.breakpointODESolver.setToken(tok);
-        tok = new StringToken(
-                "ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver");
-        ctDecDir.ODESolver.setToken(tok);
+        //tok = new StringToken(
+        //        "ptolemy.domains.ct.kernel.solver.DerivativeResolver");
+        //ctDecDir.breakpointODESolver.setToken(tok);
+        //tok = new StringToken(
+        //        "ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver");
+        //ctDecDir.ODESolver.setToken(tok);
         ctGain.factor.setToken(new DoubleToken(-1.0));
 
         // CT director parameters
         topdir.initStepSize.setToken(new DoubleToken(0.01));
-        topdir.minStepSize.setToken(new DoubleToken(1e-3));
+        //topdir.minStepSize.setToken(new DoubleToken(1e-3));
         topdir.maxStepSize.setToken(new DoubleToken(0.5));
-        tok = new StringToken(
-                "ptolemy.domains.ct.kernel.solver.DerivativeResolver");
-        topdir.breakpointODESolver.setToken(tok);
-        tok = new StringToken(
-                "ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver");
-        topdir.ODESolver.setToken(tok);
+        //tok = new StringToken(
+        //        "ptolemy.domains.ct.kernel.solver.DerivativeResolver");
+        //topdir.breakpointODESolver.setToken(tok);
+        //tok = new StringToken(
+        //        "ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver");
+        //topdir.ODESolver.setToken(tok);
     }
 }

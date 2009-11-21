@@ -476,7 +476,7 @@ http://java.sun.com/products/java-media/3D/</text></svg></configure>
             </property>
             <property name="initialVelocity" class="ptolemy.data.expr.Parameter" value="0.1688134777963">
             </property>
-            <property name="CTEmbedded Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
+            <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
                 <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="timeResolution" class="ptolemy.actor.parameters.SharedParameter" value="1.0E-10">
