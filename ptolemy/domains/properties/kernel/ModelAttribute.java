@@ -49,7 +49,23 @@ import ptolemy.vergil.properties.ModelAttributeController;
 
 /**
  * A base class for attributes that contain a refinement model graph.
- * 
+ *
+ * <p> Note that this class expects that 
+ * ptolemy.vergil.properties.ModelAttributeControllerFactory
+ * will be used as the _controllerFactory of this class.  Instead of
+ * having an explicit compile-time dependency between this class and
+ * ModelAttributeControllerFactory, derived classes should use MoML
+ * to set up the containment relationship.  For example,      
+ * <code>ptII/ptolemy/configs/properties/propertiesConfigurableSolvers.xml</code>
+ * contains: 
+ * <pre>
+ * <property name="PropertyLatticeAttribute" class="ptolemy.domains.properties.kernel.PropertyLatticeAttribute">
+ *     <property name="_controllerFactory" class="ptolemy.vergil.properties.ModelAttributeControllerFactory">
+ *     </property>
+ * </property>
+ * </pre>
+ * All classes that derive from this class should use a similar pattern.
+ *  
  * @author Man-Kit Leung
  * @version $Id$
  * @since Ptolemy II 7.1
@@ -259,11 +275,8 @@ public class ModelAttribute extends Attribute implements Configurable {
         }
         _model = (CompositeEntity) _configurer.getEntity("Model");
 
-        //new ModelAttributeIcon(this, "_icon");
-        // FIXME: This class uses classes from vergil, which means the backend
-        // and the gui are too tighly intertwined.
-        new ModelAttributeController.Factory(this, "_controllerFactory");
-        //editorFactory = new TransformationAttributeEditorFactory(this, "editorFactory");
+        // Note that derived classes should set _controllerFactory by using
+        // MoML.  See the class comment for detail
     }
 
     ///////////////////////////////////////////////////////////////////

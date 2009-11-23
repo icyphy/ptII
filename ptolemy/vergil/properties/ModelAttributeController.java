@@ -1,6 +1,6 @@
-/*
+/* A controller that provides binding of an attribute and a refinement model.
  * 
- * Copyright (c) 1997-2009 The Regents of the University of California. All
+ * Copyright (c) 2009 The Regents of the University of California. All
  * rights reserved. Permission is hereby granted, without written agreement and
  * without license or royalty fees, to use, copy, modify, and distribute this
  * software and its documentation for any purpose, provided that the above
@@ -38,6 +38,8 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.util.MessageHandler;
+import ptolemy.util.StringUtilities;
 import ptolemy.vergil.basic.NamedObjController;
 import ptolemy.vergil.basic.NodeControllerFactory;
 import ptolemy.vergil.kernel.AttributeController;
@@ -50,6 +52,7 @@ import diva.gui.GUIUtilities;
 /**
  * A controller that provides binding of an attribute and a refinement model.
  * 
+ * @see ptolemy.vergil.properties.ModelAttributeControllerFactory
  * @author Man-Kit Leung
  * @version $Id$
  * @since Ptolemy II 7.1
@@ -76,11 +79,13 @@ public class ModelAttributeController extends AttributeController {
     public ModelAttributeController(GraphController controller, Access access) {
         super(controller, access);
 
-        _lookInsideAction = new LookInsideAction();
         _menuFactory
                 .addMenuItemFactory(new MenuActionFactory(_lookInsideAction));
 
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /**
      * Add hot keys to the look inside action in the given JGraph. It would be
@@ -92,45 +97,41 @@ public class ModelAttributeController extends AttributeController {
         GUIUtilities.addHotKey(jgraph, _lookInsideAction);
     }
 
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected variables               ////
+
     /**
-     * A factory attribute that creates ModelAttributeControllers.
+     * The action that handles opening an actor. This is accessed by by
+     * ActorViewerController to create a hot key for the editor. The name
+     * "lookInside" is historical and preserved to keep backward compatibility
+     * with subclasses.
      */
-    public static class Factory extends NodeControllerFactory {
+    protected LookInsideAction _lookInsideAction = new LookInsideAction();
 
-        /**
-         * Create a new factory with the specified name and container.
-         * @param container The specified container.
-         * @param name The specified name.
-         * @exception IllegalActionException If the attribute cannot be
-         * contained by the proposed container.
-         * @exception NameDuplicationException If the container already has an
-         * attribute with this name.
-         */
-        public Factory(NamedObj container, String name)
-                throws NameDuplicationException, IllegalActionException {
-            super(container, name);
-        }
 
-        /**
-         * Create a new ModelAttributeController with the specified graph
-         * controller.
-         * @param controller The specified graph controller.
-         * @return A new ModelAttributeController.
-         */
-        public NamedObjController create(GraphController controller) {
-            return new ModelAttributeController(controller);
-        }
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
-    }
-
+    ///////////////////////////////////////////////////////////////////
+    //// LookInsideAction
+    /**
+     * An action to open a composite. This private class must remain named
+     * LookInsideAction for backward compatibility.
+     */
     private static class LookInsideAction extends FigureAction {
 
         public LookInsideAction() {
             super("Open Model");
 
-            putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
-                    KeyEvent.VK_L, Toolkit.getDefaultToolkit()
-                            .getMenuShortcutKeyMask()));
+            // If we are in an applet, so Control-L or Command-L will
+            // be caught by the browser as "Open Location", so we don't
+            // supply Control-L or Command-L as a shortcut under applets.
+            if (!StringUtilities.inApplet()) {
+                putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
+                                KeyEvent.VK_L, Toolkit.getDefaultToolkit()
+                                .getMenuShortcutKeyMask()));
+            }
         }
 
         public void actionPerformed(ActionEvent event) {
@@ -139,6 +140,11 @@ public class ModelAttributeController extends AttributeController {
             ModelAttribute attribute = (ModelAttribute) getTarget();
             TableauFrame frame = (TableauFrame) getFrame();
             Configuration configuration = frame.getConfiguration();
+            if (configuration == null) {
+                MessageHandler.error("Cannot open a model "
+                        + "without a configuration.");
+                return;
+            }
             try {
                 CompositeEntity model = attribute.getContainedModel();
                 configuration.openInstance(model);
@@ -148,6 +154,4 @@ public class ModelAttributeController extends AttributeController {
             }
         }
     }
-
-    private final LookInsideAction _lookInsideAction;
 }

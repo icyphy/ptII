@@ -412,15 +412,6 @@ public class RemoveGraphicalClasses implements MoMLFilter {
         // properties classes
         _graphicalClasses.put(
                 "ptolemy.vergil.properties.ModelAttributeController", null);
-        _graphicalClasses.put(
-                "ptolemy.domains.properties.kernel.ModelAttribute",
-                "ptolemy.kernel.util.Attribute");
-        _graphicalClasses.put(
-                "ptolemy.domains.properties.kernel.OntologyAttribute",
-                "ptolemy.kernel.util.Attribute");
-        _graphicalClasses.put(
-                "ptolemy.domains.properties.kernel.PropertyLatticeAttribute",
-                "ptolemy.kernel.util.Attribute");
 
         _graphicalClasses.put("ptolemy.vergil.actor.lib.MonitorReceiverContents",
 			      null);

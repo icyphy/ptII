@@ -3,6 +3,8 @@
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="Sinewave" class="ptolemy.actor.TypedCompositeActor">
     <property name="Custom" class="ptolemy.domains.properties.kernel.PropertyLatticeAttribute">
+        <property name="_controllerFactory" class="ptolemy.vergil.properties.ModelAttributeControllerFactory">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 435.0]">
         </property>
         <configure>
