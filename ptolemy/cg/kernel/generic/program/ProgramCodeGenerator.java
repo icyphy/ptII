@@ -44,6 +44,7 @@ import ptolemy.cg.adapter.generic.adapters.ptolemy.actor.Director;
 import ptolemy.cg.kernel.generic.CodeGeneratorAdapter;
 import ptolemy.cg.kernel.generic.GenericCodeGenerator;
 import ptolemy.data.BooleanToken;
+import ptolemy.data.IntToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
@@ -106,6 +107,10 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
         run.setTypeEquals(BaseType.BOOLEAN);
         run.setExpression("true");
 
+        verbosity = new Parameter(this, "verbosity");
+        verbosity.setTypeEquals(BaseType.INT);
+        verbosity.setExpression("0");
+
         generatorPackageList.setExpression("generic.program");
     }
 
@@ -133,6 +138,18 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
      *  value is a parameter with the value true.
      */
     public Parameter run;
+
+    /** Level of verbosity in comments and other output.  Levels
+     *  greater than 0 will cause the code generator to generate more
+     *  detailed information about the operation of the code
+     *  generator.  If the value of the <i>verbosity</i> parameter is
+     *  greater than 9, then the comment is prepended with the name of
+     *  the method that called the method that called this method.
+     *  This is useful for debugging.  The default is an integer with
+     *  the value 0, which indicates that the lowest level of
+     *  verbosity.
+     */
+    public Parameter verbosity;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -699,11 +716,23 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
      *  dependent end of line character(s): under Unix: "\n", under
      *  Windows: "\n\r". Subclasses may override this produce comments
      *  that match the code generation language.
+     *  If the value of the <i>verbosity</i> parameter is greater than 9,
+     *  then the comment is prepended with the name of the method that
+     *  called the method that called this method.  This is useful  
+     *  for debugging.
      *  @param comment The string to put in the comment.
      *  @return A formatted comment.
      */
     protected String _formatComment(String comment) {
-        return "/* " + comment + " */" + _eol;
+        String callingMethod = "";
+        try {
+            if (((IntToken)verbosity.getToken()).intValue() > 9) {
+                callingMethod = new Throwable().getStackTrace()[2].getClassName().replace('$', '.') + _eol;
+            }
+        } catch (IllegalActionException ex) {
+            callingMethod = ex.toString();
+        }
+        return "/* " + callingMethod + comment + " */" + _eol;
     }
 
     /** Generate the body code that lies between variable declaration
