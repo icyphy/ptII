@@ -903,6 +903,7 @@ codeDoc/tree.html:	../ptolemy/plot/*.java \
 			../ptolemy/codegen/java/kernel/*.java \
 			../ptolemy/codegen/java/actor/*.java \
 			../ptolemy/codegen/java/actor/parameters/*.java \
+			../ptolemy/codegen/java/domains/modal/kernel/*.java \
 			../ptolemy/codegen/java/domains/sdf/kernel/*.java \
 			../ptolemy/codegen/java/domains/sdf/lib/*.java \
 			../ptolemy/codegen/java/actor/lib/colt/*.java \
