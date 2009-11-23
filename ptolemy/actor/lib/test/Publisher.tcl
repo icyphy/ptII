@@ -282,6 +282,28 @@ test Publisher-2.0 {Test deletion of a Publisher} {
     list $r1 $r2
 } {2 1}
 
+
+test Publisher-3.0 {Test no publisher} {
+    set workspace [java::new ptolemy.kernel.util.Workspace "pubWS30"]
+    set parser [java::new ptolemy.moml.MoMLParser $workspace]
+    $parser setMoMLFilters [java::null]
+    $parser addMoMLFilters \
+	    [java::call ptolemy.moml.filter.BackwardCompatibility allFilters]
+
+    $parser addMoMLFilter [java::new \
+	    ptolemy.moml.filter.RemoveGraphicalClasses]
+    set url [[java::new java.io.File "NoPublisher.xml"] toURL]
+    $parser purgeModelRecord $url
+    set model [java::cast ptolemy.actor.TypedCompositeActor \
+		   [$parser {parse java.net.URL java.net.URL} \
+			[java::null] $url]]
+    set manager [java::new ptolemy.actor.Manager $workspace "pub30Manager"]
+    $model setManager $manager 
+    catch {$manager execute} errMsg
+    list $errMsg
+} {{ptolemy.kernel.util.IllegalActionException: No Publishers were found adjacent to or below .NoPublisher.subagg
+  in .NoPublisher}}
+
 # The list of filters is static, so we reset it
 java::call ptolemy.moml.MoMLParser setMoMLFilters [java::null]
 
