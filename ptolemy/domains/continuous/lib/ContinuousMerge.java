@@ -46,7 +46,8 @@ import ptolemy.kernel.util.NameDuplicationException;
  <p>
  Note that this actor can merge continuous signals with discrete
  ones, but the resulting signal will not be piecewise continuous.
- This will be a bit odd.
+ This will be a bit odd. It most useful to merge discrete signals
+ or signals that are piecewise continuous.
 
  @author Edward A. Lee
  @version $Id$
