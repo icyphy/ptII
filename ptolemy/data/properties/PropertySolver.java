@@ -951,7 +951,8 @@ public abstract class PropertySolver extends PropertySolverBase implements Testa
                 _updatePropertyAttribute(attribute, previousProperty);
 
             } catch (IllegalActionException ex) {
-                throw new PropertyResolutionException(this, ex);
+                throw new PropertyResolutionException(this, ex,
+                        "Failed to restore previously resolved property.");
             }
         }
 
