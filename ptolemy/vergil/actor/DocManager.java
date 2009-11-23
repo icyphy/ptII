@@ -481,8 +481,9 @@ public class DocManager extends HandlerBase {
                     if (toRead != null) {
                         InputStream toReadStream = null;
                         try {
+                            // In an Exception, this may throw a SecurityException.
                             toReadStream = toRead.openStream();
-                        } catch (IOException ex) {
+                        } catch (Exception ex) {
                             toRead = null;
                         } finally {
                             if (toReadStream != null) {
