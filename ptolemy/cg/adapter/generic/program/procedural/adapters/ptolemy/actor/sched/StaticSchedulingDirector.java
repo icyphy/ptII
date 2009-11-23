@@ -107,6 +107,7 @@ public class StaticSchedulingDirector extends Director {
     }
 
     /** Create and return the decorated attributes for the corresponding Ptolemy Component.
+     *  @param target The corresponding Ptolemy Component.
      *  @param genericCodeGenerator The code generator that is the decorator for the
      *  corresponding Ptolemy Component.
      *  @return The decorated attributes.

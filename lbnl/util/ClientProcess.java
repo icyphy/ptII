@@ -109,7 +109,7 @@ public class ClientProcess extends Thread {
     private final static String LS = System.getProperty("line.separator");
 
     /** Create a ClientProcess. 
-     *@param modelName name of the model, used for display only
+     *  @param modelName name of the model, used for display only
      **/
     public ClientProcess(final String modelName) {
         super();
@@ -121,23 +121,21 @@ public class ClientProcess extends Thread {
         showConsoleWindow = true;
     }
 
-    /** Set a flag that determines whether the console window will be displayed
-     *
-     *@param showWindow Set to false to avoid the console window to be shown
+    /** Set a flag that determines whether the console window will be displayed.
+     *  @param showWindow Set to false to avoid the console window to be shown
      */
     public void showConsoleWindow(boolean showWindow){
         showConsoleWindow = showWindow;
     }
 
-    /** Disposes the window that displays the console output */
+    /** Disposes the window that displays the console output. */
     public void disposeWindow(){
         if ( stdFra != null )
             stdFra.dispose();
     }
 
-    /** Redirects the standard error stream to the standard output stream
-     *
-     *@param flag if true, redirects the standard error stream to the standard output stream
+    /** Redirects the standard error stream to the standard output stream.
+     *  @param flag if true, redirects the standard error stream to the standard output stream
      */
     public void redirectErrorStream(boolean flag){
 	redErrStr = flag;
@@ -195,33 +193,33 @@ public class ClientProcess extends Thread {
     }
 
     /** Return the error message if <code>proSta=true</code> or a null pointer otherwise.
-     * @return the error message if <code>proSta=true</code> or a null pointer otherwise.
+     *  @return the error message if <code>proSta=true</code> or a null pointer otherwise.
      */
     public String getErrorMessage() {
         return errMes;
     }
 
     /** Causes the current thread to wait, if necessary, until the process represented 
-      * by this Process object has terminated. This method returns immediately if the 
-      * subprocess has already terminated. If the subprocess has not yet terminated, 
-      * the calling thread will be blocked until the subprocess exits.
-      *
-      *@return the exit value of the process. By convention, 0 indicates normal termination. 
-      *@exception InterruptedException if the current thread is interrupted by another thread 
-      *           while it is waiting, then the wait is ended and an InterruptedException is thrown.
-      */
-      public int waitFor()
-              throws InterruptedException{
-          this.join();
-          priStdOut.join();
-          priStdErr.join();
-            // Call waitFor() to make sure that the process exited.
-            // Without this call, the exception
-            // java.lang.IllegalThreadStateException: process hasn't exited
-            //            at java.lang.UNIXProcess.exitValue(UNIXProcess.java)
-            // is occasionally thrown
-          return simPro.waitFor();
-      }
+     * by this Process object has terminated. This method returns immediately if the 
+     * subprocess has already terminated. If the subprocess has not yet terminated, 
+     * the calling thread will be blocked until the subprocess exits.
+     *
+     * @return the exit value of the process. By convention, 0 indicates normal termination. 
+     * @exception InterruptedException if the current thread is interrupted by another thread 
+     *           while it is waiting, then the wait is ended and an InterruptedException is thrown.
+     */
+    public int waitFor()
+            throws InterruptedException{
+        this.join();
+        priStdOut.join();
+        priStdErr.join();
+        // Call waitFor() to make sure that the process exited.
+        // Without this call, the exception
+        // java.lang.IllegalThreadStateException: process hasn't exited
+        //            at java.lang.UNIXProcess.exitValue(UNIXProcess.java)
+        // is occasionally thrown
+        return simPro.waitFor();
+    }
 
     /** Get the standard output of the process.
      *  @return the standard output of the process
@@ -267,7 +265,6 @@ public class ClientProcess extends Thread {
 
         locY = Math.max(0, screenSize.height - dY - dLocY);
     }
-
 
     /** Frame that contains the console output of the simulation. */
     protected JFrame stdFra;
@@ -478,6 +475,7 @@ public class ClientProcess extends Thread {
             }
         }
     }
+
     /////////////////////////////////////////////////////////////////////
     /** Set the process arguments.
      * @param cmdarray array containing the command to call and its arguments.

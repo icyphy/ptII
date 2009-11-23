@@ -502,7 +502,7 @@ public class Director extends NamedProgramCodeGeneratorAdapter {
     /** Gets the parameter.
      *  @param target An adapter
      *  @param attribute The attribute
-     *  @param channelAndOffset
+     *  @param channelAndOffset The given channel and offset.
      *  @return code for the parameter
      *  @throws IllegalActionException
      */

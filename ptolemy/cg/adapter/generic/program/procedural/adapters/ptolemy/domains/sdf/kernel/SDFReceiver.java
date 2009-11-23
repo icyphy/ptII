@@ -51,7 +51,9 @@ import ptolemy.kernel.util.IllegalActionException;
 */
 public class SDFReceiver extends Receiver {
 
-    /** Construct a SDF receiver.
+    /** Construct an adapther for an SDF receiver.
+     *  @param The SDFReceiver for which an adapther is constructed.
+     *  @exception If thrown by the superclass.
      */
     public SDFReceiver(ptolemy.domains.sdf.kernel.SDFReceiver receiver)
             throws IllegalActionException {
@@ -63,8 +65,10 @@ public class SDFReceiver extends Receiver {
     }
 
     /** Generates code for getting tokens from the receiver.
-     *  @return generate get code.
-     *  @throws IllegalActionException
+     *  @param offset The offset of the port.
+     *  @return The generated get code.
+     *  @exception IllegalActionException If thrown while getting the component,
+     *  getting the adapter, getting the director or getting the port reference.
      */
     public String generateGetCode(String offset) throws IllegalActionException {
         TypedIOPort port = (TypedIOPort)getComponent().getContainer();
@@ -78,16 +82,21 @@ public class SDFReceiver extends Receiver {
     }
 
     /** Generates code to check the receiver has token.
-     *  @return generate hasToken code.
-     *  @throws IllegalActionException
+     *  @return The generated hasToken code, in this class, the string "true"
+     *  is returned
+     *  @exception IllegalActionException Not thrown in this base class.
      */
     public String generateHasTokenCode(String offset) throws IllegalActionException {
         return "true"; // Assume "true" is a defined constant.
     }
 
-    /** Generates code for putting tokens from the receiver.
-     *  @return generate put code.
-     *  @throws IllegalActionException
+    /** Generate code for putting tokens from the receiver.
+     *  @param sourcePort The source port.
+     *  @param offset The offset of the port.
+     *  @param token The token.    
+     *  @return The generated put code.
+     *  @exception IllegalActionException If thrown while getting the component,
+     *  getting the adapter, getting the director or getting the port reference.
      */
     public String generatePutCode(IOPort sourcePort, String offset, String token) throws IllegalActionException {
         TypedIOPort port = (TypedIOPort)getComponent().getContainer();
@@ -178,7 +187,7 @@ public class SDFReceiver extends Receiver {
     
     /** Each receiver is associated with a director, return that director.
      *  @return The director associated with this receiver.
-     *  @throws IllegalActionException 
+     *  @exception IllegalActionException 
      *  
      *  FIXME: this is not exactly correct.
      */
