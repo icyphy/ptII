@@ -96,6 +96,7 @@ EXTRA_SRCS = \
 	banner.htm \
 	body.htm \
 	buttons.htm \
+	checkstyle-ptII.xml \
 	contents.css \
 	contentsheader.htm \
 	docbody.htm \
