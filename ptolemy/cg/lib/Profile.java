@@ -43,7 +43,7 @@ import ptolemy.kernel.util.IllegalActionException;
  *  generated code.
  *  The actual profile instances derive from this class.
  *  @author Bert Rodiers
- *  @version $Id $
+ *  @version $Id$
  *  @since Ptolemy II 8.1
  *  @Pt.ProposedRating Red (rodiers)
  *  @Pt.AcceptedRating Red (rodiers)

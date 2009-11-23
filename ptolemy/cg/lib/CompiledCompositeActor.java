@@ -86,7 +86,6 @@ import ptolemy.util.StringUtilities;
  @Pt.ProposedRating red (zgang)
  @Pt.AcceptedRating red (zgang)
  */
-
 public class CompiledCompositeActor extends TypedCompositeActor {
     /** Construct a CodeGenerationCompositeActor in the default workspace
      *  with no container and an empty string as its name. Add the actor to
@@ -97,20 +96,6 @@ public class CompiledCompositeActor extends TypedCompositeActor {
      */
     public CompiledCompositeActor() {
         super();
-        _init();
-    }
-
-    /** Construct a CodeGenerationCompositeActor in the specified workspace
-     *  with no container and an empty string as a name. You can then change
-     *  the name with setName(). If the workspace argument is null, then use
-     *  the default workspace.
-     *  You should set a director before attempting to execute it.
-     *  You should set the container before sending data to it.
-     *  Increment the version number of the workspace.
-     *  @param workspace The workspace that will list the actor.
-     */
-    public CompiledCompositeActor(Workspace workspace) {
-        super(workspace);
         _init();
     }
 
@@ -139,6 +124,20 @@ public class CompiledCompositeActor extends TypedCompositeActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                     parameters                            ////
+
+    /** Construct a CodeGenerationCompositeActor in the specified workspace
+     *  with no container and an empty string as a name. You can then change
+     *  the name with setName(). If the workspace argument is null, then use
+     *  the default workspace.
+     *  You should set a director before attempting to execute it.
+     *  You should set the container before sending data to it.
+     *  Increment the version number of the workspace.
+     *  @param workspace The workspace that will list the actor.
+     */
+    public CompiledCompositeActor(Workspace workspace) {
+        super(workspace);
+        _init();
+    }
 
     /** The directory in which to put the generated code.
      *  This is a file parameter that must specify a directory.
