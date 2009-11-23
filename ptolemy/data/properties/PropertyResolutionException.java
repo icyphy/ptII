@@ -61,7 +61,7 @@ public class PropertyResolutionException extends IllegalActionException {
      *  @param solver The PropertySolver, which must not be null.
      *  @param cause The cause of this exception, or null if the cause
      *  is not known or nonexistent
-     *  @deprecated Use {@link #PropertyResolutionException(PropertySolverBase, Throwable, String}
+     *  @deprecated Use {@link #PropertyResolutionException(PropertySolverBase, Throwable, String)}
      *  instead because exceptions should include information about why
      *  the exception was thrown instead of just rethrowing.
      */
@@ -99,7 +99,7 @@ public class PropertyResolutionException extends IllegalActionException {
      *  @param nameable The Nameable object that was involved.
      *  @param cause The cause of this exception, or null if the cause
      *  is not known or nonexistent
-     *  @deprecated Use {@link #PropertyResolutionException(PropertySolverBase, Nameable, Throwable, String}
+     *  @deprecated Use {@link #PropertyResolutionException(PropertySolverBase, Nameable, Throwable, String)}
      *  instead because exceptions should include information about why
      *  the exception was thrown instead of just rethrowing.
      */

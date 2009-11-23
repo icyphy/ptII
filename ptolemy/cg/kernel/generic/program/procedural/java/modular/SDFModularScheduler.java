@@ -22,13 +22,25 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.math.Fraction;
 
+/** An SDF scheduler for modular code generation.
+
+*  @author Dai Bui
+*  @version $Id$
+*  @since Ptolemy II 7.1
+*  @Pt.ProposedRating Red (jiazou)
+*  @Pt.AcceptedRating Red (jiazou)
+*/
 public class SDFModularScheduler extends SDFScheduler {
     
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
     /**
-     * 
-     * @param container
-     * @param vectorizationFactor
-     * @return
+     * Get the firing vector for a given container.
+     * @param container The container that is being scheduled.
+     * @param vectorizationFactor The vectorization factor
+     * @return A map from each actor to its fractional
+     *  firing.
      * @throws IllegalActionException
      */
     public Map getFiringVector(CompositeActor container, int vectorizationFactor) 
@@ -80,6 +92,9 @@ public class SDFModularScheduler extends SDFScheduler {
         return entityToFiringsPerIteration;
     }
     
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+
     /** Solve the balance equations for the list of connected Actors.
      *  For each actor, determine the ratio that determines the rate at
      *  which it should fire relative to the other actors for the graph to
@@ -330,6 +345,9 @@ public class SDFModularScheduler extends SDFScheduler {
         return entityToFiringsPerIteration;
     }
     
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
     /** Update the The external rates of those directly connected input
      *  and output ports to be 1. So a direct connection will transfer
      *  one token in each execution of the schedule.
@@ -760,6 +778,9 @@ public class SDFModularScheduler extends SDFScheduler {
         }
     }
     
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
     /** A fraction equal to -1.  Used in several places to indicate an
      * actor for which we have not determined the number of times it will
      * fire.
