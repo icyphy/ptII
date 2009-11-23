@@ -3,10 +3,14 @@
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 
 <!-- Library of actors which realize continuous dynamics. -->
-<entity name="Dynamics" class="ptolemy.moml.EntityLibrary">
+<entity name="Continuous" class="ptolemy.moml.EntityLibrary">
   <configure>
     <?moml
       <group>
+        <entity name="ContinuousClock"
+                class="ptolemy.domains.continuous.lib.ContinuousClock"/>
+		<entity name="ContinuousSinewave"
+                class="ptolemy.domains.continuous.lib.ContinuousSinewave"/>
         <entity name="Integrator"
                 class="ptolemy.domains.continuous.lib.Integrator"/>
         <entity name="DifferentialSystem"

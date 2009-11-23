@@ -1,0 +1,22 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+
+<!-- Library of actors which take discrete inputs -->
+<!-- and produce continuous outputs.              -->
+<entity name="Discrete" class="ptolemy.moml.EntityLibrary">
+  <configure>
+    <?moml
+      <group>
+      	<entity name="DiscreteClock"
+                class="ptolemy.actor.lib.DiscreteClock"/>
+		<entity name="ResettableTimer"
+				class="ptolemy.actor.lib.ResettableTimer"/>
+		<entity name="Merge"
+                class="ptolemy.domains.continuous.lib.ContinuousMerge"/>
+		<entity name="TimeDelay"
+                class="ptolemy.actor.lib.TimeDelay"/>
+      </group>
+    ?>
+  </configure>
+</entity>

@@ -4,7 +4,7 @@
 
 <!-- Library of actors which take discrete inputs -->
 <!-- and produce continuous outputs.              -->
-<entity name="ToContinuous" class="ptolemy.moml.EntityLibrary">
+<entity name="DiscreteToContinuous" class="ptolemy.moml.EntityLibrary">
   <configure>
     <?moml
       <group>

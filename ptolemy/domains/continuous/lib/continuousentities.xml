@@ -7,24 +7,10 @@
     <?moml
       <group>
 <doc>Continuous actors</doc>
-
-<entity name="ContinuousClock"
-                class="ptolemy.domains.continuous.lib.ContinuousClock"/>
-<entity name="ContinuousMerge"
-                class="ptolemy.domains.continuous.lib.ContinuousMerge"/>
-<entity name="ContinuousSinewave"
-                class="ptolemy.domains.continuous.lib.ContinuousSinewave"/>
-<entity name="DiscreteClock"
-                class="ptolemy.actor.lib.DiscreteClock"/>
-<entity name="ResettableTimer"
-				class="ptolemy.actor.lib.ResettableTimer"/>
-<entity name="TimeDelay"
-                class="ptolemy.actor.lib.TimeDelay"/>
-
 <input source="ptolemy/domains/continuous/lib/dynamics.xml"/>
 <input source="ptolemy/domains/continuous/lib/eventgenerators.xml"/>
+<input source="ptolemy/domains/continuous/lib/discrete.xml"/>
 <input source="ptolemy/domains/continuous/lib/wavegenerators.xml"/>
-
       </group>
     ?>
   </configure>
