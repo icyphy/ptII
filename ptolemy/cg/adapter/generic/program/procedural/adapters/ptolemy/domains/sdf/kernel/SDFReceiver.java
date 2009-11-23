@@ -35,6 +35,7 @@ import ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.Rece
 import ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.sched.StaticSchedulingDirector;
 import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
 import ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapter;
+import ptolemy.cg.lib.ModularCodeGenTypedCompositeActor;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.Type;
 import ptolemy.kernel.util.IllegalActionException;
@@ -115,8 +116,19 @@ public class SDFReceiver extends Receiver {
         
         token = _removeSink(token);
 
+        boolean forComposite = _forComposite;
+        if (getComponent().getContainer().getContainer() instanceof ModularCodeGenTypedCompositeActor
+                && port.isInput()) {
+            // If the container is a ModularCodeGenTypedCompositeActor
+            // and the port is an input, then generate a reference
+            // assuming that the we are not operating on a composite.
+            // This code is needed for
+            // $PTII/ptolemy/cg/lib/test/auto/ModularCodeGen2.xml,
+            // which has nested ModularCodegen.
+            forComposite = false;
+        }
         return _getDirectorForReceiver().getReference(port, new String[]{Integer.toString(channel), offset}, 
-                _forComposite, true, containingActorAdapter) + "=" + token + ";" + _eol;
+                forComposite, true, containingActorAdapter) + "=" + token + ";" + _eol;
 //        adapter.processCode("$ref(" + port.getName() + "#" + channel
 //                + ")")
 //                + " = " + token + ";" + _eol;
