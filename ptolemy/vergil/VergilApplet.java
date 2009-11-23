@@ -29,6 +29,8 @@
 package ptolemy.vergil;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 import ptolemy.gui.BasicJApplet;
 import ptolemy.kernel.attributes.VersionAttribute;
@@ -96,6 +98,18 @@ public class VergilApplet extends BasicJApplet {
                         .tokenizeForExec(commandLineArguments);
             } catch (IOException ex) {
                 report("Failed to parse \"" + commandLineArguments + "\"", ex);
+            }
+        }
+        int i = 0;
+        for (;i < vergilArguments.length; i++) {
+            if (vergilArguments[i].endsWith(".xml")) {
+                URL docBase = getDocumentBase();
+                try {
+                    URL xmlFile = new URL(docBase, vergilArguments[i]);
+                    vergilArguments[i] = xmlFile.toExternalForm();
+                } catch (MalformedURLException ex) {
+                    report("Failed to open \"" + vergilArguments[i] + "\"", ex);
+                }
             }
         }
         VergilApplication.main(vergilArguments);
