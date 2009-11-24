@@ -72,7 +72,6 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.MoMLChangeRequest;
-import ptolemy.vergil.kernel.attributes.VisibleAttribute;
 
 /**
  *  This director has a local notion time, decoupled from that of the
@@ -1148,7 +1147,7 @@ public class PtidesBasicDirector extends DEDirector {
      *  or its subclasses. In this base class, this returns a rectangle like
      *  the usual director green rectangle used by default for directors,
      *  but filled with red instead of green.
-     *  @see VisibleAttribute
+     *  @see ptolemy.vergil.kernel.attributes.VisibleAttribute
      *  @param actorExecuting The actor that's exeucting.
      *  @return A MoML string.
      *  @exception IllegalActionException If the animateExecution parameter cannot
@@ -1185,7 +1184,7 @@ public class PtidesBasicDirector extends DEDirector {
      *  director. This can include a sequence of instances of VisibleAttribute
      *  or its subclasses. In this base class, this returns a rectangle like
      *  the usual director green rectangle used by default for directors.
-     *  @see VisibleAttribute
+     *  @see ptolemy.vergil.kernel.attributes.VisibleAttribute
      *  @return A MoML string.
      */
     protected String _getIdleIcon() {
