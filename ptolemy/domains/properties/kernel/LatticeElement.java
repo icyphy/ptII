@@ -84,15 +84,10 @@ public class LatticeElement extends State {
 
         solutionColor = new ColorAttribute(this, "solutionColor");
         solutionColor.setToken("{1.0, 1.0, 1.0, 1.0}");
-
-        /* _icon = */new LatticeElementIcon(this, "LatticeElementIcon");
-
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                   ports and parameters                    ////
-
-    //private LatticeElementIcon _icon;
 
     /**
      * The color of the lattice element. The property solver uses this to color
