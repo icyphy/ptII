@@ -4,13 +4,13 @@
 <entity name="Const" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={158, 90, 948, 730}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={76, 25, 947, 718}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[735, 620]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[735, 602]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{367.5, 310.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{367.5, 301.0}">
     </property>
     <property name="LogicalAND_Forward" class="ptolemy.data.properties.configuredSolvers.lattice.LogicalAND_Forward_CS">
         <property name="action" class="ptolemy.actor.parameters.SharedParameter" value="TEST">
@@ -23,14 +23,16 @@
         </property>
     </property>
     <property name="TesterDirector" class="ptolemy.domains.tester.kernel.TesterDirector">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 55.0]">
+        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{85.0, 75.0}">
         </property>
     </property>
     <entity name="Const" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="1">
-            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="True">
-            </property>
             <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.8,0.2,1.0}">
+            </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="True">
             </property>
             <property name="lattice::logicalAND" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="True">
             </property>
@@ -39,16 +41,16 @@
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
             </property>
-            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
             </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{150, 165}">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="True">
-            </property>
             <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.8,0.2,1.0}">
+            </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="True">
             </property>
             <property name="lattice::logicalAND" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="True">
             </property>
