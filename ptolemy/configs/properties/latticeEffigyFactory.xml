@@ -3,7 +3,7 @@
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <group>
   <entity name="Property Lattice Editor" class="ptolemy.actor.gui.PtolemyEffigy$Factory">
-        <entity name="blank" class="ptolemy.domains.properties.PropertyLatticeComposite">		
+        <entity name="blank" class="ptolemy.domains.properties.kernel.PropertyLatticeComposite">
         <!-- Annotate with instructions. -->
 	    <property name="annotation" class="ptolemy.kernel.util.Attribute">
 	      <property name="_hideName"
