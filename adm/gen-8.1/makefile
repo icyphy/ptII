@@ -1389,6 +1389,7 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/fsm \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/modal \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/pn \
+	$(REMOTE1PTIIDIST)/ptolemy/domains/pthales \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/ptides \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/ptera \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/rendezvous \
