@@ -27,7 +27,6 @@ import java.util.Iterator;
 import ptolemy.actor.parameters.SharedParameter;
 import ptolemy.data.ObjectToken;
 import ptolemy.data.properties.gui.PropertyDisplayGUIFactory;
-import ptolemy.data.properties.lattice.PropertyLattice;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.ChangeRequest;

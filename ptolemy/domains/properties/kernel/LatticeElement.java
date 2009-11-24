@@ -33,7 +33,6 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Settable;
-import ptolemy.vergil.properties.LatticeElementIcon;
 
 /**
  * A lattice element that represents a property value used in property
