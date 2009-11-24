@@ -53,8 +53,7 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 # Include the .class files from these jars in PTCLASSALLJAR
 # If you change this, change DIRS above
 PTCLASSALLJARS = \
-	kernel/kernel.jar \
-	lib/lib.jar
+	kernel/kernel.jar
 
 # Keep this list alphabetized.
 JSRCS =
