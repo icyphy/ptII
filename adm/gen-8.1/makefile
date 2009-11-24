@@ -1301,6 +1301,7 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/vergil/toolbox \
 	$(REMOTE1PTIIDIST)/ptolemy/vergil/icon \
 	$(REMOTE1PTIIDIST)/ptolemy/vergil/tree \
+	$(REMOTE1PTIIDIST)/ptolemy/vergil/fsm \
 	$(REMOTE1PTIIDIST)/ptolemy/vergil/fsm/modal \
 	$(REMOTE1PTIIDIST)/ptolemy/vergil/modal/modal \
 	$(REMOTE1PTIIDIST)/ptolemy/vergil/modal \
