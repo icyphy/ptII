@@ -258,7 +258,14 @@ test CSPReceiver-4.1 {Check is...Boundary() methods for single layer boundary} {
 
 
     # Create Receivers
-    $toplevel createReceivers
+    $toplevel preinitialize
+
+#     # Note that r55526 - r55528 mean that we now have to iterate here
+#     set entities [[$toplevel deepEntityList] iterator]
+#     while {[$entities hasNext]} {
+# 	set actor [java::cast ptolemy.actor.Actor [$entities next]]
+# 	$actor createReceivers
+#     }
 
     set b1InIOPort [java::cast ptolemy.actor.TypedIOPort $b1InPort]
     set rcvrs [$b1InIOPort getReceivers]
@@ -387,7 +394,15 @@ test CSPReceiver-4.2 {Check is...Boundary() for multilayered boundaries} {
 
 
     # Create Receivers
-    $toplevel createReceivers
+    $toplevel preinitialize
+
+#     # Note that r55526 - r55528 mean that we now have to iterate here
+#     set entities [[$toplevel deepEntityList] iterator]
+#     while {[$entities hasNext]} {
+# 	set actor [java::cast ptolemy.actor.Actor [$entities next]]
+# 	puts "actor: [$actor getFullName]"
+# 	$actor createReceivers
+#     }
 
     set innerwormOutIOPort [java::cast ptolemy.actor.TypedIOPort $innerwormOutPort]
     set rcvrs [$innerwormOutIOPort getInsideReceivers]
