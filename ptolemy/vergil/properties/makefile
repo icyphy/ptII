@@ -49,10 +49,12 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
 	LatticeElementController.java \
+	LatticeElementIcon.java \
 	LatticeGraphFrame.java \
 	LatticeGraphFrameController.java \
 	LatticeGraphTableau.java \
-	ModelAttributeController.java
+	ModelAttributeController.java \
+	ModelAttributeControllerFactory.java
 
 OTHER_FILES_TO_BE_JARED = 
 
