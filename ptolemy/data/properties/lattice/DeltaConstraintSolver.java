@@ -92,12 +92,10 @@ public class DeltaConstraintSolver extends PropertyConstraintSolver {
      * solver, given the model analyzer that invokes this.
      * @param analyzer The given model analyzer.
      */
-    protected void _resolveProperties(NamedObj analyzer)
-            throws KernelException {
+    protected void _resolveProperties(NamedObj analyzer) throws KernelException {
 
         NamedObj toplevel = _toplevel();
-        PropertyConstraintHelper toplevelHelper =
-          (PropertyConstraintHelper) getHelper(toplevel);
+        PropertyConstraintHelper toplevelHelper = (PropertyConstraintHelper) getHelper(toplevel);
 
         toplevelHelper.reinitialize();
 
@@ -160,24 +158,24 @@ public class DeltaConstraintSolver extends PropertyConstraintSolver {
             PropertyResolutionException, IllegalActionException {
 
         List<Inequality> errorList = constraintList;
-        int blockSize = errorList.size()/2;
+        int blockSize = errorList.size() / 2;
 
         WHILE_LOOP: while (blockSize >= 1) {
 
             for (int i = 0; i < errorList.size(); i += blockSize) {
 
                 //modify the list of constraints
-                List<Inequality> testList =
-                  new LinkedList<Inequality>(errorList);
-                testList.removeAll(errorList.subList(
-                        i, Math.min(errorList.size(), i+blockSize)));
+                List<Inequality> testList = new LinkedList<Inequality>(
+                        errorList);
+                testList.removeAll(errorList.subList(i, Math.min(errorList
+                        .size(), i + blockSize)));
 
                 if (testList.size() > 0) {
                     _resolvedProperties.clear();
                     _resolveProperties(toplevel, toplevelHelper, testList);
                     if (errorsExist()) {
                         errorList = testList;
-                        blockSize = errorList.size()/2;//Math.min(errorList.size()/2, blockSize);
+                        blockSize = errorList.size() / 2;//Math.min(errorList.size()/2, blockSize);
                         continue WHILE_LOOP;
                     }
                 }
