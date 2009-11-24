@@ -52,39 +52,56 @@ public class DiscreteClock extends PropertyConstraintHelper {
      * Construct a Integrator helper for the flatUnitSystem lattice.
      * @param solver The given solver.
      * @param actor The given Integrator actor
-     * @exception IllegalActionException
+     * @exception IllegalActionException Thrown if the helper cannot be
+     * initialized.
      */
     public DiscreteClock(PropertyConstraintSolver solver,
             ptolemy.actor.lib.DiscreteClock actor)
             throws IllegalActionException {
-
         super(solver, actor, false);
-
         _actor = actor;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /**
+     * Return the constraints of this component. The constraints is a list of
+     * inequalities.
+     * This method sets the constraint of the output to at least the value of
+     * the "UNITLESS" element in the {@link ptolemy.data.properties.lattice#_lattice}
+     * @return The constraints of this component.
+     * @exception IllegalActionException Not thrown in this base class.
+     */
     public List<Inequality> constraintList() throws IllegalActionException {
         setAtLeast(_actor.output, _lattice.getElement("UNITLESS"));
-
         return super.constraintList();
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
+    /**
+     * Return the list of property-able Attributes.
+     * A property-able Attribute is a StringAttribute with the name
+     * "guardTransition", a StringAttribute in an Expression actor,
+     * a StringAttribute with the name "expression" or a Variable
+     * with full visibility.  However, Variables with certain names
+     * are excluded.
+     * @see ptolemy.data.properties.Propertyable
+     * @return The list of property-able Attributes.
+     */
     protected List<Attribute> _getPropertyableAttributes() {
         List<Attribute> result = super._getPropertyableAttributes();
-        result.remove(_actor.trigger);
-        result.remove(_actor.period);
-
+        // FIXME: Findbugs: No relationship between generic parameter and method argument
+        // _actor.period is a PortParameter in actor.lib.DiscreteClock, not an Attribute.
+        //result.remove(_actor.period);
         return result;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
+    /** The DiscreteClock actor associated with this solver. */
     private ptolemy.actor.lib.DiscreteClock _actor;
 }

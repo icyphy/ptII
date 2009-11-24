@@ -1,6 +1,6 @@
 /* A helper class for ptolemy.actor.lib.Const.
 
- Copyright (c) 2006-2009 The Regents of the University of California.
+ Copyright (c) 2009 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -51,11 +51,11 @@ public class Const extends Source {
      * Construct a Const helper for the dimensionSystem lattice.
      * @param solver The given solver.
      * @param actor The given Const actor
-     * @exception IllegalActionException
+     * @exception IllegalActionException Thrown if the helper cannot be
+     * initialized.
      */
     public Const(PropertyConstraintSolver solver, ptolemy.actor.lib.Const actor)
             throws IllegalActionException {
-
         super(solver, actor);
         _actor = actor;
     }
@@ -63,21 +63,47 @@ public class Const extends Source {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /**
+     * Return the constraints of this component. The constraints is a list of
+     * inequalities. 
+     * This method sets the constraint of the output to at least that of the
+     * value Parameter of the actor.
+
+     * @return The constraints of this component.
+     * @exception IllegalActionException Not thrown in this base class.
+     */
     public List<Inequality> constraintList() throws IllegalActionException {
         setAtLeast(_actor.output, _actor.value);
         return super.constraintList();
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
+    ////                         protected methods                 ////
 
-    private ptolemy.actor.lib.Const _actor;
-
+    /**
+     * Return the list of property-able Attributes.
+     * A property-able Attribute is a StringAttribute with the name
+     * "guardTransition", a StringAttribute in an Expression actor,
+     * a StringAttribute with the name "expression" or a Variable
+     * with full visibility.  However, Variables with certain names
+     * are excluded.  This method adds the value Parameter of the
+     * Const actor to the list that is returned.
+     * @see ptolemy.data.properties.Propertyable
+     * @return The list of property-able Attributes.
+     */
     protected List<Attribute> _getPropertyableAttributes() {
         List<Attribute> result = super._getPropertyableAttributes();
         result.add(_actor.value);
-        result.remove(_actor.trigger);
+        // FIXME: Findbugs: No relationship between generic parameter and method argument
+        // _actor.trigger is a TypedIOPort in actor.lib.Source, not an Attribute.
+        // CurrentTime._getPropertyableAttributes() has something similar.
+        //result.remove(_actor.trigger);
         return result;
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    /** The Const actor associated with this solver. */
+    private ptolemy.actor.lib.Const _actor;
 }

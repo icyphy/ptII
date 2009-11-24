@@ -425,7 +425,12 @@ public abstract class PropertyHelper {
 
     /**
      * Return the list of property-able Attributes.
-     *
+     * A property-able Attribute is a StringAttribute with the name
+     * "guardTransition", a StringAttribute in an Expression actor,
+     * a StringAttribute with the name "expression" or a Variable
+     * with full visibility.  However, Variables with certain names
+     * are excluded.
+     * @see ptolemy.data.properties.Propertyable
      * @return The list of property-able Attributes.
      */
     protected List<Attribute> _getPropertyableAttributes() {

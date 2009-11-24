@@ -56,24 +56,42 @@ public class AtomicActor extends PropertyConstraintHelper {
      * are set for this helper.
      * @param solver The given solver.
      * @param actor The given ActomicActor.
-     * @exception IllegalActionException
+     * @exception IllegalActionException Thrown if the helper cannot be
+     * initialized.
      */
     public AtomicActor(PropertyConstraintSolver solver,
             ptolemy.actor.AtomicActor actor) throws IllegalActionException {
-
         super(solver, actor);
     }
 
+    /**
+     * Construct a helper for the given AtomicActor. This is the
+     * helper class for any ActomicActor that does not have a
+     * specific defined helper class.
+     * @param solver The given solver.
+     * @param actor The given ActomicActor.
+     * @param useDefaultConstraints Indicate whether this helper uses the
+     * default actor constraints.
+     * @exception IllegalActionException Thrown if the helper cannot be
+     * initialized.
+     */
     public AtomicActor(PropertyConstraintSolver solver,
             ptolemy.actor.AtomicActor actor, boolean useDefaultConstraints)
             throws IllegalActionException {
-
         super(solver, actor, useDefaultConstraints);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
+    /**
+     * Return the list of property-able Attributes.
+     * In this base class, an empty list is returned.
+     * Derived classes should add Attributes and Variables
+     * to list.  Commonly, actors add their parameters to this list.
+     * @see ptolemy.data.properties.Propertyable
+     * @return The list of property-able Attributes.
+     */
     protected List<Attribute> _getPropertyableAttributes() {
         // do not set up default constraints for attributes in AtomicActors
         return new LinkedList<Attribute>();

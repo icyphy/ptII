@@ -1,6 +1,6 @@
 /* A helper class for ptolemy.actor.lib.CurrentTime.
 
- Copyright (c) 2006-2009 The Regents of the University of California.
+ Copyright (c) 2009 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -49,30 +49,57 @@ import ptolemy.kernel.util.IllegalActionException;
 public class CurrentTime extends AtomicActor {
 
     /**
-     * Construct a Expression helper for the flatUnitSystem lattice.
+     * Construct a CurrentTime helper for the dimensionSystem lattice.
      * @param solver The given solver.
      * @param actor The given Expression actor
-     * @exception IllegalActionException
+     * @exception IllegalActionException Thrown if the helper cannot be
+     * initialized.
      */
     public CurrentTime(PropertyConstraintSolver solver,
             ptolemy.actor.lib.CurrentTime actor) throws IllegalActionException {
-
         super(solver, actor, false);
-
         _actor = actor;
     }
 
+    /**
+     * Return the constraints of this component. The constraints is a list of
+     * inequalities.
+     * This method sets the constraint of the output to at least the value of
+     * the "TIME" element in the {@link ptolemy.data.properties.lattice#_lattice}
+     * @return The constraints of this component.
+     * @exception IllegalActionException If thrown while reading the lattice or
+     * if thrown by the superclass. 
+     */
     public List<Inequality> constraintList() throws IllegalActionException {
         setAtLeast(_actor.output, _lattice.getElement("TIME"));
         return super.constraintList();
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+
+    /**
+     * Return the list of property-able Attributes.
+     * A property-able Attribute is a StringAttribute with the name
+     * "guardTransition", a StringAttribute in an Expression actor,
+     * a StringAttribute with the name "expression" or a Variable
+     * with full visibility.  However, Variables with certain names
+     * are excluded.
+     * @see ptolemy.data.properties.Propertyable
+     * @return The list of property-able Attributes.
+     */
     protected List<Attribute> _getPropertyableAttributes() {
         List<Attribute> result = super._getPropertyableAttributes();
-        result.remove(_actor.trigger);
-
+        // FIXME: Findbugs: No relationship between generic parameter and method argument
+        // _actor.trigger is a TypedIOPort in actor.lib.Source, not an Attribute.
+        // Const._getPropertyableAttributes() has something similar.
+        //result.remove(_actor.trigger);
         return result;
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    /** The CurrentTime actor associated with this solver. */
     private ptolemy.actor.lib.CurrentTime _actor;
 }

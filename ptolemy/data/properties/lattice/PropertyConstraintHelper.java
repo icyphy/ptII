@@ -101,8 +101,9 @@ public class PropertyConstraintHelper extends PropertyHelper {
 
     /**
      * Return the constraints of this component. The constraints is a list of
-     * inequalities. This base class returns a empty list.
-     * @return A list of Inequality.
+     * inequalities. This base class returns the union of the constraints
+     * of this component and the constraints for the subcomponents
+     * @return The constraints of this component.
      * @exception IllegalActionException Not thrown in this base class.
      */
     public List<Inequality> constraintList() throws IllegalActionException {
@@ -619,7 +620,7 @@ public class PropertyConstraintHelper extends PropertyHelper {
 
     protected List<Inequality> _ownConstraints = new LinkedList<Inequality>();
 
-    /** The property lattice * */
+    /** The property lattice. */
     protected PropertyLattice _lattice;
 
     /** Indicate whether this helper uses the default actor constraints. */
