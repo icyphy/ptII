@@ -22,12 +22,13 @@
  * "AS IS" BASIS, AND THE UNIVERSITY OF CALIFORNIA HAS NO OBLIGATION TO PROVIDE
  * MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
-package ptolemy.domains.properties;
+package ptolemy.vergil.properties;
 
 import java.awt.Color;
 import java.awt.Paint;
 
 import ptolemy.data.BooleanToken;
+import ptolemy.domains.properties.kernel.LatticeElement;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;

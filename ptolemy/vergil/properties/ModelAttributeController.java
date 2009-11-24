@@ -119,7 +119,7 @@ public class ModelAttributeController extends AttributeController {
      * An action to open a composite. This private class must remain named
      * LookInsideAction for backward compatibility.
      */
-    private static class LookInsideAction extends FigureAction {
+   protected class LookInsideAction extends FigureAction {
 
         public LookInsideAction() {
             super("Open Model");
@@ -129,8 +129,9 @@ public class ModelAttributeController extends AttributeController {
             // supply Control-L or Command-L as a shortcut under applets.
             if (!StringUtilities.inApplet()) {
                 putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
-                                KeyEvent.VK_L, Toolkit.getDefaultToolkit()
+                                KeyEvent.VK_J, Toolkit.getDefaultToolkit()
                                 .getMenuShortcutKeyMask()));
+                putValue(GUIUtilities.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_J));
             }
         }
 

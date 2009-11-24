@@ -27,8 +27,6 @@ package ptolemy.domains.properties.kernel;
 import java.util.List;
 
 import ptolemy.data.properties.lattice.PropertyLattice;
-import ptolemy.domains.properties.LatticeElement;
-import ptolemy.domains.properties.PropertyLatticeComposite;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;

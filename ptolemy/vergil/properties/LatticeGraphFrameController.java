@@ -24,7 +24,7 @@ package ptolemy.vergil.properties;
 
 import java.awt.event.ActionEvent;
 
-import ptolemy.domains.properties.PropertyLatticeComposite;
+import ptolemy.domains.properties.kernel.PropertyLatticeComposite;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.util.MessageHandler;
 import ptolemy.vergil.actor.ExternalIOPortController;

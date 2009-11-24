@@ -50,9 +50,11 @@ PTCLASSJAR = $(PTPACKAGE).jar
 PTCLASSALLJARS =
 
 JSRCS = \
+	LatticeElement.java \
 	ModelAttribute.java \
 	OntologyAttribute.java \
-	PropertyLatticeAttribute.java
+	PropertyLatticeAttribute.java \
+	PropertyLatticeComposite.java
 	
 EXTRA_SRCS =    $(JSRCS)
 

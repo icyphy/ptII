@@ -32,8 +32,8 @@ import javax.swing.KeyStroke;
 
 import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.Parameter;
-import ptolemy.domains.properties.LatticeElement;
-import ptolemy.domains.properties.PropertyLatticeComposite;
+import ptolemy.domains.properties.kernel.LatticeElement;
+import ptolemy.domains.properties.kernel.PropertyLatticeComposite;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.util.MessageHandler;

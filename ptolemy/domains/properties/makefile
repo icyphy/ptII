@@ -54,14 +54,9 @@ PTCLASSALLJARS = \
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
-JSRCS = \
-	LatticeElement.java \
-	LatticeElementIcon.java \
-	PropertyLatticeComposite.java
-
-OTHER_FILES_TO_BE_JARED = \
-	LatticeElementIcon.xml \
-	PropertyLatticeCompositeIcon.xml 
+JSRCS =
+	
+OTHER_FILES_TO_BE_JARED =
 
 EXTRA_SRCS = $(OTHER_FILES_TO_BE_JARED)
 
@@ -72,8 +67,7 @@ MISC_FILES =	kernel lib
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
-OPTIONAL_FILES = \
-	'PropertyLatticeComposite$$Lattice.class'
+OPTIONAL_FILES =
 
 JCLASS = $(JSRCS:%.java=%.class)
 

@@ -22,7 +22,7 @@
  * "AS IS" BASIS, AND THE UNIVERSITY OF CALIFORNIA HAS NO OBLIGATION TO PROVIDE
  * MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
-package ptolemy.domains.properties;
+package ptolemy.domains.properties.kernel;
 
 import ptolemy.actor.gui.ColorAttribute;
 import ptolemy.data.BooleanToken;
@@ -33,6 +33,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Settable;
+import ptolemy.vergil.properties.LatticeElementIcon;
 
 /**
  * A lattice element that represents a property value used in property

@@ -20,7 +20,7 @@
  * "AS IS" BASIS, AND THE UNIVERSITY OF CALIFORNIA HAS NO OBLIGATION TO PROVIDE
  * MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
-package ptolemy.domains.properties;
+package ptolemy.domains.properties.kernel;
 
 import java.util.ArrayList;
 import java.util.HashMap;

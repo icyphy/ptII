@@ -32,7 +32,7 @@ import ptolemy.actor.gui.DebugListenerTableau;
 import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.actor.gui.TextEffigy;
-import ptolemy.domains.properties.PropertyLatticeComposite;
+import ptolemy.domains.properties.kernel.PropertyLatticeComposite;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NamedObj;
