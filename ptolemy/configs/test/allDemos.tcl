@@ -55,7 +55,17 @@ test allDemos-1.0 {} {
 	}
 
         set grDemos [list \
+			 "domains/continuous/demo/BouncingBall/BouncingBall.xml" \
+			 "domains/continuous/demo/CartPendulum/CartPendulum.xml" \
 			 "domains/continuous/demo/NewtonsCradle/NewtonsCradleAnimated.xml" \
+			 "domains/continuous/demo/NewtonsCradle/NewtonsCradleComplicated.xml" \
+			 "domains/continuous/demo/NewtonsCradle/NewtonsCradleNondeterministic.xml" \
+			 "domains/continuous/demo/NewtonsCradle/NewtonsCradlePerfectlyInelastic1.xml" \
+			 "domains/continuous/demo/NewtonsCradle/ParameterizedNewtonsCradleAnimatedNondeterministic.xml" \
+			 "domains/continuous/demo/NewtonsCradle/ParameterizedNewtonsCradleAnimated.xml" \
+			 "domains/continuous/demo/Pendulum3D/Pendulum3D_reduced.xml" \
+			 "domains/continuous/demo/Pendulum3D/Pendulum3D.xml" \
+			 "domains/continuous/demo/Starmac/Starmac.xml" \
 			 "domains/ct/demo/BouncingBall/BouncingBallWithoutGR.xml" \
 			 "domains/ct/demo/BouncingBall/BouncingBall.xml" \
 			 "domains/ct/demo/CartPendulum/CartPendulum.xml" \
