@@ -56,7 +56,7 @@ if [ file isdirectory auto/knownFailedTests ] {
 			  [list $file]]
 
 	    set timeout 60000
-	    puts "codegen.tcl: Setting watchdog for [expr {$timeout / 1000}]\
+	    puts "CGC.tcl: Setting watchdog for [expr {$timeout / 1000}]\
                   seconds at [clock format [clock seconds]]"
 	    set watchDog [java::new util.testsuite.WatchDog $timeout]
 
@@ -111,7 +111,7 @@ proc CGC_test {file inline {extraArgs {}} } {
 	}
 
 	set timeout 60000
-	puts "codegen.tcl: Setting watchdog for [expr {$timeout / 1000}]\
+	puts "CGC.tcl: Setting watchdog for [expr {$timeout / 1000}]\
                   seconds at [clock format [clock seconds]]"
 	set watchDog [java::new util.testsuite.WatchDog $timeout]
 
@@ -124,16 +124,20 @@ proc CGC_test {file inline {extraArgs {}} } {
 	} else {
 	    $watchDog cancel
 	    if {$haveValgrind} {
-		set executableName [string range $file [ expr {[string last / $file] + 1}] [expr {[string length $file] -5}]]
-		set executable "$env(user.home)/codegen/$executableName"
-		puts "Running valgrind $executable"
+		if {[regexp {/mpi/} $relativeFilename] } {
+		    puts "CGC.tcl: skipping valgrind on /mpi/ tests"
+		} else {    
+		    set executableName [string range $file [ expr {[string last / $file] + 1}] [expr {[string length $file] -5}]]
+		    set executable "$env(user.home)/codegen/$executableName"
+		    puts "Running valgrind $executable"
 
-		set watchDog [java::new util.testsuite.WatchDog $timeout]
-		catch {set valgrind [exec -stderrok valgrind $executable]} errMsg
-		$watchDog cancel
+		    set watchDog [java::new util.testsuite.WatchDog $timeout]
+		    catch {set valgrind [exec -stderrok valgrind $executable]} errMsg
+		    $watchDog cancel
 
-		if {![regexp "ERROR SUMMARY: 0 errors" $valgrind]} {
-		    error "Valgrind had a non-zero ERROR SUMMARY\n$valgrind"
+		    if {![regexp "ERROR SUMMARY: 0 errors" $valgrind]} {
+			error "Valgrind had a non-zero ERROR SUMMARY\n$valgrind"
+		    }
 		}
 	    }
 	}

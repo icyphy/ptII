@@ -75,6 +75,6 @@ optimize:
 # Generate code coverage using gcov
 coverage:
 	rm -f @modelName@ @modelName@.exe
-	make -f @modelName@.mk USER_CC_FLAGS="-fprofile-arcs -ftest-coverage"
-	./@modelName@
-	#gcov @modelName@.c
+	$(MAKE) -f @modelName@.mk USER_CC_FLAGS="-fprofile-arcs -ftest-coverage"
+	$(MAKE) -f @modelName@.mk run
+	gcov @modelName@.c
