@@ -1340,16 +1340,7 @@ public class Director extends Attribute implements Executable {
         }
     }
     
-    /** Return the Worst Case Execution Time (WCET).
-     *  In this base class, the number 0.0 is returned.
-     *  Derived classes may calculate the WCET and return it.
-     *  @return The Worst Case Excecution Time (WCET), in this base class
-     *  0.0 is always returned.
-     */     
-    public double _getWCET() throws IllegalActionException {
-        
-        return 0;
-    }
+
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
