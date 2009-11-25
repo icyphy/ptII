@@ -60,7 +60,7 @@ import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.Variable;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.GiottoDecoratedAttributesImplementation;
+//import ptolemy.kernel.GiottoDecoratedAttributesImplementation;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.DecoratedAttributes;
@@ -984,7 +984,11 @@ TimedDirector, Decorator {
      */
     public DecoratedAttributes createDecoratedAttributes(NamedObj target) throws IllegalActionException, NameDuplicationException{
         System.out.println("createDecoratedAttributes method called for object "+target.getDisplayName());
-        return new GiottoDecoratedAttributesImplementation(target, this);
+	if (1==1) {
+	    throw new IllegalActionException("Internal compilation error");
+	}
+        //return new GiottoDecoratedAttributesImplementation(target, this);
+	return null;
     }
 
     protected void finalize() throws Throwable
