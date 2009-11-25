@@ -2068,8 +2068,8 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
                 // failed to the end user.  The alternative is to wrap the
                 // entire body in one try/catch block and say
                 // "Code generation failed for foo", which is not clear.
-                URL modelURL;
 
+                URL modelURL = null;
                 try {
                     modelURL = new File(args[i]).toURI().toURL();
                 } catch (Exception ex) {
@@ -2146,6 +2146,14 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
                     // problems with running the model after generating code
                     if (toplevel != null) {
                         toplevel.setContainer(null);
+                    }
+                    if (modelURL != null) {
+                        // It turns out that after r55530, we need to
+                        // call purgeModelRecord after setting the
+                        // container to null.  Effigy.setContainer()
+                        // does something similar.
+                        parser.reset();
+                        MoMLParser.purgeModelRecord(modelURL);
                     }
                 }
             }

@@ -74,16 +74,35 @@ test CodeGenerator-4.1 {Call main and copy two files to the codeDirectory becaus
 	[file exists $necessaryFile2]
 } {1 1}
 
-test CodeGenerator-5.1 {Test problem where generating code for a Pub/Sub fails on the second run} {
-
+test CodeGenerator-5.1 {Test problem where generating code for a Pub/Sub with Classes fails on the second run} {
     # r55530 introduced this bug.
+    set args [java::new {String[]} 1 [list "auto/PublisherTestSubscriber14.xml"]]
 
-    set args [java::new {String[]} 1 [list auto/PublisherTestSubscriber14.xml]]
+    # The fix is that CodeGenerator.generateCode() now calls purgeModelRecord
     java::call ptolemy.codegen.kernel.CodeGenerator  generateCode $args
 
-    # Note that if we reset the parser between calls, then this bug goes away.
-    #set parser [java::new ptolemy.moml.MoMLParser]
-    #$parser purgeAllModelRecords
+    set application [java::new ptolemy.moml.MoMLSimpleApplication auto/PublisherTestSubscriber14.xml]
+    [$application getClass] getName
+} {ptolemy.moml.MoMLSimpleApplication}
 
-    java::new ptolemy.moml.MoMLSimpleApplication auto/PublisherTestSubscriber14.xml
-} {}
+
+test CodeGenerator-5.2 {Test problem where generating code for a Pub/Sub with Classes fails on the second run} {
+    # r55530 introduced this bug.
+
+    # It turns out that after r55530, we need to purge the model records after setting the container to null.
+    # Effigy.setContainer() does something similar.
+
+    set parser [java::new ptolemy.moml.MoMLParser]
+    set modelURL [[[java::new java.io.File auto/PublisherTestSubscriber14.xml] toURI] toURL]
+    set toplevel [java::cast ptolemy.actor.CompositeActor [$parser {parse java.net.URL java.net.URL} [java::null] $modelURL]]
+    set manager [java::new ptolemy.actor.Manager [$toplevel workspace] "myManager"]
+    $toplevel setManager $manager
+    $manager preinitializeAndResolveTypes
+    $toplevel setContainer [java::null]
+
+    # Note that if we purge the ModelRecord parser between calls, then this bug goes away.
+    #$parser purgeModelRecord $modelURL
+
+    catch [set application [java::new ptolemy.moml.MoMLSimpleApplication auto/PublisherTestSubscriber14.xml]] errMsg
+    [$application getClass] getName
+} {ptolemy.moml.MoMLSimpleApplication} {Known Failure: after calling setContainer(null), we need to also call purgeModelRecord}

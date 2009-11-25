@@ -468,7 +468,12 @@ public class ComponentEntity extends Entity {
      *  from any relations and remove it from its container.
      *  It is not added to the workspace directory, so this could result in
      *  this entity being garbage collected.
-     *  Derived classes may further constrain the container
+     *  <p>Note that for entities that are created by parsing MoML,
+     *  it may be necessary to call MoMLParser.purgeModelRecord().
+     *  This is especially critical when the MoML file imports 
+     *  MoML classes.  See Effigy.setContainer() for details.
+     *
+     *  <p>Derived classes may further constrain the container
      *  to subclasses of CompositeEntity by overriding the protected
      *  method _checkContainer(). This method validates all
      *  deeply contained instances of Settable, since they may no longer
