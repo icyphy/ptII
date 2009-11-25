@@ -638,7 +638,7 @@ public abstract class AbstractPtalonEvaluator {
                 PtalonParameter parameter = _unassignedParameters.remove(0);
                 String expression = _unassignedParameterValues.remove(0);
                 String oldExpression = parameter.getExpression();
-                if (expression.equals(oldExpression)) {
+                if (!expression.equals(oldExpression)) {
                     parameter.setToken(expression);
                 }
             }
