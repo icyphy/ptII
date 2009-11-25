@@ -741,6 +741,12 @@ public class ContinuousDirector extends FixedPointDirector implements
      */
     public void initialize() throws IllegalActionException {
         _isInitializing = true;
+        
+        // In case we are being reinitialized by a reset transition,
+        // clear the breakpoint table. This must be done before
+        // actors are initialized because they may call fireAt(),
+        // which will insert items in the breakpoint table.
+        _breakpoints.clear();
 
         // set current time and initialize actors.
         super.initialize();
@@ -759,13 +765,28 @@ public class ContinuousDirector extends FixedPointDirector implements
         // following statements, the composite actor has no chance to be fired.
         // Also, we want to be sure to be fired at the stop time.
         if (_isEmbedded() && (_enclosingContinuousDirector() == null)) {
-            _fireContainerAt(_startTime);
-            if (!_stopTime.isInfinite()) {
+            // In preinitialize(), _startTime was set to the start time of
+            // the executive director. However, this invocation of initialize()
+            // may be occurring later in the execution of a model, as a result
+            // for example of a reset transition. In that case, _startTime
+            // may be in the past relative to the environment time.
+            // The super.initialize() call above should have set our
+            // current time to match the environment time, so we use
+            // the maximum of _startTime and the current time as the
+            // first firing time.
+            if (_startTime.compareTo(_currentTime) >= 0) {
+                _fireContainerAt(_startTime);
+            } else {
+                _fireContainerAt(_currentTime);
+            }
+            if (!_stopTime.isInfinite() && _stopTime.compareTo(_currentTime) >= 0) {
                 _fireContainerAt(_stopTime);
             }
         }
         // Set a breakpoint with index 0 for the stop time.
-        _breakpoints.insert(new SuperdenseTime(_stopTime, 0));
+        if (!_stopTime.isInfinite() && _stopTime.compareTo(_currentTime) >= 0) {
+            _breakpoints.insert(new SuperdenseTime(_stopTime, 0));
+        }
 
         // Record starting point of the real time (the computer system time)
         // in case the director is synchronized to the real time.
@@ -776,6 +797,9 @@ public class ContinuousDirector extends FixedPointDirector implements
         _isInitializing = false;
         _redoingSolverIteration = false;
         
+        // NOTE: If we are being reinitialized during execution (e.g. because
+        // of a reset transition), then our current local time is set to match
+        // the environment time.
         _accumulatedSuspendTime = _zeroTime;
         _lastSuspendTime = null;
     }
