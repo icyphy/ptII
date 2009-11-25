@@ -183,7 +183,7 @@ ptolemy_makefile:
 	@echo "PTDIST = \$$(PTPACKAGE)\$$(PTVERSION)" >> ptolemy/makefile
 	@echo "PTCLASSJAR = \$$(PTPACKAGE).jar" >> ptolemy/makefile
 	@echo "JSRCS = \\" >> ptolemy/makefile
-	@for filename in `cd ptolemy && find . -name "*.java"`; do \
+	@for filename in `cd ptolemy && find . -name "*.java"| sort`; do \
 	  echo "    $$filename \\" >> ptolemy/makefile; \
 	done
 	@echo >> ptolemy/makefile
