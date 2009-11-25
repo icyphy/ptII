@@ -1,6 +1,6 @@
-/** A base class representing a property.
+/**  A lattice node representing SystemC float type.
 
- Copyright (c) 1997-2006 The Regents of the University of California.
+ Copyright (c) 2009 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -37,44 +37,64 @@ import ptolemy.data.properties.lattice.TypeProperty;
 import ptolemy.kernel.util.IllegalActionException;
 
 //////////////////////////////////////////////////////////////////////////
-//// Property
+//// Float
 
 /**
- A base class representing a property.
+ A lattice node representing SystemC float type.
 
  @author Thomas Mandl, Man-Kit Leung, Edward A. Lee
  @version $Id$
  @since Ptolemy II 7.1
- @Pt.ProposedRating Red (neuendor)
+ @Pt.ProposedRating Red (cxh)
  @Pt.AcceptedRating Red (cxh)
  */
 public class Float extends LatticeProperty implements TypeProperty {
 
+    /** Construct a node named "Float" in the lattice.
+     *  @param lattice The lattice in which the node is to be constructed.   
+     */   
     public Float(PropertyLattice lattice) {
         super(lattice, "Float");
     }
 
+    /** Maximum value of a float in System C.
+     *  Note that this may or may not have the value equal
+     *  to that of java.lang.Float.MAX_VALUE.
+     *  @return The maximum value of a float in System C.   
+     */
     public Token getMaxValue() {
+
         return new DoubleToken(3.40282347E38F);
     }
 
+    /** Minimum value of a float in System C.
+     *  Note that this may or may not have the value equal
+     *  to that of java.lang.Double.MIN_VALUE.
+     *  @return The Minimum value of a float in System C.   
+     */
     public Token getMinValue() {
         return new DoubleToken(1.17549435E-38F);
     }
 
+    /** Return true if this element has minimum and maximum values.
+     *  @return Always return true.
+     */
     public boolean hasMinMaxValue() {
         return true;
     }
 
-    public boolean isInRange(Token token) throws IllegalActionException {
-        if ((((ScalarToken) token).doubleValue() < ((ScalarToken) getMinValue())
-                .doubleValue())
-                || (((ScalarToken) token).doubleValue() > ((ScalarToken) getMaxValue())
-                        .doubleValue())) {
+//    public boolean isInRange(Token token) throws IllegalActionException {
+//         // FIXME: Findbugs: Unchecked/unconfirmed cast.
+//         // The problem here is that token might not be a ScalarToken.
+//         // Is this method used?  Perhaps it can be removed.
+//        if ((((ScalarToken) token).doubleValue() < ((ScalarToken) getMinValue())
+//                .doubleValue())
+//                 || (((ScalarToken) token).doubleValue() > ((ScalarToken) getMaxValue())
+//                         .doubleValue())) {
 
-            return false;
-        } else {
-            return true;
-        }
-    }
+//             return false;
+//         } else {
+//             return true;
+//         }
+//     }
 }

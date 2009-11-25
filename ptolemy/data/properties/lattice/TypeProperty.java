@@ -29,7 +29,8 @@ import ptolemy.kernel.util.IllegalActionException;
 
 /**
  * An interface for type property.
- * 
+ * <p>This interface could be used to define a lattice for language such as
+ * SystemC.
  * @author Man-Kit Leung, Thomas Mandl
  * @version $Id$
  * @since Ptolemy II 7.1
@@ -38,11 +39,20 @@ import ptolemy.kernel.util.IllegalActionException;
  */
 public interface TypeProperty {
 
+    /** Return true if this element has minimum and maximum values.
+     *  @return Return true if this element has minimum and maximum values.
+     */
     public boolean hasMinMaxValue();
 
+    /** Maximum value of a this type.
+     *  @return The minimum value of this type.
+     */
     public Token getMaxValue();
 
+    /** Minimum value of a this type.
+     *  @return The minimum value of this type.
+     */
     public Token getMinValue();
 
-    public boolean isInRange(Token token) throws IllegalActionException;
+    //    public boolean isInRange(Token token) throws IllegalActionException;
 }

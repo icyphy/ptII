@@ -965,13 +965,13 @@ public class PropertyConstraintSolver extends PropertySolver {
             List<Inequality> constraintList, String annotation)
             throws IllegalActionException {
 
-        String output = "";
+        StringBuffer output = new StringBuffer();
         for (Inequality inequality : constraintList) {
-            output += _getConstraintAsLogFileString(inequality, annotation)
-                    + _eol;
+            output.append(_getConstraintAsLogFileString(inequality, annotation)
+                    + _eol);
         }
 
-        return output;
+        return output.toString();
     }
 
     /**
@@ -1117,7 +1117,7 @@ public class PropertyConstraintSolver extends PropertySolver {
                     reader.close();
                 }
             }
-        } catch (Exception ex) {
+        } catch (IOException ex) {
             throw new PropertyFailedRegressionTestException(this,
                     "Failed to open or read the constraint file \"" + filename
                             + "\".");
@@ -1132,9 +1132,11 @@ public class PropertyConstraintSolver extends PropertySolver {
         }
         NamedObj namedObj = (NamedObj) object;
 
-        String errorMessage = _eol + "Property \"" + getUseCaseName()
-                + "\" resolution failed for " + namedObj.getFullName()
-                + "'s helper." + _eol;
+        StringBuffer errorMessage = new StringBuffer(_eol +
+                "Property \"" + getUseCaseName() +
+                "\" resolution failed for " +
+                namedObj.getFullName() +
+                "'s helper." + _eol);
 
         List<Inequality>[] constraintSet = new List[2];
         constraintSet[0] = helper._ownConstraints;
@@ -1153,20 +1155,18 @@ public class PropertyConstraintSolver extends PropertySolver {
                     String constraintString = (String) logConstraints.next();
                     // Remove from the trained set so we can test for duplicates.
                     if (!_trainedConstraints.remove(constraintString)) {
-                        errorMessage += "    Extra" + whichSet
+                        errorMessage.append("    Extra" + whichSet
                                 + "constraint generated: \"" + constraintString
-                                + "\"." + _eol;
+                                + "\"." + _eol);
 
                         hasError = true;
-                    } else {
-                        errorMessage += "";
                     }
                 }
             }
         }
 
         if (hasError) {
-            getSharedUtilities().addErrors(errorMessage);
+            getSharedUtilities().addErrors(errorMessage.toString());
         }
 
     }

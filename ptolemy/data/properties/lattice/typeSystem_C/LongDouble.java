@@ -1,6 +1,6 @@
-/** A base class representing a property.
+/** A lattice node representing SystemC long double type.
 
- Copyright (c) 1997-2006 The Regents of the University of California.
+ Copyright (c) 2009 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -40,42 +40,62 @@ import ptolemy.kernel.util.IllegalActionException;
 //// Property
 
 /**
- A base class representing a property.
+ A lattice node representing SystemC long double type.
 
  @author Thomas Mandl, Man-Kit Leung, Edward A. Lee
  @version $Id$
  @since Ptolemy II 7.1
- @Pt.ProposedRating Red (neuendor)
+ @Pt.ProposedRating Red (cxh)
  @Pt.AcceptedRating Red (cxh)
  */
 public class LongDouble extends LatticeProperty implements TypeProperty {
 
+    /** Construct a node named "LongDouble" in the lattice.
+     *  @param lattice The lattice in which the node is to be constructed.   
+     */   
     public LongDouble(PropertyLattice lattice) {
         super(lattice, "LongDouble");
     }
 
-    // FIXME: Is there a java representation for the C long double type?
+    /** Maximum value of a long double in System C.
+     *  Note that this may or may not have the value equal
+     *  to that of java.lang.Double.MAX_VALUE.
+     *  @return The maximum value of a long double in System C.   
+     */
     public Token getMaxValue() {
+        // FIXME: Is there a java representation for the C long double type?
         return new DoubleToken(1.7976931348623157E308);
     }
 
+    /** Minimum value of a long double in System C.
+     *  Note that this may or may not have the value equal
+     *  to that of java.lang.Double.MIN_VALUE.
+     *  @return The minimum value of a long double in System C.   
+     */
     public Token getMinValue() {
+        // FIXME: Is there a java representation for the C long double type?
         return new DoubleToken(2.2250738585072016E-308);
     }
 
+    /** Return true if this element has minimum and maximum values.
+     *  @return Always return true.
+     */
     public boolean hasMinMaxValue() {
         return true;
     }
 
-    public boolean isInRange(Token token) throws IllegalActionException {
-        if ((((ScalarToken) token).doubleValue() < ((ScalarToken) getMinValue())
-                .doubleValue())
-                || (((ScalarToken) token).doubleValue() > ((ScalarToken) getMaxValue())
-                        .doubleValue())) {
-
-            return false;
-        } else {
-            return true;
-        }
-    }
+//    public boolean isInRange(Token token) throws IllegalActionException {
+//         // FIXME: Findbugs: Unchecked/unconfirmed cast.
+//         // The problem here is that token might not be a ScalarToken.
+//         // Is this method used?  Perhaps it can be removed.
+//         if ((((ScalarToken) token).doubleValue() < ((ScalarToken) getMinValue())
+//                 .doubleValue())
+//                 || (((ScalarToken) token).doubleValue() > ((ScalarToken) getMaxValue())
+//                         .doubleValue())) {
+//
+//             return false;
+//         } else {
+//             return true;
+//         }
+//     }
 }

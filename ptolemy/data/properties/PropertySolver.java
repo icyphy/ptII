@@ -845,7 +845,7 @@ public abstract class PropertySolver extends PropertySolverBase implements Testa
                             "Failed to process " + directoryURI);
                 }
             }
-        } catch (Exception ex) {
+        } catch (Throwable ex) {
             throw new InternalErrorException(this, ex,
                     "Failed to find directories in \"" + directoryPath
                             + "\", the parameter \"" + parameter.getFullName()

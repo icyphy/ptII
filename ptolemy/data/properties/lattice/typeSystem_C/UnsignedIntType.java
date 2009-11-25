@@ -1,6 +1,6 @@
-/** A base class representing a property.
+/** A lattice node representing SystemC unsigned int type.
 
- Copyright (c) 1997-2006 The Regents of the University of California.
+ Copyright (c) 2009 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -40,55 +40,88 @@ import ptolemy.kernel.util.IllegalActionException;
 //// Property
 
 /**
- A base class representing a property.
+ A lattice node representing SystemC unsigned int type.
 
  @author Thomas Mandl
  @version $Id$
  @since Ptolemy II 7.1
- @Pt.ProposedRating Red (neuendor)
+ @Pt.ProposedRating Red (cxh)
  @Pt.AcceptedRating Red (cxh)
  */
 public abstract class UnsignedIntType extends LatticeProperty implements
         TypeProperty {
 
+    /** Construct a node named "SignedIntType" in the lattice.
+     *  @param lattice The lattice in which the node is to be constructed.   
+     */   
     public UnsignedIntType(PropertyLattice lattice) {
+        // FIXME: why is this called UnsignedIntType and not UnsignedInt?
+        // In SystemC, a SignedIt ia a "sc_uint".
+        // See http://en.wikipedia.org/wiki/SystemC
         super(lattice, "UnsignedIntType");
     }
     
-    // 09/21/09 - Charles Shelton
-    // Additional constructor needed for subclasses that inherit from UnsignedIntType
-    // so that they can also set their name member when declared.
+    /** Construct a node named "SignedIntType" in the lattice.
+     *  @param lattice The lattice in which the node is to be constructed.   
+     *  @param name The name, used by subclasses.
+     */   
     public UnsignedIntType(PropertyLattice lattice, String name) {
+    // 09/21/09 - Charles Shelton - Additional constructor needed for
+    // subclasses that inherit from UnsignedIntType so that they can
+    // also set their name member when declared.
         super(lattice, name);
     }
 
+    /** Return the number of bits.
+     *  Derived classes should declare this method to provide different
+     *  bit widths.
+     *  @return the number of bits   
+     */
     public abstract short getNumberBits();
 
+    /** Return true if this element has signed.
+     *  @return Always return true.
+     */
     public boolean isSigned() {
         return false;
     }
 
+    /** Maximum value of an unsigned int in System C.
+     *  @return The maximum value of an unsigned int in SystemC,
+     *  which is dependent on the number of bits defined by derived
+     *  classes.
+     */
     public Token getMaxValue() {
         return new LongToken((long) Math.pow(2, getNumberBits()) - 1);
     }
 
+    /** Minimum value of an unsigned int in System C.
+     *  @return The minimum value of an unsigned int in SystemC,
+     *  which is dependent on the number of bits defined by derived
+     *  classes.
+     */
     public Token getMinValue() {
         return new LongToken(0);
     }
 
+    /** Return true if this element has minimum and maximum values.
+     *  @return Always return true.
+     */
     public boolean hasMinMaxValue() {
         return true;
     }
 
-    public boolean isInRange(Token token) throws IllegalActionException {
-        if ((((ScalarToken) token).longValue() < ((ScalarToken) getMinValue())
-                .longValue())
-                || (((ScalarToken) token).longValue() > ((ScalarToken) getMaxValue())
-                        .longValue())) {
-
-            return false;
-        } else {
-            return true;
-        }
-    }
+//     public boolean isInRange(Token token) throws IllegalActionException {
+//         // FIXME: Findbugs: Unchecked/unconfirmed cast.
+//         // The problem here is that token might not be a ScalarToken.
+//         // Is this method used?  Perhaps it can be removed.
+//         if ((((ScalarToken) token).longValue() < ((ScalarToken) getMinValue())
+//                         .longValue())
+//                 || (((ScalarToken) token).longValue() > ((ScalarToken) getMaxValue())
+//                         .longValue())) {
+//             return false;
+//         } else {
+//             return true;
+//         }
+//     }
 }

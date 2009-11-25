@@ -480,7 +480,7 @@ public abstract class PropertySolverBase extends Attribute {
      * Reset every solver in the model.
      */
     public void resetAll() {
-        _parser = null;
+        _resetParser();
         for (PropertySolver solver : getAllSolvers(sharedUtilitiesWrapper)) {
             solver.reset();
         }
@@ -630,6 +630,43 @@ public abstract class PropertySolverBase extends Attribute {
     }
 
     ///////////////////////////////////////////////////////////////////
+    ////             protected variables                           ////
+
+    /**
+     * The list that keeps track of the dependencies on other
+     * use-cases.  Circular dependencies are not allowed but it is up
+     * to the user to enforce this requirement. This means that there
+     * should not be a case where two solvers' use-cases exist in each
+     * other's dependency list.
+     */
+    protected List<String> _dependentUseCases = new LinkedList<String>();
+
+    /**
+     * The HashMap that caches components and their PropertyHelper objects.
+     */
+    protected HashMap<Object, PropertyHelper> _helperStore = new HashMap<Object, PropertyHelper>();
+
+    /**
+     * The set of property-able objects that have non-settable property. A
+     * non-settable property results from setting an object with a fixed
+     * property through PropertyHelper.setEquals().
+     */
+    protected HashSet<Object> _nonSettables = new HashSet<Object>();
+
+    /**
+     * The HashMap that caches property-able objects and their
+     * Property values.  Each mapping is a pair of Object and
+     * Property.
+     */
+    protected HashMap<Object, Property> _resolvedProperties = new HashMap<Object, Property>();
+
+    /**
+     * The utilities shared between all solvers.
+     */
+    protected SharedUtilities _sharedUtilities;
+
+
+    ///////////////////////////////////////////////////////////////////
     ////             private methods                               ////
 
     /**
@@ -732,41 +769,10 @@ public abstract class PropertySolverBase extends Attribute {
         }
     }
 
-    ///////////////////////////////////////////////////////////////////
-    ////             protected variables                           ////
-
-    /**
-     * The list that keeps track of the dependencies on other
-     * use-cases.  Circular dependencies are not allowed but it is up
-     * to the user to enforce this requirement. This means that there
-     * should not be a case where two solvers' use-cases exist in each
-     * other's dependency list.
-     */
-    protected List<String> _dependentUseCases = new LinkedList<String>();
-
-    /**
-     * The HashMap that caches components and their PropertyHelper objects.
-     */
-    protected HashMap<Object, PropertyHelper> _helperStore = new HashMap<Object, PropertyHelper>();
-
-    /**
-     * The set of property-able objects that have non-settable property. A
-     * non-settable property results from setting an object with a fixed
-     * property through PropertyHelper.setEquals().
-     */
-    protected HashSet<Object> _nonSettables = new HashSet<Object>();
-
-    /**
-     * The HashMap that caches property-able objects and their
-     * Property values.  Each mapping is a pair of Object and
-     * Property.
-     */
-    protected HashMap<Object, Property> _resolvedProperties = new HashMap<Object, Property>();
-
-    /**
-     * The utilities shared between all solvers.
-     */
-    protected SharedUtilities _sharedUtilities;
+    private void _resetParser() {
+        // Avoid FindBugs: Write to static field from instance method.
+        _parser = null;
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                        private variables                  ////

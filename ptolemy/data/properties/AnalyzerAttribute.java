@@ -322,7 +322,7 @@ public class AnalyzerAttribute extends Attribute {
                             "Failed to process " + directoryURI);
                 }
             }
-        } catch (Exception ex) {
+        } catch (Throwable ex) {
             throw new InternalErrorException(this, ex,
                     "Failed to find classes in \"" + directoryPath + "\"");
         }
@@ -346,7 +346,7 @@ public class AnalyzerAttribute extends Attribute {
 
                     return solverObject;
 
-                } catch (Exception ex) {
+                } catch (Throwable ex) {
                     assert false;
                 }
                 break;

@@ -41,6 +41,7 @@ import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import ptolemy.data.properties.PropertySolver;
 import ptolemy.kernel.CompositeEntity;
@@ -74,7 +75,7 @@ public class PropertySolverTestReporter {
     public static void testPropertiesAndGenerateReports(String directoryPath) {
         try {
 
-            Map[] stats;
+            Map<Map, HashMap<Object,Map>>[] stats;
             stats = _testPropertiesDirectory(directoryPath);
             _printGlobalStats(stats[0]);
             _printLocalStats(stats[1]);
@@ -106,14 +107,18 @@ public class PropertySolverTestReporter {
         entry.put(entryHeader, entryValue);
     }
 
-    private static void _composeOutputs(Map summary, Map intermediateOutputs) {
-        for (Object field : intermediateOutputs.keySet()) {
-            Object value = intermediateOutputs.get(field);
-            if (value instanceof Number) {
-                PropertySolver.incrementStats(summary, field, (Number) value);
-            } else if (value instanceof Map) {
-                summary.put(field, value);
-            }
+    private static void _composeOutputs(Map<Map, HashMap<Object,Map>> summary,
+            Map<Map, HashMap<Object,Map>> intermediateOutputs) {
+        //        for (Object field : intermediateOutputs.keySet()) {
+        //            Object value = intermediateOutputs.get(field);
+        Set<Map.Entry<Map, HashMap<Object,Map>>> entrySet = intermediateOutputs.entrySet();
+        for (Map.Entry entry : entrySet) {
+            HashMap<Object, Map> value = (HashMap<Object, Map>) entry.getValue();
+            //if (value instanceof Number) {
+            //    PropertySolver.incrementStats(summary, entry.getKey(), (Number) value);
+            //} else if (value instanceof Map) {
+            summary.put((LinkedHashMap) entry.getKey(), value);
+            //}
         }
     }
 
@@ -205,8 +210,9 @@ public class PropertySolverTestReporter {
             writer = new BufferedWriter(
                     new FileWriter(new File(_statsFilename)));
 
-            for (Object field : stats.keySet()) {
-                writer.append(field + _separator + stats.get(field));
+            Set<Map.Entry<Object, Map>> entrySet = stats.entrySet();
+            for (Map.Entry entry : entrySet) {
+                writer.append(entry.getKey() + _separator + entry.getValue());
                 writer.newLine();
             }
         } finally {
@@ -216,7 +222,8 @@ public class PropertySolverTestReporter {
         }
     }
 
-    private static void _printLocalStats(Map<Object, Map> stats)
+    //private static void _printLocalStats(Map<Object, Map> stats)
+    private static void _printLocalStats(Map<Map, HashMap<Object,Map>> stats)
             throws IOException {
         BufferedWriter writer = null;
         try {
@@ -237,14 +244,14 @@ public class PropertySolverTestReporter {
             writer.newLine();
 
             // Iterate using triplet keys {testFile, solver, isInvoked}.
-            for (Object key : stats.keySet()) {
-                Map entry = stats.get(key);
-                writer.append(key.toString());
+            Set<Map.Entry<Map, HashMap<Object,Map>>> entrySet = stats.entrySet();
+            for (Map.Entry entry : entrySet) {
+                writer.append(entry.getKey().toString());
 
                 for (Object header : headers) {
                     writer.append(_separator);
-                    if (entry.containsKey(header)) {
-                        writer.append(entry.get(header).toString());
+                    if (entry.getKey().equals((header))) {
+                        writer.append(entry.getValue().toString());
                     }
                 }
                 writer.newLine();
@@ -262,7 +269,7 @@ public class PropertySolverTestReporter {
      *
      * @exception IOException
      */
-    private static Map[] _testPropertiesDirectory(String directoryPath)
+    private static Map<Map, HashMap<Object,Map>>[] _testPropertiesDirectory(String directoryPath)
             throws IOException {
         // Create the log directories.
         if (!new File(_statsDirectory).mkdirs()) {
@@ -283,14 +290,15 @@ public class PropertySolverTestReporter {
         HashMap<Object, Map> localStats = new LinkedHashMap<Object, Map>();
         HashMap globalStats = new LinkedHashMap();
 
-        Map[] summary = new Map[] { globalStats, localStats };
+        Map<Map, HashMap<Object,Map>> [] summary = new Map[] { globalStats, localStats };
 
         File directory = new File(directoryPath);
 
         for (File file : directory.listFiles()) {
 
             if (file.isDirectory()) {
-                Map[] directoryOutputs = _testPropertiesDirectory(file
+                Map<Map, HashMap<Object,Map>>[] directoryOutputs;
+                directoryOutputs = _testPropertiesDirectory(file
                         .getAbsolutePath());
 
                 _composeOutputs(summary[0], directoryOutputs[0]);

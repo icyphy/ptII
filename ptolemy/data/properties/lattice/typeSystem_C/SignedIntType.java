@@ -1,6 +1,6 @@
-/** A base class representing a property.
+/** A lattice node representing SystemC signed int type.
 
- Copyright (c) 1997-2006 The Regents of the University of California.
+ Copyright (c) 2009 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -37,58 +37,93 @@ import ptolemy.data.properties.lattice.TypeProperty;
 import ptolemy.kernel.util.IllegalActionException;
 
 //////////////////////////////////////////////////////////////////////////
-//// Property
+//// SignedInt
 
 /**
- A base class representing a property.
+ A lattice node representing SystemC signed int type.
 
  @author Thomas Mandl
  @version $Id$
  @since Ptolemy II 7.1
- @Pt.ProposedRating Red (neuendor)
+ @Pt.ProposedRating Red (cxh)
  @Pt.AcceptedRating Red (cxh)
  */
 public abstract class SignedIntType extends LatticeProperty implements
         TypeProperty {
 
+    /** Construct a node named "SignedIntType" in the lattice.
+     *  @param lattice The lattice in which the node is to be constructed.   
+     */   
     public SignedIntType(PropertyLattice lattice) {
+        // FIXME: why is this called SignedIntType and not SignedInt?
+        // In SystemC, a SignedIt ia a "sc_int".
+        // See http://en.wikipedia.org/wiki/SystemC
         super(lattice, "SignedIntType");
     }
     
-    // 09/21/09 - Charles Shelton
-    // Additional constructor needed for subclasses that inherit from SignedIntType
-    // so that they can also set their name member when declared.
+    /** Construct a node named "SignedIntType" in the lattice.
+     *  @param lattice The lattice in which the node is to be constructed.   
+     *  @param name The name, used by subclasses.
+     */   
     public SignedIntType(PropertyLattice lattice, String name) {
+        // 09/21/09 - Charles Shelton: Additional constructor needed
+        // for subclasses that inherit from SignedIntType so that they
+        // can also set their name member when declared.
+
         super(lattice, name);
     }
 
+    /** Return the number of bits.
+     *  Derived classes should declare this method to provide different
+     *  bit widths.
+     *  @return the number of bits   
+     */
     public abstract short getNumberBits();
 
+    /** Return true if this element has signed.
+     *  @return Always return true.
+     */
     public boolean isSigned() {
         return true;
     }
 
+    /** Maximum value of a signed int in System C.
+     *  @return The maximum value of an signed int in SystemC,
+     *  which is dependent on the number of bits defined by derived
+     *  classes.
+     */
     public Token getMaxValue() {
         return new LongToken((long) Math.pow(2, getNumberBits() - 1) - 1);
     }
 
+    /** Minimum value of a signed int in System C.
+     *  @return The minimum value of an signed int in SystemC,
+     *  which is dependent on the number of bits defined by derived
+     *  classes.
+     */
     public Token getMinValue() {
         return new LongToken((long) -Math.pow(2, getNumberBits() - 1));
     }
 
+    /** Return true if this element has minimum and maximum values.
+     *  @return Always return true.
+     */
     public boolean hasMinMaxValue() {
         return true;
     }
 
-    public boolean isInRange(Token token) throws IllegalActionException {
-        if ((((ScalarToken) token).longValue() < ((ScalarToken) getMinValue())
-                .longValue())
-                || (((ScalarToken) token).longValue() > ((ScalarToken) getMaxValue())
-                        .longValue())) {
-
-            return false;
-        } else {
-            return true;
-        }
-    }
+//    public boolean isInRange(Token token) throws IllegalActionException {
+//         // FIXME: Findbugs: Unchecked/unconfirmed cast.
+//         // The problem here is that token might not be a ScalarToken.
+//         // Is this method used?  Perhaps it can be removed.
+//         if ((((ScalarToken) token).longValue() < ((ScalarToken) getMinValue())
+//                 .longValue())
+//                 || (((ScalarToken) token).longValue() > ((ScalarToken) getMaxValue())
+//                         .longValue())) {
+//
+//             return false;
+//         } else {
+//             return true;
+//         }
+//     }
 }

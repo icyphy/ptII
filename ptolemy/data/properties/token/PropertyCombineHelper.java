@@ -39,6 +39,8 @@ import ptolemy.data.properties.PropertyHelper;
 import ptolemy.data.properties.PropertySolverBase;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.NameDuplicationException;
 
 //////////////////////////////////////////////////////////////////////////
@@ -136,9 +138,17 @@ public class PropertyCombineHelper extends PropertyHelper {
     public void setEquals(Object object, Property property) {
         // FIXME: Charles Shelton 05/27/09 - Thomas Mandl's code doesn't call super.setEquals.  We will keep it for now.
         super.setEquals(object, property);
-        if (property != null && property instanceof PropertyToken) {
-            // Findbugs: BC: "Unchecked unconfirmed cast"
-            getSolver().putToken(object, (PropertyToken) property);
+        if (property != null) {
+            if (property instanceof PropertyToken) {
+                // Findbugs: BC: "Unchecked unconfirmed cast"
+                getSolver().putToken(object, (PropertyToken) property);
+            } else {
+                throw new InternalErrorException((getComponent() instanceof NamedObj ? (NamedObj) getComponent() : null),
+                        null,
+                        "Property " +
+                        property + " is not a PropertyToken, it is a "
+                        + property.getClass().getName());
+            }
         }
     }
 

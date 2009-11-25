@@ -405,8 +405,8 @@ public class PropertyMoMLHandler extends Attribute {
             propertyString = "";
         }
 
-        StringParameter showAttribute = (StringParameter) propertyable
-                .getAttribute("_showInfo");
+        //StringParameter showAttribute = (StringParameter) propertyable
+        //        .getAttribute("_showInfo");
 
         // Update the _showInfo attribute.
         request = "<property name=\"_showInfo\" class=\"ptolemy.data.expr.StringParameter\" value=\""
