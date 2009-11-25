@@ -28,11 +28,11 @@
  */
 package ptolemy.domains.giotto.kernel;
 
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
+
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
@@ -41,7 +41,6 @@ import ptolemy.actor.Manager;
 import ptolemy.actor.NoTokenException;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.TimedDirector;
-import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.sched.Firing;
 import ptolemy.actor.sched.Schedule;
@@ -50,7 +49,6 @@ import ptolemy.actor.sched.StaticSchedulingDirector;
 import ptolemy.actor.util.BooleanDependency;
 import ptolemy.actor.util.Dependency;
 import ptolemy.actor.util.Time;
-import ptolemy.cg.kernel.generic.GenericCodeGenerator;
 import ptolemy.codegen.kernel.CodeGeneratorHelper;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
@@ -58,22 +56,18 @@ import ptolemy.data.IntToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.Variable;
-import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
-//import ptolemy.kernel.GiottoDecoratedAttributesImplementation;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.DecoratedAttributes;
+import ptolemy.kernel.util.Decorator;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
-import ptolemy.kernel.util.ModelErrorHandler;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
-import ptolemy.kernel.util.Decorator;
-import ptolemy.domains.giotto.lib.GiottoError;
 
 
 ////GiottoDirector
@@ -110,7 +104,8 @@ TimedDirector, Decorator {
         super();
         _init();
     }
-       
+
+
 
     /** Construct a director in the given container with the given name.
      *  The container argument must not be null, or a
@@ -129,7 +124,7 @@ TimedDirector, Decorator {
     throws IllegalActionException, NameDuplicationException {
         super(container, name);
         _init();
-       }
+    }
 
     /** Construct a director in the given workspace with an empty name.
      *  The director is added to the list of objects in the workspace.
@@ -137,7 +132,7 @@ TimedDirector, Decorator {
      *  @param workspace The workspace for this object.
      */
     public GiottoDirector(Workspace workspace) {
-         super(workspace);
+        super(workspace);
         _init();
     }
 
@@ -635,7 +630,7 @@ TimedDirector, Decorator {
         Actor actor;
         double wcet = 0;
         boolean errorHandlerSet = false;
-         try{
+        try{
             createDecoratedAttributes(this);
             System.out.println("in try catch after calling createDecoratedAttributes");
         }catch(NameDuplicationException e){
@@ -648,7 +643,7 @@ TimedDirector, Decorator {
             wcet = ((DoubleToken) ((Variable) dirWCET).getToken()).doubleValue();
         }
         System.out.println("Inside preinitilize. The worst case execution time seen by this director is "+ wcet+".  The period is "+_periodValue);
-       
+
         if(wcet >_periodValue) {
             System.out.println("throw an exception");
 
@@ -871,7 +866,7 @@ TimedDirector, Decorator {
                         wcet+= dummyWCET;
                     }
                 }else{
-                   
+
                     if (WCET == null) {
                         actorWCET = 0.0011;
                     } else {
@@ -882,7 +877,7 @@ TimedDirector, Decorator {
                     } else {
                         actorFrequency =  ((IntToken) ((Variable) frequency).getToken()).intValue();
                     }
-                    
+
                     wcet+= (actorFrequency * actorWCET);
                 }
             }
@@ -984,11 +979,12 @@ TimedDirector, Decorator {
      */
     public DecoratedAttributes createDecoratedAttributes(NamedObj target) throws IllegalActionException, NameDuplicationException{
         System.out.println("createDecoratedAttributes method called for object "+target.getDisplayName());
-	if (1==1) {
-	    throw new IllegalActionException("Internal compilation error");
-	}
-        //return new GiottoDecoratedAttributesImplementation(target, this);
-	return null;
+        return new GiottoDecoratedAttributesImplementation(target, this);
+
+
+
+
+
     }
 
     protected void finalize() throws Throwable
