@@ -41,20 +41,44 @@ import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+//////////////////////////////////////////////////////////////////////////
+//// PropertyCombineHelper
+/** 
+
+@author Man-Kit Leung
+@version $Id$
+@since Ptolemy II 7.1
+@Pt.ProposedRating Red (mankit)
+@Pt.AcceptedRating Red (mankit)
+*/
 public class PropertyCombineHelper extends PropertyHelper {
 
+    /** 
+     * Construct a PropertyCombinedHelper
+     * @param solver The solver.
+     * @param component The associated components.
+     */
     public PropertyCombineHelper(PropertyCombineSolver solver, Object component) {
-
         setComponent(component);
         _solver = solver;
     }
 
+    /**
+     * Return The PropertySolver that uses this helper.
+     * @return The PropertySolver that uses this helper.
+     */
     public PropertyCombineSolver getSolver() {
+        // FIXME: This is unusual because there is a getSolver()
+        // method in the parent class that returns a PropertySolver.
         return (PropertyCombineSolver) _solver;
     }
 
-    public void determineProperty() throws IllegalActionException,
-            NameDuplicationException {
+    /** Determine the property.
+     *  @exception IllegalActionException If thrown while generating  
+     *  a parse tree for the solver, evaluating the parse tree or getting
+     *  subhelpers.
+     */
+    public void determineProperty() throws IllegalActionException {
 
         Iterator portIterator = getPropertyables().iterator();
 
@@ -102,18 +126,39 @@ public class PropertyCombineHelper extends PropertyHelper {
         return list;
     }
 
+    /**
+     * Set the property of specified object equal to the specified property.
+     *
+     * @param object The specified object.
+     *
+     * @param property The specified property.
+     */
     public void setEquals(Object object, Property property) {
         // FIXME: Charles Shelton 05/27/09 - Thomas Mandl's code doesn't call super.setEquals.  We will keep it for now.
         super.setEquals(object, property);
-        if (property != null) {
+        if (property != null && property instanceof PropertyToken) {
+            // Findbugs: BC: "Unchecked unconfirmed cast"
             getSolver().putToken(object, (PropertyToken) property);
         }
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////               protected methods                           ////
+
+    /**
+     * Create an new ParseTreeAnnotationEvaluator that is tailored for the
+     * use-case.
+     * @return A new ParseTreeAnnotationEvaluator.
+     */
     protected ParseTreeAnnotationEvaluator _annotationEvaluator() {
         return new ParseTreeAnnotationEvaluator();
     }
 
+    /**
+     * Return the list of sub-helpers.
+     * @return The list of sub-helpers.
+     * @exception IllegalActionException Not thrown in this class.
+     */
     protected List<PropertyHelper> _getSubHelpers()
             throws IllegalActionException {
         return new ArrayList<PropertyHelper>();

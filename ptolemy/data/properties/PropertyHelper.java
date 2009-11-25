@@ -54,9 +54,9 @@ import ptolemy.kernel.util.StringAttribute;
 ////PropertyHelper
 
 /**
-The base abstract class for a property helper.
-A PropertyHelper defines constraints for a component in the model.
-The model component can be an object of any Ptolemy class
+Constraints for a component in the model.
+
+<p>The model component can be an object of any Ptolemy class
 (e.g. ASTPtRootNode, Sink, Entity, and FSMActor). A model component,
 in turn, may have one or multiple property-able objects. Each
 constraint is relevant to a property-able object. For example,

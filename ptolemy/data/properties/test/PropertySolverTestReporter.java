@@ -50,10 +50,10 @@ import ptolemy.moml.filter.RemoveGraphicalClasses;
 import ptolemy.util.StringUtilities;
 
 //////////////////////////////////////////////////////////////////////////
-////TestPropertySolver
+//// PropertySolverTestReporter
 
 /**
-A extended base abstract class for a property solver.
+ Test functions for the PropertySolver.
 
 @author Man-Kit Leung
 @version $Id$
@@ -63,6 +63,10 @@ A extended base abstract class for a property solver.
 */
 public class PropertySolverTestReporter {
 
+    /** Invoke the test harness.
+     *  @param args The arguments, only the first argument is passed to
+     *  the test harness.
+     */ 
     public static void main(String args[]) throws Exception {
         testPropertiesAndGenerateReports(args[0]);
     }
@@ -234,7 +238,7 @@ public class PropertySolverTestReporter {
 
             // Iterate using triplet keys {testFile, solver, isInvoked}.
             for (Object key : stats.keySet()) {
-                Map entry = stats.get(key);
+                Map.entry entry = stats.get(key);
                 writer.append(key.toString());
 
                 for (Object header : headers) {
@@ -256,7 +260,6 @@ public class PropertySolverTestReporter {
      *
      * @param directoryPath
      *
-     *      *
      * @exception IOException
      */
     private static Map[] _testPropertiesDirectory(String directoryPath)
