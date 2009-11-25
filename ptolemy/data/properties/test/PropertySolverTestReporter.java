@@ -238,7 +238,7 @@ public class PropertySolverTestReporter {
 
             // Iterate using triplet keys {testFile, solver, isInvoked}.
             for (Object key : stats.keySet()) {
-                Map.entry entry = stats.get(key);
+                Map entry = stats.get(key);
                 writer.append(key.toString());
 
                 for (Object header : headers) {
