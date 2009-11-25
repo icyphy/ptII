@@ -27,7 +27,7 @@
  */
 package ptolemy.domains.giotto.lib;
 
-
+import ptolemy.actor.CompositeActor;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.kernel.CompositeEntity;
@@ -52,20 +52,20 @@ Model since a giotto model only specifies logical execution time.
  @Pt.AcceptedRating Red (sssf)
  */
 
+public class GiottoError extends TypedAtomicActor implements ModelErrorHandler {
 
-public class GiottoError extends TypedAtomicActor implements ModelErrorHandler{
-    
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    public GiottoError(CompositeEntity container, String name) throws IllegalActionException, NameDuplicationException {
-       super(container,name);
+    public GiottoError(CompositeEntity container, String name)
+    throws IllegalActionException, NameDuplicationException {
+        super(container, name);
         // Parameters
         errorAction = new StringParameter(this, "errorAction");
         errorAction.setExpression("Warn");
         errorAction.addChoice("Warn");
         errorAction.addChoice("Reset");
-        errorAction.addChoice("TimedUtilityFunction");     
+        errorAction.addChoice("TimedUtilityFunction");
 
         // Icon is a stop sign named error handler
         _attachText("_iconDescription", "<svg>\n"
@@ -76,6 +76,21 @@ public class GiottoError extends TypedAtomicActor implements ModelErrorHandler{
                 + "Error Actor</text>\n" + "</svg>\n");
     }
 
+    public void preinitialize() {
+        CompositeActor container = (CompositeActor) getContainer();
+        if (_debugging) {
+            _debug("inside Giotto error preinitialize about to register the container as an error handler");
+        }
+        if (container != null) {
+            if (_debugging) {
+                _debug("the model error handler is set to " + getDisplayName()
+                        + " for container " + container.getDisplayName());
+            }
+            container.setModelErrorHandler((ModelErrorHandler) this);
+        }
+
+    }
+
     /** Override the base class to determine which comparison is being
      *  specified.  Read the value of the comparison attribute and set
      *  the cached value appropriately.
@@ -84,7 +99,7 @@ public class GiottoError extends TypedAtomicActor implements ModelErrorHandler{
      */
     public void attributeChanged(Attribute attribute)
     throws IllegalActionException {
-        String errorActionName= "";
+        String errorActionName = "";
         if (attribute == errorAction) {
             errorActionName = errorAction.getExpression().trim();
 
@@ -93,29 +108,26 @@ public class GiottoError extends TypedAtomicActor implements ModelErrorHandler{
             } else if (errorActionName.equals("Reset")) {
                 _errorAction = ErrorAction.reset;
             } else if (errorActionName.equals("TimedUtilityFunction")) {
-                _errorAction =  ErrorAction.timedutilityfunction;
-            }  else {
+                _errorAction = ErrorAction.timedutilityfunction;
+            } else {
                 throw new IllegalActionException(this,
                         "Unrecognized action on error: " + errorActionName);
             }
-        }
-        else {
+        } else {
             super.attributeChanged(attribute);
         }
     }
 
-
     public void fire() throws IllegalActionException {
-       // System.out.print("fire method called"); 
+        // System.out.print("fire method called"); 
     }
 
-    public void initialize()
-    {
+    public void initialize() {
         //System.out.println("Initialize method called");
 
     }
-    
-///////////////////////////////////////////////////////////////////
+
+    ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
     /** Handle a model error.
@@ -124,55 +136,55 @@ public class GiottoError extends TypedAtomicActor implements ModelErrorHandler{
      *  @return True if the error has been handled, or false if the
      *   error is not handled.
      *  @exception IllegalActionException If the handler handles the
-     *   error by throwing an exception.
+     *   error by throwing an exception.///
      */
     public boolean handleModelError(NamedObj context,
-            IllegalActionException exception) throws IllegalActionException
-            {
+            IllegalActionException exception) throws IllegalActionException {
 
-        System.out.println("handleModelError called for the GiottoError Actor with name "+this.getDisplayName());
-
-        if (_errorAction == ErrorAction.warn){
-            System.out.println("an error was detected in "+context.getFullName());
+        System.out
+        .println("handleModelError called for the GiottoError Actor with name "
+                + this.getDisplayName());
+        System.out.println("error action has value " + _errorAction);
+        if (_errorAction == ErrorAction.warn) {
+            System.out.println("an error was detected in "
+                    + context.getFullName());
             return true;
-        } else if(_errorAction == ErrorAction.timedutilityfunction){
-            System.out.println("I should check to see if I'm within the acceptable range for the timed utility function");
+        } else if (_errorAction == ErrorAction.timedutilityfunction) {
+            System.out
+            .println("I should check to see if I'm within the acceptable range for the timed utility function");
             String temp = exception.toString();
-            int i,j,k,l =0;
+            int i, j, k, l = 0;
             i = temp.indexOf("(");
             j = temp.indexOf(")");
             k = temp.lastIndexOf("(");
             l = temp.lastIndexOf(")");
-            double wcet = Double.parseDouble(temp.substring(i+1, j));
-            double periodvalue = Double.parseDouble(temp.substring(k+1, l));
-            System.out.println("wcet value is "+wcet+" and period value is "+periodvalue);
+            double wcet = Double.parseDouble(temp.substring(i + 1, j));
+            double periodvalue = Double.parseDouble(temp.substring(k + 1, l));
+            System.out.println("wcet value is " + wcet
+                    + " and period value is " + periodvalue);
             return true;
-        }
-        else if(_errorAction == ErrorAction.reset){
+        } else if (_errorAction == ErrorAction.reset) {
             System.out.println("I should request a reset to the model");
             throw exception;
 
         }
 
-
         return false;
-            }
+    }
 
     /** The errorAction operator.  This is a string-valued attribute
      *  that defaults to "warn".
      */
     public StringParameter errorAction;
 
-    
     /// Enumeration of the different ways to handle errors
-    private enum ErrorAction
-    {warn,reset,timedutilityfunction }
+    private enum ErrorAction {
+        warn, reset, timedutilityfunction
+    }
 
-///////////////////////////////////////////////////////////////////
-////private variables                 ////
-//  An indicator for the error action to take.
+    ///////////////////////////////////////////////////////////////////
+    ////private variables                 ////
+    //  An indicator for the error action to take.
     private ErrorAction _errorAction;
 
-
 }
-
