@@ -339,12 +339,12 @@ public class ClientProcess extends Thread {
             }
             InputStream is = simPro.getInputStream();
             InputStreamReader isr = null;
+            PrintWriter pwLogFil = null;
             PrintWriter pwSysOut = null;
             BufferedReader br = null;
             try {
                 isr = new InputStreamReader(is);
                 br = new BufferedReader(isr);
-                PrintWriter pwLogFil;
                 pwSysOut = new PrintWriter(System.out);
                 try {
                     pwLogFil = new PrintWriter(new BufferedWriter(new FileWriter(
@@ -384,6 +384,14 @@ public class ClientProcess extends Thread {
                         e.printStackTrace();
                     }
                 }
+                if (pwLogFil != null) {
+                    try {
+                        // FIXME: is this ok if pwLogFil is System.err?
+                        pwLogFil.close();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
                 if (pwSysOut != null) {
                     try {
                         // FIXME: is this ok if pwSysOut is System.out?
@@ -417,12 +425,12 @@ public class ClientProcess extends Thread {
             }
             InputStream is = simPro.getErrorStream();
             InputStreamReader isr = null;
+            PrintWriter pwLogFil = null;
             PrintWriter pwSysOut = null;
             BufferedReader br = null;
             try {
                 isr = new InputStreamReader(is);
                 br = new BufferedReader(isr);
-                PrintWriter pwLogFil;
                 pwSysOut = new PrintWriter(System.err);
                 try {
                     pwLogFil = new PrintWriter(new BufferedWriter(new FileWriter(
@@ -454,6 +462,14 @@ public class ClientProcess extends Thread {
                     try {
                         isr.close();
                     } catch (java.io.IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+                if (pwLogFil != null) {
+                    try {
+                        // FIXME: is this ok if pwLogFil is System.err?
+                        pwLogFil.close();
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
                 }
