@@ -479,6 +479,8 @@
         </property>
         <property name="AUTODIMS" class="ptolemy.data.expr.Parameter" value="false">
         </property>
+        <property name="TYPESIZE" class="modeling.ListParam" value="8;">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location">
         </property>
     </entity>
