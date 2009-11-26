@@ -1,7 +1,7 @@
 # Makefile for PtolemyII PTHALES Domain
 #
 # @Version: $Id$
-# @Author: Christopher Hylands
+# @Author: Christopher Brooks
 #
 # @Copyright (c) 2009 The Regents of the University of California.
 # All rights reserved.
@@ -30,7 +30,7 @@
 
 ME =		ptolemy/domains/pthales
 
-DIRS =		kernel demo doc test
+DIRS =		kernel demo doc lib JNI test
 
 # Root of Ptolemy II directory
 ROOT =		../../..
@@ -46,14 +46,15 @@ PTCLASSJAR =
 
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
-		kernel/kernel.jar
+		kernel/kernel.jar \
+		lib/lib.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
 # Files or directories that are present, but that 'make checkjunk'
 # should not complain about
 # Don't include demo or DIRS here, or else 'make sources' will run 'make demo'
-MISC_FILES =	kernel doc test
+MISC_FILES =	kernel doc JNI lib test 
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES

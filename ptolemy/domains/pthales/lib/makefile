@@ -1,4 +1,4 @@
-# Makefile for the PTHALES domain kernel
+# Makefile for the PTHALES domain lib
 #
 # @Authors: Christopher Brooks
 #
@@ -29,7 +29,7 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/domains/pthales/kernel
+ME =		ptolemy/domains/pthales/lib
 
 DIRS = 		#test
 
@@ -43,20 +43,17 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	kernel
+PTPACKAGE = 	lib
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
-	PthalesDirector.java \
-	PthalesReceiver.java \
-	PthalesScheduler.java
+	PThalesGenericActor.java \
+	PThalesIOPort.java
 
 OTHER_FILES_TO_BE_JARED = \
-	build.xml \
-	convert.xsl
+	pthalesentities.xml
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
-
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
