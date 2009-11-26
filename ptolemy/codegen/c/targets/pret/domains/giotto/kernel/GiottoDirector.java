@@ -605,7 +605,7 @@ public class GiottoDirector extends
                             "ptolemy.actor.lib.jni.EmbeddedCActor")) {
                         //code.append("//transfer inputs in"+_eol);
                         CodeGeneratorHelper myHelper;
-                        String actorTransferCode = " ";
+                        StringBuffer actorTransferCode = new StringBuffer(" ");
 
                         while (inputPorts.hasNext()) {
                             IOPort sourcePort = (IOPort) inputPorts.next();
@@ -619,7 +619,7 @@ public class GiottoDirector extends
                                 //I don't think this is correct
                                 for (int j = 0; j < i; j++) {
 
-                                    actorTransferCode += "//multiport stuff here";
+                                    actorTransferCode.append("//multiport stuff here");
                                 }
                             } else {
                                 channelOffset[0] = "0";
@@ -633,8 +633,8 @@ public class GiottoDirector extends
                                 ArrayList args = new ArrayList();
                                 args.add(sinkReference);
                                 args.add(srcReference);
-                                actorTransferCode += _generateBlockCode(
-                                        "updatePort", args);
+                                actorTransferCode.append(_generateBlockCode(
+                                                "updatePort", args));
                             }
                         }
                         code.append(methodSignature);
@@ -662,12 +662,12 @@ public class GiottoDirector extends
                                         false, true, myHelper);
                                 args.add(sinkReference);
                                 args.add(srcReference);
-                                actorTransferCode += _generateBlockCode(
-                                        "updatePort", args);
+                                actorTransferCode.append(_generateBlockCode(
+                                                "updatePort", args));
                             }
 
                         }
-                        code.append(_eol + actorTransferCode + _eol);
+                        code.append(_eol + actorTransferCode.toString() + _eol);
                         code.append(_getActorName(actor) + "_EmbeddedActor();"
                                 + _eol);
                         //code.append("//jni actor"+_eol);
@@ -874,7 +874,7 @@ public class GiottoDirector extends
         }
         String sinkReference;
         String srcReference;
-        String actorDriverCode = " ";
+        StringBuffer actorDriverCode;
         CodeGeneratorHelper myHelper;
         Director dir;
 
@@ -885,7 +885,7 @@ public class GiottoDirector extends
             Iterator outputPorts = outputPortList.iterator();
             sinkReference = "";
             srcReference = "";
-            actorDriverCode = "";
+            actorDriverCode = new StringBuffer("");
             dir = actor.getDirector();
             code.append(_eol + "//My Director's name is: " + dir.getFullName()
                     + _eol);
@@ -894,9 +894,9 @@ public class GiottoDirector extends
                             .getFullName().contains("_Director"))) {
                 code
                         .append(_eol
-                                + "//should transfer from my outputs to my output ports"
+                                + "// should transfer from my outputs to my output ports"
                                 + _eol);
-                actorDriverCode += _eol + "//in first if" + _eol;
+                actorDriverCode.append(_eol + "// in first if" + _eol);
                 while (outputPorts.hasNext()) {
                     IOPort sourcePort = (IOPort) outputPorts.next();
                     // FIXME: figure out the channel number for the sourcePort.
@@ -909,7 +909,7 @@ public class GiottoDirector extends
                         //I don't think this is correct
                         for (int j = 0; j < i; j++) {
 
-                            actorDriverCode += "//multiport stuff here";
+                            actorDriverCode.append("// multiport stuff here");
                         }
                     } else {
                         channelOffset[0] = "0";
@@ -923,8 +923,8 @@ public class GiottoDirector extends
                         ArrayList args = new ArrayList();
                         args.add(sinkReference);
                         args.add(srcReference);
-                        actorDriverCode += _generateBlockCode("updatePort",
-                                args);
+                        actorDriverCode.append(_generateBlockCode("updatePort",
+                                        args));
                     }
                 }
             } else if (actor instanceof CompositeActor
@@ -956,7 +956,7 @@ public class GiottoDirector extends
                         //I don't think this is correct
                         for (int j = 0; j < i; j++) {
 
-                            actorDriverCode += "//multiport stuff here";
+                            actorDriverCode.append("//multiport stuff here");
                         }
                     } else {
                         channelOffset[0] = "0";
@@ -974,8 +974,8 @@ public class GiottoDirector extends
                             src = temp + "(" + srcReference + ")";
                         }
 
-                        actorDriverCode += sinkReference + " = " + src + ";"
-                                + _eol;
+                        actorDriverCode.append(sinkReference + " = " + src + ";"
+                                + _eol);
                     }
                 }
 
@@ -1006,7 +1006,7 @@ public class GiottoDirector extends
                         //I don't think this is correct
                         for (int j = 0; j < i; j++) {
 
-                            actorDriverCode += "//multiport stuff here";
+                            actorDriverCode.append("//multiport stuff here");
                         }
                     } else {
                         channelOffset[0] = "0";
@@ -1029,8 +1029,8 @@ public class GiottoDirector extends
                             src = temp + "(" + srcReference + ")";
                         }
 
-                        actorDriverCode += sinkReference + " = " + src + ";"
-                                + _eol;
+                        actorDriverCode.append(sinkReference + " = " + src + ";"
+                                + _eol);
                     }
                 }
             } else {
@@ -1046,7 +1046,7 @@ public class GiottoDirector extends
                         //I don't think this is correct
                         for (int j = 0; j < i; j++) {
 
-                            actorDriverCode += "//multiport stuff here";
+                            actorDriverCode.append("//multiport stuff here");
                         }
                     } else {
                         channelOffset[0] = "0";
@@ -1064,8 +1064,8 @@ public class GiottoDirector extends
                                 + myHelper.getClassName() + _eol);
                         code.append(_eol + "//in Last Else of outDriverCode"
                                 + _eol);
-                        actorDriverCode += _generateBlockCode("updatePort",
-                                args);
+                        actorDriverCode.append(_generateBlockCode("updatePort",
+                                        args));
                     }
                 }
 
@@ -1073,7 +1073,7 @@ public class GiottoDirector extends
 
             ArrayList args = new ArrayList();
             args.add(_generateDriverName((NamedObj) actor) + "_out");
-            args.add(actorDriverCode);
+            args.add(actorDriverCode.toString());
             code.append(_generateBlockCode("driverCode", args));
         }
 

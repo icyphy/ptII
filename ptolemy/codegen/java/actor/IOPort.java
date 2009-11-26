@@ -288,9 +288,9 @@ public class IOPort extends JavaCodeGeneratorHelper implements
         ptolemy.actor.IOPort port = (ptolemy.actor.IOPort) getComponent();
         Receiver receiver = _getReceiver(null, 0, port);
 
-        String code = getCodeGenerator().comment(
-                _eol + "....Begin updateOffset...."
-                        + CodeGeneratorHelper.generateName(port));
+        StringBuffer code = new StringBuffer(getCodeGenerator().comment(
+                "....Begin updateOffset...."
+                + CodeGeneratorHelper.generateName(port)));
 
         //        int width = 0;
         //        if (port.isInput()) {
@@ -311,20 +311,20 @@ public class IOPort extends JavaCodeGeneratorHelper implements
                         .getReferenceChannels(port, i);
 
                 for (Channel channel : channels) {
-                    code += _updatePNOffset(rate, channel.port,
-                            channel.channelNumber, directorHelper, false);
+                    code.append(_updatePNOffset(rate, channel.port,
+                                    channel.channelNumber, directorHelper, false));
                 }
-                code += getCodeGenerator().comment(
-                        _eol + "....End updateOffset (PN)...."
-                                + CodeGeneratorHelper.generateName(port));
+                code.append(getCodeGenerator().comment(
+                        "....End updateOffset (PN)...."
+                        + CodeGeneratorHelper.generateName(port)));
             } else {
-                code += _updateOffset(i, rate);
-                code += getCodeGenerator().comment(
-                        _eol + "\n....End updateOffset...."
-                                + CodeGeneratorHelper.generateName(port));
+                code.append(_updateOffset(i, rate) +
+                        getCodeGenerator().comment(
+                                "\n....End updateOffset...."
+                                + CodeGeneratorHelper.generateName(port)));
             }
         }
-        return code;
+        return code.toString();
     }
 
     ///////////////////////////////////////////////////////////////////
