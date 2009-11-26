@@ -361,7 +361,7 @@ public class IOPort extends CCodeGeneratorHelper implements PortCodeGenerator {
         ptolemy.actor.IOPort port = (ptolemy.actor.IOPort) getComponent();
         Receiver receiver = _getReceiver(null, 0, port);
 
-        String code = "";
+        StringBuffer code = new StringBuffer();
         //        code += getCodeGenerator().comment(_eol + "....Begin updateOffset...."
         //                                                 + CodeGeneratorHelper.generateName(port));
 
@@ -381,19 +381,19 @@ public class IOPort extends CCodeGeneratorHelper implements PortCodeGenerator {
                         .getReferenceChannels(port, i);
 
                 for (Channel channel : channels) {
-                    code += _updatePNOffset(rate, channel.port,
-                            channel.channelNumber, directorHelper, false);
+                    code.append(_updatePNOffset(rate, channel.port,
+                                    channel.channelNumber, directorHelper, false));
                 }
                 //                code += getCodeGenerator().comment(_eol + "....End updateOffset (PN)...."
                 //                                                   + CodeGeneratorHelper.generateName(port));
 
             } else {
-                code += _updateOffset(i, rate);
+                code.append(_updateOffset(i, rate));
                 //                code += getCodeGenerator().comment(_eol + "\n....End updateOffset...."
                 //                                                   + CodeGeneratorHelper.generateName(port));
             }
         }
-        return code;
+        return code.toString();
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -473,7 +473,7 @@ public class PNDirector extends Director {
                         + generateDirectorHeader() + ");" + _eol);
             } else {
 
-                String pnPostfireCode = "";
+                StringBuffer pnPostfireCode = new StringBuffer();
 
                 // if firingCountLimit exists, generate for loop.
                 if (actor instanceof LimitedFiringSource) {
@@ -483,7 +483,7 @@ public class PNDirector extends Director {
                     functionCode.append("for (; i < " + firingCount
                             + "; i++) {" + _eol);
 
-                    pnPostfireCode = _eol;
+                    pnPostfireCode.append(_eol);
                 } else {
                     functionCode.append("while (true) {" + _eol);
                     // code.append("{" + _eol);
@@ -517,17 +517,17 @@ public class PNDirector extends Director {
                     if (portCGHelper.checkRemote(forComposite, port)) {
                         // pnPostfireCode += portHelper.updateOffset(rate,
                         // this);
-                        pnPostfireCode += portHelper
-                                .updateConnectedPortsOffset(rate, _director);
+                        pnPostfireCode.append(portHelper
+                                .updateConnectedPortsOffset(rate, _director));
                     }
                     if (port.isInput()) {
-                        pnPostfireCode += portHelper.updateOffset(rate,
-                                _director);
+                        pnPostfireCode.append(portHelper.updateOffset(rate,
+                                        _director));
                     }
                 }
 
                 // Code for incrementing buffer offsets.
-                functionCode.append(pnPostfireCode);
+                functionCode.append(pnPostfireCode.toString());
 
                 functionCode.append("}" + _eol);
                 functionCode.append("$incrementReadBlockingThreads(&"

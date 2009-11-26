@@ -1379,7 +1379,7 @@ public class PNDirector extends Director {
                     code.append(resetCondition + _eol);
                 }
 
-                String pnPostfireCode = "";
+                StringBuffer pnPostfireCode = new StringBuffer();
                 code.append("//This is where the loops are generated" + _eol);
                 // if firingCountLimit exists, generate for loop.
                 if (actor instanceof LimitedFiringSource) {
@@ -1393,7 +1393,7 @@ public class PNDirector extends Director {
                                 + "i++;" + _eol);
                     }
 
-                    pnPostfireCode = _eol;
+                    pnPostfireCode.append(_eol);
                 } else {
 
                 }
@@ -1437,17 +1437,17 @@ public class PNDirector extends Director {
                     // int width = port.getWidth();
                     // for (int i = 0; i < width; i++) {
                     if (port.isInput()) {
-                        pnPostfireCode += portHelper.updateOffset(rate,
-                                _director);
+                        pnPostfireCode.append(portHelper.updateOffset(rate,
+                                        _director));
                     } else {
-                        pnPostfireCode += portHelper
-                                .updateConnectedPortsOffset(rate, _director);
+                        pnPostfireCode.append(portHelper
+                                .updateConnectedPortsOffset(rate, _director));
                     }
                     // }
                 }
 
                 // Code for incrementing buffer offsets.
-                code.append(pnPostfireCode);
+                code.append(pnPostfireCode.toString());
 
                 // End the timer for the fire block
                 if (_doMeasureTime()) {

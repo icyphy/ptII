@@ -292,14 +292,15 @@ public class GiottoDirector extends
             }
             temp[i] = '0'; //terminate the string
             count++;
-            periodString = new String(temp);
             if (_debugging) {
                 _debug("before padding with zeros: " + periodString);
             }
+            StringBuffer zeros = new StringBuffer();
             while (count < 3) {
-                periodString += '0';
+                zeros.append('0');
                 count++;
             }
+            periodString = temp + zeros.toString();
         }
         if (periodString.charAt(0) == '0') // leading zero so remove it
         {
@@ -1413,7 +1414,7 @@ public class GiottoDirector extends
         }
         String sinkReference;
         String srcReference;
-        String actorDriverCode = " ";
+        StringBuffer actorDriverCode;
         CodeGeneratorHelper myHelper;
 
         for (Actor actor : (List<Actor>) ((TypedCompositeActor) _director
@@ -1423,7 +1424,7 @@ public class GiottoDirector extends
             Iterator outputPorts = outputPortList.iterator();
             sinkReference = "";
             srcReference = "";
-            actorDriverCode = "";
+            actorDriverCode = new StringBuffer();
             while (outputPorts.hasNext()) {
                 IOPort sourcePort = (IOPort) outputPorts.next();
                 // FIXME: figure out the channel number for the sourcePort.
@@ -1447,8 +1448,8 @@ public class GiottoDirector extends
                         ArrayList args = new ArrayList();
                         args.add(sinkReference);
                         args.add(srcReference);
-                        actorDriverCode += _generateBlockCode("updatePort",
-                                args);
+                        actorDriverCode.append(_generateBlockCode("updatePort",
+                                        args));
                     }
                 } else {
                     channelOffset[0] = "0";
@@ -1458,17 +1459,17 @@ public class GiottoDirector extends
                     ArrayList args = new ArrayList();
                     args.add(sinkReference);
                     args.add(srcReference);
-                    actorDriverCode += _generateBlockCode("updatePort", args);
+                    actorDriverCode.append(_generateBlockCode("updatePort", args));
                 }
             }
             if (_debugging) {
                 _debug("actorDriverCode is now:");
-                _debug(actorDriverCode);
+                _debug(actorDriverCode.toString());
             }
 
             ArrayList args = new ArrayList();
             args.add(_generateDriverName((NamedObj) actor) + "_out");
-            args.add(actorDriverCode);
+            args.add(actorDriverCode.toString());
             code.append(_generateBlockCode("driverCode", args));
         }
         if (_debugging) {

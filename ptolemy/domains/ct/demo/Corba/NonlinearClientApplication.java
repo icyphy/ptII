@@ -141,13 +141,13 @@ public class NonlinearClientApplication {
 
             gain3.factor.setToken(new DoubleToken(-1000.0));
 
-            String orbinit = "";
+            StringBuffer orbinit = new StringBuffer();
 
             for (int i = 0; i < args.length; i++) {
-                orbinit = orbinit + args[i] + " ";
+                orbinit.append(args[i] + " ");
             }
 
-            _client.ORBInitProperties.setToken(new StringToken(orbinit));
+            _client.ORBInitProperties.setToken(new StringToken(orbinit.toString()));
             _client.remoteActorName.setToken(new StringToken("Nonlinear"));
 
             man.startRun();

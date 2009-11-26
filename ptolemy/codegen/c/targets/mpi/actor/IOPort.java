@@ -104,19 +104,19 @@ public class IOPort extends ptolemy.codegen.c.actor.IOPort implements
         Receiver receiver = _getReceiver(offset, channel, port);
 
         if (_isPthread() && receiver instanceof PNQueueReceiver) {
-            String result;
+            StringBuffer result = new StringBuffer();
             if (offset.length() == 0 || offset.equals("0")) {
-                result = (isWrite) ? "$getWriteOffset(" : "$getReadOffset(";
+                result.append((isWrite) ? "$getWriteOffset(" : "$getReadOffset(");
             } else {
-                result = (isWrite) ? "$getAdvancedWriteOffset("
-                        : "$getAdvancedReadOffset(";
-                result += offset + ", ";
+                result.append((isWrite) ? "$getAdvancedWriteOffset("
+                        : "$getAdvancedReadOffset(" +
+                        offset + ", ");
             }
 
             PNDirector pnDirector = (PNDirector) _getHelper(director);
-            result += "&" + PNDirector.generatePortHeader(port, channel) + ", ";
-            result += "&" + pnDirector.generateDirectorHeader() + ")";
-            return "[" + result + "]";
+            result.append("&" + PNDirector.generatePortHeader(port, channel) + ", " +
+                    "&" + pnDirector.generateDirectorHeader() + ")");
+            return "[" + result.toString() + "]";
         } else {
             return _generateOffset(offset, channel, isWrite);
         }
@@ -290,9 +290,9 @@ public class IOPort extends ptolemy.codegen.c.actor.IOPort implements
         ptolemy.actor.IOPort port = (ptolemy.actor.IOPort) getComponent();
         Receiver receiver = _getReceiver(null, 0, port);
 
-        String code = getCodeGenerator().comment(
+        StringBuffer code = new StringBuffer(getCodeGenerator().comment(
                 _eol + "....Begin updateOffset...."
-                        + CodeGeneratorHelper.generateName(port));
+                + CodeGeneratorHelper.generateName(port)));
 
         //        int width = 0;
         //        if (port.isInput()) {
@@ -315,21 +315,21 @@ public class IOPort extends ptolemy.codegen.c.actor.IOPort implements
                         i);
 
                 for (Channel channel : channels) {
-                    code += _updatePNOffset(rate, channel.port,
-                            channel.channelNumber, directorHelper, false);
+                    code.append(_updatePNOffset(rate, channel.port,
+                                    channel.channelNumber, directorHelper, false));
                 }
-                code += getCodeGenerator().comment(
+                code.append(getCodeGenerator().comment(
                         _eol + "....End updateOffset (PN)...."
-                                + CodeGeneratorHelper.generateName(port));
+                        + CodeGeneratorHelper.generateName(port)));
 
             } else {
-                code += _updateOffset(i, rate);
-                code += getCodeGenerator().comment(
+                code.append(_updateOffset(i, rate) +
+                        getCodeGenerator().comment(
                         _eol + "\n....End updateOffset...."
-                                + CodeGeneratorHelper.generateName(port));
+                        + CodeGeneratorHelper.generateName(port)));
             }
         }
-        return code;
+        return code.toString();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -680,8 +680,8 @@ public class IOPort extends ptolemy.codegen.c.actor.IOPort implements
         PNDirector pnDirector = (PNDirector) //directorHelper;
         _getHelper(((Actor) port.getContainer()).getExecutiveDirector());
 
-        String incrementFunction = (isWrite) ? "$incrementWriteOffset"
-                : "$incrementReadOffset";
+        StringBuffer incrementFunction = new StringBuffer((isWrite) ? "$incrementWriteOffset"
+                : "$incrementReadOffset");
 
         if (rate <= 0) {
             assert false;
@@ -689,16 +689,16 @@ public class IOPort extends ptolemy.codegen.c.actor.IOPort implements
 
         String incrementArg = "";
         if (rate > 1) {
-            incrementFunction += "By";
+            incrementFunction.append("By");
 
             // Supply the increment argument.
-            incrementArg += rate + ", ";
+            incrementArg = rate + ", ";
         }
 
         // FIXME: generate the right buffer reference from
         // both input and output ports.
 
-        return incrementFunction + "(" + incrementArg + "&"
+        return incrementFunction.toString() + "(" + incrementArg + "&"
                 + PNDirector.generatePortHeader(port, channelNumber) + ", &"
                 + pnDirector.generateDirectorHeader() + ");" + _eol;
     }
