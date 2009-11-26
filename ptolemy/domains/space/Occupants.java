@@ -447,9 +447,6 @@ public class Occupants extends ArrayOfRecordsRecorder {
         sql1.append(" where trim(spaceid)='");
         sql1.append(sourceSpaceID);
         sql1.append("';");
-        String databaseName = databaseManager.stringValue();
-        database = DatabaseManager.findDatabaseManager(databaseName,
-                Occupants.this);
         ArrayToken sourceArray = database.executeQuery(sql1.toString());
         // If the above returns null, the user canceled.
         if (sourceArray == null) {
