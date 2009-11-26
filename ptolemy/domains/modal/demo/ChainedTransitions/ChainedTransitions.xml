@@ -21,8 +21,6 @@
         </property>
         <property name="errorTolerance" class="ptolemy.data.expr.Parameter" value="1.0E-4">
         </property>
-        <property name="ODESolver" class="ptolemy.data.expr.StringParameter" value="ExplicitRK23Solver">
-        </property>
         <property name="minStepSize" class="ptolemy.data.expr.Parameter" value="1.0E-5">
         </property>
         <property name="valueResolution" class="ptolemy.data.expr.Parameter" value="1.0E-6">
@@ -286,7 +284,7 @@
             <link port="decreasing.outgoingPort" relation="relation6"/>
         </entity>
         <entity name="state" class="ptolemy.domains.modal.modal.Refinement">
-            <property name="Refinement Solver" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
+            <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
                 <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="timeResolution" class="ptolemy.actor.parameters.SharedParameter" value="1.0E-10">
@@ -300,8 +298,6 @@
                 <property name="maxIterations" class="ptolemy.data.expr.Parameter" value="20">
                 </property>
                 <property name="errorTolerance" class="ptolemy.data.expr.Parameter" value="1.0E-4">
-                </property>
-                <property name="ODESolver" class="ptolemy.data.expr.StringParameter" value="ExplicitRK23Solver">
                 </property>
                 <property name="minStepSize" class="ptolemy.data.expr.Parameter" value="1.0E-5">
                 </property>

@@ -600,7 +600,7 @@ of following the LeadingPlatoon.</text></svg></configure>
             <link port="Limiter.output" relation="relation2"/>
         </entity>
         <entity name="controller" class="ptolemy.domains.modal.modal.ModalModel">
-            <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalTableauFactory">
+            <property name="_tableauFactory" class="ptolemy.vergil.modal.modal.ModalTableauFactory">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="209.0, 110.0">
             </property>
@@ -666,7 +666,7 @@ of following the LeadingPlatoon.</text></svg></configure>
                     </property>
                     <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                     </property>
-                    <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
+                    <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
                     </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="395.0, 185.0">
                     </property>
@@ -678,7 +678,7 @@ of following the LeadingPlatoon.</text></svg></configure>
                     </property>
                     <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                     </property>
-                    <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
+                    <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
                     </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="235.0, 185.0">
                     </property>

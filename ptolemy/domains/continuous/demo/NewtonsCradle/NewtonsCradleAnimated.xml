@@ -804,67 +804,11 @@ transitions occur at the time of the collision.</text></svg></configure>
                 <entity name="theta" class="ptolemy.domains.continuous.lib.Integrator">
                     <property name="initialState" class="ptolemy.actor.parameters.PortParameter" value="initialTheta">
                     </property>
-                    <property name="IntegratorIcon" class="ptolemy.vergil.icon.EditorIcon">
-                        <property name="rectangle" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
-                            <property name="_location" class="ptolemy.kernel.util.Location" value="-0.0, 0.0">
-                            </property>
-                            <property name="width" class="ptolemy.data.expr.Parameter" value="38.0">
-                            </property>
-                            <property name="height" class="ptolemy.data.expr.Parameter" value="40.0">
-                            </property>
-                            <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
-                            </property>
-                            <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 1.0, 1.0}">
-                            </property>
-                        </property>
-                        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={117, 239, 815, 518}, maximized=false}">
-                        </property>
-                        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
-                        </property>
-                        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="4.0">
-                        </property>
-                        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{0.0, 0.0}">
-                        </property>
-                        <property name="image" class="ptolemy.vergil.kernel.attributes.ImageAttribute">
-                            <property name="source" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/domains/continuous/lib/integral.gif">
-                            </property>
-                            <property name="_location" class="ptolemy.kernel.util.Location" value="[-5.0, -16.0]">
-                            </property>
-                        </property>
-                    </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 245.0]">
                     </property>
                 </entity>
                 <entity name="theta_dot" class="ptolemy.domains.continuous.lib.Integrator">
                     <property name="initialState" class="ptolemy.actor.parameters.PortParameter" value="initialTheta_dot">
-                    </property>
-                    <property name="IntegratorIcon" class="ptolemy.vergil.icon.EditorIcon">
-                        <property name="rectangle" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
-                            <property name="_location" class="ptolemy.kernel.util.Location" value="-0.0, 0.0">
-                            </property>
-                            <property name="width" class="ptolemy.data.expr.Parameter" value="38.0">
-                            </property>
-                            <property name="height" class="ptolemy.data.expr.Parameter" value="40.0">
-                            </property>
-                            <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
-                            </property>
-                            <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 1.0, 1.0}">
-                            </property>
-                        </property>
-                        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={117, 239, 815, 518}, maximized=false}">
-                        </property>
-                        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
-                        </property>
-                        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="4.0">
-                        </property>
-                        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{0.0, 0.0}">
-                        </property>
-                        <property name="image" class="ptolemy.vergil.kernel.attributes.ImageAttribute">
-                            <property name="source" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/domains/continuous/lib/integral.gif">
-                            </property>
-                            <property name="_location" class="ptolemy.kernel.util.Location" value="[-5.0, -16.0]">
-                            </property>
-                        </property>
                     </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 245.0]">
                     </property>
@@ -1549,67 +1493,11 @@ transitions occur at the time of the collision.</text></svg></configure>
                 <entity name="theta" class="ptolemy.domains.continuous.lib.Integrator">
                     <property name="initialState" class="ptolemy.actor.parameters.PortParameter" value="initialTheta">
                     </property>
-                    <property name="IntegratorIcon" class="ptolemy.vergil.icon.EditorIcon">
-                        <property name="rectangle" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
-                            <property name="_location" class="ptolemy.kernel.util.Location" value="-0.0, 0.0">
-                            </property>
-                            <property name="width" class="ptolemy.data.expr.Parameter" value="38.0">
-                            </property>
-                            <property name="height" class="ptolemy.data.expr.Parameter" value="40.0">
-                            </property>
-                            <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
-                            </property>
-                            <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 1.0, 1.0}">
-                            </property>
-                        </property>
-                        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={117, 239, 815, 518}, maximized=false}">
-                        </property>
-                        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
-                        </property>
-                        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="4.0">
-                        </property>
-                        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{0.0, 0.0}">
-                        </property>
-                        <property name="image" class="ptolemy.vergil.kernel.attributes.ImageAttribute">
-                            <property name="source" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/domains/continuous/lib/integral.gif">
-                            </property>
-                            <property name="_location" class="ptolemy.kernel.util.Location" value="[-5.0, -16.0]">
-                            </property>
-                        </property>
-                    </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 245.0]">
                     </property>
                 </entity>
                 <entity name="theta_dot" class="ptolemy.domains.continuous.lib.Integrator">
                     <property name="initialState" class="ptolemy.actor.parameters.PortParameter" value="initialTheta_dot">
-                    </property>
-                    <property name="IntegratorIcon" class="ptolemy.vergil.icon.EditorIcon">
-                        <property name="rectangle" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
-                            <property name="_location" class="ptolemy.kernel.util.Location" value="-0.0, 0.0">
-                            </property>
-                            <property name="width" class="ptolemy.data.expr.Parameter" value="38.0">
-                            </property>
-                            <property name="height" class="ptolemy.data.expr.Parameter" value="40.0">
-                            </property>
-                            <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
-                            </property>
-                            <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 1.0, 1.0}">
-                            </property>
-                        </property>
-                        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={117, 239, 815, 518}, maximized=false}">
-                        </property>
-                        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
-                        </property>
-                        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="4.0">
-                        </property>
-                        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{0.0, 0.0}">
-                        </property>
-                        <property name="image" class="ptolemy.vergil.kernel.attributes.ImageAttribute">
-                            <property name="source" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/domains/continuous/lib/integral.gif">
-                            </property>
-                            <property name="_location" class="ptolemy.kernel.util.Location" value="[-5.0, -16.0]">
-                            </property>
-                        </property>
                     </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 245.0]">
                     </property>
@@ -2296,67 +2184,11 @@ transitions occur at the time of the collision.</text></svg></configure>
                 <entity name="theta" class="ptolemy.domains.continuous.lib.Integrator">
                     <property name="initialState" class="ptolemy.actor.parameters.PortParameter" value="initialTheta">
                     </property>
-                    <property name="IntegratorIcon" class="ptolemy.vergil.icon.EditorIcon">
-                        <property name="rectangle" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
-                            <property name="_location" class="ptolemy.kernel.util.Location" value="-0.0, 0.0">
-                            </property>
-                            <property name="width" class="ptolemy.data.expr.Parameter" value="38.0">
-                            </property>
-                            <property name="height" class="ptolemy.data.expr.Parameter" value="40.0">
-                            </property>
-                            <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
-                            </property>
-                            <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 1.0, 1.0}">
-                            </property>
-                        </property>
-                        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={117, 239, 815, 518}, maximized=false}">
-                        </property>
-                        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
-                        </property>
-                        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="4.0">
-                        </property>
-                        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{0.0, 0.0}">
-                        </property>
-                        <property name="image" class="ptolemy.vergil.kernel.attributes.ImageAttribute">
-                            <property name="source" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/domains/continuous/lib/integral.gif">
-                            </property>
-                            <property name="_location" class="ptolemy.kernel.util.Location" value="[-5.0, -16.0]">
-                            </property>
-                        </property>
-                    </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 245.0]">
                     </property>
                 </entity>
                 <entity name="theta_dot" class="ptolemy.domains.continuous.lib.Integrator">
                     <property name="initialState" class="ptolemy.actor.parameters.PortParameter" value="initialTheta_dot">
-                    </property>
-                    <property name="IntegratorIcon" class="ptolemy.vergil.icon.EditorIcon">
-                        <property name="rectangle" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
-                            <property name="_location" class="ptolemy.kernel.util.Location" value="-0.0, 0.0">
-                            </property>
-                            <property name="width" class="ptolemy.data.expr.Parameter" value="38.0">
-                            </property>
-                            <property name="height" class="ptolemy.data.expr.Parameter" value="40.0">
-                            </property>
-                            <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
-                            </property>
-                            <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 1.0, 1.0}">
-                            </property>
-                        </property>
-                        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={117, 239, 815, 518}, maximized=false}">
-                        </property>
-                        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
-                        </property>
-                        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="4.0">
-                        </property>
-                        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{0.0, 0.0}">
-                        </property>
-                        <property name="image" class="ptolemy.vergil.kernel.attributes.ImageAttribute">
-                            <property name="source" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/domains/continuous/lib/integral.gif">
-                            </property>
-                            <property name="_location" class="ptolemy.kernel.util.Location" value="[-5.0, -16.0]">
-                            </property>
-                        </property>
                     </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 245.0]">
                     </property>

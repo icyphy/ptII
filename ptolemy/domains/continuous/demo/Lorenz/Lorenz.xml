@@ -111,8 +111,6 @@ model is known as a Lorenz attractor.</text>
     <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="50.0">
         </property>
-        <property name="ODESolver" class="ptolemy.data.expr.StringParameter" value="ExplicitRK23Solver">
-        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 35.0]">
         </property>
     </property>
@@ -203,35 +201,17 @@ model is known as a Lorenz attractor.</text>
     <entity name="Integrator" class="ptolemy.domains.continuous.lib.Integrator">
         <property name="initialState" class="ptolemy.actor.parameters.PortParameter" value="1.0">
         </property>
-        <property name="IntegratorIcon" class="ptolemy.vergil.icon.EditorIcon">
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={117, 239, 815, 518}, maximized=false}">
-            </property>
-            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
-            </property>
-        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[250.0, 215.0]">
         </property>
     </entity>
     <entity name="Integrator2" class="ptolemy.domains.continuous.lib.Integrator">
         <property name="initialState" class="ptolemy.actor.parameters.PortParameter" value="1.0">
         </property>
-        <property name="IntegratorIcon" class="ptolemy.vergil.icon.EditorIcon">
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={117, 239, 815, 518}, maximized=false}">
-            </property>
-            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
-            </property>
-        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[265.0, 280.0]">
         </property>
     </entity>
     <entity name="Integrator3" class="ptolemy.domains.continuous.lib.Integrator">
         <property name="initialState" class="ptolemy.actor.parameters.PortParameter" value="1.0">
-        </property>
-        <property name="IntegratorIcon" class="ptolemy.vergil.icon.EditorIcon">
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={117, 239, 815, 518}, maximized=false}">
-            </property>
-            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
-            </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 345.0]">
         </property>

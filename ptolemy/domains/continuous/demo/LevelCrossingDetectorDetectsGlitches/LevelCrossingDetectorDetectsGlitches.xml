@@ -205,7 +205,7 @@ The final state (state4) simply connects the input to the output.</text></svg></
                 </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
-                <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
+                <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 50.0]">
                 </property>
@@ -215,7 +215,7 @@ The final state (state4) simply connects the input to the output.</text></svg></
                 </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
-                <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
+                <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[285.0, 50.0]">
                 </property>
@@ -225,7 +225,7 @@ The final state (state4) simply connects the input to the output.</text></svg></
                 </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
-                <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
+                <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[400.0, 55.0]">
                 </property>
@@ -235,7 +235,7 @@ The final state (state4) simply connects the input to the output.</text></svg></
                 </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
-                <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
+                <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[510.0, 55.0]">
                 </property>
@@ -247,7 +247,7 @@ The final state (state4) simply connects the input to the output.</text></svg></
                 </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
-                <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
+                <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{45.0, 55.0}">
                 </property>
@@ -392,12 +392,6 @@ The final state (state4) simply connects the input to the output.</text></svg></
     </entity>
     <entity name="Integrator" class="ptolemy.domains.continuous.lib.Integrator">
         <property name="initialState" class="ptolemy.actor.parameters.PortParameter" value="0.0">
-        </property>
-        <property name="IntegratorIcon" class="ptolemy.vergil.icon.EditorIcon">
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={117, 239, 815, 518}, maximized=false}">
-            </property>
-            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
-            </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 350.0]">
         </property>

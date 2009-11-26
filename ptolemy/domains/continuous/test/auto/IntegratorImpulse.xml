@@ -9,8 +9,6 @@
         </property>
         <property name="maxStepSize" class="ptolemy.data.expr.Parameter" value="100">
         </property>
-        <property name="ODESolver" class="ptolemy.data.expr.StringParameter" value="ExplicitRK23Solver">
-        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[110.0, 65.0]">
         </property>
     </property>
@@ -23,12 +21,6 @@
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
     </property>
     <entity name="Integrator" class="ptolemy.domains.continuous.lib.Integrator">
-        <property name="IntegratorIcon" class="ptolemy.vergil.icon.EditorIcon">
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={117, 239, 815, 518}, maximized=false}">
-            </property>
-            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
-            </property>
-        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 185.0]">
         </property>
     </entity>

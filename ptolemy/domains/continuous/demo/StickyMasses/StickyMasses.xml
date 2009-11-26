@@ -180,7 +180,7 @@
         </configure>
     </entity>
     <entity name="Sticky Mass model" class="ptolemy.domains.modal.modal.ModalModel">
-        <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalTableauFactory">
+        <property name="_tableauFactory" class="ptolemy.vergil.modal.modal.ModalTableauFactory">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="75.0, 265.0">
         </property>
@@ -340,7 +340,7 @@
                 </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
-                <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
+                <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="110.0, 200.0">
                 </property>
@@ -350,7 +350,7 @@
                 </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
-                <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
+                <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="275.0, 235.0">
                 </property>
@@ -360,7 +360,7 @@
                 </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
-                <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
+                <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="515.0, 235.0">
                 </property>
@@ -430,7 +430,7 @@
                 </property>
                 <property name="italic" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
-                <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model gives two separate ordinary differential&#10;equations, one for each point mass attached to a spring.&#10;The ZeroCrossingDetector actor detects the collision&#10;of the point masses and emits the &quot;touched&quot; event.">
+                <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model gives two separate ordinary differential&#10;equations, one for each point mass attached to a spring.&#10;The LevelCrossingDetector actor detects the collision&#10;of the point masses and emits the &quot;touched&quot; event.">
                     <property name="_style" class="ptolemy.actor.gui.style.TextStyle">
                         <property name="height" class="ptolemy.data.expr.Parameter" value="20">
                         </property>
@@ -620,8 +620,8 @@
                     </property>
                 </port>
             </entity>
-            <entity name="ZeroCrossingDetector" class="ptolemy.domains.continuous.lib.LevelCrossingDetector">
-                <property name="ZeroCrossingDetectorIcon" class="ptolemy.vergil.icon.EditorIcon">
+            <entity name="LevelCrossingDetector" class="ptolemy.domains.continuous.lib.LevelCrossingDetector">
+                <property name="LevelCrossingDetectorIcon" class="ptolemy.vergil.icon.EditorIcon">
                     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 125, 815, 518}, maximized=false}">
                     </property>
                     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
@@ -684,8 +684,8 @@
             <link port="P2 integrator.state" relation="1:_R7"/>
             <link port="Const.output" relation="relation2"/>
             <link port="Const2.output" relation="relation3"/>
-            <link port="ZeroCrossingDetector.output" relation="relation"/>
-            <link port="ZeroCrossingDetector.trigger" relation="1:_R8"/>
+            <link port="LevelCrossingDetector.output" relation="relation"/>
+            <link port="LevelCrossingDetector.trigger" relation="1:_R8"/>
         </entity>
         <entity name="Together" class="ptolemy.domains.modal.modal.Refinement">
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[629, 449]">

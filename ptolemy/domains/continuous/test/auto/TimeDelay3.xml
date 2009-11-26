@@ -9,8 +9,6 @@
         </property>
         <property name="maxStepSize" class="ptolemy.data.expr.Parameter" value="100">
         </property>
-        <property name="ODESolver" class="ptolemy.data.expr.StringParameter" value="ExplicitRK23Solver">
-        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{110.0, 65.0}">
         </property>
     </property>

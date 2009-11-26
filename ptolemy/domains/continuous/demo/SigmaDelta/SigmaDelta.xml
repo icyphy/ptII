@@ -93,7 +93,7 @@
         </property>
         <property name="feedbackGain" class="ptolemy.data.expr.Parameter" value="feedbackGain">
         </property>
-        <property name="CTMixedSignalDirector" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
+        <property name="ContinuousDirector" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
             <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
             </property>
             <property name="timeResolution" class="ptolemy.actor.parameters.SharedParameter" value="1.0E-10">

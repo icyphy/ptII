@@ -194,7 +194,7 @@ of motion.</text></svg></configure>
                 </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
-                <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
+                <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="360.0, 125.0">
                 </property>
@@ -204,7 +204,7 @@ of motion.</text></svg></configure>
                 </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
-                <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
+                <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="185.0, 175.0">
                 </property>
@@ -212,7 +212,7 @@ of motion.</text></svg></configure>
             <entity name="stop" class="ptolemy.domains.modal.kernel.State">
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
-                <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
+                <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="130.0, 25.0">
                 </property>
@@ -324,7 +324,7 @@ falling in a gravitational field.</text></svg></configure>
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
                 <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-                    <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:red">The ZeroCrossingDetector detects collisions of the
+                    <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:red">The LevelCrossingDetector detects collisions of the
 ball with the surface on which it bounces.</text></svg></configure>
                 </property>
                 <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
@@ -387,10 +387,10 @@ ball with the surface on which it bounces.</text></svg></configure>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="35.0, 105.0">
                 </property>
             </entity>
-            <entity name="ZeroCrossingDetector" class="ptolemy.domains.continuous.lib.LevelCrossingDetector">
+            <entity name="LevelCrossingDetector" class="ptolemy.domains.continuous.lib.LevelCrossingDetector">
                 <property name="direction" class="ptolemy.data.expr.StringParameter" value="falling">
                 </property>
-                <property name="ZeroCrossingDetectorIcon" class="ptolemy.vergil.icon.EditorIcon">
+                <property name="LevelCrossingDetectorIcon" class="ptolemy.vergil.icon.EditorIcon">
                     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 125, 815, 518}, maximized=false}">
                     </property>
                     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
@@ -419,8 +419,8 @@ ball with the surface on which it bounces.</text></svg></configure>
             <link port="Velocity.derivative" relation="relation5"/>
             <link port="Velocity.state" relation="relation"/>
             <link port="Const.output" relation="relation5"/>
-            <link port="ZeroCrossingDetector.output" relation="relation2"/>
-            <link port="ZeroCrossingDetector.trigger" relation="relation3"/>
+            <link port="LevelCrossingDetector.output" relation="relation2"/>
+            <link port="LevelCrossingDetector.trigger" relation="relation3"/>
         </entity>
         <relation name="heightRelation" class="ptolemy.actor.TypedIORelation">
         </relation>

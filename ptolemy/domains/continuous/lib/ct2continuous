@@ -51,6 +51,7 @@ do
 	sed 's@ZeroCrossingDetector@LevelCrossingDetector@g' |
 	sed 's@ZeroOrderHold@ZeroOrderHold@g' |
 	sed 's@ptolemy/domains/ct@ptolemy/domains/continuous@g' |
+	sed 's@ptolemy.vergil.fsm@ptolemy.vergil.modal@g' |
 	cat > $tmpfile
 	
 	# Now, handle the Integrator Port Name change
@@ -69,7 +70,7 @@ do
 	# indent as the ODESolver line
 	cat $tmpfile2 |
 	awk '{
-                 if ($0 ~ /<property name="ODESolver"/) {
+                 if ($0 ~ /<property name="ODESolver"/ && $0 ~ /ExplicitRK23Solver/) {
                      noPrint = 1
                      indentLength = index($0, "<property name=\"ODESolver\"")
                  } 
