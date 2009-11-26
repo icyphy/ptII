@@ -203,51 +203,57 @@ public class PteraGraphController extends FSMGraphController {
             FSMGraphModel graphModel = (FSMGraphModel) getGraphModel();
             NamedObj toplevel = graphModel.getPtolemyModel();
 
-            // Create the state.
-            String moml = "<group name=\"auto\">"
+            if (frame == null) {
+                // Findbugs points out NP: Null pointer dereference
+                throw new NullPointerException(PteraGraphController.this +
+                        ": frame is null?");
+            } else {
+                // Create the state.
+                String moml = "<group name=\"auto\">"
                     + frame._getDefaultEventMoML() + "</group>";
 
-            MoMLChangeRequest request = new MoMLChangeRequest(this, toplevel,
-                    moml) {
+                MoMLChangeRequest request = new MoMLChangeRequest(this, toplevel,
+                        moml) {
 
-                protected void _postParse(MoMLParser parser) {
-                    List<NamedObj> topObjects = parser.topObjectsCreated();
-                    if (topObjects == null) {
-                        return;
-                    }
-                    for (NamedObj object : topObjects) {
-                        Location location = (Location) object
-                                .getAttribute("_location");
-                        if (location == null) {
-                            try {
-                                location = new Location(object, "_location");
-                            } catch (KernelException e) {
-                                // Ignore.
+                        protected void _postParse(MoMLParser parser) {
+                            List<NamedObj> topObjects = parser.topObjectsCreated();
+                            if (topObjects == null) {
+                                return;
                             }
-                        }
-                        if (location != null) {
-                            try {
-                                location.setLocation(new double[] { x, y });
-                            } catch (IllegalActionException e) {
-                                // Ignore.
+                            for (NamedObj object : topObjects) {
+                                Location location = (Location) object
+                                    .getAttribute("_location");
+                                if (location == null) {
+                                    try {
+                                        location = new Location(object, "_location");
+                                    } catch (KernelException e) {
+                                        // Ignore.
+                                    }
+                                }
+                                if (location != null) {
+                                    try {
+                                        location.setLocation(new double[] { x, y });
+                                    } catch (IllegalActionException e) {
+                                        // Ignore.
+                                    }
+                                }
                             }
+                            parser.clearTopObjectsList();
+                            super._postParse(parser);
                         }
-                    }
-                    parser.clearTopObjectsList();
-                    super._postParse(parser);
-                }
 
-                protected void _preParse(MoMLParser parser) {
-                    super._preParse(parser);
-                    parser.clearTopObjectsList();
-                }
-            };
-            toplevel.requestChange(request);
+                        protected void _preParse(MoMLParser parser) {
+                            super._preParse(parser);
+                            parser.clearTopObjectsList();
+                        }
+                    };
+                toplevel.requestChange(request);
 
-            try {
-                request.waitForCompletion();
-            } catch (Exception ex) {
-                throw new GraphException(ex);
+                try {
+                    request.waitForCompletion();
+                } catch (Exception ex) {
+                    throw new GraphException(ex);
+                }
             }
         }
     }
