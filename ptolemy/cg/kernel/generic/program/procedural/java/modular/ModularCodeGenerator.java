@@ -213,7 +213,7 @@ public class ModularCodeGenerator extends JavaCodeGenerator {
                     }
                 }
                 
-                if (externalPortName != "") {
+                if (!externalPortName.equals("")) {
                     appendFiringFunction = true;
                     firingFunction.append(INDENT2
                         + "firingFunction.ports.add(new FiringFunctionPort(\"" + outputPort.getName()

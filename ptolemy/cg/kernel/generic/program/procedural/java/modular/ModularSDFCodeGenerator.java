@@ -524,7 +524,7 @@ public class ModularSDFCodeGenerator extends JavaCodeGenerator {
                     }
                 }
                 
-                if(externalPortName != "")
+                if(!externalPortName.equals(""))
                     esdf.append(INDENT2
                         + "firingFunction.ports.add(new FiringFunctionPort(\"" + outputPort.getName()
                         + "\",\"" + externalPortName
