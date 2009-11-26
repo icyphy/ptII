@@ -1,0 +1,19 @@
+<project name="JNI" default="Wrapper generator">
+    <!-- Ptolemy II installation directory   -->
+    <property name="dirPTII" location="../../../../../ptII/"/>
+ 
+    <!-- Internal variables -->
+    <property name="dir" location="${dirPTII}/ptolemy/domains/pthales/demo/AdaptiveBeamForming"/>
+    <property name="file" value="UCB_ABF.xml" />
+               
+    <!-- Call XSLT -->
+    <target name="Wrapper generator">
+        <xslt in="${dir}/${file}" out="${dir}/ptolemy_${file}" style="convert.xsl" force="true">
+            <classpath location="${dirPTII}/lib/saxon8.jar" />
+            <xmlcatalog>
+                <dtd publicid="-//UC Berkeley//DTD MoML 1//EN" location="${dirPTII}/ptolemy/moml/MoML_1.dtd"/>
+            </xmlcatalog>
+        </xslt>
+	</target>
+	
+</project>
