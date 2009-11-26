@@ -480,7 +480,9 @@ HYVISUALPACKAGES = \
 	ptolemy.domains.modal.kernel \
 	ptolemy.domains.modal.kernel.ia \
 	ptolemy.domains.modal.modal \
+	ptolemy.domains.pthales.JNI \
 	ptolemy.domains.pthales.kernel \
+	ptolemy.domains.pthales.lib \
 	ptolemy.domains.sdf.kernel \
 	ptolemy.domains.sdf.lib \
 	ptolemy.domains.sdf.lib.vq \
@@ -1224,7 +1226,7 @@ ptII.fb:
 	fi
 
 # -effort:max was causing us to run out of memory
-FINDBUGS_ARGS = -maxHeap 2000 -effort:min -textui -include findbugs-include.xml -exclude findbugs-exclude.xml -project ptII.fb
+FINDBUGS_ARGS = -maxHeap 2000 -experimental -effort:max -textui -include findbugs-include.xml -exclude findbugs-exclude.xml -project ptII.fb
 
 findbugs.htm:  ptII.fb findbugs-exclude.xml makefile
 	@if [ -f "$(FINDBUGS)/bin/findbugs" ]; then \
