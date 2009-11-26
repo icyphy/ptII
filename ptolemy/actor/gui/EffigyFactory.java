@@ -168,6 +168,18 @@ public class EffigyFactory extends CompositeEntity {
                         foundDTD = true;
                         break;
                     }
+                    else
+                    {
+                        // Test if DTD public Id is declared on the next line                        
+                        if (contents.startsWith(dtdStart)) {
+                            contents  += reader.readLine();
+                            if( contents.matches(dtdEndRegExp)) {
+                                // This file has the DTD for which we are looking.
+                                foundDTD = true;
+                                break;
+                            }
+                        }
+                     }
                 } else if (contents.startsWith(dtdStart)) {
                     // dtdEndRegExp is null so we don't check it
                     foundDTD = true;
