@@ -139,7 +139,7 @@ public class Default extends TypedAtomicActor {
                     if (alternate.hasToken(0)) {
                         output.send(0, alternate.get(0));
                     } else {
-                        output.sendClear(0);
+                        output.send(0, null);
                     }
                 }
             }

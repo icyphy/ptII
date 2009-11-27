@@ -151,7 +151,7 @@ public class PeriodicSampler extends Transformer {
                 if (_recordedInputs[i] != null) {
                     output.send(i, _recordedInputs[i]);
                 } else {
-                    output.sendClear(i);
+                    output.send(i, null);
                 }
             }
         }

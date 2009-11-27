@@ -97,7 +97,7 @@ public class WirelessReceiver extends DEReceiver {
     }
 
     /** Override the base class to attach an empty properties token.
-     *  @param token The token to put.
+     *  @param token The token to put, or null to send no token.
      *  @see ptolemy.domains.de.kernel.DEReceiver#put(ptolemy.data.Token)
      */
     public synchronized void put(Token token) {
@@ -105,22 +105,20 @@ public class WirelessReceiver extends DEReceiver {
     }
 
     /** Put the specified token bundled with the specified properties.
-     *  @param token The token to put.
+     *  @param token The token to put, or null to send no token.
      *  @param properties The associated properties, or null to not
      *   put any in.
      */
     public synchronized void put(Token token, Token properties) {
+        if (token == null) {
+            return;
+        }
         // Bundle the two into one token.
         // Construct the message about the input signal detected.
         String[] labels = { "properties", "value" };
 
         if (properties == null) {
             properties = _dummy;
-        }
-
-        // The following should not occur, but just in case...
-        if (token == null) {
-            token = _dummy;
         }
 
         Token[] values = { properties, token };

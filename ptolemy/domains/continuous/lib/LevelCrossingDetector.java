@@ -242,7 +242,7 @@ public class LevelCrossingDetector extends TypedAtomicActor implements
         // If the trigger input is not connected, or there is no
         // token, then produce no output.
         if (trigger.getWidth() < 1 || !trigger.hasToken(0)) {
-            output.sendClear(0);
+            output.send(0, null);
             return;
         }
         // Record the input.
@@ -254,7 +254,7 @@ public class LevelCrossingDetector extends TypedAtomicActor implements
 
         // First firing. Do not produce an output.
         if (_lastTrigger == Double.NEGATIVE_INFINITY) {
-            output.sendClear(0);
+            output.send(0, null);
             return;
         }
         // If there is a postponed output, then produce it

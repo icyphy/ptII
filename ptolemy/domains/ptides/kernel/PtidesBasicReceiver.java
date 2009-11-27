@@ -107,9 +107,12 @@ public class PtidesBasicReceiver extends DEReceiver {
      * one events.
      *
      * @param token
-     *            The token to be put.
+     *            The token to be put, or null to not put a token.
      */
     public void put(Token token) {
+        if (token == null) {
+            return;
+        }
         try {
             _getDirector()._enqueueTriggerEvent(getContainer(), token, this);
         } catch (IllegalActionException ex) {
@@ -119,11 +122,13 @@ public class PtidesBasicReceiver extends DEReceiver {
 
     /** Actually put the token into this receiver. This method should be called
      *  by the director when to token is ready to be processed by the actor
-     *  where this receier resides.
-     *  @param token The token to be put to this receiver.
+     *  where this receiver resides.
+     *  @param token The token to be put to this receiver, or null to put no token.
      */
     public void putToReceiver(Token token) {
-        _tokens.add(token);
+        if (token != null) {
+            _tokens.add(token);
+        }
     }
 
     // /////////////////////////////////////////////////////////////////

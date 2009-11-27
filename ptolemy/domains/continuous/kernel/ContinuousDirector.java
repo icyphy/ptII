@@ -427,9 +427,9 @@ public class ContinuousDirector extends FixedPointDirector implements
                         // There is an input. Do a zero step-size iteration.
                         _currentStepSize = 0.0;
                         _ODESolver._reset();
-                        // Before firing, we need to send clear to all inside
+                        // Before firing, we need to assert absent on all inside
                         // ports, since we aren't transferring the inputs.
-                        _sendClearInside();
+                        _assertAbsentInside();
                         super.fire();
                         _transferOutputsToEnvironment();
                         return;
@@ -490,7 +490,7 @@ public class ContinuousDirector extends FixedPointDirector implements
                     // _transferInputsToInside() because if we are redoing
                     // the solver iteration then there are inputs available,
                     // but they should not be consumed yet.
-                    _sendClearInside();
+                    _assertAbsentInside();
     
                     super.fire();
                     // Outputs should only be produced on the first iteration of
@@ -573,22 +573,6 @@ public class ContinuousDirector extends FixedPointDirector implements
                 // Restore the saved state of the stateful actors,
                 // including the save starting time of this integration.
                 rollBackToCommittedState();
-            }
-        }
-    }
-
-    /** Set all receivers on the inside of input ports to
-     *  absent.
-     *  @throws IllegalActionException If the sendClear fails.
-     */
-    private void _sendClearInside() throws IllegalActionException {
-        CompositeActor container = (CompositeActor) getContainer();
-        Iterator inports = container.inputPortList().iterator();
-        while (inports.hasNext()) {
-            IOPort port = (IOPort) inports.next();
-            int insideWidth = port.getWidthInside();
-            for (int i = 0; i < insideWidth; i++) {
-                port.sendClearInside(i);
             }
         }
     }
@@ -1415,6 +1399,22 @@ public class ContinuousDirector extends FixedPointDirector implements
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
+    /** Set all receivers on the inside of input ports to
+     *  absent.
+     *  @throws IllegalActionException If the send fails.
+     */
+    private void _assertAbsentInside() throws IllegalActionException {
+        CompositeActor container = (CompositeActor) getContainer();
+        Iterator inports = container.inputPortList().iterator();
+        while (inports.hasNext()) {
+            IOPort port = (IOPort) inports.next();
+            int insideWidth = port.getWidthInside();
+            for (int i = 0; i < insideWidth; i++) {
+                port.sendInside(i, null);
+            }
+        }
+    }
+
     /** Commit the current state by postfiring the actors under the
      *  control of this director. Also, set the current time, index,
      *  and step size for the next iteration. If the current step size
@@ -2120,6 +2120,7 @@ public class ContinuousDirector extends FixedPointDirector implements
         if (_debugging) {
             _debug("** Transfer outputs to the environment.");
         }
+        
         // If there are no output ports, this method does nothing.
         CompositeActor container = (CompositeActor) getContainer();
         Iterator outports = container.outputPortList().iterator();

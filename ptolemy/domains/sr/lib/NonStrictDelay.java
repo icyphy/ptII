@@ -105,12 +105,12 @@ public class NonStrictDelay extends Transformer {
         super.fire();
         if (_previousToken != null) {
             if (_previousToken == AbsentToken.ABSENT) {
-                output.sendClear(0);
+                output.send(0, null);
             } else {
                 output.send(0, _previousToken);
             }
         } else {
-            output.sendClear(0);
+            output.send(0, null);
         }
     }
 

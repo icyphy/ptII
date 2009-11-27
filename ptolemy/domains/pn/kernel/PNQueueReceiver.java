@@ -378,11 +378,11 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
      *  Check whether any process is blocked
      *  on a read from this receiver. If a process is indeed blocked, then
      *  unblock the process, and inform the director of the same.
-     *  @param token The token to be put in the receiver.
+     *  @param token The token to be put in the receiver, or null to not put anything.
      */
     public void put(Token token) {
         IOPort port = getContainer();
-        if (port == null) {
+        if (port == null || token == null) {
             return; // Nothing to do.
         }
         Workspace workspace = port.workspace();

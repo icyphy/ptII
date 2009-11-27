@@ -77,12 +77,11 @@ public class RegisterReceiver extends Mailbox {
     }
     
     /** Put a token into the registerReceiver.  
-     *  @param token The token to be put into the mailbox.
+     *  @param token The token to be put into the mailbox, or null to set
+     *   the mailbox to empty.
      *  @exception NoRoomException Not thrown in this base class.
      */
     public void put(Token token) throws NoRoomException {
         _token = token;
     }
-
-    
 }

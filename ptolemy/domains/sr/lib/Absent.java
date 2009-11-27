@@ -36,7 +36,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 
 /**
  An actor that makes its output value absent.  That is, it produces no
- tokens, and it calls the sendClear() method of the output port on
+ tokens, and it calls the send(index, null) method of the output port on
  each firing.
 
  @author Paul Whitaker, Haiyang Zheng
@@ -72,12 +72,12 @@ public class Absent extends Undefined {
         return false;
     }
 
-    /** Output an absent value by calling the sendClear() method of the
+    /** Output an absent value by calling the send(0, null) method of the
      *  output port.
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
-        output.sendClear(0);
+        output.send(0, null);
     }
 
     /** Return true. This actor always fires.

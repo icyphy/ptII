@@ -100,7 +100,7 @@ public class Pre extends Transformer {
             if (_currentToken != null) {
                 output.send(0, _currentToken);
             } else {
-                output.sendClear(0);
+                output.send(0, null);
             }
         }
     }

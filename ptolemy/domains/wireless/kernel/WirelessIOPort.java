@@ -731,10 +731,11 @@ public class WirelessIOPort extends TypedIOPort {
                 _debug("send to wireless channel " + channel.getName() + ": "
                         + token);
             }
-
-            _checkType(token);
-            channel.transmit(token, this,
-                    (RecordToken) outsideTransmitProperties.getToken());
+            if (token != null) {
+                _checkType(token);
+                channel.transmit(token, this,
+                        (RecordToken) outsideTransmitProperties.getToken());
+            }
         } else {
             super.send(channelIndex, token);
         }

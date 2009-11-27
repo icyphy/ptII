@@ -118,7 +118,7 @@ public class NonStrictLogicFunction extends LogicFunction {
             // If value is null, there were no inputs.  If all the inputs are
             // known, they must be all absent, so make the output absent.
             if (input.isKnown()) {
-                output.sendClear(0);
+                output.send(0, null);
             }
         } else {
             // If the value is not null, there were some inputs.  If some of

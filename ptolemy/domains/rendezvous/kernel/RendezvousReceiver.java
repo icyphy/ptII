@@ -407,7 +407,7 @@ public class RendezvousReceiver extends AbstractReceiver implements
      * return until the rendezvous is complete. This method is
      * internally synchronized on the director.
      *
-     * @param token The token.
+     * @param token The token, or null to not put any token.
      * @exception IllegalActionException If the token is not
      * acceptable to the port (e.g., wrong type).
      * @exception TerminateProcessException If the actor to which this
@@ -416,6 +416,9 @@ public class RendezvousReceiver extends AbstractReceiver implements
      */
     public void put(Token token) throws IllegalActionException,
             TerminateProcessException {
+        if (token == null) {
+            return;
+        }
         putToAll(new Token[][] { { token } }, _thisReceiver, _getDirector());
     }
 
@@ -456,7 +459,7 @@ public class RendezvousReceiver extends AbstractReceiver implements
      * Put to all receivers in the specified array. Implementers will assume
      * that all such receivers are of the same class.
      *
-     * @param token The token to put.
+     * @param token The token to put, or null to not put any token.
      * @param receivers The receivers.
      * @exception NoRoomException If there is no room for the token.
      * @exception IllegalActionException If the token is not
@@ -475,7 +478,7 @@ public class RendezvousReceiver extends AbstractReceiver implements
      * superclass puts the token to one receiver in the receiver array
      * at a time.
      *
-     * @param token The token to put.
+     * @param token The token to put, or null to not put any token.
      * @param receivers The receivers, which are assumed to all be
      * instances of RendezvousReceiver.
      * @param director The director, on which this method
@@ -488,7 +491,7 @@ public class RendezvousReceiver extends AbstractReceiver implements
     public void putToAll(Token token, Receiver[] receivers,
             RendezvousDirector director) throws IllegalActionException,
             TerminateProcessException {
-        if ((receivers == null) || (receivers.length == 0)) {
+        if ((token == null) || (receivers == null) || (receivers.length == 0)) {
             return;
         }
 

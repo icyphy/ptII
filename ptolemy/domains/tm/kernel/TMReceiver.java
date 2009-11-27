@@ -229,9 +229,12 @@ public class TMReceiver extends AbstractReceiver {
      *  you can enqueue the event with any priority.
      *  This method is synchronized since the actor may not
      *  execute in the same thread as the director.
-     *  @param token The token to be put.
+     *  @param token The token to be put, or null to put no token.
      */
     public synchronized void put(Token token) {
+        if (token == null) {
+            return;
+        }
         try {
             IOPort port = getContainer();
 

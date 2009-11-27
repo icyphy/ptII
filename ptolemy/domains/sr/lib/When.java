@@ -120,7 +120,7 @@ public class When extends Transformer {
                 && input.hasToken(0)) {
             output.send(0, input.get(0));
         } else {
-            output.sendClear(0);
+            output.send(0, null);
         }
     }
 }
