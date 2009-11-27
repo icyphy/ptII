@@ -203,11 +203,14 @@ public class PtidesReceiver extends AbstractReceiver {
      * Throw an exception, since this method is not used in Ptides.
      *
      * @param token
-     *            The token to be put to the receiver.
+     *            The token to be put to the receiver, or null to put no token.
      * @exception NoRoomException
      *                If the receiver is full.
      */
     public void put(Token token) {
+        if (token == null) {
+            return;
+        }
         throw new NoRoomException("put(Token) is not used in the "
                 + "Ptides domain.");
     }
@@ -222,13 +225,16 @@ public class PtidesReceiver extends AbstractReceiver {
      * IllegalArgumentException will be thrown.
      *
      * @param token
-     *            The token to put on the queue.
+     *            The token to put on the queue, or null to put no token.
      * @param time
      *            The time stamp of the token.
      * @exception NoRoomException
      *                If the queue is full.
      */
     public void put(Token token, Time time) throws NoRoomException {
+        if (token == null) {
+            return;
+        }
         Event event = new Event(token, time);
         _queue.add(event); // is only inserted if same event not already
         // exists

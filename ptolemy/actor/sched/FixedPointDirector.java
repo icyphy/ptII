@@ -226,13 +226,13 @@ public class FixedPointDirector extends StaticSchedulingDirector implements
                     // The postfire() method of this actor returned false in
                     // some previous iteration, so here, for the benefit of
                     // connected actors, we need to explicitly call the
-                    // sendClear() method of all of its output ports,
+                    // send(index, null) method of all of its output ports,
                     // which indicates that a signal is known to be absent.
                     if (_debugging) {
                         _debug("FixedPointDirector: no longer enabled (return false in postfire): "
                                 + actor.getFullName());
                     }
-                    _sendClearToAllUnknownOutputsOf(actor);
+                    _sendAbsentToAllUnknownOutputsOf(actor);
                 }
             }
             iterationCount++;
@@ -509,7 +509,7 @@ public class FixedPointDirector extends StaticSchedulingDirector implements
     /** Transfer data from the specified input port of the
      *  container to the ports it is connected to on the inside.
      *  If there is no data on the specified input port, then
-     *  set the ports on the inside to absent by calling sendClearInside().
+     *  set the ports on the inside to absent by calling sendInside(index, null).
      *  This method delegates the data transfer
      *  operation to the transferInputs method of the super class.
      *
@@ -527,7 +527,7 @@ public class FixedPointDirector extends StaticSchedulingDirector implements
                     result = super.transferInputs(port) || result;
                 } else {
                     if (i < insideWidth) {
-                        port.sendClearInside(i);
+                        port.sendInside(i, null);
                     }
                 }
             }
@@ -537,7 +537,7 @@ public class FixedPointDirector extends StaticSchedulingDirector implements
         }
         // If the inside is wider than the outside, send clear on the inside.
         for (int i = port.getWidth(); i < insideWidth; i++) {
-            port.sendClearInside(i);
+            port.sendInside(i, null);
         }
         return result;
     }
@@ -545,7 +545,7 @@ public class FixedPointDirector extends StaticSchedulingDirector implements
     /** Transfer data from the specified output port of the
      *  container to the ports it is connected to on the outside.
      *  If there is no data on the specified output port, then
-     *  set the ports on the outside to absent by calling sendClear().
+     *  set the ports on the outside to absent by calling send(index, null).
      *  This method delegates the data transfer
      *  operation to the transferOutputs method of the super class.
      *
@@ -563,26 +563,23 @@ public class FixedPointDirector extends StaticSchedulingDirector implements
             if (port.isKnownInside(i)) {
                 if (port.hasTokenInside(i)) {
                     result = super.transferOutputs(port) || result;
-                } else if (executiveDirector instanceof FixedPointDirector) {
-                    // Mark the destination receivers absent.
-                    // Note that the clear() method of the FixedPointReceiver is
-                    // the right behavior, but this will do the wrong thing for
-                    // say a DE director, where it will clear out previously
-                    // produced data.
+                } else {
+                    // Mark the destination receivers absent, if the destination
+                    // receiver has such a notion, and otherwise do nothing.
                     if (i < outsideWidth) {
-                        port.sendClear(i);
+                        port.send(i, null);
                     }
                 }
             }
         }
         // If the outside is wider than the inside, send clear on the outside.
-        /* NOTE: This isn't right!  Need to leave the output unknown in case
+        /* NOTE: The following isn't right!  Need to leave the output unknown in case
          * we are in a modal model. A transition may be wanting to set it.
          * it has to become known only if the environment sets it known
          * by presuming that any unproduced outputs are absent.
          *
         for (int i = port.getWidthInside(); i < outsideWidth; i++) {
-            port.sendClear(i);
+            port.send(i, null);
         }
         */
         return result;
@@ -770,7 +767,7 @@ public class FixedPointDirector extends StaticSchedulingDirector implements
             // the actor again in the current iteration is not necessary.
             if (allInputsKnownBeforeFiring) {
                 _actorsFinishedFiring.add(actor);
-                _sendClearToAllUnknownOutputsOf(actor);
+                _sendAbsentToAllUnknownOutputsOf(actor);
             }
         } else {
             // prefire() returned false. The actor declines
@@ -781,7 +778,7 @@ public class FixedPointDirector extends StaticSchedulingDirector implements
             // known if the actor is strict.
             if (actor.isStrict() || _areAllInputsKnown(actor)) {
                 _actorsFinishedFiring.add(actor);
-                _sendClearToAllUnknownOutputsOf(actor);
+                _sendAbsentToAllUnknownOutputsOf(actor);
             }
         }
     }
@@ -860,11 +857,11 @@ public class FixedPointDirector extends StaticSchedulingDirector implements
         return true;
     }
 
-    /** Call the sendClear() method of each output port with
+    /** Call the send(index, null) method of each output port with
      *  unknown status of the specified actor
      *  @param actor The actor.
      */
-    private void _sendClearToAllUnknownOutputsOf(Actor actor)
+    private void _sendAbsentToAllUnknownOutputsOf(Actor actor)
             throws IllegalActionException {
         // An actor, if its firing has finished but some of its
         // outputs are still unknown, clear these outputs.
@@ -879,7 +876,7 @@ public class FixedPointDirector extends StaticSchedulingDirector implements
                         _debug("  FixedPointDirector: Set output "
                                 + outputPort.getFullName() + " to absent.");
                     }
-                    outputPort.sendClear(j);
+                    outputPort.send(j, null);
                 }
             }
         }

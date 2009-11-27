@@ -307,10 +307,15 @@ public class MailboxBoundaryReceiver extends Mailbox implements ProcessReceiver 
      *  Use the local director to manage blocking writes that occur.
      *  If this receiver is terminated during the execution of this
      *  method, then throw a TerminateProcessException.
+     *  If the specified token is null, this method does nothing.
      *
-     *  @param token The token being placed in this receiver.
+     *  @param token The token being placed in this receiver, or null
+     *   to do nothing.
      */
     public void put(Token token) {
+        if (token == null) {
+            return;
+        }
         Workspace workspace = getContainer().workspace();
         int depth = 0;
         try {

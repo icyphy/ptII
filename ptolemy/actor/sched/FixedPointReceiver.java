@@ -222,10 +222,12 @@ public class FixedPointReceiver extends AbstractReceiver {
         return _known;
     }
 
-    /** Set the status of this receiver to known and present, and to contain the
-     *  specified token.  If the receiver is already known and the value of
+    /** If the specified token is non-null, then
+     *  set the status of this receiver to known and present, and to contain the
+     *  specified token. If the receiver is already known and the value of
      *  the contained token is different from that of the new token, throw
-     *  an exception.
+     *  an exception. If the specified token is null, then set the status to
+     *  be known and absent (by calling {@link #clear()}).
      *  @param token The token to be put into this receiver.
      *  @exception IllegalArgumentException If the argument is null.
      *  @exception IllegalActionException If the status is known and absent,
@@ -234,9 +236,8 @@ public class FixedPointReceiver extends AbstractReceiver {
      */
     public void put(Token token) throws IllegalActionException {
         if (token == null) {
-            throw new IllegalArgumentException(
-                    "FixedPointReceiver.put(null) is invalid. To set the "
-                            + "status to absent, use the clear() method.");
+            clear();
+            return;
         }
         if (!isKnown()) {
             _token = token;

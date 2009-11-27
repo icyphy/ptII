@@ -260,11 +260,14 @@ public class PtidesPlatformReceiver extends PtidesReceiver implements
      * actor that contains this receiver.
      *
      * @param token
-     *            The token to put in the queue.
+     *            The token to put in the queue, or null to put no token.
      * @exception TerminateProcessException
      *                If activity is scheduled to cease.
      */
     public void put(Token token) {
+        if (token == null) {
+            return;
+        }
         Thread thread = Thread.currentThread();
         Time time = null;
 
@@ -289,13 +292,16 @@ public class PtidesPlatformReceiver extends PtidesReceiver implements
      * actor that contains this receiver.
      *
      * @param token
-     *            The token to put in the queue.
+     *            The token to put in the queue, or null to put no token.
      * @param time
      *            The specified time stamp.
      * @exception TerminateProcessException
      *                If activity is scheduled to cease.
      */
     public void put(Token token, Time time) {
+        if (token == null) {
+            return;
+        }
         if (super.hasRoom() && !_terminate) { // super will always have room
             // for now
             super.put(token, time);

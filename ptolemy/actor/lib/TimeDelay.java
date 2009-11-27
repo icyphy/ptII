@@ -213,7 +213,7 @@ public class TimeDelay extends Transformer {
         _currentOutput = null;
         
         if(_delayedOutputTokens.size() == 0) {
-            output.sendClear(0);
+            output.send(0, null);
             return;
         }
 
@@ -228,7 +228,7 @@ public class TimeDelay extends Transformer {
                 break;
             } else if (comparison > 0) {
                 // It is not yet time to produce an output.
-                output.sendClear(0);
+                output.send(0, null);
                 break;
             }
             // If we get here, then we have passed the time of the delayed

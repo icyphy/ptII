@@ -82,9 +82,12 @@ public class PtidesActorReceiver extends PtidesReceiver {
      * Put a token into this receiver.
      *
      * @param token
-     *            The token to be put.
+     *            The token to be put, or null to put no token.
      */
     public void put(Token token) {
+        if (token == null) {
+            return;
+        }
         IOPort containerPort = getContainer();
         Actor containerActor = (Actor) containerPort.getContainer();
         Director dir;
@@ -117,7 +120,7 @@ public class PtidesActorReceiver extends PtidesReceiver {
      * Puts a token into all receivers.
      *
      * @param token
-     *            The token to be put.
+     *            The token to be put, or null to put no token.
      * @param receivers
      *            The receivers that get the token.
      * @param time
@@ -129,6 +132,9 @@ public class PtidesActorReceiver extends PtidesReceiver {
      */
     public void putToAll(Token token, Receiver[] receivers, Time time)
             throws NoRoomException, IllegalActionException {
+        if (token == null) {
+            return;
+        }
         for (int j = 0; j < receivers.length; j++) {
             IOPort container = receivers[j].getContainer();
 

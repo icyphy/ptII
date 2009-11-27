@@ -146,9 +146,11 @@ public class QueuedTypedIOPort extends TypedIOPort {
         if (latency == 0) {
             super.send(channelIndex, token);
         } else {
-            myQueue.add(token);
-            super.send(channelIndex, _oldToken);
-            _oldToken = myQueue.removeFirst();
+            if (token != null) {
+                myQueue.add(token);
+                super.send(channelIndex, _oldToken);
+                _oldToken = myQueue.removeFirst();
+            }
         }
     }
 

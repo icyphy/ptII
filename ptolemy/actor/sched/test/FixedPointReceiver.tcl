@@ -197,7 +197,7 @@ test FixedPointReceiver-3.1 {Try to put a null} {
     set receiver [java::new ptolemy.actor.sched.FixedPointReceiver $director]
     catch {$receiver {put ptolemy.data.Token} [java::null]} result1
     list $result1
-} {{java.lang.IllegalArgumentException: FixedPointReceiver.put(null) is invalid. To set the status to absent, use the clear() method.}}
+} {{}}
 
 ######################################################################
 ####
