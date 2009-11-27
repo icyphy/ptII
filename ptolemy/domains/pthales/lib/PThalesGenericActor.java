@@ -61,7 +61,6 @@ public class PThalesGenericActor extends TypedAtomicActor {
         if (rep == null) {
             repetitions = new StringParameter(this, "repetitions");
             repetitions.setExpression("");
-            repetitions.setTypeEquals(BaseType.STRING);
         }
     }
 
