@@ -48,9 +48,8 @@ JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS) \
-	StickyMasses.xml \
-	StickyMassesNewVersion.xml
-
+	StickyMasses.xml
+	
 EXTRA_SRCS = \
 	$(OTHER_FILES_TO_BE_JARED) \
 	StickyMasses.htm \
