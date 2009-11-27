@@ -130,8 +130,8 @@ http://java.sun.com/products/java-media/3D/</text></svg></configure>
 <title>Position</title>
 <xLabel>time (sec)</xLabel>
 <yLabel>height meters</yLabel>
-<xRange min="0.0" max="26.5469818852"/>
-<yRange min="-4.985261719060968E-5" max="10.0"/>
+<xRange min="0.0" max="26.8351706445"/>
+<yRange min="-4.929068266504798E-5" max="10.0"/>
 </plot>?>
         </configure>
     </entity>
@@ -485,9 +485,9 @@ http://java.sun.com/products/java-media/3D/</text></svg></configure>
             </property>
             <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[104, 102]">
             </property>
-            <property name="initialPosition" class="ptolemy.data.expr.Parameter" value="-5.2766344904719E-8">
+            <property name="initialPosition" class="ptolemy.data.expr.Parameter" value="-3.2454903792518E-7">
             </property>
-            <property name="initialVelocity" class="ptolemy.data.expr.Parameter" value="0.1688134777963">
+            <property name="initialVelocity" class="ptolemy.data.expr.Parameter" value="0.1507383810712">
             </property>
             <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
                 <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
@@ -581,7 +581,7 @@ falling in a gravitational field.</text></svg></configure>
             </entity>
             <entity name="Const" class="ptolemy.actor.lib.Const">
                 <display name="Gravitational&#10;Force"/>
-                <property name="value" class="ptolemy.data.expr.Parameter" value="-10">
+                <property name="value" class="ptolemy.data.expr.Parameter" value="-9.81">
                 </property>
                 <doc>Create a constant sequence</doc>
                 <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
