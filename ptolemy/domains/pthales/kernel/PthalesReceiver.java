@@ -134,7 +134,7 @@ public class PthalesReceiver extends SDFReceiver {
         for (int i = 0; i < numberOfTokens; i++)
             result[i] = get();
             
-        return null;
+        return result;
     }
 
     /** Return true.
