@@ -45,6 +45,47 @@ public class PthalesReceiver extends SDFReceiver {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Check whether the array is correct or not. FIXME: What does it
+     *  mean to be correct?
+     *  @param baseSpec The origin.
+     *  @param patternSpec Fitting of the array.
+     *  @param tilingSpec Paving of the array.
+     *  @param dimensions Dimensions contained in the array.
+     *  @throws IllegalActionException FIXME: If what?
+     */
+    public void checkArray(LinkedHashMap<String, Integer[]> baseSpec,
+            LinkedHashMap<String, Integer[]> patternSpec,
+            LinkedHashMap<String, Integer[]> tilingSpec, 
+            List<String> dimensions)
+            throws IllegalActionException {
+
+        /* FIXME: Checks for validity of array needed here.
+        // First set defaults for any unspecified dimensions.
+        for (String dimension : dimensions) {
+            // Do some error checking. 
+            Integer size = patternSpec.get(dimension)[0];
+            if (size != null && size.intValue() <= 0) {
+                throw new IllegalActionException(getContainer(),
+                        "Dimension size is required to be strictly greater than zero.");
+            }
+            Integer tiling = tilingSpec.get(dimension)[0];
+            if (tiling != null && tiling.intValue() <= 0) {
+                throw new IllegalActionException(getContainer(),
+                        "Tiling is required to be strictly greater than zero.");
+            }
+
+            // Also set the overall buffer size spec.
+            if (tilingSpec.get(dimension) == null) {
+                throw new IllegalActionException(
+                        getContainer(),
+                        "Size specification does not include "
+                                + dimension
+                                + ", which is included in the repetitions parameter of the sending actor.");
+            }
+        }
+        */
+    }
+
     /** Do nothing.
      *  @exception IllegalActionException If clear() is not supported by
      *   the domain.
@@ -63,6 +104,19 @@ public class PthalesReceiver extends SDFReceiver {
     public List<Token> elementList() {
         // FIXME: implement this.
         return new LinkedList();
+    }
+
+    /** Get a token from this receiver.
+     *  @return A token read from the receiver.
+     *  @exception NoTokenException If there is no token.
+     */
+    public Token get() throws NoTokenException {
+        if (_buffer != null) {
+            Token result =  _buffer[_addressesIn[_posIn++]];
+            return result;
+        } else {
+            throw new NoTokenException("Empty buffer in PthalesReceiver !");
+        }
     }
 
     /** Get an array of tokens from this receiver. The <i>numberOfTokens</i>
@@ -116,28 +170,17 @@ public class PthalesReceiver extends SDFReceiver {
     }
 
     /** Put the specified token into this receiver.
+     *  If the specified token is null, this method
+     *  inserts a null into the array.
      *  @param token The token to put into the receiver.
      *  @exception NoRoomException If there is no room in the receiver.
      *  @exception IllegalActionException If the token is not acceptable
      *   to one of the ports (e.g., wrong type).
      */
     public void put(Token token) {
-        if (_buffer != null)
-            _buffer[_addressesOut[_posOut++]] = token;
-    }
-
-    /** Get a token from this receiver.
-     *  @return A token read from the receiver.
-     *  @exception NoTokenException If there is no token.
-     */
-    public Token get() throws NoTokenException {
         if (_buffer != null) {
-            Token result = _buffer[_addressesIn[_posIn++]];
-            return result;
-        } else {
-            throw new NoTokenException("Empty buffer in PthalesReceiver !");
+            _buffer[_addressesOut[_posOut++]] = token;
         }
-
     }
 
     /** Put a portion of the specified token array into this receiver.
@@ -177,7 +220,9 @@ public class PthalesReceiver extends SDFReceiver {
     /** Put a single token to all receivers in the specified array.
      *  Implementers will assume that all such receivers
      *  are of the same class.
-     *  @param token The token to put.
+     *  If the specified token is null, this method inserts a
+     *  null into the arrays.
+     *  @param token The token to put, or null to put no token.
      *  @param receivers The receivers.
      *  @exception NoRoomException If there is no room for the token.
      *  @exception IllegalActionException If the token is not acceptable
@@ -289,22 +334,11 @@ public class PthalesReceiver extends SDFReceiver {
         computeAddresses(false);
     }
 
-    /** check if the array is correct or not 
-     * @param baseSpec : origins 
-     * @param patternSpec : fitting of the array
-     * @param tilingSpec : paving of the array
-     * @param dimensions : dimensions contained in the array
-     * @throws IllegalActionException
-     */
-    public void checkArray(LinkedHashMap<String, Integer[]> baseSpec,
-            LinkedHashMap<String, Integer[]> patternSpec,
-            LinkedHashMap<String, Integer[]> tilingSpec, List<String> dimensions)
-            throws IllegalActionException {
-        // FIXME : Tests to verify array
-    }
+    ///////////////////////////////////////////////////////////////////
+    ////               package friendly methods                    ////
 
-    /** Returns the size of 
-     * the array once computed
+    /** Returns the size of the array once computed.
+     *  @return The array size.
      */
     int getDataSize() {
         int blockSize = 1;
@@ -326,14 +360,13 @@ public class PthalesReceiver extends SDFReceiver {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                      protected methods                    ////
+    ////               package friendly variables                  ////
+
+    int _posIn = 0;
+    int _posOut = 0;
 
     ///////////////////////////////////////////////////////////////////
     ////                      protected variables                  ////
-
-    int _posIn = 0;
-
-    int _posOut = 0;
 
     /** Buffer memory. */
     protected Token[] _buffer = null;
