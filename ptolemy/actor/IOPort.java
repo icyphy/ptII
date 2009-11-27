@@ -2606,6 +2606,14 @@ public class IOPort extends ComponentPort {
      *  If the port is not connected to anything, or receivers have not been
      *  created in the remote port, then just return.
      *  <p>
+     *  If a null token is specified, this is interpreted as an assertion
+     *  that no token is being sent. For some domains, specifically those
+     *  that queue tokens such as PN and SDF, this has no effect. For
+     *  others, specifically those that have a well-defined notion of
+     *  "absent" inputs such as SR, modal, and Continuous, sending a null
+     *  token corresponds to asserting that the inputs of destination
+     *  actors will be absent in this round.
+     *  <p>
      *  Some of this method is read-synchronized on the workspace.
      *  Since it is possible for a thread to block while executing a put,
      *  it is important that the thread does not hold read access on
@@ -2613,15 +2621,17 @@ public class IOPort extends ComponentPort {
      *  read access on the workspace before calling put.
      *
      *  @param channelIndex The index of the channel, from 0 to width-1
-     *  @param token The token to send
+     *  @param token The token to send, or null to send no token.
      *  @exception NoRoomException If there is no room in the receiver.
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public void send(int channelIndex, Token token)
             throws IllegalActionException, NoRoomException {
+        /* Effective 11/27/09, null tokens are accepted.
         if (token == null) {
             throw new IllegalActionException(this, "Cannot send a null token.");
         }
+        */
 
         Receiver[][] farReceivers;
 
@@ -2835,6 +2845,14 @@ public class IOPort extends ComponentPort {
      *  called only by the transferInputs method of directors of
      *  composite actors, as AtomicActors do not usually have any
      *  relations on the inside of their ports.
+     *  <p>
+     *  If a null token is specified, this is interpreted as an assertion
+     *  that no token is being sent. For some domains, specifically those
+     *  that queue tokens such as PN and SDF, this has no effect. For
+     *  others, specifically those that have a well-defined notion of
+     *  "absent" inputs such as SR, modal, and Continuous, sending a null
+     *  token corresponds to asserting that the inputs of destination
+     *  actors will be absent in this round.
      *
      *  <p> Some of this method is read-synchronized on the workspace.
      *  Since it is possible for a thread to block while executing a
@@ -2843,7 +2861,7 @@ public class IOPort extends ComponentPort {
      *  read access on the workspace before calling put.
      *
      *  @param channelIndex The index of the channel, from 0 to width-1
-     *  @param token The token to send
+     *  @param token The token to send, or null to send no token.
      *  @exception NoRoomException If there is no room in the receiver.
      *  @exception IllegalActionException Not thrown in this base class.
      */

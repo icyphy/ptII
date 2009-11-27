@@ -162,7 +162,12 @@ public interface Receiver {
     public boolean isKnown();
 
     /** Put the specified token into this receiver.
-     *  @param token The token to put into the receiver.
+     *  If the specified token is null, this can be interpreted by
+     *  a receiver as an assertion that no token to be sent in the
+     *  current round (for domains that have a notion of absent values
+     *  and a current round).
+     *  @param token The token to put into the receiver, or null to
+     *   put no token.
      *  @exception NoRoomException If there is no room in the receiver.
      *  @exception IllegalActionException If the token is not acceptable
      *   to one of the ports (e.g., wrong type).
@@ -200,9 +205,13 @@ public interface Receiver {
             IllegalActionException;
 
     /** Put a single token to all receivers in the specified array.
+     *  If the specified token is null, this can be interpreted by
+     *  a receiver as an assertion that no token to be sent in the
+     *  current round (for domains that have a notion of absent values
+     *  and a current round).
      *  Implementers will assume that all such receivers
      *  are of the same class.
-     *  @param token The token to put.
+     *  @param token The token to put, or null to send no token.
      *  @param receivers The receivers.
      *  @exception NoRoomException If there is no room for the token.
      *  @exception IllegalActionException If the token is not acceptable

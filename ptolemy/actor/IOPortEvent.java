@@ -187,7 +187,7 @@ public class IOPortEvent implements DebugEvent {
                 buffer.append(" tokens");
             }
         } else if (_token == null) {
-            buffer.append("a token");
+            buffer.append("a null token");
         } else {
             buffer.append(_token.toString());
         }

@@ -248,11 +248,14 @@ public class QueueReceiver extends AbstractReceiver {
     }
 
     /** Put a token to the receiver. If the receiver is full, throw an
-     *  exception.
+     *  exception. If the argument is null, do nothing.
      *  @param token The token to be put to the receiver.
      *  @exception NoRoomException If the receiver is full.
      */
     public void put(Token token) {
+        if (token == null) {
+            return;
+        }
         if (!_queue.put(token)) {
             throw new NoRoomException(getContainer(),
                     "Queue is at capacity. Cannot put a token.");

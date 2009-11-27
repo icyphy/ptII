@@ -230,7 +230,12 @@ public abstract class AbstractReceiver implements Receiver {
     }
 
     /** Put the specified token into this receiver.
-     *  @param token The token to put into the receiver.
+     *  If the specified token is null, this can be interpreted by
+     *  a receiver as an assertion that no token to be sent in the
+     *  current round (for domains that have a notion of absent values
+     *  and a current round).
+     *  @param token The token to put into the receiver, or null to
+     *   put no token.
      *  @exception NoRoomException If there is no room in the receiver.
      *  @exception IllegalActionException If the put fails
      *   (e.g. because of incompatible types).
@@ -307,9 +312,9 @@ public abstract class AbstractReceiver implements Receiver {
     }
 
     /** Put to all receivers in the specified array.
-     *  Implementers will assume that all such receivers
-     *  are of the same class.
-     *  @param token The token to put.
+     *  This method simply calls {@link #put(Token)}
+     *  on each receiver in the specified array.
+     *  @param token The token to put, or null to put no token.
      *  @param receivers The receivers.
      *  @exception NoRoomException If there is no room for the token.
      *  @exception IllegalActionException If the token is not acceptable
@@ -321,7 +326,7 @@ public abstract class AbstractReceiver implements Receiver {
             IOPort container = receivers[j].getContainer();
 
             // If there is no container, then perform no conversion.
-            if (container == null) {
+            if (container == null || token == null) {
                 receivers[j].put(token);
             } else {
                 receivers[j].put(container.convert(token));

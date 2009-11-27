@@ -461,14 +461,16 @@ public class TypedIOPort extends IOPort implements Typeable {
      *  read access on the workspace before calling put.
      *
      *  @param channelIndex The index of the channel, from 0 to width-1.
-     *  @param token The token to send.
+     *  @param token The token to send, or null to send no token.
      *  @exception IllegalActionException If the token to be sent cannot
      *   be converted to the type of this port, or if the token is null.
      *  @exception NoRoomException If there is no room in the receiver.
      */
     public void send(int channelIndex, Token token)
             throws IllegalActionException, NoRoomException {
-        _checkType(token);
+        if (token != null) {
+            _checkType(token);
+        }
         super.send(channelIndex, token);
     }
 
@@ -560,7 +562,9 @@ public class TypedIOPort extends IOPort implements Typeable {
      */
     public void sendInside(int channelIndex, Token token)
             throws IllegalActionException, NoRoomException {
-        _checkType(token);
+        if (token != null) {
+            _checkType(token);
+        }
         super.sendInside(channelIndex, token);
     }
 
