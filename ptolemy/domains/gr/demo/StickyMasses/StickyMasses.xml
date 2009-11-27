@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="StickyMasses" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
     <property name="position1" class="ptolemy.data.expr.Parameter" value="0.0">
     </property>
@@ -1602,7 +1602,7 @@
     <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1, 467, 663, 300}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1, 467, 655, 289}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[655, 245]">
         </property>
@@ -1660,7 +1660,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 40.0]">
             </property>
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={282, 362, 727, 468}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={282, 362, 725, 460}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[512, 284]">
         </property>
@@ -1713,7 +1713,7 @@
         <entity name="Sticky Mass model" class="ptolemy.domains.fsm.modal.ModalModel">
             <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalTableauFactory">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 120.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 115.0]">
             </property>
             <port name="V1" class="ptolemy.domains.fsm.modal.ModalPort">
                 <property name="output"/>
@@ -1783,7 +1783,7 @@
                             </property>
                         </property>
                     </property>
-                    <property name="_location" class="ptolemy.kernel.util.Location" value="{215.0, 330.0}">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[180.0, 380.0]">
                     </property>
                 </property>
                 <property name="AnnotationUpdated2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -1812,7 +1812,11 @@
                     <property name="_location" class="ptolemy.kernel.util.Location" value="{90.0, 10.0}">
                     </property>
                 </property>
-                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 100, 815, 568}, maximized=false}">
+                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={313, 169, 813, 561}, maximized=false}">
+                </property>
+                <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+                </property>
+                <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 225.0}">
                 </property>
                 <port name="V1" class="ptolemy.domains.fsm.modal.RefinementPort">
                     <property name="input"/>
@@ -1863,7 +1867,7 @@
                     </property>
                     <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
                     </property>
-                    <property name="_location" class="ptolemy.kernel.util.Location" value="110.0, 200.0">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[155.0, 225.0]">
                     </property>
                 </entity>
                 <entity name="Separate" class="ptolemy.domains.fsm.kernel.State">
@@ -1873,7 +1877,7 @@
                     </property>
                     <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
                     </property>
-                    <property name="_location" class="ptolemy.kernel.util.Location" value="275.0, 235.0">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[250.0, 235.0]">
                     </property>
                 </entity>
                 <entity name="Together" class="ptolemy.domains.fsm.kernel.State">
@@ -1883,7 +1887,7 @@
                     </property>
                     <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
                     </property>
-                    <property name="_location" class="ptolemy.kernel.util.Location" value="515.0, 235.0">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[475.0, 235.0]">
                     </property>
                 </entity>
                 <relation name="relation" class="ptolemy.domains.fsm.kernel.Transition">
@@ -1903,9 +1907,11 @@
                 <relation name="relation2" class="ptolemy.domains.fsm.kernel.Transition">
                     <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="touched_isPresent &amp;&amp; (V1-V2) &gt; 0.0">
                     </property>
-                    <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute" value="Together.p = P1; Together.v = (V1+V2)/2.0; Together.stickiness = 10.0">
+                    <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute" value="Together.p = P1;&#10;  Together.v = (V1+V2)/2.0;&#10;  Together.stickiness = 10.0">
                     </property>
-                    <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6283185307179586">
+                    <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6616146526982759">
+                    </property>
+                    <property name="gamma" class="ptolemy.data.expr.Parameter" value="-0.011226540968068589">
                     </property>
                     <property name="reset" class="ptolemy.data.expr.Parameter" value="true">
                     </property>
@@ -1915,7 +1921,7 @@
                 <relation name="relation3" class="ptolemy.domains.fsm.kernel.Transition">
                     <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="abs(Force) &gt; Stickiness">
                     </property>
-                    <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute" value="Separate.p1 = P1; Separate.p2 = P1; Separate.v1 = V1; Separate.v2 = V1">
+                    <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute" value="Separate.p1 = P1;&#10;  Separate.p2 = P1;&#10;  Separate.v1 = V1;&#10;  Separate.v2 = V1">
                     </property>
                     <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6283185307179586">
                     </property>
