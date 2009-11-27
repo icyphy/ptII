@@ -57,12 +57,11 @@ public class PThalesGenericActor extends TypedAtomicActor {
     private void _initialize() throws IllegalActionException,
             NameDuplicationException {
 
-        Attribute rep = super.getAttribute("repetition");
-        if (rep == null)
-        {
-            repetition = new StringParameter(this, "repetition");
-            repetition.setExpression("");
-            repetition.setTypeEquals(BaseType.STRING);
+        Attribute rep = super.getAttribute("repetitions");
+        if (rep == null) {
+            repetitions = new StringParameter(this, "repetitions");
+            repetitions.setExpression("");
+            repetitions.setTypeEquals(BaseType.STRING);
         }
     }
 
@@ -70,16 +69,8 @@ public class PThalesGenericActor extends TypedAtomicActor {
      *  actor indicates to the scheduler that it is finished by returning
      *  false in its postfire() method.
      */
-    public Parameter repetition;
+    public Parameter repetitions;
 
-    /** Increment the iteration counter, and if it equals the
-     *  value of the <i>firingCountLimit</i> parameter, return false.
-     *  Otherwise, return true.  Derived classes should call this
-     *  at the end of their postfire() method and return its returned
-     *  value.
-     *  @exception IllegalActionException If firingCountLimit has
-     *   an invalid expression.
-     */
     /** Create a new TypedIOPort with the specified name.
      *  The container of the port is set to this actor.
      *  This method is write-synchronized on the workspace.
@@ -130,23 +121,23 @@ public class PThalesGenericActor extends TypedAtomicActor {
             IllegalActionException {
         try {
             _workspace.getWriteAccess();
-            
-            if (p instanceof StringParameter)
-            {
-                if (p.getName().equals("repetition") && repetition != null) {
-                    repetition.setExpression(((StringParameter)p).getExpression());
-                    
-                    repetition.propagateValue();
+
+            if (p instanceof StringParameter) {
+                if (p.getName().equals("repetition") && repetitions != null) {
+                    repetitions.setExpression(((StringParameter) p)
+                            .getExpression());
+
+                    repetitions.propagateValue();
                     return;
                 }
             }
             super._addAttribute(p);
-            
-         } finally {
+
+        } finally {
             _workspace.doneWriting();
         }
     }
-    
+
     /** Read all the array then (should) call JNI function 
      *  @exception IllegalActionException If there is no director, or the
      *  input can not be read, or the output can not be sent.
@@ -155,13 +146,12 @@ public class PThalesGenericActor extends TypedAtomicActor {
         super.fire();
     }
 
-    
     /** Attribute update
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
-        if (attribute == repetition) {
-            _repetition = repetition.getExpression();
+        if (attribute == repetitions) {
+            _repetitions = repetitions.getExpression();
         }
     }
 
@@ -177,6 +167,6 @@ public class PThalesGenericActor extends TypedAtomicActor {
 
     /** This is the value in parameter base.
      */
-    protected String _repetition = "";
+    protected String _repetitions = "";
 
 }

@@ -45,10 +45,9 @@ import ptolemy.actor.sched.NotSchedulableException;
 import ptolemy.actor.sched.Schedule;
 import ptolemy.actor.util.CausalityInterfaceForComposites;
 import ptolemy.actor.util.DFUtilities;
-import ptolemy.data.IntToken;
-import ptolemy.data.Token;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.data.expr.Variable;
+import ptolemy.domains.pthales.lib.PThalesIOPort;
 import ptolemy.domains.sdf.kernel.SDFScheduler;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -156,7 +155,6 @@ public class PthalesScheduler extends SDFScheduler {
 
                 // Now we need to set capacities of each of the receivers.
                 // Notify the destination receivers of the write pattern.
-                int blockSize = 0;
 
                 Receiver[][] receivers = port.getRemoteReceivers();
                 if (receivers != null && receivers.length > 0) {
@@ -166,35 +164,8 @@ public class PthalesScheduler extends SDFScheduler {
                                 ((PthalesReceiver) receiver).setOutputArray(
                                         baseSpec, patternSpec, tilingSpec, repetitionsSpecs.get(actor),
                                         dimensions);
-
-                                // Calculate the total amount of data produced by this output port.
-                                blockSize = Math.max(blockSize,
-                                        (((PthalesReceiver) receiver)
-                                                .getDataSize()));
                             }
                         }
-                    }
-                }
-
-                // Check that the multidimensional declared production rate
-                // is consistent with the SDF declared rate, if
-                // there originally was one in the port, and throw an exception
-                // if not.
-                Integer declaredRate = originalDeclaredPortRates.get(port);
-                if (declaredRate != null
-                        && declaredRate.intValue() != blockSize) {
-                    Attribute rateSpec = port.getAttribute(_PATTERN);
-                    if (rateSpec instanceof StringParameter) {
-                        String multidimensionalSpec = ((StringParameter) rateSpec)
-                                .stringValue();
-                        throw new IllegalActionException(
-                                port,
-                                "The declared rate "
-                                        + declaredRate
-                                        + " of port "
-                                        + port.getName()
-                                        + " is not equal to the declared multidimensional rate "
-                                        + multidimensionalSpec);
                     }
                 }
             }
@@ -225,38 +196,6 @@ public class PthalesScheduler extends SDFScheduler {
                 for (Entry<String, Integer[]> entry : tilingSpec.entrySet()) {
                     if (!dimensions.contains(entry.getKey()))
                         dimensions.add(entry.getKey());
-                }
-
-                // Calculate the total amount of data (blockSize) produced by
-                // a firing on this port.
-                int blockSize = 1;
-                if (patternSpec != null) {
-                    for (Entry<String, Integer[]> entry : patternSpec.entrySet()) {
-                        Integer dimensionSpec = entry.getValue()[0];
-                        if (dimensionSpec != null) {
-                            blockSize *= dimensionSpec.intValue();
-                        }
-                    }
-                }
-
-                // Check that the multidimensional declared production rate
-                // is consistent with the SDF declared rate, if
-                // there originally was one in the port, and throw an exception
-                // if not.
-                Integer declaredRate = originalDeclaredPortRates.get(port);
-                if (declaredRate != null
-                        && declaredRate.intValue() != blockSize) {
-                    Attribute rateSpec = port.getAttribute(_PATTERN);
-                    if (rateSpec instanceof StringParameter) {
-                        String multidimensionalSpec = ((StringParameter) rateSpec)
-                                .stringValue();
-                        throw new IllegalActionException(
-                                port,
-                                "The declared rate of this port "
-                                        + declaredRate
-                                        + " is not equal to the declared multidimensional rate "
-                                        + multidimensionalSpec);
-                    }
                 }
 
                 // Notify the receivers of the read pattern.
@@ -331,13 +270,9 @@ public class PthalesScheduler extends SDFScheduler {
      */
     private Integer _getDeclaredPortRate(IOPort port, String description)
             throws IllegalActionException {
-        Variable portRate = DFUtilities.getRateVariable(port, description);
-        Integer result = null;
-        if (portRate != null) {
-            Token value = portRate.getToken();
-            if (value instanceof IntToken) {
-                result = new Integer(((IntToken) value).intValue());
-            }
+        int result = 0;
+        if (port instanceof PThalesIOPort) {
+            result = ((PThalesIOPort)port).getPattern();
         }
         return result;
     }

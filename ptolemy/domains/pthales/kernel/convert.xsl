@@ -77,7 +77,7 @@
     <xsl:template name="repetition">
         <xsl:element name="property">
             <xsl:attribute name="name">
-                <xsl:text>repetition</xsl:text>
+                <xsl:text>repetitions</xsl:text>
             </xsl:attribute>
             <xsl:attribute name="class">
                 <xsl:text>ptolemy.data.expr.StringParameter</xsl:text>
@@ -287,8 +287,8 @@
                 <!-- l'origine n'a qu'une seule itération-->
                 <xsl:with-param name="loops" select="$loops[1]"/>
                 <xsl:with-param name="jump" select="1"/>
-                <!-- l'origine peut contenir des zeros -->
-                <xsl:with-param name="allowZero" select="'true'"/>
+                <!-- formalisme differnet pour la base -->
+                <xsl:with-param name="isBase" select="'true'"/>
             </xsl:call-template>
         </xsl:variable>
 
@@ -364,6 +364,8 @@
                 <xsl:with-param name="dims" select="$dims"/>
                 <xsl:with-param name="loops" select="tokenize($tilings,';')"/>
                 <xsl:with-param name="jump" select="2 + $nbDim"/>
+                <!-- formalisme differnet pour le tiling -->
+                <xsl:with-param name="isTiling" select="'true'"/>
             </xsl:call-template>
         </xsl:variable>
 
@@ -399,9 +401,10 @@
         <xsl:param name="loops"/>
         <xsl:param name="dims"/>
         <xsl:param name="jump"/>
-        <xsl:param name="allowZero" select="'false'"/>
+        <xsl:param name="isBase" select="'false'"/>
         <xsl:param name="isPattern" select="'false'"/>
-
+        <xsl:param name="isTiling" select="'false'"/>
+        
         <!-- parcours des boucles -->
         <xsl:for-each select="$loops">
             <xsl:variable name="posLoop" select="position()"/>
@@ -411,41 +414,51 @@
 
                 <xsl:variable name="coef" select="$vals[1+$jump+(number($posLoop)-1)*($nbDim+1)]"/>
 
+                <xsl:variable name="output">
+
                 <!-- parcours des dimensions pour chaque boucle -->
                 <xsl:for-each select="$dims">
-                    <xsl:variable name="posDim" select="position()"/>
+                        <xsl:variable name="posDim" select="position()"/>
 
-                    <!-- dimension "vide" non traitée -->
-                    <xsl:if test="$dims[$posDim] != ''">
+                        <!-- dimension "vide" non traitée -->
+                        <xsl:if test="$dims[$posDim] != ''">
+                            <xsl:if
+                                test="($vals[1+$jump+$posDim+(number($posLoop)-1)*($nbDim+1)] != '0' or $isBase='true') and $vals[1+$jump+$posDim+(number($posLoop)-1)*($nbDim+1)] != ''">
 
-                        <xsl:if
-                            test="($vals[1+$jump+$posDim+(number($posLoop)-1)*($nbDim+1)] != '0' or $allowZero='true') and $vals[1+$jump+$posDim+(number($posLoop)-1)*($nbDim+1)] != ''">
+                                <xsl:value-of select="$dims[$posDim]"/>
+                                <xsl:text>=</xsl:text>
 
-                            <xsl:value-of select="$dims[$posDim]"/>
-                            <xsl:text>=</xsl:text>
-                            
-                            <!-- affichage x*y -->
-                            <xsl:if test="$isPattern='false'">
-                                <xsl:value-of
-                                    select="number($vals[1+$jump+$posDim+(number($posLoop)-1)*($nbDim+1)])*number($coef)"/>
-                                <xsl:if test="$posLoop != last()">
-                                    <xsl:text>,</xsl:text>
+                                <!-- affichage x*y -->
+                                <xsl:if test="$isPattern='false'">
+                                    <xsl:value-of
+                                        select="number($vals[1+$jump+$posDim+(number($posLoop)-1)*($nbDim+1)])*number($coef)"/>
+                                    <xsl:if test="$posLoop != last()">
+                                        <xsl:text>,</xsl:text>
+                                    </xsl:if>
                                 </xsl:if>
-                            </xsl:if>
-                            <!-- affichage x.y -->
-                            <xsl:if test="$isPattern='true'">
-                                <xsl:value-of select="number($coef)"/>
-                                <xsl:text>.</xsl:text>    
-                                <xsl:value-of select="number($vals[1+$jump+$posDim+(number($posLoop)-1)*($nbDim+1)])"/>
-                                <xsl:if test="$posLoop != last()">
-                                    <xsl:text>,</xsl:text>
+                                <!-- affichage x.y -->
+                                <xsl:if test="$isPattern='true'">
+                                    <xsl:value-of select="number($coef)"/>
+                                    <xsl:text>.</xsl:text>
+                                    <xsl:value-of
+                                        select="number($vals[1+$jump+$posDim+(number($posLoop)-1)*($nbDim+1)])"/>
+                                    <xsl:if test="$posLoop != last()">
+                                        <xsl:text>,</xsl:text>
+                                    </xsl:if>
                                 </xsl:if>
                             </xsl:if>
                         </xsl:if>
-
-                    </xsl:if>
+                    
                 </xsl:for-each>
-
+                </xsl:variable>
+                <xsl:if test="$output='' and $isTiling='true'">
+                    <xsl:value-of select="$dims[1]"/>
+                    <xsl:text>=0,</xsl:text>
+                </xsl:if>
+                <xsl:if test="not($output='') or $isTiling='false'">
+                    <xsl:value-of select="$output"/>
+                </xsl:if>
+                
             </xsl:if>
         </xsl:for-each>
 
@@ -505,10 +518,21 @@
                         <xsl:text>[100.0, 100.0]</xsl:text>
                     </xsl:attribute>
                 </xsl:element>
+                <xsl:element name="property">
+                    <xsl:attribute name="name">
+                        <xsl:text>iterations</xsl:text>
+                    </xsl:attribute>
+                    <xsl:attribute name="class">
+                        <xsl:text>ptolemy.data.expr.Parameter</xsl:text>
+                    </xsl:attribute>
+                    <xsl:attribute name="value">
+                        <xsl:text>1</xsl:text>
+                    </xsl:attribute>
+                </xsl:element>
             </xsl:element>
 
             <!-- propriétés de l'application -->
-            <xsl:for-each select="./property[substring-before(@class,'.')='ptolemy']">
+            <xsl:for-each select="./property[substring-before(@class,'.')='ptolemy'][@class!='ptolemy.kernel.attributes.VersionAttribute']">
                 <xsl:call-template name="node"/>
             </xsl:for-each>
 

@@ -40,7 +40,6 @@ import ptolemy.data.Token;
 import ptolemy.domains.sdf.kernel.SDFReceiver;
 import ptolemy.kernel.util.IllegalActionException;
 
-
 public class PthalesReceiver extends SDFReceiver {
 
     ///////////////////////////////////////////////////////////////////
@@ -132,15 +131,13 @@ public class PthalesReceiver extends SDFReceiver {
      *  @exception NoTokenException If there is no token.
      */
     public Token get() throws NoTokenException {
-        if (_buffer != null)
-        {
-            Token result =  _buffer[_addressesIn[_posIn++]];
+        if (_buffer != null) {
+            Token result = _buffer[_addressesIn[_posIn++]];
             return result;
-        }
-        else {
+        } else {
             throw new NoTokenException("Empty buffer in PthalesReceiver !");
         }
-            
+
     }
 
     /** Put a portion of the specified token array into this receiver.
@@ -213,8 +210,7 @@ public class PthalesReceiver extends SDFReceiver {
     public void setInputArray(LinkedHashMap<String, Integer[]> baseSpec,
             LinkedHashMap<String, Integer[]> patternSpec,
             LinkedHashMap<String, Integer[]> tilingSpec,
-            Integer[] repetitionsSpec,
-            List<String> dimensions)
+            Integer[] repetitionsSpec, List<String> dimensions)
             throws IllegalActionException {
 
         _base = baseSpec;
@@ -226,7 +222,7 @@ public class PthalesReceiver extends SDFReceiver {
 
         if (_buffer != null)
             computeAddresses(true);
-   }
+    }
 
     /** Specifies the output array that will be read by the receiver
      * It is the output array that determines the available size and dimensions
@@ -241,9 +237,8 @@ public class PthalesReceiver extends SDFReceiver {
      */
     public void setOutputArray(LinkedHashMap<String, Integer[]> baseSpec,
             LinkedHashMap<String, Integer[]> patternSpec,
-            LinkedHashMap<String, Integer[]> tilingSpec, 
-            Integer[] repetitionsSpec,
-            List<String> dimensions)
+            LinkedHashMap<String, Integer[]> tilingSpec,
+            Integer[] repetitionsSpec, List<String> dimensions)
             throws IllegalActionException {
 
         _dimensions = dimensions;
@@ -255,17 +250,34 @@ public class PthalesReceiver extends SDFReceiver {
         checkArray(baseSpec, patternSpec, tilingSpec, dimensions);
 
         // Output determines array size needed as input cannot read which has not been written
-        
+
         // Sizes
         // FIXME: works for "compacted sizes", maybe needs some modifications
-        int i = 0;
+        int value;
+        int valuePattern;
+        int valueTiling;
         for (String dimension : dimensions) {
- 
-            _sizes.put(dimension,patternSpec.get(dimension)[0].intValue()
-                    * patternSpec.get(dimension)[1].intValue() - 1
-                    + tilingSpec.get(dimension)[0].intValue());
+            valuePattern = 0;
+            if (patternSpec.get(dimension) != null)
+                valuePattern += patternSpec.get(dimension)[0].intValue()
+                        * patternSpec.get(dimension)[1].intValue();
+            Object repList[] = tilingSpec.keySet().toArray();
+            valueTiling = 0;
+            if (tilingSpec.get(dimension) != null) {
+                for (int i = 0; i < repList.length; i++) {
+                    if (repList[i].equals(dimension))
+                        valueTiling = tilingSpec.get(dimension)[0].intValue()
+                                * repetitionsSpec[i];
+                }
+            }
+            if (valuePattern == 0)
+                value = valueTiling;
+            else if (valueTiling == 0)
+                value = valuePattern;
+            else
+                value = valuePattern * valueTiling;
 
-            i++;
+            _sizes.put(dimension, value);
         }
 
         // Total size of the array in "memory"
@@ -277,7 +289,7 @@ public class PthalesReceiver extends SDFReceiver {
         computeAddresses(false);
     }
 
-     /** check if the array is correct or not 
+    /** check if the array is correct or not 
      * @param baseSpec : origins 
      * @param patternSpec : fitting of the array
      * @param tilingSpec : paving of the array
@@ -286,33 +298,9 @@ public class PthalesReceiver extends SDFReceiver {
      */
     public void checkArray(LinkedHashMap<String, Integer[]> baseSpec,
             LinkedHashMap<String, Integer[]> patternSpec,
-            LinkedHashMap<String, Integer[]> tilingSpec, 
-            List<String> dimensions)
+            LinkedHashMap<String, Integer[]> tilingSpec, List<String> dimensions)
             throws IllegalActionException {
-
-        // First set defaults for any unspecified dimensions.
-        for (String dimension : dimensions) {
-            // Do some error checking. 
-            Integer size = patternSpec.get(dimension)[0];
-            if (size != null && size.intValue() <= 0) {
-                throw new IllegalActionException(getContainer(),
-                        "Dimension size is required to be strictly greater than zero.");
-            }
-            Integer tiling = tilingSpec.get(dimension)[0];
-            if (tiling != null && tiling.intValue() <= 0) {
-                throw new IllegalActionException(getContainer(),
-                        "Tiling is required to be strictly greater than zero.");
-            }
-
-            // Also set the overall buffer size spec.
-            if (tilingSpec.get(dimension) == null) {
-                throw new IllegalActionException(
-                        getContainer(),
-                        "Size specification does not include "
-                                + dimension
-                                + ", which is included in the repetitions parameter of the sending actor.");
-            }
-        }
+        // FIXME : Tests to verify array
     }
 
     /** Returns the size of 
@@ -321,9 +309,20 @@ public class PthalesReceiver extends SDFReceiver {
     int getDataSize() {
         int blockSize = 1;
         for (String dimension : _dimensions) {
-           blockSize *= _sizes.get(dimension);
+            blockSize *= _sizes.get(dimension);
         }
         return blockSize;
+    }
+
+    /** Returns the size of 
+     * the array for each dimension
+     */
+    String getArraySize() {
+        String blockSize = "";
+        for (String dimension : _dimensions) {
+            blockSize += dimension + "=" + _sizes.get(dimension) + ",";
+        }
+        return blockSize.substring(0, blockSize.length() - 1);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -333,6 +332,7 @@ public class PthalesReceiver extends SDFReceiver {
     ////                      protected variables                  ////
 
     int _posIn = 0;
+
     int _posOut = 0;
 
     /** Buffer memory. */
@@ -340,6 +340,7 @@ public class PthalesReceiver extends SDFReceiver {
 
     /** addresses for input or output */
     protected int[] _addressesOut = null;
+
     protected int[] _addressesIn = null;
 
     /** Current sizes of the buffer. */
@@ -347,8 +348,11 @@ public class PthalesReceiver extends SDFReceiver {
 
     /** parameters */
     protected LinkedHashMap<String, Integer[]> _base = null;
+
     protected LinkedHashMap<String, Integer[]> _pattern = null;
+
     protected LinkedHashMap<String, Integer[]> _tiling = null;
+
     protected Integer[] _repetitions = null;
 
     ///////////////////////////////////////////////////////////////////
@@ -357,98 +361,107 @@ public class PthalesReceiver extends SDFReceiver {
     void computeAddresses(boolean input) {
         // same number of addresses than buffer size (worst case)
         int jumpPattern[] = new int[_buffer.length];
-       
+
         // Position in buffer 
-         int pos = 0;
-         
+        int pos = 0;
+
         // Pattern size, used for each repetition
         int sizePattern = 1;
         // repetition size
         int sizeRepetition = 1;
-       
+
         // size for pattern dimensions 
         Iterator patternIterator = _pattern.keySet().iterator();
         while (patternIterator.hasNext()) {
             String dimPattern = (String) patternIterator.next();
-              sizePattern *=_pattern.get(dimPattern)[0];
+            sizePattern *= _pattern.get(dimPattern)[0];
         }
-        
+
         // size for tiling dimensions 
         for (Integer repetition : _repetitions) {
             // Dimension added to pattern list
-             sizeRepetition *=repetition;
+            sizeRepetition *= repetition;
         }
-       
+
         // address indexes
-        int dims[] = new int[_pattern.size()+1];
+        int dims[] = new int[_pattern.size() + 1];
         // address indexes
-        int reps[] = new int[_repetitions.length+1];
-        
+        int reps[] = new int[_repetitions.length + 1];
+
         // addresses creation
         int jumpDim;
         int jumpRep;
         int previousSize;
-        
+
         // Pattern order
         String[] patternOrder = new String[_dimensions.size()];
         _pattern.keySet().toArray(patternOrder);
-                     // tiling order 
+        // tiling order 
         String[] tilingOrder = new String[_dimensions.size()];
         _tiling.keySet().toArray(tilingOrder);
 
         // Address jump for each dimension
         LinkedHashMap<String, Integer> jumpAddr = new LinkedHashMap<String, Integer>();
-        for (int nDim = 0; nDim < _dimensions.size(); nDim++){
+        for (int nDim = 0; nDim < _dimensions.size(); nDim++) {
             previousSize = 1;
-            for (int prev = 0; prev < nDim; prev++)
-            {
+            for (int prev = 0; prev < nDim; prev++) {
                 previousSize *= _sizes.get(_dimensions.get(prev));
             }
-            jumpAddr.put(_dimensions.get(nDim),previousSize);
+            jumpAddr.put(_dimensions.get(nDim), previousSize);
         }
-      
+
         // origin construction (order is not important)
         Integer origin = 0;
-        for (int nDim = 0; nDim < _dimensions.size(); nDim++){
-             origin += _base.get(_dimensions.get(nDim))[0]*jumpAddr.get(_dimensions.get(nDim));
+        for (int nDim = 0; nDim < _dimensions.size(); nDim++) {
+            origin += _base.get(_dimensions.get(nDim))[0]
+                    * jumpAddr.get(_dimensions.get(nDim));
         }
-        
+
         // Address construction  (order is important)
-        for (int rep  = 0; rep < sizeRepetition; rep++){
+        for (int rep = 0; rep < sizeRepetition; rep++) {
             jumpRep = 0;
-            for (int nRep = 0; nRep < _repetitions.length; nRep++){
-                jumpRep += _tiling.get(tilingOrder[nRep])[0]*reps[nRep]*jumpAddr.get(tilingOrder[nRep]);
-            }
-           
-            for (int dim  = 0; dim < sizePattern; dim++){
-                jumpDim = 0;
-                for (int nDim = 0; nDim < _pattern.size(); nDim++){
-                    jumpDim += _pattern.get(patternOrder[nDim])[1]*dims[nDim]*jumpAddr.get(patternOrder[nDim]);
+            for (int nRep = 0; nRep < tilingOrder.length; nRep++) {
+                if (_tiling.get(tilingOrder[nRep]) != null)
+                {
+                    jumpRep += _tiling.get(tilingOrder[nRep])[0] * reps[nRep]
+                        * jumpAddr.get(tilingOrder[nRep]);
                 }
+            }
+
+            for (int dim = 0; dim < sizePattern; dim++) {
+                jumpDim = 0;
+                for (int nDim = 0; nDim < _pattern.size(); nDim++) {
+                    jumpDim += _pattern.get(patternOrder[nDim])[1] * dims[nDim]
+                            * jumpAddr.get(patternOrder[nDim]);
+                }
+
+                if (pos >= _buffer.length )
+                    System.out.println(pos);
+
                 jumpPattern[pos] = origin + jumpDim + jumpRep;
                 pos++;
-                  
+                
+                pos = pos%_buffer.length;
+
                 // pattern indexes update
                 dims[0]++;
-                for (int nDim = 0; nDim < _pattern.size(); nDim++){
-                    if (dims[nDim] == _pattern.get(_dimensions.get(nDim))[0])
-                    {
+                for (int nDim = 0; nDim < _pattern.size(); nDim++) {
+                    if (dims[nDim] == _pattern.get(patternOrder[nDim])[0]) {
                         dims[nDim] = 0;
-                        dims[nDim+1]++;
+                        dims[nDim + 1]++;
                     }
                 }
             }
             // repetition indexes update
             reps[0]++;
-            for (int nRep = 0; nRep < _repetitions.length; nRep++){
-                if (reps[nRep] == _repetitions[nRep])
-                {
+            for (int nRep = 0; nRep < _repetitions.length; nRep++) {
+                if (reps[nRep] == _repetitions[nRep]) {
                     reps[nRep] = 0;
-                    reps[nRep+1]++;
+                    reps[nRep + 1]++;
                 }
             }
         }
-        
+
         if (input)
             _addressesIn = jumpPattern;
         else
