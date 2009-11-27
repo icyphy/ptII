@@ -1,5 +1,5 @@
-/*
-Below is the copyright agreement for the Ptolemy II system.
+/*    When a token is received on a port, add a PropertyToken to the helper
+associated with the solver.
 
 Copyright (c) 2007-2009 The Regents of the University of California.
 All rights reserved.
@@ -34,28 +34,35 @@ import ptolemy.data.properties.token.PropertyTokenHelper;
 import ptolemy.data.properties.token.PropertyTokenSolver;
 import ptolemy.kernel.util.IllegalActionException;
 
+//////////////////////////////////////////////////////////////////////////
+//// FirstTokenGotListener
+
+/**
+   When a token is received on a port, add a PropertyToken to the helper
+   associated with the solver.
+
+   @author Man-Kit Leung
+   @version $Id$
+   @since Ptolemy II 7.1
+   @Pt.ProposedRating Red (mankit)
+   @Pt.AcceptedRating Red (mankit)
+*/
 public class FirstTokenGotListener implements IOPortEventListener {
 
+    /** Construct a FirstTokenGotListener.
+     *  @param solver The solver.
+     */
     public FirstTokenGotListener(PropertyTokenSolver solver) {
         _solver = solver;
     }
 
-    public void tokenGotEvent(IOPortEvent event) {
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
-        IOPort port = event.getPort();
-        Token token = event.getToken();
-        if (token == null) {
-            token = event.getTokenArray()[0];
-        }
-
-        try {
-            ((PropertyTokenHelper) _solver.getHelper(port.getContainer()))
-                    .setEquals(port, new PropertyToken(token));
-        } catch (IllegalActionException e) {
-            assert false;
-        }
-    }
-
+    /** When a token is received on a port, add a PropertyToken 
+     *  to the helper associated with the solver.
+     *  @param event The event to report.
+     */
     public void portEvent(IOPortEvent event) {
         if (event.getEventType() != IOPortEvent.GET_END) {
             return;
@@ -71,10 +78,17 @@ public class FirstTokenGotListener implements IOPortEventListener {
             ((PropertyTokenHelper) _solver.getHelper(port.getContainer()))
                     .setEquals(port, new PropertyToken(token));
         } catch (IllegalActionException e) {
+            // FIXME: instead of asserting false, this method should
+            // not catch the exception and just throw IllegalActionException.
+            // However, this method in IOPortEventListener does not throw
+            // an IllegalActionException.
+            e.printStackTrace();
             assert false;
         }
     }
 
-    private PropertyTokenSolver _solver;
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
+    private PropertyTokenSolver _solver;
 }
