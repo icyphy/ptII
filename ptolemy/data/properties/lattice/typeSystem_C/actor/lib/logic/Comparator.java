@@ -1,6 +1,6 @@
 /* A helper class for ptolemy.actor.lib.Comparator.
 
- Copyright (c) 2006 The Regents of the University of California.
+ Copyright (c) 2008-2009 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -49,17 +49,25 @@ import ptolemy.kernel.util.IllegalActionException;
 public class Comparator extends AtomicActor {
     /**
      * Construct an Comparator helper.
-     * @param actor the associated actor
+     * @param solver the associated solver.
+     * @param actor the associated actor.
+     * @exception IllegalActionException If thrown by the superclass.
      */
     public Comparator(PropertyConstraintSolver solver,
             ptolemy.actor.lib.logic.Comparator actor)
             throws IllegalActionException {
-
         super(solver, actor, false);
         _lattice = (Lattice) getSolver().getLattice();
         _actor = actor;
     }
 
+
+    /** Return the constraint list for this helper.
+     *  @param The constraint list for this helper which consists of
+     * the constraint list for the super class and a constraint
+     * between the output port of the actor and the Boolean element of
+     * the lattice.
+     */
     public List<Inequality> constraintList() throws IllegalActionException {
         setEquals(_actor.output, _lattice.getElement("BOOLEAN"));
 

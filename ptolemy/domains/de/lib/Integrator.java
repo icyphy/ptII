@@ -1,6 +1,6 @@
 /* An actor that outputs the discrete integration over successive inputs.
 
- Copyright (c) 1998-2005 The Regents of the University of California.
+ Copyright (c) 2009 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -189,7 +189,8 @@ public class Integrator extends DETransformer {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
-    /** Reset value of the accumulator to either an initial value or null
+
+    /** Reset value of the accumulator to either an initial value or null.
      * @throws IllegalActionException If the base class throws it
      */  
     protected void resetAccumulation() throws IllegalActionException{

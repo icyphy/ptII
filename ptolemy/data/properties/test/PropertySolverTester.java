@@ -1,6 +1,6 @@
 /*  A class that contains the test functions for the PropertySolver.
 
- Copyright (c) 1998-2009 The Regents of the University of California.
+ Copyright (c) 2009 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -44,7 +44,7 @@ import ptolemy.util.StringUtilities;
 //// PropertySolverTester
 
 /**
- * A extended base abstract class for a property solver.
+ * Test the properties of a solver.
  *
  * @author Man-Kit Leung
  * @version $Id$
@@ -54,11 +54,19 @@ import ptolemy.util.StringUtilities;
  */
 public class PropertySolverTester {
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
+    /** Invoke the test harness.
+     *  @param args An array of Strings, each element names a MoML file
+     *  containing a model.
+     *  @exception Exception If any error occurs.
+     */
     public static void main(String args[]) throws Exception {
         testProperties(args);
     }
 
-    /*
+    /**
      * Parse a command-line argument. This method recognized -help and -version
      * command-line arguments, and prints usage or version information. No other
      * command-line arguments are recognized.
@@ -98,7 +106,7 @@ public class PropertySolverTester {
         return false;
     }
 
-    /*
+    /**
      * Resolve properties for a model.
      *
      * @param args An array of Strings, each element names a MoML file
@@ -215,13 +223,15 @@ public class PropertySolverTester {
         return 0;
     }
 
-    /*
-     * @param path
-     *
-     * @param parser
-     *
-     *      *
-     * @exception IllegalActionException
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+
+    /** 
+     *  Parse a model.
+     *  @param path The file path to the model.
+     *  @param parser The parser
+     *  @exception IllegalActionException If the model cannot be opened or
+     *  parsed.
      */
     protected static CompositeEntity _getModel(String path, MoMLParser parser)
             throws IllegalActionException {
@@ -250,8 +260,16 @@ public class PropertySolverTester {
         return toplevel;
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected variables               ////
+
+    /** The end of line character. */
     protected static final String _eol = StringUtilities
             .getProperty("line.separator");
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    /** A hashmap of options. */
     private static HashMap _options = new HashMap();
 }

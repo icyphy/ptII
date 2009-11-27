@@ -1,6 +1,6 @@
 /*  A class that contains the test functions for the PropertySolver.
 
- Copyright (c) 1998-2009 The Regents of the University of California.
+ Copyright (c) 2009 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -72,6 +72,18 @@ public class PropertySolverTestReporter {
         testPropertiesAndGenerateReports(args[0]);
     }
 
+    /**
+     * Test the properties of a directory and generate reports.
+     *
+     * <p>The directory tree named by the directoryPath argument is
+     * deeply searched for files that end in ".xml".  Each .xml file
+     * is parsed and each PropertySolver in the toplevel is invoked.</p>
+     *
+     * <p>The log files are created in $PTII/propertiesLogfiles.  The
+     * exception logs are crated in $PTII/propertiesLogfiles/exceptionLogs.</p>
+     * @param directoryPath The directory in which the reports should be
+     * generated.
+     */
     public static void testPropertiesAndGenerateReports(String directoryPath) {
         try {
 
@@ -87,11 +99,34 @@ public class PropertySolverTestReporter {
         }
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         public variables                  ////
+
+    /** The command line argument used for non deep testing.
+     */
+    public static final String NONDEEP_TEST_OPTION = "-nondeep";
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected variables               ////
+
+    /** The end of line character. */
+    protected static String _eol = StringUtilities
+            .getProperty("line.separator");
+
+    /** A tab character. */
+    protected static String _separator = "\t";
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
     /**
-     * @param stats
-     * @param key
-     * @param entryHeader
-     * @param entryValue
+     * Add a stats entry to the statistics map.
+     * @param stats The statistics map
+     * @param key The key to be added.  If the key exists in the stats map,
+     * then the corresponding value is used.  If the key does not exist
+     * in the stats map, then a new HashMap is used.
+     * @param entryHeader The entry header to be added.
+     * @param entryValue The entry value to be added.
      */
     private static void _addLocalStatsEntry(Map<Object, Map> stats, Object key,
             String entryHeader, Object entryValue) {
@@ -142,7 +177,7 @@ public class PropertySolverTestReporter {
         return key;
     }
 
-    /*
+    /**
      * Get the exception log file for the given test model. The exception log
      * filename reflects whether the test has failed or not. For example, a test
      * model named "model.xml" may have a corresponding exception file named
@@ -263,11 +298,13 @@ public class PropertySolverTestReporter {
         }
     }
 
-    /*
-     *
+    /**
+     * Run the tests in a properties directory.
      * @param directoryPath
      *
-     * @exception IOException
+     * @exception IOException If the stats directory cannot be created,
+     * the exception logs directory cannot be created or if the error file
+     * cannot be written.
      */
     private static Map<Map, HashMap<Object,Map>>[] _testPropertiesDirectory(String directoryPath)
             throws IOException {
@@ -473,17 +510,15 @@ public class PropertySolverTestReporter {
         return summary;
     }
 
-    public static final String NONDEEP_TEST_OPTION = "-nondeep";
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
-    protected static String _eol = StringUtilities
-            .getProperty("line.separator");
-
-    /* The directory path to store the test statistics reports. */
+    /** The directory path to store the test statistics reports. */
     private static String _statsDirectory = StringUtilities
             .getProperty("ptolemy.ptII.dir")
             + "/propertiesLogfiles";
 
-    /* The directory path to store the exception log files. */
+    /** The directory path to store the exception log files. */
     private static String _exceptionLogsDirectory = _statsDirectory
             + "/exceptionLogs";
 
@@ -491,10 +526,7 @@ public class PropertySolverTestReporter {
 
     private static LinkedHashSet _solverStatsHeaders = new LinkedHashSet();
 
-    /* The file path for the overview report file. */
+    /** The file path for the overview report file. */
     private static String _statsFilename = _statsDirectory
             + "/propertyTestReports.tsv";
-
-    protected static final String _separator = "\t";
-
 }

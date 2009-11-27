@@ -1,4 +1,4 @@
-/* Test class for codegen.kernel.ActorCodeGeneratro
+/* Test class for codegen.kernel.ActorCodeGenerator
 
  Copyright (c) 2007 The Regents of the University of California.
  All rights reserved.
@@ -33,7 +33,7 @@ import ptolemy.codegen.kernel.CodeGeneratorHelper;
 //// TypedCompositeActor
 
 /**
- *  Test class for codegen.kernel.ActorCodeGeneratro
+ *  Test class for codegen.kernel.ActorCodeGenerator.
  *
  *  @author Christopher Brooks
  *  @version $Id$

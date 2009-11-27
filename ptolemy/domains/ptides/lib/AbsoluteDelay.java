@@ -171,6 +171,8 @@ public class AbsoluteDelay extends TimeDelay {
 
     /** Override the method of the super class to initialize the
      *  parameter values.
+     *  @exception IllegalActionException Not thrown in this class.
+     *  @exception NameDuplicationException Not thrown in this class.
      */
     protected void _init() throws NameDuplicationException,
             IllegalActionException {

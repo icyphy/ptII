@@ -1,6 +1,6 @@
 /* A helper class for ptolemy.data.expr.ASTPtRootNode.
 
- Copyright (c) 2006 The Regents of the University of California.
+ Copyright (c) 2009 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -37,7 +37,7 @@ import ptolemy.kernel.util.IllegalActionException;
 /**
  A helper class for ptolemy.data.expr.ASTPtRootNode.
 
- @author Man-Kit Leung
+ @author Man-Kit Leung, Elizabeth Latronic, Charles Shelton
  @version $Id$
  @since Ptolemy II 6.2
  @Pt.ProposedRating Red (mankit)
@@ -46,14 +46,13 @@ import ptolemy.kernel.util.IllegalActionException;
 public class ASTPtRootNode extends PropertyConstraintASTNodeHelper {
     /**
      * Construct an ASTPtRootNode helper.
-     * @param actor the associated actor
-     * @throws IllegalActionException 
+     * @param solver the associated solver.
+     * @param actor the associated actor.
+     * @exception IllegalActionException If thrown by the super class.
      */
     public ASTPtRootNode(PropertyConstraintSolver solver, 
             ptolemy.data.expr.ASTPtRootNode actor) 
     throws IllegalActionException {
-        
         super(solver, actor);
     }
-
 }

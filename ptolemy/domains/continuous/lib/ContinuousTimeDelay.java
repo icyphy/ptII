@@ -1,6 +1,6 @@
 /* An actor that delays the input by the specified amount.
 
- Copyright (c) 1998-2009 The Regents of the University of California.
+ Copyright (c) 2009 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -403,17 +403,23 @@ public class ContinuousTimeDelay extends Transformer {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    /** Linear interpolation between previous and current input.
+    /** 
+     * Linear interpolation between previous and current input.
      * 
-     * To interpolate, we determine the slope between the left and right
+     * <p>To interpolate, we determine the slope between the left and right
      * interpolation points, and multiply this by time gap between the left
      * point and the current time. This estimates the amount by which the input
      * signal has changed between the left and center points. We add this change
      * to the value of the left point to estimate the value of the center point.
      * 
-     * @throws IllegalActionException
+     *
+     * @param leftEvent The left event.
+     * @param rightEvent the right event.
+     * @exception IllegalActionException If thrown by arithmetic operations
+     * on the events
      */
-    protected Token linearInterpolate(TimedEvent leftEvent, TimedEvent rightEvent) throws IllegalActionException{
+    protected Token linearInterpolate(TimedEvent leftEvent, TimedEvent rightEvent) 
+            throws IllegalActionException {
         Time centerTime = getDirector().getModelTime().subtract(_delay);
         
         //time gap (run) between left and right events

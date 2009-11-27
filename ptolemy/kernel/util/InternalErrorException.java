@@ -85,16 +85,17 @@ public class InternalErrorException extends KernelRuntimeException {
         super(object, null, cause, detail);
     }
     
-    /** Construct an exception with a detail message that includes
-     *  the names of the first argument plus the third argument
-     *  string.  If the cause argument is non-null, then the detail
-     *  message of this argument will include the detail message of
-     *  the cause argument.  The stack trace of the cause argument is
-     *  used when we print the stack trace of this exception.  If one
-     *  or more of the parameters are null, then the detail message is
-     *  adjusted accordingly.
+    /** Construct an exception with a detail message that includes the
+     *  names of the first argument, the name of the second argument
+     *  and the value of the third argument.  If the cause argument is
+     *  non-null, then the detail message of this argument will
+     *  include the detail message of the cause argument.  The stack
+     *  trace of the cause argument is used when we print the stack
+     *  trace of this exception.  If one or more of the parameters are
+     *  null, then the detail message is adjusted accordingly.
      *
-     *  @param object The object associated with this exception.
+     *  @param object The first object associated with this exception.
+     *  @param object2 The second object associated with this exception.
      *  @param cause The cause of this exception.
      *  @param detail The message.
      */

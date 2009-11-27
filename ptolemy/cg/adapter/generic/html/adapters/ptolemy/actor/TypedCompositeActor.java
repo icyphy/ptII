@@ -54,7 +54,7 @@ public class TypedCompositeActor extends HTMLCodeGeneratorAdapter {
 
     /** Generate HTML code.
      *  @return The generated HTML.
-     *  @exception If there is a problem getting the adapter, getting
+     *  @exception IllegalActionException If there is a problem getting the adapter, getting
      *  the director or generating HTML for the director.
      */
     public String generateHTML() throws IllegalActionException {

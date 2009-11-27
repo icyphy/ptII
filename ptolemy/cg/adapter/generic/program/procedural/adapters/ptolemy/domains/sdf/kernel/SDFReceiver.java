@@ -53,8 +53,8 @@ import ptolemy.kernel.util.IllegalActionException;
 public class SDFReceiver extends Receiver {
 
     /** Construct an adapther for an SDF receiver.
-     *  @param The SDFReceiver for which an adapther is constructed.
-     *  @exception If thrown by the superclass.
+     *  @param receiver The SDFReceiver for which an adapther is constructed.
+     *  @exception IllegalActionException If thrown by the superclass.
      */
     public SDFReceiver(ptolemy.domains.sdf.kernel.SDFReceiver receiver)
             throws IllegalActionException {
@@ -83,6 +83,8 @@ public class SDFReceiver extends Receiver {
     }
 
     /** Generates code to check the receiver has token.
+     *  @param offset The offset of the receiver, ignored in this base
+     *  class.
      *  @return The generated hasToken code, in this class, the string "true"
      *  is returned
      *  @exception IllegalActionException Not thrown in this base class.

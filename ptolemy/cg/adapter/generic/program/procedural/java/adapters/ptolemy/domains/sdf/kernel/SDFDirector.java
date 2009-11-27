@@ -478,6 +478,12 @@ public class SDFDirector
     }
 
     ////////////////////////////////////////////////////////////////////////
+    ////                         protected members                        ////
+
+    /** The port number. */
+    protected int _portNumber = 0;
+
+    ////////////////////////////////////////////////////////////////////////
     ////                         private methods                      ////
 
     private void _portVariableDeclaration(StringBuffer code, TypedIOPort port)
@@ -635,10 +641,4 @@ public class SDFDirector
         }
         return code.toString();
     }
-
-    ////////////////////////////////////////////////////////////////////////
-    ////                         protected members                        ////
-
-    protected int _portNumber = 0;
-
 }
