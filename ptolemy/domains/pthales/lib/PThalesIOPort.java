@@ -32,6 +32,9 @@ public class PThalesIOPort extends TypedIOPort {
             NameDuplicationException {
         super(container, name, isInput, isOutput);
 
+        //FIXME : adapt to correct type        
+        setTypeEquals(BaseType.FLOAT);
+        
         // Add parameters for PThales Domain
         initialize();
     }
@@ -53,6 +56,7 @@ public class PThalesIOPort extends TypedIOPort {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
+        //FIXME : adapt to correct type        
         setTypeEquals(BaseType.FLOAT);
     }
 
@@ -181,8 +185,9 @@ public class PThalesIOPort extends TypedIOPort {
            {
                value *= Integer.parseInt(dim.split("=")[1].split("\\.")[0].trim());
            }
+           result = value;
        }
-           
+       
        return result;
    }
 
