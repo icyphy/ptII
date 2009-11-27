@@ -32,7 +32,7 @@ import ptolemy.data.properties.lattice.PropertyConstraintSolver;
 import ptolemy.kernel.util.IllegalActionException;
 
 //////////////////////////////////////////////////////////////////////////
-//// AddSubtract
+//// AtomicActor
 
 /**
  A helper class for ptolemy.actor.AtomicActor.
@@ -45,15 +45,32 @@ import ptolemy.kernel.util.IllegalActionException;
  */
 public class AtomicActor extends PropertyConstraintHelper {
     /**
-     * Construct an AddSubtract helper.
-     * @param actor the associated actor
-     * @exception IllegalActionException
+     * Construct a helper for the given AtomicActor. This is the
+     * helper class for any ActomicActor that does not have a
+     * specific defined helper class. Default actor constraints
+     * are set for this helper.
+     * @param solver The given solver.
+     * @param actor The given ActomicActor.
+     * @exception IllegalActionException If the helper cannot be
+     * initialized in the superclass.
+     * initialized.
      */
     public AtomicActor(PropertyConstraintSolver solver,
             ptolemy.actor.AtomicActor actor) throws IllegalActionException {
         super(solver, actor);
     }
 
+    /**
+     * Construct a helper for the given AtomicActor. This is the
+     * helper class for any ActomicActor that does not have a
+     * specific defined helper class.
+     * @param solver The given solver.
+     * @param actor The given ActomicActor.
+     * @param useDefaultConstraints Indicate whether this helper uses the
+     * default actor constraints.
+     * @exception IllegalActionException If the helper cannot be
+     * initialized in the superclass.
+     */
     public AtomicActor(PropertyConstraintSolver solver,
             ptolemy.actor.AtomicActor actor, boolean useDefaultConstraints)
             throws IllegalActionException {

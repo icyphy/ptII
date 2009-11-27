@@ -56,8 +56,8 @@ public class AtomicActor extends PropertyConstraintHelper {
      * are set for this helper.
      * @param solver The given solver.
      * @param actor The given ActomicActor.
-     * @exception IllegalActionException Thrown if the helper cannot be
-     * initialized.
+     * @exception IllegalActionException If the helper cannot be
+     * initialized in the superclass.
      */
     public AtomicActor(PropertyConstraintSolver solver,
             ptolemy.actor.AtomicActor actor) throws IllegalActionException {
@@ -72,8 +72,8 @@ public class AtomicActor extends PropertyConstraintHelper {
      * @param actor The given ActomicActor.
      * @param useDefaultConstraints Indicate whether this helper uses the
      * default actor constraints.
-     * @exception IllegalActionException Thrown if the helper cannot be
-     * initialized.
+     * @exception IllegalActionException If the helper cannot be
+     * initialized in the superclass.
      */
     public AtomicActor(PropertyConstraintSolver solver,
             ptolemy.actor.AtomicActor actor, boolean useDefaultConstraints)

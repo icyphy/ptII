@@ -1,6 +1,6 @@
 /* A helper class for ptolemy.actor.AtomicActor.
 
- Copyright (c) 2006-2009 The Regents of the University of California.
+ Copyright (c) 2008-2009 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -64,6 +64,17 @@ public class AtomicActor extends PropertyConstraintHelper {
         super(solver, actor);
     }
 
+    /**
+     * Construct a helper for the given AtomicActor. This is the
+     * helper class for any ActomicActor that does not have a
+     * specific defined helper class.
+     * @param solver The given solver.
+     * @param actor The given ActomicActor.
+     * @param useDefaultConstraints Indicate whether this helper uses the
+     * default actor constraints.
+     * @exception IllegalActionException If the helper cannot be
+     * initialized in the superclass.
+     */
     public AtomicActor(PropertyConstraintSolver solver,
             ptolemy.actor.AtomicActor actor, boolean useDefaultConstraints)
             throws IllegalActionException {
@@ -71,6 +82,16 @@ public class AtomicActor extends PropertyConstraintHelper {
         super(solver, actor, useDefaultConstraints);
     }
 
+    /**
+     * Return the list of property-able Attributes.
+     * A property-able Attribute is a StringAttribute with the name
+     * "guardTransition", a StringAttribute in an Expression actor,
+     * a StringAttribute with the name "expression" or a Variable
+     * with full visibility.  However, Variables with certain names
+     * are excluded.
+     * @see ptolemy.data.properties.Propertyable
+     * @return The list of property-able Attributes.
+     */
     protected List<Attribute> _getPropertyableAttributes() {
         // do not set up default constraints for attributes in AtomicActors
         return new LinkedList<Attribute>();
