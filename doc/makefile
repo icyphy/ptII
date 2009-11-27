@@ -656,7 +656,6 @@ ALLPACKAGES = \
 	ptolemy.domains.modal.kernel.fmv \
 	ptolemy.domains.petrinet.kernel \
 	ptolemy.domains.psdf.kernel \
-	ptolemy.domains.properties \
 	ptolemy.domains.properties.kernel \
 	ptolemy.domains.ptera.kernel \
 	ptolemy.domains.ptera.lib \
