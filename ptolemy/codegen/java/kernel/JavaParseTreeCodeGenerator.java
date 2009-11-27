@@ -949,7 +949,7 @@ public class JavaParseTreeCodeGenerator extends AbstractParseTreeVisitor
                 result.append(", TYPE_" + codegenType);
             }
             //_fireCode.append(")))");
-            result.append("($new(" + /*codegenType + */"Matrix(" + result);
+            result = new StringBuffer("($new(" + /*codegenType + */"Matrix(" + result.toString());
             _childCode = result.toString() + ")))";
 
             childToken = MatrixToken.arrayToMatrix(tokens, node.getRowCount(),
