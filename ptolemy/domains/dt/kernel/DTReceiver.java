@@ -327,10 +327,13 @@ public class DTReceiver extends SDFReceiver {
     /** Put a token to the receiver. If the port feeding this
      *  receiver is null, report an internal error.
      *
-     *  @param token The token to be put to the receiver.
+     *  @param token The token to be put to the receiver, or null to put no token.
      *  @exception InternalErrorException If the source port is null.
      */
     public void put(Token token) {
+        if (token == null) {
+            return;
+        }
         if (_fromPort == null) {
             throw new InternalErrorException(
                     "internal DT error: Receiver with null source");

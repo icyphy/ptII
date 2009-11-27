@@ -467,11 +467,14 @@ public class DDEReceiver extends PrioritizedTimedQueue implements
      *  method this receiver is scheduled for termination, then throw
      *  a TerminateProcessException which will cease activity for the
      *  actor that contains this receiver.
-     *  @param token The token to put in the queue.
+     *  @param token The token to put in the queue, or null to put no token.
      *  @exception TerminateProcessException If activity is scheduled
      *   to cease.
      */
     public void put(Token token) {
+        if (token == null) {
+            return;
+        }
         Thread thread = Thread.currentThread();
         Time time = _lastTime;
 
@@ -494,7 +497,7 @@ public class DDEReceiver extends PrioritizedTimedQueue implements
      *  method this receiver is scheduled for termination, then throw a
      *  TerminateProcessException which will cease activity for the actor
      *  that contains this receiver.
-     *  @param token The token to put in the queue.
+     *  @param token The token to put in the queue, or null to put no token.
      *  @param time The specified time stamp.
      *  @exception TerminateProcessException If activity is scheduled
      *   to cease.

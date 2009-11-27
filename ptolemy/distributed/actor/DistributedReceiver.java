@@ -91,11 +91,14 @@ public class DistributedReceiver extends AbstractReceiver {
     /** Forward copies of the token to the distributed services
      *  specified in the servicesReceiversListMap.
      *  //TODO:This could be done in parallel. Is it worth the effort?
-     *  @param token The token to be forwarded.
+     *  @param token The token to be forwarded, or null to forward no token.
      *  @exception IllegalActionException If the put fails
      *   (e.g. because of incompatible types).
      */
     public void put(Token token) throws IllegalActionException {
+        if (token == null) {
+            return;
+        }
         if (VERBOSE) {
             System.out.println("Forwarding token: " + token.toString());
         }

@@ -364,12 +364,16 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
     /** Put a token into the mailbox receiver. This method does
      *  not return until the rendezvous is complete.
      *  This method is internally synchronized on the director.
-     *  @param token The token.
+     *  If the specified token is null, this method does nothing.
+     *  @param token The token, or null to do nothing.
      *  @exception TerminateProcessException If the actor to
      *   which this receiver belongs has been terminated while still
      *   running i.e it was not allowed to run to completion.
      */
     public void put(Token token) throws TerminateProcessException {
+        if (token == null) {
+            return;
+        }
         CSPDirector director = _getDirector();
         synchronized (director) {
             try {
@@ -498,7 +502,8 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
      *  Thus, each of the put() calls occurs in a different
      *  thread. This method does not return until all the
      *  put() calls have succeeded.
-     *  @param token The token to put.
+     *  If the specified token is null, this method does nothing.
+     *  @param token The token to put, or null to put no token.
      *  @param receivers The receivers, which are assumed to
      *   all be instances of CSPReceiver.
      *  @exception NoRoomException If there is no room for the token.
@@ -511,7 +516,7 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
     public void putToAll(final Token token, final Receiver[] receivers)
             throws NoRoomException, IllegalActionException,
             TerminateProcessException {
-        if (receivers == null || receivers.length == 0) {
+        if (token == null || receivers == null || receivers.length == 0) {
             return;
         }
 

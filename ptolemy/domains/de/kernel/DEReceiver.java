@@ -151,9 +151,12 @@ public class DEReceiver extends AbstractReceiver {
      *  the correct timestamp and microstep and invoke the corresponding actor
      *  whose input port contains this receiver. This receiver may contain
      *  more than one events.
-     *  @param token The token to be put.
+     *  @param token The token to be put, or null to put no token.
      */
     public void put(Token token) {
+        if (token == null) {
+            return;
+        }
         try {
             DEDirector dir = _getDirector();
             dir._enqueueTriggerEvent(getContainer());

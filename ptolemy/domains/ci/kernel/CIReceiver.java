@@ -133,10 +133,13 @@ public class CIReceiver extends AbstractReceiver {
     }
 
     /** Put the specified token into this receiver.
-     *  @param token The token to put into the receiver.
+     *  @param token The token to put into the receiver, or null to put no token.
      *  @exception NoRoomException If there is no room in the receiver.
      */
     public synchronized void put(Token token) throws NoRoomException {
+        if (token == null) {
+            return;
+        }
         _tokens.add(token);
         _notify();
     }
