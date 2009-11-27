@@ -185,24 +185,13 @@ public class CommitActionsAttribute extends AbstractActionsAttribute implements
 
                     try {
                         if (channel != null) {
-                            if (token == null) {
-                                destination.sendClear(channel.intValue());
+                            destination.send(channel.intValue(), token);
 
-                                if (_debugging) {
-                                    _debug(getFullName() + " port: "
-                                            + destination.getName()
-                                            + " channel: " + channel.intValue()
-                                            + ", Clear!");
-                                }
-                            } else {
-                                destination.send(channel.intValue(), token);
-
-                                if (_debugging) {
-                                    _debug(getFullName() + " port: "
-                                            + destination.getName()
-                                            + " channel: " + channel.intValue()
-                                            + ", token: " + token);
-                                }
+                            if (_debugging) {
+                                _debug(getFullName() + " port: "
+                                        + destination.getName()
+                                        + " channel: " + channel.intValue()
+                                        + ", token: " + token);
                             }
                         } else {
                             if (token == null) {

@@ -372,10 +372,11 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
                     if (_debugging) {
                         _debug("Fire state refinement:",  stateRefinements[i].getName());
                     }
-                    // FIXME: If the state refinement is an FSMActor, then the following
+                    // NOTE: If the state refinement is an FSMActor, then the following
                     // fire() method doesn't do the right thing. That fire() method does
                     // much less than this fire() method, and in particular, does not
-                    // invoke refinements!
+                    // invoke refinements!  This is fixed by using ModalModel in a
+                    // hierarchical state.
                     stateRefinements[i].fire();
                     _stateRefinementsToPostfire.add(stateRefinements[i]);
                 }
@@ -411,15 +412,15 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
             }
         } else {
             // If no transition was chosen, all relevant inputs are
-            // known, and the current state has no refinement, then send
-            // clear on all outputs.
+            // known, and the current state has no refinement, then make
+            // all outputs absent.
             if (!controller.foundUnknown() && stateRefinements == null) {
-                // Use the controller to send clear.
+                // Use the controller to set absent.
                 List<IOPort> outputs = controller.outputPortList();
                 for (IOPort port : outputs) {
                     for (int channel = 0; channel < port.getWidth(); channel++) {
                         if (!port.isKnown(channel)) {
-                            port.sendClear(channel);
+                            port.send(channel, null);
                         }
                     }
                 }
@@ -1379,7 +1380,7 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
                             _debug(getName(), "sending clear from "
                                     + port.getName());
                         }
-                        port.sendClear(i);
+                        port.send(i, null);
                     }
                 }
             } catch (NoTokenException ex) {

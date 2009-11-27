@@ -418,7 +418,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
                 for (IOPort port : outputs) {
                     for (int channel = 0; channel < port.getWidth(); channel++) {
                         if (!port.isKnown(channel)) {
-                            port.sendClear(channel);
+                            port.send(channel, null);
                         }
                     }
                 }
@@ -649,14 +649,14 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         Transition chosenTransition = chooseTransition(transitionList);
         
         // If no transition was chosen, all relevant inputs are
-        // known, and the current state has no refinement, then send
-        // clear on all outputs.
+        // known, and the current state has no refinement, then make
+        // all outputs absent.
         if (chosenTransition == null && !foundUnknown() && _currentState.getRefinement() == null) {
             List<IOPort> outputs = outputPortList();
             for (IOPort port : outputs) {
                 for (int channel = 0; channel < port.getWidth(); channel++) {
                     if (!port.isKnown(channel)) {
-                        port.sendClear(channel);
+                        port.send(channel, null);
                     }
                 }
             }
