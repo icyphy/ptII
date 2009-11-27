@@ -4,11 +4,8 @@
 <entity name="UCB_ABF2_fus" class="ptolemy.actor.TypedCompositeActor">
    <property name="PThales Director" class="ptolemy.domains.pthales.kernel.PthalesDirector">
       <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 100.0]"/>
+      <property name="iterations" class="ptolemy.data.expr.Parameter" value="1"/>
    </property>
-   <property name="_spearVersion" class="ptolemy.kernel.attributes.VersionAttribute"
-             value="0.2.6"/>
-   <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute"
-             value="3.0.2"/>
    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute"
              value="{bounds={-6, 71, 1036, 626}}"/>
    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[816, 482]"/>
@@ -345,19 +342,18 @@
    </property>
    <entity name="CovarCalculation" class="ptolemy.domains.pthales.lib.PThalesGenericActor">
       <property name="_location" class="ptolemy.kernel.util.Location" value="30.0, 150.0"/>
-      <property name="repetition" class="ptolemy.data.expr.StringParameter" value="1"/>
+      <property name="repetitions" class="ptolemy.data.expr.StringParameter" value="1"/>
       <port name="port" class="ptolemy.domains.pthales.lib.PThalesIOPort">
          <property name="input"/>
          <property name="multiport"/>
          <property name="_location" class="ptolemy.kernel.util.Location" value="20.0, 160.0"/>
          <property name="dataType" class="ptolemy.data.expr.StringParameter" value="Cplfloat"/>
-         <property name="dataTypeSize" class="ptolemy.data.expr.Parameter" value=""/>
+         <property name="dataTypeSize" class="ptolemy.data.expr.Parameter" value="8"/>
          <property name="dimensionNames" class="ptolemy.data.expr.StringParameter"
                    value="rg,ant,pul"/>
-         <property name="base" class="ptolemy.data.expr.StringParameter"
-                   value="rg = 3,ant = 0,pul = 0"/>
+         <property name="base" class="ptolemy.data.expr.StringParameter" value="rg=3,ant=0,pul=0"/>
          <property name="pattern" class="ptolemy.data.expr.StringParameter"
-                   value="ant = 8,rg = 10,pul = 32"/>
+                   value="ant=8.1,rg=10.1,pul=32.1"/>
          <property name="tiling" class="ptolemy.data.expr.StringParameter" value="rg=0"/>
       </port>
       <port name="port2" class="ptolemy.domains.pthales.lib.PThalesIOPort">
@@ -365,108 +361,107 @@
          <property name="multiport"/>
          <property name="_location" class="ptolemy.kernel.util.Location" value="565.0, 160.0"/>
          <property name="dataType" class="ptolemy.data.expr.StringParameter" value="Cplfloat"/>
-         <property name="dataTypeSize" class="ptolemy.data.expr.Parameter" value=""/>
+         <property name="dataTypeSize" class="ptolemy.data.expr.Parameter" value="8"/>
          <property name="dimensionNames" class="ptolemy.data.expr.StringParameter" value="mx,my"/>
-         <property name="base" class="ptolemy.data.expr.StringParameter" value="mx = 0,my = 0"/>
-         <property name="pattern" class="ptolemy.data.expr.StringParameter" value="mx = 8,my = 8"/>
+         <property name="base" class="ptolemy.data.expr.StringParameter" value="mx=0,my=0"/>
+         <property name="pattern" class="ptolemy.data.expr.StringParameter" value="mx=8.1,my=8.1"/>
          <property name="tiling" class="ptolemy.data.expr.StringParameter" value="mx=0"/>
       </port>
    </entity>
    <entity name="Weight_Calculation"
            class="ptolemy.domains.pthales.lib.PThalesGenericActor">
       <property name="_location" class="ptolemy.kernel.util.Location" value="355.0, 175.0"/>
-      <property name="repetition" class="ptolemy.data.expr.StringParameter" value="7"/>
+      <property name="repetitions" class="ptolemy.data.expr.StringParameter" value="7"/>
       <port name="port" class="ptolemy.domains.pthales.lib.PThalesIOPort">
          <property name="input"/>
          <property name="multiport"/>
          <property name="_location" class="ptolemy.kernel.util.Location" value="20.0, 160.0"/>
          <property name="dataType" class="ptolemy.data.expr.StringParameter" value="Cplfloat"/>
-         <property name="dataTypeSize" class="ptolemy.data.expr.Parameter" value=""/>
+         <property name="dataTypeSize" class="ptolemy.data.expr.Parameter" value="8"/>
          <property name="dimensionNames" class="ptolemy.data.expr.StringParameter"
                    value="ant,beam"/>
-         <property name="base" class="ptolemy.data.expr.StringParameter" value="ant = 0,beam = 0"/>
-         <property name="pattern" class="ptolemy.data.expr.StringParameter" value="ant = 8"/>
-         <property name="tiling" class="ptolemy.data.expr.StringParameter" value="beam = 1"/>
+         <property name="base" class="ptolemy.data.expr.StringParameter" value="ant=0,beam=0"/>
+         <property name="pattern" class="ptolemy.data.expr.StringParameter" value="ant=8.1"/>
+         <property name="tiling" class="ptolemy.data.expr.StringParameter" value="beam=1"/>
       </port>
       <port name="port2" class="ptolemy.domains.pthales.lib.PThalesIOPort">
          <property name="output"/>
          <property name="multiport"/>
          <property name="_location" class="ptolemy.kernel.util.Location" value="565.0, 160.0"/>
          <property name="dataType" class="ptolemy.data.expr.StringParameter" value="Cplfloat"/>
-         <property name="dataTypeSize" class="ptolemy.data.expr.Parameter" value=""/>
+         <property name="dataTypeSize" class="ptolemy.data.expr.Parameter" value="8"/>
          <property name="dimensionNames" class="ptolemy.data.expr.StringParameter"
                    value="ant,beam"/>
-         <property name="base" class="ptolemy.data.expr.StringParameter" value="ant = 0,beam = 0"/>
-         <property name="pattern" class="ptolemy.data.expr.StringParameter" value="ant = 8"/>
-         <property name="tiling" class="ptolemy.data.expr.StringParameter" value="beam = 1"/>
+         <property name="base" class="ptolemy.data.expr.StringParameter" value="ant=0,beam=0"/>
+         <property name="pattern" class="ptolemy.data.expr.StringParameter" value="ant=8.1"/>
+         <property name="tiling" class="ptolemy.data.expr.StringParameter" value="beam=1"/>
       </port>
       <port name="port3" class="ptolemy.domains.pthales.lib.PThalesIOPort">
          <property name="input"/>
          <property name="multiport"/>
          <property name="_location" class="ptolemy.kernel.util.Location" value="20.0, 340.0"/>
          <property name="dataType" class="ptolemy.data.expr.StringParameter" value="Cplfloat"/>
-         <property name="dataTypeSize" class="ptolemy.data.expr.Parameter" value=""/>
+         <property name="dataTypeSize" class="ptolemy.data.expr.Parameter" value="8"/>
          <property name="dimensionNames" class="ptolemy.data.expr.StringParameter" value="mx,my"/>
-         <property name="base" class="ptolemy.data.expr.StringParameter" value="mx = 0,my = 0"/>
-         <property name="pattern" class="ptolemy.data.expr.StringParameter" value="mx = 8,my = 8"/>
+         <property name="base" class="ptolemy.data.expr.StringParameter" value="mx=0,my=0"/>
+         <property name="pattern" class="ptolemy.data.expr.StringParameter" value="mx=8.1,my=8.1"/>
          <property name="tiling" class="ptolemy.data.expr.StringParameter" value="mx=0"/>
       </port>
    </entity>
    <entity name="ApplyFilter" class="ptolemy.domains.pthales.lib.PThalesGenericActor">
       <property name="_location" class="ptolemy.kernel.util.Location" value="420.0, 375.0"/>
-      <property name="repetition" class="ptolemy.data.expr.StringParameter" value="32,7,185"/>
+      <property name="repetitions" class="ptolemy.data.expr.StringParameter" value="32,7,185"/>
       <port name="port" class="ptolemy.domains.pthales.lib.PThalesIOPort">
          <property name="input"/>
          <property name="multiport"/>
          <property name="_location" class="ptolemy.kernel.util.Location" value="20.0, 160.0"/>
          <property name="dataType" class="ptolemy.data.expr.StringParameter" value="Cplfloat"/>
-         <property name="dataTypeSize" class="ptolemy.data.expr.Parameter" value=""/>
+         <property name="dataTypeSize" class="ptolemy.data.expr.Parameter" value="8"/>
          <property name="dimensionNames" class="ptolemy.data.expr.StringParameter"
                    value="rg,ant,pul"/>
-         <property name="base" class="ptolemy.data.expr.StringParameter"
-                   value="rg = 0,ant = 0,pul = 0"/>
-         <property name="pattern" class="ptolemy.data.expr.StringParameter" value="ant = 8"/>
-         <property name="tiling" class="ptolemy.data.expr.StringParameter" value="pul = 1,rg = 1"/>
+         <property name="base" class="ptolemy.data.expr.StringParameter" value="rg=0,ant=0,pul=0"/>
+         <property name="pattern" class="ptolemy.data.expr.StringParameter" value="ant=8.1"/>
+         <property name="tiling" class="ptolemy.data.expr.StringParameter" value="pul=1,rg=0,rg=1"/>
       </port>
       <port name="port2" class="ptolemy.domains.pthales.lib.PThalesIOPort">
          <property name="output"/>
          <property name="multiport"/>
          <property name="_location" class="ptolemy.kernel.util.Location" value="565.0, 160.0"/>
          <property name="dataType" class="ptolemy.data.expr.StringParameter" value="Cplfloat"/>
-         <property name="dataTypeSize" class="ptolemy.data.expr.Parameter" value=""/>
+         <property name="dataTypeSize" class="ptolemy.data.expr.Parameter" value="8"/>
          <property name="dimensionNames" class="ptolemy.data.expr.StringParameter"
                    value="pul,rg,beam"/>
-         <property name="base" class="ptolemy.data.expr.StringParameter"
-                   value="pul = 0,rg = 0,beam = 0"/>
-         <property name="pattern" class="ptolemy.data.expr.StringParameter" value="pul=1"/>
+         <property name="base" class="ptolemy.data.expr.StringParameter" value="pul=0,rg=0,beam=0"/>
+         <property name="pattern" class="ptolemy.data.expr.StringParameter" value="pul=1.1"/>
          <property name="tiling" class="ptolemy.data.expr.StringParameter"
-                   value="pul = 1,beam = 1,rg = 1"/>
+                   value="pul=1,beam=1,rg=1"/>
       </port>
       <port name="port3" class="ptolemy.domains.pthales.lib.PThalesIOPort">
          <property name="input"/>
          <property name="multiport"/>
          <property name="_location" class="ptolemy.kernel.util.Location" value="20.0, 285.0"/>
          <property name="dataType" class="ptolemy.data.expr.StringParameter" value="Cplfloat"/>
-         <property name="dataTypeSize" class="ptolemy.data.expr.Parameter" value=""/>
+         <property name="dataTypeSize" class="ptolemy.data.expr.Parameter" value="8"/>
          <property name="dimensionNames" class="ptolemy.data.expr.StringParameter"
                    value="ant,beam"/>
-         <property name="base" class="ptolemy.data.expr.StringParameter" value="ant = 0,beam = 0"/>
-         <property name="pattern" class="ptolemy.data.expr.StringParameter" value="ant = 8"/>
-         <property name="tiling" class="ptolemy.data.expr.StringParameter" value="beam = 1"/>
+         <property name="base" class="ptolemy.data.expr.StringParameter" value="ant=0,beam=0"/>
+         <property name="pattern" class="ptolemy.data.expr.StringParameter" value="ant=8.1"/>
+         <property name="tiling" class="ptolemy.data.expr.StringParameter"
+                   value="ant=0,beam=1,ant=0"/>
       </port>
    </entity>
    <entity name="Matrix_invert" class="ptolemy.domains.pthales.lib.PThalesGenericActor">
       <property name="_location" class="ptolemy.kernel.util.Location" value="335.0, 70.0"/>
-      <property name="repetition" class="ptolemy.data.expr.StringParameter" value="1"/>
+      <property name="repetitions" class="ptolemy.data.expr.StringParameter" value="1"/>
       <port name="port" class="ptolemy.domains.pthales.lib.PThalesIOPort">
          <property name="input"/>
          <property name="multiport"/>
          <property name="_location" class="ptolemy.kernel.util.Location" value="20.0, 160.0"/>
          <property name="dataType" class="ptolemy.data.expr.StringParameter" value="Cplfloat"/>
-         <property name="dataTypeSize" class="ptolemy.data.expr.Parameter" value=""/>
+         <property name="dataTypeSize" class="ptolemy.data.expr.Parameter" value="8"/>
          <property name="dimensionNames" class="ptolemy.data.expr.StringParameter" value="mx,my"/>
-         <property name="base" class="ptolemy.data.expr.StringParameter" value="mx = 0,my = 0"/>
-         <property name="pattern" class="ptolemy.data.expr.StringParameter" value="mx = 8,my = 8"/>
+         <property name="base" class="ptolemy.data.expr.StringParameter" value="mx=0,my=0"/>
+         <property name="pattern" class="ptolemy.data.expr.StringParameter" value="mx=8.1,my=8.1"/>
          <property name="tiling" class="ptolemy.data.expr.StringParameter" value="mx=0"/>
       </port>
       <port name="port2" class="ptolemy.domains.pthales.lib.PThalesIOPort">
@@ -474,129 +469,126 @@
          <property name="multiport"/>
          <property name="_location" class="ptolemy.kernel.util.Location" value="565.0, 160.0"/>
          <property name="dataType" class="ptolemy.data.expr.StringParameter" value="Cplfloat"/>
-         <property name="dataTypeSize" class="ptolemy.data.expr.Parameter" value=""/>
+         <property name="dataTypeSize" class="ptolemy.data.expr.Parameter" value="8"/>
          <property name="dimensionNames" class="ptolemy.data.expr.StringParameter" value="mx,my"/>
-         <property name="base" class="ptolemy.data.expr.StringParameter" value="mx = 0,my = 0"/>
-         <property name="pattern" class="ptolemy.data.expr.StringParameter" value="mx = 8,my = 8"/>
+         <property name="base" class="ptolemy.data.expr.StringParameter" value="mx=0,my=0"/>
+         <property name="pattern" class="ptolemy.data.expr.StringParameter" value="mx=8.1,my=8.1"/>
          <property name="tiling" class="ptolemy.data.expr.StringParameter" value="mx=0"/>
       </port>
    </entity>
    <entity name="PulseCompression" class="ptolemy.domains.pthales.lib.PThalesGenericActor">
       <property name="_location" class="ptolemy.kernel.util.Location" value="195.0, 490.0"/>
-      <property name="repetition" class="ptolemy.data.expr.StringParameter" value="185,8,32"/>
+      <property name="repetitions" class="ptolemy.data.expr.StringParameter" value="185,8,32"/>
       <port name="port" class="ptolemy.domains.pthales.lib.PThalesIOPort">
          <property name="input"/>
          <property name="multiport"/>
          <property name="_location" class="ptolemy.kernel.util.Location" value="20.0, 160.0"/>
          <property name="dataType" class="ptolemy.data.expr.StringParameter" value="Cplfloat"/>
-         <property name="dataTypeSize" class="ptolemy.data.expr.Parameter" value=""/>
+         <property name="dataTypeSize" class="ptolemy.data.expr.Parameter" value="8"/>
          <property name="dimensionNames" class="ptolemy.data.expr.StringParameter"
                    value="ant,rg,pul"/>
-         <property name="base" class="ptolemy.data.expr.StringParameter"
-                   value="ant = 0,rg = 0,pul = 0"/>
-         <property name="pattern" class="ptolemy.data.expr.StringParameter" value="rg = 16"/>
+         <property name="base" class="ptolemy.data.expr.StringParameter" value="ant=0,rg=0,pul=0"/>
+         <property name="pattern" class="ptolemy.data.expr.StringParameter" value="rg=16.1"/>
          <property name="tiling" class="ptolemy.data.expr.StringParameter"
-                   value="rg = 1,ant = 1,pul = 1"/>
+                   value="rg=1,ant=1,pul=1"/>
       </port>
       <port name="port2" class="ptolemy.domains.pthales.lib.PThalesIOPort">
          <property name="output"/>
          <property name="multiport"/>
          <property name="_location" class="ptolemy.kernel.util.Location" value="565.0, 160.0"/>
          <property name="dataType" class="ptolemy.data.expr.StringParameter" value="Cplfloat"/>
-         <property name="dataTypeSize" class="ptolemy.data.expr.Parameter" value=""/>
+         <property name="dataTypeSize" class="ptolemy.data.expr.Parameter" value="8"/>
          <property name="dimensionNames" class="ptolemy.data.expr.StringParameter"
                    value="rg,ant,pul"/>
-         <property name="base" class="ptolemy.data.expr.StringParameter"
-                   value="rg = 0,ant = 0,pul = 0"/>
-         <property name="pattern" class="ptolemy.data.expr.StringParameter" value="rg=1"/>
+         <property name="base" class="ptolemy.data.expr.StringParameter" value="rg=0,ant=0,pul=0"/>
+         <property name="pattern" class="ptolemy.data.expr.StringParameter" value="rg=1.1"/>
          <property name="tiling" class="ptolemy.data.expr.StringParameter"
-                   value="rg = 1,ant = 1,pul = 1"/>
+                   value="rg=1,ant=1,pul=1"/>
       </port>
       <port name="port3" class="ptolemy.domains.pthales.lib.PThalesIOPort">
          <property name="input"/>
          <property name="multiport"/>
          <property name="_location" class="ptolemy.kernel.util.Location" value="20.0, 495.0"/>
          <property name="dataType" class="ptolemy.data.expr.StringParameter" value="Cplfloat"/>
-         <property name="dataTypeSize" class="ptolemy.data.expr.Parameter" value=""/>
+         <property name="dataTypeSize" class="ptolemy.data.expr.Parameter" value="8"/>
          <property name="dimensionNames" class="ptolemy.data.expr.StringParameter" value="t"/>
-         <property name="base" class="ptolemy.data.expr.StringParameter" value="t = 0"/>
-         <property name="pattern" class="ptolemy.data.expr.StringParameter" value="t = 16"/>
-         <property name="tiling" class="ptolemy.data.expr.StringParameter" value="t=0"/>
+         <property name="base" class="ptolemy.data.expr.StringParameter" value="t=0"/>
+         <property name="pattern" class="ptolemy.data.expr.StringParameter" value="t=16.1"/>
+         <property name="tiling" class="ptolemy.data.expr.StringParameter" value="t=0,t=0,t=0"/>
       </port>
    </entity>
    <entity name="SteerVectCalc" class="ptolemy.domains.pthales.lib.PThalesGenericActor">
       <property name="_location" class="ptolemy.kernel.util.Location" value="115.0, 230.0"/>
-      <property name="repetition" class="ptolemy.data.expr.StringParameter" value="1"/>
+      <property name="repetitions" class="ptolemy.data.expr.StringParameter" value="1"/>
       <port name="port" class="ptolemy.domains.pthales.lib.PThalesIOPort">
          <property name="output"/>
          <property name="multiport"/>
          <property name="_location" class="ptolemy.kernel.util.Location" value="565.0, 210.0"/>
          <property name="dataType" class="ptolemy.data.expr.StringParameter" value="Cplfloat"/>
-         <property name="dataTypeSize" class="ptolemy.data.expr.Parameter" value=""/>
+         <property name="dataTypeSize" class="ptolemy.data.expr.Parameter" value="8"/>
          <property name="dimensionNames" class="ptolemy.data.expr.StringParameter"
                    value="ant,beam"/>
-         <property name="base" class="ptolemy.data.expr.StringParameter" value="ant = 0,beam = 0"/>
+         <property name="base" class="ptolemy.data.expr.StringParameter" value="ant=0,beam=0"/>
          <property name="pattern" class="ptolemy.data.expr.StringParameter"
-                   value="ant = 8,beam = 7"/>
+                   value="ant=8.1,beam=7.1"/>
          <property name="tiling" class="ptolemy.data.expr.StringParameter" value="ant=0"/>
       </port>
    </entity>
    <entity name="DopplerFiltering" class="ptolemy.domains.pthales.lib.PThalesGenericActor">
       <property name="_location" class="ptolemy.kernel.util.Location" value="540.0, 475.0"/>
-      <property name="repetition" class="ptolemy.data.expr.StringParameter" value="7,185"/>
+      <property name="repetitions" class="ptolemy.data.expr.StringParameter" value="7,185"/>
       <port name="port" class="ptolemy.domains.pthales.lib.PThalesIOPort">
          <property name="input"/>
          <property name="multiport"/>
          <property name="_location" class="ptolemy.kernel.util.Location" value="20.0, 160.0"/>
          <property name="dataType" class="ptolemy.data.expr.StringParameter" value="Cplfloat"/>
-         <property name="dataTypeSize" class="ptolemy.data.expr.Parameter" value=""/>
+         <property name="dataTypeSize" class="ptolemy.data.expr.Parameter" value="8"/>
          <property name="dimensionNames" class="ptolemy.data.expr.StringParameter"
                    value="pul,rg,beam"/>
-         <property name="base" class="ptolemy.data.expr.StringParameter"
-                   value="pul = 0,rg = 0,beam = 0"/>
-         <property name="pattern" class="ptolemy.data.expr.StringParameter" value="pul = 32"/>
-         <property name="tiling" class="ptolemy.data.expr.StringParameter" value="beam = 1,rg = 1"/>
+         <property name="base" class="ptolemy.data.expr.StringParameter" value="pul=0,rg=0,beam=0"/>
+         <property name="pattern" class="ptolemy.data.expr.StringParameter" value="pul=32.1"/>
+         <property name="tiling" class="ptolemy.data.expr.StringParameter" value="beam=1,rg=1"/>
       </port>
       <port name="port2" class="ptolemy.domains.pthales.lib.PThalesIOPort">
          <property name="output"/>
          <property name="multiport"/>
          <property name="_location" class="ptolemy.kernel.util.Location" value="565.0, 160.0"/>
          <property name="dataType" class="ptolemy.data.expr.StringParameter" value="Cplfloat"/>
-         <property name="dataTypeSize" class="ptolemy.data.expr.Parameter" value=""/>
+         <property name="dataTypeSize" class="ptolemy.data.expr.Parameter" value="8"/>
          <property name="dimensionNames" class="ptolemy.data.expr.StringParameter"
                    value="f,beam,rg"/>
-         <property name="base" class="ptolemy.data.expr.StringParameter" value="f = 0"/>
-         <property name="pattern" class="ptolemy.data.expr.StringParameter" value="f = 32"/>
-         <property name="tiling" class="ptolemy.data.expr.StringParameter" value="beam = 1,rg = 1"/>
+         <property name="base" class="ptolemy.data.expr.StringParameter" value="f=0"/>
+         <property name="pattern" class="ptolemy.data.expr.StringParameter" value="f=32.1"/>
+         <property name="tiling" class="ptolemy.data.expr.StringParameter" value="beam=1,rg=1"/>
       </port>
    </entity>
    <entity name="GenPulseX4" class="ptolemy.domains.pthales.lib.PThalesGenericActor">
       <property name="_location" class="ptolemy.kernel.util.Location" value="-340.0, 435.0"/>
-      <property name="repetition" class="ptolemy.data.expr.StringParameter" value="1"/>
+      <property name="repetitions" class="ptolemy.data.expr.StringParameter" value="1"/>
       <port name="port" class="ptolemy.domains.pthales.lib.PThalesIOPort">
          <property name="output"/>
          <property name="multiport"/>
          <property name="_location" class="ptolemy.kernel.util.Location" value="900.0, 160.0"/>
          <property name="dataType" class="ptolemy.data.expr.StringParameter" value="Cplfloat"/>
-         <property name="dataTypeSize" class="ptolemy.data.expr.Parameter" value=""/>
+         <property name="dataTypeSize" class="ptolemy.data.expr.Parameter" value="8"/>
          <property name="dimensionNames" class="ptolemy.data.expr.StringParameter" value="t"/>
-         <property name="base" class="ptolemy.data.expr.StringParameter" value="t = 0"/>
-         <property name="pattern" class="ptolemy.data.expr.StringParameter" value="t = 64"/>
+         <property name="base" class="ptolemy.data.expr.StringParameter" value="t=0"/>
+         <property name="pattern" class="ptolemy.data.expr.StringParameter" value="t=64.1"/>
          <property name="tiling" class="ptolemy.data.expr.StringParameter" value="t=0"/>
       </port>
    </entity>
    <entity name="Gen_Echo" class="ptolemy.domains.pthales.lib.PThalesGenericActor">
       <property name="_location" class="ptolemy.kernel.util.Location" value="-210.0, 375.0"/>
-      <property name="repetition" class="ptolemy.data.expr.StringParameter" value="32"/>
+      <property name="repetitions" class="ptolemy.data.expr.StringParameter" value="32"/>
       <port name="port" class="ptolemy.domains.pthales.lib.PThalesIOPort">
          <property name="input"/>
          <property name="multiport"/>
          <property name="_location" class="ptolemy.kernel.util.Location" value="20.0, 160.0"/>
          <property name="dataType" class="ptolemy.data.expr.StringParameter" value="Cplfloat"/>
-         <property name="dataTypeSize" class="ptolemy.data.expr.Parameter" value=""/>
+         <property name="dataTypeSize" class="ptolemy.data.expr.Parameter" value="8"/>
          <property name="dimensionNames" class="ptolemy.data.expr.StringParameter" value="t"/>
-         <property name="base" class="ptolemy.data.expr.StringParameter" value="t = 0"/>
-         <property name="pattern" class="ptolemy.data.expr.StringParameter" value="t = 64"/>
+         <property name="base" class="ptolemy.data.expr.StringParameter" value="t=0"/>
+         <property name="pattern" class="ptolemy.data.expr.StringParameter" value="t=64.1"/>
          <property name="tiling" class="ptolemy.data.expr.StringParameter" value="t=0"/>
       </port>
       <port name="port2" class="ptolemy.domains.pthales.lib.PThalesIOPort">
@@ -604,63 +596,59 @@
          <property name="multiport"/>
          <property name="_location" class="ptolemy.kernel.util.Location" value="900.0, 160.0"/>
          <property name="dataType" class="ptolemy.data.expr.StringParameter" value="Cplfloat"/>
-         <property name="dataTypeSize" class="ptolemy.data.expr.Parameter" value=""/>
+         <property name="dataTypeSize" class="ptolemy.data.expr.Parameter" value="8"/>
          <property name="dimensionNames" class="ptolemy.data.expr.StringParameter"
                    value="ant,rg,pul"/>
-         <property name="base" class="ptolemy.data.expr.StringParameter"
-                   value="ant = 0,rg = 0,pul = 0"/>
+         <property name="base" class="ptolemy.data.expr.StringParameter" value="ant=0,rg=0,pul=0"/>
          <property name="pattern" class="ptolemy.data.expr.StringParameter"
-                   value="ant = 8,rg = 200"/>
-         <property name="tiling" class="ptolemy.data.expr.StringParameter" value="pul = 1"/>
+                   value="ant=8.1,rg=200.1"/>
+         <property name="tiling" class="ptolemy.data.expr.StringParameter" value="pul=1"/>
       </port>
    </entity>
    <entity name="Add_Noise" class="ptolemy.domains.pthales.lib.PThalesGenericActor">
       <property name="_location" class="ptolemy.kernel.util.Location" value="-105.0, 395.0"/>
-      <property name="repetition" class="ptolemy.data.expr.StringParameter" value="8,200,32"/>
+      <property name="repetitions" class="ptolemy.data.expr.StringParameter" value="8,200,32"/>
       <port name="port" class="ptolemy.domains.pthales.lib.PThalesIOPort">
          <property name="input"/>
          <property name="multiport"/>
          <property name="_location" class="ptolemy.kernel.util.Location" value="20.0, 160.0"/>
          <property name="dataType" class="ptolemy.data.expr.StringParameter" value="Cplfloat"/>
-         <property name="dataTypeSize" class="ptolemy.data.expr.Parameter" value=""/>
+         <property name="dataTypeSize" class="ptolemy.data.expr.Parameter" value="8"/>
          <property name="dimensionNames" class="ptolemy.data.expr.StringParameter"
                    value="ant,rg,pul"/>
-         <property name="base" class="ptolemy.data.expr.StringParameter"
-                   value="ant = 0,rg = 0,pul = 0"/>
-         <property name="pattern" class="ptolemy.data.expr.StringParameter" value="ant=1"/>
+         <property name="base" class="ptolemy.data.expr.StringParameter" value="ant=0,rg=0,pul=0"/>
+         <property name="pattern" class="ptolemy.data.expr.StringParameter" value="ant=1.1"/>
          <property name="tiling" class="ptolemy.data.expr.StringParameter"
-                   value="ant = 1,rg = 1,pul = 1"/>
+                   value="ant=1,rg=1,pul=1"/>
       </port>
       <port name="port2" class="ptolemy.domains.pthales.lib.PThalesIOPort">
          <property name="output"/>
          <property name="multiport"/>
          <property name="_location" class="ptolemy.kernel.util.Location" value="900.0, 160.0"/>
          <property name="dataType" class="ptolemy.data.expr.StringParameter" value="Cplfloat"/>
-         <property name="dataTypeSize" class="ptolemy.data.expr.Parameter" value=""/>
+         <property name="dataTypeSize" class="ptolemy.data.expr.Parameter" value="8"/>
          <property name="dimensionNames" class="ptolemy.data.expr.StringParameter"
                    value="ant,rg,pul"/>
-         <property name="base" class="ptolemy.data.expr.StringParameter"
-                   value="ant = 0,rg = 0,pul = 0"/>
-         <property name="pattern" class="ptolemy.data.expr.StringParameter" value="ant=1"/>
+         <property name="base" class="ptolemy.data.expr.StringParameter" value="ant=0,rg=0,pul=0"/>
+         <property name="pattern" class="ptolemy.data.expr.StringParameter" value="ant=1.1"/>
          <property name="tiling" class="ptolemy.data.expr.StringParameter"
-                   value="ant = 1,rg = 1,pul = 1"/>
+                   value="ant=1,rg=1,pul=1"/>
       </port>
    </entity>
    <entity name="AddJammer" class="ptolemy.domains.pthales.lib.PThalesGenericActor">
       <property name="_location" class="ptolemy.kernel.util.Location" value="0.0, 385.0"/>
-      <property name="repetition" class="ptolemy.data.expr.StringParameter" value="1"/>
+      <property name="repetitions" class="ptolemy.data.expr.StringParameter" value="1"/>
       <port name="port" class="ptolemy.domains.pthales.lib.PThalesIOPort">
          <property name="input"/>
          <property name="multiport"/>
          <property name="_location" class="ptolemy.kernel.util.Location" value="20.0, 375.0"/>
          <property name="dataType" class="ptolemy.data.expr.StringParameter" value="Cplfloat"/>
-         <property name="dataTypeSize" class="ptolemy.data.expr.Parameter" value=""/>
+         <property name="dataTypeSize" class="ptolemy.data.expr.Parameter" value="8"/>
          <property name="dimensionNames" class="ptolemy.data.expr.StringParameter"
                    value="ant,rg,pul"/>
-         <property name="base" class="ptolemy.data.expr.StringParameter"
-                   value="ant = 0,rg = 0,pul = 0"/>
+         <property name="base" class="ptolemy.data.expr.StringParameter" value="ant=0,rg=0,pul=0"/>
          <property name="pattern" class="ptolemy.data.expr.StringParameter"
-                   value="ant = 8,rg = 200,pul = 32"/>
+                   value="ant=8.1,rg=200.1,pul=32.1"/>
          <property name="tiling" class="ptolemy.data.expr.StringParameter" value="ant=0"/>
       </port>
       <port name="port2" class="ptolemy.domains.pthales.lib.PThalesIOPort">
@@ -668,28 +656,27 @@
          <property name="multiport"/>
          <property name="_location" class="ptolemy.kernel.util.Location" value="1170.0, 375.0"/>
          <property name="dataType" class="ptolemy.data.expr.StringParameter" value="Cplfloat"/>
-         <property name="dataTypeSize" class="ptolemy.data.expr.Parameter" value=""/>
+         <property name="dataTypeSize" class="ptolemy.data.expr.Parameter" value="8"/>
          <property name="dimensionNames" class="ptolemy.data.expr.StringParameter"
                    value="ant,rg,pul"/>
-         <property name="base" class="ptolemy.data.expr.StringParameter"
-                   value="ant = 0,rg = 0,pul = 0"/>
+         <property name="base" class="ptolemy.data.expr.StringParameter" value="ant=0,rg=0,pul=0"/>
          <property name="pattern" class="ptolemy.data.expr.StringParameter"
-                   value="ant = 8,rg = 200,pul = 32"/>
+                   value="ant=8.1,rg=200.1,pul=32.1"/>
          <property name="tiling" class="ptolemy.data.expr.StringParameter" value="ant=0"/>
       </port>
    </entity>
    <entity name="Decim" class="ptolemy.domains.pthales.lib.PThalesGenericActor">
       <property name="_location" class="ptolemy.kernel.util.Location" value="-50.0, 525.0"/>
-      <property name="repetition" class="ptolemy.data.expr.StringParameter" value="1"/>
+      <property name="repetitions" class="ptolemy.data.expr.StringParameter" value="1"/>
       <port name="port" class="ptolemy.domains.pthales.lib.PThalesIOPort">
          <property name="input"/>
          <property name="multiport"/>
          <property name="_location" class="ptolemy.kernel.util.Location" value="20.0, 375.0"/>
          <property name="dataType" class="ptolemy.data.expr.StringParameter" value="Cplfloat"/>
-         <property name="dataTypeSize" class="ptolemy.data.expr.Parameter" value=""/>
+         <property name="dataTypeSize" class="ptolemy.data.expr.Parameter" value="8"/>
          <property name="dimensionNames" class="ptolemy.data.expr.StringParameter" value="t"/>
-         <property name="base" class="ptolemy.data.expr.StringParameter" value="t = 0"/>
-         <property name="pattern" class="ptolemy.data.expr.StringParameter" value="t = 64"/>
+         <property name="base" class="ptolemy.data.expr.StringParameter" value="t=0"/>
+         <property name="pattern" class="ptolemy.data.expr.StringParameter" value="t=64.1"/>
          <property name="tiling" class="ptolemy.data.expr.StringParameter" value="t=0"/>
       </port>
       <port name="port2" class="ptolemy.domains.pthales.lib.PThalesIOPort">
@@ -697,25 +684,25 @@
          <property name="multiport"/>
          <property name="_location" class="ptolemy.kernel.util.Location" value="1170.0, 375.0"/>
          <property name="dataType" class="ptolemy.data.expr.StringParameter" value="Cplfloat"/>
-         <property name="dataTypeSize" class="ptolemy.data.expr.Parameter" value=""/>
+         <property name="dataTypeSize" class="ptolemy.data.expr.Parameter" value="8"/>
          <property name="dimensionNames" class="ptolemy.data.expr.StringParameter" value="t"/>
-         <property name="base" class="ptolemy.data.expr.StringParameter" value="t = 0"/>
-         <property name="pattern" class="ptolemy.data.expr.StringParameter" value="t = 16"/>
+         <property name="base" class="ptolemy.data.expr.StringParameter" value="t=0"/>
+         <property name="pattern" class="ptolemy.data.expr.StringParameter" value="t=16.1"/>
          <property name="tiling" class="ptolemy.data.expr.StringParameter" value="t=0"/>
       </port>
    </entity>
    <entity name="Check_Inv" class="ptolemy.domains.pthales.lib.PThalesGenericActor">
       <property name="_location" class="ptolemy.kernel.util.Location" value="440.0, -10.0"/>
-      <property name="repetition" class="ptolemy.data.expr.StringParameter" value="1"/>
+      <property name="repetitions" class="ptolemy.data.expr.StringParameter" value="1"/>
       <port name="port" class="ptolemy.domains.pthales.lib.PThalesIOPort">
          <property name="input"/>
          <property name="multiport"/>
          <property name="_location" class="ptolemy.kernel.util.Location" value="20.0, 375.0"/>
          <property name="dataType" class="ptolemy.data.expr.StringParameter" value="Cplfloat"/>
-         <property name="dataTypeSize" class="ptolemy.data.expr.Parameter" value=""/>
+         <property name="dataTypeSize" class="ptolemy.data.expr.Parameter" value="8"/>
          <property name="dimensionNames" class="ptolemy.data.expr.StringParameter" value="mx,my"/>
-         <property name="base" class="ptolemy.data.expr.StringParameter" value="mx = 0,my = 0"/>
-         <property name="pattern" class="ptolemy.data.expr.StringParameter" value="mx = 8,my = 8"/>
+         <property name="base" class="ptolemy.data.expr.StringParameter" value="mx=0,my=0"/>
+         <property name="pattern" class="ptolemy.data.expr.StringParameter" value="mx=8.1,my=8.1"/>
          <property name="tiling" class="ptolemy.data.expr.StringParameter" value="mx=0"/>
       </port>
       <port name="port2" class="ptolemy.domains.pthales.lib.PThalesIOPort">
@@ -723,10 +710,10 @@
          <property name="multiport"/>
          <property name="_location" class="ptolemy.kernel.util.Location" value="1170.0, 375.0"/>
          <property name="dataType" class="ptolemy.data.expr.StringParameter" value="Cplfloat"/>
-         <property name="dataTypeSize" class="ptolemy.data.expr.Parameter" value=""/>
+         <property name="dataTypeSize" class="ptolemy.data.expr.Parameter" value="8"/>
          <property name="dimensionNames" class="ptolemy.data.expr.StringParameter" value="mx,my"/>
-         <property name="base" class="ptolemy.data.expr.StringParameter" value="mx = 0,my = 0"/>
-         <property name="pattern" class="ptolemy.data.expr.StringParameter" value="mx = 8,my = 8"/>
+         <property name="base" class="ptolemy.data.expr.StringParameter" value="mx=0,my=0"/>
+         <property name="pattern" class="ptolemy.data.expr.StringParameter" value="mx=8.1,my=8.1"/>
          <property name="tiling" class="ptolemy.data.expr.StringParameter" value="mx=0"/>
       </port>
       <port name="port3" class="ptolemy.domains.pthales.lib.PThalesIOPort">
@@ -734,84 +721,82 @@
          <property name="multiport"/>
          <property name="_location" class="ptolemy.kernel.util.Location" value="20.0, 1085.0"/>
          <property name="dataType" class="ptolemy.data.expr.StringParameter" value="Cplfloat"/>
-         <property name="dataTypeSize" class="ptolemy.data.expr.Parameter" value=""/>
+         <property name="dataTypeSize" class="ptolemy.data.expr.Parameter" value="8"/>
          <property name="dimensionNames" class="ptolemy.data.expr.StringParameter" value="mx,my"/>
-         <property name="base" class="ptolemy.data.expr.StringParameter" value="mx = 0,my = 0"/>
-         <property name="pattern" class="ptolemy.data.expr.StringParameter" value="mx = 8,my = 8"/>
+         <property name="base" class="ptolemy.data.expr.StringParameter" value="mx=0,my=0"/>
+         <property name="pattern" class="ptolemy.data.expr.StringParameter" value="mx=8.1,my=8.1"/>
          <property name="tiling" class="ptolemy.data.expr.StringParameter" value="mx=0"/>
       </port>
    </entity>
    <entity name="ApplyAdaptiveFilter"
            class="ptolemy.domains.pthales.lib.PThalesGenericActor">
       <property name="_location" class="ptolemy.kernel.util.Location" value="440.0, 250.0"/>
-      <property name="repetition" class="ptolemy.data.expr.StringParameter" value="32,7,185"/>
+      <property name="repetitions" class="ptolemy.data.expr.StringParameter" value="32,7,185"/>
       <port name="port" class="ptolemy.domains.pthales.lib.PThalesIOPort">
          <property name="input"/>
          <property name="multiport"/>
          <property name="_location" class="ptolemy.kernel.util.Location" value="20.0, 375.0"/>
          <property name="dataType" class="ptolemy.data.expr.StringParameter" value="Cplfloat"/>
-         <property name="dataTypeSize" class="ptolemy.data.expr.Parameter" value=""/>
+         <property name="dataTypeSize" class="ptolemy.data.expr.Parameter" value="8"/>
          <property name="dimensionNames" class="ptolemy.data.expr.StringParameter"
                    value="rg,ant,pul"/>
-         <property name="base" class="ptolemy.data.expr.StringParameter"
-                   value="rg = 0,ant = 0,pul = 0"/>
-         <property name="pattern" class="ptolemy.data.expr.StringParameter" value="ant = 8"/>
-         <property name="tiling" class="ptolemy.data.expr.StringParameter" value="pul = 1,rg = 1"/>
+         <property name="base" class="ptolemy.data.expr.StringParameter" value="rg=0,ant=0,pul=0"/>
+         <property name="pattern" class="ptolemy.data.expr.StringParameter" value="ant=8.1"/>
+         <property name="tiling" class="ptolemy.data.expr.StringParameter" value="pul=1,rg=0,rg=1"/>
       </port>
       <port name="port2" class="ptolemy.domains.pthales.lib.PThalesIOPort">
          <property name="input"/>
          <property name="multiport"/>
          <property name="_location" class="ptolemy.kernel.util.Location" value="20.0, 375.0"/>
          <property name="dataType" class="ptolemy.data.expr.StringParameter" value="Cplfloat"/>
-         <property name="dataTypeSize" class="ptolemy.data.expr.Parameter" value=""/>
+         <property name="dataTypeSize" class="ptolemy.data.expr.Parameter" value="8"/>
          <property name="dimensionNames" class="ptolemy.data.expr.StringParameter"
                    value="ant,beam"/>
-         <property name="base" class="ptolemy.data.expr.StringParameter" value="ant = 0,beam = 0"/>
-         <property name="pattern" class="ptolemy.data.expr.StringParameter" value="ant = 8"/>
-         <property name="tiling" class="ptolemy.data.expr.StringParameter" value="beam = 1"/>
+         <property name="base" class="ptolemy.data.expr.StringParameter" value="ant=0,beam=0"/>
+         <property name="pattern" class="ptolemy.data.expr.StringParameter" value="ant=8.1"/>
+         <property name="tiling" class="ptolemy.data.expr.StringParameter"
+                   value="ant=0,beam=1,ant=0"/>
       </port>
       <port name="port3" class="ptolemy.domains.pthales.lib.PThalesIOPort">
          <property name="output"/>
          <property name="multiport"/>
          <property name="_location" class="ptolemy.kernel.util.Location" value="1170.0, 375.0"/>
          <property name="dataType" class="ptolemy.data.expr.StringParameter" value="Cplfloat"/>
-         <property name="dataTypeSize" class="ptolemy.data.expr.Parameter" value=""/>
+         <property name="dataTypeSize" class="ptolemy.data.expr.Parameter" value="8"/>
          <property name="dimensionNames" class="ptolemy.data.expr.StringParameter"
                    value="pul,rg,beam"/>
-         <property name="base" class="ptolemy.data.expr.StringParameter"
-                   value="pul = 0,rg = 0,beam = 0"/>
-         <property name="pattern" class="ptolemy.data.expr.StringParameter" value="pul=1"/>
+         <property name="base" class="ptolemy.data.expr.StringParameter" value="pul=0,rg=0,beam=0"/>
+         <property name="pattern" class="ptolemy.data.expr.StringParameter" value="pul=1.1"/>
          <property name="tiling" class="ptolemy.data.expr.StringParameter"
-                   value="pul = 1,beam = 1,rg = 1"/>
+                   value="pul=1,beam=1,rg=1"/>
       </port>
    </entity>
    <entity name="EnhancedDoppler" class="ptolemy.domains.pthales.lib.PThalesGenericActor">
       <property name="_location" class="ptolemy.kernel.util.Location" value="575.0, 325.0"/>
-      <property name="repetition" class="ptolemy.data.expr.StringParameter" value="7,185"/>
+      <property name="repetitions" class="ptolemy.data.expr.StringParameter" value="7,185"/>
       <port name="port" class="ptolemy.domains.pthales.lib.PThalesIOPort">
          <property name="input"/>
          <property name="multiport"/>
          <property name="_location" class="ptolemy.kernel.util.Location" value="20.0, 375.0"/>
          <property name="dataType" class="ptolemy.data.expr.StringParameter" value="Cplfloat"/>
-         <property name="dataTypeSize" class="ptolemy.data.expr.Parameter" value=""/>
+         <property name="dataTypeSize" class="ptolemy.data.expr.Parameter" value="8"/>
          <property name="dimensionNames" class="ptolemy.data.expr.StringParameter"
                    value="pul,rg,beam"/>
-         <property name="base" class="ptolemy.data.expr.StringParameter"
-                   value="pul = 0,rg = 0,beam = 0"/>
-         <property name="pattern" class="ptolemy.data.expr.StringParameter" value="pul = 32"/>
-         <property name="tiling" class="ptolemy.data.expr.StringParameter" value="beam = 1,rg = 1"/>
+         <property name="base" class="ptolemy.data.expr.StringParameter" value="pul=0,rg=0,beam=0"/>
+         <property name="pattern" class="ptolemy.data.expr.StringParameter" value="pul=32.1"/>
+         <property name="tiling" class="ptolemy.data.expr.StringParameter" value="beam=1,rg=1"/>
       </port>
       <port name="port2" class="ptolemy.domains.pthales.lib.PThalesIOPort">
          <property name="output"/>
          <property name="multiport"/>
          <property name="_location" class="ptolemy.kernel.util.Location" value="1170.0, 375.0"/>
          <property name="dataType" class="ptolemy.data.expr.StringParameter" value="Cplfloat"/>
-         <property name="dataTypeSize" class="ptolemy.data.expr.Parameter" value=""/>
+         <property name="dataTypeSize" class="ptolemy.data.expr.Parameter" value="8"/>
          <property name="dimensionNames" class="ptolemy.data.expr.StringParameter"
                    value="v,beam,rg"/>
-         <property name="base" class="ptolemy.data.expr.StringParameter" value="v = 0"/>
-         <property name="pattern" class="ptolemy.data.expr.StringParameter" value="v = 32"/>
-         <property name="tiling" class="ptolemy.data.expr.StringParameter" value="beam = 1,rg = 1"/>
+         <property name="base" class="ptolemy.data.expr.StringParameter" value="v=0"/>
+         <property name="pattern" class="ptolemy.data.expr.StringParameter" value="v=32.1"/>
+         <property name="tiling" class="ptolemy.data.expr.StringParameter" value="beam=1,rg=1"/>
       </port>
    </entity>
    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
