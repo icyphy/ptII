@@ -1,6 +1,11 @@
 package ptolemy.domains.pthales.lib;
 
+import java.util.List;
+
+import ptolemy.actor.Receiver;
 import ptolemy.actor.TypedAtomicActor;
+import ptolemy.data.FloatToken;
+import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.data.type.BaseType;
@@ -142,8 +147,40 @@ public class PThalesGenericActor extends TypedAtomicActor {
      *  input can not be read, or the output can not be sent.
      */
     public void fire() throws IllegalActionException {
-        super.fire();
-    }
+        
+        // Input ports read before calling Elementary task
+        List<PThalesIOPort> ports = this.inputPortList();
+        
+        int pos = 0;
+        Token[][] arrays = new Token[ports.size()][];
+        for (PThalesIOPort port : ports)
+        {
+            int dataSize = port.getPattern();
+            arrays[pos] = new Token[dataSize];
+            arrays[pos] = port.get(0,dataSize);
+            
+            System.out.println(getName() + "." + port.getName() + " receiving " + dataSize + "tokens from " + port.getSource() + "\n");
+        }
+        
+        // Then ouput ports are written
+        ports = this.outputPortList();
+        
+        pos = 0;
+        arrays = new Token[ports.size()][];
+        for (PThalesIOPort port : ports)
+        {
+            int dataSize = port.getPattern();
+            arrays[pos] = new Token[dataSize];
+            for (int i = 0; i < dataSize; i ++)
+                arrays[pos][i] = new FloatToken();
+            
+            for (int i = 0; i < port.getWidth(); i ++)
+            {
+                port.send(i,arrays[pos],dataSize);
+                System.out.println(getName() + "." + port.getName() + " sending " + dataSize + " tokens to " + ((Receiver)port.getRemoteReceivers()[i][0]).getContainer() + "\n");
+            }
+        }
+     }
 
     /** Attribute update
      */
