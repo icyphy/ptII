@@ -130,7 +130,10 @@ public class PthalesReceiver extends SDFReceiver {
      *   tokens.
      */
     public Token[] getArray(int numberOfTokens) throws NoTokenException {
-        // FIXME: implement
+        Token[] result = new Token[numberOfTokens];
+        for (int i = 0; i < numberOfTokens; i++)
+            result[i] = get();
+            
         return null;
     }
 
@@ -159,7 +162,7 @@ public class PthalesReceiver extends SDFReceiver {
      *  @return True.
      */
     public boolean hasToken(int numberOfTokens) {
-        return true;
+        return (_posOut + numberOfTokens < _posIn);
     }
 
     /** Return true.
@@ -197,8 +200,9 @@ public class PthalesReceiver extends SDFReceiver {
      */
     public void putArray(Token[] tokenArray, int numberOfTokens)
             throws NoRoomException, IllegalActionException {
-        // FIXME: Implement.
-    }
+        for (int i = 0; i < numberOfTokens; i++)
+            put(tokenArray[i]);
+        }
 
     /** Put a sequence of tokens to all receivers in the specified array.
      *  Implementers will assume that all such receivers
@@ -214,8 +218,11 @@ public class PthalesReceiver extends SDFReceiver {
     public void putArrayToAll(Token[] tokens, int numberOfTokens,
             Receiver[] receivers) throws NoRoomException,
             IllegalActionException {
-        // FIXME: Implement.
-    }
+        for (int i = 0; i < numberOfTokens; i++)
+            for (Receiver receiver : receivers) {
+                receiver.put(tokens[i]);
+            }
+      }
 
     /** Put a single token to all receivers in the specified array.
      *  Implementers will assume that all such receivers
