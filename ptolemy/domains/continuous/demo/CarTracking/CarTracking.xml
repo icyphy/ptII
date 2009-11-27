@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="CarTracking" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
     <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="100.0">
@@ -85,7 +85,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Simulate faults.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 290.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[450.0, 280.0]">
         </property>
     </property>
     <property name="Annotation5" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -316,7 +316,7 @@
         </property>
         <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[365.0, 405.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, 370.0]">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
         </property>
@@ -591,7 +591,7 @@
         </property>
         <property name="numberOfCycles" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[410.0, 285.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[415.0, 275.0]">
         </property>
     </entity>
     <entity name="NetworkModel" class="ptolemy.domains.modal.modal.ModalModel">
@@ -630,20 +630,26 @@
             </property>
             <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
             </property>
+            <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+                <property name="text" class="ptolemy.kernel.util.StringAttribute" value="In the normal mode, tokens at packetIn are passed&#10;unchanged to packetOut. In the faulty mode, the&#10;data in the packet is corrupted.">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 150.0]">
+                </property>
+            </property>
             <port name="packetIn" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{20.0, 200.0}">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 85.0]">
                 </property>
             </port>
             <port name="packetOut" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
                 <property name="output"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[395.0, 200.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[390.0, 55.0]">
                 </property>
             </port>
             <port name="fault" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 325.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[390.0, 110.0]">
                 </property>
             </port>
             <entity name="normal" class="ptolemy.domains.modal.kernel.State">
@@ -655,7 +661,7 @@
                 </property>
                 <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[145.0, 195.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[165.0, 80.0]">
                 </property>
             </entity>
             <entity name="faulty" class="ptolemy.domains.modal.kernel.State">
@@ -665,7 +671,7 @@
                 </property>
                 <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{285, 195}">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[305.0, 80.0]">
                 </property>
             </entity>
             <relation name="relation" class="ptolemy.domains.modal.kernel.Transition">
@@ -714,19 +720,27 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{70, 55}">
                 </property>
             </property>
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={2, 305, 813, 510}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            </property>
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+            </property>
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+            </property>
             <port name="packetIn" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 180.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 105.0]">
                 </property>
             </port>
             <port name="packetOut" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="output"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[415.0, 185.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 105.0]">
                 </property>
             </port>
             <port name="fault" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 380.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 155.0]">
                 </property>
             </port>
             <relation name="relation" class="ptolemy.actor.TypedIORelation">
@@ -738,16 +752,22 @@
         </entity>
         <entity name="faulty" class="ptolemy.domains.modal.modal.Refinement">
             <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{75, 50}">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 35.0]">
                 </property>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={613, 342, 813, 510}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={6, 326, 813, 510}, maximized=false}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
             </property>
             <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
             </property>
             <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+            </property>
+            <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+                <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This fault channel model simply replaces the&#10;position with a constant -10.0.">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 230.0]">
+                </property>
             </property>
             <port name="packetIn" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
@@ -1724,7 +1744,7 @@
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="{245.0, 280.0}">
+        <vertex name="vertex1" value="[285.0, 205.0]">
         </vertex>
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
@@ -1751,16 +1771,16 @@
         <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
         </property>
     </relation>
-    <relation name="relation9" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
-        </property>
+    <relation name="relation10" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="{290.0, 410.0}">
+        </vertex>
     </relation>
     <link port="Car Model.desiredSpeed" relation="relation2"/>
     <link port="Car Model.acceleration" relation="relation"/>
     <link port="Car Model.speed" relation="relation4"/>
     <link port="Car Model.position" relation="relation7"/>
     <link port="TimedPlotter.input" relation="relation7"/>
-    <link port="TimedPlotter.input" relation="relation9"/>
+    <link port="TimedPlotter.input" relation="relation10"/>
     <link port="Grandma Simulator.desiredSpeed" relation="relation2"/>
     <link port="DiscreteClock.output" relation="relation3"/>
     <link port="NetworkModel.packetIn" relation="relation8"/>
@@ -1775,5 +1795,5 @@
     <link port="PeriodicSampler.input" relation="relation5"/>
     <link port="PeriodicSampler.output" relation="relation8"/>
     <link port="FollowingCar.packetIn" relation="relation11"/>
-    <link port="FollowingCar.position" relation="relation9"/>
+    <link port="FollowingCar.position" relation="relation10"/>
 </entity>

@@ -42,8 +42,13 @@
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">This Continuous Time model uses a Finite State Machine
-and the GR domain to simulate a bouncing ball.</text></svg></configure>
+            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">This continuous-time model uses a modal model
+to simulate a bouncing ball and the GR domain to
+animate it.
+
+This is a classic example of a Zeno system, where
+an infinite number of bounce events occur in a finite
+time.  Open the Ball Model to see how it is implemented.</text></svg></configure>
         </property>
         <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure>
@@ -56,7 +61,7 @@ and the GR domain to simulate a bouncing ball.</text></svg></configure>
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="145.0, 10.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[125.0, 0.0]">
         </property>
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 817, 460}, maximized=false}">
@@ -65,7 +70,7 @@ and the GR domain to simulate a bouncing ball.</text></svg></configure>
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:darkgray">Author: Jie Liu</text></svg></configure>
+            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:darkgray">Author: Jie Liu and Edward A. Lee</text></svg></configure>
         </property>
         <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure>
@@ -78,7 +83,7 @@ and the GR domain to simulate a bouncing ball.</text></svg></configure>
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="-5.0, 310.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-5.0, 295.0]">
         </property>
     </property>
     <property name="annotation3" class="ptolemy.kernel.util.Attribute">
@@ -100,7 +105,7 @@ http://java.sun.com/products/java-media/3D/</text></svg></configure>
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="-5.0, 250.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[260.0, 130.0]">
         </property>
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
@@ -116,7 +121,7 @@ http://java.sun.com/products/java-media/3D/</text></svg></configure>
         </property>
         <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="190.0, 130.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[190.0, 165.0]">
         </property>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
@@ -131,7 +136,7 @@ http://java.sun.com/products/java-media/3D/</text></svg></configure>
         </configure>
     </entity>
     <entity name="Animate Ball" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="410.0, 205.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[410.0, 240.0]">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
         </property>
@@ -335,13 +340,13 @@ http://java.sun.com/products/java-media/3D/</text></svg></configure>
     <entity name="PeriodicSampler" class="ptolemy.domains.continuous.lib.PeriodicSampler">
         <property name="samplePeriod" class="ptolemy.data.expr.Parameter" value="0.1">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="195.0, 205.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[195.0, 240.0]">
         </property>
     </entity>
     <entity name="Scale" class="ptolemy.actor.lib.Scale">
         <property name="factor" class="ptolemy.data.expr.Parameter" value="0.1">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="300.0, 205.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 240.0]">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
@@ -351,15 +356,15 @@ http://java.sun.com/products/java-media/3D/</text></svg></configure>
     <entity name="Ball Model" class="ptolemy.domains.modal.modal.ModalModel">
         <property name="_tableauFactory" class="ptolemy.vergil.modal.modal.ModalTableauFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="55.0, 140.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 175.0]">
         </property>
         <port name="position" class="ptolemy.domains.modal.modal.ModalPort">
             <property name="output"/>
         </port>
-        <port name="bump" class="ptolemy.domains.modal.modal.ModalPort">
+        <port name="velocity" class="ptolemy.domains.modal.modal.ModalPort">
             <property name="output"/>
         </port>
-        <port name="velocity" class="ptolemy.domains.modal.modal.ModalPort">
+        <port name="bump" class="ptolemy.domains.modal.modal.ModalPort">
             <property name="output"/>
         </port>
         <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
@@ -372,22 +377,22 @@ http://java.sun.com/products/java-media/3D/</text></svg></configure>
             </property>
             <property name="initialPosition" class="ptolemy.data.expr.Parameter" value="10.0">
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 150, 815, 468}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={313, 219, 813, 461}, maximized=false}">
             </property>
             <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
             </property>
             <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 175.0}">
             </property>
+            <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+                <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The transition from init to free initializes the ball position and velocity.&#10;The self transition on free is triggered when a bump has been detected&#10;(inside the state refinement). The set actions on the transition reverse&#10;the velocity (with some loss due to elasticity). The transition to the&#10;stop state is taken when the position and velocity have gotten small&#10;enough that we decide the ball has stopped. If this transition is&#10;removed, then in theory time cannot progress past a certain point.&#10;In practice, numerical errors domainate and eventually the bump is&#10;not detected. Try it.">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 190.0]">
+                </property>
+            </property>
             <port name="position" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="35.0, 145.0">
-                </property>
-            </port>
-            <port name="bump" class="ptolemy.domains.modal.modal.RefinementPort">
-                <property name="input"/>
-                <property name="output"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="35.0, 90.0">
                 </property>
             </port>
             <port name="velocity" class="ptolemy.domains.modal.modal.RefinementPort">
@@ -396,14 +401,20 @@ http://java.sun.com/products/java-media/3D/</text></svg></configure>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="35.0, 40.0">
                 </property>
             </port>
+            <port name="bump" class="ptolemy.domains.modal.modal.RefinementPort">
+                <property name="input"/>
+                <property name="output"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="35.0, 90.0">
+                </property>
+            </port>
             <entity name="init" class="ptolemy.domains.modal.kernel.State">
                 <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
-                <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
+                <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="360.0, 125.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[115.0, 90.0]">
                 </property>
             </entity>
             <entity name="free" class="ptolemy.domains.modal.kernel.State">
@@ -411,37 +422,27 @@ http://java.sun.com/products/java-media/3D/</text></svg></configure>
                 </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
-                <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
+                <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="185.0, 175.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{310.0, 80.0}">
                 </property>
             </entity>
             <entity name="stop" class="ptolemy.domains.modal.kernel.State">
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
-                <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
+                <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="130.0, 25.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[525.0, 85.0]">
                 </property>
             </entity>
-            <relation name="relation" class="ptolemy.domains.modal.kernel.Transition">
-                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="abs(position) &lt; stoppedThreshold &amp;&amp; abs(velocity) &lt; stoppedThreshold">
-                </property>
-                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6283185307179586">
-                </property>
-                <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
-                <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
-            </relation>
             <relation name="relation2" class="ptolemy.domains.modal.kernel.Transition">
                 <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
                 </property>
-                <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute" value="free.initialPosition = initialPosition; free.initialVelocity = 0.0">
+                <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute" value="&#10;   free.initialPosition = initialPosition;&#10;   free.initialVelocity = 0.0">
                 </property>
                 <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.4216814692820417">
                 </property>
-                <property name="reset" class="ptolemy.data.expr.Parameter" value="true">
+                <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
@@ -449,7 +450,7 @@ http://java.sun.com/products/java-media/3D/</text></svg></configure>
             <relation name="relation3" class="ptolemy.domains.modal.kernel.Transition">
                 <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="bump_isPresent">
                 </property>
-                <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute" value="free.initialVelocity = -elasticity * velocity; free.initialPosition = position">
+                <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute" value="&#10;   free.initialVelocity = -elasticity * velocity;&#10;   free.initialPosition = position">
                 </property>
                 <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="2.376245723355259">
                 </property>
@@ -460,11 +461,23 @@ http://java.sun.com/products/java-media/3D/</text></svg></configure>
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
             </relation>
+            <relation name="relation" class="ptolemy.domains.modal.kernel.Transition">
+                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="&#10;   abs(position) &lt; stoppedThreshold&#10;   &amp;&amp; abs(velocity) &lt; stoppedThreshold">
+                </property>
+                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.4229116296947826">
+                </property>
+                <property name="gamma" class="ptolemy.data.expr.Parameter" value="-0.181061635689873">
+                </property>
+                <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+            </relation>
             <link port="init.outgoingPort" relation="relation2"/>
             <link port="free.incomingPort" relation="relation2"/>
             <link port="free.incomingPort" relation="relation3"/>
-            <link port="free.outgoingPort" relation="relation"/>
             <link port="free.outgoingPort" relation="relation3"/>
+            <link port="free.outgoingPort" relation="relation"/>
             <link port="stop.incomingPort" relation="relation"/>
         </entity>
         <entity name="free" class="ptolemy.domains.modal.modal.Refinement">
@@ -518,24 +531,30 @@ falling in a gravitational field.</text></svg></configure>
                 </property>
                 <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="155.0, 5.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[155.0, 20.0]">
                 </property>
+            </property>
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 335, 813, 560}, maximized=false}">
+            </property>
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+            </property>
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 225.0}">
             </property>
             <port name="position" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="output"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="500.0, 170.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[495.0, 170.0]">
                 </property>
                 <property name="_showName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
             </port>
-            <port name="bump" class="ptolemy.domains.modal.modal.RefinementPort">
-                <property name="output"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="500.0, 125.0">
-                </property>
-            </port>
             <port name="velocity" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="output"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="500.0, 60.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[495.0, 115.0]">
+                </property>
+            </port>
+            <port name="bump" class="ptolemy.domains.modal.modal.RefinementPort">
+                <property name="output"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[495.0, 225.0]">
                 </property>
             </port>
             <entity name="LevelCrossingDetector" class="ptolemy.domains.continuous.lib.LevelCrossingDetector">
@@ -545,22 +564,23 @@ falling in a gravitational field.</text></svg></configure>
                 </property>
                 <property name="defaultEventValue" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="415.0, 125.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[375.0, 225.0]">
                 </property>
             </entity>
             <entity name="Position" class="ptolemy.domains.continuous.lib.Integrator">
                 <property name="initialState" class="ptolemy.actor.parameters.PortParameter" value="initialPosition">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="250.0, 170.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[280.0, 170.0]">
                 </property>
             </entity>
             <entity name="Velocity" class="ptolemy.domains.continuous.lib.Integrator">
                 <property name="initialState" class="ptolemy.actor.parameters.PortParameter" value="initialVelocity">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="145.0, 115.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 115.0]">
                 </property>
             </entity>
             <entity name="Const" class="ptolemy.actor.lib.Const">
+                <display name="Gravitational&#10;Force"/>
                 <property name="value" class="ptolemy.data.expr.Parameter" value="-10">
                 </property>
                 <doc>Create a constant sequence</doc>
@@ -572,11 +592,11 @@ falling in a gravitational field.</text></svg></configure>
                 </property>
             </entity>
             <relation name="relation" class="ptolemy.actor.TypedIORelation">
-                <vertex name="vertex1" value="200.0, 115.0">
+                <vertex name="vertex1" value="[240.0, 115.0]">
                 </vertex>
             </relation>
             <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-                <vertex name="vertex1" value="300.0, 170.0">
+                <vertex name="vertex1" value="[320.0, 170.0]">
                 </vertex>
             </relation>
             <relation name="relation4" class="ptolemy.actor.TypedIORelation">
@@ -584,8 +604,8 @@ falling in a gravitational field.</text></svg></configure>
             <relation name="relation5" class="ptolemy.actor.TypedIORelation">
             </relation>
             <link port="position" relation="relation3"/>
-            <link port="bump" relation="relation4"/>
             <link port="velocity" relation="relation"/>
+            <link port="bump" relation="relation4"/>
             <link port="LevelCrossingDetector.output" relation="relation4"/>
             <link port="LevelCrossingDetector.trigger" relation="relation3"/>
             <link port="Position.derivative" relation="relation"/>
@@ -603,17 +623,17 @@ falling in a gravitational field.</text></svg></configure>
         <relation name="velocityRelation" class="ptolemy.actor.TypedIORelation">
         </relation>
         <link port="position" relation="positionRelation"/>
-        <link port="bump" relation="bumpRelation"/>
         <link port="velocity" relation="velocityRelation"/>
+        <link port="bump" relation="bumpRelation"/>
         <link port="_Controller.position" relation="positionRelation"/>
-        <link port="_Controller.bump" relation="bumpRelation"/>
         <link port="_Controller.velocity" relation="velocityRelation"/>
+        <link port="_Controller.bump" relation="bumpRelation"/>
         <link port="free.position" relation="positionRelation"/>
-        <link port="free.bump" relation="bumpRelation"/>
         <link port="free.velocity" relation="velocityRelation"/>
+        <link port="free.bump" relation="bumpRelation"/>
     </entity>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="120.0, 130.0">
+        <vertex name="vertex1" value="[120.0, 165.0]">
         </vertex>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">

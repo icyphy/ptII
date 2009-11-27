@@ -35,7 +35,7 @@ ME =		ptolemy/domains/continuous/demo
 ROOT =		../../../..
 
 DIRS =		BouncingBall Brownian CarTracking \
-		CartPendulum ComparedClocks ContinuousClock ContinuousInsideDE \
+		CartPendulum ComparedClocks ContinuousInsideDE \
 		HierarchicalExecution HybridPlant Hysteresis \
 		LevelCrossingDetector LevelCrossingDetectorDetectsGlitches \
 		Lorenz NewtonsCradle Poisson Pendulum3D SampledClocks Satellite \

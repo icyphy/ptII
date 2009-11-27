@@ -54,12 +54,7 @@ OTHER_FILES_TO_BE_JARED = \
 EXTRA_SRCS = \
 	$(OTHER_FILES_TO_BE_JARED) \
 	StickyMasses.htm \
-	StickyMassesVergil.htm \
-	StickyMassesNewVersion.htm \
-	StickyMassesNewVersion.jnlp \
-	SMdiagram.gif \
-	SMphysics.gif \
-	SMresult.gif
+	StickyMassesVergil.htm
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
