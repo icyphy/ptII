@@ -68,8 +68,8 @@ public class PropertyConstraintHelper extends PropertyHelper {
      * constraints set by the solver.
      * @param solver The specified property solver.
      * @param component The associated component.
-     * @exception IllegalActionException Thrown if
-     * PropertyConstraintHelper(NamedObj, PropertyLattice, boolean) throws it.
+     * @exception IllegalActionException Thrown if the helper cannot be
+     * initialized.
      */
     public PropertyConstraintHelper(PropertyConstraintSolver solver,
             Object component) throws IllegalActionException {

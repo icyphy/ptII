@@ -32,13 +32,21 @@ package ptolemy.data.properties.lattice;
 import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.util.IllegalActionException;
 
+
+//////////////////////////////////////////////////////////////////////////
+//// PropertyTerm
+
+/**
+ An interface for a property term.
+ A term is either a constant, a variable, or a function. 
+
+ @author Man-kit Leung
+ @version $Id$
+ @since Ptolemy II 7.1
+ @Pt.ProposedRating Red (cxh)
+ @Pt.AcceptedRating Red (cxh)
+ */
 public interface PropertyTerm extends InequalityTerm {
-
-    public Object getValue() throws IllegalActionException;
-
-    public boolean isEffective();
-
-    public void setEffective(boolean isEffective);
 
     /** Return an array of constants contained in this term.
      *  If this term is a variable, return an array of size zero;
@@ -48,4 +56,23 @@ public interface PropertyTerm extends InequalityTerm {
      *  @return An array of InequalityTerms
      */
     public InequalityTerm[] getConstants();
+
+    /** Get the value of this PropertyTerm.
+     *  @return the value of this PropertyTerm.   
+     */
+    public Object getValue() throws IllegalActionException;
+
+    /**
+     * Return true if this property term is effective.
+     * @return true if this property term is effective.
+     * @see #setEffective(boolean)
+     */
+    public boolean isEffective();
+
+    /**
+     * Set the effectiveness of this property term to the specified value.
+     * @param isEffective The specified effective value.
+     * @see #isEffective()
+     */
+    public void setEffective(boolean isEffective);
 }

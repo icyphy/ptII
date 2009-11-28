@@ -230,6 +230,7 @@ public class PropertySolverTester {
      *  Parse a model.
      *  @param path The file path to the model.
      *  @param parser The parser
+     *  @return The parsed model.
      *  @exception IllegalActionException If the model cannot be opened or
      *  parsed.
      */

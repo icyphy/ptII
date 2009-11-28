@@ -1,6 +1,6 @@
 /* A helper class for ptolemy.actor.lib.Recorder.
 
- Copyright (c) 2006-2009 The Regents of the University of California.
+ Copyright (c) 2008-2009 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -48,15 +48,29 @@ import ptolemy.kernel.util.IllegalActionException;
 */
 public class Recorder extends Sink {
     /**
-     * Construct an Recorder helper.
-     * @param actor the associated actor
-     * @exception IllegalActionException
+     * Construct the Sink property constraint helper associated
+     * with the given component and solver. The constructed helper
+     * implicitly uses the default constraints set by the solver.
+     * @param solver The given solver.
+     * @param actor The given Recorder actor
+     * @exception IllegalActionException If the helper cannot be
+     * initialized in the superclass.
      */
     public Recorder(PropertyConstraintSolver solver,
             ptolemy.actor.lib.Recorder actor) throws IllegalActionException {
         super(solver, actor, false);
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
+    /**
+     * Return the constraints of this component. The constraints are a list of
+     * inequalities.
+     * @return The constraints of this component.
+     * @exception IllegalActionException If thrown while manipulating the lattice
+     * or getting the solver.
+     */
     public List<Inequality> constraintList() throws IllegalActionException {
         ptolemy.actor.lib.Recorder actor = (ptolemy.actor.lib.Recorder) getComponent();
 

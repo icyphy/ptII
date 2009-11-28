@@ -1,6 +1,6 @@
 /* A helper class for ptolemy.data.expr.ASTPtRootNode.
 
- Copyright (c) 2006 The Regents of the University of California.
+ Copyright (c) 2008-2009 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -50,11 +50,28 @@ import ptolemy.kernel.util.IllegalActionException;
  */
 public class ASTPtLeafNode extends ASTPtRootNode {
 
+    /**
+     * Construct an ASTPtUnaryNode object.
+     * @param solver The associated solver.
+     * @param node The associated node.
+     * @exception IllegalActionException Thrown if the helper cannot be
+     * initialized.
+     */
     public ASTPtLeafNode(PropertyConstraintSolver solver,
             ptolemy.data.expr.ASTPtLeafNode node) throws IllegalActionException {
         super(solver, node, false);
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
+    /**
+     * Return the constraints of this component. The constraints are a list of
+     * inequalities.
+     * @return The constraints of this component.
+     * @exception IllegalActionException If thrown while manipulating the lattice
+     * or getting the solver.
+     */
     public List<Inequality> constraintList() throws IllegalActionException {
         ptolemy.data.expr.ASTPtLeafNode node = (ptolemy.data.expr.ASTPtLeafNode) getComponent();
 
@@ -63,7 +80,7 @@ public class ASTPtLeafNode extends ASTPtRootNode {
         String name = node.getName();
 
         if (name != null) {
-            if (_doubleleafes.contains(name)) {
+            if (_doubleleaves.contains(name)) {
                 setEquals(node, lattice.getElement("DOUBLE"));
             } else if (Constants.get(name) != null) {
                 setEquals(node, lattice.convertJavaToCtype(Constants.get(name)
@@ -81,13 +98,8 @@ public class ASTPtLeafNode extends ASTPtRootNode {
         return super.constraintList();
     }
 
-    private static List _doubleleafes = Arrays.asList(new String[] { "PI" });
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
-    public boolean isEffective() {
-        return true;
-    }
-
-    public void setEffective(boolean isEffective) {
-
-    }
+    private static List _doubleleaves = Arrays.asList(new String[] { "PI" });
 }

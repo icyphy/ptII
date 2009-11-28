@@ -53,8 +53,9 @@ public class BooleanSelect extends AtomicActor {
     /**
      * Construct a BooleanSelect helper.
      * BooleanSelect does NOT use the default constraints
-     * @param actor the associated actor
-     * @throws IllegalActionException 
+     * @param solver The associated solver.
+     * @param actor The associated actor.
+     * @exception IllegalActionException If thrown by the super class.
      */
     public BooleanSelect(PropertyConstraintSolver solver, 
             ptolemy.actor.lib.BooleanSelect actor)
@@ -62,6 +63,16 @@ public class BooleanSelect extends AtomicActor {
         super(solver, actor, false);
     }
     
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
+    /**
+     * Return the constraints of this component. The constraints are a list of
+     * inequalities.
+     * @return The constraints of this component.
+     * @exception IllegalActionException If thrown while manipulating the lattice
+     * or getting the solver.
+     */
     public List<Inequality> constraintList() throws IllegalActionException {
         ptolemy.actor.lib.BooleanSelect actor = (ptolemy.actor.lib.BooleanSelect) getComponent();
 
@@ -84,14 +95,13 @@ public class BooleanSelect extends AtomicActor {
  
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
-    // This class implements a monotonic function of the input port
-    // type. The result of the function is the same as the input type
-    // if is not Complex; otherwise, the result is Double.
-    private class FunctionTerm extends MonotonicFunction {
 
-        TypedIOPort _trueInput;
-        TypedIOPort _falseInput;
-        TypedIOPort _control;
+    /** 
+     * A monotonic function of the input port type. The result of the
+     * function is the same as the input type if is not Complex;
+     * otherwise, the result is Double.
+     */
+    private class FunctionTerm extends MonotonicFunction {
 
         public FunctionTerm(TypedIOPort trueInput, TypedIOPort falseInput, TypedIOPort control) {
             _trueInput = trueInput;
@@ -158,5 +168,9 @@ public class BooleanSelect extends AtomicActor {
         public void setEffective(boolean isEffective) {
             // TODO Auto-generated method stub            
         }
+
+        TypedIOPort _trueInput;
+        TypedIOPort _falseInput;
+        TypedIOPort _control;
     }
 }

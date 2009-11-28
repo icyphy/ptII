@@ -1,6 +1,6 @@
 /* A helper class for ptolemy.actor.lib.Const.
 
- Copyright (c) 2006 The Regents of the University of California.
+ Copyright (c) 2008-2009 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -48,7 +48,9 @@ import ptolemy.kernel.util.IllegalActionException;
 public class Const extends AtomicActor {
     /**
      * Construct an Const helper.
-     * @param actor the associated actor
+     * @param solver The associated solver.
+     * @param actor The associated actor.
+     * @exception IllegalActionException If thrown by the super class.
      */
     public Const(PropertyConstraintSolver solver, ptolemy.actor.lib.Const actor)
             throws IllegalActionException {
@@ -57,6 +59,17 @@ public class Const extends AtomicActor {
         _actor = actor;
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
+    /**
+     * Return the constraints of this component. The constraints are a list of
+     * inequalities.  This class sets the type of output to at least the
+     * type of the value.
+     * @return The constraints of this component.
+     * @exception IllegalActionException If thrown while manipulating the lattice
+     * or getting the solver.
+     */
     public List<Inequality> constraintList() throws IllegalActionException {
         //        Lattice lattice = (Lattice) getSolver().getLattice();
         //      setEquals(actor.output, lattice.getEDCtype(actor.output.getType(), actor.value.getToken()));

@@ -43,7 +43,7 @@ import ptolemy.kernel.util.IllegalActionException;
 //// ConfigurationSelect
 
 /**
- A helper class for ptolemy.actor.lib.BooleanSelect.
+ A helper class for ptolemy.actor.lib.ConfigurationSelect.
 
  @author Charles Shelton
  @version $Id: ConfigurationSelect.java 55837 2009-10-13 23:09:28Z cxh $
@@ -53,10 +53,11 @@ import ptolemy.kernel.util.IllegalActionException;
  */
 public class ConfigurationSelect extends AtomicActor {
     /**
-     * Construct a BooleanSelect helper.
-     * BooleanSelect does NOT use the default constraints
-     * @param actor the associated actor
-     * @throws IllegalActionException 
+     * Construct a ConfigurationSelect helper.
+     * ConfigurationSelect does NOT use the default constraints
+     * @param solver The associated solver.
+     * @param actor The associated actor.
+     * @exception IllegalActionException If thrown by the super class.
      */
     public ConfigurationSelect(PropertyConstraintSolver solver, 
             ptolemy.actor.lib.ConfigurationSelect actor)
@@ -64,6 +65,16 @@ public class ConfigurationSelect extends AtomicActor {
         super(solver, actor, false);
     }
     
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
+    /**
+     * Return the constraints of this component. The constraints are a list of
+     * inequalities.
+     * @return The constraints of this component.
+     * @exception IllegalActionException If thrown while manipulating the lattice
+     * or getting the solver.
+     */
     public List<Inequality> constraintList() throws IllegalActionException {
         ptolemy.actor.lib.ConfigurationSelect actor = (ptolemy.actor.lib.ConfigurationSelect) getComponent();
 
@@ -91,9 +102,12 @@ public class ConfigurationSelect extends AtomicActor {
  
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
-    // This class implements a monotonic function of the input port
-    // type. The result of the function is the same as the input type
-    // if is not Complex; otherwise, the result is Double.
+
+    /** 
+     * A monotonic function of the input port type. The result of the
+     * function is the same as the input type if is not Complex;
+     * otherwise, the result is Double.
+     */
     private class FunctionTerm extends MonotonicFunction {
 
         TypedIOPort _trueInput;

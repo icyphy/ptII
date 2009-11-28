@@ -1,6 +1,6 @@
 /* A helper class for ptolemy.data.expr.ASTPtUnaryNode.
 
- Copyright (c) 2006 The Regents of the University of California.
+ Copyright (c) 2008-2009 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -38,7 +38,7 @@ import ptolemy.data.properties.token.PropertyToken;
 import ptolemy.kernel.util.IllegalActionException;
 
 //////////////////////////////////////////////////////////////////////////
-//// AddSubtract
+//// ASTPtRootNode
 
 /**
  A helper class for ptolemy.data.expr.ASTPtRootNode.
@@ -51,12 +51,29 @@ import ptolemy.kernel.util.IllegalActionException;
  */
 public class ASTPtUnaryNode extends ASTPtRootNode {
 
+    /**
+     * Construct an ASTPtUnaryNode object.
+     * @param solver The associated solver.
+     * @param node The associated node.
+     * @exception IllegalActionException Thrown if the helper cannot be
+     * initialized.
+     */
     public ASTPtUnaryNode(PropertyConstraintSolver solver,
             ptolemy.data.expr.ASTPtUnaryNode node)
             throws IllegalActionException {
         super(solver, node);
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
+    /**
+     * Return the constraints of this component. The constraints are a list of
+     * inequalities.
+     * @return The constraints of this component.
+     * @exception IllegalActionException If thrown while manipulating the lattice
+     * or getting the solver.
+     */
     public List<Inequality> constraintList() throws IllegalActionException {
         ptolemy.data.expr.ASTPtUnaryNode node = (ptolemy.data.expr.ASTPtUnaryNode) getComponent();
 
@@ -80,13 +97,5 @@ public class ASTPtUnaryNode extends ASTPtRootNode {
         }
 
         return super.constraintList();
-    }
-
-    public boolean isEffective() {
-        return true;
-    }
-
-    public void setEffective(boolean isEffective) {
-
     }
 }

@@ -1,6 +1,6 @@
 /** A base class representing a property constraint helper.
 
- Copyright (c) 1997-2009 The Regents of the University of California.
+ Copyright (c) 2007-2009 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -61,8 +61,8 @@ public class PropertyConstraintASTNodeHelper extends PropertyConstraintHelper {
      * with the given AST node.
      * @param node The given AST node.
      * @exception IllegalActionException Thrown if
-     *  PropertyConstraintHelper(NamedObj, ASTPtRootNode, boolean)
-     *  throws it.
+     * PropertyConstraintHelper(NamedObj, ASTPtRootNode, boolean)
+     * throws it.
      */
     public PropertyConstraintASTNodeHelper(PropertyConstraintSolver solver,
             ASTPtRootNode node) throws IllegalActionException {
@@ -76,7 +76,7 @@ public class PropertyConstraintASTNodeHelper extends PropertyConstraintHelper {
      * @param node The given AST node.
      * @param useDefaultConstraints Indicate whether this helper
      *  uses the default actor constraints.
-     * @exception IllegalActionException Thrown if the helper cannot
+     * @exception IllegalActionException If the helper cannot
      *  be initialized.
      */
     public PropertyConstraintASTNodeHelper(PropertyConstraintSolver solver,

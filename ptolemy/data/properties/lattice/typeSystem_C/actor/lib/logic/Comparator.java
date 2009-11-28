@@ -70,6 +70,8 @@ public class Comparator extends AtomicActor {
      *  the constraint list for the super class and a constraint
      *  between the output port of the actor and the Boolean element of
      *  the lattice.
+     *  @exception IllegalActionException If thrown while manipulating the lattice
+     *  or getting the solver.
      */
     public List<Inequality> constraintList() throws IllegalActionException {
         setEquals(_actor.output, _lattice.getElement("BOOLEAN"));

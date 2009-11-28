@@ -1,6 +1,6 @@
 /** A base class representing a property.
 
- Copyright (c) 1997-2006 The Regents of the University of California.
+ Copyright (c) 2009 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -39,13 +39,26 @@ import ptolemy.data.properties.lattice.PropertyLattice;
  A lattice element for the softwareConfiguration lattice.
 
  @author Thomas Mandl
+ @version $Id: AtomicActor.java 55837 2009-10-13 23:09:28Z cxh $
+ @since Ptolemy II 8.0
+ @Pt.ProposedRating Red (cxh)
+ @Pt.AcceptedRating Red (cxh)
  */
 public class NotSpecified extends LatticeProperty {
         
+    /**
+     * Create a new lattice property with the name "NotSpecified" and the specified
+     * lattice.
+     * @param lattice The specified lattice where this property resides.
+     */
     public NotSpecified(PropertyLattice lattice) {
         super(lattice, "NotSpecified");
     }
 
+    /**
+     * Return false, indicating that this property is not an acceptable solution.
+     * @return False, indicating that this property is not an acceptable solution.
+     */
     public boolean isAcceptableSolution() {
         return false;
     }

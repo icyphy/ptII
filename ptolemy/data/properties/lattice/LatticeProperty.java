@@ -197,7 +197,13 @@ public class LatticeProperty extends Property implements PropertyTerm, Cloneable
         return true;
     }
 
+    /**
+     * Return true if this property term is effective.
+     * @return Always return true in this base class.
+     * @see #setEffective(boolean)
+     */
     public boolean isEffective() {
+        // FIXME: What does effective mean?
         return true;
     }
 
@@ -244,7 +250,7 @@ public class LatticeProperty extends Property implements PropertyTerm, Cloneable
     /**
      * Set the effectiveness of this property term to the specified value. Do
      * nothing in this base by default.
-     * @param isEffective The specified effective value.
+     * @param isEffective The specified effective value, ignored by this method
      */
     public void setEffective(boolean isEffective) {
         // do nothing

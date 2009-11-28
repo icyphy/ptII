@@ -68,7 +68,7 @@ public class PropertySolverTestReporter {
      *  @param args The arguments, only the first argument is passed to
      *  the test harness.
      */ 
-    public static void main(String args[]) throws Exception {
+    public static void main(String args[]) {
         testPropertiesAndGenerateReports(args[0]);
     }
 

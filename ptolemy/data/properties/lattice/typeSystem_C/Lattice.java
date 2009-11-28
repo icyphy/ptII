@@ -232,8 +232,4 @@ public class Lattice extends PropertyLattice {
 
         return (Property) cType;
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
-
 }

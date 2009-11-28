@@ -1,6 +1,6 @@
 /* A property constraint helper for composite actor.
 
- Copyright (c) 2005-2006 The Regents of the University of California.
+ Copyright (c) 2008-2009 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -61,11 +61,21 @@ public class CompositeEntity extends PropertyConstraintCompositeHelper {
         super(solver, entity);
     }
 
+    /**
+     * Return true if this property term is effective.
+     * @return Always return true in this base class.
+     * @see #setEffective(boolean)
+     */
     public boolean isEffective() {
         return true;
     }
 
+    /**
+     * Set the effectiveness of this property term to the specified value. Do
+     * nothing in this base by default.
+     * @param isEffective The specified effective value, not used by this class.
+     * @see #isEffective()
+     */
     public void setEffective(boolean isEffective) {
-
     }
 }

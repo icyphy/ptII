@@ -1,6 +1,6 @@
 /* A helper class for ptolemy.actor.lib.Sink.
 
- Copyright (c) 2006-2009 The Regents of the University of California.
+ Copyright (c) 2008-2009 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -51,12 +51,13 @@ import ptolemy.kernel.util.IllegalActionException;
 public class Sink extends AtomicActor {
 
     /**
-     * Construct a Const helper for the staticDynamic lattice.
-     * This set a permanent constraint for the output port to
-     * be STATIC, but does not use the default actor constraints.
+     * Construct the Sink property constraint helper associated
+     * with the given component and solver. The constructed helper
+     * implicitly uses the default constraints set by the solver.
      * @param solver The given solver.
-     * @param actor The given Source actor
-     * @exception IllegalActionException
+     * @param actor The given Sink actor
+     * @exception IllegalActionException If the helper cannot be
+     * initialized in the superclass.
      */
     public Sink(PropertyConstraintSolver solver, ptolemy.actor.lib.Sink actor)
             throws IllegalActionException {
@@ -64,12 +65,28 @@ public class Sink extends AtomicActor {
         super(solver, actor, false);
     }
 
+    /**
+     * Construct the Sink property constraint helper for the
+     * given component and property lattice.
+     * @param solver The given solver.
+     * @param actor The given ActomicActor.
+     * @param useDefaultConstraints Indicate whether this helper uses the
+     * default actor constraints.
+     * @exception IllegalActionException If the helper cannot be
+     * initialized in the superclass.
+     */
     public Sink(PropertyConstraintSolver solver, ptolemy.actor.lib.Sink actor,
             boolean useDefaultConstraints) throws IllegalActionException {
 
         super(solver, actor, useDefaultConstraints);
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+
+    /**
+     * Set the effective terms of the ports.
+     */
     protected void _setEffectiveTerms() {
         Entity actor = (Entity) getComponent();
 

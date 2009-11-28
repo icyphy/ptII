@@ -45,9 +45,12 @@ import ptolemy.kernel.util.IllegalActionException;
  */
 public class AtomicActor extends PropertyConstraintHelper {
     /**
-     * Construct an AddSubtract helper.
-     * @param actor the associated actor
-     * @throws IllegalActionException 
+     * Construct the AtomicActor property constraint helper associated
+     * with the given component and solver. The constructed helper
+     * implicitly uses the default constraints set by the solver.
+     * @param solver The associated solver.
+     * @param actor The associated actor.
+     * @exception IllegalActionException If thrown by the super class.
      */
     public AtomicActor(PropertyConstraintSolver solver, 
             ptolemy.actor.AtomicActor actor)
@@ -55,20 +58,39 @@ public class AtomicActor extends PropertyConstraintHelper {
         super(solver, actor);
     }
     
+    /**
+     * Construct the AtomicActor property constraint helper for the
+     * given component and property lattice.
+     * @param solver The associated solver.
+     * @param actor The associated actor.
+     * @param useDefaultConstraints Indicate whether this helper
+     *  uses the default actor constraints.
+     * @exception IllegalActionException If thrown by the super class.
+     */
     public AtomicActor(PropertyConstraintSolver solver, 
             ptolemy.actor.AtomicActor actor, 
             boolean useDefaultConstraints)
-    throws IllegalActionException {
-
+            throws IllegalActionException {
         super(solver, actor, useDefaultConstraints);
     }    
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
+    /**
+     * Return true if this property term is effective.
+     * @return Always return true in this base class.
+     * @see #setEffective(boolean)
+     */
     public boolean isEffective() {
         return true;
     }
 
+    /**
+     * Set the effectiveness of this property term to the specified value. Do
+     * nothing in this base by default.
+     * @param isEffective The specified effective value.
+     */
     public void setEffective(boolean isEffective) {
-        
     }
-    
-}
+ }

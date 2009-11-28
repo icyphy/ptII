@@ -1,6 +1,6 @@
 /** A base class representing a property.
 
- Copyright (c) 1997-2006 The Regents of the University of California.
+ Copyright (c) 2009 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -39,9 +39,18 @@ import ptolemy.data.properties.lattice.PropertyLattice;
  A base class representing a property.
 
  @author Thomas Mandl
+ @version $Id$
+ @since Ptolemy II 8.0
+ @Pt.ProposedRating Red (cxh)
+ @Pt.AcceptedRating Red (cxh)
  */
 public class Configured extends LatticeProperty {
         
+    /**
+     * Create a new lattice property with the name "Configured" and the specified
+     * lattice.
+     * @param lattice The specified lattice where this property resides.
+     */
     public Configured(PropertyLattice lattice) {
         super(lattice, "Configured");
     }

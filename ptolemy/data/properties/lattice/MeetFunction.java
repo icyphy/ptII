@@ -46,17 +46,28 @@ import ptolemy.kernel.util.IllegalActionException;
  * @Pt.ProposedRating Red (mankit)
  * @Pt.AcceptedRating Red (mankit)
  */
-
 public class MeetFunction extends MonotonicFunction {
 
+    /** Construct a MeetFunction.
+     *  @param solver The solver.
+     *  @param objects The list of objects.
+     */
     public MeetFunction(PropertyConstraintSolver solver, List<Object> objects) {
         this(solver, objects.toArray());
     }
 
+    /** Construct a MeetFunction.
+     *  @param solver The solver.
+     *  @param objects The set of objects.
+     */
     public MeetFunction(PropertyConstraintSolver solver, Set<Object> objects) {
         this(solver, objects.toArray());
     }
 
+    /** Construct a MeetFunction.
+     *  @param solver The solver.
+     *  @param objects The objects.
+     */
     public MeetFunction(PropertyConstraintSolver solver, Object... objects) {
         _solver = solver;
         for (Object object : objects) {
@@ -88,13 +99,16 @@ public class MeetFunction extends MonotonicFunction {
             if (term.isEffective()) {
                 termValue = (Property) term.getValue();
 
-                meetValue = meetValue == null ? termValue : _solver
+                 meetValue = meetValue == null ? termValue : _solver
                         .getLattice().greatestLowerBound(meetValue, termValue);
             }
         }
         return meetValue;
     }
 
+    /** Return the string description of this object.
+     *  @return the string description of this object.
+     */
     public String toString() {
         StringBuffer result = new StringBuffer("meet(");
 
@@ -115,6 +129,12 @@ public class MeetFunction extends MonotonicFunction {
         return result.toString();
     }
 
+    /**
+     * Return true if any of the meet function terms are
+     * effective. 
+     * @return True if any of the meet function terms are
+     * effective. 
+     */
     public boolean isEffective() {
         for (PropertyTerm term : _terms) {
             if (term.isEffective()) {
@@ -124,6 +144,12 @@ public class MeetFunction extends MonotonicFunction {
         return false;
     }
 
+    /**
+     * Set the effectiveness of this property term to the specified value. 
+     * In this class, it is an assertion error to call this method as MeetFunction
+     * terms cannot be effective.
+     * @param isEffective The specified effective value, not used by this class.
+     */
     public void setEffective(boolean isEffective) {
         throw new AssertionError(
                 "Cannot set the effectiveness of a MeetFunction term.");

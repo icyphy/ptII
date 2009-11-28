@@ -1,6 +1,6 @@
 /* A helper class for ptolemy.data.expr.ASTPtRootNode.
 
- Copyright (c) 2006-2009 The Regents of the University of California.
+ Copyright (c) 2008-2009 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -45,9 +45,13 @@ import ptolemy.kernel.util.IllegalActionException;
  */
 public class ASTPtRootNode extends PropertyConstraintASTNodeHelper {
     /**
-     * Construct an ASTPtRootNode helper.
-     * @param actor the associated actor
-     * @exception IllegalActionException
+     * Construct the ASTPtRootNode property constraint helper associated
+     * with the given component and solver. The constructed helper
+     * implicitly uses the default constraints set by the solver.
+     * @param solver The given solver.
+     * @param actor The given Scale actor
+     * @exception IllegalActionException If the helper cannot be
+     * initialized in the superclass.
      */
     public ASTPtRootNode(PropertyConstraintSolver solver,
             ptolemy.data.expr.ASTPtRootNode actor)
@@ -56,6 +60,16 @@ public class ASTPtRootNode extends PropertyConstraintASTNodeHelper {
         super(solver, actor);
     }
 
+    /**
+     * Construct an ASTPtRootNode helper for the given
+     * property solver and AST node.
+     * @param solver The given component.
+     * @param actor The given AST node.
+     * @param useDefaultConstraints Indicate whether this helper
+     *  uses the default actor constraints.
+     * @exception IllegalActionException If the helper cannot
+     *  be initialized.
+     */
     public ASTPtRootNode(PropertyConstraintSolver solver,
             ptolemy.data.expr.ASTPtRootNode node, boolean useDefaultConstraints)
             throws IllegalActionException {

@@ -1,6 +1,6 @@
 /* A helper class for ptolemy.actor.AtomicActor.
 
- Copyright (c) 2006 The Regents of the University of California.
+ Copyright (c) 2008-2009 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -53,7 +53,6 @@ public class AtomicActor extends PropertyConstraintHelper {
      * @param actor The given ActomicActor.
      * @exception IllegalActionException If the helper cannot be
      * initialized in the superclass.
-     * initialized.
      */
     public AtomicActor(PropertyConstraintSolver solver,
             ptolemy.actor.AtomicActor actor) throws IllegalActionException {
@@ -78,11 +77,23 @@ public class AtomicActor extends PropertyConstraintHelper {
         super(solver, actor, useDefaultConstraints);
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
+    /**
+     * Return true if this property term is effective.
+     * @return Always return true in this base class.
+     * @see #setEffective(boolean)
+     */
     public boolean isEffective() {
         return true;
     }
 
+    /**
+     * Set the effectiveness of this property term to the specified value. Do
+     * nothing in this base by default.
+     * @param isEffective The specified effective value.
+     */
     public void setEffective(boolean isEffective) {
-
     }
 }

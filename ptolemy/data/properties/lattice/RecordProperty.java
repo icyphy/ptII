@@ -698,8 +698,9 @@ public class RecordProperty extends StructuredProperty implements Cloneable {
         }
 
         /**
-         * Do nothing by default.
-         * @param isEffective Not used.
+         * Set the effectiveness of this property term to the specified value. Do
+         * nothing in this base by default.
+         * @param isEffective The specified effective value, not used by this class.
          */
         public void setEffective(boolean isEffective) {
         }

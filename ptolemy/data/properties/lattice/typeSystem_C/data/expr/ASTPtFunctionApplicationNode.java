@@ -1,6 +1,6 @@
 /* A helper class for ptolemy.data.expr.ASTPtFunctionApplicationNode.
 
- Copyright (c) 2006 The Regents of the University of California.
+ Copyright (c) 2008-2009 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -49,12 +49,29 @@ import ptolemy.kernel.util.IllegalActionException;
  */
 public class ASTPtFunctionApplicationNode extends ASTPtRootNode {
 
+    /**
+     * Construct an ASTPtUnaryNode object.
+     * @param solver The associated solver.
+     * @param node The associated node.
+     * @exception IllegalActionException Thrown if the helper cannot be
+     * initialized.
+     */
     public ASTPtFunctionApplicationNode(PropertyConstraintSolver solver,
             ptolemy.data.expr.ASTPtFunctionApplicationNode node)
             throws IllegalActionException {
         super(solver, node);
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
+    /**
+     * Return the constraints of this component. The constraints are a list of
+     * inequalities.
+     * @return The constraints of this component.
+     * @exception IllegalActionException If thrown while manipulating the lattice
+     * or getting the solver.
+     */
     public List<Inequality> constraintList() throws IllegalActionException {
         ptolemy.data.expr.ASTPtFunctionApplicationNode node = (ptolemy.data.expr.ASTPtFunctionApplicationNode) getComponent();
 
@@ -69,13 +86,8 @@ public class ASTPtFunctionApplicationNode extends ASTPtRootNode {
         return super.constraintList();
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
     private static List _real32Functions = Arrays.asList(new String[] { "" });
-
-    public boolean isEffective() {
-        return true;
-    }
-
-    public void setEffective(boolean isEffective) {
-
-    }
 }

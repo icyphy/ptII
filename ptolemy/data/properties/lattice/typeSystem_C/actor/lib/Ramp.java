@@ -1,6 +1,6 @@
 /* A helper class for ptolemy.actor.lib.Ramp.
 
- Copyright (c) 2006 The Regents of the University of California.
+ Copyright (c) 2008-2009 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -49,8 +49,9 @@ import ptolemy.kernel.util.IllegalActionException;
 public class Ramp extends AtomicActor {
     /**
      * Construct an Ramp helper.
-     * @param actor the associated actor
-     * @exception IllegalActionException
+     * @param solver The associated solver.
+     * @param actor The associated actor.
+     * @exception IllegalActionException If thrown by the super class.
      */
     public Ramp(PropertyConstraintSolver solver, ptolemy.actor.lib.Ramp actor)
             throws IllegalActionException {
@@ -60,6 +61,16 @@ public class Ramp extends AtomicActor {
         _actor = actor;
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
+    /**
+     * Return the constraints of this component. The constraints are a list of
+     * inequalities.
+     * @return The constraints of this component.
+     * @exception IllegalActionException If thrown while manipulating the lattice
+     * or getting the solver.
+     */
     public List<Inequality> constraintList() throws IllegalActionException {
         //        setAtLeast(actor.output, actor.init);
         //        setAtLeast(actor.output, actor.step);
