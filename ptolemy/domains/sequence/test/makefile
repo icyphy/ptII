@@ -1,10 +1,10 @@
-# Makefile for Ptolemy II Continuous Actors
+# Makefile for the Java classes used to test the Ptolemy actors
 #
-# @Authors: Christopher Hylands, based on a file by Thomas M. Parks
+# @Authors: Christopher Brooks (makefile only)
 #
 # @Version: $Id$
 #
-# @Copyright (c) 1997-2009 The Regents of the University of California.
+# @Copyright (c) 2009 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -29,9 +29,8 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/domains/continuous/lib
-
-DIRS =		test
+# Location of this directory, relative to the Ptolemy II directory
+ME =		ptolemy/domains/sequence/test
 
 # Root of the Ptolemy II directory
 ROOT =		../../../..
@@ -42,55 +41,53 @@ CLASSPATH =	$(ROOT)
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
-# Used to build jar files
-PTPACKAGE = 	lib
-PTCLASSJAR = 	$(PTPACKAGE).jar
+# Tcl sources that are part of the testing infrastructure
+TCL_SRCS = \
+	testDefs.tcl
 
-JSRCS = \
-	DifferentialSystem.java \
-	DiscreteClock.java \
-	EventSource.java \
-	Integrator.java \
-	LevelCrossingDetector.java \
-	ContinuousMerge.java \
-	ContinuousTimeDelay.java \
-	ContinuousTransferFunction.java \
-	PeriodicSampler.java \
-	ZeroOrderHold.java
+JSRCS =
 
-OTHER_FILES_TO_BE_JARED = \
-	ContinuousClock.xml \
-	ContinuousClockIcon.xml \
-	ContinuousTimeDelayIcon.xml \
-	ContinuousSinewave.xml \
-	ct2continuous \
-	continuousentities.xml \
-	discrete.xml \
-	dynamics.xml \
-	eventgenerators.xml \
-	EventSource.java \
-	integral.gif \
-	IntegratorIcon.xml \
-	LevelCrossingDetectorIcon.xml \
-	wavegenerators.xml
+# Non-graphical Java tests written in Tcl
+# If there are no tests, we use a dummy file so that the script that builds
+# alljtests.tcl works.  If you add a test, be sure to add
+# $(JGRAPHICAL_TESTS) to EXTRA_SRCS
+JSIMPLE_TESTS = \
+	dummy.tcl
 
-EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
+# Graphical Java tests that use Tcl.
+# If there are no tests, we use a dummy file so that the script that builds
+# alljtests.tcl works.  If you add a test, be sure to add
+# $(JGRAPHICAL_TESTS) to EXTRA_SRCS
+JGRAPHICAL_TESTS = \
+	dummy.tcl
+
+EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) #$(JSIMPLE_TESTS) #$(JGRAPHICAL_TESTS)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =	test
+MISC_FILES =	alljtests.tcl \
+		auto
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
-OPTIONAL_FILES = \
-	doc \
-	'Integrator$$FunctionTerm.class'
+OPTIONAL_FILES =
 
-JCLASS = $(JSRCS:%.java=%.class)
+JCLASS =	$(JSRCS:%.java=%.class)
 
+# Don't include all or install rules here, we want the user
+# to run 'make tests' to run the tests.
 
-all: jclass
-install: jclass $(PTCLASSJAR)
+tests:: $(EXTRA_SRCS) jclass test_java test_jsimple
+
+test_java: jclass
+
+# PtolemyII-wide test definitions.
+KERNEL_TESTDEFS = $(ROOT)/util/testsuite/testDefs.tcl
+
+# These tests do not require a graphics terminal, but do use Jacl and Java
+test_jsimple: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljtests.tcl test_auto
+	$(JTCLSH) alljtests.tcl
+
 
 
 # Get the rest of the rules

@@ -1,10 +1,9 @@
-# Makefile for Ptolemy II Continuous Actors
+# Makefile for the Ptolemy II synchronous book chapter models
 #
-# @Authors: Christopher Hylands, based on a file by Thomas M. Parks
+# Version: $Id$
+# Makefile Author: Christopher Brooks
 #
-# @Version: $Id$
-#
-# @Copyright (c) 1997-2009 The Regents of the University of California.
+# Copyright (c) 2009 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -28,70 +27,41 @@
 #
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
+##########################################################################
 
-ME =		ptolemy/domains/continuous/lib
+ME =		doc/books/design/synchronous
 
+# Sub directories to run make in.
+# Don't include src directory, since we don't ship it with the release
 DIRS =		test
 
-# Root of the Ptolemy II directory
+# Root of Ptolemy II directory
 ROOT =		../../../..
-
-CLASSPATH =	$(ROOT)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
-# Used to build jar files
-PTPACKAGE = 	lib
+PTPACKAGE = 	synchronous
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
-JSRCS = \
-	DifferentialSystem.java \
-	DiscreteClock.java \
-	EventSource.java \
-	Integrator.java \
-	LevelCrossingDetector.java \
-	ContinuousMerge.java \
-	ContinuousTimeDelay.java \
-	ContinuousTransferFunction.java \
-	PeriodicSampler.java \
-	ZeroOrderHold.java
+EXAMPLE_MODELS = \
+	ABRO.xml
 
-OTHER_FILES_TO_BE_JARED = \
-	ContinuousClock.xml \
-	ContinuousClockIcon.xml \
-	ContinuousTimeDelayIcon.xml \
-	ContinuousSinewave.xml \
-	ct2continuous \
-	continuousentities.xml \
-	discrete.xml \
-	dynamics.xml \
-	eventgenerators.xml \
-	EventSource.java \
-	integral.gif \
-	IntegratorIcon.xml \
-	LevelCrossingDetectorIcon.xml \
-	wavegenerators.xml
+OTHER_FILES_TO_BE_JARED = $(EXAMPLE_MODELS)
 
-EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
+EXTRA_SRCS = $(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =	test
+MISC_FILES =	$(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
-OPTIONAL_FILES = \
-	doc \
-	'Integrator$$FunctionTerm.class'
-
-JCLASS = $(JSRCS:%.java=%.class)
-
+OPTIONAL_FILES =
 
 all: jclass
-install: jclass $(PTCLASSJAR)
+install: jclass jars
 
-
-# Get the rest of the rules
-include $(ROOT)/mk/ptcommon.mk
+# We don't include common.mk since we don't use the compiler here
+include $(ROOT)/mk/ptno-compile.mk

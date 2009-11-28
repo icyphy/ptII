@@ -67,7 +67,8 @@ MISC_FILES =    $(DIRS)
 OPTIONAL_FILES = \
     doc \
 	'OntologyAttribute$$OntologyComposite.class' \
-	'PropertyLatticeAttribute$$1.class'
+	'PropertyLatticeAttribute$$1.class' \
+	'PropertyLatticeComposite$$Lattice.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

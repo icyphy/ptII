@@ -1,6 +1,6 @@
-# Makefile for Ptolemy II pthales AdaptiveBeamForming  demo
+# Makefile for the Java classes used to test models used in the synchronous chapter
 #
-# @Authors: Christopher Hylands (makefile only)
+# @Authors: Christopher Brooks (makefile only)
 #
 # @Version: $Id$
 #
@@ -29,9 +29,12 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/domains/pthales/demo/AdaptiveBeamForming
+# Location of this directory, relative to the Ptolemy II directory
+ME =		doc/books/design/synchronous/test
 
-# Root of the Java directory
+DIRS =
+
+# Root of the Ptolemy II directory
 ROOT =		../../../../..
 
 CLASSPATH =	$(ROOT)
@@ -40,49 +43,54 @@ CLASSPATH =	$(ROOT)
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
-# Used to build jar files
-PTPACKAGE = 	AdaptiveBeamForming
-PTCLASSJAR = 	$(PTPACKAGE).jar
+# Tcl sources that are part of the testing infrastructure
+TCL_SRCS = \
+	testDefs.tcl
 
 JSRCS =
 
-OTHER_FILES_TO_BE_JARED = \
-	$(JSRCS) \
-	AdaptiveBeamForming.xml \
-	AdaptiveBeamForming2.xml \
-	UCB_ABF.xml \
-	ptolemy_UCB_ABF.xml
+# Non-graphical Java tests written in Tcl
+# If there are no tests, we use a dummy file so that the script that builds
+# alljtests.tcl works.  If you add a test, be sure to add
+# $(JSIMPLE_TESTS) to EXTRA_SRCS
+JSIMPLE_TESTS = \
+	dummy
 
-EXTRA_SRCS = \
-	$(OTHER_FILES_TO_BE_JARED)
+# Graphical Java tests that use Tcl.
+# If there are no tests, we use a dummy file so that the script that builds
+# alljtests.tcl works.  If you add a test, be sure to add
+# $(JGRAPHICAL_TESTS) to EXTRA_SRCS
+JGRAPHICAL_TESTS = \
+	dummy.tcl
+
+EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) #$(JSIMPLE_TESTS) #$(JGRAPHICAL_TESTS)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES = $(DIRS)
+MISC_FILES =	\
+	alljtests.tcl \
+	auto
 
 # make checkjunk will not report OPTIONAL_FILES as trash
-# make realclean removes OPTIONAL_FILES
-OPTIONAL_FILES = \
-	doc
+# make distclean removes OPTIONAL_FILES
+OPTIONAL_FILES =
 
-JCLASS = $(JSRCS:%.java=%.class)
+JCLASS =	$(JSRCS:%.java=%.class)
 
 # Don't include all or install rules here, we want the user
-# to run 'make demos' to run the tests.
-all: jclass
-	@echo "To run all the demos, run 'make demo'"
+# to run 'make tests' to run the tests.
 
-install: all $(PTCLASSJAR)
+tests:: $(EXTRA_SRCS) jclass test_java test_jsimple
 
-demo: demo_applet demo_ptolemy demo_vergil
-demo_applet:
-	CLASSPATH="$(CLASSPATH)" appletviewer AdaptiveBeamForming.htm
+test_java: jclass
 
-demo_ptolemy:
-	"$(PTII)/bin/ptolemy" AdaptiveBeamForming.xml
+# PtolemyII-wide test definitions.
+KERNEL_TESTDEFS = $(ROOT)/util/testsuite/testDefs.tcl
 
-demo_vergil:
-	"$(PTII)/bin/vergil" AdaptiveBeamForming.xml
+# These tests do not require a graphics terminal, but do use Jacl and Java
+# We remove certain files from /tmp before and after running.
+test_jsimple: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljtests.tcl test_auto
+	-$(JTCLSH) alljtests.tcl
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

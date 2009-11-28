@@ -56,6 +56,7 @@ JSRCS = \
 	PtidesListEventQueue.java \
 	PtidesNoPhysicalTimeDirector.java \
 	PtidesPreemptiveEDFDirector.java \
+	PtidesPreemptiveUserEDFDirector.java \
 	PtidesTopLevelDirector.java \
 	Tag.java
 

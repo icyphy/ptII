@@ -57,7 +57,7 @@ JSRCS = \
 	JopWritePort.java
 
 OTHER_FILES_TO_BE_JARED = \
-	JopWatchDogIcon.xml
+	JopWatchDogIcon.xml \
 	jopio.xml
 
 

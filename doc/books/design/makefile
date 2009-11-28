@@ -32,7 +32,7 @@
 ME =		doc/books/design
 
 # Sub directories to run make in.
-DIRS =		modal time
+DIRS =		modal synchronous time
 
 # Root of Ptolemy II directory
 ROOT =		../../..
@@ -47,6 +47,7 @@ PTCLASSJAR =
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
 	modal/modal.jar \
+	synchronous/synchronous.jar \
 	time/time.jar
 
 OTHER_FILES_TO_BE_JARED =

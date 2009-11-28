@@ -4,7 +4,7 @@
 #
 # @Version: $Id$
 #
-# @Copyright (c) 2007 The Regents of the University of California.
+# @Copyright (c) 2008-2009 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -50,7 +50,10 @@ OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS) \
 	DOPCenter.gif \
 	DOPCenter.xml \
-	expand-group.vbs
+	expand-group.vbs \
+	Placard.pdf \
+	Placard.tex \
+	Placard.xml
 
 EXTRA_SRCS = \
 	$(OTHER_FILES_TO_BE_JARED) \

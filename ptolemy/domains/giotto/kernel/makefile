@@ -4,7 +4,7 @@
 #
 # @Version: $Id$
 #
-# @Copyright (c) 2000-2005 The Regents of the University of California.
+# @Copyright (c) 2000-2009 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -49,6 +49,7 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 JSRCS = \
 	GiottoCodeGenerator.java \
 	GiottoCodeGeneratorUtilities.java \
+	GiottoDecoratedAttributesImplementation.java \
 	GiottoDirector.java \
 	GiottoReceiver.java \
 	GiottoScheduler.java

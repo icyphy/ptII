@@ -100,7 +100,9 @@ OPTIONAL_FILES = \
 	'DebuggerParameter$$Mode$$3.class' \
 	'DebuggerParameter$$Mode.class' \
 	'EventUtils$$1.class' \
+	'ListDirectory$$1.class' \
 	'ListDirectory$$RecursiveFileFilter.class' \
+	'ListDirectory$$RecursiveFileFilter$$FileComparator.class' \
 	'Plot$$1.class' \
 	'ReceiveInput$$InputListener.class' \
 	'Report$$1.class' \

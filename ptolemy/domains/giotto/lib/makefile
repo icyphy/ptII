@@ -4,7 +4,7 @@
 #
 # @Version: $Id$
 #
-# @Copyright (c) 2002-2005 The Regents of the University of California.
+# @Copyright (c) 2002-2009 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -46,12 +46,13 @@ include $(CONFIG)
 PTPACKAGE = 	lib
 PTCLASSJAR =	$(PTPACKAGE).jar
 
+JSRCS = \
+	GiottoError.java
+
 OTHER_FILES_TO_BE_JARED =
 
 # Files that are not compiled, such as .tcl and .itcl files.
-EXTRA_SRCS = \
-	$(JSRCS) \
-	$(OTHER_FILES_TO_BE_JARED) \
+EXTRA_SRCS = $(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
@@ -59,7 +60,10 @@ MISC_FILES = $(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make realclean removes OPTIONAL_FILES
-OPTIONAL_FILES =
+OPTIONAL_FILES = \
+	'GiottoError$$ErrorAction.class'
+
+JCLASS = $(JSRCS:%.java=%.class)
 
 all:
 	@echo "Nothing to be done in this directory"

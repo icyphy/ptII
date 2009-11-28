@@ -31,8 +31,10 @@
 
 ME =		ptolemy/domains/ptides/demo
 
-DIRS =		PtidesBasicMixedSimulator PtidesBasicMultiPlatformTDMA \
-			PtidesBasicOnePlatform PtidesBasicPowerPlant PtidesBasicTwoPlatformsNetworkSensorEvents \
+DIRS =		PtidesBasicBallDrop \
+		PtidesBasicMixedSimulator PtidesBasicMultiPlatformTDMA \
+		PtidesBasicOnePlatform PtidesBasicPowerPlant \
+		PtidesBasicTwoPlatformsNetworkSensorEvents \
 		PtidesPreemptEDFOnePlatformThreePathsRealDelay PtidesSimulator
 
 # Root of the Java directory
@@ -49,10 +51,11 @@ PTPACKAGE = 	demo
 
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
+	PtidesBasicBallDrop/PtidesBasicBallDrop.jar \
 	PtidesBasicMixedSimulator/PtidesBasicMixedSimulator.jar \
 	PtidesBasicMultiPlatformTDMA/PtidesBasicMultiPlatformTDMA.jar \
 	PtidesBasicOnePlatform/PtidesBasicOnePlatform.jar \
-    PtidesBasicPowerPlant/PtidesBasicPowerPlant.jar \
+	PtidesBasicPowerPlant/PtidesBasicPowerPlant.jar \
 	PtidesBasicTwoPlatformsNetworkSensorEvents/PtidesBasicTwoPlatformsNetworkSensorEvents.jar \
 	PtidesPreemptEDFOnePlatformThreePathsRealDelay/PtidesPreemptEDFOnePlatformThreePathsRealDelay.jar \
 	PtidesSimulator/PtidesSimulator.jar

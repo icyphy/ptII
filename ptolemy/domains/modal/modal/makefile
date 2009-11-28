@@ -74,7 +74,9 @@ OPTIONAL_FILES = \
 	doc \
 	'ModalController$$1.class' \
 	'ModalController$$ClassComparator.class' \
-	'ModalModel$$1.class'
+	'ModalModel$$1.class' \
+	'ModalRefinement$$1.class' \
+	'ModalRefinement$$ClassComparator.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 
