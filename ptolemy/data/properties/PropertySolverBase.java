@@ -371,7 +371,7 @@ public abstract class PropertySolverBase extends Attribute {
             // if ((attribute instanceof StringAttribute) ||
             // ((attribute instanceof Variable
             // && ((Variable) attribute).isStringMode()))) {
-            if ((attribute instanceof Variable)
+            if (attribute instanceof Variable
                     && ((Variable) attribute).isStringMode()) {
 
                 parseTree = getParser().generateStringParseTree(expression);

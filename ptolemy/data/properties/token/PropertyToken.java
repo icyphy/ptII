@@ -1,6 +1,4 @@
 /*
- * Below is the copyright agreement for the Ptolemy II system.
- * 
  * Copyright (c) 2007-2009 The Regents of the University of California. All
  * rights reserved.
  * 
@@ -27,13 +25,28 @@ import ptolemy.data.FloatToken;
 import ptolemy.data.Token;
 import ptolemy.data.properties.Property;
 
+//////////////////////////////////////////////////////////////////////////
+//// PropertyToken
+
+/**
+   A property that represents a Ptolemy Token.
+   @author Man-Kit Leung
+   @version $Id$
+   @since Ptolemy II 7.1
+   @Pt.ProposedRating Red (mankit)
+   @Pt.AcceptedRating Red (mankit)
+*/
 public class PropertyToken extends Property {
 
-    private final Token _token;
-
+    /** Construct a PropertyToken.
+     *  @param token The Ptolemy Token.
+     */
     public PropertyToken(Token token) {
         _token = token;
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /**
      * Return true if the given object is equal to this lattice property. Two
@@ -66,29 +79,59 @@ public class PropertyToken extends Property {
         return _token.hashCode();
     }
 
+    /** Return true if the property argument is a PropertyToken.
+     *  @param property The property to be checked.   
+     *  @return True if the property argument is a PropertyToken.
+     */
     public boolean isCompatible(Property property) {
+        // FIXME: what is the difference betwee isCompatible() and isSubstitutionInstance?
         return property instanceof PropertyToken;
     }
 
+    /** Return true if this property is a constant.
+     *  @return Always return true in this base class.
+     */
     public boolean isConstant() {
         return true;
     }
 
+    /** Return true if this property is instantiable.
+     *  @return Always return true in this base class.
+     */
     public boolean isInstantiable() {
         return true;
     }
 
+    /** Return true if the property argument is a PropertyToken.
+     *  @param property The property to be checked.   
+     *  @return True if the property argument is a PropertyToken.
+     */
     public boolean isSubstitutionInstance(Property property) {
+        // FIXME: what is the difference betwee isCompatible() and isSubstitutionInstance?
         return property instanceof PropertyToken;
     }
 
+    /** Return the token with which this property was created.
+     *  @return The token.   
+     */   
     public Token getToken() {
         return _token;
     }
 
+    /** Return the string value of this property.
+     *  @return The string value of this property.  If
+     *  the underlying token is null, then the empty string
+     *  is returned.  Otherwise, the string value of the token
+     *  is returned.
+     */ 
     public String toString() {
         // FIXME: Charles Shelton 05/27/09 - How do we distinguish between an empty string token and an unresolved property (null) token?
         return _token == null ? "" : _token.toString();
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    /** The token represented by this property. */
+    private final Token _token;
 }

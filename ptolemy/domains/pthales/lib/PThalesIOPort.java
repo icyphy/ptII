@@ -196,7 +196,6 @@ public class PThalesIOPort extends TypedIOPort {
   
     
     /** Reset the variable part of this type to the specified type.
-     *  @param type A Type.
      *  @exception IllegalActionException If the type is not settable,
      *   or the argument is not a Type.
      */

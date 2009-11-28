@@ -61,12 +61,15 @@ public class Comparator extends AtomicActor {
         _actor = actor;
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
-    /** Return the constraint list for this helper.
-     *  @param The constraint list for this helper which consists of
-     * the constraint list for the super class and a constraint
-     * between the output port of the actor and the Boolean element of
-     * the lattice.
+    /** 
+     *  Return the constraint list for this helper.
+     *  @return The constraint list for this helper which consists of
+     *  the constraint list for the super class and a constraint
+     *  between the output port of the actor and the Boolean element of
+     *  the lattice.
      */
     public List<Inequality> constraintList() throws IllegalActionException {
         setEquals(_actor.output, _lattice.getElement("BOOLEAN"));

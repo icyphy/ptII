@@ -159,7 +159,7 @@ public abstract class PropertyHelper {
         return list;
     }
 
-    /*
+    /**
      * Return The PropertySolver that uses this helper.
      *
      * @return The PropertySolver that uses this helper.
@@ -601,7 +601,7 @@ public abstract class PropertyHelper {
     ///////////////////////////////////////////////////////////////////
     ////       private methods                                     ////
 
-    /*
+    /**
      * Evaluate the expression of the specified AnnotationAttribute.
      *
      * @param annotation The specified AnnotationAttribute.
@@ -630,7 +630,7 @@ public abstract class PropertyHelper {
         }
     }
 
-    /*
+    /**
      * Return the list of AnnotationAttributes specific to this use-case.
      *
      * @return The list of AnnotationAttributes.
@@ -658,8 +658,8 @@ public abstract class PropertyHelper {
         return result;
     }
 
-    // /////////////////////////////////////////////////////////////////
-    // // private variables ////
+    ///////////////////////////////////////////////////////////////////
+    ////                   private variables                       ////
 
     /* The associated component. */
     private Object _component;

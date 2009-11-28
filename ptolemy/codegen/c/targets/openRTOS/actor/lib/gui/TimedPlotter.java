@@ -1,8 +1,6 @@
-//copied from XYPlotter.
-
 /* A helper class for ptolemy.actor.lib.gui.TimedPlotter
 
- Copyright (c) 2006-2007 The Regents of the University of California.
+ Copyright (c) 2009 The Regents of the University of California.
  All rights reserved.
 
  Permission is hereby granted, without written agreement and without
@@ -41,13 +39,14 @@ import ptolemy.kernel.util.IllegalActionException;
 /**
  A helper class for ptolemy.actor.lib.gui.TimedPlotter.
 
- @author Shanna-Shaye Forbes
+ @author Shanna-Shaye Forbes, based on from XYPlotter.
+
  @version $Id$
  @since Ptolemy II 7.1
  @Pt.ProposedRating Red
  @Pt.AcceptedRating Red
  */
-public class TimedPlotter extends CCodeGeneratorHelper {//PlotterBase{  //CCodeGeneratorHelper {
+public class TimedPlotter extends CCodeGeneratorHelper {
 
     /** Constructor method for the TimedPlotter helper.
      *  @param actor the associated actor.
@@ -56,6 +55,15 @@ public class TimedPlotter extends CCodeGeneratorHelper {//PlotterBase{  //CCodeG
         super(actor);
     }
 
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
+    /** Generate fire code.
+     *  @return The generated code.
+     *  @exception IllegalActionException If the code stream encounters
+     *   errors in processing the specified code blocks.
+     */
     public String generateFireCode() throws IllegalActionException {
         if (_debugging) {
             _debug("Timed Plotter generateFireCode called");
@@ -72,6 +80,36 @@ public class TimedPlotter extends CCodeGeneratorHelper {//PlotterBase{  //CCodeG
         }
         return code.toString();
     }
+
+    /** Generate plot specific fire code.
+     *  @param width The width.
+     *  @param id The id of the code block to use.  If id equals 1,
+     *  then use plotBlock1.  If id equals 2, then use plotBlock2.
+     *  Otherwise, use plotBlock
+     *  @return The generated code.
+     *  @exception IllegalActionException If the code stream encounters
+     *   errors in processing the specified code blocks.
+     */
+    public String generatePlotFireCode(int width, int id)
+            throws IllegalActionException {
+        StringBuffer code = new StringBuffer();
+        ArrayList args = new ArrayList();
+        for (int i = width - 1; i >= 0; i--) {
+            args.clear();
+            args.add(Integer.valueOf(i));
+            if (id == 1) {
+                code.append(_generateBlockCode("plotBlock1", args));
+            } else if (id == 2) {
+                code.append(_generateBlockCode("plotBlock2", args));
+            } else {
+                code.append(_generateBlockCode("plotBlock", args));
+            }
+        }
+        return code.toString();
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
 
     /** Generate fire code.
      *  @return The generated code.
@@ -93,30 +131,4 @@ public class TimedPlotter extends CCodeGeneratorHelper {//PlotterBase{  //CCodeG
         }
         return code.toString();
     }
-
-    /** Generate plot specific fire code.
-     *  @param width The width.
-     *  @return The generated code.
-     *  @exception IllegalActionException If the code stream encounters
-     *   errors in processing the specified code blocks.
-     */
-    public String generatePlotFireCode(int width, int id)
-            throws IllegalActionException {
-        StringBuffer code = new StringBuffer();
-        ArrayList args = new ArrayList();
-        for (int i = width - 1; i >= 0; i--) {
-            args.clear();
-            args.add(Integer.valueOf(i));
-            if (id == 1) {
-                code.append(_generateBlockCode("plotBlock1", args));
-            } else if (id == 2) {
-                code.append(_generateBlockCode("plotBlock2", args));
-            } else {
-                code.append(_generateBlockCode("plotBlock", args));
-            }
-        }
-
-        return code.toString();
-    }
-
 }

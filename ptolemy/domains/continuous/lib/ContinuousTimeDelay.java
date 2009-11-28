@@ -404,7 +404,7 @@ public class ContinuousTimeDelay extends Transformer {
     ////                         protected methods                 ////
 
     /** 
-     * Linear interpolation between previous and current input.
+     * Linear interpolate between previous and current input.
      * 
      * <p>To interpolate, we determine the slope between the left and right
      * interpolation points, and multiply this by time gap between the left
@@ -412,9 +412,9 @@ public class ContinuousTimeDelay extends Transformer {
      * signal has changed between the left and center points. We add this change
      * to the value of the left point to estimate the value of the center point.
      * 
-     *
      * @param leftEvent The left event.
      * @param rightEvent the right event.
+     * @return The linear interpolation.
      * @exception IllegalActionException If thrown by arithmetic operations
      * on the events
      */
