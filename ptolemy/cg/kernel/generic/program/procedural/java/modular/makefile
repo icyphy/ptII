@@ -55,8 +55,10 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 PTCLASSALLJARS =
 
 # Keep this list alphabetized.
-JSRCS = ModularCodeGenerator.java \
-	ModularSDFCodeGenerator.java
+JSRCS = \
+	ModularCodeGenerator.java \
+	ModularSDFCodeGenerator.java \
+	SDFModularScheduler.java 
 
 OTHER_FILES_TO_BE_JARED = \
 	makefile.in
@@ -71,8 +73,14 @@ MISC_FILES = 	test
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	demo 
-	
+	demo \
+	'ModularSDFCodeGenerator$$1.class' \
+	'ModularSDFCodeGenerator$$ClusterComparator.class' \
+	'ModularSDFCodeGenerator$$Firing.class' \
+	'ModularSDFCodeGenerator$$FiringCluster.class' \
+	'ModularSDFCodeGenerator$$FiringComparator.class' \
+	'ModularSDFCodeGenerator$$SimFiringFunction.class' \
+	'ModularSDFCodeGenerator$$SimJunction.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

@@ -96,6 +96,7 @@ MISC_FILES =	connector event interactor toolbox test tutorial
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	doc \
+	demo \
 	$(PTCLASSJAR) \
 	$(PTCLASSALLJAR) \
 	'BasicZList$$1.class' \

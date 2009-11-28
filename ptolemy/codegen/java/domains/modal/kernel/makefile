@@ -3,7 +3,7 @@
 # @Version: $Id: makefile 54594 2009-06-20 18:05:09Z cxh $
 # @Author: Christopher Brooks
 #
-# @Copyright (c) 2005-2009 The Regents of the University of California
+# @Copyright (c) 2009 The Regents of the University of California
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -54,7 +54,8 @@ JSRCS = \
 	FSMDirector.java \
 	MultirateFSMDirector.java
 
-OTHER_FILES_TO_BE_JARED =
+OTHER_FILES_TO_BE_JARED = \
+	FSMActor.j
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 

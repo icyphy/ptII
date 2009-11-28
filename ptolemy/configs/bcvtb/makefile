@@ -62,7 +62,7 @@ OTHER_FILES_TO_BE_JARED = \
 	configuration.xml \
 	icon-blue.jpg \
 	intro.htm \
-	makefile \
+	overview.htm \
 	ptolemyEPlusSimuMac.png \
 	welcomeWindow.xml
 

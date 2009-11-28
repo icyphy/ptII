@@ -109,6 +109,7 @@ EXTRA_SRCS = \
 	plugin.xml \
 	pom.xml \
 	vergil.jnlp.in \
+	vergilBCVTB.jnlp.in \
 	vergilDSP.jnlp.in \
 	vergilHyVisual.jnlp.in \
 	vergilPtiny.jnlp.in \
@@ -246,6 +247,9 @@ CLEAN_SHIPPING_FILES = \
 		jni/launcher/launcher.exe \
 		jni/launcher/launcher.dSYM \
 		jni/launcher/launcher \
+		lbnl/lib/util/libbcvtb.dylib \
+		lbnl/lib/util/libbcvtb.dylib.dSYM \
+		lbnl/lib/util/libbcvtb.so \
 		lib/cachedir \
 		ptolemy/apps ptolemy/actor/lib/ptp \
 		ptolemy/actor/gui/test/CustomQueryExample.tar.gz \
@@ -289,6 +293,7 @@ CLEAN_SHIPPING_FILES = \
 		ptolemy/domains/wireless/lib/tinyOS \
 		ptolemy/hsif/Thermostat_moml.xml \
 		ptolemy/hsif/SwimmingPool_moml.xml \
+		ptolemy/matlab/libptmatlab.dylib \
 		ptolemy/matlab/libptmatlab.so \
 		ptolemy/matlab/matlabLinux.jar \
 		ptolemy/matlab/ptmatlab.dll \

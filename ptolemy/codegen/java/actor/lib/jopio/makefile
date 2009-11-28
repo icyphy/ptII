@@ -33,7 +33,7 @@
 
 ME =		ptolemy/codegen/java/actor/lib/jopio
 
-DIRS =		test
+DIRS =		demo
 
 # Root of the Java directory
 ROOT =		../../../../../..
@@ -75,6 +75,7 @@ MISC_FILES =	#test
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
+	demo
 
 JCLASS = $(JSRCS:%.java=%.class)
 

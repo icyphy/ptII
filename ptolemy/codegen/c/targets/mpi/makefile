@@ -58,7 +58,8 @@ JSRCS = \
 	MpiTarget.java
 
 OTHER_FILES_TO_BE_JARED = \
-	MpiTarget.c
+	MpiTarget.c \
+	makefile.in
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 

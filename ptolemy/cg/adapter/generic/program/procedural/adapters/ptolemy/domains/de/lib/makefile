@@ -56,7 +56,8 @@ PTCLASSALLJARS =
 
 # Keep this list alphabetized.
 JSRCS = \
-	Register.java
+	Register.java \
+	TimeGap.java
 
 OTHER_FILES_TO_BE_JARED = 
 

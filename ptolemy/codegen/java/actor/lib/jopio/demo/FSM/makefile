@@ -1,8 +1,8 @@
-# Makefile for Java Ptolemy Data Properties Lattice DimensionSystem Domains Continuous Lib
+# Makefile for Ptolemy II Jopio FSM demo
 #
-# @Authors: Man-Kit Leung, based on a file by Christopher Brooks
+# @Authors: Christopher Brooks (makefile only)
 #
-# $Id$
+# @Version: $Id$
 #
 # @Copyright (c) 2009 The Regents of the University of California.
 # All rights reserved.
@@ -26,52 +26,55 @@
 # CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 # ENHANCEMENTS, OR MODIFICATIONS.
 #
-#                       PT_COPYRIGHT_VERSION_2
-#                       COPYRIGHTENDKEY
+# 						PT_COPYRIGHT_VERSION_2
+# 						COPYRIGHTENDKEY
 
-ME =        ptolemy/data/properties/lattice/dimensionSystem/domains/continuous/lib
+ME =		ptolemy/codegen/java/actor/lib/jopio/demo/FSM
 
-DIRS =      
+# Root of the Java directory
+ROOT =		../../../../../../../..
 
-# Root of the Ptolemy II directory
-ROOT =      ../../../../../../../..
-
-CLASSPATH = $(ROOT)
+CLASSPATH =	$(ROOT)
 
 # Get configuration info
-CONFIG =    $(ROOT)/mk/ptII.mk
+CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE =     lib
+PTPACKAGE = 	FSM
+PTCLASSJAR = 	$(PTPACKAGE).jar
 
-PTCLASSJAR =
+JSRCS =
 
-PTCLASSALLJAR = $(PTPACKAGE).jar
+OTHER_FILES_TO_BE_JARED = \
+	$(JSRCS) \
+	FSM.xml
 
-PTCLASSALLJARS =
-
-JSRCS = \
-	Integrator.java
-
-EXTRA_SRCS =    $(JSRCS)
+EXTRA_SRCS = \
+	$(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =    $(DIRS)
+MISC_FILES = $(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
-# make distclean removes OPTIONAL_FILES
+# make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	doc \
-	'Integrator$$FunctionTerm.class' \
-	'Integrator$$StateOfDerivative.class'
+	doc
+
 JCLASS = $(JSRCS:%.java=%.class)
 
-
+# Don't include all or install rules here, we want the user
+# to run 'make demos' to run the tests.
 all: jclass
-install: jclass jars
+	@echo "To run all the demos, run 'make demo'"
 
+install: all jars
+
+demo: demo_vergil
+
+demo_vergil:
+	"$(PTII)/bin/vergil" FSM.xml
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

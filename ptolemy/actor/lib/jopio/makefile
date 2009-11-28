@@ -58,6 +58,7 @@ JSRCS = \
 
 OTHER_FILES_TO_BE_JARED = \
 	JopWatchDogIcon.xml
+	jopio.xml
 
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)

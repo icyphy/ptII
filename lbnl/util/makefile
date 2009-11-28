@@ -73,7 +73,8 @@ MISC_FILES =	$(DIRS)
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	'ClientProcess$$PrintOutput.class'
+	'ClientProcess$$PrintOutput.class' \
+	'ClientProcess$$PrintStderr.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

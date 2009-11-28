@@ -5,7 +5,7 @@
 #
 # @Version: $Id$
 #
-# @Copyright (c) 1999-2005 The Regents of the University of California.
+# @Copyright (c) 2009 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -60,7 +60,11 @@ JSRCS = \
 OTHER_FILES_TO_BE_JARED = \
 	Antenna.xml \
 	FuzzyEngine-copyright.htm \
-	fuzzy.xml
+	fuzzy.xml \
+	Power.xml \
+	Propulsion.xml \
+	TSSTPtolemyIIDocumentation.pdf \
+	rules.xml
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
@@ -71,7 +75,12 @@ MISC_FILES =	$(DIRS)
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	doc
+	doc \
+	demo \
+	'CombinedFile$$Architecture.class' \
+	'CombinedFile$$Option.class' \
+	FuzzyParser.class
+
 
 JCLASS = $(JSRCS:%.java=%.class)
 

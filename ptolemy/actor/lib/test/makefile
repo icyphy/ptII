@@ -105,6 +105,7 @@ EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) $(JSIMPLE_TESTS) \
 	BooleanSwitch_RegressionTest_WrongTrainingValues.xml \
 	Exit.xml \
 	FileWriter.xml \
+	NoPublisher.xml \
 	PublisherSubscriber2class.xml \
 	PublisherSubscriberInClass.xml \
 	pubsubplot \

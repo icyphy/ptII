@@ -85,6 +85,7 @@ OPTIONAL_FILES =  \
 	doc \
 	demo \
 	bugs \
+	controls \
 	$(OPTIONAL_JSRCS) \
 
 JCLASS = \
@@ -93,52 +94,6 @@ JCLASS = \
 
 all: $(OPTIONAL_JSRCS) jclass
 install: all jars
-
-# Derived java files
-PtalonRecognizer.java: parser.g
-	$(ANTLR) parser.g
-PtalonLexer.java: parser.g
-	$(ANTLR) parser.g
-PtalonPopulator.java: populator.g
-	$(ANTLR) populator.g
-PtalonScopeChecker.java: scopeChecker.g
-	$(ANTLR) scopeChecker.g
-
-# This rule is useful for cvs committing the derived files
-# For example:
-# cvs commit -m "Updated MatrixParser." `make echo_OPTIONAL_JSRCS`
-echo_OPTIONAL_JSRCS:
-	@echo $(OPTIONAL_JSRCS)
-
-# Files to be removed by make distclean
-DISTCLEAN_STUFF = \
-	PtalonTokenTypes.java \
-	PtalonTokenTypes.txt \
-	PtalonLexer.java \
-	PtalonLexer.smap \
-	PtalonRecognizer.java \
-	PtalonRecognizer.smap \
-	PtalonScopeCheckerTokenTypes.java \
-	PtalonScopeCheckerTokenTypes.txt \
-	PtalonScopeChecker.java \
-	PtalonScopeChecker.smap \
-	PtalonPopulatorTokenTypes.java \
-	PtalonPopulatorTokenTypes.txt \
-	PtalonPopulator.java \
-	PtalonPopulator.smap
-
-# make checkjunk will not report OPTIONAL_FILES as trash
-# make distclean removes OPTIONAL_FILES
-OPTIONAL_FILES = \
-	bugs \
-	demo \
-	$(DISTCLEAN_STUFF) \
-	'AbstractPtalonEvaluator$$IfTree.class' \
-	'AbstractPtalonEvaluator$$PtalonExpressionScope.class' \
-	'PtalonEvaluator$$ActorTree.class' \
-	PtalonPopulatorTokenTypes.class \
-	PtalonScopeCheckerTokenTypes.class \
-	PtalonTokenTypes.class
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

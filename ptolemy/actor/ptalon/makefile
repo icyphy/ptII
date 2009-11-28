@@ -33,7 +33,7 @@
 
 ME =		ptolemy/actor/ptalon
 
-DIRS =		doc gt lib demo test
+DIRS =		doc gt lib model demo test
 
 # Root of the Java directory
 ROOT =		../../..
@@ -105,14 +105,22 @@ OPTIONAL_JSRCS = \
 # Don't include demo or DIRS here, or else 'make sources' will run 'make demo'
 MISC_FILES =	doc gt lib test
 
+# make checkjunk will not report OPTIONAL_FILES as trash
+# make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES =  \
 	doc \
 	demo \
 	bugs \
+	model \
 	$(OPTIONAL_JSRCS) \
 	'AbstractPtalonEvaluator$$IfTree.class' \
 	'AbstractPtalonEvaluator$$PtalonExpressionScope.class' \
-	'PtalonEvaluator$$ActorTree.class'
+	'PtalonEvaluator$$ActorTree.class' \
+	$(DISTCLEAN_STUFF) \
+	PtalonPopulatorTokenTypes.class \
+	PtalonScopeCheckerTokenTypes.class \
+	PtalonTokenTypes.class
+
 
 JCLASS = \
 	$(JSRCS:%.java=%.class) \
@@ -153,19 +161,6 @@ DISTCLEAN_STUFF = \
 	PtalonPopulatorTokenTypes.txt \
 	PtalonPopulator.java \
 	PtalonPopulator.smap
-
-# make checkjunk will not report OPTIONAL_FILES as trash
-# make distclean removes OPTIONAL_FILES
-OPTIONAL_FILES = \
-	bugs \
-	demo \
-	$(DISTCLEAN_STUFF) \
-	'AbstractPtalonEvaluator$$IfTree.class' \
-	'AbstractPtalonEvaluator$$PtalonExpressionScope.class' \
-	'PtalonEvaluator$$ActorTree.class' \
-	PtalonPopulatorTokenTypes.class \
-	PtalonScopeCheckerTokenTypes.class \
-	PtalonTokenTypes.class
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

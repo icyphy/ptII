@@ -1,8 +1,7 @@
-# Makefile for Java Ptolemy Data Properties Lattice DimensionSystem Domains Continuous Lib
+# Makefile for Ptolemy II Jopio demos
 #
-# @Authors: Man-Kit Leung, based on a file by Christopher Brooks
-#
-# $Id$
+# @Version: $Id$
+# @Author: Christopher Brooks (makefile only)
 #
 # @Copyright (c) 2009 The Regents of the University of California.
 # All rights reserved.
@@ -26,52 +25,48 @@
 # CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 # ENHANCEMENTS, OR MODIFICATIONS.
 #
-#                       PT_COPYRIGHT_VERSION_2
-#                       COPYRIGHTENDKEY
+# 						PT_COPYRIGHT_VERSION_2
+# 						COPYRIGHTENDKEY
 
-ME =        ptolemy/data/properties/lattice/dimensionSystem/domains/continuous/lib
+ME =		ptolemy/codegen/java/actor/lib/jopio/demo
 
-DIRS =      
+# Keep these alphabetical please.
+DIRS = 		FSM
 
-# Root of the Ptolemy II directory
-ROOT =      ../../../../../../../..
-
-CLASSPATH = $(ROOT)
+# Root of Ptolemy II directory
+ROOT =		../../../../../../..
 
 # Get configuration info
-CONFIG =    $(ROOT)/mk/ptII.mk
+CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE =     lib
-
+PTPACKAGE = 	demo
 PTCLASSJAR =
+
+# Include the .class files from these jars in PTCLASSALLJAR
+PTCLASSALLJARS = \
+	FSM/FSM.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
-PTCLASSALLJARS =
-
-JSRCS = \
-	Integrator.java
-
-EXTRA_SRCS =    $(JSRCS)
+EXTRA_SRCS =
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =    $(DIRS)
+MISC_FILES = 	$(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
-# make distclean removes OPTIONAL_FILES
+# make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	doc \
-	'Integrator$$FunctionTerm.class' \
-	'Integrator$$StateOfDerivative.class'
-JCLASS = $(JSRCS:%.java=%.class)
-
+	doc
 
 all: jclass
+	@echo "To run all the demos, run 'make demo'"
+
 install: jclass jars
 
+demo: subdemo
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

@@ -65,6 +65,7 @@ JSRCS = \
 	ASTPtLogicalNode.java \
         ASTPtMatrixConstructNode.java \
         ASTPtMethodCallNode.java \
+	ASTPtOrderedRecordConstructNode.java \
 	ASTPtProductNode.java \
 	ASTPtPowerNode.java \
 	ASTPtRecordConstructNode.java \

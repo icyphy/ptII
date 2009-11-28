@@ -72,6 +72,7 @@ OTHER_FILES_TO_BE_JARED = \
 	cosimulation.xml \
 	customize.xml \
 	defaultFullConfiguration.xml \
+	defaultRefinements.xml \
 	experimentalDirectors.xml \
 	extendedEffigyFactories.xml \
 	extendedTableauFactories.xml \

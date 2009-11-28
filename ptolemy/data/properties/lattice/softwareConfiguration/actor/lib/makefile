@@ -67,7 +67,9 @@ MISC_FILES =    $(DIRS)
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	doc \
-	'BooleanSelect$$FunctionTerm.class'
+	'BooleanSelect$$FunctionTerm.class' \
+	'ConfigurationSelect$$FunctionTerm.class' \
+	'ConfigurationSwitch$$FunctionTerm.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

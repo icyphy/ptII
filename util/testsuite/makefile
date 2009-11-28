@@ -97,6 +97,7 @@ SCRIPTS = \
 	treeshake
 
 EXTRA_SRCS =	$(JAVA_SRCS) $(TCL_SRCS) $(SCRIPTS) \
+	aspell.en.prepl \
 	memory.xml \
 	ptlocaldict \
 

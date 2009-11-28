@@ -72,7 +72,12 @@ OPTIONAL_FILES = \
 	'EmbeddedCodeActor$$EmbeddedActor.class' \
 	'PointerToken$$1.class' \
 	'PointerToken$$PointerType.class'\
-	'Profile$$Port.class'
+	'Profile$$Connection.class' \
+	'Profile$$FiringFunction.class' \
+	'Profile$$FiringFunctionPort.class' \
+	'Profile$$Junction.class' \
+	'Profile$$Port.class' \
+	'Profile$$ProfileActor.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

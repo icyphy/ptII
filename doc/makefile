@@ -106,6 +106,7 @@ EXTRA_SRCS = \
 	domainCompatibility.htm \
 	domains.htm \
 	findbugs-exclude.xml \
+	findbugs-include.xml \
 	footer.htm \
 	help.htm \
 	hyVisualHtml.awk \
