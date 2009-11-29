@@ -59,7 +59,6 @@ PTCLASSALLJARS = \
 	CarTracking/CarTracking.jar \
 	CartPendulum/CartPendulum.jar \
 	ComparedClocks/ComparedClocks.jar \
-	ContinuousClock/ContinuousClock.jar \
 	ContinuousInsideDE/ContinuousInsideDE.jar \
 	HierarchicalExecution/HierarchicalExecution.jar \
 	HybridPlant/HybridPlant.jar \
@@ -105,7 +104,7 @@ install: jclass jars
 demo: subdemo
 
 echoCTDemos:
-	@echo "Brownian/*.xml CartPendulum/*.xml ComparedClocks/*.xml ContinuousClock/*.xml HierarchicalExecution/*.xml HybridPlant/*.xml Hysteresis/*.xml Pendulum3D/*.xml Poisson/*.xml SampledClocks/*.xml Satellite/*.xml SigmaDelta/*.xml SinuBouncingBall/*.xml SquareWave/*.xml Starmac/*.xml StickyMasses/*.xml Thermostat/*.xml Transmission/*.xml V2V/*.xml"
+	@echo "Brownian/*.xml CartPendulum/*.xml ComparedClocks/*.xml HierarchicalExecution/*.xml HybridPlant/*.xml Hysteresis/*.xml Pendulum3D/*.xml Poisson/*.xml SampledClocks/*.xml Satellite/*.xml SigmaDelta/*.xml SinuBouncingBall/*.xml SquareWave/*.xml Starmac/*.xml StickyMasses/*.xml Thermostat/*.xml Transmission/*.xml V2V/*.xml"
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
