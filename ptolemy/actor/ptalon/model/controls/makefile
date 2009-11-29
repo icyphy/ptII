@@ -71,7 +71,7 @@ OPTIONAL_JSRCS =
 # Files or directories that are present, but that 'make checkjunk'
 # should not complain about
 # Don't include demo or DIRS here, or else 'make sources' will run 'make demo'
-MISC_FILES =	doc gt lib test
+MISC_FILES =
 
 OPTIONAL_FILES =  \
 	doc \

@@ -79,7 +79,7 @@ OPTIONAL_JSRCS =
 # Files or directories that are present, but that 'make checkjunk'
 # should not complain about
 # Don't include demo or DIRS here, or else 'make sources' will run 'make demo'
-MISC_FILES =	doc gt lib test
+MISC_FILES = test		
 
 OPTIONAL_FILES =  \
 	doc \
@@ -87,6 +87,8 @@ OPTIONAL_FILES =  \
 	bugs \
 	controls \
 	$(OPTIONAL_JSRCS) \
+	'AbstractPtalonModelEvaluator$$IfTree.class' \
+	'AbstractPtalonModelEvaluator$$PtalonExpressionScope.class'
 
 JCLASS = \
 	$(JSRCS:%.java=%.class) \
