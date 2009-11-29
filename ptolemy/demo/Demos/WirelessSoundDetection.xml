@@ -4,9 +4,9 @@
 <entity name="WirelessSoundDetection" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-4, -4, 1032, 777}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1, 30, 1013, 759}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[817, 659]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[800, 649]">
     </property>
     <property name="annotation3" class="ptolemy.kernel.util.Attribute">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -168,7 +168,7 @@ GraphicalLocator)</text></svg></configure>
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="-10.0, 625.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-10.0, 615.0]">
         </property>
     </property>
     <property name="line" class="ptolemy.vergil.kernel.attributes.LineAttribute">
@@ -229,7 +229,7 @@ GraphicalLocator)</text></svg></configure>
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{408.5, 329.5}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{400, 324.5}">
     </property>
     <property name="WirelessDirector" class="ptolemy.domains.wireless.kernel.WirelessDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="Infinity">
@@ -237,26 +237,6 @@ GraphicalLocator)</text></svg></configure>
         <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{75.0, 40.0}">
-        </property>
-    </property>
-    <property name="annotation9" class="ptolemy.kernel.util.Attribute">
-        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-        </property>
-        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure><svg><text x="20" y="20" style="font-size:32; font-family:Serif; fill:black">Wireless Systems Modeling</text></svg></configure>
-        </property>
-        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure>
-      <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
-      </svg>
-    </configure>
-        </property>
-        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
-        </property>
-        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[360.0, 25.0]">
         </property>
     </property>
     <entity name="SoundSource" class="ptolemy.domains.wireless.kernel.WirelessComposite">
@@ -570,7 +550,7 @@ GraphicalLocator)</text></svg></configure>
             </property>
             <property name="outsideTransmitProperties" class="ptolemy.data.expr.Parameter" value="{range=outputRange}">
             </property>
-            <property name="type" class="ptolemy.actor.TypeAttribute" value="{location={double}, time=double}">
+            <property name="type" class="ptolemy.actor.TypeAttribute" value="{location=arrayType(double, 2), time=double}">
             </property>
         </port>
     </entity>
@@ -594,7 +574,7 @@ GraphicalLocator)</text></svg></configure>
             </property>
             <property name="outsideTransmitProperties" class="ptolemy.data.expr.Parameter" value="{range=outputRange}">
             </property>
-            <property name="type" class="ptolemy.actor.TypeAttribute" value="{location={double}, time=double}">
+            <property name="type" class="ptolemy.actor.TypeAttribute" value="{location=arrayType(double, 2), time=double}">
             </property>
         </port>
     </entity>
@@ -618,7 +598,7 @@ GraphicalLocator)</text></svg></configure>
             </property>
             <property name="outsideTransmitProperties" class="ptolemy.data.expr.Parameter" value="{range=outputRange}">
             </property>
-            <property name="type" class="ptolemy.actor.TypeAttribute" value="{location={double}, time=double}">
+            <property name="type" class="ptolemy.actor.TypeAttribute" value="{location=arrayType(double, 2), time=double}">
             </property>
         </port>
     </entity>
@@ -642,7 +622,7 @@ GraphicalLocator)</text></svg></configure>
             </property>
             <property name="outsideTransmitProperties" class="ptolemy.data.expr.Parameter" value="{range=outputRange}">
             </property>
-            <property name="type" class="ptolemy.actor.TypeAttribute" value="{location={double}, time=double}">
+            <property name="type" class="ptolemy.actor.TypeAttribute" value="{location=arrayType(double, 2), time=double}">
             </property>
         </port>
     </entity>
@@ -805,14 +785,14 @@ location can be found, then plot that location.</text></svg></configure>
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
-                <property name="type" class="ptolemy.actor.TypeAttribute" value="{location={double}, time=double}">
+                <property name="type" class="ptolemy.actor.TypeAttribute" value="{location=arrayType(double, 2), time=double}">
                 </property>
                 <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="WEST">
                 </property>
             </port>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
-                <property name="type" class="ptolemy.actor.TypeAttribute" value="{double}">
+                <property name="type" class="ptolemy.actor.TypeAttribute" value="arrayType(double, 2)">
                 </property>
                 <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="EAST">
                 </property>
@@ -821,7 +801,7 @@ location can be found, then plot that location.</text></svg></configure>
         <entity name="XYPlotter" class="ptolemy.actor.lib.gui.XYPlotter">
             <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="false">
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {635, 3, 385, 406}, maximized = false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={635, 3, 385, 406}, maximized=false}">
             </property>
             <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[377, 351]">
             </property>
