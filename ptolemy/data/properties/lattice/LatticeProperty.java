@@ -199,11 +199,22 @@ public class LatticeProperty extends Property implements PropertyTerm, Cloneable
 
     /**
      * Return true if this property term is effective.
+     *
+     * <p>This method is used to mark constraints that are due to
+     * unreachable parts of the model as not effective (i.e.
+     * isEffective() would return false), so that they would be
+     * excluded from the list passed to the constraint solver.</p>
+     *
+     * <p>Note that reachability analysis has not yet been implemented
+     * Also, it's helpful to know the values of
+     * parameters/outputs/transition guards for doing the analysis,
+     * but there are still some fundamental issues with calculating
+     * the values.</p>
+     *
      * @return Always return true in this base class.
      * @see #setEffective(boolean)
      */
     public boolean isEffective() {
-        // FIXME: What does effective mean?
         return true;
     }
 
