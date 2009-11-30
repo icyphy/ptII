@@ -43,17 +43,16 @@ import ptolemy.util.StringUtilities;
 //// TestExceptionHandler
 
 /**
- This actor handles exceptions thrown in a test. When an exception is
- thrown in a test, this actor is invoked and it has two
- working modes, trainging mode and not-training mode. If in training mode,
+ This actor tests for exceptions that are expected to occur when
+ running a test model. When an exception is
+ thrown by the model, this actor is invoked. It has two
+ working modes, training mode and non-training mode. If in training mode,
  this actor handles an exception by recording the exception message. If
  not in training mode, this actor first compares the previously stored
- (assuming correct) message to the exception message and then throws the
- exception if the two messages are not the same. This actor only handles
- IllegalActionException.
- <p>
- If a test runs to completion without throwing an exception, this actor
- throws an exception in its wrapup() method.
+ (assumed correct) message to the exception message and then throws an
+ exception if the two messages are not the same.
+ Also, if a test runs to completion without throwing an exception, this actor
+ throws an exception in its wrapup() method. An exception is expected.
 
  @author Haiyang Zheng
  @version $Id$
@@ -106,7 +105,7 @@ public class TestExceptionHandler extends TypedAtomicActor implements
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Handle an illegal action exception thrown in a test. If in training
+    /** Handle an exception thrown in a test. If in training
      *  mode, simply record the exception message. If not in training mode,
      *  first compare the stored good message against the exception message.
      *  If they are the same, do nothing. Otherwise, throw the exception again.
@@ -119,9 +118,6 @@ public class TestExceptionHandler extends TypedAtomicActor implements
      */
     public boolean handleException(NamedObj context, Throwable exception)
             throws IllegalActionException {
-        if (!(exception instanceof IllegalActionException)) {
-            return false;
-        }
         _invoked = true;
         boolean training = ((BooleanToken) trainingMode.getToken())
                 .booleanValue();
