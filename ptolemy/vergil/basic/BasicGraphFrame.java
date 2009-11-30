@@ -96,6 +96,8 @@ import ptolemy.actor.gui.Tableau;
 import ptolemy.actor.gui.UserActorLibrary;
 import ptolemy.actor.gui.WindowPropertiesAttribute;
 import ptolemy.actor.gui.properties.ToolBar;
+import ptolemy.actor.parameters.PortParameter;
+import ptolemy.actor.parameters.ParameterPort;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.Token;
@@ -2042,11 +2044,13 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                 Object userObject = ((Figure) selection[i]).getUserObject();
 
                 if (graphModel.isNode(userObject)) {
-                    nodeSet.add(userObject);
-
                     NamedObj actual = (NamedObj) graphModel
-                            .getSemanticObject(userObject);
-                    namedObjSet.add(actual);
+                        .getSemanticObject(userObject);
+                    //System.out.println("BasicGraphFrame._getSelectionSet() actual: " + actual.getClass().getName());
+                    //if ( !(actual instanceof PortParameter)) { 
+                        nodeSet.add(userObject);
+                        namedObjSet.add(actual);
+                        //}
                 }
             }
         }
@@ -2085,6 +2089,8 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                         NamedObj actual = (NamedObj) graphModel
                                 .getSemanticObject(userObject);
                         namedObjSet.add(actual);
+                        System.out.println("BasicGraphFrame._getSelectionSet() actual2: " + actual.getClass().getName());
+                    
                     }
                 }
             }
@@ -2364,7 +2370,19 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                     .getNodeModel(userObject);
             if (graphModel.isNode(userObject)
                     && !(namedObjNodeModel instanceof AttributeNodeModel)) {
-                moml.append(graphModel.getDeleteNodeMoML(userObject));
+                NamedObj actual = (NamedObj) graphModel
+                    .getSemanticObject(userObject);
+                if (! (actual instanceof ParameterPort)) {
+                    // We don't delete ParameterPorts here because if
+                    // we drag a region around a ParmeterPort, then
+                    // both the PortParameter and the ParameterPort
+                    // are selected.  Deleting both results in an
+                    // error.  If we just click (not drag) on a
+                    // ParameterPort, then the PortParameter is only
+                    // selected and deletion work ok.  See
+                    // https://chess.eecs.berkeley.edu/bugzilla/show_bug.cgi?id=311
+                    moml.append(graphModel.getDeleteNodeMoML(userObject));
+                }
             }
         }
 
@@ -2376,7 +2394,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                     .getNodeModel(userObject);
             if (graphModel.isNode(userObject)
                     && namedObjNodeModel instanceof AttributeNodeModel) {
-                moml.append(graphModel.getDeleteNodeMoML(userObject));
+                 moml.append(graphModel.getDeleteNodeMoML(userObject));
             }
         }
 
