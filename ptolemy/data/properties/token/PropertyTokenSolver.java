@@ -199,7 +199,7 @@ public class PropertyTokenSolver extends PropertySolver {
      *  Put a token and object pair into the token map.
      *  @param object The object key.
      *  @param token The token value.
-     *  @see #getToken()
+     *  @see #getToken(Object)
      */
     public void putToken(Object object, Token token) {
         // FIXME: this should be called setToken()
