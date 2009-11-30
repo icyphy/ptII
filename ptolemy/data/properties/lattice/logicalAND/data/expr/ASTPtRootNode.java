@@ -64,7 +64,7 @@ public class ASTPtRootNode extends PropertyConstraintASTNodeHelper {
      * Construct an ASTPtRootNode helper for the given
      * property solver and AST node.
      * @param solver The given component.
-     * @param actor The given AST node.
+     * @param node The given AST node.
      * @param useDefaultConstraints Indicate whether this helper
      *  uses the default actor constraints.
      * @exception IllegalActionException If the helper cannot
