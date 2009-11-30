@@ -2,7 +2,6 @@ package ptolemy.domains.pthales.lib;
 
 import java.util.List;
 
-import ptolemy.actor.Receiver;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.data.FloatToken;
 import ptolemy.data.Token;
@@ -22,9 +21,14 @@ public class PThalesGenericActor extends TypedAtomicActor {
     /** Construct an actor in the default workspace with an empty string
      *  as its name.  The object is added to the workspace directory.
      *  Increment the version number of the workspace.
+     * @throws NameDuplicationException 
+     * @throws IllegalActionException 
      */
-    public PThalesGenericActor() {
+    public PThalesGenericActor() throws IllegalActionException,
+            NameDuplicationException {
         super();
+
+        _initialize();
     }
 
     /** Construct an actor in the specified workspace with an empty
@@ -33,9 +37,14 @@ public class PThalesGenericActor extends TypedAtomicActor {
      *  The object is added to the workspace directory.
      *  Increment the version number of the workspace.
      *  @param workspace The workspace that will list the entity.
+     * @throws NameDuplicationException 
+     * @throws IllegalActionException 
      */
-    public PThalesGenericActor(Workspace workspace) {
+    public PThalesGenericActor(Workspace workspace)
+            throws IllegalActionException, NameDuplicationException {
         super(workspace);
+
+        _initialize();
     }
 
     /** Create a new actor in the specified container with the specified
@@ -147,40 +156,57 @@ public class PThalesGenericActor extends TypedAtomicActor {
      *  input can not be read, or the output can not be sent.
      */
     public void fire() throws IllegalActionException {
-        
-        // Input ports read before calling Elementary task
-        List<PThalesIOPort> ports = this.inputPortList();
-        
-        int pos = 0;
-        Token[][] arrays = new Token[ports.size()][];
-        for (PThalesIOPort port : ports)
-        {
+
+        // Variable
+        List<PThalesIOPort> portsIn = null;
+        List<PThalesIOPort> portsOut = null;
+        int portNumber = 0;
+
+        // Input ports 
+        portsIn = inputPortList();
+        // Token Arrays from simulation
+        Token[] tokensIn = null;
+        // Real Arrays 
+        float[][] realIn = new float[portsIn.size()][];
+
+        // ouput ports
+        portsOut = outputPortList();
+        // In the output case, each array is produced independantly
+        Token[] tokensOut = null;
+        // Real Array (only one) 
+        float[] realOut = null;
+
+        // Input ports read before elementary task called 
+        for (PThalesIOPort port : portsIn) {
             int dataSize = port.getPattern();
-            arrays[pos] = new Token[dataSize];
-            arrays[pos] = port.get(0,dataSize);
-            
-            System.out.println(getName() + "." + port.getName() + " receiving " + dataSize + "tokens from " + port.getSource() + "\n");
+            tokensIn = new FloatToken[dataSize];
+            tokensIn = port.get(0, dataSize);
+
+            // Call array conversion
+            realIn[portNumber] = convertToken(tokensIn);
+
+            portNumber++;
         }
         
-        // Then ouput ports are written
-        ports = this.outputPortList();
+        //////////////////////////////////////
+        // Call to elemetary task (JNI or JAVA) 
+        // Here we simulate a task generating floats
+        realOut = new float[portsOut.get(0).getPattern()];
+        //////////////////////////////////////
+
+        // Call array conversion after elementary task called
+        tokensOut = convertReal(realOut);
         
-        pos = 0;
-        arrays = new Token[ports.size()][];
-        for (PThalesIOPort port : ports)
-        {
+        // Output ports write
+        for (PThalesIOPort port : portsOut) {
             int dataSize = port.getPattern();
-            arrays[pos] = new Token[dataSize];
-            for (int i = 0; i < dataSize; i ++)
-                arrays[pos][i] = new FloatToken();
-            
-            for (int i = 0; i < port.getWidth(); i ++)
-            {
-                port.send(i,arrays[pos],dataSize);
-                System.out.println(getName() + "." + port.getName() + " sending " + dataSize + " tokens to " + ((Receiver)port.getRemoteReceivers()[i][0]).getContainer() + "\n");
+
+            for (int i = 0; i < port.getWidth(); i++) {
+                port.send(i, tokensOut, dataSize);
             }
+            portNumber++;
         }
-     }
+    }
 
     /** Attribute update
      */
@@ -189,6 +215,38 @@ public class PThalesGenericActor extends TypedAtomicActor {
         if (attribute == repetitions) {
             _repetitions = repetitions.getExpression();
         }
+    }
+
+     /**
+     * @param tokensIn
+     * @param realIn
+     */
+    public float[] convertToken(Token[] tokensIn) {
+        float[] realIn;
+       
+        int nbData = tokensIn.length;
+        realIn = new float[nbData];
+        for (int i = 0; i < nbData; i++) {
+            realIn[i] = ((FloatToken)tokensIn[i]).floatValue();
+        }
+        
+        return realIn;
+     }
+
+    /**
+     * @param realOut
+     * @param tokensOut
+     */
+    public FloatToken[] convertReal(float[] realOut ) {
+        FloatToken[] tokensOut; 
+        
+        int nbData = realOut.length;
+        tokensOut = new FloatToken[nbData];
+        for (int i = 0; i < nbData; i++) {
+            tokensOut[i] = new FloatToken(realOut[i]);
+        }
+        
+        return tokensOut;
     }
 
     /** Unused

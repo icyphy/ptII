@@ -218,8 +218,8 @@ public class PthalesReceiver extends SDFReceiver {
     public void putArrayToAll(Token[] tokens, int numberOfTokens,
             Receiver[] receivers) throws NoRoomException,
             IllegalActionException {
+        for (Receiver receiver : receivers) {
         for (int i = 0; i < numberOfTokens; i++)
-            for (Receiver receiver : receivers) {
                 receiver.put(tokens[i]);
             }
       }
@@ -354,6 +354,28 @@ public class PthalesReceiver extends SDFReceiver {
         }
         return blockSize;
     }
+    
+    /** Returns the number of addresses needed to access all of the
+     * datas for all iterations
+     *  @return the number of adresses.
+     */
+    int getAddressNumber() {
+        int valuePattern = 1;
+        for (String dimension : _dimensions) {
+            if (_pattern.get(dimension) != null)
+                valuePattern *= _pattern.get(dimension)[0].intValue()
+                        * _pattern.get(dimension)[1].intValue();
+        }
+        
+        int sizeRepetition = 1;
+        // size for tiling dimensions 
+        for (Integer repetition : _repetitions) {
+            // Dimension added to pattern list
+            sizeRepetition *= repetition;
+        }
+
+        return valuePattern*sizeRepetition;
+    }
 
     /** Returns the size of 
      * the array for each dimension
@@ -400,7 +422,7 @@ public class PthalesReceiver extends SDFReceiver {
 
     void computeAddresses(boolean input) {
         // same number of addresses than buffer size (worst case)
-        int jumpPattern[] = new int[_buffer.length];
+        int jumpPattern[] = new int[getAddressNumber()];
 
         // Position in buffer 
         int pos = 0;
@@ -475,13 +497,10 @@ public class PthalesReceiver extends SDFReceiver {
                             * jumpAddr.get(patternOrder[nDim]);
                 }
 
-                if (pos >= _buffer.length )
-                    System.out.println(pos);
-
                 jumpPattern[pos] = origin + jumpDim + jumpRep;
                 pos++;
                 
-                pos = pos%_buffer.length;
+                //pos = pos%_buffer.length;
 
                 // pattern indexes update
                 dims[0]++;
