@@ -57,6 +57,14 @@ import ptolemy.kernel.util.NamedObj;
 */
 public class DeltaConstraintSolver extends PropertyConstraintSolver {
 
+    /** Constructs a DeltaConstraintSolver with the given name
+     *  contained by the specified entity. 
+     * 
+     *  @param container  The container.
+     *  @param name       The name of this DeltaConstraintSolver
+     *  @throws IllegalActionException If the superclass throws it.
+     *  @throws NameDuplicationException If the superclass throws it.
+     */
     public DeltaConstraintSolver(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
@@ -68,11 +76,11 @@ public class DeltaConstraintSolver extends PropertyConstraintSolver {
 
     /** Determine if there were errors in the last property resolution.
      * 
-     * Unlike checkResolutionErorrs, this method does not record the
-     * errors found and has no side-effects.
+     *  Unlike checkResolutionErorrs, this method does not record the
+     *  errors found and has no side-effects.
      * 
-     * @return True if errors are found
-     * @exception IllegalActionException
+     *  @return True if errors are found
+     *  @exception IllegalActionException
      */
     public boolean errorsExist() throws IllegalActionException {
         for (Object propertyable : getAllPropertyables()) {
@@ -87,10 +95,10 @@ public class DeltaConstraintSolver extends PropertyConstraintSolver {
     ///////////////////////////////////////////////////////////////////
     ////                        protected methods                  ////
 
-    /**
-     * Resolve the property values for the toplevel entity that contains this
-     * solver, given the model analyzer that invokes this.
-     * @param analyzer The given model analyzer.
+    /** Resolve the property values for the toplevel entity that contains this
+     *  solver, given the model analyzer that invokes this.
+     *  @param analyzer The given model analyzer.
+     *  @throws KernelException If the superclass throws it.
      */
     protected void _resolveProperties(NamedObj analyzer) throws KernelException {
 
