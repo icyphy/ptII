@@ -141,28 +141,28 @@ public class PthalesReceiver extends SDFReceiver {
      *  @return True.
      */
     public boolean hasRoom() {
-        return true;
+        return (_posOut + 1 <= _buffer.length );
     }
 
     /** Return true.
      *  @return True.
      */
     public boolean hasRoom(int numberOfTokens) {
-        return true;
+        return (_posOut + numberOfTokens <= _buffer.length );
     }
 
     /** Return true.
      *  @return True.
      */
     public boolean hasToken() {
-        return true;
+        return (_posOut >=_posIn + 1 );
     }
 
     /** Return true.
      *  @return True.
      */
     public boolean hasToken(int numberOfTokens) {
-        return (_posOut + numberOfTokens < _posIn);
+        return (_posOut >=_posIn + numberOfTokens );
     }
 
     /** Return true.
