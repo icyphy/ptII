@@ -412,6 +412,10 @@ public class ConfigurationApplication implements ExecutionListener {
             ex.printStackTrace();
         }
 
+        if (configuration == null) {
+            throw new NullPointerException("Failed to find configuration in " +
+                    specificationURL);
+        }
         // If the toplevel model is a configuration containing a directory,
         // then create an effigy for the configuration itself, and put it
         // in the directory.
