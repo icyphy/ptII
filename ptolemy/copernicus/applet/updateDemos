@@ -16,22 +16,24 @@ do
 
      targetPath=`echo $modelPath | sed "s@$PTII/@@"`
 
-     echo "make MODEL=$model MODELPATH=$modelPath/$model.xml TARGETPATH=$targetPath jnlpUpdateDemo"
+     #echo "make MODEL=$model MODELPATH=$modelPath/$model.xml TARGETPATH=$targetPath jnlpUpdateDemo"
+     echo $modelPath/$model.htm
 
      #rm $modelPath/$model.htm
      #svn update $modelPath/$model.htm
      htmlFile=$modelPath/$model.htm
-     if [ -f  $htmlFile ]; then
-	 grep "PT JNLP APPLET CONVERTER" $htmlFile > /dev/null
-	 status=$?
-	 if [ $status -eq 0 ]; then
-	     sed -e 's/width = ".*"/width = "100"/' \
-	         -e's/height = ".*"/height = "100"/' < $htmlFile > /tmp/updateDemos.tmp
-	     diff /tmp/updateDemos.tmp $htmlFile
-	     cp /tmp/updateDemos.tmp $htmlFile
-	     echo "$htmlFile" >> /tmp/hfiles
-	 fi
-     fi
+#      if [ -f  $htmlFile ]; then
+# 	 grep "PT JNLP APPLET CONVERTER" $htmlFile > /dev/null
+# 	 status=$?
+# 	 if [ $status -eq 0 ]; then
+# 	     sed -e 's/width = ".*"/width = "100"/' \
+# 	         -e's/height = ".*"/height = "100"/' < $htmlFile > /tmp/updateDemos.tmp
+# 	     diff /tmp/updateDemos.tmp $htmlFile
+# 	     #cp /tmp/updateDemos.tmp $htmlFile
+# 	     echo "$htmlFile" >> /tmp/hfiles
+# 	 fi
+#      fi
+
      #if [ -f  $modelPath/$model.htm ]; then
 # 	 rm $modelPath/$model.htm
 # 	 svn update $modelPath/$model.htm
