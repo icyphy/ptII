@@ -1,5 +1,5 @@
 /**
- * The base class for a lattice property.
+ * The base class for a an element in a property lattice.
  * 
  * Copyright (c) 2007-2009 The Regents of the University of California. All
  * rights reserved. Permission is hereby granted, without written agreement and
@@ -36,7 +36,8 @@ import ptolemy.kernel.util.IllegalActionException;
 /**
  * A base class representing a lattice property. A lattice property is a element
  * in a property lattice. The user should create new sub-classes to represent
- * different elements in a property lattice (See PropertyLattice.java).
+ * different elements in a property lattice, see
+ * {@link ptolemy.data.properties.lattice.PropertyLattice}.
  * 
  * @author Thomas Mandl, Man-Kit Leung, Edward A. Lee
  * @version $Id$
@@ -46,11 +47,21 @@ import ptolemy.kernel.util.IllegalActionException;
  */
 public class LatticeProperty extends Property implements PropertyTerm, Cloneable {
 
+    // FIXME: There is no reason that for this to have to be
+    // subclassed at all to create a lattice. Instead, we should have
+    // either constructor arguments or getter and setter methods for
+    // the key fields (depending on whether we want these fields to be
+    // immutable).
+
     /**
      * Create a new lattice property associated with the given lattice.
      * @param lattice The given lattice.
      */
     public LatticeProperty(PropertyLattice lattice) {
+        // FIXME: This constructors does not specify a name, which causes
+        // toString() to use the classname as the name.  This seems wrong.
+        // For one thing, if you use this constructor, equals() will
+        // throw a null-pointer exception!
         _lattice = lattice;
     }
 
@@ -71,6 +82,18 @@ public class LatticeProperty extends Property implements PropertyTerm, Cloneable
      * @exception CloneNotSupportedException Not thrown in this base class.
      */
     public Object clone() throws CloneNotSupportedException {
+        // FIXME: The clone() method returns this.  This is only
+        // correct if the object and all instances of subclasses are
+        // immutable. This seems extremely unlikely in a class that
+        // has an isConstant() method.
+        //
+        // cloning was an issue when we combined the property system
+        // with model transformation. We got it to run somehow,
+        // but unfortunately I don't remember the details. It's
+        // definitely something we did not understand in full detail,
+        // so some refactoring may be good. In my opinion the
+        // refactored code needs to be tested along with the model
+        // transformation.
         return this;
     }
 
@@ -89,6 +112,16 @@ public class LatticeProperty extends Property implements PropertyTerm, Cloneable
      * equality between two LatticeProperty objects. 
      */
     public boolean equals(Object object) {
+        // FIXME: The equals() method compares names (which seems questionable,
+        // why is this right?). Even if this this is right,
+        // there is no corresponding hashcode() method, so if instances
+        // are put into hashed data structures, we will get chaos.
+        // 
+        // The equals() implementation probably has to do with the
+        // reset mechanism. Every time we start the solver, new
+        // instances of the classes are created. Hence, comparison on
+        // the id's does not match.
+
         if (object != null) {
             if (object instanceof LatticeProperty) {
                 if (_name.equals(((LatticeProperty) object)._name)) {
@@ -205,7 +238,17 @@ public class LatticeProperty extends Property implements PropertyTerm, Cloneable
      * isEffective() would return false), so that they would be
      * excluded from the list passed to the constraint solver.</p>
      *
-     * <p>Note that reachability analysis has not yet been implemented
+     * <p>isEffecitive() is ony used when we know for sure that parts
+     * of a model are unreachable. An example is a FSM with a guard
+     * like TRUE == FALSE. If we know that the guard transition can
+     * never happen (and therefore we use the static/dynamic solver
+     * with some basic partial evaluation) we reduce the model. In
+     * order the avoid the effort of recollecting the effecitve
+     * constraints the constraints are collected only once and then
+     * marked as effective (default) or not effective.
+     *
+     * <p>Note that reachability analysis is undecidable and partial
+     * reachability analysis has not yet been fully implemented.
      * Also, it's helpful to know the values of
      * parameters/outputs/transition guards for doing the analysis,
      * but there are still some fundamental issues with calculating
@@ -262,6 +305,7 @@ public class LatticeProperty extends Property implements PropertyTerm, Cloneable
      * Set the effectiveness of this property term to the specified value. Do
      * nothing in this base by default.
      * @param isEffective The specified effective value, ignored by this method
+     * @see #isEffective()
      */
     public void setEffective(boolean isEffective) {
         // do nothing
@@ -283,6 +327,7 @@ public class LatticeProperty extends Property implements PropertyTerm, Cloneable
         if (_name.length() > 0) {
             return _name;
         }
+        // FIXME: this seems wrong.  Why return the class name?
         return getClass().getSimpleName();
     }
 
