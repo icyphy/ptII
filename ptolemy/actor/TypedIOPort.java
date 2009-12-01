@@ -454,6 +454,16 @@ public class TypedIOPort extends IOPort implements Typeable {
      *  The conversion is done by calling the
      *  convert() method of the type of the remote input port.
      *  <p>
+     *  If the token argument is null, then no token is sent.
+     *  What this means exactly is domain dependent. In some domains
+     *  (SR, Continuous), it asserts that the output is "absent."
+     *  That is, {@link #isKnown(int)} will return true
+     *  and {@link #hasToken(int)} will return false.
+     *  In other domains (SDF, DE, PN), it simply does nothing.
+     *  Nothing is sent. Hence, {@link #isKnown(int)}
+     *  and {@link #hasToken(int)} will return whatever they would
+     *  have returned before the call.
+     *  <p>
      *  Some of this method is read-synchronized on the workspace.
      *  Since it is possible for a thread to block while executing a put,
      *  it is important that the thread does not hold read access on
@@ -547,8 +557,18 @@ public class TypedIOPort extends IOPort implements Typeable {
      *  the type of the inside input port, and converts the token if
      *  necessary.  The conversion is done by calling the convert()
      *  method of the type of the inside input port.
-     *
-     *  <p> Some of this method is read-synchronized on the workspace.
+     *  <p>
+     *  If the token argument is null, then no token is sent.
+     *  What this means exactly is domain dependent. In some domains
+     *  (SR, Continuous), it asserts that the output is "absent."
+     *  That is, {@link #isKnown(int)} will return true
+     *  and {@link #hasToken(int)} will return false.
+     *  In other domains (SDF, DE, PN), it simply does nothing.
+     *  Nothing is sent. Hence, {@link #isKnown(int)}
+     *  and {@link #hasToken(int)} will return whatever they would
+     *  have returned before the call.
+     *  <p>
+     *  Some of this method is read-synchronized on the workspace.
      *  Since it is possible for a thread to block while executing a
      *  put, it is important that the thread does not hold read access
      *  on the workspace when it is blocked. Thus this method releases
