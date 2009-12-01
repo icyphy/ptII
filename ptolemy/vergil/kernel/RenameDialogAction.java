@@ -38,7 +38,6 @@ import javax.swing.KeyStroke;
 import ptolemy.actor.gui.RenameDialog;
 import ptolemy.actor.gui.TableauFrame;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.StaticResources;
 import ptolemy.util.MessageHandler;
 import ptolemy.vergil.toolbox.FigureAction;
 import diva.gui.GUIUtilities;
@@ -79,10 +78,8 @@ public class RenameDialogAction extends FigureAction {
         this.putValue("tooltip", TOOLTIP);
         this.putValue(GUIUtilities.ACCELERATOR_KEY, ACCELERATOR_KEY);
 
-        DISPLAY_NAME = StaticResources.getDisplayString(
-                "actions.actor.displayName", "Configure");
-        TOOLTIP = StaticResources.getDisplayString("actions.actor.tooltip",
-                "Change Settings for Actor");
+        DISPLAY_NAME = "Configure";
+        TOOLTIP = "Change Settings for Actor";
     }
 
     /** Construct a rename dialog action with the specified name,
