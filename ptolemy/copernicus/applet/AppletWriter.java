@@ -70,6 +70,7 @@ import ptolemy.data.expr.UtilityFunctions;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.ConfigurableAttribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.StringAttribute;
@@ -1259,10 +1260,12 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
             CompositeActor toplevel = null;
             toplevel = (CompositeActor) parser
                     .parse(modelPathURL, modelPathURL);
+            // 1) Try to find a DocAttribute
             Attribute docAttribute = toplevel.getAttribute("DocAttribute");
             if (docAttribute != null) {
                 documentation = ((StringParameter) docAttribute.getAttribute("description")).stringValue();
             }
+            // 2) If there was no DocAttribute, search for the longest TextAttribute.
             if (documentation.length() == 0) {
                 // Loop through all the TextAttributes and set the documentation to the longest one.
                 Iterator attributes = toplevel.attributeList(TextAttribute.class).iterator();
@@ -1273,6 +1276,24 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
                         documentation = annotationText;
                     }
                 }
+            } 
+            // 3) If there were no TextAttributes, then look for an annotation.
+            if (documentation.length() == 0 || documentation.startsWith("Author")) {
+                // Might be an older model like the continuous V2V demo.
+                Attribute annotation = toplevel.getAttribute("annotation");
+                if (annotation != null) {
+                    // Loop through all the TextAttributes and set the documentation to the longest one.
+                    Iterator attributes = toplevel.attributeList(Attribute.class).iterator();
+                    while (attributes.hasNext()) {
+                        Attribute annotationAttribute = (Attribute)attributes.next();
+                        if (annotationAttribute.getName().contains("annotation")) {
+                            String annotationText = ((ConfigurableAttribute)annotationAttribute.getAttribute("_iconDescription")).getExpression();
+                            if (annotationText.length() > documentation.length()) {
+                                documentation = annotationText;
+                            }
+                        }
+                    }
+                } 
             }
         } finally {
             MoMLParser.setMoMLFilters(oldFilters);
