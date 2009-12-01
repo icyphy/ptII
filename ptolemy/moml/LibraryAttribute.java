@@ -29,13 +29,13 @@ package ptolemy.moml;
 
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
-import ptolemy.kernel.util.ConfigurableAttribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.SingletonAttribute;
+import ptolemy.kernel.util.TransientSingletonConfigurableAttribute;
 import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
@@ -67,7 +67,7 @@ import ptolemy.kernel.util.Workspace;
  @Pt.ProposedRating Yellow (eal)
  @Pt.AcceptedRating Red (janneck)
  */
-public class LibraryAttribute extends ConfigurableAttribute {
+public class LibraryAttribute extends TransientSingletonConfigurableAttribute {
     /** Construct a new attribute with no
      *  container and an empty string as its name. Add the attribute to the
      *  workspace directory.
