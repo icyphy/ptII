@@ -255,7 +255,7 @@ public class FixedPointReceiver extends AbstractReceiver {
                     throw new IllegalActionException(getContainer(),
                             "Cannot put a token with a different value "
                             + token
-                            + " into a receiver with alread established value "
+                            + " into a receiver with an already established value "
                             + _token);
                 }
             }
