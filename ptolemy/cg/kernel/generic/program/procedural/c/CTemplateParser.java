@@ -86,7 +86,7 @@ public class CTemplateParser extends ProceduralTemplateParser {
      * @param offset The given offset.
      * @param alternativeSourceRef The alternative source reference for
      * the port.  If alternativeSourceRef is null, then the adapter for the port
-     * of the source channel is used.
+     * of the source channel is used.z
      * @return The type convert statement for assigning the converted source
      *  variable to the sink variable with the given offset.
      * @exception IllegalActionException If there is a problem getting the

@@ -27,17 +27,6 @@
  */
 package ptolemy.cg.kernel.generic.program;
 
-///////////////////////////////////////////////////////////////////////
-////ProgramCodeGeneratorAdapter
-
-/*
-* @author Bert Rodiers
-* @version $Id$
-* @since Ptolemy II 8.0
-* @Pt.ProposedRating Red (rodiers)
-* @Pt.AcceptedRating Red (rodiers)
-*/
-
 import ptolemy.actor.IOPort;
 import ptolemy.cg.kernel.generic.CodeGeneratorAdapter;
 import ptolemy.cg.kernel.generic.GenericCodeGenerator;
@@ -45,6 +34,18 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.Nameable;
 import ptolemy.util.StringUtilities;
 
+///////////////////////////////////////////////////////////////////////
+//// ProgramCodeGeneratorAdapter
+
+/**
+ * An adapter that generates code for programs.
+ *
+ * @author Bert Rodiers
+ * @version $Id$
+ * @since Ptolemy II 8.0
+ * @Pt.ProposedRating Red (rodiers)
+ * @Pt.AcceptedRating Red (rodiers)
+ */
 public class ProgramCodeGeneratorAdapter extends CodeGeneratorAdapter {
 
     /** Construct the code generator adapter associated

@@ -135,6 +135,9 @@ public class TemplateParser {
      * @param source The given source channel.
      * @param sink The given sink channel.
      * @param offset The given offset._generateTypeConvertStatement
+     * @param alternativeSourceRef The alternative source reference for
+     * the port.  If alternativeSourceRef is null, then the adapter for the port
+     * of the source channel is used.
      * @return The type convert statement for assigning the converted source
      *  variable to the sink variable with the given offset.
      * @exception IllegalActionException If there is a problem getting the
@@ -492,7 +495,11 @@ public class TemplateParser {
         return result;
     }
 
+    /** Parse the list of comma separted parameters.
+     *  @return A list of parameters.
+     */
     public static List<String> parseList(String parameters) {
+        // FIXME: Why not use StringTokenizer here?
         List<String> result = new ArrayList<String>();
         int previousCommaIndex = 0;
         int commaIndex = indexOf(",", parameters, 0);

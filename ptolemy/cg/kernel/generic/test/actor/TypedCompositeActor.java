@@ -35,7 +35,7 @@ import ptolemy.kernel.util.NamedObj;
 //// TypedCompositeActor
 
 /**
- *  Test class for codegen.kernel.ActorCodeGeneratro
+ *  Test class for codegen.kernel.ActorCodeGenerator.
  *
  *  @author Christopher Brooks
  *  @version $Id$

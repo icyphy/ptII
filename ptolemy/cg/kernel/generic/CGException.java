@@ -1,4 +1,4 @@
-/* A helper class that creates exceptions in CG.
+/* An adapter class that creates exceptions in CG.
 
 Copyright (c) 2009 The Regents of the University of California.
 All rights reserved.
@@ -36,10 +36,11 @@ import ptolemy.kernel.util.Nameable;
 ////CGException
 
 /**
-A helper class that creates exceptions in CG.
-This class is introduced so that we don't need to care whether the object
-is a Nameable of not.
-IllegalActionException normally expects Nameable.
+ Create exceptions in code generation.
+
+<p>This class is introduced so that we don't need to care whether the
+object is a Nameable of not.  {@link ptolemy.kernel.util.IllegalActionException}
+normally expects a Nameable as an argument.
 
 @author Bert Rodiers
 @version $Id$
@@ -49,13 +50,31 @@ IllegalActionException normally expects Nameable.
 */
 
 public class CGException {
+    /** Throw an exception with a detail message.
+     *  @param string The message.
+     *  @exception IllegalActionException Always thrown by this method.
+     */
+    public static void throwException(String string) throws IllegalActionException {
+        throwException(null, null, string);
+    }
 
-    /** Construct an exception with a detail message that includes the
+    /** Throw an exception with a detail message that includes the
+     *  name of the first argument.
+     *  @param component The component.
+     *  @param string The message.
+     *  @exception IllegalActionException Always thrown by this method.
+     */
+    public static void throwException(Object component, String string) throws IllegalActionException {
+        throwException(component, null, string);
+    }
+
+    /** Throw an exception with a detail message that includes the
      *  name of the first argument.
      *  @param component The component.
      *  @param cause The cause of this exception, or null if the cause
      *  is not known or nonexistent.
      *  @param detail The message.
+     *  @exception IllegalActionException Always thrown by this method.
      */
     public static IllegalActionException throwException(Object component, Throwable cause,
             String detail) throws IllegalActionException {
@@ -64,21 +83,5 @@ public class CGException {
         } else {
             throw new IllegalActionException(null, cause, detail);
         }
-    }
-    
-    /** Construct an exception with a detail message that includes the
-     *  name of the first argument.
-     *  @param component The component.
-     *  @param string The message.
-     */
-    public static void throwException(Object component, String string) throws IllegalActionException {
-        throwException(component, null, string);
-    }
-
-    /** Construct an exception with a detail message.
-     *  @param string The message.
-     */
-    public static void throwException(String string) throws IllegalActionException {
-        throwException(null, null, string);
     }
 }

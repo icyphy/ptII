@@ -232,6 +232,12 @@ public abstract class GenericCodeGenerator extends Attribute implements
    /** Return the decorated attributes for the target NamedObj.
     *  @param target The NamedObj that will be decorated.
     *  @return A list of decorated attributes for the target NamedObj. 
+    *  @exception IllegalActionException If thrown while creating a
+    *  {@link ptolemy.kernel.DecoratedAttributesImplementation} or while
+    *  creating the decoratedAttributes.
+    *  @exception NameDuplicationException If thrown while creating a
+    *  {@link ptolemy.kernel.DecoratedAttributesImplementation} or while
+    *  creating the decoratedAttributes.
     */
    public DecoratedAttributes createDecoratedAttributes(NamedObj target) throws IllegalActionException, NameDuplicationException{
        CodeGeneratorAdapter adapter;
@@ -817,6 +823,9 @@ public abstract class GenericCodeGenerator extends Attribute implements
 
     /** Instantiate the given code generator adapter.
      *  @param component The given component.
+     *  @param componentClass The class of the component to be instantiated.
+     *  The constructor for class named by the adapterClassName argument
+     *  must take an argument of the class componentClass.
      *  @param adapterClassName The dot separated name of the adapter.
      *  @return The code generator adapter.
      *  @exception IllegalActionException If the adapter class cannot be found.

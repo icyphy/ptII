@@ -52,7 +52,7 @@ public class HTMLCodeGenerator extends GenericCodeGenerator {
 
     /** Create a new instance of the HTMLCodeGenerator.
      *  The value of the <i>generatorPackageList</i> parameter of the
-     *  base class is set to <i>generic.html</code>
+     *  base class is set to <code>generic.html</code>
      *  @param container The container.
      *  @param name The name of the HTMLCodeGenerator.
      *  @exception IllegalActionException If the super class throws the

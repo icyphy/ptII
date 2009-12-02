@@ -67,7 +67,7 @@ import ptolemy.util.MessageHandler;
 import ptolemy.util.StringUtilities;
 
 //////////////////////////////////////////////////////////////////////////
-////JavaCodeGenerator
+//// JavaCodeGenerator
 
 /** Base class for Java code generator.
  *
@@ -77,7 +77,6 @@ import ptolemy.util.StringUtilities;
  *  @Pt.ProposedRating red (zgang)
  *  @Pt.AcceptedRating red (zgang)
  */
-
 public class JavaCodeGenerator extends ProceduralCodeGenerator {
 
     /** Create a new instance of the Java code generator.
@@ -106,6 +105,14 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /**
+     * Get the corresponding type in code generation from the given Ptolemy
+     * type.
+     * @param ptType The given Ptolemy type.
+     * @return The code generation type.
+     * @exception IllegalActionException If the given ptolemy cannot
+     *  be resolved.
+     */
     public String codeGenType(Type type) {
         //String ptolemyType = super.codeGenType(type);
         String result = type == BaseType.INT ? "Int"
@@ -138,7 +145,20 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
         //return ptolemyType.replace("Int", "Integer").replace("Integerger", "Integer").replace("Array", "Token");
     }
 
+    /**
+     * Get the corresponding type in code generation from the given Ptolemy
+     * type.
+     * @param ptType The given Ptolemy type.
+     * @return The code generation type.
+     * @exception IllegalActionException If the given ptolemy cannot
+     *  be resolved.
+     * @deprecated Why does this method exist? It seems to return C
+     * types (int vs Int, long vs. Long)
+     */
     public String codeGenType2(Type type) {
+        // FIXME: why is this necessary?  It seems to return C types (int vs Int, long vs. Long)
+        // It is used in ./ptolemy/cg/kernel/generic/program/procedural/java/modular/ModularCodeGenerator.java
+        // It is used in ./ptolemy/cg/kernel/generic/program/procedural/java/modular/ModularSDFCodeGenerator.java
         String result = type == BaseType.INT ? "int"
                 : type == BaseType.LONG ? "long"
                         : type == BaseType.STRING ? "String"
@@ -167,7 +187,17 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
         return result;
     }
     
+    /**
+     * Return the index of the type in the typesArray in the generated code.
+     * @param type The given codegen type.
+     * @return The index of the type in the typesArray
+     * @exception IllegalActionException If the type is unsupported.
+     */
     static public Short codeGenTypeValue(String type) throws IllegalActionException {
+        // FIXME: the typesArray should only include types used
+        // by the model.
+        // FIXME: why does this return a Short, but codeGenTypeToPtType()
+        // takes an int?
         Short typeReturn = -2;
         if (type.equals("Token")) {
             typeReturn = -1;
@@ -197,10 +227,20 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
         return typeReturn;
     }
     
+    /**
+     * Return the type that corresponds with an index in the typesArray in
+     * in the generated type 
+     * @param codeGenType The index of the codegen type.
+     * @return The Ptolemy type that corresponds with the index.
+     * @exception IllegalActionException If the type is unsupported.
+     * @see #ptTypeToCodegenType(Type)
+     */
     static public Type codeGenTypeToPtType(int codeGenType) throws IllegalActionException {
         Type returnType;
         
-        //FIXME: Add more types
+        // FIXME: Add more types.
+        // FIXME: the typesArray should only include types used
+        // by the model.
         switch(codeGenType) {
         case 0:
             returnType = BaseType.STRING;
@@ -229,7 +269,16 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
         return returnType;
     }
     
+    /**
+     * Return the index of the type in the typesArray in the generated code.
+     * @param type The given Ptolemy type.
+     * @return The index of the type in the typesArray
+     * @exception IllegalActionException If the type is unsupported.
+     * @see #codeGenTypeToPtType(int)
+     */
     static public int ptTypeToCodegenType(Type type) throws IllegalActionException {
+        // FIXME: the typesArray should only include types used
+        // by the model.
         int result = type == BaseType.INT ? 2
                 : type == BaseType.LONG ? 3
                         : type == BaseType.STRING ? 0
@@ -254,6 +303,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
         
         return result;
     }
+
     /** Generate the function table.  In this base class return
      *  the empty string.
      *  @param types An array of types.
@@ -814,7 +864,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
     }
     
     /**
-     * Return the return signature for run() and execute()
+     * Return the return signature for run() and execute().
      * @return The visibility signature.
      */
     public String getMethodVisibiliyString() {
@@ -822,7 +872,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
     }
     
     /**
-     * Return the exception signature (for Java)
+     * Return the exception signature (for Java).
      * @return The exception signature.
      */
     public String getMethodExceptionString() {

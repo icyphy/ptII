@@ -522,6 +522,9 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
 
     /** Instantiate the given code generator adapter.
      *  @param component The given component.
+     *  @param componentClass The class of the component to be instantiated.
+     *  The constructor for class named by the adapterClassName argument
+     *  must take an argument of the class componentClass.
      *  @param adapterClassName The dot separated name of the adapter.
      *  @return The code generator adapter.
      *  @exception IllegalActionException If the adapter class cannot be found.

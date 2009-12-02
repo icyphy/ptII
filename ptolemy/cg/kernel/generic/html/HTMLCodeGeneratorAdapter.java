@@ -71,6 +71,8 @@ public abstract class HTMLCodeGeneratorAdapter extends CodeGeneratorAdapter {
 
     /** Generate HTML code.
      *  @return The generated HTML.
+     *  @exception IllegalActionException If there is a problem
+     *  reading data from the model while generating HTML.
      */
     abstract public String generateHTML() throws IllegalActionException;
 

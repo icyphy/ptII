@@ -46,6 +46,7 @@ public interface PortCodeGenerator {
 
     /** Generate the get code.
      *  @param channel The channel for which the get code is generated.
+     *  @param offset The offset of the port.
      *  @return The code that gets data from the channel.
      *  @exception IllegalActionException If the director adapter class cannot be found.
      */
