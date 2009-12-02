@@ -219,7 +219,6 @@ public class PThalesGenericActor extends TypedAtomicActor {
 
      /**
      * @param tokensIn
-     * @param realIn
      */
     public float[] convertToken(Token[] tokensIn) {
         float[] realIn;
@@ -235,7 +234,6 @@ public class PThalesGenericActor extends TypedAtomicActor {
 
     /**
      * @param realOut
-     * @param tokensOut
      */
     public FloatToken[] convertReal(float[] realOut ) {
         FloatToken[] tokensOut; 
