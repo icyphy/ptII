@@ -70,6 +70,7 @@ public class Integrator extends PropertyConstraintHelper {
 
         setAtLeast(actor.state, new StateOfDerivative(actor.derivative));
         setSameAs(actor.state, actor.initialState);
+        setAtLeast(actor.derivative, new DerivativeOfState(actor.state));
 
         return super.constraintList();
     }
@@ -130,4 +131,60 @@ public class Integrator extends PropertyConstraintHelper {
             return new InequalityTerm[] { getPropertyTerm(_derivative) };
         }
     }
+    
+    // This class implements a monotonic function that takes in the
+    // input property of the integrator (the derivative) and returns
+    // the output property (the state).
+    private class DerivativeOfState extends MonotonicFunction {
+
+        TypedIOPort _state;
+
+        public DerivativeOfState(TypedIOPort state) {
+            _state = state;
+        }
+
+        ///////////////////////////////////////////////////////////////
+        ////                       public inner methods            ////
+
+        /** Return the function result.
+         *  @return A Property.
+         * @exception IllegalActionException
+         */
+        public Object getValue() throws IllegalActionException {
+
+            Property inputProperty = getSolver().getProperty(_state);
+
+            if (inputProperty == _lattice.getElement("POSITION")) {
+                return _lattice.getElement("SPEED");
+            }
+
+            if (inputProperty == _lattice.getElement("SPEED")) {
+                return _lattice.getElement("ACCELERATION");
+            }
+
+            // Interesting case: the integral of unitless value gives a time.
+            if (inputProperty == _lattice.getElement("TIME")) {
+                return _lattice.getElement("UNITLESS");
+            }
+
+            if (inputProperty == null
+                    || inputProperty == _lattice.getElement("UNKNOWN")) {
+                return _lattice.getElement("UNKNOWN");
+            } else {
+                return _lattice.getElement("TOP");
+            }
+        }
+
+        public boolean isEffective() {
+            return true;
+        }
+
+        public void setEffective(boolean isEffective) {
+        }
+
+        protected InequalityTerm[] _getDependentTerms() {
+            return new InequalityTerm[] { getPropertyTerm(_state) };
+        }
+    }
+    
 }
