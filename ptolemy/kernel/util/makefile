@@ -90,7 +90,6 @@ JSRCS = \
 	Singleton.java \
 	SingletonAttribute.java \
 	SingletonConfigurableAttribute.java \
-	StaticResources.java \
 	StreamChangeListener.java \
 	StreamListener.java \
 	StringAttribute.java \
