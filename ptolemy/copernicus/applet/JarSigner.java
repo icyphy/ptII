@@ -214,14 +214,14 @@ public class JarSigner {
             }
             KeyFactory keyFactory = KeyFactory.getInstance(key.getAlgorithm());
             KeySpec keySpec = null;
-//             try {
-//                 keySpec = keyFactory.getKeySpec(key,
-//                         DSAPrivateKeySpec.class);
-//             } catch (java.security.spec.InvalidKeySpecException ex) {
+            try {
+                 keySpec = keyFactory.getKeySpec(key,
+                         DSAPrivateKeySpec.class);
+             } catch (java.security.spec.InvalidKeySpecException ex) {
                 System.out.println("Using RSA");
                 keySpec = keyFactory.getKeySpec(key,
                         RSAPrivateKeySpec.class);
-//            }
+            }
             PrivateKey privateKey = keyFactory.generatePrivate(keySpec);
             JarSigner jarSigner = new JarSigner(alias, privateKey,
                     certChain);
