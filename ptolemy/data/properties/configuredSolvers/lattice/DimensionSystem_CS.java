@@ -26,6 +26,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 package ptolemy.data.properties.configuredSolvers.lattice;
 
 import ptolemy.actor.gui.ColorAttribute;
+import ptolemy.data.properties.lattice.PropertyConstraintSolver;
 import ptolemy.data.properties.lattice.DeltaConstraintSolver;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -42,15 +43,15 @@ public class DimensionSystem_CS extends DeltaConstraintSolver {
         propertyLattice.setVisibility(Settable.NOT_EDITABLE);
         solvingFixedPoint.setExpression("least");
         solvingFixedPoint.setVisibility(Settable.NOT_EDITABLE);
-        actorConstraintType.setExpression("out >= in");
+        actorConstraintType.setExpression("out == in");
         actorConstraintType.setVisibility(Settable.NOT_EDITABLE);
-        connectionConstraintType.setExpression("sink >= src");
+        connectionConstraintType.setExpression("sink == src");
         connectionConstraintType.setVisibility(Settable.NOT_EDITABLE);
-        compositeConnectionConstraintType.setExpression("sink >= src");
+        compositeConnectionConstraintType.setExpression("sink == src");
         compositeConnectionConstraintType.setVisibility(Settable.NOT_EDITABLE);
         expressionASTNodeConstraintType.setExpression("parent >= child");
         expressionASTNodeConstraintType.setVisibility(Settable.NOT_EDITABLE);
-        fsmConstraintType.setExpression("sink >= src");
+        fsmConstraintType.setExpression("sink == src");
         fsmConstraintType.setVisibility(Settable.NOT_EDITABLE);
 
         // Add default highlight colors
