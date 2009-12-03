@@ -54,19 +54,19 @@ public class ParseTreeASTNodeHelperCollector extends AbstractParseTreeVisitor {
      *  the specified scope to resolve the values of variables.
      *  @param node The root of the parse tree.
      *  @param solver The given solver.
-     *  @return The list of property helpers.
+     *  @return The list of property adapters.
      *  @exception IllegalActionException If an error occurs during
      *   evaluation.
      */
     public List<PropertyHelper> collectHelpers(ASTPtRootNode node,
             PropertySolver solver) throws IllegalActionException {
 
-        _helpers = new LinkedList<PropertyHelper>();
+        _adapters = new LinkedList<PropertyHelper>();
         _solver = solver;
 
         _visitAllChildren(node);
         _solver = null;
-        return _helpers;
+        return _adapters;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -80,7 +80,7 @@ public class ParseTreeASTNodeHelperCollector extends AbstractParseTreeVisitor {
             throws IllegalActionException {
         int numChildren = node.jjtGetNumChildren();
 
-        _helpers.add(_solver.getHelper(node));
+        _adapters.add(_solver.getHelper(node));
 
         for (int i = 0; i < numChildren; i++) {
             _visitChild(node, i);
@@ -96,7 +96,7 @@ public class ParseTreeASTNodeHelperCollector extends AbstractParseTreeVisitor {
         _visitAllChildren(child);
     }
 
-    protected List<PropertyHelper> _helpers;
+    protected List<PropertyHelper> _adapters;
 
     protected PropertySolver _solver;
 

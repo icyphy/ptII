@@ -99,7 +99,7 @@ public class ParseTreeConstraintAnnotationEvaluator extends
         } catch (IllegalActionException ex) {
 
             // The label may be a lattice element name.
-            PropertyLattice lattice = ((PropertyConstraintHelper) _helper)
+            PropertyLattice lattice = ((PropertyConstraintHelper) _adapter)
                     .getSolver().getLattice();
 
             _evaluatedObject = lattice.getElement(_getNodeLabel(node)
@@ -145,15 +145,15 @@ public class ParseTreeConstraintAnnotationEvaluator extends
 
         Token operator = node.getOperator();
         if (operator.kind == PtParserConstants.EQUALS) {
-            ((PropertyConstraintHelper) _helper).setSameAsManualAnnotation(
+            ((PropertyConstraintHelper) _adapter).setSameAsManualAnnotation(
                     leftChild, rightChild);
 
         } else if (operator.kind == PtParserConstants.GTE) {
-            ((PropertyConstraintHelper) _helper).setAtLeastManualAnnotation(
+            ((PropertyConstraintHelper) _adapter).setAtLeastManualAnnotation(
                     leftChild, rightChild);
 
         } else if (operator.kind == PtParserConstants.LTE) {
-            ((PropertyConstraintHelper) _helper).setAtLeastManualAnnotation(
+            ((PropertyConstraintHelper) _adapter).setAtLeastManualAnnotation(
                     rightChild, leftChild);
 
         } else {

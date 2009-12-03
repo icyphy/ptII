@@ -1,4 +1,4 @@
-/* A helper class for ptolemy.actor.lib.Minimum.
+/* An adapter class for ptolemy.actor.lib.Minimum.
 
  Copyright (c) 2006-2009 The Regents of the University of California.
  All rights reserved.
@@ -37,7 +37,7 @@ import ptolemy.kernel.util.IllegalActionException;
 //// Minimum
 
 /**
- A helper class for ptolemy.actor.lib.Expression.
+ An adapter class for ptolemy.actor.lib.Expression.
 
  @author Man-Kit Leung, Beth
  @version $Id: Minimum.java 54721 2009-06-26 22:32:23Z cxh $
@@ -48,7 +48,7 @@ import ptolemy.kernel.util.IllegalActionException;
 public class Minimum extends AtomicActor {
 
     /**
-     * Construct a Minimum helper for the dimensionSystem lattice.
+     * Construct a Minimum adapter for the dimensionSystem lattice.
      * @param solver The given solver.
      * @param actor The given Minimum actor
      * @exception IllegalActionException

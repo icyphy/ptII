@@ -1,4 +1,4 @@
-/* A helper class for ptolemy.actor.lib.Sequence.
+/* An adapter class for ptolemy.actor.lib.Sequence.
 
  Copyright (c) 2006 The Regents of the University of California.
  All rights reserved.
@@ -38,7 +38,7 @@ import ptolemy.kernel.util.IllegalActionException;
 //// Sequence
 
 /**
- A helper class for ptolemy.actor.lib.Sequence.
+ An adapter class for ptolemy.actor.lib.Sequence.
 
  @author Man-Kit Leung, Thomas Mandl
  @version $Id$
@@ -49,7 +49,7 @@ import ptolemy.kernel.util.IllegalActionException;
 public class TrigFunction extends AtomicActor {
 
     /**
-     * Construct a Const helper for the staticDynamic lattice.
+     * Construct a Const adapter for the staticDynamic lattice.
      * This set a permanent constraint for the output port to
      * be STATIC, but does not use the default actor constraints.
      * @param solver The given solver.

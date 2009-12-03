@@ -561,13 +561,13 @@ public class Director extends NamedProgramCodeGeneratorAdapter {
     
     /**
      * Return an unique label for the given attribute referenced
-     * by the given helper. Subclass should override this method
+     * by the given adapter. Subclass should override this method
      * to generate the desire label according to the given parameters.
      * @param target The ProgramCodeGeneratorAdapter for which code needs to be generated.
      * @param attribute The given attribute.
      * @param channelAndOffset The given channel and offset.
      * @return an unique label for the given attribute.
-     * @throws IllegalActionException If the helper throws it while
+     * @throws IllegalActionException If the adapter throws it while
      *  generating the label.
      */
     protected String _getParameter(NamedProgramCodeGeneratorAdapter target,

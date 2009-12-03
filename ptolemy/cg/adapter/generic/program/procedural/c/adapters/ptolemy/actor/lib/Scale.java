@@ -1,4 +1,4 @@
-/* A helper class for ptolemy.actor.lib.Scale
+/* A adapter class for ptolemy.actor.lib.Scale
 
  Copyright (c) 2006-2009 The Regents of the University of California.
  All rights reserved.
@@ -46,7 +46,7 @@ import ptolemy.kernel.util.IllegalActionException;
  */
 public class Scale extends NamedProgramCodeGeneratorAdapter {
     /**
-     *  Construct a Scale helper.
+     *  Construct a Scale adapter.
      *  @param actor The given ptolemy.actor.lib.Scale actor.
      */
     public Scale(ptolemy.actor.lib.Scale actor) {

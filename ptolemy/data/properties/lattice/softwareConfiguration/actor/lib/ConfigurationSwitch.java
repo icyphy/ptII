@@ -1,4 +1,4 @@
-/* A helper class for ptolemy.actor.lib.ConfigurationSwitch
+/* An adapter class for ptolemy.actor.lib.ConfigurationSwitch
 
  Copyright (c) 2009 The Regents of the University of California.
  All rights reserved.
@@ -43,7 +43,7 @@ import ptolemy.kernel.util.IllegalActionException;
 //// ConfigurationSwitch
 
 /**
- A helper class for ptolemy.actor.lib.ConfigurationSwitch.
+ An adapter class for ptolemy.actor.lib.ConfigurationSwitch.
 
  @author Charles Shelton
  @version $Id: ConfigurationSwitch.java 55837 2009-10-13 23:09:28Z cxh $
@@ -53,7 +53,7 @@ import ptolemy.kernel.util.IllegalActionException;
  */
 public class ConfigurationSwitch extends AtomicActor {
     /**
-     * Construct a ConfigurationSwitch helper.
+     * Construct a ConfigurationSwitch adapter.
      * ConfigurationSwitch does NOT use the default constraints
      * @param solver The associated solver.
      * @param actor The associated actor.

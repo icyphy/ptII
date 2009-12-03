@@ -1,4 +1,4 @@
-/* A helper class for ptolemy.actor.lib.Limiter.
+/* An adapter class for ptolemy.actor.lib.Limiter.
 
  Copyright (c) 2006-2009 The Regents of the University of California.
  All rights reserved.
@@ -42,7 +42,7 @@ import ptolemy.kernel.util.IllegalActionException;
 //// Limiter
 
 /**
- A helper class for ptolemy.actor.lib.Limiter.
+ An adapter class for ptolemy.actor.lib.Limiter.
 
  @author Thomas Mandl, Man-Kit Leung
  @version $Id$
@@ -52,7 +52,7 @@ import ptolemy.kernel.util.IllegalActionException;
 */
 public class Limiter extends AtomicActor {
     /**
-     * Construct an Limiter helper.
+     * Construct an Limiter adapter.
      * @param actor the associated actor
      * @exception IllegalActionException
      */

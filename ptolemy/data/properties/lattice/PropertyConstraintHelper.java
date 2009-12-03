@@ -1,5 +1,5 @@
 /**
- * The base class for a property constraint helper.
+ * The base class for a property constraint adapter.
  * 
  * Copyright (c) 2007-2009 The Regents of the University of California. All
  * rights reserved. Permission is hereby granted, without written agreement and
@@ -52,7 +52,7 @@ import ptolemy.kernel.util.IllegalActionException;
 //// PropertyConstraintHelper
 
 /**
- * The base class for a property constraint helper.
+ * The base class for a property constraint adapter.
  * 
  * @author Man-Kit Leung, Thomas Mandl, Edward A. Lee
  * @version $Id$
@@ -63,12 +63,12 @@ import ptolemy.kernel.util.IllegalActionException;
 public class PropertyConstraintHelper extends PropertyHelper {
 
     /**
-     * Construct the property constraint helper associated with the given
-     * component and solver. The constructed helper implicitly uses the default
+     * Construct the property constraint adapter associated with the given
+     * component and solver. The constructed adapter implicitly uses the default
      * constraints set by the solver.
      * @param solver The specified property solver.
      * @param component The associated component.
-     * @exception IllegalActionException Thrown if the helper cannot be
+     * @exception IllegalActionException Thrown if the adapter cannot be
      * initialized.
      */
     public PropertyConstraintHelper(PropertyConstraintSolver solver,
@@ -77,13 +77,13 @@ public class PropertyConstraintHelper extends PropertyHelper {
     }
 
     /**
-     * Construct the property constraint helper for the given component and
+     * Construct the property constraint adapter for the given component and
      * property lattice.
      * @param solver The given property lattice.
      * @param component The given component.
-     * @param useDefaultConstraints Indicate whether this helper uses the
+     * @param useDefaultConstraints Indicate whether this adapter uses the
      * default actor constraints.
-     * @exception IllegalActionException Thrown if the helper cannot be
+     * @exception IllegalActionException Thrown if the adapter cannot be
      * initialized.
      */
     public PropertyConstraintHelper(PropertyConstraintSolver solver,
@@ -118,7 +118,7 @@ public class PropertyConstraintHelper extends PropertyHelper {
 
     /**
      * Return the list of constraining terms for a given object. It delegates to
-     * the constraint manager of the solver linked with this helper.
+     * the constraint manager of the solver linked with this adapter.
      * @param object The given object.
      * @return The list of constrainting terms.
      */
@@ -268,11 +268,11 @@ public class PropertyConstraintHelper extends PropertyHelper {
             super(lesserTerm, greaterTerm);
 
             _isBase = isBase;
-            _helper = PropertyConstraintHelper.this;
+            _adapter = PropertyConstraintHelper.this;
         }
 
         public PropertyHelper getHelper() {
-            return _helper;
+            return _adapter;
         }
 
         /**
@@ -322,7 +322,7 @@ public class PropertyConstraintHelper extends PropertyHelper {
 
         private final boolean _isBase;
 
-        private final PropertyHelper _helper;
+        private final PropertyHelper _adapter;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -360,20 +360,20 @@ public class PropertyConstraintHelper extends PropertyHelper {
     }
 
     /**
-     * Iterate through the list of sub helpers and gather the constraints for
-     * each one. Note that the helper stores a new set of constraints each time
+     * Iterate through the list of sub adapters and gather the constraints for
+     * each one. Note that the adapter stores a new set of constraints each time
      * this is invoked. Therefore, multiple invocations will generate excessive
      * constraints and result in inefficiency during resolution.
      * @exception IllegalActionException Thrown if there is any errors in
-     * getting the sub helpers and gathering the constraints for each one.
+     * getting the sub adapters and gathering the constraints for each one.
      */
     protected void _addSubHelperConstraints() throws IllegalActionException {
-        Iterator helpers = _getSubHelpers().iterator();
+        Iterator adapters = _getSubHelpers().iterator();
 
-        while (helpers.hasNext()) {
-            PropertyConstraintHelper helper = (PropertyConstraintHelper) helpers
+        while (adapters.hasNext()) {
+            PropertyConstraintHelper adapter = (PropertyConstraintHelper) adapters
                     .next();
-            _subHelperConstraints.addAll(helper.constraintList());
+            _subHelperConstraints.addAll(adapter.constraintList());
         }
     }
 
@@ -493,10 +493,10 @@ public class PropertyConstraintHelper extends PropertyHelper {
     }
 
     /**
-     * Return the list of sub-helpers. By default, this returns the list of
-     * ASTNode helpers that are associated with the expressions of the
+     * Return the list of sub-adapters. By default, this returns the list of
+     * ASTNode adapters that are associated with the expressions of the
      * propertyable attributes.
-     * @return The list of sub-helpers.
+     * @return The list of sub-adapters.
      * @exception IllegalActionException Not thrown in this base class.
      */
     protected List<PropertyHelper> _getSubHelpers()
@@ -542,13 +542,13 @@ public class PropertyConstraintHelper extends PropertyHelper {
             ConstraintType expressionASTNodeConstraintType)
             throws IllegalActionException {
 
-        Iterator helpers = _getSubHelpers().iterator();
+        Iterator adapters = _getSubHelpers().iterator();
 
-        while (helpers.hasNext()) {
-            PropertyConstraintHelper helper = (PropertyConstraintHelper) helpers
+        while (adapters.hasNext()) {
+            PropertyConstraintHelper adapter = (PropertyConstraintHelper) adapters
                     .next();
 
-            helper._setConnectionConstraintType(constraintType,
+            adapter._setConnectionConstraintType(constraintType,
                     compositeConstraintType, fsmConstraintType,
                     expressionASTNodeConstraintType);
         }
@@ -623,7 +623,7 @@ public class PropertyConstraintHelper extends PropertyHelper {
     /** The property lattice. */
     protected PropertyLattice _lattice;
 
-    /** Indicate whether this helper uses the default actor constraints. */
+    /** Indicate whether this adapter uses the default actor constraints. */
     protected boolean _useDefaultConstraints;
 
 }

@@ -1,4 +1,4 @@
-/* A helper class for ptolemy.actor.lib.MultiplyDivide.
+/* An adapter class for ptolemy.actor.lib.MultiplyDivide.
 
  Copyright (c) 2006-2009 The Regents of the University of California.
  All rights reserved.
@@ -41,7 +41,7 @@ import ptolemy.kernel.util.IllegalActionException;
 //// MultiplyDivide
 
 /**
- A helper class for ptolemy.actor.lib.MultiplyDivide.
+ An adapter class for ptolemy.actor.lib.MultiplyDivide.
 
  @author Man-Kit Leung
  @version $Id$
@@ -52,7 +52,7 @@ import ptolemy.kernel.util.IllegalActionException;
 public class MultiplyDivide extends AtomicActor {
 
     /**
-     * Construct a MultiplyDivide helper for the flatUnitSystem lattice.
+     * Construct a MultiplyDivide adapter for the flatUnitSystem lattice.
      * @param solver The given solver.
      * @param actor The given MultiplyDivide actor
      * @exception IllegalActionException

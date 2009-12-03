@@ -66,8 +66,8 @@ public class PropertyCombineHelper extends PropertyHelper {
     }
 
     /**
-     * Return The PropertySolver that uses this helper.
-     * @return The PropertySolver that uses this helper.
+     * Return The PropertySolver that uses this adapter.
+     * @return The PropertySolver that uses this adapter.
      */
     public PropertyCombineSolver getSolver() {
         // FIXME: This is unusual because there is a getSolver()
@@ -78,7 +78,7 @@ public class PropertyCombineHelper extends PropertyHelper {
     /** Determine the property.
      *  @exception IllegalActionException If thrown while generating  
      *  a parse tree for the solver, evaluating the parse tree or getting
-     *  subhelpers.
+     *  subadapters.
      */
     public void determineProperty() throws IllegalActionException {
 
@@ -105,11 +105,11 @@ public class PropertyCombineHelper extends PropertyHelper {
             }
         }
 
-        Iterator helpers = _getSubHelpers().iterator();
-        while (helpers.hasNext()) {
-            PropertyCombineHelper helper = (PropertyCombineHelper) helpers
+        Iterator adapters = _getSubHelpers().iterator();
+        while (adapters.hasNext()) {
+            PropertyCombineHelper adapter = (PropertyCombineHelper) adapters
                     .next();
-            helper.determineProperty();
+            adapter.determineProperty();
         }
     }
 
@@ -165,8 +165,8 @@ public class PropertyCombineHelper extends PropertyHelper {
     }
 
     /**
-     * Return the list of sub-helpers.
-     * @return The list of sub-helpers.
+     * Return the list of sub-adapters.
+     * @return The list of sub-adapters.
      * @exception IllegalActionException Not thrown in this class.
      */
     protected List<PropertyHelper> _getSubHelpers()

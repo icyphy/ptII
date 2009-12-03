@@ -1,4 +1,4 @@
-/* A code generation helper class for actor.lib.logic.Comparator
+/* A code generation adapter class for actor.lib.logic.Comparator
 
  @Copyright (c) 2005-2009 The Regents of the University of California.
  All rights reserved.
@@ -28,7 +28,7 @@
 package ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.actor.lib.logic;
 
 /**
- A code generation helper class for ptolemy.actor.lib.logic.Comparator.
+ A code generation adapter class for ptolemy.actor.lib.logic.Comparator.
 
  @author Man-Kit Leung
  @version $Id: Comparator.java 53095 2009-04-12 19:12:45Z cxh $
@@ -39,7 +39,7 @@ package ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.actor.l
 public class Comparator extends ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib.logic.Comparator {
 
     /**
-     * Construct the Comparator helper.
+     * Construct the Comparator adapter.
      * @param actor The associated actor.
      */
     public Comparator(ptolemy.actor.lib.logic.Comparator actor) {

@@ -1,4 +1,4 @@
-/* A helper class for ptolemy.actor.lib.image.ImageReader.
+/* An adapter class for ptolemy.actor.lib.image.ImageReader.
 
  Copyright (c) 2006-2009 The Regents of the University of California.
  All rights reserved.
@@ -38,7 +38,7 @@ import ptolemy.kernel.util.IllegalActionException;
 //// ImageReader
 
 /**
- A helper class for ptolemy.actor.lib.image.ImageReader.
+ An adapter class for ptolemy.actor.lib.image.ImageReader.
 
  @author Man-Kit Leung
  @version $Id$
@@ -49,10 +49,10 @@ import ptolemy.kernel.util.IllegalActionException;
 public class ImageReader extends PropertyConstraintHelper {
 
     /**
-     * Construct a helper for the given ImageReader. This is the
-     * helper class for any ImageReader that does not have a
-     * specific defined helper class. Default actor constraints
-     * are set for this helper.
+     * Construct an adapter for the given ImageReader. This is the
+     * adapter class for any ImageReader that does not have a
+     * specific defined adapter class. Default actor constraints
+     * are set for this adapter.
      * @param solver The given solver.
      * @param actor The given ImageReader (ignored).
      * @exception IllegalActionException

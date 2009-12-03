@@ -1,4 +1,4 @@
-/* Code generator helper for EmbeddedJavaActor.
+/* Code generator adapter for EmbeddedJavaActor.
 
  Copyright (c) 2007-2009 The Regents of the University of California.
  All rights reserved.
@@ -37,7 +37,7 @@ import ptolemy.kernel.util.IllegalActionException;
 
 /**
  FIXME: docs
- Code generator helper for EmbeddedJavaActor.
+ Code generator adapter for EmbeddedJavaActor.
 
  @author Gang Zhou, Contributor: Bert Rodiers
  @version $Id$
@@ -47,7 +47,7 @@ import ptolemy.kernel.util.IllegalActionException;
  @Pt.AcceptedRating Red (zgang)
  */
 public class EmbeddedCodeActor extends CompiledCompositeActor {
-    /** Construct the code generator helper associated
+    /** Construct the code generator adapter associated
      *  with the given TypedCompositeActor.
      *  @param component The associated component.
      */

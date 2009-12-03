@@ -1,6 +1,6 @@
-/* A code generation helper class for ptolemy.domains.ptides.lib.targets.luminary.GPInputDevice
+/* A code generation adapter class for ptolemy.domains.ptides.lib.targets.luminary.GPInputDevice
 
- Copyright (c) 2006-2009 The Regents of the University of California.
+ Copyright (c) 2009 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -41,7 +41,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
 /**
- * A code generation helper class for ptolemy.domains.ptides.lib.targets.luminary.GPInputDevice.
+ * A code generation adapter class for ptolemy.domains.ptides.lib.targets.luminary.GPInputDevice.
  * @author Jia Zou, Isaac Liu, Jeff C. Jensen
  * @version $Id$
  * @since Ptolemy II 7.1
@@ -50,7 +50,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  */
 
 public class GPInputDevice extends InputDevice {
-    /** Construct a helper with the given
+    /** Construct an adapter with the given
      *  ptolemy.domains.ptides.lib.GPInputDevice actor.
      *  @param actor The given ptolemy.domains.ptides.lib.targets.luminary.GPInputDevice actor.
      *  @throws IllegalActionException 
@@ -84,6 +84,13 @@ public class GPInputDevice extends InputDevice {
     ////////////////////////////////////////////////////////////////////
     ////                     public methods                         ////
 
+    /**
+     * Return the code for the sensing function.
+     * @return the code for the sensing function, which is read from the
+     * "sensingBlock" 
+     * @exception IllegalActionException If thrown while appending the code
+     * block or processing the code stream.
+     */
     public String generateSensorSensingFuncCode() throws IllegalActionException {
         List args = new LinkedList();
         CodeStream _codeStream = _templateParser.getCodeStream();
@@ -99,6 +106,12 @@ public class GPInputDevice extends InputDevice {
         return processCode(_codeStream.toString());
     }
 
+    /**
+     * Return the code for the hardware initialization function.
+     * @return the code for the hardare initialization function.
+     * @exception IllegalActionException If thrown while appending the code
+     * block or processing the code stream.
+     */
     public String generateHardwareInitializationCode()
             throws IllegalActionException {
         StringBuffer code = new StringBuffer();
@@ -109,6 +122,9 @@ public class GPInputDevice extends InputDevice {
                 "initializeGPInput", args)));
         return code.toString();
     }
+
+    ////////////////////////////////////////////////////////////////////
+    ////                     private variables                      ////
 
     private String _pinID;
     private String _padID;

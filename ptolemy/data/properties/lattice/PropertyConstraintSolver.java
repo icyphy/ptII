@@ -190,10 +190,10 @@ public class PropertyConstraintSolver extends PropertySolver {
     }
 
     /**
-     * Returns the helper that contains property information for the given AST
+     * Returns the adapter that contains property information for the given AST
      * node.
      * @param node The given ASTPtRootNode.
-     * @return The associated property constraint helper.
+     * @return The associated property constraint adapter.
      */
     public PropertyConstraintASTNodeHelper getHelper(ASTPtRootNode node)
             throws IllegalActionException {
@@ -202,10 +202,10 @@ public class PropertyConstraintSolver extends PropertySolver {
     }
 
     /**
-     * Returns the helper that contains property information for the given
+     * Returns the adapter that contains property information for the given
      * component.
      * @param component The given component
-     * @return The associated property constraint helper.
+     * @return The associated property constraint adapter.
      */
     public PropertyHelper getHelper(NamedObj component)
             throws IllegalActionException {
@@ -214,7 +214,7 @@ public class PropertyConstraintSolver extends PropertySolver {
     }
 
     /**
-     * Return the property constraint helper associated with the given object.
+     * Return the property constraint adapter associated with the given object.
      * @param object The given object.
      */
     public PropertyHelper getHelper(Object object)
@@ -370,9 +370,9 @@ public class PropertyConstraintSolver extends PropertySolver {
     public void updateProperties() throws IllegalActionException {
         super.updateProperties();
 
-        // Only need to look at the constraints of the top level helper.
-        PropertyHelper helper;
-        helper = getHelper(_toplevel());
+        // Only need to look at the constraints of the top level adapter.
+        PropertyHelper adapter;
+        adapter = getHelper(_toplevel());
 
         if (isLogMode()) {
             String constraintFilename = _getTrainedConstraintFilename()
@@ -383,7 +383,7 @@ public class PropertyConstraintSolver extends PropertySolver {
                 _trainedConstraints.clear();
 
                 // Populate the _trainedConstraints list.
-                _logHelperConstraints((PropertyConstraintHelper) helper);
+                _logHelperConstraints((PropertyConstraintHelper) adapter);
 
                 // Write the list to file.
                 _updateConstraintFile(constraintFilename);
@@ -393,7 +393,7 @@ public class PropertyConstraintSolver extends PropertySolver {
                 _readConstraintFile(constraintFilename);
 
                 // Match and remove from the list.
-                _regressionTestConstraints((PropertyConstraintHelper) helper);
+                _regressionTestConstraints((PropertyConstraintHelper) adapter);
 
                 // Check if there are unmatched constraints.
                 _checkMissingConstraints();
@@ -403,32 +403,32 @@ public class PropertyConstraintSolver extends PropertySolver {
 
     protected PropertyHelper _getHelper(Object component)
             throws IllegalActionException {
-        PropertyHelper helper = null;
+        PropertyHelper adapter = null;
 
         try {
-            helper = super._getHelper(component);
+            adapter = super._getHelper(component);
         } catch (IllegalActionException ex) {
         }
 
-        if (helper == null) {
+        if (adapter == null) {
             if (component instanceof FSMActor) {
-                helper = new PropertyConstraintFSMHelper(this,
+                adapter = new PropertyConstraintFSMHelper(this,
                         (FSMActor) component);
             } else if (component instanceof ptolemy.domains.modal.kernel.FSMActor) {
-                helper = new PropertyConstraintModalFSMHelper(this,
+                adapter = new PropertyConstraintModalFSMHelper(this,
                         (ptolemy.domains.modal.kernel.FSMActor) component);
             } else if (component instanceof CompositeEntity) {
-                helper = new PropertyConstraintCompositeHelper(this,
+                adapter = new PropertyConstraintCompositeHelper(this,
                         (CompositeEntity) component);
             } else if (component instanceof ASTPtRootNode) {
-                helper = new PropertyConstraintASTNodeHelper(this,
+                adapter = new PropertyConstraintASTNodeHelper(this,
                         (ASTPtRootNode) component);
             } else {
-                helper = new PropertyConstraintHelper(this, component);
+                adapter = new PropertyConstraintHelper(this, component);
             }
         }
-        _helperStore.put(component, helper);
-        return helper;
+        _adapterStore.put(component, adapter);
+        return adapter;
     }
 
     /**
@@ -513,12 +513,12 @@ public class PropertyConstraintSolver extends PropertySolver {
           
             /*
              * // FIXME: this is the iterative approach. List constraintList =
-             * new ArrayList(); Iterator helpers =
-             * _helperStore.values().iterator(); while (helpers.hasNext()) {
-             * PropertyConstraintHelper helper = (PropertyConstraintHelper)
-             * helpers.next();
+             * new ArrayList(); Iterator adapters =
+             * _adapterStore.values().iterator(); while (adapters.hasNext()) {
+             * PropertyConstraintHelper adapter = (PropertyConstraintHelper)
+             * adapters.next();
              * 
-             * constraintList.addAll(helper.constraintList()); } //
+             * constraintList.addAll(adapter.constraintList()); } //
              */
 
             // NOTE: To view all property constraints, uncomment these.
@@ -1071,14 +1071,14 @@ public class PropertyConstraintSolver extends PropertySolver {
 
     /**
      * 
-     * @param helper
+     * @param adapter
      * @exception IllegalActionException
      */
-    private void _logHelperConstraints(PropertyConstraintHelper helper)
+    private void _logHelperConstraints(PropertyConstraintHelper adapter)
             throws IllegalActionException {
         List<Inequality>[] constraintSet = new List[2];
-        constraintSet[0] = helper._ownConstraints;
-        constraintSet[1] = helper._subHelperConstraints;
+        constraintSet[0] = adapter._ownConstraints;
+        constraintSet[1] = adapter._subHelperConstraints;
 
         for (int i = 0; i < 2; i++) {
             //String whichSet = (i == 0) ? " own " : " subHelper's ";
@@ -1124,9 +1124,9 @@ public class PropertyConstraintSolver extends PropertySolver {
         }
     }
 
-    private void _regressionTestConstraints(PropertyConstraintHelper helper)
+    private void _regressionTestConstraints(PropertyConstraintHelper adapter)
             throws IllegalActionException {
-        Object object = helper.getComponent();
+        Object object = adapter.getComponent();
         if (!(object instanceof NamedObj)) {
             return;
         }
@@ -1136,11 +1136,11 @@ public class PropertyConstraintSolver extends PropertySolver {
                 "Property \"" + getUseCaseName() +
                 "\" resolution failed for " +
                 namedObj.getFullName() +
-                "'s helper." + _eol);
+                "'s adapter." + _eol);
 
         List<Inequality>[] constraintSet = new List[2];
-        constraintSet[0] = helper._ownConstraints;
-        constraintSet[1] = helper._subHelperConstraints;
+        constraintSet[0] = adapter._ownConstraints;
+        constraintSet[1] = adapter._subHelperConstraints;
 
         boolean hasError = false;
 

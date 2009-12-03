@@ -466,12 +466,12 @@ public class SDFDirector extends StaticSchedulingDirector {
 
     /**
      * Return an unique label for the given attribute referenced
-     * by the given helper.
+     * by the given adapter.
      * @param target The ProgramCodeGeneratorAdapter for which code needs to be generated.
      * @param attribute The given attribute.
      * @param channelAndOffset The given channel and offset.
      * @return an unique label for the given attribute.
-     * @throws IllegalActionException If the helper throws it while
+     * @throws IllegalActionException If the adapter throws it while
      *  generating the label.
      */
     @Override

@@ -1,4 +1,4 @@
-/* A helper class for ptolemy.actor.lib.Const.
+/* An adapter class for ptolemy.actor.lib.Const.
 
  Copyright (c) 2009 The Regents of the University of California.
  All rights reserved.
@@ -37,7 +37,7 @@ import ptolemy.kernel.util.IllegalActionException;
 //// Const
 
 /**
- A helper class for ptolemy.actor.lib.Const.
+ An adapter class for ptolemy.actor.lib.Const.
 
  @author Charles Shelton
  @version $Id$
@@ -48,10 +48,10 @@ import ptolemy.kernel.util.IllegalActionException;
 public class Const extends Source {
 
     /**
-     * Construct a Const helper for the dimensionSystem lattice.
+     * Construct a Const adapter for the dimensionSystem lattice.
      * @param solver The given solver.
      * @param actor The given Const actor
-     * @exception IllegalActionException Thrown if the helper cannot be
+     * @exception IllegalActionException Thrown if the adapter cannot be
      * initialized.
      */
     public Const(PropertyConstraintSolver solver, ptolemy.actor.lib.Const actor)

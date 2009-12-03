@@ -1,4 +1,4 @@
-/* A helper class for ptolemy.actor.lib.MultiplyDivide
+/* A adapter class for ptolemy.actor.lib.MultiplyDivide
 
  Copyright (c) 2006-2009 The Regents of the University of California.
  All rights reserved.
@@ -32,7 +32,7 @@ package ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.actor.l
 //// MultiplyDivide
 
 /**
- A helper class for ptolemy.actor.lib.MultiplyDivide.
+ A adapter class for ptolemy.actor.lib.MultiplyDivide.
 
  @author Man-Kit (Jackie) Leung, Gang Zhou
  @version $Id: MultiplyDivide.java 53337 2009-04-30 04:34:25Z mankit $
@@ -42,7 +42,7 @@ package ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.actor.l
  */
 public class MultiplyDivide extends ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib.MultiplyDivide {
     /**
-     * Constructor method for the MultiplyDivide helper.
+     * Constructor method for the MultiplyDivide adapter.
      * @param actor the associated actor
      */
     public MultiplyDivide(ptolemy.actor.lib.MultiplyDivide actor) {

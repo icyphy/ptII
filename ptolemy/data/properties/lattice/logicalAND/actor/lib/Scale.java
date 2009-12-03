@@ -1,4 +1,4 @@
-/* A helper class for ptolemy.actor.lib.Scale.
+/* An adapter class for ptolemy.actor.lib.Scale.
 
  Copyright (c) 2006-2009 The Regents of the University of California.
  All rights reserved.
@@ -38,7 +38,7 @@ import ptolemy.kernel.util.IllegalActionException;
 //// Scale
 
 /**
- A helper class for ptolemy.actor.lib.Scale.
+ An adapter class for ptolemy.actor.lib.Scale.
 
  @author Thomas Mandl, Man-Kit Leung
  @version $Id$
@@ -48,7 +48,7 @@ import ptolemy.kernel.util.IllegalActionException;
 */
 public class Scale extends AtomicActor {
     /**
-     * Construct a Ramp helper.
+     * Construct a Ramp adapter.
      * @param actor the associated actor
      * @exception IllegalActionException
      */

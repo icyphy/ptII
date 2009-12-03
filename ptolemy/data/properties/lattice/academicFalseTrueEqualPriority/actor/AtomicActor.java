@@ -1,4 +1,4 @@
-/* A helper class for ptolemy.actor.AtomicActor.
+/* An adapter class for ptolemy.actor.AtomicActor.
 
  Copyright (c) 2006-2009 The Regents of the University of California.
  All rights reserved.
@@ -35,7 +35,7 @@ import ptolemy.kernel.util.IllegalActionException;
 //// AtomicActor
 
 /**
- A helper class for ptolemy.actor.AtomicActor.
+ An adapter class for ptolemy.actor.AtomicActor.
 
  @author Man-Kit Leung, Thomas Mandl
  @version $Id$
@@ -46,10 +46,10 @@ import ptolemy.kernel.util.IllegalActionException;
 public class AtomicActor extends PropertyConstraintHelper {
 
     /**
-     * Construct a helper for the given AtomicActor. This is the
-     * helper class for any ActomicActor that does not have a
-     * specific defined helper class. Default actor constraints
-     * are set for this helper.
+     * Construct an adapter for the given AtomicActor. This is the
+     * adapter class for any ActomicActor that does not have a
+     * specific defined adapter class. Default actor constraints
+     * are set for this adapter.
      * @param solver The given solver.
      * @param actor The given ActomicActor.
      * @exception IllegalActionException

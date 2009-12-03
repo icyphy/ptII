@@ -48,7 +48,7 @@ import ptolemy.kernel.util.IllegalActionException;
  */
 public class Subscriber extends NamedProgramCodeGeneratorAdapter {
     /**
-     * Constructor method for the Subscriber helper.
+     * Constructor method for the Subscriber adapter.
      * @param actor the associated actor
      */
     public Subscriber(ptolemy.actor.lib.Subscriber actor) {

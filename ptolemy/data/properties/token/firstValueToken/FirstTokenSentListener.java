@@ -1,4 +1,4 @@
-/*  When a token is sent on a port, add a PropertyToken to the helper
+/*  When a token is sent on a port, add a PropertyToken to the adapter
    associated with the solver.
 
 Copyright (c) 2007-2009 The Regents of the University of California.
@@ -38,7 +38,7 @@ import ptolemy.kernel.util.IllegalActionException;
 //// FirstTokenSentListener
 
 /**
-   When a token is sent on a port, add a PropertyToken to the helper
+   When a token is sent on a port, add a PropertyToken to the adapter
    associated with the solver.
    @author Man-Kit Leung
    @version $Id$
@@ -59,7 +59,7 @@ public class FirstTokenSentListener implements IOPortEventListener {
     ////                         public methods                    ////
 
     /** When a token is sent on a port, add a PropertyToken 
-     *  to the helper associated with the solver.
+     *  to the adapter associated with the solver.
      *  @param event The event to report.
      */
     public void portEvent(IOPortEvent event) {

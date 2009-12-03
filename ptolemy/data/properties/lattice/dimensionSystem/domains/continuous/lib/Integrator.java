@@ -1,4 +1,4 @@
-/* A helper class for ptolemy.domains.continuous.lib.Integrator.
+/* An adapter class for ptolemy.domains.continuous.lib.Integrator.
 
  Copyright (c) 2006-2009 The Regents of the University of California.
  All rights reserved.
@@ -41,7 +41,7 @@ import ptolemy.kernel.util.IllegalActionException;
 //// Integrator
 
 /**
- A helper class for ptolemy.domains.continuous.lib.Integrator.
+ An adapter class for ptolemy.domains.continuous.lib.Integrator.
 
  @author Man-Kit Leung, Ben Lickly
  @version $Id$
@@ -52,7 +52,7 @@ import ptolemy.kernel.util.IllegalActionException;
 public class Integrator extends PropertyConstraintHelper {
 
     /**
-     * Construct a Integrator helper for the flatUnitSystem lattice.
+     * Construct a Integrator adapter for the flatUnitSystem lattice.
      * @param solver The given solver.
      * @param actor The given Integrator actor
      * @exception IllegalActionException

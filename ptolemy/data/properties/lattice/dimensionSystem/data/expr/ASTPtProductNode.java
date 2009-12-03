@@ -1,4 +1,4 @@
-/* A helper class for ptolemy.data.expr.ASTPtArrayConstructNode.
+/* An adapter class for ptolemy.data.expr.ASTPtArrayConstructNode.
 
  Copyright (c) 2006-2009 The Regents of the University of California.
  All rights reserved.
@@ -44,7 +44,7 @@ import ptolemy.kernel.util.IllegalActionException;
 //// ASTPtLeafNode
 
 /**
- A helper class for ptolemy.data.expr.ASTPtArrayConstructNode.
+ An adapter class for ptolemy.data.expr.ASTPtArrayConstructNode.
 
  @author Thomas Mandl
  @version $Id$
@@ -55,7 +55,7 @@ import ptolemy.kernel.util.IllegalActionException;
 public class ASTPtProductNode extends PropertyConstraintASTNodeHelper {
 
     /**
-     * Construct an property constraint helper for the given ASTPtArrayConstructNode.
+     * Construct an property constraint adapter for the given ASTPtArrayConstructNode.
      * @param solver The given solver to get the lattice from.
      * @param node The given ASTPtArrayConstructNode.
      * @exception IllegalActionException Thrown if the parent construct
@@ -194,11 +194,11 @@ public class ASTPtProductNode extends PropertyConstraintASTNodeHelper {
                 for (int i = 0; i < _getNode().jjtGetNumChildren(); i++) {
                     Object child = _getNode().jjtGetChild(i);
 
-                    PropertyConstraintASTNodeHelper helper;
+                    PropertyConstraintASTNodeHelper adapter;
 
-                    helper = (PropertyConstraintASTNodeHelper) getSolver()
+                    adapter = (PropertyConstraintASTNodeHelper) getSolver()
                             .getHelper(child);
-                    InequalityTerm term = helper.getPropertyTerm(child);
+                    InequalityTerm term = adapter.getPropertyTerm(child);
 
                     terms.add(term);
                 }

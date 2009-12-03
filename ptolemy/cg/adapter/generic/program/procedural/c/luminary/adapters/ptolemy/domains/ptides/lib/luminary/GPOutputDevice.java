@@ -1,6 +1,6 @@
-/* A code generation helper class for ptolemy.domains.ptides.lib.targets.luminary.GPOutputDevice
+/* A code generation adapter class for ptolemy.domains.ptides.lib.targets.luminary.GPOutputDevice
 
- Copyright (c) 2006-2009 The Regents of the University of California.
+ Copyright (c) 2009 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -41,7 +41,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
 /**
- * A code generation helper class for ptolemy.domains.ptides.lib.targets.luminary.GPOutputDevice.
+ * A code generation adapter class for ptolemy.domains.ptides.lib.targets.luminary.GPOutputDevice.
  * @author Jia Zou, Isaac Liu, Jeff C. Jensen
  * @version $Id$
  * @since Ptolemy II 7.1
@@ -50,7 +50,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  */
 
 public class GPOutputDevice extends OutputDevice {
-    /** Construct a helper with the given
+    /** Construct an adapter with the given
      *  ptolemy.domains.ptides.lib.GPOutputDevice actor.
      *  @param actor The given ptolemy.domains.ptides.lib.targets.luminary.GPOutputDevice actor.
      *  @throws IllegalActionException 
@@ -84,6 +84,13 @@ public class GPOutputDevice extends OutputDevice {
     ////////////////////////////////////////////////////////////////////
     ////                     public methods                         ////
 
+    /**
+     * Return the code for the actuator actuation function.
+     * @return the code for the sensing function, which is read from the
+     * "actuationBlock". 
+     * @exception IllegalActionException If thrown while appending the code
+     * block or processing the code stream.
+     */
     public String generateActuatorActuationFuncCode()
             throws IllegalActionException {
         List args = new LinkedList();
@@ -116,7 +123,7 @@ public class GPOutputDevice extends OutputDevice {
         PtidesBasicDirector adapter = (PtidesBasicDirector) getAdapter(actor
                 .getDirector());
 
-        args.add((adapter._actuators.get(actor)).toString());
+        args.add((adapter.actuators.get(actor)).toString());
 
         _codeStream.clear();
         _codeStream.appendCodeBlock("fireBlock", args);
@@ -124,6 +131,14 @@ public class GPOutputDevice extends OutputDevice {
         return processCode(_codeStream.toString());
     }
 
+
+    /**
+     * Return the hardware initialization code.
+     * @return the hardware initialization code, which is read from the
+     * "initializeGPOutput" block.
+     * @exception IllegalActionException If thrown while appending the code
+     * block or processing the code stream.
+     */
     public String generateHardwareInitializationCode()
             throws IllegalActionException {
         StringBuffer code = new StringBuffer();
@@ -134,6 +149,9 @@ public class GPOutputDevice extends OutputDevice {
                 "initializeGPOutput", args)));
         return code.toString();
     }
+
+    ////////////////////////////////////////////////////////////////////
+    ////                     private variables                      ////
 
     private String _pinID;
     private String _padID;

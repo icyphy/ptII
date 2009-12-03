@@ -1,4 +1,4 @@
-/*  A helper class for ptolemy.domains.continuous.lib.Integrator.
+/*  An adapter class for ptolemy.domains.continuous.lib.Integrator.
 
  Copyright (c) 2006-2009 The Regents of the University of California.
  All rights reserved.
@@ -37,7 +37,7 @@ import ptolemy.kernel.util.IllegalActionException;
 //// Integrator
 
 /**
- A helper class for ptolemy.domains.continuous.lib.Integrator.
+ An adapter class for ptolemy.domains.continuous.lib.Integrator.
 
  @author Man-Kit Leung
  @version $Id$
@@ -48,7 +48,7 @@ import ptolemy.kernel.util.IllegalActionException;
 public class Integrator extends AtomicActor {
 
     /**
-     * Construct a Integrator helper for the logicalAND ontology.
+     * Construct a Integrator adapter for the logicalAND ontology.
      * @param solver The given solver.
      * @param actor The given Integrator actor
      * @exception IllegalActionException Thrown if the

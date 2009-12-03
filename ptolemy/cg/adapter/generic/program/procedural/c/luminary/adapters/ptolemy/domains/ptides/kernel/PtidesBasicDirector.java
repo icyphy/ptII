@@ -1,6 +1,6 @@
 /* Code generator adapter class associated with the PtidesBasicDirector class.
 
- Copyright (c) 2005-2009 The Regents of the University of California.
+ Copyright (c) 2009 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -45,13 +45,13 @@ import ptolemy.kernel.util.NamedObj;
 //// PtidesBasicDirector
 
 /**
- Code generator helper associated with the PtidesBasicDirector class.
- This helper generates Luminary specific code.
+ Code generator adapter associated with the PtidesBasicDirector class.
+ This adapter generates Luminary specific code.
 
  This director starts a task for each actor. Each task has a specified
  name, stack size, priority and function code to execute. User can introduce
  annotations in an actor to specify these values. In particular, this
- helper class looks for the "_stackSize" and "_priority" parameters and
+ adapter class looks for the "_stackSize" and "_priority" parameters and
  use their values to create the tasks. If these parameters are not specified,
  the code generator uses the default value 80 for stack size, and 0 for
  priority.
@@ -175,7 +175,7 @@ public class PtidesBasicDirector
      * Generate the fire function code.
      * The code contains the function code for each actor. It is a collection
      * of global functions, one for each actor that is visible to this
-     * director helper. Creating each new task requires one of these
+     * director adapter. Creating each new task requires one of these
      * function as parameter. It is the code that the task executes.
      * When the inline parameter is checked, the task function code is
      * generated in {@link #generatePreinitializeCode()} which is
@@ -193,7 +193,7 @@ public class PtidesBasicDirector
      * This generates the hardware initialization code and creates
      * the queues for all referable port channels.
      * @return The generated initialize code.
-     * @exception IllegalActionException If the helper associated with
+     * @exception IllegalActionException If the adapter associated with
      *  an actor throws it while generating initialize code for the actor.
      */
     public String generateInitializeCode() throws IllegalActionException {
@@ -210,7 +210,7 @@ public class PtidesBasicDirector
 
     /** Generate the preinitialize code for the associated Ptides director.
      *  @return The generated preinitialize code.
-     *  @exception IllegalActionException If the helper associated with
+     *  @exception IllegalActionException If the adapter associated with
      *   an actor throws it while generating preinitialize code for the actor.
      *   FIXME: Take care of platform dependent code.
      */
@@ -244,7 +244,7 @@ public class PtidesBasicDirector
 
     /**
      * Generate the shared code. This is the first generate method invoked out
-     * of all, so any initialization of variables of this helper should be done
+     * of all, so any initialization of variables of this adapter should be done
      * in this method. In this base class, return an empty set. Subclasses may
      * generate code for variable declaration, defining constants, etc.
      * @return An empty set in this base class.
@@ -312,12 +312,12 @@ public class PtidesBasicDirector
 
         // FIXME: output initialization always needs to happen before input initialization.
         code.append("void initializeHardware() {" + _eol);
-        for (Actor actor : _actuators.keySet()) {
+        for (Actor actor : actuators.keySet()) {
             code
                     .append(((ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.ptides.lib.OutputDevice) getAdapter(actor))
                             .generateHardwareInitializationCode());
         }
-        for (Actor actor : _sensors.keySet()) {
+        for (Actor actor : sensors.keySet()) {
             code
                     .append(((ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.ptides.lib.InputDevice) getAdapter(actor))
                             .generateHardwareInitializationCode());

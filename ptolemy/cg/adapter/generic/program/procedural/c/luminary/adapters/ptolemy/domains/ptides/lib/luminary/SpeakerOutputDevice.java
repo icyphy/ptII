@@ -35,7 +35,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
 /**
- * A code generation helper class for ptolemy.domains.ptides.lib.targets.luminary.SpeakerOutputDevice.
+ * A code generation adapter class for ptolemy.domains.ptides.lib.targets.luminary.SpeakerOutputDevice.
  * @author Jia Zou, Isaac Liu, Jeff C. Jensen
  * @version $Id$
  * @since Ptolemy II 7.1
@@ -44,7 +44,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  */
 
 public class SpeakerOutputDevice extends OutputDevice {
-    /** Construct a helper with the given
+    /** Construct an adapter with the given
      *  ptolemy.domains.ptides.lib.SpeakerOutputDevice actor.
      *  @param actor The given ptolemy.domains.ptides.lib.targets.luminary.SpeakerOutputDevice actor.
      *  @throws IllegalActionException 
@@ -85,10 +85,10 @@ public class SpeakerOutputDevice extends OutputDevice {
         CodeStream _codeStream = _templateParser.getCodeStream();
 
         ptolemy.domains.ptides.lib.luminary.SpeakerOutputDevice actor = (ptolemy.domains.ptides.lib.luminary.SpeakerOutputDevice) getComponent();
-        PtidesBasicDirector helper = (PtidesBasicDirector) getAdapter(actor
+        PtidesBasicDirector adapter = (PtidesBasicDirector) getAdapter(actor
                 .getDirector());
 
-        args.add((helper._actuators.get(actor)).toString());
+        args.add((adapter.actuators.get(actor)).toString());
 
         _codeStream.clear();
         _codeStream.appendCodeBlock("fireBlock", args);

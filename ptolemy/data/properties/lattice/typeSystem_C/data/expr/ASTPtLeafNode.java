@@ -1,4 +1,4 @@
-/* A helper class for ptolemy.data.expr.ASTPtRootNode.
+/* An adapter class for ptolemy.data.expr.ASTPtRootNode.
 
  Copyright (c) 2008-2009 The Regents of the University of California.
  All rights reserved.
@@ -40,7 +40,7 @@ import ptolemy.kernel.util.IllegalActionException;
 //// AddSubtract
 
 /**
- A helper class for ptolemy.data.expr.ASTPtRootNode.
+ An adapter class for ptolemy.data.expr.ASTPtRootNode.
 
  @author Man-Kit Leung
  @version $Id$
@@ -54,7 +54,7 @@ public class ASTPtLeafNode extends ASTPtRootNode {
      * Construct an ASTPtUnaryNode object.
      * @param solver The associated solver.
      * @param node The associated node.
-     * @exception IllegalActionException Thrown if the helper cannot be
+     * @exception IllegalActionException Thrown if the adapter cannot be
      * initialized.
      */
     public ASTPtLeafNode(PropertyConstraintSolver solver,

@@ -101,7 +101,7 @@ public class IOPort extends NamedProgramCodeGeneratorAdapter implements
     }
 
     /** 
-     * Generate code for replacing the hasToken() macro.
+     * Generate code to check if the receiver has a token.   
      * This delegates to the receiver adapter for the specified
      * channel and asks it to generate the hasToken code.
      * 

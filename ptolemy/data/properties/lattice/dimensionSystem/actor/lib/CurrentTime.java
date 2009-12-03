@@ -1,4 +1,4 @@
-/* A helper class for ptolemy.actor.lib.CurrentTime.
+/* An adapter class for ptolemy.actor.lib.CurrentTime.
 
  Copyright (c) 2009 The Regents of the University of California.
  All rights reserved.
@@ -38,7 +38,7 @@ import ptolemy.kernel.util.IllegalActionException;
 //// CurrentTime
 
 /**
- A helper class for ptolemy.actor.lib.CurrentTime.
+ An adapter class for ptolemy.actor.lib.CurrentTime.
 
  @author Charles Shelton
  @version $Id$
@@ -49,10 +49,10 @@ import ptolemy.kernel.util.IllegalActionException;
 public class CurrentTime extends AtomicActor {
 
     /**
-     * Construct a CurrentTime helper for the dimensionSystem lattice.
+     * Construct a CurrentTime adapter for the dimensionSystem lattice.
      * @param solver The given solver.
      * @param actor The given Expression actor
-     * @exception IllegalActionException Thrown if the helper cannot be
+     * @exception IllegalActionException Thrown if the adapter cannot be
      * initialized.
      */
     public CurrentTime(PropertyConstraintSolver solver,

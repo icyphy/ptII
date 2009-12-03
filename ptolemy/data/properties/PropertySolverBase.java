@@ -223,9 +223,9 @@ public abstract class PropertySolverBase extends Attribute {
         subHelpers.add(getHelper(topLevel));
 
         while (!subHelpers.isEmpty()) {
-            PropertyHelper helper = subHelpers.remove(0);
-            subHelpers.addAll(helper._getSubHelpers());
-            result.add(helper);
+            PropertyHelper adapter = subHelpers.remove(0);
+            subHelpers.addAll(adapter._getSubHelpers());
+            result.add(adapter);
         }
 
         return result;
@@ -237,14 +237,14 @@ public abstract class PropertySolverBase extends Attribute {
      *
      * @return The set of all property-able objects.
      * @exception IllegalActionException Thrown if
-     * an error occurs when getting the helpers or the property-able
+     * an error occurs when getting the adapters or the property-able
      * objects from them.
      */
     public Set getAllPropertyables() throws IllegalActionException {
         HashSet result = new HashSet();
 
-        for (PropertyHelper helper : getAllHelpers()) {
-            result.addAll(helper.getPropertyables());
+        for (PropertyHelper adapter : getAllHelpers()) {
+            result.addAll(adapter.getPropertyables());
         }
         return result;
     }
@@ -321,11 +321,11 @@ public abstract class PropertySolverBase extends Attribute {
     public abstract String getExtendedUseCaseName();
 
     /**
-     * Return the property helper for the specified component.
+     * Return the property adapter for the specified component.
      *
      * @param object The specified component.
-     * @return The property helper for the component.
-     * @exception IllegalActionException Thrown if the helper cannot
+     * @return The property adapter for the component.
+     * @exception IllegalActionException Thrown if the adapter cannot
      * be found or instantiated.
      */
     public PropertyHelper getHelper(Object object)
@@ -473,7 +473,7 @@ public abstract class PropertySolverBase extends Attribute {
     public void reset() {
         _resolvedProperties = new HashMap<Object, Property>();
         _nonSettables = new HashSet<Object>();
-        _helperStore = new HashMap<Object, PropertyHelper>();
+        _adapterStore = new HashMap<Object, PropertyHelper>();
     }
 
     /**
@@ -523,8 +523,8 @@ public abstract class PropertySolverBase extends Attribute {
     protected PropertyHelper _getHelper(Object component)
             throws IllegalActionException {
 
-        if (_helperStore.containsKey(component)) {
-            return _helperStore.get(component);
+        if (_adapterStore.containsKey(component)) {
+            return _adapterStore.get(component);
         }
 
         if ((component instanceof IOPort) || (component instanceof Attribute)) {
@@ -542,22 +542,22 @@ public abstract class PropertySolverBase extends Attribute {
 
         Class componentClass = component.getClass();
 
-        Class helperClass = null;
-        while (helperClass == null) {
+        Class adapterClass = null;
+        while (adapterClass == null) {
             try {
 
                 // FIXME: Is this the right error message?
                 if (!componentClass.getName().contains("ptolemy")) {
                     throw new IllegalActionException("There is no "
-                            + "property helper for " + component.getClass());
+                            + "property adapter for " + component.getClass());
                 }
 
-                helperClass = Class.forName((componentClass.getName()
+                adapterClass = Class.forName((componentClass.getName()
                         .replaceFirst("ptolemy", packageName)).replaceFirst(
                         ".configuredSolvers.", "."));
 
             } catch (ClassNotFoundException e) {
-                // If helper class cannot be found, search the helper class
+                // If adapter class cannot be found, search the adapter class
                 // for parent class instead.
                 componentClass = componentClass.getSuperclass();
             }
@@ -567,7 +567,7 @@ public abstract class PropertySolverBase extends Attribute {
         Class solverClass = getClass();
         while (constructor == null && solverClass != null) {
             try {
-                constructor = helperClass.getConstructor(new Class[] {
+                constructor = adapterClass.getConstructor(new Class[] {
                         solverClass, componentClass });
 
             } catch (NoSuchMethodException ex) {
@@ -578,29 +578,29 @@ public abstract class PropertySolverBase extends Attribute {
         if (constructor == null) {
             throw new IllegalActionException(
                     "Cannot find constructor method in "
-                            + helperClass.getName());
+                            + adapterClass.getName());
         }
 
-        Object helperObject = null;
+        Object adapterObject = null;
 
         try {
-            helperObject = constructor.newInstance(new Object[] { this,
+            adapterObject = constructor.newInstance(new Object[] { this,
                     component });
 
         } catch (Exception ex) {
             throw new IllegalActionException(null, ex,
-                    "Failed to create the helper class for property constraints.");
+                    "Failed to create the adapter class for property constraints.");
         }
 
-        if (!(helperObject instanceof PropertyHelper)) {
+        if (!(adapterObject instanceof PropertyHelper)) {
             throw new IllegalActionException(
                     "Cannot resolve property for this component: " + component
-                            + ". Its helper class does not"
+                            + ". Its adapter class does not"
                             + " implement PropertyHelper.");
         }
-        _helperStore.put(component, (PropertyHelper) helperObject);
+        _adapterStore.put(component, (PropertyHelper) adapterObject);
 
-        return (PropertyHelper) helperObject;
+        return (PropertyHelper) adapterObject;
     }
 
     /**
@@ -644,7 +644,7 @@ public abstract class PropertySolverBase extends Attribute {
     /**
      * The HashMap that caches components and their PropertyHelper objects.
      */
-    protected HashMap<Object, PropertyHelper> _helperStore = new HashMap<Object, PropertyHelper>();
+    protected HashMap<Object, PropertyHelper> _adapterStore = new HashMap<Object, PropertyHelper>();
 
     /**
      * The set of property-able objects that have non-settable property. A

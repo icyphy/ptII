@@ -1,4 +1,5 @@
-/* A code generation helper class for domains.ptides.lib.SensorReceiver
+/* A code generation adapter class for domains.ptides.lib.InputDevice
+
  @Copyright (c) 2009 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -30,7 +31,7 @@ import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
 import ptolemy.kernel.util.IllegalActionException;
 
 /**
- * A code generation helper class for ptolemy.domains.ptides.lib.InputDevice
+ * A code generation adapter class for ptolemy.domains.ptides.lib.InputDevice.
  * @author Jeff C. Jensen, Jia Zou
  * @version $Id$
  * @since Ptolemy II 7.1
@@ -40,17 +41,32 @@ import ptolemy.kernel.util.IllegalActionException;
 public abstract class InputDevice extends NamedProgramCodeGeneratorAdapter {
 
     /**
-     * Construct a SensorReceiver helper.
+     * Construct an InputDevice adapater.
      * @param actor The associated actor.
      */
     public InputDevice(ptolemy.domains.ptides.lib.InputDevice actor) {
         super(actor);
     }
 
+    ////////////////////////////////////////////////////////////////////
+    ////                     public methods                         ////
+
+    /**
+     * Return the code for the sensing function.
+     * @return the code for the sensing function, which in this case
+     * is the empty string
+     * @exception IllegalActionException Not thrown in this base class.
+     */
     public String generateSensorSensingFuncCode() throws IllegalActionException {
         return "";
     }
 
+    /**
+     * Return the code for the hardware initialization function.
+     * @return the code for the hardare initialization function, which in this
+     * case is the empty string
+     * @exception IllegalActionException Not thrown in this base class.
+     */
     public String generateHardwareInitializationCode()
             throws IllegalActionException {
         return "";

@@ -1,5 +1,5 @@
 /*
- * A property helper that is used by the PropertyTokenSolver.
+ * A property adapter that is used by the PropertyTokenSolver.
  * 
  * Below is the copyright agreement for the Ptolemy II system.
  * 
@@ -42,7 +42,7 @@ import ptolemy.kernel.util.InvalidStateException;
 import ptolemy.kernel.util.KernelException;
 
 /**
- * A property helper that is used by the PropertyTokenSolver.
+ * A property adapter that is used by the PropertyTokenSolver.
  * 
  * @author Man-Kit Leung
  * @version $Id$
@@ -135,16 +135,16 @@ public class PropertyTokenHelper extends PropertyHelper {
             }
         }
 
-        // extract ASTHelpers from helperlist
+        // extract ASTHelpers from adapterlist
         List<PropertyTokenASTNodeHelper> ASTHelperList = new ArrayList<PropertyTokenASTNodeHelper>();
-        List<PropertyHelper> helperList = new ArrayList<PropertyHelper>();
-        helperList.addAll(_getSubHelpers());
+        List<PropertyHelper> adapterList = new ArrayList<PropertyHelper>();
+        adapterList.addAll(_getSubHelpers());
 
-        Iterator helpers = helperList.iterator();
-        while (helpers.hasNext()) {
-            PropertyHelper helper = (PropertyHelper) helpers.next();
-            if (helper instanceof PropertyTokenASTNodeHelper) {
-                ASTHelperList.add((PropertyTokenASTNodeHelper) helper);
+        Iterator adapters = adapterList.iterator();
+        while (adapters.hasNext()) {
+            PropertyHelper adapter = (PropertyHelper) adapters.next();
+            if (adapter instanceof PropertyTokenASTNodeHelper) {
+                ASTHelperList.add((PropertyTokenASTNodeHelper) adapter);
             }
         }
 
@@ -156,12 +156,12 @@ public class PropertyTokenHelper extends PropertyHelper {
 
         _determineRefinement();
 
-        // determine all subhelpers except attribute helpers
-        helpers = helperList.iterator();
-        while (helpers.hasNext()) {
-            PropertyTokenHelper helper = (PropertyTokenHelper) helpers.next();
-            if (!ASTHelperList.contains(helper)) {
-                helper.determineProperty();
+        // determine all subadapters except attribute adapters
+        adapters = adapterList.iterator();
+        while (adapters.hasNext()) {
+            PropertyTokenHelper adapter = (PropertyTokenHelper) adapters.next();
+            if (!ASTHelperList.contains(adapter)) {
+                adapter.determineProperty();
             }
         }
 

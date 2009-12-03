@@ -1,4 +1,5 @@
-/* A code generation helper class for domains.ptides.lib.ActuatorTransmitter
+/* A code generation adapter class for domains.ptides.lib.OutputDevice
+
  @Copyright (c) 2009 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -30,7 +31,7 @@ import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
 import ptolemy.kernel.util.IllegalActionException;
 
 /**
- A code generation helper class for ptolemy.domains.ptides.lib.OutputDevice
+ A code generation adapter class for ptolemy.domains.ptides.lib.OutputDevice.
 
  @author Jeff C. Jensen, Jia Zou
  @version $Id$
@@ -39,18 +40,33 @@ import ptolemy.kernel.util.IllegalActionException;
 public abstract class OutputDevice extends NamedProgramCodeGeneratorAdapter {
 
     /**
-     * Construct an OutputDevice helper.
+     * Construct an OutputDevice adapter.
      * @param actor The associated actor.
      */
     public OutputDevice(ptolemy.domains.ptides.lib.OutputDevice actor) {
         super(actor);
     }
 
+    ////////////////////////////////////////////////////////////////////
+    ////                     public methods                         ////
+
+    /**
+     * Return the code for the actuator actuation function.
+     * @return the code for the sensing function, which in this case is 
+     * the empty string.
+     * @exception IllegalActionException Not thrown in this base class.
+     */
     public String generateActuatorActuationFuncCode()
             throws IllegalActionException {
         return "";
     }
 
+    /**
+     * Return the hardware initialization code.
+     * @return the hardware initialization code, which in this case
+     * is the empty string.
+     * @exception IllegalActionException Not thrown in this base class.
+     */
     public String generateHardwareInitializationCode()
             throws IllegalActionException {
         return "";

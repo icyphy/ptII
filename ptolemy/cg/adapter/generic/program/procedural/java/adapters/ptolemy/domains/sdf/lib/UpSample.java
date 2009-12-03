@@ -1,4 +1,4 @@
-/* A code generation helper class for domains.sdf.lib.UpSample
+/* A code generation adapter class for domains.sdf.lib.UpSample
  @Copyright (c) 2007-2009 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -35,7 +35,7 @@ import ptolemy.data.type.Type;
 import ptolemy.kernel.util.IllegalActionException;
 
 /**
- A code generation helper class for ptolemy.domains.sdf.lib.UpSample.
+ A code generation adapter class for ptolemy.domains.sdf.lib.UpSample.
 
  @author Man-Kit Leung, Dai Bui, Bert Rodiers
  @version $Id: UpSample.java 53042 2009-04-10 20:31:21Z cxh $
@@ -46,7 +46,7 @@ import ptolemy.kernel.util.IllegalActionException;
 public class UpSample extends NamedProgramCodeGeneratorAdapter {
 
     /**
-     * Construct a UpSample helper.
+     * Construct a UpSample adapter.
      * @param actor The associated actor.
      */
     public UpSample(ptolemy.domains.sdf.lib.UpSample actor) {

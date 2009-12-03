@@ -127,10 +127,10 @@ public class PropertyTokenSolver extends PropertySolver {
     }
 
     /**
-     * Return the helper that contains property information for the given
+     * Return the adapter that contains property information for the given
      * object.
      * @param object The given object.
-     * @return The associated property constraint helper.
+     * @return The associated property constraint adapter.
      */
     public PropertyHelper getHelper(Object object)
             throws IllegalActionException {

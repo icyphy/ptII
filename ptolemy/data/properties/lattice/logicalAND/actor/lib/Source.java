@@ -1,4 +1,4 @@
-/* A helper class for ptolemy.actor.lib.Const.
+/* An adapter class for ptolemy.actor.lib.Const.
 
  Copyright (c) 2006-2009 The Regents of the University of California.
  All rights reserved.
@@ -38,7 +38,7 @@ import ptolemy.kernel.util.IllegalActionException;
 ////Const
 
 /**
- A helper class for ptolemy.actor.lib.Source.
+ An adapter class for ptolemy.actor.lib.Source.
 
  @author Man-Kit Leung, Thomas Mandl
  @version $Id$
@@ -49,7 +49,7 @@ import ptolemy.kernel.util.IllegalActionException;
 public class Source extends AtomicActor {
 
     /**
-     * Construct a Const helper for the staticDynamic lattice.
+     * Construct a Const adapter for the staticDynamic lattice.
      * This set a permanent constraint for the output port to
      * be STATIC, but does not use the default actor constraints.
      * @param solver The given solver.
@@ -67,10 +67,10 @@ public class Source extends AtomicActor {
 
     public List<Inequality> constraintList() throws IllegalActionException {
         ptolemy.actor.lib.Source actor = (ptolemy.actor.lib.Source) getComponent();
-        // add default constraints if no constraints specified in actor helper
+        // add default constraints if no constraints specified in actor adapter
 
         if (_ownConstraints.isEmpty()) {
-            // force outputs to FALSE by default; overwrite in actor specific helper class
+            // force outputs to FALSE by default; overwrite in actor specific adapter class
             setAtLeast(actor.output, _lattice.getElement("FALSE"));
         }
 

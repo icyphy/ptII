@@ -1,5 +1,5 @@
 /*
- * A property token helper for CompositeActor.
+ * A property token adapter for CompositeActor.
  * 
  * Below is the copyright agreement for the Ptolemy II system.
  * 
@@ -33,7 +33,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
 
 /**
- * A property token helper for CompositeActor.
+ * A property token adapter for CompositeActor.
  * 
  * @author Thomas Mandl, Man-Kit Leung
  * @version $Id: PropertyTokenCompositeHelper.java 54702 2009-06-26 18:05:22Z
@@ -56,9 +56,9 @@ public class PropertyTokenCompositeHelper extends PropertyTokenHelper {
         Iterator iterator = _getSubHelpers().iterator();
 
         while (iterator.hasNext()) {
-            PropertyTokenHelper helper = (PropertyTokenHelper) iterator.next();
+            PropertyTokenHelper adapter = (PropertyTokenHelper) iterator.next();
 
-            helper.addListener(listenInputs, listenOutputs);
+            adapter.addListener(listenInputs, listenOutputs);
         }
     }
 
@@ -69,15 +69,15 @@ public class PropertyTokenCompositeHelper extends PropertyTokenHelper {
         Iterator iterator = _getSubHelpers().iterator();
 
         while (iterator.hasNext()) {
-            PropertyTokenHelper helper = (PropertyTokenHelper) iterator.next();
+            PropertyTokenHelper adapter = (PropertyTokenHelper) iterator.next();
 
-            helper.removeListener(listenInputs, listenOutputs);
+            adapter.removeListener(listenInputs, listenOutputs);
         }
     }
 
     protected List<PropertyHelper> _getSubHelpers()
             throws IllegalActionException {
-        List<PropertyHelper> helpers = super._getSubHelpers();
+        List<PropertyHelper> adapters = super._getSubHelpers();
 
         CompositeEntity component = (CompositeEntity) getComponent();
         Iterator iterator = component.entityList().iterator();
@@ -85,10 +85,10 @@ public class PropertyTokenCompositeHelper extends PropertyTokenHelper {
         while (iterator.hasNext()) {
             NamedObj actor = (NamedObj) iterator.next();
 
-            helpers.add(_solver.getHelper(actor));
+            adapters.add(_solver.getHelper(actor));
         }
 
-        return helpers;
+        return adapters;
     }
 
 }

@@ -1,4 +1,4 @@
-/* A helper class for ptolemy.actor.lib.Const.
+/* An adapter class for ptolemy.actor.lib.Const.
 
  Copyright (c) 2006-2009 The Regents of the University of California.
  All rights reserved.
@@ -38,7 +38,7 @@ import ptolemy.kernel.util.IllegalActionException;
 //// Const
 
 /**
- A helper class for ptolemy.actor.lib.Const.
+ An adapter class for ptolemy.actor.lib.Const.
 
  @author Man-Kit Leung, Thomas Mandl
  @version $Id$
@@ -49,7 +49,7 @@ import ptolemy.kernel.util.IllegalActionException;
 public class Expression extends AtomicActor {
 
     /**
-     * Construct a Const helper for the staticDynamic lattice.
+     * Construct a Const adapter for the staticDynamic lattice.
      * This set a permanent constraint for the output port to
      * be STATIC, but does not use the default actor constraints.
      * @param solver The given solver.

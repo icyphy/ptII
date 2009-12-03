@@ -1,4 +1,4 @@
-/* A helper class for ptolemy.data.expr.ASTPtLeafNode.
+/* An adapter class for ptolemy.data.expr.ASTPtLeafNode.
 
  Copyright (c) 2006-2009 The Regents of the University of California.
  All rights reserved.
@@ -38,7 +38,7 @@ import ptolemy.kernel.util.IllegalActionException;
 //// ASTPtLeafNode
 
 /**
- A helper class for ptolemy.data.expr.ASTPtLeafNode.
+ An adapter class for ptolemy.data.expr.ASTPtLeafNode.
 
  @author Man-Kit Leung
  @version $Id$
@@ -49,7 +49,7 @@ import ptolemy.kernel.util.IllegalActionException;
 public class ASTPtLeafNode extends ASTPtRootNode {
 
     /**
-     * Construct an property constraint helper for the given ASTPtLeafNode.
+     * Construct an property constraint adapter for the given ASTPtLeafNode.
      * @param solver The given solver to get the lattice from.
      * @param node The given ASTPtLeafNode.
      * @exception IllegalActionException Thrown if the parent construct

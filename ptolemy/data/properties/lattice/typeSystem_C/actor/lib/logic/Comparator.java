@@ -1,4 +1,4 @@
-/* A helper class for ptolemy.actor.lib.Comparator.
+/* An adapter class for ptolemy.actor.lib.Comparator.
 
  Copyright (c) 2008-2009 The Regents of the University of California.
  All rights reserved.
@@ -38,7 +38,7 @@ import ptolemy.kernel.util.IllegalActionException;
 //// Comparator
 
 /**
- A helper class for ptolemy.actor.lib.logic.Comparator.
+ An adapter class for ptolemy.actor.lib.logic.Comparator.
 
  @author Thomas Mandl
  @version $Id$
@@ -48,7 +48,7 @@ import ptolemy.kernel.util.IllegalActionException;
 */
 public class Comparator extends AtomicActor {
     /**
-     * Construct an Comparator helper.
+     * Construct an Comparator adapter.
      * @param solver the associated solver.
      * @param actor the associated actor.
      * @exception IllegalActionException If thrown by the superclass.
@@ -65,8 +65,8 @@ public class Comparator extends AtomicActor {
     ////                         public methods                    ////
 
     /** 
-     *  Return the constraint list for this helper.
-     *  @return The constraint list for this helper which consists of
+     *  Return the constraint list for this adapter.
+     *  @return The constraint list for this adapter which consists of
      *  the constraint list for the super class and a constraint
      *  between the output port of the actor and the Boolean element of
      *  the lattice.

@@ -1,6 +1,6 @@
 /* Code generator adapter for Receiver.
 
- Copyright (c) 2005-2009 The Regents of the University of California.
+ Copyright (c) 2009 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -60,10 +60,16 @@ public abstract class Receiver extends ProgramCodeGeneratorAdapter {
         super(receiver);
     }
 
-    /** Generate code for getting tokens from the receiver.
-     *  @param offset The offset in the array representation of the port.
-     *  @return generate get code.
-     *  @throws IllegalActionException
+    ////////////////////////////////////////////////////////////////////////
+    ////                         public methods                         ////
+
+    /**
+     * Generate code for getting tokens from the receiver.
+     * @param offset The offset in the array representation of the port.
+     * @return generate get code.
+     * @exception IllegalActionException If the receiver adapter is
+     * not found or it encounters an error while generating the
+     * get code.
      */
     abstract public String generateGetCode(String offset) throws IllegalActionException;
 

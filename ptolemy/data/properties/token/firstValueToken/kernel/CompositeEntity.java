@@ -1,4 +1,4 @@
-/* A property constraint helper for composite actor.
+/* A property constraint adapter for composite actor.
 
  Copyright (c) 2005-2009 The Regents of the University of California.
  All rights reserved.
@@ -44,7 +44,7 @@ import ptolemy.kernel.util.KernelException;
 //// CompositeActor
 
 /**
- A property constraint helper for composite actor.
+ A property constraint adapter for composite actor.
 
  @author Man-Kit Leung, Thomas Mandl
  @version $Id$
@@ -55,10 +55,10 @@ import ptolemy.kernel.util.KernelException;
 public class CompositeEntity extends PropertyTokenCompositeHelper {
 
     /**
-     * Construct a property constraint helper for the given
-     * CompositeActor. This is the helper class for any
+     * Construct a property constraint adapter for the given
+     * CompositeActor. This is the adapter class for any
      * CompositeActor that does not have a specific defined
-     * helper class.
+     * adapter class.
      * @param solver The given solver.
      * @param entity The given CompositeEntity.
      * @exception IllegalActionException

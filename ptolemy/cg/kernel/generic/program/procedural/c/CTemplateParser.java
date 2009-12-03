@@ -41,12 +41,11 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.util.StringUtilities;
 
 //////////////////////////////////////////////////////////////////////////
-////CTemplateParser
+//// CTemplateParser
 
 /**
 A class that allows to parse macros of templates in a code generator
 perspective.
-
 
 @author Bert Rodiers
 @version $Id$

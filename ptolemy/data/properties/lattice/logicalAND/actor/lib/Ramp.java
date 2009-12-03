@@ -1,4 +1,4 @@
-/* A helper class for ptolemy.actor.lib.Ramp.
+/* An adapter class for ptolemy.actor.lib.Ramp.
 
  Copyright (c) 2006-2009 The Regents of the University of California.
  All rights reserved.
@@ -38,7 +38,7 @@ import ptolemy.kernel.util.IllegalActionException;
 //// Ramp
 
 /**
- A helper class for ptolemy.actor.lib.Ramp.
+ An adapter class for ptolemy.actor.lib.Ramp.
 
  @author Thomas Mandl
 @version $Id$

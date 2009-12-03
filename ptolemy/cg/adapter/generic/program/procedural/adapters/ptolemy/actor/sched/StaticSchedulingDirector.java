@@ -374,18 +374,18 @@ public class StaticSchedulingDirector extends Director {
 
     /**
      * Return an unique label for the given port channel referenced
-     * by the given helper. By default, this delegates to the helper to 
+     * by the given adapter. By default, this delegates to the adapter to 
      * generate the reference. Subclass may override this method
      * to generate the desire label according to the given parameters.
      * @param port The given port.
      * @param channelAndOffset The given channel and offset.
-     * @param forComposite Whether the given helper is associated with
+     * @param forComposite Whether the given adapter is associated with
      *  a CompositeActor
      * @param isWrite The type of the reference. True if this is
      *  a write reference; otherwise, this is a read reference.  
      * @param target The ProgramCodeGeneratorAdapter for which code needs to be generated.
      * @return an unique reference label for the given port channel.
-     * @throws IllegalActionException If the helper throws it while
+     * @throws IllegalActionException If the adapter throws it while
      *  generating the label.     
      */
     public String getReference(TypedIOPort port, String[] channelAndOffset,
@@ -639,13 +639,13 @@ public class StaticSchedulingDirector extends Director {
 
     /**
      * Return an unique label for the given attribute referenced
-     * by the given helper. Subclass should override this method
+     * by the given adapter. Subclass should override this method
      * to generate the desire label according to the given parameters.
      * @param target The ProgramCodeGeneratorAdapter for which code needs to be generated.
      * @param attribute The given attribute.
      * @param channelAndOffset The given channel and offset.
      * @return an unique label for the given attribute.
-     * @throws IllegalActionException If the helper throws it while
+     * @throws IllegalActionException If the adapter throws it while
      *  generating the label.
      */
     protected String _getParameter(NamedProgramCodeGeneratorAdapter target,
@@ -1400,7 +1400,7 @@ public class StaticSchedulingDirector extends Director {
 
     }
 
-    /** A helper class that allows generating code for ports.*/
+    /** A adapter class that allows generating code for ports.*/
     public class Ports {
 
         /**Generate the expression that represents the offset in the generated

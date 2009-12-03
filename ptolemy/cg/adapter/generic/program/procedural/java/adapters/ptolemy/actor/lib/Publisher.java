@@ -46,7 +46,7 @@ import ptolemy.kernel.util.IllegalActionException;
  */
 public class Publisher extends NamedProgramCodeGeneratorAdapter {
     /**
-     * Constructor method for the Publisher helper.
+     * Constructor method for the Publisher adapter.
      * @param actor the associated actor
      */
     public Publisher(ptolemy.actor.lib.Publisher actor) {

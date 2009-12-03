@@ -1,4 +1,4 @@
-/* A code generation helper class for domains.sdf.lib.DownSample
+/* A code generation adapter class for domains.sdf.lib.DownSample
  @Copyright (c) 2007 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -29,7 +29,7 @@ package ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.doma
 import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
 
 /**
- A code generation helper class for ptolemy.domains.sdf.lib.DownSample.
+ A code generation adapter class for ptolemy.domains.sdf.lib.DownSample.
 
  @author Man-Kit Leung, Dai Bui
  @version $Id: DownSample.java 47513 2007-12-07 06:32:21Z cxh $
@@ -40,7 +40,7 @@ import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
 public class DownSample extends NamedProgramCodeGeneratorAdapter {
 
     /**
-     * Construct a DownSample helper.
+     * Construct a DownSample adapter.
      * @param actor The associated actor.
      */
     public DownSample(ptolemy.domains.sdf.lib.DownSample actor) {

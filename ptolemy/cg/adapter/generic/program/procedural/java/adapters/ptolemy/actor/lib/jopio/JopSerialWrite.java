@@ -1,4 +1,4 @@
-/* A code generation helper class for actor.lib.jopio.JopSerialWrite.
+/* A code generation adapter class for actor.lib.jopio.JopSerialWrite.
 
  @Copyright (c) 2009 The Regents of the University of California.
  All rights reserved.
@@ -33,7 +33,7 @@ import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
 import ptolemy.kernel.util.IllegalActionException;
 
 /**
- * A code generation helper class for ptolemy.actor.lib.jopio.JopWritePort.
+ * A code generation adapter class for ptolemy.actor.lib.jopio.JopWritePort.
  *
  * @author Martin Schoeberl
  * @version $Id$
@@ -43,7 +43,7 @@ import ptolemy.kernel.util.IllegalActionException;
  */
 public class JopSerialWrite extends NamedProgramCodeGeneratorAdapter {
     /**
-     * Construct a JopWritePort helper.
+     * Construct a JopWritePort adapter.
      * @param actor The associated actor.
      */
     public JopSerialWrite(ptolemy.actor.lib.jopio.JopSerialWrite actor) {

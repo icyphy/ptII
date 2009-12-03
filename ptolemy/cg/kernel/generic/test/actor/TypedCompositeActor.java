@@ -44,7 +44,7 @@ import ptolemy.kernel.util.NamedObj;
  *  @Pt.AcceptedRating Red (cxh)
  */
 public class TypedCompositeActor extends CodeGeneratorAdapter {
-    /** Construct the code generator helper associated
+    /** Construct the code generator adapter associated
      *  with the given TypedCompositeActor.
      *  @param component The associated component.
      */

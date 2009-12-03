@@ -1,6 +1,6 @@
 /* Code generator adapter class associated with the PtidesBasicReceiver class.
 
- Copyright (c) 2005-2009 The Regents of the University of California.
+ Copyright (c) 2009 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -53,20 +53,26 @@ import ptolemy.kernel.util.NamedObj;
  *  @Pt.ProposedRating Red (jiazou)
  *  @Pt.AcceptedRating Red (jiazou)
  */
-
 public class PtidesBasicReceiver extends ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.Receiver {
 
     /** Construct a ptides basic receiver.
-     *  @throws IllegalActionException 
+     *  @throws IllegalActionException If throw by the superclass.
      */
     public PtidesBasicReceiver (
             ptolemy.domains.ptides.kernel.PtidesBasicReceiver receiver) throws IllegalActionException {
         super(receiver);
     }
 
-    /** Generates code for getting tokens from the receiver.
-     *  @return generate get code.
-     *  @throws IllegalActionException
+    ////////////////////////////////////////////////////////////////////////
+    ////                         public methods                         ////
+
+    /**
+     * Generate code for getting tokens from the receiver.
+     * @param offset The offset in the array representation of the port.
+     * @return generate get code.
+     * @exception IllegalActionException If the receiver adapter is
+     * not found or it encounters an error while generating the
+     * get code.
      */
     public String generateGetCode(String offset) throws IllegalActionException {
         TypedIOPort port = (TypedIOPort) getComponent().getContainer();
@@ -75,10 +81,12 @@ public class PtidesBasicReceiver extends ptolemy.cg.adapter.generic.program.proc
                 + port.getType().toString() + "_Value";
     }
 
-    /** Generates code to check the receiver has token.
-     *  @param offset is ignored because it is not applicable in PTIDES.
+    /** Generate code to check if the receiver has a token.
+     *  @param offset The offset in the array representation of the port.
      *  @return generate hasToken code.
-     *  @throws IllegalActionException
+     *  @exception IllegalActionException If an error occurs when
+     *  getting the receiver adapters or generating their initialize
+     *  code.
      */
     public String generateHasTokenCode(String offset)
             throws IllegalActionException {
@@ -87,9 +95,15 @@ public class PtidesBasicReceiver extends ptolemy.cg.adapter.generic.program.proc
         return "Event_Head_" + getAdapter(port).getName() + "[" + channel + "] != NULL";
     }
 
-    /** Generates code for putting tokens from the receiver.
-     *  @return generate put code.
-     *  @throws IllegalActionException
+    /** 
+     * Generate code for putting tokens from the receiver.
+     * @param sourcePort The port for which to generate the send code.
+     * @param offset The offset in the array representation of the port.
+     * @param token The token to be sent.
+     * @return generate type conversion as well as put code.
+     * @exception IllegalActionException If the receiver adapter is
+     * not found or it encounters an error while generating the send
+     * code.
      */
     public String generatePutCode(IOPort sourcePort, String offset, String token)
             throws IllegalActionException {
@@ -162,6 +176,17 @@ public class PtidesBasicReceiver extends ptolemy.cg.adapter.generic.program.proc
         return _templateParser.generateBlockCode("createEvent", args);
     }
 
+    /**
+     * Generate the type conversion statement for the particular offset of
+     * the two given channels. This assumes that the offset is the same for
+     * both channel. Advancing the offset of one has to advance the offset of
+     * the other.
+     * @param source The given source channel.
+     * @return The type convert statement for assigning the converted source
+     *  variable to the sink variable with the given offset.
+     * @exception IllegalActionException If there is a problem getting the
+     * adapters for the ports or if the conversion cannot be handled.
+     */
     protected String _generateTypeConvertStatement(Channel source)
             throws IllegalActionException {
         // TODO Auto-generated method stub

@@ -86,7 +86,7 @@ public class PropertyCombineParseTreeEvaluator extends ParseTreeEvaluator {
                     //TODO: treat as exception?
                     return;
                 } else {
-                    // get helper and property
+                    // get adapter and property
                     PropertyToken propertyToken = (PropertyToken) portValueSolver
                             .getProperty(_object);
                     if (propertyToken != null) {
@@ -110,7 +110,7 @@ public class PropertyCombineParseTreeEvaluator extends ParseTreeEvaluator {
                     //TODO: treat as exception?
                     return;
                 } else {
-                    // get helper and property
+                    // get adapter and property
                     Property property = propertyConstraintSolver
                             .getProperty(_object);
                     if (property != null) {

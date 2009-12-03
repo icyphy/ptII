@@ -1,4 +1,4 @@
-/* A helper class for ptolemy.actor.lib.Accumulator
+/* A adapter class for ptolemy.actor.lib.Accumulator
 
  Copyright (c) 2005-2009 The Regents of the University of California.
  All rights reserved.
@@ -48,7 +48,7 @@ import ptolemy.kernel.util.IllegalActionException;
  */
 public class Accumulator extends NamedProgramCodeGeneratorAdapter {
     /**
-     * Construct an Accumulator helper.
+     * Construct an Accumulator adapter.
      * @param actor the associated actor.
      */
     public Accumulator(ptolemy.actor.lib.Accumulator actor) {

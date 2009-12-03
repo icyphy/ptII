@@ -1,4 +1,4 @@
-/* A helper class for ptolemy.actor.lib.Scale
+/* A adapter class for ptolemy.actor.lib.Scale
 
  Copyright (c) 2006-2009 The Regents of the University of California.
  All rights reserved.
@@ -43,7 +43,7 @@ import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
  */
 public class TopLevelCurrentTime extends NamedProgramCodeGeneratorAdapter {
     /**
-     *  Construct a Scale helper.
+     *  Construct a Scale adapter.
      *  @param actor The given ptolemy.actor.lib.Scale actor.
      */
     public TopLevelCurrentTime(ptolemy.actor.lib.TopLevelCurrentTime actor) {

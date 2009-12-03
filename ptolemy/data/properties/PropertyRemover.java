@@ -80,8 +80,8 @@ public class PropertyRemover extends Attribute {
                 }
             }
 
-            PropertyHelper helper = solver.getHelper(component);
-            removeProperties(helper);
+            PropertyHelper adapter = solver.getHelper(component);
+            removeProperties(adapter);
         }
 
         // Update the GUI.
@@ -92,9 +92,9 @@ public class PropertyRemover extends Attribute {
         // PropertyLattice.resetAll();
     }
 
-    public void removeProperties(PropertyHelper helper)
+    public void removeProperties(PropertyHelper adapter)
             throws IllegalActionException {
-        Iterator propertyables = helper.getPropertyables(NamedObj.class)
+        Iterator propertyables = adapter.getPropertyables(NamedObj.class)
                 .iterator();
 
         while (propertyables.hasNext()) {
@@ -103,7 +103,7 @@ public class PropertyRemover extends Attribute {
         }
 
         // Recursive case.
-        Iterator subHelpers = helper._getSubHelpers().iterator();
+        Iterator subHelpers = adapter._getSubHelpers().iterator();
 
         while (subHelpers.hasNext()) {
             PropertyHelper subHelper = (PropertyHelper) subHelpers.next();

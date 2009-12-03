@@ -44,7 +44,7 @@ import ptolemy.kernel.util.IllegalActionException;
  */
 public class UnaryMathFunction extends NamedProgramCodeGeneratorAdapter {
     /**
-     * Construct the UnaryMathFunction helper.
+     * Construct the UnaryMathFunction adapter.
      * @param actor the associated actor
      */
     public UnaryMathFunction(ptolemy.actor.lib.UnaryMathFunction actor) {

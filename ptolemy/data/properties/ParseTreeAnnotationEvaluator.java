@@ -60,13 +60,13 @@ public class ParseTreeAnnotationEvaluator extends AbstractParseTreeVisitor {
     /** Infer the property of the parse tree with the specified root node using
      *  the specified scope to resolve the values of variables.
      *  @param node The root of the parse tree.
-     *  @param helper The given property helper.
+     *  @param adapter The given property adapter.
      *  @exception IllegalActionException If an error occurs during
      *   evaluation.
      */
-    public void evaluate(ASTPtRootNode node, PropertyHelper helper)
+    public void evaluate(ASTPtRootNode node, PropertyHelper adapter)
             throws IllegalActionException {
-        _helper = helper;
+        _adapter = adapter;
         node.visit(this);
     }
 
@@ -81,7 +81,7 @@ public class ParseTreeAnnotationEvaluator extends AbstractParseTreeVisitor {
         node.getExpressionTree().visit(this);
 
         if (_evaluatedObject instanceof Property) {
-            _helper.setEquals(object, (Property) _evaluatedObject);
+            _adapter.setEquals(object, (Property) _evaluatedObject);
         } else {
             throw _unsupportedVisitException("Unknown assignment object: "
                     + _evaluatedObject);
@@ -92,7 +92,7 @@ public class ParseTreeAnnotationEvaluator extends AbstractParseTreeVisitor {
      *
      */
     public void visitLeafNode(ASTPtLeafNode node) throws IllegalActionException {
-        _evaluatedObject = _resolveLabel(_getNodeLabel(node), _helper
+        _evaluatedObject = _resolveLabel(_getNodeLabel(node), _adapter
                 .getComponent());
 
         if (_evaluatedObject == null) {
@@ -209,7 +209,7 @@ public class ParseTreeAnnotationEvaluator extends AbstractParseTreeVisitor {
         }
     }
 
-    protected PropertyHelper _helper;
+    protected PropertyHelper _adapter;
 
     protected Object _evaluatedObject;
 

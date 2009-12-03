@@ -1,4 +1,4 @@
-/* A helper class for ptolemy.actor.lib.Expression.
+/* An adapter class for ptolemy.actor.lib.Expression.
 
  Copyright (c) 2006-2009 The Regents of the University of California.
  All rights reserved.
@@ -38,7 +38,7 @@ import ptolemy.kernel.util.IllegalActionException;
 //// Expression
 
 /**
- A helper class for ptolemy.actor.lib.Expression.
+ An adapter class for ptolemy.actor.lib.Expression.
 
  @author Man-Kit Leung
  @version $Id$
@@ -49,7 +49,7 @@ import ptolemy.kernel.util.IllegalActionException;
 public class Expression extends AtomicActor {
 
     /**
-     * Construct a Expression helper for the flatUnitSystem lattice.
+     * Construct a Expression adapter for the flatUnitSystem lattice.
      * @param solver The given solver.
      * @param actor The given Expression actor
      * @exception IllegalActionException

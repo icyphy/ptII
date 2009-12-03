@@ -1,4 +1,4 @@
-/* A helper class for ptolemy.actor.lib.Const.
+/* An adapter class for ptolemy.actor.lib.Const.
 
  Copyright (c) 2008-2009 The Regents of the University of California.
  All rights reserved.
@@ -37,7 +37,7 @@ import ptolemy.kernel.util.IllegalActionException;
 //// Const
 
 /**
- A helper class for ptolemy.actor.lib.Const.
+ An adapter class for ptolemy.actor.lib.Const.
 
  @author Man-Kit Leung, Thomas Mandl
  @version $Id$
@@ -47,7 +47,7 @@ import ptolemy.kernel.util.IllegalActionException;
 */
 public class Const extends AtomicActor {
     /**
-     * Construct an Const helper.
+     * Construct an Const adapter.
      * @param solver The associated solver.
      * @param actor The associated actor.
      * @exception IllegalActionException If thrown by the super class.

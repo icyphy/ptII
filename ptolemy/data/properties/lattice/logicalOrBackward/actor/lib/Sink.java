@@ -1,4 +1,4 @@
-/* A helper class for ptolemy.actor.lib.Sink.
+/* An adapter class for ptolemy.actor.lib.Sink.
 
  Copyright (c) 2008-2009 The Regents of the University of California.
  All rights reserved.
@@ -40,7 +40,7 @@ import ptolemy.kernel.util.IllegalActionException;
 //// Const
 
 /**
- A helper class for ptolemy.actor.lib.Sink.
+ An adapter class for ptolemy.actor.lib.Sink.
 
  @author Man-Kit Leung, Thomas Mandl
  @version $Id$
@@ -51,12 +51,12 @@ import ptolemy.kernel.util.IllegalActionException;
 public class Sink extends AtomicActor {
 
     /**
-     * Construct the Sink property constraint helper associated
-     * with the given component and solver. The constructed helper
+     * Construct the Sink property constraint adapter associated
+     * with the given component and solver. The constructed adapter
      * implicitly uses the default constraints set by the solver.
      * @param solver The given solver.
      * @param actor The given Sink actor
-     * @exception IllegalActionException If the helper cannot be
+     * @exception IllegalActionException If the adapter cannot be
      * initialized in the superclass.
      */
     public Sink(PropertyConstraintSolver solver, ptolemy.actor.lib.Sink actor)
@@ -66,13 +66,13 @@ public class Sink extends AtomicActor {
     }
 
     /**
-     * Construct the Sink property constraint helper for the
+     * Construct the Sink property constraint adapter for the
      * given component and property lattice.
      * @param solver The given solver.
      * @param actor The given ActomicActor.
-     * @param useDefaultConstraints Indicate whether this helper uses the
+     * @param useDefaultConstraints Indicate whether this adapter uses the
      * default actor constraints.
-     * @exception IllegalActionException If the helper cannot be
+     * @exception IllegalActionException If the adapter cannot be
      * initialized in the superclass.
      */
     public Sink(PropertyConstraintSolver solver, ptolemy.actor.lib.Sink actor,

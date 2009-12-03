@@ -1,4 +1,4 @@
-/* A helper class for ptolemy.actor.lib.Sequence.
+/* An adapter class for ptolemy.actor.lib.Sequence.
 
  Copyright (c) 2006-2009 The Regents of the University of California.
  All rights reserved.
@@ -38,7 +38,7 @@ import ptolemy.kernel.util.IllegalActionException;
 //// Sequence
 
 /**
- A helper class for ptolemy.actor.lib.Sequence.
+ An adapter class for ptolemy.actor.lib.Sequence.
 
  @author Man-Kit Leung, Thomas Mandl
  @version $Id$
@@ -49,7 +49,7 @@ import ptolemy.kernel.util.IllegalActionException;
 public class Sequence extends AtomicActor {
 
     /**
-     * Construct a Sequence helper for the logicalAND lattice.
+     * Construct a Sequence adapter for the logicalAND lattice.
      * @param solver The given solver.
      * @param actor The given Source actor
      * @exception IllegalActionException

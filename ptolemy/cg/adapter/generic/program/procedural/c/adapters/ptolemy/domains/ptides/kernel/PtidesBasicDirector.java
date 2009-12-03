@@ -1,6 +1,6 @@
 /* Code generator adapter class associated with the PtidesBasicDirector class.
 
- Copyright (c) 2005-2009 The Regents of the University of California.
+ Copyright (c) 2009 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -183,7 +183,7 @@ public class PtidesBasicDirector extends Director {
 
         // define the number of actuators in the system as a macro.
         _templateParser.getCodeStream().append(
-                "#define numActuators " + _actuators.size() + _eol);
+                "#define numActuators " + actuators.size() + _eol);
 
         _templateParser.getCodeStream().appendCodeBlocks("StructDefBlock");
         _templateParser.getCodeStream().appendCodeBlocks("FuncProtoBlock");
@@ -205,17 +205,30 @@ public class PtidesBasicDirector extends Director {
         return sharedCode;
     }
 
+
+    ////////////////////////////////////////////////////////////////////////
+    ////                         public variables                       ////
+
+    /** Map of Actors to actuator number. */
+    public Map<Actor, Integer> actuators;
+
+    /** Map of Sensor to sensor number. */
+    public Map<Actor, Integer> sensors;
+
     ////////////////////////////////////////////////////////////////////////
     ////                         protected methods                      ////
 
-    protected String _generateActuatorActuationFuncArrayCode()
-            throws IllegalActionException {
+    /**
+     *  Return the code for the actuatorActuations array.
+     *  @return the code for the actuatorActuations array.
+     */
+    protected String _generateActuatorActuationFuncArrayCode() {
         StringBuffer code = new StringBuffer();
 
-        if (_actuators.size() > 0) {
-            code.append("static void (*actuatorActuations[" + _actuators.size()
+        if (actuators.size() > 0) {
+            code.append("static void (*actuatorActuations[" + actuators.size()
                     + "])() = {");
-            Iterator it = _actuators.keySet().iterator();
+            Iterator it = actuators.keySet().iterator();
             Actor actor = (Actor) it.next();
             code.append("Actuation_"
                     + NamedProgramCodeGeneratorAdapter
@@ -232,8 +245,11 @@ public class PtidesBasicDirector extends Director {
         return code.toString();
     }
 
-    protected String _generateActuatorActuationFuncProtoCode()
-            throws IllegalActionException {
+    /**
+     *  Return the code for Actuation_*(void) function prototypes.
+     *  @return the code for Actuations_*(void) function prototypes.
+     */
+    protected String _generateActuatorActuationFuncProtoCode() {
         StringBuffer code = new StringBuffer();
 
         for (Actor actor : (List<Actor>) ((CompositeActor) _director
@@ -250,10 +266,8 @@ public class PtidesBasicDirector extends Director {
     }
 
     /** Generate actor function prototypes.
-     * @throws IllegalActionException 
      */
-    protected String _generateActorFuncProtoCode()
-            throws IllegalActionException {
+    protected String _generateActorFuncProtoCode() {
         StringBuffer code = new StringBuffer();
 
         for (Actor actor : (List<Actor>) ((CompositeActor) _director
@@ -355,9 +369,12 @@ public class PtidesBasicDirector extends Director {
         return sinkRef + " = " + result + ";" + _eol;
     }
 
+    /** Traverse all the entities in the model and place them in the sensors
+     *  and actuators variables.
+     */
     protected void _modelStaticAnalysis() {
-        _actuators = new HashMap<Actor, Integer>();
-        _sensors = new HashMap<Actor, Integer>();
+        actuators= new HashMap<Actor, Integer>();
+        sensors = new HashMap<Actor, Integer>();
 
         int actuatorIndex = 0;
         int sensorIndex = 0;
@@ -365,12 +382,12 @@ public class PtidesBasicDirector extends Director {
                 .getContainer()).deepEntityList()) {
             // FIXME: should I be using Interrupt/ActuationDevice or just Input/OutputDevice?
              if (actor instanceof ActuationDevice) {
-                 _actuators.put(actor, new Integer(actuatorIndex));
+                 actuators.put(actor, new Integer(actuatorIndex));
                  actuatorIndex++;
              }
 
             if (actor instanceof SensorInputDevice) {
-                _sensors.put(actor, new Integer(sensorIndex));
+                sensors.put(actor, new Integer(sensorIndex));
                 sensorIndex++;
             }
         }
@@ -379,9 +396,8 @@ public class PtidesBasicDirector extends Director {
     ////////////////////////////////////////////////////////////////////////
     ////                         private methods                        ////
 
-    /** fire methods for each actor.
+    /** Fire methods for each actor.
      * @return fire methods for each actor
-     * @exception IllegalActionException
      * @exception IllegalActionException If thrown when getting the port's adapter.
      */
     private String _generateActorFireCode() throws IllegalActionException {
@@ -479,7 +495,4 @@ public class PtidesBasicDirector extends Director {
         }
         return code.toString();
     }
-
-    public Map<Actor, Integer> _actuators;
-    public Map<Actor, Integer> _sensors;
 }

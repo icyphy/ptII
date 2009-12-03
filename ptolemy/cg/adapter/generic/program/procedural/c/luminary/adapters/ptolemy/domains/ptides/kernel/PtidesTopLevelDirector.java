@@ -1,4 +1,4 @@
-/* Code generator helper class associated with the PidesTopLevelDirector class.
+/* Code generator adapter class associated with the PidesTopLevelDirector class.
 
  Copyright (c) 2005-2009 The Regents of the University of California.
  All rights reserved.
@@ -31,13 +31,13 @@ package ptolemy.cg.adapter.generic.program.procedural.c.luminary.adapters.ptolem
 ////PtidesTopLevelDirector
 
 /**
- Code generator helper associated with the PtidesTopLevelDirector class.
- This helper generates Luminary specific code.
+ Code generator adapter associated with the PtidesTopLevelDirector class.
+ This adapter generates Luminary specific code.
 
  This director starts a task for each actor. Each task has a specified
  name, stack size, priority and function code to execute. User can introduce
  annotations in an actor to specify these values. In particular, this
- helper class looks for the "_stackSize" and "_priority" parameters and
+ adapter class looks for the "_stackSize" and "_priority" parameters and
  use their values to create the tasks. If these parameters are not specified,
  the code generator uses the default value 80 for stack size, and 0 for
  priority.
@@ -56,7 +56,7 @@ public class PtidesTopLevelDirector
         ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.ptides.kernel.PtidesTopLevelDirector {
 
     /**
-     * Construct the code generator helper associated with the given
+     * Construct the code generator adapter associated with the given
      * PtidesTopLevelDirector.
      * @param ptidesTopLevelDirector The associated
      *  ptolemy.domains.ptides.kernel.PtidesTopLevelDirector

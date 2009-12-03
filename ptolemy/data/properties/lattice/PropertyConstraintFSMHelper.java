@@ -1,5 +1,5 @@
 /*
- * A helper class for ptolemy.domains.fsm.kernel.FSMActor.
+ * An adapter class for ptolemy.domains.fsm.kernel.FSMActor.
  * 
  * Copyright (c) 2006-2009 The Regents of the University of California. All
  * rights reserved. Permission is hereby granted, without written agreement and
@@ -50,7 +50,7 @@ import ptolemy.kernel.util.NamedObj;
 //// FSMActor
 
 /**
- * A helper class for ptolemy.domains.fsm.kernel.FSMActor.
+ * An adapter class for ptolemy.domains.fsm.kernel.FSMActor.
  * 
  * @author Man-Kit Leung, Thomas Mandl
  * @version $Id: PropertyConstraintFSMHelper.java 54803 2009-06-29 22:33:45Z
@@ -63,9 +63,9 @@ public class PropertyConstraintFSMHelper extends
         PropertyConstraintCompositeHelper {
 
     /**
-     * Construct a helper for the given FSMActor. This is the base helper class
-     * for any FSMActor that does not have a specific defined helper class.
-     * Default actor constraints are set for this helper.
+     * Construct an adapter for the given FSMActor. This is the base adapter class
+     * for any FSMActor that does not have a specific defined adapter class.
+     * Default actor constraints are set for this adapter.
      * @param solver The given solver.
      * @param actor The given ActomicActor.
      * @exception IllegalActionException Thrown if super class throws it.
@@ -266,8 +266,8 @@ public class PropertyConstraintFSMHelper extends
     }
 
     /**
-     * Get the list of propertyable attributes for this helper. In this base
-     * helper class for FSM, it considers all guard expressions as propertyable
+     * Get the list of propertyable attributes for this adapter. In this base
+     * adapter class for FSM, it considers all guard expressions as propertyable
      * attributes.
      * @return The list of propertyable attributes.
      */
@@ -293,10 +293,10 @@ public class PropertyConstraintFSMHelper extends
     }
 
     /**
-     * Return the list of sub-helpers. In this base class, it returns the list
-     * of ASTNode helpers that are associated with the expressions of the
+     * Return the list of sub-adapters. In this base class, it returns the list
+     * of ASTNode adapters that are associated with the expressions of the
      * propertyable attributes.
-     * @return The list of sub-helpers.
+     * @return The list of sub-adapters.
      * @exception IllegalActionException Not thrown in this base class.
      */
     protected List<PropertyHelper> _getSubHelpers()

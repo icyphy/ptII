@@ -1,4 +1,4 @@
-/* Code generator helper class associated with the PtidesTopLevelDirector class.
+/* Code generator adapter class associated with the PtidesTopLevelDirector class.
 
  Copyright (c) 2005-2009 The Regents of the University of California.
  All rights reserved.
@@ -34,7 +34,7 @@ import ptolemy.kernel.util.IllegalActionException;
 ////PtidesTopLevelDirector
 
 /**
- Code generator helper associated with the PTIDESDirector class. This class
+ Code generator adapter associated with the PTIDESDirector class. This class
  is also associated with a code generator.
  Top-level director for PTIDES models.
  Unlike in the ptolemy implementation, this level generates code for
@@ -50,7 +50,7 @@ import ptolemy.kernel.util.IllegalActionException;
 public class PtidesTopLevelDirector extends Director
 /* CompositeProcessDirector implements TimedDirector*/{
 
-    /** Construct the code generator helper associated with the given
+    /** Construct the code generator adapter associated with the given
      *  PTIDESDirector.
      *  @param ptidesTopLevelDirector The associated
      *  ptolemy.domains.ptides.kernel.PtidesTopLevelDirector

@@ -1,4 +1,4 @@
-/** A base class representing a property constraint helper.
+/** A base class representing a property constraint adapter.
 
  Copyright (c) 2007-2009 The Regents of the University of California.
  All rights reserved.
@@ -46,7 +46,7 @@ import ptolemy.kernel.util.NamedObj;
 //// PropertyConstraintHelper
 
 /**
- A base class representing a property constraint helper.
+ A base class representing a property constraint adapter.
 
  @author Man-Kit Leung, Thomas Mandl, Edward A. Lee
  @version $Id$
@@ -57,7 +57,7 @@ import ptolemy.kernel.util.NamedObj;
 public class PropertyConstraintASTNodeHelper extends PropertyConstraintHelper {
 
     /**
-     * Construct the property constraint helper associated
+     * Construct the property constraint adapter associated
      * with the given AST node.
      * @param node The given AST node.
      * @exception IllegalActionException Thrown if
@@ -70,13 +70,13 @@ public class PropertyConstraintASTNodeHelper extends PropertyConstraintHelper {
     }
 
     /**
-     * Construct the property constraint helper for the given
+     * Construct the property constraint adapter for the given
      * property solver and AST node.
      * @param solver The given component.
      * @param node The given AST node.
-     * @param useDefaultConstraints Indicate whether this helper
+     * @param useDefaultConstraints Indicate whether this adapter
      *  uses the default actor constraints.
-     * @exception IllegalActionException If the helper cannot
+     * @exception IllegalActionException If the adapter cannot
      *  be initialized.
      */
     public PropertyConstraintASTNodeHelper(PropertyConstraintSolver solver,
@@ -99,7 +99,7 @@ public class PropertyConstraintASTNodeHelper extends PropertyConstraintHelper {
             ASTPtLeafNode node = (ASTPtLeafNode) getComponent();
 
             if (node.isConstant() && node.isEvaluated()) {
-                //FIXME: Should be handled by use-case specific helpers.
+                //FIXME: Should be handled by use-case specific adapters.
                 // We should make a (abstract) method that forces use-case
                 // to implement this.
             } else {
@@ -159,10 +159,10 @@ public class PropertyConstraintASTNodeHelper extends PropertyConstraintHelper {
     //        for (int i = 0; i < node.jjtGetNumChildren(); i++) {
     //            Object child = node.jjtGetChild(i);
     //
-    //            PropertyConstraintASTNodeHelper helper;
+    //            PropertyConstraintASTNodeHelper adapter;
     //
-    //            helper = (PropertyConstraintASTNodeHelper) _solver.getHelper(child);
-    //            children[i] = helper.getPropertyTerm(child);
+    //            adapter = (PropertyConstraintASTNodeHelper) _solver.getHelper(child);
+    //            children[i] = adapter.getPropertyTerm(child);
     //
     //        }
     //        return children;
@@ -184,9 +184,9 @@ public class PropertyConstraintASTNodeHelper extends PropertyConstraintHelper {
     }
 
     /**
-     * Return the list of sub-helpers. In this base class,
+     * Return the list of sub-adapters. In this base class,
      * return an empty list.
-     * @return The list of sub-helpers.
+     * @return The list of sub-adapters.
      * @exception IllegalActionException Not thrown in this base class.
      */
     protected List<PropertyHelper> _getSubHelpers() {

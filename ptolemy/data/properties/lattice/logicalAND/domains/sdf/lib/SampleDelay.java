@@ -1,4 +1,4 @@
-/* A helper class for ptolemy.domains.sdf.lib.SampleDelay.
+/* An adapter class for ptolemy.domains.sdf.lib.SampleDelay.
 
  Copyright (c) 2006-2009 The Regents of the University of California.
  All rights reserved.
@@ -37,7 +37,7 @@ import ptolemy.kernel.util.IllegalActionException;
 //// SampleDelay
 
 /**
- A helper class for ptolemy.actor.lib.SampleDelay.
+ An adapter class for ptolemy.actor.lib.SampleDelay.
 
  @author Man-Kit Leung, Thomas Mandl
  @version $Id$
@@ -48,7 +48,7 @@ import ptolemy.kernel.util.IllegalActionException;
 public class SampleDelay extends AtomicActor {
 
     /**
-     * Construct a SampleDelay helper for the logicalAND lattice.
+     * Construct a SampleDelay adapter for the logicalAND lattice.
      * @param solver The given solver.
      * @param actor The given SampleDelay actor
      * @exception IllegalActionException

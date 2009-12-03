@@ -1,4 +1,4 @@
-/* Code generator helper for typed composite actor.
+/* Code generator adapter for typed composite actor.
 
  Copyright (c) 2005-2009 The Regents of the University of California.
  All rights reserved.
@@ -40,7 +40,7 @@ import ptolemy.kernel.util.IllegalActionException;
 ////TypedCompositeActor
 
 /**
- Code generator helper for composite actor.
+ Code generator adapter for composite actor.
 
  @author Man-Kit Leung, Thomas Mandl
  @version $Id$
@@ -50,7 +50,7 @@ import ptolemy.kernel.util.IllegalActionException;
  */
 public class PropertyConstraintCompositeHelper extends PropertyConstraintHelper {
 
-    /** Construct the property constraint helper associated
+    /** Construct the property constraint adapter associated
      *  with the given TypedCompositeActor.
      * @param solver TODO
      * @param component The associated component.
@@ -72,31 +72,31 @@ public class PropertyConstraintCompositeHelper extends PropertyConstraintHelper 
     protected void _addDefaultConstraints(ConstraintType actorConstraintType)
             throws IllegalActionException {
 
-        for (PropertyHelper helper : _getSubHelpers()) {
+        for (PropertyHelper adapter : _getSubHelpers()) {
 
-            ((PropertyConstraintHelper) helper)
+            ((PropertyConstraintHelper) adapter)
                     ._addDefaultConstraints(actorConstraintType);
         }
     }
 
     /**
-     * Return the list of sub-helpers. In this base class, it
-     * returns the list of ASTNode helpers and the helpers for
+     * Return the list of sub-adapters. In this base class, it
+     * returns the list of ASTNode adapters and the adapters for
      * the contained entities.
-     * @return The list of sub-helpers.
+     * @return The list of sub-adapters.
      * @exception IllegalActionException Thrown if there is an error
-     *  getting the helper for any contained entities.
+     *  getting the adapter for any contained entities.
      */
     protected List<PropertyHelper> _getSubHelpers()
             throws IllegalActionException {
-        List<PropertyHelper> helpers = super._getSubHelpers();
+        List<PropertyHelper> adapters = super._getSubHelpers();
 
         CompositeEntity component = (CompositeEntity) getComponent();
 
         for (Object actor : component.entityList()) {
-            helpers.add(_solver.getHelper(actor));
+            adapters.add(_solver.getHelper(actor));
         }
-        return helpers;
+        return adapters;
     }
 
     /** Return all constraints of this component.  The constraints is
@@ -109,15 +109,15 @@ public class PropertyConstraintCompositeHelper extends PropertyConstraintHelper 
 
         // Set up inter-actor constraints.
         for (Entity entity : (List<Entity>) actor.entityList()) {
-            PropertyConstraintHelper helper = (PropertyConstraintHelper) _solver
+            PropertyConstraintHelper adapter = (PropertyConstraintHelper) _solver
                     .getHelper(entity);
 
-            boolean constraintSource = helper.isConstraintSource();
+            boolean constraintSource = adapter.isConstraintSource();
 
-            for (TypedIOPort port : (List<TypedIOPort>) helper
+            for (TypedIOPort port : (List<TypedIOPort>) adapter
                     ._getConstraintedPorts(constraintSource)) {
 
-                _constraintObject(helper.interconnectConstraintType, port,
+                _constraintObject(adapter.interconnectConstraintType, port,
                         _getConstraintingPorts(constraintSource, port));
             }
         }

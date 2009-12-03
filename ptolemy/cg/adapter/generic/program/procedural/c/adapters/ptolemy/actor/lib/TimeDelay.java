@@ -37,7 +37,7 @@ import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.util.IllegalActionException;
 
 /**
- * A helper class for ptolemy.actor.lib.TimeDelay.
+ * A adapter class for ptolemy.actor.lib.TimeDelay.
  *
  * @author Jia Zou
  * @version $Id: TimedDelay.java 54721 2009-06-26 22:32:23Z cxh $
@@ -47,7 +47,7 @@ import ptolemy.kernel.util.IllegalActionException;
  */
 public class TimeDelay extends NamedProgramCodeGeneratorAdapter {
     /**
-     * Constructor method for the TimedDelay helper.
+     * Constructor method for the TimedDelay adapter.
      * @param actor the associated actor
      */
     public TimeDelay(ptolemy.actor.lib.TimeDelay actor) {

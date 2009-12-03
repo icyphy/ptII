@@ -858,7 +858,7 @@ public abstract class PropertySolver extends PropertySolverBase implements Testa
      * @exception IllegalActionException
      */
     protected void _addStatistics() throws IllegalActionException {
-        _stats.put("# of helpers", _helperStore.size());
+        _stats.put("# of adapters", _adapterStore.size());
         _stats.put("# of propertyables", getAllPropertyables().size());
         _stats.put("# of resolved properties", _resolvedProperties.size());
         _stats.put("# of resolution errors", _sharedUtilities.getErrors()
@@ -1098,7 +1098,7 @@ public abstract class PropertySolver extends PropertySolverBase implements Testa
     protected void _initializeStatistics() {
         _stats.put("has trained resolution errors", false);
         _stats.put("# of trained resolution errors", 0);
-        _stats.put("# of helpers", 0);
+        _stats.put("# of adapters", 0);
         _stats.put("# of propertyables", 0);
         _stats.put("# of resolved properties", 0);
         _stats.put("# of manual annotations", 0);

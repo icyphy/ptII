@@ -1,4 +1,4 @@
-/* A code generation helper class for actor.lib.Expression
+/* A code generation adapter class for actor.lib.Expression
  @Copyright (c) 2005-2009 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -49,7 +49,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 
 /**
- * A code generation helper class for ptolemy.actor.lib.Expression.
+ * A code generation adapter class for ptolemy.actor.lib.Expression.
  *
  * @author Man-Kit Leung
  * @version $Id$
@@ -59,7 +59,7 @@ import ptolemy.kernel.util.InternalErrorException;
  */
 public class Expression extends NamedProgramCodeGeneratorAdapter {
     /**
-     * Constructor method for the Expression helper.
+     * Constructor method for the Expression adapter.
      * @param actor The associated actor.
      */
     public Expression(ptolemy.actor.lib.Expression actor) {

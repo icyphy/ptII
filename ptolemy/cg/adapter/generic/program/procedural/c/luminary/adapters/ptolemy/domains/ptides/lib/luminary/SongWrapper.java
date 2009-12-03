@@ -31,7 +31,7 @@ package ptolemy.cg.adapter.generic.program.procedural.c.luminary.adapters.ptolem
 import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
 
 /**
- * A helper class for ptolemy.domains.ptides.lib.targets.luminary.SongWrapper.
+ * A adapter class for ptolemy.domains.ptides.lib.targets.luminary.SongWrapper.
  *
  * @author Jia Zou, Isaac Liu, Jeff C. Jensen
  * @version $Id$
@@ -41,7 +41,7 @@ import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
  */
 public class SongWrapper extends NamedProgramCodeGeneratorAdapter {
     /**
-     * Constructor method for the Const helper.
+     * Constructor method for the Const adapter.
      * @param actor the associated actor
      */
     public SongWrapper(

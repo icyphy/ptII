@@ -90,7 +90,7 @@ public class ParseTreeTokenAnnotationEvaluator extends
                     + node.getAssignment());
         }
 
-        _helper.setEquals(object, new PropertyToken(expressionValue));
+        _adapter.setEquals(object, new PropertyToken(expressionValue));
     }
 
     public void visitLeafNode(ASTPtLeafNode node) throws IllegalActionException {
@@ -127,7 +127,7 @@ public class ParseTreeTokenAnnotationEvaluator extends
          */
         public Token get(String name) throws IllegalActionException {
 
-            NamedObj container = (NamedObj) _helper.getComponent();
+            NamedObj container = (NamedObj) _adapter.getComponent();
 
             Variable result = getScopedVariable(null, container, name);
 
@@ -148,7 +148,7 @@ public class ParseTreeTokenAnnotationEvaluator extends
          */
         public ptolemy.data.type.Type getType(String name)
                 throws IllegalActionException {
-            NamedObj container = (NamedObj) _helper.getComponent();
+            NamedObj container = (NamedObj) _adapter.getComponent();
             Variable result = getScopedVariable(null, container, name);
             if (result != null) {
                 return result.getType();
@@ -168,7 +168,7 @@ public class ParseTreeTokenAnnotationEvaluator extends
          */
         public ptolemy.graph.InequalityTerm getTypeTerm(String name)
                 throws IllegalActionException {
-            NamedObj container = (NamedObj) _helper.getComponent();
+            NamedObj container = (NamedObj) _adapter.getComponent();
             Variable result = getScopedVariable(null, container, name);
             if (result != null) {
                 return result.getTypeTerm();
@@ -183,7 +183,7 @@ public class ParseTreeTokenAnnotationEvaluator extends
          *  getting the identifier set from the variable.
          */
         public Set identifierSet() throws IllegalActionException {
-            NamedObj container = (NamedObj) _helper.getComponent();
+            NamedObj container = (NamedObj) _adapter.getComponent();
             return getAllScopedVariableNames(null, container);
         }
     }

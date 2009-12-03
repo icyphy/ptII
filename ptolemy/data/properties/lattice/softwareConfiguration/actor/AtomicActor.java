@@ -1,4 +1,4 @@
-/* A helper class for ptolemy.actor.AtomicActor.
+/* An adapter class for ptolemy.actor.AtomicActor.
 
  Copyright (c) 2009 The Regents of the University of California.
  All rights reserved.
@@ -35,7 +35,7 @@ import ptolemy.kernel.util.IllegalActionException;
 //// AddSubtract
 
 /**
- A helper class for ptolemy.actor.AtomicActor.
+ An adapter class for ptolemy.actor.AtomicActor.
 
  @author Man-Kit Leung, Thomas Mandl
  @version $Id$
@@ -45,8 +45,8 @@ import ptolemy.kernel.util.IllegalActionException;
  */
 public class AtomicActor extends PropertyConstraintHelper {
     /**
-     * Construct the AtomicActor property constraint helper associated
-     * with the given component and solver. The constructed helper
+     * Construct the AtomicActor property constraint adapter associated
+     * with the given component and solver. The constructed adapter
      * implicitly uses the default constraints set by the solver.
      * @param solver The associated solver.
      * @param actor The associated actor.
@@ -59,11 +59,11 @@ public class AtomicActor extends PropertyConstraintHelper {
     }
     
     /**
-     * Construct the AtomicActor property constraint helper for the
+     * Construct the AtomicActor property constraint adapter for the
      * given component and property lattice.
      * @param solver The associated solver.
      * @param actor The associated actor.
-     * @param useDefaultConstraints Indicate whether this helper
+     * @param useDefaultConstraints Indicate whether this adapter
      *  uses the default actor constraints.
      * @exception IllegalActionException If thrown by the super class.
      */

@@ -39,7 +39,7 @@ import ptolemy.kernel.util.StringAttribute;
 /**
  * A base class for the ASTPtRootNode's PropertyTokenHelper. By default, it has
  * exactly one taggable object, which is the node itself. It does not have any
- * sub-helpers.
+ * sub-adapters.
  * 
  * @author Man-Kit Leung, Thomas Mandl
  * @version $Id$
@@ -74,8 +74,8 @@ public class PropertyTokenASTNodeHelper extends PropertyTokenHelper {
     }
 
     /**
-     * Return the list of sub-helpers. In this base class, return an empty list.
-     * @return The list of sub-helpers.
+     * Return the list of sub-adapters. In this base class, return an empty list.
+     * @return The list of sub-adapters.
      * @exception IllegalActionException Not thrown in this base class.
      */
     protected List<PropertyHelper> _getSubHelpers()

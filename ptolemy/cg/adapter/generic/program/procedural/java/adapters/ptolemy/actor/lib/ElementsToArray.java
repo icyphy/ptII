@@ -1,4 +1,4 @@
-/* A code generation helper class for actor.lib.ElementsToArray
+/* A code generation adapter class for actor.lib.ElementsToArray
 
  @Copyright (c) 2005-2009 The Regents of the University of California.
  All rights reserved.
@@ -34,7 +34,7 @@ import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
 import ptolemy.kernel.util.IllegalActionException;
 
 /**
- * A code generation helper class for ptolemy.actor.lib.ElementsToArray.
+ * A code generation adapter class for ptolemy.actor.lib.ElementsToArray.
  *
  * @author Man-Kit Leung, Dai Bui
  * @version $Id: ElementsToArray.java 53095 2009-04-12 19:12:45Z cxh $
@@ -44,7 +44,7 @@ import ptolemy.kernel.util.IllegalActionException;
  */
 public class ElementsToArray extends NamedProgramCodeGeneratorAdapter {
     /**
-     * Constructor the ElementsToArray helper.
+     * Constructor the ElementsToArray adapter.
      * @param actor The associated actor.
      */
     public ElementsToArray(ptolemy.actor.lib.ElementsToArray actor) {

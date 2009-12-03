@@ -1,4 +1,4 @@
-/* A code generation helper class for actor.lib.logic.Comparator
+/* A code generation adapter class for actor.lib.logic.Comparator
 
  @Copyright (c) 2005-2009 The Regents of the University of California.
  All rights reserved.
@@ -32,7 +32,7 @@ import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
 import ptolemy.kernel.util.IllegalActionException;
 
 /**
- A code generation helper class for ptolemy.actor.lib.logic.Comparator.
+ A code generation adapter class for ptolemy.actor.lib.logic.Comparator.
 
  @author Man-Kit Leung
  @version $Id: Comparator.java 53095 2009-04-12 19:12:45Z cxh $
@@ -43,7 +43,7 @@ import ptolemy.kernel.util.IllegalActionException;
 public class Comparator extends NamedProgramCodeGeneratorAdapter {
 
     /**
-     * Construct the Comparator helper.
+     * Construct the Comparator adapter.
      * @param actor The associated actor.
      */
     public Comparator(ptolemy.actor.lib.logic.Comparator actor) {

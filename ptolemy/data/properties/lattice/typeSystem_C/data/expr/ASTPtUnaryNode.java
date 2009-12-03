@@ -1,4 +1,4 @@
-/* A helper class for ptolemy.data.expr.ASTPtUnaryNode.
+/* An adapter class for ptolemy.data.expr.ASTPtUnaryNode.
 
  Copyright (c) 2008-2009 The Regents of the University of California.
  All rights reserved.
@@ -41,7 +41,7 @@ import ptolemy.kernel.util.IllegalActionException;
 //// ASTPtRootNode
 
 /**
- A helper class for ptolemy.data.expr.ASTPtRootNode.
+ An adapter class for ptolemy.data.expr.ASTPtRootNode.
 
  @author Man-Kit Leung
  @version $Id$
@@ -55,7 +55,7 @@ public class ASTPtUnaryNode extends ASTPtRootNode {
      * Construct an ASTPtUnaryNode object.
      * @param solver The associated solver.
      * @param node The associated node.
-     * @exception IllegalActionException Thrown if the helper cannot be
+     * @exception IllegalActionException Thrown if the adapter cannot be
      * initialized.
      */
     public ASTPtUnaryNode(PropertyConstraintSolver solver,
@@ -85,7 +85,7 @@ public class ASTPtUnaryNode extends ASTPtRootNode {
                 setEquals(node, lattice.convertJavaToCtype(node.getToken()
                         .getType(), node.getToken()));
             } else {
-                // get extendedFirstValueToken from helper
+                // get extendedFirstValueToken from adapter
                 PropertySolver solver = getSolver().findSolver(
                         "extendedFirstValueToken");
                 PropertyToken propertyToken = (PropertyToken) solver

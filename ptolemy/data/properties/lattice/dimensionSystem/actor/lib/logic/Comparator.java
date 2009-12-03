@@ -1,4 +1,4 @@
-/* A helper class for ptolemy.actor.lib.logic.Comparator.
+/* An adapter class for ptolemy.actor.lib.logic.Comparator.
 
  Copyright (c) 2006-2009 The Regents of the University of California.
  All rights reserved.
@@ -41,7 +41,7 @@ import ptolemy.kernel.util.IllegalActionException;
 //// Comparator
 
 /**
- A helper class for ptolemy.actor.lib.Comparator.
+ An adapter class for ptolemy.actor.lib.Comparator.
 
  @author Man-Kit Leung
  @version $Id$
@@ -52,7 +52,7 @@ import ptolemy.kernel.util.IllegalActionException;
 public class Comparator extends PropertyConstraintHelper {
 
     /**
-     * Construct a Comparator helper for the flatUnitSystem lattice.
+     * Construct a Comparator adapter for the flatUnitSystem lattice.
      * @param solver The given solver.
      * @param actor The given Comparator actor
      * @exception IllegalActionException

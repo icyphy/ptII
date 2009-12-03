@@ -1,5 +1,5 @@
 /*
- * A helper class for ptolemy.actor.lib.RecordAssembler.
+ * An adapter class for ptolemy.actor.lib.RecordAssembler.
  * 
  * Copyright (c) 2006-2009 The Regents of the University of California. All
  * rights reserved. Permission is hereby granted, without written agreement and
@@ -38,7 +38,7 @@ import ptolemy.kernel.util.IllegalActionException;
 ////RecordAssembler
 
 /**
- * A helper class for ptolemy.actor.lib.RecordAssembler.
+ * An adapter class for ptolemy.actor.lib.RecordAssembler.
  * 
  * @author Man-Kit Leung
  * @version $Id$
@@ -49,7 +49,7 @@ import ptolemy.kernel.util.IllegalActionException;
 public class RecordAssembler extends AtomicActor {
 
     /**
-     * Construct a RecordAssembler helper for the staticDynamic lattice. This
+     * Construct a RecordAssembler adapter for the staticDynamic lattice. This
      * set a permanent constraint for the output port to be STATIC, but does not
      * use the default actor constraints.
      * @param solver The given solver.
@@ -68,7 +68,7 @@ public class RecordAssembler extends AtomicActor {
 
     public List<Inequality> constraintList() throws IllegalActionException {
         ptolemy.actor.lib.RecordAssembler actor = (ptolemy.actor.lib.RecordAssembler) getComponent();
-        // add default constraints if no constraints specified in actor helper
+        // add default constraints if no constraints specified in actor adapter
 
         Object[] portArray = actor.inputPortList().toArray();
         int size = portArray.length;

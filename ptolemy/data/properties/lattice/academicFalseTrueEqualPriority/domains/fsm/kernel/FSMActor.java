@@ -1,5 +1,5 @@
 /*
- * A property helper class for ptolemy.domains.fsm.kernel.FSMActor.
+ * A property adapter class for ptolemy.domains.fsm.kernel.FSMActor.
  * 
  * Copyright (c) 2006-2009 The Regents of the University of California. All
  * rights reserved. Permission is hereby granted, without written agreement and
@@ -32,7 +32,7 @@ import ptolemy.kernel.util.IllegalActionException;
 //// FSMActor
 
 /**
- * A property helper class for ptolemy.domains.fsm.kernel.FSMActor.
+ * A property adapter class for ptolemy.domains.fsm.kernel.FSMActor.
  * 
  * @author Man-Kit Leung, Thomas Mandl
  * @version $Id$
@@ -43,9 +43,9 @@ import ptolemy.kernel.util.IllegalActionException;
 public class FSMActor extends PropertyConstraintFSMHelper {
 
     /**
-     * Construct a helper for the given FSMActor. This is the helper class for
-     * any FSMActor that does not have a specific defined helper class. Default
-     * actor constraints are set for this helper.
+     * Construct an adapter for the given FSMActor. This is the adapter class for
+     * any FSMActor that does not have a specific defined adapter class. Default
+     * actor constraints are set for this adapter.
      * @param solver The specified property solver.
      * @param actor The specified FSMActor.
      * @exception IllegalActionException Thrown if super class throws it.

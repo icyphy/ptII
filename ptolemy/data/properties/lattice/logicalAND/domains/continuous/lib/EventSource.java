@@ -1,4 +1,4 @@
-/* A helper class for ptolemy.domains.continuous.lib.EventSource.
+/* An adapter class for ptolemy.domains.continuous.lib.EventSource.
 
  Copyright (c) 2006-2009 The Regents of the University of California.
  All rights reserved.
@@ -38,7 +38,7 @@ import ptolemy.kernel.util.IllegalActionException;
 //// EventSource
 
 /**
- A helper class for ptolemy.actor.lib.EventSource.
+ An adapter class for ptolemy.actor.lib.EventSource.
 
  @author Man-Kit Leung
  @version $Id$
@@ -50,7 +50,7 @@ import ptolemy.kernel.util.IllegalActionException;
 public class EventSource extends AtomicActor {
 
     /**
-     * Construct a EventSource helper for the logicalAND ontology.
+     * Construct a EventSource adapter for the logicalAND ontology.
      * @param solver The given solver.
      * @param actor The given EventSource actor.
      * @exception IllegalActionException Thrown if the

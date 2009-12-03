@@ -1,4 +1,4 @@
-/* A code generation helper class for actor.lib.jopio.WatchDog
+/* A code generation adapter class for actor.lib.jopio.WatchDog
 
  @Copyright (c) 2009 The Regents of the University of California.
  All rights reserved.
@@ -33,7 +33,7 @@ import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
 import ptolemy.kernel.util.IllegalActionException;
 
 /**
- * A code generation helper class for ptolemy.actor.lib.jopio.JopWatchDog.
+ * A code generation adapter class for ptolemy.actor.lib.jopio.JopWatchDog.
  *
  * @author Martin Schoeberl
  * @version $Id$
@@ -43,7 +43,7 @@ import ptolemy.kernel.util.IllegalActionException;
  */
 public class JopWatchDog extends NamedProgramCodeGeneratorAdapter {
     /**
-     * Construct a JopWatchDog helper.
+     * Construct a JopWatchDog adapter.
      * @param actor The associated actor.
      */
     public JopWatchDog(ptolemy.actor.lib.jopio.JopWatchDog actor) {

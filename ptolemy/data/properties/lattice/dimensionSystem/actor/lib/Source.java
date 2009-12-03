@@ -1,4 +1,4 @@
-/* A helper class for ptolemy.actor.lib.Source.
+/* An adapter class for ptolemy.actor.lib.Source.
 
  Copyright (c) 2006-2009 The Regents of the University of California.
  All rights reserved.
@@ -38,7 +38,7 @@ import ptolemy.kernel.util.IllegalActionException;
 ////Source
 
 /**
- A helper class for ptolemy.actor.lib.Source.
+ An adapter class for ptolemy.actor.lib.Source.
 
  @author Charles Shelton
  @version $Id$
@@ -49,7 +49,7 @@ import ptolemy.kernel.util.IllegalActionException;
 public class Source extends AtomicActor {
 
     /**
-     * Construct a Source helper for the dimensionSystem lattice.
+     * Construct a Source adapter for the dimensionSystem lattice.
      * @param solver The given solver.
      * @param actor The given Source actor
      * @exception IllegalActionException
@@ -65,10 +65,10 @@ public class Source extends AtomicActor {
 
     public List<Inequality> constraintList() throws IllegalActionException {
         ptolemy.actor.lib.Source actor = (ptolemy.actor.lib.Source) getComponent();
-        // add default constraints if no constraints specified in actor helper
+        // add default constraints if no constraints specified in actor adapter
 
         if (_ownConstraints.isEmpty()) {
-            // force outputs to UNKNOWN by default; overwrite in actor specific helper class
+            // force outputs to UNKNOWN by default; overwrite in actor specific adapter class
             setAtLeast(actor.output, _lattice.getElement("UNKNOWN"));
         }
 

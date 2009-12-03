@@ -1,4 +1,4 @@
-/* A helper class for ptolemy.actor.lib.MonitorValue.
+/* An adapter class for ptolemy.actor.lib.MonitorValue.
 
  Copyright (c) 2008-2009 The Regents of the University of California.
  All rights reserved.
@@ -37,7 +37,7 @@ import ptolemy.kernel.util.IllegalActionException;
 //// MonitorValue
 
 /**
- A helper class for ptolemy.actor.lib.MonitorValue.
+ An adapter class for ptolemy.actor.lib.MonitorValue.
 
  @author Thomas Mandl, Man-Kit Leung
  @version $Id$
@@ -47,12 +47,12 @@ import ptolemy.kernel.util.IllegalActionException;
 */
 public class MonitorValue extends Sink {
     /**
-     * Construct the Monitor property constraint helper associated
-     * with the given component and solver. The constructed helper
+     * Construct the Monitor property constraint adapter associated
+     * with the given component and solver. The constructed adapter
      * implicitly uses the default constraints set by the solver.
      * @param solver The given solver.
      * @param actor The given Monitor actor
-     * @exception IllegalActionException If the helper cannot be
+     * @exception IllegalActionException If the adapter cannot be
      * initialized in the superclass.
      */
     public MonitorValue(PropertyConstraintSolver solver,

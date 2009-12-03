@@ -1,4 +1,4 @@
-/*  The base abstract class for a property helper.
+/*  The base abstract class for a property adapter.
 
  Copyright (c) 2007-2009 The Regents of the University of California.
  All rights reserved.
@@ -69,10 +69,10 @@ part of their use-case definition.
 
 <p>Every PropertyHelper is associated a property
 solver. PropertyHelpers support hierarchical structuring. They may
-have downward links to sub-helpers. This is helpful to construct
+have downward links to sub-adapters. This is helpful to construct
 PropertyHelper for hierarchical component in the model. For example, a
 PropertyHelper for the CompositeActor have all the contained actors'
-helpers as its sub-helpers.
+adapters as its sub-adapters.
 
 <p>A PropertyHelper supports manual annotation. Users can define their
 own annotation evaluator to evaluate property expressions and/or
@@ -160,9 +160,9 @@ public abstract class PropertyHelper {
     }
 
     /**
-     * Return The PropertySolver that uses this helper.
+     * Return The PropertySolver that uses this adapter.
      *
-     * @return The PropertySolver that uses this helper.
+     * @return The PropertySolver that uses this adapter.
      */
     public PropertySolver getSolver() {
         return _solver;
@@ -171,7 +171,7 @@ public abstract class PropertyHelper {
     /**
      * Reset and initialize the PropertyHelper. This clears any
      * cached states and the resolved properties of the property-able
-     * objects. This call is recursive, so every sub-helper will be
+     * objects. This call is recursive, so every sub-adapter will be
      * reset and initialized after the call.
      *
      * @exception IllegalActionException Thrown if
@@ -233,8 +233,8 @@ public abstract class PropertyHelper {
         }
 
         // The recursive case.
-        for (PropertyHelper helper : _getSubHelpers()) {
-            helper.reinitialize();
+        for (PropertyHelper adapter : _getSubHelpers()) {
+            adapter.reinitialize();
         }
     }
 
@@ -376,9 +376,9 @@ public abstract class PropertyHelper {
         for (ASTPtRootNode root : _getAttributeParseTrees()) {
             if (root != null) {
                 //                try {
-                List<PropertyHelper> helpers = collector.collectHelpers(root,
+                List<PropertyHelper> adapters = collector.collectHelpers(root,
                         getSolver());
-                astHelpers.addAll(helpers);
+                astHelpers.addAll(adapters);
                 //                } catch (IllegalActionException ex) {
                 //                    // This means the expression is not parse-able.
                 //                    // FIXME: So, we will discard it for now.
@@ -464,7 +464,7 @@ public abstract class PropertyHelper {
                             || (attribute.getClass()
                                     .equals(ptolemy.data.expr.StringParameter.class))) {
 
-                        // FIXME: implement filter interface, so that helper
+                        // FIXME: implement filter interface, so that adapter
                         // classes can specify which attributes
                         // need to be filtered (either by name or by class)
                         // Currently all filtered attributes need to be
@@ -553,9 +553,9 @@ public abstract class PropertyHelper {
     }
 
     /**
-     * Return the list of sub-helpers.
+     * Return the list of sub-adapters.
      *
-     * @return The list of sub-helpers.
+     * @return The list of sub-adapters.
      *
      * @exception IllegalActionException Thrown if the sub-class throws it.
      */

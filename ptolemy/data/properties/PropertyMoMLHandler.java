@@ -113,9 +113,9 @@ public class PropertyMoMLHandler extends Attribute {
 
         StringBuffer completeMoML = new StringBuffer("<group>");
 
-        for (PropertyHelper helper : solver.getAllHelpers()) {
-            if (helper.getComponent() instanceof NamedObj) {
-                NamedObj namedObj = (NamedObj) helper.getComponent();
+        for (PropertyHelper adapter : solver.getAllHelpers()) {
+            if (adapter.getComponent() instanceof NamedObj) {
+                NamedObj namedObj = (NamedObj) adapter.getComponent();
 
                 for (AnnotationAttribute attribute : (List<AnnotationAttribute>) namedObj
                         .attributeList(AnnotationAttribute.class)) {

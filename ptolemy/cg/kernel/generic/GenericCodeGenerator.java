@@ -166,7 +166,7 @@ public abstract class GenericCodeGenerator extends Attribute implements
      */
     public FileParameter codeDirectory;
 
-    /** The name of the package in which to look for helper class
+    /** The name of the package in which to look for adapter class
      *  code generators. The default value of this parameter
      *  is the empty string.  Derived classes may set this parameter
      *  to values like <code>ptolemy.cg.kernel.generic.program.procedural.c</code>.

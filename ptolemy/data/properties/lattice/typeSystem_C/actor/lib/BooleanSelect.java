@@ -1,4 +1,4 @@
-/* A helper class for ptolemy.actor.lib.BooleanSelect.
+/* An adapter class for ptolemy.actor.lib.BooleanSelect.
 
  Copyright (c) 2008-2009 The Regents of the University of California.
  All rights reserved.
@@ -38,7 +38,7 @@ import ptolemy.kernel.util.IllegalActionException;
 //// BooleanSelect
 
 /**
- A helper class for ptolemy.actor.lib.BooleanSelect.
+ An adapter class for ptolemy.actor.lib.BooleanSelect.
 
  @author Thomas Mandl, Man-Kit Leung
  @version $Id$
@@ -48,7 +48,7 @@ import ptolemy.kernel.util.IllegalActionException;
 */
 public class BooleanSelect extends AtomicActor {
     /**
-     * Construct an BooleanSelect helper.
+     * Construct an BooleanSelect adapter.
      * @param solver The associated solver.
      * @param actor The associated actor.
      * @exception IllegalActionException If thrown by the super class. 

@@ -1,4 +1,4 @@
-/* A helper class for ptolemy.actor.lib.Ramp.
+/* An adapter class for ptolemy.actor.lib.Ramp.
 
  Copyright (c) 2008-2009 The Regents of the University of California.
  All rights reserved.
@@ -38,7 +38,7 @@ import ptolemy.kernel.util.IllegalActionException;
 //// Ramp
 
 /**
- A helper class for ptolemy.actor.lib.Ramp.
+ An adapter class for ptolemy.actor.lib.Ramp.
 
  @author Thomas Mandl, Man-Kit Leung
  @version $Id$
@@ -48,7 +48,7 @@ import ptolemy.kernel.util.IllegalActionException;
 */
 public class Ramp extends AtomicActor {
     /**
-     * Construct an Ramp helper.
+     * Construct an Ramp adapter.
      * @param solver The associated solver.
      * @param actor The associated actor.
      * @exception IllegalActionException If thrown by the super class.

@@ -1,4 +1,4 @@
-/* A helper class for ptolemy.actor.lib.DiscreteClock.
+/* An adapter class for ptolemy.actor.lib.DiscreteClock.
 
  Copyright (c) 2006-2009 The Regents of the University of California.
  All rights reserved.
@@ -38,7 +38,7 @@ import ptolemy.kernel.util.IllegalActionException;
 //// DiscreteClock
 
 /**
- A helper class for ptolemy.actor.lib.DiscreteClock.
+ An adapter class for ptolemy.actor.lib.DiscreteClock.
 
  @author Man-Kit Leung
  @version $Id$
@@ -49,7 +49,7 @@ import ptolemy.kernel.util.IllegalActionException;
 public class DiscreteClock extends AtomicActor {
 
     /**
-     * Construct a DiscreteClock helper for the logicalAND ontology.
+     * Construct a DiscreteClock adapter for the logicalAND ontology.
      * @param solver The given solver.
      * @param actor The given DiscreteClock actor.
      * @exception IllegalActionException Thrown if the
