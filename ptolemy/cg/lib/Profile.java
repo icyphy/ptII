@@ -35,18 +35,19 @@ import java.util.List;
 import ptolemy.kernel.util.IllegalActionException;
 
 //////////////////////////////////////////////////////////////////////////
-////Profile
+//// Profile
 
-/** This class contains meta information about 
- *  modularly generated code such as port information.
- *  In this way we have a way to interface with the
- *  generated code.
- *  The actual profile instances derive from this class.
- *  @author Bert Rodiers
- *  @version $Id$
- *  @since Ptolemy II 8.1
- *  @Pt.ProposedRating Red (rodiers)
- *  @Pt.AcceptedRating Red (rodiers)
+/**
+ * Meta information about 
+ * modularly generated code such as port information.
+ * In this way we have a way to interface with the
+ * generated code.
+ * The actual profile instances derive from this class.
+ * @author Bert Rodiers
+ * @version $Id$
+ * @since Ptolemy II 8.1
+ * @Pt.ProposedRating Red (rodiers)
+ * @Pt.AcceptedRating Red (rodiers)
  */
 abstract public class Profile {
     
@@ -63,7 +64,6 @@ abstract public class Profile {
      *  @return A list with for each actor the information
      *  necessary to interface the generated code.
      */
-//    abstract public List<ProfileActor> actors() throws IllegalActionException;
     abstract public List<FiringFunction> firings() throws IllegalActionException;
 
     /** Return firing per iteration of the actor
@@ -71,18 +71,21 @@ abstract public class Profile {
      */
 
     /**
-     * 
+     * A named connection between an actor and a junction.
      */
     static public class Connection {
         public String actorName;
         public String junctionName;
     }
     /**
-     * Profiled Junction
+     * A profiled Junction.
      * @author dai
      *  
      */
     static public class Junction {
+        /** Construct a Junction.
+         *  @param putActor The 
+         */
         public Junction(String putActor, String putActorPort,
             String getActor, String getActorPort, int numTokens) {
             _putActor = putActor;
@@ -121,7 +124,7 @@ abstract public class Profile {
     }
     
     /**
-     * A class for actors in a graph information
+     * A class for actors in a graph information.
      */
     static public class ProfileActor {
         
@@ -129,7 +132,7 @@ abstract public class Profile {
             _name = new String(name);
             _isOriginal = original;
         }
-        /** Return if an actor is an original ptolemy actor or not
+        /** Return if an actor is an original ptolemy actor or not.
          * @return true is the actor is an original ptolemy actor like Ramp,
          * false if the actor is generated from some composite actor, thus it has profile
          */
@@ -137,8 +140,11 @@ abstract public class Profile {
             return _isOriginal;
         }
         
+        /** Return the name of this ProfileActor.
+         *  @return the name of this ProfileActor 
+         */
         public String getName() {
-            return new String(_name);
+            return _name;
         }
         
         public Profile getProfile() throws IllegalActionException {

@@ -77,18 +77,14 @@ import ptolemy.util.StringUtilities;
 public class ModularSDFCodeGenerator extends JavaCodeGenerator {
 
     /**
-     * Create a new instance of the Modular java code generator.
+     * Create a new instance of the Modular Java code generator.
      * 
-     * @param container
-     *            The container.
-     * @param name
-     *            The name of the Java code generator.
-     * @exception IllegalActionException
-     *                If the super class throws the exception or error occurs
-     *                when setting the file path.
-     * @exception NameDuplicationException
-     *                If the super class throws the exception or an error occurs
-     *                when setting the file path.
+     * @param container The container.
+     * @param name The name of the Java code generator.
+     * @exception IllegalActionException If the super class throws the exception or error occurs
+     * when setting the file path.
+     * @exception NameDuplicationException If the super class throws the exception or an error occurs
+     * when setting the file path.
      */
     public ModularSDFCodeGenerator(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
@@ -98,14 +94,13 @@ public class ModularSDFCodeGenerator extends JavaCodeGenerator {
                 .setExpression("generic.program.procedural.java.modular");
     }
 
-    // /////////////////////////////////////////////////////////////////
-    // // public methods ////
+    ///////////////////////////////////////////////////////////////////
+    ////                    public methods                         ////
 
     /**
      * Create the profile for the model (at this level).
      * 
-     * @exception IllegalActionException
-     *                when the profile can't be generated.
+     * @exception IllegalActionException If the profile can't be generated.
      */
     public void createProfile() throws IllegalActionException {
         String modelName = NamedProgramCodeGeneratorAdapter
@@ -172,8 +167,11 @@ public class ModularSDFCodeGenerator extends JavaCodeGenerator {
     }
     
     /**
-     * @throws IllegalActionException 
-     * 
+     * Return the code that creates the graph that connects the actors
+     * of the graph.
+     * @return Code that creates the actor graph
+     * @exception IllegalActionException If there is a problem accessing the 
+     * underlying model.
      */
     public StringBuffer createGraph() throws IllegalActionException {
         
@@ -636,12 +634,10 @@ public class ModularSDFCodeGenerator extends JavaCodeGenerator {
     /**
      * Generate code. This is the main entry point.
      * 
-     * @param code
-     *            The code buffer into which to generate the code.
+     * @param code The code buffer into which to generate the code.
      * @return The return value of the last subprocess that was executed. or -1
-     *         if no commands were executed.
-     * @exception KernelException
-     *                If a type conflict occurs or the model is running.
+     * if no commands were executed.
+     * @exception KernelException If a type conflict occurs or the model is running.
      */
     public int generateCode(StringBuffer code) throws KernelException {
 
@@ -696,9 +692,8 @@ public class ModularSDFCodeGenerator extends JavaCodeGenerator {
      * Generate the main entry point.
      * 
      * @return Return the definition of the main entry point for a program. In
-     *         C, this would be defining main().
-     * @exception IllegalActionException
-     *                Not thrown in this base class.
+     * C, this would be defining main().
+     * @exception IllegalActionException Not thrown in this base class.
      */
     public String generateMainEntryCode() throws IllegalActionException {
 
@@ -753,9 +748,8 @@ public class ModularSDFCodeGenerator extends JavaCodeGenerator {
     /**
      * Generate the main exit point.
      * 
-     * @return Return a string that declares the end of the main() function.
-     * @exception IllegalActionException
-     *                Not thrown in this base class.
+     * @return A string that declares the end of the main() function.
+     * @exception IllegalActionException Not thrown in this base class.
      */
     public String generateMainExitCode() throws IllegalActionException {
 
@@ -773,7 +767,165 @@ public class ModularSDFCodeGenerator extends JavaCodeGenerator {
     }
     
     //////////////////////////////////////////////////////////////////////
-    /// private methods
+    ////                     public inner classes                      ////
+
+    /**
+     * A simulation junction.
+     */
+    static public class SimJunction {
+        // FIXME: Rename to SimJunction to SimulationJunction
+        // FIXME: Describe a Simulation Junction.
+        /** Create a Simulation junction.
+         *  @param inputPort The input port.
+         *  @param outputPort The output port.
+         *  @param numberOfInitialTokens The number of initial tokens.
+         */   
+        public SimJunction(IOPort inputPort, IOPort outputPort, int numberOfInitialTokens) {
+            _inputPort = inputPort;
+            _outputPort = outputPort;
+            counter = _numberOfInitialTokens = numberOfInitialTokens;
+        }
+        
+        /** Return the number of initial tokens.
+         *  @return The number of initial tokens.
+         */
+        public int getNumInitialTokens() {
+            // FIXME: rename to getNumberOfInitialTokens.
+            return _numberOfInitialTokens;
+        }
+        
+        /** Return the input port.
+         *  @return the output port with which this Simulation Junction
+         *  was constructed.
+         */
+        public IOPort getInputPort() {
+            return _inputPort;
+        }
+        
+        /** Return the output Port.
+         *  @return the output port with which this Simulation Junction
+         *  was constructed.
+         */
+        public IOPort getOutputPort() {
+            return _outputPort;
+        }
+        
+        /** Return true if the number of initial tokens is
+         *  the same as it was when reset() was last called.
+         *  @return true if the number of initial tokens is
+         *  the same as it was when reset() was last called.
+         */
+        public boolean isInInitalState() {
+            return _numberOfInitialTokens == counter;
+        }
+        
+        /** Reset the state of this simulation junction by
+         *  recording the number of initial tokens for later use.
+         */
+        public void reset() {
+            counter = _numberOfInitialTokens;
+        }
+        
+        /** The value of the number of initial tokens the last
+         *  time reset() was called.
+         */
+        public int counter;
+
+        private int _numberOfInitialTokens;
+        private IOPort _inputPort;
+        private IOPort _outputPort;
+    }
+
+    /**
+     * A simulation firing junction.
+     */
+    public static class SimFiringFunction {
+        // FIXME: Rename to SimFiringFunction to SimulationFiringFunction
+        // FIXME: Describe a Simulation Firing Junction in the class comment.
+        // FIXME: what is the index in the constructor below?
+        /** Construct a simulation firing junction.
+         *  @param actor The actor for this simulation firing junction.
+         *  @param index the index of the function.
+         */   
+        SimFiringFunction(Actor actor, int index ) {
+            this.actor = actor;
+            functionIndex = index;
+        }
+        
+        /** The actor. */
+        public Actor actor;
+
+        /** The function index.*/
+        public int functionIndex;
+    }
+    
+    /**
+     * A class that represents a firing
+     */
+    public static class Firing {
+        public Firing(Actor firingActor, int index,  int function) {
+            actor = firingActor;
+            firingIndex = index;
+            firingFunction = function;
+            nextActorFirings = new HashSet();
+            previousActorFirings = new HashSet();
+            
+            previousIterationFirings = new HashSet();
+            nextIterationFirings = new HashSet();
+            
+            this.index = 0;
+        }
+        
+        public Actor actor;
+        public int firingIndex;
+        public int firingFunction;
+        public Set<Firing> nextActorFirings;
+        public Set<Firing> previousActorFirings;
+        public Set<Firing> previousIterationFirings;
+        public Set<Firing> nextIterationFirings;
+        public FiringCluster cluster;
+        
+        public int index;
+    }
+    
+    /**
+     * 
+     * @author dai
+     *
+     */
+    static public class FiringCluster {
+        public FiringCluster() {
+            actorFirings = new LinkedList();
+            nextClusters = new LinkedList();
+            previousClusters = new LinkedList();
+            
+            nextIterationClusters = new LinkedList();
+            previousIterationClusters = new LinkedList();
+            
+            inputPorts =  new HashSet();
+            outputPorts = new HashSet();
+            
+            this.index = 0;
+        }
+        public List<Firing> actorFirings;
+        
+        public List<FiringCluster> nextClusters;
+        public List<FiringCluster> previousClusters;
+        
+        public List<FiringCluster> nextIterationClusters;
+        public List<FiringCluster> previousIterationClusters;
+        
+        public Set<IOPort> inputPorts;
+        public Set<IOPort> outputPorts;
+        
+        public int index;
+    }
+    
+    
+
+    //////////////////////////////////////////////////////////////////////
+    ///                     private methods
+
     private void _createDependencyGraph(CompositeActor container, Map firingVector, 
             Map port2Junction, List actorFirings) throws IllegalActionException {
       //create the dependency graph
@@ -1566,119 +1718,6 @@ public class ModularSDFCodeGenerator extends JavaCodeGenerator {
         }
             
     }
-    
-    /**
-     * Simulation junction
-     */
-    static public class SimJunction {
-        public SimJunction(IOPort inputPort, IOPort outputPort, int numInitialTokens) {
-            _inputPort = inputPort;
-            _outputPort = outputPort;
-            counter = _numInitialTokens = numInitialTokens;
-        }
-        
-        public int getNumInitialTokens() {
-            return _numInitialTokens;
-        }
-        
-        public IOPort getInputPort() {
-            return _inputPort;
-        }
-        
-        public IOPort getOutputPort() {
-            return _outputPort;
-        }
-        
-        public boolean isInInitalState() {
-            return _numInitialTokens == counter;
-        }
-        
-        public void reset() {
-            counter = _numInitialTokens;
-        }
-        
-        public int counter;
-        private int _numInitialTokens;
-        private IOPort _inputPort;
-        private IOPort _outputPort;
-    }
-    /**
-     * 
-     */
-    public static class SimFiringFunction {
-        SimFiringFunction(Actor actor, int index ) {
-            this.actor = actor;
-            functionIndex = index;
-        }
-        
-        public Actor actor;
-        public int functionIndex;
-    }
-    
-    /**
-     * 
-     * @author dai
-     *
-     */
-    public static class Firing {
-        public Firing(Actor firingActor, int index,  int function) {
-            actor = firingActor;
-            firingIndex = index;
-            firingFunction = function;
-            nextActorFirings = new HashSet();
-            previousActorFirings = new HashSet();
-            
-            previousIterationFirings = new HashSet();
-            nextIterationFirings = new HashSet();
-            
-            this.index = 0;
-        }
-        
-        public Actor actor;
-        public int firingIndex;
-        public int firingFunction;
-        public Set<Firing> nextActorFirings;
-        public Set<Firing> previousActorFirings;
-        public Set<Firing> previousIterationFirings;
-        public Set<Firing> nextIterationFirings;
-        public FiringCluster cluster;
-        
-        public int index;
-    }
-    
-    /**
-     * 
-     * @author dai
-     *
-     */
-    static public class FiringCluster {
-        public FiringCluster() {
-            actorFirings = new LinkedList();
-            nextClusters = new LinkedList();
-            previousClusters = new LinkedList();
-            
-            nextIterationClusters = new LinkedList();
-            previousIterationClusters = new LinkedList();
-            
-            inputPorts =  new HashSet();
-            outputPorts = new HashSet();
-            
-            this.index = 0;
-        }
-        public List<Firing> actorFirings;
-        
-        public List<FiringCluster> nextClusters;
-        public List<FiringCluster> previousClusters;
-        
-        public List<FiringCluster> nextIterationClusters;
-        public List<FiringCluster> previousIterationClusters;
-        
-        public Set<IOPort> inputPorts;
-        public Set<IOPort> outputPorts;
-        
-        public int index;
-    }
-    
     
     /** Comparator used to sort the actors. */
     private class FiringComparator implements Comparator<Firing> {

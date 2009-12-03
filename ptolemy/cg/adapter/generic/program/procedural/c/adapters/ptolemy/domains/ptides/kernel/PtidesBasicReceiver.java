@@ -56,6 +56,8 @@ import ptolemy.kernel.util.NamedObj;
 public class PtidesBasicReceiver extends ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.Receiver {
 
     /** Construct a ptides basic receiver.
+     *  @param receiver The ptolemy.domains.ptides.kernel.PtidesBasicReceiver
+     *  that corresponds with this adapter.
      *  @throws IllegalActionException If throw by the superclass.
      */
     public PtidesBasicReceiver (

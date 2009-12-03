@@ -37,7 +37,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InvalidStateException;
 
 ///////////////////////////////////////////////////////////////////////
-////Receiver
+//// Receiver
 
 /**
  * The base class adapter for Recevier.
@@ -66,7 +66,7 @@ public abstract class Receiver extends ProgramCodeGeneratorAdapter {
     /**
      * Generate code for getting tokens from the receiver.
      * @param offset The offset in the array representation of the port.
-     * @return generate get code.
+     * @return The code for gettign tokens from the receiver.
      * @exception IllegalActionException If the receiver adapter is
      * not found or it encounters an error while generating the
      * get code.
@@ -75,7 +75,7 @@ public abstract class Receiver extends ProgramCodeGeneratorAdapter {
 
     /** Generate code to check if the receiver has a token.
      *  @param offset The offset in the array representation of the port.
-     *  @return generate hasToken code.
+     *  @return The code to check if the reciever has a token.
      *  @exception IllegalActionException If an error occurs when
      *  getting the receiver adapters or generating their initialize
      *  code.
@@ -96,12 +96,12 @@ public abstract class Receiver extends ProgramCodeGeneratorAdapter {
     }
     
     /** 
-     * Generate code for putting tokens from the receiver.
+     * Generate code for putting tokens to the receiver.
      * Note the type conversion is also done in this put method.
      * @param sourcePort The port for which to generate the send code.
      * @param offset The offset in the array representation of the port.
      * @param token The token to be sent.
-     * @return generate type conversion as well as put code.
+     * @return The code to put tokens to the receiver.
      * @exception IllegalActionException If the receiver adapter is
      * not found or it encounters an error while generating the send
      * code.
@@ -185,7 +185,7 @@ public abstract class Receiver extends ProgramCodeGeneratorAdapter {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private variables               ////
+    ////                         private variables                ////
 
     /** The name of the receiver. */
     private String _name;

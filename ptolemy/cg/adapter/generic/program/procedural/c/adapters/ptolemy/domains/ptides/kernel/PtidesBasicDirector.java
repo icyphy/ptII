@@ -266,6 +266,7 @@ public class PtidesBasicDirector extends Director {
     }
 
     /** Generate actor function prototypes.
+     *  @return actor function prototype methos for each entity.   
      */
     protected String _generateActorFuncProtoCode() {
         StringBuffer code = new StringBuffer();
