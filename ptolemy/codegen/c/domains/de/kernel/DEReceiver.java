@@ -49,8 +49,6 @@ public class DEReceiver extends ptolemy.codegen.c.actor.Receiver {
 
     /**
      * Return the code for getting data from the specific port channel.
-     * @param port The specified port.
-     * @param channel The specified channel.
      * @return the code for getting data from the specific port channel,
      * in this case, return the empty string.
      * @exception IllegalActionException Not thrown here.

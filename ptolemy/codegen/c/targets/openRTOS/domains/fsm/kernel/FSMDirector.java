@@ -1,6 +1,6 @@
 /* Code generator helper class associated with the FSMDirector class.
 
- Copyright (c) 2005-2006 The Regents of the University of California.
+ Copyright (c) 2009 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -42,7 +42,8 @@ import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
 
-////FSMDirector
+///////////////////////////////////////////////////////////////////////
+//// FSMDirector
 
 /**
  Code generator helper associated with the OpenRTOS FSMDirector class. This class
@@ -64,15 +65,6 @@ public class FSMDirector extends
      */
     public FSMDirector(ptolemy.domains.fsm.kernel.FSMDirector fsmDirector) {
         super(fsmDirector);
-    }
-
-    /*This method does nothing. Check to see if it can be deleted
-     *
-     * */
-    public String generateActorCode() {
-        StringBuffer code = new StringBuffer();
-        code.append("//generate actor code inside fsmDirector called");
-        return code.toString();
     }
 
     /** Generate The fire function code. This method is called when the firing
@@ -101,9 +93,12 @@ public class FSMDirector extends
         return code.toString();
     }
 
-    /** Generates the preInitialization code for the director.
+    /**
+     * Generate the preinitialization code for the director.
      * @return string containing the preinitializaton code
-     * */
+     * @exception IllegalActionException If thrown by the superclass or thrown
+     * while generating code for the director.
+     */
     public String generatePreinitializeCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
         code.append(super.generatePreinitializeCode());
@@ -118,10 +113,12 @@ public class FSMDirector extends
         return code.toString();
     }
 
-    /**Generates the code to transfer outputs from a port to it's receiver
+    /**
+     * Generate the code to transfer outputs from a port to its receiver.
      * @param outputPort - the port generating output
      * @param code - StringBuffer the generated code should appended to.
-     * */
+     * @exception IllegalActionException If thrown by the superclass.
+     */
     public void generateTransferOutputsCode(IOPort outputPort, StringBuffer code)
             throws IllegalActionException {
         code
@@ -132,24 +129,26 @@ public class FSMDirector extends
 
     }
 
-    /**Generate code for all the actors associated with the given FSMDirector
-     *@return String containing the actor code.
+    /**
+     * Return the worst case execution time (WCET) seen by this
+     * director.
+     * @return The Worst Case Execution Time (WCET).
+     * @exception IllegalActionException If there is a problem determining
+     * the WCET or a problem accessing the model.
      */
-    private String _generateActorCode() throws IllegalActionException {
-        StringBuffer code = new StringBuffer();
+    public double getWCET() throws IllegalActionException {
         ptolemy.domains.fsm.kernel.FSMDirector director = (ptolemy.domains.fsm.kernel.FSMDirector) getComponent();
         ptolemy.domains.fsm.kernel.FSMActor controller = director
                 .getController();
         int depth = 1;
 
-        //Iterator states = controller.entityList().iterator();
         Iterator states = controller.deepEntityList().iterator();
         int stateCount = 0;
         depth++;
+        double largestWCET = 0.0;
 
         while (states.hasNext()) {
-            // code.append(_getIndentPrefix(depth));
-            //code.append("case " + stateCount + ":" + _eol);
+
             stateCount++;
 
             depth++;
@@ -163,31 +162,24 @@ public class FSMDirector extends
                     actorsSet.add(actors[i]);
                 }
             }
-
-            if (actors != null) {
-                //for (int i = 0; i < actors.length; i++) {
-                Iterator actorIterator = actorsSet.iterator();
-                Actor actors2;
-                while (actorIterator.hasNext()) {
-                    actors2 = (Actor) actorIterator.next();
-                    CodeGeneratorHelper actorHelper = (CodeGeneratorHelper) _getHelper((NamedObj) actors2);
-                    if (actors2.getDirector().getFullName().contains("Giotto") == false) {
-                        //code.append("void "+_getActorName(actors2)+"(){");
-                        code.append(actorHelper.generateFireFunctionCode()); // this was there initially and it works with SDF
-                        code.append(actorHelper.generateTypeConvertFireCode());
-                        //code.append(_eol+"}"+_eol);
-                    } else {
-                        code.append(_eol
-                                + "//modal model contains giotto director"
-                                + _eol);
-
-                    }
+            for (Actor actor : actorsSet) {
+                ptolemy.codegen.actor.Director df = new ptolemy.codegen.actor.Director(
+                        actor.getDirector());
+                double localWCET = df.getWCET();
+                if (localWCET > largestWCET) {
+                    largestWCET = localWCET;
                 }
+
             }
         }
-
-        return code.toString();
+        if (_debugging) {
+            _debug("fsm director has wcet of " + largestWCET);
+        }
+        return largestWCET;
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
 
     /** Generate code for the firing of refinements.
      *
@@ -280,31 +272,29 @@ public class FSMDirector extends
         code.append("}" + _eol); //end of switch statement
     }
 
-    /** Generates the name of an actor
-     * @param actor - The actor whose name is to be determined
-     * @return string with the actors full name
-     * */
-    private String _getActorName(Actor actor) {
-        String actorFullName = actor.getFullName();
-        actorFullName = actorFullName.substring(1, actorFullName.length());
-        actorFullName = actorFullName.replace('.', '_');
-        actorFullName = actorFullName.replace(' ', '_');
-        return actorFullName;
-    }
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
 
-    public double _getWCET() throws IllegalActionException {
+    /**
+     * Generate code for all the actors associated with the given FSMDirector.
+     * @return String containing the actor code.
+     * @exception IllegalActionException If throw while accessing the model.
+     */
+    private String _generateActorCode() throws IllegalActionException {
+        StringBuffer code = new StringBuffer();
         ptolemy.domains.fsm.kernel.FSMDirector director = (ptolemy.domains.fsm.kernel.FSMDirector) getComponent();
         ptolemy.domains.fsm.kernel.FSMActor controller = director
                 .getController();
         int depth = 1;
 
+        //Iterator states = controller.entityList().iterator();
         Iterator states = controller.deepEntityList().iterator();
         int stateCount = 0;
         depth++;
-        double largestWCET = 0.0;
 
         while (states.hasNext()) {
-
+            // code.append(_getIndentPrefix(depth));
+            //code.append("case " + stateCount + ":" + _eol);
             stateCount++;
 
             depth++;
@@ -318,21 +308,41 @@ public class FSMDirector extends
                     actorsSet.add(actors[i]);
                 }
             }
-            for (Actor actor : actorsSet) {
-                ptolemy.codegen.actor.Director df = new ptolemy.codegen.actor.Director(
-                        actor.getDirector());
-                double localWCET = df._getWCET();
-                if (localWCET > largestWCET) {
-                    largestWCET = localWCET;
-                }
 
+            if (actors != null) {
+                //for (int i = 0; i < actors.length; i++) {
+                Iterator actorIterator = actorsSet.iterator();
+                Actor actors2;
+                while (actorIterator.hasNext()) {
+                    actors2 = (Actor) actorIterator.next();
+                    CodeGeneratorHelper actorHelper = (CodeGeneratorHelper) _getHelper((NamedObj) actors2);
+                    if (actors2.getDirector().getFullName().contains("Giotto") == false) {
+                        //code.append("void "+_getActorName(actors2)+"(){");
+                        code.append(actorHelper.generateFireFunctionCode()); // this was there initially and it works with SDF
+                        code.append(actorHelper.generateTypeConvertFireCode());
+                        //code.append(_eol+"}"+_eol);
+                    } else {
+                        code.append(_eol
+                                + "//modal model contains giotto director"
+                                + _eol);
+
+                    }
+                }
             }
         }
-        if (_debugging) {
-            _debug("fsm director has wcet of " + largestWCET);
-        }
-        return largestWCET;
 
+        return code.toString();
     }
 
+    /** Generates the name of an actor
+     * @param actor - The actor whose name is to be determined
+     * @return string with the actors full name
+     * */
+    private String _getActorName(Actor actor) {
+        String actorFullName = actor.getFullName();
+        actorFullName = actorFullName.substring(1, actorFullName.length());
+        actorFullName = actorFullName.replace('.', '_');
+        actorFullName = actorFullName.replace(' ', '_');
+        return actorFullName;
+    }
 }

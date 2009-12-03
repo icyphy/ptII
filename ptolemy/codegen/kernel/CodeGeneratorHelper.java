@@ -46,7 +46,6 @@ import ptolemy.actor.parameters.ParameterPort;
 import ptolemy.actor.util.DFUtilities;
 import ptolemy.actor.util.ExplicitChangeContext;
 import ptolemy.codegen.actor.Director;
-import ptolemy.codegen.kernel.CodeGenerator.Code;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.ObjectToken;
@@ -192,6 +191,10 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
         _codeGenerator._newTypesUsed.add(typeName);
     }
 
+    /**
+     * Add a functiom to the Set of functions used thus far. 
+     * @param functionName A string naming a function, for example "new".
+     */
     public void addFunctionUsed(String functionName) {
         _codeGenerator._typeFuncUsed.add(functionName);
     }
@@ -237,12 +240,24 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
         }
     }
 
+    /**
+     * Return true if the port is a local port.
+     * @param forComposite True if this check is for a composite
+     * @param port The port to be checked.
+     * @return true if the port is a local port. 
+     */
     public boolean checkLocal(boolean forComposite, IOPort port)
             throws IllegalActionException {
         return port.isInput() && !forComposite && port.isOutsideConnected()
                 || port.isOutput() && forComposite;
     }
 
+    /**
+     * Return true if the port is a remote port.
+     * @param forComposite True if this check is for a composite
+     * @param port The port to be checked.
+     * @return true if the port is a remote port. 
+     */
     public boolean checkRemote(boolean forComposite, IOPort port) {
         return port.isOutput() && !forComposite || port.isInput()
                 && forComposite;
@@ -269,21 +284,6 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
      */
     public String createOffsetVariablesIfNeeded() throws IllegalActionException {
         return "";
-    }
-
-    /**
-     * Generate the fire code. This method is intended to be overwritten by
-     * sub-classes to generate actor-specific code.
-     * @return The generated code.
-     * @exception IllegalActionException Not thrown in this base class.
-     */
-    protected String _generateFireCode() throws IllegalActionException {
-        _codeStream.clear();
-
-        // If the component name starts with a $, then convert "$" to "Dollar" and avoid problems
-        // with macro substitution.  See codegen/c/actor/lib/test/auto/RampDollarNames.xml.
-        _codeStream.appendCodeBlock(_defaultBlocks[2], true); // fireBlock
-        return _codeStream.toString();
     }
 
     /**
@@ -392,25 +392,6 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
         return _generateBlockByName(_defaultBlocks[1]);
     }
 
-    public String generateIterationCode(String countExpression)
-            throws IllegalActionException {
-        // FIXME: This is to be used in future re-structuring.
-        return "";
-    }
-
-    //public String generateMainEntryCode() throws IllegalActionException {
-    //    return _codeGenerator.comment("main entry code");
-    //}
-    /**
-     * Generate the main entry point.
-     * @return In this base class, return a comment. Subclasses should return
-     * the a string that closes optionally calls exit and closes the main()
-     * method
-     * @exception IllegalActionException Not thrown in this base class.
-     */
-    //public String generateMainExitCode() throws IllegalActionException {
-    //    return _codeGenerator.comment("main exit code");
-    //}
     /**
      * Generate mode transition code. The mode transition code generated in this
      * method is executed after each global iteration, e.g., in HDF model. Do
@@ -668,9 +649,6 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
         return _codeGenerator;
     }
 
-    /////////////////////////////////////////////////////////////////////
-    ////                      public inner classes                   ////
-
     /**
      * Get the component associated with this helper.
      * @return The associated component.
@@ -679,17 +657,27 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
         return (NamedObj) _object;
     }
 
+    /**
+     *  Return the executive director.  If there is no executive
+     *  director, then return the director associated with the
+     *  object passed in to the constructor.
+     *  @return the executive director or the director of the actor.
+     */  
     public ptolemy.actor.Director getDirector() {
         ptolemy.actor.Director director = ((Actor) _object)
                 .getExecutiveDirector();
 
         if (director == null) {
-            // getComponent() is at the top level. Use it's local director.
+            // getComponent() is at the top level. Use its local director.
             director = ((Actor) _object).getDirector();
         }
         return director;
     }
 
+    /**
+     * Return the helper of the director.
+     * @return Return the helper of the director.
+     */
     public Director getDirectorHelper() throws IllegalActionException {
         return (Director) _getHelper(getDirector());
     }
@@ -1273,6 +1261,20 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
     }
 
     /**
+     * Return the worst case execution time (WCET) seen by this
+     * component
+     * @return The Worst Case Execution Time (WCET), in this base class,
+     * the default value of 500.0 is returned. 
+     * @exception IllegalActionException If there is a problem determining
+     * the WCET or a problem accessing the model.  Not thrown in this
+     * base class.
+     */
+    public double getWCET() throws IllegalActionException {
+        return 500.0;
+    }
+
+
+    /**
      * Get the write offset in the buffer of a given channel to which a token
      * should be put. The channel is given by its containing port and the
      * channel number in that port.
@@ -1522,7 +1524,11 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
         return result;
     }
 
-    public static List<String> _parseList(String parameters) {
+    /** Parse the list of comma separted parameters.
+     *  @param parameters A comma separate list of parameters.   
+     *  @return A list of parameters.
+     */
+    public static List<String> parseList(String parameters) {
         List<String> result = new ArrayList<String>();
         int previousCommaIndex = 0;
         int commaIndex = _indexOf(",", parameters, 0);
@@ -1723,9 +1729,16 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
         return name.replaceAll("\\$", "Dollar");
     }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected variables               ////
 
+    /**
+     *  Return a reference to the port.  
+     *  @param port The port.
+     *  @param channelAndOffset The given channel and offset.
+     *  @param isWrite True if the port is to be written to.
+     *  @return The reference to the port.
+     *  @exception IllegalActionException If the port does not
+     *   exist or does not have a value.
+     */  
     public static String generatePortReference(IOPort port,
             String[] channelAndOffset, boolean isWrite) {
 
@@ -1760,6 +1773,13 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
         return _defaultBlocks;
     }
 
+    /**
+     *  Return a reference to the attribute.
+     *  @param attribute The attribute.
+     *  @param channelAndOffset The given channel and offset.
+     *  @exception IllegalActionException If the attribute does not
+     *   exist or does not have a value.
+     */  
     public String getReference(Attribute attribute, String[] channelAndOffset)
             throws IllegalActionException {
         StringBuffer result = new StringBuffer();
@@ -1792,6 +1812,76 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
         }
         return result.toString();
     }
+
+
+    /**
+     *  Return a reference.
+     *  @param name The reference to be parsed.  The format is
+     *  assumed to be "xxx#(yyy)", where "yyy" will be returned
+     *  @param isWrite True if the reference is to be written to.
+     *  @exception IllegalActionException If the attribute does not
+     *   exist or does not have a value.
+     */  
+    public String getReference(String name, boolean isWrite)
+            throws IllegalActionException {
+        ptolemy.actor.Director director = getDirector();
+        Director directorHelper = (Director) _getHelper(director);
+
+        name = processCode(name);
+        String castType = _getCastType(name);
+        String refName = _getRefName(name);
+        String[] channelAndOffset = _getChannelAndOffset(name);
+
+        // Usually given the name of an input port, getReference(String name)
+        // returns variable name representing the input port. Given the name
+        // of an output port, getReference(String name) returns variable names
+        // representing the input ports connected to the output port.
+        // However, if the name of an input port starts with '@',
+        // getReference(String name) returns variable names representing the
+        // input ports connected to the given input port on the inside.
+        // If the name of an output port starts with '@',
+        // getReference(String name) returns variable name representing the
+        // the given output port which has inside receivers.
+        // The special use of '@' is for composite actor when
+        // tokens are transferred into or out of the composite actor.
+        boolean forComposite = false;
+        if (refName.charAt(0) == '@') {
+            forComposite = true;
+            refName = refName.substring(1);
+        }
+
+        TypedIOPort port = getPort(refName);
+        if (port != null) {
+
+            if (port instanceof ParameterPort && port.numLinks() <= 0) {
+
+                // Then use the parameter (attribute) instead.
+            } else {
+                String result = directorHelper.getReference(port,
+                        channelAndOffset, forComposite, isWrite, this);
+
+                String refType = codeGenType(port.getType());
+
+                return _generateTypeConvertMethod(result, castType, refType);
+            }
+        }
+
+        // Try if the name is a parameter.
+        Attribute attribute = getComponent().getAttribute(refName);
+
+        if (attribute != null) {
+            String refType = _getRefType(attribute);
+
+            String result = directorHelper.getReference(attribute,
+                    channelAndOffset, this);
+
+            return _generateTypeConvertMethod(result, castType, refType);
+        }
+
+        throw new IllegalActionException(getComponent(),
+                "Reference not found: " + name);
+    }
+
 
     public String getReference(TypedIOPort port, String[] channelAndOffset,
             boolean forComposite, boolean isWrite)
@@ -2077,7 +2167,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
     }
 
     public static void selfTest() {
-        System.out.println(_parseList("(a, b, abc)"));
+        System.out.println(parseList("(a, b, abc)"));
         System.out.println(_indexOf(",", "(a, b, abc,), (a , b, abc,)", 0));
         System.out.println(_indexOf(",", "a, b, abc,, (a , b, abc,)", 0));
         System.out.println(_indexOf(",", ", (b), abc,, (a , b, abc,)", 0));
@@ -2290,6 +2380,24 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
         private Variable _variable = null;
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                     protected methods.                    ////
+
+    /**
+     * Generate the fire code. This method is intended to be overwritten by
+     * sub-classes to generate actor-specific code.
+     * @return The generated code.
+     * @exception IllegalActionException Not thrown in this base class.
+     */
+    protected String _generateFireCode() throws IllegalActionException {
+        _codeStream.clear();
+
+        // If the component name starts with a $, then convert "$" to "Dollar" and avoid problems
+        // with macro substitution.  See codegen/c/actor/lib/test/auto/RampDollarNames.xml.
+        _codeStream.appendCodeBlock(_defaultBlocks[2], true); // fireBlock
+        return _codeStream.toString();
+    }
+
     /**
      * Create the buffer size and offset maps for each input port, which is
      * associated with this helper object. A key of the map is an IOPort of the
@@ -2343,9 +2451,6 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
             }
         }
     }
-
-    /////////////////////////////////////////////////////////////////////
-    ////                      public inner classes                   ////
 
     /**
      * Given a block name, generate code for that block. This method is called
@@ -2703,14 +2808,6 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
         return generateName(channel.port) + "_" + channel.channelNumber;
     }
 
-    protected void _putGlobalCode(String code, int order)
-            throws IllegalActionException {
-        _codeGenerator._globalCode.add(new Code(code, order));
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                     protected methods.                    ////
-
     /**
      * Return the replacement string of the given macro. Subclass of
      * CodeGenerator may overriding this method to extend or support a different
@@ -2840,10 +2937,10 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
 
             try {
                 checker.invoke(userMacro, new Object[] {
-                    _parseList(parameter)
+                    parseList(parameter)
                 });
                 return (String) handler.invoke(userMacro, new Object[] {
-                    _parseList(parameter)
+                    parseList(parameter)
                 });
             } catch (Exception ex) {
                 throw new IllegalActionException(this, ex,
@@ -3174,7 +3271,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
     private String _replaceGetMacro(String parameter)
             throws IllegalActionException {
         // e.g. $get(0, input);
-        List<String> parameters = _parseList(parameter);
+        List<String> parameters = parseList(parameter);
 
         TypedIOPort port = null;
         String channel = "";
@@ -3198,7 +3295,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
     private String _replaceSendMacro(String parameter)
             throws IllegalActionException {
         // e.g. $send(input, 0, token);
-        List<String> parameters = _parseList(parameter);
+        List<String> parameters = parseList(parameter);
 
         TypedIOPort port = null;
         String channel = "";
@@ -3226,66 +3323,6 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
         PortCodeGenerator portHelper = (PortCodeGenerator) _getHelper(port);
 
         return portHelper.generateCodeForSend(channel, dataToken);
-    }
-
-    public String getReference(String name, boolean isWrite)
-            throws IllegalActionException {
-        ptolemy.actor.Director director = getDirector();
-        Director directorHelper = (Director) _getHelper(director);
-
-        name = processCode(name);
-        String castType = _getCastType(name);
-        String refName = _getRefName(name);
-        String[] channelAndOffset = _getChannelAndOffset(name);
-
-        // Usually given the name of an input port, getReference(String name)
-        // returns variable name representing the input port. Given the name
-        // of an output port, getReference(String name) returns variable names
-        // representing the input ports connected to the output port.
-        // However, if the name of an input port starts with '@',
-        // getReference(String name) returns variable names representing the
-        // input ports connected to the given input port on the inside.
-        // If the name of an output port starts with '@',
-        // getReference(String name) returns variable name representing the
-        // the given output port which has inside receivers.
-        // The special use of '@' is for composite actor when
-        // tokens are transferred into or out of the composite actor.
-        boolean forComposite = false;
-        if (refName.charAt(0) == '@') {
-            forComposite = true;
-            refName = refName.substring(1);
-        }
-
-        TypedIOPort port = getPort(refName);
-        if (port != null) {
-
-            if (port instanceof ParameterPort && port.numLinks() <= 0) {
-
-                // Then use the parameter (attribute) instead.
-            } else {
-                String result = directorHelper.getReference(port,
-                        channelAndOffset, forComposite, isWrite, this);
-
-                String refType = codeGenType(port.getType());
-
-                return _generateTypeConvertMethod(result, castType, refType);
-            }
-        }
-
-        // Try if the name is a parameter.
-        Attribute attribute = getComponent().getAttribute(refName);
-
-        if (attribute != null) {
-            String refType = _getRefType(attribute);
-
-            String result = directorHelper.getReference(attribute,
-                    channelAndOffset, this);
-
-            return _generateTypeConvertMethod(result, castType, refType);
-        }
-
-        throw new IllegalActionException(getComponent(),
-                "Reference not found: " + name);
     }
 
     /**
@@ -3323,10 +3360,6 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
 
     static {
         _eol = StringUtilities.getProperty("line.separator");
-    }
-
-    public double _getWCET() throws IllegalActionException {
-        return 500.0;
     }
 
     private String _fireCode = "";

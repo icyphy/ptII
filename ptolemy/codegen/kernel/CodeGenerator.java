@@ -1986,17 +1986,6 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         }
     }
 
-    /*private String generateGlobalCode() throws IllegalActionException {
-        // Global code should be independent of other code.
-        StringBuffer globalCode = new StringBuffer();
-        Object[] array = _globalCode.toArray();
-        Arrays.sort(array);
-        for (Object code : array) {
-            globalCode.append(((Code) code).string);
-        }
-        return globalCode.toString();
-    }*/
-
     /** Return true if the input contains code.
      *  In this context, code is considered to be anything other
      *  than comments and whitespace.
@@ -2317,8 +2306,6 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      */
     protected ExecuteCommands _executeCommands;
 
-    protected List<Code> _globalCode = new ArrayList<Code>();
-
     /** List of library command line arguments where each element is
      *  a string, for example "-L/usr/local/lib".
      *  This variable is a list so as to preserve the order that the
@@ -2426,28 +2413,28 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
 
     ///////////////////////////////////////////////////////////////////
     //// Code
-    protected static class Code implements Comparable {
-        public Code(String string, int order) {
-            this.string = string;
+//     protected static class Code implements Comparable {
+//         public Code(String string, int order) {
+//             this.string = string;
 
-            // Reverse the sign so that higher order value
-            // will be first in the sorted list.
-            this.order = -order;
-        }
+//             // Reverse the sign so that higher order value
+//             // will be first in the sorted list.
+//             this.order = -order;
+//         }
 
-        public int compareTo(Object object) {
-            if (object instanceof Code) {
-                Code code2 = (Code) object;
+//         public int compareTo(Object object) {
+//             if (object instanceof Code) {
+//                 Code code2 = (Code) object;
 
-                return (order > code2.order) ? 1 : (order < code2.order) ? -1
-                        : 0;
-            }
-            return 0;
-        }
+//                 return (order > code2.order) ? 1 : (order < code2.order) ? -1
+//                         : 0;
+//             }
+//             return 0;
+//         }
 
-        public final String string;
+//         public final String string;
 
-        private int order;
+//         private int order;
 
-    }
+//     }
 }

@@ -52,7 +52,8 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.util.StringUtilities;
 
-////GiottoDirector
+///////////////////////////////////////////////////////////////////////
+//// GiottoDirector
 
 /**
  Code generator helper associated with the GiottoDirector class. This class
@@ -68,8 +69,6 @@ import ptolemy.util.StringUtilities;
 public class GiottoDirector extends
         ptolemy.codegen.c.domains.giotto.kernel.GiottoDirector {
 
-    private static int _MAX_PRIORITY_LEVEL = 254;
-
     /** Construct the code generator helper associated with the given
      *  GiottoDirector.
      *  @param giottoDirector The associated
@@ -82,9 +81,14 @@ public class GiottoDirector extends
             _debug("GiottoDirector constructor in OpenRTOS target called");
 
         }
-
     }
 
+    /**
+     * Generate the fire code for the director.
+     * @return A string containing the fire code.
+     * @exception IllegalActionException If thrown by the superclass or thrown
+     * while generating code for the director.
+     */
     public String generateFireCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
         code.append("//generate firecode in GiottoDirector called" + _eol);
@@ -103,15 +107,14 @@ public class GiottoDirector extends
         return code.toString();
     }
 
-    /** Generate The fire function code. This method is called when the firing
-     *  code of each actor is not inlined. Each actor's firing code is in a
-     *  function with the same name as that of the actor.
+    /**
+     * Generate The fire function code. This method is called when the firing
+     * code of each actor is not inlined. Each actor's firing code is in a
+     * function with the same name as that of the actor.
      *
-     *  @return The fire function code.
-     *  @exception IllegalActionException If thrown while generating fire code.
+     * @return The fire function code.
+     * @exception IllegalActionException If thrown while generating fire code.
      */
-
-    /// this is my second hack at this method. Hopefully hit generates what we expect kindof
     public String generateFireFunctionCode() throws IllegalActionException {
         if (_debugging) {
             _debug("generateFireFunctionCode called from OpenRTOS giotto director***************");
@@ -125,6 +128,13 @@ public class GiottoDirector extends
 
     }
 
+    /**
+     * Get the files needed by the code generated from this helper class. This
+     * base class returns an empty set.
+     * @return A set of strings that are header files needed by the code
+     * generated from this helper class.
+     * @exception IllegalActionException Not Thrown in this base class.
+     */
     public Set getHeaderFiles() throws IllegalActionException {
         if (_debugging) {
             _debug("generateheader files openRTOS giotto director called here");
@@ -136,6 +146,12 @@ public class GiottoDirector extends
         return files;
     }
 
+    /**
+     * Generate the initialize code.
+     * @return The initialize code of the directory.
+     * @exception IllegalActionException If thrown while appending to the the
+     * block or processing the macros.
+     */
     public String generateInitializeCode() throws IllegalActionException {
         if (_debugging) {
             _debug("generateInitializeCode from openRTOS giotto director called here");
@@ -228,11 +244,11 @@ public class GiottoDirector extends
 
     }
 
-    /****
-     * Generates C code for the content of the main loop
-     * @return String containing the content of the main method
+    /**
+     * Generate C code for the content of the main loop.
+     * @return String containing the content of the main method.
+     * @exception IllegalActionException If thrown while traversing the model.
      */
-
     public String generateMainLoop() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
         if (_debugging) {
@@ -259,19 +275,28 @@ public class GiottoDirector extends
 
     }
 
-    /** Generate mode transition code. The mode transition code
-     *  generated in this method is executed after each global
-     *  iteration, e.g., in HDF model.  Do nothing in this base class.
+    /**
+     * Generate the mode transition code. The mode transition code
+     * generated in this method is executed after each global
+     * iteration, e.g., in HDF model.  Do nothing in this base class.
      *
-     *  @param code The string buffer that the generated code is appended to.
-     *  @exception IllegalActionException Not thrown in this base class.
+     * @param code The string buffer that the generated code is appended to.
+     * @exception IllegalActionException Not thrown in this base class.
      */
     public void generateModeTransitionCode(StringBuffer code)
             throws IllegalActionException {
         System.out.println("I should generate mode transition code here");
     }
 
+    /**
+     * Generate code to create the threads.
+     * @return the code for the threads.
+     * @exception IllegalActionException If thrown while accessing the model.
+     */  
     public String generateMyThreads() throws IllegalActionException {
+        // FIXME: Change the name of this method so that it does not
+        // have "My" in it.
+
         // System.out.println("generateMyThreads called");
         StringBuffer code = new StringBuffer();
         ArrayList args1 = new ArrayList();
@@ -380,6 +405,13 @@ public class GiottoDirector extends
         return processCode(code.toString());
     }
 
+    /**
+     * Generate the postfire code.
+     * 
+     * @return The generated postfire code.
+     * @exception IllegalActionException If thrown while appending to the the
+     * block or processing the macros.
+     */
     public String generatePostFireCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
         if (_debugging) {
@@ -396,9 +428,14 @@ public class GiottoDirector extends
         return code.toString();
     }
 
+    /**
+     * Generate the preinitialize code.
+     * @return A string of the preinitialize code for the helper.
+     * @exception IllegalActionException Not thrown in this base class.
+     */
     public String generatePreinitializeCode() throws IllegalActionException {
         double myPeriod = _getPeriod();
-        double myWCET = _getWCET();
+        double myWCET = getWCET();
         if (_debugging) {
             _debug("My period is :" + myPeriod + " and my WCET is :" + myWCET);
         }
@@ -482,6 +519,22 @@ public class GiottoDirector extends
         return processCode(code.toString());
     }
 
+    /**
+     * Return an unique label for the given port channel referenced
+     * by the given helper. By default, this delegates to the helper to
+     * generate the reference. Subclass may override this method
+     * to generate the desire label according to the given parameters.
+     * @param port The given port.
+     * @param channelAndOffset The given channel and offset.
+     * @param forComposite Whether the given helper is associated with
+     *  a CompositeActor
+     * @param isWrite The type of the reference. True if this is
+     *  a write reference; otherwise, this is a read reference.
+     * @param helper The specified helper.
+     * @return an unique reference label for the given port channel.
+     * @exception IllegalActionException If the helper throws it while
+     *  generating the label.
+     */
     public String getReference(TypedIOPort port, String[] channelAndOffset,
             boolean forComposite, boolean isWrite, CodeGeneratorHelper helper)
             throws IllegalActionException {
@@ -501,6 +554,21 @@ public class GiottoDirector extends
                     isWrite, helper);
     }
 
+    /** 
+     * Return a reference to the driver.
+     * This method is similar to the getReference() method however it it tailored 
+     * for use by a driver method.
+     * @param port The port whose information is desired.
+     * @param channelAndOffset The given channel and offset.
+     * @param forComposite Whether the given helper is associated with
+     *  a CompositeActor
+     * @param isWrite The type of the reference. True if this is
+     *  a write reference; otherwise, this is a read reference.
+     * @param helper The specified helper.
+     * @return an unique reference label for the given port channel.
+     * @exception IllegalActionException If the helper throws it while
+     *  generating the label.
+     */
     public String getDriverReference(TypedIOPort port,
             String[] channelAndOffset, boolean forComposite, boolean isWrite,
             CodeGeneratorHelper helper) throws IllegalActionException {
@@ -521,10 +589,11 @@ public class GiottoDirector extends
     }
 
     /**
-     * 
-     * @param period
+     * Generate code for the scheduler thread.
+     * @param period The period of the Giotto director.
      * @return Code that creates the Scheduler thread.
-     * @throws IllegalActionException
+     * @throws IllegalActionException If thrown while accessing
+     * the model.
      */
     public String generateSchedulerThread(String period)
             throws IllegalActionException {
@@ -746,6 +815,12 @@ public class GiottoDirector extends
         return processCode(code.toString());
     }
 
+    /** Generate code for transferring enough tokens to complete an internal
+     *  iteration.
+     *  @param inputPort The port to transfer tokens.
+     *  @param code The string buffer that the generated code is appended to.
+     *  @exception IllegalActionException If thrown while transferring tokens.
+     */
     public void generateTransferInputsCode(IOPort inputPort, StringBuffer code)
             throws IllegalActionException {
         if (_debugging) {
@@ -754,6 +829,12 @@ public class GiottoDirector extends
 
     }
 
+    /** Generate code for transferring enough tokens to fulfill the output
+     *  production rate.
+     *  @param outputPort The port to transfer tokens.
+     *  @param code The string buffer that the generated code is appended to.
+     *  @exception IllegalActionException If thrown while transferring tokens.
+     */
     public void generateTransferOutputsCode(IOPort outputPort, StringBuffer code)
             throws IllegalActionException {
         if (_debugging) {
@@ -804,36 +885,30 @@ public class GiottoDirector extends
         return variableDeclarations.toString();
     }
 
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+
     /**
-     * Determines how may Giotto directors are above this director.
-     *  *      */
-    private int _depthInGiottoHierarchy() {
-        int depth = 0;
-        ptolemy.actor.Director director = ((TypedCompositeActor) _director
-                .getContainer()).getExecutiveDirector();
-
-        while (director != null) {
-            if (director instanceof ptolemy.domains.giotto.kernel.GiottoDirector) {
-                depth += 1;
-            }
-            director = ((TypedCompositeActor) director.getContainer())
-                    .getExecutiveDirector();
-
-        }
-        if (_debugging) {
-            _debug("My depth in the Giotto hierarcy is : " + depth);
-        }
-        return depth;
-    }
-
+     * Given a block name, generate code for that block. This method is called
+     * by actors helpers that have simple blocks that do not take parameters or
+     * have widths.
+     * @param blockName The name of the block.
+     * @param args A list of arguments to be passed to the code block.
+     * @return The code for the given block.
+     * @exception IllegalActionException If illegal macro names are found, or if
+     * there is a problem parsing the code block from the helper .c file.
+     */
     protected String _generateBlockCode(String blockName, List args)
             throws IllegalActionException {
         return _codeStream.getCodeBlock(blockName, args);
     }
 
     /**
-     * Generates the fire code for the director.
-     * In this case the fire code is simply the OpenRTOS thread code
+     * Generate the fire code for the director.
+     * In this case the fire code is simply the OpenRTOS thread code.
+     * @return The generated code.
+     * @exception IllegalActionException If the thread code cannot be generated.
      */
     protected String _generateFireCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
@@ -946,6 +1021,31 @@ public class GiottoDirector extends
         }
 
         return code.toString();
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+    /**
+     * Return how may Giotto directors are above this director.
+     */
+    private int _depthInGiottoHierarchy() {
+        int depth = 0;
+        ptolemy.actor.Director director = ((TypedCompositeActor) _director
+                .getContainer()).getExecutiveDirector();
+
+        while (director != null) {
+            if (director instanceof ptolemy.domains.giotto.kernel.GiottoDirector) {
+                depth += 1;
+            }
+            director = ((TypedCompositeActor) director.getContainer())
+                    .getExecutiveDirector();
+
+        }
+        if (_debugging) {
+            _debug("My depth in the Giotto hierarcy is : " + depth);
+        }
+        return depth;
     }
 
     /**
@@ -1403,8 +1503,9 @@ public class GiottoDirector extends
         return code.toString();
     }
 
-    /** Generate the content of output driver methods. The output driver updates the value of a port to be that of the
-     *  output of the latest execution of a task.
+    /** Generate the content of output driver methods. The output
+     *  driver updates the value of a port to be that of the output of
+     *  the latest execution of a task.
      *  @return code that copies outputs to a port
      */
     String _generateOutputDriverCode() throws IllegalActionException {
@@ -1480,17 +1581,110 @@ public class GiottoDirector extends
     }
 
     /**
-     * This function simply overwrites the base class function
+     * Generate the type conversion fire code. This method is called by the
+     * Director to append necessary fire code to handle type conversion.
+     * @param source The source port, ignored by this method.
+     * @param sink The sink port, ignored by this method.
+     * @return The generated code, in this case, return the empty string.
      * @exception IllegalActionException Not thrown in this base class.
      */
     public String _generateTypeConvertFireCode(IOPort source, IOPort sink)
             throws IllegalActionException {
-        StringBuffer code = new StringBuffer();
         if (_debugging) {
             _debug("generateTypeConvertFireCode in OpenRTOS giotto director called");
         }
-        return code.toString();
+        return "";
     }
+
+    /**
+     * Return the worst case execution time (WCET) seen by this
+     * director.
+     * @return The Worst Case Execution Time (WCET).
+     * @exception IllegalActionException If there is a problem determining
+     * the WCET or a problem accessing the model.
+     */
+    public double getWCET() throws IllegalActionException {
+        double wcet = 0;
+        double actorFrequency = 0;
+        double actorWCET = 0;
+        int actorCount = 0;
+        CodeGeneratorHelper directorHelper;
+        for (Actor actor : (List<Actor>) ((TypedCompositeActor) _director
+                .getContainer()).deepEntityList()) {
+            actorCount++;
+            Attribute frequency = ((Entity) actor).getAttribute("frequency");
+            Attribute WCET = ((Entity) actor).getAttribute("WCET");
+
+            if (actor instanceof CompositeActor) {
+
+                if (_debugging) {
+                    _debug("Composite Actor, if it has a director I need to ask it for it's WCET");
+                }
+                Director dir = actor.getDirector();
+
+                directorHelper = (CodeGeneratorHelper) _getHelper(actor
+                        .getDirector());
+                System.out.println(dir.getFullName());
+                System.out.println(directorHelper.getWCET());
+                //ptolemy.codegen.actor.Director df = new ptolemy.codegen.actor.Director(
+                //        actor.getDirector());
+                //if(dir == null)
+                if (dir == null) {
+
+                    if (_debugging) {
+                        _debug("no director in composite actor ");
+                    }
+
+                } else {
+                    double dummyWCET = directorHelper.getWCET();//df.getWCET();//dir.getWCET();
+                    if (_debugging) {
+                        _debug("Composite Actor:" + actor.getFullName()
+                                + " has WCET " + dummyWCET);
+                    }
+                    wcet += dummyWCET;
+                }
+            } else {
+
+                if (frequency == null) {
+                    actorFrequency = 1;
+                } else {
+                    actorFrequency = ((IntToken) ((Variable) frequency)
+                            .getToken()).intValue();
+                }
+                if (WCET == null) {
+                    actorWCET = 0.01;
+                } else {
+                    actorWCET = ((DoubleToken) ((Variable) WCET).getToken())
+                            .doubleValue();
+                }
+
+                wcet += (actorFrequency * actorWCET);
+            }
+            if (_debugging) {
+                _debug("with actor " + actor.getFullName()
+                        + " wect thus far is " + wcet);
+            }
+        }
+        if (_debugging) {
+            _debug("actor count is " + actorCount);
+        }
+        // now determine the WCET of the scheduler
+        HashSet frequencies = _getAllFrequencies();
+        Object myFrequencies[] = frequencies.toArray();
+        int intFrequencies[] = new int[_getAllFrequencies().size()];
+        for (int l = 0; l < _getAllFrequencies().size(); l++) {
+            intFrequencies[l] = (Integer) myFrequencies[l];
+
+        }
+
+        int myLCM = _lcm(intFrequencies);
+        double schedulerWCET = 0.01; // this value needs to be calculated
+
+        wcet += schedulerWCET * myLCM;
+
+        return wcet;
+    }
+
 
     /** Generate PORT variables. A PORT allows control over the value read
      *  A port is an efficient way to handle double buffering
@@ -1843,86 +2037,8 @@ public class GiottoDirector extends
             return ttype;
     }
 
-    public double _getWCET() throws IllegalActionException {
-        double wcet = 0;
-        double actorFrequency = 0;
-        double actorWCET = 0;
-        int actorCount = 0;
-        CodeGeneratorHelper directorHelper;
-        for (Actor actor : (List<Actor>) ((TypedCompositeActor) _director
-                .getContainer()).deepEntityList()) {
-            actorCount++;
-            Attribute frequency = ((Entity) actor).getAttribute("frequency");
-            Attribute WCET = ((Entity) actor).getAttribute("WCET");
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables               ////
 
-            if (actor instanceof CompositeActor) {
-
-                if (_debugging) {
-                    _debug("Composite Actor, if it has a director I need to ask it for it's WCET");
-                }
-                Director dir = actor.getDirector();
-
-                directorHelper = (CodeGeneratorHelper) _getHelper(actor
-                        .getDirector());
-                System.out.println(dir.getFullName());
-                System.out.println(directorHelper._getWCET());
-                //ptolemy.codegen.actor.Director df = new ptolemy.codegen.actor.Director(
-                //        actor.getDirector());
-                //if(dir == null)
-                if (dir == null) {
-
-                    if (_debugging) {
-                        _debug("no director in composite actor ");
-                    }
-
-                } else {
-                    double dummyWCET = directorHelper._getWCET();//df._getWCET();//dir._getWCET();
-                    if (_debugging) {
-                        _debug("Composite Actor:" + actor.getFullName()
-                                + " has WCET " + dummyWCET);
-                    }
-                    wcet += dummyWCET;
-                }
-            } else {
-
-                if (frequency == null) {
-                    actorFrequency = 1;
-                } else {
-                    actorFrequency = ((IntToken) ((Variable) frequency)
-                            .getToken()).intValue();
-                }
-                if (WCET == null) {
-                    actorWCET = 0.01;
-                } else {
-                    actorWCET = ((DoubleToken) ((Variable) WCET).getToken())
-                            .doubleValue();
-                }
-
-                wcet += (actorFrequency * actorWCET);
-            }
-            if (_debugging) {
-                _debug("with actor " + actor.getFullName()
-                        + " wect thus far is " + wcet);
-            }
-        }
-        if (_debugging) {
-            _debug("actor count is " + actorCount);
-        }
-        // now determine the WCET of the scheduler
-        HashSet frequencies = _getAllFrequencies();
-        Object myFrequencies[] = frequencies.toArray();
-        int intFrequencies[] = new int[_getAllFrequencies().size()];
-        for (int l = 0; l < _getAllFrequencies().size(); l++) {
-            intFrequencies[l] = (Integer) myFrequencies[l];
-
-        }
-
-        int myLCM = _lcm(intFrequencies);
-        double schedulerWCET = 0.01; // this value needs to be calculated
-
-        wcet += schedulerWCET * myLCM;
-
-        return wcet;
-    }
-
+    private static int _MAX_PRIORITY_LEVEL = 254;
 }

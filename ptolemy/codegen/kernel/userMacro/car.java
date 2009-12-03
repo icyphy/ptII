@@ -49,7 +49,7 @@ public class car {
             throws IllegalActionException {
         String list = arguments.get(0).trim();
         list = list.substring(list.indexOf('(') + 1, list.lastIndexOf(')'));
-        return CodeGeneratorHelper._parseList(list).get(0);
+        return CodeGeneratorHelper.parseList(list).get(0);
     }
 
     public static boolean checkArguments(List<String> arguments) {

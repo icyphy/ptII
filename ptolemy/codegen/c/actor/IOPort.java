@@ -1,6 +1,6 @@
 /* Code generator helper for IOPort.
 
- Copyright (c) 2005-2009 The Regents of the University of California.
+ Copyright (c) 2008-2009 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -127,24 +127,26 @@ public class IOPort extends CCodeGeneratorHelper implements PortCodeGenerator {
 
     /** Generate the code for postfire().
      *  @return In this baseclass, return the empty string.
+     *  @exception IllegalActionException Not thrown in this base class.
      */
     public String generatePostFireCode() throws IllegalActionException {
-        StringBuffer code = new StringBuffer();
-        return code.toString();
+        return "";
     }
 
     /** Generate the code for prefire().
      *  @return In this baseclass, return the empty string.
+     *  @exception IllegalActionException Not thrown in this base class.
      */
     public String generatePreFireCode() throws IllegalActionException {
-        StringBuffer code = new StringBuffer();
-        return code.toString();
+        return "";
     }
 
     /** Get the buffer size of channel of the port.
      *  @param channelNumber The number of the channel that is being set.
      *  @return return The size of the buffer.
      *  @see #setBufferSize(int, int)
+     *  @exception IllegalActionException If thrown while getting the width of
+     *  the port of the channel.
      */
     public int getBufferSize(int channelNumber) throws IllegalActionException {
         Channel channel = _getChannel(channelNumber);
@@ -505,8 +507,19 @@ public class IOPort extends CCodeGeneratorHelper implements PortCodeGenerator {
         return result;
     }
 
-    protected String _updateOffset(int channel, int rate)
+    /**
+     * Update the offset for each channel of a port.
+     * @param channel The channel for which the the offset is to be updated
+     * @param rate The rate of the channel
+     * @return If the rate is fixed, then the empty string is returned.
+     * If the rate is variable, then a string that refers to the appropriate
+     * element in the buffer is returned.
+     * @exception IllegalActionException If thrown while accessing the port
+     * or read offset
+     */
+    protected String _updateOffset(int channel, int rate) 
             throws IllegalActionException {
+
         StringBuffer code = new StringBuffer();
         boolean padBuffers = ((BooleanToken) _codeGenerator.padBuffers
                 .getToken()).booleanValue();

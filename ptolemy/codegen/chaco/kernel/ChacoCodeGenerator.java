@@ -1,6 +1,6 @@
 /* Code generator for the Chaco graph partitioner.
 
- Copyright (c) 2005-2006 The Regents of the University of California.
+ Copyright (c) 2008-2009 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -59,9 +59,10 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.StringAttribute;
 
-////ChacoCodeGenerator
+///////////////////////////////////////////////////////////////////////
+//// ChacoCodeGenerator
 
-/** Base class for Chaco code generator.
+/** The Chaco code generator.
  *  Chaco is a graph partitioning software. The ChacoCodeGenerator takes a 
  *  Ptolemy model and generates the corresponding input file for Chaco.
  *  
@@ -518,6 +519,11 @@ public class ChacoCodeGenerator extends CodeGenerator {
         System.out.println(_arrayToString(getDistinctColors(28)));
     }
 
+    /**
+     * Transform the model graph.
+     * @exception KernelException If thrown while reading the graph,
+     * annotating the MPI ports or updating the gui.
+     */
     public void transformGraph() throws KernelException {
 
         if (!_isClearMode()) {
@@ -696,6 +702,12 @@ public class ChacoCodeGenerator extends CodeGenerator {
         return tempCodeFileName;
     }
 
+    /**
+     * Write the code to the chaco input file.
+     * @param code The code to be written to the file returned by the
+     * _writeCode() method. 
+     * @exception IllegalActionException if the code cannot be written.
+     */
     protected void _writeChacoInputFile(String code)
             throws IllegalActionException {
         BufferedWriter out = null;
@@ -719,6 +731,10 @@ public class ChacoCodeGenerator extends CodeGenerator {
         }
     }
 
+    /**
+     * Read the codefrom the chaco input file.
+     * @exception IllegalActionException if the code cannot be read.
+     */
     protected void _readChacoOutputFile() throws IllegalActionException {
 
         String codeFileNameWritten = this.getCodeFileName();

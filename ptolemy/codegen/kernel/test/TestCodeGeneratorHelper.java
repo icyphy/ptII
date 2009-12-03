@@ -23,6 +23,11 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 */
+package ptolemy.codegen.kernel.test;
+
+import ptolemy.codegen.kernel.CodeGeneratorHelper;
+import ptolemy.kernel.util.NamedObj;
+
 /** Test stub class for the CodeGeneratorHelper class.
  * @author Christopher Brooks
  * @version $Id$
@@ -30,15 +35,16 @@ ENHANCEMENTS, OR MODIFICATIONS.
  * @Pt.ProposedRating Red (cxh)
  * @Pt.AcceptedRating Red (cxh)
  */
-package ptolemy.codegen.kernel.test;
-
-import ptolemy.codegen.kernel.CodeGeneratorHelper;
-import ptolemy.kernel.util.NamedObj;
-
 public class TestCodeGeneratorHelper extends CodeGeneratorHelper {
+
+    /**
+     * Construct the code generator helper associated with the given component.
+     * @param namedObj The associated component.
+     */
     public TestCodeGeneratorHelper(NamedObj namedObj) {
         super(namedObj);
     }
 
+    /** The VariableScope used for testing. */
     public VariableScope variableScope = new VariableScope();
 }

@@ -1,6 +1,6 @@
 /* Code generator helper class associated with the FSMDirector class.
 
- Copyright (c) 2005-2006 The Regents of the University of California.
+ Copyright (c) 2009 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -38,7 +38,8 @@ import ptolemy.domains.fsm.kernel.State;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
 
-////FSMDirector
+///////////////////////////////////////////////////////////////////////
+//// FSMDirector
 
 /**
  Code generator helper associated with the PRET FSMDirector class. This class
@@ -53,18 +54,21 @@ import ptolemy.kernel.util.NamedObj;
 public class FSMDirector extends
         ptolemy.codegen.c.domains.fsm.kernel.FSMDirector {
 
-    /** Construct the code generator helper associated with the given
-     *  FSMDirector.
-     *  @param fsmDirector The associated
-     *  ptolemy.domains.fsm.kernel.FSMDirector
+    /**
+     * Construct the code generator helper associated with the given
+     * FSMDirector.
+     * @param fsmDirector The associated ptolemy.domains.fsm.kernel.FSMDirector
      */
     public FSMDirector(ptolemy.domains.fsm.kernel.FSMDirector fsmDirector) {
         super(fsmDirector);
     }
 
-    /** Generates the preInitialization code for the director.
+    /**
+     * Generate the preInitialization code for the director.
      * @return string containing the preinitializaton code
-     * */
+     * @exception IllegalActionException If thrown by the superclass or
+     * by while generating the actor code.
+     */
     public String generatePreinitializeCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
         code.append(super.generatePreinitializeCode());
@@ -75,10 +79,12 @@ public class FSMDirector extends
         return code.toString();
     }
 
-    /**Generates the code to transfer outputs from a port to it's receiver
+    /*
+     * Generates the code to transfer outputs from a port to its receiver.
      * @param outputPort - the port generating output
      * @param code - StringBuffer the generated code should appended to.
-     * */
+     * @exception IllegalActionAction If thrown by the super class
+     */
     public void generateTransferOutputsCode(IOPort outputPort, StringBuffer code)
             throws IllegalActionException {
         code
@@ -89,8 +95,12 @@ public class FSMDirector extends
 
     }
 
-    /**Generate code for all the actors associated with the given FSMDirector
-     *@return String containing the actor code.
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+    /**
+     * Generate code for all the actors associated with the given FSMDirector
+     * @return String containing the actor code.
      */
     private String _generateActorCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
@@ -144,5 +154,4 @@ public class FSMDirector extends
 
         return code.toString();
     }
-
 }

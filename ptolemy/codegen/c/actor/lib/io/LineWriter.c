@@ -15,14 +15,14 @@ $actorSymbol(filePtr) = stdout;
 /**/
 
 /***openForAppend($fileName)***/
-if (!($actorSymbol(filePtr) = fopen ($fileName,"a"))) {
+if (!($actorSymbol(filePtr) = fopen ("$fileName" ,"a"))) {
     fprintf(stderr,"ERROR: cannot open output file for LineWriter actor.\n");
     exit(1);
 }
 /**/
 
 /***openForWrite($fileName)***/
-if (!($actorSymbol(filePtr) = fopen ($fileName,"w"))) {
+if (!($actorSymbol(filePtr) = fopen ("$fileName","w"))) {
     fprintf(stderr,"ERROR: cannot open output file for LineWriter actor.\n");
     exit(1);
 }

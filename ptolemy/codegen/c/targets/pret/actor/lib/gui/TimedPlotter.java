@@ -80,6 +80,7 @@ public class TimedPlotter extends CCodeGeneratorHelper {//PlotterBase{  //CCodeG
 
     /** Generate plot specific fire code.
      *  @param width The width.
+     *  @param id The id of the plotBlock to be used.zf
      *  @return The generated code.
      *  @exception IllegalActionException If the code stream encounters
      *   errors in processing the specified code blocks.

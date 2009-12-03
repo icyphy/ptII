@@ -39,10 +39,11 @@ import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 
-////GiottoDirector
+///////////////////////////////////////////////////////////////////////
+//// SDFDirector
 
 /**
- Code generator helper associated with the GiottoDirector class. This class
+ Code generator helper associated with the SDFDirector class. This class
  is also associated with a code generator.
 
  @author Shanna-Shaye Forbes, Man-Kit Leung, Ben Lickly
@@ -51,15 +52,29 @@ import ptolemy.kernel.util.IllegalActionException;
  @Pt.ProposedRating Red (sssf)
  @Pt.AcceptedRating Red (sssf)
  */
-
-//at the moment I'm not sure exactly what should go in this specific implementation. It will be filled out as the semester progresses.
 public class SDFDirector extends
         ptolemy.codegen.c.domains.sdf.kernel.SDFDirector {
+
+    /** Construct the code generator helper associated with the given
+     *  SDFDirector.
+     *  @param sdfDirector The associated
+     *  ptolemy.domains.sdf.kernel.SDFDirector
+     */
     public SDFDirector(ptolemy.domains.sdf.kernel.SDFDirector sdfDirector) {
         super(sdfDirector);
     }
 
-    public double _getWCET() throws IllegalActionException {
+    ////////////////////////////////////////////////////////////////////////
+    ////                         public methods                         ////
+
+    /**
+     * Return the worst case execution time (WCET) seen by this
+     * director.
+     * @return The Worst Case Execution Time (WCET).
+     * @exception IllegalActionException If there is a problem determining
+     * the WCET or a problem accessing the model.
+     */
+    public double getWCET() throws IllegalActionException {
         // go through all my actors and get their WCET and multiply that by the firing count
         // for now assume that each actor is fired once
         double wcet = 0;
@@ -98,7 +113,5 @@ public class SDFDirector extends
             _debug("sdf director has wcet of " + wcet);
         }
         return wcet;
-
     }
-
 }

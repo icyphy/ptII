@@ -103,3 +103,4 @@ test CodeGeneratorHelper-5.1 {getSourceChannel} {
     list $errMsg [$channel toString]
 } {{java.lang.ArrayIndexOutOfBoundsException: 1} output_0}
 
+

@@ -1,5 +1,4 @@
 /* Base class implementation of a ptolemy.actor.Receiver.
-Below is the copyright agreement for the Ptolemy II system.
 
 Copyright (c) 2009 The Regents of the University of California.
 All rights reserved.
@@ -33,30 +32,64 @@ import ptolemy.kernel.util.IllegalActionException;
  * @author Jia Zou, Man-Kit Leung, Isaac Liu
  * @version $Id$
  * @since Ptolemy II 7.1
- *
+ * @Pt.ProposedRating Red (mankit)
+ * @Pt.AcceptedRating Red (mankit)
  */
 public class Receiver extends CCodeGeneratorHelper {
 
+    /** Construct the Receiver helper.
+     *  @param receiver The ptolemy.actor.receiver that corresponds
+     *  with this helper.
+     *  @exception IllegalActionException If thrown by the super class.
+     */
     public Receiver(ptolemy.actor.Receiver receiver) {
         super(receiver);
     }
 
+    ////////////////////////////////////////////////////////////////////////
+    ////                         public methods                         ////
+
+    /**
+     * Generate code for getting tokens from the receiver.
+     * @param channel The channel for which to generate the get code.
+     * @return The code to check if the reciever has a token, in this
+     * base class, the empty string is returned.
+     * @exception IllegalActionException Not thrown in this base class.
+     */
     public String generateCodeForGet(int channel) throws IllegalActionException {
         return "";
     }
 
+    /**
+     * Generate code to check if the receiver has a token.
+     * @param channel The channel for which to generate the hasToken() code.
+     * @return The code to check if the reciever has a token, in this
+     * case, the String "1" is returned, which indicates that the receiver
+     * always has a token.
+     * @exception IllegalActionException Not thrown in this base class.
+     */
     public String generateCodeForHasToken(int channel)
             throws IllegalActionException {
         return "1";
     }
 
+    /** 
+     * Generate code for putting tokens to the receiver.
+     * Note the type conversion is also done in this put method.
+     * @param token The token to be sent.
+     * @return The code to put tokens to the receiver, in this case,
+     * the empty string is returned.
+     * @exception IllegalActionException Not thrown in this base class.
+     */
     public String generateCodeForPut(String token)
             throws IllegalActionException {
         return "";
     }
 
+    /** Get the corresponding component.
+     *  @return the component that corresponds with this receiver.   
+     */
     public ptolemy.actor.Receiver getReceiver() {
         return (ptolemy.actor.Receiver) getObject();
     }
-
 }

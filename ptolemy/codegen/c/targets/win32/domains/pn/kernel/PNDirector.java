@@ -68,25 +68,21 @@ public class PNDirector extends Director {
 
     /**
      * Construct the code generator helper associated with the given PNDirector.
-     * 
-     * @param pnDirector
-     *            The associated ptolemy.domains.pn.kernel.PNDirector
+     * @param pnDirector The associated ptolemy.domains.pn.kernel.PNDirector
      */
     public PNDirector(ptolemy.domains.pn.kernel.PNDirector pnDirector) {
         super(pnDirector);
-
     }
 
-    // //////////////////////////////////////////////////////////////////////
-    // // public methods ////
+    ////////////////////////////////////////////////////////////////////////
+    ////                   public methods                               ////
 
     /**
      * Generate the body code that lies between variable declaration and wrapup.
      * 
      * @return The generated body code.
-     * @exception IllegalActionException
-     *                If the {@link #_generateFireCode()} method throws the
-     *                exceptions.
+     * @exception IllegalActionException If the {@link #_generateFireCode()} method throws the
+     * exceptions.
      */
     public String generateFireCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
@@ -148,12 +144,23 @@ public class PNDirector extends Director {
         return libraries;
     }
 
+    /**
+     * Return the director header.
+     * @return Return the generated name of the directory followed by
+     * "_controlBlock".
+     */
     public String generateDirectorHeader() {
         return CodeGeneratorHelper.generateName(_director) + "_controlBlock";
     }
 
-    public static String generatePortHeader(IOPort port, int i) {
-        return CodeGeneratorHelper.generateName(port) + "_" + i + "_pnHeader";
+    /**
+     * Given a port and channel, return the port header.
+     * @param port The port.
+     * @param channel The channel
+     * @return a string that refers to the port and channel.
+     */ 
+    public static String generatePortHeader(IOPort port, int channel) {
+        return CodeGeneratorHelper.generateName(port) + "_" + channel + "_pnHeader";
     }
 
     /**

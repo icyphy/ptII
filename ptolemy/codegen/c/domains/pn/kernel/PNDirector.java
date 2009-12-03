@@ -150,7 +150,8 @@ public class PNDirector extends Director {
      * Return the code for getting data from the specific port channel.
      * @param port The specified port.
      * @param channel The specified channel.
-     * @return the code for getting data from the specific port channel.
+     * @return the code for getting data from the specific port channel,
+     * in this case, return the empty string.
      * @exception IllegalActionException Not thrown here.
      */
     public String generateCodeForGet(IOPort port, int channel)
@@ -165,7 +166,8 @@ public class PNDirector extends Director {
      * Return the code for sending data from the specific port channel.
      * @param port The specified port.
      * @param channel The specified channel.
-     * @return the code for sending data from the specific port channel.
+     * @return the code for sending data from the specific port channel,
+     * in this case, return the empty string.
      * @exception IllegalActionException Not thrown here.
      */
     public String generateCodeForSend(IOPort port, int channel)
