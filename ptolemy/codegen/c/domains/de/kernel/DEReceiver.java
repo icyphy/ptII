@@ -40,21 +40,44 @@ import ptolemy.kernel.util.IllegalActionException;
  */
 public class DEReceiver extends ptolemy.codegen.c.actor.Receiver {
 
+    /** Construct the code generator helper associated with the given DEReceiver.
+     *  @param receiver The associated receiver
+     */
     public DEReceiver(ptolemy.domains.de.kernel.DEReceiver receiver) {
         super(receiver);
-        // TODO Auto-generated constructor stub
     }
 
+    /**
+     * Return the code for getting data from the specific port channel.
+     * @param port The specified port.
+     * @param channel The specified channel.
+     * @return the code for getting data from the specific port channel,
+     * in this case, return the empty string.
+     * @exception IllegalActionException Not thrown here.
+     */
     public String generateCodeForGet() throws IllegalActionException {
         return "";
     }
 
+    /** Generate code to check if the receiver has a token.
+     *  @param channel The channel for which to generate the get code.
+     *  @return the hasToken code.
+     *  @exception IllegalActionException If an error occurs when
+     *  getting the receiver, its container or while generating a port name.
+     */
     public String generateCodeForHasToken(int channel)
             throws IllegalActionException {
         IOPort port = getReceiver().getContainer();
         return "Event_Head_" + generateName(port) + "[" + channel + "] != NULL";
     }
 
+    /**
+     * Return the code for sending data.
+     * @param token The token to be sent.
+     * @return the code for sending data, in this case, return the
+     * empty string.
+     * @exception IllegalActionException Not thrown here.
+     */
     public String generateCodeForPut(PartialResult token)
             throws IllegalActionException {
         return "";
