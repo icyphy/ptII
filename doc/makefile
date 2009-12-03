@@ -250,8 +250,6 @@ CODEGENPACKAGES = \
 	ptolemy.codegen.c.domains.modal.kernel \
 	ptolemy.codegen.c.domains.modal.modal \
 	ptolemy.codegen.c.domains.pn.kernel \
-	ptolemy.codegen.c.domains.ptides.kernel \
-	ptolemy.codegen.c.domains.ptides.lib \
 	ptolemy.codegen.c.domains.sdf.kernel \
 	ptolemy.codegen.c.domains.sdf.lib \
 	ptolemy.codegen.c.domains.sr.kernel \
