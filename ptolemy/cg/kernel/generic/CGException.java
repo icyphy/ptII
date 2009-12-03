@@ -76,7 +76,7 @@ public class CGException {
      *  @param detail The message.
      *  @exception IllegalActionException Always thrown by this method.
      */
-    public static IllegalActionException throwException(Object component, Throwable cause,
+    public static void throwException(Object component, Throwable cause,
             String detail) throws IllegalActionException {
         if (component instanceof Nameable) {
             throw new IllegalActionException((Nameable) component, cause, detail);

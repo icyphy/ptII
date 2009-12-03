@@ -67,6 +67,7 @@ public class IOPort extends NamedProgramCodeGeneratorAdapter implements
      * channel and asks it to generate the get code.
      * 
      * @param channel The channel for which to generate the get code.
+     * @param offset The offset in the array representation of the port.
      * @return The code that gets data from the specified channel.
      * @exception IllegalActionException If the receiver adapter is
      *  not found or it encounters an error while generating the
@@ -105,6 +106,7 @@ public class IOPort extends NamedProgramCodeGeneratorAdapter implements
      * channel and asks it to generate the hasToken code.
      * 
      * @param channel The channel for which to generate the hasToken code.
+     * @param offset The offset in the array representation of the port.
      * @return The code that checks whether there is data in the 
      *  specified channel.
      * @exception IllegalActionException If the receiver adapter is
@@ -144,6 +146,8 @@ public class IOPort extends NamedProgramCodeGeneratorAdapter implements
      * channel and asks it to generate the send code.
      * 
      * @param channel The channel for which to generate the send code.
+     * @param offset The offset in the array representation of the port.
+     * @param dataToken The token to be sent.
      * @return The code that sends data to the specified channel.
      * @exception IllegalActionException If the receiver adapter is
      *  not found or it encounters an error while generating the
@@ -174,9 +178,9 @@ public class IOPort extends NamedProgramCodeGeneratorAdapter implements
      *  initialize code for each receiver contained by this
      *  IOPort.
      *  @return The generated initialize code.
-     *  @exception IllegalActionException If an error occurs
-     *  when getting the receiver adapters or 
-     *  generating their initialize code.
+     *  @exception IllegalActionException If an error occurs when
+     *  getting the receiver adapters or generating their initialize
+     *  code.
      */
     public String generateInitializeCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();

@@ -496,6 +496,7 @@ public class TemplateParser {
     }
 
     /** Parse the list of comma separted parameters.
+     *  @param parameters A comma separate list of parameters.   
      *  @return A list of parameters.
      */
     public static List<String> parseList(String parameters) {

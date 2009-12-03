@@ -108,7 +108,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
     /**
      * Get the corresponding type in code generation from the given Ptolemy
      * type.
-     * @param ptType The given Ptolemy type.
+     * @param type The given Ptolemy type.
      * @return The code generation type.
      * @exception IllegalActionException If the given ptolemy cannot
      *  be resolved.
@@ -148,7 +148,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
     /**
      * Get the corresponding type in code generation from the given Ptolemy
      * type.
-     * @param ptType The given Ptolemy type.
+     * @param type The given Ptolemy type.
      * @return The code generation type.
      * @exception IllegalActionException If the given ptolemy cannot
      *  be resolved.
@@ -229,7 +229,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
     
     /**
      * Return the type that corresponds with an index in the typesArray in
-     * in the generated type 
+     * in the generated type.
      * @param codeGenType The index of the codegen type.
      * @return The Ptolemy type that corresponds with the index.
      * @exception IllegalActionException If the type is unsupported.

@@ -82,7 +82,7 @@ public class SDFReceiver extends Receiver {
                 _forComposite, false, containingActorAdapter);
     }
 
-    /** Generates code to check the receiver has token.
+    /** Generates code to check the receiver has a token.
      *  @param offset The offset of the receiver, ignored in this base
      *  class.
      *  @return The generated hasToken code, in this class, the string "true"

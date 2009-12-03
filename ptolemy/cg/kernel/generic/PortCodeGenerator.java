@@ -44,16 +44,17 @@ import ptolemy.kernel.util.IllegalActionException;
 
 public interface PortCodeGenerator {
 
-    /** Generate the get code.
+    /** Generate the code to get a token from a port.
      *  @param channel The channel for which the get code is generated.
-     *  @param offset The offset of the port.
+     *  @param offset The offset in the array representation of the port.
      *  @return The code that gets data from the channel.
      *  @exception IllegalActionException If the director adapter class cannot be found.
      */
     public String generateGetCode(String channel, String offset) throws IllegalActionException;
 
-    /** Generate the put code.
+    /** Generate the code to put a token to a port.
      *  @param channel The channel for which the send code is generated.
+     *  @param offset The offset in the array representation of the port.
      *  @param dataToken The token to be sent
      *  @return The code that sends the dataToken on the channel.
      *  @exception IllegalActionException If the director adapter class cannot be found.
@@ -61,15 +62,16 @@ public interface PortCodeGenerator {
     public String generatePutCode(String channel, String offset, String dataToken)
             throws IllegalActionException;
 
-    /** Generate code for HasToken.
+    /** Generates code to check the receiver has a token.
      *  @param channel The channel for which the get code is generated.
+     *  @param offset The offset in the array representation of the port.
      *  @return The code that generates has token from the channel. 
      *  FIXME: potentially, we could also pass in a boolean that indicates whether
      *  the port the channel resides is a multiport, if it is, then only a static
      *  variable is needed instead of an array of length 1.
      *  @exception IllegalActionException If code can't be generated.
-     */
-    public String generateHasTokenCode(String channel, String offest)
+    */
+    public String generateHasTokenCode(String channel, String offset)
             throws IllegalActionException;
 
 }

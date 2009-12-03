@@ -39,32 +39,40 @@ import ptolemy.kernel.util.InvalidStateException;
 ///////////////////////////////////////////////////////////////////////
 ////Receiver
 
-/** The base class adapter for recevier.
- *  @author Jia Zou, Man-Kit Leung, Isaac Liu, Bert Rodiers
- *  @version $Id$
- *  @since Ptolemy II 7.1
- *  @Pt.ProposedRating Red (jiazou)
- *  @Pt.AcceptedRating Red (jiazou)
+/**
+ * The base class adapter for Recevier.
  *
+ * @author Jia Zou, Man-Kit Leung, Isaac Liu, Bert Rodiers
+ * @version $Id$
+ * @since Ptolemy II 7.1
+ * @Pt.ProposedRating Red (jiazou)
+ * @Pt.AcceptedRating Red (jiazou)
  */
 public abstract class Receiver extends ProgramCodeGeneratorAdapter {
 
-    /** Construct the receiver.
+    /** Construct the Receiver adapter.
+     *  @param receiver The ptolemy.actor.receiver that corresponds
+     *  with this adapter
+     *  @exception IllegalActionException If thrown by the super class.
      */
     public Receiver(ptolemy.actor.Receiver receiver)
             throws IllegalActionException {
         super(receiver);
     }
 
-    /** Abstract class to generate code for getting tokens from the receiver.
+    /** Generate code for getting tokens from the receiver.
+     *  @param offset The offset in the array representation of the port.
      *  @return generate get code.
      *  @throws IllegalActionException
      */
     abstract public String generateGetCode(String offset) throws IllegalActionException;
 
-    /** Abstract class to generate code to check if the receiver has token.
+    /** Generate code to check if the receiver has a token.
+     *  @param offset The offset in the array representation of the port.
      *  @return generate hasToken code.
-     *  @throws IllegalActionException
+     *  @exception IllegalActionException If an error occurs when
+     *  getting the receiver adapters or generating their initialize
+     *  code.
      */
     abstract public String generateHasTokenCode(String offset) throws IllegalActionException;
     
@@ -81,20 +89,29 @@ public abstract class Receiver extends ProgramCodeGeneratorAdapter {
         return _generateBlockByName(_defaultBlocks[1]);
     }
     
-    /** Abstract class to generate code for putting tokens from the receiver.
-     *  Note the type conversion is also done in this put method.
-     *  @return generate type conversion as well as put code.
-     *  @throws IllegalActionException
+    /** 
+     * Generate code for putting tokens from the receiver.
+     * Note the type conversion is also done in this put method.
+     * @param sourcePort The port for which to generate the send code.
+     * @param offset The offset in the array representation of the port.
+     * @param token The token to be sent.
+     * @return generate type conversion as well as put code.
+     * @exception IllegalActionException If the receiver adapter is
+     * not found or it encounters an error while generating the send
+     * code.
      */
     abstract public String generatePutCode(IOPort sourcePort, String offset, String token)
             throws IllegalActionException;
 
-    /** Get the corresponding component */
+    /** Get the corresponding component.
+     *  @return the component that corresponds with this receiver.   
+     */
     public ptolemy.actor.Receiver getComponent() {
         return (ptolemy.actor.Receiver) _component;
     }
 
-    /** Return the name of this receiver
+    /** Return the name of this receiver.
+     *  @return the name of this receiver.   
      */
     public String getName() {
         if (_name == null) {
@@ -127,15 +144,21 @@ public abstract class Receiver extends ProgramCodeGeneratorAdapter {
     abstract protected String _generateTypeConvertStatement(ProgramCodeGeneratorAdapter.Channel source)
             throws IllegalActionException;
     
-    /** The token should be in the form of sinkRef = $convert(sourceRef).
-     *  @throws IllegalActionException 
+    /** Given a String that is an assignment operation, return the
+     *  right hand side (the source).   
+     *  <p>The token should be in the form of "sinkRef = $convert(sourceRef)".</p>
+     *  @param token A string that contains the assignment.  
+     *  @return The right hand side of the assignment.
+     *  @throws IllegalActionException  If the token does contain a "=".
      */
     protected String _removeSink(String token) throws IllegalActionException {
         int equalIndex = TemplateParser.indexOf("=", token, 0);
 
         if (equalIndex < 0) {
-            CGException.throwException("The parsed type conversion statement is" +
-                        "expected to be of the form: sinkRef = $convert(sourceRef)");
+            throw new IllegalActionException(((ptolemy.actor.Receiver)getComponent()).getContainer(),
+                    "The parsed type conversion statement is" +
+                    "expected to be of the form: sinkRef = $convert(sourceRef), not \"" +
+                    token + "\", which does not contain \"=\".");
         }
         
         return token.substring(equalIndex + 2);
@@ -156,11 +179,9 @@ public abstract class Receiver extends ProgramCodeGeneratorAdapter {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
-
-    ///////////////////////////////////////////////////////////////////
     ////                         private variables               ////
 
+    /** The name of the receiver. */
     private String _name;
 
 }

@@ -160,6 +160,11 @@ public class ModularCodeGenerator extends JavaCodeGenerator {
     }
     
 
+    /** Return the firings() method.
+     *  @return The code for the firings method.
+     *  @exception IllegalActionException If thrown while getting
+     *  the token consumption rates for an error message
+     */
     public StringBuffer createActorGraph() throws IllegalActionException {
         StringBuffer actorGraph = new StringBuffer();
         
