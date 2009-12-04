@@ -198,8 +198,9 @@ public class PthalesDirector extends SDFDirector {
      */
     public void preinitialize() throws IllegalActionException {
         // Load library needed to project
-        if (!_library.isEmpty())
+        if (!(_library.length() == 0)) {
             System.loadLibrary(_library);
+        }
         
         // Empties list of receivers before filling it
         _receivers.removeAll(_receivers);
