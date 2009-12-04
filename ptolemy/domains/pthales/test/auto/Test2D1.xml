@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="test2" class="ptolemy.actor.TypedCompositeActor">
+<entity name="Test2D1" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
     <property name="PthalesDirector" class="ptolemy.domains.pthales.kernel.PthalesDirector">
@@ -24,7 +24,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, 10.0]">
         </property>
     </property>
-    <property name="producePattern" class="ptolemy.data.expr.StringParameter" value="x = 3, y = 2">
+    <property name="producePattern" class="ptolemy.data.expr.Parameter" value="[x = 3, y = 2]">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -43,7 +43,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-35.0, 185.0]">
         </property>
     </property>
-    <property name="consumePattern" class="ptolemy.data.expr.StringParameter" value="x = 3, y = 2">
+    <property name="consumePattern" class="ptolemy.data.expr.Parameter" value="[x = 3, y = 2]">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -62,7 +62,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 185.0]">
         </property>
     </property>
-    <property name="produceTiling" class="ptolemy.data.expr.StringParameter" value="x = 1, y = 1">
+    <property name="produceTiling" class="ptolemy.data.expr.Parameter" value="[x = 1, y = 1]">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -81,7 +81,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-35.0, 200.0]">
         </property>
     </property>
-    <property name="consumeTiling" class="ptolemy.data.expr.StringParameter" value="x = 1, y = 1">
+    <property name="consumeTiling" class="ptolemy.data.expr.Parameter" value="[x = 1, y = 1]">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -100,7 +100,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 200.0]">
         </property>
     </property>
-    <property name="produceBase" class="ptolemy.data.expr.StringParameter" value="x = 0, y = 0">
+    <property name="produceBase" class="ptolemy.data.expr.Parameter" value="[x = 0, y = 0]">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -119,7 +119,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-35.0, 170.0]">
         </property>
     </property>
-    <property name="consumeBase" class="ptolemy.data.expr.StringParameter" value="x = 0, y = 0">
+    <property name="consumeBase" class="ptolemy.data.expr.Parameter" value="[x = 0, y = 0]">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -161,13 +161,13 @@
             <property name="output"/>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[340.0, 180.0]">
             </property>
-            <property name="base" class="ptolemy.data.expr.StringParameter" value="$produceBase">
+            <property name="base" class="ptolemy.data.expr.Parameter" value="produceBase">
             </property>
-            <property name="pattern" class="ptolemy.data.expr.StringParameter" value="$producePattern">
+            <property name="pattern" class="ptolemy.data.expr.Parameter" value="producePattern">
             </property>
-            <property name="tiling" class="ptolemy.data.expr.StringParameter" value="$produceTiling">
+            <property name="tiling" class="ptolemy.data.expr.Parameter" value="produceTiling">
             </property>
-            <property name="size" class="ptolemy.data.expr.StringParameter" value="$producePattern">
+            <property name="size" class="ptolemy.data.expr.Parameter" value="producePattern">
             </property>
         </port>
         <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
@@ -206,11 +206,11 @@
             <property name="multiport"/>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{50.0, 195.0}">
             </property>
-            <property name="base" class="ptolemy.data.expr.StringParameter" value="$consumeBase">
+            <property name="base" class="ptolemy.data.expr.Parameter" value="consumeBase">
             </property>
-            <property name="pattern" class="ptolemy.data.expr.StringParameter" value="$consumePattern">
+            <property name="pattern" class="ptolemy.data.expr.Parameter" value="consumePattern">
             </property>
-            <property name="tiling" class="ptolemy.data.expr.StringParameter" value="$consumeTiling">
+            <property name="tiling" class="ptolemy.data.expr.Parameter" value="consumeTiling">
             </property>
         </port>
         <entity name="Test" class="ptolemy.actor.lib.Test">
