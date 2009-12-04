@@ -315,18 +315,18 @@ public class PthalesScheduler extends SDFScheduler {
             throws IllegalActionException {
         String[] list = null;
         Integer[] result = null;
-        Parameter attribute = (Parameter) object.getAttribute(name);
-        if (attribute != null && !attribute.getExpression().equals("")) {
-            if (attribute instanceof StringParameter) {
-                list = ((StringParameter) attribute).stringValue().trim()
-                        .split(",");
-            }
-            result = new Integer[list.length];
-            for (int i = 0; i < list.length; i++) {
-                result[i] = new Integer(list[i].trim());
+        Attribute attribute = object.getAttribute(name);
+        if (attribute != null && attribute instanceof Parameter) {
+            Token token = ((Parameter)attribute).getToken();
+            if (token instanceof ArrayToken) {
+                int len = ((ArrayToken)token).length();
+                result = new Integer[len];
+                for (int i=0; i<len; i++) {
+                    result[i] = new Integer (((IntToken)((ArrayToken)token).getElement(i)).intValue());
+                }
             }
         }
-        
+                
         return result;
     }
 

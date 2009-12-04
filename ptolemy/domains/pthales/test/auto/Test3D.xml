@@ -174,7 +174,7 @@
         </property>
         <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
         </property>
-        <property name="repetitions" class="ptolemy.data.expr.StringParameter" value="1, 1, 3">
+        <property name="repetitions" class="ptolemy.data.expr.Parameter" value="{1, 1, 3}">
         </property>
         <port name="out" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -218,7 +218,7 @@
         </property>
         <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
         </property>
-        <property name="repetitions" class="ptolemy.data.expr.StringParameter" value="4, 2, 1">
+        <property name="repetitions" class="ptolemy.data.expr.Parameter" value="{4, 2, 1}">
         </property>
         <port name="port_0" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>

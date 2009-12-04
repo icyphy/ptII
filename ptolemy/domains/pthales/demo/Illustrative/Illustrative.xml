@@ -10,7 +10,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-85.0, -125.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 1410, 874}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 1412, 897}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1197, 764]">
     </property>
@@ -243,7 +243,7 @@
         </property>
         <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
         </property>
-        <property name="repetitions" class="ptolemy.data.expr.StringParameter" value="1, 1">
+        <property name="repetitions" class="ptolemy.data.expr.Parameter" value="{1, 1}">
         </property>
         <port name="out" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -285,7 +285,7 @@
         </property>
         <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
         </property>
-        <property name="repetitions" class="ptolemy.data.expr.StringParameter" value="2, 3">
+        <property name="repetitions" class="ptolemy.data.expr.Parameter" value="{2, 3}">
         </property>
         <port name="port_0" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -340,7 +340,7 @@
         </property>
         <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
         </property>
-        <property name="repetitions" class="ptolemy.data.expr.StringParameter" value="2, 2">
+        <property name="repetitions" class="ptolemy.data.expr.Parameter" value="{2, 2}">
         </property>
         <port name="port_0" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>

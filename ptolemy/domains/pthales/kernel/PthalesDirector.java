@@ -63,12 +63,15 @@ import ptolemy.kernel.util.NameDuplicationException;
  * domains are named, and patterns for reading and writing
  * arrays are given using those names.
  * <p>
+ * [FIXME: the description that follows needs update, the contents and syntax of parameter specs have changed]
  * The execution is governed by the following parameters
- * in the model. In all cases, the parameters are strings
- * of the form "x = n, y = m, ...", where x and y are arbitrary
+ * in the model. In all cases except for the "repetitions"
+ * parameter, the parameters are OrderedRecords
+ * of the form "[x = n, y = m, ...]", where x and y are arbitrary
  * dimension names and n and m are non-negative integers.
  * For those parameters that support strides, n and m
- * can be replaced by n.s or m.s, where s is the stride.
+ * can be replaced by {n,s} or {m,s}, where s is the stride
+ * (a positive integer).
  * The stride defaults to 1 in such cases. Unless otherwise
  * stated, the parameters do not support strides.
  * Ports contain the following parameters:
@@ -77,13 +80,14 @@ import ptolemy.kernel.util.NameDuplicationException;
  * <li> <i>size</i>: This is a parameter of each output port
  * that specifies the size of the array written by that output
  * port. All dimensions must be specified, and every output
- * port must have such a parameter. In addition, every input
+ * port must have such a parameter. [FIXME: true?] In addition, every input
  * port of a composite actor that contains a PthalesDirector
- * must also have such a parameter.
+ * must also have such a parameter. 
  * 
- * <li> <i>offset</i>: This optional parameter gives the base location
+ * <li> <i>base</i>: This mandatory parameter gives the base location
  * at which writing begins for each iteration of this director.
- * Its value defaults to 0 for any dimension that is not specified.
+ * All dimensions must be specified. The order in which they are
+ * specified does not matter.
  * 
  * <li> <i>pattern</i>: This is a parameter of each port that
  * specifies the shape of the array produced or consumed on that
@@ -91,7 +95,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  * sequentially (using get() and send() methods), then the pattern
  * specifies the order in which the array is filled.
  * For example, if you send tokens with values 1, 2, 3, 4, 5, 6
- * using a pattern x=3, y=2, then the array is filled as
+ * using a pattern [x=3, y=2], then the array is filled as
  * follows:
  * <table>
  * <tr> <td> x </td> <td> y </td> <td> value </td></tr>
@@ -103,7 +107,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  * <tr> <td> 2 </td> <td> 1 </td> <td> 6 </td></tr>
  * </table>
  * If on the other hand you specify a pattern
- * y=2, x=3, then an array of the same shape is used,
+ * [y=2, x=3], then an array of the same shape is used,
  * but it is now filled as follows:
  * <table>
  * <tr> <td> x </td> <td> y </td> <td> value </td></tr>
@@ -115,7 +119,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  * <tr> <td> 2 </td> <td> 1 </td> <td> 6 </td></tr>
  * </table>
  * If a stride is given, then the pattern may have gaps
- * in it. For example, "x = 2.2" specifies that two values
+ * in it. For example, "x = {2,2}" specifies that two values
  * are produced in the x dimension, and that they are separated
  * by one value that is not produced. Values that are not
  * produced default to zero (the value of zero depends on the
@@ -131,17 +135,21 @@ import ptolemy.kernel.util.NameDuplicationException;
  * 
  * In addition, actors must contain the following parameter:
  * <ol>
- * <li> <i>repetitions</i>: This required parameter specifies the
- * number of iterations in each dimension of
- * the actor in a single firing of the composite actor
- * containing this director. This parameter also defines the
- * order in which dimensions are traversed.
+ * <li> <i>repetitions</i>: This is a required parameter 
+ * for every actor in the Pthales domain. It is an array of
+ * positive integers of the form "{ k, l, ... }". It specifies a set
+ * of nested loops (equal to the length of the array) and the
+ * number of iterations of each loop (from the inner to the outer loop).
+ * So "{2, 4}" specifies an inner loop with 2 iterations and an outer loop
+ * with 4 iterations. There is a one-to-one mapping between the elements
+ * of the repetitions array and the fields of the tiling parameters of all
+ * ports of the corresponding actor.
  * </ol>
  * <p>
  * In all cases, when indexes are incremented, they are incremented
  * in a toroidal fashion, wrapping around when they reach the size
  * of the array. Thus, it is always possible (though rarely useful)
- * for an array size to be 1 in every dimension.
+ * for an array size to be 1 in every dimension. [FIXME?]
  * <p>
  * NOTE: It should be possible to define a PtalesPort and
  * PtalesCompositeActor that contain the above parameters, as
