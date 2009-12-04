@@ -67,7 +67,6 @@ $CLASSPATH/ptolemy/caltrop/demo/SDFDDI/SDFDDI.xml
 $CLASSPATH/ptolemy/codegen/c/domains/fsm/demo/Mod4Counter/Mod4Counter.xml
 $CLASSPATH/ptolemy/codegen/c/domains/pn/demo/Gravitation/Gravitation.xml
 $CLASSPATH/ptolemy/codegen/c/domains/pn/demo/PNButterfly/PNButterfly.xml
-$CLASSPATH/ptolemy/codegen/c/targets/mpi/demo/PNButterfly/PNButterfly.xml
 $CLASSPATH/ptolemy/codegen/c/targets/openRTOS/demo/ControlRobot/ControlRobot.xml
 $CLASSPATH/ptolemy/codegen/demo/Butterfly/Butterfly.xml
 $CLASSPATH/ptolemy/codegen/demo/Life/Life.xml
@@ -97,7 +96,6 @@ $CLASSPATH/ptolemy/domains/continuous/demo/Brownian/Brownian.xml
 $CLASSPATH/ptolemy/domains/continuous/demo/CartPendulum/CartPendulum.xml
 $CLASSPATH/ptolemy/domains/continuous/demo/CarTracking/CarTracking.xml
 $CLASSPATH/ptolemy/domains/continuous/demo/ComparedClocks/ComparedClocks.xml
-$CLASSPATH/ptolemy/domains/continuous/demo/ContinuousClock/ContinuousClock.xml
 $CLASSPATH/ptolemy/domains/continuous/demo/ContinuousInsideDE/ContinuousInsideDE.xml
 $CLASSPATH/ptolemy/domains/continuous/demo/HybridPlant/HybridPlant.xml
 $CLASSPATH/ptolemy/domains/continuous/demo/HybridPlant/RandomHybridPlant.xml
