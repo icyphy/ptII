@@ -19,23 +19,23 @@ It is defined by the following block diagram:
 
 <!-- PT JNLP APPLET CONVERTER -->
 <!-- We use both the older applet style and the JDK1.6.0_10 and later
-     JNLP Applets.  In this way, we can support pre-JDK1.6.0_10 installs.
-     See https://jdk6.dev.java.net/plugin2/jnlp/ -->
+    JNLP Applets.  In this way, we can support pre-JDK1.6.0_10 installs.
+    See https://jdk6.dev.java.net/plugin2/jnlp/ -->
 <APPLET 
-   code = "ptolemy.vergil.VergilApplet"
-   codebase = "../../../../.."
-   archive = "ptolemy/domains/giotto/demo/Hierarchy/Hierarchy.jar,ptolemy/domains/giotto/giotto.jar,ptolemy/data/data.jar,ptolemy/ptsupport.jar,lib/diva.jar,ptolemy/domains/modal/modal.jar,ptolemy/domains/fsm/fsm.jar,ptolemy/domains/ct/ct.jar,ptolemy/vergil/vergilApplet.jar"
-   width = "100"
-   height = "100"
-   >
-  <PARAM name="jnlp_href" value="ptolemy/domains/giotto/demo/Hierarchy/Hierarchy.jnlp">
-  <PARAM NAME = "commandLineArguments" VALUE = "-ptinyViewer ptolemy/domains/giotto/demo/Hierarchy/Hierarchy.xml">
-  <PARAM NAME = "NAME" VALUE = "Hierarchy" >
-  <PARAM NAME = "background" VALUE = "#ffffff" >
-  <PARAM NAME = "controls" VALUE = "buttons" >
-  <PARAM NAME = "orientation" VALUE = "vertical" > \
-  <PARAM NAME = "modelURL" VALUE = "Hierarchy.xml" > \
-  <a href="Hierarchy.xml">MoML specification for this model.</a> \
+  code = "ptolemy.vergil.VergilApplet"
+  codebase = "../../../../.."
+  archive = "ptolemy/domains/giotto/demo/Hierarchy/Hierarchy.jar,ptolemy/domains/giotto/giotto.jar,ptolemy/data/data.jar,ptolemy/ptsupport.jar,lib/diva.jar,ptolemy/domains/modal/modal.jar,ptolemy/domains/fsm/fsm.jar,ptolemy/domains/ct/ct.jar,ptolemy/vergil/vergilApplet.jar"
+  width = "100"
+  height = "100"
+  >
+ <PARAM name="jnlp_href" value="ptolemy/domains/giotto/demo/Hierarchy/Hierarchy.jnlp">
+ <PARAM NAME = "commandLineArguments" VALUE = "-ptinyViewer ptolemy/domains/giotto/demo/Hierarchy/Hierarchy.xml">
+ <PARAM NAME = "NAME" VALUE = "Hierarchy" >
+ <PARAM NAME = "background" VALUE = "#ffffff" >
+ <PARAM NAME = "controls" VALUE = "buttons" >
+ <PARAM NAME = "orientation" VALUE = "vertical" > \
+ <PARAM NAME = "modelURL" VALUE = "Hierarchy.xml" > \
+ <a href="Hierarchy.xml">MoML specification for this model.</a> \
 </APPLET>
 <!-- /PT JNLP APPLET CONVERTER -->
 </CENTER>
@@ -48,16 +48,7 @@ that they get invoked once per iteration.  The lower composite
 and the plotter run at frequency 2, meaning that they are invoked
 twice per iteration.
 <p>
-The composites are defined as follows:
-<CENTER>
-<P>
-
-<!-- PT JNLP CONVERTER -->
-<a href="Hierarchy.jnlp">Run the demo using Web Start</a>
-<!-- /PT JNLP CONVERTER -->
-</CENTER>
-<p>
-They contain an adder that adds the current input to the
+The composites contain an adder that adds the current input to the
 previous output, in a feedback loop.  This illustrates the Giotto
 semantic property that on each arc, the output value from the
 previous iteration is available.

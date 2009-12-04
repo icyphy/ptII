@@ -20,23 +20,23 @@ is shown below with a panel that controls the execution of the model.
 
 <!-- PT JNLP APPLET CONVERTER -->
 <!-- We use both the older applet style and the JDK1.6.0_10 and later
-     JNLP Applets.  In this way, we can support pre-JDK1.6.0_10 installs.
-     See https://jdk6.dev.java.net/plugin2/jnlp/ -->
+    JNLP Applets.  In this way, we can support pre-JDK1.6.0_10 installs.
+    See https://jdk6.dev.java.net/plugin2/jnlp/ -->
 <APPLET 
-   code = "ptolemy.vergil.VergilApplet"
-   codebase = "../../../../.."
-   archive = "ptolemy/domains/fsm/demo/ABP/ABP.jar,ptolemy/domains/fsm/demo/demo.jar,ptolemy/data/data.jar,ptolemy/domains/de/de.jar,ptolemy/domains/fsm/fsm.jar,ptolemy/ptsupport.jar,lib/diva.jar,ptolemy/domains/modal/modal.jar,ptolemy/domains/fsm/fsm.jar,ptolemy/domains/ct/ct.jar,ptolemy/vergil/vergilApplet.jar"
-   width = "100"
-   height = "100"
-   >
-  <PARAM name="jnlp_href" value="ptolemy/domains/fsm/demo/ABP/ABP.jnlp">
-  <PARAM NAME = "commandLineArguments" VALUE = "-ptinyViewer ptolemy/domains/fsm/demo/ABP/ABP.xml">
-  <PARAM NAME = "NAME" VALUE = "ABP" >
-  <PARAM NAME = "background" VALUE = "#ffffff" >
-  <PARAM NAME = "controls" VALUE = "buttons" >
-  <PARAM NAME = "orientation" VALUE = "vertical" > \
-  <PARAM NAME = "modelURL" VALUE = "ABP.xml" > \
-  <a href="ABP.xml">MoML specification for this model.</a> \
+  code = "ptolemy.vergil.VergilApplet"
+  codebase = "../../../../.."
+  archive = "ptolemy/domains/fsm/demo/ABP/ABP.jar,ptolemy/domains/fsm/demo/demo.jar,ptolemy/data/data.jar,ptolemy/domains/de/de.jar,ptolemy/domains/fsm/fsm.jar,ptolemy/ptsupport.jar,lib/diva.jar,ptolemy/domains/modal/modal.jar,ptolemy/domains/fsm/fsm.jar,ptolemy/domains/ct/ct.jar,ptolemy/v ergil/vergilApplet.jar"
+  width = "100"
+  height = "100"
+  >
+ <PARAM name="jnlp_href" value="ptolemy/domains/fsm/demo/ABP/ABP.jnlp">
+ <PARAM NAME = "commandLineArguments" VALUE = "-ptinyViewer ptolemy/domains/fsm/demo/ABP/ABP.xml">
+ <PARAM NAME = "NAME" VALUE = "ABP" >
+ <PARAM NAME = "background" VALUE = "#ffffff" >
+ <PARAM NAME = "controls" VALUE = "buttons" >
+ <PARAM NAME = "orientation" VALUE = "vertical" > \
+ <PARAM NAME = "modelURL" VALUE = "ABP.xml" > \
+ <a href="ABP.xml">MoML specification for this model.</a> \
 </APPLET>
 <!-- /PT JNLP APPLET CONVERTER -->
 </CENTER>
@@ -71,24 +71,14 @@ from the receiver. The blue data gives the sequence number of the messages
 going to the sender. The third data is the "alternating bit" that the protocol
 uses to number the packets going through the channel.
 <P><B>Sender. </B>The sender implements the sending part of ABP and is
-a hierarchical FSM. The top level is a 3-state FSM.
+a hierarchical FSM. To open the Sender, right click and on the icon and select
+"Open Actor".  The top level of the Sender is a 3-state FSM.
 <CENTER>
 <P>
-
-<!-- PT JNLP CONVERTER -->
-<a href="ABP.jnlp">Run the demo using Web Start</a>
-<!-- /PT JNLP CONVERTER -->
-</CENTER>
-<P>
-The top level FSM starts in the <I>Connecting</I> state. This state refines to
-the following FSM:
+The top level of the FSM Sender starts in the <I>Connecting</I> state. This state refines to
+a FSM, to view the FSM, right click on the Connecting icon and select "Look Inside".
 <CENTER>
 <P>
-
-<!-- PT JNLP CONVERTER -->
-<a href="ABP.jnlp">Run the demo using Web Start</a>
-<!-- /PT JNLP CONVERTER -->
-</CENTER>
 <P>
 This FSM starts in the <I>Init</I> state. When a request from the message
 source is received, the FSM sends a special packet (with sequence number
@@ -103,16 +93,11 @@ sends an <I>error</I> event to the top level FSM. Otherwise the FSM goes to the
 <P>
 If connection fails, the top level FSM goes to the <I>Failed</I> state and
 stops. Otherwise it sends a <I>next</I> event to the message source, and goes
-to the <I>Sending</I> state, which refines to the following FSM:
-<CENTER>
-<P>
+to the <I>Sending</I> state.
 
-<!-- PT JNLP CONVERTER -->
-<a href="ABP.jnlp">Run the demo using Web Start</a>
-<!-- /PT JNLP CONVERTER -->
 </CENTER>
 <P>
-This FSM starts in state <I>S0</I>. When a message from the message source is
+This Sending FSM starts in state <I>S0</I>. When a message from the message source is
 received, the FSM will stay in its current state, tag the message with an
 additional bit (<I>0</I> in state <I>S0</I>, <I>1</I> in <I>S1</I>, hence the
 term "alternating bit") to form a packet, and try repeatedly to send the
@@ -120,14 +105,7 @@ packet until the receiver acknowledges. When the receiver acknowledges, the
 FSM sends a <I>next</I> event to the message source, and goes to the other
 state.
 <P><B>Receiver. </B>
-The receiver is a flat FSM as shown below:
-<CENTER>
-<P>
-
-<!-- PT JNLP CONVERTER -->
-<a href="ABP.jnlp">Run the demo using Web Start</a>
-<!-- /PT JNLP CONVERTER -->
-</CENTER>
+The receiver is a flat FSM.
 <P>
 The receiver starts in state <I>Init</I>. In this state, the FSM acknowledges
 the special packet (with sequence number <I>-1</I>) that the sender sends in
