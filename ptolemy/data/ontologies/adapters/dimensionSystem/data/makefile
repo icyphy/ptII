@@ -29,7 +29,7 @@
 #                       PT_COPYRIGHT_VERSION_2
 #                       COPYRIGHTENDKEY
 
-ME =        ptolemy/data/properties/lattice/dimensionSystem/data
+ME =        ptolemy/data/ontologies/adapters/dimensionSystem/data
 
 DIRS =      expr
 
