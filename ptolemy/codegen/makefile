@@ -33,7 +33,7 @@
 
 ME =		ptolemy/codegen
 
-DIRS =		kernel actor c gui java chaco rtmaude vhdl util test demo
+DIRS =		kernel actor c gui java chaco rtmaude util test demo
 
 # Root of the Java directory
 ROOT =		../..
@@ -61,8 +61,7 @@ PTCLASSALLJARS = \
 	kernel/kernel.jar \
 	util/util.jar
 
-# The vhdl and chaco work is incomplete, so we don't include it in the jar
-#	vhdl/vhdl.jar
+# The chaco work is incomplete, so we don't include it in the jar
 #	chaco/chaco.jar
 
 # Keep this list alphabetized.
@@ -77,7 +76,7 @@ EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
 # Don't include demo or DIRS here, or else 'make sources' will run 'make demo'
-MISC_FILES = kernel actor c gui java chaco rtmaude util vhdl util test
+MISC_FILES = kernel actor c gui java chaco rtmaude util util test
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES

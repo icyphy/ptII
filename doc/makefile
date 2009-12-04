@@ -258,9 +258,6 @@ CODEGENPACKAGES = \
 	ptolemy.codegen.c.kernel \
 	ptolemy.codegen.c.kernel.type.parameterizedTemplates \
 	ptolemy.codegen.c.kernel.type.polymorphic \
-	ptolemy.codegen.c.targets.mpi \
-	ptolemy.codegen.c.targets.mpi.actor \
-	ptolemy.codegen.c.targets.mpi.domains.pn.kernel \
 	ptolemy.codegen.c.targets.openRTOS \
 	ptolemy.codegen.c.targets.openRTOS.actor.lib \
 	ptolemy.codegen.c.targets.openRTOS.actor.lib.gui \
@@ -307,14 +304,7 @@ CODEGENPACKAGES = \
 	ptolemy.codegen.rtmaude.domains.sr.kernel \
 	ptolemy.codegen.rtmaude.kernel \
 	ptolemy.codegen.rtmaude.kernel.util \
-	ptolemy.codegen.util \
-	ptolemy.codegen.vhdl.actor \
-	ptolemy.codegen.vhdl.actor.lib \
-	ptolemy.codegen.vhdl.actor.lib.gui \
-	ptolemy.codegen.vhdl.actor.lib.vhdl \
-	ptolemy.codegen.vhdl.domains.sdf.kernel \
-	ptolemy.codegen.vhdl.domains.sr.kernel \
-	ptolemy.codegen.vhdl.kernel \
+	ptolemy.codegen.util
 
 # Java packages for copernicus
 COPERNICUSPACKAGES = \

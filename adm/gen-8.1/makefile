@@ -1356,7 +1356,6 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/codegen/c/domains/modal \
 	$(REMOTE1PTIIDIST)/ptolemy/codegen/c/domains/pn \
 	$(REMOTE1PTIIDIST)/ptolemy/codegen/c/domains/sdf \
-	$(REMOTE1PTIIDIST)/ptolemy/codegen/c/targets/mpi \
 	$(REMOTE1PTIIDIST)/ptolemy/codegen/java/kernel \
 	$(REMOTE1PTIIDIST)/ptolemy/codegen/java/actor \
 	$(REMOTE1PTIIDIST)/ptolemy/codegen/java/actor/parameters \
@@ -1371,9 +1370,6 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/codegen/java/actor/lib/gui \
 	$(REMOTE1PTIIDIST)/ptolemy/codegen/java/domains/modal \
 	$(REMOTE1PTIIDIST)/ptolemy/codegen/java/domains/sdf \
-	$(REMOTE1PTIIDIST)/ptolemy/codegen/vhdl/kernel \
-	$(REMOTE1PTIIDIST)/ptolemy/codegen/vhdl/actor/lib \
-	$(REMOTE1PTIIDIST)/ptolemy/codegen/vhdl/actor/lib/vhdl \
 	$(REMOTE1PTIIDIST)/ptolemy/codegen/ \
 	$(REMOTE1PTIIDIST)/ptolemy/cg/kernel/generic \
 	$(REMOTE1PTIIDIST)/ptolemy/cg/kernel/generic/html \
