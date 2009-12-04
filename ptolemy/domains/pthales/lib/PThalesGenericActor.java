@@ -1,5 +1,8 @@
 package ptolemy.domains.pthales.lib;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.List;
 
 import ptolemy.actor.TypedAtomicActor;
@@ -7,7 +10,7 @@ import ptolemy.data.FloatToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
-import ptolemy.data.type.BaseType;
+import ptolemy.domains.pthales.kernel.PthalesDirector;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.util.Attribute;
@@ -71,10 +74,18 @@ public class PThalesGenericActor extends TypedAtomicActor {
     private void _initialize() throws IllegalActionException,
             NameDuplicationException {
 
-        Attribute rep = super.getAttribute("repetitions");
-        if (rep == null) {
-            repetitions = new StringParameter(this, "repetitions");
-            repetitions.setExpression("");
+        if (getAttribute("internalRepetitions") == null) {
+            internalRepetitions = new StringParameter(this,
+                    "internalRepetitions");
+            internalRepetitions.setExpression("");
+        }
+        if (getAttribute("arguments") == null) {
+            arguments = new StringParameter(this, "arguments");
+            arguments.setExpression("");
+        }
+        if (getAttribute("function") == null) {
+            function = new StringParameter(this, "function");
+            function.setExpression("");
         }
     }
 
@@ -82,7 +93,15 @@ public class PThalesGenericActor extends TypedAtomicActor {
      *  actor indicates to the scheduler that it is finished by returning
      *  false in its postfire() method.
      */
-    public Parameter repetitions;
+    public Parameter internalRepetitions;
+
+    /** a String that is used to fill arguments when calling the function
+     */
+    public Parameter arguments;
+
+    /** the name of the function to call when the actor is fired
+     */
+    public Parameter function;
 
     /** Create a new TypedIOPort with the specified name.
      *  The container of the port is set to this actor.
@@ -117,39 +136,6 @@ public class PThalesGenericActor extends TypedAtomicActor {
      *   or cannot be converted to the output type, or if the superclass
      *   throws it.
      */
-    /** Add an attribute.  This method should not be used directly.
-     *  Instead, call setContainer() on the attribute.
-     *  Derived classes may further constrain the class of the attribute.
-     *  To do this, they should override this method to throw an exception
-     *  when the argument is not an instance of the expected class.
-     *  This method is write-synchronized on the workspace and increments its
-     *  version number.
-     *  @param p The attribute to be added.
-     *  @exception NameDuplicationException If this object already
-     *   has an attribute with the same name.
-     *  @exception IllegalActionException If the attribute is not an
-     *   an instance of the expect class (in derived classes).
-     */
-    protected void _addAttribute(Attribute p) throws NameDuplicationException,
-            IllegalActionException {
-        try {
-            _workspace.getWriteAccess();
-
-            if (p instanceof StringParameter) {
-                if (p.getName().equals("repetition") && repetitions != null) {
-                    repetitions.setExpression(((StringParameter) p)
-                            .getExpression());
-
-                    repetitions.propagateValue();
-                    return;
-                }
-            }
-            super._addAttribute(p);
-
-        } finally {
-            _workspace.doneWriting();
-        }
-    }
 
     /** Read all the array then (should) call JNI function 
      *  @exception IllegalActionException If there is no director, or the
@@ -157,10 +143,10 @@ public class PThalesGenericActor extends TypedAtomicActor {
      */
     public void fire() throws IllegalActionException {
 
-        // Variable
+        // Variables
         List<PThalesIOPort> portsIn = null;
         List<PThalesIOPort> portsOut = null;
-        int portNumber = 0;
+        int portNumber;
 
         // Input ports 
         portsIn = inputPortList();
@@ -174,11 +160,14 @@ public class PThalesGenericActor extends TypedAtomicActor {
         // In the output case, each array is produced independantly
         Token[] tokensOut = null;
         // Real Array (only one) 
-        float[] realOut = null;
+        float[][] realOut = new float[portsOut.size()][];
 
-        // Input ports read before elementary task called 
+        // BEFORE CALLING TASK //
+
+        portNumber = 0;
+        // Input ports created and filled before elementary task called 
         for (PThalesIOPort port : portsIn) {
-            int dataSize = port.getPattern();
+            int dataSize = port.getPatternSize();
             tokensIn = new FloatToken[dataSize];
             tokensIn = port.get(0, dataSize);
 
@@ -187,20 +176,64 @@ public class PThalesGenericActor extends TypedAtomicActor {
 
             portNumber++;
         }
-        
-        //////////////////////////////////////
-        // Call to elemetary task (JNI or JAVA) 
-        // Here we simulate a task generating floats
-        realOut = new float[portsOut.get(0).getPattern()];
-        //////////////////////////////////////
 
-        // Call array conversion after elementary task called
-        tokensOut = convertReal(realOut);
-        
+        portNumber = 0;
+        // Outputs ports arrays created before elementary task called 
+        for (PThalesIOPort port : portsOut) {
+            realOut[portNumber] = new float[port.getPatternSize()];
+            portNumber++;
+        }
+
+        ///////////////////////////////////////
+        // Call to elemetary task (JNI or JAVA) 
+        ///////////////////////////////////////
+        Object[] args = null;
+
+        try {
+            PthalesDirector director = (PthalesDirector) getDirector();
+            String libName = director.getLibName();
+            if (!libName.isEmpty()) {
+                Class c = Class.forName("ptolemy.domains.pthales.JNI."
+                        + libName);
+                Method[] methods = c.getMethods();
+
+                for (Method method : methods) {
+                    if (method.getName().equals(_function)) {
+                        try {
+                            // Arguments convertion and format as a list
+                            args = convertArguments(realIn, realOut);
+                            if (method.getParameterTypes().length == args.length) {
+                                // JNI Function call with arguments 
+                                method.invoke(c, args);
+
+                                // Function call is ok
+                                break;
+                            }
+
+                        } catch (IllegalArgumentException e) {
+                            e.printStackTrace();
+                        } catch (IllegalAccessException e) {
+                            e.printStackTrace();
+                        } catch (InvocationTargetException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            }
+
+        } catch (ClassNotFoundException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        // AFTER CALLING TASK //
+
+        portNumber = 0;
         // Output ports write
         for (PThalesIOPort port : portsOut) {
-            int dataSize = port.getPattern();
+            int dataSize = port.getPatternSize();
 
+            tokensOut = convertReal(realOut[portNumber]);
             for (int i = 0; i < port.getWidth(); i++) {
                 port.send(i, tokensOut, dataSize);
             }
@@ -212,38 +245,44 @@ public class PThalesGenericActor extends TypedAtomicActor {
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
-        if (attribute == repetitions) {
-            _repetitions = repetitions.getExpression();
+        if (attribute == internalRepetitions) {
+            _internalRepetitions = internalRepetitions.getExpression();
+        }
+        if (attribute == function) {
+            _function = function.getExpression();
+        }
+        if (attribute == arguments) {
+            _arguments = arguments.getExpression();
         }
     }
 
-     /**
+    /** Conversion from Tokens to array used in JNI function 
      * @param tokensIn
      */
     public float[] convertToken(Token[] tokensIn) {
         float[] realIn;
-       
+
         int nbData = tokensIn.length;
         realIn = new float[nbData];
         for (int i = 0; i < nbData; i++) {
-            realIn[i] = ((FloatToken)tokensIn[i]).floatValue();
+            realIn[i] = ((FloatToken) tokensIn[i]).floatValue();
         }
-        
-        return realIn;
-     }
 
-    /**
+        return realIn;
+    }
+
+    /** Conversion from array used in JNI function to Tokens
      * @param realOut
      */
-    public FloatToken[] convertReal(float[] realOut ) {
-        FloatToken[] tokensOut; 
-        
+    public FloatToken[] convertReal(float[] realOut) {
+        FloatToken[] tokensOut;
+
         int nbData = realOut.length;
         tokensOut = new FloatToken[nbData];
         for (int i = 0; i < nbData; i++) {
             tokensOut[i] = new FloatToken(realOut[i]);
         }
-        
+
         return tokensOut;
     }
 
@@ -254,11 +293,85 @@ public class PThalesGenericActor extends TypedAtomicActor {
         return true;
     }
 
+    public String getInternalRepetitions() {
+        return _internalRepetitions;
+    }
+
+    /** Function which convert a list of arguments into real arguments
+     * that will be used for JNI function call
+     * @param in
+     * @param out
+     * @return
+     */
+    public Object[] convertArguments(float[][] in, float[][] out) {
+        List objs = new ArrayList();
+
+        int numIn = 0;
+        int numOut = 0;
+
+        int increase = 0;
+        String[] listArgs = _arguments.split(";");
+
+        for (int i = 0; i < listArgs.length; i++) {
+            // Argument is a port : check input or output
+            if (listArgs[i].equals("port")) {
+                if (listArgs[i + 1].equals("OUT")) {
+                    int[] sizes = ((PThalesIOPort) outputPortList().get(numOut))
+                            .getPattern();
+                    for (int size : sizes) {
+                        if (size > 1)
+                            objs.add(size);
+                    }
+                    objs.add(out[numOut]);
+                    numOut++;
+                }
+                if (listArgs[i + 1].equals("IN")) {
+                    int[] sizes = ((PThalesIOPort) inputPortList().get(numIn))
+                            .getPattern();
+                    for (int size : sizes) {
+                        if (size > 1)
+                            objs.add(size);
+                    }
+                    objs.add(in[numIn]);
+                    numIn++;
+                }
+                increase = 1;
+            }
+
+            // Argument is parameter => converted into type
+            if (listArgs[i].equals("parameter")) {
+                if (listArgs[i + 1].equals("int")) {
+                    objs.add(Integer.parseInt(listArgs[i + 2]));
+                } else if (listArgs[i + 1].equals("long")) {
+                    objs.add(Long.parseLong(listArgs[i + 2]));
+                } else if (listArgs[i + 1].equals("double")
+                        || listArgs[i + 1].equals("Spldouble")) {
+                    objs.add(Double.parseDouble(listArgs[i + 2]));
+                } else if (listArgs[i + 1].equals("float")
+                        || listArgs[i + 1].equals("Splfloat")) {
+                    objs.add(Float.parseFloat(listArgs[i + 2]));
+                } else {
+                    // Type is not a primitive =>  string 
+                    objs.add(listArgs[i]);
+                }
+                increase = 2;
+            }
+
+            i += increase;
+        }
+
+        return objs.toArray();
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
     /** This is the value in parameter base.
      */
-    protected String _repetitions = "";
+    protected String _internalRepetitions = "";
+
+    protected String _function = "";
+
+    protected String _arguments = "";
 
 }
