@@ -251,14 +251,13 @@ CLEAN_SHIPPING_FILES = \
 		lbnl/lib/util/libbcvtb.dylib.dSYM \
 		lbnl/lib/util/libbcvtb.so \
 		lib/cachedir \
-		ptolemy/apps ptolemy/actor/lib/ptp \
+		ptolemy/apps \
+		ptolemy/actor/lib/ptp \
 		ptolemy/actor/gui/test/CustomQueryExample.tar.gz \
 		ptolemy/actor/lib/gui/KeystrokeSensor* \
 		ptolemy/actor/lib/python/demo/HelloWorld \
 		ptolemy/actor/lib/python/demo/NotifyFailedTest \
 		ptolemy/actor/lib/security/test/foo.keystore \
-		ptolemy/cg \
-		ptolemy/codegen/chaco \
 		ptolemy/codegen/c/actor/lib/javasound/test/outfile.wav \
 		ptolemy/codegen/c/domains/sdf/kernel/test/foo.c \
 		ptolemy/codegen/c/targets/arduino \
@@ -277,13 +276,13 @@ CLEAN_SHIPPING_FILES = \
 		ptolemy/copernicus/kernel/test/substitute.out \
 		ptolemy/copernicus/*/cg \
 		ptolemy/configs/doc/whatsNew8.0.htm \
-		ptolemy/domains/cont \
 		ptolemy/domains/csp/demo/DiningPhilosophers/checkDeadlock \
 		ptolemy/domains/ct/lib/IPCInterface.class \
 		ptolemy/domains/ct/lib/IPCInterface.java \
 		ptolemy/domains/dde/kernel/test/test.tcl \
 		ptolemy/domains/fairdf \
-		ptolemy/domains/fp ptolemy/domains/pdf \
+		ptolemy/domains/fp \
+		ptolemy/domains/pdf \
 		ptolemy/domains/gr/lib/Loader3D.* \
 		ptolemy/domains/gr/lib/experimental \
 		ptolemy/domains/gro \
