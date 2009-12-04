@@ -247,7 +247,9 @@ public class PthalesReceiver extends SDFReceiver {
      *  @exception IllegalActionException If reset() is not supported by
      *   the domain.
      */
-    public void reset() throws IllegalActionException {
+    public void reset() throws IllegalActionException {    
+     _posIn = 0;
+     _posOut = 0;
     }
 
     /** Specifies the input array that will read the buffer allocated as output.
@@ -290,7 +292,7 @@ public class PthalesReceiver extends SDFReceiver {
     public void setOutputArray(LinkedHashMap<String, Integer[]> baseSpec,
             LinkedHashMap<String, Integer[]> patternSpec,
             LinkedHashMap<String, Integer[]> tilingSpec,
-            Integer[] repetitionsSpec, List<String> dimensions)
+            Integer[] repetitionsSpec, List<String> dimensions, int nbToken)
             throws IllegalActionException {
 
         _dimensions = dimensions;
@@ -298,6 +300,7 @@ public class PthalesReceiver extends SDFReceiver {
         _pattern = patternSpec;
         _tiling = tilingSpec;
         _repetitions = repetitionsSpec;
+        _nbToken = nbToken;
 
         checkArray(baseSpec, patternSpec, tilingSpec, dimensions);
 
@@ -352,7 +355,7 @@ public class PthalesReceiver extends SDFReceiver {
         for (String dimension : _dimensions) {
             blockSize *= _sizes.get(dimension);
         }
-        return blockSize;
+        return blockSize*_nbToken;
     }
     
     /** Returns the number of addresses needed to access all of the
@@ -374,20 +377,10 @@ public class PthalesReceiver extends SDFReceiver {
             sizeRepetition *= repetition;
         }
 
-        return valuePattern*sizeRepetition;
+        return valuePattern*sizeRepetition*_nbToken;
     }
 
-    /** Returns the size of 
-     * the array for each dimension
-     */
-    String getArraySize() {
-        String blockSize = "";
-        for (String dimension : _dimensions) {
-            blockSize += dimension + "=" + _sizes.get(dimension) + ",";
-        }
-        return blockSize.substring(0, blockSize.length() - 1);
-    }
-
+ 
     ///////////////////////////////////////////////////////////////////
     ////               package friendly variables                  ////
 
@@ -476,7 +469,7 @@ public class PthalesReceiver extends SDFReceiver {
         Integer origin = 0;
         for (int nDim = 0; nDim < _dimensions.size(); nDim++) {
             origin += _base.get(_dimensions.get(nDim))[0]
-                    * jumpAddr.get(_dimensions.get(nDim));
+                    * jumpAddr.get(_dimensions.get(nDim))*_nbToken;
         }
 
         // Address construction  (order is important)
@@ -486,7 +479,7 @@ public class PthalesReceiver extends SDFReceiver {
                 if (_tiling.get(tilingOrder[nRep]) != null)
                 {
                     jumpRep += _tiling.get(tilingOrder[nRep])[0] * reps[nRep]
-                        * jumpAddr.get(tilingOrder[nRep]);
+                        * jumpAddr.get(tilingOrder[nRep])*_nbToken;
                 }
             }
 
@@ -494,11 +487,14 @@ public class PthalesReceiver extends SDFReceiver {
                 jumpDim = 0;
                 for (int nDim = 0; nDim < _pattern.size(); nDim++) {
                     jumpDim += _pattern.get(patternOrder[nDim])[1] * dims[nDim]
-                            * jumpAddr.get(patternOrder[nDim]);
+                            * jumpAddr.get(patternOrder[nDim])*_nbToken;
                 }
 
-                jumpPattern[pos] = origin + jumpDim + jumpRep;
-                pos++;
+                for (int nbToken = 0; nbToken < _nbToken; nbToken++)
+                {
+                    jumpPattern[pos] = origin + jumpDim + jumpRep + nbToken;
+                    pos++;
+                }
                 
                 //pos = pos%_buffer.length;
 
@@ -532,4 +528,8 @@ public class PthalesReceiver extends SDFReceiver {
 
     /** The dimensions relevant to this receiver. */
     private List<String> _dimensions;
+    
+    /** The number of token used to store 1 data */
+    private int _nbToken;
+
 }

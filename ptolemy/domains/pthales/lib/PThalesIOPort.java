@@ -18,6 +18,7 @@ import ptolemy.data.type.Type;
 import ptolemy.graph.Inequality;
 import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.ComponentEntity;
+import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
@@ -34,7 +35,7 @@ public class PThalesIOPort extends TypedIOPort {
 
         //FIXME : adapt to correct type        
         setTypeEquals(BaseType.FLOAT);
-        
+
         // Add parameters for PThales Domain
         initialize();
     }
@@ -168,33 +169,122 @@ public class PThalesIOPort extends TypedIOPort {
         newObject._constraints = new HashSet<Inequality>();
         return newObject;
     }
-    
+
     /** Computes pattern size in byte, not the space in memory
-    *  @return Pattern size in byte.
-    */
-   public int getPattern() {
-       int result = 0;
-       
-       pattern = (Parameter)getAttribute("pattern");
-       
-       if (pattern != null)
-       {
-           int value = 1;
-           String [] dims = pattern.toString().split(",");
-           for (String dim : dims)
-           {
-               value *= Integer.parseInt(dim.split("=")[1].split("\\.")[0].trim());
-           }
-           result = value;
-       }
-       
-       return result;
-   }
+     *  @return Pattern size in byte.
+     */
+    public int getPatternSize() {
+        int valuePattern = 0;
+        pattern = (Parameter) getAttribute("pattern");
+        if (pattern != null) {
+            int value = 1;
+            String[] dims = pattern.toString().split(",");
+            for (String dim : dims) {
+                value *= Integer.parseInt(dim.split("=")[1].split("\\.")[0]
+                        .trim());
+            }
+            valuePattern = value;
+        }
+
+        int sizeRepetition = 1;
+        tiling = (Parameter) getAttribute("tiling");
+        String str = ((PThalesGenericActor) getContainer()).getInternalRepetitions();
+        if (!str.equals(""))
+        {
+            String[] list = str.trim().split(",");
+            Integer[] rep = new Integer[list.length];
+            String[] til = new String[list.length];
+            for (int i = 0; i < list.length; i++) {
+                rep[i] = new Integer(list[i].trim());
+                til[i] = tiling.getExpression().split(",")[i].split("=")[1].trim();
+            }
+    
+            // size for tiling dimensions 
+            for (int i = 0; i < rep.length; i++) {
+                // Dimension added to pattern list
+                if (!til[i].equals("0"))
+                    sizeRepetition *= rep[i]*Integer.parseInt(til[i]);
+            }
+        }
+
+        return valuePattern * sizeRepetition * getNbTokenPerData();
+    }
+
+    /** Computes pattern size in byte, not the space in memory
+     *  @return Pattern size in byte.
+     */
+    public int[] getPattern() {
+        int[] result = null;
+        Integer[] rep = new Integer[0];
+        String[] til = new String[0]; 
+        int numDim = 0;
+
+        pattern = (Parameter) getAttribute("pattern");
+        tiling = (Parameter) getAttribute("tiling");
+
+        String str = ((PThalesGenericActor) getContainer()).getInternalRepetitions();
+        if (!str.equals(""))
+        {
+            String[] list = str.trim().split(",");
+            rep = new Integer[list.length];
+            til = new String[list.length];
+            for (int i = 0; i < list.length; i++) {
+                rep[i] = new Integer(list[i].trim());
+                til[i] = tiling.getExpression().split(",")[i].split("=")[1].trim();
+            }
+        }
+
+        if (pattern != null) {
+            String[] dims = pattern.toString().split(",");
+
+            result = new int[dims.length + rep.length];
+
+            for (String dim : dims) {
+                result[numDim] = Integer.parseInt(dim.split("=")[1]
+                        .split("\\.")[0].trim());
+                numDim++;
+            }
+        }
+
+        // size for tiling dimensions 
+        for (int i = 0; i < rep.length; i++) {
+            // Dimension added to pattern list
+            if (!til[i].equals("0"))
+                result[numDim] = rep[i]*Integer.parseInt(til[i]);
+            numDim++;
+        }
+
+        return result;
+    }
+
+    /** Check if data type is a structure.
+     * If yes, gives the number of tokens needed to store all the data
+     * By default, the return value is 1
+     * @return the number of token needed to store the values
+     */
+    public int getNbTokenPerData() {
+        if (_dataType.equals("Cplfloat") || _dataType.equals("Cpldouble")) {
+            return 2;
+        }
+        return 1;
+    }
+
+    /** Attribute update
+     */
+    public void attributeChanged(Attribute attribute)
+            throws IllegalActionException {
+        if (attribute.getName().equals("dataType")) {
+            _dataType = ((Parameter) attribute).getExpression();
+        }
+        if (attribute.getName().equals("dataTypeSize")) {
+            _dataTypeSize = Integer.parseInt(((Parameter) attribute)
+                    .getExpression());
+        }
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
-  
-    
+
     /** Reset the variable part of this type to the specified type.
      *  @exception IllegalActionException If the type is not settable,
      *   or the argument is not a Type.
@@ -281,6 +371,14 @@ public class PThalesIOPort extends TypedIOPort {
             }
         }
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected variables               ////
+    /** This is the value in parameter base.
+     */
+    protected String _dataType = "";
+
+    protected int _dataTypeSize = 0;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////

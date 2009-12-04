@@ -45,6 +45,7 @@ import ptolemy.actor.sched.NotSchedulableException;
 import ptolemy.actor.sched.Schedule;
 import ptolemy.actor.util.CausalityInterfaceForComposites;
 import ptolemy.actor.util.DFUtilities;
+import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.data.expr.Variable;
 import ptolemy.domains.pthales.lib.PThalesIOPort;
@@ -158,12 +159,16 @@ public class PthalesScheduler extends SDFScheduler {
 
                 Receiver[][] receivers = port.getRemoteReceivers();
                 if (receivers != null && receivers.length > 0) {
+                    int nb = 1;
+                    if (port instanceof PThalesIOPort)
+                        nb = ((PThalesIOPort) port).getNbTokenPerData();
                     for (Receiver[] receiverss : receivers) {
                         if (receiverss != null && receiverss.length > 0) {
                             for (Receiver receiver : receiverss) {
                                 ((PthalesReceiver) receiver).setOutputArray(
-                                        baseSpec, patternSpec, tilingSpec, repetitionsSpecs.get(actor),
-                                        dimensions);
+                                        baseSpec, patternSpec, tilingSpec,
+                                        repetitionsSpecs.get(actor),
+                                        dimensions, nb);
                             }
                         }
                     }
@@ -207,9 +212,10 @@ public class PthalesScheduler extends SDFScheduler {
                             for (Receiver receiver : receiverss) {
                                 // FIXME: Is the cast to LinkedHashSet safe?
                                 // Depends on the Java implementation of LinkedHashMap.
-                                ((PthalesReceiver) receiver).setInputArray(
-                                        baseSpec, patternSpec, tilingSpec, repetitionsSpecs.get(actor),
-                                        dimensions);
+                                ((PthalesReceiver) receiver)
+                                        .setInputArray(baseSpec, patternSpec,
+                                                tilingSpec, repetitionsSpecs
+                                                        .get(actor), dimensions);
                             }
                         }
                     }
@@ -226,14 +232,28 @@ public class PthalesScheduler extends SDFScheduler {
         CausalityInterfaceForComposites causality = (CausalityInterfaceForComposites) compositeActor
                 .getCausalityInterface();
         List<Actor> sortedActors = causality.topologicalSort();
+        Integer[] internalLoops = null;
         for (Actor actor : sortedActors) {
+            // Internal Loops only used INSIDE the function
+            int internal = 1;
+            internalLoops = _parseRepetitions(_INTERNAL_REPETITIONS,
+                    (NamedObj) actor);
+            if (internalLoops != null) {
+                for (Integer iter : internalLoops) {
+                    internal *= iter;
+                }
+            }
+
+            // All loops are used to build array
             Firing firing = new Firing(actor);
             int iterationCount = 1;
             Integer[] repetitions = repetitionsSpecs.get(actor);
             for (Integer iter : repetitions) {
                 iterationCount *= iter;
             }
-            firing.setIterationCount(iterationCount);
+
+            // Iteration is only done on external loops
+            firing.setIterationCount(iterationCount / internal);
             schedule.add(firing);
         }
         return schedule;
@@ -272,7 +292,7 @@ public class PthalesScheduler extends SDFScheduler {
             throws IllegalActionException {
         int result = 0;
         if (port instanceof PThalesIOPort) {
-            result = ((PThalesIOPort)port).getPattern();
+            result = ((PThalesIOPort) port).getPatternSize();
         }
         return result;
     }
@@ -286,18 +306,22 @@ public class PthalesScheduler extends SDFScheduler {
      *  @return The dimension data, or null if the parameter does not exist.
      *  @throws IllegalActionException If the parameter cannot be evaluated.
      */
-    private Integer[] _parseRepetitions(String name,
-            NamedObj object) throws IllegalActionException {
+    private Integer[] _parseRepetitions(String name, NamedObj object)
+            throws IllegalActionException {
         String[] list = null;
-        Attribute attribute = object.getAttribute(name);
-        if (attribute instanceof StringParameter) {
-            list = ((StringParameter) attribute).stringValue().trim().split(",");
+        Integer[] result = null;
+        Parameter attribute = (Parameter) object.getAttribute(name);
+        if (attribute != null && !attribute.getExpression().equals("")) {
+            if (attribute instanceof StringParameter) {
+                list = ((StringParameter) attribute).stringValue().trim()
+                        .split(",");
+            }
+            result = new Integer[list.length];
+            for (int i = 0; i < list.length; i++) {
+                result[i] = new Integer(list[i].trim());
+            }
         }
-        Integer[] result = new Integer[list.length];
-        for (int i =0; i < list.length; i++) {
-            result[i] = new Integer(list[i].trim());
-        }
-
+        
         return result;
     }
 
@@ -310,12 +334,12 @@ public class PthalesScheduler extends SDFScheduler {
      *  @return The dimension data, or null if the parameter does not exist.
      *  @throws IllegalActionException If the parameter cannot be evaluated.
      */
-    private LinkedHashMap<String,Integer[]> _parseSpec(
-            String name, NamedObj object) throws IllegalActionException {
-        LinkedHashMap<String,Integer[]> result = new LinkedHashMap<String,Integer[]>();
+    private LinkedHashMap<String, Integer[]> _parseSpec(String name,
+            NamedObj object) throws IllegalActionException {
+        LinkedHashMap<String, Integer[]> result = new LinkedHashMap<String, Integer[]>();
         Attribute attribute = object.getAttribute(name);
         if (attribute instanceof StringParameter) {
-            String spec = ((StringParameter)attribute).stringValue();
+            String spec = ((StringParameter) attribute).stringValue();
             // FIXME: Handle syntax errors.
             String[] subSpecs = spec.split(",");
             for (String subSpec : subSpecs) {
@@ -352,23 +376,17 @@ public class PthalesScheduler extends SDFScheduler {
      *  @return The entry that is put in the data structure, or null if none is found.
      *  @throws IllegalActionException If the parameter cannot be evaluated.
      */
-    private LinkedHashMap<String,Integer[]> _recordPortSpec(
+    private LinkedHashMap<String, Integer[]> _recordPortSpec(
             Map<IOPort, LinkedHashMap<String, Integer[]>> returnedSpec,
-            String name,
-            IOPort port)
-            throws IllegalActionException {
-        LinkedHashMap<String,Integer[]> spec = _parseSpec(name, port);
+            String name, IOPort port) throws IllegalActionException {
+        LinkedHashMap<String, Integer[]> spec = _parseSpec(name, port);
         if (spec != null && spec.size() > 0) {
             returnedSpec.put(port, spec);
             if (_debugging) {
                 for (String dimension : spec.keySet()) {
-                    _debug("--- " + port.getFullName() 
-                            + " has "
-                            + name
-                            + " with value "
-                            + spec.get(dimension)
-                            + " in dimension "
-                            + dimension);
+                    _debug("--- " + port.getFullName() + " has " + name
+                            + " with value " + spec.get(dimension)
+                            + " in dimension " + dimension);
                 }
             }
             return spec;
@@ -390,6 +408,9 @@ public class PthalesScheduler extends SDFScheduler {
 
     /** The name of the repetitions parameter. */
     private static String _REPETITIONS = "repetitions";
+
+    /** The name of the internal repetitions parameter. */
+    private static String _INTERNAL_REPETITIONS = "internalRepetitions";
 
     private static Integer _ONE = new Integer(1);
 }

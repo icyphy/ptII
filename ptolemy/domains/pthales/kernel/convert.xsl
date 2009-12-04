@@ -75,9 +75,10 @@
     <!-- *** repetition                                    *** -->
     <!-- ***************************************************** -->
     <xsl:template name="repetition">
+        <xsl:param name="name"/>
         <xsl:element name="property">
             <xsl:attribute name="name">
-                <xsl:text>repetitions</xsl:text>
+                <xsl:value-of select="$name"/>
             </xsl:attribute>
             <xsl:attribute name="class">
                 <xsl:text>ptolemy.data.expr.StringParameter</xsl:text>
@@ -112,10 +113,43 @@
             </xsl:for-each>
 
             <!-- Repetitions -->
-            <xsl:for-each select="./property[@name='LOOP']">
-                <xsl:call-template name="repetition"/>
+            <xsl:for-each select="./property[@name='internalLoops']">
+                <xsl:call-template name="repetition">
+                    <xsl:with-param name="name" select="'internalRepetitions'"/>
+                </xsl:call-template>
             </xsl:for-each>
+            <xsl:for-each select="./property[@name='LOOP']">
+                <xsl:call-template name="repetition">
+                    <xsl:with-param name="name" select="'repetitions'"/>
+                </xsl:call-template>
+            </xsl:for-each>
+            
+            <!-- function -->
+            <xsl:element name="property">
+                <xsl:attribute name="name">
+                    <xsl:text>function</xsl:text>
+                </xsl:attribute>
+                <xsl:attribute name="class">
+                    <xsl:text>ptolemy.data.expr.StringParameter</xsl:text>
+                </xsl:attribute>
+                <xsl:attribute name="value">
+                    <xsl:value-of select="substring-before(./property[@name='ET']/@value,';')"/>
+                </xsl:attribute>
+            </xsl:element>
 
+            <!-- arguments -->
+            <xsl:element name="property">
+                <xsl:attribute name="name">
+                    <xsl:text>arguments</xsl:text>
+                </xsl:attribute>
+                <xsl:attribute name="class">
+                    <xsl:text>ptolemy.data.expr.StringParameter</xsl:text>
+                </xsl:attribute>
+                <xsl:attribute name="value">
+                    <xsl:value-of select="./property[@name='arguments']/@value"/>
+                </xsl:attribute>
+            </xsl:element>
+            
             <!-- ports  -->
             <xsl:variable name="loops" select="property[@name='LOOP']/@value"/>
             <xsl:for-each select="port[@class='modeling.application.TaskPort']">
@@ -404,7 +438,7 @@
         <xsl:param name="isBase" select="'false'"/>
         <xsl:param name="isPattern" select="'false'"/>
         <xsl:param name="isTiling" select="'false'"/>
-        
+
         <!-- parcours des boucles -->
         <xsl:for-each select="$loops">
             <xsl:variable name="posLoop" select="position()"/>
@@ -416,8 +450,8 @@
 
                 <xsl:variable name="output">
 
-                <!-- parcours des dimensions pour chaque boucle -->
-                <xsl:for-each select="$dims">
+                    <!-- parcours des dimensions pour chaque boucle -->
+                    <xsl:for-each select="$dims">
                         <xsl:variable name="posDim" select="position()"/>
 
                         <!-- dimension "vide" non traitée -->
@@ -448,8 +482,8 @@
                                 </xsl:if>
                             </xsl:if>
                         </xsl:if>
-                    
-                </xsl:for-each>
+
+                    </xsl:for-each>
                 </xsl:variable>
                 <xsl:if test="$output='' and $isTiling='true'">
                     <xsl:value-of select="$dims[1]"/>
@@ -458,7 +492,7 @@
                 <xsl:if test="not($output='') or $isTiling='false'">
                     <xsl:value-of select="$output"/>
                 </xsl:if>
-                
+
             </xsl:if>
         </xsl:for-each>
 
@@ -532,7 +566,8 @@
             </xsl:element>
 
             <!-- propriétés de l'application -->
-            <xsl:for-each select="./property[substring-before(@class,'.')='ptolemy'][@class!='ptolemy.kernel.attributes.VersionAttribute']">
+            <xsl:for-each
+                select="./property[substring-before(@class,'.')='ptolemy'][@class!='ptolemy.kernel.attributes.VersionAttribute']">
                 <xsl:call-template name="node"/>
             </xsl:for-each>
 

@@ -28,10 +28,15 @@
 
 package ptolemy.domains.pthales.kernel;
 
+import java.util.ArrayList;
+
 import ptolemy.actor.Receiver;
+import ptolemy.data.expr.StringParameter;
 import ptolemy.domains.sdf.kernel.SDFDirector;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InvalidStateException;
 import ptolemy.kernel.util.NameDuplicationException;
 
 // FIXME: Change the parameters to be ordered record types
@@ -162,12 +167,102 @@ public class PthalesDirector extends SDFDirector {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         setScheduler(new PthalesScheduler(this, "PtalesScheduler"));
+        
+        if (getAttribute("library") == null) {
+            library = new StringParameter(this,
+                    "library");
+            library.setExpression("");
+        }
     }
     
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
     public Receiver newReceiver() {
-        return new PthalesReceiver();
+        PthalesReceiver recv =  new PthalesReceiver();
+        _receivers.add(recv);
+        
+        return recv;
     }
+    
+    /** Preinitialize the actors associated with this director and
+     *  compute the schedule.  The schedule is computed during
+     *  preinitialization so that hierarchical opaque composite actors
+     *  can be scheduled properly, since the act of computing the
+     *  schedule sets the rate parameters of the external ports.  In
+     *  addition, performing scheduling during preinitialization
+     *  enables it to be present during code generation.  The order in
+     *  which the actors are preinitialized is arbitrary.
+     *  @exception IllegalActionException If the preinitialize() method of
+     *  one of the associated actors throws it.
+     */
+    public void preinitialize() throws IllegalActionException {
+        // Load library needed to project
+        if (!_library.isEmpty())
+            System.loadLibrary(_library);
+        
+        // Empties list of receivers before filling it
+        _receivers.removeAll(_receivers);
+
+        super.preinitialize();
+    }
+    
+    /** Attribute update
+     * @see ptolemy.domains.sdf.kernel.SDFDirector#attributeChanged(ptolemy.kernel.util.Attribute)
+     */
+    public void attributeChanged(Attribute attribute)
+            throws IllegalActionException {
+        if (attribute == library) {
+            _library = library.getExpression();
+        }
+    }
+    
+     /**
+     * @return the name of the library to use
+     * @throws IllegalActionException
+     */
+    public String getLibName()
+            throws IllegalActionException {
+        return _library;
+    }
+
+    
+    /** Calculate the current schedule, if necessary, and iterate the
+     *  contained actors in the order given by the schedule.
+     *  Iterating an actor involves calling the actor's iterate() method,
+     *  which is equivalent to calling the actor's prefire(), fire() and
+     *  postfire() methods in succession.  If iterate() returns NOT_READY,
+     *  indicating that the actor is not ready to execute, then an
+     *  IllegalActionException will be thrown. The values returned from
+     *  iterate() are recorded and are used to determine the value that
+     *  postfire() will return at the end of the director's iteration.
+     *  NOTE: This method does not conform with the strict actor semantics
+     *  because it calls postfire() of actors. Thus, it should not be used
+     *  in domains that require a strict actor semantics, such as SR or
+     *  Continuous.
+     *  @exception IllegalActionException If any actor executed by this
+     *   actor return false in prefire.
+     *  @exception InvalidStateException If this director does not have a
+     *   container.
+     */
+    public void fire() throws IllegalActionException {
+        for (PthalesReceiver recv : _receivers)
+        {
+            recv.reset();
+        }
+        super.fire();
+    }
+    ///////////////////////////////////////////////////////////////////
+    ////                      protected variables                  ////
+
+    /** Buffer memory. */
+    protected StringParameter library;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                      private variables                    ////
+
+    /** The dimensions relevant to this receiver. */
+    private ArrayList<PthalesReceiver> _receivers = new ArrayList<PthalesReceiver>();
+    
+    private String _library = "";
 }

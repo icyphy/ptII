@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="UCB_ABF2_fus" class="modeling.application.ApplicationModel">
+<entity name="UCB_ABF" class="modeling.application.ApplicationModel">
     <property name="SEGMENT" class="modeling.ListParam">
     </property>
     <property name="_spearVersion" class="ptolemy.kernel.attributes.VersionAttribute" value="0.2.6">
@@ -386,6 +386,99 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="15.0, 495.0">
         </property>
     </property>
+    <entity name="ApplyAdaptiveFilter" class="modeling.application.Computation">
+        <property name="UNIQID" class="modeling.application.UniqIdAttribute" value="20091029114136734081">
+        </property>
+        <property name="SEGMENT" class="modeling.ListParam">
+        </property>
+        <property name="ET" class="modeling.ListParam" value="Apply_Filter;">
+        </property>
+        <property name="LOOP" class="modeling.ListParam" value="32;7;185;">
+        </property>
+        <property name="_ediorFactory" class="modeling.application.mmi.task.TaskEditorFactory">
+        </property>
+        <property name="IGNORESONS" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="debugEnable" class="ptolemy.data.expr.Parameter" value="true">
+            <property name="isDebugEnabledStyle" class="ptolemy.actor.gui.style.CheckBoxStyle">
+            </property>
+        </property>
+        <property name="INPUTBLOC" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="440.0, 250.0">
+        </property>
+        <property name="PROTOTYPE" class="modeling.ListParam">
+        </property>
+        <property name="TRIGGERS" class="ptolemy.kernel.util.ConfigurableAttribute">
+            <configure><triggers></triggers></configure>
+        </property>
+        <property name="arguments" class="modeling.ListParam" value="port;IN;port;IN;port;OUT;">
+        </property>
+        <property name="externalLoops" class="ptolemy.data.expr.Parameter" value="7;185;">
+        </property>
+        <property name="internalLoops" class="ptolemy.data.expr.Parameter" value="32;">
+        </property>
+        <port name="ParamIN" class="modeling.application.task.ParamPort">
+            <property name="input"/>
+            <property name="output"/>
+            <property name="INOUT" class="modeling.application.InOutParam">
+            </property>
+            <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="NORTH">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location">
+            </property>
+        </port>
+        <port name="ParamOUT" class="modeling.application.task.ParamPort">
+            <property name="input"/>
+            <property name="output"/>
+            <property name="INOUT" class="modeling.application.InOutParam">
+            </property>
+            <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="SOUTH">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location">
+            </property>
+        </port>
+        <port name="port" class="modeling.application.TaskPort">
+            <property name="input"/>
+            <property name="multiport"/>
+            <property name="INOUT" class="modeling.application.InOutParam" value="3; 1;0;0;0; 1;0;0;1; 1;;;; 1;1;0;0; 8;0;1;0;">
+            </property>
+            <property name="_ediorFactory" class="modeling.application.mmi.array.ArrayEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="20.0, 375.0">
+            </property>
+            <property name="ARRAYVIEW" class="modeling.application.ArrayView">
+                <property name="View" class="modeling.aolimpl.View" value="3;1;;;;8;0;1;0;32;0;0;1;185;1;0;0;">
+                </property>
+            </property>
+        </port>
+        <port name="port2" class="modeling.application.TaskPort">
+            <property name="input"/>
+            <property name="multiport"/>
+            <property name="INOUT" class="modeling.application.InOutParam" value="2; 1;0;0; 1;0;0; 1;0;1; 1;;; 8;1;0;">
+            </property>
+            <property name="_ediorFactory" class="modeling.application.mmi.array.ArrayEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="20.0, 375.0">
+            </property>
+            <property name="ARRAYVIEW" class="modeling.application.ArrayView">
+            </property>
+        </port>
+        <port name="port3" class="modeling.application.TaskPort">
+            <property name="output"/>
+            <property name="multiport"/>
+            <property name="INOUT" class="modeling.application.InOutParam" value="3;1;0;0;0;1;1;0;0;1;;;1;1;;1;;1;0;0;0;">
+            </property>
+            <property name="_ediorFactory" class="modeling.application.mmi.array.ArrayEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="1170.0, 375.0">
+            </property>
+            <property name="LINKEDARRAY" class="modeling.application.LinkedArrayAttribute" value="ApplyAdaptiveFilter_out">
+            </property>
+            <property name="ARRAYVIEW" class="modeling.application.ArrayView">
+            </property>
+        </port>
+    </entity>
     <entity name="Generate_burst_out" class="modeling.application.Array">
         <property name="_ediorFactory" class="modeling.application.mmi.array.ArrayEditorFactory">
         </property>
@@ -420,6 +513,12 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="30.0, 150.0">
         </property>
         <property name="PROTOTYPE" class="modeling.ListParam">
+        </property>
+        <property name="arguments" class="modeling.ListParam" value="port;IN;port;OUT;">
+        </property>
+        <property name="externalLoops" class="ptolemy.data.expr.Parameter" value="1;">
+        </property>
+        <property name="internalLoops" class="ptolemy.data.expr.Parameter">
         </property>
         <port name="ParamIN" class="modeling.application.task.ParamPort">
             <property name="input"/>
@@ -506,6 +605,12 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="355.0, 175.0">
         </property>
         <property name="PROTOTYPE" class="modeling.ListParam">
+        </property>
+        <property name="arguments" class="modeling.ListParam" value="port;IN;port;IN;port;OUT;">
+        </property>
+        <property name="externalLoops" class="ptolemy.data.expr.Parameter" value="1;">
+        </property>
+        <property name="internalLoops" class="ptolemy.data.expr.Parameter" value="7;">
         </property>
         <port name="ParamIN" class="modeling.application.task.ParamPort">
             <property name="input"/>
@@ -604,6 +709,12 @@
         <property name="TRIGGERS" class="ptolemy.kernel.util.ConfigurableAttribute">
             <configure><triggers></triggers></configure>
         </property>
+        <property name="arguments" class="modeling.ListParam" value="port;IN;port;IN;port;OUT;">
+        </property>
+        <property name="externalLoops" class="ptolemy.data.expr.Parameter" value="7;185;">
+        </property>
+        <property name="internalLoops" class="ptolemy.data.expr.Parameter" value="32;">
+        </property>
         <port name="ParamIN" class="modeling.application.task.ParamPort">
             <property name="input"/>
             <property name="output"/>
@@ -700,6 +811,12 @@
         </property>
         <property name="PROTOTYPE" class="modeling.ListParam">
         </property>
+        <property name="arguments" class="modeling.ListParam" value="port;IN;port;OUT;">
+        </property>
+        <property name="externalLoops" class="ptolemy.data.expr.Parameter" value="1;">
+        </property>
+        <property name="internalLoops" class="ptolemy.data.expr.Parameter">
+        </property>
         <port name="ParamIN" class="modeling.application.task.ParamPort">
             <property name="input"/>
             <property name="output"/>
@@ -781,6 +898,12 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="195.0, 490.0">
         </property>
         <property name="PROTOTYPE" class="modeling.ListParam">
+        </property>
+        <property name="arguments" class="modeling.ListParam" value="port;IN;port;IN;port;OUT;">
+        </property>
+        <property name="externalLoops" class="ptolemy.data.expr.Parameter" value="8;32;">
+        </property>
+        <property name="internalLoops" class="ptolemy.data.expr.Parameter" value="185;">
         </property>
         <port name="ParamIN" class="modeling.application.task.ParamPort">
             <property name="input"/>
@@ -881,6 +1004,12 @@
         <property name="TRIGGERS" class="ptolemy.kernel.util.ConfigurableAttribute">
             <configure><triggers></triggers></configure>
         </property>
+        <property name="arguments" class="modeling.ListParam" value="port;OUT;parameter;float;15;parameter;int;7;parameter;int;8;parameter;float;0.09;parameter;float;0.03;">
+        </property>
+        <property name="externalLoops" class="ptolemy.data.expr.Parameter" value="1;">
+        </property>
+        <property name="internalLoops" class="ptolemy.data.expr.Parameter">
+        </property>
         <port name="ParamIN" class="modeling.application.task.ParamPort">
             <property name="input"/>
             <property name="output"/>
@@ -953,6 +1082,12 @@
         </property>
         <property name="TRIGGERS" class="ptolemy.kernel.util.ConfigurableAttribute">
             <configure><triggers></triggers></configure>
+        </property>
+        <property name="arguments" class="modeling.ListParam" value="port;IN;parameter;int;FFT_DIRECTE;parameter;int;32;port;OUT;">
+        </property>
+        <property name="externalLoops" class="ptolemy.data.expr.Parameter" value="7;185;">
+        </property>
+        <property name="internalLoops" class="ptolemy.data.expr.Parameter">
         </property>
         <port name="ParamIN" class="modeling.application.task.ParamPort">
             <property name="input"/>
@@ -1039,6 +1174,12 @@
         <property name="TRIGGERS" class="ptolemy.kernel.util.ConfigurableAttribute">
             <configure><triggers></triggers></configure>
         </property>
+        <property name="arguments" class="modeling.ListParam" value="port;OUT;parameter;int;16;parameter;Splfloat;0.2;">
+        </property>
+        <property name="externalLoops" class="ptolemy.data.expr.Parameter" value="1;">
+        </property>
+        <property name="internalLoops" class="ptolemy.data.expr.Parameter">
+        </property>
         <port name="ParamIN" class="modeling.application.task.ParamPort">
             <property name="input"/>
             <property name="output"/>
@@ -1111,6 +1252,12 @@
         </property>
         <property name="TRIGGERS" class="ptolemy.kernel.util.ConfigurableAttribute">
             <configure><triggers></triggers></configure>
+        </property>
+        <property name="arguments" class="modeling.ListParam" value="port;IN;port;OUT;parameter;int;50;parameter;float;30;parameter;float;0.09;parameter;float;0.03;parameter;float;5.0E-5;parameter;float;-6;parameter;float;-100;parameter;float;3000;parameter;float;2;">
+        </property>
+        <property name="externalLoops" class="ptolemy.data.expr.Parameter" value="1;">
+        </property>
+        <property name="internalLoops" class="ptolemy.data.expr.Parameter" value="32;">
         </property>
         <port name="ParamIN" class="modeling.application.task.ParamPort">
             <property name="input"/>
@@ -1197,6 +1344,12 @@
         <property name="TRIGGERS" class="ptolemy.kernel.util.ConfigurableAttribute">
             <configure><triggers></triggers></configure>
         </property>
+        <property name="arguments" class="modeling.ListParam" value="port;IN;parameter;Splfloat;2;port;OUT;">
+        </property>
+        <property name="externalLoops" class="ptolemy.data.expr.Parameter" value="32;">
+        </property>
+        <property name="internalLoops" class="ptolemy.data.expr.Parameter" value="8;200;">
+        </property>
         <port name="ParamIN" class="modeling.application.task.ParamPort">
             <property name="input"/>
             <property name="output"/>
@@ -1281,6 +1434,12 @@
         </property>
         <property name="TRIGGERS" class="ptolemy.kernel.util.ConfigurableAttribute">
             <configure><triggers></triggers></configure>
+        </property>
+        <property name="arguments" class="modeling.ListParam" value="port;IN;port;OUT;parameter;Splfloat;30;parameter;Splfloat;2000;parameter;Splfloat;1;parameter;Splfloat;0.09;parameter;Splfloat;0.03;parameter;Splfloat;30;">
+        </property>
+        <property name="externalLoops" class="ptolemy.data.expr.Parameter" value="1;">
+        </property>
+        <property name="internalLoops" class="ptolemy.data.expr.Parameter">
         </property>
         <port name="ParamIN" class="modeling.application.task.ParamPort">
             <property name="input"/>
@@ -1367,6 +1526,12 @@
         <property name="TRIGGERS" class="ptolemy.kernel.util.ConfigurableAttribute">
             <configure><triggers></triggers></configure>
         </property>
+        <property name="arguments" class="modeling.ListParam" value="port;IN;port;OUT;">
+        </property>
+        <property name="externalLoops" class="ptolemy.data.expr.Parameter" value="1;">
+        </property>
+        <property name="internalLoops" class="ptolemy.data.expr.Parameter">
+        </property>
         <port name="ParamIN" class="modeling.application.task.ParamPort">
             <property name="input"/>
             <property name="output"/>
@@ -1449,6 +1614,12 @@
         </property>
         <property name="PROTOTYPE" class="modeling.ListParam">
         </property>
+        <property name="arguments" class="modeling.ListParam" value="port;IN;port;IN;port;OUT;">
+        </property>
+        <property name="externalLoops" class="ptolemy.data.expr.Parameter" value="1;">
+        </property>
+        <property name="internalLoops" class="ptolemy.data.expr.Parameter">
+        </property>
         <port name="ParamIN" class="modeling.application.task.ParamPort">
             <property name="input"/>
             <property name="output"/>
@@ -1520,93 +1691,6 @@
         <property name="_location" class="ptolemy.kernel.util.Location">
         </property>
     </entity>
-    <entity name="ApplyAdaptiveFilter" class="modeling.application.Computation">
-        <property name="UNIQID" class="modeling.application.UniqIdAttribute" value="20091029114136734081">
-        </property>
-        <property name="SEGMENT" class="modeling.ListParam">
-        </property>
-        <property name="ET" class="modeling.ListParam" value="Apply_Filter;">
-        </property>
-        <property name="LOOP" class="modeling.ListParam" value="32;7;185;">
-        </property>
-        <property name="_ediorFactory" class="modeling.application.mmi.task.TaskEditorFactory">
-        </property>
-        <property name="IGNORESONS" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
-        <property name="debugEnable" class="ptolemy.data.expr.Parameter" value="true">
-            <property name="isDebugEnabledStyle" class="ptolemy.actor.gui.style.CheckBoxStyle">
-            </property>
-        </property>
-        <property name="INPUTBLOC" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="440.0, 250.0">
-        </property>
-        <property name="PROTOTYPE" class="modeling.ListParam">
-        </property>
-        <property name="TRIGGERS" class="ptolemy.kernel.util.ConfigurableAttribute">
-            <configure><triggers></triggers></configure>
-        </property>
-        <port name="ParamIN" class="modeling.application.task.ParamPort">
-            <property name="input"/>
-            <property name="output"/>
-            <property name="INOUT" class="modeling.application.InOutParam">
-            </property>
-            <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="NORTH">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location">
-            </property>
-        </port>
-        <port name="ParamOUT" class="modeling.application.task.ParamPort">
-            <property name="input"/>
-            <property name="output"/>
-            <property name="INOUT" class="modeling.application.InOutParam">
-            </property>
-            <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="SOUTH">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location">
-            </property>
-        </port>
-        <port name="port" class="modeling.application.TaskPort">
-            <property name="input"/>
-            <property name="multiport"/>
-            <property name="INOUT" class="modeling.application.InOutParam" value="3;1;0;0;0;1;0;0;1;1;;;;1;1;0;0;8;0;1;0;">
-            </property>
-            <property name="_ediorFactory" class="modeling.application.mmi.array.ArrayEditorFactory">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="20.0, 375.0">
-            </property>
-            <property name="ARRAYVIEW" class="modeling.application.ArrayView">
-                <property name="View" class="modeling.aolimpl.View" value="3;1;;;;8;0;1;0;32;0;0;1;185;1;0;0;">
-                </property>
-            </property>
-        </port>
-        <port name="port2" class="modeling.application.TaskPort">
-            <property name="input"/>
-            <property name="multiport"/>
-            <property name="INOUT" class="modeling.application.InOutParam" value="2;1;0;0;1;0;0;1;0;1;1;;;8;1;0;">
-            </property>
-            <property name="_ediorFactory" class="modeling.application.mmi.array.ArrayEditorFactory">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="20.0, 375.0">
-            </property>
-            <property name="ARRAYVIEW" class="modeling.application.ArrayView">
-            </property>
-        </port>
-        <port name="port3" class="modeling.application.TaskPort">
-            <property name="output"/>
-            <property name="multiport"/>
-            <property name="INOUT" class="modeling.application.InOutParam" value="3;1;0;0;0;1;1;0;0;1;;;1;1;;1;;1;0;0;0;">
-            </property>
-            <property name="_ediorFactory" class="modeling.application.mmi.array.ArrayEditorFactory">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="1170.0, 375.0">
-            </property>
-            <property name="LINKEDARRAY" class="modeling.application.LinkedArrayAttribute" value="ApplyAdaptiveFilter_out">
-            </property>
-            <property name="ARRAYVIEW" class="modeling.application.ArrayView">
-            </property>
-        </port>
-    </entity>
     <entity name="ApplyAdaptiveFilter_out" class="modeling.application.Array">
         <property name="_ediorFactory" class="modeling.application.mmi.array.ArrayEditorFactory">
         </property>
@@ -1644,6 +1728,12 @@
         </property>
         <property name="TRIGGERS" class="ptolemy.kernel.util.ConfigurableAttribute">
             <configure><triggers></triggers></configure>
+        </property>
+        <property name="arguments" class="modeling.ListParam" value="port;IN;parameter;int;FFT_DIRECTE;parameter;int;32;port;OUT;">
+        </property>
+        <property name="externalLoops" class="ptolemy.data.expr.Parameter" value="7;185;">
+        </property>
+        <property name="internalLoops" class="ptolemy.data.expr.Parameter">
         </property>
         <port name="ParamIN" class="modeling.application.task.ParamPort">
             <property name="input"/>
@@ -1884,6 +1974,9 @@
         <property name="_editorFactory" class="modeling.application.mmi.DataFlowEditorFactory">
         </property>
     </relation>
+    <link port="ApplyAdaptiveFilter.port" relation="relation16"/>
+    <link port="ApplyAdaptiveFilter.port2" relation="relation17"/>
+    <link port="ApplyAdaptiveFilter.port3" relation="relation18"/>
     <link port="CovarCalculation.port" relation="relation12"/>
     <link port="CovarCalculation.port2" relation="relation2"/>
     <link port="CovarCalculation.port2" relation="relation14"/>
@@ -1916,8 +2009,5 @@
     <link port="Decim.port2" relation="relation13"/>
     <link port="Check_Inv.port" relation="relation14"/>
     <link port="Check_Inv.port3" relation="relation15"/>
-    <link port="ApplyAdaptiveFilter.port" relation="relation16"/>
-    <link port="ApplyAdaptiveFilter.port2" relation="relation17"/>
-    <link port="ApplyAdaptiveFilter.port3" relation="relation18"/>
     <link port="EnhancedDoppler.port" relation="relation18"/>
 </entity>

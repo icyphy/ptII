@@ -34,20 +34,20 @@ class ABFJNI {
     public final static native int ATL_jam_power_get();
     public final static native int ATL_jam_freq_MHz_get();
 
-    public final static native void Calc_Chirp(int jarg1, float[] jarg2_, float jarg3);
-    public final static native void Calc_Echo(int jarg1, long jarg2, float[] jarg2_, int jarg3, int jarg4, int jarg5, long jarg6, int jarg7, float jarg8, float jarg9, float jarg10, float jarg11, float jarg12, float jarg13, float jarg14, float jarg15);
-    public final static native void Calc_SteerVect(int jarg1, int jarg2, long jarg3, float jarg4, float jarg5, float jarg6);
-    public final static native void DecimBy4(int jarg1, long jarg2, float[] jarg2_, long jarg3, float[] jarg3_);
-    public final static native void AddNoise(int jarg1, int jarg2, long jarg3, long jarg4, float jarg5);
-    public final static native void AddJam(int jarg1, int jarg2, int jarg3, long jarg4, long jarg5, float jarg6, float jarg7, float jarg8, float jarg9, float jarg10, float jarg11);
-    public final static native void turn_1(int jarg1, int jarg2, long jarg3, long jarg4);
-    public final static native void Slid_Filter(int jarg1, int jarg2, long jarg3, float[] jarg3_, long jarg4, float[] jarg4_, long jarg5, float[] jarg5_);
-    public final static native void turn_2(int jarg1, int jarg2, long jarg3, int jarg4, int jarg5, long jarg6, int jarg7, int jarg8);
-    public final static native void CovAvCov(int jarg1, int jarg2, int jarg3, long jarg4, long jarg5);
-    public final static native void Mat_Invert(int jarg1, long jarg2, long jarg3);
-    public final static native void Matmat(int jarg1, int jarg2, int jarg3, long jarg4, long jarg5, long jarg6);
-    public final static native void CalcWeights(int jarg1, int jarg2, long jarg3, long jarg4, long jarg5);
-    public final static native void turn_3(int jarg1, int jarg2, int jarg3, long jarg4, long jarg5);
-    public final static native void Apply_Filter(int jarg1, int jarg2, long jarg3, long jarg4, float[] jarg4_, long jarg5, float[] jarg5_);
-    public final static native void lazy_FFT(int jarg1, long jarg2, float[] jarg2_, long jarg3, float[] jarg3_);
+    public final static native void Calc_Chirp(int jarg1, float[] jarg2_, int jarg3, float jarg4);
+    public final static native void AddNoise(int nx, int ny, float[] sig_in, float Sigma2, float[] noisy);
+    public final static native void Calc_Echo(int nb_samp_chirpX4, float[] ChirpX4, int nb_ant, int nb_rg, int nb_pul, float[] echo_out, int rg_min, float rg_size, float SubArraySpacing, float lambda, float Tpulse, float Targ_angle, float Targ_V, float Targ_dist, float Targ_RCS);
+//    public final static native void Calc_SteerVect(int jarg1, int jarg2, long jarg3, float jarg4, float jarg5, float jarg6);
+//    public final static native void DecimBy4(int jarg1, long jarg2, float[] jarg2_, long jarg3, float[] jarg3_);
+//    public final static native void AddJam(int jarg1, int jarg2, int jarg3, long jarg4, long jarg5, float jarg6, float jarg7, float jarg8, float jarg9, float jarg10, float jarg11);
+//    public final static native void turn_1(int jarg1, int jarg2, long jarg3, long jarg4);
+//    public final static native void Slid_Filter(int jarg1, int jarg2, long jarg3, float[] jarg3_, long jarg4, float[] jarg4_, long jarg5, float[] jarg5_);
+//    public final static native void turn_2(int jarg1, int jarg2, long jarg3, int jarg4, int jarg5, long jarg6, int jarg7, int jarg8);
+//    public final static native void CovAvCov(int jarg1, int jarg2, int jarg3, long jarg4, long jarg5);
+//    public final static native void Mat_Invert(int jarg1, long jarg2, long jarg3);
+//    public final static native void Matmat(int jarg1, int jarg2, int jarg3, long jarg4, long jarg5, long jarg6);
+//    public final static native void CalcWeights(int jarg1, int jarg2, long jarg3, long jarg4, long jarg5);
+//    public final static native void turn_3(int jarg1, int jarg2, int jarg3, long jarg4, long jarg5);
+//    public final static native void Apply_Filter(int jarg1, int jarg2, long jarg3, long jarg4, float[] jarg4_, long jarg5, float[] jarg5_);
+//    public final static native void lazy_FFT(int jarg1, long jarg2, float[] jarg2_, long jarg3, float[] jarg3_);
 }

@@ -9,7 +9,7 @@ public class TestJNI {
         System.loadLibrary("ABF");
         float[] tabs = new float[4*ABF.ATL_lgth_chirp*2];
                        
-        ABF.Calc_Chirp(ABF.ATL_lgth_chirp, tabs, 0.2f);
+        ABF.Calc_Chirp(ABF.ATL_lgth_chirp*4, tabs, ABF.ATL_lgth_chirp, 0.2f);
         
         for (int i = 0; i < 4*ABF.ATL_lgth_chirp*2; i ++)
             System.out.println(tabs[i]);
