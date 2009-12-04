@@ -1,10 +1,10 @@
-# Makefile for Java Ptolemy Data Token classes
+# Makefile for ontologies
 #
-# @Authors: Christopher Hylands, Neil Smyth based on a file by Thomas M. Parks
+# @Authors: Christopher Brooks (makefile only)
 #
 # $Id$
 #
-# @Copyright (c) 1997-2008 The Regents of the University of California.
+# @Copyright (c) 2009 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -29,12 +29,12 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/data
+ME =		ptolemy/data/ontologies
 
-DIRS = 		expr ontologies test type properties unit
+DIRS = 		#test demo 
 
 # Root of the Ptolemy II directory
-ROOT =		../..
+ROOT =		../../..
 
 CLASSPATH =	$(ROOT)
 
@@ -43,78 +43,34 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	data
-
-# Include the .class files from these jars in PTCLASSALLJAR
-PTCLASSALLJARS = \
-	expr/expr.jar \
-	ontologies/ontologies.jar \
-	type/type.jar \
-	unit/unit.jar
-
-PTCLASSALLJAR = $(PTPACKAGE).jar
+PTPACKAGE = 	ontologies
+PTCLASSJAR =	$(PTPACKAGE).jar
 
 JSRCS = \
-	AbsentToken.java \
-	AbstractConvertibleToken.java \
-	AbstractNotConvertibleToken.java \
-	ActorToken.java \
-	ArrayToken.java \
-	AWTImageToken.java \
-	BitwiseOperationToken.java \
-	BooleanMatrixToken.java \
-	BooleanToken.java \
-	ComplexMatrixToken.java \
-	ComplexToken.java \
-	DoubleMatrixToken.java \
-	DoubleToken.java \
-	EventToken.java \
-	FixMatrixToken.java \
-	FixToken.java \
-	FloatToken.java \
-	Function.java \
-	FunctionToken.java \
-	ImageToken.java \
-	IntMatrixToken.java \
-	IntToken.java \
-	LongMatrixToken.java \
-	LongToken.java \
-	MatrixToken.java \
-	Numerical.java \
-	ObjectToken.java \
-	OrderedRecordToken.java \
-	PetiteToken.java \
-	RecordToken.java \
-	ScalarToken.java \
-	ShortToken.java \
-	StringToken.java \
-	Token.java \
-	TokenUtilities.java \
-	UnionToken.java \
-	UnsignedByteToken.java \
-	UnsizedArrayToken.java \
-	UnsizedFixToken.java \
-	XMLToken.java
+	Concept.java \
+	Ontology.java \
+	PropertyLattice.java
 
-EXTRA_SRCS =	$(JSRCS)
+
+OTHER_FILES_TO_BE_JARED =
+
+EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =	$(DIRS)
+# if $(DIRS) includes demo, then do not set MISC_FILES= $(DIRS) 
+MISC_FILES = #test
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
+	demo \
 	doc \
-	'FunctionToken$$Function.class' \
-	'ActorToken$$ActorType.class' \
-	'Token$$1.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 
-
-all: jclass
-install: jclass jars
+all: $(OPTIONAL_JSRCS) $(JCLASS)
+install: jclass $(PTCLASSJAR)
 
 
 # Get the rest of the rules

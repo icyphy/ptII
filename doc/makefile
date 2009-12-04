@@ -672,6 +672,7 @@ ALLPACKAGES = \
 	ptolemy.domains.tm.lib \
 	ptolemy.data \
 	ptolemy.data.expr \
+	ptolemy.data.ontologies \
 	ptolemy.data.type \
 	ptolemy.data.unit \
 	ptolemy.graph \
