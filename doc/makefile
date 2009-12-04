@@ -268,7 +268,6 @@ CODEGENPACKAGES = \
 	ptolemy.codegen.c.targets.posix \
 	ptolemy.codegen.c.targets.posix.actor.lib.io \
 	ptolemy.codegen.c.vergil.actor.lib \
-	ptolemy.codegen.chaco.kernel \
 	ptolemy.codegen.gui \
 	ptolemy.codegen.java.actor \
 	ptolemy.codegen.java.actor.lib \
