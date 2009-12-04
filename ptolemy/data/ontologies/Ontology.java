@@ -51,12 +51,12 @@ import ptolemy.kernel.util.NameDuplicationException;
  */
 public class Ontology extends CompositeEntity {
 
-    /** Create a new lattice property with the specified name and the specified
-     *  lattice.
-     *  @param lattice The specified lattice where this property resides.
-     *  @param name The specified name for the property.
-     *  @throws NameDuplicationException If the lattice already contains a
-     *   property with the specified name.
+    /** Create a new Ontology with the specified container and the specified
+     *  name.
+     *  @param container The container.
+     *  @param name The name for the ontology.
+     *  @throws NameDuplicationException If the container already contains an
+     *   ontology with the specified name.
      *  @throws IllegalActionException If the base class throws it.
      */
     public Ontology(CompositeEntity container, String name)
@@ -71,8 +71,8 @@ public class Ontology extends CompositeEntity {
     ////////////////////////////////////////////////////////////////////////////
     ////                   public methods                                   ////
 
-    /** Return the directed acyclic graph represented by this lattice entity.
-     *  @return A DAG.
+    /** Return the lattice represented by this ontology.
+     *  @return The property lattice.
      *  @throws IllegalActionException If the structure is not a lattice.
      */
     public PropertyLattice getLatticeGraph() throws IllegalActionException {

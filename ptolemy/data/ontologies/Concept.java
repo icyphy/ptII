@@ -54,10 +54,10 @@ public class Concept extends ComponentEntity implements InequalityTerm {
 
     /** Create a new concept with the specified name and the specified
      *  ontology.
-     *  @param ontology The specified lattice where this property resides.
-     *  @param name The specified name for the property.
-     *  @throws NameDuplicationException If the lattice already contains a
-     *   property with the specified name.
+     *  @param ontology The specified ontology where this concept resides.
+     *  @param name The specified name for the concept.
+     *  @throws NameDuplicationException If the ontology already contains a
+     *   concept with the specified name.
      *  @throws IllegalActionException If the base class throws it.
      */
     public Concept(CompositeEntity ontology, String name)
@@ -85,8 +85,8 @@ public class Concept extends ComponentEntity implements InequalityTerm {
     /** The port linked to concepts below this one in the lattice. */
     public IOPort belowPort;
 
-    /** A parameter indicating whether this property is an acceptable outcome
-     *  of property inference. This is a boolean that defaults to true.
+    /** A parameter indicating whether this concept is an acceptable outcome
+     *  during inference. This is a boolean that defaults to true.
      */
     public Parameter isAcceptable;
 
@@ -94,8 +94,8 @@ public class Concept extends ComponentEntity implements InequalityTerm {
     ////                   public methods                                   ////
 
     /** Return null.
-     *  For property variables, this method will return a reference to the
-     *  propertyable object associated with that variable. For lattice properties,
+     *  For variables, this method will return a reference to the
+     *  propertyable object associated with that variable. For concepts,
      *  there is no associated propertyable object, hence returning null is the
      *  right thing to do.
      *  @return Null.
@@ -104,30 +104,30 @@ public class Concept extends ComponentEntity implements InequalityTerm {
         return null;
     }
     
-    /** Get the property lattice associated with this property.
+    /** Get the property lattice associated with this concept.
      *  @return The associated property lattice.
      *  @throws IllegalActionException If this property is not contained
-     *   by a PropertyLattice or if the structure in the PropertyLattice is
+     *   by an Ontology or if the structure in the Ontology is
      *   not a lattice.
      */
     public PropertyLattice getPropertyLattice() throws IllegalActionException {
         NamedObj container = getContainer();
         if (!(container instanceof Ontology)) {
-            throw new IllegalActionException(this, "Not contained by a PropertyLattice");
+            throw new IllegalActionException(this, "Not contained by an Ontology");
         }
         return ((Ontology)container).getLatticeGraph();
     }
 
-    /** Return the value of the property term. Since a lattice property
-     *  is a constant, not a property variable, its value is just itself.
-     *  @return This property.
+    /** Return the value of the inequality term. Since a concept
+     *  is a constant, not a variable, its value is just itself.
+     *  @return This concept.
      */
     public Object getValue() {
         return this;
     }
 
     /** Return an array of variables contained in this term, or in this
-     *  case, an empty array. A lattice property is a single constant, so
+     *  case, an empty array. A concept is a single constant, so
      *  it has no variables.
      *  @return An empty array.
      */
@@ -142,12 +142,12 @@ public class Concept extends ComponentEntity implements InequalityTerm {
         throw new IllegalActionException(this, "Cannot initialize a lattice property.");
     }
 
-    /** Return true if this property is greater than or equal to the
-     *  specified property.
-     *  @param property The property to compare.
-     *  @return True if this property is greater than or equal to the
-     *   specified property.
-     *  @throws IllegalActionException If the specified property
+    /** Return true if this concept is greater than or equal to the
+     *  specified concept in the partial ordering.
+     *  @param property The concept to compare.
+     *  @return True if this concept is greater than or equal to the
+     *   specified concept.
+     *  @throws IllegalActionException If the specified concept
      *   does not have the same lattice as this one.
      */
     public boolean isAboveOrEqualTo(Concept property) throws IllegalActionException {
@@ -166,63 +166,44 @@ public class Concept extends ComponentEntity implements InequalityTerm {
         return false;
     }
 
-    /** Return true. By default, any property is acceptable.
-     * Return true if this property is a valid property value. Otherwise, return
-     * false. Return true in this base class by default.
+    /** Return true. By default, any concept is acceptable.
+     * Return true if this concept is a valid result of inference.
+     * Otherwise, return false. Return true in this base class by default.
      * @return True.
      */
     public boolean isValueAcceptable() {
         return true;
     }
 
-    /** Set the color that a UI should use to render this property.
-     *  The color is given as a string as described in
-     *  {@link Property#getColor()}.
-     *  @param color The specified color description.
-     *  @see #getColor()
-     */
-    public void setColor(String color) {
-        _color = color;
-    }
-
-    /**
-     * Set the value of this property term. Do nothing in this base by default.
-     * @param value The specified value.
+    /** Throw an exception. This object is not a variable.
+     *  @exception IllegalActionException Always thrown.
      */
     public void setValue(Object value) throws IllegalActionException {
-        // do nothing
+        throw new IllegalActionException(this, "Cannot set a lattice property.");
     }
 
     /**
-     * Return the string that represents this lattice property. This base class
-     * returns the simple class name of the lattice property.
+     * Return the string that represents this concept, its name.
      */
     public String toString() {
-        if (_name.length() > 0) {
-            return _name;
-        }
-        // FIXME: this seems wrong.  Why return the class name?
-        return getClass().getSimpleName();
+        return _name;
     }
     
     ///////////////////////////////////////////////////////////////////
     ////                       protected variables                 ////
 
     /**
-     * The property lattice containing this lattice property.
+     * The property lattice containing this concept.
      */
     protected PropertyLattice _lattice;
     
     /**
      * The name of this Property.
      */
-    protected String _name = "";
+    protected String _name;
     
     ///////////////////////////////////////////////////////////////////
     ////                       private variables                   ////
-
-    /** The color for a UI to use to render this property. */
-    private String _color = "";
     
     /** Empty array. */
     private static InequalityTerm[] _EMPTY_ARRAY = new InequalityTerm[0];
