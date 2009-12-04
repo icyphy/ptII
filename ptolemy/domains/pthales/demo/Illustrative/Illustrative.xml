@@ -10,13 +10,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-85.0, -125.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 0, 1412, 1062}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 1410, 874}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1197, 929]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1197, 764]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{434.0675675675675, 296.6440033783784}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{434.0675675675675, 214.1440033783784}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Select Debug-&gt;Listen to Director to get messages&#10;when you run.">
@@ -24,7 +24,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[110.0, -145.0]">
         </property>
     </property>
-    <property name="producePattern" class="ptolemy.data.expr.StringParameter" value="x = 8.1, y = 10.1">
+    <property name="producePattern" class="ptolemy.data.expr.Parameter" value="[x = {8,1}, y = {10,1}]">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -43,7 +43,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-145.0, 130.0]">
         </property>
     </property>
-    <property name="consumePattern" class="ptolemy.data.expr.StringParameter" value="x = 2.2, y = 2.1">
+    <property name="consumePattern" class="ptolemy.data.expr.Parameter" value="[x = {2,2}, y = {2,1}]">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -87,7 +87,7 @@
             </property>
         </property>
     </property>
-    <property name="produceTiling" class="ptolemy.data.expr.StringParameter" value="x = 1, y = 1">
+    <property name="produceTiling" class="ptolemy.data.expr.Parameter" value="[x = 1, y = 1]">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -106,7 +106,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-145.0, 145.0]">
         </property>
     </property>
-    <property name="consumeTiling" class="ptolemy.data.expr.StringParameter" value="x = 4, y = 2">
+    <property name="consumeTiling" class="ptolemy.data.expr.Parameter" value="[x = 4, y = 2]">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -125,7 +125,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[340.0, 100.0]">
         </property>
     </property>
-    <property name="produceBase" class="ptolemy.data.expr.StringParameter" value="x = 0, y = 0">
+    <property name="produceBase" class="ptolemy.data.expr.Parameter" value="[x = 0, y = 0]">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -144,7 +144,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-145.0, 115.0]">
         </property>
     </property>
-    <property name="consumeBase" class="ptolemy.data.expr.StringParameter" value="x = 0, y = 0">
+    <property name="consumeBase" class="ptolemy.data.expr.Parameter" value="[x = 0, y = 0]">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -163,7 +163,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[340.0, 70.0]">
         </property>
     </property>
-    <property name="consumePattern2" class="ptolemy.data.expr.StringParameter" value="x = 2.2, y = 2.1">
+    <property name="consumePattern2" class="ptolemy.data.expr.Parameter" value="[x = {2,2}, y = {2,1}]">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -182,7 +182,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[340.0, 175.0]">
         </property>
     </property>
-    <property name="consumeTiling2" class="ptolemy.data.expr.StringParameter" value="x = 4, y = 2">
+    <property name="consumeTiling2" class="ptolemy.data.expr.Parameter" value="[x = 4, y = 2]">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -201,7 +201,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[340.0, 190.0]">
         </property>
     </property>
-    <property name="consumeBase2" class="ptolemy.data.expr.StringParameter" value="x = 1, y = 6">
+    <property name="consumeBase2" class="ptolemy.data.expr.Parameter" value="[x = 1, y = 6]">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -227,7 +227,7 @@
         </property>
     </property>
     <entity name="Source" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 130.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[135.0, 130.0]">
         </property>
         <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
             <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="8*10">
@@ -235,7 +235,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="{75, 50}">
             </property>
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={15, 420, 815, 533}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={15, 367, 813, 510}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
         </property>
@@ -249,11 +249,11 @@
             <property name="output"/>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[340.0, 180.0]">
             </property>
-            <property name="base" class="ptolemy.data.expr.StringParameter" value="$produceBase">
+            <property name="base" class="ptolemy.data.expr.Parameter" value="produceBase">
             </property>
-            <property name="pattern" class="ptolemy.data.expr.StringParameter" value="$producePattern">
+            <property name="pattern" class="ptolemy.data.expr.Parameter" value="producePattern">
             </property>
-            <property name="tiling" class="ptolemy.data.expr.StringParameter" value="$produceTiling">
+            <property name="tiling" class="ptolemy.data.expr.Parameter" value="produceTiling">
             </property>
         </port>
         <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
@@ -292,15 +292,15 @@
             <property name="multiport"/>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{50.0, 195.0}">
             </property>
-            <property name="base" class="ptolemy.data.expr.StringParameter" value="$consumeBase">
+            <property name="base" class="ptolemy.data.expr.Parameter" value="consumeBase">
             </property>
-            <property name="pattern" class="ptolemy.data.expr.StringParameter" value="$consumePattern">
+            <property name="pattern" class="ptolemy.data.expr.Parameter" value="consumePattern">
             </property>
-            <property name="tiling" class="ptolemy.data.expr.StringParameter" value="$consumeTiling">
+            <property name="tiling" class="ptolemy.data.expr.Parameter" value="consumeTiling">
             </property>
         </port>
         <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={939, 385, 355, 760}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={939, 140, 347, 749}, maximized=false}">
             </property>
             <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[347, 705]">
             </property>
@@ -347,15 +347,15 @@
             <property name="multiport"/>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{50.0, 195.0}">
             </property>
-            <property name="base" class="ptolemy.data.expr.StringParameter" value="$consumeBase2">
+            <property name="base" class="ptolemy.data.expr.Parameter" value="consumeBase2">
             </property>
-            <property name="pattern" class="ptolemy.data.expr.StringParameter" value="$consumePattern2">
+            <property name="pattern" class="ptolemy.data.expr.Parameter" value="consumePattern2">
             </property>
-            <property name="tiling" class="ptolemy.data.expr.StringParameter" value="$consumeTiling2">
+            <property name="tiling" class="ptolemy.data.expr.Parameter" value="consumeTiling2">
             </property>
         </port>
         <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1182, 172, 355, 760}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1085, 140, 347, 749}, maximized=false}">
             </property>
             <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[347, 705]">
             </property>
