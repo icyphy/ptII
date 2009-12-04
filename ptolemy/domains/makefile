@@ -86,7 +86,6 @@ PTAUXALLJARS = \
 		pthales/pthales.jar \
 		ptides/ptides.jar \
 		$(PTSPACEDOMAIN_JAR) \
-		tester/tester.jar \
 		tm/tm.jar \
 		wireless/wireless.jar
 
@@ -112,7 +111,8 @@ PTCLASSALLJARS = \
 		pn/pn.jar \
 		rendezvous/rendezvous.jar \
 		sdf/sdf.jar \
-		sr/sr.jar
+		sr/sr.jar \
+		tester/tester.jar
 
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
