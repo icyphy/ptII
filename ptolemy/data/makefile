@@ -31,7 +31,7 @@
 
 ME =		ptolemy/data
 
-DIRS = 		expr ontologies test type properties unit
+DIRS = 		expr test type properties unit #ontologies
 
 # Root of the Ptolemy II directory
 ROOT =		../..
@@ -48,7 +48,6 @@ PTPACKAGE = 	data
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
 	expr/expr.jar \
-	ontologies/ontologies.jar \
 	type/type.jar \
 	unit/unit.jar
 

@@ -30,8 +30,8 @@ package ptolemy.data.ontologies.adapters.dimensionSystem.actor;
 import java.util.LinkedList;
 import java.util.List;
 
-import ptolemy.data.properties.lattice.PropertyConstraintHelper;
-import ptolemy.data.properties.lattice.PropertyConstraintSolver;
+import ptolemy.data.ontologies.PropertyHelper;
+import ptolemy.data.ontologies.PropertySolver;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 
@@ -47,7 +47,7 @@ import ptolemy.kernel.util.IllegalActionException;
  @Pt.ProposedRating Red (mankit)
  @Pt.AcceptedRating Red (mankit)
  */
-public class AtomicActor extends PropertyConstraintHelper {
+public class AtomicActor extends PropertyHelper {
 
     /**
      * Construct an adapter for the given AtomicActor. This is the
@@ -59,7 +59,7 @@ public class AtomicActor extends PropertyConstraintHelper {
      * @exception IllegalActionException If the adapter cannot be
      * initialized in the superclass.
      */
-    public AtomicActor(PropertyConstraintSolver solver,
+    public AtomicActor(PropertySolver solver,
             ptolemy.actor.AtomicActor actor) throws IllegalActionException {
         super(solver, actor);
     }
@@ -75,7 +75,7 @@ public class AtomicActor extends PropertyConstraintHelper {
      * @exception IllegalActionException If the adapter cannot be
      * initialized in the superclass.
      */
-    public AtomicActor(PropertyConstraintSolver solver,
+    public AtomicActor(PropertySolver solver,
             ptolemy.actor.AtomicActor actor, boolean useDefaultConstraints)
             throws IllegalActionException {
         super(solver, actor, useDefaultConstraints);

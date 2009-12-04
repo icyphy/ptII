@@ -1,8 +1,8 @@
-# Makefile for ontologies dimensionSystem adapters
+# Makefile for ontologies lattices
 #
 # @Authors: Christopher Brooks (makefile only)
 #
-# $Id: makefile 56409 2009-12-04 01:14:11Z cxh $
+# $Id$
 #
 # @Copyright (c) 2009 The Regents of the University of California.
 # All rights reserved.
@@ -29,12 +29,12 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/data/ontologies/adapters/dimensionSystem
+ME =		ptolemy/data/ontologies/lattices
 
-DIRS = 		actor data domains
+DIRS =
 
 # Root of the Ptolemy II directory
-ROOT =		../../../../..
+ROOT =		../../../..
 
 CLASSPATH =	$(ROOT)
 
@@ -43,19 +43,13 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	dimensionSystem
-
-# Include the .class files from these jars in PTCLASSALLJAR
-PTCLASSALLJARS = \
-	actor/actor.jar \
-	data/data.jar \
-	domains/domains.jar
-
-PTCLASSALLJAR = $(PTPACKAGE).jar
+PTPACKAGE = 	lattices
+PTCLASSJAR =	$(PTPACKAGE).jar
 
 JSRCS =
 
-OTHER_FILES_TO_BE_JARED =
+OTHER_FILES_TO_BE_JARED = \
+	DimensionSystem.xml
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 

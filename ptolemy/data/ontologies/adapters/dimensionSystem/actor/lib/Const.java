@@ -29,7 +29,8 @@ package ptolemy.data.ontologies.adapters.dimensionSystem.actor.lib;
 
 import java.util.List;
 
-import ptolemy.data.properties.lattice.PropertyConstraintSolver;
+import ptolemy.data.ontologies.PropertySolver;
+import ptolemy.data.ontologies.PropertyHelper.Inequality;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 
@@ -54,7 +55,7 @@ public class Const extends Source {
      * @exception IllegalActionException Thrown if the adapter cannot be
      * initialized.
      */
-    public Const(PropertyConstraintSolver solver, ptolemy.actor.lib.Const actor)
+    public Const(PropertySolver solver, ptolemy.actor.lib.Const actor)
             throws IllegalActionException {
         super(solver, actor);
         _actor = actor;

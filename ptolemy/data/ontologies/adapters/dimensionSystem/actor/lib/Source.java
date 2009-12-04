@@ -30,9 +30,9 @@ package ptolemy.data.ontologies.adapters.dimensionSystem.actor.lib;
 import java.util.List;
 
 import ptolemy.actor.TypedIOPort;
-import ptolemy.data.properties.lattice.PropertyConstraintSolver;
+import ptolemy.data.ontologies.PropertySolver;
+import ptolemy.data.ontologies.adapters.dimensionSystem.actor.AtomicActor;
 import ptolemy.data.properties.lattice.PropertyConstraintSolver.ConstraintType;
-import ptolemy.data.properties.lattice.logicalAND.actor.AtomicActor;
 import ptolemy.kernel.util.IllegalActionException;
 
 ////Source
@@ -54,7 +54,7 @@ public class Source extends AtomicActor {
      * @param actor The given Source actor
      * @exception IllegalActionException
      */
-    public Source(PropertyConstraintSolver solver,
+    public Source(PropertySolver solver,
             ptolemy.actor.lib.Source actor) throws IllegalActionException {
 
         super(solver, actor, false);

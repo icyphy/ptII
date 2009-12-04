@@ -1,0 +1,42 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<class name="DimensionSystem" extends="ptolemy.data.ontologies.Ontology">
+  <entity name="Unknown" class="ptolemy.data.ontologies.Concept"/>
+  <entity name="Time" class="ptolemy.data.ontologies.Concept"/>
+  <entity name="Dimensionless" class="ptolemy.data.ontologies.Concept"/>
+  <entity name="Acceleration" class="ptolemy.data.ontologies.Concept"/>
+  <entity name="Velocity" class="ptolemy.data.ontologies.Concept"/>
+  <entity name="Position" class="ptolemy.data.ontologies.Concept"/>
+  <entity name="Conflict" class="ptolemy.data.ontologies.Concept"/>
+  <relation name="r1" class="ptolemy.kernel.ComponentRelation"/>
+  <relation name="r2" class="ptolemy.kernel.ComponentRelation"/>
+  <relation name="r3" class="ptolemy.kernel.ComponentRelation"/>
+  <relation name="r4" class="ptolemy.kernel.ComponentRelation"/>
+  <relation name="r5" class="ptolemy.kernel.ComponentRelation"/>
+  <relation name="r6" class="ptolemy.kernel.ComponentRelation"/>
+  <relation name="r7" class="ptolemy.kernel.ComponentRelation"/>
+  <relation name="r8" class="ptolemy.kernel.ComponentRelation"/>
+  <relation name="r9" class="ptolemy.kernel.ComponentRelation"/>
+  <relation name="r10" class="ptolemy.kernel.ComponentRelation"/>
+  <link port="Unknown.abovePort" relation="r1"/>
+  <link port="Unknown.abovePort" relation="r2"/>
+  <link port="Unknown.abovePort" relation="r3"/>
+  <link port="Unknown.abovePort" relation="r4"/>
+  <link port="Unknown.abovePort" relation="r5"/>
+  <link port="Time.belowPort" relation="r1"/>
+  <link port="Dimensionless.belowPort" relation="r2"/>
+  <link port="Acceleration.belowPort" relation="r3"/>
+  <link port="Velocity.belowPort" relation="r4"/>
+  <link port="Position.belowPort" relation="r5"/>
+  <link port="Conflict.belowPort" relation="r6"/>
+  <link port="Conflict.belowPort" relation="r7"/>
+  <link port="Conflict.belowPort" relation="r8"/>
+  <link port="Conflict.belowPort" relation="r9"/>
+  <link port="Conflict.belowPort" relation="r10"/>
+  <link port="Time.abovePort" relation="r6"/>
+  <link port="Dimensionless.abovePort" relation="r7"/>
+  <link port="Acceleration.abovePort" relation="r8"/>
+  <link port="Velocity.abovePort" relation="r9"/>
+  <link port="Position.abovePort" relation="r10"/>
+</class>
