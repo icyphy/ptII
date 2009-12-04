@@ -25,7 +25,7 @@
  COPYRIGHTENDKEY
 
  */
-package ptolemy.data.properties.lattice.dimensionSystem.domains.continuous.lib;
+package ptolemy.data.ontologies.adapters.dimensionSystem.domains.continuous.lib;
 
 import java.util.List;
 

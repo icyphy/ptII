@@ -26,7 +26,7 @@
 
  */
 
-package ptolemy.data.properties.lattice.dimensionSystem.data.expr;
+package ptolemy.data.ontologies.adapters.dimensionSystem.data.expr;
 
 import java.util.ArrayList;
 import java.util.List;
