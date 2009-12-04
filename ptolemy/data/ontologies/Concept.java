@@ -1,5 +1,5 @@
 /**
- * The base class for a an element in a property lattice.
+ * An element in an ontology.
  * 
  * Copyright (c) 2007-2009 The Regents of the University of California. All
  * rights reserved. Permission is hereby granted, without written agreement and
@@ -26,6 +26,7 @@
 package ptolemy.data.ontologies;
 
 import ptolemy.actor.IOPort;
+import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.graph.CPO;
@@ -44,11 +45,11 @@ import ptolemy.kernel.util.NamedObj;
  * An instance of this class is always associated with
  * a particular ontology, which is specified in the constructor.
  * 
- * @author Thomas Mandl, Man-Kit Leung, Edward A. Lee
+ * @author Edward A. Lee, Ben Lickly, Dai Bui, Christopher Brooks
  * @version $Id$
  * @since Ptolemy II 7.1
- * @Pt.ProposedRating Red (mankit)
- * @Pt.AcceptedRating Red (mankit)
+ * @Pt.ProposedRating Red (blickly)
+ * @Pt.AcceptedRating Red (blickly)
  */
 public class Concept extends ComponentEntity implements InequalityTerm {
 
@@ -155,8 +156,8 @@ public class Concept extends ComponentEntity implements InequalityTerm {
             throw new IllegalActionException(this,
                     "Attempt to compare elements of two distinct lattices");
         }
-        int propertyInfo = _lattice.compare(this, property);
-        return propertyInfo == CPO.SAME || propertyInfo == CPO.HIGHER;
+        int comparisonResult = _lattice.compare(this, property);
+        return comparisonResult == CPO.SAME || comparisonResult == CPO.HIGHER;
     }
 
     /** Return false, because this inequality term is a constant.
@@ -166,13 +167,18 @@ public class Concept extends ComponentEntity implements InequalityTerm {
         return false;
     }
 
-    /** Return true. By default, any concept is acceptable.
-     * Return true if this concept is a valid result of inference.
-     * Otherwise, return false. Return true in this base class by default.
-     * @return True.
+    /** Return whether this concept is a valid inference result.
+     *  @return True, if this concept is a valid result of inference.
+     *  False, otherwise.
      */
     public boolean isValueAcceptable() {
-        return true;
+        try {
+            return ((BooleanToken)isAcceptable.getToken()).booleanValue();
+        } catch (IllegalActionException e) {
+            // If isAcceptable parameter cannot be read, fallback to
+            // assumption that value is acceptable.
+            return true;
+        }
     }
 
     /** Throw an exception. This object is not a variable.

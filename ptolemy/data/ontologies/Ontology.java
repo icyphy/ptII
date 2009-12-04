@@ -1,5 +1,5 @@
 /**
- * A composite entity containing lattice properties and their ordering relations.
+ * A composite entity containing concepts and their ordering relations.
  * 
  * Copyright (c) 2007-2009 The Regents of the University of California. All
  * rights reserved. Permission is hereby granted, without written agreement and
@@ -43,11 +43,11 @@ import ptolemy.kernel.util.NameDuplicationException;
  * 
  * @see PropertyLattice
  * @see Concept
- * @author Thomas Mandl, Man-Kit Leung, Edward A. Lee
+ * @author Edward A. Lee, Ben Lickly, Dai Bui, Christopher Brooks
  * @version $Id$
  * @since Ptolemy II 7.1
- * @Pt.ProposedRating Red (mankit)
- * @Pt.AcceptedRating Red (mankit)
+ * @Pt.ProposedRating Red (blickly)
+ * @Pt.AcceptedRating Red (blickly)
  */
 public class Ontology extends CompositeEntity {
 
