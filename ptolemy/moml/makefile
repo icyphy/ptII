@@ -69,6 +69,7 @@ JSRCS =	Documentation.java \
 	MoMLChangeRequest.java \
 	MoMLCommandLineApplication.java \
 	MoMLFilter.java \
+	MoMLModelAttribute.java \
 	MoMLParser.java \
 	MoMLSimpleApplication.java \
 	MoMLUndoEntry.java \
