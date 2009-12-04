@@ -33,6 +33,7 @@ import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.Map.Entry;
 
 import ptolemy.actor.Actor;
@@ -45,6 +46,10 @@ import ptolemy.actor.sched.NotSchedulableException;
 import ptolemy.actor.sched.Schedule;
 import ptolemy.actor.util.CausalityInterfaceForComposites;
 import ptolemy.actor.util.DFUtilities;
+import ptolemy.data.ArrayToken;
+import ptolemy.data.IntToken;
+import ptolemy.data.OrderedRecordToken;
+import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.data.expr.Variable;
@@ -334,31 +339,34 @@ public class PthalesScheduler extends SDFScheduler {
      *  @return The dimension data, or null if the parameter does not exist.
      *  @throws IllegalActionException If the parameter cannot be evaluated.
      */
-    private LinkedHashMap<String, Integer[]> _parseSpec(String name,
-            NamedObj object) throws IllegalActionException {
-        LinkedHashMap<String, Integer[]> result = new LinkedHashMap<String, Integer[]>();
+    private LinkedHashMap<String,Integer[]> _parseSpec(
+            String name, NamedObj object) throws IllegalActionException {
+        LinkedHashMap<String,Integer[]> result = new LinkedHashMap<String,Integer[]>();
         Attribute attribute = object.getAttribute(name);
-        if (attribute instanceof StringParameter) {
-            String spec = ((StringParameter) attribute).stringValue();
-            // FIXME: Handle syntax errors.
-            String[] subSpecs = spec.split(",");
-            for (String subSpec : subSpecs) {
-                if (subSpec.trim().length() > 0) {
-                    String[] subSubSpecs = subSpec.split("=");
+        if (attribute instanceof Parameter) {
+            Token token = ((Parameter)attribute).getToken();
+            if (token instanceof OrderedRecordToken) {
+                Set<String> fieldNames = ((OrderedRecordToken)token).labelSet();
+                for (String fieldName : fieldNames) {
+                    Token value = ((OrderedRecordToken)token).get(fieldName);
                     Integer[] values = new Integer[2];
-                    if (subSubSpecs[1].contains(".")) {
-                        // A stride is given.
-                        // String.split() splits on a regex, so to split on ".",
-                        // we use backquotes.
-                        String[] strideSpec = subSubSpecs[1].split("\\.");
-                        values[0] = new Integer(strideSpec[0].trim());
-                        values[1] = new Integer(strideSpec[1].trim());
-                    } else {
-                        values[0] = new Integer(subSubSpecs[1].trim());
+                    if (value instanceof IntToken) {
+                        values[0] = ((IntToken)value).intValue();
                         values[1] = _ONE;
+                    } else if (value instanceof ArrayToken) {
+                        if (((ArrayToken)value).length() != 2) {
+                            // FIXME: Need a better error message here.
+                            throw new IllegalActionException(this,
+                                    "Malformed specification: " + token);
+                        }
+                        // FIXME: Check that tokens are IntToken
+                        values[0] = ((IntToken)((ArrayToken)value).getElement(0)).intValue();
+                        values[1] = ((IntToken)((ArrayToken)value).getElement(1)).intValue();
                     }
-                    result.put(subSubSpecs[0].trim(), values);
+                    result.put(fieldName, values);
                 }
+            } else {
+                throw new IllegalActionException(this, "Unexpected token type: " + token);
             }
         }
         return result;
