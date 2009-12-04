@@ -54,15 +54,7 @@ PTCLASSALLJARS = \
 	data/data.jar \
 	domains/domains.jar
 
-JSRCS = \
-	Acceleration.java \
-	Lattice.java \
-	Position.java \
-	Speed.java \
-	Time.java \
-	Top.java \
-	Unitless.java \
-	Unknown.java
+JSRCS =
 
 EXTRA_SRCS =    $(JSRCS)
 

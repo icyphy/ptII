@@ -22,7 +22,7 @@
  * PT_COPYRIGHT_VERSION_2 COPYRIGHTENDKEY
  * 
  */
-package ptolemy.data.properties.lattice.dimensionSystem.actor.lib;
+package ptolemy.data.ontologies.adapters.dimensionSystem.actor.lib;
 
 import java.util.Iterator;
 import java.util.List;

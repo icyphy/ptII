@@ -29,7 +29,7 @@
 #                       PT_COPYRIGHT_VERSION_2
 #                       COPYRIGHTENDKEY
 
-ME =        ptolemy/data/properties/lattice/dimensionSystem/actor/lib
+ME =        ptolemy/data/ontologies/adapters/dimensionSystem/actor/lib
 
 DIRS =      logic
 

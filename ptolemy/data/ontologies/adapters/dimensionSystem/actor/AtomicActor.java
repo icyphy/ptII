@@ -25,7 +25,7 @@
  COPYRIGHTENDKEY
 
  */
-package ptolemy.data.properties.lattice.dimensionSystem.actor;
+package ptolemy.data.ontologies.adapters.dimensionSystem.actor;
 
 import java.util.LinkedList;
 import java.util.List;
