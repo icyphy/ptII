@@ -31,6 +31,7 @@ import ptolemy.data.expr.ASTPtRootNode;
 import ptolemy.data.expr.PtParserConstants;
 import ptolemy.data.expr.Token;
 import ptolemy.data.ontologies.ParseTreeAnnotationEvaluator;
+import ptolemy.data.ontologies.PropertyLattice;
 import ptolemy.kernel.util.IllegalActionException;
 
 ////ParseTreePropertyInference

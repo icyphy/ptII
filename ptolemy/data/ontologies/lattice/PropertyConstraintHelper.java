@@ -39,6 +39,7 @@ import ptolemy.data.expr.ASTPtRootNode;
 import ptolemy.data.ontologies.Concept;
 import ptolemy.data.ontologies.ParseTreeAnnotationEvaluator;
 import ptolemy.data.ontologies.PropertyHelper;
+import ptolemy.data.ontologies.PropertyLattice;
 import ptolemy.data.ontologies.lattice.PropertyConstraintSolver.ConstraintType;
 import ptolemy.domains.fsm.kernel.FSMActor;
 import ptolemy.domains.fsm.modal.ModalModel;
@@ -296,29 +297,13 @@ public class PropertyConstraintHelper extends PropertyHelper {
             InequalityTerm lesserTerm = (InequalityTerm) getLesserTerm();
             InequalityTerm greaterTerm = (InequalityTerm) getGreaterTerm();
 
-            if (lesserTerm.isEffective() && greaterTerm.isEffective()) {
-                if (lesserTerm.getValue() == null) {
-                    return true;
-                } else if (greaterTerm.getValue() == null) {
-                    return false;
-                }
-
-                return super.isSatisfied(cpo);
+            if (lesserTerm.getValue() == null) {
+                return true;
+            } else if (greaterTerm.getValue() == null) {
+                return false;
             }
-            return true;
-        }
 
-        /**
-         * @return A string describing the inequality.
-         */
-        public String toString() {
-            InequalityTerm lesserTerm = (InequalityTerm) getLesserTerm();
-            InequalityTerm greaterTerm = (InequalityTerm) getGreaterTerm();
-
-            if (lesserTerm.isEffective() && greaterTerm.isEffective()) {
-                return super.toString();
-            }
-            return "";
+            return super.isSatisfied(cpo);
         }
 
         private final boolean _isBase;

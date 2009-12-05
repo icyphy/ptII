@@ -171,7 +171,7 @@ public class PropertyConstraintSolver extends PropertySolver {
         super.attributeChanged(attribute);
     }
 
-    public List<PropertyTerm> getAffectedTerms(PropertyTerm updateTerm)
+    public List<ptolemy.graph.InequalityTerm> getAffectedTerms(ptolemy.graph.InequalityTerm updateTerm)
             throws IllegalActionException {
         return _propertyTermManager.getAffectedTerms(updateTerm);
     }
@@ -273,7 +273,7 @@ public class PropertyConstraintSolver extends PropertySolver {
      * @return The property term of the given object.
      * @exception IllegalActionException
      */
-    public PropertyTerm getPropertyTerm(Object object) {
+    public ptolemy.graph.InequalityTerm getPropertyTerm(Object object) {
         return getPropertyTermManager().getPropertyTerm(object);
     }
 
@@ -823,7 +823,7 @@ public class PropertyConstraintSolver extends PropertySolver {
     //     * @exception IllegalActionException
     //     */
     //  public Property getProperty(Object object) {
-    //  PropertyTerm term = (PropertyTerm) getPropertyTerm(object);
+    //  ptolemy.graph.InequalityTerm term = (ptolemy.graph.InequalityTerm) getPropertyTerm(object);
     //  return (Property) term.getValue();
     //  }
 
@@ -839,8 +839,8 @@ public class PropertyConstraintSolver extends PropertySolver {
         List<String> logConstraints = new LinkedList<String>();
 
         String output = "";
-        PropertyTerm lesserTerm = (PropertyTerm) inequality.getLesserTerm();
-        PropertyTerm greaterTerm = (PropertyTerm) inequality.getGreaterTerm();
+        ptolemy.graph.InequalityTerm lesserTerm = (ptolemy.graph.InequalityTerm) inequality.getLesserTerm();
+        ptolemy.graph.InequalityTerm greaterTerm = (ptolemy.graph.InequalityTerm) inequality.getGreaterTerm();
 
         output = inequality.getHelper().getClass().getPackage().toString()
                 .replace("package ", "")
@@ -871,7 +871,7 @@ public class PropertyConstraintSolver extends PropertySolver {
                         + "\t"
                         + (inequality.isBase() ? "base" : "not base")
                         + "\t"
-                        + _getConstraintLogString((PropertyTerm) variable, "")
+                        + _getConstraintLogString((ptolemy.graph.InequalityTerm) variable, "")
                         + "\t"
                         + "MFV"
                         + "\t"
@@ -891,7 +891,7 @@ public class PropertyConstraintSolver extends PropertySolver {
                         + "\t"
                         + (inequality.isBase() ? "base" : "not base")
                         + "\t"
-                        + _getConstraintLogString((PropertyTerm) constant, "")
+                        + _getConstraintLogString((ptolemy.graph.InequalityTerm) constant, "")
                         + "\t"
                         + "MFC"
                         + "\t"
@@ -905,7 +905,7 @@ public class PropertyConstraintSolver extends PropertySolver {
         return logConstraints;
     }
 
-    private String _getConstraintLogString(PropertyTerm propertyTerm,
+    private String _getConstraintLogString(ptolemy.graph.InequalityTerm propertyTerm,
             String actorName) throws IllegalActionException {
         if (propertyTerm instanceof LatticeProperty) {
             // FIXME: This is bogus unreadable syntax. "eff" means "effective"

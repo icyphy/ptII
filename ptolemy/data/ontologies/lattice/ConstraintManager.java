@@ -71,15 +71,15 @@ public class ConstraintManager {
      * @param object The given object.
      * @return The list of constrainting terms for the given object.
      */
-    public List<PropertyTerm> getConstraintingTerms(Object object) {
+    public List<ptolemy.graph.InequalityTerm> getConstraintingTerms(Object object) {
         boolean least = _solver.solvingFixedPoint.getExpression().equals(
                 "least");
 
         if (least) {
-            return (List<PropertyTerm>) _greaterTermMap.get(_solver
+            return (List<ptolemy.graph.InequalityTerm>) _greaterTermMap.get(_solver
                     .getPropertyTerm(object));
         } else {
-            return (List<PropertyTerm>) _lesserTermMap.get(_solver
+            return (List<ptolemy.graph.InequalityTerm>) _lesserTermMap.get(_solver
                     .getPropertyTerm(object));
         }
     }
