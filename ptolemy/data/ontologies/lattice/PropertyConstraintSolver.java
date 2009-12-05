@@ -493,9 +493,12 @@ public class PropertyConstraintSolver extends PropertySolver {
                         .stringValue()));
         
         // Collect and solve type constraints.
+        /*  FIXME: Removing chunks of code wholesale now.
+         * --Ben 12/04/2009
         List<Inequality> constraintList = toplevelHelper.constraintList();
-
+         
         _resolveProperties(toplevel, toplevelHelper, constraintList);
+        */
     }
 
     /** Resolve the properties of the given top-level container,
@@ -547,7 +550,10 @@ public class PropertyConstraintSolver extends PropertySolver {
                 //InequalitySolver solver = new InequalitySolver(cpo, this);
 
                 solver.addInequalities(constraintList.iterator());
+                /*  FIXME: Removing chunks of code wholesale now.
+                 * --Ben 12/04/2009
                 _constraintManager.setConstraints(constraintList);
+                */
 
                 //              BEGIN CHANGE Thomas, 04/10/2008
                 // Collect statistics.
@@ -893,6 +899,8 @@ public class PropertyConstraintSolver extends PropertySolver {
                                         .getComponent()));
                 logConstraints.add(output);
             }
+            /*  FIXME: Removing chunks of code wholesale now.
+             * --Ben 12/04/2009
             for (InequalityTerm constant : lesserTerm.getConstants()) {
                 output = inequality.getHelper().getClass().getPackage()
                         .toString().replace("package ", "")
@@ -913,6 +921,7 @@ public class PropertyConstraintSolver extends PropertySolver {
                                         .getComponent()));
                 logConstraints.add(output);
             }
+             */
         }
 
         return logConstraints;
@@ -1088,6 +1097,8 @@ public class PropertyConstraintSolver extends PropertySolver {
     private void _logHelperConstraints(PropertyConstraintHelper adapter)
             throws IllegalActionException {
         List<Inequality>[] constraintSet = new List[2];
+        /*  FIXME: Removing chunks of code wholesale now.
+         * --Ben 12/04/2009
         constraintSet[0] = adapter._ownConstraints;
         constraintSet[1] = adapter._subHelperConstraints;
 
@@ -1102,6 +1113,7 @@ public class PropertyConstraintSolver extends PropertySolver {
                 }
             }
         }
+        */
     }
 
     private void _readConstraintFile(String filename){
@@ -1152,6 +1164,8 @@ public class PropertyConstraintSolver extends PropertySolver {
                 "'s adapter." + _eol);
 
         List<Inequality>[] constraintSet = new List[2];
+        /*  FIXME: Removing chunks of code wholesale now.
+         * --Ben 12/04/2009
         constraintSet[0] = adapter._ownConstraints;
         constraintSet[1] = adapter._subHelperConstraints;
 
@@ -1181,6 +1195,7 @@ public class PropertyConstraintSolver extends PropertySolver {
         if (hasError) {
             getSharedUtilities().addErrors(errorMessage.toString());
         }
+        */
 
     }
 
