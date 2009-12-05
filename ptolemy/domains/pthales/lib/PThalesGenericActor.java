@@ -192,7 +192,7 @@ public class PThalesGenericActor extends TypedAtomicActor {
         try {
             PthalesDirector director = (PthalesDirector) getDirector();
             String libName = director.getLibName();
-            if (!libName.isEmpty()) {
+            if (libName.length() > 0) {
                 Class c = Class.forName("ptolemy.domains.pthales.JNI."
                         + libName);
                 Method[] methods = c.getMethods();
