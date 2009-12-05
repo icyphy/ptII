@@ -33,7 +33,8 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
-import ptolemy.data.properties.Property;
+import ptolemy.data.ontologies.lattice.PropertyConstraintSolver;
+import ptolemy.data.ontologies.Concept;
 import ptolemy.kernel.util.IllegalActionException;
 
 //////////////////////////////////////////////////////////////////////////
@@ -51,14 +52,14 @@ import ptolemy.kernel.util.IllegalActionException;
 public class PropertyTermManager implements PropertyTermFactory {
 
     /**
-     * Construct a new PropertyTerm factory.
+     * Construct a new ptolemy.graph.InequalityTerm factory.
      */
     public PropertyTermManager(PropertyConstraintSolver solver) {
         _solver = solver;
     }
 
-    public List<PropertyTerm> terms() {
-        List<PropertyTerm> result = new LinkedList<PropertyTerm>();
+    public List<ptolemy.graph.InequalityTerm> terms() {
+        List<ptolemy.graph.InequalityTerm> result = new LinkedList<ptolemy.graph.InequalityTerm>();
         result.addAll(_propertyTerms.values());
         return result;
     }
@@ -73,9 +74,9 @@ public class PropertyTermManager implements PropertyTermFactory {
      * @param object The given object.
      * @return The property term.
      */
-    public PropertyTerm getPropertyTerm(Object object) {
-        if (object == null || object instanceof PropertyTerm) {
-            return (PropertyTerm) object;
+    public ptolemy.graph.InequalityTerm getPropertyTerm(Object object) {
+        if (object == null || object instanceof ptolemy.graph.InequalityTerm) {
+            return (ptolemy.graph.InequalityTerm) object;
         }
 
         //        if (object instanceof NamedObj) {
@@ -104,15 +105,15 @@ public class PropertyTermManager implements PropertyTermFactory {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    /** The mapping between property-able objects and their PropertyTerm. */
-    private HashMap<Object, PropertyTerm> _propertyTerms = new HashMap<Object, PropertyTerm>();
+    /** The mapping between property-able objects and their ptolemy.graph.InequalityTerm. */
+    private HashMap<Object, ptolemy.graph.InequalityTerm> _propertyTerms = new HashMap<Object, ptolemy.graph.InequalityTerm>();
 
     protected PropertyConstraintSolver _solver;
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner class                       ////
 
-    public class InequalityTerm implements PropertyTerm {
+    public class InequalityTerm implements ptolemy.graph.InequalityTerm {
         ///////////////////////////////////////////////////////////////
         ////                       public inner methods            ////
         protected Object _object;
@@ -131,7 +132,7 @@ public class PropertyTermManager implements PropertyTermFactory {
         }
 
         /** Return null if this term is not effective. Otherwise, return
-         *  the resolved property of this PropertyTerm.
+         *  the resolved property of this ptolemy.graph.InequalityTerm.
          * @exception IllegalActionException
          */
         public Object getValue() {
@@ -141,7 +142,7 @@ public class PropertyTermManager implements PropertyTermFactory {
             return null;
         }
 
-        /** Return this PropertyTerm in an array if this term represent
+        /** Return this ptolemy.graph.InequalityTerm in an array if this term represent
          *  a property variable. This term represents a property variable
          *  if the property of this port is not set through setEquals().
          *  If the property of this port is set, return an array of size zero.
@@ -174,20 +175,20 @@ public class PropertyTermManager implements PropertyTermFactory {
          */
         public void initialize(Object property) throws IllegalActionException {
             if (!isSettable()) {
-                throw new IllegalActionException("PropertyTerm.initialize: "
+                throw new IllegalActionException("ptolemy.graph.InequalityTerm.initialize: "
                         + "Cannot initialize a constant property.");
             }
 
-            if (!(property instanceof Property)) {
-                throw new IllegalActionException("PropertyTerm.initialize: "
-                        + "The argument is not a Property.");
+            if (!(property instanceof Concept)) {
+                throw new IllegalActionException("ptolemy.graph.InequalityTerm.initialize: "
+                        + "The argument is not a Concept.");
             }
 
             // FIX: Check with Jackie if this is the right implementation! This fix is for OIL 182.
-            if (_object instanceof LatticeProperty) {
-                _solver.setResolvedProperty(_object, (LatticeProperty) _object);
+            if (_object instanceof Concept) {
+                _solver.setResolvedProperty(_object, (Concept) _object);
             } else {
-                _solver.setResolvedProperty(_object, (Property) property);
+                _solver.setResolvedProperty(_object, (Concept) property);
             }
         }
 
@@ -210,12 +211,12 @@ public class PropertyTermManager implements PropertyTermFactory {
          *  @return True if the current value is acceptable.
          */
         public boolean isValueAcceptable() {
-            Property property = (Property) getValue();
+            Concept property = (Concept) getValue();
 
             if (property == null) {
                 return true;
             }
-            if (property.isAcceptableSolution()) {
+            if (property.isValueAcceptable()) {
                 return true;
             }
 
@@ -237,7 +238,7 @@ public class PropertyTermManager implements PropertyTermFactory {
                         "The property is not settable.");
             }
 
-            _solver.setResolvedProperty(_object, (Property) property);
+            _solver.setResolvedProperty(_object, (Concept) property);
         }
 
         /** Override the base class to give a description of the port
@@ -253,8 +254,8 @@ public class PropertyTermManager implements PropertyTermFactory {
 
     }
 
-    public List<PropertyTerm> getAffectedTerms(PropertyTerm updateTerm)
+    public List<ptolemy.graph.InequalityTerm> getAffectedTerms(ptolemy.graph.InequalityTerm updateTerm)
             throws IllegalActionException {
-        return new ArrayList<PropertyTerm>();
+        return new ArrayList<ptolemy.graph.InequalityTerm>();
     }
 }
