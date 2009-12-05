@@ -26,13 +26,13 @@ ENHANCEMENTS, OR MODIFICATIONS.
 /**
  *
  */
-package ptolemy.data.ontologies;
+package ptolemy.data.ontologies.lattice;
 
 import java.util.List;
 
-import ptolemy.data.properties.lattice.PropertyConstraintHelper.Inequality;
-import ptolemy.data.properties.util.MultiHashMap;
-import ptolemy.data.properties.util.MultiMap;
+import ptolemy.data.ontologies.lattice.PropertyConstraintHelper.Inequality;
+import ptolemy.data.ontologies.util.MultiHashMap;
+import ptolemy.data.ontologies.util.MultiMap;
 import ptolemy.graph.InequalityTerm;
 
 /**

@@ -105,6 +105,8 @@ public class ParseTreeAnnotationEvaluator extends AbstractParseTreeVisitor {
         }
     }
 
+    /* FIXME: Removing this method to aid in compilation
+     * --Ben 12/04/2009
     public void visitLeafNode(ASTPtLeafNode node) throws IllegalActionException {
         try {
             _evaluatedObject = _resolveLabel(_getNodeLabel(node), _adapter
@@ -125,6 +127,7 @@ public class ParseTreeAnnotationEvaluator extends AbstractParseTreeVisitor {
         }
      // FIXME: Not handling AST constraint yet.
     }
+    */
 
     public void visitMethodCallNode(ASTPtMethodCallNode node)
             throws IllegalActionException {
@@ -159,6 +162,8 @@ public class ParseTreeAnnotationEvaluator extends AbstractParseTreeVisitor {
         }
     }
 
+    /* FIXME: Removing this method to aid in compilation
+     * --Ben 12/04/2009
     public void visitRelationalNode(ASTPtRelationalNode node)
             throws IllegalActionException {
 
@@ -186,6 +191,7 @@ public class ParseTreeAnnotationEvaluator extends AbstractParseTreeVisitor {
         }
         _evaluatedObject = null;
     }
+     */
 
 
 

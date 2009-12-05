@@ -22,7 +22,7 @@
 /**
  * 
  */
-package ptolemy.data.ontologies;
+package ptolemy.data.ontologies.lattice;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -45,6 +45,12 @@ import ptolemy.data.expr.ASTPtRootNode;
 import ptolemy.data.expr.FileParameter;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
+import ptolemy.data.ontologies.PropertyHelper;
+import ptolemy.data.ontologies.PropertyLattice;
+import ptolemy.data.ontologies.PropertyResolutionException;
+import ptolemy.data.ontologies.PropertySolver;
+import ptolemy.data.ontologies.PropertyTermFactory;
+import ptolemy.data.ontologies.PropertyTermManager;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.MonotonicFunction;
 import ptolemy.domains.fsm.kernel.FSMActor;
