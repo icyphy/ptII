@@ -25,23 +25,9 @@
  */
 package ptolemy.data.properties.lattice;
 
-import ptolemy.data.expr.ASTPtArrayConstructNode;
-import ptolemy.data.expr.ASTPtBitwiseNode;
-import ptolemy.data.expr.ASTPtFunctionApplicationNode;
-import ptolemy.data.expr.ASTPtFunctionDefinitionNode;
-import ptolemy.data.expr.ASTPtFunctionalIfNode;
 import ptolemy.data.expr.ASTPtLeafNode;
-import ptolemy.data.expr.ASTPtLogicalNode;
-import ptolemy.data.expr.ASTPtMatrixConstructNode;
-import ptolemy.data.expr.ASTPtPowerNode;
-import ptolemy.data.expr.ASTPtProductNode;
-import ptolemy.data.expr.ASTPtRecordConstructNode;
 import ptolemy.data.expr.ASTPtRelationalNode;
 import ptolemy.data.expr.ASTPtRootNode;
-import ptolemy.data.expr.ASTPtShiftNode;
-import ptolemy.data.expr.ASTPtSumNode;
-import ptolemy.data.expr.ASTPtUnaryNode;
-import ptolemy.data.expr.ASTPtUnionConstructNode;
 import ptolemy.data.expr.PtParserConstants;
 import ptolemy.data.expr.Token;
 import ptolemy.data.properties.ParseTreeAnnotationEvaluator;
@@ -64,34 +50,6 @@ public class ParseTreeConstraintAnnotationEvaluator extends
         ParseTreeAnnotationEvaluator {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
-    public void visitArrayConstructNode(ASTPtArrayConstructNode node)
-            throws IllegalActionException {
-
-        // FIXME: handle PropertySet element.
-        throw _unsupportedVisitException("ASTPtArrayConstructNode");
-    }
-
-    public void visitBitwiseNode(ASTPtBitwiseNode node)
-            throws IllegalActionException {
-        throw _unsupportedVisitException("ASTPtBitwiseNode");
-    }
-
-    public void visitFunctionApplicationNode(ASTPtFunctionApplicationNode node)
-            throws IllegalActionException {
-        throw _unsupportedVisitException("ASTPtFunctionApplicationNode");
-    }
-
-    public void visitFunctionDefinitionNode(ASTPtFunctionDefinitionNode node)
-            throws IllegalActionException {
-        throw _unsupportedVisitException("ASTPtFunctionDefinitionNode");
-    }
-
-    public void visitFunctionalIfNode(ASTPtFunctionalIfNode node)
-            throws IllegalActionException {
-        throw _unsupportedVisitException("ASTPtFunctionalIfNode");
-    }
-
     public void visitLeafNode(ASTPtLeafNode node) throws IllegalActionException {
         try {
             super.visitLeafNode(node);
@@ -107,31 +65,6 @@ public class ParseTreeConstraintAnnotationEvaluator extends
         }
 
         // FIXME: Not handling AST constraint yet.
-    }
-
-    public void visitLogicalNode(ASTPtLogicalNode node)
-            throws IllegalActionException {
-        throw _unsupportedVisitException("ASTPtLogicalNode");
-    }
-
-    public void visitMatrixConstructNode(ASTPtMatrixConstructNode node)
-            throws IllegalActionException {
-        throw _unsupportedVisitException("ASTPtMatrixConstructNode");
-    }
-
-    public void visitPowerNode(ASTPtPowerNode node)
-            throws IllegalActionException {
-        throw _unsupportedVisitException("ASTPtPowerNode");
-    }
-
-    public void visitProductNode(ASTPtProductNode node)
-            throws IllegalActionException {
-        throw _unsupportedVisitException("ASTPtProductNode");
-    }
-
-    public void visitRecordConstructNode(ASTPtRecordConstructNode node)
-            throws IllegalActionException {
-        throw _unsupportedVisitException("ASTPtRecordConstructNode");
     }
 
     public void visitRelationalNode(ASTPtRelationalNode node)
@@ -161,25 +94,6 @@ public class ParseTreeConstraintAnnotationEvaluator extends
         }
         _evaluatedObject = null;
 
-    }
-
-    public void visitShiftNode(ASTPtShiftNode node)
-            throws IllegalActionException {
-        throw _unsupportedVisitException("ASTPtShiftNode");
-    }
-
-    public void visitSumNode(ASTPtSumNode node) throws IllegalActionException {
-        throw _unsupportedVisitException("ASTPtSumNode");
-    }
-
-    public void visitUnaryNode(ASTPtUnaryNode node)
-            throws IllegalActionException {
-        throw _unsupportedVisitException("ASTPtUnaryNode");
-    }
-
-    public void visitUnionConstructNode(ASTPtUnionConstructNode node)
-            throws IllegalActionException {
-        throw _unsupportedVisitException("ASTPtUnionConstructNode");
     }
 
 }
