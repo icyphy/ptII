@@ -45,12 +45,14 @@ import ptolemy.data.expr.ASTPtRootNode;
 import ptolemy.data.expr.FileParameter;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
+import ptolemy.data.ontologies.Concept;
 import ptolemy.data.ontologies.PropertyHelper;
 import ptolemy.data.ontologies.PropertyLattice;
 import ptolemy.data.ontologies.PropertyResolutionException;
 import ptolemy.data.ontologies.PropertySolver;
 import ptolemy.data.ontologies.PropertyTermFactory;
 import ptolemy.data.ontologies.PropertyTermManager;
+import ptolemy.data.ontologies.PropertyHelper.Inequality;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.MonotonicFunction;
 import ptolemy.domains.fsm.kernel.FSMActor;
@@ -134,9 +136,12 @@ public class PropertyConstraintSolver extends PropertySolver {
                 + "style=\"fill:blue\"/>" + "<text x=\"-40\" y=\"-5\" "
                 + "style=\"font-size:12; font-family:SansSerif; fill:white\">"
                 + "Double click to\nResolve Properties</text></svg>");
-
+        
+        /* Removed to make compile
+         * --Ben on 12/04/2009
         new PropertySolverGUIFactory(this,
                 "_propertyConstraintSolverGUIFactory");
+         */
 
     }
 
@@ -229,7 +234,11 @@ public class PropertyConstraintSolver extends PropertySolver {
 
         String propertyLatticeValue = propertyLattice.getExpression();
 
+        /* FIXME: Need a better way to get a lattice from a solver.
+         * How should we do this?
+         * --Ben 12/04/2009 
         _lattice = PropertyLattice.getPropertyLattice(propertyLatticeValue);
+
 
         // FIXME: is this a good way to access the property lattice.
         if (_lattice == null
@@ -247,6 +256,7 @@ public class PropertyConstraintSolver extends PropertySolver {
             _lattice = latticeAttribute.getPropertyLattice();
             PropertyLattice.storeLattice(_lattice, latticeName);
         }
+         */
 
         return _lattice;
     }
@@ -259,9 +269,9 @@ public class PropertyConstraintSolver extends PropertySolver {
      * @param object The specified object.
      * @return The property of the specified object.
      */
-    public Property getProperty(Object object) {
+    public Concept getProperty(Object object) {
         try {
-            return (Property) getPropertyTerm(object).getValue();
+            return (Concept) getPropertyTerm(object).getValue();
         } catch (IllegalActionException ex) {
             return null;
         }
@@ -410,6 +420,8 @@ public class PropertyConstraintSolver extends PropertySolver {
 
         if (adapter == null) {
             if (component instanceof FSMActor) {
+                /* Removed to make compile
+                 * --Ben on 12/04/2009
                 adapter = new PropertyConstraintFSMHelper(this,
                         (FSMActor) component);
             } else if (component instanceof ptolemy.domains.modal.kernel.FSMActor) {
@@ -421,6 +433,7 @@ public class PropertyConstraintSolver extends PropertySolver {
             } else if (component instanceof ASTPtRootNode) {
                 adapter = new PropertyConstraintASTNodeHelper(this,
                         (ASTPtRootNode) component);
+                 */
             } else {
                 adapter = new PropertyConstraintHelper(this, component);
             }
@@ -530,8 +543,8 @@ public class PropertyConstraintSolver extends PropertySolver {
                 CPO cpo = getLattice();
 
                 // Instantiate our own customized version of InequalitySolver.
-                // ptolemy.graph.InequalitySolver solver = new ptolemy.graph.InequalitySolver(cpo);
-                InequalitySolver solver = new InequalitySolver(cpo, this);
+                ptolemy.graph.InequalitySolver solver = new ptolemy.graph.InequalitySolver(cpo);
+                //InequalitySolver solver = new InequalitySolver(cpo, this);
 
                 solver.addInequalities(constraintList.iterator());
                 _constraintManager.setConstraints(constraintList);
@@ -630,9 +643,9 @@ public class PropertyConstraintSolver extends PropertySolver {
                 if (!isCollectConstraints()) {
                     // Find the greatest solution (most general type)
                     if (solvingFixedPoint.stringValue().equals("greatest")) {
-                        solver.solveGreatest(isInitializeSolver());
+                        solver.solveGreatest();
                     } else {
-                        solver.solveLeast(isInitializeSolver());
+                        solver.solveLeast();
                     }
                 }
 
@@ -711,7 +724,7 @@ public class PropertyConstraintSolver extends PropertySolver {
             // _checkDeclaredProperty or constraintList is called on a
             // transparent actor.
             throw new PropertyResolutionException(this, toplevel, ex,
-                    "Property resolution failed because of an error "
+                    "Concept resolution failed because of an error "
                             + "during property inference");
         } finally {
             if (writer != null) {
@@ -797,7 +810,7 @@ public class PropertyConstraintSolver extends PropertySolver {
     }
 
     private void _checkMissingConstraints() {
-        StringBuffer errorMessage = new StringBuffer(_eol + "Property \"" + getUseCaseName()
+        StringBuffer errorMessage = new StringBuffer(_eol + "Concept \"" + getUseCaseName()
                 + "\" resolution failed." + _eol);
 
         boolean hasError = false;
@@ -822,9 +835,9 @@ public class PropertyConstraintSolver extends PropertySolver {
     //     * @return The property value of the given port.
     //     * @exception IllegalActionException
     //     */
-    //  public Property getProperty(Object object) {
+    //  public Concept getProperty(Object object) {
     //  ptolemy.graph.InequalityTerm term = (ptolemy.graph.InequalityTerm) getPropertyTerm(object);
-    //  return (Property) term.getValue();
+    //  return (Concept) term.getValue();
     //  }
 
     /**
@@ -907,7 +920,7 @@ public class PropertyConstraintSolver extends PropertySolver {
 
     private String _getConstraintLogString(ptolemy.graph.InequalityTerm propertyTerm,
             String actorName) throws IllegalActionException {
-        if (propertyTerm instanceof LatticeProperty) {
+        if (propertyTerm instanceof Concept) {
             // FIXME: This is bogus unreadable syntax. "eff" means "effective"
             // (whatever that means).
             return (true ? "eff" : "ineff") + "\t" + "\t"
@@ -1091,8 +1104,7 @@ public class PropertyConstraintSolver extends PropertySolver {
         }
     }
 
-    private void _readConstraintFile(String filename)
-            throws PropertyFailedRegressionTestException {
+    private void _readConstraintFile(String filename){
 
         File file = new File(filename);
 
@@ -1116,9 +1128,12 @@ public class PropertyConstraintSolver extends PropertySolver {
                 }
             }
         } catch (IOException ex) {
+            /* FIXME: Removed to make compile
+             * --Ben 12/04/2009
             throw new PropertyFailedRegressionTestException(this,
                     "Failed to open or read the constraint file \"" + filename
                             + "\".");
+            */
         }
     }
 
@@ -1131,7 +1146,7 @@ public class PropertyConstraintSolver extends PropertySolver {
         NamedObj namedObj = (NamedObj) object;
 
         StringBuffer errorMessage = new StringBuffer(_eol +
-                "Property \"" + getUseCaseName() +
+                "Concept \"" + getUseCaseName() +
                 "\" resolution failed for " +
                 namedObj.getFullName() +
                 "'s adapter." + _eol);
