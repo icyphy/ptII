@@ -433,9 +433,12 @@ public class PropertyConstraintHelper extends PropertyHelper {
                 }
             } else {
                 if (objectList.size() > 0) {
+                    /* Removed to make compile
+                     * --Ben on 12/04/2009
                     InequalityTerm term2 = new MeetFunction(getSolver(),
                             objectList);
                     setSameAsByDefault(object, term2);
+                     */
                 }
             }
         }
