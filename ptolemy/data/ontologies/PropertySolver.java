@@ -36,8 +36,8 @@ import java.util.TreeMap;
 import ptolemy.actor.parameters.SharedParameter;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.properties.PropertyFailedRegressionTestException;
 import ptolemy.data.type.BaseType;
-import ptolemy.domains.tester.lib.Testable;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
@@ -62,7 +62,7 @@ import ptolemy.util.StringUtilities;
  * @Pt.ProposedRating Red (mankit)
  * @Pt.AcceptedRating Red (mankit)
  */
-public abstract class PropertySolver extends PropertySolverBase implements Testable {
+public abstract class PropertySolver extends PropertySolverBase {
 
     /**
      * Construct a PropertySolver with the specified container and name. If this
@@ -86,13 +86,6 @@ public abstract class PropertySolver extends PropertySolverBase implements Testa
 
         _momlHandler = new PropertyMoMLHandler(this, "PropertyMoMLHandler");
 
-        manualAnnotation = new Parameter(this, "manualAnnotation",
-                BooleanToken.FALSE);
-        manualAnnotation.setTypeEquals(BaseType.BOOLEAN);
-
-        all = new SharedParameter(this, "all", PropertySolver.class, "false");
-        all.setTypeEquals(BaseType.BOOLEAN);
-
         // FIXME: We do not want this GUI dependency here...
         // This attribute should be put in the MoML in the library instead
         // of here in the Java code.
@@ -106,21 +99,6 @@ public abstract class PropertySolver extends PropertySolverBase implements Testa
      * The action mode of the solver (e.g. ANNOTATE, TRAINING, CLEAR, and etc.).
      */
     public Parameter action;
-
-    /**
-     * A boolean parameter. If true and the solver is in training mode, made all
-     * the intermediate results persistent in MoML. Otherwise, only the results
-     * of the invoked solver is made persistent and the intermediate results are
-     * discarded.
-     */
-    public Parameter all;
-
-    /**
-     * A boolean parameter. If true, the solver looks for the manual annotated
-     * constraints in the model. Otherwise, these constraints have no effects in
-     * the resolution.
-     */
-    public Parameter manualAnnotation;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -338,23 +316,6 @@ public abstract class PropertySolver extends PropertySolverBase implements Testa
         return action.getExpression().equals(PropertySolver.CLEAR);
     }
 
-    /**
-     * Return true if the solver can be identified by the given use-case string;
-     * otherwise, false.
-     * @param usecase The given use-case label.
-     * @return True if the solver can be identified by the given use-case
-     * string; otherwise, false.
-     */
-    public boolean isIdentifiable(String usecase) {
-        return usecase.equals(getName()) || usecase.equals(getUseCaseName())
-                || usecase.equals(getExtendedUseCaseName());
-    }
-
-    /** True if the solver is in clearing mode; otherwise false. */
-    public boolean isManualAnnotate() {
-        return manualAnnotation.getExpression().equals("true");
-    }
-
     /** True if the solver is in resolution mode; otherwise false. */
     public boolean isResolve() {
         return action.getExpression().equals(ANNOTATE)
@@ -388,39 +349,6 @@ public abstract class PropertySolver extends PropertySolverBase implements Testa
         return action.getExpression().equals(PropertySolver.VIEW);
     }
     
-    /** Run a test. This invokes the solver in TEST mode.
-     *  @throws IllegalActionException If the test fails.
-     */
-    public void test() throws IllegalActionException {
-        // FIXME: Brute force method here just sets the action to TEST.
-        // However, the TEST and TRAINING modes should be removed.
-        String previousAction = action.getExpression();
-        try {
-            action.setExpression(TEST);
-            invokeSolver();
-            resetAll();
-        } finally {
-            action.setExpression(previousAction);
-        }
-    }
-    
-    /** Train a test. This invokes the solver in TRAINING mode.
-     */
-    public void train() {
-        // FIXME: Brute force method here just sets the action to TRAINING.
-        // However, the TEST and TRAINING modes should be removed.
-        String previousAction = action.getExpression();
-        try {
-            workspace().getWriteAccess();
-            action.setExpression(TRAINING);
-            invokeSolver();
-            resetAll();
-        } finally {
-            action.setExpression(previousAction);
-            workspace().doneWriting();
-        }
-    }
-
     /**
      * Record the previous property of the given object.
      * @param object The given object.
@@ -556,28 +484,6 @@ public abstract class PropertySolver extends PropertySolverBase implements Testa
                 previousSolver._momlHandler.clearDisplay();
 
                 _sharedUtilities._previousInvokedSolver = this;
-
-                // If we are in ANNOTATE_ALL or TRAINING mode, then keep
-                // all the intermediate results.
-                boolean keepIntermediates =
-                // actionValue.equals(ANNOTATE_ALL) ||
-                ((BooleanToken) all.getToken()).booleanValue()
-                        || actionValue.equals(TRAINING);
-
-                for (String solverName : _dependentUseCases) {
-                    PropertySolver dependentSolver = findSolver(solverName);
-
-                    dependentSolver.resolveProperties(analyzer,
-                            keepIntermediates);
-
-                    dependentSolver.updateProperties();
-                }
-            } else if (isInvoked && isTesting()) {
-                for (String solverName : _dependentUseCases) {
-                    PropertySolver dependentSolver = findSolver(solverName);
-
-                    dependentSolver.resolveProperties(analyzer, false);
-                }
             }
             _resolveProperties(analyzer);
 
@@ -671,7 +577,6 @@ public abstract class PropertySolver extends PropertySolverBase implements Testa
         boolean userDecision = true;
 
         // Only test the invoked solver.
-        boolean testing = isTesting() && _isInvoked;
         boolean updating = isResolve();
 
         _addStatistics();
@@ -690,10 +595,7 @@ public abstract class PropertySolver extends PropertySolverBase implements Testa
             // Get the value resolved by the solver.
             Concept property = getProperty(namedObj);
 
-            if (testing) { // Regression testing.
-                _regressionTest(namedObj, property);
-
-            } else if (updating) {
+            if (updating) {
                 Concept previous = getPreviousProperty(namedObj);
 
                 if (!_isInvoked && !hasDecided) {
@@ -703,6 +605,7 @@ public abstract class PropertySolver extends PropertySolverBase implements Testa
                     if (previous == null && property != null
                             || previous != null && !previous.equals(property)) {
 
+                        /* FIXME: find a better way.
                         if (_analyzer == null) {
                             // Get user's decision.
                             userDecision = MessageHandler
@@ -717,6 +620,7 @@ public abstract class PropertySolver extends PropertySolverBase implements Testa
                                     .getToken() == BooleanToken.TRUE;
 
                         }
+                        */
                         // Remember that we have made a decision.
                         hasDecided = true;
                     }
@@ -876,6 +780,7 @@ public abstract class PropertySolver extends PropertySolverBase implements Testa
         ConceptAttribute attribute = null;
 
         // write results to attribute
+        /* FIXME: Not using attribute.
         if (getExtendedUseCaseName().startsWith("lattice")) {
             attribute = (ConceptAttribute) propertyable
                     .getAttribute(getExtendedUseCaseName());
@@ -895,6 +800,7 @@ public abstract class PropertySolver extends PropertySolverBase implements Testa
             throw new PropertyResolutionException(this, propertyable,
                     "Failed to get the PropertyAttribute.");
         }
+        */
         return attribute;
     }
 
@@ -914,49 +820,6 @@ public abstract class PropertySolver extends PropertySolverBase implements Testa
     }
 
     /*
-     * Check the given property against the trained property recorded on the
-     * given NamedObj. It also restore the trained property that is temporarily
-     * cleared for regression testing.
-     * 
-     * @param namedObj The given NamedObj.
-     * 
-     * @param property The given resolved property.
-     * 
-     * @exception PropertyResolutionException Thrown if there are errors
-     * restoring the trained property.
-     */
-    protected void _regressionTest(NamedObj namedObj, Concept property)
-            throws PropertyResolutionException {
-
-        Concept previousProperty = getPreviousProperty(namedObj);
-
-        // Restore the previous resolved property, if there exists one.
-        if (previousProperty != null) {
-            try {
-                ConceptAttribute attribute = _getPropertyAttribute(namedObj);
-                _updatePropertyAttribute(attribute, previousProperty);
-
-            } catch (IllegalActionException ex) {
-                throw new PropertyResolutionException(this, ex,
-                        "Failed to restore previously resolved property.");
-            }
-        }
-
-        // The first check is for singleton elements, and the equals()
-        // comparison is necessary for "equivalent" elements, such as
-        // those in the SetLattice usecase.
-       
-        if ((previousProperty == null && property != null)
-                || (previousProperty != null && !previousProperty.equals(property))) {
-
-            addErrors(_eol + "Property \"" + getUseCaseName()
-                    + "\" resolution failed for " + namedObj.getFullName()
-                    + "." + _eol + "    Trained value: \"" + previousProperty
-                    + "\"; Resolved value: \"" + property + "\".");
-        }
-    }
-
-    /*
      * Resolve the property values for the specified top-level entity. Print out
      * the name of the this solver. Sub-classes should overrides this method.
      * 
@@ -966,8 +829,10 @@ public abstract class PropertySolver extends PropertySolverBase implements Testa
      */
     protected void _resolveProperties(NamedObj analyzer) throws KernelException {
 
+        /* FIXME: What the heck is an analyzer?
         System.out.println("Invoking \"" + getName() + "\" ("
                 + getExtendedUseCaseName() + "):");
+                */
 
     }
 

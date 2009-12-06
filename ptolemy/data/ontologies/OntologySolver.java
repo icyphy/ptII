@@ -45,6 +45,7 @@ import ptolemy.data.ontologies.PropertyConstraintHelper.Inequality;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.MonotonicFunction;
 import ptolemy.domains.fsm.kernel.FSMActor;
+import ptolemy.domains.tester.lib.Testable;
 import ptolemy.graph.CPO;
 import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.CompositeEntity;
@@ -73,7 +74,7 @@ import ptolemy.util.FileUtilities;
  * @Pt.ProposedRating Red (mankit)
  * @Pt.AcceptedRating Red (mankit)
  */
-public class OntologySolver extends PropertySolver {
+public class OntologySolver extends PropertySolver implements Testable {
 
     /**
      * @param container The given container.
@@ -87,14 +88,6 @@ public class OntologySolver extends PropertySolver {
         
         // Provide a default model so that this is never empty.
         _model = new CompositeEntity(workspace());
-
-        //latticeClassName = new StringParameter(this, "latticeClassName");
-        //latticeClassName.setExpression("ptolemy.data.properties.PropertyLattice");
-
-        // FIXME: What should we use for the extension of the
-        // lattice decription file?
-        propertyLattice = new StringParameter(this, "propertyLattice");
-        propertyLattice.setExpression("logicalAND");
 
         solvingFixedPoint = new StringParameter(this, "solvingFixedPoint");
         solvingFixedPoint.setExpression("least");
@@ -169,9 +162,6 @@ public class OntologySolver extends PropertySolver {
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
-        if (attribute == propertyLattice) {
-            _lattice = null;
-        }
         if (attribute == logMode) {
             _logMode = logMode.getToken() == BooleanToken.TRUE;
         }
@@ -188,10 +178,6 @@ public class OntologySolver extends PropertySolver {
      */
     public ConstraintManager getConstraintManager() {
         return _constraintManager;
-    }
-
-    public String getExtendedUseCaseName() {
-        return "lattice::" + getUseCaseName();
     }
 
     /**
@@ -228,41 +214,6 @@ public class OntologySolver extends PropertySolver {
         return _getHelper(object);
     }
 
-    /**
-     * Return the property lattice for this constraint solver.
-     * @return The property lattice for this constraint solver.
-     */
-    public ConceptLattice getLattice() {
-
-        String propertyLatticeValue = propertyLattice.getExpression();
-
-        /* FIXME: Need a better way to get a lattice from a solver.
-         * How should we do this?
-         * --Ben 12/04/2009 
-        _lattice = PropertyLattice.getPropertyLattice(propertyLatticeValue);
-
-
-        // FIXME: is this a good way to access the property lattice.
-        if (_lattice == null
-                && propertyLatticeValue.startsWith(_USER_DEFINED_LATTICE)) {
-            String latticeName = propertyLatticeValue.replace(
-                    _USER_DEFINED_LATTICE, "");
-
-            // FIXME: need to handle the case if we cannot find
-            // the specified PropertyLatticeAttribute.
-            // Otherwise, this code throws a null pointer exception.
-
-            PropertyLatticeAttribute latticeAttribute = (PropertyLatticeAttribute) ((CompositeEntity) getContainer())
-                    .getAttribute(latticeName);
-
-            _lattice = latticeAttribute.getPropertyLattice();
-            PropertyLattice.storeLattice(_lattice, latticeName);
-        }
-         */
-
-        return _lattice;
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////                     public methods                        ////
 
@@ -294,10 +245,6 @@ public class OntologySolver extends PropertySolver {
             _propertyTermManager = _getPropertyTermManager();
         }
         return _propertyTermManager;
-    }
-
-    public String getUseCaseName() {
-        return getLattice().getName();
     }
 
     public boolean isAnnotatedTerm(Object object) {
@@ -347,7 +294,6 @@ public class OntologySolver extends PropertySolver {
         super.reset();
         _propertyTermManager = null;
         _trainedConstraints.clear();
-        _lattice = null;
     }
 
     public void setLogMode(boolean isLogMode) {
@@ -370,6 +316,39 @@ public class OntologySolver extends PropertySolver {
             System.out.println("doing deep testing.");
         } else {
             System.out.println("NOT deep testing: " + options.size());
+        }
+    }
+
+    /** Run a test. This invokes the solver in TEST mode.
+     *  @throws IllegalActionException If the test fails.
+     */
+    public void test() throws IllegalActionException {
+        // FIXME: Brute force method here just sets the action to TEST.
+        // However, the TEST and TRAINING modes should be removed.
+        String previousAction = action.getExpression();
+        try {
+            action.setExpression(TEST);
+            invokeSolver();
+            resetAll();
+        } finally {
+            action.setExpression(previousAction);
+        }
+    }
+    
+    /** Train a test. This invokes the solver in TRAINING mode.
+     */
+    public void train() {
+        // FIXME: Brute force method here just sets the action to TRAINING.
+        // However, the TEST and TRAINING modes should be removed.
+        String previousAction = action.getExpression();
+        try {
+            workspace().getWriteAccess();
+            action.setExpression(TRAINING);
+            invokeSolver();
+            resetAll();
+        } finally {
+            action.setExpression(previousAction);
+            workspace().doneWriting();
         }
     }
 
@@ -545,10 +524,10 @@ public class OntologySolver extends PropertySolver {
              */
 
             if (constraintList.size() > 0) {
-                CPO cpo = getLattice();
+                CPO lattice = getLattice();
 
                 // Instantiate our own customized version of InequalitySolver.
-                ptolemy.graph.InequalitySolver solver = new ptolemy.graph.InequalitySolver(cpo);
+                ptolemy.graph.InequalitySolver solver = new ptolemy.graph.InequalitySolver(lattice);
                 //InequalitySolver solver = new InequalitySolver(cpo, this);
 
                 solver.addInequalities(constraintList.iterator());
@@ -569,7 +548,7 @@ public class OntologySolver extends PropertySolver {
                 Date date = new Date();
                 String timestamp = date.toString().replace(":", "_");
                 String logFilename = getContainer().getName() + "__"
-                        + getUseCaseName() + "__" + timestamp.replace(" ", "_")
+                        + getName() + "__" + timestamp.replace(" ", "_")
                         + ".txt";
 
                 if (super.isResolve() && isLogMode()) {
@@ -676,7 +655,7 @@ public class OntologySolver extends PropertySolver {
                 // property conflicts.
                 for (Inequality inequality : constraintList) {
 
-                    if (!inequality.isSatisfied(_lattice)) {
+                    if (!inequality.isSatisfied(lattice)) {
                         conflicts.add(inequality);
 
                     } else {
@@ -752,11 +731,6 @@ public class OntologySolver extends PropertySolver {
      * or parameters.
      */
     private void _addChoices() throws IllegalActionException {
-        // Add all the subdirectories in lattice/ directory as
-        // choices.  Directories named "CVS" and ".svn" are skipped.
-        _addChoices(propertyLattice,
-                "$CLASSPATH/ptolemy/data/properties/lattice");
-
         solvingFixedPoint.addChoice("least");
         solvingFixedPoint.addChoice("greatest");
 
@@ -818,7 +792,7 @@ public class OntologySolver extends PropertySolver {
     }
 
     private void _checkMissingConstraints() {
-        StringBuffer errorMessage = new StringBuffer(_eol + "Concept \"" + getUseCaseName()
+        StringBuffer errorMessage = new StringBuffer(_eol + "Concept \"" + getName()
                 + "\" resolution failed." + _eol);
 
         boolean hasError = false;
@@ -1056,7 +1030,7 @@ public class OntologySolver extends PropertySolver {
         // Make an unique file name from the toplevel container.
         // FIXME: don't use __, they make the filenames too long.
         String constraintFilename = _toplevel().getName() + "__"
-                + getUseCaseName();
+                + getName();
 
         String directoryPath = trainedConstraintDirectory.getExpression();
         directoryPath = directoryPath.replace("\\", "/");
@@ -1160,7 +1134,7 @@ public class OntologySolver extends PropertySolver {
         NamedObj namedObj = (NamedObj) object;
 
         StringBuffer errorMessage = new StringBuffer(_eol +
-                "Concept \"" + getUseCaseName() +
+                "Concept \"" + getName() +
                 "\" resolution failed for " +
                 namedObj.getFullName() +
                 "'s adapter." + _eol);
@@ -1287,11 +1261,6 @@ public class OntologySolver extends PropertySolver {
     public Parameter logMode;
 
     /**
-     * The file parameter for the lattice description file.
-     */
-    public StringParameter propertyLattice;
-
-    /**
      * Indicate whether to compute the least or greatest fixed point solution.
      */
     public StringParameter solvingFixedPoint;
@@ -1305,11 +1274,6 @@ public class OntologySolver extends PropertySolver {
 
     private final ConstraintManager _constraintManager = new ConstraintManager(
             this);
-
-    /**
-     * The property lattice for this constraint solver.
-     */
-    private ConceptLattice _lattice = null;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////

@@ -119,6 +119,7 @@ public class PropertyMoMLHandler extends Attribute {
                 for (AnnotationAttribute attribute : (List<AnnotationAttribute>) namedObj
                         .attributeList(AnnotationAttribute.class)) {
 
+                    /* FIXME
                     if (solver.isIdentifiable(attribute.getUseCaseIdentifier())) {
 
                         String request = "<deleteProperty name=\""
@@ -127,6 +128,7 @@ public class PropertyMoMLHandler extends Attribute {
 
                         completeMoML.append(request);
                     }
+                    */
                 }
             }
         }
@@ -186,6 +188,7 @@ public class PropertyMoMLHandler extends Attribute {
                 if (propertyable instanceof NamedObj) {
                     NamedObj namedObj = (NamedObj) propertyable;
 
+                    /* FIXME
                     String attributeName = solver.getExtendedUseCaseName();
                     ConceptAttribute attribute = (ConceptAttribute) namedObj
                             .getAttribute(attributeName);
@@ -197,6 +200,7 @@ public class PropertyMoMLHandler extends Attribute {
 
                         completeMoML.append(request);
                     }
+                    */
                 }
             }
         } catch (IllegalActionException e) {

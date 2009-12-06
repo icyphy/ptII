@@ -48,6 +48,7 @@ import ptolemy.data.expr.Node;
 import ptolemy.data.expr.PtParser;
 import ptolemy.data.expr.Variable;
 import ptolemy.domains.fsm.kernel.Configurer;
+import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -155,18 +156,6 @@ public abstract class PropertySolverBase extends MoMLModelAttribute {
     ////                     public methods                        ////
 
     /**
-     * Add the given unique solver (user-case) identifier to the
-     * dependency list. A dependent solver is one whose analysis
-     * result is required for this solver's resolution. The dependent
-     * solvers are run in order before invoking this solver.
-     *
-     * @param userCaseName The specified user case name.
-     */
-    public void addDependentUseCase(String userCaseName) {
-        _dependentUseCases.add(userCaseName);
-    }
-
-    /**
      * Clear the resolved property for the specified object. The
      * object is assumed to be property-able; otherwise, nothing
      * happens.
@@ -175,36 +164,6 @@ public abstract class PropertySolverBase extends MoMLModelAttribute {
      */
     public void clearResolvedProperty(Object object) {
         _resolvedProperties.remove(object);
-    }
-
-    /**
-     * Find a solver that is associated with the specified label. A
-     * solver can be identified by the use-case name, class name, or
-     * its name in the model.  There can be more than one solvers with
-     * the label. This method returns whichever it finds first.
-     *
-     * @param identifier The specified label.
-     * @return The property solver associated with the specified label.
-     * @exception IllegalActionException Thrown if no matched solver
-     * is found.
-     */
-    public PropertySolver findSolver(String identifier)
-            throws PropertyResolutionException {
-
-        for (PropertySolver solver : getAllSolvers(sharedUtilitiesWrapper)) {
-            if (solver.getUseCaseName().equals(identifier)) {
-                return solver;
-            }
-            if (solver.getClass().getSimpleName().equals(identifier)) {
-                return solver;
-            }
-            if (solver.getName().equals(identifier)) {
-                return solver;
-            }
-        }
-
-        throw new PropertyResolutionException(this, "Cannot find \""
-                + identifier + "\" solver.");
     }
 
     /**
@@ -302,24 +261,6 @@ public abstract class PropertySolverBase extends MoMLModelAttribute {
     }
 
     /**
-     * Return the list of dependent solvers. The list contains the
-     * unique name of the solvers.
-     *
-     * @return The list of dependent solvers.
-     */
-    public List<String> getDependentSolvers() {
-        return _dependentUseCases;
-    }
-
-    /**
-     * Return the extended use-case name. The extended use-case name is an
-     * unique label for a use-case.
-     *
-     * @return the extended use-case name.
-     */
-    public abstract String getExtendedUseCaseName();
-
-    /**
      * Return the property adapter for the specified component.
      *
      * @param object The specified component.
@@ -331,6 +272,38 @@ public abstract class PropertySolverBase extends MoMLModelAttribute {
             throws IllegalActionException {
         return _getHelper(object);
     }
+
+    /** Return the property lattice for this constraint solver.
+     *  If this solver contains more than one lattice, then return the
+     *  last one added. If it contains no lattices, then return null.
+     *  @return The property lattice for this constraint solver.
+     *  @throws IllegalActionException If the structure is not a lattice.
+     */
+    public ConceptLattice getLattice() throws IllegalActionException {
+        Ontology ontology = getOntology();
+        if (ontology != null) {
+            return ontology.getLatticeGraph();
+        }
+        return null;
+    }
+
+    /** Return the ontology for this constraint solver.
+     *  If this solver contains more than one ontology, then return the
+     *  last one added. If it contains no ontologies, then return null.
+     *  @return The ontology for this constraint solver.
+     *  @throws IllegalActionException If the structure is not a lattice.
+     */
+    public Ontology getOntology() throws IllegalActionException {
+        NamedObj containedModel = getContainedModel();
+        if (containedModel instanceof CompositeEntity) {
+            List<Ontology> ontologies = ((CompositeEntity)containedModel).entityList(Ontology.class);
+            if (ontologies.size() > 0) {
+                return ontologies.get(ontologies.size() - 1);
+            }
+        }
+        return null;
+    }
+
 
     /**
      * Return the expression parser.
@@ -420,6 +393,7 @@ public abstract class PropertySolverBase extends MoMLModelAttribute {
         }
 
         // Get from the PropertyAttribute in the model.
+        /* FIXME: Not using ConceptAttribute.
         if (object instanceof NamedObj) {
             ConceptAttribute attribute = (ConceptAttribute) ((NamedObj) object)
                     .getAttribute(getExtendedUseCaseName());
@@ -428,6 +402,7 @@ public abstract class PropertySolverBase extends MoMLModelAttribute {
                 return attribute.getProperty();
             }
         }
+        */
 
         // Try resolve the property.
         try {
@@ -449,13 +424,6 @@ public abstract class PropertySolverBase extends MoMLModelAttribute {
     public SharedUtilities getSharedUtilities() {
         return _sharedUtilities;
     }
-
-    /**
-     * Return the use-case name. The use-case name is not guaranteed to be
-     * unique.
-     * @return The use-case name.
-     */
-    public abstract String getUseCaseName();
 
     /**
      * Mark the property of the specified object as non-settable. The
@@ -608,9 +576,11 @@ public abstract class PropertySolverBase extends MoMLModelAttribute {
      * Return the package name that contains the class of this solver.
      *
      * @return The package name.
+     * @throws IllegalActionException 
      */
-    protected String _getPackageName() {
-        return getClass().getPackage().getName() + "." + getUseCaseName();
+    protected String _getPackageName() throws IllegalActionException {
+        // FIXME: Is this the right package for the adapters?
+        return getClass().getPackage().getName() + "." + getOntology().getName();
     }
 
     protected NamedObj _toplevel() {
@@ -632,15 +602,6 @@ public abstract class PropertySolverBase extends MoMLModelAttribute {
 
     ///////////////////////////////////////////////////////////////////
     ////             protected variables                           ////
-
-    /**
-     * The list that keeps track of the dependencies on other
-     * use-cases.  Circular dependencies are not allowed but it is up
-     * to the user to enforce this requirement. This means that there
-     * should not be a case where two solvers' use-cases exist in each
-     * other's dependency list.
-     */
-    protected List<String> _dependentUseCases = new LinkedList<String>();
 
     /**
      * The HashMap that caches components and their PropertyHelper objects.
