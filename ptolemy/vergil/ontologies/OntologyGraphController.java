@@ -30,7 +30,6 @@ import ptolemy.util.MessageHandler;
 import ptolemy.vergil.actor.ExternalIOPortController;
 import ptolemy.vergil.kernel.AttributeController;
 import ptolemy.vergil.modal.FSMGraphController;
-import ptolemy.vergil.modal.TransitionController;
 import ptolemy.vergil.toolbox.FigureAction;
 import diva.graph.JGraph;
 
@@ -76,9 +75,8 @@ public class OntologyGraphController extends FSMGraphController {
                 AttributeController.FULL);
         _stateController = new ConceptController(this,
                 AttributeController.FULL);
-        _transitionController = new TransitionController(this);
+        _transitionController = new RelationController(this);
         _modalTransitionController = _transitionController;
-        //_transitionController.setEdgeRenderer(new BasicEdgeRenderer());
     }
 
     /**

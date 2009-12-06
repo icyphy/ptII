@@ -28,6 +28,7 @@ package ptolemy.data.ontologies;
 import java.util.List;
 
 import ptolemy.kernel.ComponentPort;
+import ptolemy.kernel.ComponentRelation;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -107,6 +108,28 @@ public class Ontology extends CompositeEntity {
             }
         }
         return _graph;
+    }
+    
+    /** Create a new relation with the specified name, add it to the
+     *  relation list, and return it.
+     *  This method is write-synchronized on the workspace and increments
+     *  its version number.
+     *  @param name The name of the new relation.
+     *  @return The new relation.
+     *  @exception IllegalActionException If name argument is null.
+     *  @exception NameDuplicationException If name collides with a name
+     *   already in the container.
+     */
+    public ComponentRelation newRelation(String name)
+            throws IllegalActionException, NameDuplicationException {
+        try {
+            _workspace.getWriteAccess();
+
+            ComponentRelation rel = new ConceptRelation(this, name);
+            return rel;
+        } finally {
+            _workspace.doneWriting();
+        }
     }
         
     ///////////////////////////////////////////////////////////////////
