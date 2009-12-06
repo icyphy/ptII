@@ -159,15 +159,19 @@ public class MoMLModelAttribute extends Attribute implements Configurable {
     protected void _exportMoMLContents(Writer output, int depth)
             throws IOException {
         super._exportMoMLContents(output, depth);
-        output.write(_getIndentPrefix(depth) + "<configure>\n");
-        _model.exportMoML(output, depth + 1);
-        output.write(_getIndentPrefix(depth) + "</configure>\n");
+        if (_model != null) {
+            output.write(_getIndentPrefix(depth) + "<configure>\n");
+            _model.exportMoML(output, depth + 1);
+            output.write(_getIndentPrefix(depth) + "</configure>\n");
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                      private variables                    ////
+    ////                    protected variables                    ////
 
-    /** The contained model. */
-    private NamedObj _model;
+    /** The contained model. This is protected so that derived classes
+     *  can provide a default model.
+     */
+    protected NamedObj _model;
 
 }
