@@ -117,8 +117,8 @@ public class Gaussian extends RandomSource {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
+    ////                      protected variables                  ////
 
     /** The random number for the current iteration. */
-    private double _current;
+    protected double _current;
 }
