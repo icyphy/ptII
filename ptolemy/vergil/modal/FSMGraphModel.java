@@ -44,6 +44,7 @@ import ptolemy.kernel.Port;
 import ptolemy.kernel.Relation;
 import ptolemy.kernel.util.ChangeListener;
 import ptolemy.kernel.util.ChangeRequest;
+import ptolemy.kernel.util.Flowable;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.Locatable;
@@ -83,7 +84,7 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Disconnect an edge from its two enpoints and notify graph
+    /** Disconnect an edge from its two endpoints and notify graph
      *  listeners with an EDGE_HEAD_CHANGED and an EDGE_TAIL_CHANGED
      *  event whose source is the given source.
      *  @param eventSource The source of the event that will be dispatched,
@@ -366,7 +367,7 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
         link.setRelation(relation);
 
         // We have to get the direction of the arc correct.
-        if (((State) port1.getContainer()).incomingPort.equals(port1)) {
+        if (((Flowable) port1.getContainer()).getIncomingPort().equals(port1)) {
             link.setHead(location1);
             link.setTail(location2);
         } else {
@@ -464,11 +465,15 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
                 TypedActor[] refinements = null;
 
                 try {
-                    refinements = ((Transition) linkRelation).getRefinement();
+                    if (linkRelation instanceof Transition) {
+                        refinements = ((Transition) linkRelation).getRefinement();
+                    }
                 } catch (IllegalActionException e) {
                     // Ignore, no refinement to remove.
                 }
 
+                // The following code executes only if the link is a Transition,
+                // so we can sure the entities are instances of State.
                 if (refinements != null) {
                     for (int i = 0; i < refinements.length; i++) {
                         TypedActor refinement = refinements[i];
@@ -831,13 +836,13 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
                 NamedObj head = (NamedObj) getSemanticObject(linkHead);
                 NamedObj tail = (NamedObj) getSemanticObject(linkTail);
 
-                if (head instanceof State && tail instanceof State) {
+                if (head instanceof Flowable && tail instanceof Flowable) {
                     // When we connect two states, we actually connect the
                     // appropriate ports.
-                    State headState = (State) head;
-                    State tailState = (State) tail;
-                    ComponentPort headPort = headState.incomingPort;
-                    ComponentPort tailPort = tailState.outgoingPort;
+                    Flowable headState = (Flowable) head;
+                    Flowable tailState = (Flowable) tail;
+                    ComponentPort headPort = headState.getIncomingPort();
+                    ComponentPort tailPort = tailState.getOutgoingPort();
                     NamedObj ptolemyModel = getPtolemyModel();
 
                     // If the context is not the entity that we're editing,
@@ -959,13 +964,13 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
                 NamedObj head = (NamedObj) getSemanticObject(linkHead);
                 NamedObj tail = (NamedObj) getSemanticObject(linkTail);
 
-                if (head instanceof State && tail instanceof State) {
+                if (head instanceof Flowable && tail instanceof Flowable) {
                     // When we connect two states, we actually connect the
                     // appropriate ports.
-                    State headState = (State) head;
-                    State tailState = (State) tail;
-                    ComponentPort headPort = headState.incomingPort;
-                    ComponentPort tailPort = tailState.outgoingPort;
+                    Flowable headState = (Flowable) head;
+                    Flowable tailState = (Flowable) tail;
+                    ComponentPort headPort = headState.getIncomingPort();
+                    ComponentPort tailPort = tailState.getOutgoingPort();
                     NamedObj ptolemyModel = getPtolemyModel();
 
                     // If the context is not the entity that we're editing,
@@ -1044,8 +1049,8 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
         private String _unlinkHead(NamedObj container, NamedObj linkHead,
                 Relation relation) {
             NamedObj head = (NamedObj) getSemanticObject(linkHead);
-            State headState = (State) head;
-            ComponentPort headPort = headState.incomingPort;
+            Flowable headState = (Flowable) head;
+            ComponentPort headPort = headState.getIncomingPort();
             return "<unlink port=\"" + headPort.getName(container)
                     + "\" relation=\"" + relation.getName(container) + "\"/>\n";
         }
@@ -1056,8 +1061,8 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
         private String _unlinkTail(NamedObj container, NamedObj linkTail,
                 Relation relation) {
             NamedObj tail = (NamedObj) getSemanticObject(linkTail);
-            State tailState = (State) tail;
-            ComponentPort tailPort = tailState.outgoingPort;
+            Flowable tailState = (Flowable) tail;
+            ComponentPort tailPort = tailState.getOutgoingPort();
             return "<unlink port=\"" + tailPort.getName(container)
                     + "\" relation=\"" + relation.getName(container) + "\"/>\n";
         }
@@ -1187,7 +1192,9 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
                 TypedActor[] refinements = null;
 
                 try {
-                    refinements = ((State) deleteObj).getRefinement();
+                    if (deleteObj instanceof State) {
+                        refinements = ((State) deleteObj).getRefinement();
+                    }
                 } catch (IllegalActionException ex) {
                     // Ignore, no refinement to remove.
                 }

@@ -52,6 +52,7 @@ import ptolemy.kernel.Relation;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.DropTargetHandler;
+import ptolemy.kernel.util.Flowable;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -91,7 +92,7 @@ import ptolemy.moml.MoMLParser;
  @see FSMDirector
  */
 public class State extends ComponentEntity implements ConfigurableEntity,
-        DropTargetHandler {
+        DropTargetHandler, Flowable {
 
     /** Construct a state with the given name contained by the specified
      *  composite entity. The container argument must not be null, or a
@@ -323,6 +324,13 @@ public class State extends ComponentEntity implements ConfigurableEntity,
         return _configurer;
     }
 
+    /** Return the incoming port.
+     *  @return The incoming port.
+     */
+    public ComponentPort getIncomingPort() {
+        return incomingPort;
+    }
+
     /** Get a NamedObj with the given name in the refinement of this state, if
      *  any.
      *
@@ -364,6 +372,13 @@ public class State extends ComponentEntity implements ConfigurableEntity,
             }
         }
         return null;
+    }
+
+    /** Return the outgoing port.
+     *  @return The outgoing port.
+     */
+    public ComponentPort getOutgoingPort() {
+        return outgoingPort;
     }
 
     /** Return the refinements of this state. The names of the refinements
