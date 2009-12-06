@@ -43,6 +43,7 @@ import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.domains.modal.kernel.State;
 import ptolemy.domains.modal.kernel.Transition;
+import ptolemy.kernel.ComponentRelation;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.Locatable;
@@ -115,7 +116,7 @@ public class TransitionController extends BasicEdgeController {
 
         ConnectorTarget ct = new LinkTarget();
         setConnectorTarget(ct);
-        setEdgeRenderer(new LinkRenderer());
+        _createEdgeRenderer();
 
         _menuCreator = new MenuCreator(null);
         _menuCreator.setMouseFilter(new PopupMouseFilter());
@@ -137,12 +138,7 @@ public class TransitionController extends BasicEdgeController {
 
         interactor.addInteractor(doubleClickInteractor);
 
-        if (_configuration != null && _lookInsideActionFactory == null) {
-            _lookInsideActionFactory = new MenuActionFactory(_lookInsideAction);
-            // NOTE: The following requires that the configuration be
-            // non-null, or it will report an error.
-            _menuFactory.addMenuItemFactory(_lookInsideActionFactory);
-        }
+        _setUpLookInsideAction();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -164,13 +160,11 @@ public class TransitionController extends BasicEdgeController {
     public void setConfiguration(Configuration configuration) {
         _configuration = configuration;
 
-        if (_configuration != null && _lookInsideActionFactory == null) {
-            _lookInsideActionFactory = new MenuActionFactory(_lookInsideAction);
-            // NOTE: The following requires that the configuration be
-            // non-null, or it will report an error.
-            _menuFactory.addMenuItemFactory(_lookInsideActionFactory);
-        }
+        _setUpLookInsideAction();
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                  public inner classes                     ////
 
     /** Render a link.
      */
@@ -308,6 +302,27 @@ public class TransitionController extends BasicEdgeController {
     }
 
     ///////////////////////////////////////////////////////////////////
+    ////                     protected methods                     ////
+
+
+    /** Create an edge renderer specifically for instances of Transition.
+     */
+    protected void _createEdgeRenderer() {
+        setEdgeRenderer(new LinkRenderer());
+    }
+
+    /** Set up look inside actions, if appropriate.
+     */
+    protected void _setUpLookInsideAction() {
+        if (_configuration != null && _lookInsideActionFactory == null) {
+            _lookInsideActionFactory = new MenuActionFactory(_lookInsideAction);
+            // NOTE: The following requires that the configuration be
+            // non-null, or it will report an error.
+            _menuFactory.addMenuItemFactory(_lookInsideActionFactory);
+        }
+    }
+
+    ///////////////////////////////////////////////////////////////////
     ////                     protected members                     ////
 
     /** The configuration. */
@@ -334,7 +349,7 @@ public class TransitionController extends BasicEdgeController {
     protected PtolemyMenuFactory _menuFactory;
 
     ///////////////////////////////////////////////////////////////////
-    ////                         inner classes                     ////
+    ////               protected inner classes                     ////
 
     /** An inner class that handles interactive changes to connectivity. */
     protected class LinkDropper extends ConnectorAdapter {
@@ -368,17 +383,19 @@ public class TransitionController extends BasicEdgeController {
 
             // Make the arc rerender itself so that geometry is preserved
             Arc arc = (Arc) edge;
-            Transition transition = (Transition) arc.getRelation();
+            ComponentRelation transition = arc.getRelation();
 
             if ((transition != null) && c instanceof ArcConnector) {
                 double angle = ((ArcConnector) c).getAngle();
                 double gamma = ((ArcConnector) c).getGamma();
 
                 // Set the new exitAngle and gamma parameter values based
-                // on the current arc.
+                // on the current arc. These will be created if they
+                // don't already exist.
                 String moml = "<group><property name=\"exitAngle\" value=\""
-                        + angle + "\"/>" + "<property name=\"gamma\" value=\""
-                        + gamma + "\"/></group>";
+                        + angle + "\" class=\"ptolemy.data.expr.Parameter\"/>"
+                        + "<property name=\"gamma\" value=\""
+                        + gamma + "\" class=\"ptolemy.data.expr.Parameter\"/></group>";
                 MoMLChangeRequest request = new MoMLChangeRequest(this,
                         transition, moml);
                 transition.requestChange(request);
