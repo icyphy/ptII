@@ -59,6 +59,7 @@ JSRCS = \
 	MenuActionFactory.java \
 	MenuItemFactory.java \
 	MenuItemListener.java \
+	MoMLModelAttributeControllerFactory.java \
 	MoveAction.java \
 	PortSite.java \
 	PtolemyListCellRenderer.java \
