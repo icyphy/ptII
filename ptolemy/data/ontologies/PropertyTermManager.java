@@ -33,7 +33,6 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
-import ptolemy.data.ontologies.lattice.PropertyConstraintSolver;
 import ptolemy.data.ontologies.Concept;
 import ptolemy.kernel.util.IllegalActionException;
 
@@ -54,7 +53,7 @@ public class PropertyTermManager implements PropertyTermFactory {
     /**
      * Construct a new ptolemy.graph.InequalityTerm factory.
      */
-    public PropertyTermManager(PropertyConstraintSolver solver) {
+    public PropertyTermManager(OntologySolver solver) {
         _solver = solver;
     }
 
@@ -108,7 +107,7 @@ public class PropertyTermManager implements PropertyTermFactory {
     /** The mapping between property-able objects and their ptolemy.graph.InequalityTerm. */
     private HashMap<Object, ptolemy.graph.InequalityTerm> _propertyTerms = new HashMap<Object, ptolemy.graph.InequalityTerm>();
 
-    protected PropertyConstraintSolver _solver;
+    protected OntologySolver _solver;
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner class                       ////

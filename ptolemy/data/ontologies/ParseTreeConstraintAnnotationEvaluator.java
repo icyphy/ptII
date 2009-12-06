@@ -23,15 +23,13 @@
 
 
  */
-package ptolemy.data.ontologies.lattice;
+package ptolemy.data.ontologies;
 
 import ptolemy.data.expr.ASTPtLeafNode;
 import ptolemy.data.expr.ASTPtRelationalNode;
 import ptolemy.data.expr.ASTPtRootNode;
 import ptolemy.data.expr.PtParserConstants;
 import ptolemy.data.expr.Token;
-import ptolemy.data.ontologies.ParseTreeAnnotationEvaluator;
-import ptolemy.data.ontologies.PropertyLattice;
 import ptolemy.kernel.util.IllegalActionException;
 
 ////ParseTreePropertyInference
@@ -58,7 +56,7 @@ public class ParseTreeConstraintAnnotationEvaluator extends
         } catch (IllegalActionException ex) {
 
             // The label may be a lattice element name.
-            PropertyLattice lattice = ((PropertyConstraintHelper) _adapter)
+            ConceptLattice lattice = ((PropertyConstraintHelper) _adapter)
                     .getSolver().getLattice();
 
             _evaluatedObject = lattice.getElement(_getNodeLabel(node)

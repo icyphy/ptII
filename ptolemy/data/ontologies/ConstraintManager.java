@@ -26,11 +26,11 @@ ENHANCEMENTS, OR MODIFICATIONS.
 /**
  *
  */
-package ptolemy.data.ontologies.lattice;
+package ptolemy.data.ontologies;
 
 import java.util.List;
 
-import ptolemy.data.ontologies.lattice.PropertyConstraintHelper.Inequality;
+import ptolemy.data.ontologies.PropertyConstraintHelper.Inequality;
 import ptolemy.data.ontologies.util.MultiHashMap;
 import ptolemy.data.ontologies.util.MultiMap;
 import ptolemy.graph.InequalityTerm;
@@ -45,7 +45,7 @@ import ptolemy.graph.InequalityTerm;
 
 public class ConstraintManager {
 
-    public ConstraintManager(PropertyConstraintSolver solver) {
+    public ConstraintManager(OntologySolver solver) {
         _solver = solver;
     }
 
@@ -85,7 +85,7 @@ public class ConstraintManager {
     }
 
     /** The property constraint solver that uses this manager. */
-    private PropertyConstraintSolver _solver;
+    private OntologySolver _solver;
 
     /** The multi-map of the greater terms (key) to the lesser terms (values). */
     private MultiMap _greaterTermMap = new MultiHashMap();

@@ -25,14 +25,15 @@
  */
 package ptolemy.data.ontologies;
 
-import ptolemy.actor.IOPort;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.graph.CPO;
 import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.ComponentEntity;
+import ptolemy.kernel.ComponentPort;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.Flowable;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
@@ -51,7 +52,7 @@ import ptolemy.kernel.util.NamedObj;
  * @Pt.ProposedRating Red (blickly)
  * @Pt.AcceptedRating Red (blickly)
  */
-public class Concept extends ComponentEntity implements InequalityTerm {
+public class Concept extends ComponentEntity implements InequalityTerm, Flowable {
 
     /** Create a new concept with the specified name and the specified
      *  ontology.
@@ -71,20 +72,18 @@ public class Concept extends ComponentEntity implements InequalityTerm {
         isAcceptable.setTypeEquals(BaseType.BOOLEAN);
         isAcceptable.setExpression("true");
         
-        belowPort = new IOPort(this, "belowPort", true, false);
-        belowPort.setMultiport(true);
-        abovePort = new IOPort(this, "abovePort", false, true);
-        abovePort.setMultiport(true);
+        belowPort = new ComponentPort(this, "belowPort");
+        abovePort = new ComponentPort(this, "abovePort");
     }
     
     ////////////////////////////////////////////////////////////////////////////
     ////                   parameters and ports                             ////
     
     /** The port linked to concepts above this one in the lattice. */
-    public IOPort abovePort;
+    public ComponentPort abovePort;
 
     /** The port linked to concepts below this one in the lattice. */
-    public IOPort belowPort;
+    public ComponentPort belowPort;
 
     /** A parameter indicating whether this concept is an acceptable outcome
      *  during inference. This is a boolean that defaults to true.
@@ -105,13 +104,27 @@ public class Concept extends ComponentEntity implements InequalityTerm {
         return null;
     }
     
+    /** Return the outgoing port.
+     *  @return The outgoing port.
+     */
+    public ComponentPort getIncomingPort() {
+        return belowPort;
+    }
+
+    /** Return the outgoing port.
+     *  @return The outgoing port.
+     */
+    public ComponentPort getOutgoingPort() {
+        return abovePort;
+    }
+
     /** Get the property lattice associated with this concept.
      *  @return The associated property lattice.
      *  @throws IllegalActionException If this property is not contained
      *   by an Ontology or if the structure in the Ontology is
      *   not a lattice.
      */
-    public PropertyLattice getPropertyLattice() throws IllegalActionException {
+    public ConceptLattice getPropertyLattice() throws IllegalActionException {
         NamedObj container = getContainer();
         if (!(container instanceof Ontology)) {
             throw new IllegalActionException(this, "Not contained by an Ontology");
@@ -201,7 +214,7 @@ public class Concept extends ComponentEntity implements InequalityTerm {
     /**
      * The property lattice containing this concept.
      */
-    protected PropertyLattice _lattice;
+    protected ConceptLattice _lattice;
     
     /**
      * The name of this Property.

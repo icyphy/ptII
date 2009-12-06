@@ -23,7 +23,7 @@
  * 
  * 
  */
-package ptolemy.data.ontologies.lattice;
+package ptolemy.data.ontologies;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -36,11 +36,7 @@ import ptolemy.actor.AtomicActor;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.expr.ASTPtRootNode;
-import ptolemy.data.ontologies.Concept;
-import ptolemy.data.ontologies.ParseTreeAnnotationEvaluator;
-import ptolemy.data.ontologies.PropertyHelper;
-import ptolemy.data.ontologies.PropertyLattice;
-import ptolemy.data.ontologies.lattice.PropertyConstraintSolver.ConstraintType;
+import ptolemy.data.ontologies.OntologySolver.ConstraintType;
 import ptolemy.domains.fsm.kernel.FSMActor;
 import ptolemy.domains.fsm.modal.ModalModel;
 import ptolemy.graph.CPO;
@@ -73,7 +69,7 @@ public class PropertyConstraintHelper extends PropertyHelper {
      * @exception IllegalActionException Thrown if the adapter cannot be
      * initialized.
      */
-    public PropertyConstraintHelper(PropertyConstraintSolver solver,
+    public PropertyConstraintHelper(OntologySolver solver,
             Object component) throws IllegalActionException {
         this(solver, component, true);
     }
@@ -88,7 +84,7 @@ public class PropertyConstraintHelper extends PropertyHelper {
      * @exception IllegalActionException Thrown if the adapter cannot be
      * initialized.
      */
-    public PropertyConstraintHelper(PropertyConstraintSolver solver,
+    public PropertyConstraintHelper(OntologySolver solver,
             Object component, boolean useDefaultConstraints)
             throws IllegalActionException {
 
@@ -158,12 +154,12 @@ public class PropertyConstraintHelper extends PropertyHelper {
      * Return the associated property solver.
      * @return The associated property solver.
      */
-    public PropertyConstraintSolver getSolver() {
-        return (PropertyConstraintSolver) _solver;
+    public OntologySolver getSolver() {
+        return (OntologySolver) _solver;
     }
 
     public boolean isAnnotated(Object object) {
-        return ((PropertyConstraintSolver) _solver).isAnnotatedTerm(object);
+        return ((OntologySolver) _solver).isAnnotatedTerm(object);
     }
 
     public boolean isConstraintSource() {
@@ -376,7 +372,7 @@ public class PropertyConstraintHelper extends PropertyHelper {
 
                 // Take care of actors without nodes, e.g. MonitorValue actors without previous execution
                 if (node != null) {
-                    PropertyConstraintASTNodeHelper astHelper = ((PropertyConstraintSolver) _solver)
+                    PropertyConstraintASTNodeHelper astHelper = ((OntologySolver) _solver)
                             .getHelper(node);
 
                     List list = new ArrayList();
@@ -490,7 +486,7 @@ public class PropertyConstraintHelper extends PropertyHelper {
      */
     protected List<PropertyHelper> _getSubHelpers()
             throws IllegalActionException {
-        PropertyConstraintSolver solver = getSolver();
+        OntologySolver solver = getSolver();
         if (solver.expressionASTNodeConstraintType.getExpression().equals(
                 "NONE")) {
             return new LinkedList();
@@ -610,7 +606,7 @@ public class PropertyConstraintHelper extends PropertyHelper {
     protected List<Inequality> _ownConstraints = new LinkedList<Inequality>();
 
     /** The property lattice. */
-    protected PropertyLattice _lattice;
+    protected ConceptLattice _lattice;
 
     /** Indicate whether this adapter uses the default actor constraints. */
     protected boolean _useDefaultConstraints;

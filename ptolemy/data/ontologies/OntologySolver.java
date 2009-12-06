@@ -1,4 +1,4 @@
-/*
+/* A solver for ontologies.
  * 
  * Copyright (c) 2007-2009 The Regents of the University of California. All
  * rights reserved.
@@ -19,10 +19,7 @@
  * "AS IS" BASIS, AND THE UNIVERSITY OF CALIFORNIA HAS NO OBLIGATION TO PROVIDE
  * MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
-/**
- * 
- */
-package ptolemy.data.ontologies.lattice;
+package ptolemy.data.ontologies;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -33,7 +30,6 @@ import java.io.Writer;
 import java.net.URI;
 import java.util.Date;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -45,14 +41,7 @@ import ptolemy.data.expr.ASTPtRootNode;
 import ptolemy.data.expr.FileParameter;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
-import ptolemy.data.ontologies.Concept;
-import ptolemy.data.ontologies.PropertyHelper;
-import ptolemy.data.ontologies.PropertyLattice;
-import ptolemy.data.ontologies.PropertyResolutionException;
-import ptolemy.data.ontologies.PropertySolver;
-import ptolemy.data.ontologies.PropertyTermFactory;
-import ptolemy.data.ontologies.PropertyTermManager;
-import ptolemy.data.ontologies.PropertyHelper.Inequality;
+import ptolemy.data.ontologies.PropertyConstraintHelper.Inequality;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.MonotonicFunction;
 import ptolemy.domains.fsm.kernel.FSMActor;
@@ -67,14 +56,24 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.util.FileUtilities;
 
+
+//////////////////////////////////////////////////////////////////////////
+//// OntologySolver
+
 /**
+ * An instance of this solver contains a <i>use case</i>, which itself
+ * contains a lattice and default constraints.
+ * <p>
+ * This class is based on the PropertyConstraintSolver in the properties package
+ * by Man-Kit Leung.
+ * 
  * @author Man-Kit Leung, Edward A. Lee
  * @version $Id$
  * @since Ptolemy II 7.1
  * @Pt.ProposedRating Red (mankit)
  * @Pt.AcceptedRating Red (mankit)
  */
-public class PropertyConstraintSolver extends PropertySolver {
+public class OntologySolver extends PropertySolver {
 
     /**
      * @param container The given container.
@@ -82,9 +81,12 @@ public class PropertyConstraintSolver extends PropertySolver {
      * @exception IllegalActionException
      * @exception NameDuplicationException
      */
-    public PropertyConstraintSolver(NamedObj container, String name)
+    public OntologySolver(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
+        
+        // Provide a default model so that this is never empty.
+        _model = new CompositeEntity(workspace());
 
         //latticeClassName = new StringParameter(this, "latticeClassName");
         //latticeClassName.setExpression("ptolemy.data.properties.PropertyLattice");
@@ -230,7 +232,7 @@ public class PropertyConstraintSolver extends PropertySolver {
      * Return the property lattice for this constraint solver.
      * @return The property lattice for this constraint solver.
      */
-    public PropertyLattice getLattice() {
+    public ConceptLattice getLattice() {
 
         String propertyLatticeValue = propertyLattice.getExpression();
 
@@ -1307,7 +1309,7 @@ public class PropertyConstraintSolver extends PropertySolver {
     /**
      * The property lattice for this constraint solver.
      */
-    private PropertyLattice _lattice = null;
+    private ConceptLattice _lattice = null;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////

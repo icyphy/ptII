@@ -56,6 +56,7 @@ import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
+import ptolemy.moml.MoMLModelAttribute;
 import ptolemy.util.FileUtilities;
 import ptolemy.util.StringBufferExec;
 import ptolemy.util.StringUtilities;
@@ -99,7 +100,7 @@ into a constraint solver.
 @Pt.ProposedRating Red (mankit)
 @Pt.AcceptedRating Red (mankit)
  */
-public abstract class PropertySolverBase extends Attribute {
+public abstract class PropertySolverBase extends MoMLModelAttribute {
 
     /**
      * Construct a PropertySolverBase with the specified container and

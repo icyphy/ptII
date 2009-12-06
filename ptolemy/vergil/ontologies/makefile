@@ -1,8 +1,8 @@
-# Makefile for ontologies
+# Makefile for the vergil/ontologies package
 #
-# @Authors: Christopher Brooks (makefile only)
+# @Authors: Edward A. Lee, based on a file by Christopher Brooks.
 #
-# $Id$
+# @Version: $Id$
 #
 # @Copyright (c) 2009 The Regents of the University of California.
 # All rights reserved.
@@ -29,72 +29,57 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/data/ontologies
 
-DIRS = 		adapters lattices #test demo 
+ME =		ptolemy/vergil/ontologies
 
-# Root of the Ptolemy II directory
-ROOT =		../../..
+DIRS =
 
-CLASSPATH =	$(ROOT)
+# Root of the Java directory
+ROOT =		../../../
+
+CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(DIVA_JAR)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	ontologies
-# Include the .class files from these jars in PTCLASSALLJAR
-PTCLASSALLJARS = \
-	adapters/adapters.jar \
-	lattices/lattices.jar
-
-PTCLASSALLJAR = $(PTPACKAGE).jar
+PTPACKAGE = 	properties
+PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
-	AnnotationAttribute.java \
-	Concept.java \
-	ConceptAttribute.java \
-	ConceptLattice.java \
-	ConstraintManager.java \
-	Ontology.java \
-	OntologySolver.java \
-	ParseTreeASTNodeHelperCollector.java \
-	ParseTreeAnnotationEvaluator.java \
-	ParseTreeConstraintAnnotationEvaluator.java \
-	PropertyConstraintASTNodeHelper.java \
-	PropertyConstraintHelper.java \
-	PropertyConstraintSolver.java \
-	PropertyHelper.java \
-	PropertyMoMLHandler.java \
-	PropertyResolutionException.java \
-	PropertySolver.java \
-	PropertySolverBase.java \
-	PropertyTermFactory.java \
-	PropertyTermManager.java \
-	SharedUtilities.java
+	ConceptController.java \
+	ConceptIcon.java \
+	OntologyElementIcon.java \
+	OntologyGraphFrame.java \
+	OntologyGraphController.java \
+	OntologyGraphModel.java \
+	OntologyGraphTableau.java
 
-OTHER_FILES_TO_BE_JARED = \
-	ontologyLibrary.xml
+OTHER_FILES_TO_BE_JARED = 
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-# if $(DIRS) includes demo, then do not set MISC_FILES= $(DIRS) 
-MISC_FILES = adapters lattices #test
+MISC_FILES =	$(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
-# make distclean removes OPTIONAL_FILES
+# make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	demo \
-	doc \
+	$(PTCLASSJAR) \
+	'LatticeElementController$$CheckIsLatticeAction.class' \
+	'LatticeElementController$$ToggleAcceptabilityAction.class' \
+	'LatticeGraphFrame$$DebugMenuListener.class' \
+	'LatticeGraphFrameController$$CheckIsLatticeAction.class' \
+	'LatticeGraphTableau$$Factory.class' \
+	'ModelAttributeController$$Factory.class' \
+	'ModelAttributeController$$LookInsideAction.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 
 all: jclass
-install: jclass jars
-
+install: jclass $(PTCLASSJAR)
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

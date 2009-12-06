@@ -33,14 +33,14 @@ import ptolemy.graph.Node;
 import ptolemy.kernel.util.IllegalActionException;
 
 //////////////////////////////////////////////////////////////////////////////
-//// PropertyLattice
+//// ConceptLattice
 
 /** A data structure defining an ontology that is constrained to have the
  *  structure of a mathematical lattice. A lattice is a partially ordered
  *  set where every subset has a least upper bound and a greatest lower bound.
- *  A property lattice is a lattice
+ *  A concept lattice is a lattice
  *  where the elements of the set are instances of {@link Concept}.
- *  We represent a property lattice as a directed acyclic graph.
+ *  We represent a concept lattice as a directed acyclic graph.
  * 
  * @author Thomas Mandl, Man-Kit Leung, Edward A. Lee, Ben Lickly, Dai Bui, Christopher Brooks
  * @version $Id$
@@ -49,7 +49,7 @@ import ptolemy.kernel.util.IllegalActionException;
  * @Pt.AcceptedRating Red (mankit)
  * @see ptolemy.graph.CPO
  */
-public class PropertyLattice extends DirectedAcyclicGraph {
+public class ConceptLattice extends DirectedAcyclicGraph {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -122,7 +122,7 @@ public class PropertyLattice extends DirectedAcyclicGraph {
      * instances of Property.
      */
     public int compare(Object t1, Object t2) {
-        synchronized (PropertyLattice.class) {
+        synchronized (ConceptLattice.class) {
             if (!(t1 instanceof Property) || !(t2 instanceof Property)) {
                 throw new IllegalArgumentException("PropertyLattice.compare: "
                         + "Arguments are not instances of Property: "
@@ -189,7 +189,7 @@ public class PropertyLattice extends DirectedAcyclicGraph {
      */
 
     public Object greatestElement(Object[] subset) {
-        synchronized (PropertyLattice.class) {
+        synchronized (ConceptLattice.class) {
             // Compare each element with all of the other elements to search
             // for the greatest one. This is a simple, brute force algorithm,
             // but may be inefficient. A more efficient one is used in
@@ -225,7 +225,7 @@ public class PropertyLattice extends DirectedAcyclicGraph {
      */
 
     public Object greatestLowerBound(Object t1, Object t2) {
-        synchronized (PropertyLattice.class) {
+        synchronized (ConceptLattice.class) {
             if (t1 == null || t2 == null) {
                 return null;
             }
@@ -306,7 +306,7 @@ public class PropertyLattice extends DirectedAcyclicGraph {
      * @return A Property or null.
      */
     public Object leastElement(Object[] subset) {
-        synchronized (PropertyLattice.class) {
+        synchronized (ConceptLattice.class) {
             // Compare each element with all of the other elements to search
             // for the least one. This is a simple, brute force algorithm,
             // but may be inefficient. A more efficient one is used in
@@ -339,7 +339,7 @@ public class PropertyLattice extends DirectedAcyclicGraph {
      * @return an instance of Property.
      */
     public Object leastUpperBound(Object t1, Object t2) {
-        synchronized (PropertyLattice.class) {
+        synchronized (ConceptLattice.class) {
             if (t1 == null) {
                 return t2;
             }
@@ -429,7 +429,7 @@ public class PropertyLattice extends DirectedAcyclicGraph {
      * {@link #getPropertyLattice(String)} first searches from the set of stored
      * lattices before instantiating a new instant.
      */
-    public static void storeLattice(PropertyLattice lattice, String name) {
+    public static void storeLattice(ConceptLattice lattice, String name) {
         _lattices.put(name, lattice);
     }
 
@@ -481,6 +481,6 @@ public class PropertyLattice extends DirectedAcyclicGraph {
      * A HashMap that contains all property lattices with unique lattice files
      * as keys.
      */
-    private static HashMap<String, PropertyLattice> _lattices = new HashMap<String, PropertyLattice>();
+    private static HashMap<String, ConceptLattice> _lattices = new HashMap<String, ConceptLattice>();
 
 }

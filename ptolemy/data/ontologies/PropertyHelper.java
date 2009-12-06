@@ -42,8 +42,6 @@ import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.Variable;
 import ptolemy.data.ontologies.ParseTreeAnnotationEvaluator;
 import ptolemy.data.ontologies.PropertyHelper;
-import ptolemy.data.ontologies.lattice.ParseTreeConstraintAnnotationEvaluator;
-import ptolemy.data.ontologies.lattice.PropertyConstraintSolver;
 import ptolemy.graph.CPO;
 import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.CompositeEntity;

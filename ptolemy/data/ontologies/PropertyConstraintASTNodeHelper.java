@@ -26,7 +26,7 @@
 
 
  */
-package ptolemy.data.ontologies.lattice;
+package ptolemy.data.ontologies;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,8 +36,7 @@ import ptolemy.data.expr.ASTPtLeafNode;
 import ptolemy.data.expr.ASTPtRootNode;
 import ptolemy.data.expr.ModelScope;
 import ptolemy.data.expr.Variable;
-import ptolemy.data.ontologies.PropertyHelper;
-import ptolemy.data.ontologies.lattice.PropertyConstraintSolver.ConstraintType;
+import ptolemy.data.ontologies.OntologySolver.ConstraintType;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
@@ -64,7 +63,7 @@ public class PropertyConstraintASTNodeHelper extends PropertyConstraintHelper {
      * PropertyConstraintHelper(NamedObj, ASTPtRootNode, boolean)
      * throws it.
      */
-    public PropertyConstraintASTNodeHelper(PropertyConstraintSolver solver,
+    public PropertyConstraintASTNodeHelper(OntologySolver solver,
             ASTPtRootNode node) throws IllegalActionException {
         this(solver, node, true);
     }
@@ -79,7 +78,7 @@ public class PropertyConstraintASTNodeHelper extends PropertyConstraintHelper {
      * @exception IllegalActionException If the adapter cannot
      *  be initialized.
      */
-    public PropertyConstraintASTNodeHelper(PropertyConstraintSolver solver,
+    public PropertyConstraintASTNodeHelper(OntologySolver solver,
             ASTPtRootNode node, boolean useDefaultConstraints)
             throws IllegalActionException {
 

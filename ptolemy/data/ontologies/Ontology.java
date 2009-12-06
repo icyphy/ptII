@@ -27,10 +27,11 @@ package ptolemy.data.ontologies;
 
 import java.util.List;
 
-import ptolemy.actor.IOPort;
+import ptolemy.kernel.ComponentPort;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
 //// Ontology
@@ -38,10 +39,10 @@ import ptolemy.kernel.util.NameDuplicationException;
 /**
  * A specification of an ontology, which is a set of concepts and an
  * ordering relation on the set that is constrained to have the structure
- * of a mathematical lattice. Structure is represented by interconnections
+ * of a mathematical lattice. The structure is represented by interconnections
  * between concepts contained by this ontology.
  * 
- * @see PropertyLattice
+ * @see ConceptLattice
  * @see Concept
  * @author Edward A. Lee, Ben Lickly, Dai Bui, Christopher Brooks
  * @version $Id$
@@ -62,6 +63,17 @@ public class Ontology extends CompositeEntity {
     public Ontology(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
+        _attachText("_iconDescription", _ICON);
+    }
+    
+    /** Create a new Ontology with no container or name.
+     *  @param workspace The workspace into which to put it.
+     *  @throws IllegalActionException If the base class throws it.
+     */
+    public Ontology(Workspace workspace)
+            throws IllegalActionException {
+        super(workspace);
+        _attachText("_iconDescription", _ICON);
     }
     
     ////////////////////////////////////////////////////////////////////////////
@@ -75,20 +87,18 @@ public class Ontology extends CompositeEntity {
      *  @return The property lattice.
      *  @throws IllegalActionException If the structure is not a lattice.
      */
-    public PropertyLattice getLatticeGraph() throws IllegalActionException {
+    public ConceptLattice getLatticeGraph() throws IllegalActionException {
         if (workspace().getVersion() != _graphVersion) {
             // Construct the graph.
-            _graph = new PropertyLattice();
+            _graph = new ConceptLattice();
             List<Concept> concepts = entityList(Concept.class);
             for (Concept concept : concepts) {
                 _graph.addNodeWeight(concept);
             }
             for (Concept concept : concepts) {
-                for (int i = 0; i < concept.abovePort.getWidth(); i++) {
-                    List<IOPort> remotePorts = concept.abovePort.sinkPortList();
-                    for (IOPort remotePort : remotePorts) {
-                        _graph.addEdge(concept, remotePort.getContainer());
-                    }
+                List<ComponentPort> remotePorts = concept.abovePort.deepConnectedPortList();
+                for (ComponentPort remotePort : remotePorts) {
+                    _graph.addEdge(concept, remotePort.getContainer());
                 }
             }
             // Check that it's a lattice.
@@ -103,8 +113,33 @@ public class Ontology extends CompositeEntity {
     ////                       private variables                   ////
 
     /** The cached graph. */
-    private PropertyLattice _graph;
+    private ConceptLattice _graph;
     
     /** The workspace version at which the cached graph was valid. */
     private long _graphVersion = -1L;
+    
+    /** The icon description used for rendering. */
+    private static final String _ICON = "<svg>"
+            + "<line x1=\"0\" y1=\"-30\" x2=\"18\" y2=\"0\""
+            + "  style=\"stroke:#303030; stroke-width:3\"/>"
+            + "<line x1=\"0\" y1=\"-30\" x2=\"-18\" y2=\"0\""
+            + "  style=\"stroke:#303030; stroke-width:3\"/>"
+            + "<line x1=\"0\" y1=\"-30\" x2=\"0\" y2=\"0\""
+            + "  style=\"stroke:#303030; stroke-width:3\"/>"
+            + "<line x1=\"0\" y1=\"30\" x2=\"18\" y2=\"0\""
+            + "  style=\"stroke:#303030; stroke-width:3\"/>"
+            + "<line x1=\"0\" y1=\"30\" x2=\"-18\" y2=\"0\""
+            + "  style=\"stroke:#303030; stroke-width:3\"/>"
+            + "<line x1=\"0\" y1=\"30\" x2=\"0\" y2=\"0\""
+            + "  style=\"stroke:#303030; stroke-width:3\"/>"
+            + "<circle cx=\"0\" cy=\"-30\" r=\"6\" style=\"fill:blue\"/>"
+            + "<circle cx=\"0\" cy=\"30\" r=\"6\" style=\"fill:red\"/>"
+            + "<circle cx=\"18\" cy=\"0\" r=\"6\" style=\"fill:white\"/>"
+            + "<circle cx=\"-18\" cy=\"0\" r=\"6\" style=\"fill:white\"/>"
+            + "<circle cx=\"0\" cy=\"0\" r=\"6\" style=\"fill:white\"/>"
+            + "<line x1=\"12\" y1=\"42\" x2=\"12\" y2=\"36\""
+            + "  style=\"stroke:#303030; stroke-width:2\"/>"
+            + "<line x1=\"9\" y1=\"42\" x2=\"15\" y2=\"42\""
+            + "  style=\"stroke:#303030; stroke-width:2\"/>" + "</svg>";
+
 }
