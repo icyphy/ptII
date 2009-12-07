@@ -34,6 +34,7 @@ public class SMTSolver {
      */
     public String check(String formula) {
         int ctx = yl.yicesl_mk_context();
+        formula += "(set-evidence! true)\n(check)\n";
         
         StringBuffer result = new StringBuffer();
         try {

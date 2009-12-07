@@ -42,8 +42,8 @@ public class SMTExpression extends Expression {
         ParseTreeDumper ptd = new ParseTreeDumper();
         ptd.displayParseTree(_parseTree);
 
-        ParseTreeSMTChecker ptsc = new ParseTreeSMTChecker();
-        String result = ptsc.checkParseTree(_parseTree);
+        SMTFormulaBuilder ptsc = new SMTFormulaBuilder();
+        String result = ptsc.parseTreeToSMTFormula(_parseTree);
         
         if (result.equals("")) {
             // could not get proof

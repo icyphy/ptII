@@ -1,4 +1,4 @@
-/**
+/** Parse tree visitor that produces an SMT formula from a Ptolemy AST.
  * 
  */
 package ptolemy.domains.interfaces;
@@ -20,11 +20,12 @@ import ptolemy.kernel.util.IllegalActionException;
  * @author blickly
  *
  */
-public class ParseTreeSMTChecker extends AbstractParseTreeVisitor {
+public class SMTFormulaBuilder extends AbstractParseTreeVisitor {
     
-    public String checkParseTree(ASTPtRootNode root) {
+    public String parseTreeToSMTFormula(ASTPtRootNode root) {
         _smtDefines = new HashMap<String, String>();
         _smtFormula = new StringBuffer("(assert ");
+        
         try {
             root.visit(this);
         } catch (IllegalActionException ex) {
@@ -32,20 +33,14 @@ public class ParseTreeSMTChecker extends AbstractParseTreeVisitor {
             ex.printStackTrace(_stream);
         }
         _smtFormula.append(")\n");
-        StringBuffer yicesIn = new StringBuffer();
+        
+        StringBuffer defines = new StringBuffer();
         for (String var : _smtDefines.keySet()) {
-            yicesIn.append("(define " + var + "::"
+            defines.append("(define " + var + "::"
                 + _smtDefines.get(var) + ")\n");   
         }
-        yicesIn.append(_smtFormula
-             + "(set-evidence! true)\n"
-             + "(check)\n");
-        String result = _solver.check(yicesIn.toString());
         
-        _stream.println("SMT Checker formula:\n" + yicesIn.toString());
-        _stream.println("Solver result: " + result);
-        
-        return result;
+        return defines.toString() + _smtFormula.toString();
     }
     
     ///////////////////////////////////////////////////////////////////
@@ -139,6 +134,5 @@ public class ParseTreeSMTChecker extends AbstractParseTreeVisitor {
     private StringBuffer _smtFormula;
 
     private PrintStream _stream = System.out;
-    private SMTSolver _solver = new SMTSolver();
 
 }

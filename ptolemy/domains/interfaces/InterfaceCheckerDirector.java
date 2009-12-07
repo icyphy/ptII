@@ -69,7 +69,6 @@ public class InterfaceCheckerDirector extends Director {
     public InterfaceCheckerDirector(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        // TODO Auto-generated constructor stub
     }
     
     /** Check that the interfaces in the model are valid.
@@ -82,11 +81,12 @@ public class InterfaceCheckerDirector extends Director {
         Nameable container = getContainer();
         
         if (container instanceof CompositeActor) {
-            Iterator<?> actors = ((CompositeActor) container).deepEntityList()
+            Iterator<NamedObj> actors = ((CompositeActor) container).deepEntityList()
                     .iterator();
             
             while (actors.hasNext() && !_stopRequested) {
-                NamedObj actor = (NamedObj) actors.next();
+                NamedObj actor = actors.next();
+                System.out.println("On actor " + actor.getFullName());
                 String result = _checkInterface(actor);
 
                 if (result.equals("")) {
@@ -118,25 +118,30 @@ public class InterfaceCheckerDirector extends Director {
      * @throws IllegalActionException 
      */
     protected String _checkInterface(NamedObj actor) throws IllegalActionException {
+        String yicesInput = _getYicesInput(actor);
+        System.out.println("Yices input is: " + yicesInput);
+        SMTSolver sc = new SMTSolver();
+        return sc.check(yicesInput);
+    }
+    
+    protected String _getYicesInput(NamedObj actor) throws IllegalActionException {
         Parameter interfaceExpr = (Parameter) actor.getAttribute("_interfaceExpr");
         Parameter interfaceStr = (Parameter) actor.getAttribute("_interfaceStr");
         if (interfaceExpr != null) {
             // If there is a Ptolemy Expression, we will use that
             String expression = interfaceExpr.getExpression();
-            System.out.println("Interface is: " + expression);
 
             PtParser parser = new PtParser();
             ASTPtRootNode parseTree;
             parseTree = parser.generateParseTree(expression);
 
-            ParseTreeSMTChecker ptsc = new ParseTreeSMTChecker();
-            return ptsc.checkParseTree(parseTree);
+            SMTFormulaBuilder formulaBuilder = new SMTFormulaBuilder();
+            return formulaBuilder.parseTreeToSMTFormula(parseTree);
 
         } else if (interfaceStr != null) {
             // If there is no Ptolemy expression, we can use a string.
             // This must already be formatted in the Yices input language.
-            SMTSolver sc = new SMTSolver();
-            return sc.check(interfaceStr.getExpression());
+            return interfaceStr.getExpression();
             
         } else { //(interfaceExpr == null && interfaceStr == null)
             throw new IllegalActionException(actor, "No interface specified");
