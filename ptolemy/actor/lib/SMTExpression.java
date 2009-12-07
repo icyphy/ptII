@@ -42,8 +42,8 @@ public class SMTExpression extends Expression {
                     .getExpression());
         }
         
-        //ParseTreeDumper ptd = new ParseTreeDumper();
-        //ptd.displayParseTree(_parseTree);
+        ParseTreeDumper ptd = new ParseTreeDumper();
+        ptd.displayParseTree(_parseTree);
 
         ParseTreeSMTChecker ptsc = new ParseTreeSMTChecker();
         ptsc.checkParseTree(_parseTree);
