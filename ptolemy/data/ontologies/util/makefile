@@ -1,8 +1,8 @@
-# Makefile for ontologies adapters
+# Makefile for ontologies utilities
 #
 # @Authors: Christopher Brooks (makefile only)
 #
-# $Id$
+# $Id: makefile 56436 2009-12-04 23:51:13Z cxh $
 #
 # @Copyright (c) 2009 The Regents of the University of California.
 # All rights reserved.
@@ -29,9 +29,9 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/data/ontologies/adapters
+ME =		ptolemy/data/ontologies/util
 
-DIRS = 		dimensionSystem
+DIRS =
 
 # Root of the Ptolemy II directory
 ROOT =		../../../..
@@ -43,15 +43,12 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	adapters
+PTPACKAGE = 	util
+PTCLASSJAR =	$(PTPACKAGE).jar
 
-# Include the .class files from these jars in PTCLASSALLJAR
-PTCLASSALLJARS = \
-	dimensionSystem/dimensionSystem.jar
-
-PTCLASSALLJAR = $(PTPACKAGE).jar
-
-JSRCS =
+JSRCS = \
+	MultiHashMap.java \
+	MultiMap.java
 
 OTHER_FILES_TO_BE_JARED =
 
@@ -60,7 +57,7 @@ EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
 # if $(DIRS) includes demo, then do not set MISC_FILES= $(DIRS) 
-MISC_FILES = dimensionSystem
+MISC_FILES =
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES

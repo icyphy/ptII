@@ -31,7 +31,7 @@
 
 ME =		ptolemy/data/ontologies
 
-DIRS = 		adapters lattices #test demo 
+DIRS = 		adapters lattices util demo #test
 
 # Root of the Ptolemy II directory
 ROOT =		../../..
@@ -47,7 +47,8 @@ PTPACKAGE = 	ontologies
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
 	adapters/adapters.jar \
-	lattices/lattices.jar
+	lattices/lattices.jar \
+	util/util.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
@@ -56,6 +57,7 @@ JSRCS = \
 	Concept.java \
 	ConceptAttribute.java \
 	ConceptLattice.java \
+	ConceptRelation.java \
 	ConstraintManager.java \
 	Ontology.java \
 	OntologySolver.java \
@@ -81,13 +83,18 @@ EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
 # if $(DIRS) includes demo, then do not set MISC_FILES= $(DIRS) 
-MISC_FILES = adapters lattices #test
+MISC_FILES = adapters lattices util #test
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	demo \
-	doc \
+	'OntologySolver$$ConstraintType.class' \
+	'PropertyConstraintHelper$$Inequality.class' \
+	'PropertyHelper$$Channel.class' \
+	'PropertyHelper$$Inequality.class' \
+	'PropertySolver$$DirectoryNameFilter.class' \
+	'PropertyTermManager$$InequalityTerm.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 
