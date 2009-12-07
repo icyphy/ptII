@@ -1,4 +1,4 @@
-# Makefile for ontologies
+# Makefile for ontologies adapters
 #
 # @Authors: Christopher Brooks (makefile only)
 #
@@ -29,12 +29,12 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/data/ontologies
+ME =		ptolemy/data/ontologies/adapters
 
-DIRS = 		adapters lattices #test demo 
+DIRS = 		dimensionSystem
 
 # Root of the Ptolemy II directory
-ROOT =		../../..
+ROOT =		../../../..
 
 CLASSPATH =	$(ROOT)
 
@@ -43,38 +43,17 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	ontologies
+PTPACKAGE = 	adapters
+
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
-	adapters/adapters.jar \
-	lattices/lattices.jar
+	dimensionSystem/dimensionSystem.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
-JSRCS = \
-	AnnotationAttribute.java \
-	Concept.java \
-	ConceptAttribute.java \
-	ConceptLattice.java \
-	ConstraintManager.java \
-	Ontology.java \
-	OntologySolver.java \
-	ParseTreeASTNodeHelperCollector.java \
-	ParseTreeAnnotationEvaluator.java \
-	ParseTreeConstraintAnnotationEvaluator.java \
-	PropertyConstraintASTNodeHelper.java \
-	PropertyConstraintHelper.java \
-	PropertyHelper.java \
-	PropertyMoMLHandler.java \
-	PropertyResolutionException.java \
-	PropertySolver.java \
-	PropertySolverBase.java \
-	PropertyTermFactory.java \
-	PropertyTermManager.java \
-	SharedUtilities.java
+JSRCS =
 
-OTHER_FILES_TO_BE_JARED = \
-	ontologyLibrary.xml
+OTHER_FILES_TO_BE_JARED =
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 

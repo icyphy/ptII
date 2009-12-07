@@ -40,7 +40,7 @@ import ptolemy.kernel.util.IllegalActionException;
  An adapter class for ptolemy.actor.lib.Expression.
 
  @author Man-Kit Leung, Beth
- @version $Id: Minimum.java 54721 2009-06-26 22:32:23Z cxh $
+ @version $Id$
  @since Ptolemy II 7.1
  @Pt.ProposedRating Red (beth)
  @Pt.AcceptedRating Red (beth)
