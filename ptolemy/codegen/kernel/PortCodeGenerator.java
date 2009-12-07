@@ -140,7 +140,7 @@ public interface PortCodeGenerator extends ComponentCodeGenerator {
 
     /** Update the write offset of the [multiple] connected ports.
      *  @param rate  The rate of the channels.
-     *  @param directorHelper The Director helper
+     *  @param director The Director helper.
      *  @return The offset.
      *  @exception IllegalActionException If thrown while getting the channel
      *  or updating the offset.
