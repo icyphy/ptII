@@ -25,7 +25,6 @@ public class ParseTreeSMTChecker extends AbstractParseTreeVisitor {
             ex.printStackTrace(_stream);
         }
         _smtFormula += ")\n";
-        _stream.println("SMT Checker formula:");
         String yicesIn = "";
         for (String var : _smtDefines.keySet()) {
             yicesIn += "(define " + var + "::"
@@ -36,13 +35,8 @@ public class ParseTreeSMTChecker extends AbstractParseTreeVisitor {
              + "(check)\n";
         String result = _solver.check(yicesIn);
         
-        _stream.println(yicesIn);
-        _stream.println("Solver result: " + result);        
-        yicesIn = "(define foo::int)" +
-        "\n(assert (= (mod foo 7 ) 4))" +
-        "\n(set-evidence! true)" +
-        "\n(check)";
-        _stream.println("Solver result: " + _solver.check(yicesIn));
+        _stream.println("SMT Checker formula:\n" + yicesIn);
+        _stream.println("Solver result: " + result);
         
         return result;
     }
