@@ -39,6 +39,7 @@
   <!-- named "blank", then the effigy will initially refer to a clone -->
   <!-- of that blank entity. -->
   <entity name="effigyFactory" class="ptolemy.actor.gui.EffigyFactory">
+    <input source="ptolemy/configs/ontologyEffigyFactory.xml"/>
     <input source="ptolemy/configs/graphEffigyFactory.xml"/>
     <input source="ptolemy/configs/modalEffigyFactories.xml"/>
     <input source="ptolemy/configs/fsmEffigyFactories.xml"/>
@@ -55,6 +56,7 @@
   <!-- is willing to open the model. Each editor contains a list -->
   <!-- of other editors that appear in the View menu.            -->
   <property name="tableauFactory" class="ptolemy.actor.gui.TableauFactory">
+    <input source="ptolemy/configs/ontologyTableauFactory.xml"/>
     <input source="ptolemy/configs/gtTableauFactory.xml"/>
     <input source="ptolemy/configs/pteraTableauFactory.xml"/>
     <input source="ptolemy/configs/iaTableauFactory.xml"/>

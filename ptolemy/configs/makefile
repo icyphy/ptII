@@ -93,6 +93,8 @@ OTHER_FILES_TO_BE_JARED = \
 	modalEffigyFactories.xml \
 	modalLibrary.xml \
 	modalTableauFactory.xml \
+	ontologyEffigyFactory.xml \
+	ontologyTableauFactory.xml \
 	ptIIplanet.gif \
 	pteraEffigyFactory.xml \
 	pteraTableauFactory.xml \
