@@ -415,24 +415,6 @@ public class ConceptLattice extends DirectedAcyclicGraph {
                         + "the property lattice.");
     }
 
-    /**
-     * Globally reset all lattices in the model. After calling this method,
-     * future calls to {@link #getPropertyLattice(String)} would have no memory
-     * of previously created lattices, and thus instantiate new instances.
-     */
-    public static void resetAll() {
-        _lattices.clear();
-    }
-
-    /**
-     * Store the specified lattice with the specified name.
-     * {@link #getPropertyLattice(String)} first searches from the set of stored
-     * lattices before instantiating a new instant.
-     */
-    public static void storeLattice(ConceptLattice lattice, String name) {
-        _lattices.put(name, lattice);
-    }
-
     /** Return the name of the package that contains this class.
      *  @return the name of the package that contains this class.
      */
@@ -476,11 +458,5 @@ public class ConceptLattice extends DirectedAcyclicGraph {
     ////                         private fields                    ////
 
     private final HashMap<String, Concept> _propertyMap = new HashMap<String, Concept>();
-
-    /**
-     * A HashMap that contains all property lattices with unique lattice files
-     * as keys.
-     */
-    private static HashMap<String, ConceptLattice> _lattices = new HashMap<String, ConceptLattice>();
 
 }
