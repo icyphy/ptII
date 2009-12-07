@@ -1,7 +1,7 @@
 /** Representation of an interface that relates its inputs and outputs.
  * 
  */
-package ptolemy.domains.interfaces;
+package ptolemy.apps.interfaces;
 
 import java.util.HashSet;
 import java.util.Iterator;

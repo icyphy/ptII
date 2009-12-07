@@ -1,4 +1,4 @@
-package ptolemy.domains.interfaces;
+package ptolemy.apps.interfaces;
 /**
  * 
  */

@@ -24,7 +24,7 @@
  PT_COPYRIGHT_VERSION_2
  COPYRIGHTENDKEY
  */
-package ptolemy.domains.interfaces;
+package ptolemy.apps.interfaces;
 
 import java.util.HashSet;
 import java.util.Iterator;

@@ -1,7 +1,7 @@
 /** Parse tree visitor that produces an SMT formula from a Ptolemy AST.
  * 
  */
-package ptolemy.domains.interfaces;
+package ptolemy.apps.interfaces;
 
 import java.io.PrintStream;
 
