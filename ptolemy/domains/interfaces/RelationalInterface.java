@@ -130,6 +130,26 @@ class Connection {
         _outputPort = outputPort;
         _inputPort = inputPort;
     }
+    
+    public static Set<Connection> connectionsFromRelations(Relation r) {
+        Set<Connection> connections = new HashSet<Connection>();
+        IOPort outputPort = null;
+        for (Object o : r.linkedPortList()) {
+            if (!(o instanceof IOPort)) continue;
+            IOPort p = (IOPort) o;
+            if (p.isOutput()) {
+                assert (outputPort == null); // FIXME: Change to exception
+                outputPort = p;
+            }
+        }
+        assert (outputPort != null); //FIXME: Change to exception
+        for (Object o : r.linkedPortList(outputPort)) {
+            if (!(o instanceof IOPort)) continue;
+            IOPort p = (IOPort) o;
+            connections.add(new Connection(outputPort.getName(), p.getName()));
+        }   
+        return connections;
+    }
  
     /** The start of the connection.
      */
