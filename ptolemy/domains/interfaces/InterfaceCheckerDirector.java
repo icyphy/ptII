@@ -43,7 +43,6 @@ import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
-import ptolemy.kernel.util.NamedObj;
 
 /** This director checks the interfaces of its contained actors.
  * 
@@ -66,11 +65,13 @@ import ptolemy.kernel.util.NamedObj;
  */
 public class InterfaceCheckerDirector extends Director {
 
-    /**
-     * @param container
-     * @param name
-     * @throws IllegalActionException
-     * @throws NameDuplicationException
+    /** Construct a new InterfaceCheckerDirector, with the given container
+     *  and name.
+     *  
+     *  @param container
+     *  @param name
+     *  @throws IllegalActionException
+     *  @throws NameDuplicationException
      */
     public InterfaceCheckerDirector(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
@@ -79,7 +80,7 @@ public class InterfaceCheckerDirector extends Director {
     
     /** Check that the interfaces in the model are valid.
      * 
-     * @throws IllegalActionException
+     *  @throws IllegalActionException
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
@@ -87,9 +88,8 @@ public class InterfaceCheckerDirector extends Director {
         Nameable container = getContainer();
         
         if (container instanceof CompositeActor) {
-            System.out.println(((CompositeActor) container).deepEntityList());
-            Iterator<Entity> actors = ((CompositeActor) container).deepEntityList()
-                    .iterator();
+            Iterator<Entity> actors = ((CompositeActor) container)
+                    .entityList().iterator();
             
             while (actors.hasNext() && !_stopRequested) {
                 Entity entity = actors.next();
@@ -119,13 +119,13 @@ public class InterfaceCheckerDirector extends Director {
 
     /** Check that the interface of the given actor are valid.
      * 
-     * In this first implementation, this is only a check of
-     * satisfiability, although later we will want to also
-     * include notions of composition, refinement, etc.
+     *  In this first implementation, this is only a check of
+     *  satisfiability, although we could potentially also check
+     *  for other properties.
      * 
-     * @param actor Actor whose interface is to be checked
-     * @return A string representing the result of the SMT check
-     * @throws IllegalActionException 
+     *  @param actor Actor whose interface is to be checked
+     *  @return A string representing the result of the SMT check
+     *  @throws IllegalActionException 
      */
     protected String _checkInterface(Actor actor)
             throws IllegalActionException {
@@ -135,18 +135,54 @@ public class InterfaceCheckerDirector extends Director {
         return sc.check(yicesInput);
     }
 
-    private String _compositeInterface(CompositeActor container) {
-        Iterator<NamedObj> actors = container.deepEntityList().iterator();
-        
+    /** Infer the interface of a composite actor from its contained actors.
+     * 
+     *  @param container The composite actor whose interface we are querying.
+     *  @return The inferred interface.
+     */
+    private RelationalInterface _getCompositeInterface(
+            CompositeActor container) {
+        /*
+        Iterator<Entity> actors = container.entityList().iterator();
+
         while (actors.hasNext() && !_stopRequested) {
-            NamedObj actor = actors.next();
-            System.out.println("On subactor " + actor.getFullName());
+            Entity entity = actors.next();
+            if (!(entity instanceof Actor)) continue;
+            Actor actor = (Actor) entity;
+
+            System.out.println("On contained actor: " + actor.getFullName());
         }
+         */
+        Iterator<IOPort> inputPorts = container.inputPortList().iterator();
+        Set<String> inputNames = new HashSet<String>();
+        while (inputPorts.hasNext()) {
+            IOPort inputPort = inputPorts.next();
+            inputNames.add(inputPort.getName());            
+            
+        }
+        
         return null;
     }
 
+    /** Return the interface of a given actor.
+     * 
+     *  In the case that the given actor is a CompositeActor, we
+     *  will try to infer the interface from the contained actors.
+     *  Otherwise, we will simply look for annotations of the
+     *  interface contract, and chose the inputs and outputs of
+     *  the actor as inputs and outputs of the interface.
+     * 
+     *  @param actor The actor whose interface we are querying.
+     *  @return The overall interface.
+     *  @throws IllegalActionException
+     */
     private RelationalInterface _getInterface(Actor actor)
             throws IllegalActionException {
+        
+        // We want to infer the interfaces of composite actors.
+        if (actor instanceof CompositeActor) {
+            return _getCompositeInterface((CompositeActor)actor);
+        }
         
         String contract = _getSMTFormula(actor);
         
@@ -165,15 +201,16 @@ public class InterfaceCheckerDirector extends Director {
         return new RelationalInterface(inputs, outputs, contract);
     }
 
-    /** Return the SMT formula for the contract of an actor.
+    /** Read the SMT formula for the contract of an actor from the
+     *  appropriate parameter.
      * 
-     * This method first checks for a parameter named _interfaceExpr that
-     * is a Ptolemy expression.  If that doesn't exist, it looks for
-     * a parameter named _interfaceStr that is a String.
+     *  This method first checks for a parameter named _interfaceExpr that
+     *  is a Ptolemy expression.  If that doesn't exist, it looks for
+     *  a parameter named _interfaceStr that is a String.
      * 
-     * @param actor
-     * @return
-     * @throws IllegalActionException
+     *  @param actor The actor whose contract we are querying.
+     *  @return The contract, as a string.
+     *  @throws IllegalActionException
      */
     protected String _getSMTFormula(Actor actor)
             throws IllegalActionException {
@@ -198,9 +235,6 @@ public class InterfaceCheckerDirector extends Director {
             return ((StringToken)interfaceStr.getToken()).stringValue();
 
         } else { //(interfaceExpr == null && interfaceStr == null)
-            if (actor instanceof CompositeActor) {
-                return _compositeInterface((CompositeActor)actor);
-            }
             throw new IllegalActionException(actor, "No interface specified");
         }
     }
