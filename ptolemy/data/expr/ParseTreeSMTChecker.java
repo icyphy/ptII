@@ -46,7 +46,7 @@ public class ParseTreeSMTChecker extends AbstractParseTreeVisitor {
     public void visitLeafNode(ASTPtLeafNode node) throws IllegalActionException {
         if (node.isIdentifier()) {
             _smtFormula += node.getName();
-            _smtDefines.put(node.getName(), node.getType().toString());
+            _smtDefines.put(node.getName(), "int");//node.getType().toString());
         } else {
             String constName = node.toString();
             constName = constName.replaceAll(":null", "");
