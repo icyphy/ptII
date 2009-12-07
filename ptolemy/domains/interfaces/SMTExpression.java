@@ -1,18 +1,15 @@
 /**
  * 
  */
-package ptolemy.actor.lib;
-
-import java.io.IOException;
+package ptolemy.domains.interfaces;
 
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+import ptolemy.actor.lib.Expression;
 import ptolemy.data.expr.ParseTreeDumper;
-import ptolemy.data.expr.ParseTreeSMTChecker;
 import ptolemy.data.expr.PtParser;
-import ptolemy.data.smtsolver.SMTSolver;
 
 /**
  * @author blickly

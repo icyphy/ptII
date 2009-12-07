@@ -1,4 +1,4 @@
-package ptolemy.data.smtsolver;
+package ptolemy.domains.interfaces;
 /**
  * 
  */
@@ -35,10 +35,9 @@ public class SMTSolver {
     public String check(String formula) {
         int ctx = yl.yicesl_mk_context();
         
-        File tmpfile;
-        String result = "";
+        StringBuffer result = new StringBuffer();
         try {
-            tmpfile = File.createTempFile("yicesout", "ycs");
+            File tmpfile = File.createTempFile("yicesout", "ycs");
             yl.yicesl_set_output_file(tmpfile.getAbsolutePath());
 
             yl.yicesl_read(ctx, formula);
@@ -46,14 +45,17 @@ public class SMTSolver {
 
             BufferedReader resultBuf = new BufferedReader(new FileReader(tmpfile));
             while (resultBuf.ready()) {
-                result += resultBuf.readLine();
+                result.append(resultBuf.readLine());
             }
-            tmpfile.delete();
+            resultBuf.close();
+            if (!tmpfile.delete()) {
+                System.err.println("Error deleting temporary file:");
+            }
         } catch (IOException e) {
             System.err.println("Error accessing temporary file:");
             e.printStackTrace();
         }
-        return result;   
+        return result.toString();   
     }
 
     /**

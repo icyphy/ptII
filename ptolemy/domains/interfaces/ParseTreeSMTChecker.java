@@ -1,12 +1,19 @@
 /**
  * 
  */
-package ptolemy.data.expr;
+package ptolemy.domains.interfaces;
 
 import java.io.PrintStream;
 import java.util.HashMap;
 
-import ptolemy.data.smtsolver.SMTSolver;
+import ptolemy.data.expr.ASTPtLeafNode;
+import ptolemy.data.expr.ASTPtLogicalNode;
+import ptolemy.data.expr.ASTPtProductNode;
+import ptolemy.data.expr.ASTPtRelationalNode;
+import ptolemy.data.expr.ASTPtRootNode;
+import ptolemy.data.expr.ASTPtSumNode;
+import ptolemy.data.expr.ASTPtUnaryNode;
+import ptolemy.data.expr.AbstractParseTreeVisitor;
 import ptolemy.kernel.util.IllegalActionException;
 
 /**
@@ -17,25 +24,25 @@ public class ParseTreeSMTChecker extends AbstractParseTreeVisitor {
     
     public String checkParseTree(ASTPtRootNode root) {
         _smtDefines = new HashMap<String, String>();
-        _smtFormula = "(assert ";
+        _smtFormula = new StringBuffer("(assert ");
         try {
             root.visit(this);
         } catch (IllegalActionException ex) {
             _stream.println(ex);
             ex.printStackTrace(_stream);
         }
-        _smtFormula += ")\n";
-        String yicesIn = "";
+        _smtFormula.append(")\n");
+        StringBuffer yicesIn = new StringBuffer();
         for (String var : _smtDefines.keySet()) {
-            yicesIn += "(define " + var + "::"
-                + _smtDefines.get(var) + ")\n";   
+            yicesIn.append("(define " + var + "::"
+                + _smtDefines.get(var) + ")\n");   
         }
-        yicesIn += _smtFormula
+        yicesIn.append(_smtFormula
              + "(set-evidence! true)\n"
-             + "(check)\n";
-        String result = _solver.check(yicesIn);
+             + "(check)\n");
+        String result = _solver.check(yicesIn.toString());
         
-        _stream.println("SMT Checker formula:\n" + yicesIn);
+        _stream.println("SMT Checker formula:\n" + yicesIn.toString());
         _stream.println("Solver result: " + result);
         
         return result;
@@ -45,13 +52,13 @@ public class ParseTreeSMTChecker extends AbstractParseTreeVisitor {
     ////                         public methods                    ////
     public void visitLeafNode(ASTPtLeafNode node) throws IllegalActionException {
         if (node.isIdentifier()) {
-            _smtFormula += node.getName();
+            _smtFormula.append(node.getName());
             _smtDefines.put(node.getName(), "int");//node.getType().toString());
         } else {
             String constName = node.toString();
             constName = constName.replaceAll(":null", "");
             constName = constName.replaceAll(".*:", "");
-            _smtFormula += constName;
+            _smtFormula.append(constName);
         }
     }
     
@@ -63,9 +70,9 @@ public class ParseTreeSMTChecker extends AbstractParseTreeVisitor {
         } else if (op.equals("||")) {
             op = "or";
         }
-        _smtFormula += "(" + op + " ";
+        _smtFormula.append("(" + op + " ");
         _visitChildren(node);
-        _smtFormula += ")";
+        _smtFormula.append(")");
     }
 
     public void visitProductNode(ASTPtProductNode node)
@@ -74,9 +81,9 @@ public class ParseTreeSMTChecker extends AbstractParseTreeVisitor {
         if (op.equals("%")) {
             op = "mod";
         }
-        _smtFormula += "(" + op + " ";
+        _smtFormula.append("(" + op + " ");
         _visitChildren(node);
-        _smtFormula += ")";
+        _smtFormula.append(")");
     }
 
     public void visitRelationalNode(ASTPtRelationalNode node)
@@ -87,15 +94,15 @@ public class ParseTreeSMTChecker extends AbstractParseTreeVisitor {
         } else if (op.equals("!=")) {
             op = "/=";
         }
-        _smtFormula += "(" + op + " ";
+        _smtFormula.append("(" + op + " ");
         _visitChildren(node);
-        _smtFormula += ")";
+        _smtFormula.append(")");
     }
 
     public void visitSumNode(ASTPtSumNode node) throws IllegalActionException {
-        _smtFormula += "(" + node.getLexicalTokenList().get(0) + " ";
+        _smtFormula.append("(" + node.getLexicalTokenList().get(0) + " ");
         _visitChildren(node);
-        _smtFormula += ")";
+        _smtFormula.append(")");
     }
     
     public void visitUnaryNode(ASTPtUnaryNode node)
@@ -104,9 +111,9 @@ public class ParseTreeSMTChecker extends AbstractParseTreeVisitor {
         if (op.equals("!")) {
             op = "not";
         }
-        _smtFormula += "(" + op + " ";
+        _smtFormula.append("(" + op + " ");
         _visitChildren(node);
-        _smtFormula += ")";
+        _smtFormula.append(")");
     }
     
     ///////////////////////////////////////////////////////////////////
@@ -121,7 +128,7 @@ public class ParseTreeSMTChecker extends AbstractParseTreeVisitor {
               for (int i = 0; i < node.jjtGetNumChildren(); i++) {
                 ASTPtRootNode child = (ASTPtRootNode) node.jjtGetChild(i);
                 child.visit(this);
-                _smtFormula += " ";
+                _smtFormula.append(" ");
             }
         }
     }
@@ -129,7 +136,7 @@ public class ParseTreeSMTChecker extends AbstractParseTreeVisitor {
     ///////////////////////////////////////////////////////////////////
     ////                      private variables                    ////
     private HashMap<String, String> _smtDefines;
-    private String _smtFormula;
+    private StringBuffer _smtFormula;
 
     private PrintStream _stream = System.out;
     private SMTSolver _solver = new SMTSolver();
