@@ -4,7 +4,6 @@
 package ptolemy.domains.interfaces;
 
 import java.io.PrintStream;
-import java.util.HashMap;
 
 import ptolemy.data.expr.ASTPtLeafNode;
 import ptolemy.data.expr.ASTPtLogicalNode;
@@ -23,8 +22,8 @@ import ptolemy.kernel.util.IllegalActionException;
 public class SMTFormulaBuilder extends AbstractParseTreeVisitor {
     
     public String parseTreeToSMTFormula(ASTPtRootNode root) {
-        _smtDefines = new HashMap<String, String>();
-        _smtFormula = new StringBuffer("(assert ");
+        //_smtDefines = new HashMap<String, String>();
+        _smtFormula = new StringBuffer();
         
         try {
             root.visit(this);
@@ -32,15 +31,16 @@ public class SMTFormulaBuilder extends AbstractParseTreeVisitor {
             _stream.println(ex);
             ex.printStackTrace(_stream);
         }
-        _smtFormula.append(")\n");
         
+        /*
         StringBuffer defines = new StringBuffer();
         for (String var : _smtDefines.keySet()) {
             defines.append("(define " + var + "::"
                 + _smtDefines.get(var) + ")\n");   
         }
+        */
         
-        return defines.toString() + _smtFormula.toString();
+        return _smtFormula.toString();
     }
     
     ///////////////////////////////////////////////////////////////////
@@ -48,7 +48,9 @@ public class SMTFormulaBuilder extends AbstractParseTreeVisitor {
     public void visitLeafNode(ASTPtLeafNode node) throws IllegalActionException {
         if (node.isIdentifier()) {
             _smtFormula.append(node.getName());
-            _smtDefines.put(node.getName(), "int");//node.getType().toString());
+            /* FIXME: This is where we will find the types once we implement
+             * type checking on this AST */
+            //_smtDefines.put(node.getName(), node.getType().toString());
         } else {
             String constName = node.toString();
             constName = constName.replaceAll(":null", "");
@@ -130,7 +132,7 @@ public class SMTFormulaBuilder extends AbstractParseTreeVisitor {
 
     ///////////////////////////////////////////////////////////////////
     ////                      private variables                    ////
-    private HashMap<String, String> _smtDefines;
+    //private HashMap<String, String> _smtDefines;
     private StringBuffer _smtFormula;
 
     private PrintStream _stream = System.out;

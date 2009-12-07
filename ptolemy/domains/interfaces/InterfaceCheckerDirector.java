@@ -26,15 +26,20 @@
  */
 package ptolemy.domains.interfaces;
 
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Set;
 
+import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
+import ptolemy.actor.IOPort;
 import ptolemy.data.StringToken;
 import ptolemy.data.expr.ASTPtRootNode;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.PtParser;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
@@ -42,22 +47,22 @@ import ptolemy.kernel.util.NamedObj;
 
 /** This director checks the interfaces of its contained actors.
  * 
- * For each actor it checks first for a parameter named _interfaceExpr,
- * which is interpreted as a boolean-valued Ptolemy expression
- * representing the interface of the actor.
+ *  For each actor it checks first for a parameter named _interfaceExpr,
+ *  which is interpreted as a boolean-valued Ptolemy expression
+ *  representing the interface of the actor.
  * 
- * If that is not present, it checks for a parameter named _interfaceStr,
- * which is interpreted as a string in the Yices expression language
- * representing the interface.
+ *  If that is not present, it checks for a parameter named _interfaceStr,
+ *  which is interpreted as a string in the Yices expression language
+ *  representing the interface.
  *
- * If neither of these are present, it labels the given actor defective
- * and raises an exception.
+ *  If neither of these are present, it labels the given actor defective
+ *  and raises an exception.
  * 
- * @author Ben Lickly
- * @version $Id$
- * @since Ptolemy II 8.1
- * @Pt.ProposedRating Red (blickly)
- * @Pt.AcceptedRating Red (blickly)
+ *  @author Ben Lickly
+ *  @version $Id$
+ *  @since Ptolemy II 8.1
+ *  @Pt.ProposedRating Red (blickly)
+ *  @Pt.AcceptedRating Red (blickly)
  */
 public class InterfaceCheckerDirector extends Director {
 
@@ -83,11 +88,14 @@ public class InterfaceCheckerDirector extends Director {
         
         if (container instanceof CompositeActor) {
             System.out.println(((CompositeActor) container).deepEntityList());
-            Iterator<NamedObj> actors = ((CompositeActor) container).deepEntityList()
+            Iterator<Entity> actors = ((CompositeActor) container).deepEntityList()
                     .iterator();
             
             while (actors.hasNext() && !_stopRequested) {
-                NamedObj actor = actors.next();
+                Entity entity = actors.next();
+                if (!(entity instanceof Actor)) continue;
+                Actor actor = (Actor) entity;
+                
                 System.out.println("On actor " + actor.getFullName());
                 String result = _checkInterface(actor);
 
@@ -96,13 +104,13 @@ public class InterfaceCheckerDirector extends Director {
                     throw new IllegalActionException(actor,
                             "Could not determine satisfiability of interface"
                           + "of " + actor.getFullName());
-                } else if (result.charAt(0) == 'u') {
+                } else if (result.startsWith("unsat")) {
                     // unsat
                     throw new IllegalActionException(actor, actor.getFullName()
                             + "'s contract is unsatisfiable.");
                 } else {
                     // sat
-                    assert (result.charAt(0) == 's');
+                    assert (result.startsWith("sat"));
                 }
             }
         }
@@ -119,14 +127,14 @@ public class InterfaceCheckerDirector extends Director {
      * @return A string representing the result of the SMT check
      * @throws IllegalActionException 
      */
-    protected String _checkInterface(NamedObj actor)
+    protected String _checkInterface(Actor actor)
             throws IllegalActionException {
-        String yicesInput = _getYicesInput(actor);
+        String yicesInput = _getInterface(actor).getYicesInput();
         System.out.println("Yices input is: " + yicesInput);
         SMTSolver sc = new SMTSolver();
         return sc.check(yicesInput);
     }
-    
+
     private String _compositeInterface(CompositeActor container) {
         Iterator<NamedObj> actors = container.deepEntityList().iterator();
         
@@ -136,8 +144,28 @@ public class InterfaceCheckerDirector extends Director {
         }
         return null;
     }
-    
-    /** Return that Yices input expression for an actor.
+
+    private RelationalInterface _getInterface(Actor actor)
+            throws IllegalActionException {
+        
+        String contract = _getSMTFormula(actor);
+        
+        Set<String> inputs = new HashSet<String>();
+        Iterator<IOPort> ports = actor.inputPortList().iterator();
+        while (ports.hasNext()) {
+            inputs.add(ports.next().getName());
+        }
+        
+        Set<String> outputs = new HashSet<String>();
+        ports = actor.outputPortList().iterator();
+        while (ports.hasNext()) {
+            outputs.add(ports.next().getName());
+        }
+        
+        return new RelationalInterface(inputs, outputs, contract);
+    }
+
+    /** Return the SMT formula for the contract of an actor.
      * 
      * This method first checks for a parameter named _interfaceExpr that
      * is a Ptolemy expression.  If that doesn't exist, it looks for
@@ -147,12 +175,12 @@ public class InterfaceCheckerDirector extends Director {
      * @return
      * @throws IllegalActionException
      */
-    protected String _getYicesInput(NamedObj actor)
+    protected String _getSMTFormula(Actor actor)
             throws IllegalActionException {
         Parameter interfaceExpr = (Parameter)
-                        actor.getAttribute("_interfaceExpr");
+                        ((Entity)actor).getAttribute("_interfaceExpr");
         Parameter interfaceStr = (Parameter)
-                        actor.getAttribute("_interfaceStr");
+                        ((Entity)actor).getAttribute("_interfaceStr");
         if (interfaceExpr != null) {
             // If there is a Ptolemy Expression, we will use that
             String expression = interfaceExpr.getExpression();
