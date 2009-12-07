@@ -7,8 +7,8 @@
     <property name="OntologySolver" class="ptolemy.data.ontologies.OntologySolver">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, 145.0]">
         </property>
-        <property name="_controllerFactory" class="ptolemy.vergil.toolbox.MoMLModelAttributeControllerFactory">
-        </property>
+		<property name="_controllerFactory" class="ptolemy.vergil.properties.MoMLModelAttributeControllerFactory">
+                  </property> 
         <configure>
             <entity name="" class="ptolemy.kernel.CompositeEntity">
                 <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={313, 195, 813, 510}, maximized=false}">
