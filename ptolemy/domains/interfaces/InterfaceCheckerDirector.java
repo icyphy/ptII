@@ -139,9 +139,14 @@ public class InterfaceCheckerDirector extends Director {
      * 
      *  @param container The composite actor whose interface we are querying.
      *  @return The inferred interface.
+     *  @throws IllegalActionException 
      */
     private RelationalInterface _getCompositeInterface(
-            CompositeActor container) {
+            CompositeActor container) throws IllegalActionException {
+        if (container.entityList().size() > 2) {
+            throw new IllegalActionException(container,
+                    "Composition of more than two actors not yet supported");
+        }
         /*
         Iterator<Entity> actors = container.entityList().iterator();
 
