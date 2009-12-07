@@ -32,21 +32,27 @@ public class SMTSolver {
      * @throws IOException If a temporary file cannot be created
      * @return A satisfying assignment if it exists, otherwise "unsat"
      */
-    public String check(String formula) throws IOException {
+    public String check(String formula) {
         int ctx = yl.yicesl_mk_context();
         
-        File tmpfile = File.createTempFile("yicesout", "ycs");
-        yl.yicesl_set_output_file(tmpfile.getAbsolutePath());
-        
-        yl.yicesl_read(ctx, formula);
-        yl.yicesl_del_context(ctx);
-
-        BufferedReader resultBuf = new BufferedReader(new FileReader(tmpfile));
+        File tmpfile;
         String result = "";
-        while (resultBuf.ready()) {
-            result += resultBuf.readLine();
+        try {
+            tmpfile = File.createTempFile("yicesout", "ycs");
+            yl.yicesl_set_output_file(tmpfile.getAbsolutePath());
+
+            yl.yicesl_read(ctx, formula);
+            yl.yicesl_del_context(ctx);
+
+            BufferedReader resultBuf = new BufferedReader(new FileReader(tmpfile));
+            while (resultBuf.ready()) {
+                result += resultBuf.readLine();
+            }
+            tmpfile.delete();
+        } catch (IOException e) {
+            System.err.println("Error accessing temporary file:");
+            e.printStackTrace();
         }
-        tmpfile.delete();
         return result;   
     }
 
@@ -56,15 +62,10 @@ public class SMTSolver {
      */
     public static void main(String[] args) throws IOException {
         SMTSolver ytm = new SMTSolver();
-        String result = "";
-        try {
-            result = ytm.check("(define x::int)"
+        String result = ytm.check("(define x::int)"
                     + "\n(assert (= x 9))"
                     + "\n(set-evidence! true)"
                     + "\n(check)");
-        } catch (IOException ex) {
-            System.out.println("Oh noes! No file for yices to use :-(");
-        }
         System.out.println("Result: " + result);
         assert(result == "sat(= x 9)");
     }
