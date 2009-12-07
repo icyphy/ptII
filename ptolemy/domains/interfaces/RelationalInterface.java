@@ -54,16 +54,23 @@ public class RelationalInterface {
         for (Connection c : connections) {
             newOutputs.add(c._inputPort);
         }
-        String newContract = "(and " + _contract + " " + rhs._contract + ")";
+        
+        Set<String> constraints = new HashSet<String>();
+        constraints.add(_contract);
+        constraints.add(rhs._contract);
+        for (Connection c : connections) {
+            constraints.add("(== " + c._inputPort + " " + c._outputPort + ")");
+        }
         // FIXME: Fix up contract
+        // String Phi = "(implies (and " + _contract + " " + _connectionConstraints + ") " + rhs.inContract(); 
         // newContract = "(and " + newContract + " " + _connected +")";
         // Y = "("
         // for (port : connections U outputs) {
         //  Y += port.name + "::int "
         // }
         // Y += ")"
-        // newContract = "(and " + newContract + " (forall " + _Y + " " + _PHI + ")"; 
-        return new RelationalInterface(newInputs, newOutputs, newContract);
+        // newContract = "(and " + newContract + " (forall " + _Y + " " + Phi + ")"; 
+        return new RelationalInterface(newInputs, newOutputs, null);
     }
 
     public String getContract() {
