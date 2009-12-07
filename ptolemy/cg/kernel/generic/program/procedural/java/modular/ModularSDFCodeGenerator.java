@@ -1431,10 +1431,11 @@ public class ModularSDFCodeGenerator extends JavaCodeGenerator {
         esdf.append(INDENT1 + "}" + _eol);
     }
     
-    /** Get the output port (source port) that connects to an input port
+    /** Return the output port (source port) that connects to an input port.
      * 
      * @param inputPort The input port.
-     * @return
+     * @return Return the output port (source port) that connects to
+     * an input port.
      */
     private IOPort _getConnectedOutputPort(IOPort inputPort) {
         IOPort outputPort = null;
