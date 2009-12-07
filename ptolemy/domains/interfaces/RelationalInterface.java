@@ -4,8 +4,11 @@
 package ptolemy.domains.interfaces;
 
 import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 
+import ptolemy.actor.IOPort;
 import ptolemy.kernel.Relation;
 
 /** Representation of an interface that relates its inputs and outputs,
@@ -15,29 +18,42 @@ import ptolemy.kernel.Relation;
  *
  */
 public class RelationalInterface {
+    
+    public RelationalInterface(List<IOPort> inputPortList,
+            List<IOPort> outputPortList, String contract) {
+        Set<String> inputs = new HashSet<String>();
+        Iterator<IOPort> ports = inputPortList.iterator();
+        while (ports.hasNext()) {
+            inputs.add(ports.next().getName());
+        }
+        
+        Set<String> outputs = new HashSet<String>();
+        ports = outputPortList.iterator();
+        while (ports.hasNext()) {
+            outputs.add(ports.next().getName());
+        }
+        
+        _init(inputs, outputs, contract);
+    }
 
     public RelationalInterface(Set<String> inputs, Set<String> outputs, String contract) {
-        // Inputs and outputs must be disjoint.
-        for (String inputPort : inputs) {
-            assert (!outputs.contains(inputPort));
-        }
-        _inputPorts = inputs;
-        _outputPorts = outputs;
-        _contract = contract;
+        _init(inputs, outputs, contract);
     }
 
     public RelationalInterface cascadeComposeWith(RelationalInterface rhs,
-            Set<Relation> connections) {
+            Set<Connection> connections) {
         Set<String> newInputs = new HashSet<String>();
         newInputs.addAll(_inputPorts);
         newInputs.addAll(rhs._inputPorts);
-        // FIXME: Remove connected ports
-        //newInputs.remove(...);
+        for (Connection c : connections) {
+            newInputs.remove(c._inputPort);
+        }
         Set<String> newOutputs = new HashSet<String>();
         newOutputs.addAll(_outputPorts);
         newOutputs.addAll(rhs._outputPorts);
-        // FIXME: Add connected ports
-        //newOutputs.add(...);
+        for (Connection c : connections) {
+            newOutputs.add(c._inputPort);
+        }
         String newContract = "(and " + _contract + " " + rhs._contract + ")";
         // FIXME: Fix up contract
         // newContract = "(and " + newContract + " " + _connected +")";
@@ -79,8 +95,47 @@ public class RelationalInterface {
         String newContract = "(and " + _contract + " " + rhs._contract + ")";
         return new RelationalInterface(newInputs, newOutputs, newContract);
     }
+    
+    /** Construct a RelationalInterface with the given inputs port names,
+     *  output port names, and contract.
+     *  
+     *  @param inputs A set of the names of input ports.
+     *  @param outputs A set of the names of output ports.
+     *  @param contract A Yices-compatible string of the contract.
+     */
+    private void _init(Set<String> inputs, Set<String> outputs, String contract) {
+        // Inputs and outputs must be disjoint.
+        for (String inputPort : inputs) {
+            assert (!outputs.contains(inputPort));
+        }
+        _inputPorts = inputs;
+        _outputPorts = outputs;
+        _contract = contract;
+    }
 
     private Set<String> _inputPorts = new HashSet<String>();
     private Set<String> _outputPorts = new HashSet<String>();
     private String _contract;
+}
+
+/** A class that represents a connection between two ports.
+ * 
+ *  @author Ben Lickly
+ */
+class Connection {
+    /** Construct a connection from the given output port
+     *  to the given input port.
+     */
+    Connection(String outputPort, String inputPort) {
+        _outputPort = outputPort;
+        _inputPort = inputPort;
+    }
+ 
+    /** The start of the connection.
+     */
+    public String _outputPort;
+    
+    /** The end of the connection.
+     */
+    public String _inputPort;
 }

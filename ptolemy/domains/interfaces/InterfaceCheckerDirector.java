@@ -185,20 +185,9 @@ public class InterfaceCheckerDirector extends Director {
         }
         
         String contract = _getSMTFormula(actor);
-        
-        Set<String> inputs = new HashSet<String>();
-        Iterator<IOPort> ports = actor.inputPortList().iterator();
-        while (ports.hasNext()) {
-            inputs.add(ports.next().getName());
-        }
-        
-        Set<String> outputs = new HashSet<String>();
-        ports = actor.outputPortList().iterator();
-        while (ports.hasNext()) {
-            outputs.add(ports.next().getName());
-        }
-        
-        return new RelationalInterface(inputs, outputs, contract);
+
+        return new RelationalInterface(actor.inputPortList(),
+                actor.outputPortList(), contract);
     }
 
     /** Read the SMT formula for the contract of an actor from the
