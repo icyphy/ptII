@@ -48,14 +48,15 @@ public class SMTExpression extends Expression {
         ParseTreeSMTChecker ptsc = new ParseTreeSMTChecker();
         String result = ptsc.checkParseTree(_parseTree);
         
-        System.err.println("Result: " + result);
-        if (!result.equals("")) {
-            if (result.substring(0, 3).equals("sat")) {
-                _setSVG("green");
-            } else if (result.substring(0, 3).equals("uns")) {
-                _setSVG("red");
-            }
-            
+        if (result.equals("")) {
+            // could not get proof
+            _setSVG("orange");
+        } else if (result.charAt(0) == 's') {
+            // sat
+            _setSVG("blue");
+        } else if (result.charAt(0) == 'u') {
+            // unsat
+            _setSVG("red");
         }
     }
     
@@ -67,7 +68,7 @@ public class SMTExpression extends Expression {
                 + text + "</text>"; 
         }
         String svg = "<svg>\n" 
-            + "<rect width=\"100\" height=\"50\" style=\"fill:"
+            + "<rect width=\"200\" height=\"50\" style=\"fill:"
             + color + "\"/>\n" + text + "\n</svg>"; 
         _attachText("_iconDescription", svg);
     }
