@@ -26,9 +26,11 @@ package ptolemy.vergil.ontologies;
 
 import java.awt.Color;
 import java.awt.Paint;
+import java.util.List;
 
+import ptolemy.actor.gui.ColorAttribute;
 import ptolemy.data.BooleanToken;
-import ptolemy.domains.properties.kernel.LatticeElement;
+import ptolemy.data.ontologies.Concept;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
@@ -66,49 +68,31 @@ public class ConceptIcon extends StateIcon {
     ///////////////////////////////////////////////////////////////////
     ////                      protected methods                    ////
 
-    /**
-     * Return the fill color. It returns the solution color of the lattice
-     * element. If the lattice element is an unacceptable solution, return a
-     * darker version of the solution color. If the solution color is not
-     * specified, or if there is any problem getting it, this returns the color
-     * white by default.
-     * @return The fill color.
+    /** Return the fill color. This will return the color specified by
+     *  the first instance of ColorAttribute in the container, or white
+     *  if there is no such instance.
+     *  @return The fill color.
      */
     protected Paint _getFill() {
         NamedObj container = getContainer();
-
-        if (container instanceof LatticeElement) {
-            try {
-                LatticeElement element = (LatticeElement) container;
-
-                boolean isAcceptable = ((BooleanToken) element.isAcceptableSolution
-                        .getToken()).booleanValue();
-
-                if (!isAcceptable) {
-                    return element.solutionColor.asColor().darker();
-                } else {
-                    return element.solutionColor.asColor();
-                }
-            } catch (IllegalActionException ex) {
-                // Ignore and return the default.
-            }
+        List<ColorAttribute> colors = container.attributeList(ColorAttribute.class);
+        if (colors.size() > 0) {
+            return colors.get(0).asColor();
         }
         return Color.white;
     }
 
-    /**
-     * Return the line width. If the lattice element is an unacceptable
-     * solution, this returns a thicker width.
-     * @return The line width.
+    /** Return the line width. If the lattice element is an unacceptable
+     *  solution, this returns a thicker width.
+     *  @return The line width.
      */
     protected float _getLineWidth() {
         NamedObj container = getContainer();
-
-        if (container instanceof LatticeElement) {
+        if (container instanceof Concept) {
             try {
-                LatticeElement element = (LatticeElement) container;
+                Concept element = (Concept) container;
 
-                boolean isAcceptable = ((BooleanToken) element.isAcceptableSolution
+                boolean isAcceptable = ((BooleanToken) element.isAcceptable
                         .getToken()).booleanValue();
 
                 if (!isAcceptable) {

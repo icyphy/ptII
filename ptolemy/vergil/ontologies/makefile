@@ -50,7 +50,6 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 JSRCS = \
 	ConceptController.java \
 	ConceptIcon.java \
-	OntologyElementIcon.java \
 	OntologyGraphFrame.java \
 	OntologyGraphController.java \
 	OntologyGraphModel.java \

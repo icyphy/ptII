@@ -51,6 +51,12 @@ public class OntologyGraphController extends FSMGraphController {
      */
     public OntologyGraphController() {
         super();
+        
+        // FIXME: Need to impose constraints to prevent self loops.
+        // Presumably this means overriding LinkCreator in the base class.
+        
+        // FIXME: Need to override the NewStateAction of the base class
+        // to create a Concept rather than a State.
 
         // FIXME: Having this action is only temporary.
         //        _menuFactory.addMenuItemFactory(
