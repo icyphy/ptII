@@ -89,7 +89,7 @@ be kept non-circular to avoid non-deterministic resolution result.
 This allows every PropertySolver to find other solvers in the model.
 
 <p>Subclasses needs to implement
-{@link PropertySolverBase#resolveProperties()}
+{@link ptolemy.data.ontologies.PropertySolverBase#resolveProperties()}
 to specify exactly how to perform the property resolution. For example,
 one may gather all the constraints from the PropertyHelpers and feed them
 into a constraint solver.
