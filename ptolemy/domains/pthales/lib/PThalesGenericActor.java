@@ -298,10 +298,10 @@ public class PThalesGenericActor extends TypedAtomicActor {
     }
 
     /** Function which convert a list of arguments into real arguments
-     * that will be used for JNI function call
+     * that will be used for JNI function call.
      * @param in
      * @param out
-     * @return
+     * @return A list of arguments to be used for the JNI function call.
      */
     public Object[] convertArguments(float[][] in, float[][] out) {
         List objs = new ArrayList();
