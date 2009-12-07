@@ -520,7 +520,7 @@ public class Expression extends TypedAtomicActor {
     ////                         private variables                 ////
     private int _iterationCount = 1;
 
-    protected ASTPtRootNode _parseTree = null;
+    private ASTPtRootNode _parseTree = null;
 
     private ParseTreeEvaluator _parseTreeEvaluator = null;
 
