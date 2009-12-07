@@ -54,7 +54,9 @@ JSRCS = \
 	LatticeGraphFrameController.java \
 	LatticeGraphTableau.java \
 	ModelAttributeController.java \
-	ModelAttributeControllerFactory.java
+	ModelAttributeControllerFactory.java \
+	MoMLModelAttributeController.java \
+	MoMLModelAttributeControllerFactory.java
 
 OTHER_FILES_TO_BE_JARED = 
 
@@ -74,7 +76,9 @@ OPTIONAL_FILES = \
 	'LatticeGraphFrameController$$CheckIsLatticeAction.class' \
 	'LatticeGraphTableau$$Factory.class' \
 	'ModelAttributeController$$Factory.class' \
-	'ModelAttributeController$$LookInsideAction.class'
+	'ModelAttributeController$$LookInsideAction.class' \
+	'MoMLModelAttributeController$$Factory.class' \
+	'MoMLModelAttributeController$$LookInsideAction.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 
