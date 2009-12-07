@@ -15,7 +15,7 @@ import ptolemy.kernel.util.IllegalActionException;
  */
 public class ParseTreeSMTChecker extends AbstractParseTreeVisitor {
     
-    public void checkParseTree(ASTPtRootNode root) {
+    public String checkParseTree(ASTPtRootNode root) {
         _smtDefines = new HashMap<String, String>();
         _smtFormula = "(assert ";
         try {
@@ -34,14 +34,17 @@ public class ParseTreeSMTChecker extends AbstractParseTreeVisitor {
         yicesIn += _smtFormula
              + "(set-evidence! true)\n"
              + "(check)\n";
-        _stream.println(yicesIn);
-        _stream.println("Solver result: " + _solver.check(yicesIn));
+        String result = _solver.check(yicesIn);
         
+        _stream.println(yicesIn);
+        _stream.println("Solver result: " + result);        
         yicesIn = "(define foo::int)" +
         "\n(assert (= (mod foo 7 ) 4))" +
         "\n(set-evidence! true)" +
         "\n(check)";
         _stream.println("Solver result: " + _solver.check(yicesIn));
+        
+        return result;
     }
     
     ///////////////////////////////////////////////////////////////////

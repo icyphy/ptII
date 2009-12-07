@@ -29,7 +29,7 @@ public class SMTExpression extends Expression {
     public SMTExpression(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
-        // TODO Auto-generated constructor stub
+        _setSVG("white");
     }
     
     public void initialize() throws IllegalActionException {
@@ -46,7 +46,30 @@ public class SMTExpression extends Expression {
         ptd.displayParseTree(_parseTree);
 
         ParseTreeSMTChecker ptsc = new ParseTreeSMTChecker();
-        ptsc.checkParseTree(_parseTree);
+        String result = ptsc.checkParseTree(_parseTree);
+        
+        System.err.println("Result: " + result);
+        if (!result.equals("")) {
+            if (result.substring(0, 3).equals("sat")) {
+                _setSVG("green");
+            } else if (result.substring(0, 3).equals("uns")) {
+                _setSVG("red");
+            }
+            
+        }
+    }
+    
+    private void _setSVG(String color) {
+        String text = expression.getExpression();
+        if (!text.equals("")) {
+            text = "<text id=\"TextElement\" x=\"20\" y=\"20\" "
+                + "style=\"font-size:14; font-family:SansSerif\">"
+                + text + "</text>"; 
+        }
+        String svg = "<svg>\n" 
+            + "<rect width=\"100\" height=\"50\" style=\"fill:"
+            + color + "\"/>\n" + text + "\n</svg>"; 
+        _attachText("_iconDescription", svg);
     }
 
 }
