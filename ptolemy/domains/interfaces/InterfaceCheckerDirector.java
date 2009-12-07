@@ -30,6 +30,7 @@ import java.util.Iterator;
 
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
+import ptolemy.data.StringToken;
 import ptolemy.data.expr.ASTPtRootNode;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.PtParser;
@@ -81,6 +82,7 @@ public class InterfaceCheckerDirector extends Director {
         Nameable container = getContainer();
         
         if (container instanceof CompositeActor) {
+            System.out.println(((CompositeActor) container).deepEntityList());
             Iterator<NamedObj> actors = ((CompositeActor) container).deepEntityList()
                     .iterator();
             
@@ -117,16 +119,40 @@ public class InterfaceCheckerDirector extends Director {
      * @return A string representing the result of the SMT check
      * @throws IllegalActionException 
      */
-    protected String _checkInterface(NamedObj actor) throws IllegalActionException {
+    protected String _checkInterface(NamedObj actor)
+            throws IllegalActionException {
         String yicesInput = _getYicesInput(actor);
         System.out.println("Yices input is: " + yicesInput);
         SMTSolver sc = new SMTSolver();
         return sc.check(yicesInput);
     }
     
-    protected String _getYicesInput(NamedObj actor) throws IllegalActionException {
-        Parameter interfaceExpr = (Parameter) actor.getAttribute("_interfaceExpr");
-        Parameter interfaceStr = (Parameter) actor.getAttribute("_interfaceStr");
+    private String _compositeInterface(CompositeActor container) {
+        Iterator<NamedObj> actors = container.deepEntityList().iterator();
+        
+        while (actors.hasNext() && !_stopRequested) {
+            NamedObj actor = actors.next();
+            System.out.println("On subactor " + actor.getFullName());
+        }
+        return null;
+    }
+    
+    /** Return that Yices input expression for an actor.
+     * 
+     * This method first checks for a parameter named _interfaceExpr that
+     * is a Ptolemy expression.  If that doesn't exist, it looks for
+     * a parameter named _interfaceStr that is a String.
+     * 
+     * @param actor
+     * @return
+     * @throws IllegalActionException
+     */
+    protected String _getYicesInput(NamedObj actor)
+            throws IllegalActionException {
+        Parameter interfaceExpr = (Parameter)
+                        actor.getAttribute("_interfaceExpr");
+        Parameter interfaceStr = (Parameter)
+                        actor.getAttribute("_interfaceStr");
         if (interfaceExpr != null) {
             // If there is a Ptolemy Expression, we will use that
             String expression = interfaceExpr.getExpression();
@@ -141,9 +167,12 @@ public class InterfaceCheckerDirector extends Director {
         } else if (interfaceStr != null) {
             // If there is no Ptolemy expression, we can use a string.
             // This must already be formatted in the Yices input language.
-            return interfaceStr.getExpression();
-            
+            return ((StringToken)interfaceStr.getToken()).stringValue();
+
         } else { //(interfaceExpr == null && interfaceStr == null)
+            if (actor instanceof CompositeActor) {
+                return _compositeInterface((CompositeActor)actor);
+            }
             throw new IllegalActionException(actor, "No interface specified");
         }
     }
