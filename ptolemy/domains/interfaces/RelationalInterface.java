@@ -39,6 +39,17 @@ public class RelationalInterface {
     public RelationalInterface(Set<String> inputs, Set<String> outputs, String contract) {
         _init(inputs, outputs, contract);
     }
+    
+    public void addFeedback(Connection connection) {
+        if (_mooreInputs().contains(connection._inputPort)) {
+            _inputPorts.remove(connection._inputPort);
+            _outputPorts.remove(connection._outputPort);
+            _contract = "(and " + _contract + " (== " + connection._inputPort
+                    + " " + connection._outputPort + "))";
+        } else {
+            assert (false); //FIXME: Throw exception
+        }
+    }
 
     public RelationalInterface cascadeComposeWith(RelationalInterface rhs,
             Set<Connection> connections) {
@@ -118,6 +129,18 @@ public class RelationalInterface {
         _inputPorts = inputs;
         _outputPorts = outputs;
         _contract = contract;
+    }
+    
+    private Set<String> _mooreInputs() {
+        Set<String> mooreInputs = new HashSet<String>();
+        for (String port : _inputPorts) {
+            // want to check for "\bport\b" regex, but this is simpler
+            if (!_contract.contains(" " + port + " ")
+                    && !_contract.contains(" " + port + ")")) {
+                mooreInputs.add(port);
+            }
+        }
+        return mooreInputs;
     }
 
     private Set<String> _inputPorts = new HashSet<String>();
