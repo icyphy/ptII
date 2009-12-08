@@ -1367,6 +1367,10 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
         auxiliaryJarMap.put("ptolemy.actor.gt.ModelExecutor", gtJar);
         auxiliaryJarMap.put("ptolemy.actor.gt.TransformationMode", gtJar);
         auxiliaryJarMap.put("ptolemy.actor.gt.TransformationRule", gtJar);
+        auxiliaryJarMap.put("ptolemy.actor.gt.TransformationRule$TransformationDirector",
+                gtJar);
+
+
 
         classMap.put("ptolemy.actor.gui.MoMLApplet", "ptolemy/ptsupport.jar");
 
@@ -1393,6 +1397,13 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
         auxiliaryJarMap.put("ptolemy.domains.space.Occupants", spaceJar);
         auxiliaryJarMap.put("ptolemy.domains.space.Region", spaceJar);
         auxiliaryJarMap.put("ptolemy.domains.space.Room", spaceJar);
+
+        // classes from data.property require tester.jar
+        String propertiesJar = "ptolemy/data/properties/properties.jar";
+        auxiliaryJarMap.put("ptolemy.data.properties.lattice.PropertyConstraintSolver",
+                propertiesJar);
+        auxiliaryJarMap.put("ptolemy.data.properties.PropertyRemover",
+                propertiesJar);
 
         // If classMap has any keys that match keys in auxiliaryJarMap,
         // then add the corresponding key and value;
@@ -1537,6 +1548,19 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
                     "ptolemy/actor/ptalon/antlr/antlr.jar");
         }
 
+        if (jarFilesThatHaveBeenRequired.contains("ptolemy/domains/properties/properties.jar")) {
+            jarFilesThatHaveBeenRequired.add(propertiesJar);
+        }
+
+        if (jarFilesThatHaveBeenRequired.contains(propertiesJar)) {
+            auxiliaryClassMap.put("data/properties.jar needs tester.jar",
+                    "ptolemy/domains/tester/tester.jar");
+            auxiliaryClassMap.put("data/properties.jar needs domains/properties/properties.jar",
+                    "ptolemy/domains/properties/properties.jar");
+            auxiliaryClassMap.put("data/properties.jar needs vergil/properties/properties.jar",
+                    "ptolemy/vergil/properties/properties.jar");
+        }
+
         if (jarFilesThatHaveBeenRequired.contains(pythonJar)) {
             auxiliaryClassMap.put("python jar needs jython jar",
                     "lib/jython.jar");
@@ -1549,6 +1573,12 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
         } else if (jarFilesThatHaveBeenRequired.contains(spaceJar)) {
             auxiliaryClassMap.put("space jar needs ojdbc6 jar",
                     "ptolemy/actor/lib/database/ojdbc6.jar");
+        }
+
+        if (jarFilesThatHaveBeenRequired
+                .contains("ptolemy/verification/verification.jar")) {
+            auxiliaryClassMap.put("verification/kernel/REDUtility requires DE",
+                    "ptolemy/domains/de/de.jar");
         }
 
         if (jarFilesThatHaveBeenRequired
