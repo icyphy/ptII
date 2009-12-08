@@ -7,6 +7,7 @@
       <group>
       <doc>experimental director library</doc>
       <property name="CI Director" class="ptolemy.domains.ci.kernel.CIDirector"/>
+      <property name="Do Nothing Director" class="ptolemy.actor.DoNothingDirector"/>
       <property name="DT Director" class="ptolemy.domains.dt.kernel.DTDirector"/>
       <!-- HDE is not shipping in 4.0 -->
       <!-- property name="HDE Director" class="ptolemy.domains.hde.kernel.HDEDirector"/-->
