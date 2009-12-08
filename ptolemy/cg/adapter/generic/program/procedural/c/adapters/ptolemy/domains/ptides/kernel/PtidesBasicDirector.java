@@ -39,6 +39,7 @@ import ptolemy.actor.CompositeActor;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.cg.adapter.generic.adapters.ptolemy.actor.Director;
+import ptolemy.cg.kernel.generic.GenericCodeGenerator;
 import ptolemy.cg.kernel.generic.program.CodeStream;
 import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
 import ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapter;
@@ -156,14 +157,30 @@ public class PtidesBasicDirector extends Director {
     }
 
     /** Generate variable declarations for inputs and outputs and parameters.
-     *  Here we want to overwrite the method in Director to generate nothing,
-     *  since we are using Events as holders for data values.
+     *  Since we are using Events as holders for data values, we want to overwrite 
+     *  the method in Director to generate nothing. However, in case any of the actors
+     *  are composite actors, we actually want to generate variable declaration for those
+     *  actors. This is because the inside composite actors do not know data is stored
+     *  within Events. Instead, it only has a reference to the input port. Thus, we need
+     *  to generate a memory address for the input port to allow transfer of data first
+     *  from the Events to these memory locations, and then from these memory locations
+     *  to inside of the composite actors.  
+     *  
      *  @return code The generated code.
      *  @exception IllegalActionException If the adapter class for the model
      *   director cannot be found.
      */
     public String generateVariableDeclaration() throws IllegalActionException {
-        return "";
+        StringBuffer code = new StringBuffer();
+
+        for (Actor actor : (List<Actor>)((CompositeActor)_director.getContainer()).deepEntityList()) {
+            if (actor instanceof CompositeActor) {
+                NamedProgramCodeGeneratorAdapter adapterObject = 
+                    (NamedProgramCodeGeneratorAdapter) getCodeGenerator().getAdapter(actor);
+                code.append(adapterObject.generateVariableDeclaration());
+            }
+        }
+        return code.toString();
     }
 
     /**

@@ -119,7 +119,6 @@ public class PtidesBasicReceiver extends ptolemy.cg.adapter.generic.program.proc
                 getComponent().getContainer().getContainer())).getTemplateParser()
                 .generateTypeConvertStatement(source, sink, 0, token);
 
-        
         token = _removeSink(token);
         
         Actor actor = (Actor) sinkPort.getContainer();
