@@ -75,15 +75,6 @@ Ptolemy class (e.g. ASTPtRootNode, Sink, Entity, and FSMActor). A
 model component, in turn, may have one or multiple property-able
 objects.
 
-<p>A PropertySolver is associated with strictly one use-case.
-PropertySolvers with the same use-case are considered equivalent.
-Subclasses need to associate the solver with an unique use-case by
-providing implementation for {@link PropertySolverBase#getUseCaseName()},
-{@link PropertySolverBase#getExtendedUseCaseName()}.
-An use-case may have dependency with other use-cases. The dependencies
-are declared when the solver is instantiated. The dependencies needs to
-be kept non-circular to avoid non-deterministic resolution result.
-
 <p>Every PropertySolver is linked together by the SharedParameter called
 "sharedUtilitiesWrapper", which contains the shared utility object.
 This allows every PropertySolver to find other solvers in the model.
