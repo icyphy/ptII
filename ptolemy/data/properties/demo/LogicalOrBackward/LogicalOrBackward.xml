@@ -1,14 +1,14 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="multipleActorsHierarchyLoopFSM" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
+<entity name="LogicalOrBackward" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-4, -4, 1288, 1032}, maximized=true}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 1286, 874}, maximized=false}">
         <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
         </property>
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1073, 925]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1073, 764]">
         <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
         </property>
     </property>
@@ -16,7 +16,7 @@
         <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
         </property>
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{399.3923141891892, 339.945945945946}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{399.3923141891892, 259.445945945946}">
         <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
         </property>
     </property>
@@ -145,6 +145,10 @@
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="MonitorValue: &#10;always True">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[290.0, 10.0]">
+        </property>
+    </property>
+    <property name="DoNothingDirector" class="ptolemy.actor.DoNothingDirector">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[855.0, 615.0]">
         </property>
     </property>
     <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
