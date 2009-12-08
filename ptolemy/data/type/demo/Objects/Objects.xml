@@ -144,8 +144,6 @@
         </property>
         <property name="_renderFirst" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
-        <property name="patternObject" class="ptolemy.actor.gt.PatternObjectAttribute" value="Annotation">
-        </property>
     </property>
     <property name="Annotation_1_" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
@@ -157,8 +155,6 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[460.0, 135.0]">
         </property>
         <property name="_renderFirst" class="ptolemy.kernel.util.SingletonAttribute">
-        </property>
-        <property name="patternObject" class="ptolemy.actor.gt.PatternObjectAttribute" value="Annotation_1_2">
         </property>
     </property>
     <property name="Annotation_1_2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -172,8 +168,6 @@
         </property>
         <property name="_renderFirst" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
-        <property name="patternObject" class="ptolemy.actor.gt.PatternObjectAttribute" value="Annotation_1_2">
-        </property>
     </property>
     <property name="Annotation_1_3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
@@ -185,8 +179,6 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[460.0, 290.0]">
         </property>
         <property name="_renderFirst" class="ptolemy.kernel.util.SingletonAttribute">
-        </property>
-        <property name="patternObject" class="ptolemy.actor.gt.PatternObjectAttribute" value="Annotation_1_2">
         </property>
     </property>
     <entity name="Test1" class="ptolemy.actor.lib.Const">
