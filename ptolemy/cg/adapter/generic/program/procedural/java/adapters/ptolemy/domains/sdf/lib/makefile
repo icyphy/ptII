@@ -57,6 +57,7 @@ PTCLASSALLJARS =
 # Keep this list alphabetized.
 JSRCS = \
 	DownSample.java \
+	SampleDelay.java \
 	UpSample.java
 	
 
