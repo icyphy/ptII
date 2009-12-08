@@ -75,6 +75,7 @@ JSRCS = \
 	CompositeActor.java \
 	DesignPatternGetMoMLAction.java \
 	Director.java \
+	DoNothingDirector.java \
 	Executable.java \
 	ExecutionListener.java \
 	FiringEvent.java \

@@ -146,7 +146,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[400.0, 510.0]">
         </property>
     </property>
-    <property name="DoNothingDirector" class="ptolemy.domains.curriculum.DoNothingDirector">
+    <property name="DoNothingDirector" class="ptolemy.actor.DoNothingDirector">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[875.0, 625.0]">
         </property>
     </property>

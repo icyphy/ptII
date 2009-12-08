@@ -1,6 +1,6 @@
 /* A director that does nothing.
 
- Copyright (c) 1998-2007 The Regents of the University of California.
+ Copyright (c) 2009 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -25,7 +25,7 @@
  COPYRIGHTENDKEY
 
  */
-package ptolemy.domains.curriculum;
+package ptolemy.actor;
 
 import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
@@ -41,9 +41,12 @@ import ptolemy.kernel.util.NameDuplicationException;
  A director that does nothing, for use in models that have no useful
  execution.
 
+ <p> It is is for use with models that have no execution semantics, yet
+ the code generator requires a director.
+ 
  @author Edward A. Lee
  @version $Id$
- @since Ptolemy II 0.3
+ @since Ptolemy II 8.1
  @Pt.ProposedRating Red (eal)
  @Pt.AcceptedRating Red (cxh)
  */
