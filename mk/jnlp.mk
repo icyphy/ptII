@@ -301,6 +301,7 @@ PTINY_ONLY_JNLP_JARS = \
 	ptolemy/domains/rendezvous/doc/doc.jar \
 	ptolemy/domains/sr/demo/demo.jar \
 	ptolemy/domains/sr/doc/doc.jar \
+	ptolemy/domains/tester/tester.jar \
 	ptolemy/moml/demo/demo.jar \
 	ptolemy/vergil/kernel/attributes/demo/demo.jar
 
