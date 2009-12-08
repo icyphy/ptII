@@ -28,7 +28,7 @@ public class LispExpression {
     }
 
     /** Return an S-expression that is a conjunction of other S-expressions.
-     *  @param subexpressions The expressions to take the conjunction of.
+     *  @param arguments The expressions to take the conjunction of.
      *  @return The conjunction.
      */
     public static String conjunction(final Collection<String> arguments) {

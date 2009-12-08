@@ -152,7 +152,7 @@ public class InterfaceCheckerDirector extends Director {
      */
     private RelationalInterface _getCompositeInterface(CompositeActor container)
             throws IllegalActionException {
-        String contract;
+        String contract = null;
         if (container.entityList().size() > 2) {
             throw new IllegalActionException(container,
                     "Composition of more than two actors not yet supported");
