@@ -18,7 +18,7 @@ import ptolemy.kernel.Relation;
  *
  */
 public class RelationalInterface {
-    
+
     /** Construct a new interface given lists of ports and a contract.
      * 
      *  This is a convenience method that simply extracts the names of
@@ -30,18 +30,18 @@ public class RelationalInterface {
      */
     public RelationalInterface(final List<IOPort> inputPortList,
             final List<IOPort> outputPortList, final String contract) {
-        Set<String> inputs = new HashSet<String>();
+        final Set<String> inputs = new HashSet<String>();
         Iterator<IOPort> ports = inputPortList.iterator();
         while (ports.hasNext()) {
             inputs.add(ports.next().getName());
         }
-        
-        Set<String> outputs = new HashSet<String>();
+
+        final Set<String> outputs = new HashSet<String>();
         ports = outputPortList.iterator();
         while (ports.hasNext()) {
             outputs.add(ports.next().getName());
         }
-        
+
         _init(inputs, outputs, contract);
     }
 
@@ -56,10 +56,10 @@ public class RelationalInterface {
             final Set<String> outputs, final String contract) {
         _init(inputs, outputs, contract);
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     /** Add a the given feedback connection to this interface.
      * 
      *  FIXME: This the only type of composition that modifies
@@ -74,7 +74,7 @@ public class RelationalInterface {
             _contract = "(and " + _contract + " (== " + connection._inputPort
                     + " " + connection._outputPort + "))";
         } else {
-            assert (false); //FIXME: Throw exception
+            assert false; //FIXME: Throw exception
         }
     }
 
@@ -89,25 +89,24 @@ public class RelationalInterface {
      *  @return The comosition's interface.
      */
     public RelationalInterface cascadeComposeWith(
-            final RelationalInterface rhs,
-            final Set<Connection> connections) {
-        Set<String> newInputs = new HashSet<String>();
+            final RelationalInterface rhs, final Set<Connection> connections) {
+        final Set<String> newInputs = new HashSet<String>();
         newInputs.addAll(_inputPorts);
         newInputs.addAll(rhs._inputPorts);
-        for (Connection c : connections) {
+        for (final Connection c : connections) {
             newInputs.remove(c._inputPort);
         }
-        Set<String> newOutputs = new HashSet<String>();
+        final Set<String> newOutputs = new HashSet<String>();
         newOutputs.addAll(_outputPorts);
         newOutputs.addAll(rhs._outputPorts);
-        for (Connection c : connections) {
+        for (final Connection c : connections) {
             newOutputs.add(c._inputPort);
         }
-        
-        Set<String> constraints = new HashSet<String>();
+
+        final Set<String> constraints = new HashSet<String>();
         constraints.add(_contract);
         constraints.add(rhs._contract);
-        for (Connection c : connections) {
+        for (final Connection c : connections) {
             constraints.add("(== " + c._inputPort + " " + c._outputPort + ")");
         }
         // FIXME: Fix up contract
@@ -144,32 +143,32 @@ public class RelationalInterface {
             yicesInput.append("(define " + outputPort + "::int)\n");
         }
 
-        yicesInput.append("(assert " + _contract +")\n");
+        yicesInput.append("(assert " + _contract + ")\n");
 
         return yicesInput.toString();
     }
-    
+
     /** Return an interface that results from the parallel composition of
      *  this interface and the given interface.
      * 
      *  @param rhs The interface to compose with.
      *  @return The comosition's interface.
      */
-    public RelationalInterface parallelComposeWith(
-            final RelationalInterface rhs) {
-        Set<String> newInputs = new HashSet<String>();
+    public RelationalInterface parallelComposeWith(final RelationalInterface rhs) {
+        final Set<String> newInputs = new HashSet<String>();
         newInputs.addAll(_inputPorts);
         newInputs.addAll(rhs._inputPorts);
-        Set<String> newOutputs = new HashSet<String>();
+        final Set<String> newOutputs = new HashSet<String>();
         newOutputs.addAll(_outputPorts);
         newOutputs.addAll(rhs._outputPorts);
-        String newContract = "(and " + _contract + " " + rhs._contract + ")";
+        final String newContract = "(and " + _contract + " " + rhs._contract
+                + ")";
         return new RelationalInterface(newInputs, newOutputs, newContract);
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-    
+
     /** Construct a RelationalInterface with the given inputs port names,
      *  output port names, and contract.
      *  
@@ -177,17 +176,16 @@ public class RelationalInterface {
      *  @param outputs A set of the names of output variables.
      *  @param contract A Yices-compatible string of the contract.
      */
-    private void _init(final Set<String> inputs,
-            final Set<String> outputs, final String contract) {
+    private void _init(final Set<String> inputs, final Set<String> outputs,
+            final String contract) {
         // Inputs and outputs must be disjoint.
-        for (String inputPort : inputs) {
-            assert (!outputs.contains(inputPort));
+        for (final String inputPort : inputs) {
+            assert !outputs.contains(inputPort);
         }
         _inputPorts = inputs;
         _outputPorts = outputs;
         _contract = contract;
     }
-    
 
     /** Return the subset of the input variables that are Moore.
      *  These are just the input variables that do not appear in the contract.
@@ -205,7 +203,7 @@ public class RelationalInterface {
         }
         return mooreInputs;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                      private variables                    ////
 
@@ -216,7 +214,7 @@ public class RelationalInterface {
     /** The set of output variables.
      */
     private Set<String> _outputPorts = new HashSet<String>();
-    
+
     /** The contract of the interface.
      */
     private String _contract;
@@ -236,7 +234,7 @@ class Connection {
         _outputPort = outputPort;
         _inputPort = inputPort;
     }
-    
+
     /** Return the set of connections represented by a relation.
      * 
      *  This is a set because relations can connect multiple ports,
@@ -246,29 +244,33 @@ class Connection {
      *  @return The set of connections that r represents.
      */
     public static Set<Connection> connectionsFromRelations(final Relation r) {
-        Set<Connection> connections = new HashSet<Connection>();
+        final Set<Connection> connections = new HashSet<Connection>();
         IOPort outputPort = null;
-        for (Object o : r.linkedPortList()) {
-            if (!(o instanceof IOPort)) continue;
-            IOPort p = (IOPort) o;
+        for (final Object o : r.linkedPortList()) {
+            if (!(o instanceof IOPort)) {
+                continue;
+            }
+            final IOPort p = (IOPort) o;
             if (p.isOutput()) {
-                assert (outputPort == null); // FIXME: Change to exception
+                assert outputPort == null; // FIXME: Change to exception
                 outputPort = p;
             }
         }
-        assert (outputPort != null); //FIXME: Change to exception
-        for (Object o : r.linkedPortList(outputPort)) {
-            if (!(o instanceof IOPort)) continue;
-            IOPort p = (IOPort) o;
+        assert outputPort != null; //FIXME: Change to exception
+        for (final Object o : r.linkedPortList(outputPort)) {
+            if (!(o instanceof IOPort)) {
+                continue;
+            }
+            final IOPort p = (IOPort) o;
             connections.add(new Connection(outputPort.getName(), p.getName()));
-        }   
+        }
         return connections;
     }
- 
+
     /** The start of the connection.
      */
     public String _outputPort;
-    
+
     /** The end of the connection.
      */
     public String _inputPort;

@@ -4,12 +4,12 @@
 
 package ptolemy.apps.interfaces;
 
-import yices.YicesLite;
-
+import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.File;
-import java.io.BufferedReader;
+
+import yices.YicesLite;
 
 /** An interface to an SMT solver.
  * 
@@ -24,10 +24,10 @@ import java.io.BufferedReader;
  *
  */
 public class SMTSolver {
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                       public methods                      ////
-    
+
     /** Check the satisfiability of the given formula.
      * 
      *  @param formula A formula to be checked.
@@ -35,18 +35,19 @@ public class SMTSolver {
      *   and the empty string if no assertion can be made.
      */
     public String check(String formula) {
-        int ctx = yl.yicesl_mk_context();
+        final int ctx = yl.yicesl_mk_context();
         formula += "(set-evidence! true)\n(check)\n";
-        
-        StringBuffer result = new StringBuffer();
+
+        final StringBuffer result = new StringBuffer();
         try {
-            File tmpfile = File.createTempFile("yicesout", "ycs");
+            final File tmpfile = File.createTempFile("yicesout", "ycs");
             yl.yicesl_set_output_file(tmpfile.getAbsolutePath());
 
             yl.yicesl_read(ctx, formula);
             yl.yicesl_del_context(ctx);
 
-            BufferedReader resultBuf = new BufferedReader(new FileReader(tmpfile));
+            final BufferedReader resultBuf = new BufferedReader(new FileReader(
+                    tmpfile));
             while (resultBuf.ready()) {
                 result.append(resultBuf.readLine());
             }
@@ -54,11 +55,11 @@ public class SMTSolver {
             if (!tmpfile.delete()) {
                 System.err.println("Error deleting temporary file:");
             }
-        } catch (IOException e) {
+        } catch (final IOException e) {
             System.err.println("Error accessing temporary file:");
             e.printStackTrace();
         }
-        return result.toString();   
+        return result.toString();
     }
 
     /** Test that the SMT Solver works correctly.
@@ -67,19 +68,18 @@ public class SMTSolver {
      *  @throws AssertionError If the test fails.
      */
     public static void main(String[] args) {
-        SMTSolver ytm = new SMTSolver();
-        String result = ytm.check("(define x::int)"
-                    + "\n(assert (= x 9))"
-                    + "\n(set-evidence! true)"
-                    + "\n(check)");
+        final SMTSolver ytm = new SMTSolver();
+        final String result = ytm
+                .check("(define x::int)" + "\n(assert (= x 9))"
+                        + "\n(set-evidence! true)" + "\n(check)");
         System.out.println("Result: " + result);
-        assert(result == "sat(= x 9)");
+        assert result == "sat(= x 9)";
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                      private variables                    ////
     /** The interface to Yices SMT solver using the Yices Java API Lite.
      */
-    private YicesLite yl = new YicesLite();
+    private final YicesLite yl = new YicesLite();
 
 }

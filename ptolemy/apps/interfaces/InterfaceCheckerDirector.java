@@ -77,49 +77,52 @@ public class InterfaceCheckerDirector extends Director {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
-   
+
     ///////////////////////////////////////////////////////////////////
     ////                       public methods                      ////
-    
+
     /** Check that the interfaces in the model are valid.
      * 
      *  @throws IllegalActionException
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
-        
-        Nameable container = getContainer();
-        
+
+        final Nameable container = getContainer();
+
         if (container instanceof CompositeActor) {
-            Iterator<Entity> actors = ((CompositeActor) container)
+            final Iterator<Entity> actors = ((CompositeActor) container)
                     .entityList().iterator();
-            
+
             while (actors.hasNext() && !_stopRequested) {
-                Entity entity = actors.next();
-                if (!(entity instanceof Actor)) continue;
-                Actor actor = (Actor) entity;
-                
+                final Entity entity = actors.next();
+                if (!(entity instanceof Actor)) {
+                    continue;
+                }
+                final Actor actor = (Actor) entity;
+
                 System.out.println("On actor " + actor.getFullName());
-                String result = _checkInterface(actor);
+                final String result = _checkInterface(actor);
 
                 if (result.equals("")) {
                     // could not get proof
                     throw new IllegalActionException(actor,
                             "Could not determine satisfiability of interface"
-                          + "of " + actor.getFullName());
+                                    + "of " + actor.getFullName());
                 } else if (result.startsWith("unsat")) {
                     // unsat
                     throw new IllegalActionException(actor, actor.getFullName()
                             + "'s contract is unsatisfiable.");
                 } else {
                     // sat
-                    assert (result.startsWith("sat"));
+                    assert result.startsWith("sat");
                 }
             }
         }
-        
+
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                       private methods                     ////
 
@@ -133,22 +136,21 @@ public class InterfaceCheckerDirector extends Director {
      *  @return A string representing the result of the SMT check
      *  @throws IllegalActionException 
      */
-    private String _checkInterface(Actor actor)
-            throws IllegalActionException {
-        String yicesInput = _getInterface(actor).getYicesInput();
+    private String _checkInterface(Actor actor) throws IllegalActionException {
+        final String yicesInput = _getInterface(actor).getYicesInput();
         System.out.println("Yices input is: " + yicesInput);
-        SMTSolver sc = new SMTSolver();
+        final SMTSolver sc = new SMTSolver();
         return sc.check(yicesInput);
     }
-    
+
     /** Infer the interface of a composite actor from its contained actors.
      * 
      *  @param container The composite actor whose interface we are querying.
      *  @return The inferred interface.
      *  @throws IllegalActionException 
      */
-    private RelationalInterface _getCompositeInterface(
-            CompositeActor container) throws IllegalActionException {
+    private RelationalInterface _getCompositeInterface(CompositeActor container)
+            throws IllegalActionException {
         if (container.entityList().size() > 2) {
             throw new IllegalActionException(container,
                     "Composition of more than two actors not yet supported");
@@ -164,14 +166,15 @@ public class InterfaceCheckerDirector extends Director {
             System.out.println("On contained actor: " + actor.getFullName());
         }
          */
-        Iterator<IOPort> inputPorts = container.inputPortList().iterator();
-        Set<String> inputNames = new HashSet<String>();
+        final Iterator<IOPort> inputPorts = container.inputPortList()
+                .iterator();
+        final Set<String> inputNames = new HashSet<String>();
         while (inputPorts.hasNext()) {
-            IOPort inputPort = inputPorts.next();
-            inputNames.add(inputPort.getName());            
-            
+            final IOPort inputPort = inputPorts.next();
+            inputNames.add(inputPort.getName());
+
         }
-        
+
         return null;
     }
 
@@ -189,16 +192,16 @@ public class InterfaceCheckerDirector extends Director {
      */
     private RelationalInterface _getInterface(Actor actor)
             throws IllegalActionException {
-        
+
         // We want to infer the interfaces of composite actors.
         if (actor instanceof CompositeActor) {
-            return _getCompositeInterface((CompositeActor)actor);
+            return _getCompositeInterface((CompositeActor) actor);
         }
-        
-        String contract = _getSMTFormula(actor);
 
-        return new RelationalInterface(actor.inputPortList(),
-                actor.outputPortList(), contract);
+        final String contract = _getSMTFormula(actor);
+
+        return new RelationalInterface(actor.inputPortList(), actor
+                .outputPortList(), contract);
     }
 
     /** Read the SMT formula for the contract of an actor from the
@@ -212,27 +215,26 @@ public class InterfaceCheckerDirector extends Director {
      *  @return The contract, as a string.
      *  @throws IllegalActionException
      */
-    private String _getSMTFormula(Actor actor)
-            throws IllegalActionException {
-        Parameter interfaceExpr = (Parameter)
-                        ((Entity)actor).getAttribute("_interfaceExpr");
-        Parameter interfaceStr = (Parameter)
-                        ((Entity)actor).getAttribute("_interfaceStr");
+    private String _getSMTFormula(Actor actor) throws IllegalActionException {
+        final Parameter interfaceExpr = (Parameter) ((Entity) actor)
+                .getAttribute("_interfaceExpr");
+        final Parameter interfaceStr = (Parameter) ((Entity) actor)
+                .getAttribute("_interfaceStr");
         if (interfaceExpr != null) {
             // If there is a Ptolemy Expression, we will use that
-            String expression = interfaceExpr.getExpression();
+            final String expression = interfaceExpr.getExpression();
 
-            PtParser parser = new PtParser();
+            final PtParser parser = new PtParser();
             ASTPtRootNode parseTree;
             parseTree = parser.generateParseTree(expression);
 
-            SMTFormulaBuilder formulaBuilder = new SMTFormulaBuilder();
+            final SMTFormulaBuilder formulaBuilder = new SMTFormulaBuilder();
             return formulaBuilder.parseTreeToSMTFormula(parseTree);
 
         } else if (interfaceStr != null) {
             // If there is no Ptolemy expression, we can use a string.
             // This must already be formatted in the Yices input language.
-            return ((StringToken)interfaceStr.getToken()).stringValue();
+            return ((StringToken) interfaceStr.getToken()).stringValue();
 
         } else { //(interfaceExpr == null && interfaceStr == null)
             throw new IllegalActionException(actor, "No interface specified");

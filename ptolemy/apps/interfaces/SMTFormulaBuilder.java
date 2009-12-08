@@ -29,7 +29,7 @@ public class SMTFormulaBuilder extends AbstractParseTreeVisitor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     /** Produce a LISP-like expression from a Ptolemy AST.
      *  
      *  @param root The root node of the Ptolemy expression.
@@ -37,22 +37,21 @@ public class SMTFormulaBuilder extends AbstractParseTreeVisitor {
      */
     public String parseTreeToSMTFormula(final ASTPtRootNode root) {
         _smtFormula = new StringBuffer();
-        
+
         try {
             root.visit(this);
-        } catch (IllegalActionException ex) {
+        } catch (final IllegalActionException ex) {
             System.err.println(ex);
             ex.printStackTrace(System.err);
         }
-        
+
         return _smtFormula.toString();
     }
-    
-    public void visitLeafNode(ASTPtLeafNode node)
-            throws IllegalActionException {
+
+    @Override
+    public void visitLeafNode(ASTPtLeafNode node) throws IllegalActionException {
         if (node.isIdentifier()) {
-            
-            
+
             _smtFormula.append(node.getName());
             /* FIXME: This is where we will find the types once we implement
              * type checking on this AST */
@@ -64,7 +63,8 @@ public class SMTFormulaBuilder extends AbstractParseTreeVisitor {
             _smtFormula.append(constName);
         }
     }
-    
+
+    @Override
     public void visitLogicalNode(ASTPtLogicalNode node)
             throws IllegalActionException {
         String op = node.getOperator().toString();
@@ -78,8 +78,9 @@ public class SMTFormulaBuilder extends AbstractParseTreeVisitor {
         _smtFormula.append(")");
     }
 
+    @Override
     public void visitProductNode(ASTPtProductNode node)
-           throws IllegalActionException {
+            throws IllegalActionException {
         String op = node.getLexicalTokenList().get(0).toString();
         if (op.equals("%")) {
             op = "mod";
@@ -89,6 +90,7 @@ public class SMTFormulaBuilder extends AbstractParseTreeVisitor {
         _smtFormula.append(")");
     }
 
+    @Override
     public void visitRelationalNode(ASTPtRelationalNode node)
             throws IllegalActionException {
         String op = node.getOperator().toString();
@@ -102,12 +104,14 @@ public class SMTFormulaBuilder extends AbstractParseTreeVisitor {
         _smtFormula.append(")");
     }
 
+    @Override
     public void visitSumNode(ASTPtSumNode node) throws IllegalActionException {
         _smtFormula.append("(" + node.getLexicalTokenList().get(0) + " ");
         _visitChildren(node);
         _smtFormula.append(")");
     }
-    
+
+    @Override
     public void visitUnaryNode(ASTPtUnaryNode node)
             throws IllegalActionException {
         String op = node.getOperator().toString();
@@ -118,7 +122,7 @@ public class SMTFormulaBuilder extends AbstractParseTreeVisitor {
         _visitChildren(node);
         _smtFormula.append(")");
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                      protected methods                    ////
     /** Recurse into the children of the given node.
@@ -130,8 +134,8 @@ public class SMTFormulaBuilder extends AbstractParseTreeVisitor {
     protected void _visitChildren(ASTPtRootNode node)
             throws IllegalActionException {
         if (node.jjtGetNumChildren() > 0) {
-              for (int i = 0; i < node.jjtGetNumChildren(); i++) {
-                ASTPtRootNode child = (ASTPtRootNode) node.jjtGetChild(i);
+            for (int i = 0; i < node.jjtGetNumChildren(); i++) {
+                final ASTPtRootNode child = (ASTPtRootNode) node.jjtGetChild(i);
                 child.visit(this);
                 _smtFormula.append(" ");
             }
