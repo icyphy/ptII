@@ -85,11 +85,13 @@
             </xsl:attribute>
 
             <xsl:attribute name="value">
+                <xsl:text>{</xsl:text>
                 <xsl:call-template name="string_replace">
                     <xsl:with-param name="string" select="@value"/>
                     <xsl:with-param name="search" select="';'"/>
                     <xsl:with-param name="replace" select="','"/>
                 </xsl:call-template>
+                <xsl:text>}</xsl:text>
             </xsl:attribute>
 
         </xsl:element>
@@ -336,7 +338,9 @@
                 <xsl:text>ptolemy.data.expr.StringParameter</xsl:text>
             </xsl:attribute>
             <xsl:attribute name="value">
+                <xsl:text>[</xsl:text>
                 <xsl:value-of select="substring($base,1,string-length($base)-1)"/>
+                <xsl:text>]</xsl:text>
             </xsl:attribute>
         </xsl:element>
 
@@ -373,6 +377,7 @@
                 <xsl:text>ptolemy.data.expr.StringParameter</xsl:text>
             </xsl:attribute>
             <xsl:attribute name="value">
+                <xsl:text>[</xsl:text>
                 <xsl:if test="$pattern != ''">
                     <xsl:value-of select="substring($pattern,1,string-length($pattern)-1)"/>
                 </xsl:if>
@@ -380,6 +385,7 @@
                     <xsl:value-of select="$dims[1]"/>
                     <xsl:text>=1.1</xsl:text>
                 </xsl:if>
+                <xsl:text>]</xsl:text>
             </xsl:attribute>
         </xsl:element>
 
@@ -413,6 +419,7 @@
                 <xsl:text>ptolemy.data.expr.StringParameter</xsl:text>
             </xsl:attribute>
             <xsl:attribute name="value">
+                <xsl:text>[</xsl:text>
                 <xsl:if test="$tiling != ''">
                     <xsl:value-of select="substring($tiling,1,string-length($tiling)-1)"/>
                 </xsl:if>
@@ -420,6 +427,7 @@
                     <xsl:value-of select="$dims[1]"/>
                     <xsl:text>=0</xsl:text>
                 </xsl:if>
+                <xsl:text>]</xsl:text>
             </xsl:attribute>
         </xsl:element>
         <!--  /////////////////////////////////////////      -->
@@ -472,10 +480,12 @@
                                 </xsl:if>
                                 <!-- affichage x.y -->
                                 <xsl:if test="$isPattern='true'">
+                                    <xsl:text>{</xsl:text>
                                     <xsl:value-of select="number($coef)"/>
                                     <xsl:text>.</xsl:text>
                                     <xsl:value-of
                                         select="number($vals[1+$jump+$posDim+(number($posLoop)-1)*($nbDim+1)])"/>
+                                    <xsl:text>}</xsl:text>
                                     <xsl:if test="$posLoop != last()">
                                         <xsl:text>,</xsl:text>
                                     </xsl:if>
