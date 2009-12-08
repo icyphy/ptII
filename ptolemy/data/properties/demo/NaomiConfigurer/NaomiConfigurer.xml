@@ -5,88 +5,104 @@
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
     <property name="Custom" class="ptolemy.domains.properties.kernel.PropertyLatticeAttribute">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 90.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[450.0, 105.0]">
         </property>
         <configure>
-            <entity name="Model" class="ptolemy.domains.properties.PropertyLatticeComposite">
-                <entity name="TrainSpeed" class="ptolemy.domains.properties.LatticeElement">
+            <entity name="Model" class="ptolemy.domains.properties.kernel.PropertyLatticeComposite">
+                <entity name="TrainSpeed" class="ptolemy.domains.properties.kernel.LatticeElement">
                     <property name="solutionColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,1.0,1.0,1.0}">
                     </property>
-                    <property name="LatticeElementIcon" class="ptolemy.domains.properties.LatticeElementIcon">
+                    <property name="LatticeElementIcon" class="ptolemy.vergil.properties.LatticeElementIcon">
                         <property name="spacing" class="ptolemy.data.expr.Parameter" value="0.0">
                         </property>
+                    </property>
+                    <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                     </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[90.0, 210.0]">
                     </property>
                 </entity>
-                <entity name="String" class="ptolemy.domains.properties.LatticeElement">
+                <entity name="String" class="ptolemy.domains.properties.kernel.LatticeElement">
                     <property name="solutionColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.0,1.0}">
                     </property>
-                    <property name="LatticeElementIcon" class="ptolemy.domains.properties.LatticeElementIcon">
+                    <property name="LatticeElementIcon" class="ptolemy.vergil.properties.LatticeElementIcon">
                         <property name="spacing" class="ptolemy.data.expr.Parameter" value="0.0">
                         </property>
+                    </property>
+                    <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                     </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[230.0, 130.0]">
                     </property>
                 </entity>
-                <entity name="Unknown" class="ptolemy.domains.properties.LatticeElement">
+                <entity name="Unknown" class="ptolemy.domains.properties.kernel.LatticeElement">
                     <property name="isAcceptableSolution" class="ptolemy.data.expr.Parameter" value="false">
                     </property>
                     <property name="solutionColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.8,0.8,0.8,1.0}">
                     </property>
-                    <property name="LatticeElementIcon" class="ptolemy.domains.properties.LatticeElementIcon">
+                    <property name="LatticeElementIcon" class="ptolemy.vergil.properties.LatticeElementIcon">
                         <property name="spacing" class="ptolemy.data.expr.Parameter" value="0.0">
                         </property>
+                    </property>
+                    <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                     </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 325.0]">
                     </property>
                 </entity>
-                <entity name="Conflict" class="ptolemy.domains.properties.LatticeElement">
+                <entity name="Conflict" class="ptolemy.domains.properties.kernel.LatticeElement">
                     <property name="solutionColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,1.0,0.6,1.0}">
                     </property>
-                    <property name="LatticeElementIcon" class="ptolemy.domains.properties.LatticeElementIcon">
+                    <property name="LatticeElementIcon" class="ptolemy.vergil.properties.LatticeElementIcon">
                         <property name="spacing" class="ptolemy.data.expr.Parameter" value="0.0">
                         </property>
+                    </property>
+                    <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                     </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 55.0]">
                     </property>
                 </entity>
-                <entity name="DEPath" class="ptolemy.domains.properties.LatticeElement">
+                <entity name="DEPath" class="ptolemy.domains.properties.kernel.LatticeElement">
                     <property name="solutionColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.8,0.2,1.0}">
                     </property>
-                    <property name="LatticeElementIcon" class="ptolemy.domains.properties.LatticeElementIcon">
+                    <property name="LatticeElementIcon" class="ptolemy.vergil.properties.LatticeElementIcon">
                         <property name="spacing" class="ptolemy.data.expr.Parameter" value="0.0">
                         </property>
+                    </property>
+                    <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                     </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[315.0, 210.0]">
                     </property>
                 </entity>
-                <entity name="NuSMVType" class="ptolemy.domains.properties.LatticeElement">
+                <entity name="NuSMVType" class="ptolemy.domains.properties.kernel.LatticeElement">
                     <property name="solutionColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,1.0,0.0,1.0}">
                     </property>
-                    <property name="LatticeElementIcon" class="ptolemy.domains.properties.LatticeElementIcon">
+                    <property name="LatticeElementIcon" class="ptolemy.vergil.properties.LatticeElementIcon">
                         <property name="spacing" class="ptolemy.data.expr.Parameter" value="0.0">
                         </property>
+                    </property>
+                    <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                     </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[415.0, 210.0]">
                     </property>
                 </entity>
-                <entity name="RTMaudePath" class="ptolemy.domains.properties.LatticeElement">
+                <entity name="RTMaudePath" class="ptolemy.domains.properties.kernel.LatticeElement">
                     <property name="solutionColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.6,0.4,1.0}">
                     </property>
-                    <property name="LatticeElementIcon" class="ptolemy.domains.properties.LatticeElementIcon">
+                    <property name="LatticeElementIcon" class="ptolemy.vergil.properties.LatticeElementIcon">
                         <property name="spacing" class="ptolemy.data.expr.Parameter" value="0.0">
                         </property>
+                    </property>
+                    <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                     </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[210.0, 210.0]">
                     </property>
                 </entity>
-                <entity name="RTMaudeType" class="ptolemy.domains.properties.LatticeElement">
+                <entity name="RTMaudeType" class="ptolemy.domains.properties.kernel.LatticeElement">
                     <property name="solutionColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.4,1.0,1.0}">
                     </property>
-                    <property name="LatticeElementIcon" class="ptolemy.domains.properties.LatticeElementIcon">
+                    <property name="LatticeElementIcon" class="ptolemy.vergil.properties.LatticeElementIcon">
                         <property name="spacing" class="ptolemy.data.expr.Parameter" value="0.0">
                         </property>
+                    </property>
+                    <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                     </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[530.0, 210.0]">
                     </property>
@@ -224,16 +240,16 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-125.0, 295.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 310.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 0, 1032, 746}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 1030, 607}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[817, 639]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[817, 497]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{238.0104166666667, 142.2083333333334}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{408.5, 248.5}">
     </property>
     <property name="CustomSolver" class="ptolemy.data.properties.lattice.PropertyConstraintSolver">
         <property name="action" class="ptolemy.actor.parameters.SharedParameter" value="ANNOTATE">
@@ -282,7 +298,7 @@
         </property>
         <property name="PropertyDisplayActions" class="ptolemy.data.properties.gui.PropertyDisplayActions">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[400.0, 130.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[550.0, 145.0]">
         </property>
     </property>
     <property name="Custom::importConstraint" class="ptolemy.data.properties.AnnotationAttribute" value="ptIIsr.TrainSpeed = TrainSpeed">
@@ -297,7 +313,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[265.0, 215.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[415.0, 230.0]">
         </property>
     </property>
     <property name="Custom::importConstraint2" class="ptolemy.data.properties.AnnotationAttribute" value="ptIIde.TrainSpeed = TrainSpeed">
@@ -312,7 +328,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[265.0, 235.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[415.0, 250.0]">
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -322,7 +338,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Attribute type checking">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[255.0, 175.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[405.0, 190.0]">
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -332,7 +348,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Declare export constraints">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-135.0, 260.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 275.0]">
         </property>
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -340,7 +356,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="A simple model of the NAOMI framework.&#10;Each node, the blue circles, represents&#10;a domain-specific model created by some&#10;tool. These models share between each other&#10;a set of attributes or parameters set by&#10;a configurer (config).">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-135.0, 20.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 35.0]">
         </property>
     </property>
     <property name="Custom::exportConstraint2" class="ptolemy.data.properties.AnnotationAttribute" value="config.DEPath &gt;= DEPath">
@@ -355,11 +371,11 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-125.0, 315.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 330.0]">
         </property>
     </property>
     <property name="PropertyRemover" class="ptolemy.data.properties.PropertyRemover">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[400.0, 70.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[550.0, 85.0]">
         </property>
     </property>
     <property name="Custom::exportConstraint3" class="ptolemy.data.properties.AnnotationAttribute" value="config.RTMaudePath &gt;= RTMaudePath">
@@ -374,7 +390,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-125.0, 340.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 355.0]">
         </property>
     </property>
     <property name="Custom::exportConstraint4" class="ptolemy.data.properties.AnnotationAttribute" value="config.NuSMVType &gt;= NuSMVType">
@@ -389,7 +405,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-125.0, 365.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 380.0]">
         </property>
     </property>
     <property name="Custom::exportConstraint5" class="ptolemy.data.properties.AnnotationAttribute" value="config.RTMaudeType &gt;= RTMaudeType">
@@ -404,7 +420,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-125.0, 390.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 405.0]">
         </property>
     </property>
     <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -412,11 +428,15 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Authors: Man-Kit Leung and Stavros Tripakis">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-130.0, 425.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 440.0]">
+        </property>
+    </property>
+    <property name="DoNothingDirector" class="ptolemy.actor.DoNothingDirector">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[720.0, 425.0]">
         </property>
     </property>
     <entity name="config" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-105.0, 195.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 210.0]">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
             <property name="ellipse" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
@@ -470,7 +490,7 @@
         </entity>
     </entity>
     <entity name="ptIIsr" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[210.0, 115.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[360.0, 130.0]">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
             <property name="ellipse" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
@@ -516,7 +536,7 @@
         </entity>
     </entity>
     <entity name="ptIIde" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[210.0, 235.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[360.0, 250.0]">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
             <property name="ellipse" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
@@ -580,7 +600,7 @@
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
             </property>
         </property>
-        <vertex name="vertex1" value="[40.0, 175.0]">
+        <vertex name="vertex1" value="[190.0, 190.0]">
         </vertex>
     </relation>
     <link port="config.TrainSpeed" relation="relation6"/>
