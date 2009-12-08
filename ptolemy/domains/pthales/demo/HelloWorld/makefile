@@ -48,8 +48,7 @@ JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS) \
-	HelloWorld.xml \
-	HelloWorld2.xml \
+	HelloWorld.xml
 
 EXTRA_SRCS = \
 	$(OTHER_FILES_TO_BE_JARED)
