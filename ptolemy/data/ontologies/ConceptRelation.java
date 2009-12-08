@@ -104,7 +104,6 @@ public class ConceptRelation extends ComponentRelation {
     public String getLabel() {
         StringBuffer buffer = new StringBuffer("");
 
-        boolean hasAnnotation = false;
         String text;
         try {
             text = annotation.stringValue();
@@ -112,7 +111,6 @@ public class ConceptRelation extends ComponentRelation {
             text = "Exception evaluating annotation: " + e.getMessage();
         }
         if (!text.trim().equals("")) {
-            hasAnnotation = true;
             buffer.append(text);
         }
         return buffer.toString();
