@@ -1,9 +1,7 @@
-/** Parse tree visitor that produces an SMT formula from a Ptolemy AST.
+/** A parse tree visitor that produces an SMT formula from a Ptolemy AST.
  * 
  */
 package ptolemy.apps.interfaces;
-
-import java.io.PrintStream;
 
 import ptolemy.data.expr.ASTPtLeafNode;
 import ptolemy.data.expr.ASTPtLogicalNode;
@@ -15,38 +13,46 @@ import ptolemy.data.expr.ASTPtUnaryNode;
 import ptolemy.data.expr.AbstractParseTreeVisitor;
 import ptolemy.kernel.util.IllegalActionException;
 
-/**
- * @author blickly
+/** A parse tree visitor that produces an SMT formula from a Ptolemy AST.
+ * 
+ *  This converts Ptolemy expressions into LISP-style expressions,
+ *  represented as strings.  These can be later used in LISP-like
+ *  languages, such as the Yices SMT solver's input language.
+ *  
+ *  Note: This class currently ignores the types in the Ptolemy
+ *  expression.  They may be needed in some applications.
+ * 
+ *  @author Ben Lickly
  *
  */
 public class SMTFormulaBuilder extends AbstractParseTreeVisitor {
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
     
-    public String parseTreeToSMTFormula(ASTPtRootNode root) {
-        //_smtDefines = new HashMap<String, String>();
+    /** Produce a LISP-like expression from a Ptolemy AST.
+     *  
+     *  @param root The root node of the Ptolemy expression.
+     *  @return A string representation of the expression.
+     */
+    public String parseTreeToSMTFormula(final ASTPtRootNode root) {
         _smtFormula = new StringBuffer();
         
         try {
             root.visit(this);
         } catch (IllegalActionException ex) {
-            _stream.println(ex);
-            ex.printStackTrace(_stream);
+            System.err.println(ex);
+            ex.printStackTrace(System.err);
         }
-        
-        /*
-        StringBuffer defines = new StringBuffer();
-        for (String var : _smtDefines.keySet()) {
-            defines.append("(define " + var + "::"
-                + _smtDefines.get(var) + ")\n");   
-        }
-        */
         
         return _smtFormula.toString();
     }
     
-    ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
-    public void visitLeafNode(ASTPtLeafNode node) throws IllegalActionException {
+    public void visitLeafNode(ASTPtLeafNode node)
+            throws IllegalActionException {
         if (node.isIdentifier()) {
+            
+            
             _smtFormula.append(node.getName());
             /* FIXME: This is where we will find the types once we implement
              * type checking on this AST */
@@ -116,8 +122,10 @@ public class SMTFormulaBuilder extends AbstractParseTreeVisitor {
     ///////////////////////////////////////////////////////////////////
     ////                      protected methods                    ////
     /** Recurse into the children of the given node.
+     *  
      *  @param node The node to be explored.
-     *  @exception If there is a problem displaying the children.
+     *  @throws IllegalActionException If there is a problem displaying
+     *   the children.
      */
     protected void _visitChildren(ASTPtRootNode node)
             throws IllegalActionException {
@@ -132,9 +140,8 @@ public class SMTFormulaBuilder extends AbstractParseTreeVisitor {
 
     ///////////////////////////////////////////////////////////////////
     ////                      private variables                    ////
-    //private HashMap<String, String> _smtDefines;
+    /** The intermediate state of the LISP-expression. 
+     */
     private StringBuffer _smtFormula;
-
-    private PrintStream _stream = System.out;
 
 }

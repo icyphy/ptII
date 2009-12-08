@@ -1,8 +1,8 @@
-package ptolemy.apps.interfaces;
-/**
+/** An interface to an SMT solver.
  * 
  */
 
+package ptolemy.apps.interfaces;
 
 import yices.YicesLite;
 
@@ -11,26 +11,28 @@ import java.io.IOException;
 import java.io.File;
 import java.io.BufferedReader;
 
-/** This class provides an interface to an SMT solver.
- * Its behavior is encapsulated in a single method,
- * <pre>check</pre>, which takes in a list of constraints
- * and returns a satisfying assignment if one exists,
- * and "unsat" if no such assignment exists.
- * Currently, the argument and return value are strings in
- * the form accepted by the Yices SMT solver.
- * @author blickly
+/** An interface to an SMT solver.
+ * 
+ *  Its behavior is encapsulated in a single method,
+ *  <pre>check</pre>, which takes in a list of constraints
+ *  and returns a satisfying assignment if one exists,
+ *  and "unsat" if no such assignment exists.
+ *  Currently, the argument and return value are strings in
+ *  the form accepted by the Yices SMT solver.
+ * 
+ *  @author Ben Lickly
  *
  */
 public class SMTSolver {
     
-    YicesLite yl = new YicesLite();
+    ///////////////////////////////////////////////////////////////////
+    ////                       public methods                      ////
     
-    /**
-     * Check the satisfiability of the given formula.
+    /** Check the satisfiability of the given formula.
      * 
-     * @param formula A formula to be checked.
-     * @throws IOException If a temporary file cannot be created
-     * @return A satisfying assignment if it exists, otherwise "unsat"
+     *  @param formula A formula to be checked.
+     *  @return A satisfying assignment if it exists, "unsat" if it does not,
+     *   and the empty string if no assertion can be made.
      */
     public String check(String formula) {
         int ctx = yl.yicesl_mk_context();
@@ -59,11 +61,12 @@ public class SMTSolver {
         return result.toString();   
     }
 
-    /**
-     * @param args
-     * @throws IOException 
+    /** Test that the SMT Solver works correctly.
+     * 
+     *  @param args Ignored.
+     *  @throws AssertionError If the test fails.
      */
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
         SMTSolver ytm = new SMTSolver();
         String result = ytm.check("(define x::int)"
                     + "\n(assert (= x 9))"
@@ -72,5 +75,11 @@ public class SMTSolver {
         System.out.println("Result: " + result);
         assert(result == "sat(= x 9)");
     }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                      private variables                    ////
+    /** The interface to Yices SMT solver using the Yices Java API Lite.
+     */
+    private YicesLite yl = new YicesLite();
 
 }

@@ -44,7 +44,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
 
-/** This director checks the interfaces of its contained actors.
+/** A director that checks the interfaces of its contained actors.
  * 
  *  For each actor it checks first for a parameter named _interfaceExpr,
  *  which is interpreted as a boolean-valued Ptolemy expression
@@ -77,6 +77,9 @@ public class InterfaceCheckerDirector extends Director {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
+   
+    ///////////////////////////////////////////////////////////////////
+    ////                       public methods                      ////
     
     /** Check that the interfaces in the model are valid.
      * 
@@ -116,6 +119,9 @@ public class InterfaceCheckerDirector extends Director {
         }
         
     }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                       private methods                     ////
 
     /** Check that the interface of the given actor are valid.
      * 
@@ -127,14 +133,14 @@ public class InterfaceCheckerDirector extends Director {
      *  @return A string representing the result of the SMT check
      *  @throws IllegalActionException 
      */
-    protected String _checkInterface(Actor actor)
+    private String _checkInterface(Actor actor)
             throws IllegalActionException {
         String yicesInput = _getInterface(actor).getYicesInput();
         System.out.println("Yices input is: " + yicesInput);
         SMTSolver sc = new SMTSolver();
         return sc.check(yicesInput);
     }
-
+    
     /** Infer the interface of a composite actor from its contained actors.
      * 
      *  @param container The composite actor whose interface we are querying.
@@ -206,7 +212,7 @@ public class InterfaceCheckerDirector extends Director {
      *  @return The contract, as a string.
      *  @throws IllegalActionException
      */
-    protected String _getSMTFormula(Actor actor)
+    private String _getSMTFormula(Actor actor)
             throws IllegalActionException {
         Parameter interfaceExpr = (Parameter)
                         ((Entity)actor).getAttribute("_interfaceExpr");
