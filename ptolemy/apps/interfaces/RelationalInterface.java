@@ -103,22 +103,29 @@ public class RelationalInterface {
             newOutputs.add(c._inputPort);
         }
 
-        final Set<String> constraints = new HashSet<String>();
-        constraints.add(_contract);
-        constraints.add(rhs._contract);
+        // Build up the contract for cascade composition.
+        // This is a translation of Definition 10 (composition by connection)
+        // in the EMSOFT 2009 paper "On Relational Interfaces"
+        final String connectionContracts = Connection.getContract(connections);
+        final StringBuffer y = new StringBuffer('(');
         for (final Connection c : connections) {
-            constraints.add("(== " + c._inputPort + " " + c._outputPort + ")");
+            y.append(c._inputPort + "::int " + c._outputPort + "::int ");
         }
-        // FIXME: Fix up contract
-        // String Phi = "(implies (and " + _contract + " " + _connectionConstraints + ") " + rhs.inContract(); 
-        // newContract = "(and " + newContract + " " + _connected +")";
+        for (final String firstInterfaceOutputVariable : _outputPorts) {
+            y.append(firstInterfaceOutputVariable + "::int ");
+        }
+        y.append(')');
         // Y = "("
         // for (port : connections U outputs) {
         //  Y += port.name + "::int "
         // }
-        // Y += ")"
-        // newContract = "(and " + newContract + " (forall " + _Y + " " + Phi + ")"; 
-        return new RelationalInterface(newInputs, newOutputs, null);
+        // Y += ")" 
+        final String phi = "(=> (and " + _contract + " " + connectionContracts
+                + ") " + rhs.inContract() + ")";
+        final String newContract = "(and " + _contract + " " + rhs._contract
+                + " " + connectionContracts + " (forall " + y.toString() + " "
+                + phi + "))";
+        return new RelationalInterface(newInputs, newOutputs, newContract);
     }
 
     /** Return a string representation of the interface contract.
@@ -146,6 +153,19 @@ public class RelationalInterface {
         yicesInput.append("(assert " + _contract + ")\n");
 
         return yicesInput.toString();
+    }
+
+    /** Return the contract of the input assumption of this interface.
+     * 
+     *  @return The input assumption.
+     */
+    private String inContract() {
+        final StringBuffer result = new StringBuffer("(exists (");
+        for (final String output : _outputPorts) {
+            result.append(output + "::int ");
+        }
+        result.append(") " + _contract + ")");
+        return result.toString();
     }
 
     /** Return an interface that results from the parallel composition of
@@ -265,6 +285,21 @@ class Connection {
             connections.add(new Connection(outputPort.getName(), p.getName()));
         }
         return connections;
+    }
+
+    /** Return the contract specifying the equality caused by a set of
+     *  connections.
+     *  
+     *  @param connections The set of connections.
+     *  @return The contract.
+     */
+    public static String getContract(final Set<Connection> connections) {
+        final StringBuffer contract = new StringBuffer("(and ");
+        for (final Connection c : connections) {
+            contract.append("(== " + c._inputPort + " " + c._outputPort + ")");
+        }
+        contract.append(")");
+        return contract.toString();
     }
 
     /** The start of the connection.

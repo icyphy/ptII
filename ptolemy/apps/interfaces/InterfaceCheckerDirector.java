@@ -28,6 +28,7 @@ package ptolemy.apps.interfaces;
 
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 
 import ptolemy.actor.Actor;
@@ -151,31 +152,49 @@ public class InterfaceCheckerDirector extends Director {
      */
     private RelationalInterface _getCompositeInterface(CompositeActor container)
             throws IllegalActionException {
+        String contract;
         if (container.entityList().size() > 2) {
             throw new IllegalActionException(container,
                     "Composition of more than two actors not yet supported");
+        } else if (container.entityList().size() > 1) {
+            // FIXME: Implement cascade composition.
+            throw new IllegalActionException(container,
+                    "Composition of more than one actor not yet supported either");
+        } else if (container.entityList().size() == 1) {
+            final Set<String> newConstraints = new HashSet<String>();
+            final List<IOPort> inputPortList = container.inputPortList();
+            for (final IOPort compositeIn : inputPortList) {
+                for (final IOPort insideIn : compositeIn.insideSinkPortList()) {
+                    newConstraints.add("(== " + insideIn.getName() + " "
+                            + compositeIn.getName());
+                }
+            }
+            final List<IOPort> outputPortList = container.outputPortList();
+            for (final IOPort compositeIn : outputPortList) {
+                for (final IOPort insideIn : compositeIn.insideSinkPortList()) {
+                    newConstraints.add("(== " + insideIn.getName() + " "
+                            + compositeIn.getName());
+                }
+            }
+            // FIXME: Implement feedback composition.
+            // FIXME: What about adding outputs from contained actors?
+            final Actor actor = (Actor) container.entityList().get(0);
+            newConstraints.add(_getInterface(actor).getContract());
+            contract = LispExpression.conjunction(newConstraints);
+        } else if (container.entityList().size() == 0) {
+            contract = "true";
         }
-        /*
-        Iterator<Entity> actors = container.entityList().iterator();
-
-        while (actors.hasNext() && !_stopRequested) {
-            Entity entity = actors.next();
-            if (!(entity instanceof Actor)) continue;
-            Actor actor = (Actor) entity;
-
-            System.out.println("On contained actor: " + actor.getFullName());
-        }
-         */
-        final Iterator<IOPort> inputPorts = container.inputPortList()
-                .iterator();
         final Set<String> inputNames = new HashSet<String>();
-        while (inputPorts.hasNext()) {
-            final IOPort inputPort = inputPorts.next();
+        final List<IOPort> inputPorts = container.inputPortList();
+        for (final IOPort inputPort : inputPorts) {
             inputNames.add(inputPort.getName());
-
         }
-
-        return null;
+        final Set<String> outputNames = new HashSet<String>();
+        final List<IOPort> outputPorts = container.outputPortList();
+        for (final IOPort outputPort : outputPorts) {
+            outputNames.add(outputPort.getName());
+        }
+        return new RelationalInterface(inputNames, outputNames, contract);
     }
 
     /** Return the interface of a given actor.
