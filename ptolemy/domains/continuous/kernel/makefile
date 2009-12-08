@@ -59,7 +59,8 @@ JSRCS = \
 	ContinuousScheduler.java \
 	ContinuousStatefulComponent.java \
 	ContinuousStepSizeController.java \
-	HybridModalDirector.java
+	HybridModalDirector.java \
+	Noise.java
 
 EXTRA_SRCS =	$(JSRCS)
 

@@ -11,10 +11,14 @@
                 class="ptolemy.domains.continuous.lib.ContinuousClock"/>
 		<entity name="ContinuousSinewave"
                 class="ptolemy.domains.continuous.lib.ContinuousSinewave"/>
-        <entity name="Integrator"
-                class="ptolemy.domains.continuous.lib.Integrator"/>
+        <entity name="ContinuousTransferFunction"
+                class="ptolemy.domains.continuous.lib.ContinuousTransferFunction"/>
         <entity name="DifferentialSystem"
                 class="ptolemy.domains.continuous.lib.DifferentialSystem"/>
+        <entity name="Integrator"
+                class="ptolemy.domains.continuous.lib.Integrator"/>
+        <entity name="Noise"
+                class="ptolemy.domains.continuous.lib.Noise"/>
       </group>
     ?>
   </configure>

@@ -55,6 +55,7 @@ JSRCS = \
 	ContinuousMerge.java \
 	ContinuousTimeDelay.java \
 	ContinuousTransferFunction.java \
+	Noise.java \
 	PeriodicSampler.java \
 	ZeroOrderHold.java
 
@@ -72,6 +73,7 @@ OTHER_FILES_TO_BE_JARED = \
 	integral.gif \
 	IntegratorIcon.xml \
 	LevelCrossingDetectorIcon.xml \
+	NoiseIcon.xml \
 	wavegenerators.xml
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)

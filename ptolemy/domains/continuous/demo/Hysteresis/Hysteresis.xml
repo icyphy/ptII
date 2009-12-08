@@ -145,7 +145,7 @@ change the value of the constant.</text></svg></configure>
         <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory"></property></entity></entity>
       </configure>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 125, 815, 518}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={313, 194, 813, 511}, maximized=false}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
             </property>
@@ -173,7 +173,7 @@ change the value of the constant.</text></svg></configure>
                 </property>
                 <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[265.0, 185.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[245.0, 180.0]">
                 </property>
             </entity>
             <entity name="low" class="ptolemy.domains.modal.kernel.State">
@@ -199,7 +199,7 @@ change the value of the constant.</text></svg></configure>
             <relation name="relation" class="ptolemy.domains.modal.kernel.Transition">
                 <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="in &lt; lowThreshold">
                 </property>
-                <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute" value="constant.outputValue = lowValue">
+                <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute" value="&#10;  constant.outputValue = lowValue">
                 </property>
                 <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6283185307179586">
                 </property>
@@ -213,7 +213,7 @@ change the value of the constant.</text></svg></configure>
             <relation name="relation2" class="ptolemy.domains.modal.kernel.Transition">
                 <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="in &gt; highThreshold">
                 </property>
-                <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute" value="constant.outputValue = highValue">
+                <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute" value="&#10;  constant.outputValue = highValue">
                 </property>
                 <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6283185307179586">
                 </property>
@@ -227,7 +227,7 @@ change the value of the constant.</text></svg></configure>
             <relation name="relation3" class="ptolemy.domains.modal.kernel.Transition">
                 <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
                 </property>
-                <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute" value="constant.outputValue = highValue">
+                <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute" value="&#10;  constant.outputValue = highValue">
                 </property>
                 <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6283185307179586">
                 </property>
@@ -250,7 +250,7 @@ change the value of the constant.</text></svg></configure>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 45.0]">
                 </property>
             </property>
-            <property name="outputValue" class="ptolemy.data.expr.Parameter" value="1.0">
+            <property name="outputValue" class="ptolemy.data.expr.Parameter" value="-1.0">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -356,7 +356,7 @@ change the value of the constant.</text></svg></configure>
 <title>Hysteresis</title>
 <xLabel></xLabel>
 <yLabel></yLabel>
-<xRange min="0.0" max="15.066855342"/>
+<xRange min="0.0" max="20.0"/>
 <yRange min="-1.0" max="1.0"/>
 </plot>?>
         </configure>

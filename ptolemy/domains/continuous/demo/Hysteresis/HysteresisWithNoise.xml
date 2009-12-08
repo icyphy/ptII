@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="HysteresisWithNoise" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
     <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="20.0">
@@ -12,7 +12,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 40.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 0, 815, 518}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 813, 510}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
     </property>
@@ -122,8 +122,6 @@
             <property name="output"/>
         </port>
         <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
-            <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute">
-            </property>
             <property name="annotation" class="ptolemy.kernel.util.Attribute">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
@@ -145,7 +143,7 @@ change the value of the constant.</text></svg></configure>
         <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory"></property></entity></entity>
       </configure>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 125, 815, 518}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={438, 384, 813, 511}, maximized=false}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
             </property>
@@ -167,11 +165,13 @@ change the value of the constant.</text></svg></configure>
             <entity name="high" class="ptolemy.domains.modal.kernel.State">
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="constant">
                 </property>
+                <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
                 <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[265.0, 185.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 180.0]">
                 </property>
             </entity>
             <entity name="low" class="ptolemy.domains.modal.kernel.State">
@@ -181,7 +181,7 @@ change the value of the constant.</text></svg></configure>
                 </property>
                 <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[440.0, 185.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{455.0, 180.0}">
                 </property>
             </entity>
             <entity name="init" class="ptolemy.domains.modal.kernel.State">
@@ -197,7 +197,7 @@ change the value of the constant.</text></svg></configure>
             <relation name="relation" class="ptolemy.domains.modal.kernel.Transition">
                 <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="in &lt; lowThreshold">
                 </property>
-                <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute" value="constant.outputValue = lowValue">
+                <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute" value="&#10;  constant.outputValue = lowValue">
                 </property>
                 <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6283185307179586">
                 </property>
@@ -211,7 +211,7 @@ change the value of the constant.</text></svg></configure>
             <relation name="relation2" class="ptolemy.domains.modal.kernel.Transition">
                 <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="in &gt; highThreshold">
                 </property>
-                <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute" value="constant.outputValue = highValue">
+                <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute" value="&#10;  constant.outputValue = highValue">
                 </property>
                 <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6283185307179586">
                 </property>
@@ -225,7 +225,7 @@ change the value of the constant.</text></svg></configure>
             <relation name="relation3" class="ptolemy.domains.modal.kernel.Transition">
                 <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
                 </property>
-                <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute" value="constant.outputValue = highValue">
+                <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute" value="&#10;  constant.outputValue = highValue">
                 </property>
                 <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6283185307179586">
                 </property>
@@ -267,7 +267,7 @@ change the value of the constant.</text></svg></configure>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[165.0, 40.0]">
                 </property>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={484, 1, 541, 468}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={484, 22, 592, 460}, maximized=false}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[326, 249]">
             </property>
@@ -323,7 +323,7 @@ change the value of the constant.</text></svg></configure>
     <entity name="ContinuousSinewave" class="ptolemy.domains.continuous.lib.ContinuousSinewave">
         <property name="frequency" class="ptolemy.actor.parameters.PortParameter" value="0.1">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 205.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 200.0]">
         </property>
         <port name="frequency" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
@@ -339,11 +339,11 @@ change the value of the constant.</text></svg></configure>
     <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={511, 410, 508, 355}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={503, 84, 912, 384}, maximized=false}">
         </property>
-        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[912, 340]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[435.0, 215.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[430.0, 220.0]">
         </property>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
@@ -352,40 +352,39 @@ change the value of the constant.</text></svg></configure>
 <title>Hysteresis</title>
 <xLabel></xLabel>
 <yLabel></yLabel>
-<xRange min="0.0" max="5.8"/>
-<yRange min="-0.44006886159256864" max="1.190668752768705"/>
-<default stems="yes"/>
+<xRange min="0.0" max="20.0"/>
+<yRange min="-3.069501952834293" max="4.425338724809054"/>
+<default marks="dots" stems="yes"/>
 </plot>?>
         </configure>
     </entity>
     <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 215.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{170.0, 215.0}">
         </property>
     </entity>
-    <entity name="Gaussian" class="ptolemy.actor.lib.Gaussian">
-        <property name="standardDeviation" class="ptolemy.actor.parameters.PortParameter" value="0.1">
+    <entity name="Noise" class="ptolemy.domains.continuous.lib.Noise">
+        <property name="standardDeviation" class="ptolemy.actor.parameters.PortParameter" value="1.0">
         </property>
-        <doc>Create a sequence of gaussian random variables</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{55, 280}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{70.0, 280.0}">
         </property>
     </entity>
-    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-    </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
         <vertex name="vertex1" value="{220.0, 215.0}">
         </vertex>
     </relation>
-    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
     </relation>
     <link port="ModalModel.in" relation="relation3"/>
     <link port="ModalModel.out" relation="relation2"/>
     <link port="ContinuousSinewave.output" relation="relation"/>
-    <link port="TimedPlotter.input" relation="relation2"/>
     <link port="TimedPlotter.input" relation="relation3"/>
+    <link port="TimedPlotter.input" relation="relation2"/>
     <link port="AddSubtract.plus" relation="relation"/>
-    <link port="AddSubtract.plus" relation="relation4"/>
+    <link port="AddSubtract.plus" relation="relation5"/>
     <link port="AddSubtract.output" relation="relation3"/>
-    <link port="Gaussian.output" relation="relation4"/>
+    <link port="Noise.output" relation="relation5"/>
 </entity>

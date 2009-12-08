@@ -66,10 +66,17 @@ import ptolemy.kernel.util.Settable;
  The continuous time domain is a timed domain that supports
  continuous-time signals, discrete-event signals, and mixtures of the
  two. There is a global notion of time that all the actors are aware of.
- The semantics of this domain is given in:
+ The semantics of this domain is given in the following two papers:
+ <ul>
+ <li>
  Edward A. Lee and Haiyang Zheng, "Operational Semantics of Hybrid Systems,"
  Invited paper in Proceedings of Hybrid Systems: Computation and Control
  (HSCC) LNCS 3414, Zurich, Switzerland, March 9-11, 2005.
+ <li>
+ Edward A. Lee, Haiyang Zheng, "Leveraging Synchronous Language
+ Principles for Heterogeneous Modeling and Design of Embedded Systems,"
+ EMSOFT Õ07, September 30ÐOctober 3, 2007, Salzburg, Austria.
+ </ul>
  <p>
  A signal is a set of "events," each of which has a tag and value.
  The set of values includes a special element, called "absent", denoting
@@ -106,12 +113,12 @@ import ptolemy.kernel.util.Settable;
  is absent at all tags.
  <p>
  A signal may be mostly continuous,
- but has multiple values at a discrete subset of times.
+ but have multiple values at a discrete subset of times.
  These multiple values semantically represent discontinuities
  in a continuous signal that is not purely continuous.
  <p>
  The set of times where signals have more than one distinct value
- are a discrete subset D of the time set. These times are called
+ is a discrete subset D of the time line. These times are called
  "breakpoints" and are treated specially in the execution.
  Between these times, an ordinary differential equation (ODE)
  solver governs the execution. Initial values are always given
@@ -121,7 +128,7 @@ import ptolemy.kernel.util.Settable;
  <UL>
  <LI> <i>startTime</i>: The start time of the
  execution. This parameter has no effect if
- this director is not within a top-level model.
+ this director is not at the top-level of a model.
 
  <LI> <i>stopTime</i>: The stop time of the execution.
  When the current time reaches this value, postfire() will return false.
@@ -154,8 +161,10 @@ import ptolemy.kernel.util.Settable;
  <LI> <i>ODESolver</i>:
  The class name of the ODE solver used for integration.
  This is a string that defaults to "ExplicitRK23Solver",
- a solver that tends to deliver smooth renditions of signals,
- at the expense of computing more points than the "ExplicitRK45Solver".
+ a solver that tends to deliver smooth renditions of signals.
+ The "ExplicitRK45Solver" may be more efficient in that it can
+ use larger step sizes, but the resulting signals when displayed
+ may be more jagged in appearance.
  Solvers are all required to be in package
  "ptolemy.domains.continuous.kernel.solver".
  If there is another ContinuousDirector above this one
@@ -177,7 +186,7 @@ import ptolemy.kernel.util.Settable;
  <P>
  This director maintains a breakpoint table to record all predictable
  breakpoints that are greater than or equal to
- the current time. The breakpoints are sorted in their chronological order.
+ the current time. The breakpoints are sorted in chronological order.
  Breakpoints at the same time are considered to be identical, and the
  breakpoint table does not contain duplicate time points. A breakpoint can
  be inserted into the table by calling the fireAt() method. The fireAt method
@@ -186,14 +195,16 @@ import ptolemy.kernel.util.Settable;
  requested firing time will be inserted into the breakpoint table.
  <p>
  This director is designed to work with any other director that
- implements the actor semantics. As long as the other director does
- not commit state changes except in postfire, this director can be
- used within it, and it can be used within the model controlled by
- this director. Of course, the enclosing model must advance time,
- or model time will not progress beyond zero.
+ implements the strict actor semantics. As long as the other director does
+ not commit state changes except in postfire(), that director
+ can be used within the model controlled by
+ this director. If, in addition to implementing the strict
+ actor semantics that other director also respects calls to
+ fireAt(), then this director may be used within a model
+ governed by that director.
  <p>
  This director is based on the CTDirector by Jie Liu and Haiyang Zheng,
- but it has a much simpler scheduler.
+ but it has a much simpler scheduler and a fixed-point semantics.
 
 FIXME: the design of clone method should be examined and reimplemented.
 All Continuous files need this.
@@ -1256,6 +1267,13 @@ public class ContinuousDirector extends FixedPointDirector implements
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
+    /** Return the current step size.
+     *  @return The current step size.
+     */
+    protected double _getCurrentStepSize() {
+        return _currentStepSize;
+    }
+    
     /** Return the ODE solver used to resolve states by the director.
      *  @return The ODE solver used to resolve states by the director.
      */
@@ -1392,6 +1410,10 @@ public class ContinuousDirector extends FixedPointDirector implements
      */
     protected boolean _isInitializing = false;
 
+    /** The current time at the start of the current integration step. 
+     */
+    protected Time _iterationBeginTime;
+    
     /** The real starting time in term of system millisecond counts.
      */
     protected long _timeBase;
@@ -2172,9 +2194,6 @@ public class ContinuousDirector extends FixedPointDirector implements
     /** The index of the time at which the current integration step began. */
     private int _iterationBeginIndex;
 
-    /** The current time at the start of the current integration step. */
-    private Time _iterationBeginTime;
-    
     /** The environment time when this refinement was last suspended
      *  (that is, the enclosing state was exited). This is null if
      *  the actor has not been suspended since initialize() or
