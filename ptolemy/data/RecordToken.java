@@ -447,7 +447,7 @@ public class RecordToken extends AbstractNotConvertibleToken {
     protected Token _add(Token rightArgument) throws IllegalActionException {
         RecordToken recordToken = (RecordToken) rightArgument;
 
-        Set intersectionSet = new HashSet();
+        Set intersectionSet = _createSet();
         intersectionSet.addAll(_fields.keySet());
         intersectionSet.retainAll(recordToken._fields.keySet());
 
@@ -482,7 +482,7 @@ public class RecordToken extends AbstractNotConvertibleToken {
     protected Token _divide(Token rightArgument) throws IllegalActionException {
         RecordToken recordToken = (RecordToken) rightArgument;
 
-        Set intersectionSet = new HashSet();
+        Set intersectionSet = _createSet();
         intersectionSet.addAll(_fields.keySet());
         intersectionSet.retainAll(recordToken._fields.keySet());
 
@@ -599,7 +599,7 @@ public class RecordToken extends AbstractNotConvertibleToken {
     protected Token _modulo(Token rightArgument) throws IllegalActionException {
         RecordToken recordToken = (RecordToken) rightArgument;
 
-        Set intersectionSet = new HashSet();
+        Set intersectionSet = _createSet();
         intersectionSet.addAll(_fields.keySet());
         intersectionSet.retainAll(recordToken._fields.keySet());
 
@@ -635,7 +635,7 @@ public class RecordToken extends AbstractNotConvertibleToken {
             throws IllegalActionException {
         RecordToken recordToken = (RecordToken) rightArgument;
 
-        Set intersectionSet = new HashSet();
+        Set intersectionSet = _createSet();
         intersectionSet.addAll(_fields.keySet());
         intersectionSet.retainAll(recordToken._fields.keySet());
 
@@ -671,7 +671,7 @@ public class RecordToken extends AbstractNotConvertibleToken {
             throws IllegalActionException {
         RecordToken recordToken = (RecordToken) rightArgument;
 
-        Set intersectionSet = new HashSet();
+        Set intersectionSet = _createSet();
         intersectionSet.addAll(_fields.keySet());
         intersectionSet.retainAll(recordToken._fields.keySet());
 
@@ -714,6 +714,15 @@ public class RecordToken extends AbstractNotConvertibleToken {
      */
     protected RecordToken _createRecordToken(String[] labels, Token[] values) throws IllegalActionException {
         return new RecordToken(labels, values);
+    }
+    
+    /**
+     * Create a Set implementation appropriate for operations on this RecordToken
+     * Subclasses of RecordToken may return a different implementation.
+     * @return a new Set.
+     */
+    protected Set _createSet() {
+        return new HashSet();
     }
 
     ///////////////////////////////////////////////////////////////////

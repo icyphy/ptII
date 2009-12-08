@@ -30,6 +30,7 @@ package ptolemy.data;
 
 import java.util.Iterator;
 import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -197,6 +198,15 @@ public class OrderedRecordToken extends RecordToken {
      */
     protected void _initializeStorage() {
         _fields = new LinkedHashMap();
+    }
+    
+    /**
+     * Create a Set implementation appropriate for operations on this RecordToken
+     * Here we are using an ordered set
+     * @return a new Set.
+     */
+    protected Set _createSet() {
+        return new LinkedHashSet();
     }
     
     /** Return true if the specified token is equal to this one.
