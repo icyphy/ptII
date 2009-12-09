@@ -75,7 +75,7 @@ import ptolemy.kernel.util.Settable;
  <li>
  Edward A. Lee, Haiyang Zheng, "Leveraging Synchronous Language
  Principles for Heterogeneous Modeling and Design of Embedded Systems,"
- EMSOFT Õ07, September 30ÐOctober 3, 2007, Salzburg, Austria.
+ EMSOFT 07, September 30-October 3, 2007, Salzburg, Austria.
  </ul>
  <p>
  A signal is a set of "events," each of which has a tag and value.
