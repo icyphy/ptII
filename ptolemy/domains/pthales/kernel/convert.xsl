@@ -81,7 +81,7 @@
                 <xsl:value-of select="$name"/>
             </xsl:attribute>
             <xsl:attribute name="class">
-                <xsl:text>ptolemy.data.expr.StringParameter</xsl:text>
+                <xsl:text>ptolemy.data.expr.Parameter</xsl:text>
             </xsl:attribute>
 
             <xsl:attribute name="value">
@@ -335,7 +335,7 @@
                 <xsl:text>base</xsl:text>
             </xsl:attribute>
             <xsl:attribute name="class">
-                <xsl:text>ptolemy.data.expr.StringParameter</xsl:text>
+                <xsl:text>ptolemy.data.expr.Parameter</xsl:text>
             </xsl:attribute>
             <xsl:attribute name="value">
                 <xsl:text>[</xsl:text>
@@ -374,7 +374,7 @@
                 <xsl:text>pattern</xsl:text>
             </xsl:attribute>
             <xsl:attribute name="class">
-                <xsl:text>ptolemy.data.expr.StringParameter</xsl:text>
+                <xsl:text>ptolemy.data.expr.Parameter</xsl:text>
             </xsl:attribute>
             <xsl:attribute name="value">
                 <xsl:text>[</xsl:text>
@@ -383,7 +383,7 @@
                 </xsl:if>
                 <xsl:if test="$pattern = ''">
                     <xsl:value-of select="$dims[1]"/>
-                    <xsl:text>=1.1</xsl:text>
+                    <xsl:text>={1,1}</xsl:text>
                 </xsl:if>
                 <xsl:text>]</xsl:text>
             </xsl:attribute>
@@ -416,7 +416,7 @@
                 <xsl:text>tiling</xsl:text>
             </xsl:attribute>
             <xsl:attribute name="class">
-                <xsl:text>ptolemy.data.expr.StringParameter</xsl:text>
+                <xsl:text>ptolemy.data.expr.Parameter</xsl:text>
             </xsl:attribute>
             <xsl:attribute name="value">
                 <xsl:text>[</xsl:text>
@@ -482,7 +482,7 @@
                                 <xsl:if test="$isPattern='true'">
                                     <xsl:text>{</xsl:text>
                                     <xsl:value-of select="number($coef)"/>
-                                    <xsl:text>.</xsl:text>
+                                    <xsl:text>,</xsl:text>
                                     <xsl:value-of
                                         select="number($vals[1+$jump+$posDim+(number($posLoop)-1)*($nbDim+1)])"/>
                                     <xsl:text>}</xsl:text>
@@ -496,7 +496,8 @@
                     </xsl:for-each>
                 </xsl:variable>
                 <xsl:if test="$output='' and $isTiling='true'">
-                    <xsl:value-of select="$dims[1]"/>
+                    <xsl:text>empty</xsl:text>
+                    <xsl:value-of select="$posLoop"/>
                     <xsl:text>=0,</xsl:text>
                 </xsl:if>
                 <xsl:if test="not($output='') or $isTiling='false'">
