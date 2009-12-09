@@ -50,6 +50,7 @@ import ptolemy.data.OrderedRecordToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
+import ptolemy.data.expr.TemporaryVariable;
 import ptolemy.data.expr.Variable;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.StructuredType;
@@ -60,6 +61,7 @@ import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
@@ -104,9 +106,7 @@ public class PThalesIOPort extends TypedIOPort {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
-        // Add parameters for PThales Domain
-        //        _initialize();
-    }
+     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -306,6 +306,7 @@ public class PThalesIOPort extends TypedIOPort {
      */
     public LinkedHashMap<String, Integer> getArraySizes() {
         LinkedHashMap<String, Integer> sizes = null;
+        LinkedHashMap<String, Token> sizesToMap = new LinkedHashMap<String, Token>();
 
         sizes = new LinkedHashMap<String, Integer>();
         PthalesActorInterface actor = (PthalesActorInterface) getContainer();
@@ -316,6 +317,7 @@ public class PThalesIOPort extends TypedIOPort {
         int value;
         int valuePattern;
         int valueTiling;
+        
         for (String dimension : getDimensions()) {
             valuePattern = 0;
             if (_pattern.get(dimension) != null)
@@ -339,9 +341,34 @@ public class PThalesIOPort extends TypedIOPort {
                 value = valuePattern * valueTiling;
 
             if (value > 1)
+            {
                 sizes.put((String) dimension, value);
+                sizesToMap.put((String) dimension, new IntToken(value));
+            }
         }
 
+        try {
+            OrderedRecordToken array = new OrderedRecordToken(sizesToMap);
+            // Write into parameter
+            Parameter p = (Parameter)getAttribute("size");
+            if (p == null) {
+                try {
+                    // if parameter does not exist, creation
+                    p = new Parameter(this, "size");
+                } catch (NameDuplicationException e) {
+                    e.printStackTrace();
+                }
+            }
+            
+            p.setVisibility(Settable.FULL);
+            p.setPersistent(true);
+            if (p.getExpression().equals(""))
+                p.setExpression(array.toString());
+           
+        } catch (IllegalActionException e) {
+            e.printStackTrace();
+        }
+        
         return sizes;
     }
 
@@ -535,6 +562,8 @@ public class PThalesIOPort extends TypedIOPort {
     private void _initialize() throws IllegalActionException,
             NameDuplicationException {
 
+        PthalesActorInterface actor = (PthalesActorInterface) getContainer();
+
         if (getAttribute("base") == null) {
             new StringParameter(this, "base");
         }
@@ -547,20 +576,23 @@ public class PThalesIOPort extends TypedIOPort {
             new StringParameter(this, "tiling");
         }
 
+        if (getAttribute("dimensionNames") == null) {
+            new StringParameter(this, "dimensionNames");
+        }
         if (getAttribute("size") == null) {
             new StringParameter(this, "size");
         }
 
-        if (getAttribute("dataType") == null) {
-            new StringParameter(this, "dataType");
-        }
-
-        if (getAttribute("dataTypeSize") == null) {
-            new StringParameter(this, "dataTypeSize");
-        }
-
-        if (getAttribute("dimensionNames") == null) {
-            new StringParameter(this, "dimensionNames");
+        // Useless parameters for CompositeActors
+        if(actor instanceof PThalesGenericActor)
+        {
+             if (getAttribute("dataType") == null) {
+                new StringParameter(this, "dataType");
+            }
+    
+            if (getAttribute("dataTypeSize") == null) {
+                new StringParameter(this, "dataTypeSize");
+            }
         }
     }
 
