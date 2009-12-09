@@ -152,6 +152,16 @@ public class InterfaceCheckerDirector extends Director {
      */
     private RelationalInterface _getCompositeInterface(CompositeActor container)
             throws IllegalActionException {
+        final Set<String> inputNames = new HashSet<String>();
+        final List<IOPort> inputPorts = container.inputPortList();
+        for (final IOPort inputPort : inputPorts) {
+            inputNames.add(inputPort.getName());
+        }
+        final Set<String> outputNames = new HashSet<String>();
+        final List<IOPort> outputPorts = container.outputPortList();
+        for (final IOPort outputPort : outputPorts) {
+            outputNames.add(outputPort.getName());
+        }
         String contract = null;
         if (container.entityList().size() > 2) {
             throw new IllegalActionException(container,
@@ -165,34 +175,26 @@ public class InterfaceCheckerDirector extends Director {
             final List<IOPort> inputPortList = container.inputPortList();
             for (final IOPort compositeIn : inputPortList) {
                 for (final IOPort insideIn : compositeIn.insideSinkPortList()) {
-                    newConstraints.add("(== " + insideIn.getName() + " "
-                            + compositeIn.getName());
+                    newConstraints.add("(= " + insideIn.getName() + " "
+                            + compositeIn.getName() + ")");
                 }
             }
             final List<IOPort> outputPortList = container.outputPortList();
             for (final IOPort compositeIn : outputPortList) {
-                for (final IOPort insideIn : compositeIn.insideSinkPortList()) {
-                    newConstraints.add("(== " + insideIn.getName() + " "
-                            + compositeIn.getName());
+                for (final IOPort insideIn : compositeIn.insideSourcePortList()) {
+                    newConstraints.add("(= " + insideIn.getName() + " "
+                            + compositeIn.getName() + ")");
                 }
             }
             // FIXME: Implement feedback composition.
             // FIXME: What about adding outputs from contained actors?
             final Actor actor = (Actor) container.entityList().get(0);
-            newConstraints.add(_getInterface(actor).getContract());
+            RelationalInterface actorInterface = _getInterface(actor); 
+            newConstraints.add(actorInterface.getContract());
             contract = LispExpression.conjunction(newConstraints);
+            outputNames.addAll(actorInterface.getVariables());
         } else if (container.entityList().size() == 0) {
             contract = "true";
-        }
-        final Set<String> inputNames = new HashSet<String>();
-        final List<IOPort> inputPorts = container.inputPortList();
-        for (final IOPort inputPort : inputPorts) {
-            inputNames.add(inputPort.getName());
-        }
-        final Set<String> outputNames = new HashSet<String>();
-        final List<IOPort> outputPorts = container.outputPortList();
-        for (final IOPort outputPort : outputPorts) {
-            outputNames.add(outputPort.getName());
         }
         return new RelationalInterface(inputNames, outputNames, contract);
     }
@@ -214,7 +216,11 @@ public class InterfaceCheckerDirector extends Director {
 
         // We want to infer the interfaces of composite actors.
         if (actor instanceof CompositeActor) {
-            return _getCompositeInterface((CompositeActor) actor);
+            RelationalInterface compositeInterface =
+                _getCompositeInterface((CompositeActor) actor);
+            System.out.println("Inferred composite contract: "
+                    + compositeInterface.getContract());
+            return compositeInterface;
         }
 
         final String contract = _getSMTFormula(actor);
@@ -256,7 +262,8 @@ public class InterfaceCheckerDirector extends Director {
             return ((StringToken) interfaceStr.getToken()).stringValue();
 
         } else { //(interfaceExpr == null && interfaceStr == null)
-            throw new IllegalActionException(actor, "No interface specified");
+            throw new IllegalActionException(actor, "No interface specified for"
+                    + actor.toString());
         }
     }
 

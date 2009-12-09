@@ -135,6 +135,16 @@ public class RelationalInterface {
     public String getContract() {
         return _contract;
     }
+    
+    /** Return a set of variables in the interface.
+     *  @return A set of all variables used in the interface.
+     */
+    public Set<String> getVariables() {
+        final Set<String> variables = new HashSet<String>();
+        variables.addAll(_inputPorts);
+        variables.addAll(_outputPorts);
+        return variables;
+    }
 
     /** Return a string that Yices can check for satisfiability.
      * 
