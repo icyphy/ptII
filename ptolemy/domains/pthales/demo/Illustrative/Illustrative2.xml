@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="Illustrative2" class="ptolemy.actor.TypedCompositeActor">
+<entity name="Illustrative2" class="ptolemy.domains.pthales.lib.PthalesCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
     <property name="PthalesDirector" class="ptolemy.domains.pthales.kernel.PthalesDirector">
@@ -245,7 +245,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[250.0, 115.0]">
         </property>
     </property>
-    <entity name="Source" class="ptolemy.actor.TypedCompositeActor">
+    <entity name="Source" class="ptolemy.domains.pthales.lib.PthalesCompositeActor">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[115.0, 130.0]">
         </property>
         <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
@@ -264,7 +264,7 @@
         </property>
         <property name="repetitions" class="ptolemy.data.expr.Parameter" value="{1, 1}">
         </property>
-        <port name="out" class="ptolemy.actor.TypedIOPort">
+        <port name="out" class="ptolemy.domains.pthales.lib.PThalesIOPort">
             <property name="output"/>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[340.0, 180.0]">
             </property>
@@ -287,7 +287,7 @@
         <link port="out" relation="relation"/>
         <link port="Ramp.output" relation="relation"/>
     </entity>
-    <entity name="Sink" class="ptolemy.actor.TypedCompositeActor">
+    <entity name="Sink" class="ptolemy.domains.pthales.lib.PthalesCompositeActor">
         <property name="_location" class="ptolemy.kernel.util.Location" value="{290.0, 85.0}">
         </property>
         <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
@@ -306,7 +306,7 @@
         </property>
         <property name="repetitions" class="ptolemy.data.expr.Parameter" value="repetitions">
         </property>
-        <port name="port_0" class="ptolemy.actor.TypedIOPort">
+        <port name="port_0" class="ptolemy.domains.pthales.lib.PThalesIOPort">
             <property name="input"/>
             <property name="multiport"/>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{50.0, 195.0}">
@@ -342,7 +342,7 @@
         <link port="Display.input" relation="relation"/>
         <link port="Test.input" relation="relation"/>
     </entity>
-    <entity name="Sink2" class="ptolemy.actor.TypedCompositeActor">
+    <entity name="Sink2" class="ptolemy.domains.pthales.lib.PthalesCompositeActor">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[290.0, 175.0]">
         </property>
         <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
@@ -361,7 +361,7 @@
         </property>
         <property name="repetitions" class="ptolemy.data.expr.Parameter" value="{2, 2}">
         </property>
-        <port name="port_0" class="ptolemy.actor.TypedIOPort">
+        <port name="port_0" class="ptolemy.domains.pthales.lib.PThalesIOPort">
             <property name="input"/>
             <property name="multiport"/>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{50.0, 195.0}">
