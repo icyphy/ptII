@@ -124,7 +124,10 @@ $CLASSPATH/ptolemy/domains/continuous/demo/Sinusoid/Sinusoid.xml
 $CLASSPATH/ptolemy/domains/continuous/demo/SquareWave/SquareWave.xml
 $CLASSPATH/ptolemy/domains/continuous/demo/StickyMasses/StickyMasses.xml
 $CLASSPATH/ptolemy/domains/continuous/demo/Switch/Switch.xml
+$CLASSPATH/ptolemy/domains/continuous/demo/Thermostat/Thermostat.xml
 $CLASSPATH/ptolemy/domains/continuous/demo/Transmission/EfficiencyCurve.xml
+$CLASSPATH/ptolemy/domains/continuous/demo/Transmission/Transmission.xml
+$CLASSPATH/ptolemy/domains/continuous/demo/V2V/V2V.xml
 $CLASSPATH/ptolemy/domains/csp/demo/Barrier/Barrier.xml
 $CLASSPATH/ptolemy/domains/csp/demo/ResourcePool/ResourcePool.xml
 $CLASSPATH/ptolemy/domains/csp/demo/WriteRegulator/WriteRegulator.xml
