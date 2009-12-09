@@ -105,7 +105,7 @@
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model demonstrates the use of a&#10;modal model to implement hysteresis. ">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model demonstrates the use of a&#10;modal model to implement hysteresis.&#10;It illustrates the use of the Noise actor,&#10;which provides an approximation to&#10;white noise in the continuous domain.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[150.0, 20.0]">
         </property>
@@ -248,7 +248,7 @@ change the value of the constant.</text></svg></configure>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 45.0]">
                 </property>
             </property>
-            <property name="outputValue" class="ptolemy.data.expr.Parameter" value="1.0">
+            <property name="outputValue" class="ptolemy.data.expr.Parameter" value="-1.0">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -339,9 +339,9 @@ change the value of the constant.</text></svg></configure>
     <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={503, 84, 912, 384}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={2, 460, 800, 356}, maximized=false}">
         </property>
-        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[912, 340]">
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[800, 312]">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[430.0, 220.0]">
         </property>
@@ -353,8 +353,7 @@ change the value of the constant.</text></svg></configure>
 <xLabel></xLabel>
 <yLabel></yLabel>
 <xRange min="0.0" max="20.0"/>
-<yRange min="-3.069501952834293" max="4.425338724809054"/>
-<default marks="dots" stems="yes"/>
+<yRange min="-1.3138352601723866" max="1.1979872455750962"/>
 </plot>?>
         </configure>
     </entity>
@@ -363,7 +362,7 @@ change the value of the constant.</text></svg></configure>
         </property>
     </entity>
     <entity name="Noise" class="ptolemy.domains.continuous.lib.Noise">
-        <property name="standardDeviation" class="ptolemy.actor.parameters.PortParameter" value="1.0">
+        <property name="standardDeviation" class="ptolemy.actor.parameters.PortParameter" value="0.1">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{70.0, 280.0}">
         </property>
