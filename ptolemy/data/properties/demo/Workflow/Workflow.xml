@@ -11,21 +11,21 @@
         </property>
         <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 80.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 90.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 25, 1000, 579}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 25, 1033, 589}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[787, 469]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[820, 479]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{393.5, 234.5}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{410.0, 239.5}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model demonstrates how to annotate/check multiple &#10;model files at a high level. It iterates through the model&#10;files from a given directory and performs property analysis. ">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Man-Kit Leung&#10;&#10;This model demonstrates how to annotate/check multiple &#10;model files at a high level. It iterates through the model&#10;files from a given directory and performs property analysis. ">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[325.0, 50.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 305.0]">
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -33,7 +33,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="A higher-ordered &#10;actor for annotating&#10;model properties.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[540.0, 370.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 235.0]">
         </property>
     </property>
     <property name="delay" class="ptolemy.data.expr.Parameter" value="2000">
@@ -52,31 +52,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 135.0]">
-        </property>
-    </property>
-    <property name="Annotation_1__1_" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
-        </property>
-        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.2, 0.2, 0.2, 1.0}">
-        </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author:  Man-Kit Leung">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 415.0]">
-        </property>
-        <property name="_renderFirst" class="ptolemy.kernel.util.SingletonAttribute">
-        </property>
-    </property>
-    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="textSize" class="ptolemy.data.expr.Parameter" value="18">
-        </property>
-        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
-        </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Checking Properties of Multiple Workflows">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 10.0]">
-        </property>
-        <property name="_renderFirst" class="ptolemy.kernel.util.SingletonAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 40.0]">
         </property>
     </property>
     <entity name="View1" class="ptolemy.actor.gt.ModelView">
@@ -84,7 +60,7 @@
         </property>
         <property name="reopenWindow" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[564.5, 180.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[575.0, 130.0]">
         </property>
     </entity>
     <entity name="ModelAnalyzer" class="ptolemy.domains.properties.lib.ModelAnalyzer">
@@ -104,7 +80,7 @@
         </property>
         <property name="logConstraint" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[274.5, 265.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[285.0, 215.0]">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
             <property name="rectangle" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
@@ -350,11 +326,11 @@
     <entity name="Original" class="ptolemy.actor.gt.ModelView">
         <property name="title" class="ptolemy.actor.parameters.PortParameter" value="Original">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[229.5, 185.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, 135.0]">
         </property>
     </entity>
     <entity name="ModelGenerator" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[49.5, 265.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 215.0]">
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 25, 1023, 699}, maximized=false}">
         </property>
@@ -396,7 +372,7 @@
         </property>
         <property name="repeatUntilFixpoint" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[499.5, 345.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[510.0, 295.0]">
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={99, 104, 825, 560}, maximized=false}">
         </property>
@@ -439,6 +415,7 @@
                 <vertex name="vertex1" value="[360.0, 110.0]">
                 </vertex>
             </relation>
+            <link port="A.port" relation="relation"/>
         </entity>
         <entity name="Replacement" class="ptolemy.actor.gt.Replacement">
             <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
@@ -465,6 +442,7 @@
                 <property name="patternObject" class="ptolemy.actor.gt.PatternObjectAttribute" value="relation">
                 </property>
             </relation>
+            <link port="A.port" relation="relation"/>
         </entity>
     </entity>
     <entity name="View" class="ptolemy.actor.gt.ModelView">
@@ -472,7 +450,7 @@
         </property>
         <property name="reopenWindow" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[394.5, 185.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[405.0, 135.0]">
         </property>
     </entity>
     <entity name="ModelAnalyzer2" class="ptolemy.domains.properties.lib.ModelAnalyzer">
@@ -492,7 +470,7 @@
         </property>
         <property name="logConstraint" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[674.5, 270.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[685.0, 220.0]">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
             <property name="rectangle" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
@@ -740,7 +718,7 @@
         </property>
         <property name="reopenWindow" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[724.5, 180.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[735.0, 130.0]">
         </property>
     </entity>
     <entity name="Sleep" class="ptolemy.actor.lib.Sleep">
@@ -752,7 +730,7 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[189.5, 265.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 215.0]">
         </property>
     </entity>
     <entity name="Sleep2" class="ptolemy.actor.lib.Sleep">
@@ -764,7 +742,7 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[374.5, 340.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[385.0, 290.0]">
         </property>
     </entity>
     <entity name="Sleep3" class="ptolemy.actor.lib.Sleep">
@@ -776,19 +754,19 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[584.5, 270.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[595.0, 220.0]">
         </property>
     </entity>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[129.5, 265.0]">
+        <vertex name="vertex1" value="[140.0, 215.0]">
         </vertex>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[469.5, 255.0]">
+        <vertex name="vertex1" value="[480.0, 205.0]">
         </vertex>
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[334.5, 255.0]">
+        <vertex name="vertex1" value="[345.0, 205.0]">
         </vertex>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
@@ -812,6 +790,8 @@
     <link port="Original.input" relation="relation2"/>
     <link port="Original.output" relation="relation8"/>
     <link port="ModelGenerator.port_8" relation="relation2"/>
+    <link port="OptimizeOnce.modelInput" relation="relation5"/>
+    <link port="OptimizeOnce.modelOutput" relation="relation3"/>
     <link port="View.input" relation="relation6"/>
     <link port="View.output" relation="relation9"/>
     <link port="ModelAnalyzer2.input" relation="relation7"/>
