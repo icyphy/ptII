@@ -209,7 +209,6 @@ public class ModelDirectory extends CompositeEntity {
                 URL url = null;
                 try {
                     url = ((URIAttribute) attributes.get(0)).getURL();
-                    System.out.println("ModelDirectory: purging " + url);
                     MoMLParser.purgeModelRecord(url);
                 } catch (Exception ex) {
                     throw new InternalErrorException("Cannot purge " + url);
