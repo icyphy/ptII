@@ -59,7 +59,9 @@ OTHER_FILES_TO_BE_JARED = \
 	model.htm.in \
 	model.jnlp.in \
 	modelJnlp.htm.in \
+	modelJnlp-ssi.htm.in \
 	modelVergil.htm.in \
+	modelVergil-ssi.htm.in \
 	runCommandTemplate.txt
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED) \

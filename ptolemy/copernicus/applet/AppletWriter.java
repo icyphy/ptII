@@ -636,6 +636,11 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
                 CodeGeneratorUtilities.substitute(_templateDirectory
                         + "modelJnlp.htm.in", _substituteMap, _outputDirectory
                         + "/" + _sanitizedModelName + ".htm");
+            } else {
+                // Overwrite *JNLP.htm
+                CodeGeneratorUtilities.substitute(_templateDirectory
+                        + "modelJnlp.htm.in", _substituteMap, _outputDirectory
+                        + "/" + _sanitizedModelName + "JNLP.htm");
             }
             if (!(new File(_outputDirectory + File.separator
                         + _sanitizedModelName + "Vergil.htm").exists())) {
@@ -1491,8 +1496,13 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
         }
         if (jarFilesThatHaveBeenRequired
                 .contains("ptolemy/codegen/codegen.jar")) {
-            auxiliaryClassMap.put("codgen jar needs embeddedJava",
+            auxiliaryClassMap.put("codegen jar needs embeddedJava",
                     "ptolemy/actor/lib/embeddedJava/embeddedJava.jar");
+        }
+        if (jarFilesThatHaveBeenRequired
+                .contains("ptolemy/distributed/domains/sdf/sdf.jar")) {
+            auxiliaryClassMap.put("distributes sdf.jar needs regular sdf.jar",
+                    "ptolemy/domains/sdf/sdf.jar");
         }
         if (jarFilesThatHaveBeenRequired.contains(gtJar)
                 || jarFilesThatHaveBeenRequired

@@ -1,12 +1,13 @@
-#!/bin/sh
+#!/bin/sh -x
 # $Id$
 # Script that updates the demos
 
-demos=`cd $PTII/ptolemy/configs/doc; make listDemos |  grep -v /SystemLevelType/`
+demos=`cd $PTII/ptolemy/configs/doc; make listDemos |  egrep -v '(iRobotCreateVerification|Matlab|SystemLevelType)' `
 
 # Create missing applets
 #demos=`cd $PTII/ptolemy/configs/doc; make check_applets |  grep -v /SystemLevelType/ | sed 's/.htm$/.xml/'`
 
+#demos=../../../ptolemy/domains/continuous/demo/Transmission/Transmission.xml
 for demo in $demos
 do
      model=`basename $demo .xml` 
@@ -16,8 +17,8 @@ do
 
      targetPath=`echo $modelPath | sed "s@$PTII/@@"`
 
-     #echo "make MODEL=$model MODELPATH=$modelPath/$model.xml TARGETPATH=$targetPath jnlpUpdateDemo"
-     echo $modelPath/$model.htm
+     echo "make MODEL=$model MODELPATH=$modelPath/$model.xml TARGETPATH=$targetPath jnlpUpdateDemo"
+     #echo $modelPath/$model.htm
 
      #rm $modelPath/$model.htm
      #svn update $modelPath/$model.htm
@@ -41,50 +42,61 @@ do
 # 	     -e "s@fullViewer [^>]*>@fullViewer $targetPath/$model.xml\">@" \
 # 	     $modelPath/$model.htm > /tmp/$model.htm 
 
-#     if [ -f  $modelPath/$model.htm -a -f $modelPath/${model}JNLP.htm ]; then
-#          awk '{ if ($0 ~ /<!-- PT JNLP CONVERTER -->/) {
-#                    exit;
-#                 } 
-#                 print $0
-#           }' $modelPath/$model.htm > /tmp/$model.htm
+    if [ -f  $modelPath/$model.htm -a -f $modelPath/${model}JNLP.htm ]; then
+	 svnStatus=`svn status $modelPath/$model.htm | awk '{print $1}'`
+	 if [ "$svnStatus" == "M" ]; then
+	     rm $modelPath/$model.htm
+ 	     svn update $modelPath/$model.htm
+         fi
+
+          awk -v jnlpFile=$model.jnlp '{ if ($0 ~ /<!-- HTML CONVERTER -->/) {
+ 	        sawHTMLConverter = 1
+ 	        print "<!-- PT JNLP APPLET CONVERTER -->";
+                 print "<a href=\"" jnlpFile "\">Run the demo using Web Start</a>";
+ 	    } else if ($0 ~ /<!-- \/HTML CONVERTER -->/) {
+ 	        sawHTMLConverter = 0 
+ 	        print "<!-- /PT JNLP APPLET CONVERTER -->";
+ 	    } else if (sawHTMLConverter == 0) {
+ 	        print $0
+             }  
+           }' $modelPath/$model.htm > /tmp/${model}0.htm
 
 
-# 	 awk '{if ($0 ~ /<!-- PT JNLP APPLET CONVERTER -->/) {
-#                   sawJNLPAppletConverter = 1
-#                }
-#                if (sawJNLPAppletConverter == 1) {
-#                   print $0
-#                }
-#                if ($0 ~ /<!-- \/PT JNLP APPLET CONVERTER -->/) {
-#                   exit
-#                }
-#               }' $modelPath/${model}JNLP.htm >> /tmp/$model.htm
-
-#          awk '{ if (sawJNLPConverter == 1) {
-#                    print $0
-#                 }
-#                 if ($0 ~ /<!-- \/PT JNLP CONVERTER -->/) {
-#                    sawJNLPConverter = 1;
-#                 } 
-#            }' $modelPath/$model.htm >> /tmp/$model.htm
+         awk '{ if ($0 ~ /<!-- PT JNLP APPLET CONVERTER -->/) {
+                   exit;
+                } 
+                if ($0 !~ /CENTER>/ && $0 !~ /center>/  $0 !~ /The HTML below is for/ && $0 !~ /section is for IE/ && $0 != " -->") {
+                   print $0
+                } 
+          }' /tmp/${model}0.htm > /tmp/$model.htm
 
 
-#          awk -v jnlpFile=$model.jnlp '{ if ($0 ~ /<!-- HTML CONVERTER -->/) {
-# 	        sawHTMLConverter = 1
-# 	        print "<!-- PT JNLP CONVERTER -->";
-#                 print "<a href=\"" jnlpFile "\">Run the demo using Web Start</a>";
-# 	    } else if ($0 ~ /<!-- \/HTML CONVERTER -->/) {
-# 	        sawHTMLConverter = 0 
-# 	        print "<!-- /PT JNLP CONVERTER -->";
-# 	    } else if (sawHTMLConverter == 0) {
-# 	        print $0
-#             }  
-#           }' $modelPath/$model.htm > /tmp/$model.htm
+	 awk '{if ($0 ~ /<!-- PT DEPLOYJAVA CONVERTER -->/) {
+                  sawJNLPAppletConverter = 1
+               }
+               if (sawJNLPAppletConverter == 1) {
+                  print $0
+               }
+               if ($0 ~ /<!-- \/PT DEPLOYJAVA CONVERTER -->/) {
+                  exit
+               }
+              }' $modelPath/${model}JNLP.htm | sed "s/url, '1.6.0'/url/" >> /tmp/$model.htm
 
-#          diff /tmp/$model.htm $modelPath/$model.htm
-#	  cp /tmp/$model.htm $modelPath/$model.htm
+         awk '{ if (sawJNLPConverter == 1) {
+                   if ($0 !~ /CENTER>/) {
+                       print $0
+                   }
+                }
+                if ($0 ~ /<!-- \/PT JNLP APPLET CONVERTER -->/ || $0 ~ /<!-- \/PT DEPLOYJAVA CONVERTER-->/ || $0 ~ /<!-- \/HTML CONVERTER -->/) {
+                   sawJNLPConverter = 1;
+                } 
+           }' $modelPath/$model.htm >> /tmp/$model.htm
+
+          diff /tmp/$model.htm $modelPath/$model.htm
+	  cp /tmp/$model.htm $modelPath/$model.htm
 #	  ls -l /tmp/$model.htm $modelPath/$model.htm
 #	  echo $modelPath/$model.htm
 	  
-     #fi
+   fi
+    exit
 done
