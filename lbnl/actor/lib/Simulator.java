@@ -663,6 +663,30 @@ public class Simulator extends SDFTransformer {
         // Send initial output token. See also domains/sdf/lib/SampleDelay.java
         _readFromServer();
         double[] dblRea = server.getDoubleArray();
+	if ( server.getClientFlag() == 1){
+	    final String em = "Actor " + this.getFullName() + ": " + LS
+		+ "When trying to read from server, at time "
+		+ getDirector().getModelTime().getDoubleValue() + "," 
+		+ "client sent flag " + server.getClientFlag() + "," + LS 
+		+ "which indicates that it reached the end of its simulation." + LS
+		+ "This should not happen during the initialization of this actor.";
+	    throw new IllegalActionException(em);
+	}
+	else
+	    if ( server.getClientFlag() != 0){
+	    final String em = "Actor " + this.getFullName() + ": " + LS
+		+ "When trying to read from server, at time "
+		+ getDirector().getModelTime().getDoubleValue() + "," 
+		+ "client sent flag " + server.getClientFlag() + "," + LS 
+		+ "which indicates a problem in the client.";
+	    throw new IllegalActionException(em);
+	}
+	if ( dblRea == null ){
+	    final String em = "Actor " + this.getFullName() + ": " + LS
+		+ "When trying to read from server, obtained 'null' at time "
+		+ getDirector().getModelTime().getDoubleValue();
+	    throw new IllegalActionException(em);
+	}
         outTok = new DoubleMatrixToken(dblRea, dblRea.length, 1);
         output.send(0, outTok);
     }
