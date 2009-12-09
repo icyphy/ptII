@@ -1,4 +1,4 @@
-/* An event that represents a token or tokens sent.
+/* An event that represents a token or tokens sent or received by an IOPort.
 
  Copyright (c) 2006-2009 The Regents of the University of California.
  All rights reserved.
@@ -35,7 +35,8 @@ import ptolemy.kernel.util.NamedObj;
 //// PortEvent
 
 /**
- An event that is published by an IOPort when a token is sent or received.
+ An event that is published by an IOPort when a token or tokens are sent or
+ received.
 
  <p>In Kepler the provenance recorder and the activity monitor use
  these events to save intermediate results / show status of the
@@ -51,7 +52,7 @@ import ptolemy.kernel.util.NamedObj;
 public class IOPortEvent implements DebugEvent {
     /** Create a new port event with the given parameters.  This
      *  constructor is used when an array of tokens is sent or received.
-     *  @param port The IOPort where the event occured.
+     *  @param port The IOPort where the event occurred.
      *  @param event The type of event.
      *  @param channel Channel the token was sent/received on. Use
      *  IOPortEvent.ALLCHANNELS to indicate a broadcast event.
@@ -74,8 +75,8 @@ public class IOPortEvent implements DebugEvent {
 
     /** Create a new port event with the given parameters.  This
      *  constructor is used when a token is sent or sent inside,
-     *  received or recevied inside.
-     *  @param port The IOPort where the event occured
+     *  received or received inside.
+     *  @param port The IOPort where the event occurred
      *  @param event The type of event.
      *  @param channel Channel the token was sent/received on. Use
      *  IOPortEvent.ALLCHANNELS to indicate a broadcast event.
@@ -127,7 +128,7 @@ public class IOPortEvent implements DebugEvent {
         return _outside;
     }
 
-    /** Return the port where the event occured.
+    /** Return the port where the event occurred.
      *  @return An instance of IOPort.
      */
     public IOPort getPort() {
@@ -139,7 +140,7 @@ public class IOPortEvent implements DebugEvent {
      *  the tokens that were sent use getTokenArray() instead.  The
      *  condition (getVectorLength == IOPortEvent.SINGLETOKEN) is true
      *  if there was a single token involved.  It returns null if it
-     *  was getstart event, since that has no related token at all.
+     *  was GET_BEGIN event, since that has no related token at all.
      *  @return The token sent/received by the IOPort.
      */
     public Token getToken() {
@@ -216,7 +217,7 @@ public class IOPortEvent implements DebugEvent {
     /** An event corresponding with the ending of a token being received. */
     public final static int GET_END = 3;
 
-    /** An evernt correspoding with the ending of a token being sent. */
+    /** An event corresponding with the ending of a token being sent. */
     public final static int SEND_END = 4;
 
     /** The token was broadcast on all channels. */
@@ -228,25 +229,25 @@ public class IOPortEvent implements DebugEvent {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    // The channel on which the token was sent.
+    /** The channel on which the token was sent. */
     private int _channel;
 
-    // The IOPort that was activated.
+    /** The IOPort that was activated. */
     private IOPort _port;
 
-    // The event type.
+    /** The event type. */
     // FIXME: we should use a type safe enumeration here.
     private int _event;
 
-    // The direction of the event (outside vs inside).
+    /** The direction of the event (outside vs inside). */
     private boolean _outside;
 
-    // The token sent by the IOPort.
+    /** The token sent by the IOPort. */
     private Token _token;
 
-    // The array of tokens sent by the IOPort.
+    /** The array of tokens sent by the IOPort. */
     private Token[] _tokenArray;
 
-    // The number of tokens from the array that were sent by the IOPort.
+    /** The number of tokens from the array that were sent by the IOPort. */
     private int _vectorLength;
 }
