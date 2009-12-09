@@ -270,7 +270,7 @@ public class PthalesReceiver extends SDFReceiver {
         // Total size of the array in "memory"
         int finalSize = port.getArraySize();
         if (_buffer == null || _buffer.length < finalSize)
-            _buffer = new Token[finalSize];
+            _buffer = new Token[finalSize*port.getNbTokenPerData()];
 
         // 
         _sizes = port.getArraySizes();
@@ -316,6 +316,9 @@ public class PthalesReceiver extends SDFReceiver {
 
     void computeAddresses(PThalesIOPort port, PthalesActorInterface actor) {
    
+        // Number of token per data
+        int nbToken = port.getNbTokenPerData();
+
         // FIXME: can reduce number of addresses if the empty tilings are taken in account
         // same number of addresses than buffer size (worst case)
         int jumpPattern[] = new int[port.getAddressNumber()];
@@ -343,9 +346,6 @@ public class PthalesReceiver extends SDFReceiver {
             sizeRepetition *= size;
         }
         
-        // Number of token per data
-        int nbToken = port.getNbTokenPerData();
-
         // address indexes
         int dims[] = new int[port.getPatternSizes().length + 1];
         // address indexes
@@ -393,8 +393,10 @@ public class PthalesReceiver extends SDFReceiver {
                             * nbToken;
                 }
 
-                jumpPattern[pos] = origin + jumpDim + jumpRep;
-                pos++;
+                for (int numToken = 0; numToken < nbToken; numToken++) {
+                    jumpPattern[pos] = origin + jumpDim + jumpRep + numToken;
+                    pos++;
+                }
 
                 // pattern indexes update
                 dims[0]++;

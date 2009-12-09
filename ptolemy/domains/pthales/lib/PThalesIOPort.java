@@ -225,7 +225,7 @@ public class PThalesIOPort extends TypedIOPort {
         for (int size : getPatternSizes()) {
             val *= size;
         }
-        return val * getNbTokenPerData();
+        return val;
     }
 
     /** Computes pattern sizes in byte for each dimension
@@ -277,7 +277,7 @@ public class PThalesIOPort extends TypedIOPort {
             Set tiling = _tiling.keySet();
             int i = 0;
             for (Object til : tiling) {
-                if (i < rep.length) {
+                if (i < rep.length  && !((String) til).startsWith("empty")) {
                     myList.add(rep[i] * _tiling.get(til)[0]);
                     i++;
                 }
@@ -298,7 +298,7 @@ public class PThalesIOPort extends TypedIOPort {
             val *= size;
         }
 
-        return val * getNbTokenPerData();
+        return val;
     }
 
     /** Computes array sizes (for each dimension)
@@ -370,7 +370,7 @@ public class PThalesIOPort extends TypedIOPort {
 
     /** Returns the number of addresses needed to access all of the
      *  datas for all iteration
-     *  @return the number of adresses.
+     *  @return the number of tokens needed
      *  FIXME: should be deleted if empty tilings are taken in account
      */
     public int getAddressNumber() {
