@@ -205,6 +205,9 @@ public class PthalesDirector extends SDFDirector {
      *  one of the associated actors throws it.
      */
     public void preinitialize() throws IllegalActionException {
+        // Garbage collector
+        System.gc ();
+
         // Load library needed to project
         if (!(_library.length() == 0)) {
             System.loadLibrary(_library);
