@@ -399,7 +399,7 @@ public class RTMaudeUtility {
                 // translate connections : Same level
                 for (IOPort p : (List<IOPort>) act.outputPortList()) {
                     RTMList rports = new RTMList(";", "noPort");
-                    for (Port op : (List<Port>) p.sinkPortList()) {
+                    for (Port op : (List<IOPort>) p.sinkPortList()) {
                         if (op.getContainer() != p.getContainer()
                                 .getContainer()) {
                             rports.add(portName(null, op));
