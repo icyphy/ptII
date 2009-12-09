@@ -460,6 +460,30 @@ public class Configuration extends CompositeEntity implements
         return results.toString();
     }
 
+    /** Close all the tableaux.
+     *  @exception IllegalActionException If thrown while accessing the Configuration
+     *  or while closing the tableaux.
+     */   
+    public static void closeAllTableaux() throws IllegalActionException {
+        // Based on code by Chad Berkley.
+        Configuration configuration = (Configuration)Configuration.configurations().iterator().next();
+        // Get the directory from the configuration
+        ModelDirectory directory = (ModelDirectory)configuration.getEntity("directory");
+
+        if (directory == null) {
+            return;
+        }
+
+        Iterator effigies = directory.entityList(Effigy.class).iterator();
+        // Go through the directory and close each effigy.
+        while (effigies.hasNext()) {
+            Effigy effigy = (Effigy) effigies.next();
+            if (!effigy.closeTableaux()) {
+                return;
+            }
+        }
+    } 
+
     /** Return a list of all the configurations that have been created.
      *  Note  that if this method is called before a configuration
      *  is created, then it will return an empty linked list.

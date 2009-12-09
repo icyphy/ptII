@@ -28,12 +28,17 @@
 
 package ptolemy.vergil;
 
+import java.io.File;
 import java.io.IOException;
+import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLConnection;
 
+import ptolemy.actor.gui.Configuration;
 import ptolemy.gui.BasicJApplet;
 import ptolemy.kernel.attributes.VersionAttribute;
+import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.util.StringUtilities;
 
 //////////////////////////////////////////////////////////////////////////
@@ -58,7 +63,6 @@ public class VergilApplet extends BasicJApplet {
         super.destroy();
         // Note: we used to call manager.terminate() here to get rid
         // of a lingering browser problem
-        System.out.println("FIXME: Need to destroy VergilApplet");
         stop();
     }
 
@@ -106,6 +110,28 @@ public class VergilApplet extends BasicJApplet {
                 URL docBase = getDocumentBase();
                 try {
                     URL xmlFile = new URL(docBase, vergilArguments[i]);
+                    
+                    try {
+                        // Try to open the URL, if it can't be opened, try from the codebase.
+                        URLConnection connection = xmlFile.openConnection();
+                        if (connection instanceof HttpURLConnection) {
+                            HttpURLConnection httpConnection = (HttpURLConnection) connection;
+                            httpConnection.setRequestMethod("HEAD");
+                            if (httpConnection.getResponseCode() != HttpURLConnection.HTTP_OK) {
+                                xmlFile = new URL(vergilArguments[i]);
+                            }
+                        } else {
+                            if (xmlFile.getProtocol().equals("file")) {
+                                File urlFile = new File(xmlFile.getPath());
+                                if (!urlFile.exists()) {
+                                    xmlFile = new URL(getCodeBase(), vergilArguments[i]);
+                                }
+                            }
+                        }
+                    } catch (Exception ex) {
+                        System.out.println("Failed to open " + vergilArguments[i]);
+                        ex.printStackTrace();
+                    }
                     vergilArguments[i] = xmlFile.toExternalForm();
                 } catch (MalformedURLException ex) {
                     report("Failed to open \"" + vergilArguments[i] + "\"", ex);
@@ -125,6 +151,10 @@ public class VergilApplet extends BasicJApplet {
      */
     public void stop() {
         super.stop();
-        System.out.println("FIXME: Need to stop VergilApplet");
+        try {
+            Configuration.closeAllTableaux();
+        } catch (IllegalActionException ex) {
+            ex.printStackTrace();
+        }
     }
 }
