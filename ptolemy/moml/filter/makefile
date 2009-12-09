@@ -65,6 +65,7 @@ JSRCS = \
 	RelationWidthChanges.java \
 	RemoveClasses.java \
 	RemoveGraphicalClasses.java \
+	RemoveNonPtinyClasses.java \
 	RemoveProperties.java
 
 EXTRA_SRCS =	$(JSRCS)

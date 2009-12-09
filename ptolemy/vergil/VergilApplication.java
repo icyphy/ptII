@@ -49,14 +49,15 @@ import ptolemy.gui.GraphicalMessageHandler;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.moml.MoMLParser;
+import ptolemy.moml.filter.RemoveNonPtinyClasses;
 import ptolemy.util.MessageHandler;
 
 //////////////////////////////////////////////////////////////////////////
 //// VergilApplication
 
 /**
- This application opens run control panels for models specified on the
- command line.
+ An application for editing ptolemy models visually.
+
  <p>
  The exact facilities that are available are determined by an optional
  command line argument that names a directory in ptolemy/configs that
@@ -64,7 +65,7 @@ import ptolemy.util.MessageHandler;
  -ptiny, then we will use ptolemy/configs/ptiny/configuration.xml and
  ptolemy/configs/ptiny/intro.htm.  The default configuration is
  ptolemy/configs/full/configuration.xml, which is loaded before any
- other command-line arguments are processed.
+ other command-line arguments are processed.</p>
 
  <p>This application also takes an optional command line argument pair
  <code>-configuration <i>configurationFile.xml</i></code> that names a configuration
@@ -79,8 +80,13 @@ import ptolemy.util.MessageHandler;
  are equivalent
  <p>
  If there are no command-line arguments at all, then the configuration
- file is augmented by the MoML file ptolemy/configs/full/welcomeWindow.xml
+ file is augmented by the MoML file ptolemy/configs/full/welcomeWindow.xml</p>
 
+ <p>Note that if the configuration starts with "ptiny", then 
+ {@link ptolemy.moml.filter.RemoveNonPtinyClasses} is used to remove classes
+ such as code generators that might be present in the model but are not part
+ of the Ptiny configuration.</p>
+ 
  @author Edward A. Lee, Steve Neuendorffer, Christopher Hylands, contributor: Chad Berkeley
  @version $Id$
  @since Ptolemy II 1.0
@@ -519,6 +525,13 @@ public class VergilApplication extends MoMLApplication {
 
                 // This will throw an Exception if we can't find the config.
                 _configurationURL = specToURL(potentialConfiguration);
+                if (_configurationSubdirectory.startsWith("ptiny")) {
+                    // If the configuration startes with ptiny, then
+                    // filter out codegenerators
+                    LinkedList filters = new LinkedList();
+                    filters.add(new RemoveNonPtinyClasses());
+                    MoMLParser.addMoMLFilters(filters);
+                }
             } catch (Throwable ex) {
                 // The argument did not name a configuration, let the parent
                 // class have a shot.
