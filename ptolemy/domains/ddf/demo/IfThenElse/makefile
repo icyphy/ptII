@@ -54,10 +54,6 @@ EXTRA_SRCS = \
 	$(OTHER_FILES_TO_BE_JARED) \
 	IfThenElse.htm \
 	IfThenElseFSM.htm \
-	IfThenElseFSMDDFPlusMinus.png \
-	IfThenElseFSMModalModel.png \
-	IfThenElseFSMGainMinus.png \
-	IfThenElseFSMGainPlus.png \
 	IfThenElseFSMKepler.xml \
 	IfThenElseFSM.xml
 
