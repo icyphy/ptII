@@ -41,9 +41,13 @@ import ptolemy.kernel.util.NameDuplicationException;
  A director that does nothing, for use in models that have no useful
  execution.
 
- <p> It is is for use with models that have no execution semantics, yet
- the code generator requires a director.
+ <p>This director is added to models for code generation purposes when
+ the model has no useful execution but the code generator runs
+ CompositeActor.preinitialize().</p> 
  
+ <p>If this director is used in a model, then adding a <code>_hide</code>
+ attribute to the director will make the director invisible to the user.</p>
+
  @author Edward A. Lee
  @version $Id$
  @since Ptolemy II 8.1
