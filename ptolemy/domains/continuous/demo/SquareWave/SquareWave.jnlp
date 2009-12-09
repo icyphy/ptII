@@ -9,6 +9,9 @@
 -->
 <jnlp codebase="file:/Users/cxh/ptII/"
       href="file:/Users/cxh/ptII/ptolemy/domains/continuous/demo/SquareWave/SquareWave.jnlp"> 
+<!-- jnlp
+      codebase="file:./../../../../.." 
+      href="ptolemy/domains/continuous/demo/SquareWave/SquareWave.jnlp"-->
   <information>
 	  <title>SquareWave</title>
 	  <vendor>Ptolemy Project, UC Berkeley</vendor>
@@ -20,36 +23,34 @@
   <security> 
         <all-permissions/>
   </security> 
+
   <resources>
         <!-- Bump maximum heap size to 500Mb, use JVM Props. to confirm -->
   	<j2se version="1.5+" max-heap-size="500m" />
 	<!-- Start Jars -->
         <jar href="ptolemy/domains/continuous/demo/SquareWave/signed_SquareWave.jar"
-             size="2219"
+             size="2253"
              main="true"/>
-        <jar href="signed/ptolemy/domains/continuous/ct.jar"
-             size="145024"
-             download="eager"/>
         <jar href="signed/ptolemy/ptsupport.jar"
-             size="3378548"
+             size="3482891"
              download="eager"/>
-        <jar href="signed/ptolemy/data/data.jar"
-             size="418380"
+        <jar href="signed/ptolemy/domains/continuous/continuous.jar"
+             size="76921"
              download="eager"/>
         <jar href="signed/ptolemy/domains/modal/modal.jar"
-             size="156800"
+             size="172908"
              download="eager"/>
-        <jar href="signed/ptolemy/domains/continuous/ct.jar"
-             size="145024"
+        <jar href="signed/ptolemy/domains/ct/ct.jar"
+             size="146860"
              download="eager"/>
         <jar href="signed/lib/diva.jar"
-             size="509852"
+             size="507815"
              download="eager"/>
-        <jar href="signed/ptolemy/domains.modal/fsm.jar"
-             size="155951"
+        <jar href="signed/ptolemy/domains/fsm/fsm.jar"
+             size="157805"
              download="eager"/>
         <jar href="signed/ptolemy/vergil/vergilApplet.jar"
-             size="872758"
+             size="893310"
              download="eager"/>
 
 	<!-- End Jars -->
@@ -58,6 +59,12 @@
 	<argument>-ptinyViewer</argument>
 	<argument>SquareWave.xml</argument>
   </application-desc>
-  <!-- Need to deal with Java 3D -->
+  <!-- applet-desc 
+         name="SquareWave Applet"
+         main-class="ptolemy.vergil.VergilApplet"
+         width="600"
+         height="1250">
+   </applet-desc-->
+
 
 </jnlp>

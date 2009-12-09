@@ -8,11 +8,14 @@
      it will appear in the desktop icon
 -->
 <jnlp codebase="file:/Users/cxh/ptII/"
-      href="file:/Users/cxh/ptII/ptolemy/domains/continuous/demo/HybridPlant/DeterministicHybridPlant.jnlp"> 
+      href="file:/Users/cxh/ptII/ptolemy/domains/continuous/demo/HybridPlant/HybridPlant.jnlp"> 
+<!-- jnlp
+      codebase="file:./../../../../.." 
+      href="ptolemy/domains/continuous/demo/HybridPlant/HybridPlant.jnlp"-->
   <information>
-	  <title>DeterministicHybridPlant</title>
+	  <title>HybridPlant</title>
 	  <vendor>Ptolemy Project, UC Berkeley</vendor>
-	  <description kind="tooltip">DeterministicHybridPlant</description>
+	  <description kind="tooltip">HybridPlant</description>
 	  <icon href="doc/img/PtolemyIISmall.gif"/>
 	  <homepage href="file:/Users/cxh/ptII/"/>
 	  <offline-allowed/>
@@ -20,50 +23,51 @@
   <security> 
         <all-permissions/>
   </security> 
+
   <resources>
         <!-- Bump maximum heap size to 500Mb, use JVM Props. to confirm -->
   	<j2se version="1.5+" max-heap-size="500m" />
 	<!-- Start Jars -->
-        <jar href="ptolemy/domains/continuous/demo/HybridPlant/signed_DeterministicHybridPlant.jar"
-             size="2516"
+        <jar href="ptolemy/domains/continuous/demo/HybridPlant/signed_HybridPlant.jar"
+             size="2552"
              main="true"/>
-        <jar href="signed/ptolemy/domains/continuous/ct.jar"
-             size="145024"
+        <jar href="signed/ptolemy/domains/modal/modal.jar"
+             size="172908"
              download="eager"/>
         <jar href="signed/ptolemy/ptsupport.jar"
-             size="3378548"
+             size="3482891"
+             download="eager"/>
+        <jar href="signed/ptolemy/domains/continuous/continuous.jar"
+             size="76921"
              download="eager"/>
         <jar href="signed/ptolemy/domains/de/de.jar"
-             size="74434"
+             size="93162"
              download="eager"/>
-        <jar href="signed/ptolemy/data/data.jar"
-             size="418380"
-             download="eager"/>
-        <jar href="signed/ptolemy/domains.modal/fsm.jar"
-             size="155951"
-             download="eager"/>
-        <jar href="signed/ptolemy/domains/modal/modal.jar"
-             size="156800"
-             download="eager"/>
-        <jar href="signed/ptolemy/domains/continuous/ct.jar"
-             size="145024"
+        <jar href="signed/ptolemy/domains/ct/ct.jar"
+             size="146860"
              download="eager"/>
         <jar href="signed/lib/diva.jar"
-             size="509852"
+             size="507815"
              download="eager"/>
-        <jar href="signed/ptolemy/domains.modal/fsm.jar"
-             size="155951"
+        <jar href="signed/ptolemy/domains/fsm/fsm.jar"
+             size="157805"
              download="eager"/>
         <jar href="signed/ptolemy/vergil/vergilApplet.jar"
-             size="872758"
+             size="893310"
              download="eager"/>
 
 	<!-- End Jars -->
   </resources>
   <application-desc main-class="ptolemy.copernicus.applet.JNLPApplication">
 	<argument>-ptinyViewer</argument>
-	<argument>DeterministicHybridPlant.xml</argument>
+	<argument>HybridPlant.xml</argument>
   </application-desc>
-  <!-- Need to deal with Java 3D -->
+  <!-- applet-desc 
+         name="HybridPlant Applet"
+         main-class="ptolemy.vergil.VergilApplet"
+         width="600"
+         height="1250">
+   </applet-desc-->
+
 
 </jnlp>

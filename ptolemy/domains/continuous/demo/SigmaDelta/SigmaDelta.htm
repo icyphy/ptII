@@ -11,32 +11,24 @@
 <P>
  <!-- All of the controls of the applet should be visible when the
 applet is displayed on a XGA screen-->
-<center>
-
-<!-- The HTML below is for the Java Plugin.  The first
-     section is for IE, the second is for Netscape
- -->
-<!-- PT JNLP APPLET CONVERTER -->
-<!-- We use both the older applet style and the JDK1.6.0_10 and later
-     JNLP Applets.  In this way, we can support pre-JDK1.6.0_10 installs.
-     See https://jdk6.dev.java.net/plugin2/jnlp/ -->
-<APPLET 
-   code = "ptolemy.vergil.VergilApplet"
-   codebase = "../../../../.."
-   archive = "ptolemy/domains/continuous/demo/SigmaDelta/SigmaDelta.jar,ptolemy/data/data.jar,ptolemy/ptsupport.jar,ptolemy/domains/de/de.jar,ptolemy/domains/continuous/ct.jar,ptolemy/domains/sdf/sdf.jar,lib/diva.jar,ptolemy/domains/modal/modal.jar,ptolemy/domains.modal/fsm.jar,ptolemy/domains/continuous/ct.jar,ptolemy/vergil/vergilApplet.jar"
-   width = "100"
-   height = "100"
-   >
-  <PARAM name="jnlp_href" value="ptolemy/domains/continuous/demo/SigmaDelta/SigmaDelta.jnlp">
-  <PARAM NAME = "commandLineArguments" VALUE = "-ptinyViewer ptolemy/domains/continuous/demo/SigmaDelta/SigmaDelta.xml">
-  <PARAM NAME = "NAME" VALUE = "SigmaDelta" >
-  <PARAM NAME = "background" VALUE = "#ffffff" >
-  <PARAM NAME = "controls" VALUE = "buttons" >
-  <PARAM NAME = "orientation" VALUE = "vertical" > \
-  <PARAM NAME = "modelURL" VALUE = "SigmaDelta.xml" > \
-  <a href="SigmaDelta.xml">MoML specification for this model.</a> \
-</APPLET>
-<!-- /PT JNLP APPLET CONVERTER -->
+<!-- PT DEPLOYJAVA CONVERTER -->
+<p>
+SigmaDelta is available in two formats:
+<ul>
+  <li> As a Web Start Application: 
+<!-- See http://blogs.sun.com/thejavatutorials/entry/deployment_toolkit_101 -->
+<script src="../../../../../doc/deployJava.js"></script>
+<script >
+    var dir = location.href.substring(0,location.href.lastIndexOf('/')+1);
+    var url = dir + "SigmaDelta.jnlp";
+    deployJava.createWebStartLaunchButton(url);
+</script>
+ <li> As an <a href="SigmaDeltaVergil.htm">applet</a>.
+</ul>  
+The Java Web Start version is preferred, though browsers with versions of Java
+earlier than Java 1.6.0_13 may only work with the applet version.
+See <a href="../../../../../doc/webStartHelp.htm">Web Start Help</a> for details.
+<!-- /PT DEPLOYJAVA CONVERTER -->
 </center>
 
 <H2>Introduction</H2>
@@ -48,7 +40,6 @@ causes the change of the capacitance. By measuring the change of capacitance
 (e.g. using the Wheatstone capacitor bridge), the acceleration can be obtained
 accurately.  A schematic diagram is shown below:
 <P>
-<CENTER><img src="SigmaDelta2.gif"></CENTER>
 <P>
 Feedback can be applied to the beams by charging the capacitors. Using
 feedback can reduce the sensitivity to process variations,
@@ -73,7 +64,6 @@ beams. The outputs are also counted and averaged every <i>NT</i> seconds to
 produce the digital output. In our example, the external acceleration
 is a sine wave.
 <P>
-<CENTER><img src="SigmaDelta.gif"></CENTER>
 <P>
 <H2>Simulation</H2>
 To run the simulation, click <B>Go</B> in the above applet.
@@ -83,11 +73,9 @@ To run the simulation, click <B>Go</B> in the above applet.
 If the model runs correctly, the result should look like:<BR>
 <B>Continuous time part:</B>
 <p>
-<CENTER><img src="SDCTPlot.gif"></CENTER>
 <P>
 <B>Discrete time part:</B>
 <p>
-<CENTER><img src="SDDEPlot.gif"></CENTER>
 <P>
 <H2>References</H2>
 [1] James C. Candy, <I>"A Use of Limit Cycle Oscillations to Obtain Robust Analog-to-Digital Converters"</I>, IEEE Trans. on Communications, Vol. COM-22, No. 3, March 1974, pp298-305<BR>

@@ -1,0 +1,37 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- : $Id: modelJnlp.htm.in 56535 2009-12-09 04:18:30Z cxh $
+-->
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US" lang="en-US">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<link href="../../../../../doc/default.css" rel="stylesheet" type="text/css">
+<title>V2V</title>
+</head>
+<body>
+<h1>V2V</h1>
+<svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">Vehicle-to-vehicle control system, as designed by U. Penn for Mobies.
+The controller in FollowingPlatoon is a modal controller with the objective
+of following the LeadingPlatoon.</text></svg>
+<!-- PT DEPLOYJAVA CONVERTER -->
+<p>
+V2V is available in two formats:
+<ul>
+  <li> As a Web Start Application: 
+<!-- See http://blogs.sun.com/thejavatutorials/entry/deployment_toolkit_101 -->
+<script src="../../../../../doc/deployJava.js"></script>
+<script >
+    var dir = location.href.substring(0,location.href.lastIndexOf('/')+1);
+    var url = dir + "V2V.jnlp";
+    deployJava.createWebStartLaunchButton(url);
+</script>
+ <li> As an <a href="V2VVergil.htm">applet</a>.
+</ul>  
+The Java Web Start version is preferred, though browsers with versions of Java
+earlier than Java 1.6.0_13 may only work with the applet version.
+See <a href="../../../../../doc/webStartHelp.htm">Web Start Help</a> for details.
+<!-- /PT DEPLOYJAVA CONVERTER -->
+
+</p>
+
+</body>
+</htm>

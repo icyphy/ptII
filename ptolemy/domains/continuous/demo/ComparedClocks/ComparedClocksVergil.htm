@@ -12,12 +12,6 @@
 This demo shows that different clocks have 
 different behaviors in CT domain. 
 <P>
- <!-- All of the controls of the applet should be visible when the
-applet is displayed on a XGA screen-->
-<center>
-<!-- The HTML below is for the Java Plugin.  The first
-     section is for IE, the second is for Netscape 4, the third for Mozilla 1.0
- -->
 <!-- PT JNLP APPLET CONVERTER -->
 <!-- We use both the older applet style and the JDK1.6.0_10 and later
      JNLP Applets.  In this way, we can support pre-JDK1.6.0_10 installs.
@@ -30,7 +24,7 @@ applet is displayed on a XGA screen-->
    height = "650"
    >
   <PARAM name="jnlp_href" value="ptolemy/domains/continuous/demo/ComparedClocks/ComparedClocks.jnlp">
-  <PARAM NAME = "commandLineArguments" VALUE = "-ptinyViewer ptolemy/domains/continuous/demo/ComparedClocks/ComparedClocks.xml">
+  <PARAM NAME = "commandLineArguments" VALUE = "-ptinyViewer ComparedClocks.xml">
   <PARAM NAME = "NAME" VALUE = "ComparedClocks" >
   <PARAM NAME = "background" VALUE = "#ffffff" >
   <PARAM NAME = "controls" VALUE = "buttons" >
@@ -42,18 +36,15 @@ applet is displayed on a XGA screen-->
 </CENTER>
 
 
-The clocks have the same period as 0.5. 
+<p>The clocks have the same period as 0.5. 
 The above two clocks have offsets as {0.0, 0.2},
-while the bottom one has offsets as {0.1, 0.2}.
+while the bottom one has offsets as {0.1, 0.2}.</p>
 
 <p>The two continuous clocks generate discontinuities
 at their offsets and the discontinuities are shown
 on the simulations results explicitly. While the
-discrete clock doesn't show that.
+discrete clock doesn't show that.</p>
 
-<p>The <a href="ComparedClocksVergil.htm">block diagram</a>
-for the model was constructed using the Ptolemy II schematic editor
-called Vergil.
 </p>
 </BODY>
 </HTML>

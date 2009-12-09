@@ -2,40 +2,33 @@
 <html>
 <head>
 <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
-<title>CT & FSM domain demo -  Thermostat System</title>
+<title>Continuous & FSM domain demo -  Thermostat System</title>
 <link href="../../../../../doc/default.css" rel="stylesheet" type="text/css">
 </head>
 <body>
-<H1>CT & FSM domain demo -  Thermostat System</h1>
+<H1>Continuous & FSM domain demo -  Thermostat System</h1>
 <P>
  <!-- All of the controls of the applet should be visible when the
 applet is displayed on a XGA screen-->
-<center>
 
-<!-- The HTML below is for the Java Plugin.  The first
-     section is for IE, the second is for Netscape
- -->
-<!-- PT JNLP APPLET CONVERTER -->
-<!-- We use both the older applet style and the JDK1.6.0_10 and later
-     JNLP Applets.  In this way, we can support pre-JDK1.6.0_10 installs.
-     See https://jdk6.dev.java.net/plugin2/jnlp/ -->
-<APPLET 
-   code = "ptolemy.vergil.VergilApplet"
-   codebase = "../../../../.."
-   archive = "ptolemy/domains/continuous/demo/Thermostat/Thermostat.jar,ptolemy/data/data.jar,ptolemy/domains.modal/fsm.jar,ptolemy/ptsupport.jar,ptolemy/domains/continuous/ct.jar,lib/diva.jar,ptolemy/domains/modal/modal.jar,ptolemy/domains.modal/fsm.jar,ptolemy/domains/continuous/ct.jar,ptolemy/vergil/vergilApplet.jar"
-   width = "100"
-   height = "100"
-   >
-  <PARAM name="jnlp_href" value="ptolemy/domains/continuous/demo/Thermostat/Thermostat.jnlp">
-  <PARAM NAME = "commandLineArguments" VALUE = "-ptinyViewer ptolemy/domains/continuous/demo/Thermostat/Thermostat.xml">
-  <PARAM NAME = "NAME" VALUE = "Thermostat" >
-  <PARAM NAME = "background" VALUE = "#ffffff" >
-  <PARAM NAME = "controls" VALUE = "buttons" >
-  <PARAM NAME = "orientation" VALUE = "vertical" > \
-  <PARAM NAME = "modelURL" VALUE = "Thermostat.xml" > \
-  <a href="Thermostat.xml">MoML specification for this model.</a> \
-</APPLET>
-<!-- /PT JNLP APPLET CONVERTER -->
+<!-- PT DEPLOYJAVA CONVERTER -->
+<p>
+Thermostat is available in two formats:
+<ul>
+  <li> As a Web Start Application: 
+<!-- See http://blogs.sun.com/thejavatutorials/entry/deployment_toolkit_101 -->
+<script src="../../../../../doc/deployJava.js"></script>
+<script >
+    var dir = location.href.substring(0,location.href.lastIndexOf('/')+1);
+    var url = dir + "Thermostat.jnlp";
+    deployJava.createWebStartLaunchButton(url);
+</script>
+ <li> As an <a href="ThermostatVergil.htm">applet</a>.
+</ul>  
+The Java Web Start version is preferred, though browsers with versions of Java
+earlier than Java 1.6.0_13 may only work with the applet version.
+See <a href="../../../../../doc/webStartHelp.htm">Web Start Help</a> for details.
+<!-- /PT DEPLOYJAVA CONVERTER -->
 </center>
 
 <H2>Introduction</H2>
@@ -64,7 +57,6 @@ irrespective of the underlying simulation sample rate.
 The simulator will iterate if necessary, and backtrack if necessary,
 to accurately determine the time at which events occur.
 <p>
-<CENTER><img src="Thermostat.gif"></CENTER>
 <P>
 </BODY>
 </HTML>
