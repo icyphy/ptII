@@ -52,11 +52,12 @@ JSRCS =
 OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS) \
 	ModelGeneration.xml \
-	ModelGeneration_DDF.xml \
-	ModelGeneration_DE.xml
+	ModelGenerationDDF.xml \
+	ModelGenerationDE.xml
 
 EXTRA_SRCS = \
-	ModelGeneration_DE.htm \
+	ModelGenerationDE.htm \
+	ModelGenerationDEVergil.htm \
 	$(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
@@ -81,8 +82,8 @@ install: jclass jars
 
 demo:
 	$(ROOT)/bin/vergil ModelGeneration.xml
-	$(ROOT)/bin/vergil ModelGeneration_DDF.xml
-	$(ROOT)/bin/vergil ModelGeneration_DE.xml
+	$(ROOT)/bin/vergil ModelGenerationDDF.xml
+	$(ROOT)/bin/vergil ModelGenerationDE.xml
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
