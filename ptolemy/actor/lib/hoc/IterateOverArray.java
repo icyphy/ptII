@@ -819,7 +819,7 @@ public class IterateOverArray extends MirrorComposite {
 
             if (_hasPortEventListeners) {
                 _notifyPortEventListeners(new IOPortEvent(this,
-                        IOPortEvent.SEND, channelIndex, true, token));
+                        IOPortEvent.SEND_BEGIN, channelIndex, true, token));
             }
 
             try {
@@ -861,6 +861,11 @@ public class IterateOverArray extends MirrorComposite {
             } catch (ArrayIndexOutOfBoundsException ex) {
                 // NOTE: This may occur if the channel index is out of range.
                 // This is allowed, just do nothing.
+            } finally {
+                if (_hasPortEventListeners) {
+                    _notifyPortEventListeners(new IOPortEvent(this,
+                            IOPortEvent.SEND_END, channelIndex, true, token));
+                }
             }
         }
     }
