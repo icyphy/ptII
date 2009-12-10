@@ -60,6 +60,8 @@ EXTRA_SRCS = \
 	$(OTHER_FILES_TO_BE_JARED) \
 	ConstOptimizationDDF.htm \
 	ConstOptimizationDE.htm \
+	ConstOptimizationDDFVergil.htm \
+	ConstOptimizationDEVergil.htm
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.

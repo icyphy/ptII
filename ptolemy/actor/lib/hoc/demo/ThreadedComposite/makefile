@@ -63,6 +63,11 @@ EXTRA_SRCS = \
 	MulticoreExecution.htm \
 	ParallelExecution.htm \
 	SpontaneousSources.htm \
+	BackgroundExecutionVergil.htm \
+	ConcurrentChatVergil.htm \
+	MulticoreExecutionVergil.htm \
+	ParallelExecutionVergil.htm \
+	SpontaneousSourcesVergil.htm \
 	$(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't

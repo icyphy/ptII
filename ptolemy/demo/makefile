@@ -61,6 +61,7 @@ OTHER_FILES_TO_BE_JARED = \
 EXTRA_SRCS = \
 	$(OTHER_FILES_TO_BE_JARED) \
 	ExecDemos.htm \
+	ExecDemosVergil.htm \
 	ExecHyVisualDemos.xml \
 	demo.txt \
 	rundemos.bat \

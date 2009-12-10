@@ -61,6 +61,10 @@ EXTRA_SRCS = \
 	$(OTHER_FILES_TO_BE_JARED) \
 	ParameterSweepSmallWorldFSM.htm \
 	ParameterSweepSmallWorldSDF.htm \
+	ParameterSweepSmallWorldFSMVergil.htm \
+	ParameterSweepSmallWorldSDFVergil.htm \
+	SmallWorldMultiInstanceCompositeVergil.htm \
+	SmallWorldPtalonActorVergil.htm \
 	SmallWorldMultiInstanceComposite.htm \
 	SmallWorldPtalonActor.htm
 

@@ -79,8 +79,8 @@ OPTIONAL_FILES = \
 	'ModularSDFCodeGenerator$$Firing.class' \
 	'ModularSDFCodeGenerator$$FiringCluster.class' \
 	'ModularSDFCodeGenerator$$FiringComparator.class' \
-	'ModularSDFCodeGenerator$$SimFiringFunction.class' \
-	'ModularSDFCodeGenerator$$SimJunction.class'
+	'ModularSDFCodeGenerator$$SimulationFiringFunction.class' \
+	'ModularSDFCodeGenerator$$SimulationJunction.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 
