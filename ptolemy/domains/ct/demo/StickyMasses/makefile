@@ -56,7 +56,6 @@ EXTRA_SRCS = \
 	StickyMasses.htm \
 	StickyMassesVergil.htm \
 	StickyMassesNewVersion.htm \
-	StickyMassesNewVersion.jnlp \
 	SMdiagram.gif \
 	SMphysics.gif \
 	SMresult.gif

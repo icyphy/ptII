@@ -59,9 +59,7 @@ EXTRA_SRCS = \
 	$(OTHER_FILES_TO_BE_JARED) \
 	Hysteresis.htm \
 	HysteresisWithRandomDelay.htm \
-	HysteresisWithRandomDelay.jnlp \
 	HysteresisWithRandomLosses.htm \
-	HysteresisWithRandomLosses.jnlp
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.

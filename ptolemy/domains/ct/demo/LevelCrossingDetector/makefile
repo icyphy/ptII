@@ -56,7 +56,6 @@ EXTRA_SRCS = \
 	LevelCrossingDetector.htm \
 	LevelCrossingDetectorVergil.htm \
 	LevelCrossingDetectorDetectingDirections.htm \
-	LevelCrossingDetectorDetectingDirections.jnlp
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.

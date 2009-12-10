@@ -61,17 +61,11 @@ EXTRA_SRCS = \
 	$(OTHER_FILES_TO_BE_JARED) \
 	NewtonsCradle.htm \
 	NewtonsCradleComplicated.htm \
-	NewtonsCradleComplicated.jnlp \
 	NewtonsCradleNondeterministic.htm \
 	NewtonsCradleAnimated.htm \
-	NewtonsCradleAnimated.jnlp \
 	NewtonsCradlePerfectlyInelastic1.htm \
-	NewtonsCradlePerfectlyInelastic1.jnlp \
 	ParameterizedNewtonsCradleAnimated.htm \
-	ParameterizedNewtonsCradleAnimated.jnlp \
 	ParameterizedNewtonsCradleAnimatedNondeterministic.htm \
-	NewtonsCradleNondeterministic.jnlp \
-	ParameterizedNewtonsCradleAnimatedNondeterministic.jnlp
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.

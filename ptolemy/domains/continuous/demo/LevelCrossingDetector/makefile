@@ -54,9 +54,7 @@ OTHER_FILES_TO_BE_JARED = \
 EXTRA_SRCS = \
 	$(OTHER_FILES_TO_BE_JARED) \
 	LevelCrossingDetector.htm \
-	LevelCrossingDetector.jnlp \
 	LevelCrossingDetectorDetectingDirections.htm \
-	LevelCrossingDetectorDetectingDirections.jnlp \
 
 
 #	LevelCrossingDetector.htm

@@ -59,7 +59,6 @@ EXTRA_SRCS = \
 	$(OTHER_FILES_TO_BE_JARED) \
 	TrafficLight.htm \
 	WirelessDeployment.htm \
-	WirelessDeployment.jnlp
 
 
 

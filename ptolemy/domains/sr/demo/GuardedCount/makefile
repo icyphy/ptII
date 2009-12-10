@@ -55,7 +55,6 @@ EXTRA_SRCS = \
 	$(OTHER_FILES_TO_BE_JARED) \
 	GuardedCount.htm \
 	GuardedCountTimed.htm \
-	GuardedCountTimed.jnlp \
 	GuardedCountVergil.htm
 
 
