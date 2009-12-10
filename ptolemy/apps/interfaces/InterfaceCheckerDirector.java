@@ -173,29 +173,26 @@ public class InterfaceCheckerDirector extends Director {
                         + compositeOut.getName() + ")");
             }
         }
-        
-        String contract = null;
-        if (container.entityList().size() > 2) {
-            throw new IllegalActionException(container,
-                    "Composition of more than two actors not yet supported");
-        } else if (container.entityList().size() > 1) {
-            // FIXME: Implement cascade composition.
-            throw new IllegalActionException(container,
-                    "Composition of more than one actor not yet supported either");
-        } else if (container.entityList().size() == 1) {
-            // FIXME: Implement feedback composition.
-            final Actor actor = (Actor) container.entityList().get(0);
+        // Deal with contained actors
+        List<Entity> actors = container.entityList();
+        if (actors.size() == 1) {
+            final Actor actor = (Actor) actors.get(0);
             Set<Connection> connections = _getConnectionsBetween(actor, actor);
             RelationalInterface actorInterface = _getInterface(actor);
-            if (!connections.isEmpty()) {
+            if (!connections.isEmpty()) { // FIXME: Move this check into interface.
                 actorInterface.addFeedback(connections);
             }
             newConstraints.add(actorInterface.getContract());
-            contract = LispExpression.conjunction(newConstraints);
             outputNames.addAll(actorInterface.getVariables());
-        } else if (container.entityList().size() == 0) {
-            contract = "true";
+        } else if (actors.size() == 2) {
+            // FIXME: Implement cascade composition.
+            throw new IllegalActionException(container,
+                    "Cascade composition not yet supported");
+        } else if (actors.size() > 2) {
+            throw new IllegalActionException(container,
+                    "Composition of more than two actors not yet supported");
         }
+        final String contract = LispExpression.conjunction(newConstraints);
         return new RelationalInterface(inputNames, outputNames, contract);
     }
 

@@ -32,7 +32,11 @@ public class LispExpression {
      *  @return The conjunction.
      */
     public static String conjunction(final Collection<String> arguments) {
-        return node("and", arguments);
+        if (arguments.isEmpty()) {
+            return "true";
+        } else {
+           return node("and", arguments);
+        }
     }
 
 }
