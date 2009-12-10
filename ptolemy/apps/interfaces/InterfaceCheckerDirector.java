@@ -175,20 +175,53 @@ public class InterfaceCheckerDirector extends Director {
         }
         // Deal with contained actors
         List<Entity> actors = container.entityList();
-        if (actors.size() == 1) {
+        if (actors.size() == 1) { 
+            // Feedback Composition
             final Actor actor = (Actor) actors.get(0);
             Set<Connection> connections = _getConnectionsBetween(actor, actor);
             RelationalInterface actorInterface = _getInterface(actor);
+
+            System.err.println("test");
             if (!connections.isEmpty()) { // FIXME: Move this check into interface.
                 actorInterface.addFeedback(connections);
             }
             newConstraints.add(actorInterface.getContract());
             outputNames.addAll(actorInterface.getVariables());
+            
         } else if (actors.size() == 2) {
-            // FIXME: Implement cascade composition.
-            throw new IllegalActionException(container,
-                    "Cascade composition not yet supported");
-        } else if (actors.size() > 2) {
+            // Cascade/Parallel Composition
+            Set<Connection> selfLoop1 = _getConnectionsBetween((Actor) actors.get(0), (Actor) actors.get(0));
+            Set<Connection> selfLoop2 = _getConnectionsBetween((Actor) actors.get(1), (Actor) actors.get(1));
+            Set<Connection> connection1 = _getConnectionsBetween((Actor) actors.get(0), (Actor) actors.get(1));
+            Set<Connection> connection2 = _getConnectionsBetween((Actor) actors.get(0), (Actor) actors.get(1));
+            if (!selfLoop1.isEmpty() || !selfLoop2.isEmpty() ||
+                    (!connection1.isEmpty() && !connection2.isEmpty())) {
+                throw new IllegalActionException(container,
+                        "Cannot handle cascade and feedback in the same actor"
+                      + "\nPlease separate hierarchy.");
+            }
+
+            final Actor actor0;
+            final Actor actor1;
+            if (connection2.isEmpty()) {
+                actor0 = (Actor) actors.get(0); actor1 = (Actor) actors.get(1);
+            } else {
+                actor0 = (Actor) actors.get(1); actor1 = (Actor) actors.get(0);
+            }
+            
+            Set<Connection> connections = _getConnectionsBetween(actor0, actor1);
+            RelationalInterface compositeInterface;
+            if (connections.isEmpty()) {
+                compositeInterface = _getInterface(actor0).
+                      cascadeComposeWith(_getInterface(actor1), connections);
+            } else {
+                compositeInterface = _getInterface(actor0).
+                      parallelComposeWith(_getInterface(actor1));
+            }
+            newConstraints.add(compositeInterface.getContract());
+            outputNames.addAll(compositeInterface.getVariables());
+            
+        } else if (actors.size() > 2) { // Not handled
             throw new IllegalActionException(container,
                     "Composition of more than two actors not yet supported");
         }
@@ -206,7 +239,8 @@ public class InterfaceCheckerDirector extends Director {
         Set<Connection> connections = new HashSet<Connection>();
         final List<IOPort> outputPorts = actor1.outputPortList();
         for (final IOPort outputPort : outputPorts) {
-            for (final IOPort inputPort : outputPort.insideSinkPortList()) {
+            final List<IOPort> inputPorts = (List<IOPort>) outputPort.connectedPortList(); 
+            for (final IOPort inputPort : inputPorts) {
                 if (inputPort.getContainer() == actor2) {
                     connections.add(new Connection(outputPort.getName(),
                             inputPort.getName()));

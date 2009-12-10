@@ -117,11 +117,6 @@ public class RelationalInterface {
             y.append(firstInterfaceOutputVariable + "::int ");
         }
         y.append(')');
-        // Y = "("
-        // for (port : connections U outputs) {
-        //  Y += port.name + "::int "
-        // }
-        // Y += ")" 
         final String phi = "(=> (and " + _contract + " " + connectionContracts
                 + ") " + rhs.inContract() + ")";
         final String newContract = "(and " + _contract + " " + rhs._contract
