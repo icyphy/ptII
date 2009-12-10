@@ -65,13 +65,15 @@ public class RelationalInterface {
      *  FIXME: This the only type of composition that modifies
      *  the original interface. We should change this.
      * 
-     *  @param connection The feedback connection.
+     *  @param connections The feedback connections.
      */
-    public void addFeedback(final Connection connection) {
+    public void addFeedback(final Set<Connection> connections) {
+        // FIXME: Deal with multiple connections
+        Connection connection = connections.iterator().next();
         if (_mooreInputs().contains(connection._inputPort)) {
             _inputPorts.remove(connection._inputPort);
-            _outputPorts.remove(connection._outputPort);
-            _contract = "(and " + _contract + " (== " + connection._inputPort
+            _outputPorts.add(connection._inputPort);
+            _contract = "(and " + _contract + " (= " + connection._inputPort
                     + " " + connection._outputPort + "))";
         } else {
             assert false; //FIXME: Throw exception

@@ -152,16 +152,28 @@ public class InterfaceCheckerDirector extends Director {
      */
     private RelationalInterface _getCompositeInterface(CompositeActor container)
             throws IllegalActionException {
+        final Set<String> newConstraints = new HashSet<String>();
+        // Common input ports
         final Set<String> inputNames = new HashSet<String>();
         final List<IOPort> inputPorts = container.inputPortList();
-        for (final IOPort inputPort : inputPorts) {
-            inputNames.add(inputPort.getName());
+        for (final IOPort compositeIn : inputPorts) {
+            inputNames.add(compositeIn.getName());
+            for (final IOPort insideIn : compositeIn.insideSinkPortList()) {
+                newConstraints.add("(= " + insideIn.getName() + " "
+                        + compositeIn.getName() + ")");
+            }
         }
+        // Common output ports
         final Set<String> outputNames = new HashSet<String>();
         final List<IOPort> outputPorts = container.outputPortList();
-        for (final IOPort outputPort : outputPorts) {
-            outputNames.add(outputPort.getName());
+        for (final IOPort compositeOut : outputPorts) {
+            outputNames.add(compositeOut.getName());
+            for (final IOPort insideOut : compositeOut.insideSourcePortList()) {
+                newConstraints.add("(= " + insideOut.getName() + " "
+                        + compositeOut.getName() + ")");
+            }
         }
+        
         String contract = null;
         if (container.entityList().size() > 2) {
             throw new IllegalActionException(container,
@@ -171,25 +183,13 @@ public class InterfaceCheckerDirector extends Director {
             throw new IllegalActionException(container,
                     "Composition of more than one actor not yet supported either");
         } else if (container.entityList().size() == 1) {
-            final Set<String> newConstraints = new HashSet<String>();
-            final List<IOPort> inputPortList = container.inputPortList();
-            for (final IOPort compositeIn : inputPortList) {
-                for (final IOPort insideIn : compositeIn.insideSinkPortList()) {
-                    newConstraints.add("(= " + insideIn.getName() + " "
-                            + compositeIn.getName() + ")");
-                }
-            }
-            final List<IOPort> outputPortList = container.outputPortList();
-            for (final IOPort compositeIn : outputPortList) {
-                for (final IOPort insideIn : compositeIn.insideSourcePortList()) {
-                    newConstraints.add("(= " + insideIn.getName() + " "
-                            + compositeIn.getName() + ")");
-                }
-            }
             // FIXME: Implement feedback composition.
-            // FIXME: What about adding outputs from contained actors?
             final Actor actor = (Actor) container.entityList().get(0);
-            RelationalInterface actorInterface = _getInterface(actor); 
+            Set<Connection> connections = _getConnectionsBetween(actor, actor);
+            RelationalInterface actorInterface = _getInterface(actor);
+            if (!connections.isEmpty()) {
+                actorInterface.addFeedback(connections);
+            }
             newConstraints.add(actorInterface.getContract());
             contract = LispExpression.conjunction(newConstraints);
             outputNames.addAll(actorInterface.getVariables());
@@ -197,6 +197,26 @@ public class InterfaceCheckerDirector extends Director {
             contract = "true";
         }
         return new RelationalInterface(inputNames, outputNames, contract);
+    }
+
+    /** Return a set of the connections between two actors.
+     *  @param actor1 The first actor.
+     *  @param actor2 The second actor.
+     *  @return The set of connections.
+     */
+    private Set<Connection> _getConnectionsBetween(final Actor actor1,
+            final Actor actor2) {
+        Set<Connection> connections = new HashSet<Connection>();
+        final List<IOPort> outputPorts = actor1.outputPortList();
+        for (final IOPort outputPort : outputPorts) {
+            for (final IOPort inputPort : outputPort.insideSinkPortList()) {
+                if (inputPort.getContainer() == actor2) {
+                    connections.add(new Connection(outputPort.getName(),
+                            inputPort.getName()));
+                }
+            }
+        }
+        return connections;
     }
 
     /** Return the interface of a given actor.
