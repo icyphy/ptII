@@ -1,4 +1,4 @@
-#!/bin/sh -x
+#!/bin/sh
 # $Id$
 # Script that updates the demos
 
@@ -7,7 +7,7 @@ demos=`cd $PTII/ptolemy/configs/doc; make listDemos |  egrep -v '(iRobotCreateVe
 # Create missing applets
 #demos=`cd $PTII/ptolemy/configs/doc; make check_applets |  grep -v /SystemLevelType/ | sed 's/.htm$/.xml/'`
 
-#demos=../../../ptolemy/domains/continuous/demo/Transmission/Transmission.xml
+#demos=../../../ptolemy/domains/ddf/demo/IfThenElse/IfThenElseFSM.xml
 for demo in $demos
 do
      model=`basename $demo .xml` 
@@ -17,23 +17,36 @@ do
 
      targetPath=`echo $modelPath | sed "s@$PTII/@@"`
 
-     echo "make MODEL=$model MODELPATH=$modelPath/$model.xml TARGETPATH=$targetPath jnlpUpdateDemo"
+     #echo "make MODEL=$model MODELPATH=$modelPath/$model.xml TARGETPATH=$targetPath jnlpUpdateDemo"
      #echo $modelPath/$model.htm
-
+     #continue
+      
      #rm $modelPath/$model.htm
      #svn update $modelPath/$model.htm
      htmlFile=$modelPath/$model.htm
-#      if [ -f  $htmlFile ]; then
-# 	 grep "PT JNLP APPLET CONVERTER" $htmlFile > /dev/null
+#      appletFile=$modelPath/${model}Vergil.htm
+#      if [ -f  $appletFile ]; then
+# 	 echo $appletFile
+# 	 grep "CONVERTER -->" $appletFile
 # 	 status=$?
-# 	 if [ $status -eq 0 ]; then
-# 	     sed -e 's/width = ".*"/width = "100"/' \
-# 	         -e's/height = ".*"/height = "100"/' < $htmlFile > /tmp/updateDemos.tmp
-# 	     diff /tmp/updateDemos.tmp $htmlFile
-# 	     #cp /tmp/updateDemos.tmp $htmlFile
-# 	     echo "$htmlFile" >> /tmp/hfiles
-# 	 fi
+#          if [ $status -eq 0 ]; then
+#  	     sed -e 's/width = ".*"/width = "100"/' \
+#  	         -e's/height = ".*"/height = "100"/' < $appletFile > /tmp/updateDemos.tmp
+#  	     diff /tmp/updateDemos.tmp $appletFile
+#  	     cp /tmp/updateDemos.tmp $appletFile
+#  	     echo "$htmlFile" >> /tmp/hfiles
+#  	 fi
 #      fi
+
+#      if [ -f  $htmlFile ]; then
+# 	 echo $htmlFile
+# 	 grep -vi 'center>' \
+# 	     $htmlFile > /tmp/updateDemos.tmp
+#          diff /tmp/updateDemos.tmp $htmlFile
+#          cp /tmp/updateDemos.tmp $htmlFile
+#  	 echo "$htmlFile" >> /tmp/hfiles
+#      fi
+
 
      #if [ -f  $modelPath/$model.htm ]; then
 # 	 rm $modelPath/$model.htm
@@ -65,10 +78,27 @@ do
          awk '{ if ($0 ~ /<!-- PT JNLP APPLET CONVERTER -->/) {
                    exit;
                 } 
-                if ($0 !~ /CENTER>/ && $0 !~ /center>/  $0 !~ /The HTML below is for/ && $0 !~ /section is for IE/ && $0 != " -->") {
+                if ($0 ~ /section is for IE/) {
+                     endOfComment=NR
+                }
+                if ($0 ~ /http:\/\/developer.java.sun.com\/developer\/bugParade\/bugs\/4713003.html/) {
+                     endOfComment=NR
+                }
+                if ($0 !~ /CENTER>/ && $0 !~ /center>/  $0 !~ /The HTML below is for/ && $0 !~ /section is for IE/ && !($0 == " -->" && NR == (endOfComment+1))) {
                    print $0
                 } 
-          }' /tmp/${model}0.htm > /tmp/$model.htm
+          }' /tmp/${model}0.htm |
+	 grep -v "@author:" |
+	 grep -v "model shown using Vergil, the Ptolemy II schematic editor:" |
+	 grep -v "For information about applets and Ptolemy, see" |
+	 grep -v "http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/ptII/doc/coding/applets.htm" |
+	 grep -v "For information about java versions and applet tags, see:" |
+	 grep -v "http://java.sun.com/products/plugin/versions.html" |
+	 grep -v "We are currently using 1.4.2 because:" |
+	 grep -v "There is a bug under JDK1.4.1 XP with Radeon display cards" |
+	 grep -v "that causes XP to hang when exiting.  For details, see" |
+	 grep -v "http://developer.java.sun.com/developer/bugParade/bugs/4713003.html" \
+	     > /tmp/$model.htm
 
 
 	 awk '{if ($0 ~ /<!-- PT DEPLOYJAVA CONVERTER -->/) {
@@ -93,10 +123,9 @@ do
            }' $modelPath/$model.htm >> /tmp/$model.htm
 
           diff /tmp/$model.htm $modelPath/$model.htm
-	  cp /tmp/$model.htm $modelPath/$model.htm
+	  #cp /tmp/$model.htm $modelPath/$model.htm
 #	  ls -l /tmp/$model.htm $modelPath/$model.htm
 #	  echo $modelPath/$model.htm
 	  
    fi
-    exit
 done
