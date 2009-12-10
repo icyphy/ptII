@@ -113,22 +113,6 @@ public class PThalesGenericActor extends TypedAtomicActor implements
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
  
-    private void _initialize() throws IllegalActionException,
-            NameDuplicationException {
-        if (getAttribute("arguments") == null) {
-            arguments = new StringParameter(this, "arguments");
-            arguments.setExpression("");
-        }
-        if (getAttribute("function") == null) {
-            function = new StringParameter(this, "function");
-            function.setExpression("");
-        }
-        if (getAttribute("repetitions") == null) {
-            repetitions = new Parameter(this, "repetitions");
-            repetitions.setExpression("{1}");
-        }
-    }
-
     /** a String that is used to fill arguments when calling the function
      */
     public Parameter arguments;
@@ -140,6 +124,32 @@ public class PThalesGenericActor extends TypedAtomicActor implements
     /** the number of times this actor is fired
      */
     public Parameter repetitions;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
+    /** Clone the actor into the specified workspace. This method
+     *  sets _internalRepetitions, _totalRepetitions and _externalRepetitions.   
+     *  @param workspace The workspace for the new object.
+     *  @return A new actor.
+     *  @exception CloneNotSupportedException If a derived class contains
+     *   an attribute that cannot be cloned.
+     */
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        PThalesGenericActor newObject = (PThalesGenericActor) super.clone(workspace);
+
+        _internalRepetitions = parseRepetitions(INTERNAL_REPETITIONS);
+        _totalRepetitions = parseRepetitions(PthalesActorInterface.REPETITIONS);
+        _externalRepetitions = new Integer[_totalRepetitions.length
+                - _internalRepetitions.length];
+        for (int i = 0; i < _totalRepetitions.length
+                 - _internalRepetitions.length; i++) {
+            _externalRepetitions[i] = _totalRepetitions[i
+                    + _internalRepetitions.length];
+        }
+
+        return newObject;
+    }
 
     /** Create a new TypedIOPort with the specified name.
      *  The container of the port is set to this actor.
@@ -165,9 +175,6 @@ public class PThalesGenericActor extends TypedAtomicActor implements
         }
     }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
-    
     /** If the argument is the <i>init</i> parameter, then reset the
      *  state to the specified value.
      *  @param attribute The attribute that changed.
@@ -279,7 +286,7 @@ public class PThalesGenericActor extends TypedAtomicActor implements
         }
     }
 
-    /** Attribute update
+    /** 
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
@@ -484,9 +491,10 @@ public class PThalesGenericActor extends TypedAtomicActor implements
             _externalRepetitions = new Integer[_totalRepetitions.length
                     - _internalRepetitions.length];
             for (int i = 0; i < _totalRepetitions.length
-                    - _internalRepetitions.length; i++)
+                     - _internalRepetitions.length; i++) {
                 _externalRepetitions[i] = _totalRepetitions[i
                         + _internalRepetitions.length];
+            }
         }
     }
 
@@ -497,7 +505,7 @@ public class PThalesGenericActor extends TypedAtomicActor implements
 
     protected String _arguments = "";
 
-    /** iteration informations */
+    /** Iteration informations. */
     protected int _iterations = 0;
 
     protected Integer[] _externalRepetitions = null;
@@ -510,4 +518,22 @@ public class PThalesGenericActor extends TypedAtomicActor implements
     /** The name of the internal repetitions parameter. */
     protected static String INTERNAL_REPETITIONS = "internalRepetitions";
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+    private void _initialize() throws IllegalActionException,
+            NameDuplicationException {
+        if (getAttribute("arguments") == null) {
+            arguments = new StringParameter(this, "arguments");
+            arguments.setExpression("");
+        }
+        if (getAttribute("function") == null) {
+            function = new StringParameter(this, "function");
+            function.setExpression("");
+        }
+        if (getAttribute("repetitions") == null) {
+            repetitions = new Parameter(this, "repetitions");
+            repetitions.setExpression("{1}");
+        }
+    }
 }
