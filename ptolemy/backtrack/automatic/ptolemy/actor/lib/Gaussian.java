@@ -72,11 +72,11 @@ public class Gaussian extends RandomSource implements Rollbackable {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
     ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
+    ////                      protected variables                  ////
     /**     
      * The random number for the current iteration. 
      */
-    private double _current;
+    protected double _current;
 
     /**     
      * Construct an actor with the given container and name.
@@ -118,14 +118,7 @@ public class Gaussian extends RandomSource implements Rollbackable {
         double meanValue = ((DoubleToken)(mean.getToken())).doubleValue();
         double standardDeviationValue = ((DoubleToken)(standardDeviation.getToken())).doubleValue();
         double rawNum = _random.nextGaussian();
-        $ASSIGN$_current((rawNum * standardDeviationValue) + meanValue);
-    }
-
-    private final double $ASSIGN$_current(double newValue) {
-        if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-            $RECORD$_current.add(null, _current, $CHECKPOINT.getTimestamp());
-        }
-        return _current = newValue;
+        _current = (rawNum * standardDeviationValue) + meanValue;
     }
 
     public void $COMMIT(long timestamp) {
@@ -134,14 +127,10 @@ public class Gaussian extends RandomSource implements Rollbackable {
     }
 
     public void $RESTORE(long timestamp, boolean trim) {
-        _current = $RECORD$_current.restore(_current, timestamp, trim);
         super.$RESTORE(timestamp, trim);
     }
 
-    private transient FieldRecord $RECORD$_current = new FieldRecord(0);
-
     private transient FieldRecord[] $RECORDS = new FieldRecord[] {
-            $RECORD$_current
         };
 
 }
