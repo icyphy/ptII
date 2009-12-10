@@ -1,5 +1,4 @@
 <!-- $Id$
-  @author: Xiaojun Liu and Edward A. Lee
 -->
 <HTML>
 <HEAD>
@@ -13,36 +12,30 @@
 <p>
 This (toy)
 example illustrates the use of a finite-state machine (implemented
-in the FSM domain) to get a modal Giotto model.  The block diagram
-is given below:
-<CENTER>
-<P>
+in the FSM domain) to get a modal Giotto model. </p>
 
-<!-- PT JNLP APPLET CONVERTER -->
-<!-- We use both the older applet style and the JDK1.6.0_10 and later
-    JNLP Applets.  In this way, we can support pre-JDK1.6.0_10 installs.
-    See https://jdk6.dev.java.net/plugin2/jnlp/ -->
-<APPLET 
-  code = "ptolemy.vergil.VergilApplet"
-  codebase = "../../../../.."
-  archive = "ptolemy/domains/giotto/demo/Multimode/Multimode.jar,ptolemy/domains/giotto/giotto.jar,ptolemy/data/data.jar,ptolemy/domains/fsm/fsm.jar,pt olemy/ptsupport.jar,ptolemy/domains/sdf/sdf.jar,lib/diva.jar,ptolemy/domains/modal/modal.jar,ptolemy/domains/fsm/fsm.jar,ptolemy/domains/ct/ct.jar,ptolemy/vergil/vergilApplet.jar"
-  width = "100"
-  height = "100"
-  >
- <PARAM name="jnlp_href" value="ptolemy/domains/giotto/demo/Multimode/Multimode.jnlp">
- <PARAM NAME = "commandLineArguments" VALUE = "-ptinyViewer ptolemy/domains/giotto/demo/Multimode/Multimode.xml">
- <PARAM NAME = "NAME" VALUE = "Multimode" >
- <PARAM NAME = "background" VALUE = "#ffffff" >
- <PARAM NAME = "controls" VALUE = "buttons" >
- <PARAM NAME = "orientation" VALUE = "vertical" > \
- <PARAM NAME = "modelURL" VALUE = "Multimode.xml" > \
- <a href="Multimode.xml">MoML specification for this model.</a> \
-</APPLET>
-<!-- /PT JNLP APPLET CONVERTER -->
-</CENTER>
-This model contains three components, all of which have frequency one.
-<P>
-The middle component is a state machine that has three states and starts in state <I>Init</I>.
+<!-- PT DEPLOYJAVA CONVERTER -->
+<p>
+Multimode is available in two formats:
+<ul>
+  <li> As a Web Start Application: 
+<!-- See http://blogs.sun.com/thejavatutorials/entry/deployment_toolkit_101 -->
+<script src="../../../../../doc/deployJava.js"></script>
+<script >
+    var dir = location.href.substring(0,location.href.lastIndexOf('/')+1);
+    var url = dir + "Multimode.jnlp";
+    deployJava.createWebStartLaunchButton(url);
+</script>
+ <li> As an <a href="MultimodeVergil.htm">applet</a>.
+</ul>  
+The Java Web Start version is preferred, though browsers with versions of Java
+earlier than Java 1.6.0_13 may only work with the applet version.
+See <a href="../../../../../doc/webStartHelp.htm">Web Start Help</a> for details.
+<!-- /PT DEPLOYJAVA CONVERTER -->
+</p>
+<p>This model contains three components, all of which have frequency one.</p>
+
+<p>The middle component is a state machine that has three states and starts in state <I>Init</I>.
 The transition from <I>Init</I> to <I>State0</I> is always enabled and
 will be taken in the first firing of the state machine. The actions on
 the transition properly initialize the refinement of <I>State0</I>.
@@ -55,13 +48,13 @@ machine is a multiple of 4. The guards read:
 which is interpreted as follows. The variable <code>in_isPresent</code>
 has value <i>true</i> when the input <i>in</i> is present.
 The variable <code>in</code> is the value of the input.
-The expression will be true when the input is a multiple of 4.
-<p>
-Each state refines to a separate instance of the following model:
-<p>
-In <I>State1</I>, the lower ramp has frequency 2, and therefore increments
+The expression will be true when the input is a multiple of 4.</p>
+
+<p>Each state refines to a separate instance of the following model:</p>
+
+<p>In <I>State1</I>, the lower ramp has frequency 2, and therefore increments
 at twice the rate of the version in <I>State0</I>.
-This is the behavior exhibited by the plot above.
-<p>
+This is the behavior exhibited by the plot above.</p>
+
 </BODY>
 </HTML>

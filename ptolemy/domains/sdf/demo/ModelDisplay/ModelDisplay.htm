@@ -10,31 +10,23 @@ The model below modifies a model produced by the
 <a href="ModelGenerator.htm">ModelGenerator</a> example
 in order to get animation. It creates MoML text to
 modify the colors of the circles.
-<center>
-<!-- The HTML below is for the Java Plugin.  The first
-     section is for IE, the second is for Netscape
- -->
-<!-- PT JNLP APPLET CONVERTER -->
-<!-- We use both the older applet style and the JDK1.6.0_10 and later
-     JNLP Applets.  In this way, we can support pre-JDK1.6.0_10 installs.
-     See https://jdk6.dev.java.net/plugin2/jnlp/ -->
-<APPLET 
-   code = "ptolemy.vergil.VergilApplet"
-   codebase = "../../../../.."
-   archive = "ptolemy/domains/sdf/demo/ModelDisplay/ModelDisplay.jar,ptolemy/vergil/actor/actor.jar,ptolemy/data/data.jar,ptolemy/ptsupport.jar,ptolemy/domains/sdf/sdf.jar,lib/diva.jar,ptolemy/domains/modal/modal.jar,ptolemy/domains/fsm/fsm.jar,ptolemy/domains/ct/ct.jar,ptolemy/vergil/vergilApplet.jar"
-   width = "100"
-   height = "100"
-   >
-  <PARAM name="jnlp_href" value="ptolemy/domains/sdf/demo/ModelDisplay/ModelDisplay.jnlp">
-  <PARAM NAME = "commandLineArguments" VALUE = "-ptinyViewer ptolemy/domains/sdf/demo/ModelDisplay/ModelDisplay.xml">
-  <PARAM NAME = "NAME" VALUE = "ModelDisplay" >
-  <PARAM NAME = "background" VALUE = "#ffffff" >
-  <PARAM NAME = "controls" VALUE = "buttons" >
-  <PARAM NAME = "orientation" VALUE = "vertical" > \
-  <PARAM NAME = "modelURL" VALUE = "ModelDisplay.xml" > \
-  <a href="ModelDisplay.xml">MoML specification for this model.</a> \
-</APPLET>
-<!-- /PT JNLP APPLET CONVERTER -->
-</center>
+<!-- PT DEPLOYJAVA CONVERTER -->
+<p>
+ModelDisplay is available in two formats:
+<ul>
+  <li> As a Web Start Application: 
+<!-- See http://blogs.sun.com/thejavatutorials/entry/deployment_toolkit_101 -->
+<script src="../../../../../doc/deployJava.js"></script>
+<script >
+    var dir = location.href.substring(0,location.href.lastIndexOf('/')+1);
+    var url = dir + "ModelDisplay.jnlp";
+    deployJava.createWebStartLaunchButton(url);
+</script>
+ <li> As an <a href="ModelDisplayVergil.htm">applet</a>.
+</ul>  
+The Java Web Start version is preferred, though browsers with versions of Java
+earlier than Java 1.6.0_13 may only work with the applet version.
+See <a href="../../../../../doc/webStartHelp.htm">Web Start Help</a> for details.
+<!-- /PT DEPLOYJAVA CONVERTER -->
 </BODY>
 </HTML>

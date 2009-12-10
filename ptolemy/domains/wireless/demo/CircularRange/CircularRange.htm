@@ -1,5 +1,4 @@
 <!-- : $Id$
-  @author: 
  -->
 <HTML>
 <HEAD>
@@ -11,30 +10,32 @@
 <H1>CircularRange</H1>
 <P>
 
-<CENTER>
 <P>
-<!-- PT JNLP APPLET CONVERTER -->
-<!-- We use both the older applet style and the JDK1.6.0_10 and later
-     JNLP Applets.  In this way, we can support pre-JDK1.6.0_10 installs.
-     See https://jdk6.dev.java.net/plugin2/jnlp/ -->
-<APPLET 
-   code = "ptolemy.vergil.VergilApplet"
-   codebase = "../../../../.."
-   archive = "ptolemy/domains/wireless/demo/CircularRange/CircularRange.jar,ptolemy/domains/wireless/wireless.jar,ptolemy/data/data.jar,ptolemy/domains/de/de.jar,ptolemy/ptsupport.jar,ptolemy/domains/sdf/sdf.jar,lib/diva.jar,ptolemy/domains/modal/modal.jar,ptolemy/domains/fsm/fsm.jar,ptolemy/domains/ct/ct.jar,ptolemy/vergil/vergilApplet.jar"
-   width = "100"
-   height = "100"
-   >
-  <PARAM name="jnlp_href" value="ptolemy/domains/wireless/demo/CircularRange/CircularRange.jnlp">
-  <PARAM NAME = "commandLineArguments" VALUE = "-ptinyViewer ptolemy/domains/wireless/demo/CircularRange/CircularRange.xml">
-  <PARAM NAME = "NAME" VALUE = "CircularRange" >
-  <PARAM NAME = "background" VALUE = "#ffffff" >
-  <PARAM NAME = "controls" VALUE = "buttons" >
-  <PARAM NAME = "orientation" VALUE = "vertical" > \
-  <PARAM NAME = "modelURL" VALUE = "CircularRange.xml" > \
-  <a href="CircularRange.xml">MoML specification for this model.</a> \
-</APPLET>
-<!-- /PT JNLP APPLET CONVERTER -->
-</CENTER>
+<!-- PT DEPLOYJAVA CONVERTER -->
+<p>
+CircularRange is available in two formats:
+<ul>
+  <li> As a Web Start Application: 
+<!-- See http://blogs.sun.com/thejavatutorials/entry/deployment_toolkit_101 -->
+<script src="../../../../../doc/deployJava.js"></script>
+<script >
+    var dir = location.href.substring(0,location.href.lastIndexOf('/')+1);
+    var url = dir + "CircularRange.jnlp";
+    deployJava.createWebStartLaunchButton(url);
+</script>
+ <li> As an <a href="CircularRangeVergil.htm">applet</a>.
+</ul>  
+The Java Web Start version is preferred, though browsers with versions of Java
+earlier than Java 1.6.0_13 may only work with the applet version.
+See <a href="../../../../../doc/webStartHelp.htm">Web Start Help</a> for details.
+<!-- /PT DEPLOYJAVA CONVERTER -->
 </p>
+<p>This model shows a transmitter (at the left) and a receiver (at the right),
+where the receiver moves in and out of range as the model executes.
+The channel is a LimitedRangeChannel, which is a simple wireless channel
+model where the transmitter specifies via a parameter in its output port
+the distance over which it can transmit.  In this model, that distance is
+shown graphically as the radius of the circular icon for the transmitter.
+As the model executes, at random times, the range of the transmitter decreases.</p>
 </BODY>
 </HTML>

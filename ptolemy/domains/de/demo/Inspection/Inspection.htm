@@ -7,98 +7,37 @@
 </head>
 <body>
 <H1>Illustration of the Inspection Paradox</H1>
-
-<P>
- <!-- All of the controls of the applet should be visible when the
+<!-- All of the controls of the applet should be visible when the
 applet is displayed on a XGA screen-->
-<center>
-<!-- The HTML below is for the Java Plugin.  The first
-     section is for IE, the second is for Netscape
- -->
-<!-- HTML CONVERTER -->
-<SCRIPT LANGUAGE="JavaScript"><!--
-    var _info = navigator.userAgent; 
-    var _ns = false; 
-    var _ns6 = false;
-    var _ie = (_info.indexOf("MSIE") > 0 && _info.indexOf("Win") > 0 && _info.indexOf("Windows 3.1") < 0);
-//--></SCRIPT>
-    <COMMENT>
-        <SCRIPT LANGUAGE="JavaScript1.1"><!--
-        var _ns6 = (_info.indexOf("Mozilla/5") >= 0);
-        var _ns = (navigator.appName.indexOf("Netscape") >= 0 && ((_info.indexOf("Win") > 0     && _info.indexOf("Win16") < 0 && java.lang.System.getProperty("os.version").indexOf("3.5") < 0) || (_info.indexOf("Sun") > 0) || (_info.indexOf("Linux") > 0) || (_info.indexOf("AIX") > 0) || (_info.indexOf("OS/2") > 0) || (_info.indexOf("IRIX") > 0 )));
-//--></SCRIPT>
-    </COMMENT>
-
-<SCRIPT LANGUAGE="JavaScript"><!--
-    if (_ie == true) document.writeln('\
-        <OBJECT \
-            classid="clsid:8AD9C840-044E-11D1-B3E9-00805F499D93" \
-            width = "600" \
-            height = "480"  \
-            codebase="http://java.sun.com/products/plugin/autodl/jinstall-1_4_2-windows-i586.cab#Version=1,4,2"> \
-            <PARAM NAME = "code" \
-                   VALUE = "ptolemy.actor.gui.MoMLApplet" > \
-	    <PARAM NAME = "codebase"   VALUE = "../../../../.." > \
-	    <PARAM NAME = "archive" \
-                   VALUE = "ptolemy/ptsupport.jar,ptolemy/domains/de/de.jar" > \
-            <PARAM NAME = "type" \
-                   VALUE = "application/x-java-applet;version=1.4.2" > \
-            <PARAM NAME = "progressbar" VALUE = "true"> \
-            <PARAM NAME = "scriptable" VALUE = "false" > \
-            <PARAM NAME = "name" VALUE = "Inspection" > \
-	    <PARAM NAME = "background" VALUE = "#ffffff" > \
-	    <PARAM NAME = "model" VALUE = "Inspection.xml" > \
-            <a href="Inspection.xml">MoML specification for this model.</a> \
-        </OBJECT> \
-        ');
-    else if (_ns == true || _ns6 == true)
-         document.writeln('\
-        <COMMENT> \
-          <EMBED \
-            type = "application/x-java-applet;version=1.4.2" \
-            code = "ptolemy.actor.gui.MoMLApplet" \
-            codebase = "../../../../.." \
-            archive = "ptolemy/ptsupport.jar,ptolemy/domains/de/de.jar" \
-            width = "600" \
-            height = "480" \
-            name = "Inspection" background = "#ffffff" model = "Inspection.xml"  \
-            progressbar = "true" \
-            scriptable = "false" \
-            pluginspage = "http://java.sun.com/j2se/1.4.2/download.html"> \
-              <NOEMBED> \
-              <a href="Inspection.xml">MoML specification for this model.</a> \
-              </NOEMBED> \
-           </EMBED> \
-        <COMMENT> \
-        ');
-    else document.writeln('\
-        <APPLET \
-            code = "ptolemy.actor.gui.MoMLApplet" \
-            codebase = "../../../../.." \
-            archive = "ptolemy/ptsupport.jar,ptolemy/domains/de/de.jar" \
-            width = "600" \
-            height = "480" \
-            > \
-            <PARAM NAME = "name" VALUE = "Inspection" > \
-	    <PARAM NAME = "background" VALUE = "#ffffff" > \
-	    <PARAM NAME = "model" VALUE = "Inspection.xml" > \
-            <a href="Inspection.xml">MoML specification for this model.</a> \
-        </APPLET> \
-        ');
-//--></SCRIPT>
-<!-- /HTML CONVERTER -->
-</center>
-<P>
-The above applet uses the Ptolemy II Discrete Event (DE) domain
-to illustrate the inspection paradox.
-The inspection paradox concerns Poisson arrivals of events.
-The metaphor used in this applet is that of busses and passengers.
-Passengers arrive according to a Poisson process.
-Busses arrive at regular intervals and according to a Poisson
-process, and the model collects statistics on waiting time for both
-cases.
+<!-- PT DEPLOYJAVA CONVERTER -->
 <p>
-The inspection paradox concerns the average time that a passenger
+Inspection is available in two formats:
+<ul>
+  <li> As a Web Start Application: 
+<!-- See http://blogs.sun.com/thejavatutorials/entry/deployment_toolkit_101 -->
+<script src="../../../../../doc/deployJava.js"></script>
+<script >
+    var dir = location.href.substring(0,location.href.lastIndexOf('/')+1);
+    var url = dir + "Inspection.jnlp";
+    deployJava.createWebStartLaunchButton(url);
+</script>
+ <li> As an <a href="InspectionVergil.htm">applet</a>.
+</ul>  
+The Java Web Start version is preferred, though browsers with versions of Java
+earlier than Java 1.6.0_13 may only work with the applet version.
+See <a href="../../../../../doc/webStartHelp.htm">Web Start Help</a> for details.
+<!-- /PT DEPLOYJAVA CONVERTER -->
+</p>
+<p> The model uses the Ptolemy II Discrete Event (DE) domain 
+to illustrate the inspection paradox. 
+The inspection paradox concerns Poisson arrivals of events. 
+The metaphor used in this applet is that of busses and passengers. 
+Passengers arrive according to a Poisson process. 
+Busses arrive at regular intervals and according to a Poisson 
+process, and the model collects statistics on waiting time for both
+cases.</p>
+
+<p>The inspection paradox concerns the average time that a passenger
 waits for a bus (more precisely, the expected value).  If the busses
 arrive at regular intervals with interarrival time equal to <i>T</i>,
 then the expected waiting time is <i>T</i>/2, which is perfectly
@@ -108,30 +47,27 @@ according to a Poisson process with mean interarrival time equal
 These expected waiting times are approximated in this applet by
 the average waiting time.  The applet also plots actual
 arrival times for both passengers and busses, and the waiting
-time of each passenger for Poisson arrival of busses.
-<p>
-The top plot shows the passengers' and busses' arrival times, and
+time of each passenger for Poisson arrival of busses.<p>
+
+<p>The top plot shows the passengers' and busses' arrival times, and
 the waiting times for the case of Poisson bus arrivals (the waiting
 times for regular arrivals are not shown).
 The bottom plot shows the distribution histogram of all wait times.
 The bin width used is equal to 0.2.
 The display at the bottom shows the average waiting time for the two
-cases.
-<p>
-The intuition that resolves the paradox is as follows.
+cases.</p>
+
+<p>The intuition that resolves the paradox is as follows.
 If the busses are arriving according to a Poisson process,
 then some intervals between busses are larger than other intervals.
 A particular passenger is more likely to arrive at the bus stop
 during one of these larger intervals than during one of the smaller
 intervals.  Thus, the expected waiting time is larger if the bus
-arrival times are irregular.
-<p>
-This paradox is called the <i>inspection paradox</i> because the
+arrival times are irregular.</p>
+
+<p>This paradox is called the <i>inspection paradox</i> because the
 passengers are viewed as inspecting the Poisson process of
-bus arrivals.
-<P>
-This applet is implemented in MoML, as shown
-in a <a href="InspectionVergil.htm">Vergil block diagram</a>.
-<p>
+bus arrivals.</p>
+
 </BODY>
 </HTML>

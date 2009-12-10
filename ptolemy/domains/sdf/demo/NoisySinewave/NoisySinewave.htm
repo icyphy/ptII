@@ -1,5 +1,4 @@
 <!-- : $Id$
-  @author: 
  -->
 <HTML>
 <HEAD>
@@ -11,41 +10,29 @@
 <H1>NoisySinewave</H1>
 <P>
 
-<CENTER>
 <P>
-<!-- The HTML below is for the Java Plugin.  The first
-     section is for IE, the second is for Netscape 4, the third for Mozilla 1.0
-     For information about applets and Ptolemy, see
-	http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/ptII/doc/coding/applets.htm
-     For information about java versions and applet tags, see:
-	http://java.sun.com/products/plugin/versions.html
-     We are currently using 1.4.2 because:
-        There is a bug under JDK1.4.1 XP with Radeon display cards
-        that causes XP to hang when exiting.  For details, see
-        http://developer.java.sun.com/developer/bugParade/bugs/4713003.html
- -->
-<!-- PT JNLP APPLET CONVERTER -->
-<!-- We use both the older applet style and the JDK1.6.0_10 and later
-     JNLP Applets.  In this way, we can support pre-JDK1.6.0_10 installs.
-     See https://jdk6.dev.java.net/plugin2/jnlp/ -->
-<APPLET 
-   code = "ptolemy.vergil.VergilApplet"
-   codebase = "../../../../.."
-   archive = "ptolemy/domains/sdf/demo/NoisySinewave/NoisySinewave.jar,ptolemy/data/data.jar,ptolemy/ptsupport.jar,ptolemy/domains/sdf/sdf.jar,lib/diva.jar,ptolemy/domains/modal/modal.jar,ptolemy/domains/fsm/fsm.jar,ptolemy/domains/ct/ct.jar,ptolemy/vergil/vergilApplet.jar"
-   width = "100"
-   height = "100"
-   >
-  <PARAM name="jnlp_href" value="ptolemy/domains/sdf/demo/NoisySinewave/NoisySinewave.jnlp">
-  <PARAM NAME = "commandLineArguments" VALUE = "-ptinyViewer ptolemy/domains/sdf/demo/NoisySinewave/NoisySinewave.xml">
-  <PARAM NAME = "NAME" VALUE = "NoisySinewave" >
-  <PARAM NAME = "background" VALUE = "#ffffff" >
-  <PARAM NAME = "controls" VALUE = "buttons" >
-  <PARAM NAME = "orientation" VALUE = "vertical" > \
-  <PARAM NAME = "modelURL" VALUE = "NoisySinewave.xml" > \
-  <a href="NoisySinewave.xml">MoML specification for this model.</a> \
-</APPLET>
-<!-- /PT JNLP APPLET CONVERTER -->
-</CENTER>
+<!-- PT DEPLOYJAVA CONVERTER -->
+<p>
+NoisySinewave is available in two formats:
+<ul>
+  <li> As a Web Start Application: 
+<!-- See http://blogs.sun.com/thejavatutorials/entry/deployment_toolkit_101 -->
+<script src="../../../../../doc/deployJava.js"></script>
+<script >
+    var dir = location.href.substring(0,location.href.lastIndexOf('/')+1);
+    var url = dir + "NoisySinewave.jnlp";
+    deployJava.createWebStartLaunchButton(url);
+</script>
+ <li> As an <a href="NoisySinewaveVergil.htm">applet</a>.
+</ul>  
+The Java Web Start version is preferred, though browsers with versions of Java
+earlier than Java 1.6.0_13 may only work with the applet version.
+See <a href="../../../../../doc/webStartHelp.htm">Web Start Help</a> for details.
+<!-- /PT DEPLOYJAVA CONVERTER -->
 </p>
+<p>This actor is a class definition, indicated by the blue halo. It is
+ignored by the director, and serves as a declaration. To create an
+instance of this class, right click on the class definition and select
+"Create Instance" (or type Ctrl-N). To see the class definition, look inside.</p>
 </BODY>
 </HTML>

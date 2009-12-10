@@ -1,5 +1,4 @@
 <!-- : $Id$
-  @author: 
  -->
 <HTML>
 <HEAD>
@@ -9,44 +8,36 @@
 </HEAD>
 <BODY>
 <H1>SmartParking</H1>
-<P>
-The SmartParking model shown using Vergil, the Ptolemy II schematic editor:
-
-<CENTER>
-<P>
-<!-- The HTML below is for the Java Plugin.  The first
-     section is for IE, the second is for Netscape 4, the third for Mozilla 1.0
-     For information about applets and Ptolemy, see
-	http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/ptII/doc/coding/applets.htm
-     For information about java versions and applet tags, see:
-	http://java.sun.com/products/plugin/versions.html
-     We are currently using 1.4.2 because:
-        There is a bug under JDK1.4.1 XP with Radeon display cards
-        that causes XP to hang when exiting.  For details, see
-        http://developer.java.sun.com/developer/bugParade/bugs/4713003.html
- -->
-<!-- PT JNLP APPLET CONVERTER -->
-<!-- We use both the older applet style and the JDK1.6.0_10 and later
-     JNLP Applets.  In this way, we can support pre-JDK1.6.0_10 installs.
-     See https://jdk6.dev.java.net/plugin2/jnlp/ -->
-<APPLET 
-   code = "ptolemy.vergil.VergilApplet"
-   codebase = "../../../../.."
-   archive = "ptolemy/domains/wireless/demo/SmartParking/SmartParking.jar,ptolemy/domains/wireless/demo/demo.jar,ptolemy/domains/wireless/wireless.jar,ptolemy/data/data.jar,ptolemy/ptsupport.jar,ptolemy/domains/de/de.jar,lib/diva.jar,ptolemy/domains/modal/modal.jar,ptolemy/domains/fsm/fsm.jar,ptolemy/domains/ct/ct.jar,ptolemy/vergil/vergilApplet.jar"
-   width = "100"
-   height = "100"
-   >
-  <PARAM name="jnlp_href" value="ptolemy/domains/wireless/demo/SmartParking/SmartParking.jnlp">
-  <PARAM NAME = "commandLineArguments" VALUE = "-ptinyViewer ptolemy/domains/wireless/demo/SmartParking/SmartParking.xml">
-  <PARAM NAME = "NAME" VALUE = "SmartParking" >
-  <PARAM NAME = "background" VALUE = "#ffffff" >
-  <PARAM NAME = "controls" VALUE = "buttons" >
-  <PARAM NAME = "orientation" VALUE = "vertical" > \
-  <PARAM NAME = "modelURL" VALUE = "SmartParking.xml" > \
-  <a href="SmartParking.xml">MoML specification for this model.</a> \
-</APPLET>
-<!-- /PT JNLP APPLET CONVERTER -->
-</CENTER>
+<!-- PT DEPLOYJAVA CONVERTER -->
+<p>
+SmartParking is available in two formats:
+<ul>
+  <li> As a Web Start Application: 
+<!-- See http://blogs.sun.com/thejavatutorials/entry/deployment_toolkit_101 -->
+<script src="../../../../../doc/deployJava.js"></script>
+<script >
+    var dir = location.href.substring(0,location.href.lastIndexOf('/')+1);
+    var url = dir + "SmartParking.jnlp";
+    deployJava.createWebStartLaunchButton(url);
+</script>
+ <li> As an <a href="SmartParkingVergil.htm">applet</a>.
+</ul>  
+The Java Web Start version is preferred, though browsers with versions of Java
+earlier than Java 1.6.0_13 may only work with the applet version.
+See <a href="../../../../../doc/webStartHelp.htm">Web Start Help</a> for details.
+<!-- /PT DEPLOYJAVA CONVERTER -->
 </p>
+<p>Sensors placed in a parking lot can be used to collect data (including which parking spot is taken, 
+how long a car has parked on a spot). The parking lot can process the collected data and provide 
+some services to clients to guide their parking. This demo illustrates these ideas. The dots are 
+sensors on the parking spots. We use green color to indicate the spot is free and red to indicate 
+the spot is taken. When a sensor detects a car arriving or leaving a spot, it sends an update to the 
+server of the parking lot, which collects and processes sensor updates to provide information to 
+parking clients. The "car model" component models when a car arrives or leaves, and where to 
+park based on the information the server provides. It is a abstraction for all the cars dynamics 
+during a specific time. The components in the upper right corner represent the server function, 
+which receives sensor data and provides information the clients. The "signal light" component 
+indicates whether the parking lot is full (using red) or not (using green).</p>
+
 </BODY>
 </HTML>

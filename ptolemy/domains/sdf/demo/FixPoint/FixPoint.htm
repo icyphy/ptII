@@ -5,59 +5,48 @@
 <TITLE>Fixpoint Conversion Demo</TITLE>
 <BODY>
 <H1>Fixpoint Conversion</H1>
-<P>
-The following model converts a sequence of floating-point numbers to
-fixed point, and then further quantizes the fixed point numbers.
-<center>
-<!-- The HTML below is for the Java Plugin.  The first
-     section is for IE, the second is for Netscape
- -->
-<!-- PT JNLP APPLET CONVERTER -->
-<!-- We use both the older applet style and the JDK1.6.0_10 and later
-     JNLP Applets.  In this way, we can support pre-JDK1.6.0_10 installs.
-     See https://jdk6.dev.java.net/plugin2/jnlp/ -->
-<APPLET 
-   code = "ptolemy.vergil.VergilApplet"
-   codebase = "../../../../.."
-   archive = "ptolemy/domains/sdf/demo/FixPoint/FixPoint.jar,ptolemy/data/data.jar,ptolemy/ptsupport.jar,ptolemy/domains/sdf/sdf.jar,lib/diva.jar,ptolemy/domains/modal/modal.jar,ptolemy/domains/fsm/fsm.jar,ptolemy/domains/ct/ct.jar,ptolemy/vergil/vergilApplet.jar"
-   width = "100"
-   height = "100"
-   >
-  <PARAM name="jnlp_href" value="ptolemy/domains/sdf/demo/FixPoint/FixPoint.jnlp">
-  <PARAM NAME = "commandLineArguments" VALUE = "-ptinyViewer ptolemy/domains/sdf/demo/FixPoint/FixPoint.xml">
-  <PARAM NAME = "NAME" VALUE = "FixPoint" >
-  <PARAM NAME = "background" VALUE = "#ffffff" >
-  <PARAM NAME = "controls" VALUE = "buttons" >
-  <PARAM NAME = "orientation" VALUE = "vertical" > \
-  <PARAM NAME = "modelURL" VALUE = "FixPoint.xml" > \
-  <a href="FixPoint.xml">MoML specification for this model.</a> \
-</APPLET>
-<!-- /PT JNLP APPLET CONVERTER -->
-</center>
-<P>
-The precision of the first fixed-point conversion is controlled by the
+<p>The following model converts a sequence of floating-point numbers to
+fixed point, and then further quantizes the fixed point numbers.</p>
+<!-- PT DEPLOYJAVA CONVERTER -->
+<p>
+FixPoint is available in two formats:
+<ul>
+  <li> As a Web Start Application: 
+<!-- See http://blogs.sun.com/thejavatutorials/entry/deployment_toolkit_101 -->
+<script src="../../../../../doc/deployJava.js"></script>
+<script >
+    var dir = location.href.substring(0,location.href.lastIndexOf('/')+1);
+    var url = dir + "FixPoint.jnlp";
+    deployJava.createWebStartLaunchButton(url);
+</script>
+ <li> As an <a href="FixPointVergil.htm">applet</a>.
+</ul>  
+The Java Web Start version is preferred, though browsers with versions of Java
+earlier than Java 1.6.0_13 may only work with the applet version.
+See <a href="../../../../../doc/webStartHelp.htm">Web Start Help</a> for details.
+<!-- /PT DEPLOYJAVA CONVERTER -->
+</p>
+<p>The precision of the first fixed-point conversion is controlled by the
 parameters of the DoubleToFix actor.  The default precision is
 [4,2], which means that a total of 4 bits are used, 2 of which
 are integer bits.
 By default, the input is rounded to the nearest representable
 number. You can change the strategy by changing the <i>quantization</i>
-parameter of the DoubleToFix actor.
-<p>
-The precision of the second second quantization
+parameter of the DoubleToFix actor.</p>
+<p>The precision of the second second quantization
 is controlled by the FixToFix actor, which has a default precision
 of [3,2].  Thus, the second quantizer reduces by one the number
 of fractional bits.  In addition, it uses an overflow model
 called "overflow_to_zero".  You can modify these properties
 by right clicking on the actor icons above and selecting
-"Edit Parameters".
-<p>
-The fixed-point numbers are represented in two's-complement
+"Edit Parameters".</p>
+<p>The fixed-point numbers are represented in two's-complement
 notation.  Thus, the set of
-numbers that can be represented with a [3, 2] precision is:
+numbers that can be represented with a [3, 2] precision is:</p>
 <p>
 <PRE>
   { -2.0, -1.5, -1.0, -0.5, 0.0, 0.5, 1.0, 1.5 }
 </PRE>
-<P>
+</p>
 </BODY>
 </HTML>

@@ -1,0 +1,45 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- : $Id: modelJnlp.htm.in 56535 2009-12-09 04:18:30Z cxh $
+-->
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US" lang="en-US">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<link href="../../../../../doc/default.css" rel="stylesheet" type="text/css">
+<title>LogicalOrBackward</title>
+</head>
+<body>
+<h1>LogicalOrBackward</h1>
+This model shows a simple example on how to annotate properties using a constraint solver algorithm.
+
+Initially the algorithm collects special constraints for Recorder, Discard, MonitorValue and Scale Actors and default 
+constraints for the rest of the model according to the definition in the Solver Attribute (blue box). The solver initializes 
+all properties to Unknown and then finds the least fixed point so that all constraints are fullfilled. The property 
+dependencies are defined as a lattice.
+
+The constraints and lattice in this example express a logical OR, e.g. if properties of at least one output of an AtomicActor 
+is True then the properties of all inputs are True. 
+
+Authors: Thomas Mandl, Man-Kit Leung
+<!-- PT DEPLOYJAVA CONVERTER -->
+<p>
+LogicalOrBackward is available in two formats:
+<ul>
+  <li> As a Web Start Application: 
+<!-- See http://blogs.sun.com/thejavatutorials/entry/deployment_toolkit_101 -->
+<script src="../../../../../doc/deployJava.js"></script>
+<script >
+    var dir = location.href.substring(0,location.href.lastIndexOf('/')+1);
+    var url = dir + "LogicalOrBackward.jnlp";
+    deployJava.createWebStartLaunchButton(url);
+</script>
+ <li> As an <a href="LogicalOrBackwardVergil.htm">applet</a>.
+</ul>  
+The Java Web Start version is preferred, though browsers with versions of Java
+earlier than Java 1.6.0_13 may only work with the applet version.
+See <a href="../../../../../doc/webStartHelp.htm">Web Start Help</a> for details.
+<!-- /PT DEPLOYJAVA CONVERTER -->
+
+</p>
+
+</body>
+</htm>

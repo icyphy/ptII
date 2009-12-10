@@ -146,14 +146,15 @@ An recent implementation of Continuous Time semantics, for use with the <a href=
 <li> <a href="../../domains/continuous/demo/ComparedClocks/ComparedClocks.xml">Compared Clocks</a> (New in Ptolemy II 8.0)
 <li><a href="../../domains/continuous/demo/ContinuousInsideDE/ContinuousInsideDE.xml">Continuous Inside DE</a>
 <li> <a href="../../domains/continuous/demo/Transmission/EfficiencyCurve.xml">Efficiency Curve</a> (New in Ptolemy II 8.0)
-<li><a href="../../domains/continuous/demo/LevelCrossingDetector/LevelCrossingDetector.xml">Level Crossing Detector</a>
+<li> <a href="../../domains/continuous/demo/HierarchicalExecution/HierarchicalExecution.xml">Hierarchical Execution</a>
 <li>Hybrid Plant: <a href="../../domains/continuous/demo/HybridPlant/HybridPlant.xml">Deterministic</a>, 
 <a href="../../domains/continuous/demo/HybridPlant/RandomHybridPlant.xml">Random</a> (New in Ptolemy II 8.0)
 <li> <a href="../../domains/continuous/demo/Hysteresis/Hysteresis.xml">Hysteresis</a> (New in Ptolemy II 8.0)
 <li> <a href="../../domains/continuous/demo/Hysteresis/HysteresisWithRandomDelay.xml">HysteresisWithRandomDelay</a> (New in Ptolemy II 8.0)
 <li> <a href="../../domains/continuous/demo/Hysteresis/HysteresisWithRandomLosses.xml">HysteresisWithRandomLosses</a> (New in Ptolemy II 8.0)
-<li><a href="../../domains/continuous/demo/LevelCrossingDetector/LevelCrossingDetectorDetectingDirections.xml">Level Crossing Detector Detecting Directions</a>, 
-<a href="../../domains/continuous/demo/LevelCrossingDetectorDetectsGlitches/LevelCrossingDetectorDetectsGlitches.xml">LevelCrossingDetectorDetectsGlitches</a> (New in Ptolemy II 8.0)
+<li><a href="../../domains/continuous/demo/LevelCrossingDetector/LevelCrossingDetector.xml">Level Crossing Detector</a>,
+<li><a href="../../domains/continuous/demo/LevelCrossingDetector/LevelCrossingDetectorDetectingDirections.xml">Level Crossing Detector Detecting Directions</a> 
+<li><a href="../../domains/continuous/demo/LevelCrossingDetectorDetectsGlitches/LevelCrossingDetectorDetectsGlitches.xml">LevelCrossingDetectorDetectsGlitches</a> (New in Ptolemy II 8.0)
 <li><a href="../../domains/continuous/demo/Lorenz/Lorenz.xml">Lorenz Attractors</a>
 <li> <a href="../../domains/continuous/demo/SigmaDelta/SigmaDelta.xml">MEMS accelerometer</a> (New in Ptolemy II 8.0)
 <li><a href="../../domains/continuous/demo/NewtonsCradle/NewtonsCradle.xml">Newtons Cradle</a>
@@ -168,7 +169,7 @@ An recent implementation of Continuous Time semantics, for use with the <a href=
 <li> <a href="../../domains/continuous/demo/NewtonsCradle/ParameterizedNewtonsCradleAnimatedNondeterministic.xml">Newton's Cradle with Balls Having Different Masses</a> (Requires Java 3D, see the <a href="../../domains/gr/doc/main.htm">GR domain</a>) (New in Ptolemy II 8.0)
 <li> <a href="../../domains/continuous/demo/Pendulum3D/Pendulum3D.xml">3D Pendulum</a> (Requires Java 3D, see the <a href="../../domains/gr/doc/main.htm">GR domain</a>) (New in Ptolemy II 8.0)
 <!--vergilDocs-->
-<li> <a href="../../domains/continuous/demo/Poisson/IncreasingRatePoisson.xml">Poisson</a>,
+<li> <a href="../../domains/continuous/demo/Poisson/Poisson.xml">Poisson</a>,
  <a href="../../domains/continuous/demo/Poisson/IncreasingRatePoisson.xml">IncreasingRatePoisson</a> (New in Ptolemy II 8.0)
 <li> <a href="../../domains/continuous/demo/SampledClocks/SampledClocks.xml">Sampled Clocks</a> (New in Ptolemy II 8.0)
 <li> <a href="../../domains/continuous/demo/Satellite/Satellite.xml">Satellite</a> (New in Ptolemy II 8.0)
@@ -177,6 +178,13 @@ An recent implementation of Continuous Time semantics, for use with the <a href=
 <li> <a href="../../domains/continuous/demo/SinuBouncingBall/SinuBouncingBall.xml">Ball Bouncing on a Sinusoidal Surface</a> (New in Ptolemy II 8.0)
 <li> <a href="../../domains/continuous/demo/StickyMasses/StickyMasses.xml">Sticky Point Masses</a> (New in Ptolemy II 8.0)
 <li> <a href="../../domains/continuous/demo/SquareWave/SquareWave.xml">Square Wave Response</a> (New in Ptolemy II 8.0)
+
+<!--/vergilDocs-->
+<!-- Starmac uses Java3D -->
+<li> <a href="../../domains/continuous/demo/Starmac/Starmac.xml">Starmac</a>
+<li> <a href="../../domains/continuous/demo/StickyMasses/StickyMasses.xml">Sticky Point Masses</a>
+<!--vergilDocs-->
+
 <li> <a href="../../domains/continuous/demo/Switch/Switch.xml">Switch</a>
 <li> <a href="../../domains/continuous/demo/Thermostat/Thermostat.xml">Thermostat</a>
 <li> <a href="../../domains/continuous/demo/Transmission/Transmission.xml">Transmission</a>
@@ -273,6 +281,7 @@ An earlier implementation of Continuous Time semantics, for use with the <a href
 <!--vergilDocs-->
 
 <li><a href="../../domains/ddf/demo/IfThenElse/IfThenElse.xml">IfThenElse</a>
+<li><a href="../../domains/ddf/demo/IfThenElse/IfThenElseFSM.xml">IfThenElseFSM</a>
 <li><a href="../../domains/ddf/demo/Loop/Loop.xml">Loop</a>
 <li><a href="../../domains/ddf/demo/OrderedMerge/OrderedMerge.xml">OrderedMerge</a>
 <li><a href="../../domains/ddf/demo/RandomWalk/RandomWalk.xml">RandomWalk</a>
@@ -462,7 +471,7 @@ A work-in-progress implementation of Modal semantics, for use with the <a href="
 <h3><a name="ptera">Ptolemy Event Relationship Actor (Ptera)</a></h3>
 <ul>
 <li> <a href="../../domains/ptera/demo/AdaptiveCarWash/AdaptiveCarWash.xml">AdaptiveCarWash (With ModelUpdater)</a>
-<li> <a href="../../domains/ptera/demo/AdaptiveCarWash/AdaptiveCarWash_FSM.xml">AdaptiveCarWash (With FSM Submodel)</a>
+<li> <a href="../../domains/ptera/demo/AdaptiveCarWash/AdaptiveCarWashFSM.xml">AdaptiveCarWash (With FSM Submodel)</a>
 <li> <a href="../../domains/ptera/demo/CarWash/CarWash.xml">CarWash</a>
 <li> <a href="../../domains/ptera/demo/CarWash/CarWash_DE.xml">CarWash (With DE)</a>
 <!-- We don't ship ptolemy/apps with the windows installer -->

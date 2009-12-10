@@ -7,44 +7,32 @@
 </head>
 <body>
 <H1>DE Modal Model</H1>
-
-<P>
- <!-- All of the controls of the applet should be visible when the
+<!-- All of the controls of the applet should be visible when the
 applet is displayed on a XGA screen-->
-<center>
-<!-- The HTML below is for the Java Plugin.  The first
-     section is for IE, the second is for Netscape
- -->
-<!-- PT JNLP APPLET CONVERTER -->
-<!-- We use both the older applet style and the JDK1.6.0_10 and later
-     JNLP Applets.  In this way, we can support pre-JDK1.6.0_10 installs.
-     See https://jdk6.dev.java.net/plugin2/jnlp/ -->
-<APPLET 
-   code = "ptolemy.vergil.VergilApplet"
-   codebase = "../../../../.."
-   archive = "ptolemy/domains/de/demo/ModalModel/ModalModel.jar,ptolemy/data/data.jar,ptolemy/domains/de/de.jar,ptolemy/domains/fsm/fsm.jar,ptolemy/ptsupport.jar,ptolemy/domains/sdf/sdf.jar,lib/diva.jar,ptolemy/domains/modal/modal.jar,ptolemy/domains/fsm/fsm.jar,ptolemy/domains/ct/ct.jar,ptolemy/vergil/vergilApplet.jar"
-   width = "100"
-   height = "100"
-   >
-  <PARAM name="jnlp_href" value="ptolemy/domains/de/demo/ModalModel/ModalModel.jnlp">
-  <PARAM NAME = "commandLineArguments" VALUE = "-ptinyViewer ptolemy/domains/de/demo/ModalModel/ModalModel.xml">
-  <PARAM NAME = "NAME" VALUE = "ModalModel" >
-  <PARAM NAME = "background" VALUE = "#ffffff" >
-  <PARAM NAME = "controls" VALUE = "buttons" >
-  <PARAM NAME = "orientation" VALUE = "vertical" > \
-  <PARAM NAME = "modelURL" VALUE = "ModalModel.xml" > \
-  <a href="ModalModel.xml">MoML specification for this model.</a> \
-</APPLET>
-<!-- /PT JNLP APPLET CONVERTER -->
-</center>
-<P>
+<!-- PT DEPLOYJAVA CONVERTER -->
+<p>
+ModalModel is available in two formats:
+<ul>
+  <li> As a Web Start Application: 
+<!-- See http://blogs.sun.com/thejavatutorials/entry/deployment_toolkit_101 -->
+<script src="../../../../../doc/deployJava.js"></script>
+<script >
+    var dir = location.href.substring(0,location.href.lastIndexOf('/')+1);
+    var url = dir + "ModalModel.jnlp";
+    deployJava.createWebStartLaunchButton(url);
+</script>
+ <li> As an <a href="ModalModelVergil.htm">applet</a>.
+</ul>  
+The Java Web Start version is preferred, though browsers with versions of Java
+earlier than Java 1.6.0_13 may only work with the applet version.
+See <a href="../../../../../doc/webStartHelp.htm">Web Start Help</a> for details.
+<!-- /PT DEPLOYJAVA CONVERTER -->
+<p>
 This modal model has two modes, "clean" and "noisy".
 In the "clean" mode, it generates samples of a clean
 (noiseless) sinusoid at regular sample intervals.
 In the "noisy" mode, it generates a noisy sinusoid.
 It switches modes at random times according to a
-Poisson process.
-
-<p>
+Poisson process.</p>
 </BODY>
 </HTML>

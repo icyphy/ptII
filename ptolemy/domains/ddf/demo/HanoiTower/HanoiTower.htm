@@ -1,5 +1,4 @@
 <!-- : $Id$
-  @author: 
  -->
 <HTML>
 <HEAD>
@@ -10,32 +9,34 @@
 <BODY>
 <H1>HanoiTower</H1>
 <P>
-The HanoiTower model shown using Vergil, the Ptolemy II schematic editor:
 
-<CENTER>
 <P>
-<!-- PT JNLP APPLET CONVERTER -->
-<!-- We use both the older applet style and the JDK1.6.0_10 and later
-   JNLP Applets.  In this way, we can support pre-JDK1.6.0_10 installs.
-   See https://jdk6.dev.java.net/plugin2/jnlp/ -->
-<APPLET 
- code = "ptolemy.vergil.VergilApplet"
- codebase = "../../../../.."
- archive = "ptolemy/domains/continuous/demo/HanoiTower/HanoiTower.jar,ptolemy/data/data.jar,ptolemy/ptsupport.jar,ptolemy/domains/continuous/ct.jar,lib/diva.jar,ptolemy/domains/modal/modal.jar,ptolemy/domains.modal/fsm.jar,ptolemy/domains/continuous/ct.jar,ptolemy/vergil/vergilApplet.jar"
- width = "100"
- height = "100"
- >
-<PARAM name="jnlp_href" value="ptolemy/domains/continuous/demo/HanoiTower/HanoiTower.jnlp">
-<PARAM NAME = "commandLineArguments" VALUE = "-ptinyViewer ptolemy/domains/continuous/demo/HanoiTower/HanoiTower.xml">
-<PARAM NAME = "NAME" VALUE = "HanoiTower" >
-<PARAM NAME = "background" VALUE = "#ffffff" >
-<PARAM NAME = "controls" VALUE = "buttons" >
-<PARAM NAME = "orientation" VALUE = "vertical" > \
-<PARAM NAME = "modelURL" VALUE = "HanoiTower.xml" > \
-<a href="HanoiTower.xml">MoML specification for this model.</a> \
-</APPLET>
-<!-- /PT JNLP APPLET CONVERTER -->
-</CENTER>
+<!-- PT DEPLOYJAVA CONVERTER -->
+<p>
+HanoiTower is available in two formats:
+<ul>
+  <li> As a Web Start Application: 
+<!-- See http://blogs.sun.com/thejavatutorials/entry/deployment_toolkit_101 -->
+<script src="../../../../../doc/deployJava.js"></script>
+<script >
+    var dir = location.href.substring(0,location.href.lastIndexOf('/')+1);
+    var url = dir + "HanoiTower.jnlp";
+    deployJava.createWebStartLaunchButton(url);
+</script>
+ <li> As an <a href="HanoiTowerVergil.htm">applet</a>.
+</ul>  
+The Java Web Start version is preferred, though browsers with versions of Java
+earlier than Java 1.6.0_13 may only work with the applet version.
+See <a href="../../../../../doc/webStartHelp.htm">Web Start Help</a> for details.
+<!-- /PT DEPLOYJAVA CONVERTER -->
 </p>
+<p>This model solves Tower of Hanoi puzzle using the ActorRecursion actor. 
+A tower of disks initially stacked in increasing size on the source tower 
+shall be transferred to the destination tower, moving only at one disk at a 
+time and never a larger one onto a smaller through the third tower. </p>
+
+<p>The number of disks can be adjusted through the parameter numberOfDisks.
+The three towers are indexed as 0,1,2. The animation speed can be adjusted 
+through the parameter interpolationFactor.</p>
 </BODY>
 </HTML>

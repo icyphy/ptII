@@ -24,8 +24,8 @@ applet is displayed on a XGA screen-->
    code = "ptolemy.vergil.VergilApplet"
    codebase = "../../../../.."
    archive = "ptolemy/domains/sr/demo/TokenRing/TokenRing.jar,ptolemy/data/data.jar,ptolemy/domains/sr/lib/lib.jar,ptolemy/ptsupport.jar,ptolemy/domains/sr/sr.jar,lib/diva.jar,ptolemy/domains/modal/modal.jar,ptolemy/domains/fsm/fsm.jar,ptolemy/domains/ct/ct.jar,ptolemy/vergil/vergilApplet.jar"
-   width = "400"
-   height = "650"
+   width = "100"
+   height = "100"
    >
   <PARAM name="jnlp_href" value="ptolemy/domains/sr/demo/TokenRing/TokenRing.jnlp">
   <PARAM NAME = "commandLineArguments" VALUE = "-ptinyViewer ptolemy/domains/sr/demo/TokenRing/TokenRing.xml">
@@ -38,25 +38,18 @@ applet is displayed on a XGA screen-->
 </APPLET>
 <!-- /PT JNLP APPLET CONVERTER -->
 </CENTER>
+</p>
 <p> This system arbitrates fairly among requests for exclusive access
 to a shared resource by marching a token around a ring.  In each
 instant, the arbiter grants access to the first requestor to the right
-of the block with the token.
+of the block with the token.</p>
 
 <p>In this model, Block1 starts with the token (see the parameter of the
-NonStrictDelay actor inside of BlockN).
+NonStrictDelay actor inside of BlockN).</p>
 
 <p>This example is from:
-<br>    Stephen A. Edwards and Edward A. Lee
-    "The Semantics and Execution of a Synchronous Block-Diagram Language"
-    Technical Memorandum UCB/ERL M01/33, 
-    University of California, Berkeley, CA 94720, 
-    October 25, 2001.
-<a href="http://ptolemy.eecs.berkeley.edu/publications/papers/01/blockdiagram/"><code>http://ptolemy.eecs.berkeley.edu/publications/papers/01/blockdiagram/</code></a>
-
-<p>The <a href="TokenRingVergil.htm">block diagram</a>
-for the model was constructed using the Ptolemy II schematic editor
-called Vergil.
-</p>
+<br> Stephen A. Edwards and Edward A. Lee,
+"<a href="http://ptolemy.eecs.berkeley.edu/publications/papers/01/blockdiagram/" target="_top">The Semantics and Execution of a Synchronous Block-Diagram Language</a>," Technical Memorandum UCB/ERL M01/33,  University of California, Berkeley, CA 94720, 
+   October 25, 2001.</p>
 </BODY>
 </HTML>

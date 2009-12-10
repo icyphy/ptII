@@ -25,8 +25,8 @@ applet is displayed on a XGA screen-->
    code = "ptolemy.vergil.VergilApplet"
    codebase = "../../../../.."
    archive = "ptolemy/domains/modal/demo/ModalBSC/ModalBSC.jar,ptolemy/domains/modal/modal.jar,ptolemy/data/data.jar,ptolemy/ptsupport.jar,ptolemy/domains/sdf/sdf.jar,lib/diva.jar,ptolemy/domains/modal/modal.jar,ptolemy/domains/fsm/fsm.jar,ptolemy/domains/ct/ct.jar,ptolemy/vergil/vergilApplet.jar"
-   width = "400"
-   height = "650"
+   width = "100"
+   height = "100"
    >
   <PARAM name="jnlp_href" value="ptolemy/domains/modal/demo/ModalBSC/ModalBSC.jnlp">
   <PARAM NAME = "commandLineArguments" VALUE = "-ptinyViewer ptolemy/domains/modal/demo/ModalBSC/ModalBSC.xml">
@@ -39,7 +39,9 @@ applet is displayed on a XGA screen-->
 </APPLET>
 <!-- /PT JNLP APPLET CONVERTER -->
 </CENTER>
-This modal model by
+</p>
+
+<p>This modal model by
 Zoltan Kemenczy (Research in Motion Limited)
 represents a trivial
 Binary Symmetric Channel
@@ -50,17 +52,12 @@ A transition refinement is used to scale the state change
 signal from the state refinement to make it more visible
 on the scope. If the same refinement is configured for both
 state transitions, the scale parameter of the refinement is
-set to be different for the two transitions.
+set to be different for the two transitions.</p>
 
 <p>Note that the decision which transition to
 take is made by the controller based on the state refinement's
 state change output (==1) and is not affected by the transition
-refinement changing the state change to double (0.5).
+refinement changing the state change to double (0.5).</p>
 
-
-<p>The <a href="ModalBSCVergil.htm">block diagram</a>
-for the model was constructed using the Ptolemy II schematic editor
-called Vergil.
-</p>
 </BODY>
 </HTML>

@@ -14,81 +14,24 @@ with DDE-specific actors.
 <P>
  <!-- All of the controls of the applet should be visible when the
 applet is displayed on a XGA screen-->
-<center>
-<!-- The HTML below is for the Java Plugin.  The first
-     section is for IE, the second is for Netscape
- -->
-<!-- HTML CONVERTER -->
-<SCRIPT LANGUAGE="JavaScript"><!--
-    var _info = navigator.userAgent; 
-    var _ns = false; 
-    var _ns6 = false;
-    var _ie = (_info.indexOf("MSIE") > 0 && _info.indexOf("Win") > 0 && _info.indexOf("Windows 3.1") < 0);
-//--></SCRIPT>
-    <COMMENT>
-        <SCRIPT LANGUAGE="JavaScript1.1"><!--
-        var _ns6 = (_info.indexOf("Mozilla/5") >= 0);
-        var _ns = (navigator.appName.indexOf("Netscape") >= 0 && ((_info.indexOf("Win") > 0     && _info.indexOf("Win16") < 0 && java.lang.System.getProperty("os.version").indexOf("3.5") < 0) || (_info.indexOf("Sun") > 0) || (_info.indexOf("Linux") > 0) || (_info.indexOf("AIX") > 0) || (_info.indexOf("OS/2") > 0) || (_info.indexOf("IRIX") > 0 )));
-//--></SCRIPT>
-    </COMMENT>
-
-<SCRIPT LANGUAGE="JavaScript"><!--
-    if (_ie == true) document.writeln('\
-        <OBJECT \
-            classid="clsid:8AD9C840-044E-11D1-B3E9-00805F499D93" \
-            width = "700" \
-            height = "500"  \
-            codebase="http://java.sun.com/products/plugin/autodl/jinstall-1_4_2-windows-i586.cab#Version=1,4,2"> \
-            <PARAM NAME = "code" \
-                   VALUE = "ptolemy.domains.dde.demo.LocalZeno.LocalZenoApplet" > \
-	    <PARAM NAME = "codebase"   VALUE = "../../../../.." > \
-	    <PARAM NAME = "archive" \
-                   VALUE = "ptolemy/ptsupport.jar,lib/diva.jar,ptolemy/domains/dde/demo/LocalZeno/LocalZeno.jar,ptolemy/domains/dde/dde.jar" > \
-            <PARAM NAME = "type" \
-                   VALUE = "application/x-java-applet;version=1.4.2" > \
-            <PARAM NAME = "progressbar" VALUE = "true"> \
-            <PARAM NAME = "scriptable" VALUE = "false" > \
-            <PARAM NAME = "name" VALUE = "LocalZenoApplet" > \
-	    <PARAM NAME = "background" VALUE = "#ffffff" > \
-            <I>If you were able to run applets, you would have a demo here.</I> \
-        </OBJECT> \
-        ');
-    else if (_ns == true || _ns6 == true)
-         document.writeln('\
-        <COMMENT> \
-          <EMBED \
-            type = "application/x-java-applet;version=1.4.2" \
-            code = "ptolemy.domains.dde.demo.LocalZeno.LocalZenoApplet" \
-            codebase = "../../../../.." \
-            archive = "ptolemy/ptsupport.jar,lib/diva.jar,ptolemy/domains/dde/demo/LocalZeno/LocalZeno.jar,ptolemy/domains/dde/dde.jar" \
-            width = "700" \
-            height = "500" \
-            name = "LocalZenoApplet" background = "#ffffff"  \
-            progressbar = "true" \
-            scriptable = "false" \
-            pluginspage = "http://java.sun.com/j2se/1.4.2/download.html"> \
-              <NOEMBED> \
-              <I>If you were able to run applets, you would have a demo here.</I> \
-              </NOEMBED> \
-           </EMBED> \
-        <COMMENT> \
-        ');
-    else document.writeln('\
-        <APPLET \
-            code = "ptolemy.domains.dde.demo.LocalZeno.LocalZenoApplet" \
-            codebase = "../../../../.." \
-            archive = "ptolemy/ptsupport.jar,lib/diva.jar,ptolemy/domains/dde/demo/LocalZeno/LocalZeno.jar,ptolemy/domains/dde/dde.jar" \
-            width = "700" \
-            height = "500" \
-            > \
-            <PARAM NAME = "name" VALUE = "LocalZenoApplet" > \
-	    <PARAM NAME = "background" VALUE = "#ffffff" > \
-            <I>If you were able to run applets, you would have a demo here.</I> \
-        </APPLET> \
-        ');
-//--></SCRIPT>
-<!-- /HTML CONVERTER -->
-</center>
+<!-- PT DEPLOYJAVA CONVERTER -->
+<p>
+LocalZeno is available in two formats:
+<ul>
+  <li> As a Web Start Application: 
+<!-- See http://blogs.sun.com/thejavatutorials/entry/deployment_toolkit_101 -->
+<script src="../../../../../doc/deployJava.js"></script>
+<script >
+    var dir = location.href.substring(0,location.href.lastIndexOf('/')+1);
+    var url = dir + "LocalZeno.jnlp";
+    deployJava.createWebStartLaunchButton(url);
+</script>
+ <li> As an <a href="LocalZenoVergil.htm">applet</a>.
+</ul>  
+The Java Web Start version is preferred, though browsers with versions of Java
+earlier than Java 1.6.0_13 may only work with the applet version.
+See <a href="../../../../../doc/webStartHelp.htm">Web Start Help</a> for details.
+<!-- /PT DEPLOYJAVA CONVERTER -->
 <P>
 <B>Background</B>
 <BR>

@@ -8,43 +8,35 @@
 </head>
 <body>
 <H1>Composite Giotto Model</H1>
-<P>
-A composite demo with a Giotto model embedded in a DE model.
- <br>The Giotto model is driven by two seperate events according 
-to the DE semantics.
-<CENTER>
-<P>
-
-<!-- PT JNLP APPLET CONVERTER -->
-<!-- We use both the older applet style and the JDK1.6.0_10 and later
-    JNLP Applets.  In this way, we can support pre-JDK1.6.0_10 installs.
-    See https://jdk6.dev.java.net/plugin2/jnlp/ -->
-<APPLET 
-  code = "ptolemy.vergil.VergilApplet"
-  codebase = "../../../../.."
-  archive = "ptolemy/domains/giotto/demo/Composite/Composite.jar,ptolemy/domains/giotto/giotto.jar,ptolemy/data/data.jar,ptolemy/ptsupport.jar,ptolemy/domains/de/de.jar,lib/diva.jar,ptolemy/domains/modal/modal.jar,ptolemy/domains/fsm/fsm.jar,ptolemy/domains/ct/ct.jar,ptolemy/vergil/vergilA pplet.jar"
-  width = "100"
-  height = "100"
-  >
- <PARAM name="jnlp_href" value="ptolemy/domains/giotto/demo/Composite/Composite.jnlp">
- <PARAM NAME = "commandLineArguments" VALUE = "-ptinyViewer ptolemy/domains/giotto/demo/Composite/Composite.xml">
- <PARAM NAME = "NAME" VALUE = "Composite" >
- <PARAM NAME = "background" VALUE = "#ffffff" >
- <PARAM NAME = "controls" VALUE = "buttons" >
- <PARAM NAME = "orientation" VALUE = "vertical" > \
- <PARAM NAME = "modelURL" VALUE = "Composite.xml" > \
- <a href="Composite.xml">MoML specification for this model.</a> \
-</APPLET>
-<!-- /PT JNLP APPLET CONVERTER -->
-</CENTER>
-<P>
-The model consists of a constant source that produces the value
-1, a pair of composites that function as accumulators, simply
-adding the current value to a running  sum, and a plotter.
-The source and the upper composite run at frequency 1, meaning
-that they get invoked once per iteration.  The lower composite
-and the plotter run at frequency 2, meaning that they are invoked
-twice per iteration.
+<!-- PT DEPLOYJAVA CONVERTER -->
 <p>
+Composite is available in two formats:
+<ul>
+  <li> As a Web Start Application: 
+<!-- See http://blogs.sun.com/thejavatutorials/entry/deployment_toolkit_101 -->
+<script src="../../../../../doc/deployJava.js"></script>
+<script >
+    var dir = location.href.substring(0,location.href.lastIndexOf('/')+1);
+    var url = dir + "Composite.jnlp";
+    deployJava.createWebStartLaunchButton(url);
+</script>
+ <li> As an <a href="CompositeVergil.htm">applet</a>.
+</ul>  
+The Java Web Start version is preferred, though browsers with versions of Java
+earlier than Java 1.6.0_13 may only work with the applet version.
+See <a href="../../../../../doc/webStartHelp.htm">Web Start Help</a> for details.
+<!-- /PT DEPLOYJAVA CONVERTER -->
+</p>
+<p>This demo shows how a Giotto model works inside a DE model.
+
+<p>The trigger events generated from the event source actors 
+simply update the inputs for the computation specified by 
+the Giotto model. However, whether the inputs are consumed 
+by the Giotto model is determined by the period of the Giotto
+model.</p>
+
+<p>The Giotto model starts at the same time the DE model starts,
+and keeps running until its iteration counts are met or the top 
+level (the DE model) stops execution.</p>
 </body>
 </html>

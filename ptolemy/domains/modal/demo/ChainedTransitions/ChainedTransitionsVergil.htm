@@ -8,11 +8,16 @@
 <BODY>
 
 <H1>ChainedTransitions</H1>
+<p>This model shows how Ptolemy II handles the "chained" transitions.</p>
+<p>By chained transitions, it means that when a state is entered through
+an incoming transition, at least one of its outgoing transitions is 
+enabled, and the enabled transition is taken immediately without 
+advancing the time. The state is called a "transient" state.</p>
 
+<p>Note, the actions associated with both the incoming and outgoing 
+transitions are executed.</p>
 
-<P>
-This model shows how Ptolemy II handles the "chained" transitions.
-
+<p>
  <!-- All of the controls of the applet should be visible when the
 applet is displayed on a XGA screen-->
 <center>
@@ -26,9 +31,9 @@ applet is displayed on a XGA screen-->
 <APPLET 
    code = "ptolemy.vergil.VergilApplet"
    codebase = "../../../../.."
-   archive = "ptolemy/domains/modal/demo/ChainedTransitions/ChainedTransitions.jar,ptolemy/domains/modal/modal.jar,ptolemy/data/data.jar,ptolemy/ptsupport.jar,ptolemy/domains/ct/ct.jar,lib/diva.jar,ptolemy/domains/modal/modal.jar,ptolemy/domains/fsm/fsm.jar,ptolemy/domains/ct/ct.jar,ptolemy/vergil/vergilApplet.jar"
-   width = "400"
-   height = "650"
+   archive = "ptolemy/domains/modal/demo/ChainedTransitions/ChainedTransitions.jar,ptolemy/domains/modal/modal.jar,ptolemy/data/data.jar,ptolemy/ptsupport.jar,ptolemy/domains/continuous/continuous.jar,lib/diva.jar,ptolemy/domains/modal/modal.jar,ptolemy/domains/fsm/fsm.jar,ptolemy/domains/ct/ct.jar,ptolemy/vergil/vergilApplet.jar"
+   width = "100"
+   height = "100"
    >
   <PARAM name="jnlp_href" value="ptolemy/domains/modal/demo/ChainedTransitions/ChainedTransitions.jnlp">
   <PARAM NAME = "commandLineArguments" VALUE = "-ptinyViewer ptolemy/domains/modal/demo/ChainedTransitions/ChainedTransitions.xml">
@@ -41,18 +46,6 @@ applet is displayed on a XGA screen-->
 </APPLET>
 <!-- /PT JNLP APPLET CONVERTER -->
 </CENTER>
-
-<p>By chained transitions, it means that when a state is entered through
-an incoming transition, at least one of its outgoing transitions is 
-enabled, and the enabled transition is taken immediately without 
-advancing the time. The state is called a "transient" state.
-
-<p>Note, the actions associated with both the incoming and outgoing 
-transitions are executed.
-
-<p>The <a href="ChainedTransitionsVergil.htm">block diagram</a>
-for the model was constructed using the Ptolemy II schematic editor
-called Vergil.
 </p>
 </BODY>
 </HTML>

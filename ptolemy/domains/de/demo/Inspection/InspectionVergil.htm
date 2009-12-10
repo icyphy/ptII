@@ -23,8 +23,8 @@ applet is displayed on a XGA screen-->
    code = "ptolemy.vergil.VergilApplet"
    codebase = "../../../../.."
    archive = "ptolemy/domains/de/demo/Inspection/Inspection.jar,ptolemy/data/data.jar,ptolemy/domains/de/de.jar,ptolemy/ptsupport.jar,lib/diva.jar,ptolemy/domains/modal/modal.jar,ptolemy/domains/fsm/fsm.jar,ptolemy/domains/ct/ct.jar,ptolemy/vergil/vergilApplet.jar"
-   width = "400"
-   height = "650"
+   width = "100"
+   height = "100"
    >
   <PARAM name="jnlp_href" value="ptolemy/domains/de/demo/Inspection/Inspection.jnlp">
   <PARAM NAME = "commandLineArguments" VALUE = "-ptinyViewer ptolemy/domains/de/demo/Inspection/Inspection.xml">
@@ -37,17 +37,16 @@ applet is displayed on a XGA screen-->
 </APPLET>
 <!-- /PT JNLP APPLET CONVERTER -->
 </center>
-<P>
-The above applet uses the Ptolemy II Discrete Event (DE) domain
-to illustrate the inspection paradox.
-The inspection paradox concerns Poisson arrivals of events.
-The metaphor used in this applet is that of busses and passengers.
-Passengers arrive according to a Poisson process.
-Busses arrive at regular intervals and according to a Poisson
+<p> The model uses the Ptolemy II Discrete Event (DE) domain 
+to illustrate the inspection paradox. 
+The inspection paradox concerns Poisson arrivals of events. 
+The metaphor used in this applet is that of busses and passengers. 
+Passengers arrive according to a Poisson process. 
+Busses arrive at regular intervals and according to a Poisson 
 process, and the model collects statistics on waiting time for both
-cases.
-<p>
-The inspection paradox concerns the average time that a passenger
+cases.</p>
+
+<p>The inspection paradox concerns the average time that a passenger
 waits for a bus (more precisely, the expected value).  If the busses
 arrive at regular intervals with interarrival time equal to <i>T</i>,
 then the expected waiting time is <i>T</i>/2, which is perfectly
@@ -57,30 +56,26 @@ according to a Poisson process with mean interarrival time equal
 These expected waiting times are approximated in this applet by
 the average waiting time.  The applet also plots actual
 arrival times for both passengers and busses, and the waiting
-time of each passenger for Poisson arrival of busses.
-<p>
-The top plot shows the passengers' and busses' arrival times, and
+time of each passenger for Poisson arrival of busses.<p>
+
+<p>The top plot shows the passengers' and busses' arrival times, and
 the waiting times for the case of Poisson bus arrivals (the waiting
 times for regular arrivals are not shown).
 The bottom plot shows the distribution histogram of all wait times.
 The bin width used is equal to 0.2.
 The display at the bottom shows the average waiting time for the two
-cases.
-<p>
-The intuition that resolves the paradox is as follows.
+cases.</p>
+
+<p>The intuition that resolves the paradox is as follows.
 If the busses are arriving according to a Poisson process,
 then some intervals between busses are larger than other intervals.
 A particular passenger is more likely to arrive at the bus stop
 during one of these larger intervals than during one of the smaller
 intervals.  Thus, the expected waiting time is larger if the bus
-arrival times are irregular.
-<p>
-This paradox is called the <i>inspection paradox</i> because the
+arrival times are irregular.</p>
+
+<p>This paradox is called the <i>inspection paradox</i> because the
 passengers are viewed as inspecting the Poisson process of
-bus arrivals.
-<P>
-This applet is implemented in MoML, as shown
-in a <a href="InspectionVergil.htm">Vergil block diagram</a>.
-<p>
+bus arrivals.</p>
 </BODY>
 </HTML>
