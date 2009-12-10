@@ -176,9 +176,9 @@ public class StaticSchedulingDirector extends Director {
      *  make state transitions in modal models at the conclusion
      *  of each iteration. Next, this code calls postfire(), and
      *  that returns false, breaks out of the main loop.
-     *  Finally, if the director has a parameter named <i>period</i>,
-     *  then increment the variable _currentTime after each
-     *  pass through the loop.
+     *  Finally, _iteration is incremented. This value can
+     *  be used with the constant PERIOD to calculate the
+     *  current time after each pass through the loop.
      *  @return Code for the main loop of an execution.
      *  @exception IllegalActionException If something goes wrong.
      */
@@ -227,14 +227,7 @@ public class StaticSchedulingDirector extends Director {
 
         code.append(generatePostfireCode());
 
-        Attribute period = _director.getAttribute("period");
-        if (period != null) {
-            Double periodValue = ((DoubleToken) ((Variable) period).getToken())
-                    .doubleValue();
-            if (periodValue != 0.0) {
-                code.append("_currentTime += " + periodValue + ";" + _eol);
-            }
-        }
+        code.append("++_iteration;" + _eol);
 
         code.append("}" + _eol);
         return code.toString();
@@ -274,27 +267,28 @@ public class StaticSchedulingDirector extends Director {
         StringBuffer variableDeclarations = new StringBuffer(super
                 .generateVariableDeclaration());
         Attribute period = _director.getAttribute("period");
-        if (period != null) {
-            Double periodValue = ((DoubleToken) ((Variable) period).getToken())
+        ptolemy.actor.sched.StaticSchedulingDirector director = (ptolemy.actor.sched.StaticSchedulingDirector) getComponent();
+        // Print period and iteration counter only if it is the containing actor
+        // is the top level.
+        // FIXME: should this test also be applied to the other code?
+        if (director.getContainer().getContainer()==null) {
+            Double periodValue = 0.0;
+            if (period != null) {
+                periodValue = ((DoubleToken) ((Variable) period).getToken())
                     .doubleValue();
-            if (periodValue != 0.0) {
-                variableDeclarations.append(_eol
-                        + _codeGenerator
-                                .comment("Director has a period attribute,"
-                                        + " so we track current time."));
-                variableDeclarations.append("double _currentTime = 0;" + _eol);
             }
-            ptolemy.actor.sched.StaticSchedulingDirector director = (ptolemy.actor.sched.StaticSchedulingDirector) getComponent();
-            // Print period only if it is the containing actor is the top level.
-            // FIXME: should this test also be applied to the other code?
-            if (director.getContainer().getContainer()==null) {
-                variableDeclarations.append(_eol
-                        + _codeGenerator
-                                .comment("Provide the period attribute as constant."));
-                variableDeclarations.append("public final static double PERIOD = "
-                        + periodValue + ";" + _eol);
-            }
+            variableDeclarations.append(_eol
+                    + _codeGenerator
+                            .comment("Provide the period attribute as constant."));
+            variableDeclarations.append("public final static double PERIOD = "
+                    + periodValue + ";" + _eol);
+            variableDeclarations.append(_eol
+                    + _codeGenerator
+                            .comment("Provide the iteration count."));
+            variableDeclarations.append("public static int _iteration = 0;" + _eol);
         }
+
+
 
         return variableDeclarations.toString();
     }
