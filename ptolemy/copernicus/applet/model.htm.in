@@ -23,7 +23,7 @@
    var url = dir + "@sanitizedModelName@.jnlp";
    deployJava.createWebStartLaunchButton(url);
 </script>
-<li> As a <a href="@sanitizedModelName@Vergil.htm">applet</a>.
+<li> As an <a href="@sanitizedModelName@Vergil.htm">applet</a>.
 </ul>  
 The Java Web Start version is preferred, though browsers with versions of Java
 earlier than Java 1.6.0_13 may only work with the applet version.
