@@ -237,11 +237,8 @@ public class PthalesReceiver extends SDFReceiver {
 
     /** Specifies the input array that will read the buffer allocated as output.
      * Here we only check that everything is correct, and computes addresses in output buffer.
-     * @param baseSpec : origins 
-     * @param patternSpec : fitting of the array
-     * @param tilingSpec : paving of the array
-     * @param repetitionsSpec
-     * @param dimensions : dimensions contained in the array
+     * @param port
+     * @param actor
      * @throws IllegalActionException
      */
     public void setInputArray(PThalesIOPort port, PthalesActorInterface actor)
@@ -255,11 +252,8 @@ public class PthalesReceiver extends SDFReceiver {
      * It is the output array that determines the available size and dimensions
      * for the receivers.
      * This function allocates a buffer that is used as a memory would be (linear)
-     * @param baseSpec : origins 
-     * @param patternSpec : fitting of the array
-     * @param tilingSpec : paving of the array
-     * @param repetitionsSpec
-     * @param dimensions : dimensions contained in the array
+     * @param port
+     * @param actor
      * @throws IllegalActionException
      */
     public void setOutputArray(PThalesIOPort port, PthalesActorInterface actor)

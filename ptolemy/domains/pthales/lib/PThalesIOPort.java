@@ -462,7 +462,6 @@ public class PThalesIOPort extends TypedIOPort {
     /** Check if data type is a structure.
      * If yes, gives the number of tokens needed to store all the data
      * By default, the return value is 1
-     * @return the number of token needed to store the values
      */
     public void setDataType() {
         Parameter p = (Parameter) getAttribute("dataType");
@@ -641,7 +640,6 @@ public class PThalesIOPort extends TypedIOPort {
      *  The dimension data is indexed by dimension name and contains two
      *  integers, a value and a stride, in that order.
      *  @param name The name of the parameter
-     *  @param object The port or actor.
      *  @return The dimension data, or null if the parameter does not exist.
      *  @throws IllegalActionException If the parameter cannot be evaluated.
      */
