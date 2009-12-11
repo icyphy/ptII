@@ -68,16 +68,19 @@ public class RelationalInterface {
      *  @param connections The feedback connections.
      */
     public void addFeedback(final Set<Connection> connections) {
-        // FIXME: Deal with multiple connections
-        Connection connection = connections.iterator().next();
-        if (_mooreInputs().contains(connection._inputPort)) {
-            _inputPorts.remove(connection._inputPort);
-            _outputPorts.add(connection._inputPort);
-            _contract = "(and " + _contract + " (= " + connection._inputPort
-                    + " " + connection._outputPort + "))";
-        } else {
-            assert false; //FIXME: Throw exception
+        Set<String> newConstraints = new HashSet<String>();
+        newConstraints.add(_contract);
+        for (Connection connection : connections) {
+            if (_mooreInputs().contains(connection._inputPort)) {
+                _inputPorts.remove(connection._inputPort);
+                _outputPorts.add(connection._inputPort);
+                newConstraints.add("(= " + connection._inputPort
+                        + " " + connection._outputPort + ")");
+            } else {
+                assert false; //FIXME: Throw exception
+            }
         }
+        _contract = LispExpression.conjunction(newConstraints);
     }
 
     /** Return an interface that results from the cascade composition of
