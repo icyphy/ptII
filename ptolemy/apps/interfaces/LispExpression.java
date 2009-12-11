@@ -32,6 +32,7 @@ public class LispExpression {
      *  @return The conjunction.
      */
     public static String conjunction(final Collection<String> arguments) {
+        arguments.remove("true");
         if (arguments.isEmpty()) {
             return "true";
         } else {

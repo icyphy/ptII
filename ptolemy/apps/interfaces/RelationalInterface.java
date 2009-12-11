@@ -109,20 +109,23 @@ public class RelationalInterface {
         // This is a translation of Definition 10 (composition by connection)
         // in the EMSOFT 2009 paper "On Relational Interfaces"
         final String connectionContracts = Connection.getContract(connections);
-        final StringBuffer y = new StringBuffer('(');
+        final Set<String> newConstraints = new HashSet<String>();
+        newConstraints.add(_contract);
+        newConstraints.add(rhs._contract);
+        newConstraints.add(connectionContracts);
+        final StringBuffer y = new StringBuffer("(");
         for (final Connection c : connections) {
             y.append(c._inputPort + "::int " + c._outputPort + "::int ");
         }
         for (final String firstInterfaceOutputVariable : _outputPorts) {
             y.append(firstInterfaceOutputVariable + "::int ");
         }
-        y.append(')');
+        y.append(")");
         final String phi = "(=> (and " + _contract + " " + connectionContracts
                 + ") " + rhs.inContract() + ")";
-        final String newContract = "(and " + _contract + " " + rhs._contract
-                + " " + connectionContracts + " (forall " + y.toString() + " "
-                + phi + "))";
-        return new RelationalInterface(newInputs, newOutputs, newContract);
+        newConstraints.add(" (forall " + y.toString() + " " + phi + ")");
+        return new RelationalInterface(newInputs, newOutputs,
+                LispExpression.conjunction(newConstraints));
     }
 
     /** Return a string representation of the interface contract.
@@ -301,12 +304,11 @@ class Connection {
      *  @return The contract.
      */
     public static String getContract(final Set<Connection> connections) {
-        final StringBuffer contract = new StringBuffer("(and ");
+        final Set<String> contracts = new HashSet<String>();
         for (final Connection c : connections) {
-            contract.append("(== " + c._inputPort + " " + c._outputPort + ")");
+            contracts.add("(== " + c._inputPort + " " + c._outputPort + ")");
         }
-        contract.append(")");
-        return contract.toString();
+        return LispExpression.conjunction(contracts);
     }
 
     /** The start of the connection.
