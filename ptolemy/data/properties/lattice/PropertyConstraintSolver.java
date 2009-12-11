@@ -660,37 +660,7 @@ public class PropertyConstraintSolver extends PropertySolver {
                     if (!inequality.isSatisfied(_lattice)) {
                         conflicts.add(inequality);
 
-                    } else {
-                        // Check if there exist an unacceptable term value.
-                        boolean isAcceptable = true;
-
-                        InequalityTerm[] lesserVariables = inequality
-                                .getLesserTerm().getVariables();
-
-                        InequalityTerm[] greaterVariables = inequality
-                                .getGreaterTerm().getVariables();
-
-                        for (InequalityTerm variable : lesserVariables) {
-                            if (!variable.isValueAcceptable()
-                                    && ((PropertyTerm) variable).isEffective()) {
-                                unacceptable.add(inequality);
-                                isAcceptable = false;
-                                break;
-                            }
-                        }
-
-                        if (isAcceptable) {
-                            // Continue checking for unacceptable terms.
-                            for (InequalityTerm variable : greaterVariables) {
-                                if (!variable.isValueAcceptable()
-                                        && ((PropertyTerm) variable)
-                                                .isEffective()) {
-                                    unacceptable.add(inequality);
-                                    break;
-                                }
-                            }
-                        }
-                    }
+                    } 
                 }
             }
 
@@ -704,12 +674,7 @@ public class PropertyConstraintSolver extends PropertySolver {
                                     + " on the following inequalities:\n"
                                     + conflicts);
                 }
-                if (unacceptable.size() > 0) {
-                    throw new TypeConflictException(unacceptable,
-                            "Properties resolved to unacceptable types in "
-                                    + toplevel.getFullName()
-                                    + " due to the following inequalities:");
-                }
+               
             }
         } catch (IllegalActionException ex) {
             // This should not happen. The exception means that
