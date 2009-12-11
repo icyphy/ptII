@@ -327,8 +327,7 @@ public class PThalesIOPort extends TypedIOPort {
             valueTiling = 0;
             if (_tiling.get(dimension) != null) {
                 for (int i = 0; i < repList.length; i++) {
-                    if (repList[i].equals(dimension)
-                            && _tiling.get(dimension) != null)
+                    if (repList[i].equals(dimension)&& _tiling.get(dimension) != null && rep.length > i)
                         valueTiling = _tiling.get(dimension)[0].intValue()
                                 * rep[i];
                 }
@@ -340,7 +339,7 @@ public class PThalesIOPort extends TypedIOPort {
             else
                 value = valuePattern * valueTiling;
 
-            if (value > 1)
+            if (value >= 1)
             {
                 sizes.put((String) dimension, value);
                 sizesToMap.put((String) dimension, new IntToken(value));
@@ -514,7 +513,7 @@ public class PThalesIOPort extends TypedIOPort {
             throws IllegalActionException {
         int result = 0;
         if (port instanceof PThalesIOPort) {
-            result = ((PThalesIOPort) port).getDataProducedSize();
+            result = ((PThalesIOPort) port).getArraySize();
         }
         return result;
     }
@@ -564,22 +563,22 @@ public class PThalesIOPort extends TypedIOPort {
         PthalesActorInterface actor = (PthalesActorInterface) getContainer();
 
         if (getAttribute("base") == null) {
-            new StringParameter(this, "base");
+            new Parameter(this, "base");
         }
 
         if (getAttribute("pattern") == null) {
-            new StringParameter(this, "pattern");
+            new Parameter(this, "pattern");
         }
 
         if (getAttribute("tiling") == null) {
-            new StringParameter(this, "tiling");
+            new Parameter(this, "tiling");
         }
 
         if (getAttribute("dimensionNames") == null) {
             new StringParameter(this, "dimensionNames");
         }
         if (getAttribute("size") == null) {
-            new StringParameter(this, "size");
+            new Parameter(this, "size");
         }
 
         // Useless parameters for CompositeActors
@@ -649,32 +648,35 @@ public class PThalesIOPort extends TypedIOPort {
         Attribute attribute = getAttribute(name);
         if (attribute instanceof Parameter) {
             Token token = ((Parameter) attribute).getToken();
-            if (token instanceof OrderedRecordToken) {
-                Set<String> fieldNames = ((OrderedRecordToken) token)
-                        .labelSet();
-                for (String fieldName : fieldNames) {
-                    Token value = ((OrderedRecordToken) token).get(fieldName);
-                    Integer[] values = new Integer[2];
-                    if (value instanceof IntToken) {
-                        values[0] = ((IntToken) value).intValue();
-                        values[1] = ONE;
-                    } else if (value instanceof ArrayToken) {
-                        if (((ArrayToken) value).length() != 2) {
-                            // FIXME: Need a better error message here.
-                            throw new IllegalActionException(this,
-                                    "Malformed specification: " + token);
+            if (token != null)
+            {
+                if (token instanceof OrderedRecordToken) {
+                    Set<String> fieldNames = ((OrderedRecordToken) token)
+                            .labelSet();
+                    for (String fieldName : fieldNames) {
+                        Token value = ((OrderedRecordToken) token).get(fieldName);
+                        Integer[] values = new Integer[2];
+                        if (value instanceof IntToken) {
+                            values[0] = ((IntToken) value).intValue();
+                            values[1] = ONE;
+                        } else if (value instanceof ArrayToken) {
+                            if (((ArrayToken) value).length() != 2) {
+                                // FIXME: Need a better error message here.
+                                throw new IllegalActionException(this,
+                                        "Malformed specification: " + token);
+                            }
+                            // FIXME: Check that tokens are IntToken
+                            values[0] = ((IntToken) ((ArrayToken) value)
+                                    .getElement(0)).intValue();
+                            values[1] = ((IntToken) ((ArrayToken) value)
+                                    .getElement(1)).intValue();
                         }
-                        // FIXME: Check that tokens are IntToken
-                        values[0] = ((IntToken) ((ArrayToken) value)
-                                .getElement(0)).intValue();
-                        values[1] = ((IntToken) ((ArrayToken) value)
-                                .getElement(1)).intValue();
+                        result.put(fieldName, values);
                     }
-                    result.put(fieldName, values);
+                } else {
+                    throw new IllegalActionException(this,
+                            "Unexpected token type: " + token);
                 }
-            } else {
-                throw new IllegalActionException(this,
-                        "Unexpected token type: " + token);
             }
         }
         return result;
