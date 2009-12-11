@@ -260,6 +260,7 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
         // Private variables.
         newObject._controller = null;
         newObject._controllerVersion = -1;
+        newObject._lastChosenTransition = null;
         newObject._localReceiverMapsVersion = -1;
 
         return newObject;

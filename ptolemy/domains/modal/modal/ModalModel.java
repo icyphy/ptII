@@ -299,6 +299,7 @@ public class ModalModel extends TypedCompositeActor implements ChangeListener {
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         ModalModel newModel = (ModalModel) super.clone(workspace);
         newModel._controller = (FSMActor) newModel.getEntity("_Controller");
+        newModel._causalityInterfacesVersions = null;
 
         try {
             // Validate the directorClass parameter so that the director
@@ -310,7 +311,6 @@ public class ModalModel extends TypedCompositeActor implements ChangeListener {
                     "Failed to validate the director of the clone of "
                             + getFullName());
         }
-
         return newModel;
     }
 
