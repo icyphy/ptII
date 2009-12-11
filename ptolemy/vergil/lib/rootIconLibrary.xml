@@ -1,7 +1,0 @@
-<?xml version="1.0" standalone="no"?>
-<!DOCTYPE entity SYSTEM "../../moml/moml.dtd">
-<class name="iconLibrary" extends="ptolemy.actor.TypedCompositeActor">
-  <doc>root icon library</doc>
-  <import source="../../actor/lib/genericicons.xml"/>
-  <entity name="generic" class=".generic"/>
-</class>

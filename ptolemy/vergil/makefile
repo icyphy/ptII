@@ -33,7 +33,7 @@ ME =		ptolemy/vergil
 
 # PTPDFRENDERER_DIR is set to pdfrenderer by configure
 DIRS = 		toolbox basic actor kernel fsm gt debugger \
-		icon lib modal $(PTPDFRENDERER_DIR) \
+		icon modal $(PTPDFRENDERER_DIR) \
 		ontologies properties ptera tree tdl \
 		unit test
 
@@ -75,8 +75,7 @@ PTAUXALLJAR =	vergilApplet.jar
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
 		$(PTAUXALLJARS) \
-		debugger/debugger.jar \
-		lib/lib.jar
+		debugger/debugger.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
