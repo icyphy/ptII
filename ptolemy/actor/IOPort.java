@@ -483,6 +483,8 @@ public class IOPort extends ComponentPort {
         newObject._localReceiversTable = null;
         newObject._insideReceivers = null;
         newObject._insideReceiversVersion = -1;
+        newObject._numberOfSinksVersion = -1;
+        newObject._numberOfSourcesVersion = -1;
 
         newObject._hasPortEventListeners = false;
         newObject._portEventListeners = null;

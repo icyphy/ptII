@@ -171,6 +171,7 @@ public class AtomicActor extends ComponentEntity implements Actor,
         newObject._outputPortsVersion = -1;
         newObject._causalityInterface = null;
         newObject._causalityInterfaceDirector = null;
+        newObject._receiversVersion = -1L;
         return newObject;
     }
 

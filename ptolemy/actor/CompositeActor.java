@@ -259,21 +259,36 @@ public class CompositeActor extends CompositeEntity implements Actor,
      *  @return A new CompositeActor.
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        // Some local variables are written to by constructors of contained
+        // actors. Those variables need to be set to null _before_ cloning
+        // so that the new instance gets its own version.
         List<Initializable> oldInitializables = _initializables;
         _initializables = null;
+        Map<String, List<IOPort>> oldPublishedPorts = _publishedPorts;
+        _publishedPorts = null;
+        Map<String, IORelation> oldPublisherRelations = _publisherRelations;
+        Director oldDirector = _director;
+        _director = null;
+        List<Executable> oldPiggybacks = _piggybacks;
+        _piggybacks = null;
+        
         CompositeActor newObject = (CompositeActor) super.clone(workspace);
+        
         _initializables = oldInitializables;
-
+        _publishedPorts = oldPublishedPorts;
+        _publisherRelations = oldPublisherRelations;
+        _director = oldDirector;
+        _piggybacks = oldPiggybacks;
+        
+        newObject._actorFiringListeners = null;
+        newObject._causalityInterface = null;
+        newObject._derivedPiggybacks = null;
+        newObject._manager = null;
         newObject._inputPortsVersion = -1;
         newObject._outputPortsVersion = -1;
-        newObject._causalityInterface = null;
         newObject._causalityInterfaceDirector = null;
-        if (newObject.getContainer() instanceof CompositeActor) {
-            newObject._relationWidthInference = null;
-        } else {
-            newObject._relationWidthInference = new RelationWidthInference(
-                    newObject);
-        }
+        newObject._receiversVersion = -1L;
+        newObject._relationWidthInference = null;
         return newObject;
     }
 
