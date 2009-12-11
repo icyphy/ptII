@@ -58,11 +58,20 @@ import ptolemy.kernel.util.NamedObj;
  */
 public class TransformationEvaluator extends PtalonEvaluator {
 
+    /** Construct transformation evaluator.
+     *  @param actor the Ptalon actor
+     */
     public TransformationEvaluator(PtalonActor actor) {
         super(actor);
         _resetParameters(false);
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
+    /** Enter the transformation.
+     *  @param incremental  True if this is an incremental transformation.
+     */
     public void enterTransformation(boolean incremental)
             throws PtalonRuntimeException {
         _isInTransformation = true;
@@ -73,12 +82,23 @@ public class TransformationEvaluator extends PtalonEvaluator {
         _preservedObjects.clear();
     }
 
+    /** Exit the transformation.
+     *  @exception PtalonRuntimeException Not thrown in this baseclass.
+     */
     public void exitTransformation() throws PtalonRuntimeException {
         _isInTransformation = false;
         _removedObjects.clear();
         _preservedObjects.clear();
     }
 
+    /**
+     * Negate an object.
+     * A negated object is a NamedObj with a 
+     * {@link ptolemy.actor.gt.NegationAttribute}.
+     * @param name The name of the NamedObj to be negated.
+     * @exception If we are in a transformation or if the object has
+     * already been negated.
+     */
     public void negateObject(String name) throws PtalonRuntimeException {
         if (_isInTransformation) {
             throw new PtalonRuntimeException("Objects can be marked negated "
@@ -104,6 +124,14 @@ public class TransformationEvaluator extends PtalonEvaluator {
         }
     }
 
+    /**
+     * Mark a NamedObj as optional.
+     * An optional object is a NamedObj with an 
+     * {@link ptolemy.actor.gt.OptionAttribute}.
+     * @param name The name of the NamedObj to be marked optional.
+     * @exception If we are in a transformation or if the object has
+     * already been marked optional
+     */
     public void optionalObject(String name) throws PtalonRuntimeException {
         if (_isInTransformation) {
             throw new PtalonRuntimeException("Objects can be marked optional "
@@ -129,6 +157,14 @@ public class TransformationEvaluator extends PtalonEvaluator {
         }
     }
 
+    /**
+     * Preserve an object.
+     * A preserved object is a NamedObj with an 
+     * {@link ptolemy.actor.gt.OptionAttribute}.
+     * @param name The name of the NamedObj to be preserved
+     * @exception If we are in a transformation or if the object has
+     * already been preserved.
+     */
     public void preserveObject(String name) throws PtalonRuntimeException {
         if (_isIncrementalTransformation) {
             throw new PtalonRuntimeException(
@@ -164,6 +200,12 @@ public class TransformationEvaluator extends PtalonEvaluator {
         }
     }
 
+    /**
+     * Remove an object.
+     * @param name The name of the NamedObj to be removed.
+     * @exception If we are in a transformation or if the object has
+     * already been marked as removed.
+     */
     public void removeObject(String name) throws PtalonRuntimeException {
         if (!_isIncrementalTransformation) {
             throw new PtalonRuntimeException("Objects can be marked removed "
@@ -196,12 +238,23 @@ public class TransformationEvaluator extends PtalonEvaluator {
         }
     }
 
+    /** Prepare the compiler to start at the outermost scope of the Ptalon
+     *  program during run time.
+     */
     public void startAtTop() {
         _negatedObjects.clear();
         _optionalObjects.clear();
         super.startAtTop();
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+
+    /** Process an attribute.
+     *  @param object The NamedObj to be processed.
+     *  @exception PtalonRuntimeException If thrown while processing
+     *  the attribute.
+     */ 
     protected void _processAttributes(NamedObj object)
             throws PtalonRuntimeException {
         if (_isInTransformation) {
@@ -240,6 +293,9 @@ public class TransformationEvaluator extends PtalonEvaluator {
         return object;
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
     private void _removeAttributes(NamedObj object, Class<?>[] attributeClasses)
             throws IllegalActionException, NameDuplicationException {
         List<?> attributes = object.attributeList();
@@ -256,6 +312,9 @@ public class TransformationEvaluator extends PtalonEvaluator {
             attribute.setContainer(null);
         }
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     private boolean _isInTransformation = false;
 

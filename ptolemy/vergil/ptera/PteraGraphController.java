@@ -1,6 +1,6 @@
-/*
+/*  A controller for a Ptera model.
 
- Copyright (c) 1997-2009 The Regents of the University of California.
+ Copyright (c) 2009 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -64,6 +64,7 @@ import diva.gui.GUIUtilities;
 import diva.gui.toolbox.FigureIcon;
 
 /**
+ A controller for a Ptera model.
 
  @author Thomas Huining Feng
  @version $Id$
@@ -73,6 +74,7 @@ import diva.gui.toolbox.FigureIcon;
  */
 public class PteraGraphController extends FSMGraphController {
 
+    /** Create a PteraGraphController. */
     public PteraGraphController() {
     }
 

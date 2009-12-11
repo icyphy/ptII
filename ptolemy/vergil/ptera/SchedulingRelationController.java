@@ -1,6 +1,6 @@
-/*
+/* The edge controller for scheduling relations in a  A Ptolemy Event Relation Actor (PTERA) domain model.
 
- Copyright (c) 1997-2009 The Regents of the University of California.
+ Copyright (c) 2009 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -40,6 +40,8 @@ import diva.canvas.connector.Connector;
 import diva.graph.GraphController;
 
 /**
+ The edge controller for scheduling relations in a A Ptolemy Event
+ Relation Actor (PTERA) domain model.
 
  @author Thomas Huining Feng
  @version $Id$
@@ -48,12 +50,22 @@ import diva.graph.GraphController;
  @Pt.AcceptedRating Red (tfeng)
  */
 public class SchedulingRelationController extends TransitionController {
-
+    /** Create a scheduling relation controller associated with the
+     *  specified graph controller.
+     *  @param controller The associated graph controller.
+     */
     public SchedulingRelationController(GraphController controller) {
         super(controller);
         setEdgeRenderer(new SchedulingRelationRenderer());
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
+    /** Set the configuration.  This is may be used by derived controllers
+     *  to open files or URLs.
+     *  @param configuration The configuration.
+     */
     public void setConfiguration(Configuration configuration) {
         super.setConfiguration(configuration);
 
@@ -62,8 +74,20 @@ public class SchedulingRelationController extends TransitionController {
         }
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                  public inner classes                     ////
+
+    /** Render a scheduling relation link between two events.
+     */
     public static class SchedulingRelationRenderer extends LinkRenderer {
 
+        /**
+         * Render a scheduling relation link between two events.
+         * @param edge The edge.
+         * @param tailSite The tailSite of the edge
+         * @param headSite The headSite of the edge
+         * @return The connector between the headSite and the tailSite.
+         */
         public Connector render(Object edge, Site tailSite, Site headSite) {
             ArcConnector connector = (ArcConnector) super.render(edge,
                     tailSite, headSite);

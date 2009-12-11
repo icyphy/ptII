@@ -1,4 +1,4 @@
-/* An FSM graph view for Ptolemy models
+/* An FSM graph view for Ptolemy models.
 
  Copyright (c) 1998-2009 The Regents of the University of California.
  All rights reserved.

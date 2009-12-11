@@ -1,6 +1,6 @@
 /* Generic actor for Pthales objects.
 
- Copyright (c) 1997-2006 The Regents of the University of California.
+ Copyright (c) 2009 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -50,28 +50,40 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
 /**
-A PThalesGenericActor is an element of ArrayOL in Ptolemy.
-It is an actor where generic means that the same actor is used to 
-implement different functions. This actor calls a JNI function when fired,
-with arguments in correct orders. These function and arguments are parameters
-of the actor.
-@author R�mi Barr�re
-@see ptolemy.actor.TypedAtomicActor
-*/
+   An element of ArrayOL in Ptolemy.
 
+   <p>ArrayOL "is a high-level visual language dedicated to
+   multidimensional intensive signal processing applications."
+
+   <p>In the name of this actor, "Generic" means that the same actor
+   is used to implement different functions. This actor calls a JNI
+   function when fired, with arguments in correct orders. These function
+   and arguments are parameters of the actor.
+
+   <p>For details about ArrayOL, see:
+   P. Boulet, “<a href="http://hal.inria.fr/inria-00128840/en">Array-OL Revisited, Multidimensional Intensive Signal Processing Specification</a>,” INRIA, Sophia Antipolis, France, 2007.
+
+   @author Rémi Barrère
+   @see ptolemy.actor.TypedAtomicActor
+   @version $Id$
+   @since Ptolemy II 8.2
+   @Pt.ProposedRating Red (cxh)
+   @Pt.AcceptedRating Red (cxh)
+*/
 public class PThalesGenericActor extends TypedAtomicActor implements
         PthalesActorInterface {
 
     /** Construct an actor in the default workspace with an empty string
      *  as its name.  The object is added to the workspace directory.
      *  Increment the version number of the workspace.
-     * @throws NameDuplicationException 
-     * @throws IllegalActionException 
+     *  @exception IllegalActionException If the actor cannot be contained
+     *   by the proposed container.
+     *  @exception NameDuplicationException If the container already has an
+     *   actor with this name.
      */
     public PThalesGenericActor() throws IllegalActionException,
             NameDuplicationException {
         super();
-
         _initialize();
     }
 
@@ -81,13 +93,14 @@ public class PThalesGenericActor extends TypedAtomicActor implements
      *  The object is added to the workspace directory.
      *  Increment the version number of the workspace.
      *  @param workspace The workspace that will list the entity.
-     * @throws NameDuplicationException 
-     * @throws IllegalActionException 
+     *  @exception IllegalActionException If the actor cannot be contained
+     *   by the proposed container.
+     *  @exception NameDuplicationException If the container already has an
+     *   actor with this name.
      */
     public PThalesGenericActor(Workspace workspace)
             throws IllegalActionException, NameDuplicationException {
         super(workspace);
-
         _initialize();
     }
 
@@ -106,27 +119,55 @@ public class PThalesGenericActor extends TypedAtomicActor implements
     public PThalesGenericActor(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
-
         _initialize();
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
  
-    /** a String that is used to fill arguments when calling the function
+    /** A String that is used to fill arguments when calling the function.
+     *  The inital default value is the empty string.  
      */
     public Parameter arguments;
 
-    /** the name of the function to call when the actor is fired
+    /** The name of the function to call when the actor is fired.
+     *  The inital default value is the empty string.  
      */
     public Parameter function;
 
-    /** the number of times this actor is fired
+    /** The number of times this actor is fired.
+     *  The initial default value is an array with one element,
+     *  the integer "1".
      */
     public Parameter repetitions;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** 
+     *  Handle changes to attributes by parsing the attribute 
+     *  @param attribute The attribute that changed.
+     *  @exception IllegalActionException If the expression cannot
+     *  be parsed, or if the superclass throws it.
+     */
+    public void attributeChanged(Attribute attribute)
+            throws IllegalActionException {
+
+        if (attribute == getAttribute(PthalesActorInterface.REPETITIONS)) {
+            _totalRepetitions = parseRepetitions(PthalesActorInterface.REPETITIONS);
+            computeIterations();
+        }
+        if (attribute == getAttribute(INTERNAL_REPETITIONS)) {
+            _internalRepetitions = parseRepetitions(INTERNAL_REPETITIONS);
+            computeIterations();
+        }
+        if (attribute == function) {
+            _function = function.getExpression();
+        }
+        if (attribute == arguments) {
+            _arguments = arguments.getExpression();
+        }
+    }
 
     /** Clone the actor into the specified workspace. This method
      *  sets _internalRepetitions, _totalRepetitions and _externalRepetitions.   
@@ -151,39 +192,39 @@ public class PThalesGenericActor extends TypedAtomicActor implements
         return newObject;
     }
 
-    /** Create a new TypedIOPort with the specified name.
-     *  The container of the port is set to this actor.
-     *  This method is write-synchronized on the workspace.
-     *
-     *  @param name The name for the new port.
-     *  @return The new port.
-     *  @exception NameDuplicationException If the actor already has a port
-     *   with the specified name.
+    /** Convert from an array used in a JNI function to Tokens.
+     *  @param realOut The array used in a JNI function.
+     *  @return An arry of Tokens.
      */
-    public Port newPort(String name) throws NameDuplicationException {
-        try {
-            _workspace.getWriteAccess();
+    public FloatToken[] convertReal(float[] realOut) {
+        FloatToken[] tokensOut;
 
-            PThalesIOPort port = new PThalesIOPort(this, name, false, false);
-            return port;
-        } catch (IllegalActionException ex) {
-            // This exception should not occur, so we throw a runtime
-            // exception.
-            throw new InternalErrorException(this, ex, null);
-        } finally {
-            _workspace.doneWriting();
+        int nbData = realOut.length;
+        tokensOut = new FloatToken[nbData];
+        for (int i = 0; i < nbData; i++) {
+            tokensOut[i] = new FloatToken(realOut[i]);
         }
+
+        return tokensOut;
     }
 
-    /** If the argument is the <i>init</i> parameter, then reset the
-     *  state to the specified value.
-     *  @param attribute The attribute that changed.
-     *  @throws IllegalActionException If <i>init<i> cannot be evaluated
-     *   or cannot be converted to the output type, or if the superclass
-     *   throws it.
+    /** Convert from Tokens to array to be used in a JNI function,
+     *  @param tokensIn The tokens to be converted.
+     *  @return The array to be used in a JNI function.
      */
+    public float[] convertToken(Token[] tokensIn) {
+        float[] realIn;
 
-    /** Read all the array then (should) call JNI function 
+        int nbData = tokensIn.length;
+        realIn = new float[nbData];
+        for (int i = 0; i < nbData; i++) {
+            realIn[i] = ((FloatToken) tokensIn[i]).floatValue();
+        }
+
+        return realIn;
+    }
+
+    /** Read the contents of the array and then call JNI function.
      *  @exception IllegalActionException If there is no director, or the
      *  input can not be read, or the output can not be sent.
      */
@@ -257,6 +298,9 @@ public class PThalesGenericActor extends TypedAtomicActor implements
                             }
 
                         } catch (IllegalArgumentException e) {
+                            // FIXME: Don't print a stack trace, instead
+                            // this method should catch all these and
+                            // then throw an IllegalActionException.
                             e.printStackTrace();
                         } catch (IllegalAccessException e) {
                             e.printStackTrace();
@@ -286,61 +330,40 @@ public class PThalesGenericActor extends TypedAtomicActor implements
         }
     }
 
-    /** 
+    /** Create a new TypedIOPort with the specified name.
+     *  The container of the port is set to this actor.
+     *  This method is write-synchronized on the workspace.
+     *
+     *  @param name The name for the new port.
+     *  @return The new port.
+     *  @exception NameDuplicationException If the actor already has a port
+     *   with the specified name.
      */
-    public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+    public Port newPort(String name) throws NameDuplicationException {
+        try {
+            _workspace.getWriteAccess();
 
-        if (attribute == getAttribute(PthalesActorInterface.REPETITIONS)) {
-            _totalRepetitions = parseRepetitions(PthalesActorInterface.REPETITIONS);
-            computeIterations();
-        }
-        if (attribute == getAttribute(INTERNAL_REPETITIONS)) {
-            _internalRepetitions = parseRepetitions(INTERNAL_REPETITIONS);
-            computeIterations();
-        }
-        if (attribute == function) {
-            _function = function.getExpression();
-        }
-        if (attribute == arguments) {
-            _arguments = arguments.getExpression();
+            PThalesIOPort port = new PThalesIOPort(this, name, false, false);
+            return port;
+        } catch (IllegalActionException ex) {
+            // This exception should not occur, so we throw a runtime
+            // exception.
+            throw new InternalErrorException(this, ex, null);
+        } finally {
+            _workspace.doneWriting();
         }
     }
 
-    /** Conversion from Tokens to array used in JNI function 
-     * @param tokensIn
-     */
-    public float[] convertToken(Token[] tokensIn) {
-        float[] realIn;
 
-        int nbData = tokensIn.length;
-        realIn = new float[nbData];
-        for (int i = 0; i < nbData; i++) {
-            realIn[i] = ((FloatToken) tokensIn[i]).floatValue();
-        }
-
-        return realIn;
-    }
-
-    /** Conversion from array used in JNI function to Tokens
-     * @param realOut
-     */
-    public FloatToken[] convertReal(float[] realOut) {
-        FloatToken[] tokensOut;
-
-        int nbData = realOut.length;
-        tokensOut = new FloatToken[nbData];
-        for (int i = 0; i < nbData; i++) {
-            tokensOut[i] = new FloatToken(realOut[i]);
-        }
-
-        return tokensOut;
-    }
-
-    /** Unused
+    /** Always return true in this base class, indicating
+     *  that execution can continue into the next iteration.
+     *  @return Always return true in this base class, indicating
+     *  that execution can continue into the next iteration.
+     *  @exception IllegalActionException Not thrown in this base class.
      */
     public boolean postfire() throws IllegalActionException {
-
+        // FIXME: This should either call super.postfire()
+        // or else print the debugging message as AtomicActor.postfire() does.
         return true;
     }
 
@@ -366,35 +389,39 @@ public class PThalesGenericActor extends TypedAtomicActor implements
     ///////////////////////////////////////////////////////////////////
     ////                      protected methods                    ////
 
-    /** Return a data structure giving the dimension data contained by a
-     *  parameter with the specified name in the specified port or actor.
-     *  The dimension data is indexed by dimension name and contains two
-     *  integers, a value and a stride, in that order.
-     *  @param name The name of the parameter
-     *  @return The dimension data, or an empty array if the parameter does not exist.
-     *  @throws IllegalActionException If the parameter cannot be evaluated.
+    /** Compute external iterations each time 
+     *  an attribute used to calculate it has changed 
      */
-    protected Integer[] parseRepetitions(String name) {
-        Integer[] result = new Integer[0];
-        Attribute attribute = getAttribute(name);
-        if (attribute != null && attribute instanceof Parameter) {
-            Token token = null;
-            try {
-                token = ((Parameter) attribute).getToken();
-            } catch (IllegalActionException e) {
-                e.printStackTrace();
-            }
-            if (token instanceof ArrayToken) {
-                int len = ((ArrayToken) token).length();
-                result = new Integer[len];
-                for (int i = 0; i < len; i++) {
-                    result[i] = new Integer(((IntToken) ((ArrayToken) token)
-                            .getElement(i)).intValue());
+    protected void computeIterations() {
+        // FIXME: prepend an underscore to the name of this protected method.        
+        // if no total repetition, no way to calculate
+        if (_totalRepetitions != null && _totalRepetitions.length > 0) {
+
+            // Internal Loops only used INSIDE the function
+            int internal = 1;
+            if (_internalRepetitions != null) {
+                for (Integer iter : _internalRepetitions) {
+                    internal *= iter;
                 }
             }
-        }
 
-        return result;
+            // All loops are used to build array
+            int iterationCount = 1;
+            for (Integer iter : _totalRepetitions) {
+                iterationCount *= iter;
+            }
+
+            // Iteration is only done on external loops
+            _iterations = iterationCount / internal;
+
+            _externalRepetitions = new Integer[_totalRepetitions.length
+                    - _internalRepetitions.length];
+            for (int i = 0; i < _totalRepetitions.length
+                     - _internalRepetitions.length; i++) {
+                _externalRepetitions[i] = _totalRepetitions[i
+                        + _internalRepetitions.length];
+            }
+        }
     }
 
     /** Function which convert a list of arguments into real arguments
@@ -404,6 +431,7 @@ public class PThalesGenericActor extends TypedAtomicActor implements
      * @return A list of arguments to be used for the JNI function call.
      */
     protected Object[] convertArguments(float[][] in, float[][] out) {
+        // FIXME: prepend an underscore to the name of this protected method.
         List objs = new ArrayList();
 
         int numIn = 0;
@@ -463,39 +491,38 @@ public class PThalesGenericActor extends TypedAtomicActor implements
         return objs.toArray();
     }
 
-    /** Compute external iterations each time 
-     *  an attribute used to calculate it has changed 
+    /** Return a data structure giving the dimension data contained by a
+     *  parameter with the specified name in the specified port or actor.
+     *  The dimension data is indexed by dimension name and contains two
+     *  integers, a value and a stride, in that order.
+     *  @param name The name of the parameter
+     *  @return The dimension data, or an empty array if the parameter does not exist.
+     *  @throws IllegalActionException If the parameter cannot be evaluated.
      */
-    protected void computeIterations() {
-        
-        // if no total repetition, no way to calculate
-        if (_totalRepetitions != null && _totalRepetitions.length > 0) {
-
-            // Internal Loops only used INSIDE the function
-            int internal = 1;
-            if (_internalRepetitions != null) {
-                for (Integer iter : _internalRepetitions) {
-                    internal *= iter;
+    protected Integer[] parseRepetitions(String name) {
+        // FIXME: prepend an underscore to the name of this protected method.
+        Integer[] result = new Integer[0];
+        Attribute attribute = getAttribute(name);
+        if (attribute != null && attribute instanceof Parameter) {
+            Token token = null;
+            try {
+                token = ((Parameter) attribute).getToken();
+            } catch (IllegalActionException e) {
+                // FIXME: Don't print a stack trace, instead
+                // this method should throw an IllegalActionException.
+                e.printStackTrace();
+            }
+            if (token instanceof ArrayToken) {
+                int len = ((ArrayToken) token).length();
+                result = new Integer[len];
+                for (int i = 0; i < len; i++) {
+                    result[i] = new Integer(((IntToken) ((ArrayToken) token)
+                            .getElement(i)).intValue());
                 }
             }
-
-            // All loops are used to build array
-            int iterationCount = 1;
-            for (Integer iter : _totalRepetitions) {
-                iterationCount *= iter;
-            }
-
-            // Iteration is only done on external loops
-            _iterations = iterationCount / internal;
-
-            _externalRepetitions = new Integer[_totalRepetitions.length
-                    - _internalRepetitions.length];
-            for (int i = 0; i < _totalRepetitions.length
-                     - _internalRepetitions.length; i++) {
-                _externalRepetitions[i] = _totalRepetitions[i
-                        + _internalRepetitions.length];
-            }
         }
+
+        return result;
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -1,4 +1,4 @@
-/*
+/* A test icon for a Ptera model.
 
  Copyright (c) 2008-2009 The Regents of the University of California.
  All rights reserved.
@@ -55,7 +55,7 @@ import diva.util.java2d.Polygon2D;
 //// TestIcon
 
 /**
-
+ A test icon for a Ptera model.
 
  @author Thomas Huining Feng
  @version $Id$
@@ -65,11 +65,27 @@ import diva.util.java2d.Polygon2D;
 */
 public class TestIcon extends NameIcon {
 
+    /** Create a new icon with the given name in the given container.
+     *  The container is required to implement Settable, or an exception
+     *  will be thrown.
+     *  @param container The container for this attribute.
+     *  @param name The name of this attribute.
+     *  @exception IllegalActionException If thrown by the parent
+     *  class or while setting an attribute.
+     *  @exception NameDuplicationException If the name coincides with
+     *   an attribute already in the container.
+     */
     public TestIcon(NamedObj container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
+    /** Create a background Figure.
+     *  @return The figure.
+     */
     public Figure createBackgroundFigure() {
         String name = "No Name";
         NamedObj container = getContainer();
@@ -122,6 +138,9 @@ public class TestIcon extends NameIcon {
         return new BasicFigure(polygon, _getFill(), _getLineWidth());
     }
 
+    /** Create a Figure.
+     *  @return The figure.
+     */
     public Figure createFigure() {
         CompositeFigure figure = (CompositeFigure) super.createFigure();
         LabelFigure label = null;
@@ -172,6 +191,9 @@ public class TestIcon extends NameIcon {
 
         return figure;
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
 
     protected Paint _getFill() {
         Parameter colorParameter;

@@ -117,9 +117,6 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
         this((Object) component);
     }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
-
     /**
      * Construct the code generator helper associated with the given component.
      * @param component The associated component.
@@ -140,6 +137,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
 
     /**
      * Construct a code generator helper.
+     * @param Object The object for which the code generator should be constructed.
      */
     public CodeGeneratorHelper(Object object) {
         // FIXME: Why is this a namedObj when the analyzeActor()
@@ -181,6 +179,9 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
             }
         };
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /**
      * Add a type to the Set of types used thus far.
@@ -245,6 +246,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
      * @param forComposite True if this check is for a composite
      * @param port The port to be checked.
      * @return true if the port is a local port. 
+     * @exception IllegalActionException If thrown while queryint the port.
      */
     public boolean checkLocal(boolean forComposite, IOPort port)
             throws IllegalActionException {
@@ -677,6 +679,8 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
     /**
      * Return the helper of the director.
      * @return Return the helper of the director.
+     * @exception IllegalActionException If thrown while getting the helper
+     * of the director.
      */
     public Director getDirectorHelper() throws IllegalActionException {
         return (Director) _getHelper(getDirector());
@@ -1262,7 +1266,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
 
     /**
      * Return the worst case execution time (WCET) seen by this
-     * component
+     * component.
      * @return The Worst Case Execution Time (WCET), in this base class,
      * the default value of 500.0 is returned. 
      * @exception IllegalActionException If there is a problem determining
@@ -1502,7 +1506,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
      * embedded in parentheses.
      */
     public static int _indexOf(String ch, String string, int fromIndex) {
-
+        // FIXME: this method name should *not* have a leading underscore.
         int parenIndex = fromIndex;
         int result = -1;
         int closedParenIndex = parenIndex;
@@ -1738,6 +1742,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
      *  @return The reference to the port.
      *  @exception IllegalActionException If the port does not
      *   exist or does not have a value.
+     *  @see #generateReference(IOPort, String[], boolean, boolean)
      */  
     public static String generatePortReference(IOPort port,
             String[] channelAndOffset, boolean isWrite) {
@@ -1777,6 +1782,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
      *  Return a reference to the attribute.
      *  @param attribute The attribute.
      *  @param channelAndOffset The given channel and offset.
+     *  @return The reference.
      *  @exception IllegalActionException If the attribute does not
      *   exist or does not have a value.
      */  
@@ -1819,6 +1825,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
      *  @param name The reference to be parsed.  The format is
      *  assumed to be "xxx#(yyy)", where "yyy" will be returned
      *  @param isWrite True if the reference is to be written to.
+     *  @return The reference.
      *  @exception IllegalActionException If the attribute does not
      *   exist or does not have a value.
      */  
@@ -1883,6 +1890,16 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
     }
 
 
+    /**
+     *  Return a reference to the port.
+     *  @param port The port.
+     *  @param channelAndOffset The given channel and offset.
+     *  @param forComposite True if this check is for a composite
+     *  @param isWrite True if the reference is to be written to.
+     *  @exception IllegalActionException If the attribute does not
+     *   exist or does not have a value.
+     *  @see #generatePortReference(IOPort, String[], boolean)
+     */  
     public String getReference(TypedIOPort port, String[] channelAndOffset,
             boolean forComposite, boolean isWrite)
             throws IllegalActionException {
@@ -2160,20 +2177,6 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
             }
         }
         return null;
-    }
-
-    public static void main(String[] args) {
-        selfTest();
-    }
-
-    public static void selfTest() {
-        System.out.println(parseList("(a, b, abc)"));
-        System.out.println(_indexOf(",", "(a, b, abc,), (a , b, abc,)", 0));
-        System.out.println(_indexOf(",", "a, b, abc,, (a , b, abc,)", 0));
-        System.out.println(_indexOf(",", ", (b), abc,, (a , b, abc,)", 0));
-        System.out.println(_indexOf(",", "a, (b, abc,), (a , b, abc,)", 0));
-        System.out
-                .println(_indexOf(",", "(((a), b,) a),bc,, (a , b, abc,)", 0));
     }
 
     /**
@@ -2660,7 +2663,14 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
         return processCode(statements.toString());
     }
 
+    /**
+     * Get the cast type of a name.
+     * @param name The given name.  The name must have a "#" in it.
+     * @param The string after the "#" and before the () is returned
+     * @exception IllegalActionException If the cast type is invalid.
+     */
     protected String _getCastType(String name) throws IllegalActionException {
+        // FIXME: This code is not called by any of the tests.
         StringTokenizer tokenizer = new StringTokenizer(name, "#,", true);
 
         // Get the referenced name.
@@ -2743,6 +2753,12 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
         return _codeGenerator._getHelper(component);
     }
 
+    /**
+     * Get the code generator helper associated with the given object.
+     * @param object The given object.
+     * @return The code generator helper.
+     * @exception IllegalActionException If the helper class cannot be found.
+     */
     protected Object _getHelper(Object object) throws IllegalActionException {
         return _codeGenerator._getHelper(object);
     }

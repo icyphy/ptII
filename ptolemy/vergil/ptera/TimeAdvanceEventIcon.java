@@ -1,4 +1,4 @@
-/*
+/* An icon for a Ptera time advance event.
 
  Copyright (c) 2008-2009 The Regents of the University of California.
  All rights reserved.
@@ -46,7 +46,7 @@ import diva.canvas.toolbox.RoundedRectangle;
 //// TimeAdvanceEventIcon
 
 /**
-
+  An icon for a Ptera time advance event.
 
  @author Thomas Huining Feng
  @version $Id$
@@ -56,17 +56,27 @@ import diva.canvas.toolbox.RoundedRectangle;
  */
 public class TimeAdvanceEventIcon extends EventIcon {
 
-    /**
-     *  @param container
-     *  @param name
-     *  @exception NameDuplicationException
-     *  @exception IllegalActionException
+    /** Create a new icon with the given name in the given container.
+     *  The container is required to implement Settable, or an exception
+     *  will be thrown.
+     *  @param container The container for this attribute.
+     *  @param name The name of this attribute.
+     *  @exception IllegalActionException If thrown by the parent
+     *  class or while setting an attribute.
+     *  @exception NameDuplicationException If the name coincides with
+     *   an attribute already in the container.
      */
     public TimeAdvanceEventIcon(NamedObj container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
+    /** Create a Figure.
+     *  @return The figure.
+     */
     public Figure createFigure() {
         CompositeFigure figure = (CompositeFigure) super.createFigure();
         Rectangle2D bounds = figure.getBounds();

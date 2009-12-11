@@ -1,6 +1,6 @@
-/*
+/*  An editor for Ptolemy Event Relation Actor (PTERA) domain models.
 
- Copyright (c) 1997-2009 The Regents of the University of California.
+ Copyright (c) 2009 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -47,7 +47,11 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.LibraryAttribute;
 import ptolemy.vergil.modal.FSMGraphTableau;
 
+//////////////////////////////////////////////////////////////////////////
+//// PteraGraphTableau
+
 /**
+ An editor for Ptolemy Event Relation Actor (PTERA) domain models.
 
  @author Thomas Huining Feng
  @version $Id$
@@ -57,30 +61,46 @@ import ptolemy.vergil.modal.FSMGraphTableau;
  */
 public class PteraGraphTableau extends FSMGraphTableau {
 
-    /**
-     * @param container
-     * @param name
-     * @exception IllegalActionException
-     * @exception NameDuplicationException
+    /** Create a new Ptera editor tableau with the specified container
+     *  and name, with no default library.
+     *  @param container The container.
+     *  @param name The name.
+     *  @exception IllegalActionException If the model associated with
+     *   the container effigy is not an FSMActor.
+     *  @exception NameDuplicationException If the container already
+     *   contains an object with the specified name.
      */
     public PteraGraphTableau(PtolemyEffigy container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
-    /**
-     * @param container
-     * @param name
-     * @param defaultLibrary
-     * @exception IllegalActionException
-     * @exception NameDuplicationException
+    /** Create a new Ptera editor tableau with the specified container,
+     *  name, and default library.
+     *  @param container The container.
+     *  @param name The name.
+     *  @param defaultLibrary The default library, or null to not specify one.
+     *  @exception IllegalActionException If the model associated with
+     *   the container effigy is not an FSMActor.
+     *  @exception NameDuplicationException If the container already
+     *   contains an object with the specified name.
      */
+
     public PteraGraphTableau(PtolemyEffigy container, String name,
             LibraryAttribute defaultLibrary) throws IllegalActionException,
             NameDuplicationException {
         super(container, name, defaultLibrary);
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
+    /** Create the graph frame that displays the model associated with
+     *  this tableau. This method creates a PteraGraphFrame. If subclass
+     *  uses another frame, this method should be overridden to create
+     *  that frame.
+     *  @param model The Ptolemy II model to display in the graph frame.
+     */
     public void createGraphFrame(CompositeEntity model,
             LibraryAttribute defaultLibrary) {
         PteraGraphFrame frame = new PteraGraphFrame(model, this, defaultLibrary);

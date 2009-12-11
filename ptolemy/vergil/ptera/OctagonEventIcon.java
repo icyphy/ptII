@@ -1,4 +1,4 @@
-/*
+/*  An octagonal icon for a Ptera event.
 
  Copyright (c) 2008-2009 The Regents of the University of California.
  All rights reserved.
@@ -54,7 +54,7 @@ import diva.gui.toolbox.FigureIcon;
 import diva.util.java2d.Polygon2D;
 
 /**
-
+ An octagonal icon for a Ptera event.
  @author Thomas Huining Feng
  @version $Id$
  @since Ptolemy II 7.1
@@ -63,12 +63,28 @@ import diva.util.java2d.Polygon2D;
  */
 public class OctagonEventIcon extends NameIcon {
 
+    /** Create a new icon with the given name in the given container.
+     *  The container is required to implement Settable, or an exception
+     *  will be thrown.
+     *  @param container The container for this attribute.
+     *  @param name The name of this attribute.
+     *  @exception IllegalActionException If thrown by the parent
+     *  class or while setting an attribute.
+     *  @exception NameDuplicationException If the name coincides with
+     *   an attribute already in the container.
+     */
     public OctagonEventIcon(NamedObj container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
         _yPadding = 8.0;
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
+    /** Create a background Figure.
+     *  @return The figure.
+     */
     public Figure createBackgroundFigure() {
         Point2D size = _getBackgroundSize();
         double width = size.getX();
@@ -94,6 +110,9 @@ public class OctagonEventIcon extends NameIcon {
         return figure;
     }
 
+    /** Create a Figure.
+     *  @return The figure.
+     */
     public Figure createFigure() {
         CompositeFigure figure = (CompositeFigure) super.createFigure();
 
@@ -127,6 +146,9 @@ public class OctagonEventIcon extends NameIcon {
         return figure;
     }
 
+    /** Create an icon.
+     *  @return The icon.
+     */
     public Icon createIcon() {
         if (_iconCache != null) {
             return _iconCache;
@@ -140,6 +162,9 @@ public class OctagonEventIcon extends NameIcon {
         _iconCache = new FigureIcon(figure, 20, 15);
         return _iconCache;
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
 
     protected Point2D _getBackgroundSize() {
         Point2D size = super._getBackgroundSize();
@@ -205,6 +230,7 @@ public class OctagonEventIcon extends NameIcon {
         return 1.0f;
     }
 
+    /** The width of a corner of a polygon. */
     protected double _cornerWidth = 5.0;
 
     private void _addLabel(CompositeFigure figure, String text) {

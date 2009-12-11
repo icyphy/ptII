@@ -1,6 +1,6 @@
-/*
+/* A graph view for Ptolemy Event Relation Actor (PTERA) domain models.
 
- Copyright (c) 1997-2009 The Regents of the University of California.
+ Copyright (c) 2009 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -40,7 +40,7 @@ import ptolemy.vergil.modal.FSMGraphModel;
 import diva.graph.GraphPane;
 
 /**
-
+ A graph view for Ptolemy Event Relation Actor (PTERA) domain models.
  @author Thomas Huining Feng
  @version $Id$
  @since Ptolemy II 7.1
@@ -49,24 +49,50 @@ import diva.graph.GraphPane;
  */
 public class PteraGraphFrame extends FSMGraphFrame {
 
-    /**
-     * @param entity
-     * @param tableau
+    /** Construct a frame associated with the specified Ptera model.
+     *  After constructing this, it is necessary
+     *  to call setVisible(true) to make the frame appear.
+     *  This is typically done by calling show() on the controlling tableau.
+     *  This constructor results in a graph frame that obtains its library
+     *  either from the model (if it has one) or the default library defined
+     *  in the configuration.
+     *  @see Tableau#show()
+     *  @param entity The model to put in this frame.
+     *  @param tableau The tableau responsible for this frame.
      */
     public PteraGraphFrame(CompositeEntity entity, Tableau tableau) {
         super(entity, tableau);
     }
 
-    /**
-     * @param entity
-     * @param tableau
-     * @param defaultLibrary
+    /** Construct a frame associated with the specified Ptera model.
+     *  After constructing this, it is necessary
+     *  to call setVisible(true) to make the frame appear.
+     *  This is typically done by calling show() on the controlling tableau.
+     *  This constructor results in a graph frame that obtains its library
+     *  either from the model (if it has one), or the <i>defaultLibrary</i>
+     *  argument (if it is non-null), or the default library defined
+     *  in the configuration.
+     *  @see Tableau#show()
+     *  @param entity The model to put in this frame.
+     *  @param tableau The tableau responsible for this frame.
+     *  @param defaultLibrary An attribute specifying the default library
+     *   to use if the model does not have a library.
      */
     public PteraGraphFrame(CompositeEntity entity, Tableau tableau,
             LibraryAttribute defaultLibrary) {
         super(entity, tableau, defaultLibrary);
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+
+    /** Create a new graph pane. Note that this method is called in
+     *  constructor of the base class, so it must be careful to not reference
+     *  local variables that may not have yet been created.
+     *  @param entity The object to be displayed in the pane (which must be
+     *   an instance of CompositeEntity).
+     *  @return The pane that is created.
+     */
     protected GraphPane _createGraphPane(NamedObj entity) {
         _controller = new PteraGraphController();
         _controller.setConfiguration(getConfiguration());
@@ -88,6 +114,9 @@ public class PteraGraphFrame extends FSMGraphFrame {
         return "Animate Events";
     }
 
+    /** Return the default event MoML.
+     *  @param  The default event MoML.
+     */   
     protected String _getDefaultEventMoML() {
         NamedObj child = GTTools.getChild(_topLibrary, "Event", false, false,
                 true, false);

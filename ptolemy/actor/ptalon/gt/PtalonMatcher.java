@@ -1,4 +1,4 @@
-/*
+/*  A graph transformation matcher for Ptalon.
 
  Copyright (c) 2008-2009 The Regents of the University of California.
  All rights reserved.
@@ -60,7 +60,7 @@ import ptolemy.kernel.util.Settable;
 //// PtalonMatcher
 
 /**
-
+ A graph transformation matcher for Ptalon.
 
  @author Thomas Huining Feng
  @version $Id$
@@ -71,18 +71,55 @@ import ptolemy.kernel.util.Settable;
 public class PtalonMatcher extends TypedCompositeActor implements
         GTCompositeActor {
 
+    /** Construct a PtalonMatcher with a name and a container.
+     *  The container argument must not be null, or a
+     *  NullPointerException will be thrown.  This actor will use the
+     *  workspace of the container for synchronization and version counts.
+     *  If the name argument is null, then the name is set to the empty string.
+     *  Increment the version of the workspace.  This actor will have no
+     *  local director initially, and its executive director will be simply
+     *  the director of the container.
+     *
+     *  @param container The container.
+     *  @param name The name of this actor.
+     *  @exception IllegalActionException If the container is incompatible
+     *   with this actor.
+     *  @exception NameDuplicationException If the name coincides with
+     *   an actor already in the container.
+     */
     public PtalonMatcher(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
+        // The superclass sets the classname, see the class comment
+        // in TypedCompositeActor.
         setClassName("ptolemy.actor.ptalon.gt.PtalonMatcher");
         ptalonCodeLocation = new FileParameter(this, "ptalonCodeLocation");
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         ports and parameters              ////
+    
+    /** The location of the Ptalon code. */
+    public FileParameter ptalonCodeLocation;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+    
+    /** Setup parameters for this actor. 
+     *  @param attribute The attribute that changed.
+     *  @throws IllegalActionException If there are problems setting
+     *  up parameters for this actor, or if the superclass throws it.
+     */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         super.attributeChanged(attribute);
 
+        // FIXME: This is confusing.  _handleAttributeChange
+        // will initially be true, which means the code will
+        // always run.  Probably one of the methods in the try block
+        // calls attributeChanged and _handleAttributeChanged() is 
+        // necessary to avoid endless loops.
         if (!_handleAttributeChange) {
             return;
         }
@@ -120,14 +157,30 @@ public class PtalonMatcher extends TypedCompositeActor implements
         }
     }
 
+    /** Clear the list of actors.
+     */
     public void clearActors() {
         _actors.clear();
     }
 
+
+    /** Set the container.
+     *  @param container The proposed container.
+     *  @exception IllegalActionException If the action would result in a
+     *   recursive containment structure, or if
+     *   this entity and container are not in the same workspace.
+     *  @exception NameDuplicationException If the container already has
+     *   an entity with the name of this entity.
+     */
     public void setContainer(CompositeEntity container)
             throws IllegalActionException, NameDuplicationException {
         super.setContainer(container);
 
+        // If we are in the pattern and we have not yet created a
+        // _containerIgnoring, then do so.  If we are not in the
+        // pattern and the _containerIgnoring parameter is null,
+        // then set the container of the _containerIgnoring attribute
+        // to null
         if (GTTools.isInPattern(this)) {
             if (getAttribute("_containerIgnoring") == null) {
                 Attribute attribute = new ContainerIgnoringAttribute(this,
@@ -143,11 +196,30 @@ public class PtalonMatcher extends TypedCompositeActor implements
         }
     }
 
-    public FileParameter ptalonCodeLocation;
-
+    ///////////////////////////////////////////////////////////////////
+    ////                         public inner classes              ////
+    
+    /**  A nested ptalon actor.
+     */
     public static class NestedPtalonActor extends PtalonActor implements
             GTCompositeActor {
 
+        /** Construct a NestedPtalonActor with a name and a container.
+         *  The container argument must not be null, or a
+         *  NullPointerException will be thrown.  This actor will use the
+         *  workspace of the container for synchronization and version counts.
+         *  If the name argument is null, then the name is set to the empty string.
+         *  Increment the version of the workspace.  This actor will have no
+         *  local director initially, and its executive director will be simply
+         *  the director of the container.
+         *
+         *  @param container The container.
+         *  @param name The name of this actor.
+         *  @exception IllegalActionException If the container is incompatible
+         *   with this actor.
+         *  @exception NameDuplicationException If the name coincides with
+         *   an actor already in the container.
+         */
         public NestedPtalonActor(CompositeEntity container, String name)
                 throws IllegalActionException, NameDuplicationException {
             super(container, name);
@@ -157,6 +229,11 @@ public class PtalonMatcher extends TypedCompositeActor implements
             setPersistent(false);
         }
 
+        /** If we are not initalizing or fixed, then call attributeChanged()
+         *  in the super class.   
+         *  @param attribute The attribute that changed.
+         *  @throws IllegalActionException If thrown by the superclass.
+         */
         public void attributeChanged(Attribute attribute)
                 throws IllegalActionException {
             if (!_initializing && !_fixed) {
@@ -164,16 +241,29 @@ public class PtalonMatcher extends TypedCompositeActor implements
             }
         }
 
+        /** Initialze the ptalon actor and the code location.
+         *  @exception IllegalActionException If there is problem
+         *  initializing the ptalon actor or the ptalon code
+         *  location.
+         */
         public void init() throws IllegalActionException {
             _initializing = false;
             super._initializePtalonActor();
             super._initializePtalonCodeLocation();
         }
 
+        /** Create a new PtalonEvaluator.
+         *  @param actor The actor for which to create a PtalonEvaluator.
+         *  @return The PtalonEvaluator
+         */
         protected PtalonEvaluator _createPtalonEvaluator(PtalonActor actor) {
             return new TransformationEvaluator(actor);
         }
 
+        /** Create a new PtalonRecognizer
+         *  @param actor The actor for which to create a PtalonRecognizer
+         *  @return The PtalonRecognizer
+         */
         protected PtalonRecognizer _createPtalonRecognizer(PtalonLexer lexer) {
             PtalonRecognizer parser = super._createPtalonRecognizer(lexer);
             parser.enableGTExtension(true);
@@ -184,6 +274,9 @@ public class PtalonMatcher extends TypedCompositeActor implements
 
         private boolean _initializing = true;
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
 
     private void _createParameters() throws IllegalActionException,
             NameDuplicationException, CloneNotSupportedException {
