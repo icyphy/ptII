@@ -113,14 +113,15 @@ public class RelationalInterface {
         newConstraints.add(_contract);
         newConstraints.add(rhs._contract);
         newConstraints.add(connectionContracts);
-        final StringBuffer y = new StringBuffer("(");
+        Set<String> quantifiedOutputs = new HashSet<String>();
         for (final Connection c : connections) {
-            y.append(c._inputPort + "::int " + c._outputPort + "::int ");
+            quantifiedOutputs.add(c._inputPort + "::int");
+            quantifiedOutputs.add(c._outputPort + "::int");
         }
         for (final String firstInterfaceOutputVariable : _outputPorts) {
-            y.append(firstInterfaceOutputVariable + "::int ");
+            quantifiedOutputs.add(firstInterfaceOutputVariable + "::int");
         }
-        y.append(")");
+        final String y = LispExpression.node("", quantifiedOutputs);
         final String phi = "(=> (and " + _contract + " " + connectionContracts
                 + ") " + rhs.inContract() + ")";
         newConstraints.add(" (forall " + y.toString() + " " + phi + ")");
@@ -306,9 +307,13 @@ class Connection {
     public static String getContract(final Set<Connection> connections) {
         final Set<String> contracts = new HashSet<String>();
         for (final Connection c : connections) {
-            contracts.add("(== " + c._inputPort + " " + c._outputPort + ")");
+            contracts.add("(= " + c._inputPort + " " + c._outputPort + ")");
         }
         return LispExpression.conjunction(contracts);
+    }
+    
+    public String toString() {
+        return "(" + _outputPort + ", " + _inputPort + ")";
     }
 
     /** The start of the connection.

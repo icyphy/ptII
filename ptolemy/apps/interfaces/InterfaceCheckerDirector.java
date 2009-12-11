@@ -194,7 +194,10 @@ public class InterfaceCheckerDirector extends Director {
             Set<Connection> selfLoop1 = _getConnectionsBetween((Actor) actors.get(0), (Actor) actors.get(0));
             Set<Connection> selfLoop2 = _getConnectionsBetween((Actor) actors.get(1), (Actor) actors.get(1));
             Set<Connection> connection1 = _getConnectionsBetween((Actor) actors.get(0), (Actor) actors.get(1));
-            Set<Connection> connection2 = _getConnectionsBetween((Actor) actors.get(0), (Actor) actors.get(1));
+            Set<Connection> connection2 = _getConnectionsBetween((Actor) actors.get(1), (Actor) actors.get(0));
+            System.err.println("Self loops: " + selfLoop1 + " & " + selfLoop2);
+            System.err.println("Connections: " + connection1 + " & " + connection2);
+            
             if (!selfLoop1.isEmpty() || !selfLoop2.isEmpty() ||
                     (!connection1.isEmpty() && !connection2.isEmpty())) {
                 throw new IllegalActionException(container,
@@ -204,20 +207,23 @@ public class InterfaceCheckerDirector extends Director {
 
             final Actor actor0;
             final Actor actor1;
+            Set<Connection> connections;
             if (connection2.isEmpty()) {
                 actor0 = (Actor) actors.get(0); actor1 = (Actor) actors.get(1);
+                connections = connection1;
             } else {
+                assert (connection1.isEmpty());
                 actor0 = (Actor) actors.get(1); actor1 = (Actor) actors.get(0);
+                connections = connection2;
             }
             
-            Set<Connection> connections = _getConnectionsBetween(actor0, actor1);
             RelationalInterface compositeInterface;
             if (connections.isEmpty()) {
                 compositeInterface = _getInterface(actor0).
-                      cascadeComposeWith(_getInterface(actor1), connections);
+                    parallelComposeWith(_getInterface(actor1));
             } else {
                 compositeInterface = _getInterface(actor0).
-                      parallelComposeWith(_getInterface(actor1));
+                    cascadeComposeWith(_getInterface(actor1), connections);
             }
             newConstraints.add(compositeInterface.getContract());
             outputNames.addAll(compositeInterface.getVariables());
