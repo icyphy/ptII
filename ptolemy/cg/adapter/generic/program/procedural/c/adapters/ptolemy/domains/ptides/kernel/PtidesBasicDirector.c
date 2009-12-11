@@ -13,8 +13,8 @@
 
 /* structures */
 typedef struct {
-    uint32 secs;
-    uint32 nsecs;
+    uint32 sec;
+    uint32 nsec;
 } Time;
 
 typedef struct {
@@ -267,21 +267,21 @@ void freeEvent(Event* thisEvent) {
 
 /* time manipulation */
 void timeAdd(const Time time1, const Time time2, Time* timeSum) {
-    timeSum->secs = time1.secs + time2.secs;
-    timeSum->nsecs = time1.nsecs + time2.nsecs;
-    if (timeSum->nsecs > 1000000000) {
-        timeSum->nsecs -= 1000000000;
-        timeSum->secs++;
+    timeSum->sec = time1.sec + time2.sec;
+    timeSum->nsec = time1.nsec + time2.nsec;
+    if (timeSum->nsec > 1000000000) {
+        timeSum->nsec -= 1000000000;
+        timeSum->sec++;
     }
 }
 
 //compare two time values
 int timeCompare(const Time time1, const Time time2) {
-    if (time1.secs < time2.secs) {
+    if (time1.sec < time2.sec) {
         return LESS;
-    } else if (time1.secs == time2.secs && time1.nsecs < time2.nsecs) {
+    } else if (time1.sec == time2.sec && time1.nsec < time2.nsec) {
         return LESS;
-    } else if (time1.secs == time2.secs && time1.nsecs == time2.nsecs) {
+    } else if (time1.sec == time2.sec && time1.nsec == time2.nsec) {
         return EQUAL;
     }
     return MORE;       
@@ -291,8 +291,8 @@ int timeCompare(const Time time1, const Time time2) {
  * 
  */
 void timeSet(const Time refTime, Time* time) {
-    time->secs = refTime.secs;
-    time->nsecs = refTime.nsecs;
+    time->sec = refTime.sec;
+    time->nsec = refTime.nsec;
 }
 
 /* subtract two time values
@@ -302,12 +302,12 @@ int timeSub(const Time time1, const Time time2, Time* timeSub) {
     if (timeCompare(time1, time2) == -1) {
         return -1;
     }
-    timeSub->secs = time1.secs - time2.secs;
-    if (time1.nsecs < time2.nsecs) {
-        timeSub->secs--;
-        timeSub->nsecs = time1.nsecs + 1000000000 - time2.nsecs;
+    timeSub->sec = time1.sec - time2.sec;
+    if (time1.nsec < time2.nsec) {
+        timeSub->sec--;
+        timeSub->nsec = time1.nsec + 1000000000 - time2.nsec;
     } else {
-        timeSub->nsecs = time1.nsecs - time2.nsecs;
+        timeSub->nsec = time1.nsec - time2.nsec;
     }
     return 1;
 }
@@ -433,8 +433,8 @@ unsigned int higherPriority(Event* event) {
         return TRUE;
     } else if (timeCompare(executingDeadlines[numStackedDeadline], event->deadline) == LESS) {
 #ifdef LCD_DEBUG
-        debugMessageNumber("exDe secs=", executingDeadlines[numStackedDeadline].secs);
-        debugMessageNumber("exDe nsecs=", executingDeadlines[numStackedDeadline].nsecs); 
+        debugMessageNumber("exDe sec=", executingDeadlines[numStackedDeadline].sec);
+        debugMessageNumber("exDe nsec=", executingDeadlines[numStackedDeadline].nsec); 
 #endif
         return FALSE;
     } else {
@@ -514,7 +514,7 @@ void safeToProcess(Event* thisEvent, Time* safeTimestamp) {
     //      }
 
 #ifdef LCD_DEBUG
-    //sprintf(str, "STP=%d", safeTimestamp->secs);
+    //sprintf(str, "STP=%d", safeTimestamp->sec);
     //RIT128x96x4StringDraw(str, 0,40,15);
 #endif
 }

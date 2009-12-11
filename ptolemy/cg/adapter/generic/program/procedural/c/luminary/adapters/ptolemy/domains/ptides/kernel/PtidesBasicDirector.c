@@ -146,23 +146,22 @@ void exit(int zero) {
         die("program exit?");
 }
 
-// Convert processor cycle count to nanoseconds.
-// This method assumes a fixed processor speed
-// of 50 MHz
-//
-uint32 convertCyclesToNsecs(uint32 cycles) {
-        // nsecs = cycles * 20 = ((cycles * 4) + 1) * 4
-        return ((cycles << 2) + cycles) << 2;
+//Convert processor cycle count to nanoseconds.
+//This method assumes a fixed processor speed
+//of 50 MHz
+uint32 convertCyclesToNsecs(uint32 cycles){
+    // nsec = cycles * 20 = cycles * (4+1) * 4
+    return ((cycles << 2) + cycles) << 2;
 }
 
 // Convert nanoseconds to processor cycles.
 // This method assumes a fixed processor speed
 // of 50 MHz
-uint32 convertNsecsToCycles(uint32 nsecs) {
-        return nsecs / 20;
+uint32 convertNsecsToCycles(uint32 nsec) {
+        return nsec / 20;
         // FIXME: Is there a way to make it less expensive?
-        // cycles = nsecs / 20 = nsecs / 32 * 8/5
-        // let y = nsecs/32
+        // cycles = nsec / 20 = nsec / 32 * 8/5
+        // let y = nsec/32
         // cycles = y * 1.6 = y + z
         // z = .6 * y = 75/125 * y ~= 75/128 * y
         // let x = y / 128
@@ -192,28 +191,31 @@ void enableInterrupts(void) {
         IntMasterEnable();
 }
 
-// Return the real physical time.
-void getRealTime(Time* physicalTime) {
-        uint32 tick1;
-        uint32 tick2;
-        uint32 tempSecs;
-        uint32 tempQuarterSecs;
-
-        //In the case where the SysTickCount() rolls over, we need to wait for
-        // the global variables _secs and _quarterSecs to be updated.
-        while (TRUE) {
-                tick1 = SysTickValueGet();
-                tempSecs = _secs;
-                tempQuarterSecs = _quarterSecs;
-                tick2 = SysTickValueGet();
-                if(tick2 > tick1) {
-                        //system tick count didn't roll over, continue to determine current time
-                        physicalTime->secs = tempSecs;
-                        // FIXME: is there an optimization we could do?
-                        physicalTime->nsecs = 250000000 * tempQuarterSecs + convertCyclesToNsecs(tick2);
-                        break;
-                }
-        }
+//Return the real physical time.
+void getRealTime(Time * const physicalTime){
+    uint32 tick1;
+    uint32 tick2;
+    uint32 tempSecs;
+    uint32 tempQuarterSecs;
+    tick1 = SysTickValueGet();
+    tempSecs = _sec;
+    tempQuarterSecs = _quarterSecs;
+    tick2 = SysTickValueGet();
+    //If the system tick rolls over (the tick counts down) between accessing
+    // the volatile variables _sec and _quartersecs, then we account for this here
+    // by incrementing _quartersecs
+    if(tick2 > tick1){
+        tempQuarterSecs++;
+    }
+    switch(tempQuarterSecs){
+        case 1:         physicalTime->nsec = 250000000; break;
+        case 2:         physicalTime->nsec = 500000000; break;
+        case 3:         physicalTime->nsec = 750000000; break;
+        case 4:         physicalTime->sec++;                            //continue to next line
+        default:        physicalTime->nsec = 0;                 break;
+    }
+    physicalTime->nsec += convertCyclesToNsecs(tick2);
+    physicalTime->sec = tempSecs;
 }
 
 /* timer */
@@ -221,8 +223,8 @@ void setTimedInterrupt(const Time* safeToProcessTime) {
         // it has already been checked, timer always needs to be set, so just set it.
         TimerConfigure(TIMER0_BASE, TIMER_CFG_32_BIT_OS);
         // interrupt 10 times per second
-        TimerLoadSet(TIMER0_BASE, TIMER_BOTH, convertNsecsToCycles(safeToProcessTime->nsecs));
-        timerInterruptSecsLeft = safeToProcessTime->secs;
+        TimerLoadSet(TIMER0_BASE, TIMER_BOTH, convertNsecsToCycles(safeToProcessTime->nsec));
+        timerInterruptSecsLeft = safeToProcessTime->sec;
 
         //
         //Setup the interrupts for the timer timeouts
@@ -265,14 +267,13 @@ void Timer0IntHandler(void) {
         addStack();
 }
 
-/* SysTickHandler ISR
-* configured to execute every 1/4 second 
-* */
+//SysTickHandler ISR
+//configured to execute every 1/4 second (
 void SysTickHandler(void) {
-        if(++_quarterSecs > 3){
-                _quarterSecs = 0;
-                _secs++;
-        }
+ if(++_quarterSecs >= 4){
+     _quarterSecs -= 4;
+     _sec++;
+ }
 }
 
 $super.FuncBlock();
@@ -308,8 +309,8 @@ void setActuationInterrupt(int actuatorToActuate) {
                 TimerConfigure(TIMER1_BASE, TIMER_CFG_B_ONE_SHOT);
 
 #ifdef LCD_DEBUG
-                //debugMessageNumber("Act sec : ", actuationTime.secs);
-                //debugMessageNumber("Act nsec: ", actuationTime.nsecs);
+                //debugMessageNumber("Act sec : ", actuationTime.sec);
+                //debugMessageNumber("Act nsec: ", actuationTime.nsec);
 #endif
 
                 IntEnable(INT_TIMER1A);
@@ -330,8 +331,8 @@ void setActuationInterrupt(int actuatorToActuate) {
                         TimerLoadSet(TIMER1_BASE, TIMER_BOTH, 0);
                         actuatorTimerInterruptSecsLeft = 0;
                 } else {
-                        TimerLoadSet(TIMER1_BASE, TIMER_BOTH, convertNsecsToCycles(actuationLeftOverTime.nsecs));
-                        actuatorTimerInterruptSecsLeft = actuationLeftOverTime.secs;
+                        TimerLoadSet(TIMER1_BASE, TIMER_BOTH, convertNsecsToCycles(actuationLeftOverTime.nsec));
+                        actuatorTimerInterruptSecsLeft = actuationLeftOverTime.sec;
                 }
                 TimerEnable(TIMER1_BASE, TIMER_BOTH);
 
@@ -368,8 +369,8 @@ void setActuationInterrupt(int actuatorToActuate) {
                                 TimerLoadSet(TIMER1_BASE, TIMER_BOTH, 0);
                                 actuatorTimerInterruptSecsLeft = 0;
                         } else {
-                                TimerLoadSet(TIMER1_BASE, TIMER_BOTH, convertNsecsToCycles(actuationLeftOverTime.nsecs));
-                                actuatorTimerInterruptSecsLeft = actuationLeftOverTime.secs;
+                                TimerLoadSet(TIMER1_BASE, TIMER_BOTH, convertNsecsToCycles(actuationLeftOverTime.nsec));
+                                actuatorTimerInterruptSecsLeft = actuationLeftOverTime.sec;
                         }
                         TimerEnable(TIMER1_BASE, TIMER_BOTH);
                 } else {
@@ -441,8 +442,8 @@ void Timer1IntHandler(void) {
         }
 
 #ifdef LCD_DEBUG
-        debugMessageNumber("To Act secs:", lastActuateTime.secs);
-        debugMessageNumber("To Act nsecs:", lastActuateTime.nsecs);
+        debugMessageNumber("To Act sec:", lastActuateTime.sec);
+        debugMessageNumber("To Act nsec:", lastActuateTime.nsec);
 #endif
 
         if (timeCompare(lastActuateTime, MAX_TIME) != EQUAL) {
@@ -472,8 +473,8 @@ void Timer1IntHandler(void) {
                         TimerLoadSet(TIMER1_BASE, TIMER_BOTH, 0);
                         actuatorTimerInterruptSecsLeft = 0;
                 } else {
-                        TimerLoadSet(TIMER1_BASE, TIMER_BOTH, convertNsecsToCycles(actuationLeftOverTime.nsecs));
-                        actuatorTimerInterruptSecsLeft = actuationLeftOverTime.secs;
+                        TimerLoadSet(TIMER1_BASE, TIMER_BOTH, convertNsecsToCycles(actuationLeftOverTime.nsec));
+                        actuatorTimerInterruptSecsLeft = actuationLeftOverTime.sec;
                 }
                 TimerEnable(TIMER1_BASE, TIMER_BOTH);
         } else {
