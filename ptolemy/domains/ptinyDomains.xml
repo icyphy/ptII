@@ -11,11 +11,10 @@
 	     paths that start with ptolemy/ so that we can find these
 	     files if they are in a jar file besides the jar file that
 	     contains this file. -->
-            <!--
-		Actors in the continuous domain arestill experimental
-		input source="ptolemy/domains/continuous/lib/continuousentities.xml"/
-		-->
-            <input source="ptolemy/domains/ct/lib/ctentities.xml"/>
+			<input source="ptolemy/domains/continuous/lib/continuousentities.xml"/>
+		<!-- CT domain has been replaced by continuous.
+            input source="ptolemy/domains/ct/lib/ctentities.xml"/
+        -->
 	        <input source="ptolemy/domains/ddf/lib/ddfentities.xml"/>	 
             <input source="ptolemy/domains/de/lib/deentities.xml"/>
             <input source="ptolemy/domains/pn/lib/pnentities.xml"/>
