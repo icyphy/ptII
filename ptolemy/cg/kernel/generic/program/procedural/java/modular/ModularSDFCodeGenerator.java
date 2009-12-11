@@ -429,10 +429,10 @@ public class ModularSDFCodeGenerator extends JavaCodeGenerator {
             
             Set searchedFirings = new HashSet();
             
-            Set ouputFirings = (Set) clusteredOutputs.get(inputFirings);
+            Set outputFirings = (Set) clusteredOutputs.get(inputFirings);
             
-            for(Object ouputFiring:ouputFirings) {
-                _clusterFirings((Firing)ouputFiring, clusteredFirings, searchedFirings, inputFirings,
+            for(Object outputFiring:outputFirings) {
+                _clusterFirings((Firing)outputFiring, clusteredFirings, searchedFirings, inputFirings,
                         inputFiringFunctions, outputFiringFunctions, outputInputDependence);
             }
             
@@ -865,6 +865,7 @@ public class ModularSDFCodeGenerator extends JavaCodeGenerator {
      * @throws IllegalActionException
      */
     private boolean _deadlockAnalysis(Map firingVector, Map port2Junction ) throws IllegalActionException {
+        
       //deadlock analysis
         Map simFiringVector = new HashMap(firingVector);
         boolean deadlocked = true;
@@ -1439,7 +1440,7 @@ public class ModularSDFCodeGenerator extends JavaCodeGenerator {
      */
     private IOPort _getConnectedOutputPort(IOPort inputPort) {
         IOPort outputPort = null;
-        for(Iterator inputPorts = inputPort.connectedPortList().iterator(); inputPorts.hasNext();) {
+        for(Iterator inputPorts = inputPort.sourcePortList().iterator(); inputPorts.hasNext();) {
             IOPort port = (IOPort)inputPorts.next();
             
             if(port.isOutput()) {
@@ -1476,12 +1477,12 @@ public class ModularSDFCodeGenerator extends JavaCodeGenerator {
     }
     
     /** Cluster firings together so that there is no false dependency.
-     * @param currentFiring
-     * @param clusteredFirings
-     * @param searchedFirings
-     * @param inputFirings
-     * @param inputActors
-     * @param outputActors
+     * @param currentFiring Pointer to current node in the firing graph.
+     * @param clusteredFirings The output set of clustered firings.
+     * @param searchedFirings The set of searched firing used for searching.
+     * @param inputFirings The set of output firings (produce external tokens).
+     * @param inputActors The set of actors that consume external tokens.
+     * @param outputActors The set of actors that produce external tokens.
      * @param outputInputDependence The map form each output firing to a set of input firings
      * that its depend on.
      */
@@ -1515,6 +1516,15 @@ public class ModularSDFCodeGenerator extends JavaCodeGenerator {
                 
                 if(!searchedFirings.contains(previousFiring)) {
                     _clusterFirings(previousFiring, clusteredFirings, searchedFirings, inputFirings,
+                            inputActors, outputActors, outputInputDependence);
+                }
+            }
+            
+            for(Iterator nextFirings = currentFiring.nextActorFirings.iterator(); nextFirings.hasNext();) {
+                Firing nextFiring = (Firing) nextFirings.next();
+                
+                if(!searchedFirings.contains(nextFiring)) {
+                    _clusterFirings(nextFiring, clusteredFirings, searchedFirings, inputFirings,
                             inputActors, outputActors, outputInputDependence);
                 }
             }
@@ -1679,8 +1689,8 @@ public class ModularSDFCodeGenerator extends JavaCodeGenerator {
     
     /** Compute the depths of clusters to obtain cluster firing order.
      * 
-     * @param cluster
-     * @param visitedClusters
+     * @param cluster The cluster whose depth is computed.
+     * @param visitedClusters the list of visited clusters.
      */
     private void _computeClusterDepth(FiringCluster cluster, Map visitedClusters) {
        
