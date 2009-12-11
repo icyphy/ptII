@@ -31,7 +31,7 @@
 
 ME =        ptolemy/codegen/c/targets/openRTOS
 
-DIRS =      actor domains demo
+DIRS =      actor domains
 
 # Root of the Ptolemy II directory
 ROOT =      ../../../../..
