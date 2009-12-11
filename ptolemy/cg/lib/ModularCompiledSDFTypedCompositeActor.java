@@ -162,7 +162,7 @@ you could do that anyway.  An attempt to make such references
 will simply result in the expression failing to evaluate.
 
 
- @author Bert Rodiers, Dai Bui
+ @author Dai Bui 
  @version $Id$
  @since Ptolemy II 8.1
  @Pt.ProposedRating Red (rodiers)
@@ -227,6 +227,7 @@ public class ModularCompiledSDFTypedCompositeActor extends LazyTypedCompositeAct
     /** Convert this Ptolemy port to a port that will be saved in the profile.
      *  @param port The Ptolemy port.
      *  @exception IllegalActionException When the width can't be retrieved.
+     *  @return The profile port for an I/O port.
      */
     public Profile.Port convertProfilePort(IOPort port) throws IllegalActionException {
         boolean publisher = _isPublishedPort(port);
@@ -267,8 +268,8 @@ public class ModularCompiledSDFTypedCompositeActor extends LazyTypedCompositeAct
     }
 
 
-    /** Generate actor name from its class name
-     * @param className  The class name of the actor
+    /** Generate actor name from its class name.
+     * @param className The class name of the actor
      * @return a String that declares the actor name
      */
     static public String classToActorName(String className) {
@@ -612,8 +613,8 @@ public class ModularCompiledSDFTypedCompositeActor extends LazyTypedCompositeAct
         }
     }
 
-    /**
-     * Always return true (opaque)
+    /** Always return true (opaque)
+     * @return true if the composite actor is set to opaque, return false otherwise.
      */
     
     public boolean isOpaque() {
@@ -1031,6 +1032,9 @@ public class ModularCompiledSDFTypedCompositeActor extends LazyTypedCompositeAct
         }
     }
     
+    /** Return the profile for the composite actor.
+     * @return The profile.
+     */
     public Profile getProfile() {
         if(_profile == null) {
             String className = NamedProgramCodeGeneratorAdapter.generateName(this) + "_profile";        

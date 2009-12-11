@@ -148,6 +148,7 @@ public class ModularCodeGenTypedCompositeActor extends LazyTypedCompositeActor {
     /** Convert this Ptolemy port to a port that will be saved in the profile.
      *  @param port The Ptolemy port.
      *  @exception IllegalActionException When the width can't be retrieved.
+     *  @return information of a port in profile. 
      */
     public Profile.Port convertProfilePort(IOPort port) throws IllegalActionException {
         boolean publisher = _isPublishedPort(port);
@@ -188,7 +189,7 @@ public class ModularCodeGenTypedCompositeActor extends LazyTypedCompositeActor {
     }
 
 
-    /** Generate actor name from its class name
+    /** Generate actor name from its class name.
      * @param className  The class name of the actor
      * @return a String that declares the actor name
      */
