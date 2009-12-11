@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="LevelCrossingDetectorDetectingDirections" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 917, 598}, maximized=false}">
     </property>
@@ -73,7 +73,7 @@ crossing detectors.</text></svg></configure>
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Haiyang Zheng">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[405.0, 395.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[390.0, 390.0]">
         </property>
     </property>
     <property name="direction1" class="ptolemy.data.expr.StringParameter" value="both">

@@ -38,7 +38,7 @@ DIRS =		BouncingBall Brownian CarTracking \
 		CartPendulum ComparedClocks ContinuousInsideDE \
 		HierarchicalExecution HybridPlant Hysteresis \
 		LevelCrossingDetector LevelCrossingDetectorDetectsGlitches \
-		Lorenz NewtonsCradle Poisson Pendulum3D SampledClocks Satellite \
+		Lorenz NewtonsCradle Noise Poisson Pendulum3D SampledClocks Satellite \
 		SigmaDelta SinuBouncingBall Sinusoid SquareWave \
 		Starmac StickyMasses Switch Thermostat Transmission V2V
 

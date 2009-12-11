@@ -5,7 +5,7 @@
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
     <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
-        <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
+        <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="20.0">
         </property>
@@ -115,7 +115,7 @@
     <entity name="ModalModel" class="ptolemy.domains.modal.modal.ModalModel">
         <property name="_tableauFactory" class="ptolemy.vergil.modal.modal.ModalTableauFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{215.0, 270.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 205.0]">
         </property>
         <port name="in" class="ptolemy.domains.modal.modal.ModalPort">
             <property name="input"/>
@@ -145,7 +145,7 @@ change the value of the constant.</text></svg></configure>
         <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory"></property></entity></entity>
       </configure>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={313, 194, 813, 511}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={563, 90, 813, 511}, maximized=false}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
             </property>
@@ -167,7 +167,7 @@ change the value of the constant.</text></svg></configure>
             <entity name="high" class="ptolemy.domains.modal.kernel.State">
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="constant">
                 </property>
-                <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">
+                <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
@@ -187,7 +187,7 @@ change the value of the constant.</text></svg></configure>
                 </property>
             </entity>
             <entity name="init" class="ptolemy.domains.modal.kernel.State">
-                <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="false">
+                <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
@@ -269,7 +269,7 @@ change the value of the constant.</text></svg></configure>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[165.0, 40.0]">
                 </property>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={484, 1, 541, 468}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={484, 22, 592, 460}, maximized=false}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[326, 249]">
             </property>
@@ -325,7 +325,7 @@ change the value of the constant.</text></svg></configure>
     <entity name="ContinuousSinewave" class="ptolemy.domains.continuous.lib.ContinuousSinewave">
         <property name="frequency" class="ptolemy.actor.parameters.PortParameter" value="0.1">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 270.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 205.0]">
         </property>
         <port name="frequency" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
@@ -341,13 +341,13 @@ change the value of the constant.</text></svg></configure>
     <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="output, input">
+        <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="output, input, high threshold, low threshold">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={511, 410, 500, 344}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-1, 481, 813, 304}, maximized=false}">
         </property>
-        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[813, 260]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[370.0, 335.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[380.0, 250.0]">
         </property>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
@@ -361,48 +361,54 @@ change the value of the constant.</text></svg></configure>
 </plot>?>
         </configure>
     </entity>
-    <entity name="XYPlotter" class="ptolemy.actor.lib.gui.XYPlotter">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={514, 22, 500, 344}, maximized=false}">
+    <entity name="Const" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="highThreshold">
         </property>
-        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[360.0, 205.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[215.0, 270.0]">
         </property>
-        <configure>
-<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
-"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
-<plot>
-<title>XYPlotter</title>
-<xLabel>input</xLabel>
-<yLabel>output</yLabel>
-<xRange min="-0.9997794403753453" max="1.0"/>
-<yRange min="-1.0" max="1.0"/>
-</plot>?>
-        </configure>
+    </entity>
+    <entity name="Const2" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="lowThreshold">
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[230.0, 305.0]">
+        </property>
     </entity>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[145.0, 270.0]">
-        </vertex>
-    </relation>
-    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[320.0, 270.0]">
-        </vertex>
-    </relation>
-    <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[145.0, 195.0]">
+        <vertex name="vertex1" value="[155.0, 205.0]">
         </vertex>
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="{145.0, 335.0}">
+        <vertex name="vertex1" value="[155.0, 240.0]">
         </vertex>
     </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+    </relation>
     <link port="ModalModel.in" relation="relation3"/>
-    <link port="ModalModel.out" relation="relation2"/>
+    <link port="ModalModel.out" relation="relation"/>
     <link port="ContinuousSinewave.output" relation="relation3"/>
-    <link port="TimedPlotter.input" relation="relation2"/>
+    <link port="TimedPlotter.input" relation="relation"/>
     <link port="TimedPlotter.input" relation="relation4"/>
-    <link port="XYPlotter.inputX" relation="relation"/>
-    <link port="XYPlotter.inputY" relation="relation2"/>
-    <link relation1="relation3" relation2="relation"/>
+    <link port="TimedPlotter.input" relation="relation2"/>
+    <link port="TimedPlotter.input" relation="relation5"/>
+    <link port="Const.output" relation="relation2"/>
+    <link port="Const2.output" relation="relation5"/>
     <link relation1="relation3" relation2="relation4"/>
 </entity>

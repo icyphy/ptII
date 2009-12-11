@@ -2,16 +2,16 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="NewtonsCradleNondeterministic" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
     <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
+        <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="30">
         </property>
         <property name="maxStepSize" class="ptolemy.data.expr.Parameter" value="0.1">
         </property>
         <property name="errorTolerance" class="ptolemy.data.expr.Parameter" value="1e-8">
-        </property>
-        <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 40.0]">
         </property>
@@ -111,7 +111,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 125.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 0, 866, 702}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={51, 22, 864, 694}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[651, 584]">
     </property>
@@ -445,13 +445,13 @@ inside the modal model to see more detailed explanation.
             </property>
         </port>
         <entity name="theta_dot" class="ptolemy.domains.continuous.lib.Integrator">
-            <property name="initialState" class="ptolemy.data.expr.Parameter" value="initialTheta_dot">
+            <property name="initialState" class="ptolemy.actor.parameters.PortParameter" value="initialTheta_dot">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[120.486328125, 249.501953125]">
             </property>
         </entity>
         <entity name="theta" class="ptolemy.domains.continuous.lib.Integrator">
-            <property name="initialState" class="ptolemy.data.expr.Parameter" value="initialTheta">
+            <property name="initialState" class="ptolemy.actor.parameters.PortParameter" value="initialTheta">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[225.486328125, 249.501953125]">
             </property>
@@ -568,7 +568,7 @@ inside the modal model to see more detailed explanation.
     <entity name="ModalModel" class="ptolemy.domains.modal.modal.ModalModel">
         <property name="_tableauFactory" class="ptolemy.vergil.modal.modal.ModalTableauFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[415.0, 455.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{415.0, 455.0}">
         </property>
         <port name="x_1" class="ptolemy.domains.modal.modal.ModalPort">
             <property name="output"/>
@@ -622,14 +622,12 @@ inside the modal model to see more detailed explanation.
             </property>
         </port>
         <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
-            <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute">
-            </property>
             <property name="_library" class="ptolemy.moml.LibraryAttribute">
                 <configure>
         <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory"></property></entity></entity>
       </configure>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={52, 20, 920, 727}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={261, 90, 918, 720}, maximized=false}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[705, 609]">
             </property>
@@ -671,7 +669,7 @@ The operational semantics of HyVisual will find the unique behavior.</text></svg
                 </property>
                 <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Transition 1">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 405.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[145.0, 375.0]">
                 </property>
             </property>
             <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -679,65 +677,67 @@ The operational semantics of HyVisual will find the unique behavior.</text></svg
                 </property>
                 <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Transition 2">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[390.0, 265.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[320.0, 270.0]">
                 </property>
             </property>
             <port name="x_1" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
                 <property name="output"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[365.0, 390.0000228881836]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[390.0, 390.0]">
                 </property>
             </port>
             <port name="x_2" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
                 <property name="output"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[440.0, 390.0000228881836]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[465.0, 390.0]">
                 </property>
             </port>
             <port name="theta_1_dot" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
                 <property name="output"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[365.0, 435.0000228881836]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[390.0, 435.0]">
                 </property>
             </port>
             <port name="theta_2_dot" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
                 <property name="output"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[440.0, 435.0000228881836]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[465.0, 435.0]">
                 </property>
             </port>
             <port name="x_3" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
                 <property name="output"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[515.0, 390.0000228881836]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[540.0, 390.0]">
                 </property>
             </port>
             <port name="theta_3_dot" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
                 <property name="output"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[515.0, 435.0000228881836]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[540.0, 435.0]">
                 </property>
             </port>
             <port name="theta_1" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
                 <property name="output"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[365.0, 475.0000228881836]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[390.0, 475.0]">
                 </property>
             </port>
             <port name="theta_2" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
                 <property name="output"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[440.0, 475.0000228881836]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[465.0, 475.0]">
                 </property>
             </port>
             <port name="theta_3" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
                 <property name="output"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[515.0, 475.0000228881836]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[540.0, 475.0]">
                 </property>
             </port>
             <entity name="state" class="ptolemy.domains.modal.kernel.State">
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="state">
+                </property>
+                <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
@@ -753,7 +753,7 @@ The operational semantics of HyVisual will find the unique behavior.</text></svg
                 </property>
                 <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[242.73112487792983, 264.4464912414551]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{245.0, 265.0}">
                 </property>
             </entity>
             <relation name="relation" class="ptolemy.domains.modal.kernel.Transition">
@@ -773,9 +773,11 @@ The operational semantics of HyVisual will find the unique behavior.</text></svg
                         </property>
                     </property>
                 </property>
-                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="2.260991363440288">
+                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="2.4606898875059904">
+                    <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+                    </property>
                 </property>
-                <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.3947358055295304">
+                <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.5437889200132409">
                 </property>
                 <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
@@ -852,7 +854,7 @@ The operational semantics of HyVisual will find the unique behavior.</text></svg
             </property>
             <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{321.0, 175.0}">
             </property>
-            <property name="theta_1_dot_initial" class="ptolemy.data.expr.Parameter" value="-0.2980873180266">
+            <property name="theta_1_dot_initial" class="ptolemy.data.expr.Parameter" value="-3.412046398401E-5">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -871,7 +873,7 @@ The operational semantics of HyVisual will find the unique behavior.</text></svg
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 245.0]">
                 </property>
             </property>
-            <property name="theta_2_dot_initial" class="ptolemy.data.expr.Parameter" value="-0.197119366476">
+            <property name="theta_2_dot_initial" class="ptolemy.data.expr.Parameter" value="0.2935280548005">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -890,7 +892,7 @@ The operational semantics of HyVisual will find the unique behavior.</text></svg
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 270.0]">
                 </property>
             </property>
-            <property name="theta_3_dot_initial" class="ptolemy.data.expr.Parameter" value="4.8779701440011E-10">
+            <property name="theta_3_dot_initial" class="ptolemy.data.expr.Parameter" value="0.1909778909706">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -1169,7 +1171,7 @@ The operational semantics of HyVisual will find the unique behavior.</text></svg
         </property>
         <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="x_1, x_2, x_3">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-1, 459, 483, 281}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 459, 475, 270}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[475, 226]">
         </property>
@@ -1182,8 +1184,8 @@ The operational semantics of HyVisual will find the unique behavior.</text></svg
 <title>positions</title>
 <xLabel>time</xLabel>
 <yLabel>displacements</yLabel>
-<xRange min="0.0" max="30.0"/>
-<yRange min="-2.1482686435651592" max="6.148396496542092"/>
+<xRange min="-3.7" max="33.7"/>
+<yRange min="-3.4757350659823194" max="7.475862918959252"/>
 </plot>?>
         </configure>
     </entity>
@@ -1192,7 +1194,7 @@ The operational semantics of HyVisual will find the unique behavior.</text></svg
         </property>
         <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="theta_1_dot, theta_2_dot, theta_3_dot">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={484, 461, 533, 280}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={484, 461, 525, 269}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[525, 225]">
         </property>

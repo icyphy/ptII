@@ -2,16 +2,16 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="NewtonsCradlePerfectlyInelastic2" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
     <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
+        <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="30">
         </property>
         <property name="maxStepSize" class="ptolemy.data.expr.Parameter" value="0.1">
         </property>
         <property name="errorTolerance" class="ptolemy.data.expr.Parameter" value="1e-8">
-        </property>
-        <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 40.0]">
         </property>
@@ -111,7 +111,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 125.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1, 1, 841, 606}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1, 22, 839, 598}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[626, 488]">
     </property>
@@ -432,13 +432,13 @@ objects while no changes can be found in the animation.
             </property>
         </port>
         <entity name="theta_dot" class="ptolemy.domains.continuous.lib.Integrator">
-            <property name="initialState" class="ptolemy.data.expr.Parameter" value="initialTheta_dot">
+            <property name="initialState" class="ptolemy.actor.parameters.PortParameter" value="initialTheta_dot">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[120.486328125, 249.501953125]">
             </property>
         </entity>
         <entity name="theta" class="ptolemy.domains.continuous.lib.Integrator">
-            <property name="initialState" class="ptolemy.data.expr.Parameter" value="initialTheta">
+            <property name="initialState" class="ptolemy.actor.parameters.PortParameter" value="initialTheta">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[225.486328125, 249.501953125]">
             </property>
@@ -609,14 +609,12 @@ objects while no changes can be found in the animation.
             </property>
         </port>
         <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
-            <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute">
-            </property>
             <property name="_library" class="ptolemy.moml.LibraryAttribute">
                 <configure>
         <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory"></property></entity></entity>
       </configure>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={52, 20, 920, 727}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={261, 90, 918, 720}, maximized=false}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[705, 609]">
             </property>
@@ -702,6 +700,8 @@ any two balls is perfect inelastic.</text></svg></configure>
             </port>
             <entity name="state" class="ptolemy.domains.modal.kernel.State">
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="state">
+                </property>
+                <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
@@ -1131,7 +1131,7 @@ any two balls is perfect inelastic.</text></svg></configure>
     <entity name="positions" class="ptolemy.actor.lib.gui.TimedPlotter">
         <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="x_1, x_2, x_3">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={2, 460, 502, 278}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={2, 460, 494, 267}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[494, 223]">
         </property>
@@ -1144,15 +1144,15 @@ any two balls is perfect inelastic.</text></svg></configure>
 <title>positions</title>
 <xLabel>time</xLabel>
 <yLabel>displacements</yLabel>
-<xRange min="0.0" max="30.0"/>
-<yRange min="-3.0614674589207183" max="7.061467458920719"/>
+<xRange min="1.7976931348623157E308" max="-1.7976931348623157E308"/>
+<yRange min="1.7976931348623157E308" max="-1.7976931348623157E308"/>
 </plot>?>
         </configure>
     </entity>
     <entity name="velocities" class="ptolemy.actor.lib.gui.TimedPlotter">
         <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="theta_1_dot, theta_2_dot, theta_3_dot">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={504, 459, 519, 279}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={504, 459, 511, 268}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[511, 224]">
         </property>
@@ -1171,8 +1171,8 @@ any two balls is perfect inelastic.</text></svg></configure>
 <title>velocities</title>
 <xLabel>time</xLabel>
 <yLabel>velocities</yLabel>
-<xRange min="0.0" max="30.0"/>
-<yRange min="-0.43185083846796907" max="0.43185083846796907"/>
+<xRange min="1.7976931348623157E308" max="-1.7976931348623157E308"/>
+<yRange min="1.7976931348623157E308" max="-1.7976931348623157E308"/>
 </plot>?>
         </configure>
     </entity>

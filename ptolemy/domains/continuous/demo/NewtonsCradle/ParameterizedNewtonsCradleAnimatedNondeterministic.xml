@@ -2,16 +2,16 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="ParameterizedNewtonsCradleAnimatedNondeterministic" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
     <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
+        <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="40">
         </property>
         <property name="maxStepSize" class="ptolemy.data.expr.Parameter" value="0.1">
         </property>
         <property name="errorTolerance" class="ptolemy.data.expr.Parameter" value="1e-8">
-        </property>
-        <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{85.0, 45.0}">
         </property>
@@ -111,7 +111,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 125.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 839, 598}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={75, 22, 839, 598}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[626, 488]">
     </property>
@@ -412,7 +412,7 @@ depends on the order of the collisions.</text></svg></configure>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 55.0]">
             </property>
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={51, 13, 877, 613}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={51, 22, 875, 605}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[662, 495]">
         </property>
@@ -570,13 +570,13 @@ depends on the order of the collisions.</text></svg></configure>
             </property>
         </port>
         <entity name="theta_dot" class="ptolemy.domains.continuous.lib.Integrator">
-            <property name="initialState" class="ptolemy.data.expr.Parameter" value="initialTheta_dot">
+            <property name="initialState" class="ptolemy.actor.parameters.PortParameter" value="initialTheta_dot">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[120.486328125, 249.501953125]">
             </property>
         </entity>
         <entity name="theta" class="ptolemy.domains.continuous.lib.Integrator">
-            <property name="initialState" class="ptolemy.data.expr.Parameter" value="initialTheta">
+            <property name="initialState" class="ptolemy.actor.parameters.PortParameter" value="initialTheta">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[225.486328125, 249.501953125]">
             </property>
@@ -752,7 +752,7 @@ depends on the order of the collisions.</text></svg></configure>
         <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory"></property></entity></entity>
       </configure>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={12, 35, 920, 647}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={261, 130, 918, 640}, maximized=false}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[705, 529]">
             </property>
@@ -839,7 +839,7 @@ and v1' and v2' are the velocities after the collision.
             <entity name="state" class="ptolemy.domains.modal.kernel.State">
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="state">
                 </property>
-                <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">
+                <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
@@ -849,7 +849,7 @@ and v1' and v2' are the velocities after the collision.
                 </property>
             </entity>
             <entity name="init" class="ptolemy.domains.modal.kernel.State">
-                <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="false">
+                <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
@@ -946,7 +946,7 @@ and v1' and v2' are the velocities after the collision.
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 45.0]">
                 </property>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={91, 109, 857, 509}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={91, 109, 855, 501}, maximized=false}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[642, 391]">
             </property>
@@ -954,7 +954,7 @@ and v1' and v2' are the velocities after the collision.
             </property>
             <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{321.0, 195.5}">
             </property>
-            <property name="theta_1_dot_initial" class="ptolemy.data.expr.Parameter" value="-0.3878989644327">
+            <property name="theta_1_dot_initial" class="ptolemy.data.expr.Parameter" value="-0.7090064186363">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -973,7 +973,7 @@ and v1' and v2' are the velocities after the collision.
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 225.0]">
                 </property>
             </property>
-            <property name="theta_2_dot_initial" class="ptolemy.data.expr.Parameter" value="-0.0383098657708">
+            <property name="theta_2_dot_initial" class="ptolemy.data.expr.Parameter" value="-0.390999542184">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -992,7 +992,7 @@ and v1' and v2' are the velocities after the collision.
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 250.0]">
                 </property>
             </property>
-            <property name="theta_3_dot_initial" class="ptolemy.data.expr.Parameter" value="0.4668419374913">
+            <property name="theta_3_dot_initial" class="ptolemy.data.expr.Parameter" value="0.3571354414361">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">

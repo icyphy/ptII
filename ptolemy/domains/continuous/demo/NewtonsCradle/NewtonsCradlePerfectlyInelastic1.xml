@@ -2,16 +2,16 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="NewtonsCradlePerfectlyInelastic1" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
     <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
+        <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="30">
         </property>
         <property name="maxStepSize" class="ptolemy.data.expr.Parameter" value="0.1">
         </property>
         <property name="errorTolerance" class="ptolemy.data.expr.Parameter" value="1e-8">
-        </property>
-        <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 40.0]">
         </property>
@@ -111,13 +111,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 125.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1, 1, 824, 441}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1, 22, 822, 460}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[609, 323]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[609, 350]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{304.5, 161.5}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{304.5, 175.0}">
     </property>
     <property name="initialTheta_2" class="ptolemy.data.expr.Parameter" value="0.0">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -420,13 +420,13 @@ where the collision between any two balls is perfect inelastic.</text></svg></co
             </property>
         </port>
         <entity name="theta_dot" class="ptolemy.domains.continuous.lib.Integrator">
-            <property name="initialState" class="ptolemy.data.expr.Parameter" value="initialTheta_dot">
+            <property name="initialState" class="ptolemy.actor.parameters.PortParameter" value="initialTheta_dot">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[120.486328125, 249.501953125]">
             </property>
         </entity>
         <entity name="theta" class="ptolemy.domains.continuous.lib.Integrator">
-            <property name="initialState" class="ptolemy.data.expr.Parameter" value="initialTheta">
+            <property name="initialState" class="ptolemy.actor.parameters.PortParameter" value="initialTheta">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[225.486328125, 249.501953125]">
             </property>
@@ -543,7 +543,7 @@ where the collision between any two balls is perfect inelastic.</text></svg></co
     <entity name="ModalModel" class="ptolemy.domains.modal.modal.ModalModel">
         <property name="_tableauFactory" class="ptolemy.vergil.modal.modal.ModalTableauFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[395.0, 175.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{395.0, 175.0}">
         </property>
         <port name="x_1" class="ptolemy.domains.modal.modal.ModalPort">
             <property name="output"/>
@@ -597,20 +597,18 @@ where the collision between any two balls is perfect inelastic.</text></svg></co
             </property>
         </port>
         <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
-            <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute">
-            </property>
             <property name="_library" class="ptolemy.moml.LibraryAttribute">
                 <configure>
         <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory"></property></entity></entity>
       </configure>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={13, 34, 922, 518}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={260, 194, 920, 511}, maximized=false}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[707, 400]">
             </property>
             <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.060676264655">
             </property>
-            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{309.446832096975, 109.282494027108}">
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{309.4468320969751, 109.282494027108}">
             </property>
             <property name="annotation" class="ptolemy.kernel.util.Attribute">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -682,6 +680,8 @@ any two balls is perfect inelastic.</text></svg></configure>
             </port>
             <entity name="state" class="ptolemy.domains.modal.kernel.State">
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="state">
+                </property>
+                <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
@@ -796,7 +796,7 @@ any two balls is perfect inelastic.</text></svg></configure>
             </property>
             <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{321.0, 175.0}">
             </property>
-            <property name="theta_1_dot_initial" class="ptolemy.data.expr.Parameter" value="-0.0374755274286">
+            <property name="theta_1_dot_initial" class="ptolemy.data.expr.Parameter" value="-0.0375833831263">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -815,7 +815,7 @@ any two balls is perfect inelastic.</text></svg></configure>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 245.0]">
                 </property>
             </property>
-            <property name="theta_2_dot_initial" class="ptolemy.data.expr.Parameter" value="-0.0374755274286">
+            <property name="theta_2_dot_initial" class="ptolemy.data.expr.Parameter" value="-0.0375833831263">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -834,7 +834,7 @@ any two balls is perfect inelastic.</text></svg></configure>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 270.0]">
                 </property>
             </property>
-            <property name="theta_3_dot_initial" class="ptolemy.data.expr.Parameter" value="-0.131259480735">
+            <property name="theta_3_dot_initial" class="ptolemy.data.expr.Parameter" value="-0.0375833831263">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -1111,7 +1111,7 @@ any two balls is perfect inelastic.</text></svg></configure>
     <entity name="positions" class="ptolemy.actor.lib.gui.TimedPlotter">
         <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="x_1, x_2, x_3">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={2, 460, 502, 278}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={2, 460, 494, 267}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[494, 223]">
         </property>
@@ -1125,13 +1125,14 @@ any two balls is perfect inelastic.</text></svg></configure>
 <xLabel>time</xLabel>
 <yLabel>displacements</yLabel>
 <xRange min="0.0" max="30.0"/>
-<yRange min="-3.0614674589207183" max="5.038273683216757"/></plot>?>
+<yRange min="-3.0717864264423786" max="5.155533122340114"/>
+</plot>?>
         </configure>
     </entity>
     <entity name="velocities" class="ptolemy.actor.lib.gui.TimedPlotter">
         <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="theta_1_dot, theta_2_dot, theta_3_dot">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={504, 459, 519, 279}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={504, 459, 511, 268}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[511, 224]">
         </property>
@@ -1151,7 +1152,7 @@ any two balls is perfect inelastic.</text></svg></configure>
 <xLabel>time</xLabel>
 <yLabel>velocities</yLabel>
 <xRange min="0.0" max="30.0"/>
-<yRange min="-0.14393306162422517" max="0.43185083846796907"/>
+<yRange min="-0.16019429345339017" max="0.4252228691592942"/>
 </plot>?>
         </configure>
     </entity>

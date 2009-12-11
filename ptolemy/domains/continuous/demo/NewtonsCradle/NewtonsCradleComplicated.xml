@@ -2,16 +2,16 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="NewtonsCradleComplicated" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
     <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
+        <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="30">
         </property>
         <property name="maxStepSize" class="ptolemy.data.expr.Parameter" value="0.1">
         </property>
         <property name="errorTolerance" class="ptolemy.data.expr.Parameter" value="1e-8">
-        </property>
-        <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 40.0]">
         </property>
@@ -111,7 +111,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 125.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 0, 900, 668}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 898, 660}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[685, 550]">
     </property>
@@ -208,7 +208,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Look inside the ModalModel to&#10;see how this is implemented.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[195.0, 465.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[185.0, 465.0]">
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -443,13 +443,13 @@ the velocities plot for a better understanding of this.</text></svg></configure>
             </property>
         </port>
         <entity name="theta_dot" class="ptolemy.domains.continuous.lib.Integrator">
-            <property name="initialState" class="ptolemy.data.expr.Parameter" value="initialTheta_dot">
+            <property name="initialState" class="ptolemy.actor.parameters.PortParameter" value="initialTheta_dot">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[120.486328125, 249.501953125]">
             </property>
         </entity>
         <entity name="theta" class="ptolemy.domains.continuous.lib.Integrator">
-            <property name="initialState" class="ptolemy.data.expr.Parameter" value="initialTheta">
+            <property name="initialState" class="ptolemy.actor.parameters.PortParameter" value="initialTheta">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[225.486328125, 249.501953125]">
             </property>
@@ -620,77 +620,77 @@ the velocities plot for a better understanding of this.</text></svg></configure>
             </property>
         </port>
         <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
-            <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute">
-            </property>
             <property name="_library" class="ptolemy.moml.LibraryAttribute">
                 <configure>
         <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory"></property></entity></entity>
       </configure>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={69, 144, 885, 479}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={278, 214, 883, 472}, maximized=false}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[670, 361]">
             </property>
             <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.060676264655">
             </property>
-            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{292.0051294620835, 90.8979966551953}">
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{292.0051294620836, 90.8979966551953}">
             </property>
             <port name="x_1" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
                 <property name="output"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[364.99999733269215, 140.00000095367432]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[395.0, 140.0]">
                 </property>
             </port>
             <port name="x_2" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
                 <property name="output"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[439.99999733269215, 140.00000095367432]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[470.0, 140.0]">
                 </property>
             </port>
             <port name="theta_1_dot" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
                 <property name="output"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[364.99999733269215, 185.00000095367432]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[395.0, 185.0]">
                 </property>
             </port>
             <port name="theta_2_dot" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
                 <property name="output"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[439.99999733269215, 185.00000095367432]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[470.0, 185.0]">
                 </property>
             </port>
             <port name="x_3" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
                 <property name="output"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[514.9999973326921, 140.00000095367432]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[545.0, 140.0]">
                 </property>
             </port>
             <port name="theta_3_dot" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
                 <property name="output"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[514.9999973326921, 185.00000095367432]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[545.0, 185.0]">
                 </property>
             </port>
             <port name="theta_1" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
                 <property name="output"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[364.99999733269215, 225.00000095367432]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[395.0, 225.0]">
                 </property>
             </port>
             <port name="theta_2" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
                 <property name="output"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[439.99999733269215, 225.00000095367432]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[470.0, 225.0]">
                 </property>
             </port>
             <port name="theta_3" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
                 <property name="output"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[514.9999973326921, 225.00000095367432]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[545.0, 225.0]">
                 </property>
             </port>
             <entity name="state" class="ptolemy.domains.modal.kernel.State">
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="state">
+                </property>
+                <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
@@ -797,7 +797,7 @@ the velocities plot for a better understanding of this.</text></svg></configure>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, 80.0]">
                 </property>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={91, 109, 857, 468}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={91, 109, 855, 460}, maximized=false}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[642, 350]">
             </property>
@@ -805,7 +805,7 @@ the velocities plot for a better understanding of this.</text></svg></configure>
             </property>
             <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{321.0, 175.0}">
             </property>
-            <property name="theta_1_dot_initial" class="ptolemy.data.expr.Parameter" value="-0.422344453283">
+            <property name="theta_1_dot_initial" class="ptolemy.data.expr.Parameter" value="-0.4217158459938">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -824,7 +824,7 @@ the velocities plot for a better understanding of this.</text></svg></configure>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 245.0]">
                 </property>
             </property>
-            <property name="theta_2_dot_initial" class="ptolemy.data.expr.Parameter" value="2.8374186686784E-10">
+            <property name="theta_2_dot_initial" class="ptolemy.data.expr.Parameter" value="2.7623395455768E-10">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -843,7 +843,7 @@ the velocities plot for a better understanding of this.</text></svg></configure>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 270.0]">
                 </property>
             </property>
-            <property name="theta_3_dot_initial" class="ptolemy.data.expr.Parameter" value="0.216970205826">
+            <property name="theta_3_dot_initial" class="ptolemy.data.expr.Parameter" value="0.2165850570092">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -1118,9 +1118,11 @@ the velocities plot for a better understanding of this.</text></svg></configure>
         <link port="state.theta_3" relation="theta_3Relation"/>
     </entity>
     <entity name="positions" class="ptolemy.actor.lib.gui.TimedPlotter">
+        <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
         <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="x_1, x_2, x_3">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-1, 470, 483, 270}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 470, 475, 259}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[475, 215]">
         </property>
@@ -1134,14 +1136,14 @@ the velocities plot for a better understanding of this.</text></svg></configure>
 <xLabel>time</xLabel>
 <yLabel>displacements</yLabel>
 <xRange min="0.0" max="30.0"/>
-<yRange min="-3.0614674589207183" max="7.061461699329003"/>
+<yRange min="-3.0614674589207183" max="7.060103423055756"/>
 </plot>?>
         </configure>
     </entity>
     <entity name="velocities" class="ptolemy.actor.lib.gui.TimedPlotter">
         <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="theta_1_dot, theta_2_dot, theta_3_dot">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={484, 470, 533, 271}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={484, 470, 525, 260}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[525, 216]">
         </property>
@@ -1161,7 +1163,7 @@ the velocities plot for a better understanding of this.</text></svg></configure>
 <xLabel>time</xLabel>
 <yLabel>velocities</yLabel>
 <xRange min="0.0" max="30.0"/>
-<yRange min="-0.4318508628800321" max="0.4318508601898895"/>
+<yRange min="-0.4317443550319119" max="0.4318153334871101"/>
 </plot>?>
         </configure>
     </entity>

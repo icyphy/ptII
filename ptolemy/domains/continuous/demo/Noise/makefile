@@ -28,7 +28,7 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/domains/continuous/demo/Hysteresis
+ME =		ptolemy/domains/continuous/demo/Noise
 
 # Root of the Java directory
 ROOT =		../../../../..
@@ -47,8 +47,10 @@ JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS) \
+	ComparingDeterministicandNonDeterministicModels.xml \
 	Hysteresis.xml \
 	HysteresisWithBernouliLosses.xml \
+	HysteresisWithNoise.xml \
 	HysteresisWithRandomDelay.xml \
 	HysteresisWithRandomLosses.xml
 
@@ -56,7 +58,9 @@ EXTRA_SRCS = \
 	$(OTHER_FILES_TO_BE_JARED) \
 	Hysteresis.htm \
 	HysteresisWithRandomDelay.htm \
+	HysteresisWithRandomDelay.jnlp \
 	HysteresisWithRandomLosses.htm \
+	HysteresisWithRandomLosses.jnlp
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.

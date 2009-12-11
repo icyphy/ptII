@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="NewtonsCradleAnimated" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
     <property name="acceleration" class="ptolemy.data.expr.Parameter" value="9.8">
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -210,7 +210,13 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{5.0, 435.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 460.0]">
+        </property>
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model simulates Newton's cradle with three balls.&#10;Newton's cradle is a toy with steel balls hanging on strings&#10;and colliding with one another.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 385.0]">
         </property>
     </property>
     <entity name="ball 1" class="ptolemy.domains.modal.modal.ModalModel">
@@ -292,20 +298,20 @@ be involved in the collision, so they exchange their velocities. After this coll
 elapsing, balls 2 and 3 collide and exchange their velocities. Thus, two simultaneous yet ordered
 transitions occur at the time of the collision.</text></svg></configure>
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[-5.0, -30.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[-10.0, 0.0]">
                 </property>
                 <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
                 </property>
                 <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
                 </property>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 125, 815, 518}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={253, 185, 933, 529}, maximized=false}">
             </property>
-            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[720, 418]">
             </property>
             <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
             </property>
-            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{360.0, 209.0}">
             </property>
             <port name="x_left" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
@@ -348,7 +354,7 @@ transitions occur at the time of the collision.</text></svg></configure>
             <entity name="state" class="ptolemy.domains.modal.kernel.State">
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="state">
                 </property>
-                <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">
+                <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
@@ -360,7 +366,7 @@ transitions occur at the time of the collision.</text></svg></configure>
             <entity name="init" class="ptolemy.domains.modal.kernel.State">
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="state">
                 </property>
-                <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="false">
+                <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
@@ -465,7 +471,7 @@ transitions occur at the time of the collision.</text></svg></configure>
             </property>
             <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
             </property>
-            <property name="theta_dot_initial" class="ptolemy.data.expr.Parameter" value="-0.4309889607626">
+            <property name="theta_dot_initial" class="ptolemy.data.expr.Parameter" value="-0.7436663785158">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -981,20 +987,20 @@ be involved in the collision, so they exchange their velocities. After this coll
 elapsing, balls 2 and 3 collide and exchange their velocities. Thus, two simultaneous yet ordered
 transitions occur at the time of the collision.</text></svg></configure>
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[-5.0, -30.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[-15.0, -5.0]">
                 </property>
                 <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
                 </property>
                 <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
                 </property>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 125, 815, 518}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={241, 196, 957, 507}, maximized=false}">
             </property>
-            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[744, 396]">
             </property>
             <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
             </property>
-            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{372.0, 198.0}">
             </property>
             <port name="x_left" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
@@ -1019,7 +1025,7 @@ transitions occur at the time of the collision.</text></svg></configure>
             <port name="x" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
                 <property name="output"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[555.0, 375.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[575.0, 370.0]">
                 </property>
             </port>
             <port name="theta_dot" class="ptolemy.domains.modal.modal.RefinementPort">
@@ -1031,13 +1037,13 @@ transitions occur at the time of the collision.</text></svg></configure>
             <port name="theta" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
                 <property name="output"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[365.0, 375.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[365.0, 370.0]">
                 </property>
             </port>
             <entity name="state" class="ptolemy.domains.modal.kernel.State">
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="state">
                 </property>
-                <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">
+                <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
@@ -1049,7 +1055,7 @@ transitions occur at the time of the collision.</text></svg></configure>
             <entity name="init" class="ptolemy.domains.modal.kernel.State">
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="state">
                 </property>
-                <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="false">
+                <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
@@ -1154,7 +1160,7 @@ transitions occur at the time of the collision.</text></svg></configure>
             </property>
             <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
             </property>
-            <property name="theta_dot_initial" class="ptolemy.data.expr.Parameter" value="3.2706741187321E-5">
+            <property name="theta_dot_initial" class="ptolemy.data.expr.Parameter" value="1.0156191935622E-4">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -1672,20 +1678,20 @@ be involved in the collision, so they exchange their velocities. After this coll
 elapsing, balls 2 and 3 collide and exchange their velocities. Thus, two simultaneous yet ordered
 transitions occur at the time of the collision.</text></svg></configure>
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[-5.0, -30.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[-5.0, 0.0]">
                 </property>
                 <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
                 </property>
                 <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
                 </property>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 125, 815, 518}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={313, 194, 948, 513}, maximized=false}">
             </property>
-            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[735, 402]">
             </property>
             <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
             </property>
-            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{367.5, 201.0}">
             </property>
             <port name="x_left" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
@@ -1704,13 +1710,13 @@ transitions occur at the time of the collision.</text></svg></configure>
             </port>
             <port name="theta_right_dot" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[475.0, 370.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{475.0, 370.0}">
                 </property>
             </port>
             <port name="x" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
                 <property name="output"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[555.0, 375.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[575.0, 370.0]">
                 </property>
             </port>
             <port name="theta_dot" class="ptolemy.domains.modal.modal.RefinementPort">
@@ -1722,13 +1728,13 @@ transitions occur at the time of the collision.</text></svg></configure>
             <port name="theta" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
                 <property name="output"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[375.0, 365.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[375.0, 370.0]">
                 </property>
             </port>
             <entity name="state" class="ptolemy.domains.modal.kernel.State">
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="state">
                 </property>
-                <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">
+                <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
@@ -1740,7 +1746,7 @@ transitions occur at the time of the collision.</text></svg></configure>
             <entity name="init" class="ptolemy.domains.modal.kernel.State">
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="state">
                 </property>
-                <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="false">
+                <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
@@ -1845,7 +1851,7 @@ transitions occur at the time of the collision.</text></svg></configure>
             </property>
             <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
             </property>
-            <property name="theta_dot_initial" class="ptolemy.data.expr.Parameter" value="2.772218955715E-5">
+            <property name="theta_dot_initial" class="ptolemy.data.expr.Parameter" value="1.0047563211023E-4">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
