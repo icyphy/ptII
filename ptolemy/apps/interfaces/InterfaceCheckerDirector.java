@@ -195,9 +195,7 @@ public class InterfaceCheckerDirector extends Director {
             Set<Connection> selfLoop2 = _getConnectionsBetween((Actor) actors.get(1), (Actor) actors.get(1));
             Set<Connection> connection1 = _getConnectionsBetween((Actor) actors.get(0), (Actor) actors.get(1));
             Set<Connection> connection2 = _getConnectionsBetween((Actor) actors.get(1), (Actor) actors.get(0));
-            System.err.println("Self loops: " + selfLoop1 + " & " + selfLoop2);
-            System.err.println("Connections: " + connection1 + " & " + connection2);
-            
+
             if (!selfLoop1.isEmpty() || !selfLoop2.isEmpty() ||
                     (!connection1.isEmpty() && !connection2.isEmpty())) {
                 throw new IllegalActionException(container,
