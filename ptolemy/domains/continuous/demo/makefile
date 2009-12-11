@@ -67,6 +67,7 @@ PTCLASSALLJARS = \
 	LevelCrossingDetectorDetectsGlitches/LevelCrossingDetectorDetectsGlitches.jar \
 	Lorenz/Lorenz.jar \
 	NewtonsCradle/NewtonsCradle.jar \
+	Noise/Noise.jar \
 	Pendulum3D/Pendulum3D.jar \
 	Poisson/Poisson.jar \
 	SampledClocks/SampledClocks.jar \

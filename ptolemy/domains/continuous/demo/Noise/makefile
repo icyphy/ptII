@@ -40,27 +40,22 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	Hysteresis
+PTPACKAGE = 	Noise
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS) \
-	ComparingDeterministicandNonDeterministicModels.xml \
-	Hysteresis.xml \
-	HysteresisWithBernouliLosses.xml \
-	HysteresisWithNoise.xml \
-	HysteresisWithRandomDelay.xml \
-	HysteresisWithRandomLosses.xml
+	Noise.xml \
+	HysteresisWithNoise.xml
 
 EXTRA_SRCS = \
 	$(OTHER_FILES_TO_BE_JARED) \
-	Hysteresis.htm \
-	HysteresisWithRandomDelay.htm \
-	HysteresisWithRandomDelay.jnlp \
-	HysteresisWithRandomLosses.htm \
-	HysteresisWithRandomLosses.jnlp
+	Noise.htm \
+	NoiseVergil.htm \
+	HysteresisWithNoise.htm \
+	HysteresisWithNoiseVergil.htm
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
@@ -86,15 +81,16 @@ install: all $(PTCLASSJAR)
 
 demo: demo_applet demo_ptolemy demo_vergil
 demo_applet:
-	CLASSPATH="$(CLASSPATH)" appletviewer Hysteresis.htm
-	CLASSPATH="$(CLASSPATH)" appletviewer HysteresisWithRandomDelay.htm
-	CLASSPATH="$(CLASSPATH)" appletviewer HysteresisWithRandomLosses.htm
+	CLASSPATH="$(CLASSPATH)" appletviewer Noise.xml
+	CLASSPATH="$(CLASSPATH)" appletviewer HysteresisWithNoise.htm
 
 demo_ptolemy:
-	"$(PTII)/bin/ptolemy" Hysteresis.xml
+	"$(PTII)/bin/ptolemy" Noise.xml
+	"$(PTII)/bin/ptolemy" HysteresisWithNoise.xml
 
 demo_vergil:
-	"$(PTII)/bin/vergil" Hysteresis.xml
+	"$(PTII)/bin/vergil" Noise.xml
+	"$(PTII)/bin/vergil" HysteresisWithNoise.xml
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
