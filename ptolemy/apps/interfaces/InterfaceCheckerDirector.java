@@ -158,7 +158,8 @@ public class InterfaceCheckerDirector extends Director {
         final List<IOPort> inputPorts = container.inputPortList();
         for (final IOPort compositeIn : inputPorts) {
             inputNames.add(compositeIn.getName());
-            for (final IOPort insideIn : compositeIn.insideSinkPortList()) {
+            final List<IOPort> linkedPorts = compositeIn.insidePortList();
+            for (final IOPort insideIn : linkedPorts) {
                 newConstraints.add("(= " + insideIn.getName() + " "
                         + compositeIn.getName() + ")");
             }
@@ -168,7 +169,8 @@ public class InterfaceCheckerDirector extends Director {
         final List<IOPort> outputPorts = container.outputPortList();
         for (final IOPort compositeOut : outputPorts) {
             outputNames.add(compositeOut.getName());
-            for (final IOPort insideOut : compositeOut.insideSourcePortList()) {
+            final List<IOPort> linkedPorts = compositeOut.insidePortList();
+            for (final IOPort insideOut : linkedPorts) {
                 newConstraints.add("(= " + insideOut.getName() + " "
                         + compositeOut.getName() + ")");
             }
@@ -181,7 +183,6 @@ public class InterfaceCheckerDirector extends Director {
             Set<Connection> connections = _getConnectionsBetween(actor, actor);
             RelationalInterface actorInterface = _getInterface(actor);
 
-            System.err.println("test");
             if (!connections.isEmpty()) { // FIXME: Move this check into interface.
                 actorInterface.addFeedback(connections);
             }
@@ -239,7 +240,8 @@ public class InterfaceCheckerDirector extends Director {
         Set<Connection> connections = new HashSet<Connection>();
         final List<IOPort> outputPorts = actor1.outputPortList();
         for (final IOPort outputPort : outputPorts) {
-            final List<IOPort> inputPorts = (List<IOPort>) outputPort.connectedPortList(); 
+            final List<IOPort> inputPorts =
+                (List<IOPort>) outputPort.connectedPortList(); 
             for (final IOPort inputPort : inputPorts) {
                 if (inputPort.getContainer() == actor2) {
                     connections.add(new Connection(outputPort.getName(),
@@ -252,11 +254,13 @@ public class InterfaceCheckerDirector extends Director {
 
     /** Return the interface of a given actor.
      * 
-     *  In the case that the given actor is a CompositeActor, we
-     *  will try to infer the interface from the contained actors.
-     *  Otherwise, we will simply look for annotations of the
-     *  interface contract, and chose the inputs and outputs of
-     *  the actor as inputs and outputs of the interface.
+     *  To find the contract, this method first checks for a parameter
+     *  named _interfaceExpr that is a Ptolemy expression.
+     *  If that doesn't exist, it looks for a parameter named
+     *  _interfaceStr that is a string representation.
+     *  In the case that neither of those two options work, and
+     *  the given actor is a CompositeActor, we can try to infer
+     *  the interface from those of the contained actors.
      * 
      *  @param actor The actor whose interface we are querying.
      *  @return The overall interface.
@@ -265,37 +269,12 @@ public class InterfaceCheckerDirector extends Director {
     private RelationalInterface _getInterface(Actor actor)
             throws IllegalActionException {
 
-        // We want to infer the interfaces of composite actors.
-        if (actor instanceof CompositeActor) {
-            RelationalInterface compositeInterface =
-                _getCompositeInterface((CompositeActor) actor);
-            System.out.println("Inferred composite contract: "
-                    + compositeInterface.getContract());
-            return compositeInterface;
-        }
-
-        final String contract = _getSMTFormula(actor);
-
-        return new RelationalInterface(actor.inputPortList(), actor
-                .outputPortList(), contract);
-    }
-
-    /** Read the SMT formula for the contract of an actor from the
-     *  appropriate parameter.
-     * 
-     *  This method first checks for a parameter named _interfaceExpr that
-     *  is a Ptolemy expression.  If that doesn't exist, it looks for
-     *  a parameter named _interfaceStr that is a String.
-     * 
-     *  @param actor The actor whose contract we are querying.
-     *  @return The contract, as a string.
-     *  @throws IllegalActionException
-     */
-    private String _getSMTFormula(Actor actor) throws IllegalActionException {
         final Parameter interfaceExpr = (Parameter) ((Entity) actor)
                 .getAttribute("_interfaceExpr");
         final Parameter interfaceStr = (Parameter) ((Entity) actor)
                 .getAttribute("_interfaceStr");
+
+        String contract;
         if (interfaceExpr != null) {
             // If there is a Ptolemy Expression, we will use that
             final String expression = interfaceExpr.getExpression();
@@ -305,17 +284,27 @@ public class InterfaceCheckerDirector extends Director {
             parseTree = parser.generateParseTree(expression);
 
             final SMTFormulaBuilder formulaBuilder = new SMTFormulaBuilder();
-            return formulaBuilder.parseTreeToSMTFormula(parseTree);
+            contract = formulaBuilder.parseTreeToSMTFormula(parseTree);
 
         } else if (interfaceStr != null) {
             // If there is no Ptolemy expression, we can use a string.
             // This must already be formatted in the Yices input language.
-            return ((StringToken) interfaceStr.getToken()).stringValue();
+            contract = ((StringToken) interfaceStr.getToken()).stringValue();
 
+        } else if (actor instanceof CompositeActor) {
+            RelationalInterface compositeInterface =
+                _getCompositeInterface((CompositeActor) actor);
+            System.out.println("Inferred composite contract: "
+                    + compositeInterface.getContract());
+            return compositeInterface;
         } else { //(interfaceExpr == null && interfaceStr == null)
-            throw new IllegalActionException(actor, "No interface specified for"
-                    + actor.toString());
+            throw new IllegalActionException(actor,
+                    "No interface specified for" + actor.toString());
         }
+        // FIXME: Ports may not be complete for composite actors that don't
+        // infer interface (since internal ports should be outputs).
+        return new RelationalInterface(actor.inputPortList(), actor
+                .outputPortList(), contract);
     }
 
 }
