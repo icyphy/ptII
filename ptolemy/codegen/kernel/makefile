@@ -31,7 +31,7 @@
 
 ME =		ptolemy/codegen/kernel
 
-DIRS = 		userMacro test 
+DIRS = 		test 
 
 # Root of the Java directory
 ROOT =		../../..
@@ -44,12 +44,12 @@ include $(CONFIG)
 
 # Used to build jar files
 PTPACKAGE = 	kernel
-PTCLASSALLJAR = $(PTPACKAGE).jar
+PTCLASSJAR = $(PTPACKAGE).jar
 
+#PTCLASSALLJAR = $(PTPACKAGE).jar
 # Include the .class files from these jars in PTCLASSALLJAR
 # If you change this, change DIRS above
-PTCLASSALLJARS = \
-	userMacro/userMacro.jar
+#PTCLASSALLJARS =
 
 JSRCS = \
 	ActorCodeGenerator.java \
