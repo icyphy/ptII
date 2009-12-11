@@ -4,27 +4,27 @@
 <entity name="modalmodel3-pthales" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={180, 120, 815, 533}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={133, 618, 917, 517}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[702, 400]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{221.8787878787879, 177.2173295454545}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{272.8787878787879, 177.2173295454545}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="A first attempt at a &quot;hello-world&quot; pthales modal model.&#10;&#10;Note: this model currently does not run.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 280.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{20.0, 280.0}">
         </property>
     </property>
     <property name="PthalesDirector" class="ptolemy.domains.pthales.kernel.PthalesDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="10">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[110.0, 45.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[210.0, 15.0]">
         </property>
     </property>
-    <property name="producePattern" class="ptolemy.data.expr.Parameter" value="[x = 3, y = 2]">
+    <property name="producePattern" class="ptolemy.data.expr.Parameter" value="[x = {1,1}, y = {1,1}]">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -40,7 +40,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-25.0, 195.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-30.0, 95.0]">
         </property>
     </property>
     <property name="produceTiling" class="ptolemy.data.expr.Parameter" value="[x = 1, y = 1]">
@@ -59,7 +59,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{-25.0, 210.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-30.0, 110.0]">
         </property>
     </property>
     <property name="produceBase" class="ptolemy.data.expr.Parameter" value="[x = 0, y = 0]">
@@ -78,10 +78,10 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{-25.0, 180.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-30.0, 80.0]">
         </property>
     </property>
-    <property name="consumePattern" class="ptolemy.data.expr.Parameter" value="[x = 3, y = 2]">
+    <property name="consumePattern" class="ptolemy.data.expr.Parameter" value="[x = {3,1}, y = {2,1}]">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -97,7 +97,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[325.0, 135.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[335.0, 85.0]">
         </property>
     </property>
     <property name="consumeTiling" class="ptolemy.data.expr.Parameter" value="[x = 1, y = 1]">
@@ -116,7 +116,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[325.0, 165.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[335.0, 100.0]">
         </property>
     </property>
     <property name="consumeBase" class="ptolemy.data.expr.Parameter" value="[x = 0, y = 0]">
@@ -135,46 +135,130 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[325.0, 120.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[335.0, 70.0]">
         </property>
     </property>
-    <property name="consumePattern2" class="ptolemy.data.expr.Parameter" value="[y = 2, x = 3]">
-        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+    <entity name="Source" class="ptolemy.domains.pthales.lib.PthalesCompositeActor">
+        <property name="repetitions" class="ptolemy.data.expr.Parameter" value="{3, 2}">
         </property>
-        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 155.0]">
+        </property>
+        <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+            <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{75, 50}">
             </property>
         </property>
-        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure>
-      <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:red" y="20">-S-</text>
-      </svg>
-    </configure>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={5, 642, 815, 517}, maximized=false}">
         </property>
-        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[325.0, 150.0]">
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
         </property>
-    </property>
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+        </property>
+        <port name="out" class="ptolemy.domains.pthales.lib.PThalesIOPort">
+            <property name="output"/>
+            <property name="base" class="ptolemy.data.expr.Parameter" value="produceBase">
+            </property>
+            <property name="pattern" class="ptolemy.data.expr.Parameter" value="producePattern">
+            </property>
+            <property name="tiling" class="ptolemy.data.expr.Parameter" value="produceTiling">
+            </property>
+            <property name="dimensionNames" class="ptolemy.data.expr.StringParameter" value="">
+            </property>
+            <property name="size" class="ptolemy.data.expr.Parameter" value="[x = 3, y = 2]">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[485.0, 180.0]">
+            </property>
+        </port>
+        <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
+            <property name="init" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+            <doc>Create a sequence of tokens with increasing value</doc>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[115.0, 180.0]">
+            </property>
+        </entity>
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <link port="out" relation="relation"/>
+        <link port="Ramp.output" relation="relation"/>
+    </entity>
+    <entity name="PthalesCompositeActor" class="ptolemy.domains.pthales.lib.PthalesCompositeActor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[360.0, 155.0]">
+        </property>
+        <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+            <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="3*2">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 25.0]">
+            </property>
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={769, 578, 815, 517}, maximized=false}">
+        </property>
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+        </property>
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+        </property>
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+        </property>
+        <port name="in" class="ptolemy.domains.pthales.lib.PThalesIOPort">
+            <property name="input"/>
+            <property name="base" class="ptolemy.data.expr.Parameter" value="consumeBase">
+            </property>
+            <property name="pattern" class="ptolemy.data.expr.Parameter" value="consumePattern">
+            </property>
+            <property name="tiling" class="ptolemy.data.expr.Parameter" value="consumeTiling">
+            </property>
+            <property name="dimensionNames" class="ptolemy.data.expr.StringParameter" value="">
+            </property>
+            <property name="size" class="ptolemy.data.expr.Parameter" value="[x = 3, y = 2]">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 200.0]">
+            </property>
+        </port>
+        <entity name="Display" class="ptolemy.actor.lib.gui.Display">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={416, 769, 327, 242}, maximized=false}">
+            </property>
+            <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[319, 187]">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 200.0]">
+            </property>
+        </entity>
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <link port="in" relation="relation"/>
+        <link port="Display.input" relation="relation"/>
+    </entity>
     <entity name="ModalModel" class="ptolemy.domains.modal.modal.ModalModel">
         <property name="_tableauFactory" class="ptolemy.vergil.modal.modal.ModalTableauFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{260, 135}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{360.0, 225.0}">
         </property>
-        <port name="port" class="ptolemy.domains.modal.modal.ModalPort">
+        <property name="repetitions" class="ptolemy.data.expr.Parameter" value="{1}">
+        </property>
+        <port name="in" class="ptolemy.domains.modal.modal.ModalPort">
             <property name="input"/>
-            <property name="multiport"/>
+            <property name="pattern" class="ptolemy.data.expr.Parameter" value="consumePattern">
+            </property>
+            <property name="base" class="ptolemy.data.expr.Parameter" value="consumeBase">
+            </property>
+            <property name="tiling" class="ptolemy.data.expr.Parameter" value="consumeTiling">
+            </property>
         </port>
         <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
             <property name="annotation" class="ptolemy.kernel.util.Attribute">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
                 <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-                    <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">This guard is not really what we want, we would probably like to have
-some array expression like "in[x=0,y=0] >= 10" or something.</text></svg></configure>
+                    <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">Create a state machine here (and ports, if needed) and
+create refinements for the states.  Create transitions
+by holding the control key and dragging from one state
+to another.  Right click to configure the properties 
+of this model, including setting the final state(s).
+Then delete this annotation.</text>
+</svg></configure>
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[90.0, 260.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="120.0, 5.0">
                 </property>
                 <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
                 </property>
@@ -186,7 +270,7 @@ some array expression like "in[x=0,y=0] >= 10" or something.</text></svg></confi
         <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory"></property></entity></entity>
       </configure>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={292, 258, 815, 533}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={392, 341, 815, 517}, maximized=false}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
             </property>
@@ -194,12 +278,11 @@ some array expression like "in[x=0,y=0] >= 10" or something.</text></svg></confi
             </property>
             <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
             </property>
-            <port name="port" class="ptolemy.domains.modal.modal.RefinementPort">
+            <port name="in" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
-                <property name="multiport"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 205.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{20.0, 200.0}">
                 </property>
-                <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+                <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
             </port>
             <entity name="state" class="ptolemy.domains.modal.kernel.State">
@@ -240,7 +323,7 @@ some array expression like "in[x=0,y=0] >= 10" or something.</text></svg></confi
             <link port="state2.incomingPort" relation="relation"/>
         </entity>
         <entity name="state" class="ptolemy.domains.modal.modal.Refinement">
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={528, 278, 815, 533}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={292, 258, 815, 517}, maximized=false}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
             </property>
@@ -248,43 +331,34 @@ some array expression like "in[x=0,y=0] >= 10" or something.</text></svg></confi
             </property>
             <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
             </property>
-            <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
-                <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="3*2">
-                </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{95.0, 70.0}">
+            <property name="SR Director" class="ptolemy.domains.sr.kernel.SRDirector">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{145.0, 45.0}">
                 </property>
             </property>
-            <property name="annotation" class="ptolemy.kernel.util.Attribute">
-                <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-                </property>
-                <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-                    <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">Data is consumed with consumePattern.</text></svg></configure>
-                </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 240.0]">
-                </property>
-                <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
-                </property>
-                <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
-                </property>
-            </property>
-            <port name="port" class="ptolemy.domains.modal.modal.RefinementPort">
+            <port name="in" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
-                <property name="multiport"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 200.0]">
-                </property>
-                <property name="base" class="ptolemy.data.expr.Parameter" value="consumeBase">
-                </property>
-                <property name="pattern" class="ptolemy.data.expr.Parameter" value="consumePattern">
-                </property>
-                <property name="tiling" class="ptolemy.data.expr.Parameter" value="consumeTiling">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{20.0, 200.0}">
                 </property>
             </port>
+            <entity name="Const" class="ptolemy.actor.lib.Const">
+                <property name="value" class="ptolemy.data.expr.Parameter" value="2">
+                </property>
+                <doc>Create a constant sequence.</doc>
+                <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                    <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+                    </property>
+                    <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                    </property>
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{130.0, 205.0}">
+                </property>
+            </entity>
             <entity name="State Scope" class="ptolemy.actor.lib.gui.SequenceScope">
-                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={765, 96, 508, 371}, maximized=false}">
+                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={765, 96, 508, 355}, maximized=false}">
                 </property>
                 <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 200.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 205.0]">
                 </property>
                 <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
@@ -293,7 +367,7 @@ some array expression like "in[x=0,y=0] >= 10" or something.</text></svg></confi
 <title>SequenceScope</title>
 <xLabel></xLabel>
 <yLabel></yLabel>
-<xRange min="0.0" max="10.0"/>
+<xRange min="0.0" max="2.0"/>
 <yRange min="2.0" max="2.0"/>
 <wrap/>
 <default connected="no" marks="bigdots" stems="yes"/>
@@ -302,10 +376,14 @@ some array expression like "in[x=0,y=0] >= 10" or something.</text></svg></confi
             </entity>
             <relation name="relation" class="ptolemy.actor.TypedIORelation">
             </relation>
-            <link port="port" relation="relation"/>
+            <link port="Const.output" relation="relation"/>
             <link port="State Scope.input" relation="relation"/>
         </entity>
         <entity name="state2" class="ptolemy.domains.modal.modal.Refinement">
+            <property name="SR Director" class="ptolemy.domains.sr.kernel.SRDirector">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{135, 35}">
+                </property>
+            </property>
             <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={292, 258, 815, 533}, maximized=false}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
@@ -314,43 +392,28 @@ some array expression like "in[x=0,y=0] >= 10" or something.</text></svg></confi
             </property>
             <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
             </property>
-            <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
-                <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="3*2">
-                </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{105.0, 80.0}">
-                </property>
-            </property>
-            <property name="annotation" class="ptolemy.kernel.util.Attribute">
-                <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-                </property>
-                <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-                    <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">Data is consumed with consumePattern2.</text></svg></configure>
-                </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{25.0, 250.0}">
-                </property>
-                <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
-                </property>
-                <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
-                </property>
-            </property>
-            <port name="port" class="ptolemy.domains.modal.modal.RefinementPort">
+            <port name="in" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
-                <property name="multiport"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 210.0]">
-                </property>
-                <property name="base" class="ptolemy.data.expr.Parameter" value="consumeBase">
-                </property>
-                <property name="pattern" class="ptolemy.data.expr.Parameter" value="consumePattern2">
-                </property>
-                <property name="tiling" class="ptolemy.data.expr.Parameter" value="consumeTiling">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{20.0, 200.0}">
                 </property>
             </port>
-            <entity name="State Scope" class="ptolemy.actor.lib.gui.SequenceScope">
-                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={765, 96, 508, 371}, maximized=false}">
+            <entity name="Const" class="ptolemy.actor.lib.Const">
+                <doc>Create a constant sequence.</doc>
+                <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                    <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+                    </property>
+                    <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                    </property>
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{120, 195}">
+                </property>
+            </entity>
+            <entity name="State2 Scope" class="ptolemy.actor.lib.gui.SequenceScope">
+                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={768, 468, 508, 355}, maximized=false}">
                 </property>
                 <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{210.0, 210.0}">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[275.0, 195.0]">
                 </property>
                 <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
@@ -359,8 +422,8 @@ some array expression like "in[x=0,y=0] >= 10" or something.</text></svg></confi
 <title>SequenceScope</title>
 <xLabel></xLabel>
 <yLabel></yLabel>
-<xRange min="0.0" max="10.0"/>
-<yRange min="2.0" max="2.0"/>
+<xRange min="0.0" max="6.0"/>
+<yRange min="1.0" max="1.0"/>
 <wrap/>
 <default connected="no" marks="bigdots" stems="yes"/>
 </plot>?>
@@ -368,77 +431,23 @@ some array expression like "in[x=0,y=0] >= 10" or something.</text></svg></confi
             </entity>
             <relation name="relation" class="ptolemy.actor.TypedIORelation">
             </relation>
-            <link port="port" relation="relation"/>
-            <link port="State Scope.input" relation="relation"/>
+            <link port="Const.output" relation="relation"/>
+            <link port="State2 Scope.input" relation="relation"/>
         </entity>
-        <relation name="portRelation" class="ptolemy.actor.TypedIORelation">
+        <relation name="inRelation" class="ptolemy.actor.TypedIORelation">
             <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
             </property>
         </relation>
-        <link port="port" relation="portRelation"/>
-        <link port="_Controller.port" relation="portRelation"/>
-        <link port="state.port" relation="portRelation"/>
-        <link port="state2.port" relation="portRelation"/>
-    </entity>
-    <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={361, 584, 334, 257}, maximized=false}">
-        </property>
-        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[326, 186]">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[255.0, 240.0]">
-        </property>
-    </entity>
-    <entity name="Source" class="ptolemy.domains.pthales.lib.PthalesCompositeActor">
-        <property name="repetitions" class="ptolemy.data.expr.Parameter" value="{1, 1}">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[90.0, 135.0]">
-        </property>
-        <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
-            <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="3*2">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{75, 50}">
-            </property>
-        </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={15, 420, 815, 533}, maximized=false}">
-        </property>
-        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
-        </property>
-        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
-        </property>
-        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
-        </property>
-        <port name="out" class="ptolemy.domains.pthales.lib.PThalesIOPort">
-            <property name="output"/>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[340.0, 180.0]">
-            </property>
-            <property name="base" class="ptolemy.data.expr.Parameter" value="produceBase">
-            </property>
-            <property name="pattern" class="ptolemy.data.expr.Parameter" value="producePattern">
-            </property>
-            <property name="tiling" class="ptolemy.data.expr.Parameter" value="produceTiling">
-            </property>
-            <property name="size" class="ptolemy.data.expr.Parameter" value="producePattern">
-            </property>
-        </port>
-        <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
-            <property name="init" class="ptolemy.data.expr.Parameter" value="1">
-            </property>
-            <doc>Create a sequence of tokens with increasing value</doc>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[115.0, 180.0]">
-            </property>
-        </entity>
-        <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        </relation>
-        <link port="out" relation="relation2"/>
-        <link port="Ramp.output" relation="relation2"/>
+        <link port="in" relation="inRelation"/>
+        <link port="_Controller.in" relation="inRelation"/>
+        <link port="state.in" relation="inRelation"/>
+        <link port="state2.in" relation="inRelation"/>
     </entity>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
-        </property>
-        <vertex name="vertex1" value="{185.0, 135.0}">
+        <vertex name="vertex1" value="[205.0, 155.0]">
         </vertex>
     </relation>
-    <link port="ModalModel.port" relation="relation2"/>
-    <link port="Display.input" relation="relation2"/>
     <link port="Source.out" relation="relation2"/>
+    <link port="PthalesCompositeActor.in" relation="relation2"/>
+    <link port="ModalModel.in" relation="relation2"/>
 </entity>

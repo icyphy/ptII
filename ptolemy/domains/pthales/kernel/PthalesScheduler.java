@@ -28,11 +28,10 @@
 
 package ptolemy.domains.pthales.kernel;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import ptolemy.actor.Actor;
+import ptolemy.actor.AtomicActor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
@@ -41,8 +40,8 @@ import ptolemy.actor.sched.Firing;
 import ptolemy.actor.sched.NotSchedulableException;
 import ptolemy.actor.sched.Schedule;
 import ptolemy.actor.util.CausalityInterfaceForComposites;
-import ptolemy.domains.pthales.lib.PThalesIOPort;
-import ptolemy.domains.pthales.lib.PthalesActorInterface;
+import ptolemy.domains.pthales.lib.PThalesGenericActor;
+import ptolemy.domains.pthales.lib.PthalesCompositeActor;
 import ptolemy.domains.sdf.kernel.SDFScheduler;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -76,37 +75,34 @@ public class PthalesScheduler extends SDFScheduler {
         // consumption rates of the actors, if they are declared.
         // The will be declared if the actor is an SDF actor (either atomic
         // or an opaque composite actor). These will need to be restored later.
-        Map<IOPort, Integer> originalDeclaredPortRates = new HashMap<IOPort, Integer>();
-        for (Actor actor : actors) {
-            List<IOPort> ports = actor.inputPortList();
-            for (IOPort port : ports) {
-                PThalesIOPort thalesPort = (PThalesIOPort)port;
-
-                Integer rate = thalesPort.getDeclaredPortRate(port,
-                        "tokenConsumptionRate");
-                if (rate != null) {
-                    originalDeclaredPortRates.put(port, rate);
-                }
-            }
-            ports = actor.outputPortList();
-            for (IOPort port : ports) {
-                PThalesIOPort thalesPort = (PThalesIOPort)port;
-
-                Integer rate = thalesPort.getDeclaredPortRate(port, "tokenProductionRate");
-                if (rate != null) {
-                    originalDeclaredPortRates.put(port, rate);
-                }
-            }
-        }
+//        Map<IOPort, Integer> originalDeclaredPortRates = new HashMap<IOPort, Integer>();
+//        for (Actor actor : actors) {
+//            List<IOPort> ports = actor.inputPortList();
+//            for (IOPort port : ports) {
+//                PThalesIOPort thalesPort = (PThalesIOPort)port;
+//
+//                Integer rate = thalesPort.getDeclaredPortRate(port,"tokenConsumptionRate");
+//                if (rate != null) {
+//                    originalDeclaredPortRates.put(port, rate);
+//                }
+//            }
+//            ports = actor.outputPortList();
+//            for (IOPort port : ports) {
+//                PThalesIOPort thalesPort = (PThalesIOPort)port;
+//
+//                Integer rate = thalesPort.getDeclaredPortRate(port, "tokenProductionRate");
+//                if (rate != null) {
+//                    originalDeclaredPortRates.put(port, rate);
+//                }
+//            }
+//        }
 
         // Iterate over the actors.
         for (Actor actor : actors) {
-            PthalesActorInterface myActor = (PthalesActorInterface)actor;
-  
+   
             // Next do the output ports.
             List<IOPort> ports = actor.outputPortList();
             for (IOPort port : ports) {
-                PThalesIOPort thalesPort = (PThalesIOPort)port;
 
                 // FIXME: The following method looks for a stride as well,
                 // which does not make sense for a tiling spec.
@@ -119,7 +115,7 @@ public class PthalesScheduler extends SDFScheduler {
                     for (Receiver[] receiverss : receivers) {
                         if (receiverss != null && receiverss.length > 0) {
                             for (Receiver receiver : receiverss) {
-                                ((PthalesReceiver) receiver).setOutputArray(thalesPort,myActor);
+                                ((PthalesReceiver) receiver).setOutputArray(port,actor);
                             }
                         }
                     }
@@ -132,8 +128,7 @@ public class PthalesScheduler extends SDFScheduler {
             // Next do the input ports.
             ports = actor.inputPortList();
             for (IOPort port : ports) {
-                PThalesIOPort thalesPort = (PThalesIOPort)port;
- 
+  
                 // Notify the receivers of the read pattern.
                 // This will have the side effect of setting the capacity of the receivers.
                 Receiver[][] receivers = port.getReceivers();
@@ -143,7 +138,7 @@ public class PthalesScheduler extends SDFScheduler {
                             for (Receiver receiver : receiverss) {
                                 // FIXME: Is the cast to LinkedHashSet safe?
                                 // Depends on the Java implementation of LinkedHashMap.
-                                ((PthalesReceiver) receiver).setInputArray(thalesPort,myActor);
+                                ((PthalesReceiver) receiver).setInputArray(port,actor);
                             }
                         }
                     }
@@ -161,11 +156,14 @@ public class PthalesScheduler extends SDFScheduler {
                 .getCausalityInterface();
         List<Actor> sortedActors = causality.topologicalSort();
         for (Actor actor : sortedActors) {
-            PthalesActorInterface myActor = (PthalesActorInterface)actor;
             Firing firing = new Firing(actor);
  
             // Iteration is only done on external loops
-            firing.setIterationCount(myActor.getIterations());
+            if (actor instanceof AtomicActor)
+                firing.setIterationCount(PThalesGenericActor.getIterations((AtomicActor)actor));
+            if (actor instanceof CompositeActor)
+                firing.setIterationCount(PthalesCompositeActor.getIterations((CompositeActor)actor));
+
             schedule.add(firing);
         }
         return schedule;

@@ -30,6 +30,7 @@ package ptolemy.domains.pthales.lib;
 import java.io.IOException;
 import java.io.Writer;
 
+import ptolemy.actor.CompositeActor;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.IntToken;
@@ -55,8 +56,7 @@ import ptolemy.kernel.util.Workspace;
  @see ptolemy.actor.TypedCompositeActor
  */
 
-public class PthalesCompositeActor extends TypedCompositeActor implements
-        PthalesActorInterface {
+public class PthalesCompositeActor extends TypedCompositeActor  {
     /** Construct a PthalesCompositeActor in the default workspace with no
      *  container and an empty string as its name. Add the actor to the
      *  workspace directory.  You should set the local director or
@@ -159,9 +159,9 @@ public class PthalesCompositeActor extends TypedCompositeActor implements
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
 
-        if (attribute == getAttribute(PthalesActorInterface.REPETITIONS)) {
-            _totalRepetitions = parseRepetitions(PthalesActorInterface.REPETITIONS);
-            computeIterations();
+        if (attribute == getAttribute(REPETITIONS)) {
+            _totalRepetitions = parseRepetitions(this, REPETITIONS);
+            computeIterations(_totalRepetitions);
         }
     }
 
@@ -190,58 +190,7 @@ public class PthalesCompositeActor extends TypedCompositeActor implements
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////              abstract methods implementation              ////
-
-    public int getIterations() {
-        return _iterations;
-    }
-
-    public Integer[] getInternalRepetitions() {
-        return _internalRepetitions;
-    }
-
-    public Integer[] getExternalRepetitions() {
-        return _externalRepetitions;
-    }
-
-    public Integer[] getRepetitions() {
-        return _totalRepetitions;
-    }
-
-    ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
-
-    /** Return a data structure giving the dimension data contained by a
-     *  parameter with the specified name in the specified port or actor.
-     *  The dimension data is indexed by dimension name and contains two
-     *  integers, a value and a stride, in that order.
-     *  @param name The name of the parameter
-     *  @return The dimension data, or an empty array if the parameter does not exist.
-     *  @throws IllegalActionException If the parameter cannot be evaluated.
-     */
-
-    protected Integer[] parseRepetitions(String name) {
-        Integer[] result = new Integer[0];
-        Attribute attribute = getAttribute(name);
-        if (attribute != null && attribute instanceof Parameter) {
-            Token token = null;
-            try {
-                token = ((Parameter) attribute).getToken();
-            } catch (IllegalActionException e) {
-                e.printStackTrace();
-            }
-            if (token instanceof ArrayToken) {
-                int len = ((ArrayToken) token).length();
-                result = new Integer[len];
-                for (int i = 0; i < len; i++) {
-                    result[i] = new Integer(((IntToken) ((ArrayToken) token)
-                            .getElement(i)).intValue());
-                }
-            }
-        }
-
-        return result;
-    }
 
     /** Write a MoML description of the contents of this object, which
      *  in this class are the attributes plus the ports.  This method is called
@@ -257,26 +206,6 @@ public class PthalesCompositeActor extends TypedCompositeActor implements
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                      protected methods                    ////
-
-    /** Compute external iterations each time 
-     *  an attribute used to calculate it has changed 
-     */
-    protected void computeIterations() {
-
-        _externalRepetitions = _totalRepetitions;
-
-        // All loops are used to build array
-        int iterationCount = 1;
-        for (Integer iter : _totalRepetitions) {
-            iterationCount *= iter;
-        }
-
-        // Iteration is only done on external loops
-        _iterations = iterationCount;
-    }
-
-    ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
     /** iteration informations */
     protected int _iterations = 0;
@@ -286,4 +215,75 @@ public class PthalesCompositeActor extends TypedCompositeActor implements
     protected Integer[] _internalRepetitions = new Integer[0];
 
     protected Integer[] _totalRepetitions = null;
+
+
+
+    ///////////////////////////////////////////////////////////////////
+    ////              static methods implementation              ////
+
+    public static int getIterations(CompositeActor actor) {
+        return computeIterations(parseRepetitions(actor, REPETITIONS));
+    }
+
+    public static Integer[] getRepetitions(CompositeActor actor) {
+        return parseRepetitions(actor, REPETITIONS);
+    }
+
+
+    /** Return a data structure giving the dimension data contained by a
+     *  parameter with the specified name in the specified port or actor.
+     *  The dimension data is indexed by dimension name and contains two
+     *  integers, a value and a stride, in that order.
+     *  @param name The name of the parameter
+     *  @return The dimension data, or an empty array if the parameter does not exist.
+     *  @throws IllegalActionException If the parameter cannot be evaluated.
+     */
+    protected static Integer[] parseRepetitions(CompositeActor actor, String name) {
+        // FIXME: prepend an underscore to the name of this protected method.
+        Integer[] result = new Integer[0];
+        Attribute attribute = actor.getAttribute(name);
+        if (attribute != null && attribute instanceof Parameter) {
+            Token token = null;
+            try {
+                token = ((Parameter) attribute).getToken();
+            } catch (IllegalActionException e) {
+                // FIXME: Don't print a stack trace, instead
+                // this method should throw an IllegalActionException.
+                e.printStackTrace();
+            }
+            if (token instanceof ArrayToken) {
+                int len = ((ArrayToken) token).length();
+                result = new Integer[len];
+                for (int i = 0; i < len; i++) {
+                    result[i] = new Integer(((IntToken) ((ArrayToken) token)
+                            .getElement(i)).intValue());
+                }
+            }
+        }
+
+        return result;
+    }
+    /** Compute external iterations each time 
+     *  an attribute used to calculate it has changed 
+     */
+    protected static int computeIterations(Integer[] totalRepetitions) {
+        int iterations = 0;
+
+        // All loops are used to build array
+        int iterationCount = 1;
+        for (Integer iter : totalRepetitions) {
+            iterationCount *= iter;
+        }
+
+        // Iteration is only done on external loops
+        iterations = iterationCount;
+        
+        return iterations;
+    }
+  
+    ///////////////////////////////////////////////////////////////////
+    ////              static variables              ////
+
+    protected static String REPETITIONS = "repetitions";
+
 }

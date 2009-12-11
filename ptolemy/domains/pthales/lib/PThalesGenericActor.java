@@ -33,6 +33,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
+import ptolemy.actor.AtomicActor;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.FloatToken;
@@ -61,17 +62,16 @@ import ptolemy.kernel.util.Workspace;
    and arguments are parameters of the actor.
 
    <p>For details about ArrayOL, see:
-   P. Boulet, “<a href="http://hal.inria.fr/inria-00128840/en">Array-OL Revisited, Multidimensional Intensive Signal Processing Specification</a>,” INRIA, Sophia Antipolis, France, 2007.
+   P. Boulet, <a href="http://hal.inria.fr/inria-00128840/en">Array-OL Revisited, Multidimensional Intensive Signal Processing Specification</a>,INRIA, Sophia Antipolis, France, 2007.
 
-   @author Rémi Barrère
+   @author Remi Barrere
    @see ptolemy.actor.TypedAtomicActor
    @version $Id$
    @since Ptolemy II 8.2
    @Pt.ProposedRating Red (cxh)
    @Pt.AcceptedRating Red (cxh)
 */
-public class PThalesGenericActor extends TypedAtomicActor implements
-        PthalesActorInterface {
+public class PThalesGenericActor extends TypedAtomicActor {
 
     /** Construct an actor in the default workspace with an empty string
      *  as its name.  The object is added to the workspace directory.
@@ -153,13 +153,13 @@ public class PThalesGenericActor extends TypedAtomicActor implements
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
 
-        if (attribute == getAttribute(PthalesActorInterface.REPETITIONS)) {
-            _totalRepetitions = parseRepetitions(PthalesActorInterface.REPETITIONS);
-            computeIterations();
+        if (attribute == getAttribute(REPETITIONS)) {
+            _totalRepetitions = parseRepetitions(this, REPETITIONS);
+            computeIterations(_totalRepetitions,_internalRepetitions);
         }
         if (attribute == getAttribute(INTERNAL_REPETITIONS)) {
-            _internalRepetitions = parseRepetitions(INTERNAL_REPETITIONS);
-            computeIterations();
+            _internalRepetitions = parseRepetitions(this, INTERNAL_REPETITIONS);
+            computeIterations(_totalRepetitions,_internalRepetitions);
         }
         if (attribute == function) {
             _function = function.getExpression();
@@ -179,8 +179,8 @@ public class PThalesGenericActor extends TypedAtomicActor implements
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         PThalesGenericActor newObject = (PThalesGenericActor) super.clone(workspace);
 
-        _internalRepetitions = parseRepetitions(INTERNAL_REPETITIONS);
-        _totalRepetitions = parseRepetitions(PthalesActorInterface.REPETITIONS);
+        _internalRepetitions = parseRepetitions(this, INTERNAL_REPETITIONS);
+        _totalRepetitions = parseRepetitions(this, REPETITIONS);
         _externalRepetitions = new Integer[_totalRepetitions.length
                 - _internalRepetitions.length];
         for (int i = 0; i < _totalRepetitions.length
@@ -254,7 +254,7 @@ public class PThalesGenericActor extends TypedAtomicActor implements
         portNumber = 0;
         // Input ports created and filled before elementary task called 
         for (PThalesIOPort port : portsIn) {
-            int dataSize = port.getDataProducedSize();
+            int dataSize = PThalesIOPort.getDataProducedSize(port);
             tokensIn = new FloatToken[dataSize];
             tokensIn = port.get(0, dataSize);
 
@@ -267,7 +267,7 @@ public class PThalesGenericActor extends TypedAtomicActor implements
         portNumber = 0;
         // Outputs ports arrays created before elementary task called 
         for (PThalesIOPort port : portsOut) {
-            realOut[portNumber] = new float[port.getDataProducedSize()];
+            realOut[portNumber] = new float[PThalesIOPort.getDataProducedSize(port)];
             portNumber++;
         }
 
@@ -320,7 +320,7 @@ public class PThalesGenericActor extends TypedAtomicActor implements
         portNumber = 0;
         // Output ports write
         for (PThalesIOPort port : portsOut) {
-            int dataSize = port.getDataProducedSize();
+            int dataSize = PThalesIOPort.getDataProducedSize(port);
 
             tokensOut = convertReal(realOut[portNumber]);
             for (int i = 0; i < port.getWidth(); i++) {
@@ -367,63 +367,6 @@ public class PThalesGenericActor extends TypedAtomicActor implements
         return true;
     }
 
-    ///////////////////////////////////////////////////////////////////
-    ////              abstract methods implementation              ////
-
-    public int getIterations() {
-        return _iterations;
-    }
-
-    public Integer[] getInternalRepetitions() {
-        return _internalRepetitions;
-    }
-
-    public Integer[] getExternalRepetitions() {
-        return _externalRepetitions;
-    }
-
-    public Integer[] getRepetitions() {
-        return _totalRepetitions;
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                      protected methods                    ////
-
-    /** Compute external iterations each time 
-     *  an attribute used to calculate it has changed 
-     */
-    protected void computeIterations() {
-        // FIXME: prepend an underscore to the name of this protected method.        
-        // if no total repetition, no way to calculate
-        if (_totalRepetitions != null && _totalRepetitions.length > 0) {
-
-            // Internal Loops only used INSIDE the function
-            int internal = 1;
-            if (_internalRepetitions != null) {
-                for (Integer iter : _internalRepetitions) {
-                    internal *= iter;
-                }
-            }
-
-            // All loops are used to build array
-            int iterationCount = 1;
-            for (Integer iter : _totalRepetitions) {
-                iterationCount *= iter;
-            }
-
-            // Iteration is only done on external loops
-            _iterations = iterationCount / internal;
-
-            _externalRepetitions = new Integer[_totalRepetitions.length
-                    - _internalRepetitions.length];
-            for (int i = 0; i < _totalRepetitions.length
-                     - _internalRepetitions.length; i++) {
-                _externalRepetitions[i] = _totalRepetitions[i
-                        + _internalRepetitions.length];
-            }
-        }
-    }
-
     /** Function which convert a list of arguments into real arguments
      * that will be used for JNI function call.
      * @param in
@@ -444,8 +387,7 @@ public class PThalesGenericActor extends TypedAtomicActor implements
             // Argument is a port : check input or output
             if (listArgs[i].equals("port")) {
                 if (listArgs[i + 1].equals("OUT")) {
-                    Integer[] sizes = ((PThalesIOPort) outputPortList().get(
-                            numOut)).getDataProducedSizes();
+                    Integer[] sizes = PThalesIOPort.getDataProducedSizes((PThalesIOPort)outputPortList().get(numOut));
                     for (int size : sizes) {
                         if (size > 1)
                             objs.add(size);
@@ -454,8 +396,7 @@ public class PThalesGenericActor extends TypedAtomicActor implements
                     numOut++;
                 }
                 if (listArgs[i + 1].equals("IN")) {
-                    Integer[] sizes = ((PThalesIOPort) inputPortList().get(
-                            numIn)).getDataProducedSizes();
+                    Integer[] sizes = PThalesIOPort.getDataProducedSizes(((PThalesIOPort) inputPortList().get(numIn)));
                     for (int size : sizes) {
                         if (size > 1)
                             objs.add(size);
@@ -491,6 +432,44 @@ public class PThalesGenericActor extends TypedAtomicActor implements
         return objs.toArray();
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected variables               ////
+
+    protected String _function = "";
+
+    protected String _arguments = "";
+
+    /** Iteration informations. */
+    protected int _iterations = 0;
+
+    protected Integer[] _externalRepetitions = null;
+
+    protected Integer[] _internalRepetitions = new Integer[0];
+
+    protected Integer[] _totalRepetitions = null;
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+    private void _initialize() throws IllegalActionException,
+            NameDuplicationException {
+        if (getAttribute("arguments") == null) {
+            arguments = new StringParameter(this, "arguments");
+            arguments.setExpression("");
+        }
+        if (getAttribute("function") == null) {
+            function = new StringParameter(this, "function");
+            function.setExpression("");
+        }
+        if (getAttribute("repetitions") == null) {
+            repetitions = new Parameter(this, "repetitions");
+            repetitions.setExpression("{1}");
+        }
+    }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////              static methods implementation              ////
+
     /** Return a data structure giving the dimension data contained by a
      *  parameter with the specified name in the specified port or actor.
      *  The dimension data is indexed by dimension name and contains two
@@ -499,10 +478,10 @@ public class PThalesGenericActor extends TypedAtomicActor implements
      *  @return The dimension data, or an empty array if the parameter does not exist.
      *  @throws IllegalActionException If the parameter cannot be evaluated.
      */
-    protected Integer[] parseRepetitions(String name) {
+    protected static Integer[] parseRepetitions(AtomicActor actor, String name) {
         // FIXME: prepend an underscore to the name of this protected method.
         Integer[] result = new Integer[0];
-        Attribute attribute = getAttribute(name);
+        Attribute attribute = actor.getAttribute(name);
         if (attribute != null && attribute instanceof Parameter) {
             Token token = null;
             try {
@@ -525,42 +504,54 @@ public class PThalesGenericActor extends TypedAtomicActor implements
         return result;
     }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected variables               ////
+    public static int getIterations(AtomicActor actor) {
+        return computeIterations(parseRepetitions(actor, REPETITIONS), parseRepetitions(actor, INTERNAL_REPETITIONS));
+    }
 
-    protected String _function = "";
+    public static Integer[] getInternalRepetitions(AtomicActor actor) {
+        return parseRepetitions(actor, INTERNAL_REPETITIONS);
+    }
 
-    protected String _arguments = "";
+    public static Integer[] getRepetitions(AtomicActor actor) {
+        return parseRepetitions(actor, REPETITIONS);
+    }
 
-    /** Iteration informations. */
-    protected int _iterations = 0;
+    /** Compute external iterations each time 
+     *  an attribute used to calculate it has changed 
+     */
+    protected static int computeIterations(Integer[] totalRepetitions,Integer[] internalRepetitions) {
+        // FIXME: prepend an underscore to the name of this protected method.        
+        // if no total repetition, no way to calculate
+        int iterations = 0;
+        if (totalRepetitions != null && totalRepetitions.length > 0) {
 
-    protected Integer[] _externalRepetitions = null;
+            // Internal Loops only used INSIDE the function
+            int internal = 1;
+            if (internalRepetitions != null) {
+                for (Integer iter : internalRepetitions) {
+                    internal *= iter;
+                }
+            }
 
-    protected Integer[] _internalRepetitions = new Integer[0];
+            // All loops are used to build array
+            int iterationCount = 1;
+            for (Integer iter : totalRepetitions) {
+                iterationCount *= iter;
+            }
 
-    protected Integer[] _totalRepetitions = null;
+            // Iteration is only done on external loops
+            iterations = iterationCount / internal;
+        }
+        return iterations;
+    }
     
+    ///////////////////////////////////////////////////////////////////
+    ////              static variables              ////
 
     /** The name of the internal repetitions parameter. */
     protected static String INTERNAL_REPETITIONS = "internalRepetitions";
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
+    protected static String REPETITIONS = "repetitions";
 
-    private void _initialize() throws IllegalActionException,
-            NameDuplicationException {
-        if (getAttribute("arguments") == null) {
-            arguments = new StringParameter(this, "arguments");
-            arguments.setExpression("");
-        }
-        if (getAttribute("function") == null) {
-            function = new StringParameter(this, "function");
-            function.setExpression("");
-        }
-        if (getAttribute("repetitions") == null) {
-            repetitions = new Parameter(this, "repetitions");
-            repetitions.setExpression("{1}");
-        }
-    }
+
 }

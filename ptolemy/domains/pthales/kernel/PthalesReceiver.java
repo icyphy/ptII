@@ -32,12 +32,17 @@ import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 
+import ptolemy.actor.Actor;
+import ptolemy.actor.AtomicActor;
+import ptolemy.actor.CompositeActor;
+import ptolemy.actor.IOPort;
 import ptolemy.actor.NoRoomException;
 import ptolemy.actor.NoTokenException;
 import ptolemy.actor.Receiver;
 import ptolemy.data.Token;
+import ptolemy.domains.pthales.lib.PThalesGenericActor;
 import ptolemy.domains.pthales.lib.PThalesIOPort;
-import ptolemy.domains.pthales.lib.PthalesActorInterface;
+import ptolemy.domains.pthales.lib.PthalesCompositeActor;
 import ptolemy.domains.sdf.kernel.SDFReceiver;
 import ptolemy.kernel.util.IllegalActionException;
 
@@ -241,11 +246,14 @@ public class PthalesReceiver extends SDFReceiver {
      * @param actor
      * @throws IllegalActionException
      */
-    public void setInputArray(PThalesIOPort port, PthalesActorInterface actor)
+    public void setInputArray(IOPort port, Actor actor)
             throws IllegalActionException {
 
         if (_buffer != null)
-            computeAddresses(port, actor);
+        {
+           fillParameters(actor,port);
+           computeAddresses(port, actor);
+        }
     }
 
     /** Specifies the output array that will be read by the receiver
@@ -256,35 +264,69 @@ public class PthalesReceiver extends SDFReceiver {
      * @param actor
      * @throws IllegalActionException
      */
-    public void setOutputArray(PThalesIOPort port, PthalesActorInterface actor)
+    public void setOutputArray(IOPort port, Actor actor)
             throws IllegalActionException {
 
         // Output determines array size needed as input cannot read which has not been written
 
         // Total size of the array in "memory"
-        int finalSize = port.getArraySize();
+        int finalSize = PThalesIOPort.getArraySize(port);
         if (_buffer == null || _buffer.length < finalSize)
-            _buffer = new Token[finalSize*port.getNbTokenPerData()];
+            _buffer = new Token[finalSize*PThalesIOPort.getNbTokenPerData(port)];
 
         // 
-        _sizes = port.getArraySizes();
+        _sizes = PThalesIOPort.getArraySizes(port);
 
         //
-        String[] objs = port.getDimensions();
+        String[] objs = PThalesIOPort.getDimensions(port);
         _dimensions = new String[objs.length];
         for (int i = 0; i < objs.length; i++)
             _dimensions[i] = (String) objs[i];
 
+        fillParameters(actor,port);
         //
         computeAddresses(port, actor);
+    }
+    
+    
+    public void fillParameters(Actor actor, IOPort port) {
+        if (actor instanceof AtomicActor)
+            _repetitions = PThalesGenericActor.getRepetitions((AtomicActor)actor);
+        if (actor instanceof CompositeActor)
+            _repetitions = PthalesCompositeActor.getRepetitions((CompositeActor)actor);
+
+        
+        _patternSize = PThalesIOPort.getPatternSize(port);
+        _patternSizes = PThalesIOPort.getPatternSizes(port);
+        
+        _pattern = PThalesIOPort.getPattern(port);
+        _tiling = PThalesIOPort.getTiling(port);
+        _base = PThalesIOPort.getBase(port);
+        
+        _addressNumber = PThalesIOPort.getAddressNumber(port);
+        _nbTokens = PThalesIOPort.getNbTokenPerData(port);
+
     }
 
     ///////////////////////////////////////////////////////////////////
     ////               package friendly variables                  ////
 
     int _posIn = 0;
-
     int _posOut = 0;
+    
+    ///////////////////////////////////////////////////////////////////
+    // Variables needed to compute
+    int _patternSize;
+    Integer[] _patternSizes;
+    Integer[] _repetitions;
+    
+    LinkedHashMap<String, Integer[]> _pattern;
+    LinkedHashMap<String, Integer[]> _tiling;
+    LinkedHashMap<String, Integer[]> _base;
+    
+    int _addressNumber;
+    int _nbTokens;
+    
 
     ///////////////////////////////////////////////////////////////////
     ////                      protected variables                  ////
@@ -308,42 +350,45 @@ public class PthalesReceiver extends SDFReceiver {
     ///////////////////////////////////////////////////////////////////
     ////                      private methods                      ////
 
-    void computeAddresses(PThalesIOPort port, PthalesActorInterface actor) {
+    void computeAddresses(IOPort port, Actor actor) {
    
+        if (port.isInput() && _pattern.isEmpty() ||_base.isEmpty() || _tiling.isEmpty()) {
+                _addressesIn = _addressesOut;
+                return;
+        }
+
+
         // Number of token per data
-        int nbToken = port.getNbTokenPerData();
+        int nbToken = _nbTokens;
 
         // FIXME: can reduce number of addresses if the empty tilings are taken in account
         // same number of addresses than buffer size (worst case)
-        int jumpPattern[] = new int[port.getAddressNumber()];
+        int jumpPattern[] = new int[_addressNumber];
  
         // Position in buffer 
         int pos = 0;
         
         // Pattern order
-        String[] patternOrder = new String[port.getPattern().size()];
-        port.getPattern().keySet().toArray(patternOrder);
+        String[] patternOrder = new String[_pattern.size()];
+        _pattern.keySet().toArray(patternOrder);
         // tiling order 
-        String[] tilingOrder = new String[port.getTiling().size()];
-        port.getTiling().keySet().toArray(tilingOrder);
-
-        // repetitions to rely with tiling
-        Integer[] repetitions = actor.getRepetitions();
+        String[] tilingOrder = new String[_tiling.size()];
+        _tiling.keySet().toArray(tilingOrder);
 
         // Pattern size, used for each repetition
-        int sizePattern = port.getPatternSize();
+        int sizePattern = _patternSize;
         
         // total repetition size
         int sizeRepetition = 1;
-        for (Integer size : repetitions)
+        for (Integer size : _repetitions)
         {
             sizeRepetition *= size;
         }
         
         // address indexes
-        int dims[] = new int[port.getPatternSizes().length + 1];
+        int dims[] = new int[_patternSizes.length + 1];
         // address indexes
-        int reps[] = new int[repetitions.length + 1];
+        int reps[] = new int[_repetitions.length + 1];
 
         // addresses creation
         int jumpDim;
@@ -363,7 +408,7 @@ public class PthalesReceiver extends SDFReceiver {
         // origin construction (order is not important)
         Integer origin = 0;
         for (int nDim = 0; nDim < _dimensions.length; nDim++) {
-             origin += port.getBase().get(_dimensions[nDim])[0]
+             origin += _base.get(_dimensions[nDim])[0]
                     * jumpAddr.get(_dimensions[nDim]) * nbToken;
         }
 
@@ -371,8 +416,8 @@ public class PthalesReceiver extends SDFReceiver {
         for (int rep = 0; rep < sizeRepetition; rep++) {
             jumpRep = 0;
             for (int nRep = 0; nRep < tilingOrder.length; nRep++) {
-                if (port.getTiling().get(tilingOrder[nRep]) != null && !tilingOrder[nRep].startsWith("empty")) {
-                    jumpRep += port.getTiling().get(tilingOrder[nRep])[0]
+                if (_tiling.get(tilingOrder[nRep]) != null && !tilingOrder[nRep].startsWith("empty")) {
+                    jumpRep += _tiling.get(tilingOrder[nRep])[0]
                             * reps[nRep] * jumpAddr.get(tilingOrder[nRep])
                             * nbToken;
                 }
@@ -381,8 +426,8 @@ public class PthalesReceiver extends SDFReceiver {
             // Pattern is written/read for each iteration
             for (int dim = 0; dim < sizePattern; dim++) {
                 jumpDim = 0;
-                for (int nDim = 0; nDim < port.getPattern().size(); nDim++) {
-                    jumpDim += port.getPattern().get(patternOrder[nDim])[1]
+                for (int nDim = 0; nDim < _pattern.size(); nDim++) {
+                    jumpDim += _pattern.get(patternOrder[nDim])[1]
                             * dims[nDim] * jumpAddr.get(patternOrder[nDim])
                             * nbToken;
                 }
@@ -394,8 +439,8 @@ public class PthalesReceiver extends SDFReceiver {
 
                 // pattern indexes update
                 dims[0]++;
-                for (int nDim = 0; nDim < port.getPattern().size(); nDim++) {
-                    if (dims[nDim] == port.getPattern().get(patternOrder[nDim])[0]) {
+                for (int nDim = 0; nDim < _pattern.size(); nDim++) {
+                    if (dims[nDim] == _pattern.get(patternOrder[nDim])[0]) {
                         dims[nDim] = 0;
                         dims[nDim + 1]++;
                     }
@@ -403,8 +448,8 @@ public class PthalesReceiver extends SDFReceiver {
             }
             // repetition indexes update
             reps[0]++;
-            for (int nRep = 0; nRep < repetitions.length; nRep++) {
-                if (reps[nRep] == repetitions[nRep]) {
+            for (int nRep = 0; nRep < _repetitions.length; nRep++) {
+                if (reps[nRep] == _repetitions[nRep]) {
                     reps[nRep] = 0;
                     reps[nRep + 1]++;
                 }

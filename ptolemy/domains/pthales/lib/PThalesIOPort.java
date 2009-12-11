@@ -37,6 +37,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import ptolemy.actor.Actor;
+import ptolemy.actor.AtomicActor;
+import ptolemy.actor.CompositeActor;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.IORelation;
 import ptolemy.actor.Receiver;
@@ -50,7 +53,6 @@ import ptolemy.data.OrderedRecordToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
-import ptolemy.data.expr.TemporaryVariable;
 import ptolemy.data.expr.Variable;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.StructuredType;
@@ -106,7 +108,7 @@ public class PThalesIOPort extends TypedIOPort {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
-     }
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -220,9 +222,9 @@ public class PThalesIOPort extends TypedIOPort {
     /** Computes pattern total size in number of data
      *  @return Pattern size
      */
-    public int getPatternSize() {
+    public static int getPatternSize(IOPort port) {
         int val = 1;
-        for (int size : getPatternSizes()) {
+        for (int size : getPatternSizes(port)) {
             val *= size;
         }
         return val;
@@ -231,13 +233,15 @@ public class PThalesIOPort extends TypedIOPort {
     /** Computes pattern sizes in byte for each dimension
      *  @return Pattern sizes
      */
-    public Integer[] getPatternSizes() {
+    public static Integer[] getPatternSizes(IOPort port) {
         List myList = new ArrayList<String>();
 
-        Set dims = _pattern.keySet();
+        LinkedHashMap<String, Integer[]> pattern = getPattern(port);
+
+        Set dims = pattern.keySet();
 
         for (Object dim : dims.toArray()) {
-            myList.add(_pattern.get(dim)[0]);
+            myList.add(pattern.get(dim)[0]);
         }
         Integer[] result = new Integer[myList.size()];
         myList.toArray(result);
@@ -248,37 +252,41 @@ public class PThalesIOPort extends TypedIOPort {
     /** Computes data size produced for each iteration 
      *  @return data size
      */
-    public int getDataProducedSize() {
+    public static int getDataProducedSize(IOPort port) {
         int val = 1;
-        for (int size : getDataProducedSizes()) {
+        for (int size : getDataProducedSizes(port)) {
             val *= size;
         }
 
-        return val * getNbTokenPerData();
+        return val * getNbTokenPerData(port);
     }
 
     /** Computes data sizes (for each dimension) produced for each iteration
      *  @return data sizes
      */
-    public Integer[] getDataProducedSizes() {
+    public static Integer[] getDataProducedSizes(IOPort port) {
         List myList = new ArrayList<String>();
 
-        PthalesActorInterface actor = (PthalesActorInterface) getContainer();
-        Integer[] rep = null;
+        Actor actor = (Actor) port.getContainer();
+        Integer[] rep = {1};
 
-        rep = actor.getInternalRepetitions();
+        LinkedHashMap<String, Integer[]> pattern = getPattern(port);
+        LinkedHashMap<String, Integer[]> tiling = getTiling(port);
+        
+        if (actor instanceof AtomicActor)
+            rep = PThalesGenericActor.getInternalRepetitions((AtomicActor)actor);
 
-        Set dims = _pattern.keySet();
+        Set dims = pattern.keySet();
 
         for (Object dim : dims.toArray()) {
-            myList.add(_pattern.get(dim)[0]);
+            myList.add(pattern.get(dim)[0]);
         }
         if (rep != null) {
-            Set tiling = _tiling.keySet();
+            Set tilingSet = tiling.keySet();
             int i = 0;
-            for (Object til : tiling) {
-                if (i < rep.length  && !((String) til).startsWith("empty")) {
-                    myList.add(rep[i] * _tiling.get(til)[0]);
+            for (Object til : tilingSet) {
+                if (i < rep.length && !((String) til).startsWith("empty")) {
+                    myList.add(rep[i] * tiling.get(til)[0]);
                     i++;
                 }
             }
@@ -292,9 +300,9 @@ public class PThalesIOPort extends TypedIOPort {
     /** Computes total array size 
      *  @return array size
      */
-    public int getArraySize() {
+    public static int getArraySize(IOPort port) {
         int val = 1;
-        for (Integer size : getArraySizes().values()) {
+        for (Integer size : getArraySizes(port).values()) {
             val *= size;
         }
 
@@ -304,31 +312,39 @@ public class PThalesIOPort extends TypedIOPort {
     /** Computes array sizes (for each dimension)
      *  @return array sizes
      */
-    public LinkedHashMap<String, Integer> getArraySizes() {
+    public static LinkedHashMap<String, Integer> getArraySizes(IOPort port) {
         LinkedHashMap<String, Integer> sizes = null;
         LinkedHashMap<String, Token> sizesToMap = new LinkedHashMap<String, Token>();
 
         sizes = new LinkedHashMap<String, Integer>();
-        PthalesActorInterface actor = (PthalesActorInterface) getContainer();
+        Actor actor = (Actor) port.getContainer();
+
         Integer[] rep = null;
 
-        rep = actor.getRepetitions();
+        if (actor instanceof AtomicActor)
+            rep = PThalesGenericActor.getRepetitions((AtomicActor) actor);
+        if (actor instanceof CompositeActor)
+            rep = PthalesCompositeActor.getRepetitions((CompositeActor) actor);
 
         int value;
         int valuePattern;
         int valueTiling;
-        
-        for (String dimension : getDimensions()) {
+
+        LinkedHashMap<String, Integer[]> pattern = getPattern(port);
+        LinkedHashMap<String, Integer[]> tiling = getTiling(port);
+
+        for (String dimension : getDimensions(port)) {
             valuePattern = 0;
-            if (_pattern.get(dimension) != null)
-                valuePattern += _pattern.get(dimension)[0].intValue()
-                        * _pattern.get(dimension)[1].intValue();
-            Object repList[] = _tiling.keySet().toArray();
+            if (pattern.get(dimension) != null)
+                valuePattern += pattern.get(dimension)[0].intValue()
+                        * pattern.get(dimension)[1].intValue();
+            Object repList[] = tiling.keySet().toArray();
             valueTiling = 0;
-            if (_tiling.get(dimension) != null) {
+            if (tiling.get(dimension) != null) {
                 for (int i = 0; i < repList.length; i++) {
-                    if (repList[i].equals(dimension)&& _tiling.get(dimension) != null && rep.length > i)
-                        valueTiling = _tiling.get(dimension)[0].intValue()
+                    if (repList[i].equals(dimension)
+                            && tiling.get(dimension) != null && rep.length > i)
+                        valueTiling = tiling.get(dimension)[0].intValue()
                                 * rep[i];
                 }
             }
@@ -339,8 +355,7 @@ public class PThalesIOPort extends TypedIOPort {
             else
                 value = valuePattern * valueTiling;
 
-            if (value >= 1)
-            {
+            if (value >= 1) {
                 sizes.put((String) dimension, value);
                 sizesToMap.put((String) dimension, new IntToken(value));
             }
@@ -349,36 +364,36 @@ public class PThalesIOPort extends TypedIOPort {
         try {
             OrderedRecordToken array = new OrderedRecordToken(sizesToMap);
             // Write into parameter
-            Parameter p = (Parameter)getAttribute("size");
+            Parameter p = (Parameter) port.getAttribute("size");
             if (p == null) {
                 try {
                     // if parameter does not exist, creation
-                    p = new Parameter(this, "size");
+                    p = new Parameter(port, "size");
                 } catch (NameDuplicationException e) {
                     e.printStackTrace();
                 }
             }
-            
+
             p.setVisibility(Settable.FULL);
             p.setPersistent(true);
             if (p.getExpression().equals(""))
                 p.setExpression(array.toString());
-           
+
         } catch (IllegalActionException e) {
             e.printStackTrace();
         }
-        
+
         return sizes;
     }
 
     /** Returns dimension names, in order of production 
      *  @return dimension names
      */
-    public String[] getDimensions() {
+    public static String[] getDimensions(IOPort port) {
         List myList = new ArrayList<String>();
 
-        Set dims1 = _pattern.keySet();
-        Set dims2 = _tiling.keySet();
+        Set dims1 = getPattern(port).keySet();
+        Set dims2 = getTiling(port).keySet();
 
         for (Object dim : dims1.toArray()) {
             myList.add((String) dim);
@@ -399,17 +414,22 @@ public class PThalesIOPort extends TypedIOPort {
      *  @return the number of tokens needed
      *  FIXME: should be deleted if empty tilings are taken in account
      */
-    public int getAddressNumber() {
+    public static int getAddressNumber(IOPort port) {
         int valuePattern = 1;
-        PthalesActorInterface actor = (PthalesActorInterface) getContainer();
+        Actor actor = (Actor) port.getContainer();
         Integer[] rep = null;
 
-        rep = actor.getRepetitions();
+        if (actor instanceof AtomicActor)
+            rep = PThalesGenericActor.getRepetitions((AtomicActor) actor);
+        if (actor instanceof CompositeActor)
+            rep = PthalesCompositeActor.getRepetitions((CompositeActor) actor);
 
-        for (String dimension : getDimensions()) {
-            if (_pattern.get(dimension) != null)
-                valuePattern *= _pattern.get(dimension)[0].intValue()
-                        * _pattern.get(dimension)[1].intValue();
+        LinkedHashMap<String, Integer[]> pattern = getPattern(port);
+
+        for (String dimension : getDimensions(port)) {
+            if (pattern.get(dimension) != null)
+                valuePattern *= pattern.get(dimension)[0].intValue()
+                        * pattern.get(dimension)[1].intValue();
         }
 
         int sizeRepetition = 1;
@@ -419,28 +439,28 @@ public class PThalesIOPort extends TypedIOPort {
             sizeRepetition *= repetition;
         }
 
-        return valuePattern * sizeRepetition * getNbTokenPerData();
+        return valuePattern * sizeRepetition * getNbTokenPerData(port);
     }
 
     /** returns the base of this port 
      *  @return base 
      */
-    public LinkedHashMap<String, Integer[]> getBase() {
-        return _base;
+    public static LinkedHashMap<String, Integer[]> getBase(IOPort port) {
+        return _parseSpec(port, BASE);
     }
 
     /** returns the pattern of this port 
      *  @return pattern 
      */
-    public LinkedHashMap<String, Integer[]> getPattern() {
-        return _pattern;
+    public static LinkedHashMap<String, Integer[]> getPattern(IOPort port) {
+        return _parseSpec(port, PATTERN);
     }
 
     /** returns the tiling of this port 
      *  @return tiling 
      */
-    public LinkedHashMap<String, Integer[]> getTiling() {
-        return _tiling;
+    public static LinkedHashMap<String, Integer[]> getTiling(IOPort port) {
+        return _parseSpec(port, TILING);
     }
 
     /** Check if data type is a structure.
@@ -448,8 +468,8 @@ public class PThalesIOPort extends TypedIOPort {
      * By default, the return value is 1
      * @return the number of token needed to store the values
      */
-    public int getNbTokenPerData() {
-        Parameter p = (Parameter) getAttribute("dataType");
+    public static int getNbTokenPerData(IOPort port) {
+        Parameter p = (Parameter) port.getAttribute("dataType");
         if (p != null) {
             if (p.getExpression().startsWith("Cpl")) {
                 return 2;
@@ -513,7 +533,7 @@ public class PThalesIOPort extends TypedIOPort {
             throws IllegalActionException {
         int result = 0;
         if (port instanceof PThalesIOPort) {
-            result = ((PThalesIOPort) port).getArraySize();
+            result = getArraySize(port);
         }
         return result;
     }
@@ -523,27 +543,15 @@ public class PThalesIOPort extends TypedIOPort {
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == getAttribute("pattern")) {
-            try {
-                _pattern = _parseSpec(PATTERN);
-            } catch (IllegalActionException e) {
-                e.printStackTrace();
-            }
+            _pattern = _parseSpec(this, PATTERN);
 
         }
         if (attribute == getAttribute("tiling")) {
-            try {
-                _tiling = _parseSpec(TILING);
-            } catch (IllegalActionException e) {
-                e.printStackTrace();
-            }
+            _tiling = _parseSpec(this, TILING);
 
         }
         if (attribute == getAttribute("base")) {
-            try {
-                _base = _parseSpec(BASE);
-            } catch (IllegalActionException e) {
-                e.printStackTrace();
-            }
+            _base = _parseSpec(this, BASE);
         }
         if (attribute == getAttribute("dataType")) {
             setDataType();
@@ -560,7 +568,7 @@ public class PThalesIOPort extends TypedIOPort {
     private void _initialize() throws IllegalActionException,
             NameDuplicationException {
 
-        PthalesActorInterface actor = (PthalesActorInterface) getContainer();
+        Actor actor = (Actor) getContainer();
 
         if (getAttribute("base") == null) {
             new Parameter(this, "base");
@@ -582,12 +590,11 @@ public class PThalesIOPort extends TypedIOPort {
         }
 
         // Useless parameters for CompositeActors
-        if(actor instanceof PThalesGenericActor)
-        {
-             if (getAttribute("dataType") == null) {
+        if (actor instanceof PThalesGenericActor) {
+            if (getAttribute("dataType") == null) {
                 new StringParameter(this, "dataType");
             }
-    
+
             if (getAttribute("dataTypeSize") == null) {
                 new StringParameter(this, "dataTypeSize");
             }
@@ -642,19 +649,24 @@ public class PThalesIOPort extends TypedIOPort {
      *  @return The dimension data, or null if the parameter does not exist.
      *  @throws IllegalActionException If the parameter cannot be evaluated.
      */
-    private LinkedHashMap<String, Integer[]> _parseSpec(String name)
-            throws IllegalActionException {
+    private static LinkedHashMap<String, Integer[]> _parseSpec(IOPort port,
+            String name) {
         LinkedHashMap<String, Integer[]> result = new LinkedHashMap<String, Integer[]>();
-        Attribute attribute = getAttribute(name);
+        Attribute attribute = port.getAttribute(name);
         if (attribute instanceof Parameter) {
-            Token token = ((Parameter) attribute).getToken();
-            if (token != null)
-            {
+            Token token = null;
+            try {
+                token = ((Parameter) attribute).getToken();
+            } catch (IllegalActionException e) {
+                e.printStackTrace();
+            }
+            if (token != null) {
                 if (token instanceof OrderedRecordToken) {
                     Set<String> fieldNames = ((OrderedRecordToken) token)
                             .labelSet();
                     for (String fieldName : fieldNames) {
-                        Token value = ((OrderedRecordToken) token).get(fieldName);
+                        Token value = ((OrderedRecordToken) token)
+                                .get(fieldName);
                         Integer[] values = new Integer[2];
                         if (value instanceof IntToken) {
                             values[0] = ((IntToken) value).intValue();
@@ -662,8 +674,6 @@ public class PThalesIOPort extends TypedIOPort {
                         } else if (value instanceof ArrayToken) {
                             if (((ArrayToken) value).length() != 2) {
                                 // FIXME: Need a better error message here.
-                                throw new IllegalActionException(this,
-                                        "Malformed specification: " + token);
                             }
                             // FIXME: Check that tokens are IntToken
                             values[0] = ((IntToken) ((ArrayToken) value)
@@ -673,9 +683,6 @@ public class PThalesIOPort extends TypedIOPort {
                         }
                         result.put(fieldName, values);
                     }
-                } else {
-                    throw new IllegalActionException(this,
-                            "Unexpected token type: " + token);
                 }
             }
         }
