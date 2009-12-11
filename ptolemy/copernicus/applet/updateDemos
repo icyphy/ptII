@@ -47,6 +47,21 @@ do
 #  	 echo "$htmlFile" >> /tmp/hfiles
 #      fi
 
+     if [ -f  $htmlFile ]; then
+	 echo $htmlFile
+	 sed -e 's/is available in two formats:/is available as:/' \
+	     -e 's/<li> As an/<li>An/' \
+	     -e 's/The Java Web Start version is preferred, though browsers with versions of Java/<script>/' \
+	     -e 's/earlier than Java 1.6.0_13 may only work with the applet version.//' \
+	     -e 's@See <a href="\([./]*\)doc/webStartHelp.htm">Web Start Help</a> for details.@deployJava.displayWebStartMessage("\1"); </script>@' \
+	     $htmlFile |
+	 grep -v '<li> As a Web Start Application:' \
+	     > /tmp/updateDemos.tmp
+         diff /tmp/updateDemos.tmp $htmlFile
+         cp /tmp/updateDemos.tmp $htmlFile
+ 	 echo "$htmlFile" >> /tmp/hfiles
+     fi
+continue
 
      #if [ -f  $modelPath/$model.htm ]; then
 # 	 rm $modelPath/$model.htm
