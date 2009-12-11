@@ -35,8 +35,10 @@ public class LispExpression {
         arguments.remove("true");
         if (arguments.isEmpty()) {
             return "true";
+        } else if (arguments.size() == 1) {
+            return arguments.iterator().next();
         } else {
-           return node("and", arguments);
+            return node("and", arguments);
         }
     }
 
