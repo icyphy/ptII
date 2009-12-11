@@ -28,7 +28,7 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/domains/ct/demo/HybridPlant
+ME =		ptolemy/domains/continuous/demo/HybridPlant
 
 # Root of the Java directory
 ROOT =		../../../../../

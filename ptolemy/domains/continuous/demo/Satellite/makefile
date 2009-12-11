@@ -29,7 +29,7 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/domains/ct/demo/Satellite
+ME =		ptolemy/domains/continuous/demo/Satellite
 
 # Root of the Java directory
 ROOT =		../../../../../

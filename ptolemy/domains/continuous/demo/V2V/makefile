@@ -29,7 +29,7 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME = 		ptolemy/domains/ct/demo/V2V
+ME = 		ptolemy/domains/continuous/demo/V2V
 
 # Root of the Java directory
 ROOT =		../../../../..

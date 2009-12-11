@@ -28,7 +28,7 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/domains/ct/demo/Pendulum3D
+ME =		ptolemy/domains/continuous/demo/Pendulum3D
 
 # Root of the Java directory
 ROOT =		../../../../../

@@ -28,7 +28,7 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/domains/ct/demo/Hysteresis
+ME =		ptolemy/domains/continuous/demo/Hysteresis
 
 # Root of the Java directory
 ROOT =		../../../../..

@@ -29,7 +29,7 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/domains/ct/demo/SigmaDelta
+ME =		ptolemy/domains/continuous/demo/SigmaDelta
 
 # Root of the Java directory
 ROOT =		../../../../../
