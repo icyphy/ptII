@@ -115,7 +115,7 @@ public class LevelCrossingDetector extends TypedAtomicActor implements
         direction.addChoice("falling");
         direction.addChoice("rising");
 
-        output.setTypeAtLeast(level);
+        output.setTypeAtLeast(value);
 
         _errorTolerance = 1e-4;
         errorTolerance = new Parameter(this, "errorTolerance", new DoubleToken(
@@ -155,7 +155,7 @@ public class LevelCrossingDetector extends TypedAtomicActor implements
     public Parameter value;
 
     /** The output port. The type is at least the type of the
-     *  <i>level</i> parameter.
+     *  <i>value</i> parameter.
      */
     public TypedIOPort output;
 

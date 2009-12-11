@@ -7,10 +7,49 @@
     <?moml
       <group>
 <doc>Continuous actors</doc>
-<input source="ptolemy/domains/continuous/lib/dynamics.xml"/>
-<input source="ptolemy/domains/continuous/lib/eventgenerators.xml"/>
-<input source="ptolemy/domains/continuous/lib/discrete.xml"/>
-<input source="ptolemy/domains/continuous/lib/wavegenerators.xml"/>
+  <entity name="Signal Generators" class="ptolemy.moml.EntityLibrary">
+        <entity name="ContinuousClock"
+                class="ptolemy.domains.continuous.lib.ContinuousClock"/>
+		<entity name="ContinuousSinewave"
+                class="ptolemy.domains.continuous.lib.ContinuousSinewave"/>
+        <entity name="DiscreteClock"
+                class="ptolemy.actor.lib.DiscreteClock"/>
+  </entity>
+  <entity name="Continuous to Discrete" class="ptolemy.moml.EntityLibrary">
+        <entity name="LevelCrossingDetector"
+                class="ptolemy.domains.continuous.lib.LevelCrossingDetector"/>
+        <entity name="PeriodicSampler"
+                class="ptolemy.domains.continuous.lib.PeriodicSampler"/>
+  </entity>
+  <entity name="Discrete to Continuous" class="ptolemy.moml.EntityLibrary">
+          <entity name="ZeroOrderHold"
+                class="ptolemy.domains.continuous.lib.ZeroOrderHold"/>
+  </entity>
+  <entity name="Dynamics" class="ptolemy.moml.EntityLibrary">
+        <entity name="ContinuousTransferFunction"
+                class="ptolemy.domains.continuous.lib.ContinuousTransferFunction"/>
+        <entity name="DifferentialSystem"
+                class="ptolemy.domains.continuous.lib.DifferentialSystem"/>
+        <entity name="Integrator"
+                class="ptolemy.domains.continuous.lib.Integrator"/>
+  </entity>
+  <entity name="Random" class="ptolemy.moml.EntityLibrary">
+        <entity name="BandlimitedNoise"
+                class="ptolemy.domains.continuous.lib.BandlimitedNoise"/>
+        <entity name="Noise"
+                class="ptolemy.domains.continuous.lib.Noise"/>
+  		<entity name="Discrete Random" class="ptolemy.moml.EntityLibrary">
+  		   <input source="ptolemy/actor/lib/random.xml"/>
+  		</entity>
+  </entity>
+  <entity name="Miscellaneous" class="ptolemy.moml.EntityLibrary">
+		<entity name="ResettableTimer"
+				class="ptolemy.actor.lib.ResettableTimer"/>
+		<entity name="Merge"
+                class="ptolemy.domains.continuous.lib.ContinuousMerge"/>
+		<entity name="Discrete TimeDelay"
+                class="ptolemy.actor.lib.TimeDelay"/>
+  </entity>
       </group>
     ?>
   </configure>

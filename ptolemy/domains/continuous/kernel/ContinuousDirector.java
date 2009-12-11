@@ -58,6 +58,7 @@ import ptolemy.kernel.util.InvalidStateException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
+import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
 //// ContinuousDirector
@@ -359,6 +360,24 @@ public class ContinuousDirector extends FixedPointDirector implements
         }
     }
 
+    /** Clone the object into the specified workspace. The new object is
+     *  <i>not</i> added to the directory of that workspace (you must do this
+     *  yourself if you want it there).
+     *  @param workspace The workspace for the cloned object.
+     *  @exception CloneNotSupportedException Not thrown in this base class
+     *  @return The new Attribute.
+     */
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        ContinuousDirector newObject = (ContinuousDirector) super
+                .clone(workspace);
+        newObject._breakpoints = null;
+        newObject._enclosingContinuousDirectorVersion = -1L;
+        newObject._ODESolver = null;
+        newObject._statefulComponentsVersion = -1L;
+        newObject._stepSizeControllersVersion = -1L;
+        return newObject;
+    }
+    
     /** Return a boolean dependency representing a model-time delay
      *  of the specified amount.
      *  @param delay A non-negative delay.

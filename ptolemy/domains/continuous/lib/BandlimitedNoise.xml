@@ -1,0 +1,96 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="BandlimitedNoise" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
+    </property>
+    <property name="_location" class="ptolemy.kernel.util.Location" value="{240.0, 145.0}">
+    </property>
+    <property name="bandwidth" class="ptolemy.data.expr.Parameter" value="10">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{385, 30}">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={301, 311, 909, 508}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[696, 398]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{348.0, 199.0}">
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This composite generates an approximation to bandlimitted noise with the specified&#10;bandwidth. The way it does is by first generating a discrete white noise process at&#10;a sample rate equal to the specified bandwidth and then shaping a continuous-time&#10;signal using an approximate raised-cosine pulse.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 45.0]">
+        </property>
+    </property>
+    <port name="noise" class="ptolemy.actor.TypedIOPort">
+        <property name="output"/>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{580.0, 200.0}">
+        </property>
+    </port>
+    <entity name="DiscreteClock" class="ptolemy.actor.lib.DiscreteClock">
+        <property name="period" class="ptolemy.actor.parameters.PortParameter" value="1.0 / bandwidth">
+        </property>
+        <property name="offsets" class="ptolemy.data.expr.Parameter" value="[0.0:1.0:15.0].toArray() / (16 * bandwidth)">
+        </property>
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 165.0]">
+        </property>
+    </entity>
+    <entity name="RaisedCosine" class="ptolemy.domains.sdf.lib.RaisedCosine">
+        <property name="interpolation" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 175.0]">
+        </property>
+    </entity>
+    <entity name="ZeroOrderHold" class="ptolemy.domains.continuous.lib.ZeroOrderHold">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[330.0, 175.0]">
+        </property>
+    </entity>
+    <entity name="Gaussian" class="ptolemy.actor.lib.Gaussian">
+        <doc>Create a sequence of gaussian random variables</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[140.0, 175.0]">
+        </property>
+    </entity>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <link port="noise" relation="relation3"/>
+    <link port="DiscreteClock.output" relation="relation"/>
+    <link port="RaisedCosine.input" relation="relation2"/>
+    <link port="RaisedCosine.output" relation="relation4"/>
+    <link port="ZeroOrderHold.input" relation="relation4"/>
+    <link port="ZeroOrderHold.output" relation="relation3"/>
+    <link port="Gaussian.output" relation="relation2"/>
+    <link port="Gaussian.trigger" relation="relation"/>
+</entity>

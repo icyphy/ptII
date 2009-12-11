@@ -30,7 +30,6 @@ package ptolemy.domains.continuous.kernel;
 import java.util.Collection;
 import java.util.LinkedList;
 
-import ptolemy.actor.Actor;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.NoTokenException;
 import ptolemy.actor.TypedAtomicActor;
@@ -50,6 +49,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InvalidStateException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.StringAttribute;
+import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
 //// ContinuousIntegrator
@@ -197,6 +197,26 @@ public class ContinuousIntegrator extends TypedAtomicActor implements
         } else {
             super.attributeChanged(attribute);
         }
+    }
+    
+    /** Clone this actor into the specified workspace. The new actor is
+     *  <i>not</i> added to the directory of that workspace (you must do this
+     *  yourself if you want it there).
+     *  The result is a new actor with the same ports as the original, but
+     *  no connections and no container.  A container must be set before
+     *  much can be done with this actor.
+     *  @param workspace The workspace for the cloned object.
+     *  @exception CloneNotSupportedException If cloned ports cannot have
+     *   as their container the cloned entity (this should not occur), or
+     *   if one of the attributes cannot be cloned.
+     *  @return A new ComponentEntity.
+     */
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        ContinuousIntegrator newObject = (ContinuousIntegrator) super.clone(workspace);
+        newObject._auxVariables = null;
+        newObject._causalityInterface = new IntegratorCausalityInterface(newObject,
+                BooleanDependency.OTIMES_IDENTITY);
+        return newObject;
     }
 
     /** If the value at the <i>derivative</i> port is known, and the
@@ -570,14 +590,15 @@ public class ContinuousIntegrator extends TypedAtomicActor implements
      *  the initialState input is a ParameterPort).
      */
     private class IntegratorCausalityInterface extends DefaultCausalityInterface {
-        public IntegratorCausalityInterface(Actor actor,
+        public IntegratorCausalityInterface(ContinuousIntegrator actor,
                 Dependency defaultDependency) {
             super(actor, defaultDependency);
-            _derivativeEquivalents.add(derivative);
-            _otherEquivalents.add(impulse);
-            _otherEquivalents.add(initialState.getPort());
+            _actor = actor;
+            _derivativeEquivalents.add(actor.derivative);
+            _otherEquivalents.add(actor.impulse);
+            _otherEquivalents.add(actor.initialState.getPort());
             
-            removeDependency(derivative, state);
+            removeDependency(actor.derivative, actor.state);
         }
 
         /** Override the base class to declare that the
@@ -593,12 +614,13 @@ public class ContinuousIntegrator extends TypedAtomicActor implements
          *   contained by the associated actor.
          */
         public Collection<IOPort> equivalentPorts(IOPort input) {
-            if (input == derivative) {
+            if (input == _actor.derivative) {
                 return _derivativeEquivalents;
             }
             return _otherEquivalents;
         }
 
+        private ContinuousIntegrator _actor;
         private LinkedList<IOPort> _derivativeEquivalents = new LinkedList<IOPort>();
         private LinkedList<IOPort> _otherEquivalents = new LinkedList<IOPort>();
     }

@@ -60,21 +60,18 @@ JSRCS = \
 	ZeroOrderHold.java
 
 OTHER_FILES_TO_BE_JARED = \
+	BandlimitedNoise.xml \
 	ContinuousClock.xml \
 	ContinuousClockIcon.xml \
 	ContinuousTimeDelayIcon.xml \
 	ContinuousSinewave.xml \
 	ct2continuous \
 	continuousentities.xml \
-	discrete.xml \
-	dynamics.xml \
-	eventgenerators.xml \
 	EventSource.java \
 	integral.gif \
 	IntegratorIcon.xml \
 	LevelCrossingDetectorIcon.xml \
-	NoiseIcon.xml \
-	wavegenerators.xml
+	NoiseIcon.xml
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
