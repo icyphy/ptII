@@ -291,7 +291,6 @@ CODEGENPACKAGES = \
 	ptolemy.codegen.kernel.test \
 	ptolemy.codegen.kernel.test.actor \
 	ptolemy.codegen.kernel.test.domains.sdf.kernel \
-	ptolemy.codegen.kernel.userMacro \
 	ptolemy.codegen.rtmaude.actor \
 	ptolemy.codegen.rtmaude.actor.lib \
 	ptolemy.codegen.rtmaude.actor.lib.gui \
@@ -910,7 +909,6 @@ codeDoc/tree.html:	../ptolemy/plot/*.java \
 			../ptolemy/codegen/java/actor/lib/string/*.java \
 			../ptolemy/codegen/java/actor/lib/*.java \
 			../ptolemy/codegen/kernel/*.java \
-			../ptolemy/codegen/kernel/userMacro/*.java \
 			../ptolemy/domains/curriculum/*.java \
 			../ptolemy/domains/ci/kernel/*.java \
 			../ptolemy/domains/ci/lib/*.java \
