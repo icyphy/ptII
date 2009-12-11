@@ -146,6 +146,9 @@ public class ComponentPort extends Port {
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         ComponentPort newObject = (ComponentPort) super.clone(workspace);
         newObject._insideLinks = new CrossRefList(newObject);
+        newObject._deepLinkedInPortsVersion = -1L;
+        newObject._deepLinkedPortsVersion = -1L;
+        newObject._isOpaqueVersion = -1L;
         return newObject;
     }
 
