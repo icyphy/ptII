@@ -157,11 +157,11 @@ uint32 convertCyclesToNsecs(uint32 cycles){
 // Convert nanoseconds to processor cycles.
 // This method assumes a fixed processor speed
 // of 50 MHz
-uint32 convertNsecsToCycles(uint32 nsec) {
-        return nsec / 20;
+uint32 convertNsecsToCycles(uint32 nsecs) {
+        return nsecs / 20;
         // FIXME: Is there a way to make it less expensive?
-        // cycles = nsec / 20 = nsec / 32 * 8/5
-        // let y = nsec/32
+        // cycles = nsecs / 20 = nsecs / 32 * 8/5
+        // let y = nsecs/32
         // cycles = y * 1.6 = y + z
         // z = .6 * y = 75/125 * y ~= 75/128 * y
         // let x = y / 128
@@ -198,24 +198,24 @@ void getRealTime(Time * const physicalTime){
     uint32 tempSecs;
     uint32 tempQuarterSecs;
     tick1 = SysTickValueGet();
-    tempSecs = _sec;
+    tempSecs = _secs;
     tempQuarterSecs = _quarterSecs;
     tick2 = SysTickValueGet();
     //If the system tick rolls over (the tick counts down) between accessing
-    // the volatile variables _sec and _quartersecs, then we account for this here
+    // the volatile variables _secs and _quartersecs, then we account for this here
     // by incrementing _quartersecs
     if(tick2 > tick1){
         tempQuarterSecs++;
     }
     switch(tempQuarterSecs){
-        case 1:         physicalTime->nsec = 250000000; break;
-        case 2:         physicalTime->nsec = 500000000; break;
-        case 3:         physicalTime->nsec = 750000000; break;
-        case 4:         physicalTime->sec++;                            //continue to next line
-        default:        physicalTime->nsec = 0;                 break;
+        case 1:         physicalTime->nsecs = 250000000; break;
+        case 2:         physicalTime->nsecs = 500000000; break;
+        case 3:         physicalTime->nsecs = 750000000; break;
+        case 4:         physicalTime->secs = 1;                            //continue to next line
+        default:        physicalTime->nsecs = 0;                 break;
     }
-    physicalTime->nsec += convertCyclesToNsecs(tick2);
-    physicalTime->sec = tempSecs;
+    physicalTime->nsecs += convertCyclesToNsecs(tick2);
+    physicalTime->secs += tempSecs;
 }
 
 /* timer */
@@ -223,8 +223,8 @@ void setTimedInterrupt(const Time* safeToProcessTime) {
         // it has already been checked, timer always needs to be set, so just set it.
         TimerConfigure(TIMER0_BASE, TIMER_CFG_32_BIT_OS);
         // interrupt 10 times per second
-        TimerLoadSet(TIMER0_BASE, TIMER_BOTH, convertNsecsToCycles(safeToProcessTime->nsec));
-        timerInterruptSecsLeft = safeToProcessTime->sec;
+        TimerLoadSet(TIMER0_BASE, TIMER_BOTH, convertNsecsToCycles(safeToProcessTime->nsecs));
+        timerInterruptSecsLeft = safeToProcessTime->secs;
 
         //
         //Setup the interrupts for the timer timeouts
@@ -272,7 +272,7 @@ void Timer0IntHandler(void) {
 void SysTickHandler(void) {
  if(++_quarterSecs >= 4){
      _quarterSecs -= 4;
-     _sec++;
+     _secs++;
  }
 }
 
@@ -309,8 +309,8 @@ void setActuationInterrupt(int actuatorToActuate) {
                 TimerConfigure(TIMER1_BASE, TIMER_CFG_B_ONE_SHOT);
 
 #ifdef LCD_DEBUG
-                //debugMessageNumber("Act sec : ", actuationTime.sec);
-                //debugMessageNumber("Act nsec: ", actuationTime.nsec);
+                //debugMessageNumber("Act secs : ", actuationTime.secs);
+                //debugMessageNumber("Act nsecs: ", actuationTime.nsecs);
 #endif
 
                 IntEnable(INT_TIMER1A);
@@ -331,8 +331,8 @@ void setActuationInterrupt(int actuatorToActuate) {
                         TimerLoadSet(TIMER1_BASE, TIMER_BOTH, 0);
                         actuatorTimerInterruptSecsLeft = 0;
                 } else {
-                        TimerLoadSet(TIMER1_BASE, TIMER_BOTH, convertNsecsToCycles(actuationLeftOverTime.nsec));
-                        actuatorTimerInterruptSecsLeft = actuationLeftOverTime.sec;
+                        TimerLoadSet(TIMER1_BASE, TIMER_BOTH, convertNsecsToCycles(actuationLeftOverTime.nsecs));
+                        actuatorTimerInterruptSecsLeft = actuationLeftOverTime.secs;
                 }
                 TimerEnable(TIMER1_BASE, TIMER_BOTH);
 
@@ -369,8 +369,8 @@ void setActuationInterrupt(int actuatorToActuate) {
                                 TimerLoadSet(TIMER1_BASE, TIMER_BOTH, 0);
                                 actuatorTimerInterruptSecsLeft = 0;
                         } else {
-                                TimerLoadSet(TIMER1_BASE, TIMER_BOTH, convertNsecsToCycles(actuationLeftOverTime.nsec));
-                                actuatorTimerInterruptSecsLeft = actuationLeftOverTime.sec;
+                                TimerLoadSet(TIMER1_BASE, TIMER_BOTH, convertNsecsToCycles(actuationLeftOverTime.nsecs));
+                                actuatorTimerInterruptSecsLeft = actuationLeftOverTime.secs;
                         }
                         TimerEnable(TIMER1_BASE, TIMER_BOTH);
                 } else {
@@ -442,8 +442,8 @@ void Timer1IntHandler(void) {
         }
 
 #ifdef LCD_DEBUG
-        debugMessageNumber("To Act sec:", lastActuateTime.sec);
-        debugMessageNumber("To Act nsec:", lastActuateTime.nsec);
+        debugMessageNumber("To Act secs:", lastActuateTime.secs);
+        debugMessageNumber("To Act nsecs:", lastActuateTime.nsecs);
 #endif
 
         if (timeCompare(lastActuateTime, MAX_TIME) != EQUAL) {
@@ -473,8 +473,8 @@ void Timer1IntHandler(void) {
                         TimerLoadSet(TIMER1_BASE, TIMER_BOTH, 0);
                         actuatorTimerInterruptSecsLeft = 0;
                 } else {
-                        TimerLoadSet(TIMER1_BASE, TIMER_BOTH, convertNsecsToCycles(actuationLeftOverTime.nsec));
-                        actuatorTimerInterruptSecsLeft = actuationLeftOverTime.sec;
+                        TimerLoadSet(TIMER1_BASE, TIMER_BOTH, convertNsecsToCycles(actuationLeftOverTime.nsecs));
+                        actuatorTimerInterruptSecsLeft = actuationLeftOverTime.secs;
                 }
                 TimerEnable(TIMER1_BASE, TIMER_BOTH);
         } else {
