@@ -84,8 +84,8 @@ public class RecordAssembler extends AtomicActor {
         RecordProperty declaredProperty = new RecordProperty(_lattice, labels,
                 properties);
 
-        setEquals(actor.output, declaredProperty);
-        //setAtLeast(actor.output, declaredProperty);
+        //setEquals(actor.output, declaredProperty);
+        setAtLeast(actor.output, declaredProperty);
 
         // set the constraints between record fields and input ports
         //_ownConstraints = new HashSet<Inequality>();
