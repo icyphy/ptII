@@ -64,8 +64,8 @@ import ptolemy.kernel.util.Workspace;
    <p>For details about ArrayOL, see:
    P. Boulet, <a href="http://hal.inria.fr/inria-00128840/en">Array-OL Revisited, Multidimensional Intensive Signal Processing Specification</a>,INRIA, Sophia Antipolis, France, 2007.
 
-   @author Remi Barrere
-   @see ptolemy.actor.TypedAtomicActor
+   @author R&eacute;mi Barr&egrave;re
+   @see ptolemy.actor.TypedIOPort
    @version $Id$
    @since Ptolemy II 8.2
    @Pt.ProposedRating Red (cxh)

@@ -1,6 +1,6 @@
-/* An aggregation of typed actors, with ports using ArrayOL informations.
+/* An aggregation of typed actors, with ports using ArrayOL information.
 
- Copyright (c) 1997-2009 The Regents of the University of California.
+ Copyright (c) 2009 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -48,14 +48,17 @@ import ptolemy.kernel.util.Workspace;
 ////PthalesCompositeActor
 
 /**
- A composite actor imposes the use of PThalesIOPort
- as they contains needed values used by PThalesDirector.
- A PthalesCompositeActor can contain actors from diffent model (as SDF),
- but the port must be a PThalesIOPort, because of the ArrayOL parameters. 
- @author Rémi Barrère
- @see ptolemy.actor.TypedCompositeActor
+   A composite actor imposes the use of PThalesIOPort
+   as they contain needed values used by PThalesDirector.
+   A PthalesCompositeActor can contain actors from diffent model (as SDF),
+   but the port must be a PThalesIOPort, because of the ArrayOL parameters. 
+   @author R&eacute;mi Barr&egrave;re
+   @see ptolemy.actor.TypedIOPort
+   @version $Id$
+   @since Ptolemy II 8.2
+   @Pt.ProposedRating Red (cxh)
+   @Pt.AcceptedRating Red (cxh)
  */
-
 public class PthalesCompositeActor extends TypedCompositeActor  {
     /** Construct a PthalesCompositeActor in the default workspace with no
      *  container and an empty string as its name. Add the actor to the

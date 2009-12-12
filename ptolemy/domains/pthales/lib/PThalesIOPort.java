@@ -1,6 +1,6 @@
-/* An TypedIOPort with ArrayOL informations
+/* An TypedIOPort with ArrayOL information
 
- Copyright (c) 1997-2006 The Regents of the University of California.
+ Copyright (c) 2009 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -70,26 +70,18 @@ import ptolemy.kernel.util.Workspace;
 ////PThalesIOPort
 
 /**
- A PthalesIOPort is an element of ArrayOL in Ptolemy.
- It contains datas needed to determine access to data
- using multidimensional arrays
- @author Rémi Barrère
- @see ptolemy.actor.TypedIOPort
+   A PthalesIOPort is an element of ArrayOL in Ptolemy.
+   It contains data needed to determine access to data
+   using multidimensional arrays.
+
+   @author R&eacute;mi Barr&egrave;re
+   @see ptolemy.actor.TypedIOPort
+   @version $Id$
+   @since Ptolemy II 8.2
+   @Pt.ProposedRating Red (cxh)
+   @Pt.AcceptedRating Red (cxh)
  */
-
 public class PThalesIOPort extends TypedIOPort {
-
-    /** Construct a PThalesIOPort with no container and no name that is
-     *  neither an input nor an output.
-     */
-    public PThalesIOPort(ComponentEntity container, String name,
-            boolean isInput, boolean isOutput) throws IllegalActionException,
-            NameDuplicationException {
-        super(container, name, isInput, isOutput);
-
-        // Add parameters for PThales Domain
-        _initialize();
-    }
 
     /** Construct a PThalesIOPort with a containing actor and a name
      *  that is neither an input nor an output.  The specified container
@@ -110,85 +102,29 @@ public class PThalesIOPort extends TypedIOPort {
 
     }
 
+    /** Construct a PThalesIOPort with no container and no name that is
+     *  neither an input nor an output.
+     *  @param container The container.
+     *  @param name The name of this actor within the container.
+     *  @param isInput True if this is to be an input port.
+     *  @param isOutput True if this is to be an output port.
+     *  @exception IllegalActionException If the port is not of an acceptable
+     *   class for the container, or if the container does not implement the
+     *   TypedActor interface.
+     *  @exception NameDuplicationException If the name coincides with
+     *   a port already in the container.
+     */
+    public PThalesIOPort(ComponentEntity container, String name,
+            boolean isInput, boolean isOutput) throws IllegalActionException,
+            NameDuplicationException {
+        super(container, name, isInput, isOutput);
+
+        // Add parameters for PThales Domain
+        _initialize();
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
-    /** If the port is an output, return the remote receivers that can
-     *  receive from the port.  For an output
-     *  port, the returned value is an array of arrays of the same form
-     *  as that returned by getReceivers() with no arguments.  The length
-     *  of the array is the width of the port (the number of channels).
-     *  It is an array of arrays, each of which represents a group of
-     *  receivers that receive data from the same channel.
-     *  <p>
-     *  This method may have the effect of creating new receivers in the
-     *  remote input ports, if they do not already have the right number of
-     *  receivers.  In this case, previous receivers are lost, together
-     *  with any data they may contain.
-     *  <p>
-     *  This method is read-synchronized on the workspace.
-     *  @return The receivers for output data, or an empty array if there
-     *   are none.
-     * @exception IllegalActionException
-     */
-    public Receiver[][] getRemoteReceivers() throws IllegalActionException {
-        try {
-            _workspace.getReadAccess();
-
-            if (!isOutput()) {
-                return _EMPTY_RECEIVER_ARRAY;
-            }
-
-            int width = getWidth();
-
-            if (width <= 0) {
-                return _EMPTY_RECEIVER_ARRAY;
-            }
-
-            // For opaque port, try the cached _farReceivers
-            // Check validity of cached version
-            if (isOpaque() && (_farReceiversVersion == _workspace.getVersion())) {
-                return _farReceivers;
-            }
-
-            // If not an opaque port or Cache is not valid.  Reconstruct it.
-            Receiver[][] farReceivers = new Receiver[width][0];
-            Iterator<?> relations = linkedRelationList().iterator();
-            int index = 0;
-            // Hypothese : 1 input per relation
-
-            while (relations.hasNext()) {
-                IORelation relation = (IORelation) relations.next();
-
-                // A null link (supported since indexed links) might
-                // yield a null relation here. EAL 7/19/00.
-                if (relation != null) {
-                    Receiver[][] deepReceivers = relation.deepReceivers(this);
-
-                    if (deepReceivers != null) {
-                        for (int i = 0; i < deepReceivers.length; i++) {
-                            farReceivers[index] = deepReceivers[i];
-                            index++;
-                        }
-                    } else {
-                        // create a number of null entries in farReceivers
-                        // corresponding to the width of relation r
-                        index += relation.getWidth();
-                    }
-                }
-            }
-
-            // For an opaque port, cache the result.
-            if (isOpaque()) {
-                _farReceiversVersion = _workspace.getVersion();
-                _farReceivers = farReceivers;
-            }
-
-            return farReceivers;
-        } finally {
-            _workspace.doneReading();
-        }
-    }
 
     /** Clone this port into the specified workspace. The new port is
      *  <i>not</i> added to the directory of that workspace (you must
@@ -219,85 +155,47 @@ public class PThalesIOPort extends TypedIOPort {
         return newObject;
     }
 
-    /** Computes pattern total size in number of data
-     *  @return Pattern size
+    /** Returns the number of addresses needed to access all of the
+     *  datas for all iteration
+     *  @return the number of tokens needed
+     *  FIXME: should be deleted if empty tilings are taken in account
      */
-    public static int getPatternSize(IOPort port) {
-        int val = 1;
-        for (int size : getPatternSizes(port)) {
-            val *= size;
-        }
-        return val;
-    }
-
-    /** Computes pattern sizes in byte for each dimension
-     *  @return Pattern sizes
-     */
-    public static Integer[] getPatternSizes(IOPort port) {
-        List myList = new ArrayList<String>();
-
-        LinkedHashMap<String, Integer[]> pattern = getPattern(port);
-
-        Set dims = pattern.keySet();
-
-        for (Object dim : dims.toArray()) {
-            myList.add(pattern.get(dim)[0]);
-        }
-        Integer[] result = new Integer[myList.size()];
-        myList.toArray(result);
-
-        return result;
-    }
-
-    /** Computes data size produced for each iteration 
-     *  @return data size
-     */
-    public static int getDataProducedSize(IOPort port) {
-        int val = 1;
-        for (int size : getDataProducedSizes(port)) {
-            val *= size;
-        }
-
-        return val * getNbTokenPerData(port);
-    }
-
-    /** Computes data sizes (for each dimension) produced for each iteration
-     *  @return data sizes
-     */
-    public static Integer[] getDataProducedSizes(IOPort port) {
-        List myList = new ArrayList<String>();
-
+    public static int getAddressNumber(IOPort port) {
+        int valuePattern = 1;
         Actor actor = (Actor) port.getContainer();
-        Integer[] rep = {1};
+        Integer[] rep = null;
+
+        if (actor instanceof AtomicActor)
+            rep = PThalesGenericActor.getRepetitions((AtomicActor) actor);
+        if (actor instanceof CompositeActor)
+            rep = PthalesCompositeActor.getRepetitions((CompositeActor) actor);
 
         LinkedHashMap<String, Integer[]> pattern = getPattern(port);
-        LinkedHashMap<String, Integer[]> tiling = getTiling(port);
-        
-        if (actor instanceof AtomicActor)
-            rep = PThalesGenericActor.getInternalRepetitions((AtomicActor)actor);
 
-        Set dims = pattern.keySet();
-
-        for (Object dim : dims.toArray()) {
-            myList.add(pattern.get(dim)[0]);
+        for (String dimension : getDimensions(port)) {
+            if (pattern.get(dimension) != null)
+                valuePattern *= pattern.get(dimension)[0].intValue()
+                        * pattern.get(dimension)[1].intValue();
         }
-        if (rep != null) {
-            Set tilingSet = tiling.keySet();
-            int i = 0;
-            for (Object til : tilingSet) {
-                if (i < rep.length && !((String) til).startsWith("empty")) {
-                    myList.add(rep[i] * tiling.get(til)[0]);
-                    i++;
-                }
-            }
-        }
-        Integer[] result = new Integer[myList.size()];
-        myList.toArray(result);
 
-        return result;
+        int sizeRepetition = 1;
+        // size for tiling dimensions 
+        for (Integer repetition : rep) {
+            // Dimension added to pattern list
+            sizeRepetition *= repetition;
+        }
+
+        return valuePattern * sizeRepetition * getNbTokenPerData(port);
     }
 
-    /** Computes total array size 
+    /** Return the base of this port. 
+     *  @return base 
+     */
+    public static LinkedHashMap<String, Integer[]> getBase(IOPort port) {
+        return _parseSpec(port, BASE);
+    }
+
+    /** Compute total array size.
      *  @return array size
      */
     public static int getArraySize(IOPort port) {
@@ -409,45 +307,162 @@ public class PThalesIOPort extends TypedIOPort {
         return result;
     }
 
-    /** Returns the number of addresses needed to access all of the
-     *  datas for all iteration
-     *  @return the number of tokens needed
-     *  FIXME: should be deleted if empty tilings are taken in account
-     */
-    public static int getAddressNumber(IOPort port) {
-        int valuePattern = 1;
-        Actor actor = (Actor) port.getContainer();
-        Integer[] rep = null;
 
-        if (actor instanceof AtomicActor)
-            rep = PThalesGenericActor.getRepetitions((AtomicActor) actor);
-        if (actor instanceof CompositeActor)
-            rep = PthalesCompositeActor.getRepetitions((CompositeActor) actor);
+    /** Computes pattern total size in number of data
+     *  @return Pattern size
+     */
+    public static int getPatternSize(IOPort port) {
+        int val = 1;
+        for (int size : getPatternSizes(port)) {
+            val *= size;
+        }
+        return val;
+    }
+
+    /** Computes pattern sizes in byte for each dimension
+     *  @return Pattern sizes
+     */
+    public static Integer[] getPatternSizes(IOPort port) {
+        List myList = new ArrayList<String>();
 
         LinkedHashMap<String, Integer[]> pattern = getPattern(port);
 
-        for (String dimension : getDimensions(port)) {
-            if (pattern.get(dimension) != null)
-                valuePattern *= pattern.get(dimension)[0].intValue()
-                        * pattern.get(dimension)[1].intValue();
-        }
+        Set dims = pattern.keySet();
 
-        int sizeRepetition = 1;
-        // size for tiling dimensions 
-        for (Integer repetition : rep) {
-            // Dimension added to pattern list
-            sizeRepetition *= repetition;
+        for (Object dim : dims.toArray()) {
+            myList.add(pattern.get(dim)[0]);
         }
+        Integer[] result = new Integer[myList.size()];
+        myList.toArray(result);
 
-        return valuePattern * sizeRepetition * getNbTokenPerData(port);
+        return result;
     }
 
-    /** returns the base of this port 
-     *  @return base 
+    /** If the port is an output, return the remote receivers that can
+     *  receive from the port.  For an output
+     *  port, the returned value is an array of arrays of the same form
+     *  as that returned by getReceivers() with no arguments.  The length
+     *  of the array is the width of the port (the number of channels).
+     *  It is an array of arrays, each of which represents a group of
+     *  receivers that receive data from the same channel.
+     *  <p>
+     *  This method may have the effect of creating new receivers in the
+     *  remote input ports, if they do not already have the right number of
+     *  receivers.  In this case, previous receivers are lost, together
+     *  with any data they may contain.
+     *  <p>
+     *  This method is read-synchronized on the workspace.
+     *  @return The receivers for output data, or an empty array if there
+     *   are none.
+     * @exception IllegalActionException
      */
-    public static LinkedHashMap<String, Integer[]> getBase(IOPort port) {
-        return _parseSpec(port, BASE);
+    public Receiver[][] getRemoteReceivers() throws IllegalActionException {
+        try {
+            _workspace.getReadAccess();
+
+            if (!isOutput()) {
+                return _EMPTY_RECEIVER_ARRAY;
+            }
+
+            int width = getWidth();
+
+            if (width <= 0) {
+                return _EMPTY_RECEIVER_ARRAY;
+            }
+
+            // For opaque port, try the cached _farReceivers
+            // Check validity of cached version
+            if (isOpaque() && (_farReceiversVersion == _workspace.getVersion())) {
+                return _farReceivers;
+            }
+
+            // If not an opaque port or Cache is not valid.  Reconstruct it.
+            Receiver[][] farReceivers = new Receiver[width][0];
+            Iterator<?> relations = linkedRelationList().iterator();
+            int index = 0;
+            // Hypothese : 1 input per relation
+
+            while (relations.hasNext()) {
+                IORelation relation = (IORelation) relations.next();
+
+                // A null link (supported since indexed links) might
+                // yield a null relation here. EAL 7/19/00.
+                if (relation != null) {
+                    Receiver[][] deepReceivers = relation.deepReceivers(this);
+
+                    if (deepReceivers != null) {
+                        for (int i = 0; i < deepReceivers.length; i++) {
+                            farReceivers[index] = deepReceivers[i];
+                            index++;
+                        }
+                    } else {
+                        // create a number of null entries in farReceivers
+                        // corresponding to the width of relation r
+                        index += relation.getWidth();
+                    }
+                }
+            }
+
+            // For an opaque port, cache the result.
+            if (isOpaque()) {
+                _farReceiversVersion = _workspace.getVersion();
+                _farReceivers = farReceivers;
+            }
+
+            return farReceivers;
+        } finally {
+            _workspace.doneReading();
+        }
     }
+
+    /** Computes data size produced for each iteration 
+     *  @return data size
+     */
+    public static int getDataProducedSize(IOPort port) {
+        int val = 1;
+        for (int size : getDataProducedSizes(port)) {
+            val *= size;
+        }
+
+        return val * getNbTokenPerData(port);
+    }
+
+    /** Computes data sizes (for each dimension) produced for each iteration
+     *  @return data sizes
+     */
+    public static Integer[] getDataProducedSizes(IOPort port) {
+        List myList = new ArrayList<String>();
+
+        Actor actor = (Actor) port.getContainer();
+        Integer[] rep = {1};
+
+        LinkedHashMap<String, Integer[]> pattern = getPattern(port);
+        LinkedHashMap<String, Integer[]> tiling = getTiling(port);
+        
+        if (actor instanceof AtomicActor)
+            rep = PThalesGenericActor.getInternalRepetitions((AtomicActor)actor);
+
+        Set dims = pattern.keySet();
+
+        for (Object dim : dims.toArray()) {
+            myList.add(pattern.get(dim)[0]);
+        }
+        if (rep != null) {
+            Set tilingSet = tiling.keySet();
+            int i = 0;
+            for (Object til : tilingSet) {
+                if (i < rep.length && !((String) til).startsWith("empty")) {
+                    myList.add(rep[i] * tiling.get(til)[0]);
+                    i++;
+                }
+            }
+        }
+        Integer[] result = new Integer[myList.size()];
+        myList.toArray(result);
+
+        return result;
+    }
+
 
     /** returns the pattern of this port 
      *  @return pattern 
