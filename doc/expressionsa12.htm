@@ -250,13 +250,7 @@
     <td><a name="194956"> </a>a scalar of the same type as the arguments</td>
     <td><a name="194958"> </a>minimum</td>
   </tr>
-  <tr>
-    <td><a name="194961"> </a>neighborhood</td>
-    <td><a name="194963"> </a>type, type, double</td>
-    <td><a name="194965"> </a>boolean</td>
-    <td><a name="194967"> </a>return true if the first argument is in the neighborhood of the second, meaning that the distance is less than or equal to the third argument. The first two arguments can be any type for which such a distance is defined. For composite types, arrays, records, and matrices, then return true if the first two arguments have the same structure, and each corresponding element is in the neighborhood.</td>
-  </tr>
-  <tr>
+ <tr>
     <td><a name="194970"> </a>pow</td>
     <td><a name="194972"> </a><i>double</i>, <i>double</i> or</font><a name="194973"> </a><i>complex</i>, <i>complex</i></td>
     <td><a name="194975"> </a>double or</font><a name="194976"> </a>complex</td>
@@ -317,6 +311,16 @@
     <td><a name="195073"> </a>double</td>
     <td><a name="195075"> </a>convert degrees to radians</td>
   </tr>
+  <tr>
+   <td><a name="194961"> </a>within</td>
+   <td><a name="194963"> </a>type, type, double</td>
+   <td><a name="194965"> </a>boolean</td>
+   <td><a name="194967"> </a>Return true if the first argument is close in value to the second,
+     where "close" means that it is within the distance given by the
+     third argument. Exactly what this means depends on the data type.
+     This method uses the isCloseTo() method of the first token.
+</tr>
+
 </table>
 
 
@@ -651,11 +655,18 @@
     <th><a name="195516"> </a>description</th>
   </tr>
   <tr>
-    <td><a name="195519"> </a>convolve</td>
-    <td><a name="195521"> </a>{</font>double}</font>, {</font>double} or</font></font><a name="195522"> </a>{</font>complex}, {</font>complex}</font></td>
-    <td><a name="195524"> </a>{<i>double</i>} or </font><a name="195525"> </a>{<i>complex</i>}</td>
-    <td><a name="195527"> </a>Convolve two arrays and return an array whose length is sum of the lengths of the two arguments minus one. Convolution of two arrays is the same as polynomial multiplication.</td>
-  </tr>
+   <td><a name="195519"> </a>close</td>
+   <td><a name="195521"> </a>double, double</td>
+   <td><a name="195524"> </a>boolean</td>
+   <td><a name="195527"> </a>Return true if the first argument is close to the second (within
+     EPSILON, where EPSILON is a static public variable of the SignalProcessing class whose default value is 1.0e-9).</a>
+ </tr>
+  <tr>
+   <td><a name="195519"> </a>convolve</td>
+   <td><a name="195521"> </a>{</font>double}</font>, {</font>double} or</font></font><a name="195522"> </a>{</font>complex}, {</font>complex}</font></td>
+   <td><a name="195524"> </a>{<i>double</i>} or </font><a name="195525"> </a>{<i>complex</i>}</td>
+   <td><a name="195527"> </a>Convolve two arrays and return an array whose length is sum of the lengths of the two arguments minus one. Convolution of two arrays is the same as polynomial multiplication.</td>
+ </tr>
   <tr>
     <td><a name="195531"> </a>DCT</td>
     <td><a name="195533"> </a>{</font>double} or</font></font><a name="195534"> </a>{</font>double}, </font>int or</font></font><a name="195535"> </a>{</font>double}, </font>int, int</td>
