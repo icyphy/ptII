@@ -83,6 +83,9 @@ public class DeltaConstraintSolver extends PropertyConstraintSolver {
      *  @exception IllegalActionException
      */
     public boolean errorsExist() throws IllegalActionException {
+        if(_conflictOccured)
+            return true;
+        
         for (Object propertyable : getAllPropertyables()) {
             Property property = getProperty(propertyable);
             if (property != null && !property.isAcceptableSolution()) {
@@ -124,13 +127,12 @@ public class DeltaConstraintSolver extends PropertyConstraintSolver {
 
         // Collect and solve type constraints.
         List<Inequality> constraintList = toplevelHelper.constraintList();
-
+        
         _resolveProperties(toplevel, toplevelHelper, constraintList);
         if (errorsExist()) {
             //Only do delta iteration when an error is found.
             _doDeltaIteration(toplevel, toplevelHelper, constraintList);
         }
-
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -198,4 +200,28 @@ public class DeltaConstraintSolver extends PropertyConstraintSolver {
         _resolveProperties(toplevel, toplevelHelper, errorList);
     }
 
+    /** Resolve the properties of the given top-level container,
+     * subject to the given constraint list.
+     * 
+     * @param toplevel The top-level container
+     * @param toplevelHelper Must be toplevel.getHelper()
+     * @param constraintList The constraint list that we are solving
+     * @throws TypeConflictException If an unacceptable solution is reached
+     * @throws IllegalActionException 
+     * @throws TypeConflictException 
+     */
+    protected void _resolveProperties(NamedObj toplevel,
+            PropertyConstraintHelper toplevelHelper,
+            List<Inequality> constraintList) throws IllegalActionException, TypeConflictException {
+        try {
+            _conflictOccured = false;
+            super._resolveProperties(toplevel, toplevelHelper, constraintList);
+        } catch (TypeConflictException ex) {
+            _conflictOccured = true;
+        }
+    }
+    
+    /////////////////////////////////////////////////////////////////////////
+    //////////         private variables        ////////////////////////////
+    boolean _conflictOccured;
 }

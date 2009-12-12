@@ -494,16 +494,15 @@ public class PropertyConstraintSolver extends PropertySolver {
      * @param toplevelHelper Must be toplevel.getHelper()
      * @param constraintList The constraint list that we are solving
      * @throws TypeConflictException If an unacceptable solution is reached
-     * @throws PropertyResolutionException If constraints are unsatisfiable
+     * @throws IllegalActionException 
+     * @throws TypeConflictException 
      */
     protected void _resolveProperties(NamedObj toplevel,
             PropertyConstraintHelper toplevelHelper,
-            List<Inequality> constraintList) throws TypeConflictException,
-            PropertyResolutionException {
+            List<Inequality> constraintList) throws IllegalActionException, TypeConflictException {
         Writer writer = null;
 
         List<Inequality> conflicts = new LinkedList<Inequality>();
-        List<Inequality> unacceptable = new LinkedList<Inequality>();
         
         try {
             // Check declared properties across all connections.
@@ -668,21 +667,13 @@ public class PropertyConstraintSolver extends PropertySolver {
             // In initialize mode, we can skip this.
             if (!isInitializeSolver() && !isCollectConstraints()) {
                 if (conflicts.size() > 0) {
-                    throw new PropertyResolutionException(this, toplevel(),
+                    throw new TypeConflictException(conflicts,
                             "Properties conflicts occurred in "
                                     + toplevel().getFullName()
                                     + " on the following inequalities:\n"
                                     + conflicts);
                 }
-               
             }
-        } catch (IllegalActionException ex) {
-            // This should not happen. The exception means that
-            // _checkDeclaredProperty or constraintList is called on a
-            // transparent actor.
-            throw new PropertyResolutionException(this, toplevel, ex,
-                    "Property resolution failed because of an error "
-                            + "during property inference");
         } finally {
             if (writer != null) {
                 try {
