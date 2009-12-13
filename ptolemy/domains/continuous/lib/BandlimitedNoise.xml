@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="BandlimitedNoise" class="ptolemy.actor.TypedCompositeActor">
+<class name="BandlimitedNoise" extends="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
     <property name="_location" class="ptolemy.kernel.util.Location" value="{240.0, 145.0}">
@@ -93,4 +93,4 @@
     <link port="ZeroOrderHold.output" relation="relation3"/>
     <link port="Gaussian.output" relation="relation2"/>
     <link port="Gaussian.trigger" relation="relation"/>
-</entity>
+</class>
