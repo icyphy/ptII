@@ -13,5 +13,8 @@ crazyboard     lego           robot          video
 etherealSting  lejos          saveasjava     waba
 jmf            midp           security       webstart
 
+anytimecontrol cacheAwareScheduler charon dpn engine flexo jacquard
+manet mobileCoding softwalls unionType vergil xsl zaurus
+
 To checkout ptIIapps, use:
 cvs -d :ext:source.eecs.berkeley.edu:/home/cvs co ptIIapps
