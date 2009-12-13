@@ -681,7 +681,7 @@ public class Simulator extends SDFTransformer {
 	if ( serFla != 0){
 	    String em = "Actor " + this.getFullName() + ": " + LS
 		+ "When trying to read from server, at time "
-		+ getDirector().getModelTime().getDoubleValue() + "," 
+		+ getDirector().getModelTime().getDoubleValue() + ", " 
 		+ "client sent flag " + server.getClientFlag() + "," + LS;
 	    // Add specifics of error message.
 	    switch (serFla) {
