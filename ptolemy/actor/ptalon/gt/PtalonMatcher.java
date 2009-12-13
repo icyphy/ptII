@@ -260,8 +260,8 @@ public class PtalonMatcher extends TypedCompositeActor implements
             return new TransformationEvaluator(actor);
         }
 
-        /** Create a new PtalonRecognizer
-         *  @param actor The actor for which to create a PtalonRecognizer
+        /** Create a new PtalonRecognizer.
+         *  @param lexer The lexer for which to create a PtalonRecognizer
          *  @return The PtalonRecognizer
          */
         protected PtalonRecognizer _createPtalonRecognizer(PtalonLexer lexer) {

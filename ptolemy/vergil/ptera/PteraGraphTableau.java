@@ -96,10 +96,13 @@ public class PteraGraphTableau extends FSMGraphTableau {
     ////                         public methods                    ////
 
     /** Create the graph frame that displays the model associated with
-     *  this tableau. This method creates a PteraGraphFrame. If subclass
+     *  this tableau together with the specified library.
+     *  This method creates a PteraGraphFrame. If a subclass
      *  uses another frame, this method should be overridden to create
      *  that frame.
      *  @param model The Ptolemy II model to display in the graph frame.
+     *  @param defaultLibrary The default library, or null to not specify
+     *   one.
      */
     public void createGraphFrame(CompositeEntity model,
             LibraryAttribute defaultLibrary) {

@@ -201,8 +201,8 @@ public class OrderedRecordToken extends RecordToken {
     }
     
     /**
-     * Create a Set implementation appropriate for operations on this RecordToken
-     * Here we are using an ordered set
+     * Create a Set implementation appropriate for operations on this RecordToken.
+     * Here we are using an ordered set.
      * @return a new Set.
      */
     protected Set _createSet() {

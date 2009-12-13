@@ -48,7 +48,7 @@ import ptolemy.kernel.util.NamedObj;
 //// TransformationEvaluator
 
 /**
-
+ Parse transformation actor or values and set parameters of actors.
 
  @author Thomas Huining Feng
  @version $Id$
@@ -71,6 +71,7 @@ public class TransformationEvaluator extends PtalonEvaluator {
 
     /** Enter the transformation.
      *  @param incremental  True if this is an incremental transformation.
+     *  @exception PtalonRuntimeException Not thrown in this baseclass.
      */
     public void enterTransformation(boolean incremental)
             throws PtalonRuntimeException {
@@ -96,8 +97,8 @@ public class TransformationEvaluator extends PtalonEvaluator {
      * A negated object is a NamedObj with a 
      * {@link ptolemy.actor.gt.NegationAttribute}.
      * @param name The name of the NamedObj to be negated.
-     * @exception If we are in a transformation or if the object has
-     * already been negated.
+     * @exception PtalonRuntimeException If we are in a transformation
+     * or if the object has already been negated.
      */
     public void negateObject(String name) throws PtalonRuntimeException {
         if (_isInTransformation) {
@@ -129,7 +130,7 @@ public class TransformationEvaluator extends PtalonEvaluator {
      * An optional object is a NamedObj with an 
      * {@link ptolemy.actor.gt.OptionAttribute}.
      * @param name The name of the NamedObj to be marked optional.
-     * @exception If we are in a transformation or if the object has
+     * @exception PtalonRuntimeException If we are in a transformation or if the object has
      * already been marked optional
      */
     public void optionalObject(String name) throws PtalonRuntimeException {
@@ -162,7 +163,7 @@ public class TransformationEvaluator extends PtalonEvaluator {
      * A preserved object is a NamedObj with an 
      * {@link ptolemy.actor.gt.OptionAttribute}.
      * @param name The name of the NamedObj to be preserved
-     * @exception If we are in a transformation or if the object has
+     * @exception PtalonRuntimeException If we are in a transformation or if the object has
      * already been preserved.
      */
     public void preserveObject(String name) throws PtalonRuntimeException {
@@ -278,6 +279,9 @@ public class TransformationEvaluator extends PtalonEvaluator {
         }
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
     private NamedObj _getObject(String name) throws PtalonScopeException,
             PtalonRuntimeException {
         String type = _getType(name);
@@ -292,9 +296,6 @@ public class TransformationEvaluator extends PtalonEvaluator {
         }
         return object;
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
 
     private void _removeAttributes(NamedObj object, Class<?>[] attributeClasses)
             throws IllegalActionException, NameDuplicationException {

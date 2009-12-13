@@ -115,7 +115,7 @@ public class PteraGraphFrame extends FSMGraphFrame {
     }
 
     /** Return the default event MoML.
-     *  @param  The default event MoML.
+     *  @return  The default event MoML.
      */   
     protected String _getDefaultEventMoML() {
         NamedObj child = GTTools.getChild(_topLibrary, "Event", false, false,

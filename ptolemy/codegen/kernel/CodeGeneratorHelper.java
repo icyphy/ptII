@@ -137,7 +137,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
 
     /**
      * Construct a code generator helper.
-     * @param Object The object for which the code generator should be constructed.
+     * @param object The object for which the code generator should be constructed.
      */
     public CodeGeneratorHelper(Object object) {
         // FIXME: Why is this a namedObj when the analyzeActor()
@@ -1896,6 +1896,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
      *  @param channelAndOffset The given channel and offset.
      *  @param forComposite True if this check is for a composite
      *  @param isWrite True if the reference is to be written to.
+     *  @return the reference.
      *  @exception IllegalActionException If the attribute does not
      *   exist or does not have a value.
      *  @see #generatePortReference(IOPort, String[], boolean)
@@ -2666,7 +2667,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
     /**
      * Get the cast type of a name.
      * @param name The given name.  The name must have a "#" in it.
-     * @param The string after the "#" and before the () is returned
+     * @return The string after the "#" and before the () is returned
      * @exception IllegalActionException If the cast type is invalid.
      */
     protected String _getCastType(String name) throws IllegalActionException {
