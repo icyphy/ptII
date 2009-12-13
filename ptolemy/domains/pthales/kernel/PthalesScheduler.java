@@ -40,7 +40,7 @@ import ptolemy.actor.sched.Firing;
 import ptolemy.actor.sched.NotSchedulableException;
 import ptolemy.actor.sched.Schedule;
 import ptolemy.actor.util.CausalityInterfaceForComposites;
-import ptolemy.domains.pthales.lib.PThalesGenericActor;
+import ptolemy.domains.pthales.lib.PthalesGenericActor;
 import ptolemy.domains.pthales.lib.PthalesCompositeActor;
 import ptolemy.domains.sdf.kernel.SDFScheduler;
 import ptolemy.kernel.util.IllegalActionException;
@@ -79,7 +79,7 @@ public class PthalesScheduler extends SDFScheduler {
 //        for (Actor actor : actors) {
 //            List<IOPort> ports = actor.inputPortList();
 //            for (IOPort port : ports) {
-//                PThalesIOPort thalesPort = (PThalesIOPort)port;
+//                PthalesIOPort thalesPort = (PthalesIOPort)port;
 //
 //                Integer rate = thalesPort.getDeclaredPortRate(port,"tokenConsumptionRate");
 //                if (rate != null) {
@@ -88,7 +88,7 @@ public class PthalesScheduler extends SDFScheduler {
 //            }
 //            ports = actor.outputPortList();
 //            for (IOPort port : ports) {
-//                PThalesIOPort thalesPort = (PThalesIOPort)port;
+//                PthalesIOPort thalesPort = (PthalesIOPort)port;
 //
 //                Integer rate = thalesPort.getDeclaredPortRate(port, "tokenProductionRate");
 //                if (rate != null) {
@@ -160,7 +160,7 @@ public class PthalesScheduler extends SDFScheduler {
  
             // Iteration is only done on external loops
             if (actor instanceof AtomicActor)
-                firing.setIterationCount(PThalesGenericActor.getIterations((AtomicActor)actor));
+                firing.setIterationCount(PthalesGenericActor.getIterations((AtomicActor)actor));
             if (actor instanceof CompositeActor)
                 firing.setIterationCount(PthalesCompositeActor.getIterations((CompositeActor)actor));
 

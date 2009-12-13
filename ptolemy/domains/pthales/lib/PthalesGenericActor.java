@@ -71,7 +71,7 @@ import ptolemy.kernel.util.Workspace;
    @Pt.ProposedRating Red (cxh)
    @Pt.AcceptedRating Red (cxh)
 */
-public class PThalesGenericActor extends TypedAtomicActor {
+public class PthalesGenericActor extends TypedAtomicActor {
 
     /** Construct an actor in the default workspace with an empty string
      *  as its name.  The object is added to the workspace directory.
@@ -81,7 +81,7 @@ public class PThalesGenericActor extends TypedAtomicActor {
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public PThalesGenericActor() throws IllegalActionException,
+    public PthalesGenericActor() throws IllegalActionException,
             NameDuplicationException {
         super();
         _initialize();
@@ -98,7 +98,7 @@ public class PThalesGenericActor extends TypedAtomicActor {
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public PThalesGenericActor(Workspace workspace)
+    public PthalesGenericActor(Workspace workspace)
             throws IllegalActionException, NameDuplicationException {
         super(workspace);
         _initialize();
@@ -116,7 +116,7 @@ public class PThalesGenericActor extends TypedAtomicActor {
      *  @exception NameDuplicationException If the name coincides with
      *   an entity already in the container.
      */
-    public PThalesGenericActor(CompositeEntity container, String name)
+    public PthalesGenericActor(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
         _initialize();
@@ -177,7 +177,7 @@ public class PThalesGenericActor extends TypedAtomicActor {
      *   an attribute that cannot be cloned.
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        PThalesGenericActor newObject = (PThalesGenericActor) super.clone(workspace);
+        PthalesGenericActor newObject = (PthalesGenericActor) super.clone(workspace);
 
         _internalRepetitions = parseRepetitions(this, INTERNAL_REPETITIONS);
         _totalRepetitions = parseRepetitions(this, REPETITIONS);
@@ -231,8 +231,8 @@ public class PThalesGenericActor extends TypedAtomicActor {
     public void fire() throws IllegalActionException {
 
         // Variables
-        List<PThalesIOPort> portsIn = null;
-        List<PThalesIOPort> portsOut = null;
+        List<PthalesIOPort> portsIn = null;
+        List<PthalesIOPort> portsOut = null;
         int portNumber;
 
         // Input ports 
@@ -253,8 +253,8 @@ public class PThalesGenericActor extends TypedAtomicActor {
 
         portNumber = 0;
         // Input ports created and filled before elementary task called 
-        for (PThalesIOPort port : portsIn) {
-            int dataSize = PThalesIOPort.getDataProducedSize(port);
+        for (PthalesIOPort port : portsIn) {
+            int dataSize = PthalesIOPort.getDataProducedSize(port);
             tokensIn = new FloatToken[dataSize];
             tokensIn = port.get(0, dataSize);
 
@@ -266,8 +266,8 @@ public class PThalesGenericActor extends TypedAtomicActor {
 
         portNumber = 0;
         // Outputs ports arrays created before elementary task called 
-        for (PThalesIOPort port : portsOut) {
-            realOut[portNumber] = new float[PThalesIOPort.getDataProducedSize(port)];
+        for (PthalesIOPort port : portsOut) {
+            realOut[portNumber] = new float[PthalesIOPort.getDataProducedSize(port)];
             portNumber++;
         }
 
@@ -319,8 +319,8 @@ public class PThalesGenericActor extends TypedAtomicActor {
 
         portNumber = 0;
         // Output ports write
-        for (PThalesIOPort port : portsOut) {
-            int dataSize = PThalesIOPort.getDataProducedSize(port);
+        for (PthalesIOPort port : portsOut) {
+            int dataSize = PthalesIOPort.getDataProducedSize(port);
 
             tokensOut = convertReal(realOut[portNumber]);
             for (int i = 0; i < port.getWidth(); i++) {
@@ -343,7 +343,7 @@ public class PThalesGenericActor extends TypedAtomicActor {
         try {
             _workspace.getWriteAccess();
 
-            PThalesIOPort port = new PThalesIOPort(this, name, false, false);
+            PthalesIOPort port = new PthalesIOPort(this, name, false, false);
             return port;
         } catch (IllegalActionException ex) {
             // This exception should not occur, so we throw a runtime
@@ -387,7 +387,7 @@ public class PThalesGenericActor extends TypedAtomicActor {
             // Argument is a port : check input or output
             if (listArgs[i].equals("port")) {
                 if (listArgs[i + 1].equals("OUT")) {
-                    Integer[] sizes = PThalesIOPort.getDataProducedSizes((PThalesIOPort)outputPortList().get(numOut));
+                    Integer[] sizes = PthalesIOPort.getDataProducedSizes((PthalesIOPort)outputPortList().get(numOut));
                     for (int size : sizes) {
                         if (size > 1)
                             objs.add(size);
@@ -396,7 +396,7 @@ public class PThalesGenericActor extends TypedAtomicActor {
                     numOut++;
                 }
                 if (listArgs[i + 1].equals("IN")) {
-                    Integer[] sizes = PThalesIOPort.getDataProducedSizes(((PThalesIOPort) inputPortList().get(numIn)));
+                    Integer[] sizes = PthalesIOPort.getDataProducedSizes(((PthalesIOPort) inputPortList().get(numIn)));
                     for (int size : sizes) {
                         if (size > 1)
                             objs.add(size);

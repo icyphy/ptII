@@ -48,10 +48,10 @@ import ptolemy.kernel.util.Workspace;
 ////PthalesCompositeActor
 
 /**
-   A composite actor imposes the use of PThalesIOPort
+   A composite actor imposes the use of PthalesIOPort
    as they contain needed values used by PThalesDirector.
    A PthalesCompositeActor can contain actors from diffent model (as SDF),
-   but the port must be a PThalesIOPort, because of the ArrayOL parameters. 
+   but the port must be a PthalesIOPort, because of the ArrayOL parameters. 
    @author R&eacute;mi Barr&egrave;re
    @see ptolemy.actor.TypedIOPort
    @version $Id$
@@ -168,12 +168,12 @@ public class PthalesCompositeActor extends TypedCompositeActor  {
         }
     }
 
-    /** Create a new PThalesIOPort with the specified name.
+    /** Create a new PthalesIOPort with the specified name.
      *  The container of the port is set to this actor.
      *  This method is write-synchronized on the workspace.
      *
      *  @param name The name for the new port.
-     *  @return A new PThalesIOPort.
+     *  @return A new PthalesIOPort.
      *  @exception NameDuplicationException If this actor already has a
      *   port with the specified name.
      */
@@ -181,7 +181,7 @@ public class PthalesCompositeActor extends TypedCompositeActor  {
         try {
             workspace().getWriteAccess();
 
-            PThalesIOPort port = new PThalesIOPort(this, name, false, false);
+            PthalesIOPort port = new PthalesIOPort(this, name, false, false);
             return port;
         } catch (IllegalActionException ex) {
             // This exception should not occur, so we throw a runtime

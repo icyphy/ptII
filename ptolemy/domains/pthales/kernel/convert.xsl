@@ -106,7 +106,7 @@
                 <xsl:value-of select="@name"/>
             </xsl:attribute>
             <xsl:attribute name="class">
-                <xsl:text>ptolemy.domains.pthales.lib.PThalesGenericActor</xsl:text>
+                <xsl:text>ptolemy.domains.pthales.lib.PthalesGenericActor</xsl:text>
             </xsl:attribute>
 
             <!-- Emplacement -->
@@ -174,7 +174,7 @@
                 <xsl:value-of select="@name"/>
             </xsl:attribute>
             <xsl:attribute name="class">
-                <xsl:text>ptolemy.domains.pthales.lib.PThalesIOPort</xsl:text>
+                <xsl:text>ptolemy.domains.pthales.lib.PthalesIOPort</xsl:text>
             </xsl:attribute>
 
             <!-- propriétés ptolemy -->

@@ -48,7 +48,11 @@ JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS) \
-	Illustrative.xml
+	Illustrative.xml \
+	Illustrative2.xml \
+	modalmodel2.xml \
+	modalmodel3-pthales.xml \
+	modalmodel4-pthales.xml
 
 EXTRA_SRCS = \
 	$(OTHER_FILES_TO_BE_JARED)

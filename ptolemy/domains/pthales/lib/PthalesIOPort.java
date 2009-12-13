@@ -67,7 +67,7 @@ import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
-////PThalesIOPort
+////PthalesIOPort
 
 /**
    A PthalesIOPort is an element of ArrayOL in Ptolemy.
@@ -81,9 +81,9 @@ import ptolemy.kernel.util.Workspace;
    @Pt.ProposedRating Red (cxh)
    @Pt.AcceptedRating Red (cxh)
  */
-public class PThalesIOPort extends TypedIOPort {
+public class PthalesIOPort extends TypedIOPort {
 
-    /** Construct a PThalesIOPort with a containing actor and a name
+    /** Construct a PthalesIOPort with a containing actor and a name
      *  that is neither an input nor an output.  The specified container
      *  must implement the TypedActor interface, or an exception will be
      *  thrown.
@@ -96,13 +96,13 @@ public class PThalesIOPort extends TypedIOPort {
      *  @exception NameDuplicationException If the name coincides with
      *   a port already in the container.
      */
-    public PThalesIOPort(ComponentEntity container, String name)
+    public PthalesIOPort(ComponentEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
     }
 
-    /** Construct a PThalesIOPort with no container and no name that is
+    /** Construct a PthalesIOPort with no container and no name that is
      *  neither an input nor an output.
      *  @param container The container.
      *  @param name The name of this actor within the container.
@@ -114,7 +114,7 @@ public class PThalesIOPort extends TypedIOPort {
      *  @exception NameDuplicationException If the name coincides with
      *   a port already in the container.
      */
-    public PThalesIOPort(ComponentEntity container, String name,
+    public PthalesIOPort(ComponentEntity container, String name,
             boolean isInput, boolean isOutput) throws IllegalActionException,
             NameDuplicationException {
         super(container, name, isInput, isOutput);
@@ -139,7 +139,7 @@ public class PThalesIOPort extends TypedIOPort {
      *  @return A new PthalesIOPort.
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        PThalesIOPort newObject = (PThalesIOPort) super.clone(workspace);
+        PthalesIOPort newObject = (PthalesIOPort) super.clone(workspace);
 
         // set _declaredType and _resolvedType
         if (_declaredType instanceof StructuredType
@@ -166,7 +166,7 @@ public class PThalesIOPort extends TypedIOPort {
         Integer[] rep = null;
 
         if (actor instanceof AtomicActor)
-            rep = PThalesGenericActor.getRepetitions((AtomicActor) actor);
+            rep = PthalesGenericActor.getRepetitions((AtomicActor) actor);
         if (actor instanceof CompositeActor)
             rep = PthalesCompositeActor.getRepetitions((CompositeActor) actor);
 
@@ -220,7 +220,7 @@ public class PThalesIOPort extends TypedIOPort {
         Integer[] rep = null;
 
         if (actor instanceof AtomicActor)
-            rep = PThalesGenericActor.getRepetitions((AtomicActor) actor);
+            rep = PthalesGenericActor.getRepetitions((AtomicActor) actor);
         if (actor instanceof CompositeActor)
             rep = PthalesCompositeActor.getRepetitions((CompositeActor) actor);
 
@@ -440,7 +440,7 @@ public class PThalesIOPort extends TypedIOPort {
         LinkedHashMap<String, Integer[]> tiling = getTiling(port);
         
         if (actor instanceof AtomicActor)
-            rep = PThalesGenericActor.getInternalRepetitions((AtomicActor)actor);
+            rep = PthalesGenericActor.getInternalRepetitions((AtomicActor)actor);
 
         Set dims = pattern.keySet();
 
@@ -547,7 +547,7 @@ public class PThalesIOPort extends TypedIOPort {
     public Integer getDeclaredPortRate(IOPort port, String description)
             throws IllegalActionException {
         int result = 0;
-        if (port instanceof PThalesIOPort) {
+        if (port instanceof PthalesIOPort) {
             result = getArraySize(port);
         }
         return result;
@@ -605,7 +605,7 @@ public class PThalesIOPort extends TypedIOPort {
         }
 
         // Useless parameters for CompositeActors
-        if (actor instanceof PThalesGenericActor) {
+        if (actor instanceof PthalesGenericActor) {
             if (getAttribute("dataType") == null) {
                 new StringParameter(this, "dataType");
             }
@@ -740,7 +740,7 @@ public class PThalesIOPort extends TypedIOPort {
          *  @return A TypedIOPort.
          */
         public Object getAssociatedObject() {
-            return PThalesIOPort.this;
+            return PthalesIOPort.this;
         }
 
         /** Return the type of this TypedIOPort.
@@ -828,7 +828,7 @@ public class PThalesIOPort extends TypedIOPort {
 
             if (!_declaredType.isSubstitutionInstance((Type) type)) {
                 throw new IllegalActionException("Type conflict on port "
-                        + PThalesIOPort.this.getFullName() + ".\n"
+                        + PthalesIOPort.this.getFullName() + ".\n"
                         + "Declared type is " + _declaredType.toString()
                         + ".\n"
                         + "The connection or type constraints, however, "
@@ -855,7 +855,7 @@ public class PThalesIOPort extends TypedIOPort {
          *  @return A description of the port and its type.
          */
         public String toString() {
-            return "(" + PThalesIOPort.this.toString() + ", " + getType() + ")";
+            return "(" + PthalesIOPort.this.toString() + ", " + getType() + ")";
         }
     }
 }

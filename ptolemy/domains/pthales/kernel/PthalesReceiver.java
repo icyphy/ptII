@@ -40,8 +40,8 @@ import ptolemy.actor.NoRoomException;
 import ptolemy.actor.NoTokenException;
 import ptolemy.actor.Receiver;
 import ptolemy.data.Token;
-import ptolemy.domains.pthales.lib.PThalesGenericActor;
-import ptolemy.domains.pthales.lib.PThalesIOPort;
+import ptolemy.domains.pthales.lib.PthalesGenericActor;
+import ptolemy.domains.pthales.lib.PthalesIOPort;
 import ptolemy.domains.pthales.lib.PthalesCompositeActor;
 import ptolemy.domains.sdf.kernel.SDFReceiver;
 import ptolemy.kernel.util.IllegalActionException;
@@ -270,15 +270,15 @@ public class PthalesReceiver extends SDFReceiver {
         // Output determines array size needed as input cannot read which has not been written
 
         // Total size of the array in "memory"
-        int finalSize = PThalesIOPort.getArraySize(port);
+        int finalSize = PthalesIOPort.getArraySize(port);
         if (_buffer == null || _buffer.length < finalSize)
-            _buffer = new Token[finalSize*PThalesIOPort.getNbTokenPerData(port)];
+            _buffer = new Token[finalSize*PthalesIOPort.getNbTokenPerData(port)];
 
         // 
-        _sizes = PThalesIOPort.getArraySizes(port);
+        _sizes = PthalesIOPort.getArraySizes(port);
 
         //
-        String[] objs = PThalesIOPort.getDimensions(port);
+        String[] objs = PthalesIOPort.getDimensions(port);
         _dimensions = new String[objs.length];
         for (int i = 0; i < objs.length; i++)
             _dimensions[i] = (String) objs[i];
@@ -291,20 +291,20 @@ public class PthalesReceiver extends SDFReceiver {
     
     public void fillParameters(Actor actor, IOPort port) {
         if (actor instanceof AtomicActor)
-            _repetitions = PThalesGenericActor.getRepetitions((AtomicActor)actor);
+            _repetitions = PthalesGenericActor.getRepetitions((AtomicActor)actor);
         if (actor instanceof CompositeActor)
             _repetitions = PthalesCompositeActor.getRepetitions((CompositeActor)actor);
 
         
-        _patternSize = PThalesIOPort.getPatternSize(port);
-        _patternSizes = PThalesIOPort.getPatternSizes(port);
+        _patternSize = PthalesIOPort.getPatternSize(port);
+        _patternSizes = PthalesIOPort.getPatternSizes(port);
         
-        _pattern = PThalesIOPort.getPattern(port);
-        _tiling = PThalesIOPort.getTiling(port);
-        _base = PThalesIOPort.getBase(port);
+        _pattern = PthalesIOPort.getPattern(port);
+        _tiling = PthalesIOPort.getTiling(port);
+        _base = PthalesIOPort.getBase(port);
         
-        _addressNumber = PThalesIOPort.getAddressNumber(port);
-        _nbTokens = PThalesIOPort.getNbTokenPerData(port);
+        _addressNumber = PthalesIOPort.getAddressNumber(port);
+        _nbTokens = PthalesIOPort.getNbTokenPerData(port);
 
     }
 

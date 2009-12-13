@@ -157,7 +157,7 @@
         </property>
         <property name="repetitions" class="ptolemy.data.expr.Parameter" value="{1, 1}">
         </property>
-        <port name="out" class="ptolemy.domains.pthales.lib.PThalesIOPort">
+        <port name="out" class="ptolemy.domains.pthales.lib.PthalesIOPort">
             <property name="output"/>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[340.0, 180.0]">
             </property>
@@ -201,7 +201,7 @@
         </property>
         <property name="repetitions" class="ptolemy.data.expr.Parameter" value="{1, 1}">
         </property>
-        <port name="port_0" class="ptolemy.domains.pthales.lib.PThalesIOPort">
+        <port name="port_0" class="ptolemy.domains.pthales.lib.PthalesIOPort">
             <property name="input"/>
             <property name="multiport"/>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{50.0, 195.0}">
