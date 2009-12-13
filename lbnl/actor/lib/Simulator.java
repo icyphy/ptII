@@ -323,15 +323,29 @@ public class Simulator extends SDFTransformer {
         try {
             //		Thread.sleep(100); // in milliseconds
             server.read();
-            int fla = server.getClientFlag();
-            if (fla < 0) {
-                final String em = "Error: Client " + this.getFullName()
-		    + " terminated communication by sending flag = " + fla
+
+	    final int serFla = server.getClientFlag();
+	    if ( serFla < 0){
+		String em = "Error: Client " + this.getFullName()
+		    + " terminated communication by sending flag = " + serFla
 		    + " at time "
-		    + getDirector().getModelTime().getDoubleValue() + ".";
-                throw new IllegalActionException(this, em);
-            }
-            if (fla > 0) {
+		    + getDirector().getModelTime().getDoubleValue() + "," + LS;
+		// Add specifics of error message.
+		switch (serFla) {
+		case -10:
+		    em += "which indicates a problem in the client during its initialization.";
+		    break;
+		case -20:
+		    em += "which indicates a problem in the client during its time integration.";
+		    break;
+		default: // used for -1 and other (undefined) flags
+		    em += "which indicates a problem in the client.";
+		    break;
+		}
+		throw new IllegalActionException(this, em);
+	    }
+	    
+            if (serFla > 0) {
 		// Client reached its final time. If this is also the last
 		// step from Ptolemy, then we don't want to issue a warning.
 		// Hence, we store the information, and if there is one more
@@ -340,7 +354,7 @@ public class Simulator extends SDFTransformer {
 		terminationMessage = "Warning: "
 		    + this.getFullName()
 		    + " terminated communication by sending flag = "
-		    + fla
+		    + serFla
 		    + " at time "
 		    + getDirector().getModelTime().getDoubleValue()
 		    + "."
@@ -663,24 +677,31 @@ public class Simulator extends SDFTransformer {
         // Send initial output token. See also domains/sdf/lib/SampleDelay.java
         _readFromServer();
         double[] dblRea = server.getDoubleArray();
-	if ( server.getClientFlag() == 1){
-	    final String em = "Actor " + this.getFullName() + ": " + LS
+	final int serFla = server.getClientFlag();
+	if ( serFla != 0){
+	    String em = "Actor " + this.getFullName() + ": " + LS
 		+ "When trying to read from server, at time "
 		+ getDirector().getModelTime().getDoubleValue() + "," 
-		+ "client sent flag " + server.getClientFlag() + "," + LS 
-		+ "which indicates that it reached the end of its simulation." + LS
-		+ "This should not happen during the initialization of this actor.";
+		+ "client sent flag " + server.getClientFlag() + "," + LS;
+	    // Add specifics of error message.
+	    switch (serFla) {
+	    case 1:
+		em += "which indicates that it reached the end of its simulation." + LS
+		    + "This should not happen during the initialization of this actor.";
+		break;
+	    case -10:
+		em += "which indicates a problem in the client during its initialization.";
+		break;
+	    case -20:
+		em += "which indicates a problem in the client during its time integration.";
+		break;
+	    default: // used for -1 and other (undefined) flags
+		em += "which indicates a problem in the client.";
+		break;
+	    }
 	    throw new IllegalActionException(em);
 	}
-	else
-	    if ( server.getClientFlag() != 0){
-	    final String em = "Actor " + this.getFullName() + ": " + LS
-		+ "When trying to read from server, at time "
-		+ getDirector().getModelTime().getDoubleValue() + "," 
-		+ "client sent flag " + server.getClientFlag() + "," + LS 
-		+ "which indicates a problem in the client.";
-	    throw new IllegalActionException(em);
-	}
+	// Check for null to avoid a NullPointerException
 	if ( dblRea == null ){
 	    final String em = "Actor " + this.getFullName() + ": " + LS
 		+ "When trying to read from server, obtained 'null' at time "
