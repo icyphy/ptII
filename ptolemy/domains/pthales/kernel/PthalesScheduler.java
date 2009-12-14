@@ -28,6 +28,7 @@
 
 package ptolemy.domains.pthales.kernel;
 
+import java.util.Iterator;
 import java.util.List;
 
 import ptolemy.actor.Actor;
@@ -36,12 +37,18 @@ import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.Receiver;
+import ptolemy.actor.parameters.ParameterPort;
 import ptolemy.actor.sched.Firing;
 import ptolemy.actor.sched.NotSchedulableException;
 import ptolemy.actor.sched.Schedule;
 import ptolemy.actor.util.CausalityInterfaceForComposites;
+import ptolemy.actor.util.ConstVariableModelAnalysis;
+import ptolemy.actor.util.DFUtilities;
 import ptolemy.domains.pthales.lib.PthalesGenericActor;
+import ptolemy.domains.pthales.lib.PthalesGenericActor;
+import ptolemy.domains.pthales.lib.PthalesIOPort;
 import ptolemy.domains.pthales.lib.PthalesCompositeActor;
+import ptolemy.domains.sdf.kernel.SDFDirector;
 import ptolemy.domains.sdf.kernel.SDFScheduler;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -168,4 +175,32 @@ public class PthalesScheduler extends SDFScheduler {
         }
         return schedule;
     }
- }
+    
+    /** Declare the rate dependency on any external ports of the model.
+     *  SDF directors should invoke this method once during preinitialize.
+     */
+    public void declareRateDependency() throws IllegalActionException {
+        ConstVariableModelAnalysis analysis = ConstVariableModelAnalysis
+                .getAnalysis(this);
+        SDFDirector director = (SDFDirector) getContainer();
+        CompositeActor model = (CompositeActor) director.getContainer();
+
+        for (Iterator ports = model.portList().iterator(); ports.hasNext();) {
+            IOPort port = (IOPort) ports.next();
+
+            if (!(port instanceof ParameterPort)) {
+                if (port.isInput()) {
+                    DFUtilities.setTokenConsumptionRate(port, PthalesIOPort.getDataProducedSize(port));
+                }
+
+                if (port.isOutput()) {
+                    DFUtilities.setTokenProductionRate(port, PthalesIOPort.getDataProducedSize(port));
+                   _declareDependency(analysis, port, "tokenInitProduction",
+                            _rateVariables);
+                }
+            }
+        }
+        super.declareRateDependency();
+    }
+
+}
