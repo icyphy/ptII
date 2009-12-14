@@ -60,7 +60,7 @@ public class DeltaConstraintSolver extends PropertyConstraintSolver {
     /** Constructs a DeltaConstraintSolver with the given name
      *  contained by the specified entity. 
      * 
-     *  @param container  The container.
+     *  @param container  T che container.
      *  @param name       The name of this DeltaConstraintSolver
      *  @throws IllegalActionException If the superclass throws it.
      *  @throws NameDuplicationException If the superclass throws it.
@@ -70,31 +70,7 @@ public class DeltaConstraintSolver extends PropertyConstraintSolver {
         super(container, name);
         // TODO Auto-generated constructor stub
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                        public methods                     ////
-
-    /** Determine if there were errors in the last property resolution.
-     * 
-     *  Unlike checkResolutionErorrs, this method does not record the
-     *  errors found and has no side-effects.
-     * 
-     *  @return True if errors are found
-     *  @exception IllegalActionException
-     */
-    public boolean errorsExist() throws IllegalActionException {
-        if(_conflictOccured)
-            return true;
-        
-        for (Object propertyable : getAllPropertyables()) {
-            Property property = getProperty(propertyable);
-            if (property != null && !property.isAcceptableSolution()) {
-                return true;
-            }
-        }
-        return false;
-    }
-
+    
     ///////////////////////////////////////////////////////////////////
     ////                        protected methods                  ////
 
@@ -128,8 +104,8 @@ public class DeltaConstraintSolver extends PropertyConstraintSolver {
         // Collect and solve type constraints.
         List<Inequality> constraintList = toplevelHelper.constraintList();
         
-        _resolveProperties(toplevel, toplevelHelper, constraintList);
-        if (errorsExist()) {
+        if (_resolvePropertiesHasErrors(toplevel, toplevelHelper,
+                constraintList)) {
             //Only do delta iteration when an error is found.
             _doDeltaIteration(toplevel, toplevelHelper, constraintList);
         }
@@ -182,8 +158,8 @@ public class DeltaConstraintSolver extends PropertyConstraintSolver {
 
                 if (testList.size() > 0) {
                     _resolvedProperties.clear();
-                    _resolveProperties(toplevel, toplevelHelper, testList);
-                    if (errorsExist()) {
+                    if (_resolvePropertiesHasErrors(toplevel, toplevelHelper,
+                            testList)) {
                         errorList = testList;
                         blockSize = errorList.size() / 2;//Math.min(errorList.size()/2, blockSize);
                         continue WHILE_LOOP;
@@ -201,27 +177,32 @@ public class DeltaConstraintSolver extends PropertyConstraintSolver {
     }
 
     /** Resolve the properties of the given top-level container,
-     * subject to the given constraint list.
+     *  subject to the given constraint list, and then check if
+     *  the resulting solution has errors.
      * 
      * @param toplevel The top-level container
      * @param toplevelHelper Must be toplevel.getHelper()
      * @param constraintList The constraint list that we are solving
-     * @throws TypeConflictException If an unacceptable solution is reached
+     * @return True If the found solution has errors.
      * @throws IllegalActionException 
-     * @throws TypeConflictException 
      */
-    protected void _resolveProperties(NamedObj toplevel,
+    protected boolean _resolvePropertiesHasErrors(NamedObj toplevel,
             PropertyConstraintHelper toplevelHelper,
-            List<Inequality> constraintList) throws IllegalActionException, TypeConflictException {
+            List<Inequality> constraintList) throws IllegalActionException {
+        boolean errorOccured = false;
         try {
-            _conflictOccured = false;
             super._resolveProperties(toplevel, toplevelHelper, constraintList);
         } catch (TypeConflictException ex) {
-            _conflictOccured = true;
+            // Thrown in case of conflict in inequalities.
+            errorOccured = true;
         }
+        // Check for unacceptable solution properties.
+        for (Object propertyable : getAllPropertyables()) {
+            Property property = getProperty(propertyable);
+            if (property != null && !property.isAcceptableSolution()) {
+                errorOccured = true;
+            }
+        }
+        return errorOccured;
     }
-    
-    /////////////////////////////////////////////////////////////////////////
-    //////////         private variables        ////////////////////////////
-    boolean _conflictOccured;
 }
