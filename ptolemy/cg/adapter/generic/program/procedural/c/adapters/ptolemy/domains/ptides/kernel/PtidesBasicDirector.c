@@ -269,7 +269,7 @@ void freeEvent(Event* thisEvent) {
 void timeAdd(const Time time1, const Time time2, Time* timeSum) {
     timeSum->secs = time1.secs + time2.secs;
     timeSum->nsecs = time1.nsecs + time2.nsecs;
-    if (timeSum->nsecs > 1000000000) {
+    if (timeSum->nsecs >= 1000000000) {
         timeSum->nsecs -= 1000000000;
         timeSum->secs++;
     }
