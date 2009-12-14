@@ -1,6 +1,6 @@
-/* An TypedIOPort with ArrayOL information
+/* An TypedIOPort with ArrayOL informations
 
- Copyright (c) 2009 The Regents of the University of California.
+ Copyright (c) 1997-2006 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -74,7 +74,7 @@ import ptolemy.kernel.util.Workspace;
    It contains data needed to determine access to data
    using multidimensional arrays.
 
-   @author R&eacute;mi Barr&egrave;re
+   @author Remi Barrere
    @see ptolemy.actor.TypedIOPort
    @version $Id$
    @since Ptolemy II 8.2
@@ -211,54 +211,56 @@ public class PthalesIOPort extends TypedIOPort {
      *  @return array sizes
      */
     public static LinkedHashMap<String, Integer> getArraySizes(IOPort port) {
-        LinkedHashMap<String, Integer> sizes = null;
+        LinkedHashMap<String, Integer> sizes = new LinkedHashMap<String, Integer>();
         LinkedHashMap<String, Token> sizesToMap = new LinkedHashMap<String, Token>();
 
-        sizes = new LinkedHashMap<String, Integer>();
         Actor actor = (Actor) port.getContainer();
+        Integer[] rep = { 1 };
 
-        Integer[] rep = null;
+        LinkedHashMap<String, Integer[]> pattern = getPattern(port);
+        LinkedHashMap<String, Integer[]> tiling = getTiling(port);
 
         if (actor instanceof AtomicActor)
             rep = PthalesGenericActor.getRepetitions((AtomicActor) actor);
         if (actor instanceof CompositeActor)
             rep = PthalesCompositeActor.getRepetitions((CompositeActor) actor);
 
-        int value;
-        int valuePattern;
-        int valueTiling;
+        Set dims = pattern.keySet();
+        Set tilingSet = tiling.keySet();
+        int i = 0;
 
-        LinkedHashMap<String, Integer[]> pattern = getPattern(port);
-        LinkedHashMap<String, Integer[]> tiling = getTiling(port);
-
-        for (String dimension : getDimensions(port)) {
-            valuePattern = 0;
-            if (pattern.get(dimension) != null)
-                valuePattern += pattern.get(dimension)[0].intValue()
-                        * pattern.get(dimension)[1].intValue();
-            Object repList[] = tiling.keySet().toArray();
-            valueTiling = 0;
-            if (tiling.get(dimension) != null) {
-                for (int i = 0; i < repList.length; i++) {
-                    if (repList[i].equals(dimension)
-                            && tiling.get(dimension) != null && rep.length > i)
-                        valueTiling = tiling.get(dimension)[0].intValue()
-                                * rep[i];
+        for (Object dim : dims.toArray()) {
+            if (!tilingSet.contains(dim)) {
+                sizes.put((String) dim, pattern.get(dim)[0]);
+                sizesToMap.put((String) dim, new IntToken(pattern.get(dim)[0]));
+            } else {
+                for (Object til : tilingSet) {
+                    if (i < rep.length && til.equals(dim)) {
+                        sizes.put((String) dim, pattern.get(dim)[0] + rep[i]
+                                * tiling.get(til)[0] - 1);
+                        sizesToMap.put((String) dim, new IntToken(pattern
+                                .get(dim)[0]
+                                + rep[i] * tiling.get(til)[0] - 1));
+                    }
                 }
             }
-            if (valuePattern == 0)
-                value = valueTiling;
-            else if (valueTiling == 0)
-                value = valuePattern;
-            else
-                value = valuePattern * valueTiling;
+            i++;
+        }
 
-            if (value >= 1) {
-                sizes.put((String) dimension, value);
-                sizesToMap.put((String) dimension, new IntToken(value));
+        if (rep != null) {
+            i = 0;
+            for (Object til : tilingSet) {
+                if (i < rep.length && !((String) til).startsWith("empty")
+                        && !dims.contains(til)) {
+                    sizes.put((String) til, rep[i] * tiling.get(til)[0]);
+                    sizesToMap.put((String) til, new IntToken(rep[i]
+                            * tiling.get(til)[0]));
+                }
+                i++;
             }
         }
 
+        // Size written if not already set
         try {
             OrderedRecordToken array = new OrderedRecordToken(sizesToMap);
             // Write into parameter
@@ -434,27 +436,41 @@ public class PthalesIOPort extends TypedIOPort {
         List myList = new ArrayList<String>();
 
         Actor actor = (Actor) port.getContainer();
-        Integer[] rep = {1};
+        Integer[] rep = { 1 };
 
         LinkedHashMap<String, Integer[]> pattern = getPattern(port);
         LinkedHashMap<String, Integer[]> tiling = getTiling(port);
-        
+
         if (actor instanceof AtomicActor)
-            rep = PthalesGenericActor.getInternalRepetitions((AtomicActor)actor);
+            rep = PthalesGenericActor
+                    .getInternalRepetitions((AtomicActor) actor);
 
         Set dims = pattern.keySet();
+        Set tilingSet = tiling.keySet();
+        int i = 0;
 
         for (Object dim : dims.toArray()) {
-            myList.add(pattern.get(dim)[0]);
-        }
-        if (rep != null) {
-            Set tilingSet = tiling.keySet();
-            int i = 0;
-            for (Object til : tilingSet) {
-                if (i < rep.length && !((String) til).startsWith("empty")) {
-                    myList.add(rep[i] * tiling.get(til)[0]);
-                    i++;
+            if (!tilingSet.contains(dim)) {
+                myList.add(pattern.get(dim)[0]);
+            } else {
+                for (Object til : tilingSet) {
+                    if (i < rep.length && til.equals(dim)) {
+                        myList.add(pattern.get(dim)[0] + rep[i]
+                                * tiling.get(til)[0] - 1);
+                    }
                 }
+            }
+            i++;
+        }
+
+        if (rep != null) {
+            i = 0;
+            for (Object til : tilingSet) {
+                if (i < rep.length && !((String) til).startsWith("empty")
+                        && !dims.contains(til)) {
+                    myList.add(rep[i] * tiling.get(til)[0]);
+                }
+                i++;
             }
         }
         Integer[] result = new Integer[myList.size()];
@@ -462,7 +478,6 @@ public class PthalesIOPort extends TypedIOPort {
 
         return result;
     }
-
 
     /** returns the pattern of this port 
      *  @return pattern 
