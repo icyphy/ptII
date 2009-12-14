@@ -64,8 +64,8 @@ import ptolemy.kernel.util.Workspace;
    <p>For details about ArrayOL, see:
    P. Boulet, <a href="http://hal.inria.fr/inria-00128840/en">Array-OL Revisited, Multidimensional Intensive Signal Processing Specification</a>,INRIA, Sophia Antipolis, France, 2007.
 
-   @author R&eacute;mi Barr&egrave;re
-   @see ptolemy.actor.TypedIOPort
+   @author Remi Barrere
+   @see ptolemy.actor.TypedAtomicActor
    @version $Id$
    @since Ptolemy II 8.2
    @Pt.ProposedRating Red (cxh)
@@ -293,9 +293,13 @@ public class PthalesGenericActor extends TypedAtomicActor {
                                 // JNI Function call with arguments 
                                 method.invoke(c, args);
 
-                                // Function call is ok
-                                break;
+                             }
+                            else
+                            {
+                                throw new IllegalActionException(this, "Wrong argument number calling " + method.getName());
                             }
+                            // Function call is done
+                            break;
 
                         } catch (IllegalArgumentException e) {
                             // FIXME: Don't print a stack trace, instead
