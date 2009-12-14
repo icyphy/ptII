@@ -4,13 +4,13 @@
 <entity name="Pendulum3D" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={12, 99, 815, 613}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={12, 99, 1034, 680}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[602, 503]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[821, 570]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{301.0, 251.5}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{410.5, 285.0}">
     </property>
     <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
         <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
@@ -117,10 +117,6 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[380.0, 50.0]">
         </property>
     </property>
-    <property name="Documentation" class="ptolemy.vergil.kernel.attributes.DocumentationAttribute">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{455.0, 175.0}">
-        </property>
-    </property>
     <property name="_documentation" class="ptolemy.data.expr.FileParameter" value="ptolemy/domains/continuous/demo/Pendulum3D/pendulum.pdf">
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -130,9 +126,9 @@
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model models a 3-D pendulum bouncing on a flat surface. &#10;Double-click the right yellow block for a graphic view. &#10;&#10;Pendulum collides with the surface of the cart&#10;and bounces back with some energy loss, which is&#10;specified by the lambda parameter. There is no &#10;extra force except the gravity force applied on&#10;the pendulum. &#10;&#10;This model is a Zeno model. We use two states for&#10;pre-Zeno and post-Zeno dynamics respectively.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model simulates a 3-D pendulum bouncing on a flat surface,&#10;as shown in the figure on the right.&#10;&#10;A pendulum collides with the surface of the cart&#10;and bounces back with some energy loss, which is&#10;specified by the lambda parameter. There is no &#10;extra force except the gravitational force on&#10;the pendulum. &#10;&#10;This is a Zeno model. We use two states for&#10;pre-Zeno and post-Zeno dynamics respectively,&#10;showing how to design systems that get past&#10;Zeno points.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 255.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 255.0]">
         </property>
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -140,7 +136,15 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Authors: Haiyang Zheng, Robert D. Gregg, Aaron D. Ames">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 460.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 485.0]">
+        </property>
+    </property>
+    <property name="PDF" class="ptolemy.vergil.pdfrenderer.PDFAttribute">
+        <property name="source" class="ptolemy.data.expr.FileParameter" value="pendulum.pdf">
+        </property>
+        <property name="scale" class="ptolemy.data.expr.Parameter" value="25.0">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[425.0, 290.0]">
         </property>
     </property>
     <entity name="ModalModel" class="ptolemy.domains.modal.modal.ModalModel">

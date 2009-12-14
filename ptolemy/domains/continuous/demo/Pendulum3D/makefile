@@ -48,7 +48,6 @@ JSRCS =
 OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS) \
 	Pendulum3D.xml \
-	Pendulum3D_reduced.xml \
 	pendulum.pdf
 
 EXTRA_SRCS = \
