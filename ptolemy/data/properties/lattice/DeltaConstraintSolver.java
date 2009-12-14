@@ -161,7 +161,7 @@ public class DeltaConstraintSolver extends PropertyConstraintSolver {
                     if (_resolvePropertiesHasErrors(toplevel, toplevelHelper,
                             testList)) {
                         errorList = testList;
-                        blockSize = errorList.size() / 2;//Math.min(errorList.size()/2, blockSize);
+                        blockSize = Math.min(errorList.size()/2, blockSize);
                         continue WHILE_LOOP;
                     }
                 }
