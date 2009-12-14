@@ -217,7 +217,7 @@ public class LevelCrossingDetector extends TypedAtomicActor implements
                 .clone(workspace);
 
         // Set the type constraints.
-        newObject.output.setTypeAtLeast(newObject.level);
+        newObject.output.setTypeAtLeast(newObject.value);
         return newObject;
     }
 
