@@ -589,7 +589,7 @@ public class ContinuousIntegrator extends TypedAtomicActor implements
      *  equivalent (the base class will make all ports equivalent because
      *  the initialState input is a ParameterPort).
      */
-    private class IntegratorCausalityInterface extends DefaultCausalityInterface {
+    private static class IntegratorCausalityInterface extends DefaultCausalityInterface {
         public IntegratorCausalityInterface(ContinuousIntegrator actor,
                 Dependency defaultDependency) {
             super(actor, defaultDependency);

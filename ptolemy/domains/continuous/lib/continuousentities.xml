@@ -36,10 +36,13 @@
   <entity name="Random" class="ptolemy.moml.EntityLibrary">
         <entity name="BandlimitedNoise"
                 class="ptolemy.domains.continuous.lib.BandlimitedNoise"/>
+        <entity name="ContinuousSpectrum"
+                class="ptolemy.domains.continuous.lib.ContinuousSpectrum"/>
         <entity name="Noise"
                 class="ptolemy.domains.continuous.lib.Noise"/>
-  		<entity name="Discrete Random" class="ptolemy.moml.EntityLibrary">
-  		   <input source="ptolemy/actor/lib/random.xml"/>
+  	    <input source="ptolemy/actor/lib/random.xml"/>
+  		<entity name="Random">
+  			<rename name="Discrete Random"/>
   		</entity>
   </entity>
   <entity name="Miscellaneous" class="ptolemy.moml.EntityLibrary">

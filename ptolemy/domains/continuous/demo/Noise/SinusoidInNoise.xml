@@ -1,0 +1,237 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="SinusoidInNoise" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
+    </property>
+    <property name="noiseStandardDeviation" class="ptolemy.data.expr.Parameter" value="0.4">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 135.0]">
+        </property>
+    </property>
+    <property name="noiseBandwidth" class="ptolemy.data.expr.Parameter" value="10.0">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 115.0]">
+        </property>
+    </property>
+    <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="(2^order - 1) / samplingFrequency">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 40.0]">
+        </property>
+    </property>
+    <property name="samplingFrequency" class="ptolemy.data.expr.Parameter" value="100.0">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 75.0]">
+        </property>
+    </property>
+    <property name="order" class="ptolemy.data.expr.Parameter" value="12">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 95.0]">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={4, 22, 813, 510}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model measures the power spectrum of&#10;bandlimited noise added to a sinusoid. The &#10;spectrum is plotted together with the theoretical&#10;value of the spectrum of the noise. Notice that&#10;the sidebands decay slightly more slowly than&#10;the theory predicts because of aliasing distortion.&#10;You can experiment with the bandwidth of the&#10;noise and the frequency and amplitude of the&#10;sine wave.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{215.0, 20.0}">
+        </property>
+    </property>
+    <property name="sinusoidFrequency" class="ptolemy.data.expr.Parameter" value="1.0">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 155.0]">
+        </property>
+    </property>
+    <property name="sinusoidAmplitude" class="ptolemy.data.expr.Parameter" value="1.0">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 175.0]">
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.4,0.4,0.4,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Edward A. Lee">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{15.0, 375.0}">
+        </property>
+    </property>
+    <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{180.0, 260.0}">
+        </property>
+    </entity>
+    <entity name="BandlimitedNoise2" class="ptolemy.domains.continuous.lib.BandlimitedNoise">
+        <property name="seed" class="ptolemy.actor.parameters.SharedParameter" value="1L">
+        </property>
+        <property name="resetOnEachRun" class="ptolemy.actor.parameters.SharedParameter" value="true">
+        </property>
+        <property name="standardDeviation" class="ptolemy.actor.parameters.PortParameter" value="noiseStandardDeviation">
+        </property>
+        <property name="bandwidth" class="ptolemy.data.expr.Parameter" value="noiseBandwidth">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{75.0, 330.0}">
+        </property>
+    </entity>
+    <entity name="SequencePlotter" class="ptolemy.actor.lib.gui.SequencePlotter">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 1127, 319}, maximized=false}">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[1127, 275]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{420.0, 340.0}">
+        </property>
+        <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>Time Domain Signal</title>
+<xLabel>time</xLabel>
+<yLabel>sinusoid in noise</yLabel>
+<xRange min="1.0" max="8191.0"/>
+<yRange min="-1.6808372521554853" max="1.8652133391222512"/>
+</plot>?>
+        </configure>
+    </entity>
+    <entity name="PeriodicSampler" class="ptolemy.domains.continuous.lib.PeriodicSampler">
+        <property name="samplePeriod" class="ptolemy.data.expr.Parameter" value="1.0/ samplingFrequency">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{275.0, 260.0}">
+        </property>
+    </entity>
+    <entity name="ContinuousSinewave" class="ptolemy.domains.continuous.lib.ContinuousSinewave">
+        <property name="magnitude" class="ptolemy.data.expr.Parameter" value="sinusoidAmplitude">
+        </property>
+        <property name="frequency" class="ptolemy.actor.parameters.PortParameter" value="sinusoidFrequency">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{65.0, 245.0}">
+        </property>
+        <port name="frequency" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{5.0, 245.0}">
+            </property>
+        </port>
+        <port name="phase" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{5.0, 285.0}">
+            </property>
+        </port>
+    </entity>
+    <entity name="ContinuousSpectrum" class="ptolemy.domains.continuous.lib.ContinuousSpectrum">
+        <property name="order" class="ptolemy.data.expr.Parameter" value="order">
+        </property>
+        <property name="samplingFrequency" class="ptolemy.data.expr.Parameter" value="samplingFrequency">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 260.0]">
+        </property>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="{360.0, 260.0}">
+        </vertex>
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="AddSubtract.plus" relation="relation3"/>
+    <link port="AddSubtract.plus" relation="relation4"/>
+    <link port="AddSubtract.output" relation="relation2"/>
+    <link port="BandlimitedNoise2.output" relation="relation4"/>
+    <link port="SequencePlotter.input" relation="relation"/>
+    <link port="PeriodicSampler.input" relation="relation2"/>
+    <link port="PeriodicSampler.output" relation="relation"/>
+    <link port="ContinuousSinewave.output" relation="relation3"/>
+    <link port="ContinuousSpectrum.in" relation="relation"/>
+</entity>

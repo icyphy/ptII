@@ -47,6 +47,7 @@ PTPACKAGE = 	lib
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
+	BandlimitedNoise.java \
 	DifferentialSystem.java \
 	DiscreteClock.java \
 	EventSource.java \
@@ -60,11 +61,12 @@ JSRCS = \
 	ZeroOrderHold.java
 
 OTHER_FILES_TO_BE_JARED = \
-	BandlimitedNoise.xml \
+	BandlimitedNoiseIcon.xml \
 	ContinuousClock.xml \
 	ContinuousClockIcon.xml \
-	ContinuousTimeDelayIcon.xml \
 	ContinuousSinewave.xml \
+	ContinuousSpectrum.xml \
+	ContinuousTimeDelayIcon.xml \
 	ct2continuous \
 	continuousentities.xml \
 	EventSource.java \

@@ -184,7 +184,7 @@ public class Noise extends Gaussian {
                 _current = _valueAtStart + (_valueAtEnd - _valueAtStart) * interval / timeGapBetweenValues;
             }
         }
-        // The supperclass produces on the output the _current value.
+        // The superclass produces on the output the _current value.
         // Since above we set _needNew to false if it was true,
         // the superclass will never produce a new random number.
         super.fire();

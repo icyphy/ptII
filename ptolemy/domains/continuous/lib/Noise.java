@@ -32,11 +32,11 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
 //////////////////////////////////////////////////////////////////////////
-//// WhiteNoise
+//// Noise
 
 /**
 This actor generates continuous-time noise with a Gaussian distribution.
-It provides two approximations to a white noise process, depending
+It provides two rather ad-hoc approximations to a white noise process, depending
 on the value of the <i>linearlyInterpolate</i> parameter. Specifically,
 if this parameter is true (the default), then the output signal is
 a continuous signal that linearly interpolates between
@@ -99,6 +99,9 @@ at the times that the LevelCrossingDetector triggers, the
 Gaussian actor will actually produce two distinct random numbers
 at the same time (at different microsteps). This changes the
 statistics of the output in a very subtle way.
+<p>
+Note that a much more principled noise process is generated
+by the {@link BandlimitedNoise} actor.
 
  @author Edward A. Lee
  @version $Id$
