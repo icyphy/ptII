@@ -400,7 +400,8 @@ public class PthalesReceiver extends SDFReceiver {
         for (int nDim = 0; nDim < _dimensions.length; nDim++) {
             previousSize = 1;
             for (int prev = 0; prev < nDim; prev++) {
-                previousSize *= _sizes.get(_dimensions[prev]);
+                if (_sizes.get(_dimensions[prev]) != null)
+                	previousSize *= _sizes.get(_dimensions[prev]);
             }
             jumpAddr.put((String) _dimensions[nDim], previousSize);
         }
