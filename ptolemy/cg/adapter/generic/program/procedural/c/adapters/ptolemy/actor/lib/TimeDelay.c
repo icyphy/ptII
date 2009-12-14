@@ -1,5 +1,5 @@
 /***fireBlock($intPart, $fracPart)***/
-static int lastMicrostep = currentMicrostep;
+int lastMicrostep = currentMicrostep;
 static Time lastModelTime;
 
 timeSet(currentModelTime, &lastModelTime);

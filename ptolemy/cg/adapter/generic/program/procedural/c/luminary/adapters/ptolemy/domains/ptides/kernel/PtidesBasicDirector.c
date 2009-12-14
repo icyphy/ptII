@@ -207,15 +207,17 @@ void getRealTime(Time * const physicalTime){
     if(tick2 > tick1){
         tempQuarterSecs++;
     }
-    switch(tempQuarterSecs){
+    physicalTime->secs = tempSecs;
+    switch(tempQuarterSecs) {
+		case 0:			physicalTime->nsecs = 0;		 break;
         case 1:         physicalTime->nsecs = 250000000; break;
         case 2:         physicalTime->nsecs = 500000000; break;
         case 3:         physicalTime->nsecs = 750000000; break;
-        case 4:         physicalTime->secs = 1;                            //continue to next line
-        default:        physicalTime->nsecs = 0;                 break;
+        case 4:         physicalTime->nsecs = 0;
+						physicalTime->secs++;			 break;
     }
-    physicalTime->nsecs += convertCyclesToNsecs(tick2);
-    physicalTime->secs += tempSecs;
+    // since the timer counts down, the actual cycle is the TIMER_ROLLOVER_CYCLES - tick2
+    physicalTime->nsecs += convertCyclesToNsecs(TIMER_ROLLOVER_CYCLES - tick2);
 }
 
 /* timer */
