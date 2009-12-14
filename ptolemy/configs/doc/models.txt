@@ -67,7 +67,6 @@ $CLASSPATH/ptolemy/caltrop/demo/SDFDDI/SDFDDI.xml
 $CLASSPATH/ptolemy/codegen/c/domains/fsm/demo/Mod4Counter/Mod4Counter.xml
 $CLASSPATH/ptolemy/codegen/c/domains/pn/demo/Gravitation/Gravitation.xml
 $CLASSPATH/ptolemy/codegen/c/domains/pn/demo/PNButterfly/PNButterfly.xml
-$CLASSPATH/ptolemy/codegen/c/targets/openRTOS/demo/ControlRobot/ControlRobot.xml
 $CLASSPATH/ptolemy/codegen/demo/Butterfly/Butterfly.xml
 $CLASSPATH/ptolemy/codegen/demo/Life/Life.xml
 $CLASSPATH/ptolemy/codegen/java/actor/lib/embeddedJava/demo/CompiledCompositeActor/CompiledCompositeActor.xml
@@ -115,6 +114,8 @@ $CLASSPATH/ptolemy/domains/continuous/demo/NewtonsCradle/NewtonsCradlePerfectlyI
 $CLASSPATH/ptolemy/domains/continuous/demo/NewtonsCradle/NewtonsCradle.xml
 $CLASSPATH/ptolemy/domains/continuous/demo/NewtonsCradle/ParameterizedNewtonsCradleAnimatedNondeterministic.xml
 $CLASSPATH/ptolemy/domains/continuous/demo/NewtonsCradle/ParameterizedNewtonsCradleAnimated.xml
+$CLASSPATH/ptolemy/domains/continuous/demo/Noise/HysteresisWithNoise.xml
+$CLASSPATH/ptolemy/domains/continuous/demo/Noise/Noise.xml
 $CLASSPATH/ptolemy/domains/continuous/demo/Pendulum3D/Pendulum3D.xml
 $CLASSPATH/ptolemy/domains/continuous/demo/Poisson/IncreasingRatePoisson.xml
 $CLASSPATH/ptolemy/domains/continuous/demo/Poisson/Poisson.xml
