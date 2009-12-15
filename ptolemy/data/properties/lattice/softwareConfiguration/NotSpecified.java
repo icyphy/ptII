@@ -59,7 +59,7 @@ public class NotSpecified extends LatticeProperty {
      * Return false, indicating that this property is not an acceptable solution.
      * @return False, indicating that this property is not an acceptable solution.
      */
-    public boolean isAcceptableSolution() {
-        return false;
-    }
+//    public boolean isAcceptableSolution() {
+//        return false;
+//    }
 }
