@@ -39,7 +39,6 @@
   <!-- named "blank", then the effigy will initially refer to a clone -->
   <!-- of that blank entity. -->
   <entity name="effigyFactory" class="ptolemy.actor.gui.EffigyFactory">
-    <input source="ptolemy/configs/ontologyEffigyFactory.xml"/>
     <input source="ptolemy/configs/graphEffigyFactory.xml"/>
     <input source="ptolemy/configs/modalEffigyFactories.xml"/>
     <input source="ptolemy/configs/fsmEffigyFactories.xml"/>
@@ -48,6 +47,7 @@
     <input source="ptolemy/configs/iaEffigyFactory.xml"/>
     <input source="ptolemy/configs/fmvEffigyFactory.xml"/>
     <input source="ptolemy/configs/extendedEffigyFactories.xml"/>
+    <input source="ptolemy/configs/ontologyEffigyFactory.xml"/>
   </entity>
 
   <!-- The list of tableau factories, which defines the visual   -->
