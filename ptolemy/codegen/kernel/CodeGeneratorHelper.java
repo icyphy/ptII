@@ -329,7 +329,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
         try {
             copyFilesToCodeDirectory(getComponent(), _codeGenerator);
         } catch (IOException ex) {
-            throw new IllegalActionException(this, ex,
+            throw new IllegalActionException(getComponent(), ex,
                     "Problem copying files from the necessaryFiles parameter.");
         }
         return processCode(code.toString());
@@ -357,7 +357,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
         try {
             copyFilesToCodeDirectory(getComponent(), _codeGenerator);
         } catch (IOException ex) {
-            throw new IllegalActionException(this, ex,
+            throw new IllegalActionException(getComponent(), ex,
                     "Problem copying files from the necessaryFiles parameter.");
         }
 
@@ -1386,7 +1386,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
                 result.append(replaceString);
 
             } catch (Throwable throwable) {
-                throw new IllegalActionException(this, throwable,
+                throw new IllegalActionException(getComponent(), throwable,
                         "Failed to replace the parameter \"" + name
                                 + "\" in the macro \"" + macro
                                 + "\".\nInitial code was:\n" + code);
@@ -2958,7 +2958,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
                     parseList(parameter)
                 });
             } catch (Exception ex) {
-                throw new IllegalActionException(this, ex,
+                throw new IllegalActionException(getComponent(), ex,
                         "Failed to invoke user macro ($" + macro + ").");
             }
         }
