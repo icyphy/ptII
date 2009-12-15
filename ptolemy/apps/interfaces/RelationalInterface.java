@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Set;
 
 import ptolemy.actor.IOPort;
+import ptolemy.kernel.util.IllegalActionException;
 
 /** Representation of an interface that relates its inputs and outputs,
  *  in the style of the EMSOFT 2009 paper "On Relational Interfaces."
@@ -65,8 +66,11 @@ public class RelationalInterface {
      *  the original interface. We should change this.
      * 
      *  @param connections The feedback connections.
+     *  @throws InterfaceCompositionException If there feedback connection
+     *   is invalid.  This can only be because the input port is non-Moore.
      */
-    public void addFeedback(final Set<Connection> connections) {
+    public void addFeedback(final Set<Connection> connections)
+            throws InterfaceCompositionException {
         Set<String> newConstraints = new HashSet<String>();
         newConstraints.add(_contract);
         for (Connection connection : connections) {
@@ -76,7 +80,8 @@ public class RelationalInterface {
                 newConstraints.add("(= " + connection._inputPort
                         + " " + connection._outputPort + ")");
             } else {
-                assert false; //FIXME: Throw exception
+                throw new InterfaceCompositionException(
+                        "Cannot add feedback to a non-Moore input port");
             }
         }
         _contract = LispExpression.conjunction(newConstraints);
@@ -251,4 +256,13 @@ public class RelationalInterface {
     /** The contract of the interface.
      */
     private String _contract;
+}
+
+class InterfaceCompositionException extends IllegalActionException {
+    /** Construct an exception with a detail message.
+     *  @param detail The message.
+     */
+    public InterfaceCompositionException(String detail) {
+        super(detail);
+    }
 }
