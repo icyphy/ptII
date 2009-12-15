@@ -9,7 +9,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 
-import yices.YicesLite;
+//import yices.YicesLite;
 
 /** An interface to an SMT solver.
  * 
@@ -35,16 +35,16 @@ public class SMTSolver {
      *   and the empty string if no assertion can be made.
      */
     public String check(String formula) {
-        final int ctx = yl.yicesl_mk_context();
+//        final int ctx = yl.yicesl_mk_context();
         formula += "(set-evidence! true)\n(check)\n";
 
         final StringBuffer result = new StringBuffer();
         try {
             final File tmpfile = File.createTempFile("yicesout", "ycs");
-            yl.yicesl_set_output_file(tmpfile.getAbsolutePath());
+//            yl.yicesl_set_output_file(tmpfile.getAbsolutePath());
 
-            yl.yicesl_read(ctx, formula);
-            yl.yicesl_del_context(ctx);
+//            yl.yicesl_read(ctx, formula);
+//            yl.yicesl_del_context(ctx);
 
             final BufferedReader resultBuf = new BufferedReader(new FileReader(
                     tmpfile));
@@ -80,6 +80,6 @@ public class SMTSolver {
     ////                      private variables                    ////
     /** The interface to Yices SMT solver using the Yices Java API Lite.
      */
-    private final YicesLite yl = new YicesLite();
+//    private final YicesLite yl = new YicesLite();
 
 }
