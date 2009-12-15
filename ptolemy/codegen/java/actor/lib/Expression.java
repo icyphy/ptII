@@ -234,7 +234,7 @@ public class Expression extends JavaCodeGeneratorHelper {
             try {
                 if (name.equals("time")) {
                     // If the director has the period set to something other
-                    // than 0, then return the value of _currentTime
+                    // than 0, then return the value of _iteration * PERIOD
                     // See codegen/kernel/StaticSchedulingCodeGenerator.java.
                     // FIXME: should we check for period being set anywhere
                     // in the hierarchy?
@@ -244,7 +244,7 @@ public class Expression extends JavaCodeGeneratorHelper {
                         Double periodValue = ((DoubleToken) ((Variable) period)
                                 .getToken()).doubleValue();
                         if (periodValue != 0.0) {
-                            return new ObjectToken("_currentTime");
+                            return new ObjectToken("_iteration * PERIOD");
                         }
                     }
                     return new DoubleToken("0.0");
