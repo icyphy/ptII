@@ -1,4 +1,4 @@
-/* A transition in an FSMActor.
+/* A relation between concepts in an ontology.
 
  Copyright (c) 1999-2009 The Regents of the University of California.
  All rights reserved.

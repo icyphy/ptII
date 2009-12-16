@@ -81,7 +81,9 @@ public class Ontology extends CompositeEntity {
     ////                   public methods                                   ////
 
     /** Return the graph represented by this ontology.
-     *  @return The property graph.
+     *  Graph is weighted by Concepts on the nodes and ConceptRelations on
+     *  the edges.
+     *  @return The concept graph.
      */
     public ConceptGraph getGraph() {
         if (workspace().getVersion() != _graphVersion) {
@@ -92,9 +94,13 @@ public class Ontology extends CompositeEntity {
                 _graph.addNodeWeight(concept);
             }
             for (Concept concept : concepts) {
-                List<ComponentPort> remotePorts = concept.abovePort.deepConnectedPortList();
-                for (ComponentPort remotePort : remotePorts) {
-                    _graph.addEdge(concept, remotePort.getContainer());
+                List<ConceptRelation> relationLinks = concept.abovePort.linkedRelationList();
+                for (ConceptRelation link : relationLinks) {
+                    List<ComponentPort> remotePorts = link.linkedPortList(concept.abovePort);
+                    assert (remotePorts.size() == 1) : "ConceptRelations can only connect two concepts";
+                    for (ComponentPort remotePort : remotePorts) {
+                        _graph.addEdge(concept, remotePort.getContainer(), link);
+                    }
                 }
             }
         }
