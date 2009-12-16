@@ -29,13 +29,10 @@ package ptolemy.data.properties.lattice.dimensionSystem.actor.lib;
 
 import java.util.List;
 
-import ptolemy.actor.TypedIOPort;
-import ptolemy.data.expr.Parameter;
-import ptolemy.data.properties.Property;
-import ptolemy.data.properties.lattice.MonotonicFunction;
 import ptolemy.data.properties.lattice.PropertyConstraintSolver;
+import ptolemy.data.properties.lattice.dimensionSystem.MultiplyMonotonicFunction;
+import ptolemy.data.properties.lattice.dimensionSystem.DivideMonotonicFunction;
 import ptolemy.data.properties.lattice.dimensionSystem.actor.AtomicActor;
-import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 
@@ -68,10 +65,15 @@ public class Scale extends AtomicActor {
     public List<Inequality> constraintList() throws IllegalActionException {
         ptolemy.actor.lib.Scale actor = (ptolemy.actor.lib.Scale) getComponent();
 
-        setAtLeast(actor.output, new OutputFunctionTerm(actor.input,
-                actor.factor));
-        setAtLeast(actor.input, new InputFunctionTerm(actor.output,
-                actor.factor));
+        // The output of the Scale actor is the product of the input and the factor parameter
+        // So use the MultiplyMonotonicFunction for the output property.
+        setAtLeast(actor.output, new MultiplyMonotonicFunction(actor.input,
+                actor.factor, _lattice, this));
+        
+        // The input of the Scale actor is the a factor of multiplication
+        // So use the FactorMonotonicFunction for the input property.
+        setAtLeast(actor.input, new DivideMonotonicFunction(actor.output,
+                actor.factor, _lattice, this));
 
         return super.constraintList();
     }
@@ -85,156 +87,4 @@ public class Scale extends AtomicActor {
         result.add(((ptolemy.actor.lib.Scale) getComponent()).factor);
         return result;
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         inner classes                     ////
-    // This class implements a monotonic function of the input port
-    // type. The result of the function is the same as the input type
-    // if is not Complex; otherwise, the result is Double.
-    private class OutputFunctionTerm extends MonotonicFunction {
-
-        TypedIOPort _input;
-        Parameter _factor;
-
-        public OutputFunctionTerm(TypedIOPort input, Parameter parameter) {
-            _input = input;
-            _factor = parameter;
-        }
-
-        ///////////////////////////////////////////////////////////////
-        ////                       public inner methods            ////
-
-        /** Return the function result.
-         *  @return A Property.
-         * @exception IllegalActionException
-         */
-        public Object getValue() throws IllegalActionException {
-
-            Property inputProperty = getSolver().getProperty(_input);
-            Property factorProperty = getSolver().getProperty(_factor);
-
-            Property time = _lattice.getElement("TIME");
-            Property position = _lattice.getElement("POSITION");
-            Property speed = _lattice.getElement("SPEED");
-            Property acceleration = _lattice.getElement("ACCELERATION");
-            Property unitless = _lattice.getElement("UNITLESS");
-            Property unknown = _lattice.getElement("UNKNOWN");
-            Property top = _lattice.getElement("TOP");
-
-            if ((inputProperty == speed && factorProperty == time)
-                    || (inputProperty == time && factorProperty == speed)) {
-                return position;
-            }
-
-            if ((inputProperty == acceleration && factorProperty == time)
-                    || (inputProperty == time && factorProperty == acceleration)) {
-                return speed;
-            }
-
-            if (inputProperty == unknown || factorProperty == unknown) {
-                return unknown;
-            }
-
-            if (inputProperty == top || factorProperty == top) {
-                return top;
-            }
-
-            if (factorProperty == unitless) {
-                return inputProperty;
-            }
-
-            if (inputProperty == unitless) {
-                return factorProperty;
-            }
-
-            return top;
-        }
-
-        public boolean isEffective() {
-            return true;
-        }
-
-        public void setEffective(boolean isEffective) {
-        }
-
-        protected InequalityTerm[] _getDependentTerms() {
-            return new InequalityTerm[] { getPropertyTerm(_input),
-                    getPropertyTerm(_factor) };
-        }
-    }
-
-    private class InputFunctionTerm extends MonotonicFunction {
-
-        TypedIOPort _output;
-        Parameter _factor;
-
-        public InputFunctionTerm(TypedIOPort input, Parameter parameter) {
-            _output = input;
-            _factor = parameter;
-        }
-
-        ///////////////////////////////////////////////////////////////
-        ////                       public inner methods            ////
-
-        /** Return the function result.
-         *  @return A Property.
-         * @exception IllegalActionException
-         */
-        public Object getValue() throws IllegalActionException {
-
-            Property outputProperty = getSolver().getProperty(_output);
-            Property factorProperty = getSolver().getProperty(_factor);
-
-            Property time = _lattice.getElement("TIME");
-            Property position = _lattice.getElement("POSITION");
-            Property speed = _lattice.getElement("SPEED");
-            Property acceleration = _lattice.getElement("ACCELERATION");
-            Property unitless = _lattice.getElement("UNITLESS");
-            Property unknown = _lattice.getElement("UNKNOWN");
-            Property top = _lattice.getElement("TOP");
-
-            if (outputProperty == speed && factorProperty == time) {
-                return acceleration;
-            }
-
-            if (outputProperty == position && factorProperty == time) {
-                return speed;
-            }
-
-            if (outputProperty == unknown || factorProperty == unknown) {
-                return unknown;
-            }
-
-            if (outputProperty == top || factorProperty == top) {
-                return top;
-            }
-
-            if (factorProperty == outputProperty) {
-                return unitless;
-            }
-
-            if (factorProperty == unitless) {
-                return outputProperty;
-            }
-
-            if (outputProperty == unitless) {
-                return factorProperty;
-            }
-
-            return top;
-        }
-
-        public boolean isEffective() {
-            return true;
-        }
-
-        public void setEffective(boolean isEffective) {
-        }
-
-        protected InequalityTerm[] _getDependentTerms() {
-            return new InequalityTerm[] { getPropertyTerm(_output),
-                    getPropertyTerm(_factor) };
-        }
-    }
-
 }

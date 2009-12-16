@@ -29,12 +29,10 @@ package ptolemy.data.properties.lattice.dimensionSystem.actor.lib;
 
 import java.util.List;
 
-import ptolemy.actor.TypedIOPort;
-import ptolemy.data.properties.Property;
-import ptolemy.data.properties.lattice.MonotonicFunction;
 import ptolemy.data.properties.lattice.PropertyConstraintSolver;
+import ptolemy.data.properties.lattice.dimensionSystem.MultiplyMonotonicFunction;
+import ptolemy.data.properties.lattice.dimensionSystem.DivideMonotonicFunction;
 import ptolemy.data.properties.lattice.dimensionSystem.actor.AtomicActor;
-import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.util.IllegalActionException;
 
 //////////////////////////////////////////////////////////////////////////
@@ -76,248 +74,19 @@ public class MultiplyDivide extends AtomicActor {
                             + "to the divide port.");
         }
 
-        setAtLeast(actor.output, new FunctionTerm(actor.multiply, actor.divide));
-        setAtLeast(actor.multiply, new MultiplyFunctionTerm(actor.output,
-                actor.divide));
-        setAtLeast(actor.divide, new DivideFunctionTerm(actor.output,
-                actor.multiply));
+        // The output is the quotient of the multiply and divide ports, so use the 
+        // DivideMonotonicFunction
+        setAtLeast(actor.output, new DivideMonotonicFunction(actor.multiply, actor.divide,
+                                                               _lattice, this));
+        
+        // The multiply input port is the dividend, so use the DividendMonotonicFunction
+        setAtLeast(actor.multiply, new MultiplyMonotonicFunction(actor.output, actor.divide,
+                                                               _lattice, this));
+        
+        // The divide input port is the divisor, so use the DivisorMonotonicFunction
+        setAtLeast(actor.divide, new DivideMonotonicFunction(actor.multiply, actor.output,
+                                                              _lattice, this));
 
         return super.constraintList();
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         inner classes                     ////
-    // This class implements a monotonic function of the input port
-    // type. The result of the function is the same as the input type
-    // if is not Complex; otherwise, the result is Double.
-    private class FunctionTerm extends MonotonicFunction {
-
-        TypedIOPort _multiply;
-        TypedIOPort _divide;
-
-        public FunctionTerm(TypedIOPort multiply, TypedIOPort divide) {
-            _multiply = multiply;
-            _divide = divide;
-        }
-
-        ///////////////////////////////////////////////////////////////
-        ////                       public inner methods            ////
-
-        /** Return the function result.
-         *  @return A Property.
-         * @exception IllegalActionException
-         */
-        public Object getValue() throws IllegalActionException {
-
-            Property multiplyProperty = getSolver().getProperty(_multiply);
-            Property divideProperty = getSolver().getProperty(_divide);
-
-            Property time = _lattice.getElement("TIME");
-            Property position = _lattice.getElement("POSITION");
-            Property speed = _lattice.getElement("SPEED");
-            Property acceleration = _lattice.getElement("ACCELERATION");
-            Property unitless = _lattice.getElement("UNITLESS");
-            Property unknown = _lattice.getElement("UNKNOWN");
-
-            if (multiplyProperty == speed && divideProperty == time) {
-                return acceleration;
-            }
-
-            if (multiplyProperty == position && divideProperty == time) {
-                return speed;
-            }
-
-            if (multiplyProperty == position && divideProperty == speed) {
-                return time;
-            }
-
-            if (multiplyProperty == speed && divideProperty == acceleration) {
-                return time;
-            }
-
-            if (divideProperty == unitless) {
-                return multiplyProperty;
-            }
-
-            if (multiplyProperty == unknown || divideProperty == unknown) {
-                return unknown;
-            }
-            if (multiplyProperty == divideProperty) {
-                return unitless;
-            }
-            return _lattice.getElement("TOP");
-        }
-
-        public boolean isEffective() {
-            return true;
-        }
-
-        public void setEffective(boolean isEffective) {
-        }
-
-        protected InequalityTerm[] _getDependentTerms() {
-            return new InequalityTerm[] { getPropertyTerm(_multiply),
-                    getPropertyTerm(_divide) };
-        }
-    }
-
-    // This class implements a monotonic function of the input port
-    // type. The result of the function is the same as the input type
-    // if is not Complex; otherwise, the result is Double.
-    private class MultiplyFunctionTerm extends MonotonicFunction {
-
-        TypedIOPort _output;
-        TypedIOPort _divide;
-
-        public MultiplyFunctionTerm(TypedIOPort output, TypedIOPort divide) {
-            _output = output;
-            _divide = divide;
-        }
-
-        ///////////////////////////////////////////////////////////////
-        ////                       public inner methods            ////
-
-        /** Return the function result.
-         *  @return A Property.
-         * @exception IllegalActionException
-         */
-        public Object getValue() throws IllegalActionException {
-
-            Property outputProperty = getSolver().getProperty(_output);
-            Property divideProperty = getSolver().getProperty(_divide);
-
-            Property time = _lattice.getElement("TIME");
-            Property position = _lattice.getElement("POSITION");
-            Property speed = _lattice.getElement("SPEED");
-            Property acceleration = _lattice.getElement("ACCELERATION");
-            Property unitless = _lattice.getElement("UNITLESS");
-            Property unknown = _lattice.getElement("UNKNOWN");
-
-            if (outputProperty == acceleration && divideProperty == time) {
-                return speed;
-            }
-
-            if (outputProperty == speed && divideProperty == time) {
-                return position;
-            }
-
-            if (outputProperty == time && divideProperty == speed) {
-                return position;
-            }
-
-            if (outputProperty == time && divideProperty == acceleration) {
-                return speed;
-            }
-
-            if (divideProperty == unitless) {
-                return outputProperty;
-            }
-
-            if (outputProperty == unitless) {
-                return divideProperty;
-            }
-
-            if (outputProperty == unknown || divideProperty == unknown) {
-                return unknown;
-            }
-
-            if (outputProperty == divideProperty) {
-                return unitless;
-            }
-
-            return _lattice.getElement("TOP");
-        }
-
-        public boolean isEffective() {
-            return true;
-        }
-
-        public void setEffective(boolean isEffective) {
-        }
-
-        protected InequalityTerm[] _getDependentTerms() {
-            return new InequalityTerm[] { getPropertyTerm(_output),
-                    getPropertyTerm(_divide) };
-        }
-    }
-
-    // This class implements a monotonic function of the input port
-    // type. The result of the function is the same as the input type
-    // if is not Complex; otherwise, the result is Double.
-    private class DivideFunctionTerm extends MonotonicFunction {
-
-        TypedIOPort _output;
-        TypedIOPort _multiply;
-
-        public DivideFunctionTerm(TypedIOPort output, TypedIOPort multiply) {
-            _output = output;
-            _multiply = multiply;
-        }
-
-        ///////////////////////////////////////////////////////////////
-        ////                       public inner methods            ////
-
-        /** Return the function result.
-         *  @return A Property.
-         * @exception IllegalActionException
-         */
-        public Object getValue() throws IllegalActionException {
-
-            Property outputProperty = getSolver().getProperty(_output);
-            Property multiplyProperty = getSolver().getProperty(_multiply);
-
-            Property time = _lattice.getElement("TIME");
-            Property position = _lattice.getElement("POSITION");
-            Property speed = _lattice.getElement("SPEED");
-            Property acceleration = _lattice.getElement("ACCELERATION");
-            Property unitless = _lattice.getElement("UNITLESS");
-            Property unknown = _lattice.getElement("UNKNOWN");
-
-            if (outputProperty == acceleration && multiplyProperty == speed) {
-                return time;
-            }
-
-            if (outputProperty == speed && multiplyProperty == position) {
-                return time;
-            }
-
-            if (outputProperty == time && multiplyProperty == position) {
-                return speed;
-            }
-
-            if (outputProperty == time && multiplyProperty == speed) {
-                return acceleration;
-            }
-
-            if (multiplyProperty == unitless) {
-                return outputProperty;
-            }
-
-            if (outputProperty == unitless) {
-                return multiplyProperty;
-            }
-
-            if (outputProperty == unknown || multiplyProperty == unknown) {
-                return unknown;
-            }
-
-            if (outputProperty == multiplyProperty) {
-                return unitless;
-            }
-
-            return _lattice.getElement("TOP");
-        }
-
-        public boolean isEffective() {
-            return true;
-        }
-
-        public void setEffective(boolean isEffective) {
-        }
-
-        protected InequalityTerm[] _getDependentTerms() {
-            return new InequalityTerm[] { getPropertyTerm(_output),
-                    getPropertyTerm(_multiply) };
-        }
     }
 }

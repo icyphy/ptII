@@ -29,6 +29,7 @@
 package ptolemy.data.properties.lattice.dimensionSystem.data.expr;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import ptolemy.data.expr.PtParserConstants;
@@ -37,6 +38,8 @@ import ptolemy.data.properties.Property;
 import ptolemy.data.properties.lattice.MonotonicFunction;
 import ptolemy.data.properties.lattice.PropertyConstraintASTNodeHelper;
 import ptolemy.data.properties.lattice.PropertyConstraintSolver;
+import ptolemy.data.properties.lattice.dimensionSystem.MultiplyMonotonicFunction;
+import ptolemy.data.properties.lattice.dimensionSystem.DivideMonotonicFunction;
 import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.util.IllegalActionException;
 
@@ -70,8 +73,8 @@ public class ASTPtProductNode extends PropertyConstraintASTNodeHelper {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    public List<Inequality> constraintList() throws IllegalActionException {
-        setAtLeast(_getNode(), new FunctionTerm());
+    public List<Inequality> constraintList() throws IllegalActionException {        
+        setAtLeast(_getNode(), new ASTPtProductNodeMonotonicFunction());
         return super.constraintList();
     }
 
@@ -81,100 +84,69 @@ public class ASTPtProductNode extends PropertyConstraintASTNodeHelper {
     /**
      *
      */
-    private class FunctionTerm extends MonotonicFunction {
+    private class ASTPtProductNodeMonotonicFunction extends MonotonicFunction {
 
         ///////////////////////////////////////////////////////////////////
-        ////                         public methods                    ////
+        ////                         public inner methods                    ////
 
         /**
          * @exception IllegalActionException
          */
         public Object getValue() throws IllegalActionException {
-            // Updated by Charles Shelton 05/11/09:
-            // Added support for binary division in addition to multiplication.
-            // We need a general algorithm to cover all product node cases.
+            // Updated by Charles Shelton 12/15/09:
+            // Created a general function that covers any combination of multiplication
+            // and division operators.  Modulo operators are not supported.
 
             ptolemy.data.expr.ASTPtProductNode node = (ptolemy.data.expr.ASTPtProductNode) _getNode();
-
             List tokenList = node.getLexicalTokenList();
-
-            int numChildren = node.jjtGetNumChildren();
-
-            if (numChildren != 2
-                    || tokenList.size() != 1
-                    || (((Token) tokenList.get(0)).kind != PtParserConstants.MULTIPLY && ((Token) tokenList
-                            .get(0)).kind != PtParserConstants.DIVIDE)) {
-                throw new IllegalActionException(
-                        ASTPtProductNode.this.getSolver(),
-                        "The property analysis "
-                                + "currently supports only binary multiplication and division.");
-            }
-
-            int operation = ((Token) tokenList.get(0)).kind;
-
-            Property time = _lattice.getElement("TIME");
-            Property position = _lattice.getElement("POSITION");
-            Property speed = _lattice.getElement("SPEED");
-            Property acceleration = _lattice.getElement("ACCELERATION");
-            Property unitless = _lattice.getElement("UNITLESS");
-            Property unknown = _lattice.getElement("UNKNOWN");
-
-            Property property1 = getSolver().getProperty(node.jjtGetChild(0));
-            Property property2 = getSolver().getProperty(node.jjtGetChild(1));
-
-            if (operation == PtParserConstants.MULTIPLY) {
-                // Property rules for multiplication
-
-                if ((property1 == speed && property2 == time)
-                        || (property2 == speed && property1 == time)) {
-                    return position;
-                }
-
-                if ((property1 == acceleration && property2 == time)
-                        || (property2 == acceleration && property1 == time)) {
-                    return speed;
-                }
-
-                if (property1 == unitless) {
-                    return property2;
-                }
-
-                if (property2 == unitless) {
-                    return property1;
-                }
-
-                if (property1 == unknown || property2 == unknown) {
-                    return unknown;
-                }
-            } else if (operation == PtParserConstants.DIVIDE) {
-                // Property rules for division
-
-                if ((property1 == speed && property2 == time)) {
-                    return acceleration;
-                }
-
-                if ((property1 == position && property2 == time)) {
-                    return speed;
-                }
-
-                if (property1 == property2) {
-                    return unitless;
-                }
-
-                if (property1 == unitless) {
-                    return property2;
-                }
-
-                if (property2 == unitless) {
-                    return property1;
-                }
-
-                if (property1 == unknown || property2 == unknown) {
-                    return unknown;
+            
+            // Throw an exception if there is a modulo (%) operation in the product node expression.
+            for (Object lexicalToken : tokenList) {
+                if (((Token) lexicalToken).kind == PtParserConstants.MODULO) {
+                    throw new IllegalActionException(
+                            ASTPtProductNode.this.getSolver(),
+                            "The Dimension System property analysis "
+                                + "supports only multiplication and division, not modulo.");
                 }
             }
-
-            return _lattice.getElement("TOP");
+            
+            // Loop through all the child nodes in the product node
+            // and get the correct result property by calling MultiplyMonotonicFunction
+            // or DivideMonotonicFunction depending on the operator used.
+            
+            // Initialize the result to the first node in the product node
+            Property result = getSolver().getProperty(node.jjtGetChild(0));
+            
+            // Iterate through the operator tokens
+            Iterator lexicalTokenIterator = tokenList.iterator();
+            
+            for (int i = 1; i < node.jjtGetNumChildren(); i++) {
+                if (lexicalTokenIterator.hasNext()) {
+                    Token lexicalToken = (Token) lexicalTokenIterator.next();
+                    MonotonicFunction propertyFunction = null;
+                    
+                    // If operator token is '*' call the MultiplyMonotonicFunction
+                    if (lexicalToken.kind == PtParserConstants.MULTIPLY) {
+                        propertyFunction = new MultiplyMonotonicFunction(result,
+                                node.jjtGetChild(i), _lattice, ASTPtProductNode.this);
+                        result = (Property) propertyFunction.getValue();
+                        
+                    // If operator token is '/' call the DivideMonotonicFunction
+                    } else {
+                        propertyFunction = new DivideMonotonicFunction(result,
+                                node.jjtGetChild(i), _lattice, ASTPtProductNode.this);
+                        result = (Property) propertyFunction.getValue(); 
+                    }
+                    
+                } else {
+                    throw new IllegalActionException(
+                            ASTPtProductNode.this.getSolver(),
+                            "Error in the product expression; "
+                                    + "the number of operators don't match the number of operands.");
+                }
+            }
+            
+            return result;
         }
 
         public boolean isEffective() {
