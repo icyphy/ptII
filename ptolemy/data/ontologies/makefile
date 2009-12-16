@@ -56,7 +56,7 @@ JSRCS = \
 	AnnotationAttribute.java \
 	Concept.java \
 	ConceptAttribute.java \
-	ConceptLattice.java \
+	ConceptGraph.java \
 	ConceptRelation.java \
 	ConstraintManager.java \
 	Ontology.java \

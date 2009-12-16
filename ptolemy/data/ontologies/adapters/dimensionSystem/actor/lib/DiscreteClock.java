@@ -69,7 +69,7 @@ public class DiscreteClock extends PropertyConstraintHelper {
      * Return the constraints of this component. The constraints is a list of
      * inequalities.
      * This method sets the constraint of the output to at least the value of
-     * the "UNITLESS" element in the {@link ptolemy.data.properties.lattice#_lattice}
+     * the "UNITLESS" element in the ontology.
      * @return The constraints of this component.
      * @exception IllegalActionException Not thrown in this base class.
      */

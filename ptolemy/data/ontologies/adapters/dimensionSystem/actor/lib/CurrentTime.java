@@ -65,7 +65,7 @@ public class CurrentTime extends AtomicActor {
      * Return the constraints of this component. The constraints is a list of
      * inequalities.
      * This method sets the constraint of the output to at least the value of
-     * the "TIME" element in the {@link ptolemy.data.properties.lattice#_lattice}
+     * the "TIME" element in the ontology.
      * @return The constraints of this component.
      * @exception IllegalActionException If thrown while reading the lattice or
      * if thrown by the superclass. 

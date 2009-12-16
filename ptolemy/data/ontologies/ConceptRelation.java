@@ -93,43 +93,32 @@ public class ConceptRelation extends ComponentRelation {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Return a string describing this transition. The string has up to
-     *  three lines. The first line is the guard expression, preceded
-     *  by "guard: ".  The second line is the <i>outputActions</i> preceded
-     *  by the string "output: ". The third line is the
-     *  <i>setActions</i> preceded by the string "set: ". If any of these
-     *  is missing, then the corresponding line is omitted.
-     *  @return A string describing this transition.
+    /** Return the value of the {@link #annotation} parameter.
+     *  @return The value of the annotation parameter, or a
+     *   string "ERROR" if the parameter cannot be evaluated.
      */
     public String getLabel() {
-        StringBuffer buffer = new StringBuffer("");
-
-        String text;
         try {
-            text = annotation.stringValue();
+            return annotation.stringValue();
         } catch (IllegalActionException e) {
-            text = "Exception evaluating annotation: " + e.getMessage();
+            return "ERROR";
         }
-        if (!text.trim().equals("")) {
-            buffer.append(text);
-        }
-        return buffer.toString();
     }
 
     /** Override the base class to ensure that the proposed container
-     *  is an instance of Ontology or null.
+     *  is an instance of {@link Ontology} or null.
      *  @param container The proposed container.
      *  @exception IllegalActionException If the argument is not an Ontology or null.
      *  @exception NameDuplicationException If the container already has
-     *   an relation with the name of this transition.
+     *   a relation with the name of this relation.
      */
     public void setContainer(CompositeEntity container)
             throws IllegalActionException, NameDuplicationException {
         if (container != null) {
             if (!(container instanceof Ontology)) {
                 throw new IllegalActionException(container, this,
-                        "Transition can only be contained by instances of "
-                                + "FSMActor.");
+                        "Relation can only be contained by instances of "
+                                + "Ontology.");
             }
         }
         super.setContainer(container);
@@ -156,13 +145,10 @@ public class ConceptRelation extends ComponentRelation {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    /** Throw an IllegalActionException if the port cannot be linked
-     *  to this transition. A transition has a source state and a
-     *  destination state. A transition is only linked to the outgoing
-     *  port of its source state and the incoming port of its destination
-     *  state.
-     *  @exception IllegalActionException If the port cannot be linked
-     *   to this transition.
+    /** Throw an exception if the port cannot be linked
+     *  to this relation.
+     *  @exception IllegalActionException If the port's container
+     *   is not a {@link Concept}.
      */
     protected void _checkPort(Port port) throws IllegalActionException {
         super._checkPort(port);

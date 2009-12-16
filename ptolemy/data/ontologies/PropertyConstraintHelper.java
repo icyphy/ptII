@@ -606,7 +606,7 @@ public class PropertyConstraintHelper extends PropertyHelper {
     protected List<Inequality> _ownConstraints = new LinkedList<Inequality>();
 
     /** The property lattice. */
-    protected ConceptLattice _lattice;
+    protected ConceptGraph _lattice;
 
     /** Indicate whether this adapter uses the default actor constraints. */
     protected boolean _useDefaultConstraints;

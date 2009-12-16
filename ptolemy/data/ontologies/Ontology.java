@@ -38,12 +38,12 @@ import ptolemy.kernel.util.Workspace;
 //// Ontology
 
 /**
- * A specification of an ontology, which is a set of concepts and an
- * ordering relation on the set that is constrained to have the structure
- * of a mathematical lattice. The structure is represented by interconnections
+ * A specification of an ontology, which is a set of concepts and a
+ * partial ordering relation.
+ * The structure is represented by interconnections
  * between concepts contained by this ontology.
  * 
- * @see ConceptLattice
+ * @see ConceptGraph
  * @see Concept
  * @author Edward A. Lee, Ben Lickly, Dai Bui, Christopher Brooks
  * @version $Id$
@@ -78,20 +78,15 @@ public class Ontology extends CompositeEntity {
     }
     
     ////////////////////////////////////////////////////////////////////////////
-    ////                   parameters                                       ////
-    
-
-    ////////////////////////////////////////////////////////////////////////////
     ////                   public methods                                   ////
 
-    /** Return the lattice represented by this ontology.
-     *  @return The property lattice.
-     *  @throws IllegalActionException If the structure is not a lattice.
+    /** Return the graph represented by this ontology.
+     *  @return The property graph.
      */
-    public ConceptLattice getLatticeGraph() throws IllegalActionException {
+    public ConceptGraph getGraph() {
         if (workspace().getVersion() != _graphVersion) {
             // Construct the graph.
-            _graph = new ConceptLattice();
+            _graph = new ConceptGraph(this);
             List<Concept> concepts = entityList(Concept.class);
             for (Concept concept : concepts) {
                 _graph.addNodeWeight(concept);
@@ -102,12 +97,15 @@ public class Ontology extends CompositeEntity {
                     _graph.addEdge(concept, remotePort.getContainer());
                 }
             }
-            // Check that it's a lattice.
-            if (!_graph.isLattice()) {
-                throw new IllegalActionException(this, "Not a lattice.");
-            }
         }
         return _graph;
+    }
+    
+    /** Return true if the ontology graph is a lattice.
+     *  @return True if the graph is a lattice.
+     */
+    public boolean isLattice() {
+        return getGraph().isLattice();
     }
     
     /** Create a new relation with the specified name, add it to the
@@ -136,7 +134,7 @@ public class Ontology extends CompositeEntity {
     ////                       private variables                   ////
 
     /** The cached graph. */
-    private ConceptLattice _graph;
+    private ConceptGraph _graph;
     
     /** The workspace version at which the cached graph was valid. */
     private long _graphVersion = -1L;

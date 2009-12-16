@@ -270,10 +270,10 @@ public abstract class PropertySolverBase extends MoMLModelAttribute {
      *  @return The property lattice for this constraint solver.
      *  @throws IllegalActionException If the structure is not a lattice.
      */
-    public ConceptLattice getLattice() throws IllegalActionException {
+    public ConceptGraph getLattice() throws IllegalActionException {
         Ontology ontology = getOntology();
         if (ontology != null) {
-            return ontology.getLatticeGraph();
+            return ontology.getGraph();
         }
         return null;
     }

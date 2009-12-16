@@ -36,7 +36,6 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Flowable;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.NamedObj;
 
 //////////////////////////////////////////////////////////////////////////
 //// Concept
@@ -118,20 +117,6 @@ public class Concept extends ComponentEntity implements InequalityTerm, Flowable
         return abovePort;
     }
 
-    /** Get the property lattice associated with this concept.
-     *  @return The associated property lattice.
-     *  @throws IllegalActionException If this property is not contained
-     *   by an Ontology or if the structure in the Ontology is
-     *   not a lattice.
-     */
-    public ConceptLattice getPropertyLattice() throws IllegalActionException {
-        NamedObj container = getContainer();
-        if (!(container instanceof Ontology)) {
-            throw new IllegalActionException(this, "Not contained by an Ontology");
-        }
-        return ((Ontology)container).getLatticeGraph();
-    }
-
     /** Return the value of the inequality term. Since a concept
      *  is a constant, not a variable, its value is just itself.
      *  @return This concept.
@@ -165,11 +150,16 @@ public class Concept extends ComponentEntity implements InequalityTerm, Flowable
      *   does not have the same lattice as this one.
      */
     public boolean isAboveOrEqualTo(Concept property) throws IllegalActionException {
-        if (!((Concept)property)._lattice.equals(_lattice)) {
+        if (!(property.getContainer().equals(getContainer()))) {
             throw new IllegalActionException(this,
-                    "Attempt to compare elements of two distinct lattices");
+                    "Attempt to compare elements of two distinct ontologies");
         }
-        int comparisonResult = _lattice.compare(this, property);
+        if (!(getContainer() instanceof Ontology)) {
+            throw new IllegalActionException(this,
+                    "Concept is not contained by an Ontology.");
+        }
+        Ontology ontology = (Ontology)getContainer();
+        int comparisonResult = ontology.getGraph().compare(this, property);
         return comparisonResult == CPO.SAME || comparisonResult == CPO.HIGHER;
     }
 
@@ -211,11 +201,6 @@ public class Concept extends ComponentEntity implements InequalityTerm, Flowable
     ///////////////////////////////////////////////////////////////////
     ////                       protected variables                 ////
 
-    /**
-     * The property lattice containing this concept.
-     */
-    protected ConceptLattice _lattice;
-    
     /**
      * The name of this Property.
      */

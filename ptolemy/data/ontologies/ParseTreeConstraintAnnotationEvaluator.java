@@ -56,11 +56,15 @@ public class ParseTreeConstraintAnnotationEvaluator extends
         } catch (IllegalActionException ex) {
 
             // The label may be a lattice element name.
-            ConceptLattice lattice = ((PropertyConstraintHelper) _adapter)
+            ConceptGraph lattice = ((PropertyConstraintHelper) _adapter)
                     .getSolver().getLattice();
 
-            _evaluatedObject = lattice.getElement(_getNodeLabel(node)
-                    .toUpperCase());
+            _evaluatedObject = lattice.getOntology().getEntity(_getNodeLabel(node));
+            if (_evaluatedObject == null) {
+                throw new IllegalActionException(lattice.getOntology(),
+                        "Does not contain a concept named"
+                        + _getNodeLabel(node));
+            }
         }
 
         // FIXME: Not handling AST constraint yet.
