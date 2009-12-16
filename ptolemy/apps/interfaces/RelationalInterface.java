@@ -130,7 +130,7 @@ public class RelationalInterface {
         }
         final String y = LispExpression.node("", quantifiedOutputs);
         final String phi = "(=> (and " + _contract + " " + connectionContracts
-                + ") " + rhs.inContract() + ")";
+                + ") " + rhs._inContract() + ")";
         newConstraints.add(" (forall " + y.toString() + " " + phi + ")");
         return new RelationalInterface(newInputs, newOutputs,
                 LispExpression.conjunction(newConstraints));
@@ -173,19 +173,6 @@ public class RelationalInterface {
         return yicesInput.toString();
     }
 
-    /** Return the contract of the input assumption of this interface.
-     * 
-     *  @return The input assumption.
-     */
-    private String inContract() {
-        final StringBuffer result = new StringBuffer("(exists (");
-        for (final String output : _outputPorts) {
-            result.append(output + "::int ");
-        }
-        result.append(") " + _contract + ")");
-        return result.toString();
-    }
-
     /** Return an interface that results from the parallel composition of
      *  this interface and the given interface.
      * 
@@ -207,6 +194,19 @@ public class RelationalInterface {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
+    /** Return the contract of the input assumption of this interface.
+     * 
+     *  @return The input assumption.
+     */
+    private String _inContract() {
+        final StringBuffer result = new StringBuffer("(exists (");
+        for (final String output : _outputPorts) {
+            result.append(output + "::int ");
+        }
+        result.append(") " + _contract + ")");
+        return result.toString();
+    }
+    
     /** Construct a RelationalInterface with the given inputs port names,
      *  output port names, and contract.
      *  
@@ -258,6 +258,10 @@ public class RelationalInterface {
     private String _contract;
 }
 
+/** Exception thrown when there an interface is unable to add composition
+ *  or feedback.
+ *  @author Ben Lickly
+ */
 class InterfaceCompositionException extends IllegalActionException {
     /** Construct an exception with a detail message.
      *  @param detail The message.
