@@ -166,9 +166,9 @@ public class PthalesScheduler extends SDFScheduler {
  
             // Iteration is only done on external loops
             if (actor instanceof AtomicActor)
-                firing.setIterationCount(PthalesGenericActor.getIterations((AtomicActor)actor));
+                firing.setIterationCount(PthalesGenericActor.getIteration((AtomicActor)actor));
             if (actor instanceof CompositeActor)
-                firing.setIterationCount(PthalesCompositeActor.getIterations((CompositeActor)actor));
+                firing.setIterationCount(PthalesCompositeActor.getIteration((CompositeActor)actor));
 
             schedule.add(firing);
         }

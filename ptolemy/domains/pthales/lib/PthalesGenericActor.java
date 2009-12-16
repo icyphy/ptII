@@ -155,12 +155,10 @@ public class PthalesGenericActor extends TypedAtomicActor {
 
         if (attribute == getAttribute(REPETITIONS)) {
             _totalRepetitions = parseRepetitions(this, REPETITIONS);
-            computeIterations(_totalRepetitions,_internalRepetitions);
         }
         if (attribute == getAttribute(INTERNAL_REPETITIONS)) {
             _internalRepetitions = parseRepetitions(this, INTERNAL_REPETITIONS);
-            computeIterations(_totalRepetitions,_internalRepetitions);
-        }
+         }
         if (attribute == function) {
             _function = function.getExpression();
         }
@@ -254,7 +252,7 @@ public class PthalesGenericActor extends TypedAtomicActor {
         portNumber = 0;
         // Input ports created and filled before elementary task called 
         for (PthalesIOPort port : portsIn) {
-            int dataSize = PthalesIOPort.getDataProducedSize(port);
+            int dataSize = PthalesIOPort.getDataProducedSize(port)*PthalesIOPort.getNbTokenPerData(port);
             tokensIn = new FloatToken[dataSize];
             tokensIn = port.get(0, dataSize);
 
@@ -267,7 +265,7 @@ public class PthalesGenericActor extends TypedAtomicActor {
         portNumber = 0;
         // Outputs ports arrays created before elementary task called 
         for (PthalesIOPort port : portsOut) {
-            realOut[portNumber] = new float[PthalesIOPort.getDataProducedSize(port)];
+            realOut[portNumber] = new float[PthalesIOPort.getDataProducedSize(port)*PthalesIOPort.getNbTokenPerData(port)];
             portNumber++;
         }
 
@@ -324,7 +322,7 @@ public class PthalesGenericActor extends TypedAtomicActor {
         portNumber = 0;
         // Output ports write
         for (PthalesIOPort port : portsOut) {
-            int dataSize = PthalesIOPort.getDataProducedSize(port);
+            int dataSize = PthalesIOPort.getDataProducedSize(port)*PthalesIOPort.getNbTokenPerData(port);
 
             tokensOut = convertReal(realOut[portNumber]);
             for (int i = 0; i < port.getWidth(); i++) {
@@ -414,7 +412,11 @@ public class PthalesGenericActor extends TypedAtomicActor {
             // Argument is parameter => converted into type
             if (listArgs[i].equals("parameter")) {
                 if (listArgs[i + 1].equals("int")) {
-                    objs.add(Integer.parseInt(listArgs[i + 2]));
+                    try {
+                        objs.add(Integer.parseInt(listArgs[i + 2]));
+                    } catch (NumberFormatException e) {
+                        objs.add(0);
+                    }
                 } else if (listArgs[i + 1].equals("long")) {
                     objs.add(Long.parseLong(listArgs[i + 2]));
                 } else if (listArgs[i + 1].equals("double")
@@ -508,9 +510,14 @@ public class PthalesGenericActor extends TypedAtomicActor {
         return result;
     }
 
-    public static int getIterations(AtomicActor actor) {
+    public static int getIteration(AtomicActor actor) {
+        return computeIteration(parseRepetitions(actor, REPETITIONS), parseRepetitions(actor, INTERNAL_REPETITIONS));
+    }
+
+    public static int[] getIterations(AtomicActor actor) {
         return computeIterations(parseRepetitions(actor, REPETITIONS), parseRepetitions(actor, INTERNAL_REPETITIONS));
     }
+
 
     public static Integer[] getInternalRepetitions(AtomicActor actor) {
         return parseRepetitions(actor, INTERNAL_REPETITIONS);
@@ -523,7 +530,7 @@ public class PthalesGenericActor extends TypedAtomicActor {
     /** Compute external iterations each time 
      *  an attribute used to calculate it has changed 
      */
-    protected static int computeIterations(Integer[] totalRepetitions,Integer[] internalRepetitions) {
+    protected static int computeIteration(Integer[] totalRepetitions,Integer[] internalRepetitions) {
         // FIXME: prepend an underscore to the name of this protected method.        
         // if no total repetition, no way to calculate
         int iterations = 0;
@@ -545,6 +552,23 @@ public class PthalesGenericActor extends TypedAtomicActor {
 
             // Iteration is only done on external loops
             iterations = iterationCount / internal;
+        }
+        return iterations;
+    }
+
+    /** Compute external iterations each time 
+     *  an attribute used to calculate it has changed 
+     */
+    protected static int[] computeIterations(Integer[] totalRepetitions,Integer[] internalRepetitions) {
+        // FIXME: prepend an underscore to the name of this protected method.        
+        // if no total repetition, no way to calculate
+        int[] iterations = new int[totalRepetitions.length - internalRepetitions.length];
+        if (totalRepetitions != null && totalRepetitions.length > 0) {
+
+            // All loops are used to build array
+            for (int i = internalRepetitions.length; i < totalRepetitions.length; i++) {
+                iterations[i-internalRepetitions.length] = totalRepetitions[i];
+            }
         }
         return iterations;
     }

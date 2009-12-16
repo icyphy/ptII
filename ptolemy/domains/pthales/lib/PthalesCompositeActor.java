@@ -224,7 +224,11 @@ public class PthalesCompositeActor extends TypedCompositeActor  {
     ///////////////////////////////////////////////////////////////////
     ////              static methods implementation              ////
 
-    public static int getIterations(CompositeActor actor) {
+    public static int getIteration(CompositeActor actor) {
+        return computeIteration(parseRepetitions(actor, REPETITIONS));
+    }
+
+    public static int[] getIterations(CompositeActor actor) {
         return computeIterations(parseRepetitions(actor, REPETITIONS));
     }
 
@@ -266,10 +270,11 @@ public class PthalesCompositeActor extends TypedCompositeActor  {
 
         return result;
     }
+    
     /** Compute external iterations each time 
      *  an attribute used to calculate it has changed 
      */
-    protected static int computeIterations(Integer[] totalRepetitions) {
+    protected static int computeIteration(Integer[] totalRepetitions) {
         int iterations = 0;
 
         // All loops are used to build array
@@ -284,7 +289,21 @@ public class PthalesCompositeActor extends TypedCompositeActor  {
         return iterations;
     }
   
-    ///////////////////////////////////////////////////////////////////
+    /** Compute external iterations each time 
+     *  an attribute used to calculate it has changed 
+     */
+    protected static int[] computeIterations(Integer[] totalRepetitions) {
+        int[] iterations = new int[totalRepetitions.length];
+
+        // All loops are used to build array
+        for (int i = 0; i < iterations.length; i++) {
+            iterations[i] = totalRepetitions[i];
+        }
+
+        return iterations;
+    }
+  
+   ///////////////////////////////////////////////////////////////////
     ////              static variables              ////
 
     protected static String REPETITIONS = "repetitions";
