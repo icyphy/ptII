@@ -366,7 +366,7 @@ change the value of the constant.</text></svg></configure>
         </property>
         <property name="resetOnEachRun" class="ptolemy.actor.parameters.SharedParameter" value="true">
         </property>
-        <property name="standardDeviation" class="ptolemy.actor.parameters.PortParameter" value="0.2">
+        <property name="standardDeviation" class="ptolemy.actor.parameters.PortParameter" value="0.0">
         </property>
         <property name="bandwidth" class="ptolemy.data.expr.Parameter" value="1.0">
         </property>
