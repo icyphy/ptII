@@ -189,14 +189,14 @@ void getRealTime(Time * const physicalTime){
     uint32 tick2;
     uint32 tempSecs;
     uint32 tempQuarterSecs;
-    tick1 = SysTickValueGet();
-    tempSecs = _secs;
-    tempQuarterSecs = _quarterSecs;
-    tick2 = SysTickValueGet();
-    //If the system tick rolls over (the tick counts down) between accessing
-    // the volatile variables _secs and _quartersecs, then we account for this here
-    // by incrementing _quartersecs
 	for (;;) {
+        tick1 = SysTickValueGet();
+        tempSecs = _secs;
+        tempQuarterSecs = _quarterSecs;
+        tick2 = SysTickValueGet();
+        //If the system tick rolls over (the tick counts down) between accessing
+        // the volatile variables _secs and _quartersecs, then we account for this here
+        // by incrementing _quartersecs
 	    if(tick2 < tick1) {
 		    physicalTime->secs = tempSecs;
 		    switch(tempQuarterSecs){
