@@ -65,6 +65,7 @@ JSRCS = \
 	ParseTreeAnnotationEvaluator.java \
 	ParseTreeConstraintAnnotationEvaluator.java \
 	PropertyConstraintASTNodeHelper.java \
+	PropertyConstraintCompositeHelper.java \
 	PropertyConstraintHelper.java \
 	PropertyHelper.java \
 	PropertyMoMLHandler.java \

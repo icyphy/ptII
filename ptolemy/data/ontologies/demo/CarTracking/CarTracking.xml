@@ -5,13 +5,13 @@
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
     <property name="OntologySolver" class="ptolemy.data.ontologies.OntologySolver">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, 145.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[450.0, 85.0]">
         </property>
-		<property name="_controllerFactory" class="ptolemy.vergil.properties.MoMLModelAttributeControllerFactory">
-                  </property> 
+        <property name="_controllerFactory" class="ptolemy.vergil.properties.MoMLModelAttributeControllerFactory">
+        </property>
         <configure>
             <entity name="" class="ptolemy.kernel.CompositeEntity">
-                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={313, 195, 813, 510}, maximized=false}">
+                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={211, 195, 813, 510}, maximized=false}">
                 </property>
                 <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
                 </property>
@@ -19,14 +19,39 @@
                 </property>
                 <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
                 </property>
+                <property name="f" class="ptolemy.data.expr.Parameter" value="function (in1:int, in2:int) in1+in2">
+                    <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+                    </property>
+                    <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                        <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                        </property>
+                    </property>
+                    <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                        <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+                    </property>
+                    <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+                    </property>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="{70.0, 35.0}">
+                    </property>
+                </property>
                 <entity name="DimensionSystem" class="ptolemy.data.ontologies.lattices.DimensionSystem">
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[410.0, 105.0]">
+                    </property>
+                </entity>
+                <entity name="MultiplyDivide" class="ptolemy.actor.lib.MultiplyDivide">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[135.0, 105.0]">
+                    </property>
+                    <property name="constraint" class="ptolemy.data.expr.Parameter" value="f(10, 2)">
                     </property>
                 </entity>
             </entity>
         </configure>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={313, 195, 813, 510}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={149, 22, 813, 510}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
     </property>
@@ -40,4 +65,56 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 10.0]">
         </property>
     </property>
+    <property name="TesterDirector" class="ptolemy.domains.tester.kernel.TesterDirector">
+        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{110, 75}">
+        </property>
+    </property>
+    <property name="OntologySolver::constraint" class="ptolemy.data.ontologies.AnnotationAttribute" value="Const.value &gt;= Speed">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg><text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text></svg></configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{50.0, 250.0}">
+        </property>
+    </property>
+    <entity name="Integrator" class="ptolemy.domains.continuous.lib.Integrator">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 185.0]">
+        </property>
+    </entity>
+    <entity name="Const" class="ptolemy.actor.lib.Const">
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[90.0, 185.0]">
+        </property>
+    </entity>
+    <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{345, 200}">
+        </property>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="Integrator.derivative" relation="relation"/>
+    <link port="Integrator.state" relation="relation2"/>
+    <link port="Const.output" relation="relation"/>
+    <link port="TimedPlotter.input" relation="relation2"/>
 </entity>
