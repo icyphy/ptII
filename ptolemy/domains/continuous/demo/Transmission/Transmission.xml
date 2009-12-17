@@ -2,9 +2,11 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="Transmission" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
     <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
+        <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
         <property name="timeResolution" class="ptolemy.actor.parameters.SharedParameter" value="1.0E-10">
         </property>
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -13,17 +15,15 @@
         </property>
         <property name="initStepSize" class="ptolemy.data.expr.Parameter" value="10.0">
         </property>
-        <property name="minStepSize" class="ptolemy.data.expr.Parameter" value="1.0E-5">
-        </property>
         <property name="maxStepSize" class="ptolemy.data.expr.Parameter" value="100.0">
         </property>
         <property name="maxIterations" class="ptolemy.data.expr.Parameter" value="20">
         </property>
         <property name="errorTolerance" class="ptolemy.data.expr.Parameter" value="1.0E-4">
         </property>
-        <property name="valueResolution" class="ptolemy.data.expr.Parameter" value="1.0E-6">
+        <property name="minStepSize" class="ptolemy.data.expr.Parameter" value="1.0E-5">
         </property>
-        <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
+        <property name="valueResolution" class="ptolemy.data.expr.Parameter" value="1.0E-6">
         </property>
         <property name="runAheadLength" class="ptolemy.data.expr.Parameter" value="0.1">
         </property>
@@ -83,7 +83,7 @@
     <entity name="Plot position" class="ptolemy.actor.lib.gui.TimedPlotter">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {510, 414, 508, 348}, maximized = false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={510, 414, 500, 344}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
         </property>
@@ -99,14 +99,14 @@
 <xLabel>Time (seconds)</xLabel>
 <yLabel>Position</yLabel>
 <xRange min="0.0" max="500.0"/>
-<yRange min="0.0" max="11485.844839026198"/>
+<yRange min="0.0" max="11485.845822022271"/>
 </plot>?>
         </configure>
     </entity>
     <entity name="car model" class="ptolemy.domains.modal.modal.ModalModel">
         <property name="_tableauFactory" class="ptolemy.vergil.modal.modal.ModalTableauFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{210.0, 215.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[210.0, 215.0]">
         </property>
         <port name="position" class="ptolemy.domains.modal.modal.ModalPort">
             <property name="output"/>
@@ -130,7 +130,7 @@
             <property name="_library" class="ptolemy.moml.LibraryAttribute">
                 <configure><entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property></entity></entity></configure>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={506, 25, 813, 516}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={313, 192, 813, 516}, maximized=false}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 405]">
             </property>
@@ -195,11 +195,11 @@
             <relation name="relation" class="ptolemy.domains.modal.kernel.Transition">
                 <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="gear_isPresent">
                 </property>
-                <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute" value="state.efficiencyFunction = function(rpm:double) 1/(1+((rpm-300*gear)/100)^2)">
+                <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute" value="state.efficiencyFunction =&#10;   function(rpm:double) 1/(1+((rpm-300*gear)/100)^2)">
                 </property>
-                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="2.160046119885927">
+                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="2.4311731218682806">
                 </property>
-                <property name="gamma" class="ptolemy.data.expr.Parameter" value="-3.2756478298664344">
+                <property name="gamma" class="ptolemy.data.expr.Parameter" value="-3.214480631422191">
                 </property>
                 <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
@@ -209,7 +209,7 @@
             <relation name="relation2" class="ptolemy.domains.modal.kernel.Transition">
                 <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
                 </property>
-                <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute" value="state.efficiencyFunction = function(rpm:double) 1/(1+((rpm-300)/100)^2)">
+                <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute" value="state.efficiencyFunction =&#10;   function(rpm:double) 1/(1+((rpm-300)/100)^2)">
                 </property>
                 <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="1.3077625089165776">
                 </property>
@@ -217,7 +217,7 @@
                 </property>
                 <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
-                <property name="preemptive" class="ptolemy.data.expr.Parameter" value="true">
+                <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
             </relation>
             <link port="inGear.incomingPort" relation="relation"/>
@@ -227,13 +227,13 @@
         </entity>
         <entity name="state" class="ptolemy.domains.modal.modal.Refinement">
             <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
+                <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
                 <property name="timeResolution" class="ptolemy.actor.parameters.SharedParameter" value="1.0E-10">
                 </property>
                 <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
                 <property name="initStepSize" class="ptolemy.data.expr.Parameter" value="0.1">
-                </property>
-                <property name="minStepSize" class="ptolemy.data.expr.Parameter" value="1.0E-5">
                 </property>
                 <property name="maxStepSize" class="ptolemy.data.expr.Parameter" value="1.0">
                 </property>
@@ -241,9 +241,9 @@
                 </property>
                 <property name="errorTolerance" class="ptolemy.data.expr.Parameter" value="1.0E-4">
                 </property>
-                <property name="valueResolution" class="ptolemy.data.expr.Parameter" value="1.0E-6">
+                <property name="minStepSize" class="ptolemy.data.expr.Parameter" value="1.0E-5">
                 </property>
-                <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
+                <property name="valueResolution" class="ptolemy.data.expr.Parameter" value="1.0E-6">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="75.0, 40.0">
                 </property>
@@ -295,8 +295,12 @@
             <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
                 <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Convert velocity to revolutions per minute (rpm).">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 355.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 290.0]">
                 </property>
+            </property>
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+            </property>
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
             </property>
             <port name="position" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="output"/>
@@ -319,13 +323,13 @@
                 </property>
             </port>
             <entity name="Integrator" class="ptolemy.domains.continuous.lib.Integrator">
-                <property name="initialState" class="ptolemy.data.expr.Parameter" value="0.0">
+                <property name="initialState" class="ptolemy.actor.parameters.PortParameter" value="0.0">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="425.0, 230.0">
                 </property>
             </entity>
             <entity name="Integrator2" class="ptolemy.domains.continuous.lib.Integrator">
-                <property name="initialState" class="ptolemy.data.expr.Parameter" value="0.0">
+                <property name="initialState" class="ptolemy.actor.parameters.PortParameter" value="0.0">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="500.0, 275.0">
                 </property>
@@ -372,7 +376,9 @@
                     <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
                     </property>
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="80.0, 330.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[195.0, 275.0]">
+                </property>
+                <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -440,7 +446,7 @@
     <entity name="Plot velocity" class="ptolemy.actor.lib.gui.TimedPlotter">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {1, 414, 508, 348}, maximized = false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1, 414, 500, 344}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
         </property>
@@ -456,7 +462,7 @@
 <xLabel>time (seconds)</xLabel>
 <yLabel>speed</yLabel>
 <xRange min="0.0" max="500.0"/>
-<yRange min="0.0" max="28.591719932939142"/>
+<yRange min="0.0" max="28.591719809995602"/>
 </plot>?>
         </configure>
     </entity>

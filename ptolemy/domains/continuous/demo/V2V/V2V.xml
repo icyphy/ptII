@@ -2,13 +2,15 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="V2V" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[108, 13]">
     </property>
     <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
+        <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
         <property name="timeResolution" class="ptolemy.actor.parameters.SharedParameter" value="1.0E-10">
         </property>
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -17,17 +19,15 @@
         </property>
         <property name="initStepSize" class="ptolemy.data.expr.Parameter" value="0.1">
         </property>
-        <property name="minStepSize" class="ptolemy.data.expr.Parameter" value="1.0E-5">
-        </property>
         <property name="maxStepSize" class="ptolemy.data.expr.Parameter" value="1.0">
         </property>
         <property name="maxIterations" class="ptolemy.data.expr.Parameter" value="20">
         </property>
         <property name="errorTolerance" class="ptolemy.data.expr.Parameter" value="1.0E-4">
         </property>
-        <property name="valueResolution" class="ptolemy.data.expr.Parameter" value="1.0E-6">
+        <property name="minStepSize" class="ptolemy.data.expr.Parameter" value="1.0E-5">
         </property>
-        <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
+        <property name="valueResolution" class="ptolemy.data.expr.Parameter" value="1.0E-6">
         </property>
         <property name="runAheadLength" class="ptolemy.data.expr.Parameter" value="0.1">
         </property>
@@ -58,7 +58,7 @@ of following the LeadingPlatoon.</text></svg></configure>
         <property name="_location" class="ptolemy.kernel.util.Location" value="15.0, 245.0">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1, 0, 815, 518}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1, 22, 813, 510}, maximized=false}">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
@@ -69,7 +69,7 @@ of following the LeadingPlatoon.</text></svg></configure>
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Edward A. Lee">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 330.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 330.0]">
         </property>
     </property>
     <entity name="MeasureDistance" class="ptolemy.actor.TypedCompositeActor">
@@ -81,7 +81,7 @@ of following the LeadingPlatoon.</text></svg></configure>
         </property>
         <property name="initialDistance" class="ptolemy.data.expr.Parameter" value="initialDistance">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 125, 731, 468}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 125, 729, 460}, maximized=false}">
         </property>
         <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
         </property>
@@ -107,7 +107,7 @@ of following the LeadingPlatoon.</text></svg></configure>
             </property>
         </port>
         <entity name="Integrator" class="ptolemy.domains.continuous.lib.Integrator">
-            <property name="initialState" class="ptolemy.data.expr.Parameter" value="initialDistance">
+            <property name="initialState" class="ptolemy.actor.parameters.PortParameter" value="initialDistance">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[315.0, 180.0]">
             </property>
@@ -520,6 +520,12 @@ of following the LeadingPlatoon.</text></svg></configure>
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
             </property>
         </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={313, 195, 813, 510}, maximized=false}">
+        </property>
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+        </property>
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+        </property>
         <port name="dist" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="_location" class="ptolemy.kernel.util.Location" value="39.0, 40.0">
@@ -573,7 +579,7 @@ of following the LeadingPlatoon.</text></svg></configure>
                 </property>
             </port>
             <entity name="Integrator" class="ptolemy.domains.continuous.lib.Integrator">
-                <property name="initialState" class="ptolemy.data.expr.Parameter" value="vInit">
+                <property name="initialState" class="ptolemy.actor.parameters.PortParameter" value="vInit">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[210.0, 175.0]">
                 </property>
@@ -599,10 +605,10 @@ of following the LeadingPlatoon.</text></svg></configure>
             <link port="Limiter.input" relation="relation"/>
             <link port="Limiter.output" relation="relation2"/>
         </entity>
-        <entity name="controller" class="ptolemy.domains.modal.modal.ModalModel">
+        <entity name="Controller" class="ptolemy.domains.modal.modal.ModalModel">
             <property name="_tableauFactory" class="ptolemy.vergil.modal.modal.ModalTableauFactory">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="209.0, 110.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{210.0, 110.0}">
             </property>
             <port name="vel" class="ptolemy.domains.modal.modal.ModalPort">
                 <property name="input"/>
@@ -625,8 +631,6 @@ of following the LeadingPlatoon.</text></svg></configure>
                 </property>
             </port>
             <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
-                <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute">
-                </property>
                 <property name="_library" class="ptolemy.moml.LibraryAttribute">
                     <configure><entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property></entity></entity></configure>
                 </property>
@@ -634,7 +638,7 @@ of following the LeadingPlatoon.</text></svg></configure>
                 </property>
                 <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[104, 127]">
                 </property>
-                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 125, 815, 518}, maximized=false}">
+                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={313, 194, 813, 511}, maximized=false}">
                 </property>
                 <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
                 </property>
@@ -642,7 +646,7 @@ of following the LeadingPlatoon.</text></svg></configure>
                 </property>
                 <port name="vel" class="ptolemy.domains.modal.modal.RefinementPort">
                     <property name="input"/>
-                    <property name="_location" class="ptolemy.kernel.util.Location" value="30.0, 305.0">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 220.0]">
                     </property>
                 </port>
                 <port name="dist" class="ptolemy.domains.modal.modal.RefinementPort">
@@ -652,7 +656,7 @@ of following the LeadingPlatoon.</text></svg></configure>
                 </port>
                 <port name="otherVel" class="ptolemy.domains.modal.modal.RefinementPort">
                     <property name="input"/>
-                    <property name="_location" class="ptolemy.kernel.util.Location" value="35.0, 230.0">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 185.0]">
                     </property>
                 </port>
                 <port name="acc" class="ptolemy.domains.modal.modal.RefinementPort">
@@ -663,6 +667,8 @@ of following the LeadingPlatoon.</text></svg></configure>
                 </port>
                 <entity name="previous" class="ptolemy.domains.modal.kernel.State">
                     <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="previous">
+                    </property>
+                    <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="false">
                     </property>
                     <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                     </property>
@@ -684,7 +690,7 @@ of following the LeadingPlatoon.</text></svg></configure>
                     </property>
                 </entity>
                 <relation name="relation" class="ptolemy.domains.modal.kernel.Transition">
-                    <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="(dist - lambdaV*vel &lt;= elow2 +epsE + lambdaP) &amp;&amp; (lambdaV*vel - dist &lt;= -elow2 - lambdaP)">
+                    <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="(dist - lambdaV*vel &lt;= elow2 +epsE + lambdaP)&#10;   &amp;&amp; (lambdaV*vel - dist &lt;= -elow2 - lambdaP)">
                     </property>
                     <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6283185307179586">
                     </property>
@@ -696,7 +702,7 @@ of following the LeadingPlatoon.</text></svg></configure>
                     </property>
                 </relation>
                 <relation name="relation2" class="ptolemy.domains.modal.kernel.Transition">
-                    <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="(dist - lambdaV * vel &lt;= eup1+lambdaP) &amp;&amp; (lambdaV*vel - dist &lt;= epsE - eup1 - lambdaP)">
+                    <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="(dist - lambdaV * vel &lt;= eup1+lambdaP)&#10;   &amp;&amp; (lambdaV*vel - dist &lt;= epsE - eup1 - lambdaP)">
                     </property>
                     <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6283185307179586">
                     </property>
@@ -718,13 +724,13 @@ of following the LeadingPlatoon.</text></svg></configure>
                 <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[104, 127]">
                 </property>
                 <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
+                    <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
                     <property name="timeResolution" class="ptolemy.actor.parameters.SharedParameter" value="1.0E-10">
                     </property>
                     <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
                     </property>
                     <property name="initStepSize" class="ptolemy.data.expr.Parameter" value="0.1">
-                    </property>
-                    <property name="minStepSize" class="ptolemy.data.expr.Parameter" value="1.0E-5">
                     </property>
                     <property name="maxStepSize" class="ptolemy.data.expr.Parameter" value="1.0">
                     </property>
@@ -732,12 +738,18 @@ of following the LeadingPlatoon.</text></svg></configure>
                     </property>
                     <property name="errorTolerance" class="ptolemy.data.expr.Parameter" value="1.0E-4">
                     </property>
-                    <property name="valueResolution" class="ptolemy.data.expr.Parameter" value="1.0E-6">
+                    <property name="minStepSize" class="ptolemy.data.expr.Parameter" value="1.0E-5">
                     </property>
-                    <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
+                    <property name="valueResolution" class="ptolemy.data.expr.Parameter" value="1.0E-6">
                     </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="415.0, 50.0">
                     </property>
+                </property>
+                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={313, 195, 813, 510}, maximized=false}">
+                </property>
+                <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+                </property>
+                <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
                 </property>
                 <port name="vel" class="ptolemy.domains.modal.modal.RefinementPort">
                     <property name="input"/>
@@ -770,11 +782,11 @@ of following the LeadingPlatoon.</text></svg></configure>
                         <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
                         </property>
                     </property>
-                    <property name="_location" class="ptolemy.kernel.util.Location" value="200.0, 80.0">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 80.0]">
                     </property>
                 </entity>
-                <entity name="1:AddSubtract" class="ptolemy.actor.lib.AddSubtract">
-                    <property name="_location" class="ptolemy.kernel.util.Location" value="330.0, 290.0">
+                <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[365.0, 295.0]">
                     </property>
                 </entity>
                 <entity name="Scale3" class="ptolemy.actor.lib.Scale">
@@ -788,7 +800,7 @@ of following the LeadingPlatoon.</text></svg></configure>
                         <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
                         </property>
                     </property>
-                    <property name="_location" class="ptolemy.kernel.util.Location" value="200.0, 200.0">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[185.0, 200.0]">
                     </property>
                 </entity>
                 <entity name="Scale2" class="ptolemy.actor.lib.Scale">
@@ -802,10 +814,10 @@ of following the LeadingPlatoon.</text></svg></configure>
                         <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
                         </property>
                     </property>
-                    <property name="_location" class="ptolemy.kernel.util.Location" value="200.0, 140.0">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[215.0, 140.0]">
                     </property>
                 </entity>
-                <entity name="1:Const" class="ptolemy.actor.lib.Const">
+                <entity name="Const" class="ptolemy.actor.lib.Const">
                     <property name="value" class="ptolemy.data.expr.Parameter" value="k32 * lambdaP">
                     </property>
                     <doc>Create a constant sequence</doc>
@@ -815,13 +827,13 @@ of following the LeadingPlatoon.</text></svg></configure>
                         <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
                         </property>
                     </property>
-                    <property name="_location" class="ptolemy.kernel.util.Location" value="185.0, 350.0">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="{185.0, 350.0}">
                     </property>
                 </entity>
-                <entity name="1:Integrator" class="ptolemy.domains.continuous.lib.Integrator">
-                    <property name="initialState" class="ptolemy.data.expr.Parameter" value="0.0">
+                <entity name="Integrator" class="ptolemy.domains.continuous.lib.Integrator">
+                    <property name="initialState" class="ptolemy.actor.parameters.PortParameter" value="0.0">
                     </property>
-                    <property name="_location" class="ptolemy.kernel.util.Location" value="430.0, 290.0">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[460.0, 295.0]">
                     </property>
                 </entity>
                 <entity name="Scale4" class="ptolemy.actor.lib.Scale">
@@ -840,8 +852,6 @@ of following the LeadingPlatoon.</text></svg></configure>
                 </entity>
                 <relation name="1:relation" class="ptolemy.actor.TypedIORelation">
                 </relation>
-                <relation name="1:relation5" class="ptolemy.actor.TypedIORelation">
-                </relation>
                 <relation name="1:relation3" class="ptolemy.actor.TypedIORelation">
                     <vertex name="vertex1" value="505.0, 240.0">
                     </vertex>
@@ -852,35 +862,37 @@ of following the LeadingPlatoon.</text></svg></configure>
                 </relation>
                 <relation name="relation4" class="ptolemy.actor.TypedIORelation">
                 </relation>
+                <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+                </relation>
+                <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+                </relation>
                 <relation name="relation6" class="ptolemy.actor.TypedIORelation">
                 </relation>
                 <relation name="relation7" class="ptolemy.actor.TypedIORelation">
                 </relation>
                 <relation name="relation8" class="ptolemy.actor.TypedIORelation">
                 </relation>
-                <relation name="relation9" class="ptolemy.actor.TypedIORelation">
-                </relation>
                 <link port="vel" relation="relation2"/>
                 <link port="dist" relation="relation4"/>
                 <link port="otherVel" relation="relation"/>
                 <link port="acc" relation="1:relation3"/>
                 <link port="Scale.input" relation="relation"/>
-                <link port="Scale.output" relation="relation8"/>
-                <link port="1:AddSubtract.plus" relation="1:relation5"/>
-                <link port="1:AddSubtract.plus" relation="relation6"/>
-                <link port="1:AddSubtract.plus" relation="relation7"/>
-                <link port="1:AddSubtract.plus" relation="relation8"/>
-                <link port="1:AddSubtract.plus" relation="relation9"/>
-                <link port="1:AddSubtract.output" relation="1:relation"/>
+                <link port="Scale.output" relation="relation3"/>
+                <link port="AddSubtract.plus" relation="relation3"/>
+                <link port="AddSubtract.plus" relation="relation5"/>
+                <link port="AddSubtract.plus" relation="relation6"/>
+                <link port="AddSubtract.plus" relation="relation7"/>
+                <link port="AddSubtract.plus" relation="relation8"/>
+                <link port="AddSubtract.output" relation="1:relation"/>
                 <link port="Scale3.input" relation="1:relation3"/>
-                <link port="Scale3.output" relation="relation9"/>
+                <link port="Scale3.output" relation="relation6"/>
                 <link port="Scale2.input" relation="relation2"/>
-                <link port="Scale2.output" relation="1:relation5"/>
-                <link port="1:Const.output" relation="relation7"/>
-                <link port="1:Integrator.derivative" relation="1:relation"/>
-                <link port="1:Integrator.state" relation="1:relation3"/>
+                <link port="Scale2.output" relation="relation5"/>
+                <link port="Const.output" relation="relation8"/>
+                <link port="Integrator.derivative" relation="1:relation"/>
+                <link port="Integrator.state" relation="1:relation3"/>
                 <link port="Scale4.input" relation="relation4"/>
-                <link port="Scale4.output" relation="relation6"/>
+                <link port="Scale4.output" relation="relation7"/>
             </entity>
             <entity name="previous" class="ptolemy.domains.modal.modal.Refinement">
                 <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[598, 400]">
@@ -888,13 +900,13 @@ of following the LeadingPlatoon.</text></svg></configure>
                 <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[238, 198]">
                 </property>
                 <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
+                    <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
                     <property name="timeResolution" class="ptolemy.actor.parameters.SharedParameter" value="1.0E-10">
                     </property>
                     <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
                     </property>
                     <property name="initStepSize" class="ptolemy.data.expr.Parameter" value="0.1">
-                    </property>
-                    <property name="minStepSize" class="ptolemy.data.expr.Parameter" value="1.0E-5">
                     </property>
                     <property name="maxStepSize" class="ptolemy.data.expr.Parameter" value="1.0">
                     </property>
@@ -902,16 +914,22 @@ of following the LeadingPlatoon.</text></svg></configure>
                     </property>
                     <property name="errorTolerance" class="ptolemy.data.expr.Parameter" value="1.0E-4">
                     </property>
-                    <property name="valueResolution" class="ptolemy.data.expr.Parameter" value="1.0E-6">
+                    <property name="minStepSize" class="ptolemy.data.expr.Parameter" value="1.0E-5">
                     </property>
-                    <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
+                    <property name="valueResolution" class="ptolemy.data.expr.Parameter" value="1.0E-6">
                     </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="465.0, 50.0">
                     </property>
                 </property>
+                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={314, 195, 811, 510}, maximized=false}">
+                </property>
+                <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+                </property>
+                <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{299.0, 200.0}">
+                </property>
                 <port name="vel" class="ptolemy.domains.modal.modal.RefinementPort">
                     <property name="input"/>
-                    <property name="_location" class="ptolemy.kernel.util.Location" value="40.0, 145.0">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 140.0]">
                     </property>
                 </port>
                 <port name="dist" class="ptolemy.domains.modal.modal.RefinementPort">
@@ -929,13 +947,13 @@ of following the LeadingPlatoon.</text></svg></configure>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="540.0, 240.0">
                     </property>
                 </port>
-                <entity name="1:1:Integrator" class="ptolemy.domains.continuous.lib.Integrator">
-                    <property name="initialState" class="ptolemy.data.expr.Parameter" value="0.0">
+                <entity name="Integrator" class="ptolemy.domains.continuous.lib.Integrator">
+                    <property name="initialState" class="ptolemy.actor.parameters.PortParameter" value="0.0">
                     </property>
-                    <property name="_location" class="ptolemy.kernel.util.Location" value="430.0, 290.0">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[435.0, 295.0]">
                     </property>
                 </entity>
-                <entity name="1:Scale3" class="ptolemy.actor.lib.Scale">
+                <entity name="Scale3" class="ptolemy.actor.lib.Scale">
                     <property name="factor" class="ptolemy.data.expr.Parameter" value="k11">
                     </property>
                     <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
@@ -946,10 +964,10 @@ of following the LeadingPlatoon.</text></svg></configure>
                         <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
                         </property>
                     </property>
-                    <property name="_location" class="ptolemy.kernel.util.Location" value="200.0, 200.0">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[195.0, 200.0]">
                     </property>
                 </entity>
-                <entity name="1:1:Const" class="ptolemy.actor.lib.Const">
+                <entity name="Const" class="ptolemy.actor.lib.Const">
                     <property name="value" class="ptolemy.data.expr.Parameter" value="k31 * lambdaP">
                     </property>
                     <doc>Create a constant sequence</doc>
@@ -962,7 +980,7 @@ of following the LeadingPlatoon.</text></svg></configure>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="185.0, 350.0">
                     </property>
                 </entity>
-                <entity name="1:Scale2" class="ptolemy.actor.lib.Scale">
+                <entity name="Scale2" class="ptolemy.actor.lib.Scale">
                     <property name="factor" class="ptolemy.data.expr.Parameter" value="k21 + k31*lambdaV">
                     </property>
                     <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
@@ -973,10 +991,10 @@ of following the LeadingPlatoon.</text></svg></configure>
                         <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
                         </property>
                     </property>
-                    <property name="_location" class="ptolemy.kernel.util.Location" value="200.0, 145.0">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[210.0, 140.0]">
                     </property>
                 </entity>
-                <entity name="1:Scale" class="ptolemy.actor.lib.Scale">
+                <entity name="Scale" class="ptolemy.actor.lib.Scale">
                     <property name="factor" class="ptolemy.data.expr.Parameter" value="- k21">
                     </property>
                     <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
@@ -987,10 +1005,10 @@ of following the LeadingPlatoon.</text></svg></configure>
                         <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
                         </property>
                     </property>
-                    <property name="_location" class="ptolemy.kernel.util.Location" value="200.0, 80.0">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 80.0]">
                     </property>
                 </entity>
-                <entity name="1:Scale4" class="ptolemy.actor.lib.Scale">
+                <entity name="Scale4" class="ptolemy.actor.lib.Scale">
                     <property name="factor" class="ptolemy.data.expr.Parameter" value="- k31">
                     </property>
                     <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
@@ -1005,7 +1023,7 @@ of following the LeadingPlatoon.</text></svg></configure>
                     </property>
                 </entity>
                 <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
-                    <property name="_location" class="ptolemy.kernel.util.Location" value="325.0, 290.0">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, 295.0]">
                     </property>
                 </entity>
                 <relation name="1:1:relation3" class="ptolemy.actor.TypedIORelation">
@@ -1014,13 +1032,15 @@ of following the LeadingPlatoon.</text></svg></configure>
                 </relation>
                 <relation name="relation" class="ptolemy.actor.TypedIORelation">
                 </relation>
-                <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-                </relation>
                 <relation name="relation3" class="ptolemy.actor.TypedIORelation">
                 </relation>
-                <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-                </relation>
                 <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+                </relation>
+                <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+                </relation>
+                <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+                </relation>
+                <relation name="relation4" class="ptolemy.actor.TypedIORelation">
                 </relation>
                 <relation name="relation6" class="ptolemy.actor.TypedIORelation">
                 </relation>
@@ -1028,23 +1048,21 @@ of following the LeadingPlatoon.</text></svg></configure>
                 </relation>
                 <relation name="relation8" class="ptolemy.actor.TypedIORelation">
                 </relation>
-                <relation name="relation9" class="ptolemy.actor.TypedIORelation">
-                </relation>
                 <link port="vel" relation="relation5"/>
                 <link port="dist" relation="relation"/>
                 <link port="otherVel" relation="relation3"/>
                 <link port="acc" relation="1:1:relation3"/>
-                <link port="1:1:Integrator.derivative" relation="relation9"/>
-                <link port="1:1:Integrator.state" relation="1:1:relation3"/>
-                <link port="1:Scale3.input" relation="1:1:relation3"/>
-                <link port="1:Scale3.output" relation="relation6"/>
-                <link port="1:1:Const.output" relation="relation8"/>
-                <link port="1:Scale2.input" relation="relation5"/>
-                <link port="1:Scale2.output" relation="relation7"/>
-                <link port="1:Scale.input" relation="relation3"/>
-                <link port="1:Scale.output" relation="relation4"/>
-                <link port="1:Scale4.input" relation="relation"/>
-                <link port="1:Scale4.output" relation="relation2"/>
+                <link port="Integrator.derivative" relation="relation9"/>
+                <link port="Integrator.state" relation="1:1:relation3"/>
+                <link port="Scale3.input" relation="1:1:relation3"/>
+                <link port="Scale3.output" relation="relation6"/>
+                <link port="Const.output" relation="relation8"/>
+                <link port="Scale2.input" relation="relation5"/>
+                <link port="Scale2.output" relation="relation4"/>
+                <link port="Scale.input" relation="relation3"/>
+                <link port="Scale.output" relation="relation2"/>
+                <link port="Scale4.input" relation="relation"/>
+                <link port="Scale4.output" relation="relation7"/>
                 <link port="AddSubtract.plus" relation="relation2"/>
                 <link port="AddSubtract.plus" relation="relation4"/>
                 <link port="AddSubtract.plus" relation="relation6"/>
@@ -1094,17 +1112,17 @@ of following the LeadingPlatoon.</text></svg></configure>
         <link port="velFollower" relation="relation3"/>
         <link port="Velocity.acc" relation="relation"/>
         <link port="Velocity.vel" relation="relation3"/>
-        <link port="controller.vel" relation="relation3"/>
-        <link port="controller.dist" relation="relation7"/>
-        <link port="controller.otherVel" relation="relation8"/>
-        <link port="controller.acc" relation="relation"/>
+        <link port="Controller.vel" relation="relation3"/>
+        <link port="Controller.dist" relation="relation7"/>
+        <link port="Controller.otherVel" relation="relation8"/>
+        <link port="Controller.acc" relation="relation"/>
     </entity>
     <entity name="Velocities" class="ptolemy.actor.lib.gui.TimedPlotter">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="leader, follower">
+        <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="follower, leader">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={5, 412, 508, 355}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={5, 412, 500, 344}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
         </property>
@@ -1120,12 +1138,12 @@ of following the LeadingPlatoon.</text></svg></configure>
 <xLabel>time</xLabel>
 <yLabel>velocity</yLabel>
 <xRange min="0.0" max="25.0"/>
-<yRange min="16.817008441138878" max="30.0"/>
+<yRange min="16.81825610064668" max="30.0"/>
 </plot>?>
         </configure>
     </entity>
     <entity name="LeadingPlatoon" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="65.0, 190.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{65.0, 190.0}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
         </property>
@@ -1157,7 +1175,7 @@ of following the LeadingPlatoon.</text></svg></configure>
             </property>
         </entity>
         <entity name="Integrator" class="ptolemy.domains.continuous.lib.Integrator">
-            <property name="initialState" class="ptolemy.data.expr.Parameter" value="initialVelocity">
+            <property name="initialState" class="ptolemy.actor.parameters.PortParameter" value="initialVelocity">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="335.0, 175.0">
             </property>
@@ -1208,7 +1226,7 @@ of following the LeadingPlatoon.</text></svg></configure>
         <link port="ContinuousSinewave.output" relation="relation2"/>
     </entity>
     <entity name="Distance" class="ptolemy.actor.lib.gui.TimedPlotter">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={514, 412, 508, 355}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={514, 412, 500, 344}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
         </property>
@@ -1222,7 +1240,7 @@ of following the LeadingPlatoon.</text></svg></configure>
 <xLabel>time</xLabel>
 <yLabel></yLabel>
 <xRange min="0.0" max="25.0"/>
-<yRange min="29.440233214058463" max="100.0"/>
+<yRange min="29.44124142952408" max="100.0"/>
 </plot>?>
         </configure>
     </entity>
@@ -1244,8 +1262,8 @@ of following the LeadingPlatoon.</text></svg></configure>
     <link port="FollowingPlatoon.dist" relation="relation2"/>
     <link port="FollowingPlatoon.velLeader" relation="relation5"/>
     <link port="FollowingPlatoon.velFollower" relation="relation4"/>
-    <link port="Velocities.input" relation="relation5"/>
     <link port="Velocities.input" relation="relation4"/>
+    <link port="Velocities.input" relation="relation5"/>
     <link port="LeadingPlatoon.velLeader" relation="relation5"/>
     <link port="Distance.input" relation="relation2"/>
 </entity>

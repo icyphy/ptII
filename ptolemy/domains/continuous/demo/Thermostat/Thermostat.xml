@@ -109,7 +109,7 @@ see the modal behavior.</text></svg></configure>
     <entity name="Thermostat" class="ptolemy.domains.modal.modal.ModalModel">
         <property name="_tableauFactory" class="ptolemy.vergil.modal.modal.ModalTableauFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="65.0, 165.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 165.0]">
         </property>
         <port name="output" class="ptolemy.domains.modal.modal.ModalPort">
             <property name="output"/>
@@ -129,10 +129,8 @@ see the modal behavior.</text></svg></configure>
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
                 <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-                    <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">The thermostat has two modes of operation,
-"heating" and "cooling." The "init" state
-has a transition that is used to initialize
-the "heating" model (double click on that
+                    <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">The thermostat has two modes of operation, "heating" and "cooling." The "init" state
+has a transition that is used to initialize the "heating" model (double click on that
 transition to see its actions).</text></svg></configure>
                 </property>
                 <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
@@ -146,16 +144,15 @@ transition to see its actions).</text></svg></configure>
                 </property>
                 <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="250.0, 5.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[-10.0, 5.0]">
                 </property>
             </property>
             <property name="annotation2" class="ptolemy.kernel.util.Attribute">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
                 <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-                    <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:red">Right click to look inside the states to see the
-model of the system behavior in the corresponding
-mode of operation. Note that both the "heating"
+                    <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:red">Right click to look inside the states to see the model of the system behavior in
+the corresponding mode of operation. Note that both the "heating"
 and "cooling" states have the same refinement.</text></svg></configure>
                 </property>
                 <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
@@ -169,8 +166,14 @@ and "cooling" states have the same refinement.</text></svg></configure>
                 </property>
                 <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="15.0, 315.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 335.0]">
                 </property>
+            </property>
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={313, 194, 813, 511}, maximized=false}">
+            </property>
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+            </property>
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
             </property>
             <port name="output" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
@@ -181,7 +184,7 @@ and "cooling" states have the same refinement.</text></svg></configure>
             <port name="event" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
                 <property name="output"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="502.5, 331.75">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[500.0, 285.0]">
                 </property>
             </port>
             <entity name="cooling" class="ptolemy.domains.modal.kernel.State">
@@ -193,7 +196,7 @@ and "cooling" states have the same refinement.</text></svg></configure>
                 </property>
                 <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="375.0, 240.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[390.0, 240.0]">
                 </property>
             </entity>
             <entity name="heating" class="ptolemy.domains.modal.kernel.State">
@@ -213,15 +216,19 @@ and "cooling" states have the same refinement.</text></svg></configure>
                 </property>
                 <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="70.0, 110.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 95.0]">
                 </property>
             </entity>
             <relation name="relation" class="ptolemy.domains.modal.kernel.Transition">
                 <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
                 </property>
-                <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute" value="heating.Integrator.initialState = 65.0; heating.HeatSource.value = 35.0; heating.LevelCrossingDetector.level = 80.0">
+                <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute" value="&#10;  heating.Integrator.initialState = 65.0;&#10;  heating.HeatSource.value = 35.0;&#10;  heating.LevelCrossingDetector.level = 80.0">
                 </property>
-                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.770501419737834">
+                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.5011903185597845">
+                    <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+                    </property>
+                </property>
+                <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.8972396429020406">
                 </property>
                 <property name="reset" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
@@ -231,9 +238,11 @@ and "cooling" states have the same refinement.</text></svg></configure>
             <relation name="relation4" class="ptolemy.domains.modal.kernel.Transition">
                 <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="event_isPresent">
                 </property>
-                <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute" value="heating.HeatSource.value = 0.0; heating.LevelCrossingDetector.level = 70.0">
+                <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute" value="&#10;  heating.HeatSource.value = 0.0;&#10;  heating.LevelCrossingDetector.level = 70.0">
                 </property>
-                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6283185307179586">
+                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.3981311024341356">
+                </property>
+                <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.029250109914564976">
                 </property>
                 <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
@@ -243,9 +252,13 @@ and "cooling" states have the same refinement.</text></svg></configure>
             <relation name="relation5" class="ptolemy.domains.modal.kernel.Transition">
                 <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="output &lt; 70.0">
                 </property>
-                <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute" value="heating.HeatSource.value = 35.0; heating.LevelCrossingDetector.level = 80.0">
+                <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute" value="&#10;  heating.HeatSource.value = 35.0;&#10;  heating.LevelCrossingDetector.level = 80.0">
                 </property>
-                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6283185307179586">
+                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.46792241702118864">
+                    <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+                    </property>
+                </property>
+                <property name="gamma" class="ptolemy.data.expr.Parameter" value="-3.1093362976288033">
                 </property>
                 <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
@@ -440,8 +453,8 @@ event that triggers a transition out of this mode.</text></svg></configure>
 <title>Temperature</title>
 <xLabel>Time</xLabel>
 <yLabel>Degrees</yLabel>
-<xRange min="-1.0" max="21.0"/>
-<yRange min="63.69999228074704" max="81.30009678755631"/>
+<xRange min="0.0" max="20.0"/>
+<yRange min="65.0" max="80.00008906830335"/>
 </plot>?>
         </configure>
     </entity>
