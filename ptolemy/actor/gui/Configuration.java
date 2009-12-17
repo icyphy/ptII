@@ -1183,6 +1183,9 @@ public class Configuration extends CompositeEntity implements
      */
     private Tableau _openModel(NamedObj entity, CompositeEntity container)
             throws IllegalActionException, NameDuplicationException {
+        if (entity == null) {
+            throw new IllegalActionException("Nothing to open.");
+        }
         // Search the model directory for an effigy that already
         // refers to this model.
         PtolemyEffigy effigy = getEffigy(entity);
