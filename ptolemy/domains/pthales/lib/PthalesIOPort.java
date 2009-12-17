@@ -430,8 +430,8 @@ public class PthalesIOPort extends TypedIOPort {
                             myList.add(pattern.get(dim)[0] + rep[i]
                                     * tiling.get(til)[0] - 1);
                         } else {
-                            myList.add(pattern.get(dim)[0] + tiling.get(til)[0]
-                                    - 1);
+                            // Data produced does depend of repetition, unlike addresses
+                            myList.add(pattern.get(dim)[0]);
                         }
 
                     }
