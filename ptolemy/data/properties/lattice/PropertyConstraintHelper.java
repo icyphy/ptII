@@ -340,6 +340,7 @@ public class PropertyConstraintHelper extends PropertyHelper {
             return;
         }
 
+        // Determine whether the constraint specifies to constrain the source.
         boolean constraintSource = actorConstraintType == ConstraintType.SRC_EQUALS_MEET
                 || actorConstraintType == ConstraintType.SRC_EQUALS_GREATER;
 
