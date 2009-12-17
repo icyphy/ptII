@@ -20,6 +20,8 @@
                 class="ptolemy.domains.continuous.lib.LevelCrossingDetector"/>
         <entity name="PeriodicSampler"
                 class="ptolemy.domains.continuous.lib.PeriodicSampler"/>
+        <entity name="Sampler"
+                class="ptolemy.actor.lib.Sampler"/>
   </entity>
   <entity name="Discrete to Continuous" class="ptolemy.moml.EntityLibrary">
           <entity name="ZeroOrderHold"
