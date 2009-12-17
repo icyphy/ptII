@@ -105,29 +105,31 @@ public class ParseTreeAnnotationEvaluator extends AbstractParseTreeVisitor {
         }
     }
 
-    /* FIXME: Removing this method to aid in compilation
-     * --Ben 12/04/2009
+    /**
+     *  visitLeafNode method is called when parsing an Annotation for a manual constraint.
+     *  Uncommented to get ontology solver to work.
+     *  12/16/09 Charles Shelton
+     *  
+     *  This visitLeafNode method assumes the node will refer to a component
+     *  in the model and _evaluatedObject will be set to that component.
+     *  If it is not, then an exception is thrown.
+     *  
+     *  In the derived class ParseTreeConstraintAnnotationEvaluator for constraint
+     *  annotations, the node could also refer to a Concept in the Ontology.
+     *  
+     *  The derived class will override this method and catch its exception, then
+     *  check to see if the node refers to a Concept rather than a model Component.
+     * 
+     */
+    
     public void visitLeafNode(ASTPtLeafNode node) throws IllegalActionException {
-        try {
-            _evaluatedObject = _resolveLabel(_getNodeLabel(node), _adapter
-                    .getComponent());
-
-            if (_evaluatedObject == null) {
-                throw _unsupportedVisitException("Cannot resolve label: "
-                        + node.getName());
-            }
-        } catch (IllegalActionException ex) {
-
-            // The label may be a lattice element name.
-            PropertyLattice lattice = ((PropertyHelper) _adapter)
-                    .getSolver().getLattice();
-
-            _evaluatedObject = lattice.getElement(_getNodeLabel(node)
-                    .toUpperCase());
+        _evaluatedObject = _resolveLabel(_getNodeLabel(node), _adapter.getComponent());
+        
+        if (_evaluatedObject == null) {               
+            throw _unsupportedVisitException("Cannot resolve label: " + node.getName());
         }
      // FIXME: Not handling AST constraint yet.
     }
-    */
 
     public void visitMethodCallNode(ASTPtMethodCallNode node)
             throws IllegalActionException {

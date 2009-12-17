@@ -49,21 +49,32 @@ public class ParseTreeConstraintAnnotationEvaluator extends
         ParseTreeAnnotationEvaluator {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+    
+    /**
+     *  visitLeafNode method is called when parsing an Annotation for a manual constraint.
+     *  12/16/09 Charles Shelton
+     *  
+     *  This visitLeafNode method assumes the node will refer to either a component
+     *  in the model or a Concept in the ontology.  The _evaluatedObject will then be set to
+     *  that component or Concept.
+     *  If it is not, then an exception is thrown.
+     *  
+     *  This method calls the super class method for model Components, and then
+     *  catches the super class' exception to check for a Concept.
+     */
+    
     public void visitLeafNode(ASTPtLeafNode node) throws IllegalActionException {
         try {
             super.visitLeafNode(node);
 
         } catch (IllegalActionException ex) {
-
-            // The label may be a lattice element name.
-            ConceptGraph lattice = ((PropertyConstraintHelper) _adapter)
-                    .getSolver().getLattice();
-
-            _evaluatedObject = lattice.getOntology().getEntity(_getNodeLabel(node));
+            _evaluatedObject = _adapter.getSolver().getOntology().getEntity(_getNodeLabel(node));
+            
             if (_evaluatedObject == null) {
-                throw new IllegalActionException(lattice.getOntology(),
-                        "Does not contain a concept named"
-                        + _getNodeLabel(node));
+                throw new IllegalActionException(_adapter.getSolver().getOntology(),
+                        "Cannot resolve label: "
+                        + _getNodeLabel(node) + ". There is no matching component in the model, "
+                        + "and there is no matching Concept in the Ontology.");
             }
         }
 

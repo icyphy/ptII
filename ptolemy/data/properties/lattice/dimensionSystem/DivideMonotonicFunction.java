@@ -46,7 +46,7 @@ import ptolemy.kernel.util.IllegalActionException;
  A Monotonic function class for division quotients in the dimensionSystem lattice.
 
  @author Charles Shelton
- @version $Id: DivideMonotonicFunction.java 56395 2009-12-03 02:10:27Z cxh $
+ @version $Id$
  @since Ptolemy II 8.1
  @Pt.ProposedRating Red (cshelton)
  @Pt.AcceptedRating Red (cshelton)

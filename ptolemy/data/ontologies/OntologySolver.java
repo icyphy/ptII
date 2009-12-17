@@ -521,7 +521,17 @@ public class OntologySolver extends PropertySolver implements Testable {
              */
 
             if (constraintList.size() > 0) {
-                CPO lattice = getLattice();
+                CPO lattice = null;
+                
+                // Added by Charles Shelton 12/17/09
+                // Check to see if the ontology is a lattice
+                // and throw an exception if it isn't.                
+                if (getOntology().isLattice()) {                
+                    lattice = getOntology().getGraph();
+                } else {
+                    throw new IllegalActionException(this, "This Ontology is not a lattice, "
+                            + "and therefore we cannot resolve the model using the least fixed point algorithm.");
+                }
 
                 // Instantiate our own customized version of InequalitySolver.
                 ptolemy.graph.InequalitySolver solver = new ptolemy.graph.InequalitySolver(lattice);
@@ -717,6 +727,8 @@ public class OntologySolver extends PropertySolver implements Testable {
                 }
             }
         }
+        
+        
     }
 
     /**
