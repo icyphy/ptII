@@ -408,13 +408,13 @@ public class OntologySolver extends PropertySolver implements Testable {
             } else if (component instanceof ptolemy.domains.modal.kernel.FSMActor) {
                 adapter = new PropertyConstraintModalFSMHelper(this,
                         (ptolemy.domains.modal.kernel.FSMActor) component);
+                 */
             } else if (component instanceof CompositeEntity) {
                 adapter = new PropertyConstraintCompositeHelper(this,
                         (CompositeEntity) component);
             } else if (component instanceof ASTPtRootNode) {
                 adapter = new PropertyConstraintASTNodeHelper(this,
                         (ASTPtRootNode) component);
-                 */
             } else {
                 adapter = new PropertyConstraintHelper(this, component);
             }
@@ -474,12 +474,9 @@ public class OntologySolver extends PropertySolver implements Testable {
                         .stringValue()));
         
         // Collect and solve type constraints.
-        /*  FIXME: Removing chunks of code wholesale now.
-         * --Ben 12/04/2009
         List<Inequality> constraintList = toplevelHelper.constraintList();
          
         _resolveProperties(toplevel, toplevelHelper, constraintList);
-        */
     }
 
     /** Resolve the properties of the given top-level container,
@@ -531,10 +528,7 @@ public class OntologySolver extends PropertySolver implements Testable {
                 //InequalitySolver solver = new InequalitySolver(cpo, this);
 
                 solver.addInequalities(constraintList.iterator());
-                /*  FIXME: Removing chunks of code wholesale now.
-                 * --Ben 12/04/2009
                 _constraintManager.setConstraints(constraintList);
-                */
 
                 //              BEGIN CHANGE Thomas, 04/10/2008
                 // Collect statistics.

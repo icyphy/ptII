@@ -121,7 +121,7 @@ public class PropertyConstraintHelper extends PropertyHelper {
      * @return The list of constrainting terms.
      */
     public List<InequalityTerm> getConstraintingTerms(Object object) {
-        return getSolver().getConstraintManager().getConstraintingTerms(object);
+        return getSolver().getConstraintManager().getConstrainingTerms(object);
     }
 
     /**

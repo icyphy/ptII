@@ -187,12 +187,17 @@ public class PropertyHelper {
      * {@link #getPropertyables()} throws it.
      */
     public void reinitialize() throws IllegalActionException {
-        /* FIXME
+        
+        for (AnnotationAttribute annotation : _getAnnotationAttributes()) {
+            _evaluateAnnotation(annotation);
+        }
+
         for (Object propertyable : getPropertyables()) {
 
             // Remove all ConceptAttributes.
             if (propertyable instanceof NamedObj) {
                 NamedObj namedObj = (NamedObj) propertyable;
+                /** FIXME: Not using ConceptAttribute
                 ConceptAttribute attribute = (ConceptAttribute) namedObj
                         .getAttribute(_solver.getExtendedUseCaseName());
 
@@ -216,11 +221,13 @@ public class PropertyHelper {
 
                     }
                 }
+                */
 
                 if (_solver.isSettable(propertyable)) {
                     _solver.clearResolvedProperty(propertyable);
                 }
 
+                /* FIXME: Not doing display for now.
                 if (clearShowInfo) {
                     // Clear the expression of the _showInfo attribute.
                     // It will be updated later.
@@ -230,6 +237,7 @@ public class PropertyHelper {
                         showAttribute.setExpression("");
                     }
                 }
+                */
             }
         }
 
@@ -237,7 +245,6 @@ public class PropertyHelper {
         for (PropertyHelper adapter : _getSubHelpers()) {
             adapter.reinitialize();
         }
-        */
     }
 
     /**

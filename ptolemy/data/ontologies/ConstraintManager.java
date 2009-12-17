@@ -30,10 +30,12 @@ package ptolemy.data.ontologies;
 
 import java.util.List;
 
+import ptolemy.data.StringToken;
 import ptolemy.data.ontologies.PropertyConstraintHelper.Inequality;
 import ptolemy.data.ontologies.util.MultiHashMap;
 import ptolemy.data.ontologies.util.MultiMap;
 import ptolemy.graph.InequalityTerm;
+import ptolemy.kernel.util.IllegalActionException;
 
 /**
  @author Man-Kit Leung
@@ -67,13 +69,18 @@ public class ConstraintManager {
     }
 
     /**
-     * Return the list of constrainting terms for the given object.
+     * Return the list of constraining terms for the given object.
      * @param object The given object.
-     * @return The list of constrainting terms for the given object.
+     * @return The list of constraining terms for the given object.
      */
-    public List<ptolemy.graph.InequalityTerm> getConstraintingTerms(Object object) {
-        boolean least = _solver.solvingFixedPoint.getExpression().equals(
-                "least");
+    public List<ptolemy.graph.InequalityTerm> getConstrainingTerms(Object object) {
+        boolean least;
+        try {
+            least = ((StringToken)_solver.solvingFixedPoint.getToken()).stringValue().equals(
+                    "least");
+        } catch (IllegalActionException e) {
+            least = true;
+        }
 
         if (least) {
             return (List<ptolemy.graph.InequalityTerm>) _greaterTermMap.get(_solver

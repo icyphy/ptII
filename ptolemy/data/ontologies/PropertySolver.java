@@ -916,12 +916,15 @@ public abstract class PropertySolver extends PropertySolverBase {
      */
     private void _updatePropertyAttribute(ConceptAttribute attribute,
             Concept property) throws IllegalActionException {
-        if (property != null) {
-            // Write results to attribute
-            attribute.setExpression(property.toString());
-
+        if (attribute != null) {
+            if (property != null) {
+                // Write results to attribute
+                attribute.setExpression(property.toString());
+            } else {
+                attribute.setExpression("");
+            }
         } else {
-            attribute.setExpression("");
+            // FIXME: What to do?
         }
     }
 
