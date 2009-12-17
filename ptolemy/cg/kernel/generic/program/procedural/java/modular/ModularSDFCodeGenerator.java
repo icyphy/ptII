@@ -1379,19 +1379,15 @@ public class ModularSDFCodeGenerator extends JavaCodeGenerator {
         for(Iterator firings = actorFirings.iterator(); firings.hasNext();) {
             Firing firing = (Firing) firings.next();
             
+            graph.append("\t" + firing.actor.getName() + "_" + 
+                    firing.firingIndex + "_" + firing.firingFunction + ";" + _eol);
+            
             for(Iterator nextFirings = firing.nextActorFirings.iterator(); nextFirings.hasNext();) {
                 Firing nextFiring = (Firing) nextFirings.next();
                 graph.append("\t" + firing.actor.getName() + "_" + firing.firingIndex + "_" + firing.firingFunction 
                         + " -> "+ nextFiring.actor.getName() + "_" + nextFiring.firingIndex + "_" 
                         + nextFiring.firingFunction + ";" + _eol);
             }
-            
-//            for(Iterator nextFirings = firing.nextIterationFirings.iterator(); nextFirings.hasNext();) {
-//                Firing nextFiring = (Firing) nextFirings.next();
-//                graph.append("\t" + firing.actor.getName() + "_" + firing.firingIndex + "_" + firing.firingFunction 
-//                        + " -> "+ nextFiring.actor.getName() + "_" + nextFiring.firingIndex + "_" 
-//                        + nextFiring.firingFunction + "[style=dotted];" + _eol);
-//            }
         }
         
         for(FiringCluster cluster:firingClusters) {
@@ -1410,7 +1406,7 @@ public class ModularSDFCodeGenerator extends JavaCodeGenerator {
         for(FiringCluster cluster:firingClusters) { 
             
             int index = firingClusters.indexOf(cluster);
-//            Firing firing = cluster.actorFirings.get(0);
+            clustersGraph.append("\t" + "Cluster_" + index+";" + _eol);
             
             for(FiringCluster nextCluster:cluster.nextClusters) {
 //                Firing nextFiring = nextCluster.actorFirings.get(0);
