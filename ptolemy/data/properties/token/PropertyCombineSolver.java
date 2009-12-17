@@ -140,6 +140,13 @@ public class PropertyCombineSolver extends PropertySolver {
     }
 
     protected StringParameter _propertyName;
+    
+    /** An expression in the Ptolemy II expression language that
+     *  refers to solved properties via a naming convention where
+     *  a property has the form package::useCase::
+     * 
+     *  
+     */
     protected StringParameter _propertyExpression;
     protected StringParameter _propertyEmptyString;
     protected Parameter _inputPorts;
