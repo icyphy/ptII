@@ -146,28 +146,20 @@ void exit(int zero) {
         die("program exit?");
 }
 
-//Convert processor cycle count to nanoseconds.
-//This method assumes a fixed processor speed
-//of 50 MHz
+// Convert processor cycle count to nanoseconds.
+// This method assumes a fixed clock rate
+// of 50 MHz
 uint32 convertCyclesToNsecs(uint32 cycles){
     // nsec = cycles * 20 = cycles * (4+1) * 4
     return ((cycles << 2) + cycles) << 2;
 }
 
 // Convert nanoseconds to processor cycles.
-// This method assumes a fixed processor speed
+// This method assumes a fixed clock rate
 // of 50 MHz
 uint32 convertNsecsToCycles(uint32 nsecs) {
         return nsecs / 20;
         // FIXME: Is there a way to make it less expensive?
-        // cycles = nsecs / 20 = nsecs / 32 * 8/5
-        // let y = nsecs/32
-        // cycles = y * 1.6 = y + z
-        // z = .6 * y = 75/125 * y ~= 75/128 * y
-        // let x = y / 128
-        // z = x * 75 = x * 64 + x * 8 + x * 2 + x
-        // uint32 y, z;
-        // return y + z;
 }
 
 /* error printout */
@@ -204,20 +196,22 @@ void getRealTime(Time * const physicalTime){
     //If the system tick rolls over (the tick counts down) between accessing
     // the volatile variables _secs and _quartersecs, then we account for this here
     // by incrementing _quartersecs
-    if(tick2 > tick1){
-        tempQuarterSecs++;
-    }
-    physicalTime->secs = tempSecs;
-    switch(tempQuarterSecs) {
-		case 0:			physicalTime->nsecs = 0;		 break;
-        case 1:         physicalTime->nsecs = 250000000; break;
-        case 2:         physicalTime->nsecs = 500000000; break;
-        case 3:         physicalTime->nsecs = 750000000; break;
-        case 4:         physicalTime->nsecs = 0;
-						physicalTime->secs++;			 break;
-    }
-    // since the timer counts down, the actual cycle is the TIMER_ROLLOVER_CYCLES - tick2
-    physicalTime->nsecs += convertCyclesToNsecs(TIMER_ROLLOVER_CYCLES - tick2);
+	for (;;) {
+	    if(tick2 < tick1) {
+		    physicalTime->secs = tempSecs;
+		    switch(tempQuarterSecs){
+				case 0:			physicalTime->nsecs = 0;		 break;
+		        case 1:         physicalTime->nsecs = 250000000; break;
+		        case 2:         physicalTime->nsecs = 500000000; break;
+		        case 3:         physicalTime->nsecs = 750000000; break;
+		    }
+		    // because the systick handler runs at 4 times the rate of 50MHz (20MHz),
+		    // since convertCyclesToNsecs assumes 50MHz clock, we need to divide the
+		    // # of nsec by 4.
+	    	physicalTime->nsecs += (convertCyclesToNsecs(TIMER_ROLLOVER_CYCLES - tick2) >> 2);
+			break;
+		}
+	}
 }
 
 /* timer */
