@@ -203,6 +203,7 @@ JSRCS = \
 	RemoveNilTokens.java \
 	ResettableTimer.java \
 	Rician.java \
+	Sampler.java \
 	Scale.java \
 	Select.java \
 	Sequence.java \
