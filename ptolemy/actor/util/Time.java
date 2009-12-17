@@ -261,7 +261,7 @@ public class Time implements Comparable {
                 quantizedValue = _doubleToMultiple(timeValue);
             } catch (IllegalActionException e) {
                 throw new ArithmeticException("Cannot guarantee the specified "
-                        + "time resolution " + _director.getTimeResolution()
+                        + "time resolution " + _timeResolution()
                         + " for the time value " + timeValue + ".\nTry "
                         + "choosing a greater time resolution "
                         + "by configuring the timeResolution parameter of the "
@@ -312,9 +312,9 @@ public class Time implements Comparable {
 
         // Ensure the resolutions are the same.
         try {
-            double resolution = _director.getTimeResolution();
+            double resolution = _timeResolution();
 
-            if (resolution != time._director.getTimeResolution()) {
+            if (resolution != time._timeResolution()) {
                 double thisValue = getDoubleValue();
                 double thatValue = time.getDoubleValue();
                 return new Time(_director, thisValue + thatValue);
@@ -370,9 +370,9 @@ public class Time implements Comparable {
             }
         }
 
-        double resolution = _director.getTimeResolution();
+        double resolution = _timeResolution();
 
-        if (resolution == castTime._director.getTimeResolution()) {
+        if (resolution == castTime._timeResolution()) {
             return _timeValue.compareTo(castTime._timeValue);
         } else {
             double thisValue = getDoubleValue();
@@ -419,7 +419,7 @@ public class Time implements Comparable {
             // NOTE: Using doubleValue() here hugely increases the
             // execution time... Could instead use longValue(), but the
             // result would not necessarily be accurate.
-            return _timeValue.doubleValue() * _director.getTimeResolution();
+            return _timeValue.doubleValue() * _timeResolution();
         }
     }
 
@@ -517,7 +517,7 @@ public class Time implements Comparable {
         // (-1)^(sign)x(1+significand)x2^(exponent-1023)
         // for double presision.
         int minimumNumberOfBits = (int) Math.floor(-1
-                * ExtendedMath.log2(_director.getTimeResolution())) + 1;
+                * ExtendedMath.log2(_timeResolution())) + 1;
         int maximumGain = 52 - minimumNumberOfBits;
 
         return ExtendedMath.DOUBLE_PRECISION_SIGNIFICAND_ONLY
@@ -580,6 +580,20 @@ public class Time implements Comparable {
     }
 
     ///////////////////////////////////////////////////////////////////
+    ////                       protected methods                   ////
+    
+    /** Return the time resolution for this Time object, which in this
+     *  class is the time resolution of the director given in the
+     *  constructor.
+     *  This is a protected method to allow subclasses to use their
+     *  own time resolution.
+     *  @return The time resolution of the director.
+     */
+    protected double _timeResolution() {
+        return _director.getTimeResolution();
+    }
+
+    ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
     /** Given a double, return the BigInteger that represents its
@@ -615,7 +629,7 @@ public class Time implements Comparable {
         // representation is (-1)^(sign)x(1+significand)x2^(exponent-127) for
         // signal precision and (-1)^(sign)x(1+significand)x2^(exponent-1023)
         // for double precision.
-        double precision = _director.getTimeResolution();
+        double precision = _timeResolution();
         long multiple = Math.round(value / precision);
 
         if (Math.abs((multiple * precision) - value) > precision) {
