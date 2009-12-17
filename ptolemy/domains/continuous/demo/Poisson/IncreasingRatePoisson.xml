@@ -88,7 +88,7 @@
             <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
                 <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Note that on this transition, only one of the&#10;two integrators is reset, so the rate continues&#10;to increase linearly.">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[155.0, 240.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[145.0, 300.0]">
                 </property>
             </property>
             <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -96,7 +96,7 @@
                 </property>
                 <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Look inside the wait state to&#10;see how this is implemented.">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[260.0, 85.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[275.0, 185.0]">
                 </property>
             </property>
             <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -114,23 +114,23 @@
             <entity name="wait" class="ptolemy.domains.modal.kernel.State">
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="wait">
                 </property>
-                <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">
-                </property>
-                <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
-                </property>
-                <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
-                </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 115.0]">
-                </property>
-            </entity>
-            <entity name="init" class="ptolemy.domains.modal.kernel.State">
                 <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
                 <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 115.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[230.0, 205.0]">
+                </property>
+            </entity>
+            <entity name="init" class="ptolemy.domains.modal.kernel.State">
+                <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+                <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 130.0]">
                 </property>
             </entity>
             <relation name="relation" class="ptolemy.domains.modal.kernel.Transition">
@@ -177,7 +177,7 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{85.0, 60.0}">
                 </property>
             </property>
-            <property name="threshold" class="ptolemy.data.expr.Parameter" value="2.9475967791604">
+            <property name="threshold" class="ptolemy.data.expr.Parameter" value="1.4850858511832">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -281,8 +281,8 @@
 <title>Events</title>
 <xLabel>time</xLabel>
 <yLabel>elapsed time</yLabel>
-<xRange min="17.3492843087" max="399.44061332900003"/>
-<yRange min="4.867071538527918E-4" max="5.077610364519176"/>
+<xRange min="21.4962872034" max="399.4436866652"/>
+<yRange min="0.001850316727709996" max="6.608286270147071"/>
 <default connected="no" marks="dots" stems="yes"/>
 </plot>?>
         </configure>
@@ -305,8 +305,8 @@
 <title>Times Between Events</title>
 <xLabel>amount of time</xLabel>
 <yLabel>number of occurrences</yLabel>
-<xRange min="0.1" max="5.199999999999999"/>
-<yRange min="0.0" max="71.0"/>
+<xRange min="0.1" max="6.8"/>
+<yRange min="0.0" max="78.0"/>
 <barGraph width="0.5" offset="0.15"/>
 <bin width="0.2" offset="0.1"/>
 </plot>?>
