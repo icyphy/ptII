@@ -49,7 +49,7 @@ import ptolemy.kernel.util.Workspace;
  0.1.  Specifically, if the actor is initialized at time <i>t</i> and the sample
  period is <i>T</i>, then the output will have the value of the input
  at times <i>t</i> + <i>nT</i>, for all natural numbers <i>n</i>.
- This sampler will send to the output the first non-absent input event that occur
+ This sampler will send to the output the first non-absent input event that occurs
  at a sample time. It produces it one microstep later than that input event.
  This ensures that the output at microstep 0 is always absent, thus
  ensuring continuity from the left. That is, the input is absent prior
