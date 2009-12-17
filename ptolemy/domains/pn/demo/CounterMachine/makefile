@@ -1,10 +1,10 @@
-# Makefile for Ptolemy II PN domain demos
+# Makefile for Ptolemy II Process Networks BrockAckerman Demo
 #
-# @Authors: Mudit Goel, Christopher Hylands, based on a file by Thomas M. Parks
+# @Authors: Christopher Hylands, based on a file by Thomas M. Parks
 #
-# @Version: $Id$
+# @Version: $Id: makefile 44140 2006-10-26 21:45:01Z cxh $
 #
-# @Copyright (c) 1997-2007 The Regents of the University of California.
+# @Copyright (c) 1998-2006 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -29,14 +29,10 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME = 		ptolemy/domains/pn/demo
-
-DIRS =		BrockAckerman \
-		NondeterministicMerge NondeterministicMergeWithFeedback \
-		OrderedMerge QR RemoveNilTokens Stack
+ME =		ptolemy/domains/pn/demo/CounterMachine
 
 # Root of the Java directory
-ROOT =		../../../..
+ROOT =		../../../../..
 
 CLASSPATH =	$(ROOT)
 
@@ -45,39 +41,52 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	demo
-PTCLASSJAR =
+PTPACKAGE = 	CounterMachine
+PTCLASSJAR = 	$(PTPACKAGE).jar
 
-# Include the .class files from these jars in PTCLASSALLJAR
-PTCLASSALLJARS = \
-	BrockAckerman/BrockAckerman.jar \
-	NondeterministicMerge/NondeterministicMerge.jar \
-	NondeterministicMergeWithFeedback/NondeterministicMergeWithFeedback.jar \
-	OrderedMerge/OrderedMerge.jar \
-	QR/QR.jar \
-	RemoveNilTokens/RemoveNilTokens.jar \
-	Stack/Stack.jar \
-	CounterMachine/CounterMachine.jar 
+JSRCS =
 
-PTCLASSALLJAR = $(PTPACKAGE).jar
+OTHER_FILES_TO_BE_JARED = \
+	$(JSRCS) \
+	Counter-prelim.xml \
+	CounterMachine-does-not-halt.xml \
+	CounterMachine-halts.xml
 
-# Files that are not compiled, such as .tcl and .itcl files.
-EXTRA_SRCS =	index.htm
+EXTRA_SRCS = \
+	$(OTHER_FILES_TO_BE_JARED) \
+	CounterMachine.htm
 
-# Files or directories that are present, but that 'make checkjunk'
-# should not complain about
-MISC_FILES =	$(DIRS)
+# Sources that may or may not be present, but if they are present, we don't
+# want make checkjunk to barf on them.
+MISC_FILES =
 
 # make checkjunk will not report OPTIONAL_FILES as trash
-# make realclean removes OPTIONAL_FILES
-OPTIONAL_FILES =
+# make distclean removes OPTIONAL_FILES
+OPTIONAL_FILES = doc
 
-all: jclass
+JCLASS = $(JSRCS:%.java=%.class)
+
+# Don't include all or install rules here, we want the user
+# to run 'make demos' to run the tests.
+all: jclass $(PTCLASSJAR)
 	@echo "To run all the demos, run 'make demo'"
 
-install: all jars
+install: all
 
-demo: subdemo
+demo: demo_applet demo_ptolemy demo_vergil
+demo_applet:
+	CLASSPATH="$(CLASSPATH)" appletviewer CounterMachine.htm
+
+demo_ptolemy:
+	"$(PTII)/bin/ptolemy" CounterMachine.xml
+
+demo_vergil:
+	"$(PTII)/bin/vergil" CounterMachine.xml
+
+docs: javadocs
+
+# 'make clean' removes everything in KRUFT
+KRUFT = $(PTCLASSJAR)
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
