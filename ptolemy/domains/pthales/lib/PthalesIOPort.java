@@ -45,6 +45,7 @@ import ptolemy.actor.IORelation;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.TypeEvent;
 import ptolemy.actor.TypeListener;
+import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.util.DFUtilities;
 import ptolemy.data.ArrayToken;
@@ -153,66 +154,6 @@ public class PthalesIOPort extends TypedIOPort {
         newObject._typeListeners = new LinkedList<TypeListener>();
         newObject._constraints = new HashSet<Inequality>();
         return newObject;
-    }
-
-    /** Returns the number of addresses needed to access all of the
-     *  datas for all iteration
-     *  @return the number of tokens needed
-     *  FIXME: should be deleted if empty tilings are taken in account
-     */
-    public static int getAddressNumber(IOPort port) {
-        int valuePattern = 1;
-        Actor actor = (Actor) port.getContainer();
-
-        Integer[] rep = { 1 };
-
-        LinkedHashMap<String, Integer[]> pattern = _getPattern(port);
-        LinkedHashMap<String, Integer[]> tiling = _getTiling(port);
-
-        if (actor instanceof AtomicActor)
-            rep = PthalesGenericActor.getRepetitions((AtomicActor) actor);
-        if (actor instanceof CompositeActor)
-            rep = PthalesCompositeActor.getRepetitions((CompositeActor) actor);
-
-        Set dims = pattern.keySet();
-        Set tilingSet = tiling.keySet();
-
-        int i = 0;
-        for (Object dimension : dims) {
-            if (!tilingSet.contains(dimension)) {
-                valuePattern *= pattern.get(dimension)[0]
-                        * pattern.get(dimension)[1];
-            } else {
-                for (Object til : tilingSet) {
-                    if (til.equals(dimension) && pattern.get(dimension) != null) {
-                        if (i < rep.length) {
-                            valuePattern *= pattern.get(dimension)[0]
-                                    * pattern.get(dimension)[1] + rep[i]
-                                    * tiling.get(til)[0] - 1;
-                        } else {
-                            // Not enough reps for tilings, rep = 1
-                            valuePattern *= pattern.get(dimension)[0]
-                                    * pattern.get(dimension)[1]
-                                    + tiling.get(til)[0] - 1;
-                        }
-                    }
-                }
-            }
-            i++;
-        }
-
-        int sizeRepetition = 1;
-        if (rep != null) {
-            i = 0;
-            for (Object til : tilingSet) {
-                if (i < rep.length && !dims.contains(til)) {
-                    sizeRepetition *= rep[i];
-                }
-                i++;
-            }
-        }
-
-        return valuePattern * sizeRepetition;
     }
 
     /** Return the base of this port. 
@@ -765,7 +706,7 @@ public class PthalesIOPort extends TypedIOPort {
         }
 
         // Useless parameters for CompositeActors
-        if (actor instanceof PthalesGenericActor) {
+        if (actor instanceof TypedAtomicActor) {
             if (getAttribute("dataType") == null) {
                 new StringParameter(this, "dataType");
             }
