@@ -3,7 +3,7 @@
 #
 # @Version: $Id$
 #
-# @Copyright (c) 1998-2005 The Regents of the University of California.
+# @Copyright (c) 2009 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -54,7 +54,11 @@ OTHER_FILES_TO_BE_JARED = \
 EXTRA_SRCS = \
 	$(OTHER_FILES_TO_BE_JARED) \
 	Noise.htm \
-	NoiseVergil.htm
+	NoiseVergil.htm \
+	NoiseSpectrum.htm \
+	NoiseSpectrumVergil.htm \
+	SinusoidInNoise.htm \
+	SinusoidInNoiseVergil.htm
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
@@ -80,16 +84,19 @@ install: all $(PTCLASSJAR)
 
 demo: demo_applet demo_ptolemy demo_vergil
 demo_applet:
+	CLASSPATH="$(CLASSPATH)" appletviewer NoiseSpectrum.xml
 	CLASSPATH="$(CLASSPATH)" appletviewer Noise.xml
-	CLASSPATH="$(CLASSPATH)" appletviewer HysteresisWithNoise.htm
+	CLASSPATH="$(CLASSPATH)" appletviewer SinusoidInNoise.xml
 
 demo_ptolemy:
+	"$(PTII)/bin/ptolemy" NoiseSpectrum.xml
 	"$(PTII)/bin/ptolemy" Noise.xml
-	"$(PTII)/bin/ptolemy" HysteresisWithNoise.xml
+	"$(PTII)/bin/ptolemy" SinusoidInNoise.xml
 
 demo_vergil:
+	"$(PTII)/bin/vergil" NoiseSpectrum.xml
 	"$(PTII)/bin/vergil" Noise.xml
-	"$(PTII)/bin/vergil" HysteresisWithNoise.xml
+	"$(PTII)/bin/vergil" SinusoidInNoise.xml
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
