@@ -48,7 +48,6 @@ import ptolemy.kernel.util.InternalErrorException;
   @Pt.ProposedRating Red (tfeng)
   @Pt.AcceptedRating Red (tfeng)
  */
-*/
 public class SDFDirector
         extends
         ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.sdf.kernel.SDFDirector {
