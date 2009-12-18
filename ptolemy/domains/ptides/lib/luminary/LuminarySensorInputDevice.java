@@ -1,5 +1,5 @@
 /*
-@Copyright (c) 2008-2009 The Regents of the University of California.
+@Copyright (c) 2009 The Regents of the University of California.
 All rights reserved.
 
 Permission is hereby granted, without written agreement and without
@@ -36,17 +36,19 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
 /**
- * All input devices for Luminary should extend this class. This class
- * saves the total number of configurations of interrupts.
- * For example, if we only support GPInputDevice, i.e., the only subclass
- * of LuminaryInputDevice is GPInputDevice, and GPInputDevice supports 8
- * configurations, then numSupportedInputDeviceConfigurations is set to
- * 8. If more devices are implemented, numSupportedInputDeviceConfigurations
- * should be updated.
+ * A base class for all Luminary input devices. 
+ *
+ * <p>All input devices for Luminary should extend this class. This
+ * class saves the total number of configurations of interrupts.  For
+ * example, if we only support GPInputDevice, i.e., the only subclass
+ * of LuminaryInputDevice is GPInputDevice, and GPInputDevice supports
+ * 8 configurations, then the {@link #numberOfSupportedInputDeviceConfigurations}
+ * field is set to 8. If more devices are implemented,
+ * numberOfSupportedInputDeviceConfigurations should be updated.</p>
  *
  * @author Jia Zou
  * @version $Id$
- * @since Ptolemy II 7.1
+ * @since Ptolemy II 8.1
  * @Pt.ProposedRating Yellow (jiazou)
  * @Pt.AcceptedRating
  *
@@ -69,9 +71,12 @@ public abstract class LuminarySensorInputDevice extends SensorInputDevice {
     ///////////////////////////////////////////////////////////////////
     ////                       parameters                          ////
 
-    // The total number of supported configurations for all devices that
-    public static int numSupportedInputDeviceConfigurations = 8;
+    /** The total number of supported configurations for all devices that
+     *  are supported.
+     */
+    public static int numberOfSupportedInputDeviceConfigurations = 8;
     
+    // FIXME: what's a configuration?
     abstract public String configuration() throws IllegalActionException;
     
     abstract public List<String> supportedConfigurations();

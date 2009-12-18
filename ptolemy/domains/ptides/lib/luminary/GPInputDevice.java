@@ -38,8 +38,8 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
 /**
- * This is an abstract class for GPIO pins on the Luminary Micro.
- * This actor will have no effect in model simulations, but
+ * An abstract class for GPIO pins on the Luminary board.
+ * <p>This actor will have no effect in model simulations, but
  * allows for code generators to generate the actors.
  *
  * @author Jia Zou, Jeff C. Jensen
@@ -52,11 +52,12 @@ import ptolemy.kernel.util.NameDuplicationException;
 public class GPInputDevice extends LuminarySensorInputDevice {
 
     /**
-     * Constructs a GPInputDevice object.
+     * Construct a GPInputDevice object.
      *
      * @param container The container.
      * @param name The name of this actor within the container.
-     * @exception IllegalActionException if the super constructor throws it.
+     * @exception IllegalActionException if the super constructor throws it
+     * or if setting the pin and pad expressions fails.
      * @exception NameDuplicationException if the super constructor throws it.
      */
     public GPInputDevice(CompositeEntity container, String name)
@@ -68,7 +69,7 @@ public class GPInputDevice extends LuminarySensorInputDevice {
         pad = new StringParameter(this, "pad");
         pad.setExpression("G");
         _initSupportedConfigurations();
-        startingConfiguration = 0;
+        _startingConfiguration = 0;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -92,28 +93,28 @@ public class GPInputDevice extends LuminarySensorInputDevice {
     }
     
     public int startingConfiguration() {
-        return startingConfiguration;
+        return _startingConfiguration;
     }
     
     public List<String> supportedConfigurations() {
-        return supportedConfigurations;
+        return _supportedConfigurations;
     }
     
-    private int startingConfiguration;
+    private int _startingConfiguration;
     
-    private List<String> supportedConfigurations;
+    private List<String> _supportedConfigurations;
 
     /** Initialize the list of supported configurations
      */
     private void _initSupportedConfigurations() {
-        supportedConfigurations = new LinkedList<String>();
-        supportedConfigurations.add("A");
-        supportedConfigurations.add("B");
-        supportedConfigurations.add("C");
-        supportedConfigurations.add("D");
-        supportedConfigurations.add("E");
-        supportedConfigurations.add("F");
-        supportedConfigurations.add("G");
-        supportedConfigurations.add("H");
+        _supportedConfigurations = new LinkedList<String>();
+        _supportedConfigurations.add("A");
+        _supportedConfigurations.add("B");
+        _supportedConfigurations.add("C");
+        _supportedConfigurations.add("D");
+        _supportedConfigurations.add("E");
+        _supportedConfigurations.add("F");
+        _supportedConfigurations.add("G");
+        _supportedConfigurations.add("H");
     }
 }

@@ -119,7 +119,7 @@ public class PtidesBasicDirector
         // a particular configuration, add it into the array associated with the device, 
         // and the index of this actor should equal to the index of the configuration in
         // supportedConfigurations().
-        int configurationSize = LuminarySensorInputDevice.numSupportedInputDeviceConfigurations;
+        int configurationSize = LuminarySensorInputDevice.numberOfSupportedInputDeviceConfigurations;
         String[] GPHandlers = new String[configurationSize];
         boolean foundConfig = false;
         for (LuminarySensorInputDevice actor : (Set<LuminarySensorInputDevice>) devices.keySet()) {

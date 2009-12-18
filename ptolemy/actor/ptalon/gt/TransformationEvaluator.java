@@ -1,4 +1,4 @@
-/*
+/*  Parse transformation actor or values and set parameters of actors.
 
  Copyright (c) 2008 The Regents of the University of California.
  All rights reserved.
@@ -204,7 +204,7 @@ public class TransformationEvaluator extends PtalonEvaluator {
     /**
      * Remove an object.
      * @param name The name of the NamedObj to be removed.
-     * @exception If we are in a transformation or if the object has
+     * @exception IllegalActionException If we are in a transformation or if the object has
      * already been marked as removed.
      */
     public void removeObject(String name) throws PtalonRuntimeException {
