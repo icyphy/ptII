@@ -114,7 +114,7 @@ $CLASSPATH/ptolemy/domains/continuous/demo/NewtonsCradle/NewtonsCradlePerfectlyI
 $CLASSPATH/ptolemy/domains/continuous/demo/NewtonsCradle/NewtonsCradle.xml
 $CLASSPATH/ptolemy/domains/continuous/demo/NewtonsCradle/ParameterizedNewtonsCradleAnimatedNondeterministic.xml
 $CLASSPATH/ptolemy/domains/continuous/demo/NewtonsCradle/ParameterizedNewtonsCradleAnimated.xml
-$CLASSPATH/ptolemy/domains/continuous/demo/Noise/HysteresisWithNoise.xml
+$CLASSPATH/ptolemy/domains/continuous/demo/Noise/NoiseSpectrum.xml
 $CLASSPATH/ptolemy/domains/continuous/demo/Noise/Noise.xml
 $CLASSPATH/ptolemy/domains/continuous/demo/Pendulum3D/Pendulum3D.xml
 $CLASSPATH/ptolemy/domains/continuous/demo/Poisson/IncreasingRatePoisson.xml
