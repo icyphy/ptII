@@ -36,19 +36,17 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
 /**
- * A base class for all Luminary input devices. 
- *
- * <p>All input devices for Luminary should extend this class. This
- * class saves the total number of configurations of interrupts.  For
- * example, if we only support GPInputDevice, i.e., the only subclass
- * of LuminaryInputDevice is GPInputDevice, and GPInputDevice supports
- * 8 configurations, then the {@link #numberOfSupportedInputDeviceConfigurations}
- * field is set to 8. If more devices are implemented,
- * numberOfSupportedInputDeviceConfigurations should be updated.</p>
+ * All input devices for Luminary should extend this class. This class
+ * saves the total number of configurations of interrupts.
+ * For example, if we only support GPInputDevice, i.e., the only subclass
+ * of LuminaryInputDevice is GPInputDevice, and GPInputDevice supports 8
+ * configurations, then numSupportedInputDeviceConfigurations is set to
+ * 8. If more devices are implemented, numSupportedInputDeviceConfigurations
+ * should be updated.
  *
  * @author Jia Zou
  * @version $Id$
- * @since Ptolemy II 8.1
+ * @since Ptolemy II 7.1
  * @Pt.ProposedRating Yellow (jiazou)
  * @Pt.AcceptedRating
  *
@@ -71,15 +69,27 @@ public abstract class LuminarySensorInputDevice extends SensorInputDevice {
     ///////////////////////////////////////////////////////////////////
     ////                       parameters                          ////
 
-    /** The total number of supported configurations for all devices that
-     *  are supported.
-     */
-    public static int numberOfSupportedInputDeviceConfigurations = 8;
+    /** The total number of supported configurations for all Luminary
+     *  sensor input devices. A sensor device could have multiple access
+     *  pin and pads (configurations), this number keeps track of the
+     *  total number of configurations available.
+     */ 
+    public static int numSupportedInputDeviceConfigurations = 8;
     
-    // FIXME: what's a configuration?
+    /** A sensor device could have multiple access pin and pads 
+     *  (configurations), This method returns the current configuration.
+     *  @return The current configuration captured in a string.
+     *  @throws IllegalActionException
+     */
     abstract public String configuration() throws IllegalActionException;
     
+    /** The set of supported configurations.
+     *  @return The set of supported configurations.
+     */
     abstract public List<String> supportedConfigurations();
     
-    abstract public int startingConfiguration();
+    /** There is a default configuration, which is returned.
+     *  @return The default configuration.
+     */
+    abstract public String startingConfiguration();
 }

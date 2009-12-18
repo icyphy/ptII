@@ -69,7 +69,7 @@ public class GPInputDevice extends LuminarySensorInputDevice {
         pad = new StringParameter(this, "pad");
         pad.setExpression("G");
         _initSupportedConfigurations();
-        _startingConfiguration = 0;
+        startingConfiguration = "0";
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -92,19 +92,27 @@ public class GPInputDevice extends LuminarySensorInputDevice {
         return pad.stringValue();
     }
     
-    public int startingConfiguration() {
-        return _startingConfiguration;
+    /** Returns the starting configuration, which is an integer.
+     */
+    public String startingConfiguration() {
+        return startingConfiguration;
     }
     
+    /** Returns the list of supported configurations.
+     */
     public List<String> supportedConfigurations() {
         return _supportedConfigurations;
     }
     
-    private int _startingConfiguration;
+    /** The default configuration.
+     */
+    private String startingConfiguration;
     
+    /** The set of supported configurations.
+     */
     private List<String> _supportedConfigurations;
 
-    /** Initialize the list of supported configurations
+    /** Initialize the list of supported configurations.
      */
     private void _initSupportedConfigurations() {
         _supportedConfigurations = new LinkedList<String>();
