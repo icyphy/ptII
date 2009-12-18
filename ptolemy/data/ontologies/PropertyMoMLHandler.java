@@ -30,10 +30,12 @@ package ptolemy.data.ontologies;
 
 import java.util.List;
 
+import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.gui.ColorAttribute;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
+import ptolemy.kernel.Port;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -337,11 +339,24 @@ public class PropertyMoMLHandler extends Attribute {
             propertyString = "";
         }
 
-        /* FIXME
-        if (property != null && property.getColor().length() > 0) {
+        // 12/18/09 Charles Shelton
+        // Get ColorAttribute from Concept to provide
+        // correct highlight color
+        ColorAttribute conceptColor = null;        
+        if (property != null) {
+            conceptColor =
+                (ColorAttribute) property.getAttribute("ColorAttribute");
+        }
+        
+        /* FIXME: This change request that sets the highlight color
+         * occasionally causes a dependency loop exception in
+         * ptolemy.data.expr.Variable.validate() and I don't know why.
+         * 12/18/09 Charles Shelton
+        if (conceptColor != null && !(propertyable instanceof OntologySolver)) {
             request = "<property name=\"_highlightColor\" "
                     + "class=\"ptolemy.actor.gui.ColorAttribute\" value=\""
-                    + property.getColor() + "\"/>";
+                    + conceptColor.getExpression()
+                    + "\"/>";
             request = _completeHierarchyInMoML(propertyable, request);
             return request;
         }
@@ -384,7 +399,6 @@ public class PropertyMoMLHandler extends Attribute {
                 }
             }
         }
-
         return "";
     }
 
