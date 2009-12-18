@@ -189,6 +189,7 @@ public class BandlimitedNoise extends Gaussian {
     ////                         protected methods                 ////
 
     /** Generate a new random number.
+     *  @return A random number.
      *  @exception IllegalActionException If parameter values are incorrect.
      */
     protected double _generateGaussian() throws IllegalActionException {
