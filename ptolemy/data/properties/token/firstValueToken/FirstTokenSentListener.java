@@ -33,6 +33,7 @@ import ptolemy.data.properties.token.PropertyToken;
 import ptolemy.data.properties.token.PropertyTokenHelper;
 import ptolemy.data.properties.token.PropertyTokenSolver;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 
 //////////////////////////////////////////////////////////////////////////
 //// FirstTokenSentListener
@@ -70,6 +71,12 @@ public class FirstTokenSentListener implements IOPortEventListener {
         IOPort port = event.getPort();
         Token token = event.getToken();
         if (token == null) {
+	    Token [] tokens = event.getTokenArray();
+	    if (tokens == null) {
+ 		throw new InternalErrorException(event.getSource(), null,
+ 						 "event " + event +
+ 						 " returned a null token array.");
+	    }
             token = event.getTokenArray()[0];
         }
 
