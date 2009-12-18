@@ -197,7 +197,7 @@ public class ModularSDFCodeGenerator extends JavaCodeGenerator {
             return null;
         
         //unfolding the graph
-        List actorFirings = new LinkedList();
+        Set actorFirings = new HashSet();
         
         _createDependencyGraph(container, firingVector, port2Junction, actorFirings);
         
@@ -236,7 +236,7 @@ public class ModularSDFCodeGenerator extends JavaCodeGenerator {
         
         _clusterActorFirings(outputFiringFunctions, inputFiringFunctions,
                 clusteredOutputs, outputInputDependence, inInputConnectedPorts,
-                inOutputConnectedPorts, firingClusters, clusters);
+                inOutputConnectedPorts, firingClusters, clusters, actorFirings);
         
         _deriveClusterDependency(firingClusters);
         
@@ -423,8 +423,12 @@ public class ModularSDFCodeGenerator extends JavaCodeGenerator {
             List<SimulationFiringFunction> inputFiringFunctions, Map clusteredOutputs,
             Map outputInputDependence, Set<IOPort> inInputConnectedPorts,
             Set<IOPort> inOutputConnectedPorts,
-            List<FiringCluster> firingClusters, Set clusters)
+            List<FiringCluster> firingClusters, Set clusters,
+            Set actorFirings)
             throws IllegalActionException {
+        
+        Set<Firing> nonClustered = new HashSet(actorFirings);
+        
         //create clusters of firings of actors
         for(Iterator firings = clusteredOutputs.keySet().iterator(); firings.hasNext();) {
             Set inputFirings = (Set) firings.next();
@@ -435,6 +439,7 @@ public class ModularSDFCodeGenerator extends JavaCodeGenerator {
             
             Set outputFirings = (Set) clusteredOutputs.get(inputFirings);
             
+//            _printGraph(inputFirings);
             for(Object outputFiring:outputFirings) {
                 _clusterFirings((Firing)outputFiring, clusteredFirings, searchedFirings, inputFirings,
                         inputFiringFunctions, outputFiringFunctions, outputInputDependence);
@@ -442,14 +447,14 @@ public class ModularSDFCodeGenerator extends JavaCodeGenerator {
             
             //sort actors in a firing cluster
             List sortedFirings = new LinkedList(clusteredFirings);
-            if(sortedFirings.size() > 0) {
-                Set visitedFirings = new HashSet();
-                _computeFiringDepth((Firing) sortedFirings.get(0), visitedFirings);
-                FiringComparator comparator = new FiringComparator();
-                Collections.sort(sortedFirings, comparator);
-            }
+//            if(sortedFirings.size() > 0) {
+//                Set visitedFirings = new HashSet();
+//                _computeFiringDepth((Firing) sortedFirings.get(0), visitedFirings);
+//                FiringComparator comparator = new FiringComparator();
+//                Collections.sort(sortedFirings, comparator);
+//            }
             
-            System.out.println("New cluster");
+//            System.out.println("New cluster");
             
             for(Object f:sortedFirings) {
                 firingCluster.actorFirings.add((Firing)f);
@@ -507,12 +512,125 @@ public class ModularSDFCodeGenerator extends JavaCodeGenerator {
                     }
                 }
                 
-                System.out.println("Clustered firing: " + actor.getFullName() + ", firing Index: " + ((Firing)f).firingIndex + " function: " + ((Firing)f).firingFunction);
+                //System.out.println("Clustered firing: " + actor.getFullName() + ", firing Index: " + ((Firing)f).firingIndex + " function: " + ((Firing)f).firingFunction);
             }
             
             firingClusters.add(firingCluster);
             
             clusters.add(sortedFirings);
+            nonClustered.removeAll(sortedFirings);
+        }
+        
+        //firings that do not belong to any cluster
+        if(nonClustered.size() > 0) {
+            FiringCluster firingCluster = new FiringCluster();
+            firingClusters.add(firingCluster);
+
+            clusters.add(nonClustered);
+
+            for(Object f:nonClustered) {
+                firingCluster.actorFirings.add((Firing)f);
+                ((Firing)f).cluster = firingCluster;
+                Actor actor = ((Firing)f).actor;
+
+                if(actor instanceof ModularCompiledSDFTypedCompositeActor) {
+                    if(_getFiringFunction(inputFiringFunctions, actor, ((Firing)f).firingFunction) != null) {
+
+                        Set<IOPort> inputPorts = new HashSet(actor.inputPortList());
+
+                        inputPorts.retainAll(inInputConnectedPorts);
+
+                        List<FiringFunctionPort> inputFiringPorts = ((ModularCompiledSDFTypedCompositeActor)actor).getProfile().firings().get(((Firing)f).firingFunction).ports;
+                        for(IOPort inputPort: inputPorts) {
+                            for(FiringFunctionPort firingPort : inputFiringPorts) {
+                                if(firingPort.isInput && firingPort.externalPortName.equals(inputPort.getName())) {
+                                    firingCluster.inputPorts.add(inputPort);
+                                    break;
+                                }
+                            }
+                        }
+                    }
+
+                    if(_getFiringFunction(outputFiringFunctions, actor, ((Firing)f).firingFunction) != null) {
+
+                        Set<IOPort> outputPorts = new HashSet(actor.outputPortList());
+                        outputPorts.retainAll(inOutputConnectedPorts);
+
+                        List<FiringFunctionPort> outputFiringPorts = ((ModularCompiledSDFTypedCompositeActor)actor).getProfile().firings().get(((Firing)f).firingFunction).ports;
+                        for(IOPort outputPort: outputPorts) {
+                            for(FiringFunctionPort firingPort : outputFiringPorts) {
+                                if(!firingPort.isInput && firingPort.externalPortName.equals(outputPort.getName())) {
+                                    firingCluster.outputPorts.add(outputPort);
+                                    break;
+                                }
+                            }
+                        }
+                        firingCluster.outputPorts.addAll(outputPorts);
+                    }
+                } else {
+                    if(_getFiringFunction(inputFiringFunctions, actor, ((Firing)f).firingFunction) != null) {
+
+                        Set inputPorts = new HashSet(actor.inputPortList());
+
+                        inputPorts.retainAll(inInputConnectedPorts);
+                        firingCluster.inputPorts.addAll(inputPorts);
+                    }
+
+                    if(_getFiringFunction(outputFiringFunctions, actor, ((Firing)f).firingFunction) != null) {
+
+                        Set outputPorts = new HashSet(actor.outputPortList());
+                        outputPorts.retainAll(inOutputConnectedPorts);
+                        firingCluster.outputPorts.addAll(outputPorts);
+                    }
+                }
+
+            }
+        }
+    }
+    
+    /** Cluster firings together so that there is no false dependency.
+     * @param currentFiring Pointer to current node in the firing graph.
+     * @param clusteredFirings The output set of clustered firings.
+     * @param searchedFirings The set of searched firing used for searching.
+     * @param inputFirings The set of output firings (produce external tokens) of the cluster.
+     * @param inputActors The set of actors that consume external tokens.
+     * @param outputActors The set of actors that produce external tokens.
+     * @param outputInputDependence The map form each output firing to a set of input firings
+     * that its depend on.
+     */
+    private void _clusterFirings(Firing currentFiring, Set  clusteredFirings, Set searchedFirings, Set inputFirings,
+            List inputActors, List outputActors, Map outputInputDependence) {
+        
+        searchedFirings.add(currentFiring);
+        
+        Set currentlySearchedFirings = new HashSet();
+        Set outputFirings = new HashSet();
+
+        _getDependentForwardFiring(currentFiring, outputFirings, currentlySearchedFirings,
+                inputActors, outputActors);
+        
+        boolean validFiring = true;
+        for(Object outputFiring: outputFirings) {
+            Set inputDependentFirings = (Set)outputInputDependence.get(outputFiring);
+            Set tmpInputFiring = new HashSet(inputFirings);
+            tmpInputFiring.removeAll(inputDependentFirings);
+            
+            if(!tmpInputFiring.isEmpty()) { //there are some inputs of the cluster that the current firing does not depend on
+                validFiring = false;
+                break;
+            } 
+        }
+       
+        if(validFiring) {
+            clusteredFirings.add(currentFiring);
+            for(Iterator previousFirings = currentFiring.previousActorFirings.iterator(); previousFirings.hasNext();) {
+                Firing previousFiring = (Firing) previousFirings.next();
+                
+                if(!searchedFirings.contains(previousFiring)) {
+                    _clusterFirings(previousFiring, clusteredFirings, searchedFirings, inputFirings,
+                            inputActors, outputActors, outputInputDependence);
+                }
+            }
         }
     }
 
@@ -526,7 +644,7 @@ public class ModularSDFCodeGenerator extends JavaCodeGenerator {
      */
     
     private void _createDependencyGraph(CompositeActor container, Map firingVector, 
-            Map port2Junction, List actorFirings) throws IllegalActionException {
+            Map port2Junction, Set actorFirings) throws IllegalActionException {
       //create the dependency graph
         for(Iterator actors = container.deepEntityList().iterator(); actors.hasNext();) {
             Actor actor = (Actor) actors.next();
@@ -819,7 +937,7 @@ public class ModularSDFCodeGenerator extends JavaCodeGenerator {
      * @param outputInputDependence
      */
     
-    private void _clusteringOuputFirings(List actorFirings,
+    private void _clusteringOuputFirings(Set actorFirings,
             List<SimulationFiringFunction> outputFiringFunctions,
             List<SimulationFiringFunction> inputFiringFunctions, Map clusteredOutputs,
             Map outputInputDependence) {
@@ -835,7 +953,7 @@ public class ModularSDFCodeGenerator extends JavaCodeGenerator {
                 outputInputDependence.put(firing, inputFirings);
                 
                 System.out.println("Out put firing: " + firing.actor.getFullName() + ", firing Index: " + firing.firingIndex + " function: " + firing.firingFunction);
-                //_printGraph(inputFirings);
+                _printGraph(inputFirings);
             }
         }       
         
@@ -843,6 +961,7 @@ public class ModularSDFCodeGenerator extends JavaCodeGenerator {
         for(Iterator outputFirings = outputInputDependence.keySet().iterator(); outputFirings.hasNext();) {
             Firing outputFiring = (Firing) outputFirings.next();
             Set inputFirings = (Set) outputInputDependence.get(outputFiring);
+            
             boolean existed = false;
             for(Iterator inputFiringsIter = clusteredOutputs.keySet().iterator(); inputFiringsIter.hasNext();) {
                 Set firings = (Set) inputFiringsIter.next();
@@ -898,8 +1017,6 @@ public class ModularSDFCodeGenerator extends JavaCodeGenerator {
                         IOPort inputPort = (IOPort) ports.next();
                         
                         for(IOPort connectedPort : _getConnectedOutputPorts(inputPort)) {
-//                            if(connectedPort == null)
-//                                continue;
                             
                             SimulationJunction junction = (SimulationJunction) port2Junction.get(inputPort.hashCode() ^ 
                                     connectedPort.hashCode());
@@ -1050,7 +1167,7 @@ public class ModularSDFCodeGenerator extends JavaCodeGenerator {
      */
     
     private void _deriveFiringFunctionDependency(CompositeActor container, Map firingVector,
-            List actorFirings) throws IllegalActionException {
+            Set actorFirings) throws IllegalActionException {
       //dependency between firing of each actor
         for(Iterator actors = container.deepEntityList().iterator(); actors.hasNext();) {
              Actor actor = (Actor) actors.next();
@@ -1248,8 +1365,6 @@ public class ModularSDFCodeGenerator extends JavaCodeGenerator {
         for(Iterator ports = actor.inputPortList().iterator(); ports.hasNext();) {
             IOPort inputPort = (IOPort) ports.next();
             for(IOPort connectedPort : _getConnectedOutputPorts(inputPort)) {
-//                if(connectedPort == null)
-//                    continue;
                 SimulationJunction junction = (SimulationJunction) port2Junction.get(inputPort.hashCode() ^
                         connectedPort.hashCode());
                 
@@ -1288,7 +1403,7 @@ public class ModularSDFCodeGenerator extends JavaCodeGenerator {
      * @param esdf
      * @throws IllegalActionException
      */
-    private void _generateProfile(CompositeActor container, List actorFirings,
+    private void _generateProfile(CompositeActor container, Set actorFirings,
             List<FiringCluster> firingClusters, StringBuffer esdf)
             throws IllegalActionException {
         esdf.append(INDENT1
@@ -1462,7 +1577,6 @@ public class ModularSDFCodeGenerator extends JavaCodeGenerator {
                 }
                 else
                     outputPorts.add(port);
-//                break;
             }
         }
         
@@ -1487,61 +1601,6 @@ public class ModularSDFCodeGenerator extends JavaCodeGenerator {
             }
         }
         return connectedInputPorts;
-    }
-    
-    /** Cluster firings together so that there is no false dependency.
-     * @param currentFiring Pointer to current node in the firing graph.
-     * @param clusteredFirings The output set of clustered firings.
-     * @param searchedFirings The set of searched firing used for searching.
-     * @param inputFirings The set of output firings (produce external tokens).
-     * @param inputActors The set of actors that consume external tokens.
-     * @param outputActors The set of actors that produce external tokens.
-     * @param outputInputDependence The map form each output firing to a set of input firings
-     * that its depend on.
-     */
-    private void _clusterFirings(Firing currentFiring, Set  clusteredFirings, Set searchedFirings, Set inputFirings,
-            List inputActors, List outputActors, Map outputInputDependence) {
-        
-        searchedFirings.add(currentFiring);
-        
-        Set currentSearchedFirings = new HashSet();
-        Set outputFirings = new HashSet();
-
-        _getDependentForwardFiring(currentFiring, outputFirings, currentSearchedFirings,
-                inputActors, outputActors);
-        
-        boolean validFiring = true;
-        for(Object outputFiring: outputFirings) {
-            Set inputDependentFirings = (Set)outputInputDependence.get(outputFiring);
-            Set tmpInputFiring = new HashSet(inputFirings);
-            tmpInputFiring.removeAll(inputDependentFirings);
-            
-            if(!tmpInputFiring.isEmpty()) { //there are some inputs that the current firing does not depend on
-                validFiring = false;
-                break;
-            } 
-        }
-       
-        if(validFiring) {
-            clusteredFirings.add(currentFiring);
-            for(Iterator previousFirings = currentFiring.previousActorFirings.iterator(); previousFirings.hasNext();) {
-                Firing previousFiring = (Firing) previousFirings.next();
-                
-                if(!searchedFirings.contains(previousFiring)) {
-                    _clusterFirings(previousFiring, clusteredFirings, searchedFirings, inputFirings,
-                            inputActors, outputActors, outputInputDependence);
-                }
-            }
-            
-            for(Iterator nextFirings = currentFiring.nextActorFirings.iterator(); nextFirings.hasNext();) {
-                Firing nextFiring = (Firing) nextFirings.next();
-                
-                if(!searchedFirings.contains(nextFiring)) {
-                    _clusterFirings(nextFiring, clusteredFirings, searchedFirings, inputFirings,
-                            inputActors, outputActors, outputInputDependence);
-                }
-            }
-        }
     }
     
     /** Find input firings that a firing of an internal actor depends on.
@@ -1589,7 +1648,6 @@ public class ModularSDFCodeGenerator extends JavaCodeGenerator {
             Firing nextFiring = (Firing) nextFirings.next();
             if(!searchedFirings.contains(nextFiring)) {
                 searchedFirings.add(nextFiring);
-//                if(!((nextFiring.actor == firing.actor) && (nextFiring.firingFunction == firing.firingFunction)))    //FIXME: do we need this?
                     _getDependentForwardFiring(nextFiring, outputFirings, searchedFirings,
                             inputFiringFunctions, outputFiringFunctions);
             }
@@ -1621,7 +1679,7 @@ public class ModularSDFCodeGenerator extends JavaCodeGenerator {
      * @return The firing object if the object existed, otherwise return null.
      */
     
-    private Firing _getFiring(Actor actor, int index, int firingFunction, List firingList) {
+    private Firing _getFiring(Actor actor, int index, int firingFunction, Set firingList) {
         Firing ret = null;
         for(Iterator firings = firingList.iterator(); firings.hasNext();) {
             Firing firing = (Firing) firings.next();
@@ -1635,9 +1693,9 @@ public class ModularSDFCodeGenerator extends JavaCodeGenerator {
     }
     
     /** Print out the firing dependency graph for debugging both textually and in dot format. 
-     * @param firingList The list of all firings.
+     * @param inputFirings The list of all firings.
      */
-    private void _printGraph(List firingList) {
+    private void _printGraph(Set inputFirings) {
 //        for(Iterator firings = firingList.iterator(); firings.hasNext();) {
 //            Firing firing = (Firing) firings.next();
 //            
@@ -1654,7 +1712,7 @@ public class ModularSDFCodeGenerator extends JavaCodeGenerator {
 //        }
         
         System.out.println("digraph G1 {" + _eol + "\tsize=\"8,8\"");
-        for(Iterator firings = firingList.iterator(); firings.hasNext();) {
+        for(Iterator firings = inputFirings.iterator(); firings.hasNext();) {
             Firing firing = (Firing) firings.next();
             
             for(Iterator nextFirings = firing.nextActorFirings.iterator(); nextFirings.hasNext();) {
