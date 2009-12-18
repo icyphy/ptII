@@ -122,8 +122,7 @@ public class PthalesReceiver extends SDFReceiver {
     public Token[] getArray(int numberOfTokens) throws NoTokenException {
         Token[] result = new Token[numberOfTokens];
 
-        for (int i = 0; i < numberOfTokens; i++)
-        {
+        for (int i = 0; i < numberOfTokens; i++) {
             result[i] = get();
         }
 
@@ -380,11 +379,6 @@ public class PthalesReceiver extends SDFReceiver {
         // Number of token per data
         int nbToken = _nbTokens;
 
-        // FIXME: can reduce number of addresses if the empty tilings are taken in account
-        // same number of addresses than buffer size (worst case)
-        int jumpPattern[] = new int[PthalesIOPort.getAddressNumber(port)
-                * _nbTokens];
-
         // Position in buffer 
         int pos = 0;
 
@@ -403,6 +397,10 @@ public class PthalesReceiver extends SDFReceiver {
         for (Integer size : _repetitions) {
             sizeRepetition *= size;
         }
+
+        // FIXME: can reduce number of addresses if the empty tilings are taken in account
+        // same number of addresses than buffer size (worst case)
+        int jumpPattern[] = new int[sizePattern * sizeRepetition * _nbTokens];
 
         // address indexes
         int dims[] = new int[_pattern.size() + 1];
@@ -430,7 +428,8 @@ public class PthalesReceiver extends SDFReceiver {
         for (int nDim = 0; nDim < _dimensions.length; nDim++) {
             // a base can be null so origin does not increase
             if (_base.get(_dimensions[nDim]) != null)
-                origin += _base.get(_dimensions[nDim])[0] * jumpAddr.get(_dimensions[nDim]) * nbToken;
+                origin += _base.get(_dimensions[nDim])[0]
+                        * jumpAddr.get(_dimensions[nDim]) * nbToken;
         }
 
         // Address construction  (order is important)
