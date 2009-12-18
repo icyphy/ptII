@@ -30,10 +30,11 @@ package ptolemy.data.ontologies.adapters.dimensionSystem.domains.continuous.lib;
 import java.util.List;
 
 import ptolemy.actor.TypedIOPort;
-import ptolemy.data.properties.Property;
+import ptolemy.data.ontologies.Concept;
 import ptolemy.data.properties.lattice.MonotonicFunction;
-import ptolemy.data.properties.lattice.PropertyConstraintHelper;
-import ptolemy.data.properties.lattice.PropertyConstraintSolver;
+import ptolemy.data.ontologies.PropertyConstraintHelper;
+import ptolemy.data.ontologies.OntologySolver;
+import ptolemy.data.ontologies.adapters.dimensionSystem.DimensionSystemPropertyConstraintHelper;
 import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.util.IllegalActionException;
 
@@ -49,7 +50,7 @@ import ptolemy.kernel.util.IllegalActionException;
  @Pt.ProposedRating Red (mankit)
  @Pt.AcceptedRating Red (mankit)
 */
-public class Integrator extends PropertyConstraintHelper {
+public class Integrator extends DimensionSystemPropertyConstraintHelper {
 
     /**
      * Construct a Integrator adapter for the flatUnitSystem lattice.
@@ -57,11 +58,13 @@ public class Integrator extends PropertyConstraintHelper {
      * @param actor The given Integrator actor
      * @exception IllegalActionException
      */
-    public Integrator(PropertyConstraintSolver solver,
+    public Integrator(OntologySolver solver,
             ptolemy.domains.continuous.lib.Integrator actor)
             throws IllegalActionException {
 
         super(solver, actor, false);
+        
+        
     }
 
     public List<Inequality> constraintList() throws IllegalActionException {
@@ -74,6 +77,8 @@ public class Integrator extends PropertyConstraintHelper {
 
         return super.constraintList();
     }
+    
+    
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
@@ -97,26 +102,26 @@ public class Integrator extends PropertyConstraintHelper {
          */
         public Object getValue() throws IllegalActionException {
 
-            Property inputProperty = getSolver().getProperty(_derivative);
-
-            if (inputProperty == _lattice.getElement("SPEED")) {
-                return _lattice.getElement("POSITION");
+            Concept inputProperty = getSolver().getProperty(_derivative);
+            
+            if (inputProperty == _velocityConcept) {
+                return _positionConcept;
             }
 
-            if (inputProperty == _lattice.getElement("ACCELERATION")) {
-                return _lattice.getElement("SPEED");
+            if (inputProperty == _accelerationConcept) {
+                return _velocityConcept;
             }
 
             // Interesting case: the integral of unitless value gives a time.
-            if (inputProperty == _lattice.getElement("UNITLESS")) {
-                return _lattice.getElement("TIME");
+            if (inputProperty == _dimensionlessConcept) {
+                return _timeConcept;
             }
 
             if (inputProperty == null
-                    || inputProperty == _lattice.getElement("UNKNOWN")) {
-                return _lattice.getElement("UNKNOWN");
+                    || inputProperty == _unknownConcept) {
+                return _unknownConcept;
             } else {
-                return _lattice.getElement("TOP");
+                return _conflictConcept;
             }
         }
 
@@ -152,26 +157,26 @@ public class Integrator extends PropertyConstraintHelper {
          */
         public Object getValue() throws IllegalActionException {
 
-            Property inputProperty = getSolver().getProperty(_state);
+            Concept inputProperty = getSolver().getProperty(_state);
 
-            if (inputProperty == _lattice.getElement("POSITION")) {
-                return _lattice.getElement("SPEED");
+            if (inputProperty == _positionConcept) {
+                return _velocityConcept;
             }
 
-            if (inputProperty == _lattice.getElement("SPEED")) {
-                return _lattice.getElement("ACCELERATION");
+            if (inputProperty == _velocityConcept) {
+                return _accelerationConcept;
             }
 
             // Interesting case: the integral of unitless value gives a time.
-            if (inputProperty == _lattice.getElement("TIME")) {
-                return _lattice.getElement("UNITLESS");
+            if (inputProperty == _timeConcept) {
+                return _dimensionlessConcept;
             }
 
             if (inputProperty == null
-                    || inputProperty == _lattice.getElement("UNKNOWN")) {
-                return _lattice.getElement("UNKNOWN");
+                    || inputProperty == _unknownConcept) {
+                return _unknownConcept;
             } else {
-                return _lattice.getElement("TOP");
+                return _conflictConcept;
             }
         }
 

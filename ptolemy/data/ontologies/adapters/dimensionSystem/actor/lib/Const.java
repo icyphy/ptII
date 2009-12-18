@@ -1,4 +1,4 @@
-/* An adapter class for ptolemy.actor.lib.CurrentTime.
+/* An adapter class for ptolemy.actor.lib.Const.
 
  Copyright (c) 2009 The Regents of the University of California.
  All rights reserved.
@@ -30,15 +30,13 @@ package ptolemy.data.ontologies.adapters.dimensionSystem.actor.lib;
 import java.util.List;
 
 import ptolemy.data.ontologies.OntologySolver;
-import ptolemy.data.ontologies.adapters.dimensionSystem.actor.AtomicActor;
-import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 
 //////////////////////////////////////////////////////////////////////////
-//// CurrentTime
+//// Const
 
 /**
- An adapter class for ptolemy.actor.lib.CurrentTime.
+ An adapter class for ptolemy.actor.lib.Const.
 
  @author Charles Shelton
  @version $Id$
@@ -46,32 +44,35 @@ import ptolemy.kernel.util.IllegalActionException;
  @Pt.ProposedRating Red (mankit)
  @Pt.AcceptedRating Red (mankit)
 */
-public class CurrentTime extends AtomicActor {
+public class Const extends Source {
 
     /**
-     * Construct a CurrentTime adapter for the dimensionSystem lattice.
+     * Construct a Const adapter for the dimensionSystem lattice.
      * @param solver The given solver.
-     * @param actor The given Expression actor
+     * @param actor The given Const actor
      * @exception IllegalActionException Thrown if the adapter cannot be
      * initialized.
      */
-    public CurrentTime(OntologySolver solver,
-            ptolemy.actor.lib.CurrentTime actor) throws IllegalActionException {
-        super(solver, actor, false);
+    public Const(OntologySolver solver, ptolemy.actor.lib.Const actor)
+            throws IllegalActionException {
+        super(solver, actor);
         _actor = actor;
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
     /**
      * Return the constraints of this component. The constraints is a list of
-     * inequalities.
-     * This method sets the constraint of the output to at least the value of
-     * the "TIME" element in the ontology.
+     * inequalities. 
+     * This method sets the constraint of the output to at least that of the
+     * value Parameter of the actor.
+
      * @return The constraints of this component.
-     * @exception IllegalActionException If thrown while reading the lattice or
-     * if thrown by the superclass. 
+     * @exception IllegalActionException Not thrown in this base class.
      */
     public List<Inequality> constraintList() throws IllegalActionException {
-        setAtLeast(_actor.output, _timeConcept);
+        setAtLeast(_actor.output, _actor.value);
         return super.constraintList();
     }
 
@@ -84,22 +85,33 @@ public class CurrentTime extends AtomicActor {
      * "guardTransition", a StringAttribute in an Expression actor,
      * a StringAttribute with the name "expression" or a Variable
      * with full visibility.  However, Variables with certain names
-     * are excluded.
+     * are excluded.  This method adds the value Parameter of the
+     * Const actor to the list that is returned.
      * @see ptolemy.data.properties.Propertyable
      * @return The list of property-able Attributes.
      */
+    
+    /* 12/17/09 Charles Shelton
+     * I don't think this method is necessary.
+     * value is a Parameter in the Const actor
+     * and all actor parameters are already added to
+     * the propertyable attribute list.
+    
     protected List<Attribute> _getPropertyableAttributes() {
         List<Attribute> result = super._getPropertyableAttributes();
+        result.add(_actor.value);
         // FIXME: Findbugs: No relationship between generic parameter and method argument
         // _actor.trigger is a TypedIOPort in actor.lib.Source, not an Attribute.
-        // Const._getPropertyableAttributes() has something similar.
+        // CurrentTime._getPropertyableAttributes() has something similar.
         //result.remove(_actor.trigger);
         return result;
     }
+    
+    */
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    /** The CurrentTime actor associated with this solver. */
-    private ptolemy.actor.lib.CurrentTime _actor;
+    /** The Const actor associated with this solver. */
+    private ptolemy.actor.lib.Const _actor;
 }

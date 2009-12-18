@@ -29,8 +29,8 @@ package ptolemy.data.ontologies.adapters.dimensionSystem.actor.lib;
 
 import java.util.List;
 
-import ptolemy.data.properties.lattice.PropertyConstraintSolver;
-import ptolemy.data.properties.lattice.dimensionSystem.actor.AtomicActor;
+import ptolemy.data.ontologies.OntologySolver;
+import ptolemy.data.ontologies.adapters.dimensionSystem.actor.AtomicActor;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 
@@ -54,7 +54,7 @@ public class Expression extends AtomicActor {
      * @param actor The given Expression actor
      * @exception IllegalActionException
      */
-    public Expression(PropertyConstraintSolver solver,
+    public Expression(OntologySolver solver,
             ptolemy.actor.lib.Expression actor) throws IllegalActionException {
 
         super(solver, actor, false);

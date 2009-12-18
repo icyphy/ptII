@@ -30,10 +30,10 @@ package ptolemy.data.ontologies.adapters.dimensionSystem.actor.lib.logic;
 import java.util.List;
 
 import ptolemy.actor.TypedIOPort;
-import ptolemy.data.properties.Property;
+import ptolemy.data.ontologies.Concept;
+import ptolemy.data.ontologies.OntologySolver;
+import ptolemy.data.ontologies.adapters.dimensionSystem.actor.AtomicActor;
 import ptolemy.data.properties.lattice.MonotonicFunction;
-import ptolemy.data.properties.lattice.PropertyConstraintHelper;
-import ptolemy.data.properties.lattice.PropertyConstraintSolver;
 import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.util.IllegalActionException;
 
@@ -49,7 +49,7 @@ import ptolemy.kernel.util.IllegalActionException;
  @Pt.ProposedRating Red (mankit)
  @Pt.AcceptedRating Red (mankit)
 */
-public class Comparator extends PropertyConstraintHelper {
+public class Comparator extends AtomicActor {
 
     /**
      * Construct a Comparator adapter for the flatUnitSystem lattice.
@@ -57,7 +57,7 @@ public class Comparator extends PropertyConstraintHelper {
      * @param actor The given Comparator actor
      * @exception IllegalActionException
      */
-    public Comparator(PropertyConstraintSolver solver,
+    public Comparator(OntologySolver solver,
             ptolemy.actor.lib.logic.Comparator actor)
             throws IllegalActionException {
 
@@ -96,20 +96,20 @@ public class Comparator extends PropertyConstraintHelper {
          */
         public Object getValue() throws IllegalActionException {
 
-            Property leftProperty = getSolver().getProperty(_left);
-            Property rightProperty = getSolver().getProperty(_right);
+            Concept leftProperty = getSolver().getProperty(_left);
+            Concept rightProperty = getSolver().getProperty(_right);
 
-            Property unknown = _lattice.getElement("UNKNOWN");
+            Concept unknown = _unknownConcept;
 
             if (leftProperty == unknown || rightProperty == unknown) {
                 return unknown;
             }
 
             if (leftProperty == rightProperty) {
-                return _lattice.getElement("UNITLESS");
+                return _dimensionlessConcept;
             }
 
-            return _lattice.getElement("TOP");
+            return _conflictConcept;
         }
 
         public boolean isEffective() {

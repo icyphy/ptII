@@ -29,8 +29,8 @@ package ptolemy.data.ontologies.adapters.dimensionSystem.actor.lib;
 
 import java.util.List;
 
-import ptolemy.data.properties.lattice.PropertyConstraintSolver;
-import ptolemy.data.properties.lattice.dimensionSystem.actor.AtomicActor;
+import ptolemy.data.ontologies.OntologySolver;
+import ptolemy.data.ontologies.adapters.dimensionSystem.actor.AtomicActor;
 import ptolemy.kernel.util.IllegalActionException;
 
 //////////////////////////////////////////////////////////////////////////
@@ -53,7 +53,7 @@ public class Minimum extends AtomicActor {
      * @param actor The given Minimum actor
      * @exception IllegalActionException
      */
-    public Minimum(PropertyConstraintSolver solver,
+    public Minimum(OntologySolver solver,
             ptolemy.actor.lib.Minimum actor) throws IllegalActionException {
 
         super(solver, actor, false);
@@ -65,7 +65,7 @@ public class Minimum extends AtomicActor {
         // Set the minimumValue output to at least the input
         // Set the channelNumber output to Unitless
         setAtLeast(actor.minimumValue, actor.input);
-        setAtLeast(actor.channelNumber, _lattice.getElement("Unitless"));
+        setAtLeast(actor.channelNumber, _dimensionlessConcept);
         return super.constraintList();
     }
 }

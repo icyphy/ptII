@@ -512,9 +512,8 @@ public abstract class PropertySolverBase extends MoMLModelAttribute {
                             + "property adapter for " + component.getClass());
                 }
 
-                adapterClass = Class.forName((componentClass.getName()
-                        .replaceFirst("ptolemy", packageName)).replaceFirst(
-                        ".configuredSolvers.", "."));
+                adapterClass = Class.forName(componentClass.getName()
+                        .replaceFirst("ptolemy", packageName));
 
             } catch (ClassNotFoundException e) {
                 // If adapter class cannot be found, search the adapter class
@@ -570,8 +569,10 @@ public abstract class PropertySolverBase extends MoMLModelAttribute {
      * @throws IllegalActionException 
      */
     protected String _getPackageName() throws IllegalActionException {
-        // FIXME: Is this the right package for the adapters?
-        return getClass().getPackage().getName() + "." + getOntology().getName();
+        // FIXME: Is it a good idea to hard code the adapters string in the package name?
+        // 12/17/09 Charles Shelton
+        // This was missing adapters directory for the correct package name.
+        return getClass().getPackage().getName() + ".adapters." + getOntology().getName();
     }
 
     protected NamedObj _toplevel() {

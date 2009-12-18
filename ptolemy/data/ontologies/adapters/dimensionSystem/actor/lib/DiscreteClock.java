@@ -29,8 +29,7 @@ package ptolemy.data.ontologies.adapters.dimensionSystem.actor.lib;
 
 import java.util.List;
 
-import ptolemy.data.properties.lattice.PropertyConstraintHelper;
-import ptolemy.data.properties.lattice.PropertyConstraintSolver;
+import ptolemy.data.ontologies.OntologySolver;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 
@@ -46,7 +45,7 @@ import ptolemy.kernel.util.IllegalActionException;
  @Pt.ProposedRating Red (mankit)
  @Pt.AcceptedRating Red (mankit)
 */
-public class DiscreteClock extends PropertyConstraintHelper {
+public class DiscreteClock extends Source {
 
     /**
      * Construct a Integrator adapter for the flatUnitSystem lattice.
@@ -55,10 +54,10 @@ public class DiscreteClock extends PropertyConstraintHelper {
      * @exception IllegalActionException Thrown if the adapter cannot be
      * initialized.
      */
-    public DiscreteClock(PropertyConstraintSolver solver,
+    public DiscreteClock(OntologySolver solver,
             ptolemy.actor.lib.DiscreteClock actor)
             throws IllegalActionException {
-        super(solver, actor, false);
+        super(solver, actor);
         _actor = actor;
     }
 
@@ -74,7 +73,7 @@ public class DiscreteClock extends PropertyConstraintHelper {
      * @exception IllegalActionException Not thrown in this base class.
      */
     public List<Inequality> constraintList() throws IllegalActionException {
-        setAtLeast(_actor.output, _lattice.getElement("UNITLESS"));
+        setAtLeast(_actor.output, _dimensionlessConcept);
         return super.constraintList();
     }
 
