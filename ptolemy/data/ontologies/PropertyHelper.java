@@ -665,10 +665,15 @@ public class PropertyHelper {
             for (Object attribute : ((NamedObj) _component).attributeList()) {
 
                 if (AnnotationAttribute.class.isInstance(attribute)) {
-                    String usecase = ((AnnotationAttribute) attribute)
+                    String ontology = ((AnnotationAttribute) attribute)
                             .getUseCaseIdentifier();
 
-                    result.add(attribute);
+                    // 12/18/09 Charles Shelton
+                    // Check to make sure the use case name of the AnnotationAttribute
+                    // matches the name of the ontology for this solver                    
+                    if (_solver.getOntology().getName().equals(ontology)) {
+                        result.add(attribute);
+                    }
                 }
             }
         }
