@@ -126,7 +126,11 @@ public class PtidesBasicDirector
             for (int i = 0; i < actor.supportedConfigurations().size(); i++) {
                 if (actor.configuration().compareTo(actor
                         .supportedConfigurations().get(i)) == 0) {
-                    GPHandlers[i + actor.startingConfiguration()] = (String) devices.get(actor);
+    
+		    if (1==1) {
+			throw new RuntimeException("Fix for compilation problem");
+		    }
+		    //GPHandlers[i + actor.startingConfiguration()] = (String) devices.get(actor);
                     foundConfig = true;
                     break;
                 }
