@@ -31,7 +31,7 @@
 
 ME = 		ptolemy/domains/pn/demo
 
-DIRS =		BrockAckerman \
+DIRS =		BrockAckerman CounterMachine \
 		NondeterministicMerge NondeterministicMergeWithFeedback \
 		OrderedMerge QR RemoveNilTokens Stack
 
@@ -51,13 +51,13 @@ PTCLASSJAR =
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
 	BrockAckerman/BrockAckerman.jar \
+	CounterMachine/CounterMachine.jar \ 
 	NondeterministicMerge/NondeterministicMerge.jar \
 	NondeterministicMergeWithFeedback/NondeterministicMergeWithFeedback.jar \
 	OrderedMerge/OrderedMerge.jar \
 	QR/QR.jar \
 	RemoveNilTokens/RemoveNilTokens.jar \
-	Stack/Stack.jar \
-	CounterMachine/CounterMachine.jar 
+	Stack/Stack.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
