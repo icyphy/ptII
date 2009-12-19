@@ -91,5 +91,5 @@ public abstract class LuminarySensorInputDevice extends SensorInputDevice {
     /** There is a default configuration, which is returned.
      *  @return The default configuration.
      */
-    abstract String int startingConfiguration();
+    abstract String startingConfiguration();
 }
