@@ -40,8 +40,8 @@ import ptolemy.kernel.util.NameDuplicationException;
  * saves the total number of configurations of interrupts.
  * For example, if we only support GPInputDevice, i.e., the only subclass
  * of LuminaryInputDevice is GPInputDevice, and GPInputDevice supports 8
- * configurations, then numSupportedInputDeviceConfigurations is set to
- * 8. If more devices are implemented, numSupportedInputDeviceConfigurations
+ * configurations, then numberOfSupportedInputDeviceConfigurations is set to
+ * 8. If more devices are implemented, numberOfSupportedInputDeviceConfigurations
  * should be updated.
  *
  * @author Jia Zou
@@ -74,7 +74,7 @@ public abstract class LuminarySensorInputDevice extends SensorInputDevice {
      *  pin and pads (configurations), this number keeps track of the
      *  total number of configurations available.
      */ 
-    public static int numSupportedInputDeviceConfigurations = 8;
+    public static int numberOfSupportedInputDeviceConfigurations = 8;
     
     /** A sensor device could have multiple access pin and pads 
      *  (configurations), This method returns the current configuration.
@@ -91,5 +91,5 @@ public abstract class LuminarySensorInputDevice extends SensorInputDevice {
     /** There is a default configuration, which is returned.
      *  @return The default configuration.
      */
-    abstract public String startingConfiguration();
+    abstract public int startingConfiguration();
 }
