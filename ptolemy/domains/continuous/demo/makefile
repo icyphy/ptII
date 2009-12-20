@@ -36,6 +36,7 @@ ROOT =		../../../..
 
 DIRS =		BouncingBall Brownian CarTracking \
 		CartPendulum ComparedClocks ContinuousInsideDE \
+		FurutaPendulum \
 		HierarchicalExecution HybridPlant Hysteresis \
 		LevelCrossingDetector LevelCrossingDetectorDetectsGlitches \
 		Lorenz NewtonsCradle Noise Poisson Pendulum3D SampledClocks Satellite \
