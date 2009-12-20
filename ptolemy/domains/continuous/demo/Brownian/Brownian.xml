@@ -34,11 +34,6 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 245.0]">
         </property>
     </property>
-    <entity name="Gaussian" class="ptolemy.actor.lib.Gaussian">
-        <doc>Create a sequence of gaussian random variables</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 125.0]">
-        </property>
-    </entity>
     <entity name="Integrator" class="ptolemy.domains.continuous.lib.Integrator">
         <property name="_location" class="ptolemy.kernel.util.Location" value="{210.0, 125.0}">
         </property>
@@ -59,16 +54,11 @@
 <title>Brownian Motion</title>
 <xLabel></xLabel>
 <yLabel></yLabel>
-<xRange min="-12.0" max="12.0"/>
-<yRange min="-12.0" max="12.0"/>
+<xRange min="-3.3295205021569823" max="0.2146491278705975"/>
+<yRange min="-2.246883006534555" max="0.6435066644410469"/>
 <noGrid/>
 </plot>?>
         </configure>
-    </entity>
-    <entity name="Gaussian2" class="ptolemy.actor.lib.Gaussian">
-        <doc>Create a sequence of gaussian random variables</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 205.0]">
-        </property>
     </entity>
     <entity name="Integrator2" class="ptolemy.domains.continuous.lib.Integrator">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[210.0, 205.0]">
@@ -89,7 +79,7 @@
 <xLabel></xLabel>
 <yLabel></yLabel>
 <xRange min="0.0" max="100.0"/>
-<yRange min="-6.424742141681848" max="7.049708391342513"/>
+<yRange min="-3.3295205021569823" max="0.2146491278705975"/>
 </plot>?>
         </configure>
     </entity>
@@ -104,14 +94,22 @@
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
-<title>White Noise</title>
+<title>Bandlimited Noise</title>
 <xLabel></xLabel>
 <yLabel></yLabel>
 <xRange min="0.0" max="100.0"/>
-<yRange min="-2.017858885135006" max="2.986037851754211"/>
+<yRange min="-3.269544224031838" max="3.30089968595319"/>
 <noGrid/>
 </plot>?>
         </configure>
+    </entity>
+    <entity name="BandlimitedNoise" class="ptolemy.domains.continuous.lib.BandlimitedNoise">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 125.0]">
+        </property>
+    </entity>
+    <entity name="BandlimitedNoise2" class="ptolemy.domains.continuous.lib.BandlimitedNoise">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{75.0, 205.0}">
+        </property>
     </entity>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
     </relation>
@@ -119,20 +117,20 @@
         <vertex name="vertex1" value="[280.0, 125.0]">
         </vertex>
     </relation>
-    <relation name="relation" class="ptolemy.actor.TypedIORelation">
-    </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
         <vertex name="vertex1" value="{160.0, 125.0}">
         </vertex>
     </relation>
-    <link port="Gaussian.output" relation="relation2"/>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
     <link port="Integrator.derivative" relation="relation2"/>
     <link port="Integrator.state" relation="relation11"/>
     <link port="XYPlotter.inputX" relation="relation11"/>
     <link port="XYPlotter.inputY" relation="relation4"/>
-    <link port="Gaussian2.output" relation="relation"/>
     <link port="Integrator2.derivative" relation="relation"/>
     <link port="Integrator2.state" relation="relation4"/>
     <link port="TimedPlotter.input" relation="relation11"/>
     <link port="TimedPlotter2.input" relation="relation2"/>
+    <link port="BandlimitedNoise.output" relation="relation2"/>
+    <link port="BandlimitedNoise2.output" relation="relation"/>
 </entity>
