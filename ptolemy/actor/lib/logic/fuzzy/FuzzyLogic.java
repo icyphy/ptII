@@ -127,7 +127,7 @@ public class FuzzyLogic extends Transformer {
      */
     public void preinitialize() throws IllegalActionException {
         try {
-            new File("ptolemy/actor/lib/logic/fuzz/"
+            new File("ptolemy/actor/lib/logic/fuzzy/"
                     + rulesFileName.getExpression());
 
             if (_debugging) {
@@ -281,11 +281,15 @@ public class FuzzyLogic extends Transformer {
         myRisk = "\"" + myRisk + "\"";
         myMass = "\"" + myMass + "\"";
         value.setExpression(myCost);
-        System.out.println("cost just output " + value.toString());
+        if(_debugging){
+        _debug("cost just output " + value.toString());
+        }
         cost.send(0, value.getToken());
         value.setExpression(myRisk);
-        System.out.println("risk has data: " + myRisk);
-        System.out.println("risk just output" + value.toString());
+        if(_debugging){
+        _debug("risk has data: " + myRisk);
+        _debug("risk just output" + value.toString());
+        }
         risk.send(0, value.getToken());
 
         value.setExpression(myMass);
@@ -334,6 +338,7 @@ public class FuzzyLogic extends Transformer {
 This class parses an XML file containing the fuzzy logic rules
  **/
 class FuzzyParser extends DefaultHandler {
+    private boolean _debugging = false;
     private boolean startVar;
     private int toDefuzzyify;
     private int currentIndex;
@@ -359,7 +364,7 @@ class FuzzyParser extends DefaultHandler {
             xr.setContentHandler(this);
             xr.setErrorHandler(this);
             FileReader r = new FileReader("ptolemy/actor/lib/logic/fuzzy/"
-                    + filename.toString());
+                    + filename);
             xr.parse(new InputSource(r));
         } catch (Exception e) {
             e.printStackTrace();
@@ -429,13 +434,14 @@ class FuzzyParser extends DefaultHandler {
                             c, d);
                 }
             }
-            if ("RULEBLOCK".equals(qName)) {
-            }
+           
             if ("RULE".equals(qName)) {
                 rules.add(atts.getValue(1));
             }
         } else {
+            if(_debugging){
             System.out.println("Start element: {" + uri + "}" + name);
+            }
 
         }
     }
@@ -449,18 +455,13 @@ class FuzzyParser extends DefaultHandler {
             if ("RULEBLOCK".equals(qName)) {
             }
         } else {
+            if(_debugging){
             System.out.println("End element:   {" + uri + "}" + name);
+            }
         }
     }
 
     public void characters(char ch[], int start, int length) {
-        /*
-         * for (int i = start; i < start + length; i++) { switch (ch[i]) { case
-         * '\\': System.out.print("\\\\"); break; case '"':
-         * System.out.print("\\\""); break; case '\n': System.out.print("\\n");
-         * break; case '\r': System.out.print("\\r"); break; case '\t':
-         * System.out.print("\\t"); break; default: System.out.print(ch[i]);
-         * break; } } System.out.print("\"\n");
-         */
+       
     }
 }
