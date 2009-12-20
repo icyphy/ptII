@@ -34,6 +34,8 @@
                 class="ptolemy.domains.continuous.lib.DifferentialSystem"/>
         <entity name="Integrator"
                 class="ptolemy.domains.continuous.lib.Integrator"/>
+        <entity name="LinearStateSpace"
+                class="ptolemy.domains.continuous.lib.LinearStateSpace"/>
   </entity>
   <entity name="Random" class="ptolemy.moml.EntityLibrary">
         <entity name="BandlimitedNoise"

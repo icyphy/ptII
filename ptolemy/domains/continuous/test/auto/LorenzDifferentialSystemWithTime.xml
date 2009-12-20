@@ -1,0 +1,194 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="LorenzDifferentialSystemWithTime" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[772, 439]">
+    </property>
+    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[100, 114]">
+    </property>
+    <property name="sigma" class="ptolemy.data.expr.Parameter" value="10.0">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="sigma" class="ptolemy.vergil.icon.ValueIcon">
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[165.0, 30.0]">
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+    </property>
+    <property name="lambda" class="ptolemy.data.expr.Parameter" value="25.0">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="lambda" class="ptolemy.vergil.icon.ValueIcon">
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[165.0, 45.0]">
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+    </property>
+    <property name="b" class="ptolemy.data.expr.Parameter" value="2.0">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="b" class="ptolemy.vergil.icon.ValueIcon">
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[165.0, 60.0]">
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1, 73, 985, 549}, maximized=false}">
+    </property>
+    <property name="annotation" class="ptolemy.kernel.util.Attribute">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:darkgray">Author: Edward A. Lee</text></svg></configure>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, 200.0]">
+        </property>
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{386.0, 219.5}">
+    </property>
+    <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="5.0">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 50.0]">
+        </property>
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model is identical to the Lorenz&#10;demo, except that it uses a DifferentialSystem&#10;actor rather than discrete components&#10;to build up the dynamical system.&#10;Also, this has an input port.&#10;&#10;It shows a nonlinear feedback&#10;system that exhibits chaotic behavior.&#10;It is modeled in continuous time. The&#10;Continuous director uses a sophisticated&#10;ordinary differential equation solver&#10;to execute the model. This particular&#10;model is known as a Lorenz attractor.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[395.0, 10.0]">
+        </property>
+    </property>
+    <entity name="DifferentialSystem" class="ptolemy.domains.continuous.lib.DifferentialSystem">
+        <property name="stateVariableNames" class="ptolemy.data.expr.Parameter" value="{&quot;x1&quot;, &quot;x2&quot;, &quot;x3&quot;}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 150.0]">
+        </property>
+        <property name="x1" class="ptolemy.data.expr.Parameter" value="1.0">
+        </property>
+        <property name="x2" class="ptolemy.data.expr.Parameter" value="1.0">
+        </property>
+        <property name="x3" class="ptolemy.data.expr.Parameter" value="1.0">
+        </property>
+        <property name="x1_dot" class="ptolemy.data.expr.Parameter" value="sigma*(x2-x1)">
+        </property>
+        <property name="x2_dot" class="ptolemy.data.expr.Parameter" value="(lambda-x3)*x1-x2">
+        </property>
+        <property name="x3_dot" class="ptolemy.data.expr.Parameter" value="x1*x2-b*x3">
+        </property>
+        <property name="y1" class="ptolemy.data.expr.Parameter" value="x1 + t">
+        </property>
+        <property name="y2" class="ptolemy.data.expr.Parameter" value="x2">
+        </property>
+        <property name="xOffset" class="ptolemy.data.expr.Parameter" value="5.0000000004598">
+        </property>
+        <port name="y1" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="y2" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <relation name="_R" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+            </property>
+        </relation>
+        <relation name="_R2" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+            </property>
+        </relation>
+        <relation name="_R3" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+            </property>
+        </relation>
+        <relation name="_R4" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+            </property>
+        </relation>
+        <relation name="_R5" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+            </property>
+        </relation>
+        <link port="y1" relation="_R4"/>
+        <link port="y2" relation="_R5"/>
+    </entity>
+    <entity name="PeriodicSampler" class="ptolemy.domains.continuous.lib.PeriodicSampler">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[220.0, 115.0]">
+        </property>
+    </entity>
+    <entity name="PeriodicSampler2" class="ptolemy.domains.continuous.lib.PeriodicSampler">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[215.0, 185.0]">
+        </property>
+    </entity>
+    <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1.0, 2.0793621665816, 5.7455607850215, 13.9990552447516, 16.4700012671091, 4.0915527584644, -2.8027342872039, -4.3162156791203, -4.3326363713479, -4.5026835805455, -5.2426663313674, -6.3875743924707, -7.2237511187219, -6.865630770661, -5.4745019651225, -4.1652239638151, -3.6484812060617, -4.0103513878066, -5.0648083833346, -6.2732786963272, -6.5996003441443, -5.4971636561679, -3.8862568957354, -2.8882062744168, -2.839690368244, -3.6501216532536, -4.9962024965993, -6.0067416959505, -5.560138786376, -3.886444725991, -2.3830794126294, -1.8250186356357, -2.2511177583249, -3.4757180064143, -4.9499783993791, -5.4261067275731, -4.1346119089262, -2.2199808177779, -1.0529641186311, -0.969543445444, -1.8535479600485, -3.4287837129436, -4.7842186069809, -4.4399289116126, -2.4724278076018, -0.64221435329, 0.0891462829687, -0.2857716432528, -1.6025836312374, -3.4246501654679, -4.3668875337753}">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-3">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[330.0, 115.0]">
+        </property>
+    </entity>
+    <entity name="NonStrictTest2" class="ptolemy.actor.lib.NonStrictTest">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1.0, 3.9590289459712, 11.1920348491887, 23.183209617567, 7.5806843453535, -7.6098142248009, -6.8660196449787, -5.4444528211272, -5.1888774220921, -5.9447063574932, -7.354846850763, -8.7435343128955, -8.8635640796369, -7.2377729544168, -5.4388168462226, -4.8000881378191, -5.2860049279669, -6.5676732415295, -8.2332762888898, -9.231199028605, -8.2747249693687, -6.1049486674798, -4.7611009217675, -4.7619114610703, -5.7501328669044, -7.4143899162775, -9.0792987562832, -9.2183958707696, -7.1969900783564, -5.0789872756425, -4.4076851801443, -4.9794678823485, -6.4210486947405, -8.3745896037642, -9.6722726840708, -8.5845084981258, -5.9320600113504, -4.3433707056296, -4.334320575833, -5.3968046543776, -7.2584067240065, -9.3302488341948, -9.7965672474866, -7.4443777300422, -4.7908926302302, -3.915256588188, -4.4597578782728, -5.9615837119551, -8.2041949596234, -10.1274940152255, -9.3522481239063}">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-3">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[330.0, 185.0]">
+        </property>
+    </entity>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="DifferentialSystem.y1" relation="relation5"/>
+    <link port="DifferentialSystem.y2" relation="relation6"/>
+    <link port="PeriodicSampler.input" relation="relation5"/>
+    <link port="PeriodicSampler.output" relation="relation"/>
+    <link port="PeriodicSampler2.input" relation="relation6"/>
+    <link port="PeriodicSampler2.output" relation="relation4"/>
+    <link port="NonStrictTest.input" relation="relation"/>
+    <link port="NonStrictTest2.input" relation="relation4"/>
+</entity>

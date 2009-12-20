@@ -53,6 +53,7 @@ JSRCS = \
 	EventSource.java \
 	Integrator.java \
 	LevelCrossingDetector.java \
+	LinearStateSpace.java \
 	ContinuousMerge.java \
 	ContinuousTimeDelay.java \
 	ContinuousTransferFunction.java \

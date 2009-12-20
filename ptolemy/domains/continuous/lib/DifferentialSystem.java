@@ -28,26 +28,28 @@
 package ptolemy.domains.continuous.lib;
 
 import java.util.Iterator;
+import java.util.Set;
 
-import ptolemy.actor.Actor;
 import ptolemy.actor.Director;
 import ptolemy.actor.IORelation;
-import ptolemy.actor.Manager;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.TypedIORelation;
 import ptolemy.actor.lib.Expression;
 import ptolemy.data.ArrayToken;
-import ptolemy.data.DoubleMatrixToken;
+import ptolemy.data.DoubleToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
+import ptolemy.domains.continuous.kernel.ContinuousDirector;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.Port;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Settable;
 
 //////////////////////////////////////////////////////////////////////////
 //// DifferentialSystem
@@ -56,41 +58,62 @@ import ptolemy.kernel.util.NamedObj;
  A differential system in the Continuous domain.
 
  <p>The differential system  model implements a system whose behavior
- is defined by:
+ is defined by:           
  <pre>
  dx/dt = f(x, u, t)
  y = g(x, u, t)
  x(0) = x0
  </pre>
  where x is the state vector, u is the input vector, and y is the output
- vector, t is the time. Users must give the name of the variables
- by filling in parameters
- <P>
- The actor, upon creation, has no input and no output. Upon filling
- in the names in the <i>inputVariableNames</i> and
- <i>outputVariableNames</i> parameters, the ports will be created.
- The name of the state variables are manually added by filling in
- the <i>stateVariableNames</i> parameter.
- <P>
- The state equations and output maps must be manually created by users.
- If there are <i>n</i> state variables <i>x</i><sub>1</sub>, ...
- <i>x</i><sub>n</sub>,
- then users must create <i>n</i> additional parameters, one
- for each state equation. And the parameters must be named as:
- "<i>x</i><sub>1</sub>_dot", ..., "<i>x</i><sub>n</sub>_dot" respectively.
- Similarly, if the output ports have name <i>y</i><sub>1</sub>, ...,
- <i>y</i><sub>r</sub>, then users must create additional <i>r</i>
- parameters for output maps. These parameters should be named
- "<i>y</i><sub>1</sub>", ... "<i>y</i><sub>r</sub>" respectively.
- <P>
- This actor works like a higher-order function. Upon preinitialization,
- the actor will create a subsystem using integrators and expressions.
- After that, the actor becomes transparent, and the director
- takes over the control of the actors contained by this actor.
- <p>
- This actor is based on the ptolemy.domain.ct.lib.DifferentialSystem actor by Jie Liu.
+ vector, t is the time. To use this actor, proceed through the following
+ steps:
+ <ul>
+ <li> For each input in <i>u</i>, create an input port.
+ Each input may have any name, since you will refer to it by
+ name rather than by the symbol <i>u</i>. This actor will
+ automatically create a parameter with the same name as the
+ input port. That parameter will have its value set during
+ execution to match the value of the input.
+ Note that at this time, multiport inputs are not supported.
+ 
+ <li> Fill in the <i>stateVariableNames</i> parameter, which is
+ an array of strings, with the names of the state variables in <i>x</i>.
+ These names can be anything you like, since you will refer them to
+ by name rather than by the symbol <i>x</i>.
+ 
+ <li> For each state variable name in <i>stateVariableNames</i>,
+ create a parameter with a value equal to the initial value of that
+ particular state variable.
 
- @author Jie Liu
+ <li> Specify an update function (part of <i>f</i> above) for each
+ state variable by creating a parameter named <i>name</i>_dot, where
+ <i>name</i> is the name of the state variable. The value of this
+ parameter should be an expression giving the rate of change of
+ this state variable as a function of any of the state variables,
+ any input, any other actor parameter, and (possibly), the variable
+ <i>t</i>, representing current time.
+ 
+ <li> For each output in <i>y</i>, create an output port.
+ The output may have any name. This actor will automatically
+ create a parameter with the same name as the output port.
+ 
+ <li> For each parameter matching an output port, set its
+ value to be an expression giving the output
+ value as a function of the state variables, the inputs, any other
+ actor parameter, and (possibly), the variable
+ <i>t</i>, representing current time.
+ 
+ </ul>
+ <P>
+ This actor is a higher-order component. Upon preinitialization,
+ the actor will create a subsystem using integrators and expressions.
+ These are not persistent (they are not exported in the MoML file),
+ and will instead by created each time the actor is preinitialized.
+ <p>
+ This actor is based on the ptolemy.domain.ct.lib.DifferentialSystem
+ actor by Jie Liu.
+
+ @author Jie Liu and Edward A. Lee
  @version $Id$
  @since Ptolemy II 7.0
  @Pt.ProposedRating Red (liuj)
@@ -114,10 +137,19 @@ public class DifferentialSystem extends TypedCompositeActor {
         stateVariableNames = new Parameter(this, "stateVariableNames");
         empty[0] = new StringToken("");
         stateVariableNames.setToken(new ArrayToken(BaseType.STRING, empty));
-        initialStates = new Parameter(this, "initialStates");
-        initialStates.setTypeEquals(BaseType.DOUBLE_MATRIX);
 
         setClassName("ptolemy.domains.ct.lib.DifferentialSystem");
+        
+        t = new Parameter(this, "t");
+        t.setTypeEquals(BaseType.DOUBLE);
+        t.setVisibility(Settable.EXPERT);
+        t.setExpression("0.0");
+        
+        // This actor contains a ContinuousDirector.
+        // This director is not persistent, however.
+        // There is no need to store it in the MoML file, since
+        // it is created here in the constructor.
+        (new ContinuousDirector(this, "ContinuousDirector")).setPersistent(false);
 
         // icon
         _attachText("_iconDescription", "<svg>\n"
@@ -136,83 +168,80 @@ public class DifferentialSystem extends TypedCompositeActor {
      *  The default is an ArrayToken of an empty String.
      */
     public Parameter stateVariableNames;
-
-    /** The initial condition for the state variables. This must be
-     *  a vector (double matrix with only one row) whose
-     *  default value is empty.
+    
+    /** The value of current time. This parameter is not visible in
+     *  the expression screen except in expert mode. Its value initially
+     *  is just 0.0, a double, but upon each firing, it is given a
+     *  value equal to the current time as reported by the director.
      */
-    public Parameter initialStates;
+    public Parameter t;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** If the argument is the <i>initialState</i>
-     *  parameters, check that it is a row vector;
-     *  Other sanity checks, like whether a differential equation matches
-     *  a state variable name, are done in preinitialize() and run time.
+    /** If the argument is any parameter other than <i>stateVariableNames</i>
+     *  <i>t</i>, or any parameter matching an input port,
+     *  then request reinitialization.
      *  @param attribute The attribute that changed.
      *  @exception IllegalActionException If the numerator and the
      *   denominator matrix is not a row vector.
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
-        if (attribute == initialStates) {
-            // The initialStates parameter should be a row vector.
-            DoubleMatrixToken token = (DoubleMatrixToken) initialStates
-                    .getToken();
-
-            if (token == null) {
-                return;
-            }
-
-            if ((token.getRowCount() != 1) || (token.getColumnCount() < 1)) {
-                throw new IllegalActionException(this,
-                        "The initialStates must be a row vector.");
-            }
-
-            // Changes of the initialStates parameter are ignored after
-            // the execution.
-            if ((getManager() != null)
-                    && (getManager().getState() == Manager.IDLE)) {
+        super.attributeChanged(attribute);
+        if (attribute instanceof Parameter
+                && attribute != t
+                && attribute != stateVariableNames) {
+            // If the attribute name matches an input port name,
+            // do not reinitialize.
+            TypedIOPort port = (TypedIOPort)getPort(attribute.getName());
+            if (port == null || !port.isInput()) {
+                // Change of any parameter triggers reinitialization.
                 _requestInitialization();
             }
-        } else if (attribute instanceof Parameter) {
-            // Change of other parameters triggers reinitialization.
-            super.attributeChanged(attribute);
-            _requestInitialization();
-        } else {
-            super.attributeChanged(attribute);
         }
+        // If any parameter changes, then the next preinitialize()
+        // will recreate the contents.
+        _upToDate = false;
     }
-
-    /** Return the executive director, regardless what isOpaque returns.
+    
+    /** Override the base class to first set the value of the
+     *  parameter <i>t</i> to match current time, then to set
+     *  the local parameters that mirror input values,
+     *  and then to fire the contained actors.
      */
-    public Director getDirector() {
-        if (_opaque) {
-            return null;
-        } else {
-            return getExecutiveDirector();
+    public void fire() throws IllegalActionException {
+        // Set the time variable.
+        double currentTime = getDirector().getModelTime().getDoubleValue();
+        t.setToken(new DoubleToken(currentTime));
+        
+        // Set the input parameters.
+        /* NOTE: There is no need to set the values of these shadow
+         * variables. They are not used.
+        List<TypedIOPort> inputs = inputPortList();
+        for (TypedIOPort input : inputs) {
+            String name = input.getName();
+            if (input.getWidth() > 0 && input.isKnown(0) && input.hasToken(0)) {
+                Parameter parameter = (Parameter)getAttribute(name);
+                parameter.setToken(input.get(0));
+            }
         }
+        */
+        
+        super.fire();
     }
-
-    /** Return the opaqueness of this composite actor. This actor is
-     *  opaque if it has not been preinitialized after creation or
-     *  changes of parameters. Otherwise, it is not opaque.
-     */
-    public boolean isOpaque() {
-        return _opaque;
-    }
-
-    /** Sanity check the parameters; if the parameters are legal
-     *  create a continuous-time subsystem that implement the model,
-     *  preinitialize all the actors in the subsystem,
-     *  and set the opaqueness of this actor to true.
-     *  This method need the write access on the workspace.
-     *  @exception IllegalActionException If there is no CTDirector,
-     *  or any contained actors throw it in its preinitialize() method.
+    
+    /** Create the model inside from the parameter values.
+     *  This method gets write access on the workspace.
+     *  @exception IllegalActionException If there is no director,
+     *   or if any contained actors throws it in its preinitialize() method.
      *
      */
     public void preinitialize() throws IllegalActionException {
+        if (_upToDate) {
+            super.preinitialize();
+            return;
+        }
         // Check parameters.
         _checkParameters();
 
@@ -220,10 +249,6 @@ public class DifferentialSystem extends TypedCompositeActor {
         int n = stateNames.length();
         int m = inputPortList().size();
         int r = outputPortList().size();
-
-        // FIXME: Why does this get the token and then do nothing with the value?
-        //DoubleMatrixToken initial = (DoubleMatrixToken) initialStates
-        //        .getToken();
 
         try {
             _workspace.getWriteAccess();
@@ -241,21 +266,20 @@ public class DifferentialSystem extends TypedCompositeActor {
                 states[i] = ((StringToken) stateNames.getElement(i))
                         .stringValue().trim();
                 integrators[i] = new Integrator(this, states[i]);
-                integrators[i].initialState.setExpression("initialStates(0,"
-                        + i + ")");
+                integrators[i].setPersistent(false);
+                integrators[i].initialState.setExpression(states[i]);
                 stateRelations[i] = new TypedIORelation(this, "relation_"
                         + states[i]);
+                stateRelations[i].setPersistent(false);
 
                 integrators[i].state.link(stateRelations[i]);
 
-                // One Expression per integrator.
+                // One Expression actor per integrator.
                 equations[i] = new Expression(this, states[i] + "_dot");
-                equations[i].expression
-                        .setExpression(((StringToken) ((Parameter) getAttribute(states[i]
-                                + "_dot")).getToken()).stringValue());
+                equations[i].setPersistent(false);
+                equations[i].expression.setExpression(
+                        ((Parameter) getAttribute(states[i] + "_dot")).getExpression());
 
-                //FIXME: Why should I set type here?
-                equations[i].output.setTypeEquals(BaseType.DOUBLE);
                 connect(equations[i].output, integrators[i].derivative);
             }
 
@@ -269,6 +293,7 @@ public class DifferentialSystem extends TypedCompositeActor {
                 inputs[inputIndex] = ((NamedObj) inputPorts.next()).getName();
                 inputRelations[inputIndex] = new TypedIORelation(this,
                         "relation_" + inputs[inputIndex]);
+                inputRelations[inputIndex].setPersistent(false);
                 getPort(inputs[inputIndex]).link(inputRelations[inputIndex]);
                 inputIndex++;
             }
@@ -283,10 +308,10 @@ public class DifferentialSystem extends TypedCompositeActor {
                 outputs[outIndex] = ((NamedObj) outputPorts.next()).getName();
                 maps[outIndex] = new Expression(this, "output_"
                         + outputs[outIndex]);
+                maps[outIndex].setPersistent(false);
 
-                maps[outIndex].expression
-                        .setExpression(((StringToken) ((Parameter) getAttribute(outputs[outIndex]))
-                                .getToken()).stringValue());
+                maps[outIndex].expression.setExpression(
+                        ((Parameter) getAttribute(outputs[outIndex])).getExpression());
                 maps[outIndex].output.setTypeEquals(BaseType.DOUBLE);
                 connect(maps[outIndex].output,
                         (TypedIOPort) getPort(outputs[outIndex]));
@@ -295,6 +320,8 @@ public class DifferentialSystem extends TypedCompositeActor {
 
             // Connect state feedback expressions.
             for (int i = 0; i < n; i++) {
+                // Create ports for each state update Expression actor
+                // and connect them.
                 // One port for each state variable.
                 for (int k = 0; k < n; k++) {
                     TypedIOPort port = new TypedIOPort(equations[i], states[k],
@@ -304,20 +331,26 @@ public class DifferentialSystem extends TypedCompositeActor {
                 }
 
                 // One port for each input variable.
+                // Create and connect the port only if the input
+                // is used.
                 for (int k = 0; k < m; k++) {
-                    TypedIOPort port = new TypedIOPort(equations[i], inputs[k],
-                            true, false);
-                    port.setTypeEquals(BaseType.DOUBLE);
-                    port.link(inputRelations[k]);
+                    Parameter stateUpdateSpec = ((Parameter) getAttribute(states[i] + "_dot"));
+                    Set<String> freeIdentifiers = stateUpdateSpec.getFreeIdentifiers();
+                    // Create an output port only if the expression references the input.
+                    if (freeIdentifiers.contains(inputs[k])) {
+                        TypedIOPort port = new TypedIOPort(equations[i], inputs[k],
+                                true, false);
+                        port.setTypeEquals(BaseType.DOUBLE);
+                        port.link(inputRelations[k]);
+                    }
                 }
             }
 
             // Connect output expressions.
-            // The policy now is that the output should never directly
-            // depend on the input. The output Expression actors will no
-            // longer have input ports that represent the input of this
-            // composite actor.
+            // For each output expression/port:
             for (int l = 0; l < r; l++) {
+                // Create ports for each state update Expression actor
+                // and connect them.
                 // One port for each state variable.
                 for (int k = 0; k < n; k++) {
                     TypedIOPort port = new TypedIOPort(maps[l], states[k],
@@ -326,20 +359,23 @@ public class DifferentialSystem extends TypedCompositeActor {
                     port.link(stateRelations[k]);
                 }
 
-                /*
-                 // One port for each input variable.
-
-                 for (int k = 0; k < m; k++) {
-                 TypedIOPort port = new TypedIOPort(maps[l], inputs[k],
-                 true, false);
-                 port.setTypeEquals(BaseType.DOUBLE);
-                 port.link(inputRelations[k]);
-                 }
-                 */
+                // One port for each input variable.
+                // NOTE: Do not reference input ports
+                // in the expression for an output port
+                // if you want that output port in a feedback loop.
+                for (int k = 0; k < m; k++) {
+                    Parameter outputSpec = ((Parameter) getAttribute(outputs[l]));
+                    Set<String> freeIdentifiers = outputSpec.getFreeIdentifiers();
+                    // Create an output port only if the expression references the input.
+                    if (freeIdentifiers.contains(inputs[k])) {
+                        TypedIOPort port = new TypedIOPort(maps[l], inputs[k],
+                                true, false);
+                        port.setTypeEquals(BaseType.DOUBLE);
+                        port.link(inputRelations[k]);
+                    }
+                }
             }
-
-            _opaque = false;
-            _workspace.incrVersion();
+            _upToDate = true;
         } catch (NameDuplicationException ex) {
             // Should never happen.
             throw new InternalErrorException("Duplicated name when "
@@ -348,23 +384,37 @@ public class DifferentialSystem extends TypedCompositeActor {
             _workspace.doneWriting();
         }
 
-        // preinitialize all contained actors.
-        for (Iterator i = deepEntityList().iterator(); i.hasNext();) {
-            Actor actor = (Actor) i.next();
-            actor.preinitialize();
-        }
-    }
-
-    /** Set the opaqueness to true and wrapup.
-     *  @exception IllegalActionException If there is no director.
-     */
-    public void wrapup() throws IllegalActionException {
-        _opaque = true;
-        super.wrapup();
+        // Preinitialize the contained model.
+        super.preinitialize();
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
+    ////                       protected methods                   ////
+
+    /** Add a port to this actor. This overrides the base class to
+     *  add a parameter with the same name as the port. This parameter
+     *  is not persistent and is visible only in expert mode. It will
+     *  be used to mirror the values of the inputs.
+     *  @param port The TypedIOPort to add to this actor.
+     *  @exception IllegalActionException If the port class is not
+     *   acceptable to this actor, or the port has no name.
+     *  @exception NameDuplicationException If the port name collides with a
+     *   name already in the actor.
+     */
+    protected void _addPort(Port port) throws IllegalActionException,
+            NameDuplicationException {
+        super._addPort(port);
+        
+        // Add the parameter, if it does not already exist.
+        String name = port.getName();
+        if (getAttribute(name) == null) {
+            Parameter parameter = new Parameter(this, name);
+            parameter.setExpression("0.0");
+        }
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
 
     /** Check the dimensions of all parameters and ports.
      *  @exception IllegalActionException If the dimensions are illegal.
@@ -395,7 +445,7 @@ public class DifferentialSystem extends TypedCompositeActor {
             if (getAttribute(equation) == null) {
                 throw new IllegalActionException(this, "Please add a "
                         + "parameter with name \"" + equation
-                        + "\" to specify the state equation.");
+                        + "\" that gives the state update expression.");
             }
         }
 
@@ -427,19 +477,17 @@ public class DifferentialSystem extends TypedCompositeActor {
      *  from the director if there is one.
      */
     private void _requestInitialization() {
-        // Set this composite to opaque.
-        _opaque = true;
-
         // Request for initialization.
-        Director dir = getDirector();
+        Director dir = getExecutiveDirector();
 
         if (dir != null) {
             dir.requestInitialization(this);
         }
     }
-
+    
     ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
-    // opaqueness.
-    private boolean _opaque;
+    ////                         private members                   ////
+    
+    /** Flag indicating whether the contained model is up to date. */
+    private boolean _upToDate = false;
 }
