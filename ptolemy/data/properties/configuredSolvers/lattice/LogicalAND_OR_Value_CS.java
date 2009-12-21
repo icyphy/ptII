@@ -75,7 +75,6 @@ public class LogicalAND_OR_Value_CS extends PropertyConstraintSolver {
                 "falseHighlightColor");
         highlightFalseColor.setExpression("{0.0,0.2,1.0,1.0}");
 
-        addDependentUseCase("FirstValuePTS");
         addDependentUseCase("LogicalOR_Backward_CS");
     }
 
