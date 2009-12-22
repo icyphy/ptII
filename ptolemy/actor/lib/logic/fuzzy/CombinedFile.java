@@ -34,6 +34,7 @@ import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.InputStreamReader;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import org.xml.sax.Attributes;
@@ -98,8 +99,8 @@ public class CombinedFile extends DefaultHandler {
         handler._outputFileName = _outputFileName;
         xmlReader.setContentHandler(handler);
         xmlReader.setErrorHandler(handler);
-        FileReader reader = new FileReader("ptolemy\\actor\\lib\\logic\\fuzzy\\"
-                + filename);
+        FileReader reader = new FileReader("ptolemy\\actor\\lib\\logic" +
+                "\\fuzzy\\"+ filename);
         xmlReader.parse(new InputSource(reader));
     }
 
@@ -125,126 +126,149 @@ public class CombinedFile extends DefaultHandler {
 
     private void readCreate() {
         ArrayList<String> componentNames = new ArrayList<String>();
-        
-            String output= new String();
-            output+="<?xml version= \"1.0\" standalone=\"no\"?>";
-            output+=newline;
-            output+="<!DOCTYPE entity PUBLIC \"-//UC Berkeley//DTD MoML 1//EN\"";
-            output+= newline;
-            output+="    \"http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd\">";
-            output+= newline;
-            output+="<entity name=\"dummy\" class=\"ptolemy.actor.TypedCompositeActor\">";
-            output+= newline;
-            output+= "<property name=\"_createdBy\" class=\"ptolemy.kernel.attributes.VersionAttribute\" value=\"8.0.beta\">";
-            output+= newline;
-            output+="</property>";
-            output+= newline;
-            output+="<property name=\"director\" class=\"ptolemy.domains.sdf.kernel.SDFDirector\">";
-            output+="     <property name=\"iterations\" class=\"ptolemy.data.expr.Parameter\" value=\"1\">";
-            output+= newline;
-            output+="     </property>";
-            output+= newline;
-            output+= "</property>";
-            output+= newline; 
-            try {
-                Option tOption;
-                if (architecture == null) {
-                    System.out.println("this architecture is null");
-                }
-                for (int i = 0; i < architecture.myOptions.size(); i++) {
-                    tOption = (Option) architecture.myOptions.get(i);
-                    componentNames.add(tOption.name + "_"
-                            + tOption.relatedDimensions.get(0).toString());
-                }
-                if(_debugging){
-                    System.out.println("there are currently "
-                            + architecture.myOptions.size()
-                            + " components with this architecture named "
-                            + architecture.getName());
-                    System.out.println("there were " + componentNames.size()
-                            + " components ");
-                }
-                for (int i = 0; i < componentNames.size(); i++) {
-                    output+= "<entity name=\""
-                        + componentNames.get(i)
-                        + "\" class=\"ptolemy.actor.lib.logic.fuzzy.FuzzyLogic\">";
-                    output+= "<property name=\"rulesFileName\" class=\"ptolemy.data.expr.Parameter\" value=\""
-                        + ((Option) (architecture.myOptions
-                                .get(i))).relatedDimensions.get(0)
-                                + ".xml\">";
-                    output+="</property>";
-                    output+="<property name=\"componentType\" class=\"ptolemy.data.expr.Parameter\" value=\""
-                        + ((Option) (architecture.myOptions
-                                .get(i))).name + "\">";
-                    output+= "</property>";
-                    output+= newline;
-                    output+= "<property name=\"init\" class=\"ptolemy.data.expr.Parameter\" value=\"2\">";
-                    output+= "</property>";
-                    output+= newline;
-                    output+="</entity>";
-                }
 
-                output+= "<entity name=\"Display\" class=\"ptolemy.actor.lib.gui.Display\">";
+        String output="";
+        output+="<?xml version= \"1.0\" standalone=\"no\"?>";
+        output+=newline;
+        output+="<!DOCTYPE entity PUBLIC \"-//UC Berkeley//DTD " +
+        "MoML 1//EN\"";
+        output+= newline;
+        output+="    \"http://ptolemy.eecs.berkeley.edu/xml/dtd/"+
+        "MoML_1.dtd\">";
+        output+= newline;
+        output+="<entity name=\"dummy\" class=\"ptolemy.actor.Typed" +
+        "CompositeActor\">";
+        output+= newline;
+        output+= "<property name=\"_createdBy\" class=\"ptolemy." +
+        "kernel.attributes.VersionAttribute\" " +
+        "value=\"8.0.beta\">";
+        output+= newline;
+        output+="</property>";
+        output+= newline;
+        output+="<property name=\"director\" class=\"ptolemy." +
+        "domains.sdf.kernel.SDFDirector\">";
+        output+="     <property name=\"iterations\" class=\"ptol" +
+        "emy.data.expr.Parameter\" value=\"1\">";
+        output+= newline;
+        output+="     </property>";
+        output+= newline;
+        output+= "</property>";
+        output+= newline; 
+        try {
+            Option tOption;
+            for (int i = 0; i < architecture.myOptions.size(); i++) {
+                tOption = (Option) architecture.myOptions.get(i);
+                componentNames.add(tOption.name + "_"
+                        + tOption.relatedDimensions.get(0).toString());
+            }
+            if(_debugging){
+                System.out.println("there are currently "
+                        + architecture.myOptions.size()
+                        + " components with this architecture " 
+                        + "named "+ architecture.getName());
+                System.out.println("there were " + componentNames.size()
+                        + " components ");
+            }
+            for (int i = 0; i < componentNames.size(); i++) {
+                output+= "<entity name=\""
+                    + componentNames.get(i)
+                    + "\" class=\"ptolemy.actor.lib.logic.fuzzy." +
+                    "FuzzyLogic\">";
+                output+= "<property name=\"rulesFileName\" " +
+                "class=\"ptolemy.data.expr.Parameter\"" +
+                " value=\""
+                + ((Option) (architecture.myOptions
+                        .get(i))).relatedDimensions.get(0)
+                        + ".xml\">";
+                output+="</property>";
+                output+="<property name=\"componentType\" " +
+                "class=\"ptolemy.data.expr.Parameter" +
+                "\" value=\""
+                + ((Option) (architecture.myOptions
+                        .get(i))).name + "\">";
+                output+= "</property>";
                 output+= newline;
-                output+= "</entity>";
+                output+= "<property name=\"init\" class=\"ptolemy." +
+                "data.expr.Parameter\" value=\"2\">";
+                output+= "</property>";
                 output+= newline;
+                output+="</entity>";
+            }
 
-                for (int i = 0; i <= componentNames.size(); i++) {
-                    output+= " <relation name=\"relation" + i
-                    + "\" class=\"ptolemy.actor.TypedIORelation\">";
-                    output+= newline;
-                    output+= "<property name=\"width\" class=\"ptolemy.data.expr.Parameter\" value=\"Auto\">";
-                    output+= newline;
-                    output+= "</property>";
-                    output+= newline;
-                    output+= "</relation>";
-                    output+= newline;
-                }
+            output+= "<entity name=\"Display\" class=\"ptolemy." +
+            "actor.lib.gui.Display\">";
+            output+= newline;
+            output+= "</entity>";
+            output+= newline;
 
-                for (int i = 0; i < componentNames.size() - 1; i++) {
+            for (int i = 0; i <= componentNames.size(); i++) {
+                output+= " <relation name=\"relation" + i
+                + "\" class=\"ptolemy.actor.TypedIORelation\">";
+                output+= newline;
+                output+= "<property name=\"width\" class=\"ptolemy"+
+                ".data.expr.Parameter\" value=\"Auto\">";
+                output+= newline;
+                output+= "</property>";
+                output+= newline;
+                output+= "</relation>";
+                output+= newline;
+            }
 
-                    output+= "<link port=\"" + componentNames.get(i)
-                    + ".output\" relation=\"relation" + i + "\"/>";
-                    output+= newline;
-                    output+= "<link port=\""
-                        + componentNames.get(i + 1)
-                        + ".input\" relation=\"relation" + i + "\"/>";
-                    output+= newline;
-                }
-                if (componentNames.size() > 1) {
-                    output+="<link port=\""
-                        + componentNames.get(componentNames.size() - 1)
-                        + ".output\" relation=\"relation"
-                        + (componentNames.size() - 1) + "\"/>";
-                    output+= newline;
-                    output+= "<link port=\"Display.input\" relation=\"relation"
-                        + (componentNames.size() - 1) + "\"/>";
-                    output+= newline;
-                    output+="</entity>";
-                }
-            } finally {
-                if(_debugging){
-                    System.out
-                    .println("I've closed the output stream. The output file has the name "
-                            + _outputFileName);
-                }
-                try{
-                BufferedWriter outputStream = new BufferedWriter(new FileWriter(
-                        "ptolemy\\actor\\lib\\logic\\fuzzy\\" + _outputFileName));
+            for (int i = 0; i < componentNames.size() - 1; i++) {
+
+                output+= "<link port=\"" + componentNames.get(i)
+                + ".output\" relation=\"relation" + i + "\"/>";
+                output+= newline;
+                output+= "<link port=\""
+                    + componentNames.get(i + 1)
+                    + ".input\" relation=\"relation" + i + "\"/>";
+                output+= newline;
+            }
+            if (componentNames.size() > 1) {
+                output+="<link port=\""
+                    + componentNames.get(componentNames.size() - 1)
+                    + ".output\" relation=\"relation"
+                    + (componentNames.size() - 1) + "\"/>";
+                output+= newline;
+                output+= "<link port=\"Display.input\" relation=\"" +
+                "relation" +
+                (componentNames.size() - 1) + "\"/>";
+                output+= newline;
+                output+="</entity>";
+            }
+        } finally {
+            if(_debugging){
+                System.out
+                .println("I've closed the output stream. The " +
+                        "output file has the name "
+                        + _outputFileName);
+            }
+            BufferedWriter outputStream=null;
+            try{
+                outputStream = new BufferedWriter(new FileWriter(
+                        "ptolemy\\actor\\lib\\logic\\fuzzy\\" +
+                        _outputFileName));
                 outputStream.write(output);
                 outputStream.close();
             } catch (Exception e) {
-
+                try{
+                    outputStream.close();
+                }catch(IOException ioe)
+                {
+                    if(_debugging){
+                        System.out.println("There was an exception " +
+                                "when attempting to close the " +
+                                "file from" +
+                        "the ioexception catch block");
+                    }
+                }
                 e.printStackTrace();
 
             }
-            }
-       
+        }
+
 
     }
-
-
-
 
     /*
      * Private architecture class to recreate a textual representation 
@@ -257,7 +281,7 @@ public class CombinedFile extends DefaultHandler {
         /*Default Constructor
          * */
         public Architecture() {
-            name = new String("dummy");
+            name = "dummy";
             myOptions = new ArrayList<String>();
         }
         /*
@@ -280,14 +304,15 @@ public class CombinedFile extends DefaultHandler {
     }
 
     /*
-     * Private options class, it stores the different dimensions in an architecture
+     * Private options class, it stores the different dimensions in an
+     *  architecture
      * */
     static class Option {
         String name;
         ArrayList relatedDimensions;
 
         public Option() {
-            name = new String("dummy");
+            name = "dummy";
             relatedDimensions = new ArrayList();
         }
 
@@ -295,6 +320,10 @@ public class CombinedFile extends DefaultHandler {
             return name;
         }
     }
+    /**
+     * Main method for the class.
+     * @param args
+     */
 
     public static void main(String args[]) {
         try {
@@ -303,14 +332,18 @@ public class CombinedFile extends DefaultHandler {
             BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
             String fileName = null;
             fileName = reader.readLine();
-            CombinedFile cF = new CombinedFile(fileName);
+            if(fileName!= null){
+                CombinedFile cF = new CombinedFile(fileName);
+            }
         } catch(Exception ex){
             ex.printStackTrace();
             System.exit(1);
         }
         System.exit(0);
     }
-
+    /*
+     * returns the current architecture 
+     */
     public ptolemy.actor.lib.logic.fuzzy.CombinedFile.Architecture getArchitecture() {
         return architecture;
     }
@@ -381,8 +414,8 @@ public class CombinedFile extends DefaultHandler {
                 }
                 Option tOption;
                 for (int i = 0; i < architecture.myOptions.size(); i++) {
-                    tOption = (Option) architecture.myOptions.get(i);
                     if(_debugging){
+                        tOption = (Option) architecture.myOptions.get(i);
                         System.out.println(tOption.name + " "
                                 + tOption.relatedDimensions.get(0).toString());
                     }
@@ -403,8 +436,9 @@ public class CombinedFile extends DefaultHandler {
             }
             if (_endOption == true) {
                 _endOption = false;
-                int k = _option.relatedDimensions.size();
+
                 if(_debugging){
+                    int k = _option.relatedDimensions.size();
                     System.out.println("there are " + k
                             + "dimensions with this option");
                 }
@@ -499,16 +533,11 @@ public class CombinedFile extends DefaultHandler {
     }
 
     /**
-     * <p>
-     * This indicates that a processing instruction (other than the XML
-     * declaration) has been encountered.
-     * </p>
-     * 
-     * @param target
-     *            <code>String</code> target of PI
-     * @param data
-     *            <code>String</code containing all data sent to the PI. This
-     *            typically looks like one or more attribute value pairs.
+     * <p> This indicates that a processing instruction (other than the XML
+     * declaration) has been encountered.</p>
+     * @param target <code>String</code> target of PI
+     * @param data <code>String</code containing all data sent to the PI. 
+     * This typically looks like one or more attribute value pairs.
      * @throws <code>SAXException</code> when things go wrong
      */
     public void processingInstruction(String target, String data) {
@@ -519,8 +548,15 @@ public class CombinedFile extends DefaultHandler {
         }
     }
 
-    private final boolean _debugging = false;
+
+    ////////////////////////////////////////////////////////////////////
+    ////                         private variables                  ////
+    //these variables are used in the class 
     private Option _option;
+    private String _outputFileName;
+    //these variables are constants used throught the class
+    private final boolean _debugging = false;
+    public static final String newline = System.getProperty("line.separator");
     // These flags mark the start and end of architectures, options,
     // and dimensions in the file produced by TSST.
     private boolean _startArchitecture;
@@ -529,7 +565,6 @@ public class CombinedFile extends DefaultHandler {
     private boolean _endArchitecture;
     private boolean _endOption;
     private boolean _endDimension;
-    public static String newline = System.getProperty("line.separator");
-    private String _outputFileName;
+
 
 }
