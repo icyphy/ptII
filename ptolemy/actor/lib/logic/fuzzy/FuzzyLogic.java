@@ -77,8 +77,8 @@ public class FuzzyLogic extends Transformer {
      *  and a default component type
      *  @param container The container.
      *  @param name The name of this actor within the container.
-     * @throws NameDuplicationException
-     * @throws IllegalActionException
+     *  @throws NameDuplicationException
+     *  @throws IllegalActionException
      */
 
     public FuzzyLogic(CompositeEntity container, String name)
@@ -118,7 +118,15 @@ public class FuzzyLogic extends Transformer {
         cost = new TypedIOPort(this, "cost", false, true);
         cost.setMultiport(false);
         cost.setTypeEquals(BaseType.STRING);
+        fuzzyEngine = null;
+        linguisticVarArray = null;
+        myParser = null;
+        rules = null;
+        
     }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         public  methods                  ////
 
     /*
      * Open the file specified in the rulesFileName Parameter, create an
@@ -315,19 +323,26 @@ public class FuzzyLogic extends Transformer {
         // this was copied from RAMP fill in with details later
         return newObject;
     }
-
+    ////////////////////////////////////////////////////////////////////
+    ////                         public  variables                  /////
+    //input ports for risk, cost and mass to the actor
     public TypedIOPort inRisk;
     public TypedIOPort inCost;
     public TypedIOPort inMass;
-
+     
+    //output ports for risk, cost and mast from the actor
     public TypedIOPort risk;
     public TypedIOPort mass;
     public TypedIOPort cost;
 
+    //actor parameters specified by the creator of the model
     public Parameter rulesFileName;
     public Parameter componentType;
+    
     public Parameter value;
     public PortParameter inc;
+    ////////////////////////////////////////////////////////////////////
+    ////                         private variables                  ////
     private FuzzyEngine fuzzyEngine;
     private ArrayList<String> rules;
     private ArrayList<LinguisticVariable> linguisticVarArray;
