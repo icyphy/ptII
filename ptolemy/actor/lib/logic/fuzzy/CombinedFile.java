@@ -59,8 +59,8 @@ produced by the Trade Space Specification Tool. This class produces a
 MoML representation of the Architecture model that includes 
 instantiations of the FuzzyLogic actor.
 
-If the input file name is <code><i>filename</i>.xml<\code>, the output 
-file name will be <code><i>filename</i>Model.xml<\code>. 
+If the input file name is <code><i>filename</i>.xml</code>, the output 
+file name will be <code><i>filename</i>Model.xml</code>. 
 
 @author Shanna-Shaye Forbes
 @version $Id$
@@ -250,10 +250,10 @@ public class CombinedFile extends DefaultHandler {
                         _outputFileName));
                 outputStream.write(output);
                 outputStream.close();
-            } catch (Exception e) {
+            } catch (IOException ioe) {
                 try{
                     outputStream.close();
-                }catch(IOException ioe)
+                }catch(IOException ioex)
                 {
                     if(_debugging){
                         System.out.println("There was an exception " +
@@ -262,7 +262,7 @@ public class CombinedFile extends DefaultHandler {
                         "the ioexception catch block");
                     }
                 }
-                e.printStackTrace();
+                ioe.printStackTrace();
 
             }
         }
@@ -270,10 +270,10 @@ public class CombinedFile extends DefaultHandler {
 
     }
 
-    /*
+    /**
      * Private architecture class to recreate a textual representation 
      * of the architecture from a XML file
-     * */
+     */
     static class Architecture {
         String name="";
         ArrayList myOptions;
@@ -303,7 +303,7 @@ public class CombinedFile extends DefaultHandler {
         }
     }
 
-    /*
+    /**
      * Private options class, it stores the different dimensions in an
      *  architecture
      * */
@@ -320,11 +320,12 @@ public class CombinedFile extends DefaultHandler {
             return name;
         }
     }
+
     /**
      * Main method for the class.
-     * @param args
+     * @param args with inputs to the main method.
+     * Inputs are currently not used
      */
-
     public static void main(String args[]) {
         try {
             System.out.println("Enter the name of the XML file containing the TSST XML output");
@@ -334,20 +335,25 @@ public class CombinedFile extends DefaultHandler {
             fileName = reader.readLine();
             if(fileName!= null){
                 CombinedFile cF = new CombinedFile(fileName);
+
             }
+
         } catch(Exception ex){
             ex.printStackTrace();
             System.exit(1);
         }
         System.exit(0);
     }
-    /*
-     * returns the current architecture 
+
+    /**
+     * Access method to determine the current architecture
+     * @returns current architecture
      */
     public ptolemy.actor.lib.logic.fuzzy.CombinedFile.Architecture getArchitecture() {
         return architecture;
     }
-    /*
+
+    /**
      * Constructs a new CombinedFile Object 
      * */
     public CombinedFile() {
@@ -556,6 +562,8 @@ public class CombinedFile extends DefaultHandler {
     private String _outputFileName;
     //these variables are constants used throught the class
     private final boolean _debugging = false;
+    /* newline marker
+     * */
     public static final String newline = System.getProperty("line.separator");
     // These flags mark the start and end of architectures, options,
     // and dimensions in the file produced by TSST.

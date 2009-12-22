@@ -74,7 +74,7 @@ there is no input the defuzzified value is produced on the output.
 public class FuzzyLogic extends Transformer {
     /**
      *  Construct a fuzzy logic actor and set a default rule file name
-     *  and a default component type
+     *  and a default component type.
      *  @param container The container.
      *  @param name The name of this actor within the container.
      *  @throws NameDuplicationException
@@ -122,9 +122,9 @@ public class FuzzyLogic extends Transformer {
         linguisticVarArray = null;
         myParser = null;
         rules = null;
-        
+
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public  methods                  ////
 
@@ -290,13 +290,13 @@ public class FuzzyLogic extends Transformer {
         myMass = "\"" + myMass + "\"";
         value.setExpression(myCost);
         if(_debugging){
-        _debug("cost just output " + value.toString());
+            _debug("cost just output " + value.toString());
         }
         cost.send(0, value.getToken());
         value.setExpression(myRisk);
         if(_debugging){
-        _debug("risk has data: " + myRisk);
-        _debug("risk just output" + value.toString());
+            _debug("risk has data: " + myRisk);
+            _debug("risk just output" + value.toString());
         }
         risk.send(0, value.getToken());
 
@@ -325,20 +325,26 @@ public class FuzzyLogic extends Transformer {
     }
     ////////////////////////////////////////////////////////////////////
     ////                         public  variables                  /////
-    //input ports for risk, cost and mass to the actor
+    /**input ports for risk, cost and mass to the actor
+     * 
+     */
     public TypedIOPort inRisk;
     public TypedIOPort inCost;
     public TypedIOPort inMass;
-     
-    //output ports for risk, cost and mast from the actor
+
+    /**output ports for risk, cost and mast from the actor
+     * 
+     */
     public TypedIOPort risk;
     public TypedIOPort mass;
     public TypedIOPort cost;
 
-    //actor parameters specified by the creator of the model
+    /**actor parameters specified by the creator of the model
+     * 
+     */
     public Parameter rulesFileName;
     public Parameter componentType;
-    
+
     public Parameter value;
     public PortParameter inc;
     ////////////////////////////////////////////////////////////////////
@@ -435,7 +441,7 @@ class FuzzyParser extends DefaultHandler {
                 if (startVar == true) {
                     String localName = atts.getValue(0);
                     StringTokenizer st = new StringTokenizer(atts.getValue(1),
-                            " ");
+                    " ");
 
                     double a = Double.valueOf(st.nextToken().trim())
                     .doubleValue();
@@ -449,13 +455,13 @@ class FuzzyParser extends DefaultHandler {
                             c, d);
                 }
             }
-           
+
             if ("RULE".equals(qName)) {
                 rules.add(atts.getValue(1));
             }
         } else {
             if(_debugging){
-            System.out.println("Start element: {" + uri + "}" + name);
+                System.out.println("Start element: {" + uri + "}" + name);
             }
 
         }
@@ -471,12 +477,12 @@ class FuzzyParser extends DefaultHandler {
             }
         } else {
             if(_debugging){
-            System.out.println("End element:   {" + uri + "}" + name);
+                System.out.println("End element:   {" + uri + "}" + name);
             }
         }
     }
 
     public void characters(char ch[], int start, int length) {
-       
+
     }
 }
