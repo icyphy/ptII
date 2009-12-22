@@ -8,8 +8,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-
-import yices.YicesLite;
+import java.lang.reflect.Method;
 
 /** An interface to an SMT solver.
  * 
@@ -35,16 +34,13 @@ public class SMTSolver {
      *   and the empty string if no assertion can be made.
      */
     public String check(String formula) {
-        final int ctx = yl.yicesl_mk_context();
         formula += "(set-evidence! true)\n(check)\n";
 
         final StringBuffer result = new StringBuffer();
         try {
             final File tmpfile = File.createTempFile("yicesout", "ycs");
-            yl.yicesl_set_output_file(tmpfile.getAbsolutePath());
 
-            yl.yicesl_read(ctx, formula);
-            yl.yicesl_del_context(ctx);
+            runYices(formula, tmpfile);
 
             final BufferedReader resultBuf = new BufferedReader(new FileReader(
                     tmpfile));
@@ -77,9 +73,52 @@ public class SMTSolver {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                      private variables                    ////
-    /** The interface to Yices SMT solver using the Yices Java API Lite.
+    ////                      private methods                      ////
+    /** Invoke the Yices SMT solver on the given formula, saving the
+     *  results in the given file.
+     *  This method attempts to interface with the solver using the
+     *  Yices Java API Lite.  We use reflection here to ensure the code
+     *  will compile even without Yices installed. If we encounter a
+     *  problem here, we assume it is because Yices is not installed
+     *  and notify the user accordingly.
+     *  
+     *  @param formula The formula to be checked for satisfiability.
+     *  @param tmpfile The file to save the results in.
      */
-    private final YicesLite yl = new YicesLite();
+    private void runYices(final String formula, final File tmpfile) {
+        final String fileName = tmpfile.getAbsolutePath();
+
+        try {
+            // Reflect an instance of the Yices Java API
+            ClassLoader myClassLoader = ClassLoader.getSystemClassLoader();
+            Class yicesClass = myClassLoader.loadClass("yices.YicesLite");
+            Object yicesLite = yicesClass.newInstance();
+
+            // Reflect required methods
+            Method makeContext = yicesClass.getMethod("yicesl_mk_context",
+                    new Class[] {});
+            Method setOutputFile = yicesClass.getMethod("yicesl_set_output_file",
+                    new Class[] { String.class });
+            Method readFormula = yicesClass.getMethod("yicesl_read",
+                    new Class[] { Integer.class, String.class });
+            Method deleteContext = yicesClass.getMethod("yicesl_del_context",
+                    new Class[] { Integer.class });
+
+            // Actually create and invoke solver
+            final int ctx = (Integer) makeContext.invoke(yicesLite, new Object[] {});
+            setOutputFile.invoke(yicesLite, new Object[] { fileName });
+            readFormula.invoke(yicesLite, new Object[] { ctx, formula });
+            deleteContext.invoke(yicesLite, new Object[] { ctx });
+
+        } catch (Exception e) {
+            System.err.println(
+                    "Could not interface with the Yices SMT solver.\n"
+                  + "Please make sure that Yices and the Yices Java API Lite are both installed"
+                  + " and the yiceslite jar is in your LD_LIBRARY_PATH.\n"
+                  + "For more information, please see "
+                  + "http://atlantis.seidenberg.pace.edu/wiki/lep/Yices%20Java%20API%20Lite");
+            e.printStackTrace();
+        }
+    }
 
 }
