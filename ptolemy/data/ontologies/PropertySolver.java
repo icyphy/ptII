@@ -36,6 +36,7 @@ import java.util.TreeMap;
 import ptolemy.actor.parameters.SharedParameter;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.ontologies.gui.PropertyDisplayActions;
 import ptolemy.data.properties.PropertyFailedRegressionTestException;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.util.Attribute;
@@ -89,7 +90,7 @@ public abstract class PropertySolver extends PropertySolverBase {
         // FIXME: We do not want this GUI dependency here...
         // This attribute should be put in the MoML in the library instead
         // of here in the Java code.
-        //new PropertyDisplayActions(this, "PropertyDisplayActions");
+        new PropertyDisplayActions(this, "PropertyDisplayActions");
     }
 
     ///////////////////////////////////////////////////////////////////

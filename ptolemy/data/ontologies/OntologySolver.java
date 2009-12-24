@@ -42,6 +42,7 @@ import ptolemy.data.expr.FileParameter;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.data.ontologies.PropertyConstraintHelper.Inequality;
+import ptolemy.data.ontologies.gui.PropertySolverGUIFactory;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.MonotonicFunction;
 import ptolemy.domains.fsm.kernel.FSMActor;
@@ -134,10 +135,13 @@ public class OntologySolver extends PropertySolver implements Testable {
         
         /* Removed to make compile
          * --Ben on 12/04/2009
+         * 
+         * Added back in to provide double-click property resolution
+         * GUI operation for OntologySolver.
+         * 12/21/09 Charles Shelton
+         */
         new PropertySolverGUIFactory(this,
                 "_propertyConstraintSolverGUIFactory");
-         */
-
     }
 
     ///////////////////////////////////////////////////////////////////
