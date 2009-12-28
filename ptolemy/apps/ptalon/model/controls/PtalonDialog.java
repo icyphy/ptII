@@ -1,4 +1,4 @@
-package ptolemy.actor.ptalon.model.controls;
+package ptolemy.apps.ptalon.model.controls;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -29,7 +29,7 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
-import ptolemy.actor.ptalon.model.PtalonModel;
+import ptolemy.apps.ptalon.model.PtalonModel;
 import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.util.StringUtilities;

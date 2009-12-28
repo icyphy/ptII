@@ -1,4 +1,4 @@
-package ptolemy.actor.ptalon.model;
+package ptolemy.apps.ptalon.model;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -12,7 +12,7 @@ import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.ptalon.PtalonAST;
 import ptolemy.actor.ptalon.PtalonLexer;
 import ptolemy.actor.ptalon.PtalonRecognizer;
-import ptolemy.actor.ptalon.model.controls.PtalonEditorFactory;
+import ptolemy.apps.ptalon.model.controls.PtalonEditorFactory;
 import ptolemy.data.StringToken;
 import ptolemy.data.expr.ExpertParameter;
 import ptolemy.data.expr.Parameter;

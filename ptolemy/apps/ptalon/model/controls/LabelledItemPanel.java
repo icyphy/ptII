@@ -1,4 +1,4 @@
-package ptolemy.actor.ptalon.model.controls;
+package ptolemy.apps.ptalon.model.controls;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;

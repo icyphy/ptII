@@ -1,4 +1,4 @@
-package ptolemy.actor.ptalon.model;
+package ptolemy.apps.ptalon.model;
 
 import java.util.HashSet;
 import java.util.Hashtable;

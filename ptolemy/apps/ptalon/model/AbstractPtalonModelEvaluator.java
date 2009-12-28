@@ -27,7 +27,7 @@
  COPYRIGHTENDKEY
 
  */
-package ptolemy.actor.ptalon.model;
+package ptolemy.apps.ptalon.model;
 
 import java.net.URL;
 import java.util.HashSet;

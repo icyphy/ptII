@@ -33,7 +33,7 @@
 
 ME =		ptolemy/actor/ptalon
 
-DIRS =		doc gt lib model demo test
+DIRS =		doc gt lib demo test
 
 # Root of the Java directory
 ROOT =		../../..
@@ -111,7 +111,6 @@ OPTIONAL_FILES =  \
 	doc \
 	demo \
 	bugs \
-	model \
 	$(OPTIONAL_JSRCS) \
 	'AbstractPtalonEvaluator$$IfTree.class' \
 	'AbstractPtalonEvaluator$$PtalonExpressionScope.class' \

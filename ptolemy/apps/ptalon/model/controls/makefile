@@ -1,4 +1,4 @@
-# Makefile for Ptalon model
+# Makefile for Ptalon model controls
 #
 # @Authors: Christopher Hylands, based on a file by Thomas M. Parks
 #
@@ -31,12 +31,12 @@
 
 # This directory contains polymorphic actors.
 
-ME =		ptolemy/actor/ptalon/model
+ME =		ptolemy/apps/ptalon/model
 
-DIRS =		controls #test
+DIRS =
 
 # Root of the Java directory
-ROOT =		../../../..
+ROOT =		../../../../..
 
 CLASSPATH =	$(ROOT)${CLASSPATHSEPARATOR}${ROOT}/ptolemy/actor/ptalon/antlr/antlr.jar
 
@@ -45,28 +45,20 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	model
-PTCLASSJAR =
+PTPACKAGE = 	controls
+PTCLASSJAR =    $(PTPACKAGE).jar
 
 # Include the .class files from these jars in PTCLASSALLJAR
-PTCLASSALLJARS = \
-	controls/controls.jar
+#PTCLASSALLJARS = \
+#	lib/lib.jar
 
-# Do not include gt.jar because it is not part of Ptalon in Ptiny. 
-#	gt/gt.jar \
-
-PTCLASSALLJAR = $(PTPACKAGE).jar
+#PTCLASSALLJAR = $(PTPACKAGE).jar
 
 # Keep this list alphabetized.
 JSRCS = \
-	AbstractPtalonModelEvaluator.java \
-	ActorInstantiator.java \
-	LoopedAstReference.java \
-	PtalonModel.java \
-	PtalonModelEvaluator.java \
-	PtalonModelScope.java \
-	ReversableHashtable.java \
-	TransparentRelation.java
+	LabelledItemPanel.java \
+	PtalonDialog.java \
+	PtalonEditorFactory.java 
 
 OTHER_FILES_TO_BE_JARED =
 
@@ -79,16 +71,13 @@ OPTIONAL_JSRCS =
 # Files or directories that are present, but that 'make checkjunk'
 # should not complain about
 # Don't include demo or DIRS here, or else 'make sources' will run 'make demo'
-MISC_FILES = test		
+MISC_FILES =
 
 OPTIONAL_FILES =  \
 	doc \
 	demo \
 	bugs \
-	controls \
 	$(OPTIONAL_JSRCS) \
-	'AbstractPtalonModelEvaluator$$IfTree.class' \
-	'AbstractPtalonModelEvaluator$$PtalonExpressionScope.class'
 
 JCLASS = \
 	$(JSRCS:%.java=%.class) \
@@ -96,6 +85,52 @@ JCLASS = \
 
 all: $(OPTIONAL_JSRCS) jclass
 install: all jars
+
+# Derived java files
+PtalonRecognizer.java: parser.g
+	$(ANTLR) parser.g
+PtalonLexer.java: parser.g
+	$(ANTLR) parser.g
+PtalonPopulator.java: populator.g
+	$(ANTLR) populator.g
+PtalonScopeChecker.java: scopeChecker.g
+	$(ANTLR) scopeChecker.g
+
+# This rule is useful for cvs committing the derived files
+# For example:
+# cvs commit -m "Updated MatrixParser." `make echo_OPTIONAL_JSRCS`
+echo_OPTIONAL_JSRCS:
+	@echo $(OPTIONAL_JSRCS)
+
+# Files to be removed by make distclean
+DISTCLEAN_STUFF = \
+	PtalonTokenTypes.java \
+	PtalonTokenTypes.txt \
+	PtalonLexer.java \
+	PtalonLexer.smap \
+	PtalonRecognizer.java \
+	PtalonRecognizer.smap \
+	PtalonScopeCheckerTokenTypes.java \
+	PtalonScopeCheckerTokenTypes.txt \
+	PtalonScopeChecker.java \
+	PtalonScopeChecker.smap \
+	PtalonPopulatorTokenTypes.java \
+	PtalonPopulatorTokenTypes.txt \
+	PtalonPopulator.java \
+	PtalonPopulator.smap
+
+# make checkjunk will not report OPTIONAL_FILES as trash
+# make distclean removes OPTIONAL_FILES
+OPTIONAL_FILES = \
+	bugs \
+	demo \
+	$(DISTCLEAN_STUFF) \
+	'AbstractPtalonEvaluator$$IfTree.class' \
+	'AbstractPtalonEvaluator$$PtalonExpressionScope.class' \
+	'PtalonEvaluator$$ActorTree.class' \
+	PtalonPopulatorTokenTypes.class \
+	PtalonScopeCheckerTokenTypes.class \
+	PtalonTokenTypes.class
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

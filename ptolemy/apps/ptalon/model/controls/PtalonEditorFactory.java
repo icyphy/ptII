@@ -1,9 +1,9 @@
-package ptolemy.actor.ptalon.model.controls;
+package ptolemy.apps.ptalon.model.controls;
 
 import java.awt.Frame;
 
 import ptolemy.actor.gui.EditorFactory;
-import ptolemy.actor.ptalon.model.PtalonModel;
+import ptolemy.apps.ptalon.model.PtalonModel;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
