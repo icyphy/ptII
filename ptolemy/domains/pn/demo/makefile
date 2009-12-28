@@ -51,7 +51,7 @@ PTCLASSJAR =
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
 	BrockAckerman/BrockAckerman.jar \
-	CounterMachine/CounterMachine.jar \ 
+	CounterMachine/CounterMachine.jar \
 	NondeterministicMerge/NondeterministicMerge.jar \
 	NondeterministicMergeWithFeedback/NondeterministicMergeWithFeedback.jar \
 	OrderedMerge/OrderedMerge.jar \
