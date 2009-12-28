@@ -1740,7 +1740,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
      *  @param channelAndOffset The given channel and offset.
      *  @param isWrite True if the port is to be written to.
      *  @return The reference to the port.
-     *  @see #getReference(IOPort, String[], boolean, boolean)
+     *  @see #getReference(TypedIOPort, String[], boolean, boolean)
      */  
     public static String generatePortReference(IOPort port,
             String[] channelAndOffset, boolean isWrite) {
