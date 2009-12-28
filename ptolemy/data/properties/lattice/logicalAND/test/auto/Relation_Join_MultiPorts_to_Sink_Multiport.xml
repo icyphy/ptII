@@ -2,15 +2,9 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="Relation_Join_MultiPorts_to_Sink_Multiport" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.1.devel_20080331">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
-    <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
-        <property name="iterations" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{85, 50}">
-        </property>
-    </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={106, 54, 950, 727}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={106, 54, 948, 730}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[735, 620]">
     </property>
@@ -28,6 +22,16 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[510.0, 160.0]">
         </property>
         <property name="PropertyResolutionExceptionMessage" class="ptolemy.kernel.util.StringAttribute" value="[Property &quot;Unknown&quot; is not an acceptable solution for ptolemy.actor.TypedIOPort {.Relation_Join_MultiPorts_to_Sink_Multiport.Discard.input}.&#13;&#10;, Property &quot;Unknown&quot; is not an acceptable solution for ptolemy.actor.TypedIOPort {.Relation_Join_MultiPorts_to_Sink_Multiport.Subscriber.input}.&#13;&#10;, Property &quot;Unknown&quot; is not an acceptable solution for ptolemy.actor.TypedIOPort {.Relation_Join_MultiPorts_to_Sink_Multiport.Subscriber.output}.&#13;&#10;, Property &quot;Unknown&quot; is not an acceptable solution for ptolemy.actor.TypedIOPort {.Relation_Join_MultiPorts_to_Sink_Multiport.Subscriber2.input}.&#13;&#10;, Property &quot;Unknown&quot; is not an acceptable solution for ptolemy.actor.TypedIOPort {.Relation_Join_MultiPorts_to_Sink_Multiport.Subscriber2.output}.&#13;&#10;]&#10;  in .Relation_Join_MultiPorts_to_Sink_Multiport.LogicalAND_Forward">
+        </property>
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This test case fails because there is a &#10;suscriber with no publisher.&#10;TesterDirector runs the initialize&#10;method of each actor, whereas the&#10;original test infrastructure did not.&#10;&#10;This test case should either be fixed to&#10;make sense, or, if needed, TesterDirector&#10;should be given a parameter to turn off&#10;calling initialize.&#10;&#10;-- Ben 12/25/2009">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 265.0]">
+        </property>
+    </property>
+    <property name="TesterDirector" class="ptolemy.domains.tester.kernel.TesterDirector">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{70, 55}">
         </property>
     </property>
     <entity name="Discard" class="ptolemy.actor.lib.Discard">
