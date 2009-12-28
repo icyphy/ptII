@@ -97,9 +97,6 @@ public class Lattice extends PropertyLattice {
      * The lattice element named UNKNOWN.
      */
     private final Property UNKNOWN = new LatticeProperty(this, "Unknown") {
-        public boolean isAcceptableSolution() {
-            return false;
-        }
         public boolean isConstant() {
             return false;
         }
