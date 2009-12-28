@@ -97,7 +97,7 @@ $CLASSPATH/ptolemy/domains/continuous/demo/CartPendulum/CartPendulum.xml
 $CLASSPATH/ptolemy/domains/continuous/demo/CarTracking/CarTracking.xml
 $CLASSPATH/ptolemy/domains/continuous/demo/ComparedClocks/ComparedClocks.xml
 $CLASSPATH/ptolemy/domains/continuous/demo/ContinuousInsideDE/ContinuousInsideDE.xml
-$CLASSPATH/ptolemy/domains/continuous/demo/HierarchicalExecution/HierarchicalExecution.xml
+$CLASSPATH/ptolemy/domains/continuous/demo/FurutaPendulum/FurutaPendulum.xml
 $CLASSPATH/ptolemy/domains/continuous/demo/HybridPlant/HybridPlant.xml
 $CLASSPATH/ptolemy/domains/continuous/demo/HybridPlant/RandomHybridPlant.xml
 $CLASSPATH/ptolemy/domains/continuous/demo/Hysteresis/HysteresisWithRandomDelay.xml
@@ -106,6 +106,7 @@ $CLASSPATH/ptolemy/domains/continuous/demo/Hysteresis/Hysteresis.xml
 $CLASSPATH/ptolemy/domains/continuous/demo/LevelCrossingDetectorDetectsGlitches/LevelCrossingDetectorDetectsGlitches.xml
 $CLASSPATH/ptolemy/domains/continuous/demo/LevelCrossingDetector/LevelCrossingDetectorDetectingDirections.xml
 $CLASSPATH/ptolemy/domains/continuous/demo/LevelCrossingDetector/LevelCrossingDetector.xml
+$CLASSPATH/ptolemy/domains/continuous/demo/Lorenz/LorenzDifferentialSystem.xml
 $CLASSPATH/ptolemy/domains/continuous/demo/Lorenz/Lorenz.xml
 $CLASSPATH/ptolemy/domains/continuous/demo/NewtonsCradle/NewtonsCradleAnimated.xml
 $CLASSPATH/ptolemy/domains/continuous/demo/NewtonsCradle/NewtonsCradleComplicated.xml
@@ -116,6 +117,7 @@ $CLASSPATH/ptolemy/domains/continuous/demo/NewtonsCradle/ParameterizedNewtonsCra
 $CLASSPATH/ptolemy/domains/continuous/demo/NewtonsCradle/ParameterizedNewtonsCradleAnimated.xml
 $CLASSPATH/ptolemy/domains/continuous/demo/Noise/NoiseSpectrum.xml
 $CLASSPATH/ptolemy/domains/continuous/demo/Noise/Noise.xml
+$CLASSPATH/ptolemy/domains/continuous/demo/Noise/SinusoidInNoise.xml
 $CLASSPATH/ptolemy/domains/continuous/demo/Pendulum3D/Pendulum3D.xml
 $CLASSPATH/ptolemy/domains/continuous/demo/Poisson/IncreasingRatePoisson.xml
 $CLASSPATH/ptolemy/domains/continuous/demo/Poisson/Poisson.xml

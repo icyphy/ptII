@@ -102,21 +102,26 @@ or accessed from within Ptolemy II. Here, we illustrate some such frameworks.
 
   <li>
     <i>Stochastic hybrid systems</i>:
-    <a href="../../domains/ct/demo/Spontaneous/IncreasingRatePoisson.xml">IncreasingRatePoisson</a>
+    <a href="../../domains/continuous/demo/Noise/Noise.xml">Noise</a>
 (see also
-    <a href="../../domains/ct/demo/Hysteresis/HysteresisWithRandomDelay.xml">HysteresisWithRandomDelay</a>,
-    <a href="../../domains/ct/demo/Brownian/Brownian.xml">Brownian</a>
+    <a href="../../domains/continuous/demo/Poisson/IncreasingRatePoisson.xml">IncreasingRatePoisson</a>,
+    <a href="../../domains/continuous/demo/Hysteresis/HysteresisWithRandomDelay.xml">HysteresisWithRandomDelay</a>,
+    <a href="../../domains/continuous/demo/Brownian/Brownian.xml">Brownian</a>
 ).
     <br>
 
 
 Stochastic hybrid systems add random behavior to continuous-time models mixed
 with discrete events. The
-    <a href="../../domains/ct/demo/Spontaneous/IncreasingRatePoisson.xml">IncreasingRatePoisson</a>
+<a href="../../domains/continuous/demo/Noise/Noise.xml">Noise</a>
+(and <a href="../../domains/continuous/demo/Noise/NoiseSpectrum.xml">Noise Spectrum</a>,
+<a href="../../domains/continuous/demo/Noise/SinusoidInNoise.xml">Sinusoid In Noise</a>) models
+show bandlimited Gaussian noise processe.
+    <a href="../../domains/continuous/demo/Poisson/IncreasingRatePoisson.xml">IncreasingRatePoisson</a>
 models spontaneous mode transitions governed by a Poisson process.
-The <a href="../../domains/ct/demo/Hysteresis/HysteresisWithRandomDelay.xml">HysteresisWithRandomDelay</a>
+The <a href="../../domains/continuous/demo/Hysteresis/HysteresisWithRandomDelay.xml">HysteresisWithRandomDelay</a>
 example uses similar spontaneous mode transitions to model random delay in mode transitions.
-The <a href="../../domains/ct/demo/Brownian/Brownian.xml">Brownian</a> example
+The <a href="../../domains/continuous/demo/Brownian/Brownian.xml">Brownian</a> example
 models a stochastic differential equation describing a random walk process.
 
 <!--vergilDocs-->
@@ -189,9 +194,9 @@ events in time.
   </li>
 
   <li><i>Mixed-Signal Modeling</i>:
-    <a href="../../domains/ct/demo/SigmaDelta/SigmaDelta.xml">
+    <a href="../../domains/continuous/demo/SigmaDelta/SigmaDelta.xml">
 SigmaDelta</a> (see also
-    <a href="../../domains/ct/demo/Switch/Switch.xml">Switching Continuous</a>)
+    <a href="../../domains/continuous/demo/Switch/Switch.xml">Switching Continuous</a>)
     <br>
 
 
@@ -241,16 +246,20 @@ boundedness and deadlock conditions are checked.
   </li>
 
   <li><i>Continuous-Time Modeling</i>:
-    <a href="../../domains/ct/demo/Lorenz/Lorenz.xml">
+    <a href="../../domains/continuous/demo/Lorenz/Lorenz.xml">
 Lorenz</a> (see also
-    <a href="../../domains/ct/demo/SquareWave/SquareWave.xml">SquareWave</a>)
+    <a href="../../domains/continuous/demo/Lorenz/LorenzDifferentialSystem.xml">Lorenz with DifferentialSystem</a>,
+    <a href="../../domains/continuous/demo/SquareWave/SquareWave.xml">SquareWave</a>,
+    <a href="../../domains/continuous/demo/Sinusoid/Sinusoid.xml">Sinusoid</a>)
     <br>
 
  This example shows a continuous-time
 nonlinear feedback system that exhibits
 chaotic behavior (this system is called a Lorenz attractor).
-It illustrates the <i>continuous-time</i> (CT) domain,
-which uses an underlying solver for ordinary differential equations.
+It illustrates the <i>continuous</i> domain,
+which uses an underlying solver for ordinary differential equations
+and cleanly supports mixtures of discrete events and continuous-time
+signals.
 
 
     <br>
@@ -359,7 +368,7 @@ delays may result in out-of-order arrival of packets.
   </li>
 
   <li><i>Expression Language</i>:
-    <a href="../../domains/ct/demo/Transmission/Transmission.xml">
+    <a href="../../domains/continuous/demo/Transmission/Transmission.xml">
 Transmission</a>.
     <br>
 
