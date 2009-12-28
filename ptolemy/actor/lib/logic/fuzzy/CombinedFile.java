@@ -72,6 +72,16 @@ file name will be <code><i>filename</i>Model.xml</code>.
 public class CombinedFile extends DefaultHandler {
 
     /**
+     * Construct a new CombinedFile Object. 
+     *
+     */
+    public CombinedFile() {
+        super();
+        architecture = new Architecture();
+        _option = new Option();
+    }
+
+    /**
      *  Construct a combined file object, parse the specified file,
      *  and create the Ptolemy II model.
      *  It is expected that this is run from the path $PTII and it 
@@ -122,8 +132,8 @@ public class CombinedFile extends DefaultHandler {
 
     /* Read the TSST xml file and produce the MoML xml file with the 
      * Ptolemy II model.
-     * */
-
+     *
+     */
     private void readCreate() {
         ArrayList<String> componentNames = new ArrayList<String>();
 
@@ -272,7 +282,7 @@ public class CombinedFile extends DefaultHandler {
 
     /**
      * Private architecture class to recreate a textual representation 
-     * of the architecture from a XML file
+     * of the architecture from a XML file.
      */
     static class Architecture {
         String name="";
@@ -305,8 +315,9 @@ public class CombinedFile extends DefaultHandler {
 
     /**
      * Private options class, it stores the different dimensions in an
-     *  architecture
-     * */
+     * architecture.
+     *
+     */
     static class Option {
         String name;
         ArrayList relatedDimensions;
@@ -346,34 +357,29 @@ public class CombinedFile extends DefaultHandler {
     }
 
     /**
-     * Access method to determine the current architecture
-     * @returns current architecture
+     * Return the current architecture.
+     * @return current architecture
      */
     public ptolemy.actor.lib.logic.fuzzy.CombinedFile.Architecture getArchitecture() {
         return architecture;
     }
 
-    /**
-     * Constructs a new CombinedFile Object 
-     * */
-    public CombinedFile() {
-        super();
-        architecture = new Architecture();
-        _option = new Option();
-    }
 
-    // //////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////
     // Event handlers.
-    // //////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////
     /*
      * The end Document handler is called at the end of an XML document
-     * */
+     *
+     */
     public void endDocument() {
         System.out.println("End document");
     }
+
     /*
      * The start Element handler is called when an new XML element is seen
-     * */
+     *
+     */
     public void startElement(String uri, String name, String qName,
             Attributes atts) {
         if ("".equals(uri)) {
@@ -402,9 +408,11 @@ public class CombinedFile extends DefaultHandler {
             }
         }
     }
+
     /*
-     *The end Element handler is called at the end of and XML element 
-     * */
+     * The end Element handler is called at the end of and XML element.
+     *
+     */
     public void endElement(String uri, String name, String qName) {
         if ("".equals(uri)) {
             if ("gov.nasa.jpl.trades.ui.menu.ExportArchitecture_-ArchitectureExport"
@@ -539,7 +547,7 @@ public class CombinedFile extends DefaultHandler {
     }
 
     /**
-     * <p> This indicates that a processing instruction (other than the XML
+     * This indicates that a processing instruction (other than the XML
      * declaration) has been encountered.</p>
      * @param target <code>String</code> target of PI
      * @param data <code>String</code containing all data sent to the PI. 
@@ -557,6 +565,7 @@ public class CombinedFile extends DefaultHandler {
 
     ////////////////////////////////////////////////////////////////////
     ////                         private variables                  ////
+
     //these variables are used in the class 
     private Option _option;
     private String _outputFileName;
