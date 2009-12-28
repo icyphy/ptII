@@ -663,10 +663,13 @@ ALLPACKAGES = \
 	ptolemy.data \
 	ptolemy.data.expr \
 	ptolemy.data.ontologies \
+	ptolemy.data.ontologies.adapters.dimensionSystem \
+	ptolemy.data.ontologies.adapters.dimensionSystem.actor \
 	ptolemy.data.ontologies.adapters.dimensionSystem.actor.lib \
 	ptolemy.data.ontologies.adapters.dimensionSystem.actor.lib.logic \
 	ptolemy.data.ontologies.adapters.dimensionSystem.data.expr \
 	ptolemy.data.ontologies.adapters.dimensionSystem.domains.continuous.lib \
+	ptolemy.data.ontologies.gui \
 	ptolemy.data.ontologies.util \
 	ptolemy.data.type \
 	ptolemy.data.unit \
