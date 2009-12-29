@@ -21,7 +21,7 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[510.0, 160.0]">
         </property>
-        <property name="PropertyResolutionExceptionMessage" class="ptolemy.kernel.util.StringAttribute" value="[Property &quot;Unknown&quot; is not an acceptable solution for ptolemy.actor.TypedIOPort {.Relation_Join_MultiPorts_to_Sink_Multiport.Discard.input}.&#13;&#10;, Property &quot;Unknown&quot; is not an acceptable solution for ptolemy.actor.TypedIOPort {.Relation_Join_MultiPorts_to_Sink_Multiport.Subscriber.input}.&#13;&#10;, Property &quot;Unknown&quot; is not an acceptable solution for ptolemy.actor.TypedIOPort {.Relation_Join_MultiPorts_to_Sink_Multiport.Subscriber.output}.&#13;&#10;, Property &quot;Unknown&quot; is not an acceptable solution for ptolemy.actor.TypedIOPort {.Relation_Join_MultiPorts_to_Sink_Multiport.Subscriber2.input}.&#13;&#10;, Property &quot;Unknown&quot; is not an acceptable solution for ptolemy.actor.TypedIOPort {.Relation_Join_MultiPorts_to_Sink_Multiport.Subscriber2.output}.&#13;&#10;]&#10;  in .Relation_Join_MultiPorts_to_Sink_Multiport.LogicalAND_Forward">
+        <property name="PropertyResolutionExceptionMessage" class="ptolemy.kernel.util.StringAttribute">
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">

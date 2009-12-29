@@ -4,7 +4,7 @@
 <entity name="Limiter" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={74, 25, 947, 718}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={325, 22, 948, 712}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[735, 602]">
     </property>
@@ -19,9 +19,9 @@
         </property>
         <property name="Trained constraint directory" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH\trainedConstraints">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[510.0, 170.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[510.0, 165.0]">
         </property>
-        <property name="PropertyResolutionExceptionMessage" class="ptolemy.kernel.util.StringAttribute" value="[Property &quot;Unknown&quot; is not an acceptable solution for ptolemy.actor.TypedIOPort {.Limiter.Limiter.input}.&#13;&#10;, Property &quot;Unknown&quot; is not an acceptable solution for ptolemy.actor.TypedIOPort {.Limiter.Limiter.output}.&#13;&#10;]&#10;  in .Limiter.LogicalAND_Forward">
+        <property name="PropertyResolutionExceptionMessage" class="ptolemy.kernel.util.StringAttribute">
         </property>
     </property>
     <property name="TesterDirector" class="ptolemy.domains.tester.kernel.TesterDirector">

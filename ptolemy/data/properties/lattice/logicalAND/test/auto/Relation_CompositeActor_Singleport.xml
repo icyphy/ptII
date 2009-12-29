@@ -4,7 +4,7 @@
 <entity name="Relation_CompositeActor_Singleport" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 25, 947, 718}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 25, 948, 712}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[735, 602]">
     </property>
@@ -21,7 +21,7 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[565.0, 130.0]">
         </property>
-        <property name="PropertyResolutionExceptionMessage" class="ptolemy.kernel.util.StringAttribute" value="[Property &quot;Unknown&quot; is not an acceptable solution for ptolemy.actor.TypedIOPort {.Relation_CompositeActor_Singleport.ConnectionInside.in1}.&#10;, Property &quot;Unknown&quot; is not an acceptable solution for ptolemy.actor.TypedIOPort {.Relation_CompositeActor_Singleport.ConnectionInside.out1}.&#10;, Property &quot;Unknown&quot; is not an acceptable solution for ptolemy.actor.TypedIOPort {.Relation_CompositeActor_Singleport.RelationInPort.in1}.&#10;, Property &quot;Unknown&quot; is not an acceptable solution for ptolemy.actor.TypedIOPort {.Relation_CompositeActor_Singleport.RelationInPort.out1}.&#10;, Property &quot;Unknown&quot; is not an acceptable solution for ptolemy.actor.TypedIOPort {.Relation_CompositeActor_Singleport.RelationInPortOutPort.in1}.&#10;, Property &quot;Unknown&quot; is not an acceptable solution for ptolemy.actor.TypedIOPort {.Relation_CompositeActor_Singleport.RelationInPortOutPort.out1}.&#10;, Property &quot;Unknown&quot; is not an acceptable solution for ptolemy.actor.TypedIOPort {.Relation_CompositeActor_Singleport.RelationOutPort.in1}.&#10;, Property &quot;Unknown&quot; is not an acceptable solution for ptolemy.actor.TypedIOPort {.Relation_CompositeActor_Singleport.RelationOutPort.out1}.&#10;]&#10;  in .Relation_CompositeActor_Singleport.LogicalAND_Forward">
+        <property name="PropertyResolutionExceptionMessage" class="ptolemy.kernel.util.StringAttribute">
         </property>
     </property>
     <property name="TesterDirector" class="ptolemy.domains.tester.kernel.TesterDirector">
