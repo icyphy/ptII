@@ -99,7 +99,7 @@ DecoratedAttributes {
                     //new Parameter(_decoratedDirector,"WCET")).setExpression(Double.toString(_getWCET()));
                     dummyParam = new Parameter(temp, "WCET");
                     dummyParam.setTypeEquals(BaseType.DOUBLE);
-                    dummyParam.setExpression("0.01");
+                    dummyParam.setExpression(Double.toString(0.00000001));
 
                 } catch (Exception e) {// "WCET parameter already exists so just determine the value of WCET with _getWCET and set it"
                     //Parameter wcetPar = (Parameter) temp.getAttribute("WCET");
@@ -116,9 +116,7 @@ DecoratedAttributes {
                     dummyParam.setExpression("1");
 
                 } catch (Exception e) {// "WCET parameter already exists so just determine the value of WCET with _getWCET and set it"
-                    //Parameter frequencyPar = (Parameter) temp
-                    //.getAttribute("WCET");
-                    //frequencyPar.setExpression("1");//Double.toString(_getWCET()));  
+
                     if(_debugging){
                         _debug(actor.getFullName()
                                 + " already had frequency parameter appended");
@@ -128,9 +126,7 @@ DecoratedAttributes {
         }// end of label all the actors with WCET
 
         GiottoDirector tempDir = (GiottoDirector) decorator;
-        /*if(container instanceof ptolemy.domains.giotto.kernel.GiottoDirector){
-            container = container.getContainer();
-        }*/
+
         double dirWCET = tempDir._getWCET();
         try {
             //add parameter to the container if it's not already there
@@ -153,17 +149,13 @@ DecoratedAttributes {
             //add parameter to the container if it's not already there
             dummyParam = new Parameter(container.getContainer(), "frequency");
             dummyParam.setTypeEquals(BaseType.INT);
-            dummyParam.setExpression("2");
+            dummyParam.setExpression("1");
 
         } catch (Exception e) {
 
             if(_debugging){
                 _debug("container already had frequency parameters set");
             }
-            dummyParam = (Parameter) container.getContainer().getAttribute("frequency");
-            dummyParam.setTypeEquals(BaseType.INT);
-            dummyParam.setExpression("3");
-
         }
 
         _decorator = decorator;
