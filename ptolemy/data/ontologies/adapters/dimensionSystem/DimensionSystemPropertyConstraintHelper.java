@@ -61,7 +61,7 @@ public class DimensionSystemPropertyConstraintHelper extends PropertyConstraintH
      * null, and if thus the adapters will create incorrect constraints.
      * 
      * @param solver The given ontology solver.
-     * @param actor The given Object that this adapter refers to and sets up constraints for.
+     * @param component The given Object that this adapter refers to and sets up constraints for.
      * @exception IllegalActionException If the adapter cannot be
      * initialized in the superclass.
      */
@@ -80,7 +80,7 @@ public class DimensionSystemPropertyConstraintHelper extends PropertyConstraintH
      * null, and if thus the adapters will create incorrect constraints.
      * 
      * @param solver The given ontology solver.
-     * @param actor The given Object that this adapter refers to and sets up constraints for.
+     * @param component The given Object that this adapter refers to and sets up constraints for.
      * @param useDefaultConstraints Indicate whether this adapter uses the
      * default actor constraints.
      * @exception IllegalActionException If the adapter cannot be
