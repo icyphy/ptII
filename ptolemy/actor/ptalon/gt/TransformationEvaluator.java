@@ -204,7 +204,7 @@ public class TransformationEvaluator extends PtalonEvaluator {
     /**
      * Remove an object.
      * @param name The name of the NamedObj to be removed.
-     * @exception IllegalActionException If we are in a transformation or if the object has
+     * @exception PtalonRuntimeException If we are in a transformation or if the object has
      * already been marked as removed.
      */
     public void removeObject(String name) throws PtalonRuntimeException {
