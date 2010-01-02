@@ -288,7 +288,9 @@ public class CompositeActor extends CompositeEntity implements Actor,
         newObject._outputPortsVersion = -1;
         newObject._causalityInterfaceDirector = null;
         newObject._receiversVersion = -1L;
-        newObject._relationWidthInference = null;
+        // Don't set _relationWidthInference to null, see 7.1.5 in CompositeActor.tcl
+        //newObject._relationWidthInference = null;
+        newObject._relationWidthInference = new RelationWidthInference(newObject);
         return newObject;
     }
 
@@ -2160,6 +2162,8 @@ public class CompositeActor extends CompositeEntity implements Actor,
             // assert _relationWidthInference != null;
             // Removed the assert. When your cloning this object it is possible
             //  that _relationWidthInference hasn't been filled in yet.
+            // If _relationWidthInference is null, then running newly created models
+            // will fail.  See 7.1.5 in CompositeActor.tcl
             return _relationWidthInference;
         }
     }

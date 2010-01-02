@@ -245,6 +245,25 @@ test CompositeActor-7.1 {Test clone and description} {
 ######################################################################
 ####
 #
+test CompositeActor-7.1.5 {Test width inference on a clone} {
+    # Uses 7.1 above
+    # Running a newly built model fails because CompositeActor.clone() was setting
+    # _relationWidthInference to null.  One way to replicate this bug
+    # is to create an empty graph and then add a Const to a Discard and add
+    # a SDF Director and run the model.  CompositeActor.needsWidthInference()
+    # will throw an NPE because _getWidthInferenceAlgorithm() returns null
+    # because _relationWidth is null.
+
+    set wClone [java::new ptolemy.kernel.util.Workspace WClone]
+    set e0Clone [java::cast ptolemy.actor.CompositeActor [$e0 clone $wClone]]
+    set managerClone [java::new ptolemy.actor.Manager $wClone managerClone]
+    $e0Clone setManager $managerClone
+    $managerClone preinitializeAndResolveTypes
+} {}
+
+######################################################################
+####
+#
 test CompositeActor-8.1 {Test newReceiver} {
     # NOTE: Uses the setup above
     set r [$e3 newReceiver]
