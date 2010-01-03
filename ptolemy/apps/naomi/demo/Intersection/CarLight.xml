@@ -1233,18 +1233,6 @@
                 </property>
             </property>
         </entity>
-        <relation name="PedControlRelation" class="ptolemy.actor.TypedIORelation">
-            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-            </property>
-        </relation>
-        <relation name="LightRelation" class="ptolemy.actor.TypedIORelation">
-            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-            </property>
-        </relation>
-        <link port="PedControl" relation="PedControlRelation"/>
-        <link port="Light" relation="LightRelation"/>
-        <link port="_Controller.PedControl" relation="PedControlRelation"/>
-        <link port="_Controller.Light" relation="LightRelation"/>
     </entity>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
