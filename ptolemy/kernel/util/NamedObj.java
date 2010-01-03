@@ -442,6 +442,11 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
 
             NamedObj newObject = (NamedObj) super.clone();
 
+            // The clone should have its own listeners, otherwise
+            // debug messages from the clone will go to the master.
+            // See 8.1.0 in NamedObj.tcl. Credit: Colin Endicott
+            newObject._debugListeners = null;
+
             // During the cloning process, change requests might
             // be issued (e.g. in an actor's _addEntity() method).
             // Execution of these change requests need to be deferred
