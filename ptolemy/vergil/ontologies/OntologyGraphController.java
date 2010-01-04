@@ -24,7 +24,7 @@ package ptolemy.vergil.ontologies;
 
 import java.awt.event.ActionEvent;
 
-import ptolemy.domains.properties.kernel.PropertyLatticeComposite;
+import ptolemy.data.ontologies.Ontology;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.util.MessageHandler;
 import ptolemy.vergil.actor.ExternalIOPortController;
@@ -104,12 +104,13 @@ public class OntologyGraphController extends FSMGraphController {
 
             NamedObj target = getTarget();
 
-            boolean isLattice = ((PropertyLatticeComposite) target).isLattice();
+            boolean isLattice = ((Ontology) target
+                    .getContainer()).isLattice();
 
             if (isLattice) {
-                MessageHandler.message("This is good.");
+                MessageHandler.message("The model graph is a valid lattice.");
             } else {
-                MessageHandler.error("This is not a Lattice.");
+                MessageHandler.error("The model graph is not a valid lattice.");
             }
         }
     }

@@ -32,7 +32,7 @@ import ptolemy.actor.gui.DebugListenerTableau;
 import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.actor.gui.TextEffigy;
-import ptolemy.domains.properties.kernel.PropertyLatticeComposite;
+import ptolemy.data.ontologies.Ontology;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NamedObj;
@@ -136,11 +136,11 @@ public class OntologyGraphFrame extends FSMGraphFrame implements ActionListener 
                     DebugListenerTableau tableau = new DebugListenerTableau(
                             textEffigy, textEffigy.uniqueName("debugListener"));
 
-                    PropertyLatticeComposite lattice = (PropertyLatticeComposite) getModel();
+                    Ontology ontologyModel = (Ontology) getModel();
 
-                    tableau.setDebuggable(lattice);
+                    tableau.setDebuggable(ontologyModel);
 
-                    lattice.isLattice();
+                    ontologyModel.isLattice();               
                 }
             } catch (KernelException ex) {
                 try {

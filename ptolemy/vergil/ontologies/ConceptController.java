@@ -32,8 +32,8 @@ import javax.swing.KeyStroke;
 
 import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.ontologies.Ontology;
 import ptolemy.domains.properties.kernel.LatticeElement;
-import ptolemy.domains.properties.kernel.PropertyLatticeComposite;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.util.MessageHandler;
@@ -167,11 +167,13 @@ public class ConceptController extends StateController {
 
             NamedObj target = getTarget();
 
-            boolean isLattice = ((PropertyLatticeComposite) target
+            boolean isLattice = ((Ontology) target
                     .getContainer()).isLattice();
 
             if (isLattice) {
                 MessageHandler.message("The model graph is a valid lattice.");
+            } else {
+                MessageHandler.message("The model graph is not a valid lattice.");
             }
         }
     }
