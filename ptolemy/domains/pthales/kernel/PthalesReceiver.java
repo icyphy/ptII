@@ -371,7 +371,7 @@ public class PthalesReceiver extends SDFReceiver {
 
     void computeAddresses(IOPort port, Actor actor) {
         PthalesIOPort.getInternalPattern(port);
-        if (port.isInput() && _pattern.isEmpty() || _base.isEmpty()) {
+        if (port.isInput() && _pattern.isEmpty()) {
             _addressesIn = _addressesOut;
             return;
         }
