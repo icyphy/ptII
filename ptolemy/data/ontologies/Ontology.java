@@ -34,7 +34,6 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
-import ptolemy.util.MessageHandler;
 
 //////////////////////////////////////////////////////////////////////////
 //// Ontology
@@ -123,23 +122,19 @@ public class Ontology extends CompositeEntity {
 
         try {
             if (_graph.top() == null) {
-                _debug("This is not a lattice.");
-                MessageHandler.error("Cannot find a unique top element.");
+                _debug("This is not a lattice. Cannot find a unique top element.");
                 return false;
             } else {
                 Concept top = (Concept) _graph.top();
                 _debug("Top is: " + top.toString());
             }
         } catch (GraphStateException e) {
-            _debug("This is not a lattice.");
-            MessageHandler
-                    .error("Proposed graph has a cycle and is not a lattice.");
+            _debug("This is not a lattice. Proposed graph has a cycle and is not a lattice.");
             return false;
         }
 
         if (_graph.bottom() == null) {
-            _debug("This is not a lattice.");
-            MessageHandler.error("Cannot find a unique bottom element.");
+            _debug("This is not a lattice. Cannot find a unique bottom element.");
             return false;
         } else {
             Concept bottom = (Concept) _graph.bottom();
@@ -157,17 +152,13 @@ public class Ontology extends CompositeEntity {
 
                 if (lub == null) {
                     // FIXME: add highlight color?
-
                     // The offending nodes.
-                    _debug("This is not a lattice.");
-                    MessageHandler
-                            .error("\""
-                                    + ontologyConcepts.get(i).getName()
-                                    + "\" and \""
-                                    + ontologyConcepts.get(j).getName()
-                                    + "\""
-                                    + " does not have a unique least upper bound (LUB).");
-
+                    _debug("This is not a lattice. \""
+                                + ontologyConcepts.get(i).getName()
+                                + "\" and \""
+                                + ontologyConcepts.get(j).getName()
+                                + "\""
+                                + " does not have a unique least upper bound (LUB).");
                     return false;
                 } else {
                     _debug("LUB(" + ontologyConcepts.get(i).getName() + ", "
