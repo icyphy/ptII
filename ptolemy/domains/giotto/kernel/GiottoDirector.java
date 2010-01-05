@@ -847,7 +847,11 @@ TimedDirector, Decorator {
         }
         return frequencyValue;
     }
-
+    
+    /**
+     * Returns the WCET seen by the director
+     * 
+     */
     public double _getWCET()throws IllegalActionException
     {
         double wcet=0;
