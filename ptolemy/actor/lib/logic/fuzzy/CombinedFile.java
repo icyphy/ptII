@@ -548,7 +548,7 @@ public class CombinedFile extends DefaultHandler {
 
     /**
      * This indicates that a processing instruction (other than the XML
-     * declaration) has been encountered.</p>
+     * declaration) has been encountered.
      * @param target <code>String</code> target of PI
      * @param data <code>String</code containing all data sent to the PI. 
      * This typically looks like one or more attribute value pairs.
@@ -571,8 +571,7 @@ public class CombinedFile extends DefaultHandler {
     private String _outputFileName;
     //these variables are constants used throught the class
     private final boolean _debugging = false;
-    /* newline marker
-     * */
+    /** newline marker*/
     public static final String newline = System.getProperty("line.separator");
     // These flags mark the start and end of architectures, options,
     // and dimensions in the file produced by TSST.
