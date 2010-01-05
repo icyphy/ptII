@@ -414,9 +414,9 @@
         </property>
         <property name="arguments" class="modeling.ListParam" value="port;IN;port;IN;port;OUT;">
         </property>
-        <property name="externalLoops" class="ptolemy.data.expr.Parameter" value="7;185;">
+        <property name="externalLoops" class="modeling.ListParam" value="7;185;">
         </property>
-        <property name="internalLoops" class="ptolemy.data.expr.Parameter" value="32;">
+        <property name="internalLoops" class="modeling.ListParam" value="32;">
         </property>
         <port name="ParamIN" class="modeling.application.task.ParamPort">
             <property name="input"/>
@@ -516,9 +516,9 @@
         </property>
         <property name="arguments" class="modeling.ListParam" value="port;IN;port;OUT;">
         </property>
-        <property name="externalLoops" class="ptolemy.data.expr.Parameter" value="1;">
+        <property name="externalLoops" class="modeling.ListParam" value="1;">
         </property>
-        <property name="internalLoops" class="ptolemy.data.expr.Parameter">
+        <property name="internalLoops" class="modeling.ListParam">
         </property>
         <port name="ParamIN" class="modeling.application.task.ParamPort">
             <property name="input"/>
@@ -608,9 +608,9 @@
         </property>
         <property name="arguments" class="modeling.ListParam" value="port;IN;port;IN;port;OUT;">
         </property>
-        <property name="externalLoops" class="ptolemy.data.expr.Parameter" value="1;">
+        <property name="externalLoops" class="modeling.ListParam" value="1;">
         </property>
-        <property name="internalLoops" class="ptolemy.data.expr.Parameter" value="7;">
+        <property name="internalLoops" class="modeling.ListParam" value="7;">
         </property>
         <port name="ParamIN" class="modeling.application.task.ParamPort">
             <property name="input"/>
@@ -711,9 +711,9 @@
         </property>
         <property name="arguments" class="modeling.ListParam" value="port;IN;port;IN;port;OUT;">
         </property>
-        <property name="externalLoops" class="ptolemy.data.expr.Parameter" value="7;185;">
+        <property name="externalLoops" class="modeling.ListParam" value="7;185;">
         </property>
-        <property name="internalLoops" class="ptolemy.data.expr.Parameter" value="32;">
+        <property name="internalLoops" class="modeling.ListParam" value="32;">
         </property>
         <port name="ParamIN" class="modeling.application.task.ParamPort">
             <property name="input"/>
@@ -813,9 +813,9 @@
         </property>
         <property name="arguments" class="modeling.ListParam" value="port;IN;port;OUT;">
         </property>
-        <property name="externalLoops" class="ptolemy.data.expr.Parameter" value="1;">
+        <property name="externalLoops" class="modeling.ListParam" value="1;">
         </property>
-        <property name="internalLoops" class="ptolemy.data.expr.Parameter">
+        <property name="internalLoops" class="modeling.ListParam">
         </property>
         <port name="ParamIN" class="modeling.application.task.ParamPort">
             <property name="input"/>
@@ -901,9 +901,9 @@
         </property>
         <property name="arguments" class="modeling.ListParam" value="port;IN;port;IN;port;OUT;">
         </property>
-        <property name="externalLoops" class="ptolemy.data.expr.Parameter" value="8;32;">
+        <property name="externalLoops" class="modeling.ListParam" value="8;32;">
         </property>
-        <property name="internalLoops" class="ptolemy.data.expr.Parameter" value="185;">
+        <property name="internalLoops" class="modeling.ListParam" value="185;">
         </property>
         <port name="ParamIN" class="modeling.application.task.ParamPort">
             <property name="input"/>
@@ -1006,9 +1006,9 @@
         </property>
         <property name="arguments" class="modeling.ListParam" value="port;OUT;parameter;float;15;parameter;float;0.09;parameter;float;0.03;">
         </property>
-        <property name="externalLoops" class="ptolemy.data.expr.Parameter" value="1;">
+        <property name="externalLoops" class="modeling.ListParam" value="1;">
         </property>
-        <property name="internalLoops" class="ptolemy.data.expr.Parameter">
+        <property name="internalLoops" class="modeling.ListParam">
         </property>
         <port name="ParamIN" class="modeling.application.task.ParamPort">
             <property name="input"/>
@@ -1085,9 +1085,9 @@
         </property>
         <property name="arguments" class="modeling.ListParam" value="port;IN;parameter;int;FFT_DIRECTE;parameter;int;32;port;OUT;">
         </property>
-        <property name="externalLoops" class="ptolemy.data.expr.Parameter" value="7;185;">
+        <property name="externalLoops" class="modeling.ListParam" value="7;185;">
         </property>
-        <property name="internalLoops" class="ptolemy.data.expr.Parameter">
+        <property name="internalLoops" class="modeling.ListParam">
         </property>
         <port name="ParamIN" class="modeling.application.task.ParamPort">
             <property name="input"/>
@@ -1176,9 +1176,9 @@
         </property>
         <property name="arguments" class="modeling.ListParam" value="port;OUT;parameter;int;16;parameter;Splfloat;0.2;">
         </property>
-        <property name="externalLoops" class="ptolemy.data.expr.Parameter" value="1;">
+        <property name="externalLoops" class="modeling.ListParam" value="1;">
         </property>
-        <property name="internalLoops" class="ptolemy.data.expr.Parameter">
+        <property name="internalLoops" class="modeling.ListParam">
         </property>
         <port name="ParamIN" class="modeling.application.task.ParamPort">
             <property name="input"/>
@@ -1255,9 +1255,9 @@
         </property>
         <property name="arguments" class="modeling.ListParam" value="port;IN;port;OUT;parameter;int;50;parameter;float;30;parameter;float;0.09;parameter;float;0.03;parameter;float;5.0E-5;parameter;float;-6;parameter;float;-100;parameter;float;3000;parameter;float;2;">
         </property>
-        <property name="externalLoops" class="ptolemy.data.expr.Parameter" value="1;">
+        <property name="externalLoops" class="modeling.ListParam" value="1;">
         </property>
-        <property name="internalLoops" class="ptolemy.data.expr.Parameter" value="32;">
+        <property name="internalLoops" class="modeling.ListParam" value="32;">
         </property>
         <port name="ParamIN" class="modeling.application.task.ParamPort">
             <property name="input"/>
@@ -1346,9 +1346,9 @@
         </property>
         <property name="arguments" class="modeling.ListParam" value="port;IN;parameter;Splfloat;2;port;OUT;">
         </property>
-        <property name="externalLoops" class="ptolemy.data.expr.Parameter" value="32;">
+        <property name="externalLoops" class="modeling.ListParam" value="32;">
         </property>
-        <property name="internalLoops" class="ptolemy.data.expr.Parameter" value="8;200;">
+        <property name="internalLoops" class="modeling.ListParam" value="8;200;">
         </property>
         <port name="ParamIN" class="modeling.application.task.ParamPort">
             <property name="input"/>
@@ -1437,9 +1437,9 @@
         </property>
         <property name="arguments" class="modeling.ListParam" value="port;IN;port;OUT;parameter;Splfloat;30;parameter;Splfloat;2000;parameter;Splfloat;1;parameter;Splfloat;0.09;parameter;Splfloat;0.03;parameter;Splfloat;30;">
         </property>
-        <property name="externalLoops" class="ptolemy.data.expr.Parameter" value="1;">
+        <property name="externalLoops" class="modeling.ListParam" value="1;">
         </property>
-        <property name="internalLoops" class="ptolemy.data.expr.Parameter">
+        <property name="internalLoops" class="modeling.ListParam">
         </property>
         <port name="ParamIN" class="modeling.application.task.ParamPort">
             <property name="input"/>
@@ -1528,9 +1528,9 @@
         </property>
         <property name="arguments" class="modeling.ListParam" value="port;IN;port;OUT;">
         </property>
-        <property name="externalLoops" class="ptolemy.data.expr.Parameter" value="1;">
+        <property name="externalLoops" class="modeling.ListParam" value="1;">
         </property>
-        <property name="internalLoops" class="ptolemy.data.expr.Parameter">
+        <property name="internalLoops" class="modeling.ListParam">
         </property>
         <port name="ParamIN" class="modeling.application.task.ParamPort">
             <property name="input"/>
@@ -1616,9 +1616,9 @@
         </property>
         <property name="arguments" class="modeling.ListParam" value="port;IN;port;IN;port;OUT;">
         </property>
-        <property name="externalLoops" class="ptolemy.data.expr.Parameter" value="1;">
+        <property name="externalLoops" class="modeling.ListParam" value="1;">
         </property>
-        <property name="internalLoops" class="ptolemy.data.expr.Parameter">
+        <property name="internalLoops" class="modeling.ListParam">
         </property>
         <port name="ParamIN" class="modeling.application.task.ParamPort">
             <property name="input"/>
@@ -1731,9 +1731,9 @@
         </property>
         <property name="arguments" class="modeling.ListParam" value="port;IN;parameter;int;FFT_DIRECTE;parameter;int;32;port;OUT;">
         </property>
-        <property name="externalLoops" class="ptolemy.data.expr.Parameter" value="7;185;">
+        <property name="externalLoops" class="modeling.ListParam" value="7;185;">
         </property>
-        <property name="internalLoops" class="ptolemy.data.expr.Parameter">
+        <property name="internalLoops" class="modeling.ListParam">
         </property>
         <port name="ParamIN" class="modeling.application.task.ParamPort">
             <property name="input"/>
