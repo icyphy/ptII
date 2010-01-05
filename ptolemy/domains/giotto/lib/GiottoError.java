@@ -57,6 +57,17 @@ public class GiottoError extends TypedAtomicActor implements ModelErrorHandler {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+
+
+    /**
+     * Constructs a GiottoError object.
+     *
+     * @param container  a CompositeEntity object
+     * @param name       a String ...
+     * @throws IllegalActionException ...
+     * @throws NameDuplicationException ...
+     */
+
     public GiottoError(CompositeEntity container, String name)
     throws IllegalActionException, NameDuplicationException {
         super(container, name);
