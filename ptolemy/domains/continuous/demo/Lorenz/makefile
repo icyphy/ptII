@@ -68,6 +68,7 @@ MISC_FILES =
 OPTIONAL_FILES = \
 	doc \
 	$(PTCLASSJAR) \
+	LorenzDifferentialSystem.jar \
 	'LorenzApplet$$ParameterListener.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
