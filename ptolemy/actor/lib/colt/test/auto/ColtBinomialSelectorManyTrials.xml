@@ -1,0 +1,125 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="ColtBinomialSelectorManyTrials" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
+    </property>
+    <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{-20.0, -1430.0}">
+        </property>
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The while(trialsRemaining&gt;0) is important. The old code only went&#10;through the array once, so if we had passed  in [10, 10,10], it would&#10;only do selections 3 times. The selection code isn't guaranteed to&#10;select the number of trials from the populations (correctly) in only one&#10;pass. If our trials was 29, then the only acceptable results of a&#10;selection on the above array is some combination of one nine and two&#10;tens. The old code almost always exceeds the possible selections in one&#10;or two populations given the above inputs, so results like 7, 8, 14 or&#10;7, 11, 11 are common. This was causing issues in our model as it throws&#10;off tracking, if we send in 29 people to be removed, and populations are&#10;truncating negative values (remove 11 from 10 and the population reports&#10;0), then we're missing people, or have too many.&#10;&#10;The change &quot;selected = _generator.nextInt((int)&#10;Math.min(trialsRemaining,sourceValues[i]), p);&quot; goes with the added&#10;while loop to ensure that selections don't exceed possible populations.&#10;Doing a selection of 15 people with some probability, but given a&#10;population of 10, it's possible to select too many from that population.&#10;This fixes it from &quot;select up to x people with probability y, and select&#10;them from this population&quot; to &quot;select up to x people from this&#10;population with probability y&quot;. The while loop takes care of ensuring&#10;the correct number of selections should the first pass (with high&#10;probability) fail to select the required number of selections.&#10;">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, -1375.0]">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={315, 24, 929, 719}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[716, 609]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.9274976054637">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{311.4848239942528, -1139.8027343750002}">
+    </property>
+    <entity name="Const" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-45.0, -885.0]">
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+    </entity>
+    <entity name="Const2" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-45.0, -865.0]">
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+    </entity>
+    <entity name="ElementsToArray" class="ptolemy.actor.lib.ElementsToArray">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[305.0, -890.0]">
+        </property>
+    </entity>
+    <entity name="ColtBinomialSelector" class="ptolemy.actor.lib.colt.ColtBinomialSelector">
+        <property name="seed" class="ptolemy.actor.parameters.SharedParameter" value="1L">
+        </property>
+        <property name="resetOnEachRun" class="ptolemy.actor.parameters.SharedParameter" value="true">
+        </property>
+        <property name="trials" class="ptolemy.actor.parameters.PortParameter" value="29">
+        </property>
+        <doc>Create a sequence of Binomial selections from sources.</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, -885.0]">
+        </property>
+    </entity>
+    <entity name="Test" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{{10, 9, 10}}, {{10, 9, 10}}, {{10, 9, 10}}, {{10, 10, 9}}, {{10, 10, 9}}, {{9, 10, 10}}, {{10, 9, 10}}, {{10, 9, 10}}, {{9, 10, 10}}, {{10, 10, 9}}}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{475.0, -885.0}">
+        </property>
+    </entity>
+    <entity name="Const3" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-40.0, -830.0]">
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="3">
+        </property>
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="Const.output" relation="relation2"/>
+    <link port="Const2.output" relation="relation3"/>
+    <link port="ElementsToArray.input" relation="relation"/>
+    <link port="ElementsToArray.output" relation="relation4"/>
+    <link port="ColtBinomialSelector.output" relation="relation"/>
+    <link port="ColtBinomialSelector.populations" relation="relation2"/>
+    <link port="ColtBinomialSelector.populations" relation="relation3"/>
+    <link port="ColtBinomialSelector.populations" relation="relation5"/>
+    <link port="Test.input" relation="relation4"/>
+    <link port="Const3.output" relation="relation5"/>
+</entity>

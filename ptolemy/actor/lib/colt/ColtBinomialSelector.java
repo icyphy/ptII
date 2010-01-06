@@ -63,7 +63,7 @@ import cern.jet.random.Binomial;
 
  @see ptolemy.actor.lib.colt.ColtBinomial
  @see cern.jet.random.Binomial
- @author Raymond A. Cardillo, Matthew J. Robbins
+ @author Raymond A. Cardillo, Matthew J. Robbins, Contributors: Jason Smith and Brian Hudson
  @version $Id$
  @since Ptolemy II 6.0
  @Pt.ProposedRating Red (cxh)
@@ -120,7 +120,7 @@ public class ColtBinomialSelector extends ColtRandomSource {
         super.fire();
 
         for (int i = 0; i < _current.length; i++) {
-            output.send(i, _current[i]);
+            output.send(i, new IntToken(_current[i]));
         }
     }
 
@@ -141,7 +141,7 @@ public class ColtBinomialSelector extends ColtRandomSource {
         // Pull out the source values, make sure they're valid, and
         // calculate the total.
         long[] sourceValues = new long[populations.getWidth()];
-        long sourceTotal = 0;
+        long sourcePool = 0;
         for (int i = 0; i < sourceValues.length; i++) {
             sourceValues[i] = ((LongToken) populations.get(i)).longValue();
             if (sourceValues[i] < 0) {
@@ -149,29 +149,66 @@ public class ColtBinomialSelector extends ColtRandomSource {
                         + "] is negative.");
             }
 
-            sourceTotal += sourceValues[i];
+            sourcePool += sourceValues[i];
         }
 
         // Process the binomial selections.
         int trialsRemaining = ((IntToken) trials.getToken()).intValue();
-        long sourcePool = sourceTotal;
-        _current = new IntToken[sourceValues.length];
-        for (int i = 0; i < _current.length; i++) {
-            int selected = 0;
-            if ((trialsRemaining > 0) && (sourceValues[i] > 0)) {
-                double p = (double) sourceValues[i] / (double) sourcePool;
-                if (p < 1.0) {
-                    selected = _generator.nextInt(trialsRemaining, p);
-                } else {
-                    selected = trialsRemaining;
+        // Initialize the _current array.
+        _current = new int[sourceValues.length];
+
+        // Constrain trialsRemaining to be less than or equal to the sourcePool.
+        if (trialsRemaining > sourcePool) {
+        	trialsRemaining = (int) sourcePool;
+        }
+        // While there are trials remaining...
+        // Loop through the array multiple times.  Formerly, if we passed
+        // in trials of 10, 10, 10, the selection would only occur 3 times.
+        // The selection code is not guaranteed to select the correct number 
+        // of trial in only one pass.  If the number of trials was 29, then the
+        // only acceptable results from 10, 10, 10 would be combinations of
+        // one 9 and two 10.  Formerly, the old code exceeded the possible
+        // selections in one or two populations given, results like 7, 8, 14
+        // or 7, 11, 11 were common.
+        // See test/auto/ColtBinomialSelectorManyTrials.xml
+        while(trialsRemaining>0) {
+            for (int i = 0; i < _current.length; i++) {
+                // Do a selection for a population.
+                int selected = 0;
+                if ((trialsRemaining > 0) && (sourceValues[i] > 0)) {
+                    double p = (double) sourceValues[i] / (double) sourcePool;
+                    if (p < 1.0) {
+                        // Make sure that selections don't exceed
+                        // possible populations.  Doing a selection of
+                        // 15 people with some probability, but given
+                        // a population of 10, it's possible to select
+                        // too many from that population.  This fixes
+                        // it from "select up to x people with
+                        // probability y, and select them from this
+                        // population" to "select up to x people from
+                        // this population with probability y". The
+                        // while loop takes care of ensuring the
+                        // correct number of selections should the
+                        // first pass (with high probability) fail to
+                        // select the required number of selections
+                        selected = _generator.nextInt((int) Math.min(trialsRemaining,sourceValues[i]), p);
+                    } else {
+                        selected = trialsRemaining;
+                    }
                 }
-                ;
+
+                // Add to the selection record (_current).
+                _current[i] += selected;
+            
+                // Reduce the amount that can be selected from this population in the future.
+                sourceValues[i]-=selected;
+
+                // Reduce the trials remaining by the successful trials.
+                trialsRemaining -= selected;
+
+                // Reduce the remaining source pool.
+                sourcePool -= selected;
             }
-
-            _current[i] = new IntToken(selected);
-
-            trialsRemaining -= selected;
-            sourcePool -= sourceValues[i];
         }
     }
 
@@ -179,7 +216,7 @@ public class ColtBinomialSelector extends ColtRandomSource {
     ////                         private variables                 ////
 
     /** The tokens to emit during the current iteration. */
-    private IntToken _current[];
+    private int _current[];
 
     /** The random number generator. */
     private Binomial _generator;
