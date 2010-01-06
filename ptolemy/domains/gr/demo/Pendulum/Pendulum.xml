@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="Pendulum" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
     <property name="GR" class="ptolemy.domains.gr.kernel.GRDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
@@ -180,7 +180,9 @@ the 3-D graphics and ODE capabilities of Ptolemy II</text></svg></configure>
         </property>
     </entity>
     <entity name="damped pendulum ODE" class="ptolemy.actor.TypedCompositeActor">
-        <property name="CT" class="ptolemy.domains.ct.kernel.CTMixedSignalDirector">
+        <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
+            <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
             <property name="timeResolution" class="ptolemy.actor.parameters.SharedParameter" value="1.0E-10">
             </property>
             <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -189,27 +191,15 @@ the 3-D graphics and ODE capabilities of Ptolemy II</text></svg></configure>
             </property>
             <property name="initStepSize" class="ptolemy.data.expr.Parameter" value="0.1">
             </property>
-            <property name="minStepSize" class="ptolemy.data.expr.Parameter" value="1.0E-5">
-            </property>
             <property name="maxStepSize" class="ptolemy.data.expr.Parameter" value="1.0">
             </property>
             <property name="maxIterations" class="ptolemy.data.expr.Parameter" value="20">
             </property>
             <property name="errorTolerance" class="ptolemy.data.expr.Parameter" value="1.0E-4">
             </property>
+            <property name="minStepSize" class="ptolemy.data.expr.Parameter" value="1.0E-5">
+            </property>
             <property name="valueResolution" class="ptolemy.data.expr.Parameter" value="1.0E-6">
-            </property>
-            <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
-            </property>
-            <property name="ODESolver" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver&quot;">
-                <property name="style" class="ptolemy.actor.gui.style.EditableChoiceStyle">
-                    <property name="choice0" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver&quot;">
-                    </property>
-                    <property name="choice1" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.BackwardEulerSolver&quot;">
-                    </property>
-                    <property name="choice2" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ForwardEulerSolver&quot;">
-                    </property>
-                </property>
             </property>
             <property name="runAheadLength" class="ptolemy.data.expr.Parameter" value="1.0">
             </property>
@@ -222,7 +212,7 @@ the 3-D graphics and ODE capabilities of Ptolemy II</text></svg></configure>
         </property>
         <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[136, 152]">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={136, 150, 752, 468}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={136, 150, 750, 460}, maximized=false}">
         </property>
         <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
         </property>
@@ -251,7 +241,7 @@ the 3-D graphics and ODE capabilities of Ptolemy II</text></svg></configure>
                 <property name="input"/>
             </port>
         </entity>
-        <entity name="Periodic Sampler" class="ptolemy.domains.ct.lib.CTPeriodicSampler">
+        <entity name="Periodic Sampler" class="ptolemy.domains.continuous.lib.PeriodicSampler">
             <property name="samplePeriod" class="ptolemy.data.expr.Parameter" value="0.1">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="340.0, 60.0">
@@ -269,49 +259,17 @@ the 3-D graphics and ODE capabilities of Ptolemy II</text></svg></configure>
                 </property>
             </port>
         </entity>
-        <entity name="Integrator1" class="ptolemy.domains.ct.lib.Integrator">
-            <property name="initialState" class="ptolemy.data.expr.Parameter" value="0.0">
-            </property>
-            <property name="IntegratorIcon" class="ptolemy.vergil.icon.EditorIcon">
-                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={117, 239, 815, 518}, maximized=false}">
-                </property>
-                <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
-                </property>
+        <entity name="Integrator1" class="ptolemy.domains.continuous.lib.Integrator">
+            <property name="initialState" class="ptolemy.actor.parameters.PortParameter" value="0.0">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="85.0, 140.0">
             </property>
-            <port name="input" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
-                </property>
-            </port>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-                <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
-                </property>
-            </port>
         </entity>
-        <entity name="Integrator2" class="ptolemy.domains.ct.lib.Integrator">
-            <property name="initialState" class="ptolemy.data.expr.Parameter" value="PI/3.0">
-            </property>
-            <property name="IntegratorIcon" class="ptolemy.vergil.icon.EditorIcon">
-                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={117, 239, 815, 518}, maximized=false}">
-                </property>
-                <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
-                </property>
+        <entity name="Integrator2" class="ptolemy.domains.continuous.lib.Integrator">
+            <property name="initialState" class="ptolemy.actor.parameters.PortParameter" value="PI/3.0">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="215.0, 60.0">
             </property>
-            <port name="input" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
-                </property>
-            </port>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-                <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
-                </property>
-            </port>
         </entity>
         <relation name="relation14" class="ptolemy.actor.TypedIORelation">
             <vertex name="vertex0" value="275.0, 60.0">
@@ -333,10 +291,10 @@ the 3-D graphics and ODE capabilities of Ptolemy II</text></svg></configure>
         <link port="Expression.y" relation="relation5"/>
         <link port="Periodic Sampler.input" relation="relation14"/>
         <link port="Periodic Sampler.output" relation="relation2"/>
-        <link port="Integrator1.input" relation="relation0"/>
-        <link port="Integrator1.output" relation="relation5"/>
-        <link port="Integrator2.input" relation="relation5"/>
-        <link port="Integrator2.output" relation="relation14"/>
+        <link port="Integrator1.derivative" relation="relation0"/>
+        <link port="Integrator1.state" relation="relation5"/>
+        <link port="Integrator2.derivative" relation="relation5"/>
+        <link port="Integrator2.state" relation="relation14"/>
     </entity>
     <entity name="Stage" class="ptolemy.actor.TypedCompositeActor">
         <property name="_location" class="ptolemy.kernel.util.Location" value="321.0, 115.0">
@@ -345,7 +303,7 @@ the 3-D graphics and ODE capabilities of Ptolemy II</text></svg></configure>
         </property>
         <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[104, 102]">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 101, 815, 566}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 101, 813, 560}, maximized=false}">
         </property>
         <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
         </property>
