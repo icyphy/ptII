@@ -119,7 +119,9 @@ public class Concept extends ComponentEntity implements InequalityTerm, Flowable
 
     /** Return the value of the inequality term. Since a concept
      *  is a constant, not a variable, its value is just itself.
+     *  
      *  @return This concept.
+     *  @see #setValue
      */
     public Object getValue() {
         return this;
@@ -185,7 +187,9 @@ public class Concept extends ComponentEntity implements InequalityTerm, Flowable
     }
 
     /** Throw an exception. This object is not a variable.
+     * 
      *  @exception IllegalActionException Always thrown.
+     *  @see #getValue
      */
     public void setValue(Object value) throws IllegalActionException {
         throw new IllegalActionException(this, "Cannot set a lattice property.");

@@ -59,6 +59,12 @@ public class AnnotationAttribute extends StringAttribute {
      * Set the name of the attribute and error-check for name format. A proper
      * name should contain an use-case identifier and an attribute label,
      * separated by "::".
+     * 
+     * @param name The new name that the attribute should be set to.
+     * @throws NameDuplicationException If the name coincides with an
+     * attribute already in the container.
+     * @throws IllegalActionException If the name does not have the correct syntax
+     * or does not refer to a valid ontology.
      */
     public void setName(String name) throws IllegalActionException,
             NameDuplicationException {
@@ -99,8 +105,12 @@ public class AnnotationAttribute extends StringAttribute {
     //        }
     //    }
 
-    /**
-     * 
+    /** 
+     * Returns the name of the ontology (use case) for which this annotation
+     * attribute is a constraint.
+     *
+     * @return a String representing the name of the referred ontology (use case)
+     * @throws IllegalActionException
      */
     public String getUseCaseIdentifier() throws IllegalActionException {
         String[] tokens = getName().split("::");
@@ -115,6 +125,6 @@ public class AnnotationAttribute extends StringAttribute {
         }
 
         throw new IllegalActionException("Bad annotation attribute name: "
-                + getName() + ". (should have form USECASE::LABEL)");
+                + getName() + ". (should have form ONTOLOGY_NAME::LABEL)");
     }
 }

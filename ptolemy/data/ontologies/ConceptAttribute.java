@@ -100,6 +100,13 @@ public class ConceptAttribute extends AbstractSettableAttribute {
         return _property == null ? "" : _property.toString();
     }
 
+    /**
+     * Returns the Concept value.
+     * 
+     * @return a Concept object representing the Concept value
+     * contained by the ConceptAttribute
+     * @see #setProperty
+     */
     public Concept getProperty() {
         return _property;
     }
@@ -113,6 +120,13 @@ public class ConceptAttribute extends AbstractSettableAttribute {
         return;
     }
 
+    /**
+     * Specifies the Concept value.
+     * 
+     * @param property a Concept object specifying the Concept value
+     * contained by the ConceptAttribute
+     * @see #getProperty
+     */
     public void setProperty(Concept property) {
         _property = property;
     }
@@ -120,13 +134,25 @@ public class ConceptAttribute extends AbstractSettableAttribute {
     public void setVisibility(Visibility visibility) {
         _visibility = visibility;
     }
-
+    
+    /**
+     * The validate() method must be implemented to implement the 
+     * {@linkplain ptolemy.kernel.util.Settable Settable}
+     * interface but is not relevant
+     * for the ConceptAttribute class.
+     * 
+     * @return null
+     * @throws IllegalActionException To match the signature of the
+     * {@linkplain ptolemy.kernel.util.Settable#validate validate()}
+     * method in the {@linkplain ptolemy.kernel.util.Settable Settable}
+     * interface, but this is not ever thrown here.
+     */
     public Collection validate() throws IllegalActionException {
         // not relevant
         return null;
     }
 
-    //    private Visibility _visibility = Settable.NOT_EDITABLE;
+    /** The Concept contained by the ConceptAtribute. */
     protected Concept _property;
 
     //    private Visibility _visibility = Settable.NONE;

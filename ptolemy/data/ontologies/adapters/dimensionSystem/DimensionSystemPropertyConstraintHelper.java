@@ -84,7 +84,8 @@ public class DimensionSystemPropertyConstraintHelper extends PropertyConstraintH
      * @param useDefaultConstraints Indicate whether this adapter uses the
      * default actor constraints.
      * @exception IllegalActionException If the adapter cannot be
-     * initialized in the superclass.
+     * initialized in the superclass or the concepts from the dimensionSystem ontology
+     * cannot be found.
      */
     public DimensionSystemPropertyConstraintHelper(OntologySolver solver,
             Object component, boolean useDefaultConstraints)
@@ -144,14 +145,30 @@ public class DimensionSystemPropertyConstraintHelper extends PropertyConstraintH
     ////                         protected members                 ////
     
     // The ontology for all the dimensionSystem adapters
+    
+    /** The dimensionSystem ontology refered to by all dimensionSystem adapters. */
     protected Ontology _dimensionSystemOntology;
     
     // Get all the Concepts from the ontology to use in all the dimensionSystem adapters   
+    
+    /** The "Unknown" Concept from the dimensionSystem ontology. */
     protected Concept _unknownConcept;
+    
+    /** The "Dimensionless" Concept from the dimensionSystem ontology. */
     protected Concept _dimensionlessConcept;
+    
+    /** The "Time" Concept from the dimensionSystem ontology. */
     protected Concept _timeConcept;
+    
+    /** The "Position" Concept from the dimensionSystem ontology. */
     protected Concept _positionConcept;
+    
+    /** The "Velocity" Concept from the dimensionSystem ontology. */
     protected Concept _velocityConcept;
+    
+    /** The "Acceleration" Concept from the dimensionSystem ontology. */
     protected Concept _accelerationConcept;
+    
+    /** The "Conflict" Concept from the dimensionSystem ontology. */
     protected Concept _conflictConcept;
 }
