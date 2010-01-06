@@ -61,6 +61,8 @@ import ptolemy.data.type.Type;
 import ptolemy.graph.Inequality;
 import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.ComponentEntity;
+import ptolemy.kernel.Port;
+import ptolemy.kernel.Relation;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -317,7 +319,8 @@ public class PthalesIOPort extends TypedIOPort {
         if (rep != null) {
             i = 0;
             for (Object til : tilingSet) {
-                if (i < rep.length && !dims.contains(til) && !((String)til).startsWith("empty")) {
+                if (i < rep.length && !dims.contains(til)
+                        && !((String) til).startsWith("empty")) {
                     myList.add(rep[i]);
                 }
                 i++;
@@ -447,7 +450,8 @@ public class PthalesIOPort extends TypedIOPort {
         if (rep != null) {
             i = 0;
             for (Object til : tilingSet) {
-                if (i < rep.length && !dims.contains(til) && !((String)til).startsWith("empty")) {
+                if (i < rep.length && !dims.contains(til)
+                        && !((String) til).startsWith("empty")) {
                     res = new Integer[2];
                     res[0] = rep[i];
                     res[1] = tiling.get(til)[1];
@@ -674,6 +678,69 @@ public class PthalesIOPort extends TypedIOPort {
         }
     }
 
+    /** Override the base class to invalidate the schedule and resolved
+     *  types of the director of the container, if there is one, in addition
+     *  to what the base class does.
+     *  @param relation The relation to link to.
+     *  @exception IllegalActionException If the link crosses levels of
+     *   the hierarchy, or the port has no container, or the relation
+     *   is not an instance of IORelation.
+     */
+    public void link(Relation relation) throws IllegalActionException {
+        super.link(relation);
+
+        PthalesIOPort outputPort = null;
+        PthalesIOPort inputPort = null;
+
+        // Récupération du port de sortie et d'entree de la relation
+        List listePortsRelation = relation.linkedPortList();
+        for (Iterator iterPorts = listePortsRelation.iterator(); iterPorts
+                .hasNext();) {
+            Port portTemp = (Port) iterPorts.next();
+            if (portTemp instanceof PthalesIOPort) {
+                if (((PthalesIOPort) portTemp).isOutput()) {
+                    outputPort = (PthalesIOPort) portTemp;
+                }
+                if (((PthalesIOPort) portTemp).isInput()) {
+                    inputPort = (PthalesIOPort) portTemp;
+                }
+            }
+        }
+
+        // Output port linked and input port not defined
+        if (outputPort != null
+            && inputPort != null
+            && (getInternalPattern(inputPort) == null || getInternalPattern(inputPort).size() == 0)) {
+            Actor actor = (Actor) getContainer();
+
+            ((Parameter) inputPort.getAttribute("base"))
+                    .setExpression(((Parameter) outputPort.getAttribute("base"))
+                            .getExpression());
+            ((Parameter) inputPort.getAttribute("pattern"))
+                    .setExpression(((Parameter) outputPort
+                            .getAttribute("pattern")).getExpression());
+            ((Parameter) inputPort.getAttribute("tiling"))
+                    .setExpression(((Parameter) outputPort
+                            .getAttribute("tiling")).getExpression());
+            ((Parameter) inputPort.getAttribute("dimensionNames"))
+                    .setExpression(((Parameter) outputPort
+                            .getAttribute("dimensionNames")).getExpression());
+            ((Parameter) inputPort.getAttribute("size"))
+                    .setExpression(((Parameter) outputPort.getAttribute("size"))
+                            .getExpression());
+
+            // Useless parameters for CompositeActors
+            if (actor instanceof TypedAtomicActor) {
+                ((Parameter) inputPort.getAttribute("dataType"))
+                        .setExpression(((Parameter) outputPort
+                                .getAttribute("dataType")).getExpression());
+                ((Parameter) inputPort.getAttribute("dataTypeSize"))
+                        .setExpression(((Parameter) outputPort
+                                .getAttribute("dataTypeSize")).getExpression());
+            }
+        }
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
@@ -716,7 +783,7 @@ public class PthalesIOPort extends TypedIOPort {
             }
         }
     }
-  
+
     ///////////////////////////////////////////////////////////////////
     ////                      protected variables                  ////
 
@@ -752,7 +819,6 @@ public class PthalesIOPort extends TypedIOPort {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
     // Notify the type listener about type change.
-  
     /** returns the pattern of this port 
      *  @return pattern 
      */
@@ -766,8 +832,7 @@ public class PthalesIOPort extends TypedIOPort {
     public static LinkedHashMap<String, Integer[]> _getTiling(IOPort port) {
         return _parseSpec(port, TILING);
     }
-    
-    
+
     /**
      * @param oldType
      * @param newType
