@@ -48,7 +48,7 @@ JSRCS =
 OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS) \
 	Hysteresis.xml \
-	HysteresisWithBernouliLosses.xml \
+	HysteresisWithBernoulliLosses.xml \
 	HysteresisWithRandomDelay.xml \
 	HysteresisWithRandomLosses.xml
 
@@ -56,6 +56,8 @@ EXTRA_SRCS = \
 	$(OTHER_FILES_TO_BE_JARED) \
 	Hysteresis.htm \
 	HysteresisVergil.htm \
+	HysteresisWithBernoulliLosses.htm \
+	HysteresisWithBernoulliLossesVergil.htm \
 	HysteresisWithRandomDelay.htm \
 	HysteresisWithRandomDelayVergil.htm \
 	HysteresisWithRandomLosses.htm \
