@@ -121,17 +121,27 @@ public class ColtBinomialSelector extends ColtRandomSource {
                     .appendCodeBlock("initArraysBinomialSelectorBlock", args);
         }
 
-        _codeStream.appendCodeBlock("updateStateVariables");
+        args.set(0, Integer.valueOf(actor.populations.getWidth()));
+        _codeStream.appendCodeBlock("updateStateVariables", args);
 
         for (int i = 0; i < actor.populations.getWidth(); i++) {
             args.set(0, Integer.valueOf(i));
             // code.append(_generateBlockCode("binomialSelectorBlock", args));
             _codeStream.appendCodeBlock("binomialSelectorBlock", args);
+
             if (i < actor.output.getWidth()) {
                 _codeStream.appendCodeBlock("fireBlock", args);
             }
         }
+        _codeStream.append("}");
 
+        for (int i = 0; i < actor.populations.getWidth(); i++) {
+            args.set(0, Integer.valueOf(i));
+
+            if (i < actor.output.getWidth()) {
+                _codeStream.appendCodeBlock("fireBlock", args);
+            }
+        }
         // return processCode(code.toString());
         return processCode(_codeStream.toString());
     }
