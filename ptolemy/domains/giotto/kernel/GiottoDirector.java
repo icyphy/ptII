@@ -979,8 +979,6 @@ TimedDirector, Decorator {
      */
     public void setTypesOfDecoratedVariables(
             DecoratedAttributes decoratedAttributes) throws IllegalActionException{
-        System.out.println("setTypesOfDecoratedVariabels method called");
-
     }
 
     /** Return the decorated attributes for the target NamedObj.
@@ -992,22 +990,8 @@ TimedDirector, Decorator {
      *   an attribute already in the container.
      */
     public DecoratedAttributes createDecoratedAttributes(NamedObj target) throws IllegalActionException, NameDuplicationException{
-        System.out.println("createDecoratedAttributes method called for object "+target.getDisplayName());
         return new GiottoDecoratedAttributesImplementation(target, this);
-
-
-
-
-
     }
-
-    protected void finalize() throws Throwable
-    {
-        //do finalization here
-        super.finalize(); //not necessary if extending Object.
-        System.out.println("Giotto Destructor called. Undo the decorations that were initally done");
-    }
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
