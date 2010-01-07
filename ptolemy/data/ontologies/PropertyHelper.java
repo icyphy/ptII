@@ -94,6 +94,7 @@ public class PropertyHelper {
      * Return the associated component object.
      *
      * @return The associated component.
+     * @see #setComponent
      */
     public Object getComponent() {
         return _component;
@@ -250,6 +251,7 @@ public class PropertyHelper {
      * Associate this PropertyHelper with the specified component.
      *
      * @param component The specified component.
+     * @see #getComponent
      */
     public void setComponent(Object component) {
         _component = component;
@@ -377,6 +379,7 @@ public class PropertyHelper {
      * parsing the expression of every property-able Attribute.
      *
      * @return The list of PropertyHelpers for ASTPtRootNodes.
+     * @throws IllegalActionException If the AST expression is not parseable
      */
     protected List<PropertyHelper> _getASTNodeHelpers()
             throws IllegalActionException {
@@ -689,8 +692,19 @@ public class PropertyHelper {
     ///////////////////////////////////////////////////////////////////
     ////                        public inner class                 ////
 
+    /**
+     * Specialized Inequality class for the PropertyHelper class.
+     */
     public class Inequality extends ptolemy.graph.Inequality {
 
+        /**
+         * Constructs an Inequality object for a PropertyHelper.
+         *
+         * @param lesserTerm   The lesser term in the inequality
+         * @param greaterTerm  The greater term in the inequality
+         * @param isBase       true if the inequality is composeable;
+         * false otherwise
+         */
         public Inequality(InequalityTerm lesserTerm, InequalityTerm greaterTerm,
                 boolean isBase) {
             super(lesserTerm, greaterTerm);
@@ -699,13 +713,18 @@ public class PropertyHelper {
             _adapter = PropertyHelper.this;
         }
 
+        /**
+         * Returns the the ontology adapter for this Inequality.
+         * 
+         * @return A PropertyHelper object representing the ontology adapter
+         */
         public PropertyHelper getHelper() {
             return _adapter;
         }
 
         /**
-         * Return true if this inequality is composable; otherwise, false.
-         * @return Whether this inequality is composable.
+         * Return true if this inequality is composeable; otherwise, false.
+         * @return Whether this inequality is composeable.
          */
         public boolean isBase() {
             return _isBase;

@@ -159,9 +159,11 @@ public abstract class PropertySolverBase extends MoMLModelAttribute {
 
     /**
      * Return the list of all PropertyHelpers associated with this
-     * solver.
+     * ontology solver.
      *
      * @return The list of PropertyHelpers.
+     * @throws IllegalActionException If there is an exception from getting
+     * all the subHelpers. 
      */
     public List<PropertyHelper> getAllHelpers() throws IllegalActionException {
         NamedObj topLevel = _toplevel();
@@ -363,6 +365,7 @@ public abstract class PropertySolverBase extends MoMLModelAttribute {
      * resolution to happen if the object's property is not present.
      * @param object The specified object
      * @return The resolved property for the specified object.
+     * @see #setResolvedProperty
      */
     public Concept getResolvedProperty(Object object) {
         return getResolvedProperty(object, true);
@@ -374,6 +377,7 @@ public abstract class PropertySolverBase extends MoMLModelAttribute {
      * @param object The specified object.
      * @param resolve Whether or not to force resolution.
      * @return The resolved property for the specified object.
+     * @see #setResolvedProperty
      */
     public Concept getResolvedProperty(Object object, boolean resolve) {
         Concept property = _resolvedProperties.get(object);
@@ -461,6 +465,7 @@ public abstract class PropertySolverBase extends MoMLModelAttribute {
      * (See {@link #getResolvedProperty(Object)}).
      * @param object The specified object.
      * @param property The specified property.
+     * @see #getResolvedProperty
      */
     public void setResolvedProperty(Object object, Concept property) {
         _resolvedProperties.put(object, property);
@@ -575,6 +580,12 @@ public abstract class PropertySolverBase extends MoMLModelAttribute {
         return getClass().getPackage().getName() + ".adapters." + getOntology().getName();
     }
 
+    /**
+     * Return the top level of the model hierarchy for the model
+     * we want to analyze.
+     * 
+     * @return The top level model object as a NamedObj
+     */
     protected NamedObj _toplevel() {
         NamedObj toplevel = toplevel();
 

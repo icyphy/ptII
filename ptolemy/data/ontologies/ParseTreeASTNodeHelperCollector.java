@@ -98,8 +98,10 @@ public class ParseTreeASTNodeHelperCollector extends AbstractParseTreeVisitor {
         _visitAllChildren(child);
     }
 
+    /** The list of property adapters for each node in the AST. */
     protected List<PropertyHelper> _adapters;
 
+    /** The given ontology solver for which the AST will be evaluated. */
     protected PropertySolver _solver;
 
 }

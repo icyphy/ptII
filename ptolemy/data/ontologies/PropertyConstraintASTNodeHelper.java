@@ -58,7 +58,8 @@ public class PropertyConstraintASTNodeHelper extends PropertyConstraintHelper {
     /**
      * Construct the property constraint adapter associated
      * with the given AST node.
-     * @param node The given AST node.
+     * @param solver  The ontology solver for this adapter
+     * @param node The given AST node
      * @exception IllegalActionException Thrown if
      * PropertyConstraintHelper(NamedObj, ASTPtRootNode, boolean)
      * throws it.
@@ -71,10 +72,10 @@ public class PropertyConstraintASTNodeHelper extends PropertyConstraintHelper {
     /**
      * Construct the property constraint adapter for the given
      * property solver and AST node.
-     * @param solver The given component.
-     * @param node The given AST node.
+     * @param solver The ontology solver for this adapter
+     * @param node The given AST node
      * @param useDefaultConstraints Indicate whether this adapter
-     *  uses the default actor constraints.
+     *  uses the default actor constraints
      * @exception IllegalActionException If the adapter cannot
      *  be initialized.
      */
@@ -86,8 +87,8 @@ public class PropertyConstraintASTNodeHelper extends PropertyConstraintHelper {
     }
 
     /** Return the constraints of this component.  The constraints is
-     *  a list of inequalities. This base class returns a empty list.
-     *  @return A list of Inequality.
+     *  a list of inequalities.
+     *  @return A list of Inequalities.
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public List<Inequality> constraintList() throws IllegalActionException {
@@ -192,6 +193,15 @@ public class PropertyConstraintASTNodeHelper extends PropertyConstraintHelper {
         return new ArrayList<PropertyHelper>();
     }
 
+    /**
+     * Returns the component referenced by the given name in the given
+     * container.
+     * 
+     * @param container The container in which to find the component
+     * @param name The name of the component
+     * @return The NamedObj component referred to by the name found in the
+     * container, or null if it is not found
+     */
     public static NamedObj getNamedObject(Entity container, String name) {
         // Check the port names.
         TypedIOPort port = (TypedIOPort) container.getPort(name);
@@ -208,6 +218,11 @@ public class PropertyConstraintASTNodeHelper extends PropertyConstraintHelper {
         return null;
     }
 
+    /**
+     * Return the node this adapter references.
+     * 
+     * @return The node referred to by this adapter
+     */
     protected ASTPtRootNode _getNode() {
         return (ASTPtRootNode) getComponent();
     }

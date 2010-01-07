@@ -119,9 +119,11 @@ public class ParseTreeAnnotationEvaluator extends AbstractParseTreeVisitor {
      *  
      *  The derived class will override this method and catch its exception, then
      *  check to see if the node refers to a Concept rather than a model Component.
-     * 
-     */
-    
+     *  
+     *  @param node The leaf node to be visited
+     *  @throws IllegalActionException If the node label cannot be resolved to a
+     *  component in the model 
+     */    
     public void visitLeafNode(ASTPtLeafNode node) throws IllegalActionException {
         _evaluatedObject = _resolveLabel(_getNodeLabel(node), _adapter.getComponent());
         
@@ -253,15 +255,25 @@ public class ParseTreeAnnotationEvaluator extends AbstractParseTreeVisitor {
         return null;
     }
 
-    /** Return an exception that describes an unsupported node type.
-     *  @param name The name of the node type.
-     *  @return An exception that describes an unsupported node type.
+    /**
+     * Return an exception that describes an unsupported node type.
+     * 
+     * @param name The name of the node type.
+     * @return An exception that describes an unsupported node type.
      */
     protected IllegalActionException _unsupportedVisitException(String name) {
         return new IllegalActionException("Nodes of type " + name
                 + " cannot be visited by a " + getClass().getName() + ".");
     }
 
+    /**
+     * Return the label for the leaf node.
+     * 
+     * @param node The given leaf node
+     * @return The string label for the node; If the node
+     * is constant this is the token contained in the node
+     * as a string, if not then this is the name of the node.
+     */
     protected String _getNodeLabel(ASTPtLeafNode node) {
         if (node.isConstant()) {
             return node.getToken().toString();
@@ -270,8 +282,13 @@ public class ParseTreeAnnotationEvaluator extends AbstractParseTreeVisitor {
         }
     }
 
+    /** The property adapter that contains the top level model
+     *  component containing actors that could be referenced
+     *  by the node label.
+     */
     protected PropertyHelper _adapter;
 
+    /** The model component that the parse tree node refers to. */
     protected Object _evaluatedObject;
 
 }
