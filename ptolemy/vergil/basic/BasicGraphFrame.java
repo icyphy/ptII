@@ -981,7 +981,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
      *  controls to change the layout.  The class should have a constructor
      *  that takes a Frame argument. If the parameter cannot
      *  be read, then the default Ptolemy layout mechanism in
-     *  {@link #layoutGraphWithPtolemyLayout() is used.
+     *  {@link #layoutGraphWithPtolemyLayout()} is used.
      */
     public void layoutGraph() {
         boolean success = false;
