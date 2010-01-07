@@ -73,7 +73,7 @@ public class KielerLayoutGUIFactory extends EditorFactory {
 
     /** Create an editor for configuring the specified object with the
      *  specified parent window.
-     *  @param object The object to configure.
+     *  @param model The object to configure.
      *  @param parent The parent window, or null if there is none.
      */
     public void createEditor(NamedObj model, Frame parent) {
