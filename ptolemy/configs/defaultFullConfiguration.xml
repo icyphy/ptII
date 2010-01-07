@@ -30,6 +30,12 @@
             class="ptolemy.data.expr.Parameter"
             value="false"/>
 
+  <!-- Use the Kieler graph layout algorithms. -->
+  <!--  Used in BasicGraphFrame.java-->
+  <property name="_layoutGraphDialog"
+            class="ptolemy.data.expr.StringParameter"
+            value="ptolemy.vergil.basic.layout.KielerLayoutGUIFactory"/>
+
   <!-- The list of effigy factories, which defines what goes in  -->
   <!-- the New menu, and also what sorts of files can be opened. -->
   <!-- These are searched in the order listed here, until one of -->

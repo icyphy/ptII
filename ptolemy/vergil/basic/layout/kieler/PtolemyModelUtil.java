@@ -494,7 +494,7 @@ public class PtolemyModelUtil {
     protected void _performChangeRequest(CompositeActor actor) {
         _momlChangeRequest.insert(0, "<group>");
         _momlChangeRequest.append("</group>");
-        System.out.println(_momlChangeRequest);
+        //System.out.println(_momlChangeRequest);
         MoMLChangeRequest request = new MoMLChangeRequest(this, actor,
                 _momlChangeRequest.toString());
         request.setUndoable(true);

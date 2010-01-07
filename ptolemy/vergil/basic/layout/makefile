@@ -56,11 +56,8 @@ PTCLASSALLJARS = \
 	kieler/kieler.jar
 
 JSRCS = \
-	HideVerticesButton.java \
-	PlaceAllButton.java \
-	PlaceAndRouteButton.java \
-	PlaceButton.java \
-	RemoveVerticesButton.java
+	KielerLayoutGUI.java \
+	KielerLayoutGUIFactory.java \
 
 OTHER_FILES_TO_BE_JARED =
 

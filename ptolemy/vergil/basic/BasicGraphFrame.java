@@ -61,6 +61,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
+import java.lang.reflect.Constructor;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -88,6 +89,7 @@ import ptolemy.actor.DesignPatternGetMoMLAction;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.IORelation;
 import ptolemy.actor.gui.Configuration;
+import ptolemy.actor.gui.EditorFactory;
 import ptolemy.actor.gui.EditParametersDialog;
 import ptolemy.actor.gui.PtolemyFrame;
 import ptolemy.actor.gui.PtolemyPreferences;
@@ -103,6 +105,7 @@ import ptolemy.data.DoubleToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.ExpertParameter;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.expr.StringParameter;
 import ptolemy.gui.Query;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
@@ -972,8 +975,50 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
     }
 
     /** Layout the graph view.
+     *  If the configuration contains a parameter named
+     *  _layoutGraphDialog, the that parameter is assumed
+     *  to name a class that creates a modal dialog that displays
+     *  controls to change the layout.  The class should have a constructor
+     *  that takes a Frame argument. If the parameter cannot
+     *  be read, then the default Ptolemy layout mechanism in
+     *  {@link #layoutGraphWithPtolemyLayout() is used.
      */
     public void layoutGraph() {
+        boolean success = false;
+        try {
+            Configuration configuration = getConfiguration();
+            StringParameter layoutGraphDialogParameter = (StringParameter) configuration
+                .getAttribute("_layoutGraphDialog", Parameter.class);
+            if (layoutGraphDialogParameter == null) {
+                layoutGraphWithPtolemyLayout();
+                success = true;
+            } else {
+                String layoutGraphDialogClassName = layoutGraphDialogParameter.stringValue();
+                try {
+                    Class layoutGraphDialogClass = Class
+                        .forName(layoutGraphDialogClassName);
+                    Constructor layoutGraphDialogConstructor =  layoutGraphDialogClass.getDeclaredConstructor(NamedObj.class, String.class);
+                    EditorFactory editorFactory = (EditorFactory) layoutGraphDialogConstructor.newInstance(getModel(), "layoutGraphFactory");
+                    editorFactory.createEditor(getModel(), this);
+                    success = true;
+                } catch (Throwable throwable) {
+                    new Exception("Failed to invoke layout graph dialog class \""
+                            + layoutGraphDialogClassName
+                            + "\", which was read from the configuration.", throwable).printStackTrace();
+                    layoutGraphWithPtolemyLayout();
+                }
+            }
+        } catch (Throwable throwable) {
+            new Exception("Failed to read _layoutGraphDialogParameter from configuration",
+                    throwable).printStackTrace();
+            if (!success) {
+                layoutGraphWithPtolemyLayout();                
+            }
+        }
+    }
+
+    /** Layout the graph view using the default PtolemyLayout. */
+    public void layoutGraphWithPtolemyLayout() {
         GraphController controller = _getGraphController();
         AbstractBasicGraphModel model = _getGraphModel();
         LayoutTarget target = new PtolemyLayoutTarget(controller);
