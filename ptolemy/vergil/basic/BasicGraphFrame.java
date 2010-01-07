@@ -997,8 +997,14 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                 try {
                     Class layoutGraphDialogClass = Class
                         .forName(layoutGraphDialogClassName);
-                    Constructor layoutGraphDialogConstructor =  layoutGraphDialogClass.getDeclaredConstructor(NamedObj.class, String.class);
-                    EditorFactory editorFactory = (EditorFactory) layoutGraphDialogConstructor.newInstance(getModel(), "layoutGraphFactory");
+                    List layoutFactories = getModel().attributeList(layoutGraphDialogClass);
+                    EditorFactory editorFactory = null;
+                    if (layoutFactories.size() > 0) {
+                        editorFactory = (EditorFactory) layoutFactories.get(0);
+                    } else {
+                        Constructor layoutGraphDialogConstructor =  layoutGraphDialogClass.getDeclaredConstructor(NamedObj.class, String.class);
+                        editorFactory = (EditorFactory) layoutGraphDialogConstructor.newInstance(getModel(), "layoutGraphFactory");
+                    }
                     editorFactory.createEditor(getModel(), this);
                     success = true;
                 } catch (Throwable throwable) {

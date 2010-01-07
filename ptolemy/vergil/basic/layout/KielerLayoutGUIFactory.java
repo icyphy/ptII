@@ -65,6 +65,7 @@ public class KielerLayoutGUIFactory extends EditorFactory {
     public KielerLayoutGUIFactory(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
+        setPersistent(false);
     }
 
     ///////////////////////////////////////////////////////////////////
