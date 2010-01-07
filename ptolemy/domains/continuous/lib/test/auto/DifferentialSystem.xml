@@ -45,13 +45,19 @@
         </property>
         <property name="initialStates" class="ptolemy.data.expr.Parameter" value="[0.0, 1.0]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="257.0, 188.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{260.0, 190.0}">
         </property>
-        <property name="x1_dot" class="ptolemy.data.expr.Parameter" value="&quot;sin(x2+x1)+u&quot;">
+        <property name="x1_dot" class="ptolemy.data.expr.Parameter" value="sin(x2+x1)+u">
         </property>
-        <property name="x2_dot" class="ptolemy.data.expr.Parameter" value="&quot;u-1.0&quot;">
+        <property name="x2_dot" class="ptolemy.data.expr.Parameter" value="u-1.0">
         </property>
-        <property name="y" class="ptolemy.data.expr.Parameter" value="&quot;x1+x2&quot;">
+        <property name="y" class="ptolemy.data.expr.Parameter" value="x1+x2">
+        </property>
+        <property name="u" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <property name="x1" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <property name="x2" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
         <port name="u" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -59,106 +65,7 @@
         <port name="y" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
         </port>
-        <entity name="x1" class="ptolemy.domains.continuous.lib.Integrator">
-            <property name="initialState" class="ptolemy.actor.parameters.PortParameter" value="initialStates(0,0)">
-            </property>
-            <port name="impulse" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="SOUTH">
-                </property>
-            </port>
-            <port name="derivative" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-            </port>
-            <port name="state" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
-            <port name="initialState" class="ptolemy.actor.parameters.ParameterPort">
-                <property name="input"/>
-                <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="SOUTH">
-                </property>
-            </port>
-        </entity>
-        <entity name="x1_dot" class="ptolemy.actor.lib.Expression">
-            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="sin(x2+x1)+u">
-                <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
-                </property>
-            </property>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
-            <port name="x1" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-            </port>
-            <port name="x2" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-            </port>
-            <port name="u" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-            </port>
-        </entity>
-        <entity name="x2" class="ptolemy.domains.continuous.lib.Integrator">
-            <property name="initialState" class="ptolemy.actor.parameters.PortParameter" value="initialStates(0,1)">
-            </property>
-            <port name="impulse" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="SOUTH">
-                </property>
-            </port>
-            <port name="derivative" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-            </port>
-            <port name="state" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
-            <port name="initialState" class="ptolemy.actor.parameters.ParameterPort">
-                <property name="input"/>
-                <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="SOUTH">
-                </property>
-            </port>
-        </entity>
-        <entity name="x2_dot" class="ptolemy.actor.lib.Expression">
-            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="u-1.0">
-                <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
-                </property>
-            </property>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
-            <port name="x1" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-            </port>
-            <port name="x2" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-            </port>
-            <port name="u" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-            </port>
-        </entity>
-        <entity name="output_y" class="ptolemy.actor.lib.Expression">
-            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="x1+x2">
-                <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
-                </property>
-            </property>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
-            <port name="x1" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-            </port>
-            <port name="x2" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-            </port>
-        </entity>
-        <relation name="relation_x1" class="ptolemy.actor.TypedIORelation">
-            <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
-            </property>
-        </relation>
         <relation name="_R" class="ptolemy.actor.TypedIORelation">
-            <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
-            </property>
-        </relation>
-        <relation name="relation_x2" class="ptolemy.actor.TypedIORelation">
             <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
             </property>
         </relation>
@@ -166,40 +73,20 @@
             <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
             </property>
         </relation>
-        <relation name="relation_u" class="ptolemy.actor.TypedIORelation">
-            <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
-            </property>
-        </relation>
         <relation name="_R3" class="ptolemy.actor.TypedIORelation">
             <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
             </property>
         </relation>
-        <link port="u" relation="relation_u"/>
         <link port="y" relation="_R3"/>
-        <link port="x1.derivative" relation="_R"/>
-        <link port="x1.state" relation="relation_x1"/>
-        <link port="x1_dot.output" relation="_R"/>
-        <link port="x1_dot.x1" relation="relation_x1"/>
-        <link port="x1_dot.x2" relation="relation_x2"/>
-        <link port="x1_dot.u" relation="relation_u"/>
-        <link port="x2.derivative" relation="_R2"/>
-        <link port="x2.state" relation="relation_x2"/>
-        <link port="x2_dot.output" relation="_R2"/>
-        <link port="x2_dot.x1" relation="relation_x1"/>
-        <link port="x2_dot.x2" relation="relation_x2"/>
-        <link port="x2_dot.u" relation="relation_u"/>
-        <link port="output_y.output" relation="_R3"/>
-        <link port="output_y.x1" relation="relation_x1"/>
-        <link port="output_y.x2" relation="relation_x2"/>
     </entity>
     <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1.0, 1.188698266115, 1.3845214644905, 1.5839808665886, 1.783178678889, 1.9782477348325, 2.1657825427136, 2.3431485895047, 2.5086125762128, 2.6613056784683, 2.8010769410281, 2.7374912275048, 2.6794920190829, 2.6264598655789, 2.577848701594, 2.53317866709, 2.4920287332715, 2.4540296331037, 2.418857350104, 2.3862272697596, 2.3558890109737}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 0.1051622866319, 0.2213062203687, 0.3493314473924, 0.4899396434363, 0.6434791324728, 0.8097581821036, 0.9878550839259, 1.1759763902183, 1.3714297697526, 1.5707669026303, 1.570766902587, 1.5707669025437, 1.5707669025004, 1.5707669024571, 1.5707669024138, 1.5707669023705, 1.5707669023273, 1.570766902284, 1.5707669022407, 1.5707669021974}">
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-4">
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="515.0, 185.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{515.0, 185.0}">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
