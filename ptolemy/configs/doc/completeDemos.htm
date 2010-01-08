@@ -150,7 +150,7 @@ An recent implementation of Continuous Time semantics, for use with the <a href=
 <li>Hybrid Plant: <a href="../../domains/continuous/demo/HybridPlant/HybridPlant.xml">Deterministic</a>, 
 <a href="../../domains/continuous/demo/HybridPlant/RandomHybridPlant.xml">Random</a> (New in Ptolemy II 8.0)
 <li><a href="../../domains/continuous/demo/Hysteresis/Hysteresis.xml">Hysteresis</a> (New in Ptolemy II 8.0)
-<li><a href="../../domains/continuous/demo/Hysteresis/HysteresisWithRandomDelay.xml">HysteresisWithBernoulliLosses</a> (New in Ptolemy II 8.0)
+<li><a href="../../domains/continuous/demo/Hysteresis/HysteresisWithBernoulliLosses.xml">HysteresisWithBernoulliLosses</a> (New in Ptolemy II 8.0)
 <li><a href="../../domains/continuous/demo/Hysteresis/HysteresisWithRandomDelay.xml">HysteresisWithRandomDelay</a> (New in Ptolemy II 8.0)
 <li><a href="../../domains/continuous/demo/Hysteresis/HysteresisWithRandomLosses.xml">HysteresisWithRandomLosses</a> (New in Ptolemy II 8.0)
 <li><a href="../../domains/continuous/demo/LevelCrossingDetector/LevelCrossingDetector.xml">Level Crossing Detector</a>,
@@ -183,7 +183,6 @@ An recent implementation of Continuous Time semantics, for use with the <a href=
 <li><a href="../../domains/continuous/demo/Noise/SinusoidInNoise.xml">Sinusoid In Noise</a>) (New in Ptolemy II 8.0)
 <li><a href="../../data/unit/demo/StaticUnits/StaticUnits.xml">Static Units</a>
 <li><a href="../../domains/continuous/demo/SinuBouncingBall/SinuBouncingBall.xml">Ball Bouncing on a Sinusoidal Surface</a> (New in Ptolemy II 8.0)
-<li><a href="../../domains/continuous/demo/StickyMasses/StickyMasses.xml">Sticky Point Masses</a> (New in Ptolemy II 8.0)
 <li><a href="../../domains/continuous/demo/SquareWave/SquareWave.xml">Square Wave Response</a> (New in Ptolemy II 8.0)
 
 <!--/vergilDocs-->
@@ -318,12 +317,6 @@ visible parameters, and MonitorValue</a>
 <li><a href="../../domains/de/demo/LongRuns/LongRuns.xml">Long Runs</a>
 <li><a href="../../domains/de/demo/ModalModel/ModalModel.xml">Modal Model</a> 
 <li><a href="../../actor/lib/hoc/demo/ThreadedComposite/ParallelExecution.xml">Parallel Execution</a> (New in Ptolemy II 8.0)
-<!--/vergilDocs-->
-<!--Ptiny does not include GR-->
-<li><a href="../../domains/gr/demo/Pong/Pong.xml">Pong</a>  (Requires Java 3D, see the <a href="../../domains/gr/doc/main.htm">GR 
-domain</a>)  (New in Ptolemy II 8.0)
-<!--vergilDocs-->
-
 <!--/vergilDocs-->
 <!-- Ptiny and Kepler don't include backtracking -->
 <li><a href="../../backtrack/demo/PrimeTest/PrimeTest.xml">Prime Test with Backtracking</a> 
@@ -699,7 +692,7 @@ requires that JMF be installed:
 <h3><a name="wireless">Wireless</a></h3>
 <ul>
 <li><a href="../../domains/wireless/demo/AntennaPattern/TransmitAntennaPattern.xml">Antenna Pattern (Transmit)</a>
-<li><a href="../../domains/wireless/demo/AntennaPattern/TransmitAntennaPattern.xml">Antenna Pattern (Receiver)</a>
+<li><a href="../../domains/wireless/demo/AntennaPattern/ReceiveAntennaPattern.xml">Antenna Pattern (Receiver)</a>
 <li><a href="../../domains/wireless/demo/AntennaPattern/AntennaGainTest.xml">Antenna Gain Calculation</a>
 <li><a href="../../domains/wireless/demo/CircularRange/CircularRange.xml">Circular Range Channel</a>
 <li><a href="../../domains/wireless/demo/Collisions/Collisions.xml">Collisions</a>
@@ -784,16 +777,16 @@ Ptolemy II 8.0)
 <!-- Ptiny does not include data/properties -->
 <h3><a name="propertySystem">Property System</h3>
 <ul>
-<li><a href="../../../ptolemy/data/properties/demo/CarTracking/CarTracking.xml">CarTracking</a> (Simple dimension analysis) (New in Ptolemy II 8.0)</li>
-<li><a href="../../../ptolemy/data/properties/demo/CarTracking/CarTrackingSoSYM.xml">CarTrackingSoSYM</a> (Simple dimension analysis) (New in Ptolemy II 8.0)</li>
-<li><a href="../../../ptolemy/data/properties/demo/ConstNonconst/ConstNonconst.xml">ConstNonconst</a> (Constant propagation) (New in Ptolemy II 8.0)</li>
-<li><a href="../../../ptolemy/data/properties/demo/LogicalAND/LogicalAND.xml">LogicalAND</a> (New in Ptolemy II 8.0)</li>
-<li><a href="../../../ptolemy/data/properties/demo/LogicalOrBackward/LogicalOrBackward.xml">LogicalOrBackward</a> (New in Ptolemy II 8.0)</li>
-<li><a href="../../../ptolemy/data/properties/demo/NaomiConfigurer/NaomiConfigurer.xml">NaomiConfigurer</a> (New in Ptolemy II 8.0)</li>
-<li><a href="../../../ptolemy/data/properties/demo/RegressionTest/RegressionTest.xml">RegressionTest</a> (With the ModelAnalysis workflow actor) (New in Ptolemy II 8.0)</li>
-<li><a href="../../../ptolemy/data/properties/lattice/imageOntology/demo/SimpleImageAnnotation/SimpleImageAnnotation.xml">SimpleImageAnnotation</a> (New in Ptolemy II 8.0)</li>
-<li><a href="../../../ptolemy/data/properties/demo/Sinewave/Sinewave.xml">Sinewave</a> New in Ptolemy II 8.0)</li> 
-<li><a href="../../../ptolemy/data/properties/demo/Workflow/Workflow.xml">Workflow</a> (Workflow combined with GT) (New in Ptolemy II 8.0)</li> 
+<li><a href="../../data/properties/demo/CarTracking/CarTracking.xml">CarTracking</a> (Simple dimension analysis) (New in Ptolemy II 8.0)</li>
+<li><a href="../../data/properties/demo/CarTracking/CarTrackingSoSYM.xml">CarTrackingSoSYM</a> (Simple dimension analysis) (New in Ptolemy II 8.0)</li>
+<li><a href="../../data/properties/demo/ConstNonconst/ConstNonconst.xml">ConstNonconst</a> (Constant propagation) (New in Ptolemy II 8.0)</li>
+<li><a href="../../data/properties/demo/LogicalAND/LogicalAND.xml">LogicalAND</a> (New in Ptolemy II 8.0)</li>
+<li><a href="../../data/properties/demo/LogicalOrBackward/LogicalOrBackward.xml">LogicalOrBackward</a> (New in Ptolemy II 8.0)</li>
+<li><a href="../../data/properties/demo/NaomiConfigurer/NaomiConfigurer.xml">NaomiConfigurer</a> (New in Ptolemy II 8.0)</li>
+<li><a href="../../data/properties/demo/RegressionTest/RegressionTest.xml">RegressionTest</a> (With the ModelAnalysis workflow actor) (New in Ptolemy II 8.0)</li>
+<li><a href="../../data/properties/lattice/imageOntology/demo/SimpleImageAnnotation/SimpleImageAnnotation.xml">SimpleImageAnnotation</a> (New in Ptolemy II 8.0)</li>
+<li><a href="../../data/properties/demo/Sinewave/Sinewave.xml">Sinewave</a> New in Ptolemy II 8.0)</li> 
+<li><a href="../../data/properties/demo/Workflow/Workflow.xml">Workflow</a> (Workflow combined with GT) (New in Ptolemy II 8.0)</li> 
 </ul>
 
 <!-- Ptiny does not include these somewhat esoteric models -->
