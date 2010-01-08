@@ -113,12 +113,13 @@ public abstract class PropertySolver extends PropertySolverBase {
     }
 
     /**
-     * Check if there is any regression testing errors after resolving
-     * properties. If so, throw a new PropertyFailedRegressionTestException with
+     * Check if there are any regression testing errors after resolving
+     * properties. If so, throw a new PropertyResolutionException with
      * an error message that includes all the properties that does not match the
      * regression test values.
-     * @exception PropertyFailedRegressionTestException Thrown if there is any
-     * errors in the regression test.
+     * 
+     * @exception PropertyResolutionException Thrown if there are any
+     * errors from running the OntologySolver in the regression test.
      */
     public void checkErrors() throws PropertyResolutionException {
 
@@ -137,6 +138,13 @@ public abstract class PropertySolver extends PropertySolverBase {
         }
     }
 
+    
+    /**
+     * Check if there are any OntologySolver resolution errors after resolving
+     * properties. If so, throw an IllegalActionException.
+     * 
+     * @throws IllegalActionException If an exception is thrown by calling checkErrors()
+     */
     public void checkResolutionErrors() throws IllegalActionException {
         for (Object propertyable : getAllPropertyables()) {
             _recordUnacceptableSolution(propertyable, getProperty(propertyable));
@@ -173,6 +181,11 @@ public abstract class PropertySolver extends PropertySolverBase {
         }
     }
 
+    /**
+     * Return the PropertyMoMLHandler for this OntologySolver.
+     * 
+     * @return The PropertyMoMLHandler for the OntologySolver
+     */
     public PropertyMoMLHandler getMoMLHandler() {
         return _momlHandler;
     }
@@ -210,13 +223,19 @@ public abstract class PropertySolver extends PropertySolverBase {
     }
 
     /**
-     * Return the name of the trained exception attribute.
-     * @return The name of the trained exception attribute.
+     * Return the trained exception attribute for the OntologySolver.
+     * 
+     * @return The name of the trained exception attribute
      */
     public Attribute getTrainedExceptionAttribute() {
         return getAttribute(_TRAINED_EXCEPTION_ATTRIBUTE_NAME);
     }
 
+    /**
+     * Return the name of the trained exception attribute for the OntologySolver.
+     * 
+     * @return The name of the trained exception attribute
+     */
     public String getTrainedExceptionAttributeName() {
         return _TRAINED_EXCEPTION_ATTRIBUTE_NAME;
     }
@@ -312,12 +331,18 @@ public abstract class PropertySolver extends PropertySolverBase {
         return success;
     }
 
-    /** True if the solver is in clearing mode; otherwise false. */
+    /** True if the solver is in clear mode; otherwise false.
+     * 
+     * @return true if the OntologySolver is in clear mode, false otherwise
+     */
     public boolean isClear() {
         return action.getExpression().equals(PropertySolver.CLEAR);
     }
 
-    /** True if the solver is in resolution mode; otherwise false. */
+    /** True if the solver is in resolution mode; otherwise false.
+     * 
+     * @return true if the OntologySolver is in resolve mode, false otherwise
+     */
     public boolean isResolve() {
         return action.getExpression().equals(ANNOTATE)
                 || action.getExpression().equals(TRAINING);
@@ -335,17 +360,27 @@ public abstract class PropertySolver extends PropertySolverBase {
         return !_nonSettables.contains(object);
     }
 
-    /** True if the solver is in testing mode; otherwise false. */
+    /** True if the solver is in testing mode; otherwise false.
+     * 
+     * @return true if the OntologySolver is in test mode, false otherwise
+     */
     public boolean isTesting() {
         return action.getExpression().equals(PropertySolver.TEST);
     }
 
-    /** True if the solver is in training mode; otherwise false. */
+    /** True if the solver is in training mode; otherwise false.
+     * 
+     * @return true if the OntologySolver is in training mode, false otherwise
+     */
     public boolean isTraining() {
         return action.getExpression().equals(TRAINING);
     }
 
-    /** True if the solver is in viewing mode; otherwise false. */
+    /** True if the solver is in viewing mode; otherwise false.
+     * FIXME: Not sure what the view mode for the solver does...
+     * 
+     * @return true if the OntologySolver is in view mode, false otherwise
+     */
     public boolean isView() {
         return action.getExpression().equals(PropertySolver.VIEW);
     }
@@ -395,6 +430,9 @@ public abstract class PropertySolver extends PropertySolverBase {
     }
 
     /**
+     * Invoke the OntologySolver and run its algorithm to resolve
+     * which Concepts in the Ontology are assigned to each object in the
+     * model.
      * 
      */
     public void resolveProperties() throws KernelException {
@@ -402,30 +440,44 @@ public abstract class PropertySolver extends PropertySolverBase {
     }
 
     /**
-     * Resolve the properties.
-     * @exception KernelException
+     * Invoke the OntologySolver and run its algorithm to resolve
+     * which Concepts in the Ontology are assigned to each object in the
+     * model.
+     * 
+     * @param isInvoked Whether the solver is directly invoked or activated
+     * through solver dependencies.
+     * @return True if resolution succeeds as expected; Otherwise, false.
+     * @exception KernelException If the OntologySolver algorithm causes an exception
      */
     public boolean resolveProperties(boolean isInvoked) throws KernelException {
         return resolveProperties(_analyzer, isInvoked);
     }
 
     /**
-     * Resolve the properties (invoked from a ModelAnalyzer).
-     * @exception KernelException
+     * Invoke the OntologySolver from a model analyzer graph transformation
+     * object and run its algorithm to resolve which Concepts in the Ontology
+     * are assigned to each object in the model.
+     * 
+     * @param analyzer The model analyzer that invokes the solver. However, this
+     * is null if the solver is invoked directly from its GUI.
+     * @return True if resolution succeeds as expected; Otherwise, false.
+     * @exception KernelException If the OntologySolver algorithm causes an exception
      */
     public boolean resolveProperties(NamedObj analyzer) throws KernelException {
         return resolveProperties(analyzer, false);
     }
 
     /**
-     * Resolve the property values for the top-level entity that contains the
-     * solver.
+     * Invoke the OntologySolver for the top-level entity that contains
+     * the solver and run its algorithm to resolve which Concepts in the
+     * Ontology are assigned to each object in the model.
+     * 
      * @param analyzer The model analyzer that invokes the solver. However, this
      * is null if the solver is invoked directly from its GUI.
      * @param isInvoked Whether the solver is directly invoked or activated
      * through solver dependencies.
      * @return True if resolution succeeds as expected; Otherwise, false.
-     * @exception IllegalActionException TODO
+     * @exception KernelException If the OntologySolver algorithm causes an exception
      */
     public boolean resolveProperties(NamedObj analyzer, boolean isInvoked)
             throws KernelException {
@@ -559,6 +611,8 @@ public abstract class PropertySolver extends PropertySolverBase {
 
     /**
      * Prepare for automatic testing. In this base class, do nothing.
+     * 
+     * @param options The map of options for automatic testing
      */
     public void setOptions(Map options) {
         return;
@@ -649,6 +703,7 @@ public abstract class PropertySolver extends PropertySolverBase {
     ///////////////////////////////////////////////////////////////////
     ////                      public variables                     ////
 
+    /** String that represents the solver option for nondeep testing. */
     public static final String NONDEEP_TEST_OPTION = "-nondeep";
 
     ///////////////////////////////////////////////////////////////////
@@ -805,11 +860,11 @@ public abstract class PropertySolver extends PropertySolverBase {
         return attribute;
     }
 
-    /*
-     * Return the string representation of the recorded statistics.
+    /**
+     * Return the string representation of the recorded OntologySolver
+     * algorithm execution statistics.
      * 
      * @param separator The delimiter to separate the statistics fields.
-     * 
      * @return The string representation of the recorded statistics.
      */
     protected String _getStatsAsString(String separator) {
@@ -820,13 +875,12 @@ public abstract class PropertySolver extends PropertySolverBase {
         return result.toString();
     }
 
-    /*
-     * Resolve the property values for the specified top-level entity. Print out
-     * the name of the this solver. Sub-classes should overrides this method.
+    /**
+     * Resolve the Concept values for the specified top-level entity. Print out
+     * the name of the this OntologySolver. Sub-classes should override this method.
      * 
      * @param analyzer The specified model analyzer.
-     * 
-     * @exception IllegalActionException Not thrown in this base class.
+     * @exception KernelException Not thrown in this base class.
      */
     protected void _resolveProperties(NamedObj analyzer) throws KernelException {
 
@@ -950,6 +1004,9 @@ public abstract class PropertySolver extends PropertySolverBase {
      */
     private static String _TRAINED_EXCEPTION_ATTRIBUTE_NAME = "PropertyResolutionExceptionMessage";
 
+    /**
+     * Initialize solver algorithm execution statistics Map for OntologySolver.
+     */
     protected void _initializeStatistics() {
         _stats.put("has trained resolution errors", false);
         _stats.put("# of trained resolution errors", 0);
@@ -959,6 +1016,11 @@ public abstract class PropertySolver extends PropertySolverBase {
         _stats.put("# of manual annotations", 0);
     }
 
+    
+    /**
+     * Add error statistics for OntologySolver to its solver
+     * algorithm execution statistics Map.
+     */
     protected void _addErrorStatistics() {
         Integer errorCount = (Integer) _stats
                 .get("# of trained resolution errors");
