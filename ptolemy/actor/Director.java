@@ -977,13 +977,26 @@ public class Director extends Attribute implements Executable {
                     _debug("Invoking preinitialize(): ", ((NamedObj) actor)
                             .getFullName());
                 }
-                actor.preinitialize();
+                preinitialize(actor);
             }
         }
         _createReceivers(); // Undid this change temporarily since the move of createReceivers breaks HDF
         if (_debugging) {
             _debug(getFullName(), "Finished preinitialize().");
         }
+    }
+
+    /**
+     * Preintialize the actor.
+     * This method is used by directors that want to instrument calls to 
+     * preinitialize. {@link #preinitialize()} calls this method.
+     * @param actor The actor to be preinitialized.
+     * @exception IllegalActionException If thrown while the actor is being
+     * preinitialized.
+     * @see #preinitialize()
+     */
+    public void preinitialize(Actor actor) throws IllegalActionException {
+        actor.preinitialize();
     }
 
     /** Remove the specified object from the list of objects whose

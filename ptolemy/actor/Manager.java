@@ -679,7 +679,7 @@ public class Manager extends NamedObj implements Runnable {
                 // Note that the cast is safe, as everything in Ptolemy that
                 // is an actor is also a ComponentEntity.
                 if (((ComponentEntity) actor).isOpaque()) {
-                    actor.preinitialize();
+                    actor.getExecutiveDirector().preinitialize(actor);
                 }
 
                 // NOTE: To see why this is no longer needed, see the comment
