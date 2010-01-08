@@ -165,6 +165,12 @@ public class Case extends ModalModel {
      */
     private void _init() throws IllegalActionException,
             NameDuplicationException {
+        if (!_printedDeprecatedMessage) {
+            _printedDeprecatedMessage = true;
+            System.out.println("Warning: " + getFullName() 
+                    + ": modal.modal.Case has been deprecated"
+                    + " since March, 2006.  Use actor.lib.hoc.Case instead.");
+        }
         // Create the one and only state in the controller.
         _state = new State(_controller, "State");
         _controller.initialStateName.setExpression("State");
@@ -193,4 +199,11 @@ public class Case extends ModalModel {
         // want the sibling input ports that come with output ports.
         _default = new Refinement(this, "default");
     }
+
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    /** True if we have printed the deprecated message. */
+    private static boolean _printedDeprecatedMessage = false;
 }
