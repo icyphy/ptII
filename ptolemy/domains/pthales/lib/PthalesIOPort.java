@@ -554,34 +554,49 @@ public class PthalesIOPort extends TypedIOPort {
 
         // Output port linked and input port not defined
         if (outputPort != null
-            && inputPort != null
-            && (getInternalPattern(inputPort) == null || getInternalPattern(inputPort).size() == 0)) {
+                && inputPort != null
+                && (getInternalPattern(inputPort) == null || getInternalPattern(
+                        inputPort).size() == 0)) {
             Actor actor = (Actor) getContainer();
 
-            ((Parameter) inputPort.getAttribute("base"))
-                    .setExpression(((Parameter) outputPort.getAttribute("base"))
-                            .getExpression());
-            ((Parameter) inputPort.getAttribute("pattern"))
-                    .setExpression(((Parameter) outputPort
-                            .getAttribute("pattern")).getExpression());
-            ((Parameter) inputPort.getAttribute("tiling"))
-                    .setExpression(((Parameter) outputPort
-                            .getAttribute("tiling")).getExpression());
-            ((Parameter) inputPort.getAttribute("dimensionNames"))
-                    .setExpression(((Parameter) outputPort
-                            .getAttribute("dimensionNames")).getExpression());
-            ((Parameter) inputPort.getAttribute("size"))
-                    .setExpression(((Parameter) outputPort.getAttribute("size"))
-                            .getExpression());
+            if (outputPort.getAttribute("base") != null)
+                ((Parameter) inputPort.getAttribute("base"))
+                        .setExpression(((Parameter) outputPort
+                                .getAttribute("base")).getExpression());
+
+            if (outputPort.getAttribute("pattern") != null)
+                ((Parameter) inputPort.getAttribute("pattern"))
+                        .setExpression(((Parameter) outputPort
+                                .getAttribute("pattern")).getExpression());
+
+            if (outputPort.getAttribute("tiling") != null)
+                ((Parameter) inputPort.getAttribute("tiling"))
+                        .setExpression(((Parameter) outputPort
+                                .getAttribute("tiling")).getExpression());
+
+            if (outputPort.getAttribute("dimensionNames") != null)
+                ((Parameter) inputPort.getAttribute("dimensionNames"))
+                        .setExpression(((Parameter) outputPort
+                                .getAttribute("dimensionNames"))
+                                .getExpression());
+
+            if (outputPort.getAttribute("size") != null)
+                ((Parameter) inputPort.getAttribute("size"))
+                        .setExpression(((Parameter) outputPort
+                                .getAttribute("size")).getExpression());
 
             // Useless parameters for CompositeActors
             if (actor instanceof TypedAtomicActor) {
-                ((Parameter) inputPort.getAttribute("dataType"))
-                        .setExpression(((Parameter) outputPort
-                                .getAttribute("dataType")).getExpression());
-                ((Parameter) inputPort.getAttribute("dataTypeSize"))
-                        .setExpression(((Parameter) outputPort
-                                .getAttribute("dataTypeSize")).getExpression());
+                if (outputPort.getAttribute("dataType") != null)
+                    ((Parameter) inputPort.getAttribute("dataType"))
+                            .setExpression(((Parameter) outputPort
+                                    .getAttribute("dataType")).getExpression());
+
+                if (outputPort.getAttribute("dataTypeSize") != null)
+                    ((Parameter) inputPort.getAttribute("dataTypeSize"))
+                            .setExpression(((Parameter) outputPort
+                                    .getAttribute("dataTypeSize"))
+                                    .getExpression());
             }
         }
     }
