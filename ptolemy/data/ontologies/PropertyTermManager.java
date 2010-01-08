@@ -52,11 +52,18 @@ public class PropertyTermManager implements PropertyTermFactory {
 
     /**
      * Construct a new ptolemy.graph.InequalityTerm factory.
+     * 
+     * @param solver the OntologySolver that contains this PropertyTermManager
      */
     public PropertyTermManager(OntologySolver solver) {
         _solver = solver;
     }
 
+    /**
+     * Return a list of all the inequality terms contained in the PropertyTermManager.
+     * 
+     * @return The list of inequality terms for all objects in the model
+     */
     public List<ptolemy.graph.InequalityTerm> terms() {
         List<ptolemy.graph.InequalityTerm> result = new LinkedList<ptolemy.graph.InequalityTerm>();
         result.addAll(_propertyTerms.values());
@@ -69,7 +76,8 @@ public class PropertyTermManager implements PropertyTermFactory {
      * it returns the given object. Otherwise, it checks
      * its cache if a term object was created previously. Returns
      * the property term if it is found; otherwise, it creates
-     * and cache a new property term before returning it.
+     * and caches a new property term before returning it.
+     * 
      * @param object The given object.
      * @return The property term.
      */
@@ -101,30 +109,59 @@ public class PropertyTermManager implements PropertyTermFactory {
         return _propertyTerms.get(object);
     }
 
+    /**
+     * Get the list of affected InequalityTerms from the PropertyTermManager.
+     * FIXME: Not really sure what this method is used for. It appears to
+     * always return an empty ArrayList.
+     * 
+     * @param updateTerm This parameter doesn't appear to be used
+     * @return The list of inequality terms that are affected by the OntologySolver
+     * @throws IllegalActionException If an exception is thrown
+     */
+    public List<ptolemy.graph.InequalityTerm> getAffectedTerms(ptolemy.graph.InequalityTerm updateTerm)
+            throws IllegalActionException {
+        return new ArrayList<ptolemy.graph.InequalityTerm>();
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
     /** The mapping between property-able objects and their ptolemy.graph.InequalityTerm. */
     private HashMap<Object, ptolemy.graph.InequalityTerm> _propertyTerms = new HashMap<Object, ptolemy.graph.InequalityTerm>();
 
+    /** The OntologySolver that contains this PropertyTermManager. */
     protected OntologySolver _solver;
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner class                       ////
 
+    /**
+     * An InequalityTerm class that is used for ontology analysis and contains
+     * a reference to the associated object for the InequalityTerm.
+     * 
+     */
     public class InequalityTerm implements ptolemy.graph.InequalityTerm {
         ///////////////////////////////////////////////////////////////
         ////                       public inner methods            ////
+        
+        /** The model object associated with the InequalityTerm. */
         protected Object _object;
+        
         private boolean _isEffective;
 
+        /**
+         * Construct an InequalityTerm for the given model object.
+         * 
+         * @param object The model object associated with this InequalityTerm
+         */
         protected InequalityTerm(Object object) {
             _object = object;
             _isEffective = true;
         }
 
-        /** Return this TypedIOPort.
-         *  @return A TypedIOPort.
+        /** Return the model object associated with the InequalityTerm.
+         * 
+         *  @return The associated model object
          */
         public Object getAssociatedObject() {
             return _object;
@@ -132,7 +169,9 @@ public class PropertyTermManager implements PropertyTermFactory {
 
         /** Return null if this term is not effective. Otherwise, return
          *  the resolved property of this ptolemy.graph.InequalityTerm.
-         * @exception IllegalActionException
+         *  
+         * @exception IllegalActionException If an exception is thrown
+         * @see #setValue(Object)
          */
         public Object getValue() {
             if (_isEffective) {
@@ -157,6 +196,14 @@ public class PropertyTermManager implements PropertyTermFactory {
             return (new InequalityTerm[0]);
         }
 
+        /**
+         * Return an array of one element with this InequalityTerm if it is
+         * a constant InequalityTerm that cannot be changed.  If it can be changed
+         * then return an empty InequalityTerm array.
+         * 
+         * @return The InequalityTerm array with either one or zero elements
+         * that is returned.
+         */
         public InequalityTerm[] getConstants() {
             if (!isSettable()) {
                 InequalityTerm[] constant = new InequalityTerm[1];
@@ -191,6 +238,14 @@ public class PropertyTermManager implements PropertyTermFactory {
             }
         }
 
+        /**
+         * Return true if the InequalityTerm is an effective constraint for
+         * the OntologySolver, and false otherwise. Effective means the constraint
+         * will be used by the OntologySolver when it runs its algorithm.  If it
+         * is not effective, the constraint will not be used by the OntologySolver.
+         * 
+         * @return true if the InequalityTerm is effective, false otherwise
+         */
         public boolean isEffective() {
             return _isEffective;
         }
@@ -198,6 +253,7 @@ public class PropertyTermManager implements PropertyTermFactory {
         /** Test if the property of the port associated with this Term
          *  can be changed. The property can be changed if setEquals()
          *  is not called.
+         *  
          *  @return True if the property can be changed; false otherwise.
          */
         public boolean isSettable() {
@@ -207,6 +263,7 @@ public class PropertyTermManager implements PropertyTermFactory {
         /** Check whether the current value of this term is acceptable.
          *  This method delegates the check to the isTypeAcceptable()
          *  method of the outer class.
+         *  
          *  @return True if the current value is acceptable.
          */
         public boolean isValueAcceptable() {
@@ -222,14 +279,24 @@ public class PropertyTermManager implements PropertyTermFactory {
             return false;
         }
 
+        /**
+         * Sets whether the InequalityTerm constraint will be effective for
+         * the OntologySolver's algorithm.
+         * 
+         * @param isEffective true if the InequalityTerm should be effective,
+         * false if it should be ineffective
+         * @see #isEffective
+         */
         public void setEffective(boolean isEffective) {
             _isEffective = isEffective;
         }
 
         /** Set the property value of this term.
+         * 
          *  @param property The given property.
          *  @exception IllegalActionException If the new type violates
          *   the declared property of this port.
+         *  @see #getValue()
          */
         public void setValue(Object property) throws IllegalActionException {
             if (!isSettable()) {
@@ -251,10 +318,5 @@ public class PropertyTermManager implements PropertyTermFactory {
             return "(" + _object.toString() + ", " + getValue() + ")";
         }
 
-    }
-
-    public List<ptolemy.graph.InequalityTerm> getAffectedTerms(ptolemy.graph.InequalityTerm updateTerm)
-            throws IllegalActionException {
-        return new ArrayList<ptolemy.graph.InequalityTerm>();
     }
 }

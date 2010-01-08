@@ -863,22 +863,22 @@ public abstract class PropertySolver extends PropertySolverBase {
     protected static final String _eol = StringUtilities
             .getProperty("line.separator");
 
-    /** The display label for "annotate" in the action choices */
+    /** The display label for "annotate" in the action choices. */
     protected static final String ANNOTATE = "ANNOTATE";
 
-    /** The display label for "clear" in the action choices */
+    /** The display label for "clear" in the action choices. */
     protected static final String CLEAR = "CLEAR";
 
-    /** The display label for "clear annotation" in the action choices */
+    /** The display label for "clear annotation" in the action choices. */
     protected static final String CLEAR_ANNOTATION = "CLEAR_ANNOTATION";
 
-    /** The display label for "test" in the action choices */
+    /** The display label for "test" in the action choices. */
     protected static final String TEST = "TEST";
 
-    /** The display label for "training" in the action choices */
+    /** The display label for "training" in the action choices. */
     protected static final String TRAINING = "TRAINING";
 
-    /** The display label for "view" in the action choices */
+    /** The display label for "view" in the action choices. */
     protected static final String VIEW = "VIEW";
 
     ///////////////////////////////////////////////////////////////////

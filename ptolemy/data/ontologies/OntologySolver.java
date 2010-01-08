@@ -63,7 +63,7 @@ import ptolemy.util.FileUtilities;
 //// OntologySolver
 
 /**
- * An instance of this solver contains a <i>use case</i>, which itself
+ * An instance of this solver contains an <i>ontology</i>, which itself
  * contains a lattice and default constraints.
  * <p>
  * This class is based on the PropertyConstraintSolver in the properties package
@@ -78,10 +78,14 @@ import ptolemy.util.FileUtilities;
 public class OntologySolver extends PropertySolver implements Testable {
 
     /**
-     * @param container The given container.
-     * @param name The given name
-     * @exception IllegalActionException
-     * @exception NameDuplicationException
+     * Constructor for the OntologySolver.
+     * 
+     * @param container The model that contains the OntologySolver
+     * @param name The name of the OntologySolver
+     * @exception IllegalActionException If there is any problem creating the
+     * OntologySolver object.
+     * @exception NameDuplicationException If there is already a component
+     * in the container with the same name
      */
     public OntologySolver(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
@@ -146,14 +150,113 @@ public class OntologySolver extends PropertySolver implements Testable {
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
+    
+    /** 
+     * String that represents the setting for default actor constraints.
+     * <ul>
+     * <li>"in >= out" The actor inputs must be >= the actor outputs
+     * <li>"out >= in" The actor outputs must be >= the actor inputs
+     * <li>"out == in" The actor outputs must == the actor inputs
+     * <li>"out == meet(in1, in2, ...)" The actor outputs must == the
+     * least upper bound of the outputs
+     * <li>"in == meet(out1, out2, ...)" The actor inputs must == the
+     * least upper bound of the outputs
+     * <li>"NONE" No constraints between the actor inputs and outputs
+     * </ul>
+     */
+    public StringParameter actorConstraintType;
 
     /**
-     * 
+     * String that represents the setting for default composite connection constraints.
+     * <ul>
+     * <li>"src >= sink" The source must be >= the sink of each composite connection
+     * <li>"sink >= src" The sink must be >= the source of each composite connection
+     * <li>"sink == src" The sink must == the source of each composite connection
+     * <li>"src == meet(sink1, sink2, ...)" The source must == the least upper bound
+     * of the sink of each composite connection
+     * <li>"sink == meet(src1, src2, ...)" The sink must == the least upper bound
+     * of the source of each composite connection
+     * <li>"NONE" No constraints between the sources and sinks of composite connections
+     * </ul>
      */
-    public static enum ConstraintType {
-        EQUALS, NONE, NOT_EQUALS, SINK_EQUALS_GREATER, SINK_EQUALS_MEET, SINK_GREATER, SRC_EQUALS_GREATER, SRC_EQUALS_MEET, SRC_GREATER
-    }
+    public StringParameter compositeConnectionConstraintType;
 
+    /**
+     * String that represents the setting for default connection constraints.
+     * <ul>
+     * <li>"src >= sink" The source must be >= the sink of each connection
+     * <li>"sink >= src" The sink must be >= the source of each connection
+     * <li>"sink == src" The sink must == the source of each connection
+     * <li>"src == meet(sink1, sink2, ...)" The source must == the least upper bound
+     * of the sink of each connection
+     * <li>"sink == meet(src1, src2, ...)" The sink must == the least upper bound
+     * of the source of each connection
+     * <li>"NONE" No constraints between the sources and sinks of connections
+     * </ul>
+     */
+    public StringParameter connectionConstraintType;
+
+    /**
+     * String that represents the setting for default AST expression constraints.
+     * <ul>
+     * <li>"child >= parent" The child node must be >= the parent node
+     * <li>"parent >= child" The parent node must be >= the child node
+     * <li>"parent == child" The parent node must == the child node
+     * <li>"parent == meet(child1, child2, ...)" The parent node must == the least
+     * upper bound of the child nodes
+     * <li>"NONE"
+     * </ul>
+     */
+    public StringParameter expressionASTNodeConstraintType;
+
+    /**
+     * String that represents the setting for default finite state machine constraints.
+     * <ul>
+     * <li>"src >= sink" The source must be >= the sink of each state transition
+     * <li>"sink >= src" The sink must be >= the source of each state transition
+     * <li>"sink == src" The sink must == the source of each state transition
+     * <li>"src == meet(sink1, sink2, ...)" The source must == the least upper bound
+     * of the sink of each state transition
+     * <li>"sink == meet(src1, src2, ...)" The sink must == the least upper bound
+     * of the source of each state transition
+     * <li>"NONE" No constraints between the sources and sinks of state transitions
+     * </ul>
+     */
+    public StringParameter fsmConstraintType;
+
+    /** Holds the value of the directory location for the log file for the OntologySolver. */
+    public FileParameter logDirectory;
+
+    /** 
+     * Holds the value of the logMode. "true" to enable logging for the
+     * OntologySolver and "false" to disable logging.
+     */
+    public Parameter logMode;
+    
+    /**
+     * Indicate whether to compute the least or greatest fixed point solution.
+     * <ul>
+     * <li> "least" Solve for least fixed point
+     * <li> "greatest" Solve for greatest fixed point
+     * </ul>
+     */
+    public StringParameter solvingFixedPoint;
+
+    /**
+     * Holds the value of the directory locatino for the trained constraints
+     * for regression tests for the OntologySolver resolution.
+     */
+    public FileParameter trainedConstraintDirectory;
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                     public methods                        ////
+    
+    /**
+     * Add the specified object to the hash table of manually annotated
+     * objects in the model.
+     * 
+     * @param object The java Object to be added to the hash table
+     */
     public void addAnnotated(Object object) {
         _annotatedObjects.add(object);
     }
@@ -172,12 +275,26 @@ public class OntologySolver extends PropertySolver implements Testable {
         super.attributeChanged(attribute);
     }
 
+    /**
+     * Get the list of affected InequalityTerms from the OntologySolver's
+     * PropertyTermManager.
+     * FIXME: Not really sure what this method is used for. The call to
+     * _propertyTermManager.getAffectedTerms() appears to always return
+     * an empty ArrayList.
+     * 
+     * @param updateTerm This parameter doesn't appear to be used
+     * @return The list of inequality terms that are affected by the OntologySolver
+     * @throws IllegalActionException If an exception is thrown
+     */
     public List<ptolemy.graph.InequalityTerm> getAffectedTerms(ptolemy.graph.InequalityTerm updateTerm)
             throws IllegalActionException {
         return _propertyTermManager.getAffectedTerms(updateTerm);
     }
 
     /**
+     * Get the ConstraintManager that collects and maintains all the inequality
+     * constraints for the OntologySolver.
+     * 
      * @return the constraintManager
      */
     public ConstraintManager getConstraintManager() {
@@ -189,6 +306,8 @@ public class OntologySolver extends PropertySolver implements Testable {
      * node.
      * @param node The given ASTPtRootNode.
      * @return The associated property constraint adapter.
+     * @throws IllegalActionException If an exception is thrown in the private
+     * _getHelper method
      */
     public PropertyConstraintASTNodeHelper getHelper(ASTPtRootNode node)
             throws IllegalActionException {
@@ -201,6 +320,8 @@ public class OntologySolver extends PropertySolver implements Testable {
      * component.
      * @param component The given component
      * @return The associated property constraint adapter.
+     * @throws IllegalActionException If an exception is thrown in the private
+     * _getHelper method
      */
     public PropertyHelper getHelper(NamedObj component)
             throws IllegalActionException {
@@ -211,15 +332,15 @@ public class OntologySolver extends PropertySolver implements Testable {
     /**
      * Return the property constraint adapter associated with the given object.
      * @param object The given object.
+     * @return The associated property constraint adapter.
+     * @throws IllegalActionException If an exception is thrown in the private
+     * _getHelper method
      */
     public PropertyHelper getHelper(Object object)
             throws IllegalActionException {
 
         return _getHelper(object);
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                     public methods                        ////
 
     /**
      * Return the property value associated with the specified object.
@@ -244,6 +365,12 @@ public class OntologySolver extends PropertySolver implements Testable {
         return getPropertyTermManager().getPropertyTerm(object);
     }
 
+    /**
+     * Return the property term manager that collects and maintains a hash map
+     * that maps all model objects to their the inequality terms for the OntologySolver.
+     * 
+     * @return The property term manager for the OntologySolver
+     */
     public PropertyTermFactory getPropertyTermManager() {
         if (_propertyTermManager == null) {
             _propertyTermManager = _getPropertyTermManager();
@@ -251,6 +378,13 @@ public class OntologySolver extends PropertySolver implements Testable {
         return _propertyTermManager;
     }
 
+    /**
+     * Return true if the given model object has been annotated with a manual annotation
+     * constraint.
+     * 
+     * @param object The model object to be checked to see if it is annotated
+     * @return true if the model object is annotated, false otherwise
+     */
     public boolean isAnnotatedTerm(Object object) {
         return _annotatedObjects.contains(object);
     }
@@ -275,6 +409,11 @@ public class OntologySolver extends PropertySolver implements Testable {
         return action.getExpression().equals(INITIALIZE_SOLVER);
     }
 
+    /**
+     * Return true if the OntologySolver log mode is enabled, false otherwise.
+     * 
+     * @return true if the OntologySolver log mode is enabled, false otherwise
+     */
     public Boolean isLogMode() {
         return _logMode;
     }
@@ -291,15 +430,18 @@ public class OntologySolver extends PropertySolver implements Testable {
                 || super.isResolve();
     }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
-
     public void reset() {
         super.reset();
         _propertyTermManager = null;
         _trainedConstraints.clear();
     }
 
+    /**
+     * Set the log mode for the OntologySolver. True enables the log mode
+     * and false disables the log mode.
+     * 
+     * @param isLogMode Boolean value to set the log mode
+     */
     public void setLogMode(boolean isLogMode) {
         _logMode = isLogMode;
     }
@@ -453,6 +595,8 @@ public class OntologySolver extends PropertySolver implements Testable {
      * Resolve the property values for the toplevel entity that contains this
      * solver, given the model analyzer that invokes this.
      * @param analyzer The given model analyzer.
+     * @throws KernelException If there is an exception thrown during the OntologySolver
+     * resolution
      */
     protected void _resolveProperties(NamedObj analyzer) throws KernelException {
         super._resolveProperties(analyzer);
@@ -981,10 +1125,12 @@ public class OntologySolver extends PropertySolver implements Testable {
     }
 
     /**
-     * Return the constraint type.
-     * @param typeValue
-     * @return The constraint type.
-     * @exception IllegalActionException
+     * Return the constraint type based on the string parsed from the OntologySolver
+     * dialog box.
+     * 
+     * @param typeValue The string representing the constraint type to be parsed
+     * @return The constraint type as one of the enumerated ConstraintType values.
+     * @exception IllegalActionException If an exception is thrown.
      */
     protected static ConstraintType _getConstraintType(String typeValue)
             throws IllegalActionException {
@@ -1252,42 +1398,57 @@ public class OntologySolver extends PropertySolver implements Testable {
                             + "\".");
         }
     }
-
-    public StringParameter actorConstraintType;
-
-    public StringParameter compositeConnectionConstraintType;
-
-    public StringParameter connectionConstraintType;
-
-    public StringParameter expressionASTNodeConstraintType;
-
-    public StringParameter fsmConstraintType;
-
-    public FileParameter logDirectory;
-
+ 
+    
+    /**
+     * An enumeration type to represent the types of constraints for
+     * default constraint settings for actor inputs and outputs, connections
+     * and finite state machine transitions.
+     */
+    public static enum ConstraintType {
+        /** Represents that the two sides must be equal. */
+        EQUALS,
+        
+        /** Represents that there is no constraint between the two sides. */
+        NONE,
+        
+        /** Represents that the two sides must be unequal. */
+        NOT_EQUALS,
+        
+        /** Represents that the sink must be >= the source. */
+        SINK_EQUALS_GREATER,
+        
+        /** Represents that the sink must == the least upper bound of all sources. */
+        SINK_EQUALS_MEET,
+        
+        /** Represents that the sink must be > the source. */
+        SINK_GREATER,
+        
+        /** Represents that the source must be >= the sink. */
+        SRC_EQUALS_GREATER,
+        
+        /** Represents that the source must == the least upper bound of all sinks. */
+        SRC_EQUALS_MEET,
+        
+        /** Represents that the source must be > the sink. */
+        SRC_GREATER
+    }
+    
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    public Parameter logMode;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     /**
-     * Indicate whether to compute the least or greatest fixed point solution.
-     */
-    public StringParameter solvingFixedPoint;
-
-    public FileParameter trainedConstraintDirectory;
-
-    /**
-     * The set of Object that has been manually annotated.
+     * The set of Objects that have been manually annotated.
      */
     private final HashSet<Object> _annotatedObjects = new HashSet<Object>();
 
     private final ConstraintManager _constraintManager = new ConstraintManager(
             this);
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
-
+    
     private boolean _logMode;
 
     private PropertyTermManager _propertyTermManager;
@@ -1298,10 +1459,23 @@ public class OntologySolver extends PropertySolver implements Testable {
      */
     private final List<String> _trainedConstraints = new LinkedList<String>();
 
+    /**
+     * The string that identifies whether the OntologySolver should use
+     * a user-defined lattice.  This is obsolete and should be removed.
+     */
     protected static final String _USER_DEFINED_LATTICE = "Attribute::";
 
+    /**
+     * The string that represents the menu choice to set the OntologySolver
+     * to only collect all the constraints in the model without actually running
+     * the solver algorithm.
+     */
     protected static final String COLLECT_CONSTRAINTS = "COLLECT_CONSTRAINTS";
 
+    /**
+     * The string that represents the menu choice to set the OntologySolver
+     * to initialize the constraints in the solving algorithm without running it.
+     */
     protected static final String INITIALIZE_SOLVER = "INITIALIZE_SOLVER";
 
 }
