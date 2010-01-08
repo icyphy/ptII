@@ -62,6 +62,7 @@ JSRCS = \
 	ZeroOrderHold.java
 
 OTHER_FILES_TO_BE_JARED = \
+	BandlimitedNoise.xml \
 	BandlimitedNoiseIcon.xml \
 	ContinuousClock.xml \
 	ContinuousClockIcon.xml \
