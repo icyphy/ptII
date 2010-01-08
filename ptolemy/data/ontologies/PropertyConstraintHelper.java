@@ -142,9 +142,11 @@ public class PropertyConstraintHelper extends PropertyHelper {
     }
 
     /**
-     * Return the associated InequalityTerm.
-     * @param object
-     * @return The InequalityTerm.
+     * Return the InequalityTerm associated with the given model object.
+     * 
+     * @param object The given model object for which to find the InequalityTerm in
+     * the OntologySolver
+     * @return The InequalityTerm associated with the model object
      */
     public InequalityTerm getPropertyTerm(Object object) {
         return getSolver().getPropertyTerm(object);
@@ -158,10 +160,27 @@ public class PropertyConstraintHelper extends PropertyHelper {
         return (OntologySolver) _solver;
     }
 
+    /**
+     * Return true if the given model object has been annotated with a manual annotation
+     * constraint. This calls the OntologySolver's
+     * {@linkplain OntologySolver#isAnnotatedTerm(Object) isAnnotatedTerm()} method.
+     * 
+     * @param object The model object to be checked to see if it is annotated
+     * @return true if the model object is annotated, false otherwise
+     */
     public boolean isAnnotated(Object object) {
         return ((OntologySolver) _solver).isAnnotatedTerm(object);
     }
 
+    /**
+     * Returns true if the interconnectConstraintType is for sources, false otherwise.
+     * It will return only true if {@linkplain #interconnectConstraintType
+     * interconnectConstraintType} is set to either
+     * {@linkplain ConstraintType#SRC_EQUALS_GREATER SRC_EQUALS_GREATER} or
+     * {@linkplain ConstraintType#SRC_EQUALS_MEET SRC_EQUALS_MEET}
+     * 
+     * @return true if the interconnectConstraintType is for sources, false otherwise
+     */
     public boolean isConstraintSource() {
         boolean constraintSource = interconnectConstraintType == ConstraintType.SRC_EQUALS_MEET
                 || interconnectConstraintType == ConstraintType.SRC_EQUALS_GREATER;
@@ -170,19 +189,37 @@ public class PropertyConstraintHelper extends PropertyHelper {
 
     /**
      * Set an inequality constraint between the two specified objects, such that
-     * the property value of object1 is at least as great as the property value
+     * the Concept value of object1 is greater than or equal to the Concept value
      * of object2.
-     * @param object1 The first object.
-     * @param object2 The second object.
+     * 
+     * @param object1 The model object on the LHS of the >= inequality
+     * @param object2 The model object on the RHS of the >= inequality
      */
     public void setAtLeast(Object object1, Object object2) {
         _setAtLeast(getPropertyTerm(object1), getPropertyTerm(object2), true);
     }
 
+    /**
+     * Set an inequality constraint between the two specified objects, such that
+     * the Concept value of object1 is greater than or equal to the Concept value
+     * of object2.
+     * 
+     * @param object1 The model object on the LHS of the >= inequality
+     * @param object2 The model object on the RHS of the >= inequality
+     * @param isBase true if the Inequality is composeable, false otherwise
+     */
     public void setAtLeast(Object object1, Object object2, boolean isBase) {
         _setAtLeast(getPropertyTerm(object1), getPropertyTerm(object2), isBase);
     }
 
+    /**
+     * Set a default inequality constraint between the two specified objects, such that
+     * the Concept value of term1 is greater than or equal to the Concept value
+     * of term2.
+     * 
+     * @param term1 The model object on the LHS of the >= inequality
+     * @param term2 The model object on the RHS of the >= inequality
+     */
     public void setAtLeastByDefault(Object term1, Object term2) {
         setAtLeast(term1, term2);
 
@@ -192,6 +229,16 @@ public class PropertyConstraintHelper extends PropertyHelper {
         }
     }
 
+    /**
+     * Set an inequality constraint between the two specified objects, such that
+     * the Concept value of term1 is greater than or equal to the Concept value
+     * of term2.  This constraint is specified by a user-defined manual annotation
+     * in the model, and the statistics on the manual annotations for the
+     * OntologySolver is incremented.
+     * 
+     * @param term1 The model object on the LHS of the >= inequality
+     * @param term2 The model object on the RHS of the >= inequality
+     */
     public void setAtLeastManualAnnotation(Object term1, Object term2) {
         setAtLeast(term1, term2);
 
@@ -204,31 +251,49 @@ public class PropertyConstraintHelper extends PropertyHelper {
 
     /**
      * Set an inequality constraint between the two specified objects, such that
-     * the property value of object1 is at most the property value of object2.
-     * @param object1 The first object.
-     * @param object2 The second object.
+     * the Concept value of object1 is less than or equal to the Concept value
+     * of object2.
+     * 
+     * @param object1 The model object on the LHS of the <= inequality
+     * @param object2 The model object on the RHS of the <= inequality
      */
     public void setAtMost(Object object1, Object object2) {
         _setAtLeast(getPropertyTerm(object2), getPropertyTerm(object1), true);
     }
 
+    /**
+     * Set an inequality constraint between the two specified objects, such that
+     * the Concept value of object1 is less than or equal to the Concept value
+     * of object2.
+     * 
+     * @param object1 The model object on the LHS of the <= inequality
+     * @param object2 The model object on the RHS of the <= inequality
+     * @param isBase true if the Inequality is composeable, false otherwise
+     */
     public void setAtMost(Object object1, Object object2, boolean isBase) {
         _setAtLeast(getPropertyTerm(object2), getPropertyTerm(object1), isBase);
     }
 
     /**
-     * Create constraints that set the property of the given objects same as
-     * each other. It creates two inequalities that constraint the first object
-     * to be at least the second, and then constraint the second to be at least
-     * the first.
-     * @param object1 The given port.
-     * @param object2 The given function term.
+     * Set an equality constraint between the two specified objects, such that
+     * the Concept value of object1 is equal to the Concept value
+     * of object2.
+     * 
+     * @param object1 The model object on the LHS of the equality
+     * @param object2 The model object on the RHS of the equality
      */
     public void setSameAs(Object object1, Object object2) {
         setAtLeast(object1, object2);
         setAtLeast(object2, object1);
     }
 
+    /**
+     * Set a default equality constraint between the two specified objects, such that
+     * the Concept value of term1  equal to the Concept value of term2.
+     * 
+     * @param term1 The model object on the LHS of the equality
+     * @param term2 The model object on the RHS of the equality
+     */
     public void setSameAsByDefault(Object term1, Object term2) {
         setSameAs(term1, term2);
 
@@ -238,6 +303,16 @@ public class PropertyConstraintHelper extends PropertyHelper {
         }
     }
 
+    /**
+     * Set an equality constraint between the two specified objects, such that
+     * the Concept value of term1 is equal to the Concept value
+     * of term2.  This constraint is specified by a user-defined manual annotation
+     * in the model, and the statistics on the manual annotations for the
+     * OntologySolver is incremented.
+     * 
+     * @param term1 The model object on the LHS of the equality
+     * @param term2 The model object on the RHS of the equality
+     */
     public void setSameAsManualAnnotation(Object term1, Object term2) {
         setSameAs(term1, term2);
 
@@ -252,15 +327,25 @@ public class PropertyConstraintHelper extends PropertyHelper {
     ////                           public variable                 ////
 
     /**
-     * 
+     * The default constraint type for connections between actors.
      */
     public ConstraintType interconnectConstraintType;
 
     ///////////////////////////////////////////////////////////////////
     ////                        public inner class                 ////
 
+    /**
+     * Specialized Inequality class for the LatticeOntologyAdapter class.
+     */
     public class Inequality extends ptolemy.graph.Inequality {
 
+        /**
+         * The constructor for the Inequality constraint.
+         * 
+         * @param lesserTerm The lesser term of the Inequality
+         * @param greaterTerm The greater term of the Inequality
+         * @param isBase true if the Inequality is composeable, false otherwise
+         */
         public Inequality(InequalityTerm lesserTerm, InequalityTerm greaterTerm,
                 boolean isBase) {
             super(lesserTerm, greaterTerm);
@@ -269,13 +354,18 @@ public class PropertyConstraintHelper extends PropertyHelper {
             _adapter = PropertyConstraintHelper.this;
         }
 
+        /**
+         * Return the OntologyAdapter associated with this Inequality.
+         * 
+         * @return The associated OntologyAdapter
+         */
         public PropertyHelper getHelper() {
             return _adapter;
         }
 
         /**
-         * Return true if this inequality is composable; otherwise, false.
-         * @return Whether this inequality is composable.
+         * Return true if this inequality is composeable; otherwise, false.
+         * @return Whether this inequality is composeable.
          */
         public boolean isBase() {
             return _isBase;
@@ -311,9 +401,13 @@ public class PropertyConstraintHelper extends PropertyHelper {
     ////                         protected methods                 ////
 
     /**
+     * Add default constraints for the actor referred to by this OntologyAdapter
+     * based on the given ConstraintType.
      * 
-     * @param actorConstraintType
-     * @exception IllegalActionException
+     * @see ConstraintType
+     * @param actorConstraintType The given ConstraintType for the default constraints
+     * for the actor referred to by this OntologyAdapter
+     * @exception IllegalActionException If an exception is thrown
      */
     protected void _addDefaultConstraints(ConstraintType actorConstraintType)
             throws IllegalActionException {
@@ -363,6 +457,12 @@ public class PropertyConstraintHelper extends PropertyHelper {
         return new ParseTreeConstraintAnnotationEvaluator();
     }
 
+    /**
+     * Set default Inequality constraints for all attributes that can
+     * be evaluated to a Concept in the Ontology. This method parses each
+     * attribute and sets a default constraint between the root AST node and
+     * its attribute, if the attribute was parseable.
+     */
     protected void _constraintAttributes() {
 
         for (Attribute attribute : _getPropertyableAttributes()) {
@@ -392,10 +492,18 @@ public class PropertyConstraintHelper extends PropertyHelper {
     }
 
     /**
-     * @param constraintType
-     * @param object
-     * @param objectList
-     * @exception IllegalActionException
+     * Set default constraints between the given object and a list of objects based
+     * on the given constraintType.  The given object is the sink and the list of objects
+     * are the sources.
+     * 
+     * @see ConstraintType
+     * @see #setAtLeastByDefault(Object, Object)
+     * @see #setSameAsByDefault(Object, Object)
+     * @param constraintType The given ConstraintType to be used for the default constraints
+     * @param object The given object that represents the sink for the default constraints
+     * @param objectList The list of objects passed in as a {@linkplain List} that
+     * represents the sources for the default constraints
+     * @throws IllegalActionException If an exception is thrown
      */
     protected void _constraintObject(ConstraintType constraintType,
             Object object, List objectList) throws IllegalActionException {
@@ -440,6 +548,20 @@ public class PropertyConstraintHelper extends PropertyHelper {
         }
     }
 
+    /**
+     * Set default constraints between the given object and a list of objects based
+     * on the given constraintType.  The given object is the sink and the list of objects
+     * are the sources.
+     * 
+     * @see ConstraintType
+     * @see #setAtLeastByDefault(Object, Object)
+     * @see #setSameAsByDefault(Object, Object)
+     * @param constraintType The given ConstraintType to be used for the default constraints
+     * @param object The given object that represents the sink for the default constraints
+     * @param objectList The list of objects passed in as a {@linkplain Set} that
+     * represents the sources for the default constraints
+     * @throws IllegalActionException If an exception is thrown
+     */
     protected void _constraintObject(ConstraintType constraintType,
             Object object, Set<Object> objectList)
             throws IllegalActionException {
@@ -449,12 +571,13 @@ public class PropertyConstraintHelper extends PropertyHelper {
 
     /**
      * Return the list of constrained ports given the flag whether source or
-     * sink ports should be constrainted. If source ports are constrained, it
-     * returns the list of input ports of the assoicated actor; otherwise, it
+     * sink ports should be constrained. If source ports are constrained, it
+     * returns the list of input ports of the associated actor; otherwise, it
      * returns the list of output ports.
+     * 
      * @param constraintSource The flag that indicates whether source or sink
-     * ports are constrainted.
-     * @return The list of constrainted ports.
+     * ports are constrained.
+     * @return The list of constrained ports.
      */
     protected List _getConstraintedPorts(boolean constraintSource) {
         Actor actor = (Actor) getComponent();
@@ -495,10 +618,12 @@ public class PropertyConstraintHelper extends PropertyHelper {
     }
 
     /**
-     * Create a constraint that set the first term to be at least the second
-     * term.
-     * @param term1 The greater term.
-     * @param term2 The lesser term.
+     * Create a constraint that sets the first term to be greater than or
+     * equal to the second term.
+     * 
+     * @param term1 The InequalityTerm on the LHS of the >= inequality
+     * @param term2 The InequalityTerm on the RHS of the >= inequality
+     * @param isBase true if the Inequality is composeable, false otherwise
      */
     protected void _setAtLeast(InequalityTerm term1, InequalityTerm term2,
             boolean isBase) {
@@ -517,9 +642,26 @@ public class PropertyConstraintHelper extends PropertyHelper {
     }
 
     /**
+     * Set the default constraint type for connections for the model component referred
+     * to by this OntologyAdapter for the given OntologySolver, depending on what type of
+     * component it is.  This method is recursive and
+     * will set the default constraints for the OntologyAdapters for all subcomponents
+     * of this model component as well.
      * 
-     * @param constraintType
-     * @exception IllegalActionException
+     * @see ConstraintType
+     * @param constraintType The default ConstraintType for generic model component
+     * connections; will be used if the model component is not one of the following
+     * types
+     * @param compositeConstraintType The default ConstraintType for
+     * composite actor connections; will be used if the model component is a
+     * composite actor
+     * @param fsmConstraintType The default ConstraintType for
+     * finite state machine transition connections; will be used if the model component
+     * is a ModalModel component or an FSMActor
+     * @param expressionASTNodeConstraintType The default ConstraintType
+     * for Ptolemy expression language AST nodes; will be used it the model component
+     * is an AST node
+     * @throws IllegalActionException If an exception is thrown
      */
     protected void _setConnectionConstraintType(ConstraintType constraintType,
             ConstraintType compositeConstraintType,
@@ -576,6 +718,16 @@ public class PropertyConstraintHelper extends PropertyHelper {
      * removeConstraints.add(inequality); } } }
      * _constraints.removeAll(removeConstraints); }
      */
+    
+    /**
+     * Set the effective terms for the Inequality constraints for the model component
+     * referred to by this OntologyAdapter.  This method does nothing in the base class
+     * and is overridden in subclasses for specific cases where an OntologySolver wants
+     * to only set certain InequalityTerms as effective to be used in the
+     * OntologySolver algorithm.
+     * 
+     * @see PropertyTermManager.InequalityTerm#isEffective isEffective()
+     */
     protected void _setEffectiveTerms() {
         // do nothing in here, overwrite use-case specific!
 
@@ -603,9 +755,14 @@ public class PropertyConstraintHelper extends PropertyHelper {
     ///////////////////////////////////////////////////////////////////
     ////                       protected variables                 ////
 
+    /** The list of Inequality constraints contained by this LatticeOntologyAdapter. */
     protected List<Inequality> _ownConstraints = new LinkedList<Inequality>();
 
-    /** The property lattice. */
+    /**
+     * The Ontology lattice for the Ontology used by the LatticeOntologyAdapter.
+     * This should be removed since we can now get Concepts in the lattice directly to
+     * the ontology itself.
+     */
     protected ConceptGraph _lattice;
 
     /** Indicate whether this adapter uses the default actor constraints. */
