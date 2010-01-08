@@ -15,12 +15,11 @@
 		<!-- CT domain has been replaced by continuous.
             input source="ptolemy/domains/ct/lib/ctentities.xml"/
         -->
-	        <input source="ptolemy/domains/ddf/lib/ddfentities.xml"/>	 
+            <input source="ptolemy/domains/ddf/lib/ddfentities.xml"/>	 
             <input source="ptolemy/domains/de/lib/deentities.xml"/>
             <input source="ptolemy/domains/pn/lib/pnentities.xml"/>
             <input source="ptolemy/domains/rendezvous/lib/rendezvousentities.xml"/>
     	    <input source="ptolemy/domains/sr/lib/srentities.xml"/>
-            <input source="ptolemy/domains/pthales/lib/pthalesentities.xml"/>
         </group>
     ?>
   </configure>
