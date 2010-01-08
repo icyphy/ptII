@@ -77,7 +77,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[165.0, 75.0]">
         </property>
     </property>
-    <property name="P4" class="ptolemy.data.expr.Parameter" value="Display.input.getReceivers().length">
+    <property name="P4" class="ptolemy.data.expr.Parameter" value="Test7.input.getReceivers().length">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -232,7 +232,7 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{115.0, 320.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[115.0, 315.0]">
         </property>
     </entity>
     <entity name="CompositeActor" class="ptolemy.actor.TypedCompositeActor">
@@ -262,7 +262,7 @@
         <link port="Test5.output" relation="relation"/>
     </entity>
     <entity name="Test" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;Test1: 6&quot;}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;Test1: 10&quot;}">
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
@@ -270,19 +270,21 @@
         </property>
     </entity>
     <entity name="Test5" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;Test2: Test1: 6&quot;}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;Test2: Test1: 10&quot;}">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[420.0, 220.0]">
         </property>
     </entity>
     <entity name="Test6" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;Test3: Display&quot;}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;Test3: Test5&quot;}">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[415.0, 270.0]">
         </property>
     </entity>
     <entity name="Test7" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;Test4: 5&quot;}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;Test4: 1&quot;}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[420.0, 320.0]">
         </property>
