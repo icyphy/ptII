@@ -32,7 +32,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import ptolemy.actor.Actor;
-import ptolemy.actor.AtomicActor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
@@ -44,11 +43,11 @@ import ptolemy.actor.sched.Schedule;
 import ptolemy.actor.util.CausalityInterfaceForComposites;
 import ptolemy.actor.util.ConstVariableModelAnalysis;
 import ptolemy.actor.util.DFUtilities;
-import ptolemy.domains.pthales.lib.PthalesCompositeActor;
-import ptolemy.domains.pthales.lib.PthalesGenericActor;
+import ptolemy.domains.pthales.lib.PthalesAtomicActor;
 import ptolemy.domains.pthales.lib.PthalesIOPort;
 import ptolemy.domains.sdf.kernel.SDFDirector;
 import ptolemy.domains.sdf.kernel.SDFScheduler;
+import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
@@ -77,31 +76,6 @@ public class PthalesScheduler extends SDFScheduler {
                 .getContainer());
         List<Actor> actors = compositeActor.deepEntityList();
 
-        // Before overwriting them, collect the production and
-        // consumption rates of the actors, if they are declared.
-        // The will be declared if the actor is an SDF actor (either atomic
-        // or an opaque composite actor). These will need to be restored later.
-//        Map<IOPort, Integer> originalDeclaredPortRates = new HashMap<IOPort, Integer>();
-//        for (Actor actor : actors) {
-//            List<IOPort> ports = actor.inputPortList();
-//            for (IOPort port : ports) {
-//                PthalesIOPort thalesPort = (PthalesIOPort)port;
-//
-//                Integer rate = thalesPort.getDeclaredPortRate(port,"tokenConsumptionRate");
-//                if (rate != null) {
-//                    originalDeclaredPortRates.put(port, rate);
-//                }
-//            }
-//            ports = actor.outputPortList();
-//            for (IOPort port : ports) {
-//                PthalesIOPort thalesPort = (PthalesIOPort)port;
-//
-//                Integer rate = thalesPort.getDeclaredPortRate(port, "tokenProductionRate");
-//                if (rate != null) {
-//                    originalDeclaredPortRates.put(port, rate);
-//                }
-//            }
-//        }
 
         // Iterate over the actors.
         for (Actor actor : actors) {
@@ -165,10 +139,7 @@ public class PthalesScheduler extends SDFScheduler {
             Firing firing = new Firing(actor);
  
             // Iteration is only done on external loops
-            if (actor instanceof AtomicActor)
-                firing.setIterationCount(PthalesGenericActor.getIteration((AtomicActor)actor));
-            if (actor instanceof CompositeActor)
-                firing.setIterationCount(PthalesCompositeActor.getIteration((CompositeActor)actor));
+            firing.setIterationCount(PthalesAtomicActor.getIteration((ComponentEntity)actor));
 
             schedule.add(firing);
         }

@@ -348,7 +348,7 @@
       <property name="function" class="ptolemy.data.expr.StringParameter" value="Apply_Filter"/>
       <property name="arguments" class="ptolemy.data.expr.StringParameter"
                 value="port;IN;port;IN;port;OUT;"/>
-      <port name="port" class="ptolemy.domains.pthales.lib.PthalesIOPort">
+      <port name="port" class="ptolemy.actor.TypedIOPort">
          <property name="input"/>
          <property name="multiport"/>
          <property name="_location" class="ptolemy.kernel.util.Location" value="20.0, 375.0"/>
@@ -360,7 +360,7 @@
          <property name="pattern" class="ptolemy.data.expr.Parameter" value="[ant={8,1}]"/>
          <property name="tiling" class="ptolemy.data.expr.Parameter" value="[pul=1,empty2=0,rg=1]"/>
       </port>
-      <port name="port2" class="ptolemy.domains.pthales.lib.PthalesIOPort">
+      <port name="port2" class="ptolemy.actor.TypedIOPort">
          <property name="input"/>
          <property name="multiport"/>
          <property name="_location" class="ptolemy.kernel.util.Location" value="20.0, 375.0"/>
@@ -373,7 +373,7 @@
          <property name="tiling" class="ptolemy.data.expr.Parameter"
                    value="[empty1=0,beam=1,empty3=0]"/>
       </port>
-      <port name="port3" class="ptolemy.domains.pthales.lib.PthalesIOPort">
+      <port name="port3" class="ptolemy.actor.TypedIOPort">
          <property name="output"/>
          <property name="multiport"/>
          <property name="_location" class="ptolemy.kernel.util.Location" value="1170.0, 375.0"/>
@@ -393,7 +393,7 @@
       <property name="function" class="ptolemy.data.expr.StringParameter" value="CovAvCov"/>
       <property name="arguments" class="ptolemy.data.expr.StringParameter"
                 value="port;IN;port;OUT;"/>
-      <port name="port" class="ptolemy.domains.pthales.lib.PthalesIOPort">
+      <port name="port" class="ptolemy.actor.TypedIOPort">
          <property name="input"/>
          <property name="multiport"/>
          <property name="_location" class="ptolemy.kernel.util.Location" value="20.0, 160.0"/>
@@ -406,7 +406,7 @@
                    value="[ant={8,1},rg={10,1},pul={32,1}]"/>
          <property name="tiling" class="ptolemy.data.expr.Parameter" value="[empty1=0]"/>
       </port>
-      <port name="port2" class="ptolemy.domains.pthales.lib.PthalesIOPort">
+      <port name="port2" class="ptolemy.actor.TypedIOPort">
          <property name="output"/>
          <property name="multiport"/>
          <property name="_location" class="ptolemy.kernel.util.Location" value="565.0, 160.0"/>
@@ -426,7 +426,7 @@
       <property name="function" class="ptolemy.data.expr.StringParameter" value="CalcWeights"/>
       <property name="arguments" class="ptolemy.data.expr.StringParameter"
                 value="port;IN;port;IN;port;OUT;"/>
-      <port name="port" class="ptolemy.domains.pthales.lib.PthalesIOPort">
+      <port name="port" class="ptolemy.actor.TypedIOPort">
          <property name="input"/>
          <property name="multiport"/>
          <property name="_location" class="ptolemy.kernel.util.Location" value="20.0, 160.0"/>
@@ -438,7 +438,7 @@
          <property name="pattern" class="ptolemy.data.expr.Parameter" value="[ant={8,1}]"/>
          <property name="tiling" class="ptolemy.data.expr.Parameter" value="[beam=1]"/>
       </port>
-      <port name="port2" class="ptolemy.domains.pthales.lib.PthalesIOPort">
+      <port name="port2" class="ptolemy.actor.TypedIOPort">
          <property name="output"/>
          <property name="multiport"/>
          <property name="_location" class="ptolemy.kernel.util.Location" value="565.0, 160.0"/>
@@ -450,7 +450,7 @@
          <property name="pattern" class="ptolemy.data.expr.Parameter" value="[ant={8,1}]"/>
          <property name="tiling" class="ptolemy.data.expr.Parameter" value="[beam=1]"/>
       </port>
-      <port name="port3" class="ptolemy.domains.pthales.lib.PthalesIOPort">
+      <port name="port3" class="ptolemy.actor.TypedIOPort">
          <property name="input"/>
          <property name="multiport"/>
          <property name="_location" class="ptolemy.kernel.util.Location" value="20.0, 340.0"/>
@@ -469,7 +469,7 @@
       <property name="function" class="ptolemy.data.expr.StringParameter" value="Apply_Filter"/>
       <property name="arguments" class="ptolemy.data.expr.StringParameter"
                 value="port;IN;port;IN;port;OUT;"/>
-      <port name="port" class="ptolemy.domains.pthales.lib.PthalesIOPort">
+      <port name="port" class="ptolemy.actor.TypedIOPort">
          <property name="input"/>
          <property name="multiport"/>
          <property name="_location" class="ptolemy.kernel.util.Location" value="20.0, 160.0"/>
@@ -481,7 +481,7 @@
          <property name="pattern" class="ptolemy.data.expr.Parameter" value="[ant={8,1}]"/>
          <property name="tiling" class="ptolemy.data.expr.Parameter" value="[pul=1,empty2=0,rg=1]"/>
       </port>
-      <port name="port2" class="ptolemy.domains.pthales.lib.PthalesIOPort">
+      <port name="port2" class="ptolemy.actor.TypedIOPort">
          <property name="output"/>
          <property name="multiport"/>
          <property name="_location" class="ptolemy.kernel.util.Location" value="565.0, 160.0"/>
@@ -493,7 +493,7 @@
          <property name="pattern" class="ptolemy.data.expr.Parameter" value="[pul={1,1}]"/>
          <property name="tiling" class="ptolemy.data.expr.Parameter" value="[pul=1,beam=1,rg=1]"/>
       </port>
-      <port name="port3" class="ptolemy.domains.pthales.lib.PthalesIOPort">
+      <port name="port3" class="ptolemy.actor.TypedIOPort">
          <property name="input"/>
          <property name="multiport"/>
          <property name="_location" class="ptolemy.kernel.util.Location" value="20.0, 285.0"/>
@@ -514,7 +514,7 @@
       <property name="function" class="ptolemy.data.expr.StringParameter" value="Mat_Invert"/>
       <property name="arguments" class="ptolemy.data.expr.StringParameter"
                 value="port;IN;port;OUT;"/>
-      <port name="port" class="ptolemy.domains.pthales.lib.PthalesIOPort">
+      <port name="port" class="ptolemy.actor.TypedIOPort">
          <property name="input"/>
          <property name="multiport"/>
          <property name="_location" class="ptolemy.kernel.util.Location" value="20.0, 160.0"/>
@@ -525,7 +525,7 @@
          <property name="pattern" class="ptolemy.data.expr.Parameter" value="[mx={8,1},my={8,1}]"/>
          <property name="tiling" class="ptolemy.data.expr.Parameter" value="[empty1=0]"/>
       </port>
-      <port name="port2" class="ptolemy.domains.pthales.lib.PthalesIOPort">
+      <port name="port2" class="ptolemy.actor.TypedIOPort">
          <property name="output"/>
          <property name="multiport"/>
          <property name="_location" class="ptolemy.kernel.util.Location" value="565.0, 160.0"/>
@@ -544,7 +544,7 @@
       <property name="function" class="ptolemy.data.expr.StringParameter" value="Slid_Filter"/>
       <property name="arguments" class="ptolemy.data.expr.StringParameter"
                 value="port;IN;port;IN;port;OUT;"/>
-      <port name="port" class="ptolemy.domains.pthales.lib.PthalesIOPort">
+      <port name="port" class="ptolemy.actor.TypedIOPort">
          <property name="input"/>
          <property name="multiport"/>
          <property name="_location" class="ptolemy.kernel.util.Location" value="20.0, 160.0"/>
@@ -556,7 +556,7 @@
          <property name="pattern" class="ptolemy.data.expr.Parameter" value="[rg={16,1}]"/>
          <property name="tiling" class="ptolemy.data.expr.Parameter" value="[rg=1,ant=1,pul=1]"/>
       </port>
-      <port name="port2" class="ptolemy.domains.pthales.lib.PthalesIOPort">
+      <port name="port2" class="ptolemy.actor.TypedIOPort">
          <property name="output"/>
          <property name="multiport"/>
          <property name="_location" class="ptolemy.kernel.util.Location" value="565.0, 160.0"/>
@@ -568,7 +568,7 @@
          <property name="pattern" class="ptolemy.data.expr.Parameter" value="[rg={1,1}]"/>
          <property name="tiling" class="ptolemy.data.expr.Parameter" value="[rg=1,ant=1,pul=1]"/>
       </port>
-      <port name="port3" class="ptolemy.domains.pthales.lib.PthalesIOPort">
+      <port name="port3" class="ptolemy.actor.TypedIOPort">
          <property name="input"/>
          <property name="multiport"/>
          <property name="_location" class="ptolemy.kernel.util.Location" value="20.0, 495.0"/>
@@ -589,7 +589,7 @@
                 value="Calc_SteerVect"/>
       <property name="arguments" class="ptolemy.data.expr.StringParameter"
                 value="port;OUT;parameter;float;15;parameter;float;0.09;parameter;float;0.03;"/>
-      <port name="port" class="ptolemy.domains.pthales.lib.PthalesIOPort">
+      <port name="port" class="ptolemy.actor.TypedIOPort">
          <property name="output"/>
          <property name="multiport"/>
          <property name="_location" class="ptolemy.kernel.util.Location" value="565.0, 210.0"/>
@@ -610,7 +610,7 @@
       <property name="function" class="ptolemy.data.expr.StringParameter" value="MAT_fft_CF"/>
       <property name="arguments" class="ptolemy.data.expr.StringParameter"
                 value="port;IN;parameter;int;FFT_DIRECTE;parameter;int;32;port;OUT;"/>
-      <port name="port" class="ptolemy.domains.pthales.lib.PthalesIOPort">
+      <port name="port" class="ptolemy.actor.TypedIOPort">
          <property name="input"/>
          <property name="multiport"/>
          <property name="_location" class="ptolemy.kernel.util.Location" value="20.0, 160.0"/>
@@ -622,7 +622,7 @@
          <property name="pattern" class="ptolemy.data.expr.Parameter" value="[pul={32,1}]"/>
          <property name="tiling" class="ptolemy.data.expr.Parameter" value="[beam=1,rg=1]"/>
       </port>
-      <port name="port2" class="ptolemy.domains.pthales.lib.PthalesIOPort">
+      <port name="port2" class="ptolemy.actor.TypedIOPort">
          <property name="output"/>
          <property name="multiport"/>
          <property name="_location" class="ptolemy.kernel.util.Location" value="565.0, 160.0"/>
@@ -642,7 +642,7 @@
       <property name="function" class="ptolemy.data.expr.StringParameter" value="Calc_Chirp"/>
       <property name="arguments" class="ptolemy.data.expr.StringParameter"
                 value="port;OUT;parameter;int;16;parameter;Splfloat;0.2;"/>
-      <port name="port" class="ptolemy.domains.pthales.lib.PthalesIOPort">
+      <port name="port" class="ptolemy.actor.TypedIOPort">
          <property name="output"/>
          <property name="multiport"/>
          <property name="_location" class="ptolemy.kernel.util.Location" value="900.0, 160.0"/>
@@ -661,7 +661,7 @@
       <property name="function" class="ptolemy.data.expr.StringParameter" value="Calc_Echo"/>
       <property name="arguments" class="ptolemy.data.expr.StringParameter"
                 value="port;IN;port;OUT;parameter;int;50;parameter;float;30;parameter;float;0.09;parameter;float;0.03;parameter;float;5.0E-5;parameter;float;-6;parameter;float;-100;parameter;float;3000;parameter;float;2;"/>
-      <port name="port" class="ptolemy.domains.pthales.lib.PthalesIOPort">
+      <port name="port" class="ptolemy.actor.TypedIOPort">
          <property name="input"/>
          <property name="multiport"/>
          <property name="_location" class="ptolemy.kernel.util.Location" value="20.0, 160.0"/>
@@ -672,7 +672,7 @@
          <property name="pattern" class="ptolemy.data.expr.Parameter" value="[t={64,1}]"/>
          <property name="tiling" class="ptolemy.data.expr.Parameter" value="[empty1=0]"/>
       </port>
-      <port name="port2" class="ptolemy.domains.pthales.lib.PthalesIOPort">
+      <port name="port2" class="ptolemy.actor.TypedIOPort">
          <property name="output"/>
          <property name="multiport"/>
          <property name="_location" class="ptolemy.kernel.util.Location" value="900.0, 160.0"/>
@@ -693,7 +693,7 @@
       <property name="function" class="ptolemy.data.expr.StringParameter" value="AddNoise"/>
       <property name="arguments" class="ptolemy.data.expr.StringParameter"
                 value="port;IN;parameter;Splfloat;2;port;OUT;"/>
-      <port name="port" class="ptolemy.domains.pthales.lib.PthalesIOPort">
+      <port name="port" class="ptolemy.actor.TypedIOPort">
          <property name="input"/>
          <property name="multiport"/>
          <property name="_location" class="ptolemy.kernel.util.Location" value="20.0, 160.0"/>
@@ -705,7 +705,7 @@
          <property name="pattern" class="ptolemy.data.expr.Parameter" value="[ant={1,1}]"/>
          <property name="tiling" class="ptolemy.data.expr.Parameter" value="[ant=1,rg=1,pul=1]"/>
       </port>
-      <port name="port2" class="ptolemy.domains.pthales.lib.PthalesIOPort">
+      <port name="port2" class="ptolemy.actor.TypedIOPort">
          <property name="output"/>
          <property name="multiport"/>
          <property name="_location" class="ptolemy.kernel.util.Location" value="900.0, 160.0"/>
@@ -725,7 +725,7 @@
       <property name="function" class="ptolemy.data.expr.StringParameter" value="AddJam"/>
       <property name="arguments" class="ptolemy.data.expr.StringParameter"
                 value="port;IN;port;OUT;parameter;Splfloat;30;parameter;Splfloat;2000;parameter;Splfloat;1;parameter;Splfloat;0.09;parameter;Splfloat;0.03;parameter;Splfloat;30;"/>
-      <port name="port" class="ptolemy.domains.pthales.lib.PthalesIOPort">
+      <port name="port" class="ptolemy.actor.TypedIOPort">
          <property name="input"/>
          <property name="multiport"/>
          <property name="_location" class="ptolemy.kernel.util.Location" value="20.0, 375.0"/>
@@ -738,7 +738,7 @@
                    value="[ant={8,1},rg={200,1},pul={32,1}]"/>
          <property name="tiling" class="ptolemy.data.expr.Parameter" value="[empty1=0]"/>
       </port>
-      <port name="port2" class="ptolemy.domains.pthales.lib.PthalesIOPort">
+      <port name="port2" class="ptolemy.actor.TypedIOPort">
          <property name="output"/>
          <property name="multiport"/>
          <property name="_location" class="ptolemy.kernel.util.Location" value="1170.0, 375.0"/>
@@ -759,7 +759,7 @@
       <property name="function" class="ptolemy.data.expr.StringParameter" value="DecimBy4"/>
       <property name="arguments" class="ptolemy.data.expr.StringParameter"
                 value="port;IN;port;OUT;"/>
-      <port name="port" class="ptolemy.domains.pthales.lib.PthalesIOPort">
+      <port name="port" class="ptolemy.actor.TypedIOPort">
          <property name="input"/>
          <property name="multiport"/>
          <property name="_location" class="ptolemy.kernel.util.Location" value="20.0, 375.0"/>
@@ -770,7 +770,7 @@
          <property name="pattern" class="ptolemy.data.expr.Parameter" value="[t={64,1}]"/>
          <property name="tiling" class="ptolemy.data.expr.Parameter" value="[empty1=0]"/>
       </port>
-      <port name="port2" class="ptolemy.domains.pthales.lib.PthalesIOPort">
+      <port name="port2" class="ptolemy.actor.TypedIOPort">
          <property name="output"/>
          <property name="multiport"/>
          <property name="_location" class="ptolemy.kernel.util.Location" value="1170.0, 375.0"/>
@@ -789,7 +789,7 @@
       <property name="function" class="ptolemy.data.expr.StringParameter" value="Matmat"/>
       <property name="arguments" class="ptolemy.data.expr.StringParameter"
                 value="port;IN;port;IN;port;OUT;"/>
-      <port name="port" class="ptolemy.domains.pthales.lib.PthalesIOPort">
+      <port name="port" class="ptolemy.actor.TypedIOPort">
          <property name="input"/>
          <property name="multiport"/>
          <property name="_location" class="ptolemy.kernel.util.Location" value="20.0, 375.0"/>
@@ -800,7 +800,7 @@
          <property name="pattern" class="ptolemy.data.expr.Parameter" value="[mx={8,1},my={8,1}]"/>
          <property name="tiling" class="ptolemy.data.expr.Parameter" value="[empty1=0]"/>
       </port>
-      <port name="port2" class="ptolemy.domains.pthales.lib.PthalesIOPort">
+      <port name="port2" class="ptolemy.actor.TypedIOPort">
          <property name="output"/>
          <property name="multiport"/>
          <property name="_location" class="ptolemy.kernel.util.Location" value="1170.0, 375.0"/>
@@ -811,7 +811,7 @@
          <property name="pattern" class="ptolemy.data.expr.Parameter" value="[mx={8,1},my={8,1}]"/>
          <property name="tiling" class="ptolemy.data.expr.Parameter" value="[empty1=0]"/>
       </port>
-      <port name="port3" class="ptolemy.domains.pthales.lib.PthalesIOPort">
+      <port name="port3" class="ptolemy.actor.TypedIOPort">
          <property name="input"/>
          <property name="multiport"/>
          <property name="_location" class="ptolemy.kernel.util.Location" value="20.0, 1085.0"/>
@@ -830,7 +830,7 @@
       <property name="function" class="ptolemy.data.expr.StringParameter" value="MAT_fft_CF"/>
       <property name="arguments" class="ptolemy.data.expr.StringParameter"
                 value="port;IN;parameter;int;FFT_DIRECTE;parameter;int;32;port;OUT;"/>
-      <port name="port" class="ptolemy.domains.pthales.lib.PthalesIOPort">
+      <port name="port" class="ptolemy.actor.TypedIOPort">
          <property name="input"/>
          <property name="multiport"/>
          <property name="_location" class="ptolemy.kernel.util.Location" value="20.0, 375.0"/>
@@ -842,7 +842,7 @@
          <property name="pattern" class="ptolemy.data.expr.Parameter" value="[pul={32,1}]"/>
          <property name="tiling" class="ptolemy.data.expr.Parameter" value="[beam=1,rg=1]"/>
       </port>
-      <port name="port2" class="ptolemy.domains.pthales.lib.PthalesIOPort">
+      <port name="port2" class="ptolemy.actor.TypedIOPort">
          <property name="output"/>
          <property name="multiport"/>
          <property name="_location" class="ptolemy.kernel.util.Location" value="1170.0, 375.0"/>

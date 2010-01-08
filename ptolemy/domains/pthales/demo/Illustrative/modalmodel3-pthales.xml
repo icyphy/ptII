@@ -157,7 +157,7 @@
         </property>
         <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
         </property>
-        <port name="out" class="ptolemy.domains.pthales.lib.PthalesIOPort">
+        <port name="out" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
             <property name="base" class="ptolemy.data.expr.Parameter" value="produceBase">
             </property>
@@ -201,7 +201,7 @@
         </property>
         <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
         </property>
-        <port name="in" class="ptolemy.domains.pthales.lib.PthalesIOPort">
+        <port name="in" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="base" class="ptolemy.data.expr.Parameter" value="consumeBase">
             </property>

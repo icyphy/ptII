@@ -35,17 +35,15 @@ import java.util.LinkedList;
 import java.util.List;
 
 import ptolemy.actor.Actor;
-import ptolemy.actor.AtomicActor;
-import ptolemy.actor.CompositeActor;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.NoRoomException;
 import ptolemy.actor.NoTokenException;
 import ptolemy.actor.Receiver;
 import ptolemy.data.Token;
-import ptolemy.domains.pthales.lib.PthalesGenericActor;
+import ptolemy.domains.pthales.lib.PthalesAtomicActor;
 import ptolemy.domains.pthales.lib.PthalesIOPort;
-import ptolemy.domains.pthales.lib.PthalesCompositeActor;
 import ptolemy.domains.sdf.kernel.SDFReceiver;
+import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.util.IllegalActionException;
 
 /**
@@ -318,13 +316,10 @@ public class PthalesReceiver extends SDFReceiver {
 
     public void fillParameters(Actor actor, IOPort port) {
         int[] repetitions = null;
+        
+        PthalesIOPort.setDataType(port);
 
-        if (actor instanceof AtomicActor)
-            repetitions = PthalesGenericActor
-                    .getIterations((AtomicActor) actor);
-        if (actor instanceof CompositeActor)
-            repetitions = PthalesCompositeActor
-                    .getIterations((CompositeActor) actor);
+        repetitions = PthalesAtomicActor.getIterations((ComponentEntity) actor);
 
         LinkedHashMap<String, Integer[]> base = PthalesIOPort.getBase(port);
 

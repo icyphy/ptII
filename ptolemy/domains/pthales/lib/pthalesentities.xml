@@ -5,9 +5,9 @@
   <configure>
     <?moml <group>
       <doc>PThales actors</doc>
-
       <entity name="PthalesGenericActor" class="ptolemy.domains.pthales.lib.PthalesGenericActor"/>
       <entity name="PthalesCompositeActor" class="ptolemy.domains.pthales.lib.PthalesCompositeActor"/>
+      <entity name="PthalesExcelActor" class="ptolemy.domains.pthales.lib.PthalesExcelActor"/>
       </group>
     ?>
   </configure>

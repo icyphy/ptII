@@ -1,4 +1,4 @@
-/* An TypedIOPort with ArrayOL informations
+/* A pool of functions used into Pthales Domain
 
  Copyright (c) 1997-2006 The Regents of the University of California.
  All rights reserved.
@@ -29,14 +29,12 @@
 package ptolemy.domains.pthales.lib;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Set;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.AtomicActor;
-import ptolemy.actor.CompositeActor;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
@@ -48,8 +46,6 @@ import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.ComponentEntity;
-import ptolemy.kernel.Port;
-import ptolemy.kernel.Relation;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -60,57 +56,15 @@ import ptolemy.kernel.util.Settable;
 
 /**
  A PthalesIOPort is an element of ArrayOL in Ptolemy.
- It contains data needed to determine access to data
- using multidimensional arrays.
+ It contains functions needed to use multidimensional arrays.
 
  @author Remi Barrere
- @see ptolemy.actor.TypedIOPort
  @version $Id$
  @since Ptolemy II 8.2
  @Pt.ProposedRating Red (cxh)
  @Pt.AcceptedRating Red (cxh)
  */
-public class PthalesIOPort extends TypedIOPort {
-
-    /** Construct a PthalesIOPort with a containing actor and a name
-     *  that is neither an input nor an output.  The specified container
-     *  must implement the TypedActor interface, or an exception will be
-     *  thrown.
-     *
-     *  @param container The container actor.
-     *  @param name The name of the port.
-     *  @exception IllegalActionException If the port is not of an acceptable
-     *   class for the container, or if the container does not implement the
-     *   TypedActor interface.
-     *  @exception NameDuplicationException If the name coincides with
-     *   a port already in the container.
-     */
-    public PthalesIOPort(ComponentEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
-        super(container, name);
-
-    }
-
-    /** Construct a PthalesIOPort with no container and no name that is
-     *  neither an input nor an output.
-     *  @param container The container.
-     *  @param name The name of this actor within the container.
-     *  @param isInput True if this is to be an input port.
-     *  @param isOutput True if this is to be an output port.
-     *  @exception IllegalActionException If the port is not of an acceptable
-     *   class for the container, or if the container does not implement the
-     *   TypedActor interface.
-     *  @exception NameDuplicationException If the name coincides with
-     *   a port already in the container.
-     */
-    public PthalesIOPort(ComponentEntity container, String name,
-            boolean isInput, boolean isOutput) throws IllegalActionException,
-            NameDuplicationException {
-        super(container, name, isInput, isOutput);
-
-        // Add parameters for PThales Domain
-        _initialize();
-    }
+public class PthalesIOPort {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -147,10 +101,7 @@ public class PthalesIOPort extends TypedIOPort {
         LinkedHashMap<String, Integer[]> pattern = _getPattern(port);
         LinkedHashMap<String, Integer[]> tiling = _getTiling(port);
 
-        if (actor instanceof AtomicActor)
-            rep = PthalesGenericActor.getRepetitions((AtomicActor) actor);
-        if (actor instanceof CompositeActor)
-            rep = PthalesCompositeActor.getRepetitions((CompositeActor) actor);
+        rep = PthalesGenericActor.getRepetitions((ComponentEntity) actor);
 
         Set dims = pattern.keySet();
         Set tilingSet = tiling.keySet();
@@ -478,125 +429,28 @@ public class PthalesIOPort extends TypedIOPort {
         return result;
     }
 
+
     /** Check if data type is a structure.
      * If yes, gives the number of tokens needed to store all the data
      * By default, the return value is 1
      */
-    public void setDataType() {
-        Parameter p = (Parameter) getAttribute("dataType");
-        if (p != null) {
+    public static void setDataType(IOPort port) {
+        Parameter p = (Parameter) port.getAttribute("dataType");
+        if (p != null && port instanceof TypedIOPort) {
             if (p.getExpression().equals("Cplfloat")
                     || p.getExpression().equals("Splfloat")
                     || p.getExpression().equals("float")) {
-                setTypeEquals(BaseType.FLOAT);
+                ((TypedIOPort)port).setTypeEquals(BaseType.FLOAT);
             }
             if (p.getExpression().equals("Cpldouble")
                     || p.getExpression().equals("Spldouble")
                     || p.getExpression().equals("double")) {
-                setTypeEquals(BaseType.DOUBLE);
+                ((TypedIOPort)port).setTypeEquals(BaseType.DOUBLE);
             }
             if (p.getExpression().equals("Cplint")
                     || p.getExpression().equals("Splint")
                     || p.getExpression().equals("int")) {
-                setTypeEquals(BaseType.INT);
-            }
-        }
-    }
-
-    /** Attribute update
-     */
-    public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
-        if (attribute == getAttribute("pattern")) {
-            _pattern = _parseSpec(this, PATTERN);
-
-        }
-        if (attribute == getAttribute("tiling")) {
-            _tiling = _parseSpec(this, TILING);
-
-        }
-        if (attribute == getAttribute("base")) {
-            _base = _parseSpec(this, BASE);
-        }
-        if (attribute == getAttribute("dataType")) {
-            setDataType();
-        }
-    }
-
-    /** Override the base class to invalidate the schedule and resolved
-     *  types of the director of the container, if there is one, in addition
-     *  to what the base class does.
-     *  @param relation The relation to link to.
-     *  @exception IllegalActionException If the link crosses levels of
-     *   the hierarchy, or the port has no container, or the relation
-     *   is not an instance of IORelation.
-     */
-    public void link(Relation relation) throws IllegalActionException {
-        super.link(relation);
-
-        PthalesIOPort outputPort = null;
-        PthalesIOPort inputPort = null;
-
-        // Récupération du port de sortie et d'entree de la relation
-        List listePortsRelation = relation.linkedPortList();
-        for (Iterator iterPorts = listePortsRelation.iterator(); iterPorts
-                .hasNext();) {
-            Port portTemp = (Port) iterPorts.next();
-            if (portTemp instanceof PthalesIOPort) {
-                if (((PthalesIOPort) portTemp).isOutput()) {
-                    outputPort = (PthalesIOPort) portTemp;
-                }
-                if (((PthalesIOPort) portTemp).isInput()) {
-                    inputPort = (PthalesIOPort) portTemp;
-                }
-            }
-        }
-
-        // Output port linked and input port not defined
-        if (outputPort != null
-                && inputPort != null
-                && (getInternalPattern(inputPort) == null || getInternalPattern(
-                        inputPort).size() == 0)) {
-            Actor actor = (Actor) getContainer();
-
-            if (outputPort.getAttribute("base") != null)
-                ((Parameter) inputPort.getAttribute("base"))
-                        .setExpression(((Parameter) outputPort
-                                .getAttribute("base")).getExpression());
-
-            if (outputPort.getAttribute("pattern") != null)
-                ((Parameter) inputPort.getAttribute("pattern"))
-                        .setExpression(((Parameter) outputPort
-                                .getAttribute("pattern")).getExpression());
-
-            if (outputPort.getAttribute("tiling") != null)
-                ((Parameter) inputPort.getAttribute("tiling"))
-                        .setExpression(((Parameter) outputPort
-                                .getAttribute("tiling")).getExpression());
-
-            if (outputPort.getAttribute("dimensionNames") != null)
-                ((Parameter) inputPort.getAttribute("dimensionNames"))
-                        .setExpression(((Parameter) outputPort
-                                .getAttribute("dimensionNames"))
-                                .getExpression());
-
-            if (outputPort.getAttribute("size") != null)
-                ((Parameter) inputPort.getAttribute("size"))
-                        .setExpression(((Parameter) outputPort
-                                .getAttribute("size")).getExpression());
-
-            // Useless parameters for CompositeActors
-            if (actor instanceof TypedAtomicActor) {
-                if (outputPort.getAttribute("dataType") != null)
-                    ((Parameter) inputPort.getAttribute("dataType"))
-                            .setExpression(((Parameter) outputPort
-                                    .getAttribute("dataType")).getExpression());
-
-                if (outputPort.getAttribute("dataTypeSize") != null)
-                    ((Parameter) inputPort.getAttribute("dataTypeSize"))
-                            .setExpression(((Parameter) outputPort
-                                    .getAttribute("dataTypeSize"))
-                                    .getExpression());
+                ((TypedIOPort)port).setTypeEquals(BaseType.INT);
             }
         }
     }
@@ -608,51 +462,41 @@ public class PthalesIOPort extends TypedIOPort {
      *  @exception IllegalActionException If the type is not settable,
      *   or the argument is not a Type.
      */
-    private void _initialize() throws IllegalActionException,
+    public static void initialize(IOPort port) throws IllegalActionException,
             NameDuplicationException {
 
-        Actor actor = (Actor) getContainer();
+        Actor actor = (Actor) port.getContainer();
 
-        if (getAttribute("base") == null) {
-            new Parameter(this, "base");
+        if (port.getAttribute("base") == null) {
+            new Parameter(port, "base");
         }
 
-        if (getAttribute("pattern") == null) {
-            new Parameter(this, "pattern");
+        if (port.getAttribute("pattern") == null) {
+            new Parameter(port, "pattern");
         }
 
-        if (getAttribute("tiling") == null) {
-            new Parameter(this, "tiling");
+        if (port.getAttribute("tiling") == null) {
+            new Parameter(port, "tiling");
         }
 
-        if (getAttribute("dimensionNames") == null) {
-            new StringParameter(this, "dimensionNames");
+        if (port.getAttribute("dimensionNames") == null) {
+            new StringParameter(port, "dimensionNames");
         }
-        if (getAttribute("size") == null) {
-            new Parameter(this, "size");
+        if (port.getAttribute("size") == null) {
+            new Parameter(port, "size");
         }
 
         // Useless parameters for CompositeActors
         if (actor instanceof TypedAtomicActor) {
-            if (getAttribute("dataType") == null) {
-                new StringParameter(this, "dataType");
+            if (port.getAttribute("dataType") == null) {
+                new StringParameter(port, "dataType");
             }
 
-            if (getAttribute("dataTypeSize") == null) {
-                new StringParameter(this, "dataTypeSize");
+            if (port.getAttribute("dataTypeSize") == null) {
+                new StringParameter(port, "dataTypeSize");
             }
         }
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                      protected variables                  ////
-
-    /** parameters */
-    protected LinkedHashMap<String, Integer[]> _base = null;
-
-    protected LinkedHashMap<String, Integer[]> _pattern = null;
-
-    protected LinkedHashMap<String, Integer[]> _tiling = new LinkedHashMap<String, Integer[]>();
 
     ///////////////////////////////////////////////////////////////////
     ////                      public variables                  ////

@@ -27,18 +27,11 @@
  */
 package ptolemy.domains.pthales.lib;
 
-import java.io.IOException;
-import java.io.Writer;
-
-import ptolemy.actor.CompositeActor;
 import ptolemy.actor.TypedCompositeActor;
-import ptolemy.data.ArrayToken;
-import ptolemy.data.IntToken;
-import ptolemy.data.Token;
+import ptolemy.actor.TypedIOPort;
 import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Port;
-import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -146,32 +139,12 @@ public class PthalesCompositeActor extends TypedCompositeActor  {
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    private void _initialize() throws IllegalActionException,
-            NameDuplicationException {
-
-        if (getAttribute("_iconDescription") != null) {
-            ((SingletonConfigurableAttribute)getAttribute("_iconDescription")).setExpression("<svg width=\"60\" height=\"40\"><polygon points=\"2.54167,37.2083 13.9198,20.0125 2.54167,2.45833 46.675,2.45833 57.7083,20.0125 47.0198,37.2083\"style=\"fill:#c0c0ff;stroke:#000080;stroke-width:1\"/><text x=\"18\" y=\"31\" style=\"fill:#000080;font-size:35\">H</text></svg>");
-        }
-        if (getAttribute("repetitions") == null) {
-            repetitions = new Parameter(this, "repetitions");
-            repetitions.setExpression("{1}");
-        }
-    }
-
-    /** the number of times this actor is fired
+    /** The number of times this actor is fired.
+     *  The initial default value is an array with one element,
+     *  the integer "1".
      */
     public Parameter repetitions;
 
-    /** Attribute update
-     */
-    public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
-
-        if (attribute == getAttribute(REPETITIONS)) {
-            _totalRepetitions = parseRepetitions(this, REPETITIONS);
-            computeIterations(_totalRepetitions);
-        }
-    }
 
     /** Create a new PthalesIOPort with the specified name.
      *  The container of the port is set to this actor.
@@ -186,7 +159,9 @@ public class PthalesCompositeActor extends TypedCompositeActor  {
         try {
             workspace().getWriteAccess();
 
-            PthalesIOPort port = new PthalesIOPort(this, name, false, false);
+            TypedIOPort port = new TypedIOPort(this, name, false, false);
+            PthalesIOPort.initialize(port);
+            
             return port;
         } catch (IllegalActionException ex) {
             // This exception should not occur, so we throw a runtime
@@ -196,119 +171,23 @@ public class PthalesCompositeActor extends TypedCompositeActor  {
             workspace().doneWriting();
         }
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected methods                 ////
-
-    /** Write a MoML description of the contents of this object, which
-     *  in this class are the attributes plus the ports.  This method is called
-     *  by exportMoML().  Each description is indented according to the
-     *  specified depth and terminated with a newline character.
-     *  @param output The output to write to.
-     *  @param depth The depth in the hierarchy, to determine indenting.
-     *  @exception IOException If an I/O error occurs.
-     */
-    protected void _exportMoMLContents(Writer output, int depth)
-            throws IOException {
-        super._exportMoMLContents(output, depth);
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected variables               ////
-    /** iteration informations */
-    protected int _iterations = 0;
-
-    protected Integer[] _externalRepetitions = null;
-
-    protected Integer[] _internalRepetitions = new Integer[0];
-
-    protected Integer[] _totalRepetitions = null;
-
-
-
-    ///////////////////////////////////////////////////////////////////
-    ////              static methods implementation              ////
-
-    public static int getIteration(CompositeActor actor) {
-        return computeIteration(parseRepetitions(actor, REPETITIONS));
-    }
-
-    public static int[] getIterations(CompositeActor actor) {
-        return computeIterations(parseRepetitions(actor, REPETITIONS));
-    }
-
-    public static Integer[] getRepetitions(CompositeActor actor) {
-        return parseRepetitions(actor, REPETITIONS);
-    }
-
-
-    /** Return a data structure giving the dimension data contained by a
-     *  parameter with the specified name in the specified port or actor.
-     *  The dimension data is indexed by dimension name and contains two
-     *  integers, a value and a stride, in that order.
-     *  @param name The name of the parameter
-     *  @return The dimension data, or an empty array if the parameter does not exist.
-     *  @throws IllegalActionException If the parameter cannot be evaluated.
-     */
-    protected static Integer[] parseRepetitions(CompositeActor actor, String name) {
-        // FIXME: prepend an underscore to the name of this protected method.
-        Integer[] result = new Integer[0];
-        Attribute attribute = actor.getAttribute(name);
-        if (attribute != null && attribute instanceof Parameter) {
-            Token token = null;
-            try {
-                token = ((Parameter) attribute).getToken();
-            } catch (IllegalActionException e) {
-                // FIXME: Don't print a stack trace, instead
-                // this method should throw an IllegalActionException.
-                e.printStackTrace();
-            }
-            if (token instanceof ArrayToken) {
-                int len = ((ArrayToken) token).length();
-                result = new Integer[len];
-                for (int i = 0; i < len; i++) {
-                    result[i] = new Integer(((IntToken) ((ArrayToken) token)
-                            .getElement(i)).intValue());
-                }
-            }
-        }
-
-        return result;
-    }
     
-    /** Compute external iterations each time 
-     *  an attribute used to calculate it has changed 
-     */
-    protected static int computeIteration(Integer[] totalRepetitions) {
-        int iterations = 0;
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                   ////
 
-        // All loops are used to build array
-        int iterationCount = 1;
-        for (Integer iter : totalRepetitions) {
-            iterationCount *= iter;
-        }
-
-        // Iteration is only done on external loops
-        iterations = iterationCount;
+    protected void _initialize() throws IllegalActionException,
+            NameDuplicationException {
         
-        return iterations;
-    }
-  
-    /** Compute external iterations each time 
-     *  an attribute used to calculate it has changed 
-     */
-    protected static int[] computeIterations(Integer[] totalRepetitions) {
-        int[] iterations = new int[totalRepetitions.length];
-
-        // All loops are used to build array
-        for (int i = 0; i < iterations.length; i++) {
-            iterations[i] = totalRepetitions[i];
+        if (getAttribute("_iconDescription") != null) {
+            ((SingletonConfigurableAttribute)getAttribute("_iconDescription")).setExpression("<svg width=\"60\" height=\"40\"><polygon points=\"2.54167,37.2083 13.9198,20.0125 2.54167,2.45833 46.675,2.45833 57.7083,20.0125 47.0198,37.2083\"style=\"fill:#c0c0ff;stroke:#000080;stroke-width:1\"/></svg>");
         }
-
-        return iterations;
+        if (getAttribute("repetitions") == null) {
+            repetitions = new Parameter(this, "repetitions");
+            repetitions.setExpression("{1}");
+        }
     }
-  
-   ///////////////////////////////////////////////////////////////////
+
+    ///////////////////////////////////////////////////////////////////
     ////              static variables              ////
 
     protected static String REPETITIONS = "repetitions";
