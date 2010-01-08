@@ -1,0 +1,18 @@
+#!/bin/sh
+# $Id$
+# Check that each demo listed in $PTII/ptolemy/configs/doc/completeDemos.htm has a corresponding test
+
+configDir="$PTII/ptolemy/configs/doc"
+demos=`cd $PTII/ptolemy/configs/doc; make listDemos`
+for demo in $demos
+do
+    testFile1=`echo $demo | sed 's@/demo/[^/]*/@/test/auto/@'`
+    #echo "1: $testFile1"
+    if [ ! -f "$configDir/$testFile1" ]; then
+        testFile2=`echo $testFile1 | sed 's@\.xml$@Test.xml@'`
+	#echo "2: $testFile2"
+	if [ ! -f "$configDir/$testFile2" ]; then
+	     echo "$demo"
+	fi
+    fi	
+done
