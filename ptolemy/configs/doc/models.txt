@@ -100,6 +100,7 @@ $CLASSPATH/ptolemy/domains/continuous/demo/ContinuousInsideDE/ContinuousInsideDE
 $CLASSPATH/ptolemy/domains/continuous/demo/FurutaPendulum/FurutaPendulum.xml
 $CLASSPATH/ptolemy/domains/continuous/demo/HybridPlant/HybridPlant.xml
 $CLASSPATH/ptolemy/domains/continuous/demo/HybridPlant/RandomHybridPlant.xml
+$CLASSPATH/ptolemy/domains/continuous/demo/Hysteresis/HysteresisWithBernoulliLosses.xml
 $CLASSPATH/ptolemy/domains/continuous/demo/Hysteresis/HysteresisWithRandomDelay.xml
 $CLASSPATH/ptolemy/domains/continuous/demo/Hysteresis/HysteresisWithRandomLosses.xml
 $CLASSPATH/ptolemy/domains/continuous/demo/Hysteresis/Hysteresis.xml
@@ -340,6 +341,7 @@ $CLASSPATH/ptolemy/domains/tm/demo/FFT/FFT.xml
 $CLASSPATH/ptolemy/domains/tm/demo/MergedEvents/MergedEvents.xml
 $CLASSPATH/ptolemy/domains/tm/demo/SimpleTasks/SimpleTasks.xml
 $CLASSPATH/ptolemy/domains/wireless/demo/AntennaPattern/AntennaGainTest.xml
+$CLASSPATH/ptolemy/domains/wireless/demo/AntennaPattern/ReceiveAntennaPattern.xml
 $CLASSPATH/ptolemy/domains/wireless/demo/AntennaPattern/TransmitAntennaPattern.xml
 $CLASSPATH/ptolemy/domains/wireless/demo/CircularRange/CircularRange.xml
 $CLASSPATH/ptolemy/domains/wireless/demo/Collisions/CollisionsDeterministic.xml
