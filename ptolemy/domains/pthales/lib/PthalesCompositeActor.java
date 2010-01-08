@@ -51,7 +51,7 @@ import ptolemy.kernel.util.Workspace;
 /**
    A composite actor imposes the use of PthalesIOPort
    as they contain needed values used by PThalesDirector.
-   A PthalesCompositeActor can contain actors from diffent model (as SDF),
+   A PthalesCompositeActor can contain actors from different model (as SDF),
    but the port must be a PthalesIOPort, because of the ArrayOL parameters. 
    @author R&eacute;mi Barr&egrave;re
    @see ptolemy.actor.TypedIOPort

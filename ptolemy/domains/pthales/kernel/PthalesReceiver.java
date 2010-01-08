@@ -328,7 +328,7 @@ public class PthalesReceiver extends SDFReceiver {
 
         LinkedHashMap<String, Integer[]> base = PthalesIOPort.getBase(port);
 
-        // Number of token per data
+        // Number of tokens per data
         _nbTokens = PthalesIOPort.getNbTokenPerData(port);
 
         // total repetition size
