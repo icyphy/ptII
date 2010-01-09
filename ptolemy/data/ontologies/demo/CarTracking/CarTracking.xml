@@ -4,7 +4,7 @@
 <entity name="CarTracking" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
-    <property name="OntologySolver" class="ptolemy.data.ontologies.OntologySolver">
+    <property name="LatticeOntologySolver" class="ptolemy.data.ontologies.lattice.LatticeOntologySolver">
         <property name="action" class="ptolemy.actor.parameters.SharedParameter" value="ANNOTATE">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[450.0, 85.0]">
@@ -13,7 +13,7 @@
         </property>
         <configure>
             <entity name="" class="ptolemy.kernel.CompositeEntity">
-                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={211, 195, 815, 507}, maximized=false}">
+                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={366, 187, 815, 507}, maximized=false}">
                 </property>
                 <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
                 </property>
@@ -46,14 +46,14 @@
                     <property name="constraint" class="ptolemy.data.expr.Parameter" value="f(10, 2)">
                     </property>
                 </entity>
-                <entity name="dimensionSystem" class="ptolemy.data.ontologies.lattices.dimensionSystem">
-                    <property name="_location" class="ptolemy.kernel.util.Location" value="[420.0, 95.0]">
+                <entity name="DimensionSystem" class="ptolemy.data.ontologies.lattice.adapters.DimensionSystem.DimensionSystem">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[470.0, 95.0]">
                     </property>
                 </entity>
             </entity>
         </configure>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={249, 276, 815, 501}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={237, 169, 815, 501}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 394]">
     </property>
@@ -73,7 +73,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{110, 75}">
         </property>
     </property>
-    <property name="dimensionSystem::constraint" class="ptolemy.data.ontologies.AnnotationAttribute" value="Const.value &gt;= Velocity">
+    <property name="DimensionSystem::constraint" class="ptolemy.data.ontologies.AnnotationAttribute" value="Const.value &gt;= Velocity">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -90,36 +90,12 @@
     </property>
     <entity name="Integrator" class="ptolemy.domains.continuous.lib.Integrator">
         <property name="initialState" class="ptolemy.actor.parameters.PortParameter" value="0.0">
-            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Position">
-            </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 185.0]">
         </property>
-        <port name="impulse" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
-            </property>
-        </port>
-        <port name="derivative" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Velocity">
-            </property>
-        </port>
-        <port name="state" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Position">
-            </property>
-        </port>
-        <port name="initialState" class="ptolemy.actor.parameters.ParameterPort">
-            <property name="input"/>
-            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
-            </property>
-        </port>
     </entity>
     <entity name="Const" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="1">
-            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Velocity">
-            </property>
         </property>
         <doc>Create a constant sequence.</doc>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
@@ -130,51 +106,24 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[90.0, 185.0]">
         </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Velocity">
-            </property>
-        </port>
-        <port name="trigger" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
-            </property>
-        </port>
     </entity>
     <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
-            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Unknown">
-            </property>
         </property>
         <property name="automaticRescale" class="ptolemy.data.expr.Parameter" value="false">
-            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Unknown">
-            </property>
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute">
         </property>
         <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
-            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Unknown">
-            </property>
         </property>
         <property name="disconnectGraphOnAbsentValue" class="ptolemy.data.expr.Parameter" value="false">
-            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Unknown">
-            </property>
         </property>
         <property name="useLocalTime" class="ptolemy.data.expr.Parameter" value="false">
-            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Unknown">
-            </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[375.0, 185.0]">
         </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Position">
-            </property>
-        </port>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>

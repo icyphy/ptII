@@ -104,6 +104,9 @@ public class Ontology extends CompositeEntity {
                     }
                 }
             }
+            
+            // Set the graph version after creating the new graph
+            _graphVersion = workspace().getVersion();
         }
         return _graph;
     }

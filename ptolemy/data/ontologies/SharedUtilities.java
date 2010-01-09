@@ -150,6 +150,8 @@ public class SharedUtilities {
 
     /**
      * Return the representation for the SharedUtilities object.
+     * 
+     * @return The string representation of the SharedUtilities object
      */
     public String toString() {
         String result = "sharedUtilities#" + _id;

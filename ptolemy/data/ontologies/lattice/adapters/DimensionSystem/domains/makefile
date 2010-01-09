@@ -1,6 +1,6 @@
-# Makefile for ontologies
+# Makefile for Java Ptolemy Data Ontologies Lattice Adapters DimensionSystem Domains
 #
-# @Authors: Christopher Brooks (makefile only)
+# @Authors: Man-Kit Leung, based on a file by Christopher Brooks
 #
 # $Id$
 #
@@ -26,67 +26,46 @@
 # CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 # ENHANCEMENTS, OR MODIFICATIONS.
 #
-# 						PT_COPYRIGHT_VERSION_2
-# 						COPYRIGHTENDKEY
+#                       PT_COPYRIGHT_VERSION_2
+#                       COPYRIGHTENDKEY
 
-ME =		ptolemy/data/ontologies
+ME =        ptolemy/data/ontologies/lattice/adapters/DimensionSystem/domains
 
-DIRS = 		demo doc gui lattice util #test
+DIRS =      continuous
 
 # Root of the Ptolemy II directory
-ROOT =		../../..
+ROOT =      ../../../../../../..
 
-CLASSPATH =	$(ROOT)
+CLASSPATH = $(ROOT)
 
 # Get configuration info
-CONFIG =	$(ROOT)/mk/ptII.mk
+CONFIG =    $(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	ontologies
-# Include the .class files from these jars in PTCLASSALLJAR
-PTCLASSALLJARS = \
-	gui/gui.jar \
-	lattice/lattice.jar \
-	util/util.jar
+PTPACKAGE =     domains
+
+PTCLASSJAR =
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
-JSRCS = \
-	AnnotationAttribute.java \
-	Concept.java \
-	ConceptAttribute.java \
-	ConceptGraph.java \
-	ConceptRelation.java \
-	Ontology.java \
-	ParseTreeASTNodeHelperCollector.java \
-	ParseTreeAnnotationEvaluator.java \
-	PropertyHelper.java \
-	PropertyMoMLHandler.java \
-	PropertyResolutionException.java \
-	PropertySolver.java \
-	PropertySolverBase.java \
-	SharedUtilities.java
+PTCLASSALLJARS = \
+	continuous/continuous.jar
 
-OTHER_FILES_TO_BE_JARED = \
-	ontologyLibrary.xml
-
-EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
+JSRCS =
+EXTRA_SRCS =    $(JSRCS)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-# if $(DIRS) includes demo, then do not set MISC_FILES= $(DIRS) 
-MISC_FILES = gui lattice util #test
+MISC_FILES =    $(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	demo \
-	'PropertyHelper$$Channel.class' \
-	'PropertyHelper$$Inequality.class' \
-	'PropertySolver$$DirectoryNameFilter.class' \
+    doc
 
 JCLASS = $(JSRCS:%.java=%.class)
+
 
 all: jclass
 install: jclass jars

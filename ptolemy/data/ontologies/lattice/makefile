@@ -1,4 +1,4 @@
-# Makefile for ontologies
+# Makefile for Java Ptolemy Data Ontologies Lattice
 #
 # @Authors: Christopher Brooks (makefile only)
 #
@@ -29,12 +29,12 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/data/ontologies
+ME =		ptolemy/data/ontologies/lattice
 
-DIRS = 		demo doc gui lattice util #test
+DIRS = 		adapters
 
 # Root of the Ptolemy II directory
-ROOT =		../../..
+ROOT =		../../../..
 
 CLASSPATH =	$(ROOT)
 
@@ -43,54 +43,43 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	ontologies
+PTPACKAGE = 	lattice
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
-	gui/gui.jar \
-	lattice/lattice.jar \
-	util/util.jar
+	adapters/adapters.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
 JSRCS = \
-	AnnotationAttribute.java \
-	Concept.java \
-	ConceptAttribute.java \
-	ConceptGraph.java \
-	ConceptRelation.java \
-	Ontology.java \
-	ParseTreeASTNodeHelperCollector.java \
-	ParseTreeAnnotationEvaluator.java \
-	PropertyHelper.java \
-	PropertyMoMLHandler.java \
-	PropertyResolutionException.java \
-	PropertySolver.java \
-	PropertySolverBase.java \
-	SharedUtilities.java
-
-OTHER_FILES_TO_BE_JARED = \
-	ontologyLibrary.xml
+	ConstraintManager.java \
+	LatticeOntologySolver.java \
+	ParseTreeConstraintAnnotationEvaluator.java \
+	PropertyConstraintASTNodeHelper.java \
+	PropertyConstraintCompositeHelper.java \
+	PropertyConstraintHelper.java \
+	PropertyTermFactory.java \
+	PropertyTermManager.java
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
 # if $(DIRS) includes demo, then do not set MISC_FILES= $(DIRS) 
-MISC_FILES = gui lattice util #test
+MISC_FILES = $(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	demo \
-	'PropertyHelper$$Channel.class' \
-	'PropertyHelper$$Inequality.class' \
-	'PropertySolver$$DirectoryNameFilter.class' \
+	'LatticeOntologySolver$$ConstraintType.class' \
+	'PropertyConstraintHelper$Inequality.class' \
+	'PropertyTermManager$InequalityTerm.class'	
 
 JCLASS = $(JSRCS:%.java=%.class)
 
 all: jclass
 install: jclass jars
 
+propertyTestReports:: test_properties_reports
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

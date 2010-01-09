@@ -147,6 +147,9 @@ public class ConceptRelation extends ComponentRelation {
 
     /** Throw an exception if the port cannot be linked
      *  to this relation.
+     *  
+     *  @param port The port to be checked to see if the relation
+     *  can be attached
      *  @exception IllegalActionException If the port's container
      *   is not a {@link Concept}.
      */

@@ -137,6 +137,9 @@ public class Concept extends ComponentEntity implements InequalityTerm, Flowable
     }
 
     /** Throw an exception. This object is not a variable.
+     * 
+     *  @param object The object used to initialize the InequalityTerm; not used
+     *  since a Concept is a static value that cannot be initialized
      *  @exception IllegalActionException Always thrown.
      */
     public void initialize(Object object) throws IllegalActionException {
@@ -188,6 +191,9 @@ public class Concept extends ComponentEntity implements InequalityTerm, Flowable
 
     /** Throw an exception. This object is not a variable.
      * 
+     *  @param value The Object being passed in to set the value for the
+     *  InequalityTerm; not used since a Concept is a static value that
+     *  cannot be changed
      *  @exception IllegalActionException Always thrown.
      *  @see #getValue
      */
@@ -197,6 +203,8 @@ public class Concept extends ComponentEntity implements InequalityTerm, Flowable
 
     /**
      * Return the string that represents this concept, its name.
+     * 
+     * @return The string name that represents this concept
      */
     public String toString() {
         return _name;

@@ -85,7 +85,7 @@ constraints.
 @Pt.ProposedRating Red (mankit)
 @Pt.AcceptedRating Red (mankit)
 */
-public class PropertyHelper {
+public abstract class PropertyHelper {
 
     ///////////////////////////////////////////////////////////////////
     ////                 public methods                            ////
@@ -356,9 +356,7 @@ public class PropertyHelper {
      *
      * @return A new ParseTreeAnnotationEvaluator.
      */
-    protected ParseTreeAnnotationEvaluator _annotationEvaluator() {
-        return new ParseTreeConstraintAnnotationEvaluator();
-    }
+    protected abstract ParseTreeAnnotationEvaluator _annotationEvaluator();
 
     /**
      * Return the ParseTreeAnnotationEvaluator. This will creates a new
