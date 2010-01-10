@@ -351,8 +351,9 @@ public abstract class OntologyAdapter {
     ////               protected methods                           ////
 
     /**
-     * Create an new ParseTreeAnnotationEvaluator that is tailored for the
-     * use-case.
+     * Create a new ParseTreeAnnotationEvaluator that is tailored for the
+     * ontology. This class parses the user-defined ontology annotations
+     * in the model containing the OntologySolver.
      *
      * @return A new ParseTreeAnnotationEvaluator.
      */

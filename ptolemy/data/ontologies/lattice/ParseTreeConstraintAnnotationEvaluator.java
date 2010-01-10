@@ -60,10 +60,13 @@ public class ParseTreeConstraintAnnotationEvaluator extends
      *  that component or Concept.
      *  If it is not, then an exception is thrown.
      *  
-     *  This method calls the super class method for model Components, and then
-     *  catches the super class' exception to check for a Concept.
-     */
-    
+     *  This method calls the superclass method for model Components, and then
+     *  catches the superclass' exception to check for a Concept.
+     *  
+     *  @param node The leaf node to be visited
+     *  @throws IllegalActionException If the node label cannot be resolved to a
+     *  component in the model
+     */    
     public void visitLeafNode(ASTPtLeafNode node) throws IllegalActionException {
         try {
             super.visitLeafNode(node);
@@ -82,6 +85,16 @@ public class ParseTreeConstraintAnnotationEvaluator extends
         // FIXME: Not handling AST constraint yet.
     }
 
+    
+    /**
+     * Visit the relational node when parsing a user-defined manual constraint
+     * doe the LatticeOntologySolver.  It should be an operator that is either
+     * '==', '>=', or '<='.
+     * 
+     * @param node The relational node to be visited
+     * @throws IllegalActionException If the operator is not supported (should be
+     * one of '==', '>=', or '<=')
+     */
     public void visitRelationalNode(ASTPtRelationalNode node)
             throws IllegalActionException {
 

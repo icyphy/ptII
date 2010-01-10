@@ -77,6 +77,10 @@ public class ParseTreeASTNodeAdapterCollector extends AbstractParseTreeVisitor {
     /** Loop through all of the children of this node,
      *  visiting each one of them, which will cause their token
      *  value to be determined.
+     *  
+     *  @param node The root node whose children will be visited
+     *  @throws IllegalActionException If an exception is thrown while
+     *  visiting child nodes
      */
     protected void _visitAllChildren(ASTPtRootNode node)
             throws IllegalActionException {
@@ -91,6 +95,11 @@ public class ParseTreeASTNodeAdapterCollector extends AbstractParseTreeVisitor {
 
     /** Visit the child with the given index of the given node.
      *  This is usually called while visiting the given node.
+     *  
+     *  @param node The root node whose child will be visited
+     *  @param i The index (starting from 0) of the child node to be visited
+     *  @throws IllegalActionException If an exception is thrown while
+     *  visiting the child node
      */
     protected void _visitChild(ASTPtRootNode node, int i)
             throws IllegalActionException {

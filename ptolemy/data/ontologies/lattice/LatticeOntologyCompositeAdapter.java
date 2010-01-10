@@ -67,7 +67,15 @@ public class LatticeOntologyCompositeAdapter extends LatticeOntologyAdapter {
     ////                         public methods                    ////
 
     /**
-     *
+     * Add default constraints for the composite actor referred to by this
+     * LatticeOntologyCompositeAdapter based on the given ConstraintType.
+     * This method iteratively adds all the default constraints for all model components
+     * contained by the composite component referred to by this adapter.
+     * 
+     * @see ConstraintType
+     * @param actorConstraintType The given ConstraintType for the default constraints
+     * for the composite actor referred to by this LatticeOntologyCompositeAdapter
+     * @exception IllegalActionException If an exception is thrown
      */
     protected void _addDefaultConstraints(ConstraintType actorConstraintType)
             throws IllegalActionException {
@@ -132,6 +140,15 @@ public class LatticeOntologyCompositeAdapter extends LatticeOntologyAdapter {
         return super.constraintList();
     }
 
+    /**
+     * Set a default inequality constraint between the two specified objects, such that
+     * the Concept value of term1 is greater than or equal to the Concept value
+     * of term2. This method increments the composite default constraints statistic in
+     * the LatticeOntologySolver.
+     * 
+     * @param term1 The model object on the LHS of the >= inequality
+     * @param term2 The model object on the RHS of the >= inequality
+     */
     public void setAtLeastByDefault(Object term1, Object term2) {
         setAtLeast(term1, term2);
 
@@ -141,6 +158,14 @@ public class LatticeOntologyCompositeAdapter extends LatticeOntologyAdapter {
         }
     }
 
+    /**
+     * Set a default equality constraint between the two specified objects, such that
+     * the Concept value of term1  equal to the Concept value of term2. This method
+     * increments the composite default constraints statistic in the LatticeOntologySolver.
+     * 
+     * @param term1 The model object on the LHS of the equality
+     * @param term2 The model object on the RHS of the equality
+     */
     public void setSameAsByDefault(Object term1, Object term2) {
         setSameAs(term1, term2);
 

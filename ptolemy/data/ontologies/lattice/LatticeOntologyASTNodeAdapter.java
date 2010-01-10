@@ -228,6 +228,15 @@ public class LatticeOntologyASTNodeAdapter extends LatticeOntologyAdapter {
         return (ASTPtRootNode) getComponent();
     }
 
+    /**
+     * Set a default inequality constraint between the two specified objects, such that
+     * the Concept value of term1 is greater than or equal to the Concept value
+     * of term2. This method increments the AST default constraints statistic in
+     * the LatticeOntologySolver.
+     * 
+     * @param term1 The model object on the LHS of the >= inequality
+     * @param term2 The model object on the RHS of the >= inequality
+     */
     public void setAtLeastByDefault(Object term1, Object term2) {
         setAtLeast(term1, term2);
 
@@ -237,6 +246,14 @@ public class LatticeOntologyASTNodeAdapter extends LatticeOntologyAdapter {
         }
     }
 
+    /**
+     * Set a default equality constraint between the two specified objects, such that
+     * the Concept value of term1  equal to the Concept value of term2. This method
+     * increments the AST default constraints statistic in the LatticeOntologySolver.
+     * 
+     * @param term1 The model object on the LHS of the equality
+     * @param term2 The model object on the RHS of the equality
+     */
     public void setSameAsByDefault(Object term1, Object term2) {
         setSameAs(term1, term2);
 

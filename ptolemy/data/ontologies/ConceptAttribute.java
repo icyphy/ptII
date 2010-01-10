@@ -37,8 +37,8 @@ import ptolemy.kernel.util.ValueListener;
 import ptolemy.util.StringUtilities;
 
 /**
- * The base class of a property attribute. A ConceptAttribute contains the
- * property value annotated by the solver.
+ * The base class of a concept attribute. A ConceptAttribute contains the
+ * concept value annotated by the solver.
  * 
  * @author Man-Kit Leung
  * @version $Id$
@@ -65,6 +65,14 @@ public class ConceptAttribute extends AbstractSettableAttribute {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** 
+     * Method required since ConceptAttribute extends AbstractSettableAttribute
+     * which implements the {@linkplain ptolemy.kernel.util.Settable Settable} interface.
+     * But we do not currently support any listeners in this class.
+     *  
+     *  @param listener The listener to add.
+     *  @see #removeValueListener
+     */
     public void addValueListener(ValueListener listener) {
         // no listeners supported so far
         return;
@@ -96,8 +104,14 @@ public class ConceptAttribute extends AbstractSettableAttribute {
         }
     }
 
+    /** 
+     * Get the string name of the Concept contained by the ConceptAttribute
+     * or the empty string if there is none.
+     * 
+     * @return The name of the Concept as a string, or the empty string ""
+     */
     public String getExpression() {
-        return _property == null ? "" : _property.toString();
+        return _concept == null ? "" : _concept.toString();
     }
 
     /**
@@ -105,16 +119,32 @@ public class ConceptAttribute extends AbstractSettableAttribute {
      * 
      * @return a Concept object representing the Concept value
      * contained by the ConceptAttribute
-     * @see #setProperty
+     * @see #setConcept
      */
-    public Concept getProperty() {
-        return _property;
+    public Concept getConcept() {
+        return _concept;
     }
 
+    /** Get the visibility of this Settable, as set by setVisibility().
+     *  If setVisibility() has not been called, then this method returns
+     *  the default Settable.FULL. The returned value is one of the static
+     *  instances of the Visibility inner class.
+     *  @return The visibility of this Settable.
+     *  
+     *  @see #setVisibility(Settable.Visibility)
+     */
     public Visibility getVisibility() {
         return _visibility;
     }
 
+    /** 
+     * Method required since ConceptAttribute extends AbstractSettableAttribute
+     * which implements the {@linkplain ptolemy.kernel.util.Settable Settable} interface.
+     * But we do not currently support any listeners in this class.
+     * 
+     * @param listener The listener to remove.
+     * @see #addValueListener
+     */
     public void removeValueListener(ValueListener listener) {
         // no listeners supported so far
         return;
@@ -123,14 +153,22 @@ public class ConceptAttribute extends AbstractSettableAttribute {
     /**
      * Specifies the Concept value.
      * 
-     * @param property a Concept object specifying the Concept value
+     * @param concept a Concept object specifying the Concept value
      * contained by the ConceptAttribute
-     * @see #getProperty
+     * @see #getConcept
      */
-    public void setProperty(Concept property) {
-        _property = property;
+    public void setConcept(Concept concept) {
+        _concept = concept;
     }
 
+    /** Set the visibility of this Settable.  The argument should be one
+     *  of the static public instances of the inner class Visibility.
+     *  This is enforced by making it impossible to construct instances
+     *  of this inner class outside this interface definition.
+
+     *  @param visibility The visibility of this Settable.
+     *  @see #getVisibility()
+     */
     public void setVisibility(Visibility visibility) {
         _visibility = visibility;
     }
@@ -153,7 +191,7 @@ public class ConceptAttribute extends AbstractSettableAttribute {
     }
 
     /** The Concept contained by the ConceptAtribute. */
-    protected Concept _property;
+    protected Concept _concept;
 
     //    private Visibility _visibility = Settable.NONE;
     private Visibility _visibility = Settable.FULL;

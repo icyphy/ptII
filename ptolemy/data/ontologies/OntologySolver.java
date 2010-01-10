@@ -420,7 +420,7 @@ public abstract class OntologySolver extends OntologySolverBase {
 
     /**
      * Reset the solver. This removes the internal states of the solver (e.g.
-     * previously recorded properties, statistics, and etc.).
+     * previously recorded properties, statistics, etc.).
      */
     public void reset() {
         super.reset();

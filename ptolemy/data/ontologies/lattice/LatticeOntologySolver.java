@@ -74,10 +74,12 @@ import ptolemy.util.FileUtilities;
 
 /**
  * An instance of this solver contains an <i>ontology</i>, which itself
- * contains a {@linkplain ConceptGraph} and default constraints. The LatticeOntologySolver
- * contains an {@linkplain Ontology} whose ConceptGraph must be a lattice.  It uses the
- * Reihof-Mogensen algorithm to resolve which {@linkplain Concept Concepts} are assigned to
- * model components.
+ * contains a {@linkplain ptolemy.data.ontologies.ConceptGraph ConceptGraph}
+ * and default constraints. The LatticeOntologySolver
+ * contains an {@linkplain ptolemy.data.ontologies.Ontology Ontology} whose
+ * ConceptGraph must be a lattice.  It uses the
+ * Reihof-Mogensen algorithm to resolve which {@linkplain ptolemy.data.ontologies.Concept Concepts}
+ * are assigned to model components.
  * <p>
  * This class is based on the PropertyConstraintSolver in the properties package
  * by Man-Kit Leung.
@@ -443,6 +445,11 @@ public class LatticeOntologySolver extends OntologySolver implements Testable {
                 || super.isResolve();
     }
 
+    /**
+     * Reset the solver. This removes the internal states of the solver (e.g.
+     * previously recorded properties, statistics, etc.). Also resets the
+     * {@linkplain ConceptTermManager} to null and clears the trained constraints.
+     */
     public void reset() {
         super.reset();
         _conceptTermManager = null;
@@ -461,6 +468,8 @@ public class LatticeOntologySolver extends OntologySolver implements Testable {
 
     /**
      * Prepare for automatic testing.
+     * 
+     * @param options The map of options for automatic testing
      */
     public void setOptions(Map options) {
         super.setOptions(options);
@@ -549,6 +558,17 @@ public class LatticeOntologySolver extends OntologySolver implements Testable {
         }
     }
 
+    /**
+     * Return the LatticeOntologyAdapter for the specified component. This
+     * instantiates a new OntologyAdapter if it does not already exist
+     * for the specified component.  This returns specific LatticeOntologyAdapters
+     * for the LatticeOntologySolver.
+     * 
+     * @param component The specified component.
+     * @return The LatticeOntologyAdapter for the specified component.
+     * @exception IllegalActionException Thrown if the LatticeOntologyAdapter
+     * cannot be instantiated.
+     */
     protected OntologyAdapter _getAdapter(Object component)
             throws IllegalActionException {
         OntologyAdapter adapter = null;
@@ -594,6 +614,11 @@ public class LatticeOntologySolver extends OntologySolver implements Testable {
         return new ConceptTermManager(this);
     }
 
+    /**
+     * Initialize solver algorithm execution statistics Map for OntologySolver.
+     * Adds constraint statistics for LatticeOntologySolver in addition to the
+     * default set of OntologySolver statistics.
+     */
     protected void _initializeStatistics() {
         super._initializeStatistics();
         getStats().put("# of default constraints", 0);

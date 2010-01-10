@@ -88,7 +88,12 @@ public class ParseTreeAnnotationEvaluator extends AbstractParseTreeVisitor {
     }
 
     /**
-     *
+     * Visit the assignment node when parsing a user-defined ontology annotation.
+     * This is for a manual annotation that assigns a Concept to a specified
+     * model component.
+     * 
+     * @param node The assignment node to be visited.
+     * @throws IllegalActionException If the assignment is not possible.
      */
     public void visitAssignmentNode(ASTPtAssignmentNode node)
             throws IllegalActionException {
@@ -133,6 +138,12 @@ public class ParseTreeAnnotationEvaluator extends AbstractParseTreeVisitor {
      // FIXME: Not handling AST constraint yet.
     }
 
+    /**
+     * Visit the method node when parsing a user-defined ontology annotation.
+     * 
+     * @param node The method call node to be visited
+     * @throws IllegalActionException If the method label cannot be resolved.
+     */
     public void visitMethodCallNode(ASTPtMethodCallNode node)
             throws IllegalActionException {
         String name = node.getMethodName();

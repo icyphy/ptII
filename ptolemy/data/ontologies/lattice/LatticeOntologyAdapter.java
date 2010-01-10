@@ -54,7 +54,7 @@ import ptolemy.kernel.util.IllegalActionException;
 //// LatticeOntologyAdapter
 
 /**
- * The base class for a property constraint adapter.
+ * The base class for a lattice-based ontology adapter.
  * 
  * @author Man-Kit Leung, Thomas Mandl, Edward A. Lee
  * @version $Id$
@@ -65,7 +65,7 @@ import ptolemy.kernel.util.IllegalActionException;
 public class LatticeOntologyAdapter extends OntologyAdapter {
 
     /**
-     * Construct the property constraint adapter associated with the given
+     * Construct the lattice ontology adapter associated with the given
      * component and solver. The constructed adapter implicitly uses the default
      * constraints set by the solver.
      * @param solver The specified lattice-based ontology solver.
@@ -79,7 +79,7 @@ public class LatticeOntologyAdapter extends OntologyAdapter {
     }
 
     /**
-     * Construct the property constraint adapter for the given component and
+     * Construct the lattice ontology adapter for the given component and
      * property lattice.
      * @param solver The specified lattice-based ontology solver.
      * @param component The given component.
@@ -457,6 +457,13 @@ public class LatticeOntologyAdapter extends OntologyAdapter {
         }
     }
 
+    /**
+     * Create a new ParseTreeAnnotationEvaluator that is tailored for the
+     * ontology. This class parses the user-defined ontology constraint
+     * annotations in the model containing the LatticeOntologySolver.
+     * 
+     * @return a new ParseTreeConstraintAnnotationEvaluator object
+     */
     protected ParseTreeAnnotationEvaluator _annotationEvaluator() {
         return new ParseTreeConstraintAnnotationEvaluator();
     }
