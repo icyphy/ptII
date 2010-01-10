@@ -61,6 +61,7 @@ PTCLASSALLJARS = \
 	CartPendulum/CartPendulum.jar \
 	ComparedClocks/ComparedClocks.jar \
 	ContinuousInsideDE/ContinuousInsideDE.jar \
+	FurutaPendulum/FurutaPendulum.xml \
 	HierarchicalExecution/HierarchicalExecution.jar \
 	HybridPlant/HybridPlant.jar \
 	Hysteresis/Hysteresis.jar \
