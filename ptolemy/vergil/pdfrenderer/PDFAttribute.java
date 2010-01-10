@@ -27,12 +27,20 @@
  */
 package ptolemy.vergil.pdfrenderer;
 
+import java.io.BufferedOutputStream;
+import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.net.URL;
+import java.nio.CharBuffer;
+import java.nio.charset.Charset;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 
+import ptolemy.actor.gui.JNLPUtilities;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.expr.FileParameter;
 import ptolemy.data.expr.Parameter;
@@ -41,6 +49,8 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.util.ClassUtilities;
+import ptolemy.util.FileUtilities;
 import ptolemy.vergil.kernel.attributes.VisibleAttribute;
 
 import com.sun.pdfview.PDFFile;
@@ -131,11 +141,32 @@ public class PDFAttribute extends VisibleAttribute {
             throws IllegalActionException {
         if (attribute == source) {
             try {
-                File file = source.asFile();
-                RandomAccessFile raf = new RandomAccessFile(file, "r");
-                FileChannel channel = raf.getChannel();
-                ByteBuffer buf = channel.map(FileChannel.MapMode.READ_ONLY, 0, channel.size());
-                PDFFile pdffile = new PDFFile(buf);
+                ByteBuffer byteBuffer = null;
+                try {
+                    File file = source.asFile();
+                    RandomAccessFile raf = new RandomAccessFile(file, "r");
+                    FileChannel channel = raf.getChannel();
+                    byteBuffer = channel.map(FileChannel.MapMode.READ_ONLY, 0, channel.size());
+                } catch (Exception ex) {
+                    try {
+                        // We might be under WebStart.  In theory, we should be able to read
+                        // the URL and create a ByteBuffer, but there are problems with the non-ascii bytes
+                        // in the pdf file.  The basic idea was to new BufferedOutputStream(new ByteArrayOutputStream()).
+                        URL jarURL = FileUtilities.nameToURL(source.getExpression(), null, null);
+                        if (! jarURL.toString().startsWith("jar:")) {
+                            throw ex;
+                        } else {
+                            File file = new File(JNLPUtilities.saveJarURLAsTempFile(jarURL.toString(), "PDFAttribute", ".pdf", null));
+                            RandomAccessFile raf = new RandomAccessFile(file, "r");
+                            FileChannel channel = raf.getChannel();
+                            byteBuffer = channel.map(FileChannel.MapMode.READ_ONLY, 0, channel.size());
+                        }
+                    } catch (Exception ex2) {
+                        throw new IllegalActionException(this, ex, "Failed to open " + source.getExpression());
+                    }
+                }
+
+                PDFFile pdffile = new PDFFile(byteBuffer);
     
                 // draw the first page to an image
                 PDFPage page = pdffile.getPage(0);
@@ -153,11 +184,10 @@ public class PDFAttribute extends VisibleAttribute {
             super.attributeChanged(attribute);
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
+    ///                         private variables                 ////
 
     /** The PDF icon. */
     private PDFIcon _icon;
-
 }
