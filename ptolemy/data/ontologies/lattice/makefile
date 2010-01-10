@@ -54,11 +54,11 @@ JSRCS = \
 	ConstraintManager.java \
 	LatticeOntologySolver.java \
 	ParseTreeConstraintAnnotationEvaluator.java \
-	PropertyConstraintASTNodeHelper.java \
-	PropertyConstraintCompositeHelper.java \
-	PropertyConstraintHelper.java \
-	PropertyTermFactory.java \
-	PropertyTermManager.java
+	LatticeOntologyASTNodeAdapter.java \
+	LatticeOntologyCompositeAdapter.java \
+	LatticeOntologyAdapter.java \
+	ConceptTermFactory.java \
+	ConceptTermManager.java
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
@@ -71,8 +71,8 @@ MISC_FILES = $(DIRS)
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	'LatticeOntologySolver$$ConstraintType.class' \
-	'PropertyConstraintHelper$Inequality.class' \
-	'PropertyTermManager$InequalityTerm.class'	
+	'LatticeOntologyAdapter$Inequality.class' \
+	'ConceptTermManager$InequalityTerm.class'	
 
 JCLASS = $(JSRCS:%.java=%.class)
 

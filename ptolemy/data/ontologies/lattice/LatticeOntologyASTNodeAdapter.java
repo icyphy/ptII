@@ -36,7 +36,7 @@ import ptolemy.data.expr.ASTPtLeafNode;
 import ptolemy.data.expr.ASTPtRootNode;
 import ptolemy.data.expr.ModelScope;
 import ptolemy.data.expr.Variable;
-import ptolemy.data.ontologies.PropertyHelper;
+import ptolemy.data.ontologies.OntologyAdapter;
 import ptolemy.data.ontologies.lattice.LatticeOntologySolver.ConstraintType;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.IllegalActionException;
@@ -54,7 +54,7 @@ import ptolemy.kernel.util.NamedObj;
  @Pt.ProposedRating Red (mankit)
  @Pt.AcceptedRating Red (mankit)
  */
-public class PropertyConstraintASTNodeHelper extends PropertyConstraintHelper {
+public class LatticeOntologyASTNodeAdapter extends LatticeOntologyAdapter {
 
     /**
      * Construct the property constraint adapter associated
@@ -65,7 +65,7 @@ public class PropertyConstraintASTNodeHelper extends PropertyConstraintHelper {
      * PropertyConstraintHelper(NamedObj, ASTPtRootNode, boolean)
      * throws it.
      */
-    public PropertyConstraintASTNodeHelper(LatticeOntologySolver solver,
+    public LatticeOntologyASTNodeAdapter(LatticeOntologySolver solver,
             ASTPtRootNode node) throws IllegalActionException {
         this(solver, node, true);
     }
@@ -80,7 +80,7 @@ public class PropertyConstraintASTNodeHelper extends PropertyConstraintHelper {
      * @exception IllegalActionException If the adapter cannot
      *  be initialized.
      */
-    public PropertyConstraintASTNodeHelper(LatticeOntologySolver solver,
+    public LatticeOntologyASTNodeAdapter(LatticeOntologySolver solver,
             ASTPtRootNode node, boolean useDefaultConstraints)
             throws IllegalActionException {
 
@@ -190,8 +190,8 @@ public class PropertyConstraintASTNodeHelper extends PropertyConstraintHelper {
      * @return The list of sub-adapters.
      * @exception IllegalActionException Not thrown in this base class.
      */
-    protected List<PropertyHelper> _getSubHelpers() {
-        return new ArrayList<PropertyHelper>();
+    protected List<OntologyAdapter> _getSubAdapters() {
+        return new ArrayList<OntologyAdapter>();
     }
 
     /**

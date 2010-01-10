@@ -1,4 +1,4 @@
-/** A class representing a property term factory.
+/** A class representing a concept term factory.
 
  Copyright (c) 1997-2009 The Regents of the University of California.
  All rights reserved.
@@ -48,14 +48,14 @@ import ptolemy.kernel.util.IllegalActionException;
  @Pt.ProposedRating Red (mankit)
  @Pt.AcceptedRating Red (mankit)
  */
-public class PropertyTermManager implements PropertyTermFactory {
+public class ConceptTermManager implements ConceptTermFactory {
 
     /**
      * Construct a new ptolemy.graph.InequalityTerm factory.
      * 
      * @param solver the LatticeOntologySolver that contains this PropertyTermManager
      */
-    public PropertyTermManager(LatticeOntologySolver solver) {
+    public ConceptTermManager(LatticeOntologySolver solver) {
         _solver = solver;
     }
 
@@ -66,7 +66,7 @@ public class PropertyTermManager implements PropertyTermFactory {
      */
     public List<ptolemy.graph.InequalityTerm> terms() {
         List<ptolemy.graph.InequalityTerm> result = new LinkedList<ptolemy.graph.InequalityTerm>();
-        result.addAll(_propertyTerms.values());
+        result.addAll(_conceptTerms.values());
         return result;
     }
 
@@ -81,7 +81,7 @@ public class PropertyTermManager implements PropertyTermFactory {
      * @param object The given object.
      * @return The property term.
      */
-    public ptolemy.graph.InequalityTerm getPropertyTerm(Object object) {
+    public ptolemy.graph.InequalityTerm getConceptTerm(Object object) {
         if (object == null || object instanceof ptolemy.graph.InequalityTerm) {
             return (ptolemy.graph.InequalityTerm) object;
         }
@@ -103,10 +103,10 @@ public class PropertyTermManager implements PropertyTermFactory {
         //            //}
         //        }
 
-        if (!_propertyTerms.containsKey(object)) {
-            _propertyTerms.put(object, new InequalityTerm(object));
+        if (!_conceptTerms.containsKey(object)) {
+            _conceptTerms.put(object, new InequalityTerm(object));
         }
-        return _propertyTerms.get(object);
+        return _conceptTerms.get(object);
     }
 
     /**
@@ -127,7 +127,7 @@ public class PropertyTermManager implements PropertyTermFactory {
     ////                         private variables                 ////
 
     /** The mapping between property-able objects and their ptolemy.graph.InequalityTerm. */
-    private HashMap<Object, ptolemy.graph.InequalityTerm> _propertyTerms = new HashMap<Object, ptolemy.graph.InequalityTerm>();
+    private HashMap<Object, ptolemy.graph.InequalityTerm> _conceptTerms = new HashMap<Object, ptolemy.graph.InequalityTerm>();
 
     /** The LatticeOntologySolver that contains this PropertyTermManager. */
     protected LatticeOntologySolver _solver;

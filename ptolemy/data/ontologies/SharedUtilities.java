@@ -77,7 +77,7 @@ public class SharedUtilities {
      * Mard the given property solver as already activated.
      * @param solver The given solver.
      */
-    public void addRanSolvers(PropertySolver solver) {
+    public void addRanSolvers(OntologySolver solver) {
         _ranSolvers.add(solver);
     }
 
@@ -112,7 +112,7 @@ public class SharedUtilities {
      * Return the set of solvers that were marked activated.
      * @return The set of solvers that were activated previously.
      */
-    public Set<PropertySolver> getRanSolvers() {
+    public Set<OntologySolver> getRanSolvers() {
         return _ranSolvers;
     }
 
@@ -141,7 +141,7 @@ public class SharedUtilities {
      * recorded information.
      */
     public void resetAll() {
-        _ranSolvers = new HashSet<PropertySolver>();
+        _ranSolvers = new HashSet<OntologySolver>();
         _parseTrees = new HashMap<Attribute, ASTPtRootNode>();
         _attributes = new HashMap<ASTPtRootNode, Attribute>();
         _errors = new ArrayList<String>();
@@ -169,12 +169,12 @@ public class SharedUtilities {
     }
 
     /**  The last most recent OntologySolver that was invoked on a model during runtime. */
-    protected PropertySolver _previousInvokedSolver = null;
+    protected OntologySolver _previousInvokedSolver = null;
 
     /**
      * The set of solvers that have already been invoked.
      */
-    private HashSet<PropertySolver> _ranSolvers = new HashSet<PropertySolver>();
+    private HashSet<OntologySolver> _ranSolvers = new HashSet<OntologySolver>();
 
     private Map<Attribute, ASTPtRootNode> _parseTrees = new HashMap<Attribute, ASTPtRootNode>();
 

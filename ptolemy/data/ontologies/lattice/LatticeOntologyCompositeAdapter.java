@@ -31,7 +31,7 @@ import java.util.List;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.TypedIOPort;
-import ptolemy.data.ontologies.PropertyHelper;
+import ptolemy.data.ontologies.OntologyAdapter;
 import ptolemy.data.ontologies.lattice.LatticeOntologySolver.ConstraintType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
@@ -48,7 +48,7 @@ import ptolemy.kernel.util.IllegalActionException;
  @Pt.ProposedRating Red (mankit)
  @Pt.AcceptedRating Red (mankit)
  */
-public class PropertyConstraintCompositeHelper extends PropertyConstraintHelper {
+public class LatticeOntologyCompositeAdapter extends LatticeOntologyAdapter {
 
     /** Construct the property constraint adapter associated
      *  with the given TypedCompositeActor.
@@ -57,7 +57,7 @@ public class PropertyConstraintCompositeHelper extends PropertyConstraintHelper 
      *  @exception IllegalActionException
      * @exception IllegalActionException
      */
-    public PropertyConstraintCompositeHelper(LatticeOntologySolver solver,
+    public LatticeOntologyCompositeAdapter(LatticeOntologySolver solver,
             CompositeEntity component) throws IllegalActionException {
 
         super(solver, component, false);
@@ -72,9 +72,9 @@ public class PropertyConstraintCompositeHelper extends PropertyConstraintHelper 
     protected void _addDefaultConstraints(ConstraintType actorConstraintType)
             throws IllegalActionException {
 
-        for (PropertyHelper adapter : _getSubHelpers()) {
+        for (OntologyAdapter adapter : _getSubAdapters()) {
 
-            ((PropertyConstraintHelper) adapter)
+            ((LatticeOntologyAdapter) adapter)
                     ._addDefaultConstraints(actorConstraintType);
         }
     }
@@ -87,14 +87,14 @@ public class PropertyConstraintCompositeHelper extends PropertyConstraintHelper 
      * @exception IllegalActionException Thrown if there is an error
      *  getting the adapter for any contained entities.
      */
-    protected List<PropertyHelper> _getSubHelpers()
+    protected List<OntologyAdapter> _getSubAdapters()
             throws IllegalActionException {
-        List<PropertyHelper> adapters = super._getSubHelpers();
+        List<OntologyAdapter> adapters = super._getSubAdapters();
 
         CompositeEntity component = (CompositeEntity) getComponent();
 
         for (Object actor : component.entityList()) {
-            adapters.add(_solver.getHelper(actor));
+            adapters.add(_solver.getAdapter(actor));
         }
         return adapters;
     }
@@ -109,8 +109,8 @@ public class PropertyConstraintCompositeHelper extends PropertyConstraintHelper 
 
         // Set up inter-actor constraints.
         for (Entity entity : (List<Entity>) actor.entityList()) {
-            PropertyConstraintHelper adapter = (PropertyConstraintHelper) _solver
-                    .getHelper(entity);
+            LatticeOntologyAdapter adapter = (LatticeOntologyAdapter) _solver
+                    .getAdapter(entity);
 
             boolean constraintSource = adapter.isConstraintSource();
 

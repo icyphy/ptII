@@ -33,7 +33,7 @@ import ptolemy.actor.TypedIOPort;
 import ptolemy.data.ontologies.Concept;
 import ptolemy.data.properties.lattice.MonotonicFunction;
 import ptolemy.data.ontologies.lattice.LatticeOntologySolver;
-import ptolemy.data.ontologies.lattice.adapters.DimensionSystem.DimensionSystemPropertyConstraintHelper;
+import ptolemy.data.ontologies.lattice.adapters.DimensionSystem.DimensionSystemAdapter;
 import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.util.IllegalActionException;
 
@@ -49,7 +49,7 @@ import ptolemy.kernel.util.IllegalActionException;
  @Pt.ProposedRating Red (mankit)
  @Pt.AcceptedRating Red (mankit)
 */
-public class Integrator extends DimensionSystemPropertyConstraintHelper {
+public class Integrator extends DimensionSystemAdapter {
 
     /**
      * Construct a Integrator adapter for the flatUnitSystem lattice.

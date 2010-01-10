@@ -1,4 +1,4 @@
-/*  The base abstract class for a property adapter.
+/*  The base abstract class for an ontology adapter.
 
  Copyright (c) 2007-2009 The Regents of the University of California.
  All rights reserved.
@@ -52,7 +52,7 @@ import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.StringAttribute;
 
 //////////////////////////////////////////////////////////////////////////
-//// PropertyHelper
+//// OntologyAdapter
 
 /**
 Constraints for a component in the model.
@@ -85,7 +85,7 @@ constraints.
 @Pt.ProposedRating Red (mankit)
 @Pt.AcceptedRating Red (mankit)
 */
-public abstract class PropertyHelper {
+public abstract class OntologyAdapter {
 
     ///////////////////////////////////////////////////////////////////
     ////                 public methods                            ////
@@ -173,7 +173,7 @@ public abstract class PropertyHelper {
      *
      * @return The PropertySolver that uses this adapter.
      */
-    public PropertySolver getSolver() {
+    public OntologySolver getSolver() {
         return _solver;
     }
 
@@ -242,7 +242,7 @@ public abstract class PropertyHelper {
         }
 
         // The recursive case.
-        for (PropertyHelper adapter : _getSubHelpers()) {
+        for (OntologyAdapter adapter : _getSubAdapters()) {
             adapter.reinitialize();
         }
     }
@@ -379,15 +379,15 @@ public abstract class PropertyHelper {
      * @return The list of PropertyHelpers for ASTPtRootNodes.
      * @throws IllegalActionException If the AST expression is not parseable
      */
-    protected List<PropertyHelper> _getASTNodeHelpers()
+    protected List<OntologyAdapter> _getASTNodeAdapters()
             throws IllegalActionException {
-        List<PropertyHelper> astHelpers = new ArrayList<PropertyHelper>();
-        ParseTreeASTNodeHelperCollector collector = new ParseTreeASTNodeHelperCollector();
+        List<OntologyAdapter> astHelpers = new ArrayList<OntologyAdapter>();
+        ParseTreeASTNodeAdapterCollector collector = new ParseTreeASTNodeAdapterCollector();
 
         for (ASTPtRootNode root : _getAttributeParseTrees()) {
             if (root != null) {
                 //                try {
-                List<PropertyHelper> adapters = collector.collectHelpers(root,
+                List<OntologyAdapter> adapters = collector.collectAdapters(root,
                         getSolver());
                 astHelpers.addAll(adapters);
                 //                } catch (IllegalActionException ex) {
@@ -570,16 +570,16 @@ public abstract class PropertyHelper {
      * @return The list of sub-adapters.
      * @exception IllegalActionException Not thrown in this base class.
      */
-    protected List<PropertyHelper> _getSubHelpers()
+    protected List<OntologyAdapter> _getSubAdapters()
             throws IllegalActionException {
-        PropertySolver solver = getSolver();
+        OntologySolver solver = getSolver();
         /* FIXME: Haven't included these options yet on default constraints.
         if (solver.expressionASTNodeConstraintType.getExpression().equals(
                 "NONE")) {
             return new LinkedList();
         }
         */
-        return _getASTNodeHelpers();
+        return _getASTNodeAdapters();
     }
 
     /**
@@ -615,8 +615,8 @@ public abstract class PropertyHelper {
     /** The annotation evaluator. */
     protected ParseTreeAnnotationEvaluator _annotationEvaluator;
 
-    /** The associated property solver. */
-    protected PropertySolver _solver;
+    /** The associated ontology solver. */
+    protected OntologySolver _solver;
 
     ///////////////////////////////////////////////////////////////////
     ////       private methods                                     ////
@@ -632,13 +632,13 @@ public abstract class PropertyHelper {
             throws IllegalActionException {
         Map map;
         try {
-            ASTPtRootNode parseTree = PropertySolver.getParser()
+            ASTPtRootNode parseTree = OntologySolver.getParser()
                     .generateParseTree(annotation.getExpression());
 
             map = new HashMap();
             map.put(parseTree, parseTree);
         } catch (IllegalActionException ex) {
-            map = PropertySolver.getParser().generateAssignmentMap(
+            map = OntologySolver.getParser().generateAssignmentMap(
                     annotation.getExpression());
 
         }
@@ -708,15 +708,15 @@ public abstract class PropertyHelper {
             super(lesserTerm, greaterTerm);
 
             _isBase = isBase;
-            _adapter = PropertyHelper.this;
+            _adapter = OntologyAdapter.this;
         }
 
         /**
          * Returns the the ontology adapter for this Inequality.
          * 
-         * @return A PropertyHelper object representing the ontology adapter
+         * @return An OntologyAdapter object representing the ontology adapter
          */
-        public PropertyHelper getHelper() {
+        public OntologyAdapter getAdapter() {
             return _adapter;
         }
 
@@ -751,6 +751,6 @@ public abstract class PropertyHelper {
 
         private final boolean _isBase;
 
-        private final PropertyHelper _adapter;
+        private final OntologyAdapter _adapter;
     }
 }

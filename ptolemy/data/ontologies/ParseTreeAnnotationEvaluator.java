@@ -81,7 +81,7 @@ public class ParseTreeAnnotationEvaluator extends AbstractParseTreeVisitor {
      *  @exception IllegalActionException If an error occurs during
      *   evaluation.
      */
-    public void evaluate(ASTPtRootNode node, PropertyHelper adapter)
+    public void evaluate(ASTPtRootNode node, OntologyAdapter adapter)
             throws IllegalActionException {
         _adapter = adapter;
         node.visit(this);
@@ -286,7 +286,7 @@ public class ParseTreeAnnotationEvaluator extends AbstractParseTreeVisitor {
      *  component containing actors that could be referenced
      *  by the node label.
      */
-    protected PropertyHelper _adapter;
+    protected OntologyAdapter _adapter;
 
     /** The model component that the parse tree node refers to. */
     protected Object _evaluatedObject;

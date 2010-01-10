@@ -59,13 +59,13 @@ JSRCS = \
 	ConceptGraph.java \
 	ConceptRelation.java \
 	Ontology.java \
-	ParseTreeASTNodeHelperCollector.java \
+	ParseTreeASTNodeAdapterCollector.java \
 	ParseTreeAnnotationEvaluator.java \
-	PropertyHelper.java \
-	PropertyMoMLHandler.java \
-	PropertyResolutionException.java \
-	PropertySolver.java \
-	PropertySolverBase.java \
+	OntologyAdapter.java \
+	OntologyMoMLHandler.java \
+	OntologyResolutionException.java \
+	OntologySolver.java \
+	OntologySolverBase.java \
 	SharedUtilities.java
 
 OTHER_FILES_TO_BE_JARED = \
@@ -82,9 +82,9 @@ MISC_FILES = gui lattice util #test
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	demo \
-	'PropertyHelper$$Channel.class' \
-	'PropertyHelper$$Inequality.class' \
-	'PropertySolver$$DirectoryNameFilter.class' \
+	'OntologyAdapter$$Channel.class' \
+	'OntologyAdapter$$Inequality.class' \
+	'OntologySolver$$DirectoryNameFilter.class' \
 
 JCLASS = $(JSRCS:%.java=%.class)
 

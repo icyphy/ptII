@@ -1,4 +1,4 @@
-/** A class that collects and manages all the inequality constraints for an OntologySolver.
+/** A class that collects and manages all the inequality constraints for a LatticeOntologySolver.
 
  Copyright (c) 1997-2009 The Regents of the University of California.
  All rights reserved.
@@ -31,7 +31,7 @@ package ptolemy.data.ontologies.lattice;
 import java.util.List;
 
 import ptolemy.data.StringToken;
-import ptolemy.data.ontologies.lattice.PropertyConstraintHelper.Inequality;
+import ptolemy.data.ontologies.lattice.LatticeOntologyAdapter.Inequality;
 import ptolemy.data.ontologies.util.MultiHashMap;
 import ptolemy.data.ontologies.util.MultiMap;
 import ptolemy.graph.InequalityTerm;
@@ -94,10 +94,10 @@ public class ConstraintManager {
 
         if (least) {
             return (List<ptolemy.graph.InequalityTerm>) _greaterTermMap.get(_solver
-                    .getPropertyTerm(object));
+                    .getConceptTerm(object));
         } else {
             return (List<ptolemy.graph.InequalityTerm>) _lesserTermMap.get(_solver
-                    .getPropertyTerm(object));
+                    .getConceptTerm(object));
         }
     }
 

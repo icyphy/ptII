@@ -30,12 +30,12 @@ package ptolemy.data.ontologies.gui;
 import java.awt.Frame;
 
 import ptolemy.actor.gui.EditorFactory;
-import ptolemy.data.ontologies.PropertySolver;
+import ptolemy.data.ontologies.OntologySolver;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 
-////PropertySolverGUIFactory
+////OntologySolverGUIFactory
 
 /**
  This is an attribute that creates an editor for configuring and
@@ -51,7 +51,7 @@ import ptolemy.kernel.util.NamedObj;
  @Pt.ProposedRating Red (eal)
  @Pt.AcceptedRating Red (eal)
  */
-public class PropertySolverGUIFactory extends EditorFactory {
+public class OntologySolverGUIFactory extends EditorFactory {
 
     /** Construct a factory with the specified container and name.
      *  @param container The container.
@@ -61,7 +61,7 @@ public class PropertySolverGUIFactory extends EditorFactory {
      *  @exception NameDuplicationException If the name coincides with
      *   an attribute already in the container.
      */
-    public PropertySolverGUIFactory(NamedObj container, String name)
+    public OntologySolverGUIFactory(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
@@ -77,7 +77,7 @@ public class PropertySolverGUIFactory extends EditorFactory {
     public void createEditor(NamedObj object, Frame parent) {
         // This is always used to configure the container, so
         // we just use that.
-        PropertySolver solver = (PropertySolver) getContainer();
+        OntologySolver solver = (OntologySolver) getContainer();
         workspace().getWriteAccess();
         solver.invokeSolver();
         solver.resetAll();

@@ -31,7 +31,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import ptolemy.data.ontologies.lattice.LatticeOntologySolver;
-import ptolemy.data.ontologies.lattice.adapters.DimensionSystem.DimensionSystemPropertyConstraintHelper;
+import ptolemy.data.ontologies.lattice.adapters.DimensionSystem.DimensionSystemAdapter;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 
@@ -47,7 +47,7 @@ import ptolemy.kernel.util.IllegalActionException;
  @Pt.ProposedRating Red (mankit)
  @Pt.AcceptedRating Red (mankit)
  */
-public class AtomicActor extends DimensionSystemPropertyConstraintHelper {
+public class AtomicActor extends DimensionSystemAdapter {
 
     /**
      * Construct an adapter for the given AtomicActor. This is the

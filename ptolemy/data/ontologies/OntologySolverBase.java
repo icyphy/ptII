@@ -1,4 +1,4 @@
-/*  The base abstract class for a property solver.
+/*  The base abstract class for an ontology solver.
 
  Copyright (c) 2008-2009 The Regents of the University of California.
  All rights reserved.
@@ -63,28 +63,27 @@ import ptolemy.util.StringBufferExec;
 import ptolemy.util.StringUtilities;
 
 //////////////////////////////////////////////////////////////////////////
-////PropertySolverBase
+////OntologySolverBase
 
 /**
-The base abstract class for a property solver.
+The base abstract class for an ontology solver.
 
-<p>The base class provides the core functionality for property
-resolution.  It provides a method to create a PropertyHelper for any
+<p>The base class provides the core functionality for ontology
+solver resolution.  It provides a method to create an OntologyAdapter for any
 given model component. The model component can be an object of any
 Ptolemy class (e.g. ASTPtRootNode, Sink, Entity, and FSMActor). A
-model component, in turn, may have one or multiple property-able
-objects.
+model component, in turn, may have one or multiple objects to which
+ontology concepts can be attached.
 
-<p>Every PropertySolver is linked together by the SharedParameter called
+<p>Every OntologySolver is linked together by the SharedParameter called
 "sharedUtilitiesWrapper", which contains the shared utility object.
-This allows every PropertySolver to find other solvers in the model.
+This allows every OntologySolver to find other solvers in the model.
 
 <p>Subclasses needs to implement
-{@link ptolemy.data.ontologies.PropertySolverBase#resolveProperties()}
-to specify exactly how to perform the property resolution. For example,
-one may gather all the constraints from the PropertyHelpers and feed them
+{@link ptolemy.data.ontologies.OntologySolverBase#resolveProperties()}
+to specify exactly how to perform the ontology concept resolution. For example,
+one may gather all the constraints from the OntologyAdapters and feed them
 into a constraint solver.
-
 
 @author Man-Kit Leung
 @version $Id$
@@ -92,26 +91,26 @@ into a constraint solver.
 @Pt.ProposedRating Red (mankit)
 @Pt.AcceptedRating Red (mankit)
  */
-public abstract class PropertySolverBase extends MoMLModelAttribute {
+public abstract class OntologySolverBase extends MoMLModelAttribute {
 
     /**
-     * Construct a PropertySolverBase with the specified container and
-     * name. If this is the first PropertySolver created in the model,
+     * Construct an OntologySolverBase with the specified container and
+     * name. If this is the first OntologySolver created in the model,
      * the shared utility object will also be created.
      *
      * @param container The specified container.
      * @param name The specified name.
-     * @exception IllegalActionException If the PropertySolverBase is
+     * @exception IllegalActionException If the OntologySolverBase is
      * not of an acceptable attribute for the container.
      * @exception NameDuplicationException If the name coincides with an
      * attribute already in the container.
      */
-    public PropertySolverBase(NamedObj container, String name)
+    public OntologySolverBase(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         sharedUtilitiesWrapper = new SharedParameter(this,
-                "sharedUtilitiesWrapper", PropertySolver.class);
+                "sharedUtilitiesWrapper", OntologySolver.class);
         sharedUtilitiesWrapper.setPersistent(false);
         sharedUtilitiesWrapper.setVisibility(Settable.NONE);
 
@@ -165,17 +164,17 @@ public abstract class PropertySolverBase extends MoMLModelAttribute {
      * @throws IllegalActionException If there is an exception from getting
      * all the subHelpers. 
      */
-    public List<PropertyHelper> getAllHelpers() throws IllegalActionException {
+    public List<OntologyAdapter> getAllAdapters() throws IllegalActionException {
         NamedObj topLevel = _toplevel();
-        List<PropertyHelper> result = new LinkedList<PropertyHelper>();
-        List<PropertyHelper> subHelpers = new LinkedList<PropertyHelper>();
+        List<OntologyAdapter> result = new LinkedList<OntologyAdapter>();
+        List<OntologyAdapter> subHelpers = new LinkedList<OntologyAdapter>();
 
-        result.add(getHelper(topLevel));
-        subHelpers.add(getHelper(topLevel));
+        result.add(getAdapter(topLevel));
+        subHelpers.add(getAdapter(topLevel));
 
         while (!subHelpers.isEmpty()) {
-            PropertyHelper adapter = subHelpers.remove(0);
-            subHelpers.addAll(adapter._getSubHelpers());
+            OntologyAdapter adapter = subHelpers.remove(0);
+            subHelpers.addAll(adapter._getSubAdapters());
             result.add(adapter);
         }
 
@@ -194,7 +193,7 @@ public abstract class PropertySolverBase extends MoMLModelAttribute {
     public Set getAllPropertyables() throws IllegalActionException {
         HashSet result = new HashSet();
 
-        for (PropertyHelper adapter : getAllHelpers()) {
+        for (OntologyAdapter adapter : getAllAdapters()) {
             result.addAll(adapter.getPropertyables());
         }
         return result;
@@ -208,15 +207,15 @@ public abstract class PropertySolverBase extends MoMLModelAttribute {
      * together the solvers.
      * @return A list of PropertySolvers.
      */
-    public static List<PropertySolver> getAllSolvers(
+    public static List<OntologySolver> getAllSolvers(
             SharedParameter sharedParameter) {
         List<NamedObj> parameters = new ArrayList<NamedObj>(sharedParameter
                 .sharedParameterSet());
-        List<PropertySolver> solvers = new LinkedList<PropertySolver>();
+        List<OntologySolver> solvers = new LinkedList<OntologySolver>();
         for (NamedObj parameter : parameters) {
             Object container = parameter.getContainer();
-            if (container instanceof PropertySolver) {
-                solvers.add((PropertySolver) container);
+            if (container instanceof OntologySolver) {
+                solvers.add((OntologySolver) container);
             }
         }
         return solvers;
@@ -261,14 +260,16 @@ public abstract class PropertySolverBase extends MoMLModelAttribute {
      * @exception IllegalActionException Thrown if the adapter cannot
      * be found or instantiated.
      */
-    public PropertyHelper getHelper(Object object)
+    public OntologyAdapter getAdapter(Object object)
             throws IllegalActionException {
-        return _getHelper(object);
+        return _getAdapter(object);
     }
 
     /** Return the property lattice for this constraint solver.
      *  If this solver contains more than one lattice, then return the
-     *  last one added. If it contains no lattices, then return null.
+     *  last one added. If it contains no lattices, then return null. This
+     *  method should be removed since the ConceptGraph can be accessed
+     *  through the getOntology() method.
      *  @return The property lattice for this constraint solver.
      *  @throws IllegalActionException If the structure is not a lattice.
      */
@@ -435,7 +436,7 @@ public abstract class PropertySolverBase extends MoMLModelAttribute {
     public void reset() {
         _resolvedProperties = new HashMap<Object, Concept>();
         _nonSettables = new HashSet<Object>();
-        _adapterStore = new HashMap<Object, PropertyHelper>();
+        _adapterStore = new HashMap<Object, OntologyAdapter>();
     }
 
     /**
@@ -443,7 +444,7 @@ public abstract class PropertySolverBase extends MoMLModelAttribute {
      */
     public void resetAll() {
         _resetParser();
-        for (PropertySolver solver : getAllSolvers(sharedUtilitiesWrapper)) {
+        for (OntologySolver solver : getAllSolvers(sharedUtilitiesWrapper)) {
             solver.reset();
         }
         getSharedUtilities().resetAll();
@@ -483,7 +484,7 @@ public abstract class PropertySolverBase extends MoMLModelAttribute {
      * @exception IllegalActionException Thrown if the PropertyHelper
      * cannot be instantiated.
      */
-    protected PropertyHelper _getHelper(Object component)
+    protected OntologyAdapter _getAdapter(Object component)
             throws IllegalActionException {
 
         if (_adapterStore.containsKey(component)) {
@@ -494,7 +495,7 @@ public abstract class PropertySolverBase extends MoMLModelAttribute {
             if (((NamedObj) component).getContainer() == null) {
                 System.err.println("component container is null: " + component);
             }
-            return _getHelper(((NamedObj) component).getContainer());
+            return _getAdapter(((NamedObj) component).getContainer());
         }
 
         /* FIXME
@@ -556,15 +557,15 @@ public abstract class PropertySolverBase extends MoMLModelAttribute {
                     "Failed to create the adapter class for property constraints.");
         }
 
-        if (!(adapterObject instanceof PropertyHelper)) {
+        if (!(adapterObject instanceof OntologyAdapter)) {
             throw new IllegalActionException(
                     "Cannot resolve property for this component: " + component
                             + ". Its adapter class does not"
                             + " implement PropertyHelper.");
         }
-        _adapterStore.put(component, (PropertyHelper) adapterObject);
+        _adapterStore.put(component, (OntologyAdapter) adapterObject);
 
-        return (PropertyHelper) adapterObject;
+        return (OntologyAdapter) adapterObject;
     }
 
     /**
@@ -609,7 +610,7 @@ public abstract class PropertySolverBase extends MoMLModelAttribute {
     /**
      * The HashMap that caches components and their PropertyHelper objects.
      */
-    protected HashMap<Object, PropertyHelper> _adapterStore = new HashMap<Object, PropertyHelper>();
+    protected HashMap<Object, OntologyAdapter> _adapterStore = new HashMap<Object, OntologyAdapter>();
 
     /**
      * The set of property-able objects that have non-settable property. A

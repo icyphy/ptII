@@ -48,7 +48,7 @@ import ptolemy.kernel.util.IllegalActionException;
  @Pt.AcceptedRating Yellow (neuendor)
  @see ptolemy.data.expr.ASTPtRootNode
  */
-public class ParseTreeASTNodeHelperCollector extends AbstractParseTreeVisitor {
+public class ParseTreeASTNodeAdapterCollector extends AbstractParseTreeVisitor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -60,10 +60,10 @@ public class ParseTreeASTNodeHelperCollector extends AbstractParseTreeVisitor {
      *  @exception IllegalActionException If an error occurs during
      *   evaluation.
      */
-    public List<PropertyHelper> collectHelpers(ASTPtRootNode node,
-            PropertySolver solver) throws IllegalActionException {
+    public List<OntologyAdapter> collectAdapters(ASTPtRootNode node,
+            OntologySolver solver) throws IllegalActionException {
 
-        _adapters = new LinkedList<PropertyHelper>();
+        _adapters = new LinkedList<OntologyAdapter>();
         _solver = solver;
 
         _visitAllChildren(node);
@@ -82,7 +82,7 @@ public class ParseTreeASTNodeHelperCollector extends AbstractParseTreeVisitor {
             throws IllegalActionException {
         int numChildren = node.jjtGetNumChildren();
 
-        _adapters.add(_solver.getHelper(node));
+        _adapters.add(_solver.getAdapter(node));
 
         for (int i = 0; i < numChildren; i++) {
             _visitChild(node, i);
@@ -98,10 +98,10 @@ public class ParseTreeASTNodeHelperCollector extends AbstractParseTreeVisitor {
         _visitAllChildren(child);
     }
 
-    /** The list of property adapters for each node in the AST. */
-    protected List<PropertyHelper> _adapters;
+    /** The list of ontology adapters for each node in the AST. */
+    protected List<OntologyAdapter> _adapters;
 
     /** The given ontology solver for which the AST will be evaluated. */
-    protected PropertySolver _solver;
+    protected OntologySolver _solver;
 
 }

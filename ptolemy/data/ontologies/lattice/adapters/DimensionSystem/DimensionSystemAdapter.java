@@ -1,4 +1,4 @@
-/* Top level adapter class for all dimensionSystem ontology adapters.
+/* Top level adapter class for all DimensionSystem ontology adapters.
 
  Copyright (c) 2006-2009 The Regents of the University of California.
  All rights reserved.
@@ -30,14 +30,14 @@ package ptolemy.data.ontologies.lattice.adapters.DimensionSystem;
 import ptolemy.data.ontologies.Concept;
 import ptolemy.data.ontologies.Ontology;
 import ptolemy.data.ontologies.lattice.LatticeOntologySolver;
-import ptolemy.data.ontologies.lattice.PropertyConstraintHelper;
+import ptolemy.data.ontologies.lattice.LatticeOntologyAdapter;
 import ptolemy.kernel.util.IllegalActionException;
 
 //////////////////////////////////////////////////////////////////////////
-//// DimensionSystemPropertyConstraintHelper
+//// DimensionSystemAdapter
 
 /**
- The top level adapter class for dimensionSystem adapters.
+ The top level adapter class for DimensionSystem adapters.
 
  @author Charles Shelton
  @version $Id$
@@ -45,7 +45,7 @@ import ptolemy.kernel.util.IllegalActionException;
  @Pt.ProposedRating Red (cshelton)
  @Pt.AcceptedRating Red (cshelton)
  */
-public class DimensionSystemPropertyConstraintHelper extends PropertyConstraintHelper {
+public class DimensionSystemAdapter extends LatticeOntologyAdapter {
 
     /**
      * Construct a generic adapter for the dimensionSystem Ontology. This is the
@@ -61,7 +61,7 @@ public class DimensionSystemPropertyConstraintHelper extends PropertyConstraintH
      * @exception IllegalActionException If the adapter cannot be
      * initialized in the superclass.
      */
-    public DimensionSystemPropertyConstraintHelper(LatticeOntologySolver solver,
+    public DimensionSystemAdapter(LatticeOntologySolver solver,
             Object component) throws IllegalActionException {
         this(solver, component, true);        
     }
@@ -83,7 +83,7 @@ public class DimensionSystemPropertyConstraintHelper extends PropertyConstraintH
      * initialized in the superclass or the concepts from the dimensionSystem ontology
      * cannot be found.
      */
-    public DimensionSystemPropertyConstraintHelper(LatticeOntologySolver solver,
+    public DimensionSystemAdapter(LatticeOntologySolver solver,
             Object component, boolean useDefaultConstraints)
             throws IllegalActionException {
         super(solver, component, useDefaultConstraints);

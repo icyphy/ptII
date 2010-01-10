@@ -52,8 +52,8 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 PTCLASSALLJARS =
 
 JSRCS = \
-	PropertyDisplayActions.java \
-	PropertySolverGUIFactory.java
+	OntologyDisplayActions.java \
+	OntologySolverGUIFactory.java
 
 EXTRA_SRCS =    $(JSRCS)
 
@@ -66,13 +66,13 @@ MISC_FILES =    $(DIRS) \
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	doc \
-	'PropertyDisplayActions$$ClearDisplay.class' \
-	'PropertyDisplayActions$$ClearProperty.class' \
-	'PropertyDisplayActions$$ConfigureHighlightAction.class' \
-	'PropertyDisplayActions$$EditHighlightDialog.class' \
-	'PropertyDisplayActions$$HighlighterController.class' \
-	'PropertyDisplayActions$$HighlightProperty.class' \
-	'PropertyDisplayActions$$ShowProperty.class' \
+	'OntologyDisplayActions$$ClearDisplay.class' \
+	'OntologyDisplayActions$$ClearProperty.class' \
+	'OntologyDisplayActions$$ConfigureHighlightAction.class' \
+	'OntologyDisplayActions$$EditHighlightDialog.class' \
+	'OntologyDisplayActions$$HighlighterController.class' \
+	'OntologyDisplayActions$$HighlightProperty.class' \
+	'OntologyDisplayActions$$ShowProperty.class' \
 
 JCLASS = $(JSRCS:%.java=%.class)
 

@@ -1,5 +1,5 @@
 /*
- * A extended base abstract class for a property solver.
+ * A extended base abstract class for an ontology solver.
  * 
  * Copyright (c) 1998-2009 The Regents of the University of California. All
  * rights reserved. Permission is hereby granted, without written agreement and
@@ -36,7 +36,7 @@ import java.util.TreeMap;
 import ptolemy.actor.parameters.SharedParameter;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.Parameter;
-import ptolemy.data.ontologies.gui.PropertyDisplayActions;
+import ptolemy.data.ontologies.gui.OntologyDisplayActions;
 import ptolemy.data.properties.PropertyFailedRegressionTestException;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.util.Attribute;
@@ -52,10 +52,10 @@ import ptolemy.util.MessageHandler;
 import ptolemy.util.StringUtilities;
 
 //////////////////////////////////////////////////////////////////////////
-////PropertySolver
+////OntologySolver
 
 /**
- * A extended base abstract class for a property solver.
+ * A extended base abstract class for an ontology solver.
  * 
  * @author Man-Kit Leung
  * @version $Id$
@@ -63,11 +63,11 @@ import ptolemy.util.StringUtilities;
  * @Pt.ProposedRating Red (mankit)
  * @Pt.AcceptedRating Red (mankit)
  */
-public abstract class PropertySolver extends PropertySolverBase {
+public abstract class OntologySolver extends OntologySolverBase {
 
     /**
-     * Construct a PropertySolver with the specified container and name. If this
-     * is the first PropertySolver created in the model, the shared utility
+     * Construct an OntologySolver with the specified container and name. If this
+     * is the first OntologySolver created in the model, the shared utility
      * object will also be created.
      * @param container The specified container.
      * @param name The specified name.
@@ -76,21 +76,21 @@ public abstract class PropertySolver extends PropertySolverBase {
      * @exception NameDuplicationException If the name coincides with an
      * attribute already in the container.
      */
-    public PropertySolver(NamedObj container, String name)
+    public OntologySolver(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
-        action = new SharedParameter(this, "action", PropertySolver.class,
+        action = new SharedParameter(this, "action", OntologySolver.class,
                 TRAINING);
         action.setStringMode(true);
         _addActions(action);
 
-        _momlHandler = new PropertyMoMLHandler(this, "PropertyMoMLHandler");
+        _momlHandler = new OntologyMoMLHandler(this, "OntologyMoMLHandler");
 
         // FIXME: We do not want this GUI dependency here...
         // This attribute should be put in the MoML in the library instead
         // of here in the Java code.
-        new PropertyDisplayActions(this, "PropertyDisplayActions");
+        new OntologyDisplayActions(this, "PropertyDisplayActions");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -118,10 +118,10 @@ public abstract class PropertySolver extends PropertySolverBase {
      * an error message that includes all the properties that does not match the
      * regression test values.
      * 
-     * @exception PropertyResolutionException Thrown if there are any
+     * @exception OntologyResolutionException Thrown if there are any
      * errors from running the OntologySolver in the regression test.
      */
-    public void checkErrors() throws PropertyResolutionException {
+    public void checkErrors() throws OntologyResolutionException {
 
         // first, store errors to statistics
         _addErrorStatistics();
@@ -134,7 +134,7 @@ public abstract class PropertySolver extends PropertySolverBase {
         if (!errors.isEmpty()) {
             String errorMessage = errors.toString();
 
-            throw new PropertyResolutionException(this, errorMessage);
+            throw new OntologyResolutionException(this, errorMessage);
         }
     }
 
@@ -186,7 +186,7 @@ public abstract class PropertySolver extends PropertySolverBase {
      * 
      * @return The PropertyMoMLHandler for the OntologySolver
      */
-    public PropertyMoMLHandler getMoMLHandler() {
+    public OntologyMoMLHandler getMoMLHandler() {
         return _momlHandler;
     }
 
@@ -336,7 +336,7 @@ public abstract class PropertySolver extends PropertySolverBase {
      * @return true if the OntologySolver is in clear mode, false otherwise
      */
     public boolean isClear() {
-        return action.getExpression().equals(PropertySolver.CLEAR);
+        return action.getExpression().equals(OntologySolver.CLEAR);
     }
 
     /** True if the solver is in resolution mode; otherwise false.
@@ -365,7 +365,7 @@ public abstract class PropertySolver extends PropertySolverBase {
      * @return true if the OntologySolver is in test mode, false otherwise
      */
     public boolean isTesting() {
-        return action.getExpression().equals(PropertySolver.TEST);
+        return action.getExpression().equals(OntologySolver.TEST);
     }
 
     /** True if the solver is in training mode; otherwise false.
@@ -382,7 +382,7 @@ public abstract class PropertySolver extends PropertySolverBase {
      * @return true if the OntologySolver is in view mode, false otherwise
      */
     public boolean isView() {
-        return action.getExpression().equals(PropertySolver.VIEW);
+        return action.getExpression().equals(OntologySolver.VIEW);
     }
     
     /**
@@ -524,7 +524,7 @@ public abstract class PropertySolver extends PropertySolverBase {
             // If this is not an intermediate (invoked) solver,
             // we need to clear the display.
             if (isInvoked && isResolve()) {
-                PropertySolver previousSolver = _sharedUtilities._previousInvokedSolver;
+                OntologySolver previousSolver = _sharedUtilities._previousInvokedSolver;
 
                 // Clear the display properties of the previous invoked solver.
                 // If no solver is invoked previously, at least clear
@@ -542,13 +542,13 @@ public abstract class PropertySolver extends PropertySolverBase {
 
             checkResolutionErrors();
 
-        } catch (PropertyResolutionException ex) {
+        } catch (OntologyResolutionException ex) {
             noException = false;
             // resolution exceptions. that means resolution ended prematurely.
             // But that may not means that this is an improper behavior
             // Check whether we are expecting an exception,
             // if in testing mode, then add a RegressionTestErrorException
-            PropertySolver failedSolver = (PropertySolver) ex.getSolver();
+            OntologySolver failedSolver = (OntologySolver) ex.getSolver();
 
             // Remove '\r' characters to make Windows-Linux comparable strings.
             String trainedException = failedSolver.getTrainedException()
@@ -556,7 +556,7 @@ public abstract class PropertySolver extends PropertySolverBase {
             String exception = ex.getMessage().replaceAll("\r", "");
             if (isTesting()) {
                 if (!exception.equals(trainedException)) {
-                    addErrors(PropertySolver
+                    addErrors(OntologySolver
                             .getTrainedExceptionMismatchMessage(exception,
                                     trainedException));
                 }
@@ -565,7 +565,7 @@ public abstract class PropertySolver extends PropertySolverBase {
 
                     // ask the user if this is expected,
                     boolean doRecord = MessageHandler
-                            .yesNoQuestion(PropertySolver
+                            .yesNoQuestion(OntologySolver
                                     .getTrainedExceptionMismatchMessage(
                                             exception, trainedException)
                                     + "Do you want to record it?");
@@ -590,7 +590,7 @@ public abstract class PropertySolver extends PropertySolverBase {
             // RegressionTestErrorExceptionException
             // and we do not get one in the resolution,
             // then we throw an exception.
-            addErrors(PropertySolver.getTrainedExceptionMismatchMessage("",
+            addErrors(OntologySolver.getTrainedExceptionMismatchMessage("",
                     getTrainedException()));
         }
 
@@ -903,7 +903,7 @@ public abstract class PropertySolver extends PropertySolverBase {
     /**
      * The handler that issues MoML requests and makes model changes.
      */
-    protected PropertyMoMLHandler _momlHandler;
+    protected OntologyMoMLHandler _momlHandler;
 
     /**
      * True if the solver is invoked directly; otherwise, false which means it

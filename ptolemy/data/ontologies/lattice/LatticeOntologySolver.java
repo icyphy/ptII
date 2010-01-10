@@ -43,16 +43,16 @@ import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.data.ontologies.Concept;
 import ptolemy.data.ontologies.lattice.ConstraintManager;
-import ptolemy.data.ontologies.lattice.PropertyConstraintASTNodeHelper;
-import ptolemy.data.ontologies.lattice.PropertyConstraintCompositeHelper;
-import ptolemy.data.ontologies.lattice.PropertyConstraintHelper;
-import ptolemy.data.ontologies.PropertyHelper;
-import ptolemy.data.ontologies.PropertyResolutionException;
-import ptolemy.data.ontologies.PropertySolver;
-import ptolemy.data.ontologies.lattice.PropertyTermFactory;
-import ptolemy.data.ontologies.lattice.PropertyTermManager;
-import ptolemy.data.ontologies.lattice.PropertyConstraintHelper.Inequality;
-import ptolemy.data.ontologies.gui.PropertySolverGUIFactory;
+import ptolemy.data.ontologies.lattice.LatticeOntologyASTNodeAdapter;
+import ptolemy.data.ontologies.lattice.LatticeOntologyCompositeAdapter;
+import ptolemy.data.ontologies.lattice.LatticeOntologyAdapter;
+import ptolemy.data.ontologies.OntologyAdapter;
+import ptolemy.data.ontologies.OntologyResolutionException;
+import ptolemy.data.ontologies.OntologySolver;
+import ptolemy.data.ontologies.lattice.ConceptTermFactory;
+import ptolemy.data.ontologies.lattice.ConceptTermManager;
+import ptolemy.data.ontologies.lattice.LatticeOntologyAdapter.Inequality;
+import ptolemy.data.ontologies.gui.OntologySolverGUIFactory;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.MonotonicFunction;
 import ptolemy.domains.fsm.kernel.FSMActor;
@@ -88,7 +88,7 @@ import ptolemy.util.FileUtilities;
  * @Pt.ProposedRating Red (mankit)
  * @Pt.AcceptedRating Red (mankit)
  */
-public class LatticeOntologySolver extends PropertySolver implements Testable {
+public class LatticeOntologySolver extends OntologySolver implements Testable {
 
     /**
      * Constructor for the OntologySolver.
@@ -157,8 +157,8 @@ public class LatticeOntologySolver extends PropertySolver implements Testable {
          * GUI operation for OntologySolver.
          * 12/21/09 Charles Shelton
          */
-        new PropertySolverGUIFactory(this,
-                "_propertyConstraintSolverGUIFactory");
+        new OntologySolverGUIFactory(this,
+                "_LatticeOntologySolverGUIFactory");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -301,7 +301,7 @@ public class LatticeOntologySolver extends PropertySolver implements Testable {
      */
     public List<ptolemy.graph.InequalityTerm> getAffectedTerms(ptolemy.graph.InequalityTerm updateTerm)
             throws IllegalActionException {
-        return _propertyTermManager.getAffectedTerms(updateTerm);
+        return _conceptTermManager.getAffectedTerms(updateTerm);
     }
 
     /**
@@ -322,10 +322,10 @@ public class LatticeOntologySolver extends PropertySolver implements Testable {
      * @throws IllegalActionException If an exception is thrown in the private
      * _getHelper method
      */
-    public PropertyConstraintASTNodeHelper getHelper(ASTPtRootNode node)
+    public LatticeOntologyASTNodeAdapter getAdapter(ASTPtRootNode node)
             throws IllegalActionException {
 
-        return (PropertyConstraintASTNodeHelper) _getHelper(node);
+        return (LatticeOntologyASTNodeAdapter) _getAdapter(node);
     }
 
     /**
@@ -336,10 +336,10 @@ public class LatticeOntologySolver extends PropertySolver implements Testable {
      * @throws IllegalActionException If an exception is thrown in the private
      * _getHelper method
      */
-    public PropertyHelper getHelper(NamedObj component)
+    public OntologyAdapter getAdapter(NamedObj component)
             throws IllegalActionException {
 
-        return _getHelper(component);
+        return _getAdapter(component);
     }
 
     /**
@@ -349,10 +349,10 @@ public class LatticeOntologySolver extends PropertySolver implements Testable {
      * @throws IllegalActionException If an exception is thrown in the private
      * _getHelper method
      */
-    public PropertyHelper getHelper(Object object)
+    public OntologyAdapter getAdapter(Object object)
             throws IllegalActionException {
 
-        return _getHelper(object);
+        return _getAdapter(object);
     }
 
     /**
@@ -362,7 +362,7 @@ public class LatticeOntologySolver extends PropertySolver implements Testable {
      */
     public Concept getProperty(Object object) {
         try {
-            return (Concept) getPropertyTerm(object).getValue();
+            return (Concept) getConceptTerm(object).getValue();
         } catch (IllegalActionException ex) {
             return null;
         }
@@ -374,8 +374,8 @@ public class LatticeOntologySolver extends PropertySolver implements Testable {
      * @return The property term of the given object.
      * @exception IllegalActionException
      */
-    public ptolemy.graph.InequalityTerm getPropertyTerm(Object object) {
-        return getPropertyTermManager().getPropertyTerm(object);
+    public ptolemy.graph.InequalityTerm getConceptTerm(Object object) {
+        return getPropertyTermManager().getConceptTerm(object);
     }
 
     /**
@@ -384,11 +384,11 @@ public class LatticeOntologySolver extends PropertySolver implements Testable {
      * 
      * @return The property term manager for the OntologySolver
      */
-    public PropertyTermFactory getPropertyTermManager() {
-        if (_propertyTermManager == null) {
-            _propertyTermManager = _getPropertyTermManager();
+    public ConceptTermFactory getPropertyTermManager() {
+        if (_conceptTermManager == null) {
+            _conceptTermManager = _getPropertyTermManager();
         }
-        return _propertyTermManager;
+        return _conceptTermManager;
     }
 
     /**
@@ -445,7 +445,7 @@ public class LatticeOntologySolver extends PropertySolver implements Testable {
 
     public void reset() {
         super.reset();
-        _propertyTermManager = null;
+        _conceptTermManager = null;
         _trainedConstraints.clear();
     }
 
@@ -519,8 +519,8 @@ public class LatticeOntologySolver extends PropertySolver implements Testable {
         super.updateProperties();
 
         // Only need to look at the constraints of the top level adapter.
-        PropertyHelper adapter;
-        adapter = getHelper(_toplevel());
+        OntologyAdapter adapter;
+        adapter = getAdapter(_toplevel());
 
         if (isLogMode()) {
             String constraintFilename = _getTrainedConstraintFilename()
@@ -531,7 +531,7 @@ public class LatticeOntologySolver extends PropertySolver implements Testable {
                 _trainedConstraints.clear();
 
                 // Populate the _trainedConstraints list.
-                _logHelperConstraints((PropertyConstraintHelper) adapter);
+                _logHelperConstraints((LatticeOntologyAdapter) adapter);
 
                 // Write the list to file.
                 _updateConstraintFile(constraintFilename);
@@ -541,7 +541,7 @@ public class LatticeOntologySolver extends PropertySolver implements Testable {
                 _readConstraintFile(constraintFilename);
 
                 // Match and remove from the list.
-                _regressionTestConstraints((PropertyConstraintHelper) adapter);
+                _regressionTestConstraints((LatticeOntologyAdapter) adapter);
 
                 // Check if there are unmatched constraints.
                 _checkMissingConstraints();
@@ -549,12 +549,12 @@ public class LatticeOntologySolver extends PropertySolver implements Testable {
         }
     }
 
-    protected PropertyHelper _getHelper(Object component)
+    protected OntologyAdapter _getAdapter(Object component)
             throws IllegalActionException {
-        PropertyHelper adapter = null;
+        OntologyAdapter adapter = null;
 
         try {
-            adapter = super._getHelper(component);
+            adapter = super._getAdapter(component);
         } catch (IllegalActionException ex) {
         }
 
@@ -569,13 +569,13 @@ public class LatticeOntologySolver extends PropertySolver implements Testable {
                         (ptolemy.domains.modal.kernel.FSMActor) component);
                  */
             } else if (component instanceof CompositeEntity) {
-                adapter = new PropertyConstraintCompositeHelper(this,
+                adapter = new LatticeOntologyCompositeAdapter(this,
                         (CompositeEntity) component);
             } else if (component instanceof ASTPtRootNode) {
-                adapter = new PropertyConstraintASTNodeHelper(this,
+                adapter = new LatticeOntologyASTNodeAdapter(this,
                         (ASTPtRootNode) component);
             } else {
-                adapter = new PropertyConstraintHelper(this, component);
+                adapter = new LatticeOntologyAdapter(this, component);
             }
         }
         _adapterStore.put(component, adapter);
@@ -588,10 +588,10 @@ public class LatticeOntologySolver extends PropertySolver implements Testable {
      * class.
      * @return A property term manager.
      */
-    protected PropertyTermManager _getPropertyTermManager() {
+    protected ConceptTermManager _getPropertyTermManager() {
         //      FIXME: doesn't work for other use-cases!
         //      return new StaticDynamicTermManager(this);
-        return new PropertyTermManager(this);
+        return new ConceptTermManager(this);
     }
 
     protected void _initializeStatistics() {
@@ -615,7 +615,7 @@ public class LatticeOntologySolver extends PropertySolver implements Testable {
         super._resolveProperties(analyzer);
 
         NamedObj toplevel = _toplevel();
-        PropertyConstraintHelper toplevelHelper = (PropertyConstraintHelper) getHelper(toplevel);
+        LatticeOntologyAdapter toplevelHelper = (LatticeOntologyAdapter) getAdapter(toplevel);
 
         toplevelHelper.reinitialize();
 
@@ -644,15 +644,15 @@ public class LatticeOntologySolver extends PropertySolver implements Testable {
      * subject to the given constraint list.
      * 
      * @param toplevel The top-level container
-     * @param toplevelHelper Must be toplevel.getHelper()
+     * @param toplevelAdapter Must be toplevel.getAdapter()
      * @param constraintList The constraint list that we are solving
      * @throws TypeConflictException If an unacceptable solution is reached
-     * @throws PropertyResolutionException If constraints are unsatisfiable
+     * @throws OntologyResolutionException If constraints are unsatisfiable
      */
     protected void _resolveProperties(NamedObj toplevel,
-            PropertyConstraintHelper toplevelHelper,
+            LatticeOntologyAdapter toplevelAdapter,
             List<Inequality> constraintList) throws TypeConflictException,
-            PropertyResolutionException {
+            OntologyResolutionException {
         Writer writer = null;
 
         List<Inequality> conflicts = new LinkedList<Inequality>();
@@ -706,7 +706,7 @@ public class LatticeOntologySolver extends PropertySolver implements Testable {
                 getStats().put("# of generated constraints",
                         constraintList.size());
                 getStats().put("# of property terms",
-                        _propertyTermManager.terms().size());
+                        _conceptTermManager.terms().size());
 
                 // log initial constraints to file
                 File file = null;
@@ -770,7 +770,7 @@ public class LatticeOntologySolver extends PropertySolver implements Testable {
                                 constraintList, "I"));
 
                     } catch (IOException ex) {
-                        throw new PropertyResolutionException(this, ex,
+                        throw new OntologyResolutionException(this, ex,
                                 "Error writing to constraint log file \""
                                         + file.getAbsolutePath() + "\".");
                     }
@@ -784,7 +784,7 @@ public class LatticeOntologySolver extends PropertySolver implements Testable {
                             + "_initial.txt";
 
                     // Populate the _trainedConstraints list.
-                    _logHelperConstraints(toplevelHelper);
+                    _logHelperConstraints(toplevelAdapter);
 
                     // Write the list to file.
                     _updateConstraintFile(constraintFilename);
@@ -808,7 +808,7 @@ public class LatticeOntologySolver extends PropertySolver implements Testable {
                                 constraintList, "R"));
                         writer.close();
                     } catch (IOException ex) {
-                        throw new PropertyResolutionException(this, ex,
+                        throw new OntologyResolutionException(this, ex,
                                 "Error writing to constraint log file \""
                                         + file.getAbsolutePath() + "\".");
                     }
@@ -858,7 +858,7 @@ public class LatticeOntologySolver extends PropertySolver implements Testable {
             // In initialize mode, we can skip this.
             if (!isInitializeSolver() && !isCollectConstraints()) {
                 if (conflicts.size() > 0) {
-                    throw new PropertyResolutionException(this, toplevel(),
+                    throw new OntologyResolutionException(this, toplevel(),
                             "Properties conflicts occurred in "
                                     + toplevel().getFullName()
                                     + " on the following inequalities:\n"
@@ -875,7 +875,7 @@ public class LatticeOntologySolver extends PropertySolver implements Testable {
             // This should not happen. The exception means that
             // _checkDeclaredProperty or constraintList is called on a
             // transparent actor.
-            throw new PropertyResolutionException(this, toplevel, ex,
+            throw new OntologyResolutionException(this, toplevel, ex,
                     "Concept resolution failed because of an error "
                             + "during property inference");
         } finally {
@@ -883,7 +883,7 @@ public class LatticeOntologySolver extends PropertySolver implements Testable {
                 try {
                     writer.close();
                 } catch (IOException ex) {
-                    throw new PropertyResolutionException(this, toplevel(), ex,
+                    throw new OntologyResolutionException(this, toplevel(), ex,
                             "Failed to close a file");
                 }
             }
@@ -1103,7 +1103,7 @@ public class LatticeOntologySolver extends PropertySolver implements Testable {
                             containerName = _getReducedFullName(((ASTPtRootNode) object)
                                     .jjtGetParent());
                         } else {
-                            containerName = _getReducedFullName(getHelper(
+                            containerName = _getReducedFullName(getAdapter(
                                     object).getContainerEntity(
                                     (ASTPtRootNode) object));
                         }
@@ -1239,7 +1239,7 @@ public class LatticeOntologySolver extends PropertySolver implements Testable {
      * @param adapter
      * @exception IllegalActionException
      */
-    private void _logHelperConstraints(PropertyConstraintHelper adapter)
+    private void _logHelperConstraints(LatticeOntologyAdapter adapter)
             throws IllegalActionException {
         List<Inequality>[] constraintSet = new List[2];
         /*  FIXME: Removing chunks of code wholesale now.
@@ -1294,7 +1294,7 @@ public class LatticeOntologySolver extends PropertySolver implements Testable {
         }
     }
 
-    private void _regressionTestConstraints(PropertyConstraintHelper adapter)
+    private void _regressionTestConstraints(LatticeOntologyAdapter adapter)
             throws IllegalActionException {
         Object object = adapter.getComponent();
         if (!(object instanceof NamedObj)) {
@@ -1350,7 +1350,7 @@ public class LatticeOntologySolver extends PropertySolver implements Testable {
      * of toplevel container and this solver. If the constraint file already
      * exists, an overwrite warning message is sent to the user.
      * @param filename
-     * @exception PropertyResolutionException Thrown if there is a problem
+     * @exception OntologyResolutionException Thrown if there is a problem
      * opening, writing, or closing the constraint file.
      */
     private void _updateConstraintFile(String filename)
@@ -1406,7 +1406,7 @@ public class LatticeOntologySolver extends PropertySolver implements Testable {
             }
 
         } catch (IOException ex) {
-            throw new PropertyResolutionException(this, ex,
+            throw new OntologyResolutionException(this, ex,
                     "Failed to train the constraint log file \"" + filename
                             + "\".");
         }
@@ -1464,7 +1464,7 @@ public class LatticeOntologySolver extends PropertySolver implements Testable {
     
     private boolean _logMode;
 
-    private PropertyTermManager _propertyTermManager;
+    private ConceptTermManager _conceptTermManager;
 
     /**
      * The set of trained constraints. This set is populated from parsing the

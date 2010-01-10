@@ -1,5 +1,5 @@
 /**
- * The base class for a property constraint adapter.
+ * The base class for a lattice-based ontology adapter.
  * 
  * Copyright (c) 2007-2009 The Regents of the University of California. All
  * rights reserved. Permission is hereby granted, without written agreement and
@@ -39,7 +39,7 @@ import ptolemy.data.expr.ASTPtRootNode;
 import ptolemy.data.ontologies.Concept;
 import ptolemy.data.ontologies.ConceptGraph;
 import ptolemy.data.ontologies.ParseTreeAnnotationEvaluator;
-import ptolemy.data.ontologies.PropertyHelper;
+import ptolemy.data.ontologies.OntologyAdapter;
 import ptolemy.data.ontologies.lattice.LatticeOntologySolver.ConstraintType;
 import ptolemy.domains.fsm.kernel.FSMActor;
 import ptolemy.domains.fsm.modal.ModalModel;
@@ -51,7 +51,7 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 
 //////////////////////////////////////////////////////////////////////////
-//// PropertyConstraintHelper
+//// LatticeOntologyAdapter
 
 /**
  * The base class for a property constraint adapter.
@@ -62,7 +62,7 @@ import ptolemy.kernel.util.IllegalActionException;
  * @Pt.ProposedRating Red (mankit)
  * @Pt.AcceptedRating Red (mankit)
  */
-public class PropertyConstraintHelper extends PropertyHelper {
+public class LatticeOntologyAdapter extends OntologyAdapter {
 
     /**
      * Construct the property constraint adapter associated with the given
@@ -73,7 +73,7 @@ public class PropertyConstraintHelper extends PropertyHelper {
      * @exception IllegalActionException Thrown if the adapter cannot be
      * initialized.
      */
-    public PropertyConstraintHelper(LatticeOntologySolver solver,
+    public LatticeOntologyAdapter(LatticeOntologySolver solver,
             Object component) throws IllegalActionException {
         this(solver, component, true);
     }
@@ -88,7 +88,7 @@ public class PropertyConstraintHelper extends PropertyHelper {
      * @exception IllegalActionException Thrown if the adapter cannot be
      * initialized.
      */
-    public PropertyConstraintHelper(LatticeOntologySolver solver,
+    public LatticeOntologyAdapter(LatticeOntologySolver solver,
             Object component, boolean useDefaultConstraints)
             throws IllegalActionException {
 
@@ -153,7 +153,7 @@ public class PropertyConstraintHelper extends PropertyHelper {
      * @return The InequalityTerm associated with the model object
      */
     public InequalityTerm getPropertyTerm(Object object) {
-        return getSolver().getPropertyTerm(object);
+        return getSolver().getConceptTerm(object);
     }
 
     /**
@@ -355,7 +355,7 @@ public class PropertyConstraintHelper extends PropertyHelper {
             super(lesserTerm, greaterTerm);
 
             _isBase = isBase;
-            _adapter = PropertyConstraintHelper.this;
+            _adapter = LatticeOntologyAdapter.this;
         }
 
         /**
@@ -363,7 +363,7 @@ public class PropertyConstraintHelper extends PropertyHelper {
          * 
          * @return The associated OntologyAdapter
          */
-        public PropertyHelper getHelper() {
+        public OntologyAdapter getHelper() {
             return _adapter;
         }
 
@@ -398,7 +398,7 @@ public class PropertyConstraintHelper extends PropertyHelper {
 
         private final boolean _isBase;
 
-        private final PropertyHelper _adapter;
+        private final OntologyAdapter _adapter;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -448,10 +448,10 @@ public class PropertyConstraintHelper extends PropertyHelper {
      * getting the sub adapters and gathering the constraints for each one.
      */
     protected void _addSubHelperConstraints() throws IllegalActionException {
-        Iterator adapters = _getSubHelpers().iterator();
+        Iterator adapters = _getSubAdapters().iterator();
 
         while (adapters.hasNext()) {
-            PropertyConstraintHelper adapter = (PropertyConstraintHelper) adapters
+            LatticeOntologyAdapter adapter = (LatticeOntologyAdapter) adapters
                     .next();
             _subHelperConstraints.addAll(adapter.constraintList());
         }
@@ -476,13 +476,13 @@ public class PropertyConstraintHelper extends PropertyHelper {
 
                 // Take care of actors without nodes, e.g. MonitorValue actors without previous execution
                 if (node != null) {
-                    PropertyConstraintASTNodeHelper astHelper = ((LatticeOntologySolver) _solver)
-                            .getHelper(node);
+                    LatticeOntologyASTNodeAdapter astAdapter = ((LatticeOntologySolver) _solver)
+                            .getAdapter(node);
 
                     List list = new ArrayList();
                     list.add(node);
 
-                    _constraintObject(astHelper.interconnectConstraintType,
+                    _constraintObject(astAdapter.interconnectConstraintType,
                             attribute, list);
                     //setSameAs(attribute, getParseTree(attribute));
                     //setAtLeast(attribute, getParseTree(attribute));
@@ -611,14 +611,14 @@ public class PropertyConstraintHelper extends PropertyHelper {
      * @return The list of sub-adapters.
      * @exception IllegalActionException Not thrown in this base class.
      */
-    protected List<PropertyHelper> _getSubHelpers()
+    protected List<OntologyAdapter> _getSubAdapters()
             throws IllegalActionException {
         LatticeOntologySolver solver = getSolver();
         if (solver.expressionASTNodeConstraintType.getExpression().equals(
                 "NONE")) {
             return new LinkedList();
         }
-        return _getASTNodeHelpers();
+        return _getASTNodeAdapters();
     }
 
     /**
@@ -673,10 +673,10 @@ public class PropertyConstraintHelper extends PropertyHelper {
             ConstraintType expressionASTNodeConstraintType)
             throws IllegalActionException {
 
-        Iterator adapters = _getSubHelpers().iterator();
+        Iterator adapters = _getSubAdapters().iterator();
 
         while (adapters.hasNext()) {
-            PropertyConstraintHelper adapter = (PropertyConstraintHelper) adapters
+            LatticeOntologyAdapter adapter = (LatticeOntologyAdapter) adapters
                     .next();
 
             adapter._setConnectionConstraintType(constraintType,

@@ -1,4 +1,4 @@
-/* An attribute that helps a PropertySolver to issue MoML requests and
+/* An attribute that helps an OntologySolver to issue MoML requests and
  make changes to the model.
 
  Copyright (c) 2006-2009 The Regents of the University of California.
@@ -44,7 +44,7 @@ import ptolemy.kernel.util.StringAttribute;
 import ptolemy.moml.MoMLChangeRequest;
 
 //////////////////////////////////////////////////////////////////////////
-//// PropertyHighlighter
+//// OntologyMoMLHandler
 
 /**
  This is an attribute used by the PropertySolver to issue MoML requests and
@@ -60,17 +60,17 @@ import ptolemy.moml.MoMLChangeRequest;
  @Pt.ProposedRating Red (mankit)
  @Pt.AcceptedRating Red (mankit)
  */
-public class PropertyMoMLHandler extends Attribute {
+public class OntologyMoMLHandler extends Attribute {
 
-    /** Construct a PropertyMoMLHandler with the specified container and name.
+    /** Construct an OntologyMoMLHandler with the specified container and name.
      *  @param container The container.
-     *  @param name The name of the PropertyMoMLHandler.
-     *  @exception IllegalActionException If the PropertyMoMLHandler is not of an
+     *  @param name The name of the OntologyMoMLHandler.
+     *  @exception IllegalActionException If the OntologyMoMLHandler is not of an
      *   acceptable attribute for the container.
      *  @exception NameDuplicationException If the name coincides with
      *   an attribute already in the container.
      */
-    public PropertyMoMLHandler(NamedObj container, String name)
+    public OntologyMoMLHandler(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
@@ -110,11 +110,11 @@ public class PropertyMoMLHandler extends Attribute {
      *  when removing the annotation attributes.
      */
     public void clearAnnotations() throws IllegalActionException {
-        PropertySolver solver = (PropertySolver) getContainer();
+        OntologySolver solver = (OntologySolver) getContainer();
 
         StringBuffer completeMoML = new StringBuffer("<group>");
 
-        for (PropertyHelper adapter : solver.getAllHelpers()) {
+        for (OntologyAdapter adapter : solver.getAllAdapters()) {
             if (adapter.getComponent() instanceof NamedObj) {
                 NamedObj namedObj = (NamedObj) adapter.getComponent();
 
@@ -145,7 +145,7 @@ public class PropertyMoMLHandler extends Attribute {
     public void clearDisplay() {
 
         // Get the PropertySolver.
-        PropertySolver solver = (PropertySolver) getContainer();
+        OntologySolver solver = (OntologySolver) getContainer();
         StringBuffer completeMoML = new StringBuffer("<group>");
         try {
             for (Object propertyable : solver.getAllPropertyables()) {
@@ -182,7 +182,7 @@ public class PropertyMoMLHandler extends Attribute {
      */
     public void clearProperties() {
         // Get the PropertySolver.
-        PropertySolver solver = (PropertySolver) getContainer();
+        OntologySolver solver = (OntologySolver) getContainer();
         StringBuffer completeMoML = new StringBuffer("<group>");
 
         try {
@@ -233,7 +233,7 @@ public class PropertyMoMLHandler extends Attribute {
         StringBuffer completeMoML = new StringBuffer("<group>");
 
         // Get the PropertySolver.
-        PropertySolver solver = (PropertySolver) getContainer();
+        OntologySolver solver = (OntologySolver) getContainer();
         try {
             for (Object propertyable : solver.getAllPropertyables()) {
 
@@ -264,7 +264,7 @@ public class PropertyMoMLHandler extends Attribute {
         StringBuffer completeMoML = new StringBuffer("<group>");
 
         // Get the PropertySolver.
-        PropertySolver solver = (PropertySolver) getContainer();
+        OntologySolver solver = (OntologySolver) getContainer();
         try {
             for (Object propertyable : solver.getAllPropertyables()) {
 

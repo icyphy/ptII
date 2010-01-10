@@ -1,4 +1,4 @@
-/** A class representing a property term factory.
+/** A class representing a concept term factory.
 
  Copyright (c) 1997-2009 The Regents of the University of California.
  All rights reserved.
@@ -31,10 +31,10 @@ package ptolemy.data.ontologies.lattice;
 import ptolemy.graph.InequalityTerm;
 
 //////////////////////////////////////////////////////////////////////////
-//// PropertyTermFactory.
+//// ConceptTermFactory.
 
 /**
-Interface for a property term factory.
+Interface for a concept term factory.
 
 @author Man-Kit Leung
 @version $Id$
@@ -43,13 +43,13 @@ Interface for a property term factory.
 @Pt.AcceptedRating Red (mankit)
 */
 
-public interface PropertyTermFactory {
+public interface ConceptTermFactory {
 
     /**
      * Return the property term for the given object.
      * @param object The given object.
      * @return The property term.
      */
-    public abstract InequalityTerm getPropertyTerm(Object object);
+    public abstract InequalityTerm getConceptTerm(Object object);
 
 }

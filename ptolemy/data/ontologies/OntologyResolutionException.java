@@ -1,4 +1,4 @@
-/*  Thrown when a property fails to resolve.
+/*  Thrown when an ontology solver fails to resolve correctly.
 
  Copyright (c) 2008-2009 The Regents of the University of California.
  All rights reserved.
@@ -31,10 +31,10 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.Nameable;
 
 //////////////////////////////////////////////////////////////////////////
-//// PropertyResolutionException
+//// OntologyResolutionException
 
 /**
- Thrown when a property fails to resolve.
+ Thrown when an ontology solver fails to resolve correctly.
 
  @author Man-kit (Jackie) Leung, Christopher Brooks
  @version $Id$
@@ -42,7 +42,7 @@ import ptolemy.kernel.util.Nameable;
  @Pt.ProposedRating Yellow (cxh)
  @Pt.AcceptedRating Red (cxh)
  */
-public class PropertyResolutionException extends IllegalActionException {
+public class OntologyResolutionException extends IllegalActionException {
 
     /** Construct an exception that includes the PropertySolver that 
      *  that was involved.
@@ -50,7 +50,7 @@ public class PropertyResolutionException extends IllegalActionException {
      *  @param solver The PropertySolver, which must not be null.
      *  @param detail The message.
      */
-    public PropertyResolutionException(PropertySolverBase solver, String detail) {
+    public OntologyResolutionException(OntologySolverBase solver, String detail) {
         this(solver, null, null, detail);
     }
 
@@ -61,11 +61,11 @@ public class PropertyResolutionException extends IllegalActionException {
      *  @param solver The PropertySolver, which must not be null.
      *  @param cause The cause of this exception, or null if the cause
      *  is not known or nonexistent
-     *  @deprecated Use {@link #PropertyResolutionException(PropertySolverBase, Throwable, String)}
+     *  @deprecated Use {@link #OntologyResolutionException(PropertySolverBase, Throwable, String)}
      *  instead because exceptions should include information about why
      *  the exception was thrown instead of just rethrowing.
      */
-    public PropertyResolutionException(PropertySolverBase solver,
+    public OntologyResolutionException(OntologySolverBase solver,
             Throwable cause) {
         this(solver, null, cause, "");
     }
@@ -77,7 +77,7 @@ public class PropertyResolutionException extends IllegalActionException {
      *  is not known or nonexistent
      *  @param detail The message.
      */
-    public PropertyResolutionException(PropertySolverBase solver,
+    public OntologyResolutionException(OntologySolverBase solver,
             Throwable cause, String detail) {
         this(solver, null, cause, detail);
     }
@@ -88,7 +88,7 @@ public class PropertyResolutionException extends IllegalActionException {
      *  @param nameable The Nameable object that was involved.
      *  @param detail The message.
      */
-    public PropertyResolutionException(PropertySolverBase solver,
+    public OntologyResolutionException(OntologySolverBase solver,
             Nameable nameable, String detail) {
         this(solver, nameable, null, detail);
     }
@@ -99,11 +99,11 @@ public class PropertyResolutionException extends IllegalActionException {
      *  @param nameable The Nameable object that was involved.
      *  @param cause The cause of this exception, or null if the cause
      *  is not known or nonexistent
-     *  @deprecated Use {@link #PropertyResolutionException(PropertySolverBase, Nameable, Throwable, String)}
+     *  @deprecated Use {@link #OntologyResolutionException(PropertySolverBase, Nameable, Throwable, String)}
      *  instead because exceptions should include information about why
      *  the exception was thrown instead of just rethrowing.
      */
-    public PropertyResolutionException(PropertySolverBase solver,
+    public OntologyResolutionException(OntologySolverBase solver,
             Nameable nameable, Throwable cause) {
         this(solver, nameable, cause, "");
     }
@@ -116,7 +116,7 @@ public class PropertyResolutionException extends IllegalActionException {
      *  is not known or nonexistent
      *  @param detail The message.
      */
-    public PropertyResolutionException(PropertySolverBase solver,
+    public OntologyResolutionException(OntologySolverBase solver,
             Nameable nameable, Throwable cause, String detail) {
         super(solver, nameable, cause, detail);
 
@@ -130,7 +130,7 @@ public class PropertyResolutionException extends IllegalActionException {
      *  @return the solver with which this exception was constructed.
      *  Guaranteed to be non-null.
      */
-    public PropertySolverBase getSolver() {
+    public OntologySolverBase getSolver() {
         return _solver;
     }
 
@@ -140,5 +140,5 @@ public class PropertyResolutionException extends IllegalActionException {
     /** The PropertySolver with which this exception was constructed.
      *  Guaranteed to be non-null.
      */
-    private PropertySolverBase _solver;
+    private OntologySolverBase _solver;
 }

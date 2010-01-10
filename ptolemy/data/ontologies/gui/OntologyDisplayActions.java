@@ -31,7 +31,7 @@ import java.awt.Frame;
 import java.awt.event.ActionEvent;
 
 import ptolemy.actor.gui.EditParametersDialog;
-import ptolemy.data.ontologies.PropertySolver;
+import ptolemy.data.ontologies.OntologySolver;
 import ptolemy.gui.ComponentDialog;
 import ptolemy.gui.Query;
 import ptolemy.kernel.util.IllegalActionException;
@@ -46,7 +46,7 @@ import ptolemy.vergil.toolbox.MenuActionFactory;
 import diva.graph.GraphController;
 
 //////////////////////////////////////////////////////////////////////////
-//// PropertyHighlighter
+//// OntologyDisplayActions
 
 /**
  This is an attribute that creates an editor for configuring and
@@ -62,7 +62,7 @@ import diva.graph.GraphController;
  @Pt.ProposedRating Red (mankit)
  @Pt.AcceptedRating Red (mankit)
  */
-public class PropertyDisplayActions extends NodeControllerFactory {
+public class OntologyDisplayActions extends NodeControllerFactory {
 
     /** Construct a PropertyHighlighter with the specified container and name.
      *  @param container The container.
@@ -72,7 +72,7 @@ public class PropertyDisplayActions extends NodeControllerFactory {
      *  @exception NameDuplicationException If the name coincides with
      *   an attribute already in the container.
      */
-    public PropertyDisplayActions(NamedObj container, String name)
+    public OntologyDisplayActions(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
@@ -114,8 +114,8 @@ public class PropertyDisplayActions extends NodeControllerFactory {
             super.actionPerformed(e);
 
             NamedObj container = getContainer();
-            if (container instanceof PropertySolver) {
-                ((PropertySolver) container).getMoMLHandler().clearDisplay();
+            if (container instanceof OntologySolver) {
+                ((OntologySolver) container).getMoMLHandler().clearDisplay();
             }
         }
     }
@@ -132,8 +132,8 @@ public class PropertyDisplayActions extends NodeControllerFactory {
             super.actionPerformed(e);
 
             NamedObj container = getContainer();
-            if (container instanceof PropertySolver) {
-                ((PropertySolver) container).getMoMLHandler().clearProperties();
+            if (container instanceof OntologySolver) {
+                ((OntologySolver) container).getMoMLHandler().clearProperties();
             }
         }
     }
@@ -155,7 +155,7 @@ public class PropertyDisplayActions extends NodeControllerFactory {
             // Determine which entity was selected for the look inside action.
             super.actionPerformed(e);
 
-            NamedObj target = ((PropertySolver) PropertyDisplayActions.this
+            NamedObj target = ((OntologySolver) OntologyDisplayActions.this
                     .getContainer()).getMoMLHandler();
 
             // Create a dialog for configuring the object.
@@ -258,8 +258,8 @@ public class PropertyDisplayActions extends NodeControllerFactory {
             super.actionPerformed(e);
 
             NamedObj container = getContainer();
-            if (container instanceof PropertySolver) {
-                ((PropertySolver) container).getMoMLHandler()
+            if (container instanceof OntologySolver) {
+                ((OntologySolver) container).getMoMLHandler()
                         .highlightProperties();
             }
         }
@@ -307,8 +307,8 @@ public class PropertyDisplayActions extends NodeControllerFactory {
         public void actionPerformed(ActionEvent e) {
             super.actionPerformed(e);
             NamedObj container = getContainer();
-            if (container instanceof PropertySolver) {
-                ((PropertySolver) container).getMoMLHandler().showProperties();
+            if (container instanceof OntologySolver) {
+                ((OntologySolver) container).getMoMLHandler().showProperties();
             }
         }
     }
