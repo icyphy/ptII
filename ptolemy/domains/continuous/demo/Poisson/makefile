@@ -29,7 +29,7 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/domains/continuous/demo/Spontaneous
+ME =		ptolemy/domains/continuous/demo/Poisson
 
 # Root of the Java directory
 ROOT =		../../../../../
@@ -87,10 +87,10 @@ demo_applet: $(PTCLASSJAR)
 	CLASSPATH=$(CLASSPATH) appletviewer *.htm
 
 demo_ptolemy:
-	"$(PTII)/bin/ptolemy" Spontaneous.xml
+	"$(PTII)/bin/ptolemy" Poisson.xml
 
 demo_vergil:
-	"$(PTII)/bin/vergil" Spontaneous.xml
+	"$(PTII)/bin/vergil" Poisson.xml
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
