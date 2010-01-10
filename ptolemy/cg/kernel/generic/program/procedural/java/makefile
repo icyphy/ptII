@@ -48,12 +48,13 @@ include $(CONFIG)
 PTPACKAGE = 	java
 PTCLASSJAR =
 
-PTCLASSALLJAR = $(PTPACKAGE).jar \
-	type/type.jar
+PTCLASSALLJAR = $(PTPACKAGE).jar
 
 # Include the .class files from these jars in PTCLASSALLJAR
 # If you change this, change DIRS above
-PTCLASSALLJARS =
+PTCLASSALLJARS = \
+	modular/modular.jar \
+	type/type.jar
 
 # Keep this list alphabetized.
 JSRCS = JavaCodeGenerator.java \
