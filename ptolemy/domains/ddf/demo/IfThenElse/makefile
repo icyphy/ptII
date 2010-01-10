@@ -47,15 +47,15 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
-	IfThenElse.xml
+	IfThenElse.xml \
+	IfThenElseFSM.xml
 
 EXTRA_SRCS = \
 	$(JSRCS) \
 	$(OTHER_FILES_TO_BE_JARED) \
 	IfThenElse.htm \
 	IfThenElseFSM.htm \
-	IfThenElseFSMKepler.xml \
-	IfThenElseFSM.xml
+	IfThenElseFSMKepler.xml
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
