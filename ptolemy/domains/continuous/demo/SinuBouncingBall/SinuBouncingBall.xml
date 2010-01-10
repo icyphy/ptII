@@ -77,7 +77,7 @@
         </property>
     </property>
     <property name="PDF" class="ptolemy.vergil.pdfrenderer.PDFAttribute">
-        <property name="source" class="ptolemy.data.expr.FileParameter" value="sinu-ball.pdf">
+        <property name="source" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/domains/continuous/demo/SinuBouncingBall/sinu-ball.pdf">
         </property>
         <property name="scale" class="ptolemy.data.expr.Parameter" value="70.0">
         </property>

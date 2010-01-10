@@ -140,7 +140,7 @@
         </property>
     </property>
     <property name="PDF" class="ptolemy.vergil.pdfrenderer.PDFAttribute">
-        <property name="source" class="ptolemy.data.expr.FileParameter" value="pendulum.pdf">
+        <property name="source" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/domains/continuous/demo/Pendulum3D/pendulum.pdf">
         </property>
         <property name="scale" class="ptolemy.data.expr.Parameter" value="25.0">
         </property>
