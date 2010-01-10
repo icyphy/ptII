@@ -1907,30 +1907,8 @@ http://java3d.dev.java.net/</text></svg></configure>
                     </property>
                 </port>
                 <entity name="InputAdder" class="ptolemy.actor.lib.AddSubtract">
-                    <port name="plus" class="ptolemy.actor.TypedIOPort">
-                        <property name="input"/>
-                        <property name="multiport"/>
-                    </port>
-                    <port name="minus" class="ptolemy.actor.TypedIOPort">
-                        <property name="input"/>
-                        <property name="multiport"/>
-                    </port>
-                    <port name="output" class="ptolemy.actor.TypedIOPort">
-                        <property name="output"/>
-                    </port>
                 </entity>
                 <entity name="OutputAdder" class="ptolemy.actor.lib.AddSubtract">
-                    <port name="plus" class="ptolemy.actor.TypedIOPort">
-                        <property name="input"/>
-                        <property name="multiport"/>
-                    </port>
-                    <port name="minus" class="ptolemy.actor.TypedIOPort">
-                        <property name="input"/>
-                        <property name="multiport"/>
-                    </port>
-                    <port name="output" class="ptolemy.actor.TypedIOPort">
-                        <property name="output"/>
-                    </port>
                 </entity>
                 <entity name="Integrator0" class="ptolemy.domains.continuous.lib.Integrator">
                     <property name="initialState" class="ptolemy.actor.parameters.PortParameter" value="0.0">
@@ -1939,12 +1917,6 @@ http://java3d.dev.java.net/</text></svg></configure>
                         <property name="input"/>
                         <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="SOUTH">
                         </property>
-                    </port>
-                    <port name="derivative" class="ptolemy.actor.TypedIOPort">
-                        <property name="input"/>
-                    </port>
-                    <port name="state" class="ptolemy.actor.TypedIOPort">
-                        <property name="output"/>
                     </port>
                     <port name="initialState" class="ptolemy.actor.parameters.ParameterPort">
                         <property name="input"/>
@@ -1957,24 +1929,20 @@ http://java3d.dev.java.net/</text></svg></configure>
                     </property>
                     <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
                     </property>
-                    <port name="input" class="ptolemy.actor.TypedIOPort">
-                        <property name="input"/>
-                    </port>
-                    <port name="output" class="ptolemy.actor.TypedIOPort">
-                        <property name="output"/>
-                    </port>
+                    <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+                        <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
+                        </property>
+                    </property>
                 </entity>
                 <entity name="Feedforward0" class="ptolemy.actor.lib.Scale">
                     <property name="factor" class="ptolemy.data.expr.Parameter" value="10.0">
                     </property>
                     <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
                     </property>
-                    <port name="input" class="ptolemy.actor.TypedIOPort">
-                        <property name="input"/>
-                    </port>
-                    <port name="output" class="ptolemy.actor.TypedIOPort">
-                        <property name="output"/>
-                    </port>
+                    <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+                        <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
+                        </property>
+                    </property>
                 </entity>
                 <relation name="node0" class="ptolemy.actor.TypedIORelation">
                     <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
@@ -2851,30 +2819,8 @@ http://java3d.dev.java.net/</text></svg></configure>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, 210.0]">
                 </property>
                 <entity name="InputAdder" class="ptolemy.actor.lib.AddSubtract">
-                    <port name="plus" class="ptolemy.actor.TypedIOPort">
-                        <property name="input"/>
-                        <property name="multiport"/>
-                    </port>
-                    <port name="minus" class="ptolemy.actor.TypedIOPort">
-                        <property name="input"/>
-                        <property name="multiport"/>
-                    </port>
-                    <port name="output" class="ptolemy.actor.TypedIOPort">
-                        <property name="output"/>
-                    </port>
                 </entity>
                 <entity name="OutputAdder" class="ptolemy.actor.lib.AddSubtract">
-                    <port name="plus" class="ptolemy.actor.TypedIOPort">
-                        <property name="input"/>
-                        <property name="multiport"/>
-                    </port>
-                    <port name="minus" class="ptolemy.actor.TypedIOPort">
-                        <property name="input"/>
-                        <property name="multiport"/>
-                    </port>
-                    <port name="output" class="ptolemy.actor.TypedIOPort">
-                        <property name="output"/>
-                    </port>
                 </entity>
                 <entity name="Integrator0" class="ptolemy.domains.continuous.lib.Integrator">
                     <property name="initialState" class="ptolemy.actor.parameters.PortParameter" value="0.0">
@@ -2883,12 +2829,6 @@ http://java3d.dev.java.net/</text></svg></configure>
                         <property name="input"/>
                         <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="SOUTH">
                         </property>
-                    </port>
-                    <port name="derivative" class="ptolemy.actor.TypedIOPort">
-                        <property name="input"/>
-                    </port>
-                    <port name="state" class="ptolemy.actor.TypedIOPort">
-                        <property name="output"/>
                     </port>
                     <port name="initialState" class="ptolemy.actor.parameters.ParameterPort">
                         <property name="input"/>
@@ -2901,24 +2841,20 @@ http://java3d.dev.java.net/</text></svg></configure>
                     </property>
                     <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
                     </property>
-                    <port name="input" class="ptolemy.actor.TypedIOPort">
-                        <property name="input"/>
-                    </port>
-                    <port name="output" class="ptolemy.actor.TypedIOPort">
-                        <property name="output"/>
-                    </port>
+                    <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+                        <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
+                        </property>
+                    </property>
                 </entity>
                 <entity name="Feedforward0" class="ptolemy.actor.lib.Scale">
                     <property name="factor" class="ptolemy.data.expr.Parameter" value="10.0">
                     </property>
                     <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
                     </property>
-                    <port name="input" class="ptolemy.actor.TypedIOPort">
-                        <property name="input"/>
-                    </port>
-                    <port name="output" class="ptolemy.actor.TypedIOPort">
-                        <property name="output"/>
-                    </port>
+                    <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+                        <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
+                        </property>
+                    </property>
                 </entity>
                 <relation name="node0" class="ptolemy.actor.TypedIORelation">
                     <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
@@ -2964,30 +2900,8 @@ http://java3d.dev.java.net/</text></svg></configure>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 305.0]">
                 </property>
                 <entity name="InputAdder" class="ptolemy.actor.lib.AddSubtract">
-                    <port name="plus" class="ptolemy.actor.TypedIOPort">
-                        <property name="input"/>
-                        <property name="multiport"/>
-                    </port>
-                    <port name="minus" class="ptolemy.actor.TypedIOPort">
-                        <property name="input"/>
-                        <property name="multiport"/>
-                    </port>
-                    <port name="output" class="ptolemy.actor.TypedIOPort">
-                        <property name="output"/>
-                    </port>
                 </entity>
                 <entity name="OutputAdder" class="ptolemy.actor.lib.AddSubtract">
-                    <port name="plus" class="ptolemy.actor.TypedIOPort">
-                        <property name="input"/>
-                        <property name="multiport"/>
-                    </port>
-                    <port name="minus" class="ptolemy.actor.TypedIOPort">
-                        <property name="input"/>
-                        <property name="multiport"/>
-                    </port>
-                    <port name="output" class="ptolemy.actor.TypedIOPort">
-                        <property name="output"/>
-                    </port>
                 </entity>
                 <entity name="Integrator0" class="ptolemy.domains.continuous.lib.Integrator">
                     <property name="initialState" class="ptolemy.actor.parameters.PortParameter" value="0.0">
@@ -2996,12 +2910,6 @@ http://java3d.dev.java.net/</text></svg></configure>
                         <property name="input"/>
                         <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="SOUTH">
                         </property>
-                    </port>
-                    <port name="derivative" class="ptolemy.actor.TypedIOPort">
-                        <property name="input"/>
-                    </port>
-                    <port name="state" class="ptolemy.actor.TypedIOPort">
-                        <property name="output"/>
                     </port>
                     <port name="initialState" class="ptolemy.actor.parameters.ParameterPort">
                         <property name="input"/>
@@ -3014,24 +2922,20 @@ http://java3d.dev.java.net/</text></svg></configure>
                     </property>
                     <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
                     </property>
-                    <port name="input" class="ptolemy.actor.TypedIOPort">
-                        <property name="input"/>
-                    </port>
-                    <port name="output" class="ptolemy.actor.TypedIOPort">
-                        <property name="output"/>
-                    </port>
+                    <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+                        <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
+                        </property>
+                    </property>
                 </entity>
                 <entity name="Feedforward0" class="ptolemy.actor.lib.Scale">
                     <property name="factor" class="ptolemy.data.expr.Parameter" value="10.0">
                     </property>
                     <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
                     </property>
-                    <port name="input" class="ptolemy.actor.TypedIOPort">
-                        <property name="input"/>
-                    </port>
-                    <port name="output" class="ptolemy.actor.TypedIOPort">
-                        <property name="output"/>
-                    </port>
+                    <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+                        <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
+                        </property>
+                    </property>
                 </entity>
                 <relation name="node0" class="ptolemy.actor.TypedIORelation">
                     <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
@@ -3077,30 +2981,8 @@ http://java3d.dev.java.net/</text></svg></configure>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 405.0]">
                 </property>
                 <entity name="InputAdder" class="ptolemy.actor.lib.AddSubtract">
-                    <port name="plus" class="ptolemy.actor.TypedIOPort">
-                        <property name="input"/>
-                        <property name="multiport"/>
-                    </port>
-                    <port name="minus" class="ptolemy.actor.TypedIOPort">
-                        <property name="input"/>
-                        <property name="multiport"/>
-                    </port>
-                    <port name="output" class="ptolemy.actor.TypedIOPort">
-                        <property name="output"/>
-                    </port>
                 </entity>
                 <entity name="OutputAdder" class="ptolemy.actor.lib.AddSubtract">
-                    <port name="plus" class="ptolemy.actor.TypedIOPort">
-                        <property name="input"/>
-                        <property name="multiport"/>
-                    </port>
-                    <port name="minus" class="ptolemy.actor.TypedIOPort">
-                        <property name="input"/>
-                        <property name="multiport"/>
-                    </port>
-                    <port name="output" class="ptolemy.actor.TypedIOPort">
-                        <property name="output"/>
-                    </port>
                 </entity>
                 <entity name="Integrator0" class="ptolemy.domains.continuous.lib.Integrator">
                     <property name="initialState" class="ptolemy.actor.parameters.PortParameter" value="0.0">
@@ -3109,12 +2991,6 @@ http://java3d.dev.java.net/</text></svg></configure>
                         <property name="input"/>
                         <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="SOUTH">
                         </property>
-                    </port>
-                    <port name="derivative" class="ptolemy.actor.TypedIOPort">
-                        <property name="input"/>
-                    </port>
-                    <port name="state" class="ptolemy.actor.TypedIOPort">
-                        <property name="output"/>
                     </port>
                     <port name="initialState" class="ptolemy.actor.parameters.ParameterPort">
                         <property name="input"/>
@@ -3127,24 +3003,20 @@ http://java3d.dev.java.net/</text></svg></configure>
                     </property>
                     <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
                     </property>
-                    <port name="input" class="ptolemy.actor.TypedIOPort">
-                        <property name="input"/>
-                    </port>
-                    <port name="output" class="ptolemy.actor.TypedIOPort">
-                        <property name="output"/>
-                    </port>
+                    <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+                        <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
+                        </property>
+                    </property>
                 </entity>
                 <entity name="Feedforward0" class="ptolemy.actor.lib.Scale">
                     <property name="factor" class="ptolemy.data.expr.Parameter" value="10.0">
                     </property>
                     <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
                     </property>
-                    <port name="input" class="ptolemy.actor.TypedIOPort">
-                        <property name="input"/>
-                    </port>
-                    <port name="output" class="ptolemy.actor.TypedIOPort">
-                        <property name="output"/>
-                    </port>
+                    <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+                        <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
+                        </property>
+                    </property>
                 </entity>
                 <relation name="node0" class="ptolemy.actor.TypedIORelation">
                     <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
