@@ -166,8 +166,9 @@ public class LatticeOntologyAdapter extends OntologyAdapter {
 
     /**
      * Return true if the given model object has been annotated with a manual annotation
-     * constraint. This calls the OntologySolver's
-     * {@linkplain OntologySolver#isAnnotatedTerm(Object) isAnnotatedTerm()} method.
+     * constraint. This method calls the LatticeOntologySolver's
+     * {@linkplain LatticeOntologySolver#isAnnotatedTerm(Object) isAnnotatedTerm()}
+     * method.
      * 
      * @param object The model object to be checked to see if it is annotated
      * @return true if the model object is annotated, false otherwise
@@ -737,7 +738,7 @@ public class LatticeOntologyAdapter extends OntologyAdapter {
      * to only set certain InequalityTerms as effective to be used in the
      * OntologySolver algorithm.
      * 
-     * @see PropertyTermManager.InequalityTerm#isEffective isEffective()
+     * @see ptolemy.data.ontologies.lattice.ConceptTermManager.InequalityTerm#isEffective isEffective()
      */
     protected void _setEffectiveTerms() {
         // do nothing in here, overwrite use-case specific!
