@@ -849,8 +849,10 @@ TimedDirector, Decorator {
     }
     
     /**
-     * Returns the WCET seen by the director
-     * 
+     * Return the WCET of the actors.
+     * Worst-Case Execution Time (WCET) of an actor is the maximum length of time 
+     * the task could take to execute on a particular platform
+     *   
      */
     public double _getWCET()throws IllegalActionException
     {
