@@ -619,5 +619,12 @@ public class PropertyClassChanges implements MoMLFilter {
         _actorsWithPropertyClassChanges.put(
                 "ptolemy.domains.modal.kernel.Transition",
                 TransitionClassChanges);
+
+        // DocAttribute
+        HashMap DocAttributeClassChanges = new HashMap();
+        DocAttributeClassChanges.put("description", "ptolemy.kernel.util.StringAttribute");
+        _actorsWithPropertyClassChanges
+            .put("ptolemy.vergil.basic.DocAttribute",
+                        DocAttributeClassChanges);
     }
 }

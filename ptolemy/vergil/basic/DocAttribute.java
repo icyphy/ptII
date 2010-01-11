@@ -81,7 +81,7 @@ public class DocAttribute extends SingletonAttribute {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
-        description = new StringParameter(this, "description");
+        description = new StringAttribute(this, "description");
         TextStyle style = new TextStyle(description, "_style");
         style.height.setExpression("10");
         style.width.setExpression("70");
@@ -120,7 +120,7 @@ public class DocAttribute extends SingletonAttribute {
     public StringAttribute author;
 
     /** The description. */
-    public StringParameter description;
+    public StringAttribute description;
 
     /** The since field. */
     public StringAttribute since;

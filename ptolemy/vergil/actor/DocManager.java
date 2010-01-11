@@ -154,14 +154,15 @@ public class DocManager extends HandlerBase {
         _target = target;
         _targetClass = target.getClass();
         _className = target.getClassName();
-        try {
+        //try {
             List docAttributes = _target.attributeList(DocAttribute.class);
             // Get the last doc attribute.
             if (docAttributes.size() > 0) {
                 DocAttribute instanceDoc = (DocAttribute) docAttributes
                         .get(docAttributes.size() - 1);
                 // Populate fields from the attribute.
-                String descriptionValue = instanceDoc.description.stringValue();
+                //String descriptionValue = instanceDoc.description.stringValue();
+                String descriptionValue = instanceDoc.description.getExpression();
                 if (descriptionValue != null
                         && !descriptionValue.trim().equals("")) {
                     _isInstanceDoc = true;
@@ -225,9 +226,9 @@ public class DocManager extends HandlerBase {
                     }
                 }
             }
-        } catch (IllegalActionException e) {
-            _exception = "Error evaluating DocAttribute parameter:\n" + e;
-        }
+            //} catch (IllegalActionException e) {
+            //_exception = "Error evaluating DocAttribute parameter:\n" + e + ptolemy.kernel.util.KernelException.stackTraceToString(e);
+            //}
     }
 
     /** Construct a manager to handle documentation for the specified target

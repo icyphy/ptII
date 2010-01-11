@@ -19,7 +19,7 @@
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{325.0, 201.5}">
     </property>
     <property name="Documentation" class="ptolemy.vergil.basic.DocAttribute">
-        <property name="description" class="ptolemy.data.expr.StringParameter" value="This model shows how to use the Case actor.&#10;Looking inside the Case actor will reveal that it&#10;has three distinct refinements. Which one is executed&#10;depends on the value of the control input provided to&#10;it. In this example, the control value cycles through&#10;the list {0, 1, 2, 3} repeatedly. The &quot;0&quot; refinement&#10;is executed when the control is 0, the &quot;1&quot; refinement is&#10;executed when the control is 1, and the &quot;default&quot; refinement&#10;is executed otherwise.">
+        <property name="description" class="ptolemy.kernel.util.StringAttribute" value="This model shows how to use the Case actor.&#10;Looking inside the Case actor will reveal that it&#10;has three distinct refinements. Which one is executed&#10;depends on the value of the control input provided to&#10;it. In this example, the control value cycles through&#10;the list {0, 1, 2, 3} repeatedly. The &quot;0&quot; refinement&#10;is executed when the control is 0, the &quot;1&quot; refinement is&#10;executed when the control is 1, and the &quot;default&quot; refinement&#10;is executed otherwise.">
         </property>
         <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Edward A. Lee">
         </property>

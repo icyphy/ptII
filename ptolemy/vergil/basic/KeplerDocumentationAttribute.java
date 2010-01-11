@@ -350,7 +350,7 @@ public class KeplerDocumentationAttribute extends Attribute implements
             documentationAttribute.since = new StringAttribute(
                     documentationAttribute, "since");
             documentationAttribute.since.setExpression("");
-            documentationAttribute.description = new StringParameter(
+            documentationAttribute.description = new StringAttribute(
                     documentationAttribute, "description");
             documentationAttribute.description
                     .setExpression(_userLevelDocumentation);
