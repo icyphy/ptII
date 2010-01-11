@@ -325,7 +325,19 @@ public class FuzzyLogic extends Transformer {
     }
     ////////////////////////////////////////////////////////////////////
     ////                         public  variables                /////
-    /**Input port for risk, cost and mass to the actor.*/
+
+    //  Risk is the risk associated with using a component or 
+    //  combination of components.
+    //  Cost is the monetary cost associated with using a component or
+    //  a combination of components.
+    //  Mass is the weight associated with a component or combination
+    //  of components.
+    //  In this case risk, cost, and mass are assumed to be strings. 
+    //  Based on a user suggestion at the moment risk, cost, and mass 
+    //  have the values such as high, medium or low.  
+
+
+    /**Input port for risk the actor.*/
     public TypedIOPort inRisk;
     /**Input port for cost to the actor.*/
     public TypedIOPort inCost;
