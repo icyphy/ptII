@@ -47,6 +47,7 @@ import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.util.ClassUtilities;
@@ -148,21 +149,29 @@ public class PDFAttribute extends VisibleAttribute {
                     FileChannel channel = raf.getChannel();
                     byteBuffer = channel.map(FileChannel.MapMode.READ_ONLY, 0, channel.size());
                 } catch (Exception ex) {
+                    URL jarURL = null;
+                    // We might be under WebStart.  In theory, we should be able to read
+                    // the URL and create a ByteBuffer, but there are problems with the non-ascii bytes
+                    // in the pdf file.  The basic idea was to new BufferedOutputStream(new ByteArrayOutputStream()).
                     try {
-                        // We might be under WebStart.  In theory, we should be able to read
-                        // the URL and create a ByteBuffer, but there are problems with the non-ascii bytes
-                        // in the pdf file.  The basic idea was to new BufferedOutputStream(new ByteArrayOutputStream()).
-                        URL jarURL = FileUtilities.nameToURL(source.getExpression(), null, null);
-                        if (! jarURL.toString().startsWith("jar:")) {
-                            throw ex;
-                        } else {
+                        jarURL = FileUtilities.nameToURL(source.getExpression(), null, null);
+                    } catch (Exception ex2) {
+                        throw new IllegalActionException(this, ex, "Failed to open " + source.getExpression()
+                                                         + ". Tried opening as URL, exception was: " + ex2);
+                    }
+                    if (! jarURL.toString().startsWith("jar:")) {
+                        throw new IllegalActionException(this, ex, "Failed to open " + source.getExpression());
+                    } else {
+                        try {
                             File file = new File(JNLPUtilities.saveJarURLAsTempFile(jarURL.toString(), "PDFAttribute", ".pdf", null));
                             RandomAccessFile raf = new RandomAccessFile(file, "r");
                             FileChannel channel = raf.getChannel();
                             byteBuffer = channel.map(FileChannel.MapMode.READ_ONLY, 0, channel.size());
+                        } catch (Exception ex3) {
+                            throw new IllegalActionException(this, ex, "Failed to open " + source.getExpression()
+                                    + ".  Also, tried to open jar URL " + jarURL + ", exception was: \n"
+                                    + KernelException.stackTraceToString(ex3));
                         }
-                    } catch (Exception ex2) {
-                        throw new IllegalActionException(this, ex, "Failed to open " + source.getExpression());
                     }
                 }
 
