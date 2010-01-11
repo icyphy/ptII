@@ -60,7 +60,9 @@ public class GiottoError extends TypedAtomicActor implements ModelErrorHandler {
 
 
     /**
-     * Constructs a GiottoError object.
+     * Construct a GiottoError actor. A Giotto Error actor
+     * is used to specify how simulation should handle
+     * timing overruns. 
      *
      * @param container  a CompositeEntity object
      * @param name       a String ...
