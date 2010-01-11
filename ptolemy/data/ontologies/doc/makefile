@@ -1,10 +1,10 @@
-# Makefile for ontologies
+# Makefile for ontologies documentation
 #
 # @Authors: Christopher Brooks (makefile only)
 #
-# $Id$
+# $Id: makefile 56824 2010-01-10 01:32:01Z cshelton $
 #
-# @Copyright (c) 2009-2010 The Regents of the University of California.
+# @Copyright (c) 2010 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -29,12 +29,12 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/data/ontologies
+ME =		ptolemy/data/ontologies/doc
 
-DIRS = 		demo doc gui lattice util #test
+DIRS =
 
 # Root of the Ptolemy II directory
-ROOT =		../../..
+ROOT =		../../../..
 
 CLASSPATH =	$(ROOT)
 
@@ -43,49 +43,25 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	ontologies
-# Include the .class files from these jars in PTCLASSALLJAR
-PTCLASSALLJARS = \
-	doc/doc.jar \
-	gui/gui.jar \
-	lattice/lattice.jar \
-	util/util.jar
+PTPACKAGE = 	doc
+PTCLASSJAR = $(PTPACKAGE).jar
 
-PTCLASSALLJAR = $(PTPACKAGE).jar
-
-JSRCS = \
-	AnnotationAttribute.java \
-	Concept.java \
-	ConceptAttribute.java \
-	ConceptGraph.java \
-	ConceptRelation.java \
-	Ontology.java \
-	ParseTreeASTNodeAdapterCollector.java \
-	ParseTreeAnnotationEvaluator.java \
-	OntologyAdapter.java \
-	OntologyMoMLHandler.java \
-	OntologyResolutionException.java \
-	OntologySolver.java \
-	OntologySolverBase.java \
-	SharedUtilities.java
+JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
-	ontologyLibrary.xml
+	ontologies_class_diagram.zargo
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
 # if $(DIRS) includes demo, then do not set MISC_FILES= $(DIRS) 
-MISC_FILES = doc gui lattice util #test
+MISC_FILES =
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	demo \
-	'OntologyAdapter$$Channel.class' \
-	'OntologyAdapter$$Inequality.class' \
-	'OntologySolver$$DirectoryNameFilter.class' \
+	demo
 
 JCLASS = $(JSRCS:%.java=%.class)
 
