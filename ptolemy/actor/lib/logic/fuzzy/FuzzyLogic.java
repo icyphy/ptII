@@ -325,14 +325,18 @@ public class FuzzyLogic extends Transformer {
     }
     ////////////////////////////////////////////////////////////////////
     ////                         public  variables                /////
-    /**input ports for risk, cost and mass to the actor.*/
+    /**Input port for risk, cost and mass to the actor.*/
     public TypedIOPort inRisk;
+    /**Input port for cost to the actor.*/
     public TypedIOPort inCost;
+    /**Input port for mass to the actor.*/
     public TypedIOPort inMass;
 
-    /**output ports for risk, cost and mast from the actor.*/
+    /**Output port for risk,from the actor.*/
     public TypedIOPort risk;
+    /**Output port for mass from the actor.*/
     public TypedIOPort mass;
+    /**Output port for cost from the actor.*/
     public TypedIOPort cost;
 
     /**actor parameters specified by the creator of the model. */
