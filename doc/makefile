@@ -332,12 +332,13 @@ DATAPROPERTIESPACKAGES = \
 	ptolemy.data.properties.lattice.academicFalseTrueSet.data.expr \
 	ptolemy.data.properties.lattice.academicFalseTrueSet.domains.fsm.kernel \
 	ptolemy.data.properties.lattice.academicFalseTrueSet.kernel \
-	ptolemy.data.properties.lattice.dimensionSystem \
-	ptolemy.data.properties.lattice.dimensionSystem.actor \
-	ptolemy.data.properties.lattice.dimensionSystem.actor.lib \
-	ptolemy.data.properties.lattice.dimensionSystem.actor.lib.logic \
-	ptolemy.data.properties.lattice.dimensionSystem.data.expr \
-	ptolemy.data.properties.lattice.dimensionSystem.domains.continuous.lib \
+	ptolemy.data.ontologies.lattice \
+	ptolemy.data.ontologies.lattice.adapters.DimensionSystem \
+	ptolemy.data.ontologies.lattice.adapters.DimensionSystem.actor \
+	ptolemy.data.ontologies.lattice.adapters.DimensionSystem.actor.lib \
+	ptolemy.data.ontologies.lattice.adapters.DimensionSystem.actor.lib.logic \
+	ptolemy.data.ontologies.lattice.adapters.DimensionSystem.data.expr \
+	ptolemy.data.ontologies.lattice.adapters.DimensionSystem.domains.continuous.lib \
 	ptolemy.data.properties.lattice.logicalAND.domains.continuous.lib \
 	ptolemy.data.properties.lattice.logicalAND.domains.modal.kernel \
 	ptolemy.data.properties.lattice.exampleSetLattice \
