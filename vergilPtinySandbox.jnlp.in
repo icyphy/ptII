@@ -7,6 +7,7 @@
 <!-- href is needed so that web start can cache the app and
      it will appear in the desktop icon
 -->
+<!-- NOTE: the sandbox jnlp does not work with local files -->
 <jnlp codebase="@PTII_LOCALURL@"
       href="@PTII_LOCALURL@/vergilPtinySandbox.jnlp"> 
   <information>
@@ -23,24 +24,14 @@
   </security> 
   <resources>
         <!-- Bump maximum heap size to 128Mb, use JVM Props. to confirm -->
-  	<j2se version="1.4+" max-heap-size="128m" />
-
-        <!-- There is a bug under JDK1.4.1 XP with Radeon display cards
-        that causes XP to hang when exiting.  For details, see
-        http://developer.java.sun.com/developer/bugParade/bugs/4713003.html
-        The workaround is to start the java interpreter with 
-        -Dsun.java2d.d3d=false 
-        or
-        -Dsun.java2d.noddraw=true
-        T30's seem to be happier with noddraw than with only d3d, at least
-	under 1.4.1-beta-b14 -->
-        <property name="sun.java2d.noddraw" value="true"/>
-
+  	<j2se version="1.5+" max-heap-size="128m" />
 	<!-- Start Jars -->
 	<!-- End Jars -->
   </resources>
   <application-desc main-class="ptolemy.actor.gui.jnlp.PtinySandboxApplication">
 	<argument>-ptiny</argument>
+	<!-- Viewing html tends to fail because the html widget gets images -->
+	<argument>ptolemy/domains/sdf/demo/Butterfly/Butterfly.xml</argument>
   </application-desc>
   <!-- Need to deal with Java 3D -->
 </jnlp>
