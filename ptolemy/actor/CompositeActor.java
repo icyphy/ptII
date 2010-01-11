@@ -281,6 +281,7 @@ public class CompositeActor extends CompositeEntity implements Actor,
         _piggybacks = oldPiggybacks;
         
         newObject._actorFiringListeners = null;
+        newObject._notifyingActorFiring = false;
         newObject._causalityInterface = null;
         newObject._derivedPiggybacks = null;
         newObject._manager = null;
