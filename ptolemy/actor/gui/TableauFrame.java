@@ -891,7 +891,13 @@ public class TableauFrame extends Top {
             // Another thing to check for is whether the icon is in the
             // same directory as TableauFrame.class
             Toolkit tk = Toolkit.getDefaultToolkit();
-            _defaultIconImage = tk.createImage(url);
+            try {
+                _defaultIconImage = tk.createImage(url);
+            } catch (SecurityException ex) {
+                System.out.println("Warning: Could not read " + url
+                        + " for default icon of TableauFrame."
+                        + "(-sandbox always causes this)");
+            }
         }
 
         return _defaultIconImage;
