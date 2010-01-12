@@ -93,7 +93,7 @@ public class Locator extends TypedAtomicActor {
         // Since this actor sources the data at this port, we have to
         // declare the type.
         TypeAttribute portType = new TypeAttribute(output, "type");
-        portType.setExpression("{location={double}, time=double}");
+        portType.setExpression("{location=arrayType(double, 2), time=double}");
     }
 
     ///////////////////////////////////////////////////////////////////

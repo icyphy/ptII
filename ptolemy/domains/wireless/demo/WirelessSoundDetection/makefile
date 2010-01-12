@@ -48,6 +48,7 @@ JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
 	WirelessSoundDetection.xml \
+	WirelessSoundDetectionContinuous.xml \
 	WirelessSoundDetectionCT.xml
 
 EXTRA_SRCS = \

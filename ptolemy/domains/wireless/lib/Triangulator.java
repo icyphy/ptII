@@ -112,12 +112,12 @@ public class Triangulator extends TypedAtomicActor {
         input = new TypedIOPort(this, "input", true, false);
 
         TypeAttribute inputType = new TypeAttribute(input, "type");
-        inputType.setExpression("{location = {double}, time = double}");
+        inputType.setExpression("{location = arrayType(double,2), time = double}");
 
         output = new TypedIOPort(this, "output", false, true);
 
         TypeAttribute outputType = new TypeAttribute(output, "type");
-        outputType.setExpression("{double}");
+        outputType.setExpression("arrayType(double,2)");
 
         // Create parameters.
         signalPropagationSpeed = new Parameter(this, "signalPropagationSpeed");
