@@ -1,0 +1,11 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="Modal Model" class="ptolemy.actor.gui.PtolemyEffigy$Factory">
+  <entity name="blank"
+	  class="ptolemy.domains.modal.modal.ModalModel">
+    <property name="_tableauFactory" class="ptolemy.vergil.modal.modal.ModalTableauFactory">
+    </property>
+    <input source="ptolemy/configs/modalController.xml"/>
+  </entity>
+</entity>

@@ -7,12 +7,18 @@
       <group>
       <doc>Actors that generate random data.</doc>
 
+        <entity name="BandlimitedNoise"
+                class="ptolemy.domains.continuous.lib.BandlimitedNoise"/>
+
         <entity name="Bernoulli" class="ptolemy.actor.lib.Bernoulli">
 	  <doc>Create a sequence of bernoulli random variables</doc>
   <port name="trigger">
     <property name="_hide" class="ptolemy.kernel.util.Attribute"/>
   </port>
 	</entity>
+
+        <entity name="ContinuousSpectrum"
+                class="ptolemy.domains.continuous.lib.ContinuousSpectrum"/>
 
 	<entity name="DiscreteRandomSource"
 	        class="ptolemy.actor.lib.DiscreteRandomSource">
@@ -27,6 +33,9 @@
     <property name="_hide" class="ptolemy.kernel.util.Attribute"/>
   </port>
 	</entity>
+
+        <entity name="Noise"
+                class="ptolemy.domains.continuous.lib.Noise"/>
 
 	<entity name="Uniform" class="ptolemy.actor.lib.Uniform">
 	  <doc>Create a sequence of uniformly distributed random numbers</doc>

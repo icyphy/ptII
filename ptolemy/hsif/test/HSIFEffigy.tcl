@@ -87,5 +87,4 @@ test HSIFEffigy-1.2 {Parse the results from converting the Thermostat HSIF model
     set composite [java::cast ptolemy.actor.CompositeActor $toplevel]
     set director [$composite getDirector]	
     list [$director toString]
-} {{ptolemy.domains.ct.kernel.CTMixedSignalDirector {.Thermostat.CT Director}}}
-
+} {{ptolemy.domains.continuous.kernel.ContinuousDirector {.Thermostat.Continuous Director}}}

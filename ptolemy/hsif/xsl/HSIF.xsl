@@ -188,7 +188,7 @@ CT-ModalModel-CTEmbedded.
         <!-- Construct the Modal model director. -->
         <xsl:call-template name="composite">
             <xsl:with-param name="name" select="@name"/>
-            <xsl:with-param name="class" select="'ptolemy.domains.fsm.modal.ModalModel'"/>
+            <xsl:with-param name="class" select="'ptolemy.domains.modal.modal.ModalModel'"/>
             <xsl:with-param name="type" select="'Modal'"/>
         </xsl:call-template>
 
@@ -200,7 +200,7 @@ CT-ModalModel-CTEmbedded.
         <!-- I/O ports -->
         <xsl:for-each select="IntegerVariable">
             <xsl:call-template name="variable">
-                <xsl:with-param name="portType" select="'ptolemy.domains.fsm.modal.ModalPort'"/>
+                <xsl:with-param name="portType" select="'ptolemy.domains.modal.modal.ModalPort'"/>
                 <xsl:with-param name="dataType" select="'int'"/>
                 <xsl:with-param name="environment" select = "'HA'"/>
             </xsl:call-template>
@@ -208,7 +208,7 @@ CT-ModalModel-CTEmbedded.
 
         <xsl:for-each select="RealVariable">
             <xsl:call-template name="variable">
-                <xsl:with-param name="portType" select="'ptolemy.domains.fsm.modal.ModalPort'"/>
+                <xsl:with-param name="portType" select="'ptolemy.domains.modal.modal.ModalPort'"/>
                 <xsl:with-param name="dataType" select="'double'"/>
                 <xsl:with-param name="environment" select = "'HA'"/>
             </xsl:call-template>
@@ -216,7 +216,7 @@ CT-ModalModel-CTEmbedded.
 
         <xsl:for-each select="BooleanVariable">
             <xsl:call-template name="variable">
-                <xsl:with-param name="portType" select="'ptolemy.domains.fsm.modal.ModalPort'"/>
+                <xsl:with-param name="portType" select="'ptolemy.domains.modal.modal.ModalPort'"/>
                 <xsl:with-param name="dataType" select="'boolean'"/>
                 <xsl:with-param name="environment" select = "'HA'"/>
             </xsl:call-template>
@@ -226,7 +226,7 @@ CT-ModalModel-CTEmbedded.
         <xsl:element name="entity">
             <!-- attributes of entity -->
             <xsl:attribute name="name">_Controller</xsl:attribute>
-            <xsl:attribute name="class">ptolemy.domains.fsm.modal.ModalController</xsl:attribute>
+            <xsl:attribute name="class">ptolemy.domains.modal.modal.ModalController</xsl:attribute>
             <xsl:call-template name="_Controller">
             </xsl:call-template>
          </xsl:element>
@@ -259,7 +259,7 @@ CT-ModalModel-CTEmbedded.
 	<xsl:attribute name="class"><xsl:value-of select="$class"/></xsl:attribute>
 
     <xsl:choose>
-        <xsl:when test="$type='CT'"><xsl:call-template name="CTDirector"/></xsl:when>
+        <xsl:when test="$type='CT'"><xsl:call-template name="ContinuousDirector"/></xsl:when>
         <xsl:when test="$type='CTEmbedded'"><xsl:call-template name="CTEmbeddedDirector"/></xsl:when>
         <xsl:when test="$type='Modal'"><xsl:call-template name="ModalDirector"/></xsl:when>
     </xsl:choose>
@@ -270,12 +270,12 @@ CT-ModalModel-CTEmbedded.
      Different directors for different domains.
      ========================================================== -->
 
-<!-- CT MixedDirector -->
-<xsl:template name="CTDirector">
+<!-- Continuous Director -->
+<xsl:template name="ContinuousDirector">
     <xsl:element name="property">
         <!-- attributes of entity -->
-        <xsl:attribute name="name">CT Director</xsl:attribute>
-        <xsl:attribute name="class">ptolemy.domains.ct.kernel.CTMixedSignalDirector</xsl:attribute>
+        <xsl:attribute name="name">Continuous Director</xsl:attribute>
+        <xsl:attribute name="class">ptolemy.domains.continuous.kernel.ContinuousDirector</xsl:attribute>
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="10.0"></property>
         <property name="maxStepSize" class="ptolemy.data.expr.Parameter" value="0.3"></property>
     </xsl:element>
@@ -289,9 +289,9 @@ CT-ModalModel-CTEmbedded.
            <svg>
            <text x="20" style="font-size:14; font-family:sanserif; fill:blue" y="20">To run the model, follow these steps:
 1. To automatically layout the actors, 
-   type Ctrl-t
-     or
-   use the Graph -> Automatic Layout menu choice.
+   on the Mac type 'Command-t'
+   under Windows, type 'Ctrl-t'
+   or use the Graph -> Automatic Layout menu choice.
 
 2. Connect a TimedPlotter from the Actors -> Sinks
    palette in the upper left tree widget to one of the
@@ -314,8 +314,8 @@ For more help, choose Help from the upper menu bar.</text>
 <xsl:template name="CTEmbeddedDirector">
     <xsl:element name="property">
         <!-- attributes of entity -->
-        <xsl:attribute name="name">CT Embedded Director</xsl:attribute>
-        <xsl:attribute name="class">ptolemy.domains.ct.kernel.CTEmbeddedDirector</xsl:attribute>
+        <xsl:attribute name="name">Continuous Director</xsl:attribute>
+        <xsl:attribute name="class">ptolemy.domains.continuous.kernel.ContinuousDirector</xsl:attribute>
     </xsl:element>
 </xsl:template>
 
@@ -325,7 +325,7 @@ For more help, choose Help from the upper menu bar.</text>
     <!-- _tableau -->
     <xsl:element name="property">
         <xsl:attribute name="name">_tableauFactory</xsl:attribute>
-        <xsl:attribute name="class">ptolemy.vergil.fsm.modal.ModalTableauFactory</xsl:attribute>
+        <xsl:attribute name="class">ptolemy.vergil.modal.modal.ModalTableauFactory</xsl:attribute>
     </xsl:element>
 </xsl:template>
 
@@ -347,9 +347,9 @@ For more help, choose Help from the upper menu bar.</text>
            <configure>
                 <entity name="state library" class="ptolemy.kernel.CompositeEntity">
                    <input source="ptolemy/configs/basicUtilities.xml"></input>
-                   <entity name="state" class="ptolemy.domains.fsm.kernel.State">
+                   <entity name="state" class="ptolemy.domains.modal.kernel.State">
                       <property name="_centerName" class="ptolemy.kernel.util.Attribute"></property>
-                      <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory"></property>
+                      <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory"></property>
                    </entity>
                 </entity>
            </configure>
@@ -372,7 +372,7 @@ For more help, choose Help from the upper menu bar.</text>
     <!-- I/O ports (RefinementPorts in _Controller) -->
     <xsl:for-each select="IntegerVariable">
         <xsl:call-template name="variable">
-            <xsl:with-param name="portType" select="'ptolemy.domains.fsm.modal.RefinementPort'"/>
+            <xsl:with-param name="portType" select="'ptolemy.domains.modal.modal.RefinementPort'"/>
             <xsl:with-param name="dataType" select="'int'"/>
             <xsl:with-param name="environment" select = "'controller'"/>
         </xsl:call-template>
@@ -380,7 +380,7 @@ For more help, choose Help from the upper menu bar.</text>
 
     <xsl:for-each select="RealVariable">
         <xsl:call-template name="variable">
-            <xsl:with-param name="portType" select="'ptolemy.domains.fsm.modal.RefinementPort'"/>
+            <xsl:with-param name="portType" select="'ptolemy.domains.modal.modal.RefinementPort'"/>
             <xsl:with-param name="dataType" select="'double'"/>
             <xsl:with-param name="environment" select = "'controller'"/>
         </xsl:call-template>
@@ -388,7 +388,7 @@ For more help, choose Help from the upper menu bar.</text>
 
     <xsl:for-each select="BooleanVariable">
         <xsl:call-template name="variable">
-            <xsl:with-param name="portType" select="'ptolemy.domains.fsm.modal.RefinementPort'"/>
+            <xsl:with-param name="portType" select="'ptolemy.domains.modal.modal.RefinementPort'"/>
             <xsl:with-param name="dataType" select="'boolean'"/>
             <xsl:with-param name="environment" select = "'controller'"/>
         </xsl:call-template>
@@ -410,13 +410,13 @@ For more help, choose Help from the upper menu bar.</text>
     <xsl:element name="entity">
         <!-- attributes of entity -->
         <xsl:attribute name="name"><xsl:value-of select="@name"/></xsl:attribute>
-        <xsl:attribute name="class">ptolemy.domains.fsm.kernel.State</xsl:attribute>
+        <xsl:attribute name="class">ptolemy.domains.modal.kernel.State</xsl:attribute>
         <xsl:element name="property">
             <xsl:attribute name="name">refinementName</xsl:attribute>
             <xsl:attribute name="class">ptolemy.kernel.util.StringAttribute</xsl:attribute>
             <xsl:attribute name="value"><xsl:value-of select="@name"/></xsl:attribute>
         </xsl:element>
-        <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
+        <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
         </property>
         <xsl:element name="port">
             <xsl:attribute name="name">incomingPort</xsl:attribute>
@@ -439,7 +439,7 @@ For more help, choose Help from the upper menu bar.</text>
         <xsl:attribute name="name">
             <xsl:value-of select="concat(@_id, $stateID, $nextStateID)"/>
         </xsl:attribute>
-        <xsl:attribute name="class">ptolemy.domains.fsm.kernel.Transition</xsl:attribute>
+        <xsl:attribute name="class">ptolemy.domains.modal.kernel.Transition</xsl:attribute>
         <!-- attributes of guard Expression -->
         <xsl:element name="property">
             <xsl:attribute name="name">guardExpression</xsl:attribute>
@@ -449,13 +449,13 @@ For more help, choose Help from the upper menu bar.</text>
         <!-- attributes of Output Action -->
         <xsl:element name="property">
             <xsl:attribute name="name">outputActions</xsl:attribute>
-            <xsl:attribute name="class">ptolemy.domains.fsm.kernel.OutputActionsAttribute</xsl:attribute>
+            <xsl:attribute name="class">ptolemy.domains.modal.kernel.OutputActionsAttribute</xsl:attribute>
             <xsl:attribute name="value"></xsl:attribute>
         </xsl:element>
         <!-- attributes of Set Action -->
         <xsl:element name="property">
             <xsl:attribute name="name">setActions</xsl:attribute>
-            <xsl:attribute name="class">ptolemy.domains.fsm.kernel.CommitActionsAttribute</xsl:attribute>
+            <xsl:attribute name="class">ptolemy.domains.modal.kernel.CommitActionsAttribute</xsl:attribute>
 
             <xsl:variable name="setActionString">
                 <xsl:variable name="srcState" select="key('nodeID', $stateID)/@name"/>
@@ -532,7 +532,7 @@ For more help, choose Help from the upper menu bar.</text>
     <xsl:element name="entity">
         <xsl:call-template name="composite">
             <xsl:with-param name="name" select="@name"/>
-            <xsl:with-param name="class" select="'ptolemy.domains.fsm.modal.Refinement'"/>
+            <xsl:with-param name="class" select="'ptolemy.domains.modal.modal.Refinement'"/>
             <xsl:with-param name="type" select="'CTEmbedded'"/>
         </xsl:call-template>
         <xsl:element name="property">
@@ -556,7 +556,7 @@ For more help, choose Help from the upper menu bar.</text>
         <!-- I/O port (RefinementPort) -->
         <xsl:for-each select="../IntegerVariable">
             <xsl:call-template name="variable">
-                <xsl:with-param name="portType" select="'ptolemy.domains.fsm.modal.RefinementPort'"/>
+                <xsl:with-param name="portType" select="'ptolemy.domains.modal.modal.RefinementPort'"/>
                 <xsl:with-param name="dataType" select="'int'"/>
                 <xsl:with-param name="environment" select = "'FSM'"/>
             </xsl:call-template>
@@ -564,7 +564,7 @@ For more help, choose Help from the upper menu bar.</text>
 
         <xsl:for-each select="../RealVariable">
             <xsl:call-template name="variable">
-                <xsl:with-param name="portType" select="'ptolemy.domains.fsm.modal.RefinementPort'"/>
+                <xsl:with-param name="portType" select="'ptolemy.domains.modal.modal.RefinementPort'"/>
                 <xsl:with-param name="dataType" select="'double'"/>
                 <xsl:with-param name="environment" select = "'FSM'"/>
             </xsl:call-template>
@@ -572,7 +572,7 @@ For more help, choose Help from the upper menu bar.</text>
 
         <xsl:for-each select="../BooleanVariable">
             <xsl:call-template name="variable">
-                <xsl:with-param name="portType" select="'ptolemy.domains.fsm.modal.RefinementPort'"/>
+                <xsl:with-param name="portType" select="'ptolemy.domains.modal.modal.RefinementPort'"/>
                 <xsl:with-param name="dataType" select="'boolean'"/>
                 <xsl:with-param name="environment" select = "'FSM'"/>
             </xsl:call-template>
@@ -1055,7 +1055,7 @@ For more help, choose Help from the upper menu bar.</text>
         <xsl:element name="entity">
             <xsl:variable name="initialValue"><xsl:value-of select="key('nodeID',@var)/@initialMinValue"/></xsl:variable>
             <xsl:attribute name="name"><xsl:value-of select="key('nodeID',@var)/@name"/></xsl:attribute>
-            <xsl:attribute name="class">ptolemy.domains.ct.lib.Integrator</xsl:attribute>
+            <xsl:attribute name="class">ptolemy.domains.continuous.lib.Integrator</xsl:attribute>
             <property name="initialState" class="ptolemy.data.expr.Parameter">
                 <xsl:attribute name="value">
                     <xsl:if test="$initialValue!=''"><xsl:value-of select="$initialValue"/></xsl:if>
@@ -1063,17 +1063,17 @@ For more help, choose Help from the upper menu bar.</text>
                 </xsl:attribute>
             </property> 
             <xsl:element name="port">
-                <xsl:attribute name="name">output</xsl:attribute>
+                <xsl:attribute name="name">state</xsl:attribute>
                 <xsl:attribute name="class">ptolemy.actor.TypedIOPort</xsl:attribute>
                 <xsl:element name="property">
-                    <xsl:attribute name="name">output</xsl:attribute>
+                    <xsl:attribute name="name">state</xsl:attribute>
                 </xsl:element>
             </xsl:element>
             <xsl:element name="port">
-                <xsl:attribute name="name">input</xsl:attribute>
+                <xsl:attribute name="name">derivative</xsl:attribute>
                 <xsl:attribute name="class">ptolemy.actor.TypedIOPort</xsl:attribute>
                 <xsl:element name="property">
-                    <xsl:attribute name="name">input</xsl:attribute>
+                    <xsl:attribute name="name">derivative</xsl:attribute>
                 </xsl:element>
             </xsl:element>
         </xsl:element>
@@ -1132,7 +1132,7 @@ For more help, choose Help from the upper menu bar.</text>
             <xsl:attribute name="class">ptolemy.actor.TypedIORelation</xsl:attribute>
         </xsl:element>
         <xsl:element name="link">
-            <xsl:attribute name="port"><xsl:value-of select="concat($varName, '.input')"/></xsl:attribute>
+            <xsl:attribute name="port"><xsl:value-of select="concat($varName, '.derivative')"/></xsl:attribute>
             <xsl:attribute name="relation"><xsl:value-of select="concat($varName, 'relationBetweenIntegratorAndExpression')"/></xsl:attribute>
         </xsl:element>
         <xsl:element name="link">
@@ -1144,7 +1144,7 @@ For more help, choose Help from the upper menu bar.</text>
             <xsl:attribute name="relation"><xsl:value-of select="$varName"/></xsl:attribute>
         </xsl:element>
         <xsl:element name="link">
-            <xsl:attribute name="port"><xsl:value-of select="concat($varName, '.output')"/></xsl:attribute>
+            <xsl:attribute name="port"><xsl:value-of select="concat($varName, '.state')"/></xsl:attribute>
             <xsl:attribute name="relation"><xsl:value-of select="$varName"/></xsl:attribute>
         </xsl:element>
 

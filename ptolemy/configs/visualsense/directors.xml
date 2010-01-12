@@ -17,8 +17,7 @@
       <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector"/>
       <property name="PN Director" class="ptolemy.domains.pn.kernel.PNDirector"/>
       <property name="Rendezvous Director" class="ptolemy.domains.rendezvous.kernel.RendezvousDirector"/>
-      <property name="CT Director" class="ptolemy.domains.ct.kernel.CTMixedSignalDirector"/>
-      <property name="CTEmbedded Director" class="ptolemy.domains.ct.kernel.CTEmbeddedDirector"/>
+      <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector"/>
       <property name="Director" class="ptolemy.actor.Director">
          <doc>Simple director that executes actors in the order in which they were created.</doc>
       </property>

@@ -90,7 +90,9 @@ OTHER_FILES_TO_BE_JARED = \
 	gtTableauFactory.xml \
 	iaEffigyFactory.xml \
 	iaTableauFactory.xml \
+	modalController.xml \
 	modalEffigyFactories.xml \
+	modalEffigyFactory.xml \
 	modalLibrary.xml \
 	modalTableauFactory.xml \
 	ontologyEffigyFactory.xml \

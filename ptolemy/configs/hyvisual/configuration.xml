@@ -34,6 +34,12 @@
             class="ptolemy.data.expr.FileParameter"
             value="$CLASSPATH/ptolemy/configs/hyvisual/help.htm"/>
 
+  <!-- Use the Kieler graph layout algorithms. -->
+  <!--  Used in BasicGraphFrame.java-->
+  <property name="_layoutGraphDialog"
+            class="ptolemy.data.expr.StringParameter"
+            value="ptolemy.vergil.basic.layout.KielerLayoutGUIFactory"/>
+
   <!-- The directory of open models, each represented by an effigy. -->
   <!-- Note that this begins empty. -->
   <entity name="directory" class="ptolemy.actor.gui.ModelDirectory"/>
@@ -85,14 +91,12 @@
       <configure>
         <?moml
           <group>
-            <property name="Continuous Time (CT) Solver"
-                      class="ptolemy.domains.ct.kernel.CTMixedSignalDirector"/>
-            <property name="CTEmbedded Director"
-    	          class="ptolemy.domains.ct.kernel.CTEmbeddedDirector"/>
+	    <property name="Continuous Director"
+	              class="ptolemy.domains.continuous.kernel.ContinuousDirector"/>
             <property name="DE Director"
                       class="ptolemy.domains.de.kernel.DEDirector"/>
             <property name="FSM Director"
-    	          class="ptolemy.domains.fsm.kernel.FSMDirector"/>
+                      class="ptolemy.domains.modal.kernel.FSMDirector"/>
             <property name="GR Director"
     	          class="ptolemy.domains.gr.kernel.GRDirector"/>
             <property name="SDF Director"
@@ -115,9 +119,8 @@
 
 <!---------------------------------------------------------------------------->
 <!-- Continuous-time actors. -->
-<input source="ptolemy/domains/ct/lib/dynamics.xml"/>
-<input source="ptolemy/domains/ct/lib/eventgenerators.xml"/>
-<input source="ptolemy/domains/ct/lib/wavegenerators.xml"/>
+<input source="ptolemy/domains/continuous/lib/continuousentities.xml"/>
+
 <!-- Discrete library is added to include a few useful actors. -->
 <input source="ptolemy/configs/hyvisual/discrete.xml"/>
 

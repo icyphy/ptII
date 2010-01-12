@@ -16,14 +16,14 @@
   </port>
 </entity>
 
-<entity name="ContinuousClock" class="ptolemy.domains.ct.lib.ContinuousClock">
+<entity name="ContinuousClock" class="ptolemy.domains.continuous.lib.ContinuousClock">
   <port name="trigger">
     <property name="_hide" class="ptolemy.kernel.util.Attribute"/>
   </port>
 </entity>
 
 <entity name="ContinuousSinewave"
-        class="ptolemy.domains.ct.lib.ContinuousSinewave"/>
+        class="ptolemy.domains.continuous.lib.ContinuousSinewave"/>
 
 <entity name="CurrentTime" class="ptolemy.actor.lib.CurrentTime">
   <port name="trigger">
@@ -47,8 +47,6 @@
 <entity name="TriggeredDiscreteClock" class="ptolemy.actor.lib.TriggeredClock">
 </entity>
 
-<entity name="TriggeredContinuousClock" class="ptolemy.domains.ct.lib.TriggeredContinuousClock">
-</entity>
 
 <entity name="VariableClock" class="ptolemy.actor.lib.VariableClock">
 </entity>
