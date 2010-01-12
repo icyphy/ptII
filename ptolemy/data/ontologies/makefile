@@ -54,7 +54,6 @@ PTCLASSALLJARS = \
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
 JSRCS = \
-	AnnotationAttribute.java \
 	Concept.java \
 	ConceptAttribute.java \
 	ConceptGraph.java \
