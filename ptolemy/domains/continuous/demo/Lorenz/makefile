@@ -56,7 +56,6 @@ EXTRA_SRCS = \
 	Lorenz.htm \
 	LorenzVergil.htm \
 	LorenzDifferentialSystem.htm \
-	LorenzDifferentialSystem.jnlp \
 	LorenzDifferentialSystemVergil.htm
 
 # Sources that may or may not be present, but if they are present, we don't
