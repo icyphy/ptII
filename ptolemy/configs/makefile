@@ -76,6 +76,7 @@ OTHER_FILES_TO_BE_JARED = \
 	experimentalDirectors.xml \
 	extendedEffigyFactories.xml \
 	extendedTableauFactories.xml \
+	fsmController.xml \
 	fsmEffigyFactories.xml \
 	fsmLibrary.xml \
 	fsmTableauFactory.xml \

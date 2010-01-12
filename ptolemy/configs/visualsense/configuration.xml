@@ -66,24 +66,7 @@
     <entity name="FSM Editor"
             class="ptolemy.actor.gui.PtolemyEffigy$FactoryWithoutNew">
       <entity name="blank" class="ptolemy.domains.modal.kernel.FSMActor">
-        <input source="ptolemy/configs/fsmLibrary.xml"/>
-        <!-- Annotate with instructions. -->
-	    <property name="annotation" class="ptolemy.kernel.util.Attribute">
-			<property name="_hideName"
-    	            class="ptolemy.kernel.util.SingletonAttribute"/>
-	        <property name="_iconDescription"
-            	    class="ptolemy.kernel.util.SingletonConfigurableAttribute"><configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">Create a state machine here.  Create transitions by holding 
-the control key and dragging from one state to another.  
-Right click to configure the properties of this model, including 
-setting the final state(s).  Then delete this annotation.</text>
-</svg></configure></property>
-	       <property name="_location"
-           	     	class="ptolemy.kernel.util.Location" value="120.0, 5.0"/>
-      	   <property name="_controllerFactory"
-                    class="ptolemy.vergil.basic.NodeControllerFactory"/>
-           <property name="_editorFactory"
-                    class="ptolemy.vergil.toolbox.AnnotationEditorFactory"/>
-        </property>
+	<input source="ptolemy/configs/fsmController.xml"/>
       </entity>
     </entity>
     <entity name="Modal Model"
@@ -104,7 +87,7 @@ setting the final state(s).  Then delete this annotation.</text>
   <!-- of other editors that appear in the View menu.            -->
   <property name="tableauFactory" class="ptolemy.actor.gui.TableauFactory">
     <input source="ptolemy/configs/modalTableauFactory.xml"/>
-    <input source="ptolemy/configs/fsmTableauFactory.xml"/>
+    <!--input source="ptolemy/configs/fsmTableauFactory.xml"/-->
     <input source="ptolemy/configs/graphTableauFactory.xml"/>
     <input source="ptolemy/configs/extendedTableauFactories.xml"/>
   </property>
@@ -132,7 +115,7 @@ setting the final state(s).  Then delete this annotation.</text>
 	  </entity>
       <class name="CompositeClass" extends="ptolemy.actor.TypedCompositeActor"/>
       <input source="ptolemy/configs/utilityCompositeActor.xml"/>
-      
+      <input source="ptolemy/configs/utilityModalModel.xml"/>      
       <input source="ptolemy/configs/basicUtilities.xml"/>
       <!-- Do not include this as singleton parameters are buggy. -->
       <!-- input source="ptolemy/configs/customize.xml"/ -->

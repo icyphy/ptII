@@ -9,8 +9,9 @@
     <property name="_iconDescription"
 	      class="ptolemy.kernel.util.SingletonConfigurableAttribute"><configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">Create a state machine here (and ports, if needed) and
 create refinements for the states.  Create transitions
-by holding the control key and dragging from one state
-to another.  Right click to configure the properties 
+by holding the (Mac: command key, Windows: control key)
+and dragging from one state to another.  
+Right click to configure the properties 
 of this model, including setting the final state(s).
 Then delete this annotation.</text>
     </svg></configure></property>
