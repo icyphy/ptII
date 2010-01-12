@@ -52,7 +52,7 @@
 #   make key_list STOREPASSWORD="-storepass xxx" KEYSTORE=/users/ptII/adm/certs/ptkeystore
 #   make key_list STOREPASSWORD="-storepass xxx" KEYSTORE=c:/cygwin/users/ptII/adm/certs/ptkeystore
 
-# To sign using our key:
+# To sign using our key and update the website:
 #   make KEYSTORE=/users/ptII/adm/certs/ptkeystore KEYALIAS=ptolemy STOREPASSWORD="-storepass xxx" KEYPASSWORD="-keypass xxx" jnlp_dist
 
 # To update the website:  make jnlp_dist_update
@@ -78,16 +78,44 @@ DOC_CODEDOC_JAR = \
 
 SIGNED_DIR =		signed
 
+lib/bcvtbMacOSX.jar:
+	if [ -f lib/libbcvtb.dylib ]; then \
+		(cd lib; \
+	 	"$(JAR)" -cvf bcvtbMacOSX.jar libbcvtb.dylib); \
+	else \
+		echo "$$PTII/libbcvtb.dylib does not exist creating dummy jar"; \
+		echo "$$PTII/lib/libbcvtb.dylib not found, see PTII/mk/jnlp.mk" \
+			> lib/README_bcvtb.txt; \
+		(cd lib; \
+                "$(JAR)" -cvf bcvtbMacOSX.jar \
+			README_bcvtb.txt); \
+		rm -f lib/README_bcvtb.txt; \
+	fi
+
+lib/rxtxMacOSX.jar: 
+	if [ -f /Library/Java/Extensions/RXTXcomm.jar ]; then \
+		(cd /Library/Java/Extensions; \
+	 	"$(JAR)" -cvf $(PTII)/lib/rxtxMacOSX.jar librxtxSerial.jnilib RXTXcomm.jar); \
+	else \
+		echo "/Library/Java/Extensions/RXTXcomm.jar, creating dummy jar"; \
+		echo "/Library/Java/Extension/RXTXcomm.jar, not found, see PTII/mk/jnlp.mk" \
+			> README_rxtx.txt; \
+		(cd lib; \
+		"$(JAR)" -cvf lib/rxtxMacOSX.jar \
+			README_rxtx.txt); \
+		rm -f README_rxtx.txt; \
+	fi
+
 # Jar file that contains win32com.dll for the Java Serial Communications API
-lib/commWindows.jar: 
+lib/rxtxWindows.jar: 
 	if [ -f vendors/sun/commapi/win32com.dll ]; then \
 		(cd vendors/sun/commapi; \
-	 	"$(JAR)" -cvf ../../../lib/commWindows.jar win32com.dll); \
+	 	"$(JAR)" -cvf ../../../lib/rxtxWindows.jar win32com.dll); \
 	else \
 		echo "vendors/sun/commapi not found, creating dummy jar"; \
 		echo "vendors/sun/commapi not found, see PTII/mk/jnlp.mk" \
 			> README_comm.txt; \
-		"$(JAR)" -cvf ../../../lib/commWindows.jar \
+		"$(JAR)" -cvf ../../../lib/rxtxindows.jar \
 			README_comm.txt; \
 		rm -f README_comm.txt; \
 	fi
@@ -110,10 +138,12 @@ lib/joystickWindows.jar:
 # include it in ALL_JNLP_JARS
 NATIVE_SIGNED_LIB_JARS = \
 	lib/commWindows.jar \
+	lib/bcvtbMacOSX.jar \
 	lib/joystickWindows.jar \
 	lib/matlabMacOSX.jar \
 	lib/matlabSunOS.jar \
-	lib/matlabWindows.jar
+	lib/matlabWindows.jar \
+	lib/rxtxMacOSX.jar 
 
 # Not all hosts have matlab
 MATLAB_JARS = \
@@ -280,8 +310,6 @@ PTINY_ONLY_JNLP_JARS = \
 	ptolemy/codegen/c/domains/fsm/demo/demo.jar \
 	ptolemy/codegen/c/domains/modal/demo/demo.jar \
 	ptolemy/codegen/c/domains/pn/demo/demo.jar \
-	ptolemy/codegen/c/targets/mpi/demo/demo.jar \
-	ptolemy/codegen/c/targets/openRTOS/demo/demo.jar \
 	ptolemy/codegen/java/actor/lib/embeddedJava/demo/demo.jar \
 	$(PTALON_JARS) \
 	$(HYBRID_SYSTEMS_DEMO_AND_DOC_JARS) \
@@ -295,6 +323,8 @@ PTINY_ONLY_JNLP_JARS = \
 	ptolemy/domains/de/doc/doc.jar \
 	ptolemy/domains/hdf/demo/demo.jar \
 	ptolemy/domains/hdf/doc/doc.jar \
+	ptolemy/domains/modal/doc/doc.jar \
+	ptolemy/domains/modal/demo/demo.jar \
 	ptolemy/domains/pn/demo/demo.jar \
 	ptolemy/domains/pn/doc/doc.jar \
 	ptolemy/domains/rendezvous/demo/demo.jar \
@@ -366,6 +396,16 @@ WIRELESS_JARS = \
 	ptolemy/domains/wireless/demo/demo.jar \
 	ptolemy/domains/wireless/doc/doc.jar
 
+FULL_8_1_JARS = \
+	ptolemy/cg/cg.jar \
+	ptolemy/data/properties/properties.jar \
+	ptolemy/data/properties/lattice/imageOntology/demo/demo.jar \
+	ptolemy/data/properties/demo/demo.jar \
+	ptolemy/vergil/properties/properties.jar \
+	ptolemy/data/ontologies/ontologies.jar \
+	ptolemy/vergil/ontologies/ontologies.jar \
+	ptolemy/domains/pthales/pthales.jar \
+	ptolemy/domains/pthales/demo/demo.jar
 
 # Jar files that will appear in a full JNLP Ptolemy II Runtime
 # ptolemy/domains/sdf/lib/vq/data/data.jar contains images for HTVQ demo
@@ -374,11 +414,12 @@ FULL_ONLY_JNLP_JARS = \
 	doc/design/design.jar \
 	doc/img/img.jar \
 	$(PTJACL_JARS) \
+	lbnl/lbnl.jar \
 	ptolemy/actor/gt/gt.jar \
 	ptolemy/actor/gt/demo/demo.jar \
 	ptolemy/actor/lib/io/comm/comm.jar \
 	ptolemy/actor/lib/io/comm/demo/demo.jar \
-	vendors/sun/commapi/comm.jar \
+	vendors/misc/rxtx/RXTXcomm.jar \
 	ptolemy/actor/lib/jai/jai.jar \
 	ptolemy/actor/lib/jai/demo/demo.jar \
 	ptolemy/actor/lib/jmf/jmf.jar \
@@ -401,7 +442,6 @@ FULL_ONLY_JNLP_JARS = \
 	ptolemy/caltrop/demo/demo.jar \
 	ptolemy/distributed/distributed.jar \
 	ptolemy/distributed/demo/demo.jar \
-	ptolemy/data/properties/properties.jar \
 	ptolemy/demo/demo.jar \
 	ptolemy/domains/experimentalDomains.jar \
 	ptolemy/domains/ci/demo/demo.jar \
@@ -418,8 +458,6 @@ FULL_ONLY_JNLP_JARS = \
 	ptolemy/domains/gr/demo/demo.jar \
 	ptolemy/domains/gr/doc/doc.jar \
 	ptolemy/domains/gr/lib/quicktime/quicktime.jar \
-	ptolemy/domains/modal/doc/doc.jar \
-	ptolemy/domains/modal/demo/demo.jar \
 	ptolemy/domains/psdf/psdf.jar \
 	ptolemy/domains/psdf/demo/demo.jar \
 	ptolemy/domains/psdf/doc/doc.jar \
@@ -437,8 +475,8 @@ FULL_ONLY_JNLP_JARS = \
 	ptolemy/vergil/ptera/ptera.jar \
 	ptolemy/vergil/fsm/fmv/fmv.jar \
 	ptolemy/vergil/gt/gt.jar \
-	ptolemy/vergil/properties/properties.jar \
 	ptolemy/vergil/tdl/tdl.jar \
+	$(FULL_8_1_JARS) \
 	$(PTDATABASE_JNLP_JARS) \
 	$(RUN_JARS) \
 	$(WIRELESS_JARS)
