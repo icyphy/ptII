@@ -2,7 +2,7 @@
 # $Id$
 # Script to check for proper svn properties in text files
 
-while [ $# -gt 1 ];
+while [ $# -gt 0 ];
 do
     keywords=`svn propget svn:keywords $1`
     if [ "$keywords" != "Author Date Id Revision" ] ;then
