@@ -315,6 +315,21 @@ COPERNICUSPACKAGES = \
 
 # Packages used by data/properties 
 # Use this command to update:
+# cd $PTII/ptolemy/data/ontologies; find . -name "*.java" | xargs -n 1 dirname | sort | uniq | awk '{dir=substr($0, 2, length($0)-1) ; print "ptolemy/data/ontologies" dir}' | sed 's@/@.@g'
+DATAONTOLOGIESPACKAGES = \
+	ptolemy.data.ontologies \
+	ptolemy.data.ontologies.gui \
+	ptolemy.data.ontologies.lattice \
+	ptolemy.data.ontologies.lattice.adapters.DimensionSystem \
+	ptolemy.data.ontologies.lattice.adapters.DimensionSystem.actor \
+	ptolemy.data.ontologies.lattice.adapters.DimensionSystem.actor.lib \
+	ptolemy.data.ontologies.lattice.adapters.DimensionSystem.actor.lib.logic \
+	ptolemy.data.ontologies.lattice.adapters.DimensionSystem.data.expr \
+	ptolemy.data.ontologies.lattice.adapters.DimensionSystem.domains.continuous.lib \
+	ptolemy.data.ontologies.util
+
+# Packages used by data/properties 
+# Use this command to update:
 # cd $PTII/ptolemy/data/properties; find . -name "*.java" | xargs -n 1 dirname | sort | uniq | awk '{dir=substr($0, 2, length($0)-1) ; print "ptolemy/data/properties" dir}' | sed 's@/@.@g'
 DATAPROPERTIESPACKAGES = \
 	ptolemy.data.properties \
@@ -332,13 +347,12 @@ DATAPROPERTIESPACKAGES = \
 	ptolemy.data.properties.lattice.academicFalseTrueSet.data.expr \
 	ptolemy.data.properties.lattice.academicFalseTrueSet.domains.fsm.kernel \
 	ptolemy.data.properties.lattice.academicFalseTrueSet.kernel \
-	ptolemy.data.ontologies.lattice \
-	ptolemy.data.ontologies.lattice.adapters.DimensionSystem \
-	ptolemy.data.ontologies.lattice.adapters.DimensionSystem.actor \
-	ptolemy.data.ontologies.lattice.adapters.DimensionSystem.actor.lib \
-	ptolemy.data.ontologies.lattice.adapters.DimensionSystem.actor.lib.logic \
-	ptolemy.data.ontologies.lattice.adapters.DimensionSystem.data.expr \
-	ptolemy.data.ontologies.lattice.adapters.DimensionSystem.domains.continuous.lib \
+	ptolemy.data.properties.lattice.dimensionSystem \
+	ptolemy.data.properties.lattice.dimensionSystem.actor \
+	ptolemy.data.properties.lattice.dimensionSystem.actor.lib \
+	ptolemy.data.properties.lattice.dimensionSystem.actor.lib.logic \
+	ptolemy.data.properties.lattice.dimensionSystem.data.expr \
+	ptolemy.data.properties.lattice.dimensionSystem.domains.continuous.lib \
 	ptolemy.data.properties.lattice.logicalAND.domains.continuous.lib \
 	ptolemy.data.properties.lattice.logicalAND.domains.modal.kernel \
 	ptolemy.data.properties.lattice.exampleSetLattice \
@@ -579,6 +593,7 @@ ALLPACKAGES = \
 	$(CODEGENPACKAGES) \
 	$(COMPACKAGES) \
 	$(COPERNICUSPACKAGES) \
+	$(DATAONTOLOGIESPACKAGES) \
 	$(DATAPROPERTIESPACKAGES) \
 	$(DIVAPACKAGES) \
 	$(EXPERIMENTALPACKAGES) \
@@ -663,15 +678,6 @@ ALLPACKAGES = \
 	ptolemy.domains.tm.lib \
 	ptolemy.data \
 	ptolemy.data.expr \
-	ptolemy.data.ontologies \
-	ptolemy.data.ontologies.adapters.dimensionSystem \
-	ptolemy.data.ontologies.adapters.dimensionSystem.actor \
-	ptolemy.data.ontologies.adapters.dimensionSystem.actor.lib \
-	ptolemy.data.ontologies.adapters.dimensionSystem.actor.lib.logic \
-	ptolemy.data.ontologies.adapters.dimensionSystem.data.expr \
-	ptolemy.data.ontologies.adapters.dimensionSystem.domains.continuous.lib \
-	ptolemy.data.ontologies.gui \
-	ptolemy.data.ontologies.util \
 	ptolemy.data.type \
 	ptolemy.data.unit \
 	ptolemy.graph \
