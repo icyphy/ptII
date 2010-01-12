@@ -607,7 +607,7 @@ public abstract class OntologyAdapter {
      * @param attribute The specified Attribute.
      */
     protected void putAttribute(ASTPtRootNode node, Attribute attribute) {
-        _solver.getSharedUtilities().putAttribute(node, attribute);
+        _solver.getOntologySolverUtilities().putAttribute(node, attribute);
     }
 
     ///////////////////////////////////////////////////////////////////

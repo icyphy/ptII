@@ -997,7 +997,7 @@ public class LatticeOntologySolver extends OntologySolver implements Testable {
         }
 
         if (hasError) {
-            getSharedUtilities().addErrors(errorMessage.toString());
+            getOntologySolverUtilities().addErrors(errorMessage.toString());
         }
     }
 

@@ -37,8 +37,6 @@ import ptolemy.actor.parameters.SharedParameter;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.ontologies.gui.OntologyDisplayActions;
-import ptolemy.data.properties.PropertyFailedRegressionTestException;
-import ptolemy.data.type.BaseType;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
@@ -109,7 +107,7 @@ public abstract class OntologySolver extends OntologySolverBase {
      * @param error The specified error message string.
      */
     public void addErrors(String error) {
-        _sharedUtilities.addErrors(error);
+        _ontologySolverUtilities.addErrors(error);
     }
 
     /**
@@ -128,7 +126,7 @@ public abstract class OntologySolver extends OntologySolverBase {
 
         // FIXME: remove the errors as well.
 
-        List errors = _sharedUtilities.removeErrors();
+        List errors = _ontologySolverUtilities.removeErrors();
         Collections.sort(errors);
 
         if (!errors.isEmpty()) {
@@ -492,7 +490,7 @@ public abstract class OntologySolver extends OntologySolverBase {
 
             _initializeStatistics();
 
-            getSharedUtilities().addRanSolvers(this);
+            getOntologySolverUtilities().addRanSolvers(this);
 
             _analyzer = analyzer;
             _isInvoked = isInvoked;
@@ -524,7 +522,7 @@ public abstract class OntologySolver extends OntologySolverBase {
             // If this is not an intermediate (invoked) solver,
             // we need to clear the display.
             if (isInvoked && isResolve()) {
-                OntologySolver previousSolver = _sharedUtilities._previousInvokedSolver;
+                OntologySolver previousSolver = _ontologySolverUtilities._previousInvokedSolver;
 
                 // Clear the display properties of the previous invoked solver.
                 // If no solver is invoked previously, at least clear
@@ -536,7 +534,7 @@ public abstract class OntologySolver extends OntologySolverBase {
 
                 previousSolver._momlHandler.clearDisplay();
 
-                _sharedUtilities._previousInvokedSolver = this;
+                _ontologySolverUtilities._previousInvokedSolver = this;
             }
             _resolveProperties(analyzer);
 
@@ -819,7 +817,7 @@ public abstract class OntologySolver extends OntologySolverBase {
         _stats.put("# of adapters", _adapterStore.size());
         _stats.put("# of propertyables", getAllPropertyables().size());
         _stats.put("# of resolved properties", _resolvedProperties.size());
-        _stats.put("# of resolution errors", _sharedUtilities.getErrors()
+        _stats.put("# of resolution errors", _ontologySolverUtilities.getErrors()
                 .size());
         _stats.put("has trained resolution errors", getTrainedException()
                 .length() > 0);
@@ -1028,14 +1026,14 @@ public abstract class OntologySolver extends OntologySolverBase {
             errorCount = 0;
         }
         _stats.put("# of trained resolution errors", errorCount
-                + _sharedUtilities.getErrors().size());
+                + _ontologySolverUtilities.getErrors().size());
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
 
     /**
-     * Look for directories that do are not CVS or .svn.
+     * Look for directories that are not CVS or .svn.
      */
     static class DirectoryNameFilter implements FilenameFilter {
         // FindBugs suggests making this class static so as to decrease

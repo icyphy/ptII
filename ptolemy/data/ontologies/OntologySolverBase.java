@@ -76,7 +76,7 @@ model component, in turn, may have one or multiple objects to which
 ontology concepts can be attached.
 
 <p>Every OntologySolver is linked together by the SharedParameter called
-"sharedUtilitiesWrapper", which contains the shared utility object.
+"ontologySolverUtilitiesWrapper", which contains the shared utility object.
 This allows every OntologySolver to find other solvers in the model.
 
 <p>Subclasses needs to implement
@@ -109,25 +109,25 @@ public abstract class OntologySolverBase extends MoMLModelAttribute {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
-        sharedUtilitiesWrapper = new SharedParameter(this,
-                "sharedUtilitiesWrapper", OntologySolver.class);
-        sharedUtilitiesWrapper.setPersistent(false);
-        sharedUtilitiesWrapper.setVisibility(Settable.NONE);
+        ontologySolverUtilitiesWrapper = new SharedParameter(this,
+                "ontologySolverUtilitiesWrapper", OntologySolver.class);
+        ontologySolverUtilitiesWrapper.setPersistent(false);
+        ontologySolverUtilitiesWrapper.setVisibility(Settable.NONE);
 
         // **We can only create a new shared utilities object
         // only once per model.
-        if (sharedUtilitiesWrapper.getExpression().length() == 0) {
-            sharedUtilitiesWrapper.setToken(new ObjectToken(
-                    new SharedUtilities()));
+        if (ontologySolverUtilitiesWrapper.getExpression().length() == 0) {
+            ontologySolverUtilitiesWrapper.setToken(new ObjectToken(
+                    new OntologySolverUtilities()));
         }
 
-        Collection<SharedParameter> parameters = sharedUtilitiesWrapper
+        Collection<SharedParameter> parameters = ontologySolverUtilitiesWrapper
                 .sharedParameterSet();
         for (SharedParameter parameter : parameters) {
             parameters = parameter.sharedParameterSet();
         }
 
-        _sharedUtilities = (SharedUtilities) ((ObjectToken) sharedUtilitiesWrapper
+        _ontologySolverUtilities = (OntologySolverUtilities) ((ObjectToken) ontologySolverUtilitiesWrapper
                 .getToken()).getValue();
 
     }
@@ -140,7 +140,7 @@ public abstract class OntologySolverBase extends MoMLModelAttribute {
      * same model.
      */
 
-    public SharedParameter sharedUtilitiesWrapper;
+    public SharedParameter ontologySolverUtilitiesWrapper;
 
     ///////////////////////////////////////////////////////////////////
     ////                     public methods                        ////
@@ -234,7 +234,7 @@ public abstract class OntologySolverBase extends MoMLModelAttribute {
      */
     public Attribute getAttribute(ASTPtRootNode node) {
         Node root = node;
-        Map<ASTPtRootNode, Attribute> attributes = getSharedUtilities()
+        Map<ASTPtRootNode, Attribute> attributes = getOntologySolverUtilities()
                 .getAttributes();
 
         while (root.jjtGetParent() != null) {
@@ -263,22 +263,6 @@ public abstract class OntologySolverBase extends MoMLModelAttribute {
     public OntologyAdapter getAdapter(Object object)
             throws IllegalActionException {
         return _getAdapter(object);
-    }
-
-    /** Return the property lattice for this constraint solver.
-     *  If this solver contains more than one lattice, then return the
-     *  last one added. If it contains no lattices, then return null. This
-     *  method should be removed since the ConceptGraph can be accessed
-     *  through the getOntology() method.
-     *  @return The property lattice for this constraint solver.
-     *  @throws IllegalActionException If the structure is not a lattice.
-     */
-    public ConceptGraph getLattice() throws IllegalActionException {
-        Ontology ontology = getOntology();
-        if (ontology != null) {
-            return ontology.getGraph();
-        }
-        return null;
     }
 
     /** Return the ontology for this constraint solver.
@@ -322,7 +306,7 @@ public abstract class OntologySolverBase extends MoMLModelAttribute {
      */
     public ASTPtRootNode getParseTree(Attribute attribute)
             throws IllegalActionException {
-        Map<Attribute, ASTPtRootNode> parseTrees = getSharedUtilities()
+        Map<Attribute, ASTPtRootNode> parseTrees = getOntologySolverUtilities()
                 .getParseTrees();
 
         if (!parseTrees.containsKey(attribute)) {
@@ -347,7 +331,7 @@ public abstract class OntologySolverBase extends MoMLModelAttribute {
             }
 
             parseTrees.put(attribute, parseTree);
-            getSharedUtilities().putAttribute(parseTree, attribute);
+            getOntologySolverUtilities().putAttribute(parseTree, attribute);
         }
         return parseTrees.get(attribute);
     }
@@ -402,7 +386,7 @@ public abstract class OntologySolverBase extends MoMLModelAttribute {
 
         // Try resolve the property.
         try {
-            if (resolve && !getSharedUtilities().getRanSolvers().contains(this)) {
+            if (resolve && !getOntologySolverUtilities().getRanSolvers().contains(this)) {
                 resolveProperties();
             }
         } catch (KernelException ex) {
@@ -417,8 +401,8 @@ public abstract class OntologySolverBase extends MoMLModelAttribute {
      * Return the shared utility object.
      * @return The shared utility object.
      */
-    public SharedUtilities getSharedUtilities() {
-        return _sharedUtilities;
+    public OntologySolverUtilities getOntologySolverUtilities() {
+        return _ontologySolverUtilities;
     }
 
     /**
@@ -444,10 +428,10 @@ public abstract class OntologySolverBase extends MoMLModelAttribute {
      */
     public void resetAll() {
         _resetParser();
-        for (OntologySolver solver : getAllSolvers(sharedUtilitiesWrapper)) {
+        for (OntologySolver solver : getAllSolvers(ontologySolverUtilitiesWrapper)) {
             solver.reset();
         }
-        getSharedUtilities().resetAll();
+        getOntologySolverUtilities().resetAll();
 
         // Don't clear the lattices; otherwise, we'll have multiple
         // copies of a lattice element when we recreate a lattice.
@@ -629,113 +613,11 @@ public abstract class OntologySolverBase extends MoMLModelAttribute {
     /**
      * The utilities shared between all solvers.
      */
-    protected SharedUtilities _sharedUtilities;
+    protected OntologySolverUtilities _ontologySolverUtilities;
 
 
     ///////////////////////////////////////////////////////////////////
     ////             private methods                               ////
-
-    /**
-     *
-     */
-    /*
-    private void _compileHelperClasses() throws IllegalActionException {
-
-        OntologyComposite container = (OntologyComposite) getContainer();
-        for (Entity entity : (List<Entity>) container.entityList()) {
-            StringAttribute attribute = (StringAttribute) (entity)
-                    .getAttribute(OntologyComposite.RULES);
-
-            String userCode = attribute.getExpression();
-
-            _compileUserCode(entity, userCode);
-        }
-    }
-    */
-
-    /**
-     *
-     * @param entity
-     * @param userCode
-     * @exception IllegalActionException
-     */
-    private void _compileUserCode(Entity entity, String userCode)
-            throws IllegalActionException {
-
-        String ptRoot = StringUtilities.getProperty("ptolemy.ptII.dir");
-
-        String classname = _getPackageName()
-                + entity.getClass().getName().replaceFirst("ptolemy", "");
-
-        String packageName = _getPackageName()
-                + entity.getClass().getPackage().getName().replaceFirst(
-                        "ptolemy", "");
-
-        String directoryPath = (ptRoot + "/" + packageName).replace(".", "/");
-
-        try {
-            File file;
-            File directory = FileUtilities.nameToFile(directoryPath, null);
-            if (!directory.mkdirs()) {
-                throw new IllegalActionException(this, "Failed to create \""
-                        + directory.getAbsolutePath() + "\" directory.");
-
-            }
-            file = new File(directory, entity.getClass().getSimpleName()
-                    + ".java");
-
-            // Set the file to delete on exit
-            //            directory.deleteOnExit();
-            //            file.deleteOnExit();
-
-            // Get the file name and extract a class name from it
-            String filename = file.getCanonicalPath();
-
-            PrintWriter out = new PrintWriter(new FileOutputStream(file));
-            out.println(userCode);
-            // Flush and close the stream
-            out.flush();
-            out.close();
-
-            if (_executeCommands == null) {
-                // Append the results to a StringBuffer and to stderr/stdout.
-                _executeCommands = new StringBufferExec(true);
-            }
-
-            List commands = new LinkedList();
-
-            // Create the .class file.
-            commands.add("javac -classpath . " + filename + ".java");
-
-            _executeCommands.setWorkingDirectory(new File(ptRoot));
-            _executeCommands.setCommands(commands);
-            _executeCommands.start();
-            int status = _executeCommands.getLastSubprocessReturnCode();
-
-            //int status = com.sun.tools.javac.Main.compile(args);
-
-            switch (status) {
-            case 0: // OK
-                // Make the class file temporary as well
-                //new File(file.getParent(), classname + ".class").deleteOnExit();
-                try {
-                    // Try to access the class and run its main method
-                    Class.forName(classname);
-                } catch (Exception ex) {
-                    throw new IllegalActionException(null, ex,
-                            "Cannot load the class file for: " + classname);
-                }
-                break;
-            default:
-                throw new IllegalActionException(
-                        "Cannot compile user code for " + entity.getName());
-            }
-        } catch (IOException ex) {
-            throw new IllegalActionException(null, ex,
-                    "Error occurs when compiling the user code for "
-                            + entity.getName());
-        }
-    }
 
     private void _resetParser() {
         // Avoid FindBugs: Write to static field from instance method.

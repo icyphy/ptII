@@ -1,4 +1,4 @@
-/** A class representing shared utilities for the ontologies package.
+/** A class representing shared utilities for ontology solvers in the ontologies package.
 
  Copyright (c) 1997-2009 The Regents of the University of California.
  All rights reserved.
@@ -43,7 +43,7 @@ import ptolemy.kernel.util.Attribute;
 //// SharedUtilities.
 
 /**
- A class representing shared utilities for the ontologies package.
+ A class representing shared utilities for ontology solvers in the ontologies package.
 
  @author Man-Kit Leung
  @version $Id$
@@ -51,12 +51,12 @@ import ptolemy.kernel.util.Attribute;
  @Pt.ProposedRating Red (cshelton)
  @Pt.AcceptedRating Red (cshelton)
 */
-public class SharedUtilities {
+public class OntologySolverUtilities {
 
     /**
      * Construct a new SharedUtilities object.
      */
-    public SharedUtilities() {
+    public OntologySolverUtilities() {
         // Since this is a shared (singleton) object per model,
         // it is important that all model-specific references
         // need to be reset when cloned. Otherwise, it will lead

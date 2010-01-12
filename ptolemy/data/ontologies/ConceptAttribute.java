@@ -66,15 +66,17 @@ public class ConceptAttribute extends AbstractSettableAttribute {
     ////                         public methods                    ////
 
     /** 
-     * Method required since ConceptAttribute extends AbstractSettableAttribute
-     * which implements the {@linkplain ptolemy.kernel.util.Settable Settable} interface.
-     * But we do not currently support any listeners in this class.
+     * Add the specified ValueListener. Currently this class doesn't support
+     * any listeners, so this method does nothing.
      *  
      *  @param listener The listener to add.
      *  @see #removeValueListener
      */
     public void addValueListener(ValueListener listener) {
-        // no listeners supported so far
+        /* This method is required since ConceptAttribute extends AbstractSettableAttribute
+         * which implements the ptolemy.kernel.util.Settable interface.
+         * But we do not currently support any listeners in this class.
+         */
         return;
     }
 
@@ -138,15 +140,17 @@ public class ConceptAttribute extends AbstractSettableAttribute {
     }
 
     /** 
-     * Method required since ConceptAttribute extends AbstractSettableAttribute
-     * which implements the {@linkplain ptolemy.kernel.util.Settable Settable} interface.
-     * But we do not currently support any listeners in this class.
+     * Remove the specified ValueListener. Currently this class doesn't support
+     * any listeners, so this method does nothing.
      * 
      * @param listener The listener to remove.
      * @see #addValueListener
      */
     public void removeValueListener(ValueListener listener) {
-        // no listeners supported so far
+        /* This method is required since ConceptAttribute extends AbstractSettableAttribute
+         * which implements the ptolemy.kernel.util.Settable interface.
+         * But we do not currently support any listeners in this class.
+         */
         return;
     }
 
@@ -194,6 +198,8 @@ public class ConceptAttribute extends AbstractSettableAttribute {
     protected Concept _concept;
 
     //    private Visibility _visibility = Settable.NONE;
+    
+    /** The visibility property of this attribute. */
     private Visibility _visibility = Settable.FULL;
 
 }

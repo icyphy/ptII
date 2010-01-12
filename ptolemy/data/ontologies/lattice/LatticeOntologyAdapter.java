@@ -37,7 +37,6 @@ import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.expr.ASTPtRootNode;
 import ptolemy.data.ontologies.Concept;
-import ptolemy.data.ontologies.ConceptGraph;
 import ptolemy.data.ontologies.ParseTreeAnnotationEvaluator;
 import ptolemy.data.ontologies.OntologyAdapter;
 import ptolemy.data.ontologies.lattice.LatticeOntologySolver.ConstraintType;
@@ -95,7 +94,6 @@ public class LatticeOntologyAdapter extends OntologyAdapter {
         setComponent(component);
         _useDefaultConstraints = useDefaultConstraints;
         _solver = solver;
-        _lattice = solver.getLattice();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -769,13 +767,6 @@ public class LatticeOntologyAdapter extends OntologyAdapter {
 
     /** The list of Inequality constraints contained by this LatticeOntologyAdapter. */
     protected List<Inequality> _ownConstraints = new LinkedList<Inequality>();
-
-    /**
-     * The Ontology lattice for the Ontology used by the LatticeOntologyAdapter.
-     * This should be removed since we can now get Concepts in the lattice directly to
-     * the ontology itself.
-     */
-    protected ConceptGraph _lattice;
 
     /** Indicate whether this adapter uses the default actor constraints. */
     protected boolean _useDefaultConstraints;
