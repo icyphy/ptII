@@ -21,7 +21,7 @@
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[113, 152]">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={6, 22, 896, 589}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={6, 22, 894, 582}, maximized=false}">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
@@ -79,6 +79,10 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 310.0]">
         </property>
     </property>
+    <property name="WCET" class="ptolemy.data.expr.Parameter" value="0.0022000300000000004">
+    </property>
+    <property name="frequency" class="ptolemy.data.expr.Parameter" value="1">
+    </property>
     <entity name="Source" class="ptolemy.actor.lib.Const">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 230.0]">
         </property>
@@ -87,6 +91,10 @@
             </property>
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
             </property>
+        </property>
+        <property name="WCET" class="ptolemy.data.expr.Parameter" value="1.0E-8">
+        </property>
+        <property name="frequency" class="ptolemy.data.expr.Parameter" value="1">
         </property>
     </entity>
     <entity name="Plotter" class="ptolemy.actor.lib.gui.TimedPlotter">
@@ -104,6 +112,8 @@
         </property>
         <property name="frequency" class="ptolemy.data.expr.Parameter" value="2">
         </property>
+        <property name="WCET" class="ptolemy.data.expr.Parameter" value="1.0E-8">
+        </property>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
@@ -120,7 +130,7 @@
     <entity name="Upper Composite" class="ptolemy.actor.TypedCompositeActor">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 190.0]">
         </property>
-        <property name="internalFrequency" class="ptolemy.data.expr.Parameter" value="7">
+        <property name="internalFrequency" class="ptolemy.data.expr.Parameter" value="4">
         </property>
         <property name="Giotto Director" class="ptolemy.domains.giotto.kernel.GiottoDirector">
             <property name="_location" class="ptolemy.kernel.util.Location" value="{120.0, 55.0}">
@@ -131,6 +141,10 @@
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 175.0]">
             </property>
+        </property>
+        <property name="WCET" class="ptolemy.data.expr.Parameter" value="4.0E-8">
+        </property>
+        <property name="frequency" class="ptolemy.data.expr.Parameter" value="1">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -146,6 +160,8 @@
             <property name="frequency" class="ptolemy.data.expr.Parameter" value="internalFrequency">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, 135.0]">
+            </property>
+            <property name="WCET" class="ptolemy.data.expr.Parameter" value="1.0E-8">
             </property>
         </entity>
         <relation name="relation" class="ptolemy.actor.TypedIORelation">
@@ -177,6 +193,8 @@
         </property>
         <property name="frequency" class="ptolemy.data.expr.Parameter" value="2">
         </property>
+        <property name="WCET" class="ptolemy.data.expr.Parameter" value="2.0E-8">
+        </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{85.0, 135.0}">
@@ -191,6 +209,8 @@
             <property name="frequency" class="ptolemy.data.expr.Parameter" value="internalFrequency">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{250.0, 145.0}">
+            </property>
+            <property name="WCET" class="ptolemy.data.expr.Parameter" value="1.0E-8">
             </property>
         </entity>
         <relation name="relation" class="ptolemy.actor.TypedIORelation">
