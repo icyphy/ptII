@@ -44,37 +44,21 @@ import ptolemy.kernel.util.Nameable;
  */
 public class OntologyResolutionException extends IllegalActionException {
 
-    /** Construct an exception that includes the PropertySolver that 
+    /** Construct an exception that includes the OntologySolver
      *  that was involved.
      *  
-     *  @param solver The PropertySolver, which must not be null.
+     *  @param solver The OntologySolver, which must not be null.
      *  @param detail The message.
      */
     public OntologyResolutionException(OntologySolverBase solver, String detail) {
         this(solver, null, null, detail);
     }
 
-
-    /** Construct an exception that includes the PropertySolver that 
-     *  that was involved.
-     *  
-     *  @param solver The PropertySolver, which must not be null.
-     *  @param cause The cause of this exception, or null if the cause
-     *  is not known or nonexistent
-     *  @deprecated Use {@link #OntologyResolutionException(OntologySolverBase, Throwable, String)}
-     *  instead because exceptions should include information about why
-     *  the exception was thrown instead of just rethrowing.
-     */
-    public OntologyResolutionException(OntologySolverBase solver,
-            Throwable cause) {
-        this(solver, null, cause, "");
-    }
-
-    /** Construct an exception that includes the PropertySolver that 
+    /** Construct an exception that includes the OntologySolver 
      *  that was involved and the cause.
-     *  @param solver The PropertySolver, which must not be null.
+     *  @param solver The OntologySolver, which must not be null.
      *  @param cause The cause of this exception, or null if the cause
-     *  is not known or nonexistent
+     *  is not known or nonexistent.
      *  @param detail The message.
      */
     public OntologyResolutionException(OntologySolverBase solver,
@@ -82,9 +66,9 @@ public class OntologyResolutionException extends IllegalActionException {
         this(solver, null, cause, detail);
     }
 
-    /** Construct an exception that includes the PropertySolver that 
+    /** Construct an exception that includes the OntologySolver 
      *  that was involved and the cause.
-     *  @param solver The PropertySolver, which must not be null.
+     *  @param solver The OntologySolver, which must not be null.
      *  @param nameable The Nameable object that was involved.
      *  @param detail The message.
      */
@@ -93,24 +77,9 @@ public class OntologyResolutionException extends IllegalActionException {
         this(solver, nameable, null, detail);
     }
 
-    /** Construct an exception that includes the PropertySolver that 
-     *  that was involved and the cause.
-     *  @param solver The PropertySolver, which must not be null.
-     *  @param nameable The Nameable object that was involved.
-     *  @param cause The cause of this exception, or null if the cause
-     *  is not known or nonexistent
-     *  @deprecated Use {@link #OntologyResolutionException(OntologySolverBase, Nameable, Throwable, String)}
-     *  instead because exceptions should include information about why
-     *  the exception was thrown instead of just rethrowing.
-     */
-    public OntologyResolutionException(OntologySolverBase solver,
-            Nameable nameable, Throwable cause) {
-        this(solver, nameable, cause, "");
-    }
-
-    /** Construct an exception that includes the PropertySolver that 
+    /** Construct an exception that includes the OntologySolver
      *  that was involved, the Nameable and the cause.
-     *  @param solver The PropertySolver, which must not be null.
+     *  @param solver The OntologySolver, which must not be null.
      *  @param nameable The Nameable object that was involved.
      *  @param cause The cause of this exception, or null if the cause
      *  is not known or nonexistent
@@ -125,7 +94,7 @@ public class OntologyResolutionException extends IllegalActionException {
         _solver = solver;
     }
 
-    /** Return the PropertySolver with which this exception was
+    /** Return the OntologySolver with which this exception was
      *  constructed.
      *  @return the solver with which this exception was constructed.
      *  Guaranteed to be non-null.
@@ -137,7 +106,7 @@ public class OntologyResolutionException extends IllegalActionException {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    /** The PropertySolver with which this exception was constructed.
+    /** The OntologySolver with which this exception was constructed.
      *  Guaranteed to be non-null.
      */
     private OntologySolverBase _solver;

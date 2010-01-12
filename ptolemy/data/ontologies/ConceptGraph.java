@@ -1,5 +1,5 @@
 /*
- * The base class of a property lattice.
+ * The data structure for the graph of relations between concepts in an ontology.
  * 
  * Copyright (c) 2007-2009 The Regents of the University of California. All
  * rights reserved. Permission is hereby granted, without written agreement and
@@ -24,14 +24,24 @@
  */
 package ptolemy.data.ontologies;
 
+import java.util.Collection;
+
 import ptolemy.graph.DirectedAcyclicGraph;
+import ptolemy.graph.Edge;
 import ptolemy.graph.Node;
 
 //////////////////////////////////////////////////////////////////////////////
 //// ConceptLattice
 
-/** A data structure defining an ontology. An ontology is partially
- *  ordered set of concepts.
+/** A data structure defining the relationships in an ontology. An ontology is a set of concepts
+ *  and the relationships between them.  In a general ontology the graph describing the relationships
+ *  between concepts need not be a directed acyclic graph (DAG).  But we restrict our implementation
+ *  to a DAG because we currently deal only with ontologies than can be partially ordered. This is
+ *  particularly important for an ontology whose graph is a lattice, where we can use the Reihof and
+ *  Mogensen algorithm to do a scalable analysis
+ *  and inference on a model to assign concepts from the ontology to each element in the model.
+ *  This specialization is implemented as a {@linkplain ptolemy.data.ontologies.lattice.LatticeOntologySolver
+ *  LatticeOntologySolver}, a subclass of {@linkplain OntologySolver}.
  * 
  * @author Thomas Mandl, Man-Kit Leung, Edward A. Lee, Ben Lickly, Dai Bui, Christopher Brooks
  * @version $Id$
@@ -42,7 +52,7 @@ import ptolemy.graph.Node;
  */
 public class ConceptGraph extends DirectedAcyclicGraph {
     
-    /** Construct a lattice associated with the specified ontology.
+    /** Construct a graph associated with the specified ontology.
      *  @param ontology The associated ontology.
      */
     public ConceptGraph(Ontology ontology) {
@@ -52,15 +62,34 @@ public class ConceptGraph extends DirectedAcyclicGraph {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Add a concept to this lattice.
+    /**
+     * Add a relation between two Concepts as an edge to the graph.
+     * 
+     * @param weight1 The source concept
+     * @param weight2 The sink concept
+     * @param newEdgeWeight The ConceptRelation between the two concepts weight1
+     *  and weight2.
+     * @return The set of edges that were added; each element
+     *  of this set is an instance of {@link Edge}.
+     * @throws IllegalArgumentException If the newEdgeWeight argument is not an
+     *  instance of {@link ConceptRelation}.
+     */
+    public Collection addEdge(Object weight1, Object weight2, Object newEdgeWeight) {
+        if (!(newEdgeWeight instanceof ConceptRelation)) {
+            throw new IllegalArgumentException("Attempt to add a relation that is not a ConceptRelation to an Ontology graph.");
+        }
+        return super.addEdge(weight1, weight2, newEdgeWeight);
+    }
+    
+    /** Add a concept to this concept graph.
      *  @param weight The concept.
-     *  @return The constructed graph node in the lattice.
+     *  @return The constructed node in the graph.
      *  @throws IllegalArgumentException If the argument is not
      *   an instance of {@link Concept}.
      */
     public Node addNodeWeight(Object weight) {
         if (!(weight instanceof Concept)) {
-            throw new IllegalArgumentException("Attempt to add a non-Concept to an Ontology.");
+            throw new IllegalArgumentException("Attempt to add a non-Concept to an Ontology graph.");
         }
         return super.addNodeWeight(weight);
     }
@@ -113,7 +142,7 @@ public class ConceptGraph extends DirectedAcyclicGraph {
      *  first argument is lower than, equal to, higher than, or incomparable with
      *  the second argument in the property hierarchy, respectively.
      *  @param concept1 An instance of {@link Concept}.
-     *  @param concept2 an instance of {@link Concept}.
+     *  @param concept2 An instance of {@link Concept}.
      *  @return One of CPO.LOWER, CPO.SAME, CPO.HIGHER, CPO.INCOMPARABLE.
      *  @exception IllegalArgumentException If one or both arguments are not
      *   instances of {@link Concept}.
@@ -161,7 +190,7 @@ public class ConceptGraph extends DirectedAcyclicGraph {
 
     /** If the argument is a structured concept, return its representative;
      *  otherwise, return the argument.
-     *  @return The representive for the specified concept.
+     *  @return The representative for the specified concept.
      */
     private Concept _toRepresentative(Concept p) {
         /* FIXME: Support structured concepts using something like this:

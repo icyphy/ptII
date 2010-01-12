@@ -118,8 +118,8 @@ public class OntologyMoMLHandler extends Attribute {
             if (adapter.getComponent() instanceof NamedObj) {
                 NamedObj namedObj = (NamedObj) adapter.getComponent();
 
-                for (AnnotationAttribute attribute : (List<AnnotationAttribute>) namedObj
-                        .attributeList(AnnotationAttribute.class)) {
+                for (OntologyAnnotationAttribute attribute : (List<OntologyAnnotationAttribute>) namedObj
+                        .attributeList(OntologyAnnotationAttribute.class)) {
 
                     /* FIXME
                     if (solver.isIdentifiable(attribute.getUseCaseIdentifier())) {

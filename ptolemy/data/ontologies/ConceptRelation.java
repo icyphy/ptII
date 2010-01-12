@@ -127,9 +127,9 @@ public class ConceptRelation extends ComponentRelation {
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 
-    /** An annotation that describes the transition. If this is non-empty,
+    /** An annotation that describes the relation between concepts. If this is non-empty,
      *  then a visual editor will be expected to put this annotation on
-     *  or near the transition to document its function. This is a string
+     *  or near the relation to document its function. This is a string
      *  that defaults to the empty string. Note that it can reference
      *  variables in scope using the notation $name.
      */
@@ -174,7 +174,7 @@ public class ConceptRelation extends ComponentRelation {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    /** Initialize the variables of this transition. */
+    /** Initialize the variables of this relation. */
     private void _init() throws IllegalActionException,
             NameDuplicationException {
         annotation = new StringParameter(this, "annotation");

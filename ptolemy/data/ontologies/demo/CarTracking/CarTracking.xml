@@ -73,7 +73,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{110, 75}">
         </property>
     </property>
-    <property name="DimensionSystem::constraint" class="ptolemy.data.ontologies.AnnotationAttribute" value="Const.value &gt;= Velocity">
+    <property name="DimensionSystem::constraint" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="Const.value &gt;= Velocity">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">

@@ -1,5 +1,5 @@
 /*
- * The base class of a property attribute.
+ * The base class of a concept attribute.
  * 
  * Below is the copyright agreement for the Ptolemy II system.
  * 
@@ -108,7 +108,7 @@ public class ConceptAttribute extends AbstractSettableAttribute {
      * Get the string name of the Concept contained by the ConceptAttribute
      * or the empty string if there is none.
      * 
-     * @return The name of the Concept as a string, or the empty string ""
+     * @return The name of the Concept as a string, or the empty string "".
      */
     public String getExpression() {
         return _concept == null ? "" : _concept.toString();
@@ -118,7 +118,7 @@ public class ConceptAttribute extends AbstractSettableAttribute {
      * Returns the Concept value.
      * 
      * @return a Concept object representing the Concept value
-     * contained by the ConceptAttribute
+     * contained by the ConceptAttribute.
      * @see #setConcept
      */
     public Concept getConcept() {
@@ -154,7 +154,7 @@ public class ConceptAttribute extends AbstractSettableAttribute {
      * Specifies the Concept value.
      * 
      * @param concept a Concept object specifying the Concept value
-     * contained by the ConceptAttribute
+     * contained by the ConceptAttribute.
      * @see #getConcept
      */
     public void setConcept(Concept concept) {

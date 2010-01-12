@@ -1,5 +1,5 @@
 /*
- * An annotation attribute that specifies property constraints in the model.
+ * An annotation attribute that specifies ontology constraints in the model.
  * 
  * Below is the copyright agreement for the Ptolemy II system.
  * 
@@ -30,8 +30,8 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.StringAttribute;
 
 /**
- * An annotation attribute that specifies property constraints in the model. The
- * name of the attribute is prefixed by the use case or solver's name.
+ * An annotation attribute that specifies ontology constraints in the model. The
+ * name of the attribute is prefixed by the ontology's name.
  * 
  * @author Man-Kit Leung
  * @version $Id$
@@ -39,10 +39,11 @@ import ptolemy.kernel.util.StringAttribute;
  * @Pt.ProposedRating Red (mankit)
  * @Pt.AcceptedRating Red (mankit)
  */
-public class AnnotationAttribute extends StringAttribute {
+public class OntologyAnnotationAttribute extends StringAttribute {
 
     /**
-     * Construct a PropertyAttribute with the specified name, and container.
+     * Construct an OntologyAnnotationAttribute with the specified name, and container.
+     * 
      * @param container Container
      * @param name The given name for the attribute.
      * @exception IllegalActionException If the attribute is not of an
@@ -50,14 +51,14 @@ public class AnnotationAttribute extends StringAttribute {
      * @exception NameDuplicationException If the name coincides with an
      * attribute already in the container.
      */
-    public AnnotationAttribute(NamedObj container, String name)
+    public OntologyAnnotationAttribute(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
     /**
      * Set the name of the attribute and error-check for name format. A proper
-     * name should contain an use-case identifier and an attribute label,
+     * name should contain an ontology identifier and an attribute label,
      * separated by "::".
      * 
      * @param name The new name that the attribute should be set to.
@@ -87,7 +88,7 @@ public class AnnotationAttribute extends StringAttribute {
     //    throws IllegalActionException, NameDuplicationException {
     //        /*String usecaseName =*/ getUseCaseIdentifier();
     //
-    //        // FIXME: Cannot check if there is an assoicated solver
+    //        // FIXME: Cannot check if there is an associated solver
     //        // because it may not be instantiated yet.
     //
     //        List solvers = toplevel().attributeList(PropertySolver.class);
@@ -106,13 +107,14 @@ public class AnnotationAttribute extends StringAttribute {
     //    }
 
     /** 
-     * Returns the name of the ontology (use case) for which this annotation
+     * Returns the name of the ontology for which this annotation
      * attribute is a constraint.
      *
-     * @return a String representing the name of the referred ontology (use case)
-     * @throws IllegalActionException
+     * @return A String representing the name of the referred ontology.
+     * @throws IllegalActionException If a valid ontology identifier cannot be
+     * found in the attribute name.
      */
-    public String getUseCaseIdentifier() throws IllegalActionException {
+    public String getOntologyIdentifier() throws IllegalActionException {
         String[] tokens = getName().split("::");
 
         if (tokens.length == 2) {
@@ -124,7 +126,7 @@ public class AnnotationAttribute extends StringAttribute {
             return tokens[0] + "::" + tokens[1];
         }
 
-        throw new IllegalActionException("Bad annotation attribute name: "
+        throw new IllegalActionException("Invalid ontology annotation attribute name: "
                 + getName() + ". (should have form ONTOLOGY_NAME::LABEL)");
     }
 }

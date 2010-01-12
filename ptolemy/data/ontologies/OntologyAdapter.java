@@ -188,7 +188,7 @@ public abstract class OntologyAdapter {
      */
     public void reinitialize() throws IllegalActionException {
         
-        for (AnnotationAttribute annotation : _getAnnotationAttributes()) {
+        for (OntologyAnnotationAttribute annotation : _getAnnotationAttributes()) {
             _evaluateAnnotation(annotation);
         }
 
@@ -629,7 +629,7 @@ public abstract class OntologyAdapter {
      * @exception IllegalActionException Thrown there is an error
      * parsing or evaluating the annotation.
      */
-    private void _evaluateAnnotation(AnnotationAttribute annotation)
+    private void _evaluateAnnotation(OntologyAnnotationAttribute annotation)
             throws IllegalActionException {
         Map map;
         try {
@@ -659,16 +659,16 @@ public abstract class OntologyAdapter {
      * @exception IllegalActionException Thrown if there is a problem obtaining
      * the use-case identifier for an annotation attribute.
      */
-    private List<AnnotationAttribute> _getAnnotationAttributes()
+    private List<OntologyAnnotationAttribute> _getAnnotationAttributes()
             throws IllegalActionException {
         List result = new LinkedList();
         if (_component instanceof NamedObj) {
 
             for (Object attribute : ((NamedObj) _component).attributeList()) {
 
-                if (AnnotationAttribute.class.isInstance(attribute)) {
-                    String ontology = ((AnnotationAttribute) attribute)
-                            .getUseCaseIdentifier();
+                if (OntologyAnnotationAttribute.class.isInstance(attribute)) {
+                    String ontology = ((OntologyAnnotationAttribute) attribute)
+                            .getOntologyIdentifier();
 
                     // 12/18/09 Charles Shelton
                     // Check to make sure the use case name of the AnnotationAttribute

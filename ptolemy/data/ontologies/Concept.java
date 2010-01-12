@@ -55,6 +55,7 @@ public class Concept extends ComponentEntity implements InequalityTerm, Flowable
 
     /** Create a new concept with the specified name and the specified
      *  ontology.
+     *  
      *  @param ontology The specified ontology where this concept resides.
      *  @param name The specified name for the concept.
      *  @throws NameDuplicationException If the ontology already contains a
@@ -93,10 +94,11 @@ public class Concept extends ComponentEntity implements InequalityTerm, Flowable
     ////                   public methods                                   ////
 
     /** Return null.
-     *  For variables, this method will return a reference to the
-     *  propertyable object associated with that variable. For concepts,
-     *  there is no associated propertyable object, hence returning null is the
+     *  For variable InequaliyTerms, this method will return a reference to the
+     *  model object associated with that InequalityTerm. For concepts,
+     *  there is no associated model object, hence returning null is the
      *  right thing to do.
+     *  
      *  @return Null.
      */
     public Object getAssociatedObject() {
@@ -117,7 +119,7 @@ public class Concept extends ComponentEntity implements InequalityTerm, Flowable
         return abovePort;
     }
 
-    /** Return the value of the inequality term. Since a concept
+    /** Return the current value of the inequality term. Since a concept
      *  is a constant, not a variable, its value is just itself.
      *  
      *  @return This concept.
@@ -139,32 +141,32 @@ public class Concept extends ComponentEntity implements InequalityTerm, Flowable
     /** Throw an exception. This object is not a variable.
      * 
      *  @param object The object used to initialize the InequalityTerm; not used
-     *  since a Concept is a static value that cannot be initialized
+     *  since a Concept is a static value that cannot be initialized.
      *  @exception IllegalActionException Always thrown.
      */
     public void initialize(Object object) throws IllegalActionException {
-        throw new IllegalActionException(this, "Cannot initialize a lattice property.");
+        throw new IllegalActionException(this, "Cannot initialize an ontology concept.");
     }
 
     /** Return true if this concept is greater than or equal to the
      *  specified concept in the partial ordering.
-     *  @param property The concept to compare.
+     *  @param concept The concept to compare.
      *  @return True if this concept is greater than or equal to the
      *   specified concept.
      *  @throws IllegalActionException If the specified concept
-     *   does not have the same lattice as this one.
+     *   does not have the same ontology as this one.
      */
-    public boolean isAboveOrEqualTo(Concept property) throws IllegalActionException {
-        if (!(property.getContainer().equals(getContainer()))) {
+    public boolean isAboveOrEqualTo(Concept concept) throws IllegalActionException {
+        if (!(concept.getContainer().equals(getContainer()))) {
             throw new IllegalActionException(this,
-                    "Attempt to compare elements of two distinct ontologies");
+                    "Attempt to compare elements from two distinct ontologies");
         }
         if (!(getContainer() instanceof Ontology)) {
             throw new IllegalActionException(this,
                     "Concept is not contained by an Ontology.");
         }
-        Ontology ontology = (Ontology)getContainer();
-        int comparisonResult = ontology.getGraph().compare(this, property);
+        Ontology ontology = (Ontology) getContainer();
+        int comparisonResult = ontology.getGraph().compare(this, concept);
         return comparisonResult == CPO.SAME || comparisonResult == CPO.HIGHER;
     }
 
@@ -178,6 +180,9 @@ public class Concept extends ComponentEntity implements InequalityTerm, Flowable
     /** Return whether this concept is a valid inference result.
      *  @return True, if this concept is a valid result of inference.
      *  False, otherwise.
+     *  @deprecated We do not want to use this method going forward. Acceptability
+     *  constraints should be of the form variable <= Concept.  Acceptability constraints
+     *  prevent a variable from being promoted in the ontology lattice.
      */
     public boolean isValueAcceptable() {
         try {
@@ -193,7 +198,7 @@ public class Concept extends ComponentEntity implements InequalityTerm, Flowable
      * 
      *  @param value The Object being passed in to set the value for the
      *  InequalityTerm; not used since a Concept is a static value that
-     *  cannot be changed
+     *  cannot be changed.
      *  @exception IllegalActionException Always thrown.
      *  @see #getValue
      */
@@ -204,7 +209,7 @@ public class Concept extends ComponentEntity implements InequalityTerm, Flowable
     /**
      * Return the string that represents this concept, its name.
      * 
-     * @return The string name that represents this concept
+     * @return The string name that represents this concept.
      */
     public String toString() {
         return _name;
@@ -214,7 +219,7 @@ public class Concept extends ComponentEntity implements InequalityTerm, Flowable
     ////                       protected variables                 ////
 
     /**
-     * The name of this Property.
+     * The name of this Concept.
      */
     protected String _name;
     
