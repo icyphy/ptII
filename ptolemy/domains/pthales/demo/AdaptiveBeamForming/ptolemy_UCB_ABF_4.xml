@@ -4,13 +4,13 @@
 <entity name="ptolemy_UCB_ABF_4" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 0, 1608, 1178}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-4, -4, 1408, 988}, maximized=true}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1393, 1061]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1193, 855]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{302.610692033864, 328.09600995767}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{202.610692033864, 225.09600995767}">
     </property>
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="1">
@@ -424,6 +424,8 @@
     <entity name="ModalModel" class="ptolemy.domains.modal.modal.ModalModel">
         <property name="stateDependentCausality" class="ptolemy.data.expr.Parameter" value="false">
         </property>
+        <property name="directorClass" class="ptolemy.data.expr.StringParameter" value="ptolemy.domains.modal.kernel.MultirateFSMDirector">
+        </property>
         <property name="_tableauFactory" class="ptolemy.vergil.modal.modal.ModalTableauFactory">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-65.0, 220.0]">
@@ -499,7 +501,7 @@
                 </property>
                 <property name="tiling" class="ptolemy.data.expr.Parameter" value="[empty1=0]">
                 </property>
-                <property name="size" class="ptolemy.data.expr.Parameter" value="">
+                <property name="size" class="ptolemy.data.expr.Parameter" value="[rg = 185, ant = 8, pul = 32]">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{20.0, 200.0}">
                 </property>
