@@ -205,13 +205,25 @@ public class CombinedFile extends DefaultHandler {
                 output+="</entity>";
             }
 
-            output+= "<entity name=\"Display\" class=\"ptolemy." +
+            output+= "<entity name=\"RiskDisplay\" class=\"ptolemy." +
             "actor.lib.gui.Display\">";
             output+= newline;
             output+= "</entity>";
             output+= newline;
-
-            for (int i = 0; i <= componentNames.size(); i++) {
+            output+= "<entity name=\"CostDisplay\" class=\"ptolemy." +
+            "actor.lib.gui.Display\">";
+            output+= newline;
+            output+= "</entity>";
+            output+= newline;
+            output+= "<entity name=\"MassDisplay\" class=\"ptolemy." +
+            "actor.lib.gui.Display\">";
+            output+= newline;
+            output+= "</entity>";
+            output+= newline;
+            
+            
+            int relationCount = componentNames.size()*3;
+            for (int i = 0; i < relationCount; i++) {
                 output+= " <relation name=\"relation" + i
                 + "\" class=\"ptolemy.actor.TypedIORelation\">";
                 output+= newline;
@@ -224,27 +236,77 @@ public class CombinedFile extends DefaultHandler {
                 output+= newline;
             }
 
-            for (int i = 0; i < componentNames.size() - 1; i++) {
 
+            int tempRelCounter = 0;
+            for (int i = 0; i < componentNames.size() - 1; i++) {                        
+                //risk
                 output+= "<link port=\"" + componentNames.get(i)
-                + ".output\" relation=\"relation" + i + "\"/>";
+                + ".risk\" relation=\"relation" + tempRelCounter+ "\"/>";
                 output+= newline;
                 output+= "<link port=\""
                     + componentNames.get(i + 1)
-                    + ".input\" relation=\"relation" + i + "\"/>";
+                    + ".riskInput\" relation=\"relation" + tempRelCounter+ "\"/>";
                 output+= newline;
+                tempRelCounter++;
+                
+                //cost
+                output+= "<link port=\"" + componentNames.get(i)
+                + ".cost\" relation=\"relation" + tempRelCounter+ "\"/>";
+                output+= newline;
+                output+= "<link port=\""
+                    + componentNames.get(i + 1)
+                    + ".costInput\" relation=\"relation" + tempRelCounter+ "\"/>";
+                output+= newline;
+                
+                tempRelCounter++;
+                //mass
+                output+= "<link port=\"" + componentNames.get(i)
+                + ".mass\" relation=\"relation" + tempRelCounter + "\"/>";
+                output+= newline;
+                output+= "<link port=\""
+                    + componentNames.get(i + 1)
+                    + ".massInput\" relation=\"relation" + tempRelCounter+ "\"/>";
+                output+= newline;
+                tempRelCounter++;
             }
             if (componentNames.size() > 1) {
+                //risk
                 output+="<link port=\""
                     + componentNames.get(componentNames.size() - 1)
-                    + ".output\" relation=\"relation"
-                    + (componentNames.size() - 1) + "\"/>";
+                    + ".risk\" relation=\"relation"
+                    + tempRelCounter + "\"/>";
                 output+= newline;
-                output+= "<link port=\"Display.input\" relation=\"" +
+                output+= "<link port=\"RiskDisplay.input\" relation=\"" +
                 "relation" +
-                (componentNames.size() - 1) + "\"/>";
+                tempRelCounter + "\"/>";
+                output+= newline;
+                tempRelCounter++;
+
+                //cost
+                output+="<link port=\""
+                    + componentNames.get(componentNames.size() - 1)
+                    + ".cost\" relation=\"relation"
+                    + tempRelCounter + "\"/>";
+                output+= newline;
+                output+= "<link port=\"CostDisplay.input\" relation=\"" +
+                "relation" +
+                tempRelCounter + "\"/>";
+                output+= newline;
+               
+                tempRelCounter++;
+
+                //mass
+                output+="<link port=\""
+                    + componentNames.get(componentNames.size() - 1)
+                    + ".mass\" relation=\"relation"
+                    + tempRelCounter + "\"/>";
+                output+= newline;
+                output+= "<link port=\"MassDisplay.input\" relation=\"" +
+                "relation" +
+                tempRelCounter+ "\"/>";
                 output+= newline;
                 output+="</entity>";
+                
             }
         } finally {
             if(_debugging){

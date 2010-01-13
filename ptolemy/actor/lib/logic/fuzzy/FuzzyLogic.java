@@ -38,10 +38,14 @@ import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.DefaultHandler;
 import org.xml.sax.helpers.XMLReaderFactory;
 
+import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.lib.Transformer;
 import ptolemy.actor.parameters.PortParameter;
+import ptolemy.data.DoubleToken;
+import ptolemy.data.StringToken;
 import ptolemy.data.Token;
+import ptolemy.data.expr.FileParameter;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
@@ -71,7 +75,7 @@ there is no input the defuzzified value is produced on the output.
 @Pt.AcceptedRating red (sssf)
  */
 
-public class FuzzyLogic extends Transformer {
+public class FuzzyLogic extends TypedAtomicActor{ 
     /**
      *  Construct a fuzzy logic actor and set a default rule file name
      *  and a default component type.
@@ -85,39 +89,32 @@ public class FuzzyLogic extends Transformer {
     throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
-        rulesFileName = new Parameter(this, "rulesFileName");
+        rulesFileName = new FileParameter(this, "rulesFileName");
         rulesFileName.setExpression("rules.xml");
 
         componentType = new Parameter(this, "componentType");
         componentType.setExpression("dummyType");
 
-        value = new Parameter(this, "value");
+        riskInput = new TypedIOPort(this, "riskInput", true, false);
+        riskInput.setMultiport(false);
+        riskInput.setTypeEquals(BaseType.STRING);
+        costInput = new TypedIOPort(this, "costInput", true, false);
+        costInput.setMultiport(false);
+        costInput.setTypeEquals(BaseType.DOUBLE);
+        massInput = new TypedIOPort(this, "massInput", true, false);
+        massInput.setMultiport(false);
+        massInput.setTypeEquals(BaseType.STRING);
 
-        output.setTypeEquals(BaseType.DOUBLE);
-        output.setMultiport(false);
-
-        input.setMultiport(false);
-        input.setTypeEquals(BaseType.DOUBLE);
-
-        inRisk = new TypedIOPort(this, "inRisk", true, false);
-        inRisk.setMultiport(false);
-        inRisk.setTypeEquals(BaseType.STRING);
-        inCost = new TypedIOPort(this, "inCost", true, false);
-        inCost.setMultiport(false);
-        inCost.setTypeEquals(BaseType.STRING);
-        inMass = new TypedIOPort(this, "inMass", true, false);
-        inMass.setMultiport(false);
-        inMass.setTypeEquals(BaseType.STRING);
 
         risk = new TypedIOPort(this, "risk", false, true);
         risk.setMultiport(false);
         risk.setTypeEquals(BaseType.STRING);
+        cost = new TypedIOPort(this, "cost", false, true);
+        cost.setMultiport(false);
+        cost.setTypeEquals(BaseType.DOUBLE);
         mass = new TypedIOPort(this, "mass", false, true);
         mass.setMultiport(false);
         mass.setTypeEquals(BaseType.STRING);
-        cost = new TypedIOPort(this, "cost", false, true);
-        cost.setMultiport(false);
-        cost.setTypeEquals(BaseType.STRING);
         fuzzyEngine = null;
         linguisticVarArray = null;
         myParser = null;
@@ -161,7 +158,7 @@ public class FuzzyLogic extends Transformer {
                     linguisticVarArray.get(0).setInputValue(1.5);
                 }
             } else if (rulesFileName.getExpression().equalsIgnoreCase(
-            "propulsion")) {
+            "antenna")) {
                 if (compType.equalsIgnoreCase("high gain")) {
                     linguisticVarArray.get(0).setInputValue(1.5);
                 } else {
@@ -196,7 +193,6 @@ public class FuzzyLogic extends Transformer {
         }
 
         double result = 0;
-        String myCost = " ";
         String myRisk = " ";
         String myMass = " ";
         Token dToken = null;
@@ -210,13 +206,8 @@ public class FuzzyLogic extends Transformer {
             // linguistic variable
             result += linguisticVarArray.get(myParser.getIndexToDefuzzify())
             .defuzzify();
-            myCost = componentType.getExpression()
-            + " "
-            + rulesFileName.getExpression().substring(0,
-                    rulesFileName.getExpression().length() - 4)
-                    + " cost is medium."
-                    + StringUtilities.getProperty("line.separator");
-            ;
+
+
             myRisk = componentType.getExpression()
             + " "
             + rulesFileName.getExpression().substring(0,
@@ -238,19 +229,17 @@ public class FuzzyLogic extends Transformer {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        if (inCost.isOutsideConnected()) {
-            if (inCost.hasToken(0)) {
-                dToken = inCost.get(0);
-                myCost += dToken.toString();
-                while (myCost.contains("\"")) {
-                    myCost = myCost.replace('\"', ' ');
-                }
+        if (costInput.isOutsideConnected()) {
+            if (costInput.hasToken(0)) {
+                dToken = costInput.get(0);
+                result += Double.valueOf(dToken.toString());
+
             }
         }
 
-        if (inRisk.isOutsideConnected()) {
-            if (inRisk.hasToken(0)) {
-                dToken = inRisk.get(0);
+        if (riskInput.isOutsideConnected()) {
+            if (riskInput.hasToken(0)) {
+                dToken = riskInput.get(0);
                 myRisk += dToken.toString();
                 while (myRisk.contains("\"")) {
                     myRisk = myRisk.replace('\"', ' ');
@@ -258,9 +247,9 @@ public class FuzzyLogic extends Transformer {
             }
         }
 
-        if (inMass.isOutsideConnected()) {
-            if (inMass.hasToken(0)) {
-                dToken = inMass.get(0);
+        if (massInput.isOutsideConnected()) {
+            if (massInput.hasToken(0)) {
+                dToken = massInput.get(0);
                 myMass += dToken.toString();
                 while (myMass.contains("\"")) {
                     myMass = myMass.replace('\"', ' ');
@@ -269,41 +258,11 @@ public class FuzzyLogic extends Transformer {
 
         }
 
-        if (input == null) {
-            if (_debugging) {
-                _debug("input is null");
-            }
-        } else if (input.isOutsideConnected()) {
-            if (input.hasToken(0)) {
+        cost.send(0, new DoubleToken(result));
+        risk.send(0, new StringToken(myRisk));
+        mass.send(0, new StringToken(myMass));
 
-                dToken = input.get(0);
-                if (_debugging) {
-                    _debug("input from port has value: " + dToken.toString());
-                }
-                result += Double.valueOf(dToken.toString());
-            }
 
-        }
-
-        myCost = "\"" + myCost + "\"";
-        myRisk = "\"" + myRisk + "\"";
-        myMass = "\"" + myMass + "\"";
-        value.setExpression(myCost);
-        if(_debugging){
-            _debug("cost just output " + value.toString());
-        }
-        cost.send(0, value.getToken());
-        value.setExpression(myRisk);
-        if(_debugging){
-            _debug("risk has data: " + myRisk);
-            _debug("risk just output" + value.toString());
-        }
-        risk.send(0, value.getToken());
-
-        value.setExpression(myMass);
-        mass.send(0, value.getToken());
-        value.setExpression(Double.toString(result));
-        output.send(0, value.getToken());
     }
 
     /**
@@ -323,39 +282,84 @@ public class FuzzyLogic extends Transformer {
         // this was copied from RAMP fill in with details later
         return newObject;
     }
-    ////////////////////////////////////////////////////////////////////
-    ////                         public  variables                /////
 
-    //  Risk is the risk associated with using a component or 
-    //  combination of components.
-    //  Cost is the monetary cost associated with using a component or
-    //  a combination of components.
-    //  Mass is the weight associated with a component or combination
-    //  of components.
-    //  In this case risk, cost, and mass are assumed to be strings. 
-    //  Based on a user suggestion at the moment risk, cost, and mass 
-    //  have the values such as high, medium or low.  
+    /** An input port that contains the level of risk associated
+     * with upstream components.
+     * In this context, risk is the risk that a failure will
+     * occur. The default type of this port is a String. The only 
+     * meaningful values are "high", "medium" and "low". 
+     */ 
+    public TypedIOPort riskInput;
+    /** An input port that contains the cost associated
+     * with upstream components.
+     * The default type of this port is a double. 
+     */ 
+    public TypedIOPort costInput;
+
+    /** An input port that contains the cost associated
+     * with upstream components.
+     * The default type of this port is a String. Currently the only 
+     * meaningful values are "high", "medium" and "low", however they
+     * could be changed to doubles in the future. 
+     */ 
+    public TypedIOPort massInput;
 
 
-    /**Input port for risk the actor.*/
-    public TypedIOPort inRisk;
-    /**Input port for cost to the actor.*/
-    public TypedIOPort inCost;
-    /**Input port for mass to the actor.*/
-    public TypedIOPort inMass;
-
-    /**Output port for risk,from the actor.*/
+    /** An output port that specifies the level of risk associated
+     * with using a component or combination of components.
+     * In this context, risk is the risk that a failure will
+     * occur. The default type of this port is a String. The only 
+     * meaningful values are "high", "medium" and "low". 
+     */
     public TypedIOPort risk;
-    /**Output port for mass from the actor.*/
+
+    /** An output port that specifies the mass associated
+     * with using a component or combination of components.
+     * The default type of this port is a String. Currently the only 
+     * meaningful values are "high", "medium" and "low", however they
+     * could be changed to doubles in the future. 
+     */ 
     public TypedIOPort mass;
-    /**Output port for cost from the actor.*/
+
+    /** An out port that specifies the cost associated
+     * with using a component or combination of components.
+     * The default type of this port is a double. 
+     */
     public TypedIOPort cost;
 
-    /**actor parameters specified by the creator of the model. */
-    public Parameter rulesFileName;
+    /**
+     * The name of the file containing the xml specification for the component.
+     * The default value is a file name <code>rules.xml</code>. 
+     * The file is expected to be specified in XML/FCL Fuzzy Control Language XML. 
+     * Details on this schema can be found at http://www.havana7.com/dotfuzzy/format.aspx.
+     * 
+     * The file named by this parameter should have a fuzzify xml element with the same name as 
+     * the base name of the xml file. For example: The file <code>rules.xml</code> should contain
+     *  <pre>
+     *  <FUZZIFY NAME="rules">
+     *   ... 
+     *  </FUZZIFY>
+     *  </pre> 
+     *  
+     */
+    public FileParameter rulesFileName;
+
+    /**
+     * One of the terms listed in the corresponding fuzzify xml element
+     *  in the file named by the <i>rulesFileName</i> parameter.
+     *  For example: The file <code>rules.xml</code> should contain
+     *  <pre>
+     *  <FUZZIFY NAME="rules">
+     *    <TERM NAME="Solar" POINTS="1 0 0 2" />
+     *    <TERM NAME="Wind" POINTS="0 0 0 1" />
+     *    <TERM NAME="Default" POINTS="2 0 0 3" />
+     *  </FUZZIFY>
+     *  </pre> 
+     *  For details about the xml specification see {@link #rulesFileName}.
+     */
     public Parameter componentType;
 
-    public Parameter value;
+
     public PortParameter inc;
     ////////////////////////////////////////////////////////////////////
     ////                         private variables                  ////
