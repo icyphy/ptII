@@ -35,7 +35,6 @@ import java.awt.Event;
 import java.awt.FlowLayout;
 import java.awt.Frame;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.ClipboardOwner;
@@ -55,11 +54,9 @@ import java.awt.geom.NoninvertibleTransformException;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.print.PageFormat;
-import java.awt.print.Paper;
 import java.awt.print.Printable;
 import java.awt.print.PrinterException;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.StringWriter;
@@ -92,8 +89,8 @@ import ptolemy.actor.DesignPatternGetMoMLAction;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.IORelation;
 import ptolemy.actor.gui.Configuration;
-import ptolemy.actor.gui.EditParametersDialog;
 import ptolemy.actor.gui.EditorFactory;
+import ptolemy.actor.gui.EditParametersDialog;
 import ptolemy.actor.gui.PtolemyFrame;
 import ptolemy.actor.gui.PtolemyPreferences;
 import ptolemy.actor.gui.SizeAttribute;
@@ -101,6 +98,7 @@ import ptolemy.actor.gui.Tableau;
 import ptolemy.actor.gui.UserActorLibrary;
 import ptolemy.actor.gui.WindowPropertiesAttribute;
 import ptolemy.actor.gui.properties.ToolBar;
+import ptolemy.actor.parameters.PortParameter;
 import ptolemy.actor.parameters.ParameterPort;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.DoubleToken;
@@ -108,7 +106,6 @@ import ptolemy.data.Token;
 import ptolemy.data.expr.ExpertParameter;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
-import ptolemy.gui.JFileChooserBugFix;
 import ptolemy.gui.Query;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
@@ -146,13 +143,6 @@ import ptolemy.vergil.tree.EntityTreeModel;
 import ptolemy.vergil.tree.PTree;
 import ptolemy.vergil.tree.PTreeMenuCreator;
 import ptolemy.vergil.tree.VisibleTreeModel;
-
-import com.itextpdf.text.Document;
-import com.itextpdf.text.Rectangle;
-import com.itextpdf.text.pdf.PdfContentByte;
-import com.itextpdf.text.pdf.PdfTemplate;
-import com.itextpdf.text.pdf.PdfWriter;
-
 import diva.canvas.CanvasUtilities;
 import diva.canvas.Figure;
 import diva.canvas.JCanvas;
@@ -858,87 +848,6 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                 }
             }
         }
-    }
-    
-    /** Export PDF to a file.
-     *  This uses the iText library at http://itextpdf.com/.
-     */
-    public void exportPDF() {
-        Dimension size = getJGraph().getSize();
-        Rectangle pageSize = null;
-        try {
-            pageSize = new Rectangle(size.width, size.height);
-        } catch (Throwable ex) {
-            // This exception will occur if the iText library is not installed.
-            MessageHandler.error("iText library is not installed. See http://itextpdf.com/.", ex);
-            return;
-        }
-        Document document = new Document(pageSize);
-        JFileChooserBugFix jFileChooserBugFix = new JFileChooserBugFix();
-        Color background = null;
-        try {
-            background = jFileChooserBugFix.saveBackground();
-
-            JFileChooser fileDialog = _saveAsFileDialog();
-            fileDialog.setDialogTitle("Specify a file to write to.");
-            LinkedList extensions = new LinkedList();
-            extensions.add("pdf");
-            extensions.add("PDF");
-            fileDialog.addChoosableFileFilter(new ExtensionFileFilter(extensions));
-
-            if (_directory != null) {
-                fileDialog.setCurrentDirectory(_directory);
-            } else {
-                // The default on Windows is to open at user.home, which is
-                // typically an absurd directory inside the O/S installation.
-                // So we use the current directory instead.
-                // This will throw a security exception in an applet.
-                // FIXME: we should support users under applets opening files
-                // on the server.
-                String currentWorkingDirectory = StringUtilities.getProperty("user.dir");
-                if (currentWorkingDirectory != null) {
-                    fileDialog.setCurrentDirectory(new File(currentWorkingDirectory));
-                }
-            }
-            int returnVal = fileDialog.showSaveDialog(this);
-            if (returnVal == JFileChooser.APPROVE_OPTION) {
-                _directory = fileDialog.getCurrentDirectory();
-                File file = fileDialog.getSelectedFile().getCanonicalFile();
-                
-                if (file.getName().indexOf(".") == -1) {
-                    // If the user has not given the file an extension, add it
-                    file = new File(file.getAbsolutePath() + ".pdf");
-                }
-
-                PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(file));
-                // To ensure Latex compatibility, use earlier PDF version.
-                writer.setPdfVersion(PdfWriter.VERSION_1_3);
-                document.open();
-                PdfContentByte contentByte = writer.getDirectContent();
-
-                PdfTemplate template = contentByte.createTemplate(size.width, size.height);
-                Graphics2D graphics = template.createGraphics(size.width, size.height);
-                template.setWidth(size.width);
-                template.setHeight(size.height);
-
-                Paper paper = new Paper();
-                paper.setSize(size.width, size.height);
-                paper.setImageableArea(0.0, 0.0, size.width, size.height);
-                PageFormat format = new PageFormat();
-                format.setPaper(paper);
-                print(graphics, format, 0);
-                graphics.dispose();
-                contentByte.addTemplate(template, 0, 0);
-
-                // Open the PDF file.
-                _read(file.toURI().toURL());
-            }
-        } catch (Exception e) {
-            MessageHandler.error("Export to PDF failed", e);
-        } finally {
-            jFileChooserBugFix.restoreBackground(background);
-        }
-        document.close();
     }
 
     /** Return the center location of the visible part of the pane.
@@ -1837,7 +1746,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
         _cutAction = new CutAction();
         _copyAction = new CopyAction();
         _pasteAction = new PasteAction();
-        
+
         // FIXME: vergil.kernel.AttributeController also defines context
         // menu choices that do the same thing.
         _moveToFrontAction = new MoveToFrontAction();
@@ -1854,7 +1763,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
      */
     protected void _addMenus() {
         super._addMenus();
-        
+
         _editMenu = new JMenu("Edit");
         _editMenu.setMnemonic(KeyEvent.VK_E);
         _menubar.add(_editMenu);
@@ -1986,33 +1895,6 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
         } else {
             return null;
         }
-    }
-
-    /** Create the items in the File menu. A null element in the array
-     *  represents a separator in the menu.
-     *  @return The items in the File menu.
-     */
-    protected JMenuItem[] _createFileMenuItems() {
-        // Insert the Export PDF item after the Print item in the menu.
-        JMenuItem[] fileMenuItems = super._createFileMenuItems();
-        int i = 0;
-        for (JMenuItem item : fileMenuItems) {
-            i++;
-            if (item.getActionCommand().equals("Print")) {
-                // Add a Export PDF item here.
-                if (_exportPDFAction == null) {
-                    _exportPDFAction = new ExportPDFAction();
-                }
-                JMenuItem exportItem = new JMenuItem(_exportPDFAction);
-                JMenuItem[] newItems = new JMenuItem[fileMenuItems.length + 1];
-                System.arraycopy(fileMenuItems, 0, newItems, 0, i);
-                newItems[i] = exportItem;
-                System.arraycopy(fileMenuItems, i, newItems, i + 1,
-                        fileMenuItems.length - i);
-                return newItems;
-            }
-        }
-        return fileMenuItems;
     }
 
     /** Create a new graph pane.  Subclasses will override this to change
@@ -2441,9 +2323,6 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
 
     /** The action to edit preferences. */
     protected EditPreferencesAction _editPreferencesAction;
-    
-    /** The export to PDF action. */
-    protected Action _exportPDFAction;
 
     /** The panner. */
     protected JCanvasPanner _graphPanner;
@@ -2835,24 +2714,6 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
     //            }
     //        }
     //    }
-
-    ///////////////////////////////////////////////////////////////////
-    //// ExportPDFAction
-
-    /** Action to copy and delete the current selection. */
-    protected class ExportPDFAction extends AbstractAction {
-        /** Create a new action to copy and delete the current selection. */
-        public ExportPDFAction() {
-            super("Export PDF");
-            putValue("tooltip", "Export PDF to a file.");
-            putValue(GUIUtilities.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_X));
-        }
-
-        /** Copy and delete the current selection. */
-        public void actionPerformed(ActionEvent e) {
-            exportPDF();
-        }
-    }
 
     ///////////////////////////////////////////////////////////////////
     //// LinkElementProperties
