@@ -347,7 +347,7 @@ public class KielerLayoutGUI extends PtolemyFrame {
          *  boxLayout set to false.
          */
         public RemoveVerticesAction() {
-            super(false, false, false, true);
+            super(false, false, true, false);
         }
     }
 }
