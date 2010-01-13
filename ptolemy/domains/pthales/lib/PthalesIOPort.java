@@ -486,15 +486,12 @@ public class PthalesIOPort {
             new Parameter(port, "size");
         }
 
-        // Useless parameters for CompositeActors
-        if (actor instanceof TypedAtomicActor) {
-            if (port.getAttribute("dataType") == null) {
-                new StringParameter(port, "dataType");
-            }
+        if (port.getAttribute("dataType") == null) {
+            new StringParameter(port, "dataType");
+        }
 
-            if (port.getAttribute("dataTypeSize") == null) {
-                new StringParameter(port, "dataTypeSize");
-            }
+        if (port.getAttribute("dataTypeSize") == null) {
+            new StringParameter(port, "dataTypeSize");
         }
     }
 
