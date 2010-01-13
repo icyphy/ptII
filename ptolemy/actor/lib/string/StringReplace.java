@@ -153,6 +153,9 @@ public class StringReplace extends StringSimpleReplace {
         if (_debugging) {
             _debug("Called fire()");
         }
+        if (!stringToEdit.getPort().hasToken(0)) {
+        	return;
+        }
         replacement.update();
         stringToEdit.update();
         pattern.update();
