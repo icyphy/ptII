@@ -36,6 +36,7 @@ import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.Receiver;
+import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.parameters.ParameterPort;
 import ptolemy.actor.sched.Firing;
 import ptolemy.actor.sched.NotSchedulableException;
@@ -43,9 +44,11 @@ import ptolemy.actor.sched.Schedule;
 import ptolemy.actor.util.CausalityInterfaceForComposites;
 import ptolemy.actor.util.ConstVariableModelAnalysis;
 import ptolemy.actor.util.DFUtilities;
+import ptolemy.data.Token;
 import ptolemy.domains.pthales.lib.PthalesAtomicActor;
 import ptolemy.domains.pthales.lib.PthalesIOPort;
 import ptolemy.domains.sdf.kernel.SDFDirector;
+import ptolemy.domains.sdf.kernel.SDFReceiver;
 import ptolemy.domains.sdf.kernel.SDFScheduler;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.util.IllegalActionException;
@@ -165,17 +168,54 @@ public class PthalesScheduler extends SDFScheduler {
 
             if (!(port instanceof ParameterPort)) {
                 if (port.isInput()) {
-                    DFUtilities.setTokenConsumptionRate(port, PthalesIOPort
-                            .getDataProducedSize(port)
-                            * PthalesIOPort.getNbTokenPerData(port));
+                    int size = 0;
+
+                    List<Actor> actors = model.deepEntityList();
+
+                    // External ports
+                    List<TypedIOPort> externalPorts = model.inputPortList();
+                    for (TypedIOPort externalPort : externalPorts) {
+                        // Dispatch to all input ports using output port
+                        for (Actor actor : actors) {
+                            List<IOPort> inputPorts = actor.inputPortList();
+                            for (IOPort inputPort : inputPorts) {
+                                if (inputPort.connectedPortList().contains(
+                                        externalPort)) {
+                                    size = PthalesIOPort.getArraySize(inputPort)
+                                            * PthalesIOPort.getNbTokenPerData(inputPort);
+                                }
+                            }
+                        }
+                    }
+
+                    DFUtilities.setTokenConsumptionRate(port, size);
                     _declareDependency(analysis, port, "tokenConsumptionRate",
                             _rateVariables);
                 }
 
                 if (port.isOutput()) {
-                    DFUtilities.setTokenProductionRate(port, PthalesIOPort
-                            .getDataProducedSize(port)
-                            * PthalesIOPort.getNbTokenPerData(port));
+
+                    int size = 0;
+
+                    List<Actor> actors = model.deepEntityList();
+
+                    // External ports
+                    List<TypedIOPort> externalPorts = model.outputPortList();
+                    for (TypedIOPort externalPort : externalPorts) {
+                        // Dispatch to all input ports using output port
+                        for (Actor actor : actors) {
+                            List<IOPort> outputPorts = actor.outputPortList();
+                            for (IOPort outputPort : outputPorts) {
+                                if (outputPort.connectedPortList().contains(
+                                        externalPort)) {
+                                    size = PthalesIOPort.getArraySize(outputPort)
+                                            * PthalesIOPort.getNbTokenPerData(outputPort);
+                                }
+                            }
+                        }
+                    }
+
+                    DFUtilities.setTokenProductionRate(port, size);
                     DFUtilities.setTokenInitProduction(port, 0);
 
                     _declareDependency(analysis, port, "tokenInitProduction",
@@ -186,5 +226,4 @@ public class PthalesScheduler extends SDFScheduler {
             }
         }
     }
-
 }
