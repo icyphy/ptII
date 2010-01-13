@@ -377,20 +377,14 @@ public class SVGParser {
             return Color.blue;
         } else if (s.equals("cyan")) {
             return Color.cyan;
-        } else if (s.equals("darkgray")) {
+        } else if (s.equals("darkgray") || s.equals("darkgrey")) {
             return Color.darkGray;
-        } else if (s.equals("darkgrey")) {
-            return Color.darkGray;
-        } else if (s.equals("gray")) {
-            return Color.gray;
-        } else if (s.equals("grey")) {
+        } else if (s.equals("lightgray") || s.equals("lightgrey")) {
+            return Color.lightGray;
+        } else if (s.equals("gray") || s.equals("grey")) {
             return Color.gray;
         } else if (s.equals("green")) {
             return Color.green;
-        } else if (s.equals("lightgray")) {
-            return Color.lightGray;
-        } else if (s.equals("lightgrey")) {
-            return Color.lightGray;
         } else if (s.equals("magenta")) {
             return Color.magenta;
         } else if (s.equals("orange")) {
@@ -404,11 +398,24 @@ public class SVGParser {
         } else if (s.equals("yellow")) {
             return Color.yellow;
         } else {
-            Color c = Color.getColor(s);
-
+            Color c = null;
+            try {
+                c = Color.getColor(s);
+            } catch (SecurityException ex) {
+                // Ignore.  On the Mac, under 1.5.0_22, under an applet,
+                // Color.getColor(String) calls
+                // Integer.getInteger(String), which calls
+                // Integer.getInteger(String, Integer), which calls 
+                // System.getProperty(String), which *fails* in a 
+                // sandbox.  A very poor choice for getColor(String)
+            }
             if (c == null) {
                 // Color.decode throws NumberFormatException
-                c = Color.decode(s);
+                try {
+                    c = Color.decode(s);
+                } catch (Exception ex) {
+                    return Color.black;
+                }
             }
 
             if (c == null) {
