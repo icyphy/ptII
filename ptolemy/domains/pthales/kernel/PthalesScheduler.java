@@ -76,10 +76,12 @@ public class PthalesScheduler extends SDFScheduler {
                 .getContainer());
         List<Actor> actors = compositeActor.deepEntityList();
 
+        CompositeActor model = (CompositeActor) director.getContainer();
+        _checkDynamicRateVariables(model, _rateVariables);
 
         // Iterate over the actors.
         for (Actor actor : actors) {
-   
+
             // Next do the output ports.
             List<IOPort> ports = actor.outputPortList();
             for (IOPort port : ports) {
@@ -95,7 +97,8 @@ public class PthalesScheduler extends SDFScheduler {
                     for (Receiver[] receiverss : receivers) {
                         if (receiverss != null && receiverss.length > 0) {
                             for (Receiver receiver : receiverss) {
-                                ((PthalesReceiver) receiver).setOutputArray(port,actor);
+                                ((PthalesReceiver) receiver).setOutputArray(
+                                        port, actor);
                             }
                         }
                     }
@@ -108,7 +111,7 @@ public class PthalesScheduler extends SDFScheduler {
             // Next do the input ports.
             ports = actor.inputPortList();
             for (IOPort port : ports) {
-  
+
                 // Notify the receivers of the read pattern.
                 // This will have the side effect of setting the capacity of the receivers.
                 Receiver[][] receivers = port.getReceivers();
@@ -118,7 +121,8 @@ public class PthalesScheduler extends SDFScheduler {
                             for (Receiver receiver : receiverss) {
                                 // FIXME: Is the cast to LinkedHashSet safe?
                                 // Depends on the Java implementation of LinkedHashMap.
-                                ((PthalesReceiver) receiver).setInputArray(port,actor);
+                                ((PthalesReceiver) receiver).setInputArray(
+                                        port, actor);
                             }
                         }
                     }
@@ -137,15 +141,16 @@ public class PthalesScheduler extends SDFScheduler {
         List<Actor> sortedActors = causality.topologicalSort();
         for (Actor actor : sortedActors) {
             Firing firing = new Firing(actor);
- 
+
             // Iteration is only done on external loops
-            firing.setIterationCount(PthalesAtomicActor.getIteration((ComponentEntity)actor));
+            firing.setIterationCount(PthalesAtomicActor
+                    .getIteration((ComponentEntity) actor));
 
             schedule.add(firing);
         }
         return schedule;
     }
-    
+
     /** Declare the rate dependency on any external ports of the model.
      *  SDF directors should invoke this method once during preinitialize.
      */
@@ -160,17 +165,26 @@ public class PthalesScheduler extends SDFScheduler {
 
             if (!(port instanceof ParameterPort)) {
                 if (port.isInput()) {
-                    DFUtilities.setTokenConsumptionRate(port, PthalesIOPort.getDataProducedSize(port));
+                    DFUtilities.setTokenConsumptionRate(port, PthalesIOPort
+                            .getDataProducedSize(port)
+                            * PthalesIOPort.getNbTokenPerData(port));
+                    _declareDependency(analysis, port, "tokenConsumptionRate",
+                            _rateVariables);
                 }
 
                 if (port.isOutput()) {
-                    DFUtilities.setTokenProductionRate(port, PthalesIOPort.getDataProducedSize(port));
-                   _declareDependency(analysis, port, "tokenInitProduction",
+                    DFUtilities.setTokenProductionRate(port, PthalesIOPort
+                            .getDataProducedSize(port)
+                            * PthalesIOPort.getNbTokenPerData(port));
+                    DFUtilities.setTokenInitProduction(port, 0);
+
+                    _declareDependency(analysis, port, "tokenInitProduction",
+                            _rateVariables);
+                    _declareDependency(analysis, port, "tokenProductionRate",
                             _rateVariables);
                 }
             }
         }
-        super.declareRateDependency();
     }
 
 }
