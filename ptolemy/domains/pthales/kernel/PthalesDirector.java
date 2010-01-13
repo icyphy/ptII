@@ -29,13 +29,24 @@
 package ptolemy.domains.pthales.kernel;
 
 import java.util.ArrayList;
+import java.util.List;
 
+import ptolemy.actor.Actor;
+import ptolemy.actor.CompositeActor;
+import ptolemy.actor.IOPort;
+import ptolemy.actor.NoTokenException;
 import ptolemy.actor.Receiver;
+import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.util.DFUtilities;
+import ptolemy.data.Token;
 import ptolemy.data.expr.StringParameter;
+import ptolemy.domains.pthales.lib.PthalesIOPort;
 import ptolemy.domains.sdf.kernel.SDFDirector;
+import ptolemy.domains.sdf.kernel.SDFReceiver;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.InvalidStateException;
 import ptolemy.kernel.util.NameDuplicationException;
 
@@ -175,24 +186,23 @@ public class PthalesDirector extends SDFDirector {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         setScheduler(new PthalesScheduler(this, "PtalesScheduler"));
-        
+
         if (getAttribute("library") == null) {
-            library = new StringParameter(this,
-                    "library");
+            library = new StringParameter(this, "library");
             library.setExpression("");
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
     public Receiver newReceiver() {
-        PthalesReceiver recv =  new PthalesReceiver();
+        PthalesReceiver recv = new PthalesReceiver();
         _receivers.add(recv);
-        
+
         return recv;
     }
-    
+
     /** Preinitialize the actors associated with this director and
      *  compute the schedule.  The schedule is computed during
      *  preinitialization so that hierarchical opaque composite actors
@@ -206,19 +216,19 @@ public class PthalesDirector extends SDFDirector {
      */
     public void preinitialize() throws IllegalActionException {
         // Garbage collector
-        System.gc ();
+        System.gc();
 
         // Load library needed to project
         if (!(_library.length() == 0)) {
             System.loadLibrary(_library);
         }
-        
+
         // Empties list of receivers before filling it
         _receivers.removeAll(_receivers);
 
         super.preinitialize();
     }
-    
+
     /** Attribute update
      * @see ptolemy.domains.sdf.kernel.SDFDirector#attributeChanged(ptolemy.kernel.util.Attribute)
      */
@@ -228,17 +238,15 @@ public class PthalesDirector extends SDFDirector {
             _library = library.getExpression();
         }
     }
-    
-     /**
+
+    /**
      * @return the name of the library to use
      * @throws IllegalActionException
      */
-    public String getLibName()
-            throws IllegalActionException {
+    public String getLibName() throws IllegalActionException {
         return _library;
     }
 
-    
     /** Calculate the current schedule, if necessary, and iterate the
      *  contained actors in the order given by the schedule.
      *  Iterating an actor involves calling the actor's iterate() method,
@@ -258,12 +266,125 @@ public class PthalesDirector extends SDFDirector {
      *   container.
      */
     public void fire() throws IllegalActionException {
-        for (PthalesReceiver recv : _receivers)
-        {
+        for (PthalesReceiver recv : _receivers) {
             recv.reset();
         }
         super.fire();
     }
+
+    /** Override the base class method to transfer enough tokens to
+     *  complete an internal iteration.  If there are not enough tokens,
+     *  then throw an exception.  If the port is not connected on the
+     *  inside, or has a narrower width on the inside than on the outside,
+     *  then consume exactly one token from the corresponding outside
+     *  channels and discard it.  Thus, a port connected on the outside
+     *  but not on the inside can be used as a trigger for an SDF
+     *  composite actor.
+     *
+     *  @exception IllegalActionException If the port is not an opaque
+     *   input port, or if there are not enough input tokens available.
+     *  @param port The port to transfer tokens from.
+     *  @return True if data are transferred.
+     */
+    public boolean transferInputs(IOPort port) throws IllegalActionException {
+        if (!port.isInput() || !port.isOpaque()) {
+            throw new IllegalActionException(this, port,
+                    "Attempted to transferInputs on a port is not an opaque"
+                            + "input port.");
+        }
+
+        // The number of tokens depends on the schedule, so make sure
+        // the schedule is valid.
+        getScheduler().getSchedule();
+
+        int rate = DFUtilities.getTokenConsumptionRate(port);
+        boolean wasTransferred = false;
+
+        for (int i = 0; i < port.getWidth(); i++) {
+            try {
+                if (i < port.getWidthInside()) {
+                    if (port.hasToken(i, rate)) {
+                        if (_debugging) {
+                            _debug(getName(), "transferring input from "
+                                    + port.getName());
+                        }
+
+                        if (port.getRemoteReceivers().length > 0)
+                        {
+                            port.send(i, port.get(i, rate), rate);
+                        }
+                        else
+                        {
+                            CompositeActor compositeActor = ((CompositeActor)port.getContainer());
+                            List<Actor> actors = compositeActor.deepEntityList();
+
+                            // External ports
+                            List<TypedIOPort> externalPorts = compositeActor.inputPortList();
+                            for (TypedIOPort externalPort : externalPorts) {
+                                Receiver recv = externalPort.getReceivers()[0][0];
+                                Token[] buffer = null;
+                                if (recv instanceof SDFReceiver) {
+                                    // Buffer acquisition
+                                    buffer = ((SDFReceiver) recv).getArray(PthalesIOPort
+                                            .getArraySize(externalPort)
+                                            * PthalesIOPort.getNbTokenPerData(externalPort));
+                                }
+                    
+                                // Dispatch to all input ports using output port
+                                for (Actor actor : actors) {
+                                    List<IOPort> ports = actor.inputPortList();
+                                    for (IOPort inputPort : ports) {
+                                        if (inputPort.connectedPortList().contains(externalPort)) {
+                                            Receiver[][] receivers = inputPort.getReceivers();
+                                            if (receivers != null && receivers.length > 0) {
+                                                for (Receiver[] receiverss : receivers) {
+                                                    if (receiverss != null && receiverss.length > 0) {
+                                                        for (Receiver receiver : receiverss) {
+                                                            if (receiver instanceof PthalesReceiver)
+                                                                ((PthalesReceiver) receiver).setExternalBuffer(compositeActor, externalPort, buffer);
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                            
+                        }
+                        
+                        wasTransferred = true;
+                    } else {
+                        throw new IllegalActionException(
+                                this,
+                                port,
+                                "Port should consume "
+                                        + rate
+                                        + " tokens, but not enough tokens available.");
+                    }
+                } else if (port.isKnown(i)) {
+                    // No inside connection to transfer tokens to.
+                    // Tolerate an unknown input, but if it is known, then
+                    // transfer the input token if there is one.
+                    // In this case, consume one input token if there is one.
+                    if (_debugging) {
+                        _debug(getName(), "Dropping single input from "
+                                + port.getName());
+                    }
+
+                    if (port.hasToken(i)) {
+                        port.get(i);
+                    }
+                }
+            } catch (NoTokenException ex) {
+                // this shouldn't happen.
+                throw new InternalErrorException(this, ex, null);
+            }
+        }
+
+        return wasTransferred;
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                      protected variables                  ////
 
@@ -275,6 +396,6 @@ public class PthalesDirector extends SDFDirector {
 
     /** The dimensions relevant to this receiver. */
     private ArrayList<PthalesReceiver> _receivers = new ArrayList<PthalesReceiver>();
-    
+
     private String _library = "";
 }

@@ -361,6 +361,18 @@ public class PthalesReceiver extends SDFReceiver {
         }
     }
 
+    public void setExternalBuffer(Actor actor, IOPort port, Token[] buffer) {
+        if (_buffer == null) {
+            _buffer = buffer;
+             _posIn = _buffer.length;
+            try {
+                setOutputArray(port,actor);
+            } catch (IllegalActionException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////               package friendly variables                  ////
 
@@ -422,15 +434,16 @@ public class PthalesReceiver extends SDFReceiver {
         int patternSize = 0;
         LinkedHashMap<String, Integer[]> pattern = null;
         LinkedHashMap<String, Integer[]> tiling = null;
-        int[] repetitions;
+        int[] repetitions = null;
 
-        if (input) {
+        if (input || _patternOut == null) {
             patternSize = _patternSizeIn;
             pattern = _patternIn;
             tiling = _tilingIn;
             origin = _originIn;
             repetitions = _repetitionsIn;
-        } else {
+        }
+        if (!input || _patternIn == null) {
             patternSize = _patternSizeOut;
             pattern = _patternOut;
             tiling = _tilingOut;
@@ -439,7 +452,8 @@ public class PthalesReceiver extends SDFReceiver {
         }
 
         // Pattern order
-        String[] patternOrder = new String[pattern.size()];
+        String[] patternOrder = null;
+        patternOrder = new String[pattern.size()];
         pattern.keySet().toArray(patternOrder);
         // tiling order 
         String[] tilingOrder = new String[tiling.size()];
