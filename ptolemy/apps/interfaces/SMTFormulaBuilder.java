@@ -48,6 +48,14 @@ public class SMTFormulaBuilder extends AbstractParseTreeVisitor {
         return _smtFormula.toString();
     }
 
+    /** Visit a leaf node of a Ptolemy expresssion.
+     * 
+     *  This will typically be either an identifier or a variable.
+     *  In both cases we need to extract the name of the leaf and
+     *  add it to the LISP formula.
+     *  
+     *  @param node The Ptolemy expression leaf node.
+     */
     @Override
     public void visitLeafNode(ASTPtLeafNode node) throws IllegalActionException {
         if (node.isIdentifier()) {
@@ -63,7 +71,14 @@ public class SMTFormulaBuilder extends AbstractParseTreeVisitor {
             _smtFormula.append(constName);
         }
     }
-
+    
+    /** Visit Ptolemy expression node representing a logical operation.
+     * 
+     *  We need to include this operation into the LISP formula, substituting
+     *  names that differ between Ptolemy and LISP appropriately.
+     *  
+     *  @param node The Ptolemy expression operation node.
+     */
     @Override
     public void visitLogicalNode(ASTPtLogicalNode node)
             throws IllegalActionException {
@@ -78,6 +93,13 @@ public class SMTFormulaBuilder extends AbstractParseTreeVisitor {
         _smtFormula.append(")");
     }
 
+    /** Visit Ptolemy expression node representing a multiplicative operation.
+     * 
+     *  We need to include this operation into the LISP formula, substituting
+     *  names that differ between Ptolemy and LISP appropriately.
+     *  
+     *  @param node The Ptolemy expression operation node.
+     */
     @Override
     public void visitProductNode(ASTPtProductNode node)
             throws IllegalActionException {
@@ -90,6 +112,13 @@ public class SMTFormulaBuilder extends AbstractParseTreeVisitor {
         _smtFormula.append(")");
     }
 
+    /** Visit Ptolemy expression node representing a binary relation.
+     * 
+     *  We need to include this relation into the LISP formula, substituting
+     *  names that differ between Ptolemy and LISP appropriately.
+     *  
+     *  @param node The Ptolemy expression operation node.
+     */
     @Override
     public void visitRelationalNode(ASTPtRelationalNode node)
             throws IllegalActionException {
@@ -104,6 +133,12 @@ public class SMTFormulaBuilder extends AbstractParseTreeVisitor {
         _smtFormula.append(")");
     }
 
+    /** Visit Ptolemy expression node representing an additive operation.
+     * 
+     *  We need to include this operation into the LISP formula.
+     *  
+     *  @param node The Ptolemy expression operation node.
+     */
     @Override
     public void visitSumNode(ASTPtSumNode node) throws IllegalActionException {
         _smtFormula.append("(" + node.getLexicalTokenList().get(0) + " ");
@@ -111,6 +146,13 @@ public class SMTFormulaBuilder extends AbstractParseTreeVisitor {
         _smtFormula.append(")");
     }
 
+    /** Visit Ptolemy expression node representing a unary operation.
+     * 
+     *  We need to include this operation into the LISP formula, substituting
+     *  names that differ between Ptolemy and LISP appropriately.
+     *  
+     *  @param node The Ptolemy expression operation node.
+     */
     @Override
     public void visitUnaryNode(ASTPtUnaryNode node)
             throws IllegalActionException {

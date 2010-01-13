@@ -91,7 +91,7 @@ public class SMTSolver {
         try {
             // Reflect an instance of the Yices Java API
             ClassLoader myClassLoader = ClassLoader.getSystemClassLoader();
-            Class yicesClass = myClassLoader.loadClass("yices.YicesLite");
+            Class<?> yicesClass = myClassLoader.loadClass("yices.YicesLite");
             Object yicesLite = yicesClass.newInstance();
 
             // Reflect required methods

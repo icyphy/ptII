@@ -69,10 +69,10 @@ public class InterfaceCheckerDirector extends Director {
     /** Construct a new InterfaceCheckerDirector, with the given container
      *  and name.
      *  
-     *  @param container
-     *  @param name
-     *  @throws IllegalActionException
-     *  @throws NameDuplicationException
+     *  @param container The container.
+     *  @param name The name of this director.
+     *  @throws IllegalActionException If the superclass throws it.
+     *  @throws NameDuplicationException If the superclass throws it.
      */
     public InterfaceCheckerDirector(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
@@ -84,7 +84,8 @@ public class InterfaceCheckerDirector extends Director {
 
     /** Check that the interfaces in the model are valid.
      * 
-     *  @throws IllegalActionException
+     *  @throws IllegalActionException If the interfaces of any actors in
+     *    the model cannot be determined.
      */
     @Override
     public void initialize() throws IllegalActionException {
@@ -135,7 +136,8 @@ public class InterfaceCheckerDirector extends Director {
      * 
      *  @param actor Actor whose interface is to be checked
      *  @return A string representing the result of the SMT check
-     *  @throws IllegalActionException 
+     *  @throws IllegalActionException If the interface of the actor
+     *    cannot be determined.
      */
     private String _checkInterface(Actor actor) throws IllegalActionException {
         final String yicesInput = _getInterface(actor).getYicesInput();
@@ -148,7 +150,7 @@ public class InterfaceCheckerDirector extends Director {
      * 
      *  @param container The composite actor whose interface we are querying.
      *  @return The inferred interface.
-     *  @throws IllegalActionException 
+     *  @throws IllegalActionException If no interface can be inferred.
      */
     private RelationalInterface _getCompositeInterface(CompositeActor container)
             throws IllegalActionException {
@@ -268,7 +270,8 @@ public class InterfaceCheckerDirector extends Director {
      * 
      *  @param actor The actor whose interface we are querying.
      *  @return The overall interface.
-     *  @throws IllegalActionException
+     *  @throws IllegalActionException If an interface doesn't exist and
+     *    cannot be inferred.
      */
     private RelationalInterface _getInterface(Actor actor)
             throws IllegalActionException {

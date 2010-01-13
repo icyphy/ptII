@@ -70,6 +70,11 @@ public class Connection {
         return LispExpression.conjunction(contracts);
     }
     
+    /** Return the string representation of the connection.
+     * i.e "(port1, port2)" 
+     * 
+     * @return The string representation.
+     */
     public String toString() {
         return "(" + _outputPort + ", " + _inputPort + ")";
     }
