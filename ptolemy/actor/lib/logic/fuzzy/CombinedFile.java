@@ -136,34 +136,24 @@ public class CombinedFile extends DefaultHandler {
      */
     private void readCreate() {
         ArrayList<String> componentNames = new ArrayList<String>();
-
-        String output="";
-        output+="<?xml version= \"1.0\" standalone=\"no\"?>";
-        output+=newline;
-        output+="<!DOCTYPE entity PUBLIC \"-//UC Berkeley//DTD " +
-        "MoML 1//EN\"";
-        output+= newline;
-        output+="    \"http://ptolemy.eecs.berkeley.edu/xml/dtd/"+
-        "MoML_1.dtd\">";
-        output+= newline;
-        output+="<entity name=\"dummy\" class=\"ptolemy.actor.Typed" +
-        "CompositeActor\">";
-        output+= newline;
-        output+= "<property name=\"_createdBy\" class=\"ptolemy." +
-        "kernel.attributes.VersionAttribute\" " +
-        "value=\"8.0.beta\">";
-        output+= newline;
-        output+="</property>";
-        output+= newline;
-        output+="<property name=\"director\" class=\"ptolemy." +
-        "domains.sdf.kernel.SDFDirector\">";
-        output+="     <property name=\"iterations\" class=\"ptol" +
-        "emy.data.expr.Parameter\" value=\"1\">";
-        output+= newline;
-        output+="     </property>";
-        output+= newline;
-        output+= "</property>";
-        output+= newline; 
+        StringBuffer output=new StringBuffer();//"";
+        output.append("<?xml version= \"1.0\" standalone=\"no\"?>"+_eol
+                +"<!DOCTYPE entity PUBLIC \"-//UC Berkeley//DTD " 
+                +"MoML 1//EN\""+ _eol
+                +"    \"http://ptolemy.eecs.berkeley.edu/xml/dtd/"
+                +"MoML_1.dtd\">"+ _eol
+                +"<entity name=\"dummy\" class=\"ptolemy.actor.Typed" 
+                +"CompositeActor\">"+_eol
+                + "<property name=\"_createdBy\" class=\"ptolemy." 
+                +"kernel.attributes.VersionAttribute\" " 
+                +"value=\"8.0.beta\">"+ _eol
+                +"</property>"+ _eol
+                +"<property name=\"director\" class=\"ptolemy." 
+                +"domains.sdf.kernel.SDFDirector\">"
+                +"     <property name=\"iterations\" class=\"ptol" 
+                + "emy.data.expr.Parameter\" value=\"1\">" +_eol
+                +"     </property>"+_eol
+                +"</property>"+ _eol); 
         try {
             Option tOption;
             for (int i = 0; i < architecture.myOptions.size(); i++) {
@@ -180,133 +170,109 @@ public class CombinedFile extends DefaultHandler {
                         + " components ");
             }
             for (int i = 0; i < componentNames.size(); i++) {
-                output+= "<entity name=\""
-                    + componentNames.get(i)
-                    + "\" class=\"ptolemy.actor.lib.logic.fuzzy." +
-                    "FuzzyLogic\">";
-                output+= "<property name=\"rulesFileName\" " +
-                "class=\"ptolemy.data.expr.Parameter\"" +
-                " value=\""
-                + ((Option) (architecture.myOptions
-                        .get(i))).relatedDimensions.get(0)
-                        + ".xml\">";
-                output+="</property>";
-                output+="<property name=\"componentType\" " +
-                "class=\"ptolemy.data.expr.Parameter" +
-                "\" value=\""
-                + ((Option) (architecture.myOptions
-                        .get(i))).name + "\">";
-                output+= "</property>";
-                output+= newline;
-                output+= "<property name=\"init\" class=\"ptolemy." +
-                "data.expr.Parameter\" value=\"2\">";
-                output+= "</property>";
-                output+= newline;
-                output+="</entity>";
+                output.append("<entity name=\""
+                        + componentNames.get(i)
+                        + "\" class=\"ptolemy.actor.lib.logic.fuzzy." 
+                        +"FuzzyLogic\">"
+                        +"<property name=\"rulesFileName\" " 
+                        +"class=\"ptolemy.data.expr.Parameter\"" 
+                        +" value=\""
+                        + ((Option) (architecture.myOptions.get(i))).
+                        relatedDimensions.get(0)
+                        + ".xml\">"
+                        +"</property>"
+                        +"<property name=\"componentType\" " 
+                        +"class=\"ptolemy.data.expr.Parameter" 
+                        +"\" value=\""
+                        + ((Option) (architecture.myOptions.get(i))).
+                        name + "\">"
+                        +"</property>"+_eol
+                        +"<property name=\"init\" class=\"ptolemy." 
+                        +"data.expr.Parameter\" value=\"2\">"
+                        +"</property>"+_eol
+                        +"</entity>");
             }
 
-            output+= "<entity name=\"RiskDisplay\" class=\"ptolemy." +
-            "actor.lib.gui.Display\">";
-            output+= newline;
-            output+= "</entity>";
-            output+= newline;
-            output+= "<entity name=\"CostDisplay\" class=\"ptolemy." +
-            "actor.lib.gui.Display\">";
-            output+= newline;
-            output+= "</entity>";
-            output+= newline;
-            output+= "<entity name=\"MassDisplay\" class=\"ptolemy." +
-            "actor.lib.gui.Display\">";
-            output+= newline;
-            output+= "</entity>";
-            output+= newline;
-            
-            
+            output.append("<entity name=\"RiskDisplay\" class=\"ptolemy." 
+                    +"actor.lib.gui.Display\">"+ _eol
+                    +"</entity>" + _eol
+                    +"<entity name=\"CostDisplay\" class=\"ptolemy." 
+                    +"actor.lib.gui.Display\">" + _eol
+                    +"</entity>"+_eol
+                    +"<entity name=\"MassDisplay\" class=\"ptolemy." 
+                    +"actor.lib.gui.Display\">"+_eol
+                    +"</entity>"+_eol);
+
+
             int relationCount = componentNames.size()*3;
             for (int i = 0; i < relationCount; i++) {
-                output+= " <relation name=\"relation" + i
-                + "\" class=\"ptolemy.actor.TypedIORelation\">";
-                output+= newline;
-                output+= "<property name=\"width\" class=\"ptolemy"+
-                ".data.expr.Parameter\" value=\"Auto\">";
-                output+= newline;
-                output+= "</property>";
-                output+= newline;
-                output+= "</relation>";
-                output+= newline;
+                output.append(" <relation name=\"relation" + i
+                        + "\" class=\"ptolemy.actor.TypedIORelation\">"+_eol
+                        +"<property name=\"width\" class=\"ptolemy"
+                        +".data.expr.Parameter\" value=\"Auto\">"+_eol
+                        + "</property>"+ _eol
+                        +"</relation>"+ _eol);
             }
 
 
             int tempRelCounter = 0;
             for (int i = 0; i < componentNames.size() - 1; i++) {                        
                 //risk
-                output+= "<link port=\"" + componentNames.get(i)
-                + ".risk\" relation=\"relation" + tempRelCounter+ "\"/>";
-                output+= newline;
-                output+= "<link port=\""
-                    + componentNames.get(i + 1)
-                    + ".riskInput\" relation=\"relation" + tempRelCounter+ "\"/>";
-                output+= newline;
+                output.append("<link port=\"" + componentNames.get(i)
+                        + ".risk\" relation=\"relation" +tempRelCounter
+                        + "\"/>"+_eol
+                        + "<link port=\""+ componentNames.get(i + 1)
+                        + ".riskInput\" relation=\"relation" + 
+                        tempRelCounter+ "\"/>"+_eol);
                 tempRelCounter++;
-                
+
                 //cost
-                output+= "<link port=\"" + componentNames.get(i)
-                + ".cost\" relation=\"relation" + tempRelCounter+ "\"/>";
-                output+= newline;
-                output+= "<link port=\""
-                    + componentNames.get(i + 1)
-                    + ".costInput\" relation=\"relation" + tempRelCounter+ "\"/>";
-                output+= newline;
-                
+                output.append("<link port=\"" + componentNames.get(i)
+                        + ".cost\" relation=\"relation" + tempRelCounter
+                        +"\"/>"+_eol
+                        +"<link port=\""+componentNames.get(i + 1)
+                        + ".costInput\" relation=\"relation" + tempRelCounter
+                        +"\"/>"+_eol);
                 tempRelCounter++;
+
                 //mass
-                output+= "<link port=\"" + componentNames.get(i)
-                + ".mass\" relation=\"relation" + tempRelCounter + "\"/>";
-                output+= newline;
-                output+= "<link port=\""
-                    + componentNames.get(i + 1)
-                    + ".massInput\" relation=\"relation" + tempRelCounter+ "\"/>";
-                output+= newline;
+                output.append("<link port=\"" + componentNames.get(i)
+                        + ".mass\" relation=\"relation" + tempRelCounter 
+                        + "\"/>"+ _eol
+                        + "<link port=\"" + componentNames.get(i + 1)
+                        + ".massInput\" relation=\"relation" + tempRelCounter
+                        + "\"/>"+ _eol);
                 tempRelCounter++;
             }
             if (componentNames.size() > 1) {
                 //risk
-                output+="<link port=\""
-                    + componentNames.get(componentNames.size() - 1)
-                    + ".risk\" relation=\"relation"
-                    + tempRelCounter + "\"/>";
-                output+= newline;
-                output+= "<link port=\"RiskDisplay.input\" relation=\"" +
-                "relation" +
-                tempRelCounter + "\"/>";
-                output+= newline;
+                output.append("<link port=\""
+                        + componentNames.get(componentNames.size() - 1)
+                        + ".risk\" relation=\"relation"
+                        + tempRelCounter + "\"/>"+_eol
+                        + "<link port=\"RiskDisplay.input\" relation=\"" 
+                        +"relation" +tempRelCounter + "\"/>"+_eol);
                 tempRelCounter++;
 
                 //cost
-                output+="<link port=\""
-                    + componentNames.get(componentNames.size() - 1)
-                    + ".cost\" relation=\"relation"
-                    + tempRelCounter + "\"/>";
-                output+= newline;
-                output+= "<link port=\"CostDisplay.input\" relation=\"" +
-                "relation" +
-                tempRelCounter + "\"/>";
-                output+= newline;
-               
+                output.append("<link port=\""
+                        + componentNames.get(componentNames.size() - 1)
+                        + ".cost\" relation=\"relation"
+                        + tempRelCounter + "\"/>"+ _eol
+                        +"<link port=\"CostDisplay.input\" relation=\"" 
+                        +"relation" +tempRelCounter + "\"/>"+ _eol);
+
                 tempRelCounter++;
 
                 //mass
-                output+="<link port=\""
-                    + componentNames.get(componentNames.size() - 1)
-                    + ".mass\" relation=\"relation"
-                    + tempRelCounter + "\"/>";
-                output+= newline;
-                output+= "<link port=\"MassDisplay.input\" relation=\"" +
-                "relation" +
-                tempRelCounter+ "\"/>";
-                output+= newline;
-                output+="</entity>";
-                
+                output.append("<link port=\""
+                        + componentNames.get(componentNames.size() - 1)
+                        + ".mass\" relation=\"relation"
+                        + tempRelCounter + "\"/>"+ _eol
+                        +"<link port=\"MassDisplay.input\" relation=\"" 
+                        +"relation" + tempRelCounter+ "\"/>"+ _eol
+                        +"</entity>");
+
             }
         } finally {
             if(_debugging){
@@ -320,7 +286,7 @@ public class CombinedFile extends DefaultHandler {
                 outputStream = new BufferedWriter(new FileWriter(
                         "ptolemy\\actor\\lib\\logic\\fuzzy\\" +
                         _outputFileName));
-                outputStream.write(output);
+                outputStream.write(output.toString());
                 outputStream.close();
             } catch (IOException ioe) {
                 try{
@@ -634,7 +600,7 @@ public class CombinedFile extends DefaultHandler {
     //these variables are constants used throught the class
     private final boolean _debugging = false;
     /** newline marker*/
-    public static final String newline = System.getProperty("line.separator");
+    public static final String _eol = System.getProperty("line.separator");
     // These flags mark the start and end of architectures, options,
     // and dimensions in the file produced by TSST.
     private boolean _startArchitecture;
