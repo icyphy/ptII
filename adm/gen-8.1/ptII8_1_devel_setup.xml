@@ -301,8 +301,8 @@ The Ptiny pack is required.
                   targetdir="$INSTALL_PATH/ptolemy/actor/lib/io/comm"/>
             <file src="../../jar_dist/ptolemy/actor/lib/io/comm/demo/demo.jar"
                   targetdir="$INSTALL_PATH/ptolemy/actor/lib/io/comm/demo"/>
-            <file src="../../jar_dist/vendors/sun/commapi/comm.jar"
-                  targetdir="$INSTALL_PATH/vendors/sun/commapi"/>
+            <file src="../../jar_dist/vendors/misc/rxtx/RXTXcomm.jar"
+                  targetdir="$INSTALL_PATH/vendors/misc/rxtx"/>
             <file src="../../jar_dist/ptolemy/actor/lib/jai/jai.jar"
                   targetdir="$INSTALL_PATH/ptolemy/actor/lib/jai"/>
             <file src="../../jar_dist/ptolemy/actor/lib/jai/demo/demo.jar"
