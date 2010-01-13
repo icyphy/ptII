@@ -325,9 +325,7 @@ public class PthalesDirector extends SDFDirector {
                                 Token[] buffer = null;
                                 if (recv instanceof SDFReceiver) {
                                     // Buffer acquisition
-                                    buffer = ((SDFReceiver) recv).getArray(PthalesIOPort
-                                            .getArraySize(externalPort)
-                                            * PthalesIOPort.getNbTokenPerData(externalPort));
+                                    buffer = ((SDFReceiver) recv).getArray(DFUtilities.getRate(externalPort));
                                 }
                     
                                 // Dispatch to all input ports using output port
