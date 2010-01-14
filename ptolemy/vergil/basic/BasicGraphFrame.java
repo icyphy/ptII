@@ -35,6 +35,7 @@ import java.awt.Event;
 import java.awt.FlowLayout;
 import java.awt.Frame;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.ClipboardOwner;
@@ -54,9 +55,11 @@ import java.awt.geom.NoninvertibleTransformException;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.print.PageFormat;
+import java.awt.print.Paper;
 import java.awt.print.Printable;
 import java.awt.print.PrinterException;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.StringWriter;
@@ -89,8 +92,8 @@ import ptolemy.actor.DesignPatternGetMoMLAction;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.IORelation;
 import ptolemy.actor.gui.Configuration;
-import ptolemy.actor.gui.EditorFactory;
 import ptolemy.actor.gui.EditParametersDialog;
+import ptolemy.actor.gui.EditorFactory;
 import ptolemy.actor.gui.PtolemyFrame;
 import ptolemy.actor.gui.PtolemyPreferences;
 import ptolemy.actor.gui.SizeAttribute;
@@ -98,7 +101,6 @@ import ptolemy.actor.gui.Tableau;
 import ptolemy.actor.gui.UserActorLibrary;
 import ptolemy.actor.gui.WindowPropertiesAttribute;
 import ptolemy.actor.gui.properties.ToolBar;
-import ptolemy.actor.parameters.PortParameter;
 import ptolemy.actor.parameters.ParameterPort;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.DoubleToken;
@@ -106,6 +108,7 @@ import ptolemy.data.Token;
 import ptolemy.data.expr.ExpertParameter;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
+import ptolemy.gui.JFileChooserBugFix;
 import ptolemy.gui.Query;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
@@ -143,6 +146,7 @@ import ptolemy.vergil.tree.EntityTreeModel;
 import ptolemy.vergil.tree.PTree;
 import ptolemy.vergil.tree.PTreeMenuCreator;
 import ptolemy.vergil.tree.VisibleTreeModel;
+
 import diva.canvas.CanvasUtilities;
 import diva.canvas.Figure;
 import diva.canvas.JCanvas;
@@ -849,7 +853,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             }
         }
     }
-
+    
     /** Return the center location of the visible part of the pane.
      *  @return The center of the visible part.
      *  @see #setCenter(Point2D)
@@ -1018,7 +1022,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             new Exception("Failed to read _layoutGraphDialogParameter from configuration",
                     throwable).printStackTrace();
             if (!success) {
-                layoutGraphWithPtolemyLayout();                
+                layoutGraphWithPtolemyLayout();
             }
         }
     }
@@ -1746,7 +1750,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
         _cutAction = new CutAction();
         _copyAction = new CopyAction();
         _pasteAction = new PasteAction();
-
+        
         // FIXME: vergil.kernel.AttributeController also defines context
         // menu choices that do the same thing.
         _moveToFrontAction = new MoveToFrontAction();
@@ -1763,7 +1767,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
      */
     protected void _addMenus() {
         super._addMenus();
-
+        
         _editMenu = new JMenu("Edit");
         _editMenu.setMnemonic(KeyEvent.VK_E);
         _menubar.add(_editMenu);
@@ -1895,6 +1899,70 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
         } else {
             return null;
         }
+    }
+
+    /** Create the items in the File menu. A null element in the array
+     *  represents a separator in the menu.
+     *  In this class, if the configuration contains a StringParmeter
+     *  with the name "_exportPDFActionClassName", the then value of
+     *  that parameter is assumed to name a class that extends AbstractAction
+     *  and that export PDF.
+     *  If there is no parameter by that name, then value returned
+     *  by super._createFileMenuItems is returned.
+     *  @return The items in the File menu, optionally include an "Export PDF"
+     *  menu choice.
+     */
+    protected JMenuItem[] _createFileMenuItems() {
+        JMenuItem[] fileMenuItems = super._createFileMenuItems();
+        try {
+            Configuration configuration = getConfiguration();
+            if (configuration == null) {
+                //new Exception("BSF: configuration is null").printStackTrace();
+            } else {
+                StringParameter exportPDFActionClassNameParameter = (StringParameter) configuration
+                    .getAttribute("_exportPDFActionClassName", StringParameter.class);
+
+
+                if (exportPDFActionClassNameParameter == null) {
+                    // Parameter not set, so just return
+                    return fileMenuItems;
+                }
+
+                if (_exportPDFAction == null) {
+                    String exportPDFActionClassName = exportPDFActionClassNameParameter.stringValue();
+                    try {
+                        Class exportPDFActionClass = Class
+                            .forName(exportPDFActionClassName);
+                        Constructor exportPDFActionConstructor = exportPDFActionClass.getDeclaredConstructor(BasicGraphFrame.class);
+                        _exportPDFAction = (AbstractAction) exportPDFActionConstructor.newInstance(this);
+                    } catch (Throwable throwable) {
+                        new InternalErrorException(null, throwable, "Failed to construct export PDF class \""
+                                + exportPDFActionClassName
+                                + "\", which was read from the configuration.");
+                    }
+                }
+            }
+        } catch (Exception ex) {
+            throw new InternalErrorException(null, ex,
+                    "Failed to read _exportPDFActionName from the Configuration");
+        }
+
+        // Insert the Export PDF item after the Print item in the menu.
+        int i = 0;
+        for (JMenuItem item : fileMenuItems) {
+            i++;
+            if (item.getActionCommand().equals("Print")) {
+                // Add a Export PDF item here.
+                JMenuItem exportItem = new JMenuItem(_exportPDFAction);
+                JMenuItem[] newItems = new JMenuItem[fileMenuItems.length + 1];
+                System.arraycopy(fileMenuItems, 0, newItems, 0, i);
+                newItems[i] = exportItem;
+                System.arraycopy(fileMenuItems, i, newItems, i + 1,
+                        fileMenuItems.length - i);
+                return newItems;
+            }
+        }
+        return fileMenuItems;
     }
 
     /** Create a new graph pane.  Subclasses will override this to change
@@ -2323,6 +2391,9 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
 
     /** The action to edit preferences. */
     protected EditPreferencesAction _editPreferencesAction;
+    
+    /** The export to PDF action. */
+    protected Action _exportPDFAction;
 
     /** The panner. */
     protected JCanvasPanner _graphPanner;
@@ -2714,6 +2785,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
     //            }
     //        }
     //    }
+
 
     ///////////////////////////////////////////////////////////////////
     //// LinkElementProperties

@@ -492,6 +492,17 @@ PTGRO_DIR =		@PTGRO_DIR@
 # PTGRO_PACKAGES is used in ptII/doc/makefile if Jogl was found.
 PTGRO_PACKAGES =	@PTGRO_PACKAGES@
 
+# Set to itextpdf and used in
+# $PTII/ptolemy/vergil/basic/makefile if iText.jar was found
+PTITEXTPDF_DIR = 	@PTITEXTPDF_DIR@
+
+# iText PDF jar file.  iText is from
+# http://itextpdf.com
+PTITEXTPDF_JAR =	@PTITEXTPDF_JAR@
+
+# PTITEXTPDF_PACKAGES is used in ptII/doc/makefile if iTextjar is found
+PTITEXTPDF_PACKAGES =	@PTITEXTPDF_PACKAGES@
+
 # Set to ptjacl and used in
 # $PTII/ptolemy/actor/gui/makefile if ptjacl.jar was found 
 PTJACL_DIR =	@PTJACL_DIR@

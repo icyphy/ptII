@@ -32,7 +32,7 @@
 
 ME =		ptolemy/vergil/basic
 
-DIRS =		img layout test
+DIRS =		img itextpdf layout test
 
 # Root of the Java directory
 ROOT =		../../..
