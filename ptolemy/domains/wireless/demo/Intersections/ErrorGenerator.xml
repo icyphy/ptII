@@ -4,22 +4,22 @@
 <class name="ErrorGenerator" extends="ptolemy.domains.ptera.kernel.PteraModalModel">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
     </property>
-    <port name="ErrorIn" class="ptolemy.domains.fsm.modal.ModalPort">
+    <port name="ErrorIn" class="ptolemy.domains.modal.modal.ModalPort">
         <property name="input"/>
         <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
     </port>
-    <port name="OkIn" class="ptolemy.domains.fsm.modal.ModalPort">
+    <port name="OkIn" class="ptolemy.domains.modal.modal.ModalPort">
         <property name="input"/>
         <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
     </port>
-    <port name="ErrorOut" class="ptolemy.domains.fsm.modal.ModalPort">
+    <port name="ErrorOut" class="ptolemy.domains.modal.modal.ModalPort">
         <property name="output"/>
         <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
     </port>
-    <port name="OkOut" class="ptolemy.domains.fsm.modal.ModalPort">
+    <port name="OkOut" class="ptolemy.domains.modal.modal.ModalPort">
         <property name="output"/>
         <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
@@ -94,24 +94,24 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 50.0]">
             </property>
         </property>
-        <port name="ErrorOut" class="ptolemy.domains.fsm.modal.RefinementPort">
+        <port name="ErrorOut" class="ptolemy.domains.modal.modal.RefinementPort">
             <property name="input"/>
             <property name="output"/>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[560.0, 220.0]">
             </property>
         </port>
-        <port name="OkOut" class="ptolemy.domains.fsm.modal.RefinementPort">
+        <port name="OkOut" class="ptolemy.domains.modal.modal.RefinementPort">
             <property name="input"/>
             <property name="output"/>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[560.0, 285.0]">
             </property>
         </port>
-        <port name="ErrorIn" class="ptolemy.domains.fsm.modal.RefinementPort">
+        <port name="ErrorIn" class="ptolemy.domains.modal.modal.RefinementPort">
             <property name="input"/>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 225.0]">
             </property>
         </port>
-        <port name="OkIn" class="ptolemy.domains.fsm.modal.RefinementPort">
+        <port name="OkIn" class="ptolemy.domains.modal.modal.RefinementPort">
             <property name="input"/>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 290.0]">
             </property>

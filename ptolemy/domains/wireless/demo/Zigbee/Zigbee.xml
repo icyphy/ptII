@@ -198,11 +198,11 @@
         </property>
         <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{-1274.6640625, -692.0893770578552}">
         </property>
-        <property name="MsgId" class="ptolemy.data.expr.Parameter" value="{Data = {IdReq = 10, Lifetime = 0, NoH = 6, Requester = 12, Responder = 6, SeqN = 1}, Sender = 5, Type = &quot;RREQ&quot;}">
+        <property name="MsgId" class="ptolemy.data.expr.Parameter" value="{Data = {IdReq = 10, Lifetime = 0, NoH = 8, Requester = 12, Responder = 6, SeqN = 1}, Sender = 4, Type = &quot;RREQ&quot;}">
         </property>
         <property name="NodeId" class="ptolemy.data.expr.Parameter" value="3">
         </property>
-        <property name="SeqN" class="ptolemy.data.expr.Parameter" value="63">
+        <property name="SeqN" class="ptolemy.data.expr.Parameter" value="64">
         </property>
         <property name="inrange" class="ptolemy.data.expr.Parameter" value="200.0">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -266,26 +266,26 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[-1730.0, -700.0]">
             </property>
         </port>
-        <entity name="ModalModel" class="ptolemy.domains.fsm.modal.ModalModel">
+        <entity name="ModalModel" class="ptolemy.domains.modal.modal.ModalModel">
             <property name="conservativeAnalysis" class="ptolemy.data.expr.Parameter" value="false">
             </property>
-            <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalTableauFactory">
+            <property name="_tableauFactory" class="ptolemy.vergil.modal.modal.ModalTableauFactory">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{-1525.0, -785.0}">
             </property>
-            <port name="CommIn" class="ptolemy.domains.fsm.modal.ModalPort">
+            <port name="CommIn" class="ptolemy.domains.modal.modal.ModalPort">
                 <property name="input"/>
             </port>
-            <port name="NextState" class="ptolemy.domains.fsm.modal.ModalPort">
+            <port name="NextState" class="ptolemy.domains.modal.modal.ModalPort">
                 <property name="output"/>
             </port>
-            <port name="Comm" class="ptolemy.domains.fsm.modal.ModalPort">
+            <port name="Comm" class="ptolemy.domains.modal.modal.ModalPort">
                 <property name="output"/>
             </port>
-            <entity name="_Controller" class="ptolemy.domains.fsm.modal.ModalController">
+            <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
                 <property name="_library" class="ptolemy.moml.LibraryAttribute">
                     <configure>
-        <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.fsm.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory"></property></entity></entity>
+        <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory"></property></entity></entity>
       </configure>
                 </property>
                 <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1, 16, 1278, 991}, maximized=false}">
@@ -298,24 +298,24 @@
                 </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="false">
                 </property>
-                <port name="CommIn" class="ptolemy.domains.fsm.modal.RefinementPort">
+                <port name="CommIn" class="ptolemy.domains.modal.modal.RefinementPort">
                     <property name="input"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[1105.0, 715.0]">
                     </property>
                 </port>
-                <port name="NextState" class="ptolemy.domains.fsm.modal.RefinementPort">
+                <port name="NextState" class="ptolemy.domains.modal.modal.RefinementPort">
                     <property name="input"/>
                     <property name="output"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[1110.0, 785.0]">
                     </property>
                 </port>
-                <port name="Comm" class="ptolemy.domains.fsm.modal.RefinementPort">
+                <port name="Comm" class="ptolemy.domains.modal.modal.RefinementPort">
                     <property name="input"/>
                     <property name="output"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="{0.0, 0.0}">
                     </property>
                 </port>
-                <entity name="NewREQ" class="ptolemy.domains.fsm.kernel.State">
+                <entity name="NewREQ" class="ptolemy.domains.modal.kernel.State">
                     <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="NewREQ">
                     </property>
                     <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="false">
@@ -327,7 +327,7 @@
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[-70.0, 760.0]">
                     </property>
                 </entity>
-                <entity name="Free" class="ptolemy.domains.fsm.kernel.State">
+                <entity name="Free" class="ptolemy.domains.modal.kernel.State">
                     <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="Free">
                     </property>
                     <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="false">
@@ -339,7 +339,7 @@
                     <property name="_location" class="ptolemy.kernel.util.Location" value="{385.0, 540.0}">
                     </property>
                 </entity>
-                <entity name="GoodREP" class="ptolemy.domains.fsm.kernel.State">
+                <entity name="GoodREP" class="ptolemy.domains.modal.kernel.State">
                     <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="GoodREP">
                     </property>
                     <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
@@ -349,7 +349,7 @@
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[255.0, 100.0]">
                     </property>
                 </entity>
-                <entity name="RepetedREQ" class="ptolemy.domains.fsm.kernel.State">
+                <entity name="RepetedREQ" class="ptolemy.domains.modal.kernel.State">
                     <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="RepetedREQ">
                     </property>
                     <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
@@ -359,7 +359,7 @@
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[910.0, 535.0]">
                     </property>
                 </entity>
-                <entity name="ini" class="ptolemy.domains.fsm.kernel.State">
+                <entity name="ini" class="ptolemy.domains.modal.kernel.State">
                     <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="ini">
                     </property>
                     <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">
@@ -371,7 +371,7 @@
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[305.0, 1140.0]">
                     </property>
                 </entity>
-                <relation name="relation" class="ptolemy.domains.fsm.kernel.Transition">
+                <relation name="relation" class="ptolemy.domains.modal.kernel.Transition">
                     <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
                     </property>
                     <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="NextState==3 &amp;&amp; NextState_isPresent">
@@ -389,7 +389,7 @@
                     <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
                     </property>
                 </relation>
-                <relation name="relation2" class="ptolemy.domains.fsm.kernel.Transition">
+                <relation name="relation2" class="ptolemy.domains.modal.kernel.Transition">
                     <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
                     </property>
                     <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="NextState_isPresent &amp;&amp; NextState==0">
@@ -407,7 +407,7 @@
                     <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
                     </property>
                 </relation>
-                <relation name="relation3" class="ptolemy.domains.fsm.kernel.Transition">
+                <relation name="relation3" class="ptolemy.domains.modal.kernel.Transition">
                     <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
                     </property>
                     <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="NextState==2 &amp;&amp; NextState_isPresent">
@@ -425,7 +425,7 @@
                     <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
                     </property>
                 </relation>
-                <relation name="relation4" class="ptolemy.domains.fsm.kernel.Transition">
+                <relation name="relation4" class="ptolemy.domains.modal.kernel.Transition">
                     <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
                     </property>
                     <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="NextState_isPresent &amp;&amp; NextState==0">
@@ -443,7 +443,7 @@
                     <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
                     </property>
                 </relation>
-                <relation name="relation5" class="ptolemy.domains.fsm.kernel.Transition">
+                <relation name="relation5" class="ptolemy.domains.modal.kernel.Transition">
                     <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
                     </property>
                     <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="NextState==1 &amp;&amp; NextState_isPresent">
@@ -461,7 +461,7 @@
                     <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
                     </property>
                 </relation>
-                <relation name="relation6" class="ptolemy.domains.fsm.kernel.Transition">
+                <relation name="relation6" class="ptolemy.domains.modal.kernel.Transition">
                     <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
                     </property>
                     <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="NextState==0 &amp;&amp; NextState_isPresent">
@@ -479,7 +479,7 @@
                     <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
                     </property>
                 </relation>
-                <relation name="relation7" class="ptolemy.domains.fsm.kernel.Transition">
+                <relation name="relation7" class="ptolemy.domains.modal.kernel.Transition">
                     <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
                     </property>
                     <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="NextState_isPresent &amp;&amp; NextState == 0">
@@ -512,7 +512,7 @@
                 <link port="RepetedREQ.outgoingPort" relation="relation6"/>
                 <link port="ini.outgoingPort" relation="relation7"/>
             </entity>
-            <entity name="Free" class="ptolemy.domains.fsm.modal.Refinement">
+            <entity name="Free" class="ptolemy.domains.modal.modal.Refinement">
                 <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[-285.0, 10.0]">
                     </property>
@@ -531,17 +531,17 @@
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, -20.0]">
                     </property>
                 </property>
-                <port name="CommIn" class="ptolemy.domains.fsm.modal.RefinementPort">
+                <port name="CommIn" class="ptolemy.domains.modal.modal.RefinementPort">
                     <property name="input"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[-320.0, 120.0]">
                     </property>
                 </port>
-                <port name="NextState" class="ptolemy.domains.fsm.modal.RefinementPort">
+                <port name="NextState" class="ptolemy.domains.modal.modal.RefinementPort">
                     <property name="output"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[910.0, 130.0]">
                     </property>
                 </port>
-                <port name="Comm" class="ptolemy.domains.fsm.modal.RefinementPort">
+                <port name="Comm" class="ptolemy.domains.modal.modal.RefinementPort">
                     <property name="output"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[930.0, 325.0]">
                     </property>
@@ -549,8 +549,8 @@
                 <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
                     <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="MsgId">
                     </property>
-		    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
-		    </property>
+                    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
                     <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
                         </property>
@@ -804,7 +804,7 @@
                 <link port="Expression4.a" relation="relation2"/>
                 <link port="Expression4.b" relation="relation"/>
             </entity>
-            <entity name="RepetedREQ" class="ptolemy.domains.fsm.modal.Refinement">
+            <entity name="RepetedREQ" class="ptolemy.domains.modal.modal.Refinement">
                 <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
                     <property name="iterations" class="ptolemy.data.expr.Parameter" value="1">
                     </property>
@@ -823,17 +823,17 @@
                 </property>
                 <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{276.8124999999999, 660.2064888164025}">
                 </property>
-                <port name="CommIn" class="ptolemy.domains.fsm.modal.RefinementPort">
+                <port name="CommIn" class="ptolemy.domains.modal.modal.RefinementPort">
                     <property name="input"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[480.0, 520.0]">
                     </property>
                 </port>
-                <port name="NextState" class="ptolemy.domains.fsm.modal.RefinementPort">
+                <port name="NextState" class="ptolemy.domains.modal.modal.RefinementPort">
                     <property name="output"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, 480.0]">
                     </property>
                 </port>
-                <port name="Comm" class="ptolemy.domains.fsm.modal.RefinementPort">
+                <port name="Comm" class="ptolemy.domains.modal.modal.RefinementPort">
                     <property name="output"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="{0.0, 0.0}">
                     </property>
@@ -1041,8 +1041,8 @@
                 <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
                     <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="Table">
                     </property>
-		    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
-		    </property>
+                    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
                     <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
                         </property>
@@ -1168,7 +1168,7 @@
                 <link port="BooleanSwitch3.control" relation="relation2"/>
                 <link port="BooleanSwitch3.falseOutput" relation="relation6"/>
             </entity>
-            <entity name="NewREQ" class="ptolemy.domains.fsm.modal.Refinement">
+            <entity name="NewREQ" class="ptolemy.domains.modal.modal.Refinement">
                 <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 0, 1288, 1004}, maximized=false}">
                 </property>
                 <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1073, 894]">
@@ -1181,17 +1181,17 @@
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[-325.0, -135.0]">
                     </property>
                 </property>
-                <port name="CommIn" class="ptolemy.domains.fsm.modal.RefinementPort">
+                <port name="CommIn" class="ptolemy.domains.modal.modal.RefinementPort">
                     <property name="input"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[-345.0, -75.0]">
                     </property>
                 </port>
-                <port name="NextState" class="ptolemy.domains.fsm.modal.RefinementPort">
+                <port name="NextState" class="ptolemy.domains.modal.modal.RefinementPort">
                     <property name="output"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[930.0, -45.0]">
                     </property>
                 </port>
-                <port name="Comm" class="ptolemy.domains.fsm.modal.RefinementPort">
+                <port name="Comm" class="ptolemy.domains.modal.modal.RefinementPort">
                     <property name="output"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[1055.0, 105.0]">
                     </property>
@@ -1531,8 +1531,8 @@
                 <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
                     <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="ActiveREQ">
                     </property>
-		    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
-		    </property>
+                    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
                     <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
                         </property>
@@ -1633,8 +1633,8 @@
                 <entity name="SetVariable2" class="ptolemy.actor.lib.SetVariable">
                     <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="Table">
                     </property>
-		    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
-		    </property>
+                    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
                     <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
                         </property>
@@ -2166,7 +2166,7 @@
                 <link relation1="relation16" relation2="relation35"/>
                 <link relation1="relation35" relation2="relation36"/>
             </entity>
-            <entity name="GoodREP" class="ptolemy.domains.fsm.modal.Refinement">
+            <entity name="GoodREP" class="ptolemy.domains.modal.modal.Refinement">
                 <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 0, 1288, 1004}, maximized=false}">
                 </property>
                 <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1073, 894]">
@@ -2179,17 +2179,17 @@
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 50.0]">
                     </property>
                 </property>
-                <port name="CommIn" class="ptolemy.domains.fsm.modal.RefinementPort">
+                <port name="CommIn" class="ptolemy.domains.modal.modal.RefinementPort">
                     <property name="input"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[190.0, 45.0]">
                     </property>
                 </port>
-                <port name="NextState" class="ptolemy.domains.fsm.modal.RefinementPort">
+                <port name="NextState" class="ptolemy.domains.modal.modal.RefinementPort">
                     <property name="output"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[1031.75, 670.0]">
                     </property>
                 </port>
-                <port name="Comm" class="ptolemy.domains.fsm.modal.RefinementPort">
+                <port name="Comm" class="ptolemy.domains.modal.modal.RefinementPort">
                     <property name="output"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[896.75, 460.0]">
                     </property>
@@ -2257,8 +2257,8 @@
                 <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
                     <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="ActiveREQ">
                     </property>
-		    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
-		    </property>
+                    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
                     <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
                         </property>
@@ -2292,8 +2292,8 @@
                 <entity name="SetVariable2" class="ptolemy.actor.lib.SetVariable">
                     <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="Table">
                     </property>
-		    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
-		    </property>
+                    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
                     <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
                         </property>
@@ -2448,22 +2448,22 @@
                 <link port="Const4.trigger" relation="relation5"/>
                 <link port="PoissonClock.output" relation="relation12"/>
             </entity>
-            <entity name="ini" class="ptolemy.domains.fsm.modal.Refinement">
+            <entity name="ini" class="ptolemy.domains.modal.modal.Refinement">
                 <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[-585.0, -15.0]">
                     </property>
                 </property>
-                <port name="CommIn" class="ptolemy.domains.fsm.modal.RefinementPort">
+                <port name="CommIn" class="ptolemy.domains.modal.modal.RefinementPort">
                     <property name="input"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[-5.0, -5.0]">
                     </property>
                 </port>
-                <port name="NextState" class="ptolemy.domains.fsm.modal.RefinementPort">
+                <port name="NextState" class="ptolemy.domains.modal.modal.RefinementPort">
                     <property name="output"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[-230.0, 400.0]">
                     </property>
                 </port>
-                <port name="Comm" class="ptolemy.domains.fsm.modal.RefinementPort">
+                <port name="Comm" class="ptolemy.domains.modal.modal.RefinementPort">
                     <property name="output"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[-10.0, 35.0]">
                     </property>
@@ -2471,8 +2471,8 @@
                 <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
                     <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="MsgId">
                     </property>
-		    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
-		    </property>
+                    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
                     <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
                         </property>
@@ -2511,8 +2511,8 @@
                 <entity name="SetVariable2" class="ptolemy.actor.lib.SetVariable">
                     <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="Table">
                     </property>
-		    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
-		    </property>
+                    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
                     <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
                         </property>
@@ -2525,8 +2525,8 @@
                 <entity name="SetVariable3" class="ptolemy.actor.lib.SetVariable">
                     <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="ActiveREQ">
                     </property>
-		    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
-		    </property>
+                    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
                     <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
                         </property>
@@ -2719,8 +2719,8 @@
         <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
             <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="SeqN">
             </property>
-		    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
-		    </property>
+            <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
             <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                 <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
                 </property>
@@ -2783,11 +2783,11 @@
         </property>
         <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{-1274.6640625, -692.0893770578552}">
         </property>
-        <property name="MsgId" class="ptolemy.data.expr.Parameter" value="{Data = {IdReq = 10, Lifetime = 0, NoH = 6, Requester = 12, Responder = 6, SeqN = 1}, Sender = 5, Type = &quot;RREQ&quot;}">
+        <property name="MsgId" class="ptolemy.data.expr.Parameter" value="{Data = {IdReq = 10, Lifetime = 0, NoH = 7, Requester = 12, Responder = 6, SeqN = 1}, Sender = 3, Type = &quot;RREQ&quot;}">
         </property>
         <property name="NodeId" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <property name="SeqN" class="ptolemy.data.expr.Parameter" value="63">
+        <property name="SeqN" class="ptolemy.data.expr.Parameter" value="64">
         </property>
         <property name="inrange" class="ptolemy.data.expr.Parameter" value="200.0">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -2851,26 +2851,26 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[-1730.0, -700.0]">
             </property>
         </port>
-        <entity name="ModalModel" class="ptolemy.domains.fsm.modal.ModalModel">
+        <entity name="ModalModel" class="ptolemy.domains.modal.modal.ModalModel">
             <property name="conservativeAnalysis" class="ptolemy.data.expr.Parameter" value="false">
             </property>
-            <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalTableauFactory">
+            <property name="_tableauFactory" class="ptolemy.vergil.modal.modal.ModalTableauFactory">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{-1525.0, -785.0}">
             </property>
-            <port name="CommIn" class="ptolemy.domains.fsm.modal.ModalPort">
+            <port name="CommIn" class="ptolemy.domains.modal.modal.ModalPort">
                 <property name="input"/>
             </port>
-            <port name="NextState" class="ptolemy.domains.fsm.modal.ModalPort">
+            <port name="NextState" class="ptolemy.domains.modal.modal.ModalPort">
                 <property name="output"/>
             </port>
-            <port name="Comm" class="ptolemy.domains.fsm.modal.ModalPort">
+            <port name="Comm" class="ptolemy.domains.modal.modal.ModalPort">
                 <property name="output"/>
             </port>
-            <entity name="_Controller" class="ptolemy.domains.fsm.modal.ModalController">
+            <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
                 <property name="_library" class="ptolemy.moml.LibraryAttribute">
                     <configure>
-        <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.fsm.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory"></property></entity></entity>
+        <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory"></property></entity></entity>
       </configure>
                 </property>
                 <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1, 16, 1278, 991}, maximized=false}">
@@ -2883,24 +2883,24 @@
                 </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="false">
                 </property>
-                <port name="CommIn" class="ptolemy.domains.fsm.modal.RefinementPort">
+                <port name="CommIn" class="ptolemy.domains.modal.modal.RefinementPort">
                     <property name="input"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[1105.0, 715.0]">
                     </property>
                 </port>
-                <port name="NextState" class="ptolemy.domains.fsm.modal.RefinementPort">
+                <port name="NextState" class="ptolemy.domains.modal.modal.RefinementPort">
                     <property name="input"/>
                     <property name="output"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[1110.0, 785.0]">
                     </property>
                 </port>
-                <port name="Comm" class="ptolemy.domains.fsm.modal.RefinementPort">
+                <port name="Comm" class="ptolemy.domains.modal.modal.RefinementPort">
                     <property name="input"/>
                     <property name="output"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="{0.0, 0.0}">
                     </property>
                 </port>
-                <entity name="NewREQ" class="ptolemy.domains.fsm.kernel.State">
+                <entity name="NewREQ" class="ptolemy.domains.modal.kernel.State">
                     <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="NewREQ">
                     </property>
                     <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="false">
@@ -2912,7 +2912,7 @@
                     <property name="_location" class="ptolemy.kernel.util.Location" value="{-70.0, 760.0}">
                     </property>
                 </entity>
-                <entity name="Free" class="ptolemy.domains.fsm.kernel.State">
+                <entity name="Free" class="ptolemy.domains.modal.kernel.State">
                     <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="Free">
                     </property>
                     <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="false">
@@ -2924,7 +2924,7 @@
                     <property name="_location" class="ptolemy.kernel.util.Location" value="{385.0, 540.0}">
                     </property>
                 </entity>
-                <entity name="GoodREP" class="ptolemy.domains.fsm.kernel.State">
+                <entity name="GoodREP" class="ptolemy.domains.modal.kernel.State">
                     <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="GoodREP">
                     </property>
                     <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
@@ -2934,7 +2934,7 @@
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[255.0, 100.0]">
                     </property>
                 </entity>
-                <entity name="RepetedREQ" class="ptolemy.domains.fsm.kernel.State">
+                <entity name="RepetedREQ" class="ptolemy.domains.modal.kernel.State">
                     <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="RepetedREQ">
                     </property>
                     <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
@@ -2944,7 +2944,7 @@
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[910.0, 535.0]">
                     </property>
                 </entity>
-                <entity name="ini" class="ptolemy.domains.fsm.kernel.State">
+                <entity name="ini" class="ptolemy.domains.modal.kernel.State">
                     <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="ini">
                     </property>
                     <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">
@@ -2956,7 +2956,7 @@
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[305.0, 1140.0]">
                     </property>
                 </entity>
-                <relation name="relation" class="ptolemy.domains.fsm.kernel.Transition">
+                <relation name="relation" class="ptolemy.domains.modal.kernel.Transition">
                     <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
                     </property>
                     <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="NextState==3 &amp;&amp; NextState_isPresent">
@@ -2974,7 +2974,7 @@
                     <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
                     </property>
                 </relation>
-                <relation name="relation2" class="ptolemy.domains.fsm.kernel.Transition">
+                <relation name="relation2" class="ptolemy.domains.modal.kernel.Transition">
                     <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
                     </property>
                     <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="NextState_isPresent &amp;&amp; NextState==0">
@@ -2992,7 +2992,7 @@
                     <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
                     </property>
                 </relation>
-                <relation name="relation3" class="ptolemy.domains.fsm.kernel.Transition">
+                <relation name="relation3" class="ptolemy.domains.modal.kernel.Transition">
                     <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
                     </property>
                     <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="NextState==2 &amp;&amp; NextState_isPresent">
@@ -3010,7 +3010,7 @@
                     <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
                     </property>
                 </relation>
-                <relation name="relation4" class="ptolemy.domains.fsm.kernel.Transition">
+                <relation name="relation4" class="ptolemy.domains.modal.kernel.Transition">
                     <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
                     </property>
                     <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="NextState_isPresent &amp;&amp; NextState==0">
@@ -3028,7 +3028,7 @@
                     <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
                     </property>
                 </relation>
-                <relation name="relation5" class="ptolemy.domains.fsm.kernel.Transition">
+                <relation name="relation5" class="ptolemy.domains.modal.kernel.Transition">
                     <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
                     </property>
                     <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="NextState==1 &amp;&amp; NextState_isPresent">
@@ -3046,7 +3046,7 @@
                     <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
                     </property>
                 </relation>
-                <relation name="relation6" class="ptolemy.domains.fsm.kernel.Transition">
+                <relation name="relation6" class="ptolemy.domains.modal.kernel.Transition">
                     <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
                     </property>
                     <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="NextState==0 &amp;&amp; NextState_isPresent">
@@ -3064,7 +3064,7 @@
                     <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
                     </property>
                 </relation>
-                <relation name="relation7" class="ptolemy.domains.fsm.kernel.Transition">
+                <relation name="relation7" class="ptolemy.domains.modal.kernel.Transition">
                     <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
                     </property>
                     <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="NextState_isPresent &amp;&amp; NextState == 0">
@@ -3097,7 +3097,7 @@
                 <link port="RepetedREQ.outgoingPort" relation="relation6"/>
                 <link port="ini.outgoingPort" relation="relation7"/>
             </entity>
-            <entity name="Free" class="ptolemy.domains.fsm.modal.Refinement">
+            <entity name="Free" class="ptolemy.domains.modal.modal.Refinement">
                 <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[-285.0, 10.0]">
                     </property>
@@ -3116,17 +3116,17 @@
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, -20.0]">
                     </property>
                 </property>
-                <port name="CommIn" class="ptolemy.domains.fsm.modal.RefinementPort">
+                <port name="CommIn" class="ptolemy.domains.modal.modal.RefinementPort">
                     <property name="input"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[-320.0, 120.0]">
                     </property>
                 </port>
-                <port name="NextState" class="ptolemy.domains.fsm.modal.RefinementPort">
+                <port name="NextState" class="ptolemy.domains.modal.modal.RefinementPort">
                     <property name="output"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[910.0, 130.0]">
                     </property>
                 </port>
-                <port name="Comm" class="ptolemy.domains.fsm.modal.RefinementPort">
+                <port name="Comm" class="ptolemy.domains.modal.modal.RefinementPort">
                     <property name="output"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[930.0, 325.0]">
                     </property>
@@ -3134,8 +3134,8 @@
                 <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
                     <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="MsgId">
                     </property>
-		    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
-		    </property>
+                    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
                     <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
                         </property>
@@ -3389,7 +3389,7 @@
                 <link port="Expression4.a" relation="relation2"/>
                 <link port="Expression4.b" relation="relation"/>
             </entity>
-            <entity name="RepetedREQ" class="ptolemy.domains.fsm.modal.Refinement">
+            <entity name="RepetedREQ" class="ptolemy.domains.modal.modal.Refinement">
                 <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
                     <property name="iterations" class="ptolemy.data.expr.Parameter" value="1">
                     </property>
@@ -3408,17 +3408,17 @@
                 </property>
                 <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{276.8124999999999, 660.2064888164025}">
                 </property>
-                <port name="CommIn" class="ptolemy.domains.fsm.modal.RefinementPort">
+                <port name="CommIn" class="ptolemy.domains.modal.modal.RefinementPort">
                     <property name="input"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[480.0, 520.0]">
                     </property>
                 </port>
-                <port name="NextState" class="ptolemy.domains.fsm.modal.RefinementPort">
+                <port name="NextState" class="ptolemy.domains.modal.modal.RefinementPort">
                     <property name="output"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, 480.0]">
                     </property>
                 </port>
-                <port name="Comm" class="ptolemy.domains.fsm.modal.RefinementPort">
+                <port name="Comm" class="ptolemy.domains.modal.modal.RefinementPort">
                     <property name="output"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="{0.0, 0.0}">
                     </property>
@@ -3626,8 +3626,8 @@
                 <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
                     <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="Table">
                     </property>
-		    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
-		    </property>
+                    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
                     <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
                         </property>
@@ -3753,7 +3753,7 @@
                 <link port="BooleanSwitch3.control" relation="relation2"/>
                 <link port="BooleanSwitch3.falseOutput" relation="relation6"/>
             </entity>
-            <entity name="NewREQ" class="ptolemy.domains.fsm.modal.Refinement">
+            <entity name="NewREQ" class="ptolemy.domains.modal.modal.Refinement">
                 <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 0, 1288, 1004}, maximized=false}">
                 </property>
                 <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1073, 894]">
@@ -3766,17 +3766,17 @@
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[-325.0, -135.0]">
                     </property>
                 </property>
-                <port name="CommIn" class="ptolemy.domains.fsm.modal.RefinementPort">
+                <port name="CommIn" class="ptolemy.domains.modal.modal.RefinementPort">
                     <property name="input"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[-345.0, -75.0]">
                     </property>
                 </port>
-                <port name="NextState" class="ptolemy.domains.fsm.modal.RefinementPort">
+                <port name="NextState" class="ptolemy.domains.modal.modal.RefinementPort">
                     <property name="output"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[930.0, -45.0]">
                     </property>
                 </port>
-                <port name="Comm" class="ptolemy.domains.fsm.modal.RefinementPort">
+                <port name="Comm" class="ptolemy.domains.modal.modal.RefinementPort">
                     <property name="output"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[1055.0, 105.0]">
                     </property>
@@ -4116,8 +4116,8 @@
                 <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
                     <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="ActiveREQ">
                     </property>
-		    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
-		    </property>
+                    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
                     <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
                         </property>
@@ -4218,8 +4218,8 @@
                 <entity name="SetVariable2" class="ptolemy.actor.lib.SetVariable">
                     <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="Table">
                     </property>
-		    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
-		    </property>
+                    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
                     <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
                         </property>
@@ -4751,7 +4751,7 @@
                 <link relation1="relation16" relation2="relation35"/>
                 <link relation1="relation35" relation2="relation36"/>
             </entity>
-            <entity name="GoodREP" class="ptolemy.domains.fsm.modal.Refinement">
+            <entity name="GoodREP" class="ptolemy.domains.modal.modal.Refinement">
                 <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 0, 1288, 1004}, maximized=false}">
                 </property>
                 <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1073, 894]">
@@ -4764,17 +4764,17 @@
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 50.0]">
                     </property>
                 </property>
-                <port name="CommIn" class="ptolemy.domains.fsm.modal.RefinementPort">
+                <port name="CommIn" class="ptolemy.domains.modal.modal.RefinementPort">
                     <property name="input"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[190.0, 45.0]">
                     </property>
                 </port>
-                <port name="NextState" class="ptolemy.domains.fsm.modal.RefinementPort">
+                <port name="NextState" class="ptolemy.domains.modal.modal.RefinementPort">
                     <property name="output"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[1031.75, 670.0]">
                     </property>
                 </port>
-                <port name="Comm" class="ptolemy.domains.fsm.modal.RefinementPort">
+                <port name="Comm" class="ptolemy.domains.modal.modal.RefinementPort">
                     <property name="output"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[896.75, 460.0]">
                     </property>
@@ -4842,8 +4842,8 @@
                 <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
                     <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="ActiveREQ">
                     </property>
-		    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
-		    </property>
+                    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
                     <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
                         </property>
@@ -4877,8 +4877,8 @@
                 <entity name="SetVariable2" class="ptolemy.actor.lib.SetVariable">
                     <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="Table">
                     </property>
-		    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
-		    </property>
+                    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
                     <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
                         </property>
@@ -5033,22 +5033,22 @@
                 <link port="Const4.trigger" relation="relation5"/>
                 <link port="PoissonClock.output" relation="relation12"/>
             </entity>
-            <entity name="ini" class="ptolemy.domains.fsm.modal.Refinement">
+            <entity name="ini" class="ptolemy.domains.modal.modal.Refinement">
                 <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[-585.0, -15.0]">
                     </property>
                 </property>
-                <port name="CommIn" class="ptolemy.domains.fsm.modal.RefinementPort">
+                <port name="CommIn" class="ptolemy.domains.modal.modal.RefinementPort">
                     <property name="input"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[-5.0, -5.0]">
                     </property>
                 </port>
-                <port name="NextState" class="ptolemy.domains.fsm.modal.RefinementPort">
+                <port name="NextState" class="ptolemy.domains.modal.modal.RefinementPort">
                     <property name="output"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[-230.0, 400.0]">
                     </property>
                 </port>
-                <port name="Comm" class="ptolemy.domains.fsm.modal.RefinementPort">
+                <port name="Comm" class="ptolemy.domains.modal.modal.RefinementPort">
                     <property name="output"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[-10.0, 35.0]">
                     </property>
@@ -5056,8 +5056,8 @@
                 <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
                     <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="MsgId">
                     </property>
-		    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
-		    </property>
+                    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
                     <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
                         </property>
@@ -5096,8 +5096,8 @@
                 <entity name="SetVariable2" class="ptolemy.actor.lib.SetVariable">
                     <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="Table">
                     </property>
-		    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
-		    </property>
+                    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
                     <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
                         </property>
@@ -5110,8 +5110,8 @@
                 <entity name="SetVariable3" class="ptolemy.actor.lib.SetVariable">
                     <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="ActiveREQ">
                     </property>
-		    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
-		    </property>
+                    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
                     <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
                         </property>
@@ -5304,8 +5304,8 @@
         <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
             <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="SeqN">
             </property>
-		    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
-		    </property>
+            <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
             <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                 <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
                 </property>
@@ -5368,11 +5368,11 @@
         </property>
         <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{-1274.6640625, -692.0893770578552}">
         </property>
-        <property name="MsgId" class="ptolemy.data.expr.Parameter" value="{Data = {IdReq = 10, Lifetime = 0, NoH = 8, Requester = 12, Responder = 6, SeqN = 1}, Sender = 5, Type = &quot;RREQ&quot;}">
+        <property name="MsgId" class="ptolemy.data.expr.Parameter" value="{Data = {IdReq = 10, Lifetime = 90, NoH = 2, Requester = 12, Responder = 6, SeqN = 58}, Sender = 5, Type = &quot;RREP&quot;}">
         </property>
         <property name="NodeId" class="ptolemy.data.expr.Parameter" value="4">
         </property>
-        <property name="SeqN" class="ptolemy.data.expr.Parameter" value="63">
+        <property name="SeqN" class="ptolemy.data.expr.Parameter" value="65">
         </property>
         <property name="inrange" class="ptolemy.data.expr.Parameter" value="200.0">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -5393,7 +5393,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[-1425.0, -900.0]">
             </property>
         </property>
-        <property name="Table" class="ptolemy.data.expr.Parameter" value="{{Dest = 0, Next = 0, NoH = 0, SeqN = 0}, {Dest = 12, Next = 3, NoH = 7, SeqN = 1}, {Dest = 3, Next = 3, NoH = 1, SeqN = 1}, {Dest = 27, Next = 27, NoH = 1, SeqN = 1}}">
+        <property name="Table" class="ptolemy.data.expr.Parameter" value="{{Dest = 0, Next = 0, NoH = 0, SeqN = 0}, {Dest = 12, Next = 3, NoH = 7, SeqN = 1}, {Dest = 3, Next = 3, NoH = 1, SeqN = 1}, {Dest = 27, Next = 27, NoH = 1, SeqN = 1}, {Dest = 6, Next = 6, NoH = 1, SeqN = 58}}">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -5412,7 +5412,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[-1725.0, -970.0]">
             </property>
         </property>
-        <property name="ActiveREQ" class="ptolemy.data.expr.Parameter" value="{{IdReq = 0, Requester = 0, Responder = 0}, {IdReq = 10, Requester = 12, Responder = 6}}">
+        <property name="ActiveREQ" class="ptolemy.data.expr.Parameter" value="{{IdReq = 0, Requester = 0, Responder = 0}}">
         </property>
         <port name="CommOut" class="ptolemy.domains.wireless.kernel.WirelessIOPort">
             <property name="output"/>
@@ -5436,26 +5436,26 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[-1730.0, -700.0]">
             </property>
         </port>
-        <entity name="ModalModel" class="ptolemy.domains.fsm.modal.ModalModel">
+        <entity name="ModalModel" class="ptolemy.domains.modal.modal.ModalModel">
             <property name="conservativeAnalysis" class="ptolemy.data.expr.Parameter" value="false">
             </property>
-            <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalTableauFactory">
+            <property name="_tableauFactory" class="ptolemy.vergil.modal.modal.ModalTableauFactory">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{-1525.0, -785.0}">
             </property>
-            <port name="CommIn" class="ptolemy.domains.fsm.modal.ModalPort">
+            <port name="CommIn" class="ptolemy.domains.modal.modal.ModalPort">
                 <property name="input"/>
             </port>
-            <port name="NextState" class="ptolemy.domains.fsm.modal.ModalPort">
+            <port name="NextState" class="ptolemy.domains.modal.modal.ModalPort">
                 <property name="output"/>
             </port>
-            <port name="Comm" class="ptolemy.domains.fsm.modal.ModalPort">
+            <port name="Comm" class="ptolemy.domains.modal.modal.ModalPort">
                 <property name="output"/>
             </port>
-            <entity name="_Controller" class="ptolemy.domains.fsm.modal.ModalController">
+            <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
                 <property name="_library" class="ptolemy.moml.LibraryAttribute">
                     <configure>
-        <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.fsm.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory"></property></entity></entity>
+        <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory"></property></entity></entity>
       </configure>
                 </property>
                 <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1, 16, 1278, 991}, maximized=false}">
@@ -5468,24 +5468,24 @@
                 </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="false">
                 </property>
-                <port name="CommIn" class="ptolemy.domains.fsm.modal.RefinementPort">
+                <port name="CommIn" class="ptolemy.domains.modal.modal.RefinementPort">
                     <property name="input"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[1105.0, 715.0]">
                     </property>
                 </port>
-                <port name="NextState" class="ptolemy.domains.fsm.modal.RefinementPort">
+                <port name="NextState" class="ptolemy.domains.modal.modal.RefinementPort">
                     <property name="input"/>
                     <property name="output"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[1110.0, 785.0]">
                     </property>
                 </port>
-                <port name="Comm" class="ptolemy.domains.fsm.modal.RefinementPort">
+                <port name="Comm" class="ptolemy.domains.modal.modal.RefinementPort">
                     <property name="input"/>
                     <property name="output"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="{0.0, 0.0}">
                     </property>
                 </port>
-                <entity name="NewREQ" class="ptolemy.domains.fsm.kernel.State">
+                <entity name="NewREQ" class="ptolemy.domains.modal.kernel.State">
                     <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="NewREQ">
                     </property>
                     <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="false">
@@ -5497,7 +5497,7 @@
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[-70.0, 760.0]">
                     </property>
                 </entity>
-                <entity name="Free" class="ptolemy.domains.fsm.kernel.State">
+                <entity name="Free" class="ptolemy.domains.modal.kernel.State">
                     <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="Free">
                     </property>
                     <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="false">
@@ -5509,7 +5509,7 @@
                     <property name="_location" class="ptolemy.kernel.util.Location" value="{385.0, 540.0}">
                     </property>
                 </entity>
-                <entity name="GoodREP" class="ptolemy.domains.fsm.kernel.State">
+                <entity name="GoodREP" class="ptolemy.domains.modal.kernel.State">
                     <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="GoodREP">
                     </property>
                     <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
@@ -5519,7 +5519,7 @@
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[255.0, 100.0]">
                     </property>
                 </entity>
-                <entity name="RepetedREQ" class="ptolemy.domains.fsm.kernel.State">
+                <entity name="RepetedREQ" class="ptolemy.domains.modal.kernel.State">
                     <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="RepetedREQ">
                     </property>
                     <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
@@ -5529,7 +5529,7 @@
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[910.0, 535.0]">
                     </property>
                 </entity>
-                <entity name="ini" class="ptolemy.domains.fsm.kernel.State">
+                <entity name="ini" class="ptolemy.domains.modal.kernel.State">
                     <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="ini">
                     </property>
                     <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">
@@ -5541,7 +5541,7 @@
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[305.0, 1140.0]">
                     </property>
                 </entity>
-                <relation name="relation" class="ptolemy.domains.fsm.kernel.Transition">
+                <relation name="relation" class="ptolemy.domains.modal.kernel.Transition">
                     <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
                     </property>
                     <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="NextState==3 &amp;&amp; NextState_isPresent">
@@ -5559,7 +5559,7 @@
                     <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
                     </property>
                 </relation>
-                <relation name="relation2" class="ptolemy.domains.fsm.kernel.Transition">
+                <relation name="relation2" class="ptolemy.domains.modal.kernel.Transition">
                     <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
                     </property>
                     <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="NextState_isPresent &amp;&amp; NextState==0">
@@ -5577,7 +5577,7 @@
                     <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
                     </property>
                 </relation>
-                <relation name="relation3" class="ptolemy.domains.fsm.kernel.Transition">
+                <relation name="relation3" class="ptolemy.domains.modal.kernel.Transition">
                     <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
                     </property>
                     <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="NextState==2 &amp;&amp; NextState_isPresent">
@@ -5595,7 +5595,7 @@
                     <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
                     </property>
                 </relation>
-                <relation name="relation4" class="ptolemy.domains.fsm.kernel.Transition">
+                <relation name="relation4" class="ptolemy.domains.modal.kernel.Transition">
                     <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
                     </property>
                     <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="NextState_isPresent &amp;&amp; NextState==0">
@@ -5613,7 +5613,7 @@
                     <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
                     </property>
                 </relation>
-                <relation name="relation5" class="ptolemy.domains.fsm.kernel.Transition">
+                <relation name="relation5" class="ptolemy.domains.modal.kernel.Transition">
                     <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
                     </property>
                     <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="NextState==1 &amp;&amp; NextState_isPresent">
@@ -5631,7 +5631,7 @@
                     <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
                     </property>
                 </relation>
-                <relation name="relation6" class="ptolemy.domains.fsm.kernel.Transition">
+                <relation name="relation6" class="ptolemy.domains.modal.kernel.Transition">
                     <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
                     </property>
                     <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="NextState==0 &amp;&amp; NextState_isPresent">
@@ -5649,7 +5649,7 @@
                     <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
                     </property>
                 </relation>
-                <relation name="relation7" class="ptolemy.domains.fsm.kernel.Transition">
+                <relation name="relation7" class="ptolemy.domains.modal.kernel.Transition">
                     <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
                     </property>
                     <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="NextState_isPresent &amp;&amp; NextState == 0">
@@ -5682,7 +5682,7 @@
                 <link port="RepetedREQ.outgoingPort" relation="relation6"/>
                 <link port="ini.outgoingPort" relation="relation7"/>
             </entity>
-            <entity name="Free" class="ptolemy.domains.fsm.modal.Refinement">
+            <entity name="Free" class="ptolemy.domains.modal.modal.Refinement">
                 <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[-285.0, 10.0]">
                     </property>
@@ -5701,17 +5701,17 @@
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, -20.0]">
                     </property>
                 </property>
-                <port name="CommIn" class="ptolemy.domains.fsm.modal.RefinementPort">
+                <port name="CommIn" class="ptolemy.domains.modal.modal.RefinementPort">
                     <property name="input"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[-320.0, 120.0]">
                     </property>
                 </port>
-                <port name="NextState" class="ptolemy.domains.fsm.modal.RefinementPort">
+                <port name="NextState" class="ptolemy.domains.modal.modal.RefinementPort">
                     <property name="output"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[910.0, 130.0]">
                     </property>
                 </port>
-                <port name="Comm" class="ptolemy.domains.fsm.modal.RefinementPort">
+                <port name="Comm" class="ptolemy.domains.modal.modal.RefinementPort">
                     <property name="output"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[930.0, 325.0]">
                     </property>
@@ -5719,8 +5719,8 @@
                 <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
                     <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="MsgId">
                     </property>
-		    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
-		    </property>
+                    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
                     <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
                         </property>
@@ -5974,7 +5974,7 @@
                 <link port="Expression4.a" relation="relation2"/>
                 <link port="Expression4.b" relation="relation"/>
             </entity>
-            <entity name="RepetedREQ" class="ptolemy.domains.fsm.modal.Refinement">
+            <entity name="RepetedREQ" class="ptolemy.domains.modal.modal.Refinement">
                 <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
                     <property name="iterations" class="ptolemy.data.expr.Parameter" value="1">
                     </property>
@@ -5993,17 +5993,17 @@
                 </property>
                 <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{276.8124999999999, 660.2064888164025}">
                 </property>
-                <port name="CommIn" class="ptolemy.domains.fsm.modal.RefinementPort">
+                <port name="CommIn" class="ptolemy.domains.modal.modal.RefinementPort">
                     <property name="input"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[480.0, 520.0]">
                     </property>
                 </port>
-                <port name="NextState" class="ptolemy.domains.fsm.modal.RefinementPort">
+                <port name="NextState" class="ptolemy.domains.modal.modal.RefinementPort">
                     <property name="output"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, 480.0]">
                     </property>
                 </port>
-                <port name="Comm" class="ptolemy.domains.fsm.modal.RefinementPort">
+                <port name="Comm" class="ptolemy.domains.modal.modal.RefinementPort">
                     <property name="output"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="{0.0, 0.0}">
                     </property>
@@ -6211,8 +6211,8 @@
                 <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
                     <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="Table">
                     </property>
-		    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
-		    </property>
+                    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
                     <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
                         </property>
@@ -6338,7 +6338,7 @@
                 <link port="BooleanSwitch3.control" relation="relation2"/>
                 <link port="BooleanSwitch3.falseOutput" relation="relation6"/>
             </entity>
-            <entity name="NewREQ" class="ptolemy.domains.fsm.modal.Refinement">
+            <entity name="NewREQ" class="ptolemy.domains.modal.modal.Refinement">
                 <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 0, 1288, 1004}, maximized=false}">
                 </property>
                 <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1073, 894]">
@@ -6351,17 +6351,17 @@
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[-325.0, -135.0]">
                     </property>
                 </property>
-                <port name="CommIn" class="ptolemy.domains.fsm.modal.RefinementPort">
+                <port name="CommIn" class="ptolemy.domains.modal.modal.RefinementPort">
                     <property name="input"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[-345.0, -75.0]">
                     </property>
                 </port>
-                <port name="NextState" class="ptolemy.domains.fsm.modal.RefinementPort">
+                <port name="NextState" class="ptolemy.domains.modal.modal.RefinementPort">
                     <property name="output"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[930.0, -45.0]">
                     </property>
                 </port>
-                <port name="Comm" class="ptolemy.domains.fsm.modal.RefinementPort">
+                <port name="Comm" class="ptolemy.domains.modal.modal.RefinementPort">
                     <property name="output"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[1055.0, 105.0]">
                     </property>
@@ -6701,8 +6701,8 @@
                 <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
                     <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="ActiveREQ">
                     </property>
-		    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
-		    </property>
+                    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
                     <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
                         </property>
@@ -6803,8 +6803,8 @@
                 <entity name="SetVariable2" class="ptolemy.actor.lib.SetVariable">
                     <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="Table">
                     </property>
-		    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
-		    </property>
+                    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
                     <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
                         </property>
@@ -7336,7 +7336,7 @@
                 <link relation1="relation16" relation2="relation35"/>
                 <link relation1="relation35" relation2="relation36"/>
             </entity>
-            <entity name="GoodREP" class="ptolemy.domains.fsm.modal.Refinement">
+            <entity name="GoodREP" class="ptolemy.domains.modal.modal.Refinement">
                 <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 0, 1288, 1004}, maximized=false}">
                 </property>
                 <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1073, 894]">
@@ -7349,17 +7349,17 @@
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 50.0]">
                     </property>
                 </property>
-                <port name="CommIn" class="ptolemy.domains.fsm.modal.RefinementPort">
+                <port name="CommIn" class="ptolemy.domains.modal.modal.RefinementPort">
                     <property name="input"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[190.0, 45.0]">
                     </property>
                 </port>
-                <port name="NextState" class="ptolemy.domains.fsm.modal.RefinementPort">
+                <port name="NextState" class="ptolemy.domains.modal.modal.RefinementPort">
                     <property name="output"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[1031.75, 670.0]">
                     </property>
                 </port>
-                <port name="Comm" class="ptolemy.domains.fsm.modal.RefinementPort">
+                <port name="Comm" class="ptolemy.domains.modal.modal.RefinementPort">
                     <property name="output"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[896.75, 460.0]">
                     </property>
@@ -7427,8 +7427,8 @@
                 <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
                     <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="ActiveREQ">
                     </property>
-		    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
-		    </property>
+                    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
                     <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
                         </property>
@@ -7462,8 +7462,8 @@
                 <entity name="SetVariable2" class="ptolemy.actor.lib.SetVariable">
                     <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="Table">
                     </property>
-		    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
-		    </property>
+                    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
                     <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
                         </property>
@@ -7618,22 +7618,22 @@
                 <link port="Const4.trigger" relation="relation5"/>
                 <link port="PoissonClock.output" relation="relation12"/>
             </entity>
-            <entity name="ini" class="ptolemy.domains.fsm.modal.Refinement">
+            <entity name="ini" class="ptolemy.domains.modal.modal.Refinement">
                 <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[-585.0, -15.0]">
                     </property>
                 </property>
-                <port name="CommIn" class="ptolemy.domains.fsm.modal.RefinementPort">
+                <port name="CommIn" class="ptolemy.domains.modal.modal.RefinementPort">
                     <property name="input"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[-5.0, -5.0]">
                     </property>
                 </port>
-                <port name="NextState" class="ptolemy.domains.fsm.modal.RefinementPort">
+                <port name="NextState" class="ptolemy.domains.modal.modal.RefinementPort">
                     <property name="output"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[-230.0, 400.0]">
                     </property>
                 </port>
-                <port name="Comm" class="ptolemy.domains.fsm.modal.RefinementPort">
+                <port name="Comm" class="ptolemy.domains.modal.modal.RefinementPort">
                     <property name="output"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[-10.0, 35.0]">
                     </property>
@@ -7641,8 +7641,8 @@
                 <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
                     <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="MsgId">
                     </property>
-		    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
-		    </property>
+                    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
                     <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
                         </property>
@@ -7681,8 +7681,8 @@
                 <entity name="SetVariable2" class="ptolemy.actor.lib.SetVariable">
                     <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="Table">
                     </property>
-		    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
-		    </property>
+                    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
                     <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
                         </property>
@@ -7695,8 +7695,8 @@
                 <entity name="SetVariable3" class="ptolemy.actor.lib.SetVariable">
                     <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="ActiveREQ">
                     </property>
-		    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
-		    </property>
+                    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
                     <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
                         </property>
@@ -7889,8 +7889,8 @@
         <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
             <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="SeqN">
             </property>
-		    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
-		    </property>
+            <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
             <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                 <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
                 </property>
@@ -7953,11 +7953,11 @@
         </property>
         <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{-1274.6640625, -692.0893770578552}">
         </property>
-        <property name="MsgId" class="ptolemy.data.expr.Parameter" value="{Data = {IdReq = 10, Lifetime = 0, NoH = 8, Requester = 12, Responder = 6, SeqN = 1}, Sender = 4, Type = &quot;RREQ&quot;}">
+        <property name="MsgId" class="ptolemy.data.expr.Parameter" value="{Data = {IdReq = 10, Lifetime = 90, NoH = 2, Requester = 12, Responder = 6, SeqN = 58}, Sender = 4, Type = &quot;RREP&quot;}">
         </property>
         <property name="NodeId" class="ptolemy.data.expr.Parameter" value="5">
         </property>
-        <property name="SeqN" class="ptolemy.data.expr.Parameter" value="63">
+        <property name="SeqN" class="ptolemy.data.expr.Parameter" value="65">
         </property>
         <property name="inrange" class="ptolemy.data.expr.Parameter" value="200.0">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -7978,7 +7978,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[-1425.0, -900.0]">
             </property>
         </property>
-        <property name="Table" class="ptolemy.data.expr.Parameter" value="{{Dest = 0, Next = 0, NoH = 0, SeqN = 0}, {Dest = 12, Next = 3, NoH = 7, SeqN = 1}, {Dest = 3, Next = 3, NoH = 1, SeqN = 1}, {Dest = 27, Next = 27, NoH = 1, SeqN = 1}}">
+        <property name="Table" class="ptolemy.data.expr.Parameter" value="{{Dest = 0, Next = 0, NoH = 0, SeqN = 0}, {Dest = 12, Next = 3, NoH = 7, SeqN = 1}, {Dest = 3, Next = 3, NoH = 1, SeqN = 1}, {Dest = 27, Next = 27, NoH = 1, SeqN = 1}, {Dest = 6, Next = 6, NoH = 1, SeqN = 58}}">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -7997,7 +7997,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[-1725.0, -970.0]">
             </property>
         </property>
-        <property name="ActiveREQ" class="ptolemy.data.expr.Parameter" value="{{IdReq = 0, Requester = 0, Responder = 0}, {IdReq = 10, Requester = 12, Responder = 6}}">
+        <property name="ActiveREQ" class="ptolemy.data.expr.Parameter" value="{{IdReq = 0, Requester = 0, Responder = 0}}">
         </property>
         <port name="CommOut" class="ptolemy.domains.wireless.kernel.WirelessIOPort">
             <property name="output"/>
@@ -8021,26 +8021,26 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[-1730.0, -700.0]">
             </property>
         </port>
-        <entity name="ModalModel" class="ptolemy.domains.fsm.modal.ModalModel">
+        <entity name="ModalModel" class="ptolemy.domains.modal.modal.ModalModel">
             <property name="conservativeAnalysis" class="ptolemy.data.expr.Parameter" value="false">
             </property>
-            <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalTableauFactory">
+            <property name="_tableauFactory" class="ptolemy.vergil.modal.modal.ModalTableauFactory">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{-1525.0, -785.0}">
             </property>
-            <port name="CommIn" class="ptolemy.domains.fsm.modal.ModalPort">
+            <port name="CommIn" class="ptolemy.domains.modal.modal.ModalPort">
                 <property name="input"/>
             </port>
-            <port name="NextState" class="ptolemy.domains.fsm.modal.ModalPort">
+            <port name="NextState" class="ptolemy.domains.modal.modal.ModalPort">
                 <property name="output"/>
             </port>
-            <port name="Comm" class="ptolemy.domains.fsm.modal.ModalPort">
+            <port name="Comm" class="ptolemy.domains.modal.modal.ModalPort">
                 <property name="output"/>
             </port>
-            <entity name="_Controller" class="ptolemy.domains.fsm.modal.ModalController">
+            <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
                 <property name="_library" class="ptolemy.moml.LibraryAttribute">
                     <configure>
-        <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.fsm.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory"></property></entity></entity>
+        <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory"></property></entity></entity>
       </configure>
                 </property>
                 <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1, 16, 1278, 991}, maximized=false}">
@@ -8053,24 +8053,24 @@
                 </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="false">
                 </property>
-                <port name="CommIn" class="ptolemy.domains.fsm.modal.RefinementPort">
+                <port name="CommIn" class="ptolemy.domains.modal.modal.RefinementPort">
                     <property name="input"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[1105.0, 715.0]">
                     </property>
                 </port>
-                <port name="NextState" class="ptolemy.domains.fsm.modal.RefinementPort">
+                <port name="NextState" class="ptolemy.domains.modal.modal.RefinementPort">
                     <property name="input"/>
                     <property name="output"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[1110.0, 785.0]">
                     </property>
                 </port>
-                <port name="Comm" class="ptolemy.domains.fsm.modal.RefinementPort">
+                <port name="Comm" class="ptolemy.domains.modal.modal.RefinementPort">
                     <property name="input"/>
                     <property name="output"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="{0.0, 0.0}">
                     </property>
                 </port>
-                <entity name="NewREQ" class="ptolemy.domains.fsm.kernel.State">
+                <entity name="NewREQ" class="ptolemy.domains.modal.kernel.State">
                     <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="NewREQ">
                     </property>
                     <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="false">
@@ -8082,7 +8082,7 @@
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[-70.0, 760.0]">
                     </property>
                 </entity>
-                <entity name="Free" class="ptolemy.domains.fsm.kernel.State">
+                <entity name="Free" class="ptolemy.domains.modal.kernel.State">
                     <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="Free">
                     </property>
                     <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="false">
@@ -8094,7 +8094,7 @@
                     <property name="_location" class="ptolemy.kernel.util.Location" value="{385.0, 540.0}">
                     </property>
                 </entity>
-                <entity name="GoodREP" class="ptolemy.domains.fsm.kernel.State">
+                <entity name="GoodREP" class="ptolemy.domains.modal.kernel.State">
                     <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="GoodREP">
                     </property>
                     <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
@@ -8104,7 +8104,7 @@
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[255.0, 100.0]">
                     </property>
                 </entity>
-                <entity name="RepetedREQ" class="ptolemy.domains.fsm.kernel.State">
+                <entity name="RepetedREQ" class="ptolemy.domains.modal.kernel.State">
                     <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="RepetedREQ">
                     </property>
                     <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
@@ -8114,7 +8114,7 @@
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[910.0, 535.0]">
                     </property>
                 </entity>
-                <entity name="ini" class="ptolemy.domains.fsm.kernel.State">
+                <entity name="ini" class="ptolemy.domains.modal.kernel.State">
                     <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="ini">
                     </property>
                     <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">
@@ -8126,7 +8126,7 @@
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[305.0, 1140.0]">
                     </property>
                 </entity>
-                <relation name="relation" class="ptolemy.domains.fsm.kernel.Transition">
+                <relation name="relation" class="ptolemy.domains.modal.kernel.Transition">
                     <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
                     </property>
                     <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="NextState==3 &amp;&amp; NextState_isPresent">
@@ -8144,7 +8144,7 @@
                     <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
                     </property>
                 </relation>
-                <relation name="relation2" class="ptolemy.domains.fsm.kernel.Transition">
+                <relation name="relation2" class="ptolemy.domains.modal.kernel.Transition">
                     <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
                     </property>
                     <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="NextState_isPresent &amp;&amp; NextState==0">
@@ -8162,7 +8162,7 @@
                     <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
                     </property>
                 </relation>
-                <relation name="relation3" class="ptolemy.domains.fsm.kernel.Transition">
+                <relation name="relation3" class="ptolemy.domains.modal.kernel.Transition">
                     <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
                     </property>
                     <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="NextState==2 &amp;&amp; NextState_isPresent">
@@ -8180,7 +8180,7 @@
                     <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
                     </property>
                 </relation>
-                <relation name="relation4" class="ptolemy.domains.fsm.kernel.Transition">
+                <relation name="relation4" class="ptolemy.domains.modal.kernel.Transition">
                     <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
                     </property>
                     <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="NextState_isPresent &amp;&amp; NextState==0">
@@ -8198,7 +8198,7 @@
                     <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
                     </property>
                 </relation>
-                <relation name="relation5" class="ptolemy.domains.fsm.kernel.Transition">
+                <relation name="relation5" class="ptolemy.domains.modal.kernel.Transition">
                     <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
                     </property>
                     <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="NextState==1 &amp;&amp; NextState_isPresent">
@@ -8216,7 +8216,7 @@
                     <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
                     </property>
                 </relation>
-                <relation name="relation6" class="ptolemy.domains.fsm.kernel.Transition">
+                <relation name="relation6" class="ptolemy.domains.modal.kernel.Transition">
                     <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
                     </property>
                     <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="NextState==0 &amp;&amp; NextState_isPresent">
@@ -8234,7 +8234,7 @@
                     <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
                     </property>
                 </relation>
-                <relation name="relation7" class="ptolemy.domains.fsm.kernel.Transition">
+                <relation name="relation7" class="ptolemy.domains.modal.kernel.Transition">
                     <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
                     </property>
                     <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="NextState_isPresent &amp;&amp; NextState == 0">
@@ -8267,7 +8267,7 @@
                 <link port="RepetedREQ.outgoingPort" relation="relation6"/>
                 <link port="ini.outgoingPort" relation="relation7"/>
             </entity>
-            <entity name="Free" class="ptolemy.domains.fsm.modal.Refinement">
+            <entity name="Free" class="ptolemy.domains.modal.modal.Refinement">
                 <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[-285.0, 10.0]">
                     </property>
@@ -8286,17 +8286,17 @@
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, -20.0]">
                     </property>
                 </property>
-                <port name="CommIn" class="ptolemy.domains.fsm.modal.RefinementPort">
+                <port name="CommIn" class="ptolemy.domains.modal.modal.RefinementPort">
                     <property name="input"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[-320.0, 120.0]">
                     </property>
                 </port>
-                <port name="NextState" class="ptolemy.domains.fsm.modal.RefinementPort">
+                <port name="NextState" class="ptolemy.domains.modal.modal.RefinementPort">
                     <property name="output"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[910.0, 130.0]">
                     </property>
                 </port>
-                <port name="Comm" class="ptolemy.domains.fsm.modal.RefinementPort">
+                <port name="Comm" class="ptolemy.domains.modal.modal.RefinementPort">
                     <property name="output"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[930.0, 325.0]">
                     </property>
@@ -8304,8 +8304,8 @@
                 <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
                     <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="MsgId">
                     </property>
-		    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
-		    </property>
+                    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
                     <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
                         </property>
@@ -8559,7 +8559,7 @@
                 <link port="Expression4.a" relation="relation2"/>
                 <link port="Expression4.b" relation="relation"/>
             </entity>
-            <entity name="RepetedREQ" class="ptolemy.domains.fsm.modal.Refinement">
+            <entity name="RepetedREQ" class="ptolemy.domains.modal.modal.Refinement">
                 <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
                     <property name="iterations" class="ptolemy.data.expr.Parameter" value="1">
                     </property>
@@ -8578,17 +8578,17 @@
                 </property>
                 <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{276.8124999999999, 660.2064888164025}">
                 </property>
-                <port name="CommIn" class="ptolemy.domains.fsm.modal.RefinementPort">
+                <port name="CommIn" class="ptolemy.domains.modal.modal.RefinementPort">
                     <property name="input"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[480.0, 520.0]">
                     </property>
                 </port>
-                <port name="NextState" class="ptolemy.domains.fsm.modal.RefinementPort">
+                <port name="NextState" class="ptolemy.domains.modal.modal.RefinementPort">
                     <property name="output"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, 480.0]">
                     </property>
                 </port>
-                <port name="Comm" class="ptolemy.domains.fsm.modal.RefinementPort">
+                <port name="Comm" class="ptolemy.domains.modal.modal.RefinementPort">
                     <property name="output"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="{0.0, 0.0}">
                     </property>
@@ -8796,8 +8796,8 @@
                 <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
                     <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="Table">
                     </property>
-		    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
-		    </property>
+                    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
                     <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
                         </property>
@@ -8923,7 +8923,7 @@
                 <link port="BooleanSwitch3.control" relation="relation2"/>
                 <link port="BooleanSwitch3.falseOutput" relation="relation6"/>
             </entity>
-            <entity name="NewREQ" class="ptolemy.domains.fsm.modal.Refinement">
+            <entity name="NewREQ" class="ptolemy.domains.modal.modal.Refinement">
                 <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 0, 1288, 1004}, maximized=false}">
                 </property>
                 <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1073, 894]">
@@ -8936,17 +8936,17 @@
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[-325.0, -135.0]">
                     </property>
                 </property>
-                <port name="CommIn" class="ptolemy.domains.fsm.modal.RefinementPort">
+                <port name="CommIn" class="ptolemy.domains.modal.modal.RefinementPort">
                     <property name="input"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[-345.0, -75.0]">
                     </property>
                 </port>
-                <port name="NextState" class="ptolemy.domains.fsm.modal.RefinementPort">
+                <port name="NextState" class="ptolemy.domains.modal.modal.RefinementPort">
                     <property name="output"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[930.0, -45.0]">
                     </property>
                 </port>
-                <port name="Comm" class="ptolemy.domains.fsm.modal.RefinementPort">
+                <port name="Comm" class="ptolemy.domains.modal.modal.RefinementPort">
                     <property name="output"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[1055.0, 105.0]">
                     </property>
@@ -9286,8 +9286,8 @@
                 <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
                     <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="ActiveREQ">
                     </property>
-		    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
-		    </property>
+                    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
                     <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
                         </property>
@@ -9388,8 +9388,8 @@
                 <entity name="SetVariable2" class="ptolemy.actor.lib.SetVariable">
                     <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="Table">
                     </property>
-		    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
-		    </property>
+                    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
                     <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
                         </property>
@@ -9921,7 +9921,7 @@
                 <link relation1="relation16" relation2="relation35"/>
                 <link relation1="relation35" relation2="relation36"/>
             </entity>
-            <entity name="GoodREP" class="ptolemy.domains.fsm.modal.Refinement">
+            <entity name="GoodREP" class="ptolemy.domains.modal.modal.Refinement">
                 <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 0, 1288, 1004}, maximized=false}">
                 </property>
                 <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1073, 894]">
@@ -9934,17 +9934,17 @@
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 50.0]">
                     </property>
                 </property>
-                <port name="CommIn" class="ptolemy.domains.fsm.modal.RefinementPort">
+                <port name="CommIn" class="ptolemy.domains.modal.modal.RefinementPort">
                     <property name="input"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[190.0, 45.0]">
                     </property>
                 </port>
-                <port name="NextState" class="ptolemy.domains.fsm.modal.RefinementPort">
+                <port name="NextState" class="ptolemy.domains.modal.modal.RefinementPort">
                     <property name="output"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[1031.75, 670.0]">
                     </property>
                 </port>
-                <port name="Comm" class="ptolemy.domains.fsm.modal.RefinementPort">
+                <port name="Comm" class="ptolemy.domains.modal.modal.RefinementPort">
                     <property name="output"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[896.75, 460.0]">
                     </property>
@@ -10012,8 +10012,8 @@
                 <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
                     <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="ActiveREQ">
                     </property>
-		    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
-		    </property>
+                    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
                     <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
                         </property>
@@ -10047,8 +10047,8 @@
                 <entity name="SetVariable2" class="ptolemy.actor.lib.SetVariable">
                     <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="Table">
                     </property>
-		    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
-		    </property>
+                    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
                     <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
                         </property>
@@ -10203,22 +10203,22 @@
                 <link port="Const4.trigger" relation="relation5"/>
                 <link port="PoissonClock.output" relation="relation12"/>
             </entity>
-            <entity name="ini" class="ptolemy.domains.fsm.modal.Refinement">
+            <entity name="ini" class="ptolemy.domains.modal.modal.Refinement">
                 <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[-585.0, -15.0]">
                     </property>
                 </property>
-                <port name="CommIn" class="ptolemy.domains.fsm.modal.RefinementPort">
+                <port name="CommIn" class="ptolemy.domains.modal.modal.RefinementPort">
                     <property name="input"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[-5.0, -5.0]">
                     </property>
                 </port>
-                <port name="NextState" class="ptolemy.domains.fsm.modal.RefinementPort">
+                <port name="NextState" class="ptolemy.domains.modal.modal.RefinementPort">
                     <property name="output"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[-230.0, 400.0]">
                     </property>
                 </port>
-                <port name="Comm" class="ptolemy.domains.fsm.modal.RefinementPort">
+                <port name="Comm" class="ptolemy.domains.modal.modal.RefinementPort">
                     <property name="output"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[-10.0, 35.0]">
                     </property>
@@ -10226,8 +10226,8 @@
                 <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
                     <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="MsgId">
                     </property>
-		    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
-		    </property>
+                    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
                     <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
                         </property>
@@ -10266,8 +10266,8 @@
                 <entity name="SetVariable2" class="ptolemy.actor.lib.SetVariable">
                     <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="Table">
                     </property>
-		    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
-		    </property>
+                    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
                     <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
                         </property>
@@ -10280,8 +10280,8 @@
                 <entity name="SetVariable3" class="ptolemy.actor.lib.SetVariable">
                     <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="ActiveREQ">
                     </property>
-		    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
-		    </property>
+                    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
                     <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
                         </property>
@@ -10474,8 +10474,8 @@
         <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
             <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="SeqN">
             </property>
-		    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
-		    </property>
+            <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
             <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                 <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
                 </property>
@@ -10538,11 +10538,11 @@
         </property>
         <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{-1274.6640625, -692.0893770578552}">
         </property>
-        <property name="MsgId" class="ptolemy.data.expr.Parameter" value="{Data = {IdReq = 10, Lifetime = 0, NoH = 8, Requester = 12, Responder = 6, SeqN = 1}, Sender = 4, Type = &quot;RREQ&quot;}">
+        <property name="MsgId" class="ptolemy.data.expr.Parameter" value="{Data = {IdReq = 10, Lifetime = 90, NoH = 2, Requester = 12, Responder = 6, SeqN = 58}, Sender = 4, Type = &quot;RREP&quot;}">
         </property>
         <property name="NodeId" class="ptolemy.data.expr.Parameter" value="6">
         </property>
-        <property name="SeqN" class="ptolemy.data.expr.Parameter" value="58">
+        <property name="SeqN" class="ptolemy.data.expr.Parameter" value="59">
         </property>
         <property name="inrange" class="ptolemy.data.expr.Parameter" value="200.0">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -10606,26 +10606,26 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[-1730.0, -700.0]">
             </property>
         </port>
-        <entity name="ModalModel" class="ptolemy.domains.fsm.modal.ModalModel">
+        <entity name="ModalModel" class="ptolemy.domains.modal.modal.ModalModel">
             <property name="conservativeAnalysis" class="ptolemy.data.expr.Parameter" value="false">
             </property>
-            <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalTableauFactory">
+            <property name="_tableauFactory" class="ptolemy.vergil.modal.modal.ModalTableauFactory">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{-1525.0, -785.0}">
             </property>
-            <port name="CommIn" class="ptolemy.domains.fsm.modal.ModalPort">
+            <port name="CommIn" class="ptolemy.domains.modal.modal.ModalPort">
                 <property name="input"/>
             </port>
-            <port name="NextState" class="ptolemy.domains.fsm.modal.ModalPort">
+            <port name="NextState" class="ptolemy.domains.modal.modal.ModalPort">
                 <property name="output"/>
             </port>
-            <port name="Comm" class="ptolemy.domains.fsm.modal.ModalPort">
+            <port name="Comm" class="ptolemy.domains.modal.modal.ModalPort">
                 <property name="output"/>
             </port>
-            <entity name="_Controller" class="ptolemy.domains.fsm.modal.ModalController">
+            <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
                 <property name="_library" class="ptolemy.moml.LibraryAttribute">
                     <configure>
-        <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.fsm.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory"></property></entity></entity>
+        <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory"></property></entity></entity>
       </configure>
                 </property>
                 <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1, 16, 1278, 991}, maximized=false}">
@@ -10638,24 +10638,24 @@
                 </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="false">
                 </property>
-                <port name="CommIn" class="ptolemy.domains.fsm.modal.RefinementPort">
+                <port name="CommIn" class="ptolemy.domains.modal.modal.RefinementPort">
                     <property name="input"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[1105.0, 715.0]">
                     </property>
                 </port>
-                <port name="NextState" class="ptolemy.domains.fsm.modal.RefinementPort">
+                <port name="NextState" class="ptolemy.domains.modal.modal.RefinementPort">
                     <property name="input"/>
                     <property name="output"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[1110.0, 785.0]">
                     </property>
                 </port>
-                <port name="Comm" class="ptolemy.domains.fsm.modal.RefinementPort">
+                <port name="Comm" class="ptolemy.domains.modal.modal.RefinementPort">
                     <property name="input"/>
                     <property name="output"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="{0.0, 0.0}">
                     </property>
                 </port>
-                <entity name="NewREQ" class="ptolemy.domains.fsm.kernel.State">
+                <entity name="NewREQ" class="ptolemy.domains.modal.kernel.State">
                     <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="NewREQ">
                     </property>
                     <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="false">
@@ -10667,7 +10667,7 @@
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[-70.0, 760.0]">
                     </property>
                 </entity>
-                <entity name="Free" class="ptolemy.domains.fsm.kernel.State">
+                <entity name="Free" class="ptolemy.domains.modal.kernel.State">
                     <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="Free">
                     </property>
                     <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="false">
@@ -10679,7 +10679,7 @@
                     <property name="_location" class="ptolemy.kernel.util.Location" value="{385.0, 540.0}">
                     </property>
                 </entity>
-                <entity name="GoodREP" class="ptolemy.domains.fsm.kernel.State">
+                <entity name="GoodREP" class="ptolemy.domains.modal.kernel.State">
                     <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="GoodREP">
                     </property>
                     <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
@@ -10689,7 +10689,7 @@
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[255.0, 100.0]">
                     </property>
                 </entity>
-                <entity name="RepetedREQ" class="ptolemy.domains.fsm.kernel.State">
+                <entity name="RepetedREQ" class="ptolemy.domains.modal.kernel.State">
                     <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="RepetedREQ">
                     </property>
                     <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
@@ -10699,7 +10699,7 @@
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[910.0, 535.0]">
                     </property>
                 </entity>
-                <entity name="ini" class="ptolemy.domains.fsm.kernel.State">
+                <entity name="ini" class="ptolemy.domains.modal.kernel.State">
                     <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="ini">
                     </property>
                     <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">
@@ -10711,7 +10711,7 @@
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[305.0, 1140.0]">
                     </property>
                 </entity>
-                <relation name="relation" class="ptolemy.domains.fsm.kernel.Transition">
+                <relation name="relation" class="ptolemy.domains.modal.kernel.Transition">
                     <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
                     </property>
                     <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="NextState==3 &amp;&amp; NextState_isPresent">
@@ -10729,7 +10729,7 @@
                     <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
                     </property>
                 </relation>
-                <relation name="relation2" class="ptolemy.domains.fsm.kernel.Transition">
+                <relation name="relation2" class="ptolemy.domains.modal.kernel.Transition">
                     <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
                     </property>
                     <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="NextState_isPresent &amp;&amp; NextState==0">
@@ -10747,7 +10747,7 @@
                     <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
                     </property>
                 </relation>
-                <relation name="relation3" class="ptolemy.domains.fsm.kernel.Transition">
+                <relation name="relation3" class="ptolemy.domains.modal.kernel.Transition">
                     <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
                     </property>
                     <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="NextState==2 &amp;&amp; NextState_isPresent">
@@ -10765,7 +10765,7 @@
                     <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
                     </property>
                 </relation>
-                <relation name="relation4" class="ptolemy.domains.fsm.kernel.Transition">
+                <relation name="relation4" class="ptolemy.domains.modal.kernel.Transition">
                     <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
                     </property>
                     <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="NextState_isPresent &amp;&amp; NextState==0">
@@ -10783,7 +10783,7 @@
                     <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
                     </property>
                 </relation>
-                <relation name="relation5" class="ptolemy.domains.fsm.kernel.Transition">
+                <relation name="relation5" class="ptolemy.domains.modal.kernel.Transition">
                     <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
                     </property>
                     <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="NextState==1 &amp;&amp; NextState_isPresent">
@@ -10801,7 +10801,7 @@
                     <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
                     </property>
                 </relation>
-                <relation name="relation6" class="ptolemy.domains.fsm.kernel.Transition">
+                <relation name="relation6" class="ptolemy.domains.modal.kernel.Transition">
                     <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
                     </property>
                     <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="NextState==0 &amp;&amp; NextState_isPresent">
@@ -10819,7 +10819,7 @@
                     <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
                     </property>
                 </relation>
-                <relation name="relation7" class="ptolemy.domains.fsm.kernel.Transition">
+                <relation name="relation7" class="ptolemy.domains.modal.kernel.Transition">
                     <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
                     </property>
                     <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="NextState_isPresent &amp;&amp; NextState == 0">
@@ -10852,7 +10852,7 @@
                 <link port="RepetedREQ.outgoingPort" relation="relation6"/>
                 <link port="ini.outgoingPort" relation="relation7"/>
             </entity>
-            <entity name="Free" class="ptolemy.domains.fsm.modal.Refinement">
+            <entity name="Free" class="ptolemy.domains.modal.modal.Refinement">
                 <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[-285.0, 10.0]">
                     </property>
@@ -10871,17 +10871,17 @@
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, -20.0]">
                     </property>
                 </property>
-                <port name="CommIn" class="ptolemy.domains.fsm.modal.RefinementPort">
+                <port name="CommIn" class="ptolemy.domains.modal.modal.RefinementPort">
                     <property name="input"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[-320.0, 120.0]">
                     </property>
                 </port>
-                <port name="NextState" class="ptolemy.domains.fsm.modal.RefinementPort">
+                <port name="NextState" class="ptolemy.domains.modal.modal.RefinementPort">
                     <property name="output"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[910.0, 130.0]">
                     </property>
                 </port>
-                <port name="Comm" class="ptolemy.domains.fsm.modal.RefinementPort">
+                <port name="Comm" class="ptolemy.domains.modal.modal.RefinementPort">
                     <property name="output"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[930.0, 325.0]">
                     </property>
@@ -10889,8 +10889,8 @@
                 <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
                     <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="MsgId">
                     </property>
-		    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
-		    </property>
+                    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
                     <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
                         </property>
@@ -11144,7 +11144,7 @@
                 <link port="Expression4.a" relation="relation2"/>
                 <link port="Expression4.b" relation="relation"/>
             </entity>
-            <entity name="RepetedREQ" class="ptolemy.domains.fsm.modal.Refinement">
+            <entity name="RepetedREQ" class="ptolemy.domains.modal.modal.Refinement">
                 <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
                     <property name="iterations" class="ptolemy.data.expr.Parameter" value="1">
                     </property>
@@ -11163,17 +11163,17 @@
                 </property>
                 <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{276.8124999999999, 660.2064888164025}">
                 </property>
-                <port name="CommIn" class="ptolemy.domains.fsm.modal.RefinementPort">
+                <port name="CommIn" class="ptolemy.domains.modal.modal.RefinementPort">
                     <property name="input"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[480.0, 520.0]">
                     </property>
                 </port>
-                <port name="NextState" class="ptolemy.domains.fsm.modal.RefinementPort">
+                <port name="NextState" class="ptolemy.domains.modal.modal.RefinementPort">
                     <property name="output"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, 480.0]">
                     </property>
                 </port>
-                <port name="Comm" class="ptolemy.domains.fsm.modal.RefinementPort">
+                <port name="Comm" class="ptolemy.domains.modal.modal.RefinementPort">
                     <property name="output"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="{0.0, 0.0}">
                     </property>
@@ -11381,8 +11381,8 @@
                 <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
                     <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="Table">
                     </property>
-		    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
-		    </property>
+                    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
                     <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
                         </property>
@@ -11508,7 +11508,7 @@
                 <link port="BooleanSwitch3.control" relation="relation2"/>
                 <link port="BooleanSwitch3.falseOutput" relation="relation6"/>
             </entity>
-            <entity name="NewREQ" class="ptolemy.domains.fsm.modal.Refinement">
+            <entity name="NewREQ" class="ptolemy.domains.modal.modal.Refinement">
                 <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 0, 1288, 1004}, maximized=false}">
                 </property>
                 <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1073, 894]">
@@ -11521,17 +11521,17 @@
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[-325.0, -135.0]">
                     </property>
                 </property>
-                <port name="CommIn" class="ptolemy.domains.fsm.modal.RefinementPort">
+                <port name="CommIn" class="ptolemy.domains.modal.modal.RefinementPort">
                     <property name="input"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[-345.0, -75.0]">
                     </property>
                 </port>
-                <port name="NextState" class="ptolemy.domains.fsm.modal.RefinementPort">
+                <port name="NextState" class="ptolemy.domains.modal.modal.RefinementPort">
                     <property name="output"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[930.0, -45.0]">
                     </property>
                 </port>
-                <port name="Comm" class="ptolemy.domains.fsm.modal.RefinementPort">
+                <port name="Comm" class="ptolemy.domains.modal.modal.RefinementPort">
                     <property name="output"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[1055.0, 105.0]">
                     </property>
@@ -11871,8 +11871,8 @@
                 <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
                     <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="ActiveREQ">
                     </property>
-		    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
-		    </property>
+                    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
                     <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
                         </property>
@@ -11973,8 +11973,8 @@
                 <entity name="SetVariable2" class="ptolemy.actor.lib.SetVariable">
                     <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="Table">
                     </property>
-		    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
-		    </property>
+                    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
                     <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
                         </property>
@@ -12506,7 +12506,7 @@
                 <link relation1="relation16" relation2="relation35"/>
                 <link relation1="relation35" relation2="relation36"/>
             </entity>
-            <entity name="GoodREP" class="ptolemy.domains.fsm.modal.Refinement">
+            <entity name="GoodREP" class="ptolemy.domains.modal.modal.Refinement">
                 <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 0, 1288, 1004}, maximized=false}">
                 </property>
                 <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1073, 894]">
@@ -12519,17 +12519,17 @@
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 50.0]">
                     </property>
                 </property>
-                <port name="CommIn" class="ptolemy.domains.fsm.modal.RefinementPort">
+                <port name="CommIn" class="ptolemy.domains.modal.modal.RefinementPort">
                     <property name="input"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[190.0, 45.0]">
                     </property>
                 </port>
-                <port name="NextState" class="ptolemy.domains.fsm.modal.RefinementPort">
+                <port name="NextState" class="ptolemy.domains.modal.modal.RefinementPort">
                     <property name="output"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[1031.75, 670.0]">
                     </property>
                 </port>
-                <port name="Comm" class="ptolemy.domains.fsm.modal.RefinementPort">
+                <port name="Comm" class="ptolemy.domains.modal.modal.RefinementPort">
                     <property name="output"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[896.75, 460.0]">
                     </property>
@@ -12597,8 +12597,8 @@
                 <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
                     <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="ActiveREQ">
                     </property>
-		    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
-		    </property>
+                    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
                     <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
                         </property>
@@ -12632,8 +12632,8 @@
                 <entity name="SetVariable2" class="ptolemy.actor.lib.SetVariable">
                     <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="Table">
                     </property>
-		    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
-		    </property>
+                    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
                     <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
                         </property>
@@ -12788,22 +12788,22 @@
                 <link port="Const4.trigger" relation="relation5"/>
                 <link port="PoissonClock.output" relation="relation12"/>
             </entity>
-            <entity name="ini" class="ptolemy.domains.fsm.modal.Refinement">
+            <entity name="ini" class="ptolemy.domains.modal.modal.Refinement">
                 <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[-585.0, -15.0]">
                     </property>
                 </property>
-                <port name="CommIn" class="ptolemy.domains.fsm.modal.RefinementPort">
+                <port name="CommIn" class="ptolemy.domains.modal.modal.RefinementPort">
                     <property name="input"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[-5.0, -5.0]">
                     </property>
                 </port>
-                <port name="NextState" class="ptolemy.domains.fsm.modal.RefinementPort">
+                <port name="NextState" class="ptolemy.domains.modal.modal.RefinementPort">
                     <property name="output"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[-230.0, 400.0]">
                     </property>
                 </port>
-                <port name="Comm" class="ptolemy.domains.fsm.modal.RefinementPort">
+                <port name="Comm" class="ptolemy.domains.modal.modal.RefinementPort">
                     <property name="output"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[-10.0, 35.0]">
                     </property>
@@ -12811,8 +12811,8 @@
                 <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
                     <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="MsgId">
                     </property>
-		    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
-		    </property>
+                    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
                     <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
                         </property>
@@ -12851,8 +12851,8 @@
                 <entity name="SetVariable2" class="ptolemy.actor.lib.SetVariable">
                     <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="Table">
                     </property>
-		    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
-		    </property>
+                    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
                     <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
                         </property>
@@ -12865,8 +12865,8 @@
                 <entity name="SetVariable3" class="ptolemy.actor.lib.SetVariable">
                     <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="ActiveREQ">
                     </property>
-		    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
-		    </property>
+                    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
                     <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
                         </property>
@@ -13059,8 +13059,8 @@
         <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
             <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="SeqN">
             </property>
-		    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
-		    </property>
+            <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
             <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                 <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
                 </property>
@@ -13141,11 +13141,11 @@
         </property>
         <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{-1274.6640625, -692.0893770578552}">
         </property>
-        <property name="MsgId" class="ptolemy.data.expr.Parameter" value="{Data = {IdReq = 10, Lifetime = 0, NoH = 6, Requester = 12, Responder = 6, SeqN = 1}, Sender = 1, Type = &quot;RREQ&quot;}">
+        <property name="MsgId" class="ptolemy.data.expr.Parameter" value="{Data = {IdReq = 10, Lifetime = 0, NoH = 7, Requester = 12, Responder = 6, SeqN = 1}, Sender = 3, Type = &quot;RREQ&quot;}">
         </property>
         <property name="NodeId" class="ptolemy.data.expr.Parameter" value="5">
         </property>
-        <property name="SeqN" class="ptolemy.data.expr.Parameter" value="63">
+        <property name="SeqN" class="ptolemy.data.expr.Parameter" value="64">
         </property>
         <property name="inrange" class="ptolemy.data.expr.Parameter" value="200.0">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -13209,26 +13209,26 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[-1730.0, -700.0]">
             </property>
         </port>
-        <entity name="ModalModel" class="ptolemy.domains.fsm.modal.ModalModel">
+        <entity name="ModalModel" class="ptolemy.domains.modal.modal.ModalModel">
             <property name="conservativeAnalysis" class="ptolemy.data.expr.Parameter" value="false">
             </property>
-            <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalTableauFactory">
+            <property name="_tableauFactory" class="ptolemy.vergil.modal.modal.ModalTableauFactory">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{-1525.0, -785.0}">
             </property>
-            <port name="CommIn" class="ptolemy.domains.fsm.modal.ModalPort">
+            <port name="CommIn" class="ptolemy.domains.modal.modal.ModalPort">
                 <property name="input"/>
             </port>
-            <port name="NextState" class="ptolemy.domains.fsm.modal.ModalPort">
+            <port name="NextState" class="ptolemy.domains.modal.modal.ModalPort">
                 <property name="output"/>
             </port>
-            <port name="Comm" class="ptolemy.domains.fsm.modal.ModalPort">
+            <port name="Comm" class="ptolemy.domains.modal.modal.ModalPort">
                 <property name="output"/>
             </port>
-            <entity name="_Controller" class="ptolemy.domains.fsm.modal.ModalController">
+            <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
                 <property name="_library" class="ptolemy.moml.LibraryAttribute">
                     <configure>
-        <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.fsm.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory"></property></entity></entity>
+        <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory"></property></entity></entity>
       </configure>
                 </property>
                 <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1, 16, 1278, 991}, maximized=false}">
@@ -13241,24 +13241,24 @@
                 </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="false">
                 </property>
-                <port name="CommIn" class="ptolemy.domains.fsm.modal.RefinementPort">
+                <port name="CommIn" class="ptolemy.domains.modal.modal.RefinementPort">
                     <property name="input"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[1105.0, 715.0]">
                     </property>
                 </port>
-                <port name="NextState" class="ptolemy.domains.fsm.modal.RefinementPort">
+                <port name="NextState" class="ptolemy.domains.modal.modal.RefinementPort">
                     <property name="input"/>
                     <property name="output"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[1110.0, 785.0]">
                     </property>
                 </port>
-                <port name="Comm" class="ptolemy.domains.fsm.modal.RefinementPort">
+                <port name="Comm" class="ptolemy.domains.modal.modal.RefinementPort">
                     <property name="input"/>
                     <property name="output"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="{0.0, 0.0}">
                     </property>
                 </port>
-                <entity name="NewREQ" class="ptolemy.domains.fsm.kernel.State">
+                <entity name="NewREQ" class="ptolemy.domains.modal.kernel.State">
                     <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="NewREQ">
                     </property>
                     <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="false">
@@ -13270,7 +13270,7 @@
                     <property name="_location" class="ptolemy.kernel.util.Location" value="{-70.0, 760.0}">
                     </property>
                 </entity>
-                <entity name="Free" class="ptolemy.domains.fsm.kernel.State">
+                <entity name="Free" class="ptolemy.domains.modal.kernel.State">
                     <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="Free">
                     </property>
                     <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="false">
@@ -13282,7 +13282,7 @@
                     <property name="_location" class="ptolemy.kernel.util.Location" value="{385.0, 540.0}">
                     </property>
                 </entity>
-                <entity name="GoodREP" class="ptolemy.domains.fsm.kernel.State">
+                <entity name="GoodREP" class="ptolemy.domains.modal.kernel.State">
                     <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="GoodREP">
                     </property>
                     <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
@@ -13292,7 +13292,7 @@
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[255.0, 100.0]">
                     </property>
                 </entity>
-                <entity name="RepetedREQ" class="ptolemy.domains.fsm.kernel.State">
+                <entity name="RepetedREQ" class="ptolemy.domains.modal.kernel.State">
                     <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="RepetedREQ">
                     </property>
                     <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
@@ -13302,7 +13302,7 @@
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[910.0, 535.0]">
                     </property>
                 </entity>
-                <entity name="ini" class="ptolemy.domains.fsm.kernel.State">
+                <entity name="ini" class="ptolemy.domains.modal.kernel.State">
                     <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="ini">
                     </property>
                     <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">
@@ -13314,7 +13314,7 @@
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[305.0, 1140.0]">
                     </property>
                 </entity>
-                <relation name="relation" class="ptolemy.domains.fsm.kernel.Transition">
+                <relation name="relation" class="ptolemy.domains.modal.kernel.Transition">
                     <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
                     </property>
                     <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="NextState==3 &amp;&amp; NextState_isPresent">
@@ -13332,7 +13332,7 @@
                     <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
                     </property>
                 </relation>
-                <relation name="relation2" class="ptolemy.domains.fsm.kernel.Transition">
+                <relation name="relation2" class="ptolemy.domains.modal.kernel.Transition">
                     <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
                     </property>
                     <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="NextState_isPresent &amp;&amp; NextState==0">
@@ -13350,7 +13350,7 @@
                     <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
                     </property>
                 </relation>
-                <relation name="relation3" class="ptolemy.domains.fsm.kernel.Transition">
+                <relation name="relation3" class="ptolemy.domains.modal.kernel.Transition">
                     <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
                     </property>
                     <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="NextState==2 &amp;&amp; NextState_isPresent">
@@ -13368,7 +13368,7 @@
                     <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
                     </property>
                 </relation>
-                <relation name="relation4" class="ptolemy.domains.fsm.kernel.Transition">
+                <relation name="relation4" class="ptolemy.domains.modal.kernel.Transition">
                     <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
                     </property>
                     <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="NextState_isPresent &amp;&amp; NextState==0">
@@ -13386,7 +13386,7 @@
                     <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
                     </property>
                 </relation>
-                <relation name="relation5" class="ptolemy.domains.fsm.kernel.Transition">
+                <relation name="relation5" class="ptolemy.domains.modal.kernel.Transition">
                     <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
                     </property>
                     <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="NextState==1 &amp;&amp; NextState_isPresent">
@@ -13404,7 +13404,7 @@
                     <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
                     </property>
                 </relation>
-                <relation name="relation6" class="ptolemy.domains.fsm.kernel.Transition">
+                <relation name="relation6" class="ptolemy.domains.modal.kernel.Transition">
                     <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
                     </property>
                     <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="NextState==0 &amp;&amp; NextState_isPresent">
@@ -13422,7 +13422,7 @@
                     <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
                     </property>
                 </relation>
-                <relation name="relation7" class="ptolemy.domains.fsm.kernel.Transition">
+                <relation name="relation7" class="ptolemy.domains.modal.kernel.Transition">
                     <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
                     </property>
                     <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="NextState_isPresent &amp;&amp; NextState == 0">
@@ -13455,7 +13455,7 @@
                 <link port="RepetedREQ.outgoingPort" relation="relation6"/>
                 <link port="ini.outgoingPort" relation="relation7"/>
             </entity>
-            <entity name="Free" class="ptolemy.domains.fsm.modal.Refinement">
+            <entity name="Free" class="ptolemy.domains.modal.modal.Refinement">
                 <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[-285.0, 10.0]">
                     </property>
@@ -13474,17 +13474,17 @@
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, -20.0]">
                     </property>
                 </property>
-                <port name="CommIn" class="ptolemy.domains.fsm.modal.RefinementPort">
+                <port name="CommIn" class="ptolemy.domains.modal.modal.RefinementPort">
                     <property name="input"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[-320.0, 120.0]">
                     </property>
                 </port>
-                <port name="NextState" class="ptolemy.domains.fsm.modal.RefinementPort">
+                <port name="NextState" class="ptolemy.domains.modal.modal.RefinementPort">
                     <property name="output"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[910.0, 130.0]">
                     </property>
                 </port>
-                <port name="Comm" class="ptolemy.domains.fsm.modal.RefinementPort">
+                <port name="Comm" class="ptolemy.domains.modal.modal.RefinementPort">
                     <property name="output"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[930.0, 325.0]">
                     </property>
@@ -13492,8 +13492,8 @@
                 <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
                     <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="MsgId">
                     </property>
-		    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
-		    </property>
+                    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
                     <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
                         </property>
@@ -13747,7 +13747,7 @@
                 <link port="Expression4.a" relation="relation2"/>
                 <link port="Expression4.b" relation="relation"/>
             </entity>
-            <entity name="RepetedREQ" class="ptolemy.domains.fsm.modal.Refinement">
+            <entity name="RepetedREQ" class="ptolemy.domains.modal.modal.Refinement">
                 <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
                     <property name="iterations" class="ptolemy.data.expr.Parameter" value="1">
                     </property>
@@ -13766,17 +13766,17 @@
                 </property>
                 <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{276.8124999999999, 660.2064888164025}">
                 </property>
-                <port name="CommIn" class="ptolemy.domains.fsm.modal.RefinementPort">
+                <port name="CommIn" class="ptolemy.domains.modal.modal.RefinementPort">
                     <property name="input"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[480.0, 520.0]">
                     </property>
                 </port>
-                <port name="NextState" class="ptolemy.domains.fsm.modal.RefinementPort">
+                <port name="NextState" class="ptolemy.domains.modal.modal.RefinementPort">
                     <property name="output"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, 480.0]">
                     </property>
                 </port>
-                <port name="Comm" class="ptolemy.domains.fsm.modal.RefinementPort">
+                <port name="Comm" class="ptolemy.domains.modal.modal.RefinementPort">
                     <property name="output"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="{0.0, 0.0}">
                     </property>
@@ -13984,8 +13984,8 @@
                 <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
                     <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="Table">
                     </property>
-		    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
-		    </property>
+                    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
                     <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
                         </property>
@@ -14111,7 +14111,7 @@
                 <link port="BooleanSwitch3.control" relation="relation2"/>
                 <link port="BooleanSwitch3.falseOutput" relation="relation6"/>
             </entity>
-            <entity name="NewREQ" class="ptolemy.domains.fsm.modal.Refinement">
+            <entity name="NewREQ" class="ptolemy.domains.modal.modal.Refinement">
                 <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 0, 1288, 1004}, maximized=false}">
                 </property>
                 <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1073, 894]">
@@ -14124,17 +14124,17 @@
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[-325.0, -135.0]">
                     </property>
                 </property>
-                <port name="CommIn" class="ptolemy.domains.fsm.modal.RefinementPort">
+                <port name="CommIn" class="ptolemy.domains.modal.modal.RefinementPort">
                     <property name="input"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[-345.0, -75.0]">
                     </property>
                 </port>
-                <port name="NextState" class="ptolemy.domains.fsm.modal.RefinementPort">
+                <port name="NextState" class="ptolemy.domains.modal.modal.RefinementPort">
                     <property name="output"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[930.0, -45.0]">
                     </property>
                 </port>
-                <port name="Comm" class="ptolemy.domains.fsm.modal.RefinementPort">
+                <port name="Comm" class="ptolemy.domains.modal.modal.RefinementPort">
                     <property name="output"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[1055.0, 105.0]">
                     </property>
@@ -14474,8 +14474,8 @@
                 <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
                     <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="ActiveREQ">
                     </property>
-		    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
-		    </property>
+                    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
                     <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
                         </property>
@@ -14576,8 +14576,8 @@
                 <entity name="SetVariable2" class="ptolemy.actor.lib.SetVariable">
                     <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="Table">
                     </property>
-		    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
-		    </property>
+                    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
                     <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
                         </property>
@@ -15109,7 +15109,7 @@
                 <link relation1="relation16" relation2="relation35"/>
                 <link relation1="relation35" relation2="relation36"/>
             </entity>
-            <entity name="GoodREP" class="ptolemy.domains.fsm.modal.Refinement">
+            <entity name="GoodREP" class="ptolemy.domains.modal.modal.Refinement">
                 <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 0, 1288, 1004}, maximized=false}">
                 </property>
                 <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1073, 894]">
@@ -15122,17 +15122,17 @@
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 50.0]">
                     </property>
                 </property>
-                <port name="CommIn" class="ptolemy.domains.fsm.modal.RefinementPort">
+                <port name="CommIn" class="ptolemy.domains.modal.modal.RefinementPort">
                     <property name="input"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[190.0, 45.0]">
                     </property>
                 </port>
-                <port name="NextState" class="ptolemy.domains.fsm.modal.RefinementPort">
+                <port name="NextState" class="ptolemy.domains.modal.modal.RefinementPort">
                     <property name="output"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[1031.75, 670.0]">
                     </property>
                 </port>
-                <port name="Comm" class="ptolemy.domains.fsm.modal.RefinementPort">
+                <port name="Comm" class="ptolemy.domains.modal.modal.RefinementPort">
                     <property name="output"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[896.75, 460.0]">
                     </property>
@@ -15200,8 +15200,8 @@
                 <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
                     <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="ActiveREQ">
                     </property>
-		    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
-		    </property>
+                    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
                     <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
                         </property>
@@ -15235,8 +15235,8 @@
                 <entity name="SetVariable2" class="ptolemy.actor.lib.SetVariable">
                     <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="Table">
                     </property>
-		    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
-		    </property>
+                    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
                     <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
                         </property>
@@ -15391,22 +15391,22 @@
                 <link port="Const4.trigger" relation="relation5"/>
                 <link port="PoissonClock.output" relation="relation12"/>
             </entity>
-            <entity name="ini" class="ptolemy.domains.fsm.modal.Refinement">
+            <entity name="ini" class="ptolemy.domains.modal.modal.Refinement">
                 <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[-585.0, -15.0]">
                     </property>
                 </property>
-                <port name="CommIn" class="ptolemy.domains.fsm.modal.RefinementPort">
+                <port name="CommIn" class="ptolemy.domains.modal.modal.RefinementPort">
                     <property name="input"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[-5.0, -5.0]">
                     </property>
                 </port>
-                <port name="NextState" class="ptolemy.domains.fsm.modal.RefinementPort">
+                <port name="NextState" class="ptolemy.domains.modal.modal.RefinementPort">
                     <property name="output"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[-230.0, 400.0]">
                     </property>
                 </port>
-                <port name="Comm" class="ptolemy.domains.fsm.modal.RefinementPort">
+                <port name="Comm" class="ptolemy.domains.modal.modal.RefinementPort">
                     <property name="output"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[-10.0, 35.0]">
                     </property>
@@ -15414,8 +15414,8 @@
                 <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
                     <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="MsgId">
                     </property>
-		    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
-		    </property>
+                    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
                     <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
                         </property>
@@ -15454,8 +15454,8 @@
                 <entity name="SetVariable2" class="ptolemy.actor.lib.SetVariable">
                     <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="Table">
                     </property>
-		    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
-		    </property>
+                    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
                     <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
                         </property>
@@ -15468,8 +15468,8 @@
                 <entity name="SetVariable3" class="ptolemy.actor.lib.SetVariable">
                     <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="ActiveREQ">
                     </property>
-		    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
-		    </property>
+                    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
                     <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
                         </property>
@@ -15662,8 +15662,8 @@
         <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
             <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="SeqN">
             </property>
-		    <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
-		    </property>
+            <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
             <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                 <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
                 </property>

@@ -2,13 +2,13 @@
 <!DOCTYPE class PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <class name="CarLight" extends="ptolemy.domains.wireless.kernel.WirelessComposite">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
     <property name="DEDirector" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 45.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={192, 35, 815, 517}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={192, 35, 813, 510}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
     </property>
@@ -188,53 +188,53 @@
         <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
         </property>
     </port>
-    <entity name="CarLight" class="ptolemy.domains.fsm.modal.ModalModel">
-        <property name="directorClass" class="ptolemy.data.expr.StringParameter" value="ptolemy.domains.fsm.kernel.FSMDirector">
+    <entity name="CarLight" class="ptolemy.domains.modal.modal.ModalModel">
+        <property name="directorClass" class="ptolemy.data.expr.StringParameter" value="ptolemy.domains.modal.kernel.FSMDirector">
         </property>
-        <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalTableauFactory">
+        <property name="_tableauFactory" class="ptolemy.vergil.modal.modal.ModalTableauFactory">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[278.140625, 180.625]">
         </property>
-        <port name="Sec" class="ptolemy.domains.fsm.modal.ModalPort">
+        <port name="Sec" class="ptolemy.domains.modal.modal.ModalPort">
             <property name="input"/>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
         </port>
-        <port name="Pgo" class="ptolemy.domains.fsm.modal.ModalPort">
+        <port name="Pgo" class="ptolemy.domains.modal.modal.ModalPort">
             <property name="output"/>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
             </property>
         </port>
-        <port name="Pstop" class="ptolemy.domains.fsm.modal.ModalPort">
+        <port name="Pstop" class="ptolemy.domains.modal.modal.ModalPort">
             <property name="output"/>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
             </property>
         </port>
-        <port name="Error" class="ptolemy.domains.fsm.modal.ModalPort">
+        <port name="Error" class="ptolemy.domains.modal.modal.ModalPort">
             <property name="input"/>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
         </port>
-        <port name="Ok" class="ptolemy.domains.fsm.modal.ModalPort">
+        <port name="Ok" class="ptolemy.domains.modal.modal.ModalPort">
             <property name="input"/>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
         </port>
-        <port name="CarLight" class="ptolemy.domains.fsm.modal.ModalPort">
+        <port name="CarLight" class="ptolemy.domains.modal.modal.ModalPort">
             <property name="output"/>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
         </port>
-        <port name="OtherPgo" class="ptolemy.domains.fsm.modal.ModalPort">
+        <port name="OtherPgo" class="ptolemy.domains.modal.modal.ModalPort">
             <property name="input"/>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
         </port>
-        <entity name="_Controller" class="ptolemy.domains.fsm.modal.ModalController">
+        <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
             <property name="AnnotationUpdated" class="ptolemy.vergil.kernel.attributes.TextAttribute">
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
@@ -263,7 +263,7 @@
             </property>
             <property name="_library" class="ptolemy.moml.LibraryAttribute">
                 <configure>
-        <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.fsm.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory"></property></entity></entity>
+        <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory"></property></entity></entity>
       </configure>
             </property>
             <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 150, 815, 467}, maximized=false}">
@@ -274,45 +274,45 @@
             </property>
             <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 145.5}">
             </property>
-            <port name="Sec" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="Sec" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[57.48319645377026, 139.51845932006842]">
                 </property>
             </port>
-            <port name="Pgo" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="Pgo" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[480.0, 135.0]">
                 </property>
             </port>
-            <port name="Pstop" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="Pstop" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[480.0, 180.0]">
                 </property>
             </port>
-            <port name="Error" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="Error" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 185.0]">
                 </property>
             </port>
-            <port name="Ok" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="Ok" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 230.0]">
                 </property>
             </port>
-            <port name="CarLight" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="CarLight" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[480.0, 225.0]">
                 </property>
             </port>
-            <port name="OtherPgo" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="OtherPgo" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 275.0]">
                 </property>
             </port>
-            <entity name="normal" class="ptolemy.domains.fsm.kernel.State">
+            <entity name="normal" class="ptolemy.domains.modal.kernel.State">
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="normal">
                 </property>
                 <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">
@@ -324,7 +324,7 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[217.48319645377026, 174.51845932006842]">
                 </property>
             </entity>
-            <entity name="error" class="ptolemy.domains.fsm.kernel.State">
+            <entity name="error" class="ptolemy.domains.modal.kernel.State">
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="errorR">
                 </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
@@ -334,7 +334,7 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[360.0, 175.0]">
                 </property>
             </entity>
-            <relation name="relation" class="ptolemy.domains.fsm.kernel.Transition">
+            <relation name="relation" class="ptolemy.domains.modal.kernel.Transition">
                 <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="Ok_isPresent &amp;&amp; Ok==1">
                 </property>
                 <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6283185307179586">
@@ -350,7 +350,7 @@
                 <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
             </relation>
-            <relation name="relation2" class="ptolemy.domains.fsm.kernel.Transition">
+            <relation name="relation2" class="ptolemy.domains.modal.kernel.Transition">
                 <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="Error_isPresent &amp;&amp; Error==1">
                 </property>
                 <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6283185307179586">
@@ -371,7 +371,7 @@
             <link port="error.incomingPort" relation="relation2"/>
             <link port="error.outgoingPort" relation="relation"/>
         </entity>
-        <entity name="errorR" class="ptolemy.domains.fsm.modal.ModalController">
+        <entity name="errorR" class="ptolemy.domains.modal.modal.ModalController">
             <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={288, 268, 823, 514}, maximized=false}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
@@ -406,40 +406,40 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{128.98105151634218, 270.5000011920929}">
                 </property>
             </property>
-            <port name="Sec" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="Sec" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[78.98105151634218, 260.5000011920929]">
                 </property>
             </port>
-            <port name="Pgo" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="Pgo" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[470.0, 170.0]">
                 </property>
             </port>
-            <port name="Pstop" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="Pstop" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[470.0, 210.0]">
                 </property>
             </port>
-            <port name="Error" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="Error" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[78.98105151634218, 165.50000119209295]">
                 </property>
             </port>
-            <port name="Ok" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="Ok" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[78.98105151634218, 210.5000011920929]">
                 </property>
             </port>
-            <port name="CarLight" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="CarLight" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[470.0, 255.0]">
                 </property>
             </port>
-            <port name="OtherPgo" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="OtherPgo" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
             </port>
-            <entity name="Init" class="ptolemy.domains.fsm.kernel.State">
+            <entity name="Init" class="ptolemy.domains.modal.kernel.State">
                 <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
@@ -447,22 +447,22 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[188.98105151634218, 170.50000119209295]">
                 </property>
             </entity>
-            <entity name="YellowOn" class="ptolemy.domains.fsm.kernel.State">
+            <entity name="YellowOn" class="ptolemy.domains.modal.kernel.State">
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[258.9810515163422, 175.50000119209295]">
                 </property>
             </entity>
-            <entity name="YellowOff" class="ptolemy.domains.fsm.kernel.State">
+            <entity name="YellowOff" class="ptolemy.domains.modal.kernel.State">
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[258.9810515163422, 240.5000011920929]">
                 </property>
             </entity>
-            <relation name="relation" class="ptolemy.domains.fsm.kernel.Transition">
+            <relation name="relation" class="ptolemy.domains.modal.kernel.Transition">
                 <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
                 </property>
-                <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="CarLight=1">
+                <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="CarLight=1">
                 </property>
                 <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.8012887899190636">
                 </property>
@@ -477,10 +477,10 @@
                 <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
             </relation>
-            <relation name="relation2" class="ptolemy.domains.fsm.kernel.Transition">
+            <relation name="relation2" class="ptolemy.domains.modal.kernel.Transition">
                 <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="Sec_isPresent">
                 </property>
-                <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="CarLight=3">
+                <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="CarLight=3">
                 </property>
                 <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6283185307179586">
                 </property>
@@ -495,10 +495,10 @@
                 <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
             </relation>
-            <relation name="relation3" class="ptolemy.domains.fsm.kernel.Transition">
+            <relation name="relation3" class="ptolemy.domains.modal.kernel.Transition">
                 <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="Sec_isPresent">
                 </property>
-                <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="CarLight=1">
+                <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="CarLight=1">
                 </property>
                 <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6283185307179586">
                 </property>
@@ -520,7 +520,7 @@
             <link port="YellowOff.incomingPort" relation="relation2"/>
             <link port="YellowOff.outgoingPort" relation="relation3"/>
         </entity>
-        <entity name="normal" class="ptolemy.domains.fsm.modal.Refinement">
+        <entity name="normal" class="ptolemy.domains.modal.modal.Refinement">
             <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={123, 95, 815, 551}, maximized=false}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 434]">
@@ -549,37 +549,37 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[326.5, 155.0]">
                 </property>
             </property>
-            <port name="Sec" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="Sec" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[61.5, 255.0]">
                 </property>
             </port>
-            <port name="Pgo" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="Pgo" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[276.5, 150.0]">
                 </property>
             </port>
-            <port name="Pstop" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="Pstop" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[276.5, 190.0]">
                 </property>
             </port>
-            <port name="Error" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="Error" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[61.5, 330.0]">
                 </property>
             </port>
-            <port name="Ok" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="Ok" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[61.5, 295.0]">
                 </property>
             </port>
-            <port name="CarLight" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="CarLight" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[275.0, 235.0]">
                 </property>
             </port>
-            <port name="OtherPgo" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="OtherPgo" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 370.0]">
                 </property>
@@ -587,7 +587,7 @@
             <entity name="CarLightNormal" class="ptolemy.domains.wireless.demo.Intersections.CarLightNormal">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[145.0, 190.0]">
                 </property>
-                <entity name="_Controller" class="ptolemy.domains.fsm.modal.ModalController">
+                <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
                     <property name="RedStart" class="ptolemy.data.expr.Parameter" value="RedStart">
                     </property>
                     <property name="LightsToWait" class="ptolemy.data.expr.Parameter" value="LightsToWait">
@@ -740,22 +740,22 @@
     <entity name="ErrorGenerator" class="ptolemy.domains.wireless.demo.Intersections.ErrorGenerator">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[155.0, 265.0]">
         </property>
-        <port name="ErrorIn" class="ptolemy.domains.fsm.modal.ModalPort">
+        <port name="ErrorIn" class="ptolemy.domains.modal.modal.ModalPort">
             <property name="input"/>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="false">
             </property>
         </port>
-        <port name="OkIn" class="ptolemy.domains.fsm.modal.ModalPort">
+        <port name="OkIn" class="ptolemy.domains.modal.modal.ModalPort">
             <property name="input"/>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="false">
             </property>
         </port>
-        <port name="ErrorOut" class="ptolemy.domains.fsm.modal.ModalPort">
+        <port name="ErrorOut" class="ptolemy.domains.modal.modal.ModalPort">
             <property name="output"/>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="false">
             </property>
         </port>
-        <port name="OkOut" class="ptolemy.domains.fsm.modal.ModalPort">
+        <port name="OkOut" class="ptolemy.domains.modal.modal.ModalPort">
             <property name="output"/>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="false">
             </property>
