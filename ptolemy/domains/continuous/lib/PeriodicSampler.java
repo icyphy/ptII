@@ -191,6 +191,9 @@ public class PeriodicSampler extends Transformer {
                                 + " at time "
                                 + director.getModelTime());
                     }
+                } else {
+                    // Erase any previous value that may have been recorded.
+                    _recordedInputs[i] = null;
                 }
             }
             // To ensure we read only the initial value of the input signal,

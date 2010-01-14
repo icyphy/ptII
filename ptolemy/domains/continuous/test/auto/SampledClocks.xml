@@ -84,7 +84,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Authors: Haiyang Zheng and Edward A. Lee">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[340.0, 340.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[335.0, 340.0]">
         </property>
     </property>
     <entity name="ContinuousClock" class="ptolemy.domains.continuous.lib.ContinuousClock">
@@ -98,7 +98,7 @@
         </property>
         <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="0">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{50.0, 105.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 105.0]">
         </property>
     </entity>
     <entity name="DiscreteClock" class="ptolemy.actor.lib.Clock">
@@ -110,7 +110,7 @@
         </property>
         <property name="numberOfCycles" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 290.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{45.0, 290.0}">
         </property>
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -160,7 +160,7 @@
         </property>
     </entity>
     <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1, 0, 0, 1, 1, 1, 0, 0, 1, 1, 1}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0, 0, 1, 1, 1, 0, 0, 1, 1, 1}">
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
@@ -184,7 +184,7 @@
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[290.0, 290.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{290.0, 290.0}">
         </property>
     </entity>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
@@ -192,7 +192,7 @@
         </vertex>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[91.0, 105.5]">
+        <vertex name="vertex1" value="{90.0, 105.0}">
         </vertex>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
