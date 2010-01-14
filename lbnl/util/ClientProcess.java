@@ -342,13 +342,16 @@ public class ClientProcess extends Thread {
             PrintWriter pwLogFil = null;
             PrintWriter pwSysOut = null;
             BufferedReader br = null;
+	    BufferedWriter bufWri = null;
+	    FileWriter filWri = null;
             try {
                 isr = new InputStreamReader(is);
                 br = new BufferedReader(isr);
                 pwSysOut = new PrintWriter(System.out);
                 try {
-                    pwLogFil = new PrintWriter(new BufferedWriter(new FileWriter(
-                                            logFil)));
+		    filWri = new FileWriter( logFil );
+		    bufWri = new BufferedWriter (filWri);
+                    pwLogFil = new PrintWriter( bufWri );
                 } catch (java.io.IOException e) {
                     e.printStackTrace();
                     pwLogFil = new PrintWriter(System.err);
@@ -388,6 +391,8 @@ public class ClientProcess extends Thread {
                     try {
                         // FIXME: is this ok if pwLogFil is System.err?
                         pwLogFil.close();
+			bufWri.close();
+			filWri.close();
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -428,13 +433,16 @@ public class ClientProcess extends Thread {
             PrintWriter pwLogFil = null;
             PrintWriter pwSysOut = null;
             BufferedReader br = null;
+	    BufferedWriter bufWri = null;
+	    FileWriter filWri = null;
             try {
                 isr = new InputStreamReader(is);
                 br = new BufferedReader(isr);
                 pwSysOut = new PrintWriter(System.err);
                 try {
-                    pwLogFil = new PrintWriter(new BufferedWriter(new FileWriter(
-                                            logFil)));
+		    filWri = new FileWriter( logFil );
+		    bufWri = new BufferedWriter (filWri);
+                    pwLogFil = new PrintWriter( bufWri );
                 } catch (java.io.IOException e) {
                     e.printStackTrace();
                     pwLogFil = new PrintWriter(System.err);
@@ -469,6 +477,8 @@ public class ClientProcess extends Thread {
                     try {
                         // FIXME: is this ok if pwLogFil is System.err?
                         pwLogFil.close();
+			bufWri.close();
+			filWri.close();
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
