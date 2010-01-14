@@ -51,6 +51,21 @@ Small World</a>.
 connectivity with fewer hops on average with a network that is less reliable
 but where ranges are larger than with a network that is more reliable but
 ranges are shorter.
+
+<li><a href="../../domains/wireless/demo/SmartParking/SmartParking.xml">SmartParking</a>
+
+<br> Sensors placed in a parking lot can be used to collect data
+(including which parking spot is taken, how long a car has parked on a
+spot). The parking lot can process the collected data and provide
+some services to clients to guide their parking. This demo illustrates
+these ideas. When a sensor detects a car arriving or leaving a spot,
+it sends an update to the server of the parking lot, which collects
+and processes sensor updates to provide information to parking
+clients. The &quot;car model&quot; component models when a car arrives
+or leaves, and where to park based on the information the server
+provides. It is a abstraction for all the cars dynamics during a
+specific time.
+
 <li><a href="../../domains/wireless/demo/EvaderAndPursuer/EvaderAndPursuer.xml">
 Evader and Pursuer</a>.
 <br> This model shows an "evader"
@@ -91,6 +106,8 @@ a <i>property transformer</i> model that is registered with the channel.
 In this model, the receiver moves in a circular pattern around the
 transmitter and measures and plots the received power. The transmitter
 has an 8-element phased-array antenna with steering.
+See also <a href="../../domains/wireless/demo/AntennaPattern/ReceiveAntennaPattern.xml">Antenna Pattern (Receiver)</a> and
+<a href="../../domains/wireless/demo/AntennaPattern/AntennaGainTest.xml">Antenna Gain Calculation</a>.
 </li>
 <li><a href="../../domains/wireless/demo/Collisions/Collisions.xml">
 Collisions</a>.
@@ -113,6 +130,18 @@ Link Visualizer</a>.
 This model is a version of Terrain Model that shows the capabilities of 
 LinkVisualizer, which displays links between communicating nodes whenever
 a transmission is made.
+</li>
+<li><a href="../../domains/wireless/demo/Intersections/Intersections.xml">
+Intersections</a>.
+<br>
+A simulation of a set of automobile intersections that use wireless to
+communicate between traffic signals.  See also the Synchronous/Reactive (SR) 
+domain 
+<a href="../../domains/sr/demo/TrafficLight/TrafficLight.xml">Traffic Light</a> and 
+<a href="../../domains/sr/demo/TrafficLight/WirelessDeployment.xml">Traffic Light Wireless Deployment</a>.  
+</li>
+<li><a href="../../domains/wireless/demo/Zigbee/Zigbee.xml">Zigbee</a>.
+<br>A simulation of a Zigbee radio.
 </li>
 </ul>
 <p>
