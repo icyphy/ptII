@@ -61,13 +61,13 @@ import ptolemy.kernel.util.Workspace;
  All three of these will also set the current value, which is then
  equal to the persistent value.
  The current value is returned by get getToken()
- and is set by any of three different mechanisms:</p>
+ and is set by any of two different mechanisms:</p>
  <ul>
  <li> calling setCurrentValue();</li>
  <li> calling update() sets the current value if there is an associated
  port, and that port has a token to consume; and</li>
  </ul>
- These three techniques do not change the persistent value, so after
+ These two techniques do not change the persistent value, so after
  these are used, the persistent value and current value may be different.
  <p>
  When using this parameter in an actor, care must be exercised
