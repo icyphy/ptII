@@ -1517,6 +1517,12 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
             auxiliaryClassMap.put("fullViewer needs vergil gt gt jar",
                     "ptolemy/vergil/gt/gt.jar");
 
+            auxiliaryClassMap.put("fullViewer needs PDFAttribute",
+                    "ptolemy/vergil/pdfrenderer/pdfrenderer.jar");
+
+            auxiliaryClassMap.put("PDFAttribute needs PDFRenderer.jar",
+                    "lib/PDFRenderer.jar");
+
             auxiliaryClassMap.put("ptera jar needs vergil ptera jar",
                     "ptolemy/vergil/ptera/ptera.jar");
 
