@@ -166,27 +166,9 @@ public class PthalesScheduler extends SDFScheduler {
 
             if (!(port instanceof ParameterPort)) {
                 if (port.isInput()) {
-                    int size = 0;
-
-                    List<Actor> actors = model.deepEntityList();
-
-                    // External ports
-                    List<TypedIOPort> externalPorts = model.inputPortList();
-                    for (TypedIOPort externalPort : externalPorts) {
-                        // Dispatch to all input ports using output port
-                        for (Actor actor : actors) {
-                            List<IOPort> inputPorts = actor.inputPortList();
-                            for (IOPort inputPort : inputPorts) {
-                                if (inputPort.connectedPortList().contains(
-                                        externalPort)) {
-                                    size = PthalesIOPort.getArraySize(inputPort)
-                                            * PthalesIOPort.getNbTokenPerData(inputPort);
-                                }
-                            }
-                        }
-                    }
-
-                    DFUtilities.setTokenConsumptionRate(port, size);
+                    DFUtilities.setTokenConsumptionRate(port, PthalesIOPort
+                            .getDataProducedSize(port)
+                            * PthalesIOPort.getNbTokenPerData(port));
                     _declareDependency(analysis, port, "tokenConsumptionRate",
                             _rateVariables);
                 }
