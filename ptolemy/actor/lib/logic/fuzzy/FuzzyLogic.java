@@ -27,8 +27,8 @@
  */
 package ptolemy.actor.lib.logic.fuzzy;
 
-import java.io.File;
 import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 
@@ -40,8 +40,6 @@ import org.xml.sax.helpers.XMLReaderFactory;
 
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
-import ptolemy.actor.lib.Transformer;
-import ptolemy.actor.parameters.PortParameter;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.Token;
@@ -51,23 +49,36 @@ import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.Workspace;
 import ptolemy.util.StringUtilities;
 import fuzzy.FuzzyEngine;
 import fuzzy.LinguisticVariable;
 
 
 /**
-An actor that implements fuzzy logic operation.  It has four inputs and
-four outputs.  Neither inputs nor outputs are multiports. The first
-input and output are of type double.  The remaining three inputs are
-type string.  If no input token is avaliable, the actor proceeds with
-its defuzzification and produces an output.
+An actor that implements a fuzzy logic operation. 
+<p>
+Fuzzy Logic is multi-valued logic derived from Fuzzy Set Theory by
+Lotfi Zadeh. In fuzzy logic, reasoning is approximate instead of
+precise and takes on values between 0 and 1.
+</p>
+<p>
+This actor has three inputs and three outputs. The cost input and 
+output are of type double. The remaining two inputs are of type
+string.  If no input token is available, the actor proceeds with
+its defuzzification and produces an output. Defuzzification is the
+evaluation of specification provided by the designer for a fuzzy logic
+based control system, such as "speed too fast," "speed too slow" and 
+"speed about right"  for a specific input and is used to determine 
+a crisp output.A brief overview of fuzzy logic can be found at
+<a href="http://www.fuzzy-logic.com/#in_browser">http://www.fuzzy-logic.com/</a>.
+</p>
 
-<p>If there is input the defuzzfied value is
-added(double)/appended(string) to the input and produced as output. If
-there is no input the defuzzified value is produced on the output.
-
+<p>If there is input, the defuzzfied value is added or appended to the 
+input and produced as output. If there is no input, the defuzzified 
+value is produced as output. As a result, in a chain of FuzzyLogic 
+actors the inputs of the first actor need not be connected for the model 
+to run under the {@link ptolemy.actor.Director}.
+</p>
 @author Shanna-Shaye Forbes
 @version $Id$
 @since Ptolemy II 8.1
@@ -81,10 +92,10 @@ public class FuzzyLogic extends TypedAtomicActor{
      *  and a default component type.
      *  @param container The container.
      *  @param name The name of this actor within the container.
-     *  @throws NameDuplicationException
-     *  @throws IllegalActionException
+     *  @exception NameDuplicationException
+     *  @exception IllegalActionException If the actor cannot be contained
+     *   by the proposed container.
      */
-
     public FuzzyLogic(CompositeEntity container, String name)
     throws NameDuplicationException, IllegalActionException {
         super(container, name);
@@ -96,94 +107,166 @@ public class FuzzyLogic extends TypedAtomicActor{
         componentType.setExpression("dummyType");
 
         riskInput = new TypedIOPort(this, "riskInput", true, false);
-        riskInput.setMultiport(false);
+
         riskInput.setTypeEquals(BaseType.STRING);
         costInput = new TypedIOPort(this, "costInput", true, false);
-        costInput.setMultiport(false);
+
         costInput.setTypeEquals(BaseType.DOUBLE);
         massInput = new TypedIOPort(this, "massInput", true, false);
-        massInput.setMultiport(false);
+
         massInput.setTypeEquals(BaseType.STRING);
 
-
         risk = new TypedIOPort(this, "risk", false, true);
-        risk.setMultiport(false);
+
         risk.setTypeEquals(BaseType.STRING);
         cost = new TypedIOPort(this, "cost", false, true);
-        cost.setMultiport(false);
+
         cost.setTypeEquals(BaseType.DOUBLE);
         mass = new TypedIOPort(this, "mass", false, true);
-        mass.setMultiport(false);
+
         mass.setTypeEquals(BaseType.STRING);
-        fuzzyEngine = null;
-        linguisticVarArray = null;
-        myParser = null;
-        rules = null;
 
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                     ports and parameters                  ////
+
+    /** An input port that contains the level of risk associated
+     * with upstream components.
+     * In this context, risk is the risk that a failure will
+     * occur. The default type of this port is String. The only 
+     * meaningful values are "high", "medium" and "low". 
+     */ 
+    public TypedIOPort riskInput;
+
+    /** An input port that contains the cost associated
+     * with upstream components.
+     * The default type of this port is Double. 
+     */ 
+    public TypedIOPort costInput;
+
+    /** An input port that contains the mass associated
+     * with upstream components.
+     * The default type of this port is String. Currently the only 
+     * meaningful values are "high", "medium" and "low".
+     */ 
+    public TypedIOPort massInput;
+
+    /** An output port that specifies the level of risk associated
+     * with using a component or combination of components.
+     * In this context, risk is the risk that a failure will
+     * occur. The default type of this port is String. The only 
+     * meaningful values are "high", "medium" and "low". 
+     */
+    public TypedIOPort risk;
+
+    /** An output port that specifies the mass associated
+     * with using a component or combination of components.
+     * The default type of this port is String. Currently the only 
+     * meaningful values are "high", "medium" and "low", however they
+     * could be changed to doubles in the future. 
+     */ 
+    public TypedIOPort mass;
+
+    /** An output port that specifies the cost associated
+     * with using a component or combination of components.
+     * The default type of this port is Double. 
+     */
+    public TypedIOPort cost;
+
+    /**
+     * The name of the file containing the xml specification for the component.
+     * The default value is a file name <code>rules.xml</code>. 
+     * The file is expected to be specified in XML/FCL Fuzzy Control Language XML. 
+     * Details on this schema can be found at 
+     * <a href="http://www.havana7.com/dotfuzzy/format.aspx#in_browser">http://www.havana7.com/dotfuzzy/format.aspx</a>.
+     * <p>
+     * The file named by this parameter should have a fuzzify xml element with the same name as 
+     * the base name of the xml file. For example: The file <code>rules.xml</code> should contain
+     *  <pre>
+     *  <FUZZIFY NAME="rules">
+     *   ... 
+     *  </FUZZIFY>
+     *  </pre> 
+     *  </p>
+     */
+    public FileParameter rulesFileName;
+
+    /**
+     *  One of the terms listed in the corresponding fuzzify xml element
+     *  in the file named by the <i>rulesFileName</i> parameter.
+     *  A term specifies the particular type can describes a fuzzy
+     *  component.
+     *  For example: The file <code>rules.xml</code> should contain
+     *  <pre>
+     *  <FUZZIFY NAME="rules">
+     *    <TERM NAME="Solar" POINTS="1 0 0 2" />
+     *    <TERM NAME="Wind" POINTS="0 0 0 1" />
+     *    <TERM NAME="Default" POINTS="2 0 0 3" />
+     *  </FUZZIFY>
+     *  </pre> 
+     *  For details about the xml specification see {@link #rulesFileName}.
+     */
+    public Parameter componentType;
+
+
+
 
     ///////////////////////////////////////////////////////////////////
     ////                         public  methods                  ////
 
     /*
-     * Open the file specified in the rulesFileName Parameter, create an
-     * instance of a fuzzy logic engine and populate the engine based on the
-     * information provided in the rules file
+     * Open the file specified by the rulesFileName Parameter, create an
+     * instance of a fuzzy logic engine, and populate the engine based on the
+     * information provided in the rules file.
+     * @exception IllegalActionException If thrown by the base class.
      */
     public void preinitialize() throws IllegalActionException {
-        try {
-            new File("ptolemy/actor/lib/logic/fuzzy/"
-                    + rulesFileName.getExpression());
-
-            if (_debugging) {
-                _debug("rules file name is :" + rulesFileName.getExpression());
-            }
-
-            myParser = new FuzzyParser(rulesFileName.getExpression());
-            linguisticVarArray = myParser.getLinguisticVariableArray();
-            String compType = componentType.getExpression();
-            if (rulesFileName.getExpression().equalsIgnoreCase("power")) {
-                if (compType.equalsIgnoreCase("wind")) {
-                    linguisticVarArray.get(0).setInputValue(0.7);
-                } else if (compType.equalsIgnoreCase("solar")) {
-                    linguisticVarArray.get(0).setInputValue(1.5);
-                } else {
-                    linguisticVarArray.get(0).setInputValue(2.5);
-                }
-            } else if (rulesFileName.getExpression().equalsIgnoreCase(
-            "propulsion")) {
-                if (compType.equalsIgnoreCase("electrical")) {
-                    linguisticVarArray.get(0).setInputValue(0.5);
-                } else {
-                    linguisticVarArray.get(0).setInputValue(1.5);
-                }
-            } else if (rulesFileName.getExpression().equalsIgnoreCase(
-            "antenna")) {
-                if (compType.equalsIgnoreCase("high gain")) {
-                    linguisticVarArray.get(0).setInputValue(1.5);
-                } else {
-                    linguisticVarArray.get(0).setInputValue(0.5);
-                }
-            } else {
-                linguisticVarArray.get(0).setInputValue(1.5);
-            }
-
-            fuzzyEngine = new FuzzyEngine();
-            for (int i = 0; i < linguisticVarArray.size(); i++) {
-                fuzzyEngine.register(linguisticVarArray.get(i));
-            }
-            rules = myParser.getRules();
-
-        } catch (Exception e) {
-            // this may not be the ideal way to do this but lets make due with
-            // it for now
-            e.printStackTrace();
+        super.preinitialize();
+        if (_debugging) {
+            _debug("rules file name is :" + rulesFileName.getExpression());
         }
+
+        _fuzzyParser = new FuzzyParser(rulesFileName.asURL().toString().replace("file:/",""));
+        ArrayList<FuzzyLogicVar> tempArray = _fuzzyParser.getFuzzyLogicVariableArray();
+
+        _linguisticVariableArray = _fuzzyParser.getLinguisticVariableArray();
+        String componentTypeValue = componentType.getExpression();
+        //FIXME one option is to create a FuzzyLogic base class(abstract class) and a TSSTFuzzyLogic class that inherits from it
+        // the class comment would then need to detail how the class should be extended.
+        // this lines below could be called from an initializeLinguisticVariables method
+        FuzzyLogicVar tempvar = tempArray.get(0);
+        int commaindex;
+        int periodindex;
+        String tempTermName;
+
+        periodindex = rulesFileName.getExpression().indexOf('.');
+        if(rulesFileName.getExpression().substring(0,periodindex).equalsIgnoreCase(tempvar.name)){
+            for(int j = 0; j < tempvar.termNames.size(); j++){
+                tempTermName = tempvar.termNames.get(j);
+                commaindex = tempTermName.indexOf(',');
+                if (componentTypeValue.equalsIgnoreCase(tempTermName.substring(0,commaindex))) {
+                    _linguisticVariableArray.get(0).setInputValue(Double.parseDouble(tempTermName.substring(commaindex+1)));
+                }
+            }
+
+        }else {
+            _linguisticVariableArray.get(0).setInputValue(1.5);
+        }
+
+        _fuzzyEngine = new FuzzyEngine();
+        for (int i = 0; i < _linguisticVariableArray.size(); i++) {
+            _fuzzyEngine.register(_linguisticVariableArray.get(i));
+        }
+        _rules = _fuzzyParser.getRules();
+
     }
 
     /*
-     * Evaluates the Fuzzy Logic Rules specified and determines the output for
-     * this component
+     * Evaluate the fuzzy logic rules specified and determines the
+     * output for this component. The fuzzy logic rules are specified
+     * in {@link #rulesFileName}.
+     * @exception IllegalActionException If thrown by the base class.
      */
     public void fire() throws IllegalActionException {
         super.fire();
@@ -192,19 +275,19 @@ public class FuzzyLogic extends TypedAtomicActor{
                     + rulesFileName.getExpression());
         }
 
-        double result = 0;
+        double myCost = 0;
         String myRisk = " ";
         String myMass = " ";
-        Token dToken = null;
+        Token token = null;
 
         try {
-            for (int i = 0; i < rules.size(); i++) {
-                fuzzyEngine.evaluateRule(rules.get(i));
+            for (int i = 0; i < _rules.size(); i++) {
+                _fuzzyEngine.evaluateRule(_rules.get(i));
             }
 
-            // here we simply assume that we need to defuzzify the last
-            // linguistic variable
-            result += linguisticVarArray.get(myParser.getIndexToDefuzzify())
+            // Here, we simply assume that we need to defuzzify the last
+            // linguistic variable specified in rulesFileName
+            myCost += _linguisticVariableArray.get(_fuzzyParser.getIndexToDefuzzify())
             .defuzzify();
 
 
@@ -223,24 +306,29 @@ public class FuzzyLogic extends TypedAtomicActor{
                     + StringUtilities.getProperty("line.separator");
             ;
             if (_debugging) {
-                _debug("result is: " + result);
+                _debug("result is: " + myCost);
             }
 
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (Exception ex) {
+            throw new IllegalActionException(this, ex, "A problem " 
+                    + "occurred when attempting to evaluate the " 
+                    + "rules or to get the linguistic variable " 
+                    + "for defuzzification.");
         }
+
+        //FIXME Is it necessary to call isOutsideConnected?? I think it is for the first actor in a
+        // chain.. but it may not be.
         if (costInput.isOutsideConnected()) {
             if (costInput.hasToken(0)) {
-                dToken = costInput.get(0);
-                result += Double.valueOf(dToken.toString());
-
+                token = costInput.get(0);
+                myCost += Double.valueOf(token.toString());
             }
         }
 
         if (riskInput.isOutsideConnected()) {
             if (riskInput.hasToken(0)) {
-                dToken = riskInput.get(0);
-                myRisk += dToken.toString();
+                token = riskInput.get(0);
+                myRisk += token.toString();
                 while (myRisk.contains("\"")) {
                     myRisk = myRisk.replace('\"', ' ');
                 }
@@ -249,254 +337,227 @@ public class FuzzyLogic extends TypedAtomicActor{
 
         if (massInput.isOutsideConnected()) {
             if (massInput.hasToken(0)) {
-                dToken = massInput.get(0);
-                myMass += dToken.toString();
+                token = massInput.get(0);
+                myMass += token.toString();
                 while (myMass.contains("\"")) {
                     myMass = myMass.replace('\"', ' ');
                 }
             }
-
         }
-
-        cost.send(0, new DoubleToken(result));
+        //FIXME: Would changing your state here cause this to misbehave in the continuous domain?
+        cost.send(0, new DoubleToken(myCost));
         risk.send(0, new StringToken(myRisk));
         mass.send(0, new StringToken(myMass));
-
-
     }
 
-    /**
-     * Clone the actor into the specified workspace. This calls the base class
-     * and then sets the <code>init</code> and <code>step</code> public members
-     * to the parameters of the new actor.
-     * 
-     * @param workspace
-     *            The workspace for the new object.
-     * @return A new actor.
-     * @exception CloneNotSupportedException
-     *                If a derived class contains an attribute that cannot be
-     *                cloned.
-     */
-    public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        FuzzyLogic newObject = (FuzzyLogic) super.clone(workspace);
-        // this was copied from RAMP fill in with details later
-        return newObject;
-    }
-
-    /** An input port that contains the level of risk associated
-     * with upstream components.
-     * In this context, risk is the risk that a failure will
-     * occur. The default type of this port is a String. The only 
-     * meaningful values are "high", "medium" and "low". 
-     */ 
-    public TypedIOPort riskInput;
-    /** An input port that contains the cost associated
-     * with upstream components.
-     * The default type of this port is a double. 
-     */ 
-    public TypedIOPort costInput;
-
-    /** An input port that contains the cost associated
-     * with upstream components.
-     * The default type of this port is a String. Currently the only 
-     * meaningful values are "high", "medium" and "low", however they
-     * could be changed to doubles in the future. 
-     */ 
-    public TypedIOPort massInput;
 
 
-    /** An output port that specifies the level of risk associated
-     * with using a component or combination of components.
-     * In this context, risk is the risk that a failure will
-     * occur. The default type of this port is a String. The only 
-     * meaningful values are "high", "medium" and "low". 
-     */
-    public TypedIOPort risk;
-
-    /** An output port that specifies the mass associated
-     * with using a component or combination of components.
-     * The default type of this port is a String. Currently the only 
-     * meaningful values are "high", "medium" and "low", however they
-     * could be changed to doubles in the future. 
-     */ 
-    public TypedIOPort mass;
-
-    /** An out port that specifies the cost associated
-     * with using a component or combination of components.
-     * The default type of this port is a double. 
-     */
-    public TypedIOPort cost;
-
-    /**
-     * The name of the file containing the xml specification for the component.
-     * The default value is a file name <code>rules.xml</code>. 
-     * The file is expected to be specified in XML/FCL Fuzzy Control Language XML. 
-     * Details on this schema can be found at http://www.havana7.com/dotfuzzy/format.aspx.
-     * 
-     * The file named by this parameter should have a fuzzify xml element with the same name as 
-     * the base name of the xml file. For example: The file <code>rules.xml</code> should contain
-     *  <pre>
-     *  <FUZZIFY NAME="rules">
-     *   ... 
-     *  </FUZZIFY>
-     *  </pre> 
-     *  
-     */
-    public FileParameter rulesFileName;
-
-    /**
-     * One of the terms listed in the corresponding fuzzify xml element
-     *  in the file named by the <i>rulesFileName</i> parameter.
-     *  For example: The file <code>rules.xml</code> should contain
-     *  <pre>
-     *  <FUZZIFY NAME="rules">
-     *    <TERM NAME="Solar" POINTS="1 0 0 2" />
-     *    <TERM NAME="Wind" POINTS="0 0 0 1" />
-     *    <TERM NAME="Default" POINTS="2 0 0 3" />
-     *  </FUZZIFY>
-     *  </pre> 
-     *  For details about the xml specification see {@link #rulesFileName}.
-     */
-    public Parameter componentType;
-
-
-    public PortParameter inc;
     ////////////////////////////////////////////////////////////////////
-    ////                         private variables                  ////
-    private FuzzyEngine fuzzyEngine;
-    private ArrayList<String> rules;
-    private ArrayList<LinguisticVariable> linguisticVarArray;
-    private FuzzyParser myParser;
-}
+    ////                         private variables                 ////
+    private FuzzyEngine _fuzzyEngine;
+    private ArrayList<String> _rules;
+    private ArrayList<LinguisticVariable> _linguisticVariableArray;
+    private FuzzyParser _fuzzyParser;
 
-/**
-This class parses an XML file containing the fuzzy logic rules
- **/
-class FuzzyParser extends DefaultHandler {
-    private boolean _debugging = false;
-    private boolean startVar;
-    private int toDefuzzyify;
-    private int currentIndex;
-    private ArrayList<LinguisticVariable> linguisticVarArray;
-    private ArrayList<String> rules;
-
-    FuzzyParser() {
-        startVar = false;
-        toDefuzzyify = -1;
-        currentIndex = 0;
-        linguisticVarArray = new ArrayList<LinguisticVariable>();
-        rules = new ArrayList<String>();
-    }
-
-    FuzzyParser(String filename) {
-        startVar = false;
-        toDefuzzyify = -1;
-        currentIndex = 0;
-        linguisticVarArray = new ArrayList<LinguisticVariable>();
-        rules = new ArrayList<String>();
-        try {
-            XMLReader xr = XMLReaderFactory.createXMLReader();
-            xr.setContentHandler(this);
-            xr.setErrorHandler(this);
-            FileReader r = new FileReader("ptolemy/actor/lib/logic/fuzzy/"
-                    + filename);
-            xr.parse(new InputSource(r));
-        } catch (Exception e) {
-            e.printStackTrace();
+    /* A record type used when parsing*/
+    private class FuzzyLogicVar{
+        /**The name of the fuzzy logic variable */
+        String name;
+        /*An array of term names. Each string in the termNames array
+         * is in the format name,initialvalue  specifying a single string with two values
+         * a  name and an initial value for the name*/
+        ArrayList<String> termNames;
+        /**
+         * Fuzzy Logic Variable Constructor
+         */
+        FuzzyLogicVar(){
+            termNames = new ArrayList<String>();
         }
     }
+    /**
+     * Parse an XML file containing the fuzzy logic rules.
+     */
+    private class FuzzyParser extends DefaultHandler {
+        /**
+         * Construct a Fuzzy Parser.
+         */
+        FuzzyParser() {
+            initialize();
+        }
+        /**
+         * Construct a Fuzzy Parser.
+         * @param filename The name of the xml file containing the fuzzy logic rules
+         */
+        FuzzyParser(String filename) throws IllegalActionException{
 
-    /*Returns the array list index of the variable to be defuzzified
-     * */
-    int getIndexToDefuzzify() {
-        return toDefuzzyify;
-    }
+            initialize();
+            FileReader r = null;
+            try {
+                XMLReader xr = XMLReaderFactory.createXMLReader();
+                xr.setContentHandler(this);
+                xr.setErrorHandler(this);
+                r = new FileReader(filename);
+                xr.parse(new InputSource(r));
 
-    /* Returns an array of linguistic vairables read from the xml file
-     * 
-     * */
-
-    ArrayList<LinguisticVariable> getLinguisticVariableArray() {
-        return linguisticVarArray;
-
-    }
-    /* Returns a string representation of the rules specified in the xml file
-     * */
-    ArrayList<String> getRules() {
-        return rules;
-    }
-
-    // //////////////////////////////////////////////////////////////////
-    // Customized XML Event handlers.
-    // //////////////////////////////////////////////////////////////////
-
-    public void startDocument() {
-
-    }
-
-    public void endDocument() {
-
-    }
-
-    public void startElement(String uri, String name, String qName,
-            Attributes atts) {
-
-        if ("".equals(uri)) {
-            if ("FUZZIFY".equals(qName) || "DEFUZZIFY".equals(qName)) {
-                startVar = true;
-                if ("DEFUZZIFY".equals(qName)) {
-                    toDefuzzyify = currentIndex;
-                }
-                int index = atts.getIndex("NAME");
-                linguisticVarArray.add(new LinguisticVariable(atts
-                        .getValue(index)));
-            }
-            if ("TERM".equals(qName)) {
-                if (startVar == true) {
-                    String localName = atts.getValue(0);
-                    StringTokenizer st = new StringTokenizer(atts.getValue(1),
-                    " ");
-
-                    double a = Double.valueOf(st.nextToken().trim())
-                    .doubleValue();
-                    double b = Double.valueOf(st.nextToken().trim())
-                    .doubleValue();
-                    double c = Double.valueOf(st.nextToken().trim())
-                    .doubleValue();
-                    double d = Double.valueOf(st.nextToken().trim())
-                    .doubleValue();
-                    (linguisticVarArray.get(currentIndex)).add(localName, a, b,
-                            c, d);
+            } catch (Exception ex) {
+                throw new IllegalActionException(null, ex, "Failed to parse " 
+                        + filename + ".");
+            } finally{
+                if(r!=null){
+                    try{
+                        r.close();
+                    }catch(IOException ex){
+                        //FIXME change null to super.this but something that actually works
+                        throw new IllegalActionException(null, ex, 
+                                "Failed to close " + filename + ".");
+                    }
                 }
             }
+        }
+        private void initialize() {
+            _startVar = false;
+            _toDefuzzyify = -1;
+            _currentIndex = 0;
+            _linguisticVarArray = new ArrayList<LinguisticVariable>();
+            _myRules = new ArrayList<String>();
+            _fuzzyVar = new FuzzyLogicVar();
+            _fuzzyLogicVariableArray = new ArrayList<FuzzyLogicVar>();
+        }
 
-            if ("RULE".equals(qName)) {
-                rules.add(atts.getValue(1));
+        /** Return the array list index of the variable to be defuzzified. */
+        int getIndexToDefuzzify() {
+            return _toDefuzzyify;
+        }
+
+        /** Return an array of linguistic variables read from the xml file. */
+        ArrayList<LinguisticVariable> getLinguisticVariableArray() {
+            return _linguisticVarArray;
+        }
+
+        /** Return an array of fuzzy logic variables read from the xml file. */
+        ArrayList<FuzzyLogicVar> getFuzzyLogicVariableArray() {
+            return _fuzzyLogicVariableArray;
+        }
+
+        /** Return a string representation of the rules specified in
+         *  the xml file.
+         */
+        ArrayList<String> getRules() {
+            return _myRules;
+        }
+
+        ////////////////////////////////////////////////////////////////////
+        // Customized SAX XML Event handlers.
+        ////////////////////////////////////////////////////////////////////
+        /**
+         * Called once when the SAX driver sees the beginning of a document.
+         * */
+        public void startDocument() {
+        }
+
+        /**
+         * Called once when the SAX driver sees the end of a document, even if errors occured.
+         * */
+        public void endDocument() {
+        }
+
+        /** Called each time the SAX parser sees the beginning of an element
+         * @param uri The Namespace Uniform Resource Identifier(URI)
+         * @param name Is the elements local name
+         * @param qName Is the XML 1.0 name 
+         * */
+        public void startElement(String uri, String name, String qName,
+                Attributes atts) {
+            String tempString;
+            if ("".equals(uri)) {
+                if ("FUZZIFY".equals(qName) || "DEFUZZIFY".equals(qName)) {
+                    _startVar = true;
+                    if ("DEFUZZIFY".equals(qName)) {
+                        _toDefuzzyify = _currentIndex;
+                    }
+                    int index = atts.getIndex("NAME");
+                    if("FUZZIFY".equals(qName)){
+                        _fuzzyVar.name = atts.getValue(index); 
+                    } 
+                    _linguisticVarArray.add(new LinguisticVariable(atts
+                            .getValue(index)));
+
+                }
+                if ("TERM".equals(qName)) {
+                    if (_startVar == true) {
+                        String localName = atts.getValue(0);
+                        StringTokenizer st = new StringTokenizer(atts.getValue(1),
+                        " ");
+
+                        double a = Double.valueOf(st.nextToken().trim())
+                        .doubleValue();
+                        double b = Double.valueOf(st.nextToken().trim())
+                        .doubleValue();
+                        double c = Double.valueOf(st.nextToken().trim())
+                        .doubleValue();
+                        double d = Double.valueOf(st.nextToken().trim())
+                        .doubleValue();
+                        (_linguisticVarArray.get(_currentIndex)).add(localName, a, b,
+                                c, d);
+
+                        tempString = localName+","+(a+d)/2;
+                        _fuzzyVar.termNames.add(tempString);
+                    }
+
+                }
+
+                if ("RULE".equals(qName)) {
+                    _myRules.add(atts.getValue(1));
+                }
+            } else {
+                if(_debugging){
+                    System.out.println("Start element: {" + uri + "}" + name);
+                }
+
             }
-        } else {
-            if(_debugging){
-                System.out.println("Start element: {" + uri + "}" + name);
+        }
+
+        /** Called each time the SAX parser sees the end of an element
+         * @param uri The Namespace Uniform Resource Identifier(URI)
+         * @param name Is the elements local name
+         * @param qName Is the XML 1.0 name 
+         * */
+        public void endElement(String uri, String name, String qName) {
+            if ("".equals(uri)) {
+                if ("FUZZIFY".equals(qName) || "DEFUZZIFY".equals(qName)) {
+                    _startVar = false;
+                    _currentIndex++;
+                    if("FUZZIFY".equals(qName)){
+                        _fuzzyLogicVariableArray.add(_fuzzyVar);
+                        _fuzzyVar = new FuzzyLogicVar();
+                    }
+                }
+                if ("RULEBLOCK".equals(qName)) {
+                }
+            } else {
+                if(_debugging){
+                    System.out.println("End element:   {" + uri + "}" + name);
+                }
             }
+        }
+
+        /** Called by the SAX parser to report regular characters.
+         * @param ch[] The array containing characters
+         * @param start Is the starting point in the character array
+         * @param lenght Is length of the character array 
+         * */
+        public void characters(char ch[], int start, int length) {
 
         }
-    }
-
-    public void endElement(String uri, String name, String qName) {
-        if ("".equals(uri)) {
-            if ("FUZZIFY".equals(qName) || "DEFUZZIFY".equals(qName)) {
-                startVar = false;
-                currentIndex++;
-            }
-            if ("RULEBLOCK".equals(qName)) {
-            }
-        } else {
-            if(_debugging){
-                System.out.println("End element:   {" + uri + "}" + name);
-            }
-        }
-    }
-
-    public void characters(char ch[], int start, int length) {
-
+        ////////////////////////////////////////////////////////////////////
+        ////                         private variables                 ////
+        private boolean _debugging = false;
+        private boolean _startVar;
+        private int _toDefuzzyify;
+        private int _currentIndex;
+        private FuzzyLogicVar _fuzzyVar;
+        private ArrayList<LinguisticVariable> _linguisticVarArray;
+        private ArrayList<String> _myRules;
+        private ArrayList<FuzzyLogicVar> _fuzzyLogicVariableArray;
     }
 }
