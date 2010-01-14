@@ -199,6 +199,24 @@ public class SRDirector extends FixedPointDirector implements PeriodicDirector {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+    
+    /** Clone the object into the specified workspace. The new object is
+     *  <i>not</i> added to the directory of that workspace (you must do this
+     *  yourself if you want it there).
+     *  @param workspace The workspace for the cloned object.
+     *  @exception CloneNotSupportedException Not thrown in this base class
+     *  @return The new Attribute.
+     */
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        SRDirector newObject = (SRDirector) super.clone(workspace);
+        try {
+            newObject._periodicDirectorHelper = new PeriodicDirectorHelper(newObject);
+        } catch (IllegalActionException e) {
+            throw new CloneNotSupportedException("Failed to clone helper: " + e);
+        }
+        return newObject;
+    }
+
 
     /** Request a firing of the given actor at the given absolute
      *  time, and return the time at which the specified will be
