@@ -765,6 +765,9 @@ PTGR_PACKAGES
 PTGRO_DIR
 PTGRO_PACKAGES
 PTII
+PTITEXTPDF_DIR
+PTITEXTPDF_JAR
+PTITEXTPDF_PACKAGES
 PTJACL_DIR
 PTJACL_JAR
 PTJAI_DIR
@@ -1457,6 +1460,8 @@ Optional Packages:
                           defaults to \$PTII/vendors/misc/FuzzyEngine
   --with-gc-include=DIR       use gc.h from DIR
                           defaults to \$PTII/vendors/gc/gc/include
+  --with-itextpdf=JARFILE       use iText from JARFILE,
+                          defaults to \$PTII/vendors/misc/itext/iText.jar
   --with-jogl=DIRECTORY       use Java OpenGL interface (jogl) from DIRECTORY,
                           defaults to \$PTII/vendors/sun/jogl
   --with-joystick-jar=JARFILE       use JOYSTICK from JARFILE,
@@ -6550,6 +6555,81 @@ fi
 
 
 #--------------------------------------------------------------------
+#       iText PDF is a "a library that allows you to generate PDF files on the fly."
+#	http://itextpdf.com/
+#	However, itextpdf is GPL'd, so we don't ship it.
+#--------------------------------------------------------------------
+
+# Set to itextpdf and used in
+# $PTII/ptolemy/vergil/basic/makefile if iText.jar was found
+PTITEXTPDF_DIR=
+
+# iText PDF jar file.  iText is from
+# http://itextpdf.com
+PTITEXTPDF_JAR=
+
+# We only need to look for iText.jar if $ITEXTPDF_USER_DIR exists
+ITEXTPDF_USER_DIR="$PTII/ptolemy/vergil/basic/itextpdf"
+if test ! -d "$ITEXTPDF_USER_DIR"; then
+    if test "${PTVERBOSE:-none}" != "none"; then { echo "$as_me:$LINENO: result: $ITEXT_USER_DIR is not present,
+    so we need not find the iText PDF interface." >&5
+echo "${ECHO_T}$ITEXT_USER_DIR is not present,
+    so we need not find the iText PDF interface." >&6; }; fi
+else
+    { echo "$as_me:$LINENO: checking for the iText PDF jar" >&5
+echo $ECHO_N "checking for the iText PDF jar... $ECHO_C" >&6; }
+
+# Check whether --with-itextpdf was given.
+if test "${with_itextpdf+set}" = set; then
+  withval=$with_itextpdf; PTITEXTPDF_JAR=$withval
+else
+  PTITEXTPDF_JAR=$PTII/vendors/misc/itext/iText.jar
+fi
+
+
+    if test -f "$PTITEXTPDF_JAR"; then
+	if test "${PTVERBOSE:-none}" = "none"; then { echo "$as_me:$LINENO: result: ok" >&5
+echo "${ECHO_T}ok" >&6; }; else { echo "$as_me:$LINENO: result: $PTITEXTPDF_JAR" >&5
+echo "${ECHO_T}$PTITEXTPDF_JAR" >&6; }; fi
+	# Set to itextpdf and used in
+	# $PTII/ptolemy/vergil/basic/makefile if iText.jar is found
+	PTITEXTPDF_DIR=itextpdf
+        # PTITEXTPDF_PACKAGES is used in ptII/doc/makefile
+	PTITEXTPDF_PACKAGES=ptolemy.vergil.basic.itextpdf
+    fi
+
+    if test "$PTITEXTPDF_DIR" = ""; then
+        { echo "$as_me:$LINENO: WARNING: Failed to find iText.jar
+    as $PTITEXTPDF_JAR.
+    Perhaps the iText is not installed?
+    You need not download the iText interface unless you
+    would like to export PDF from Vergil.
+    Note that the iText jar file has the Affero General Public License (AGPL),
+    which is an extension of the GNU Public License.
+    To use the iText interface, download iText from http://itextpdf.com
+    place iText.jar in $PTII/vendors/misc/itext/ and then rerun configure." >&5
+echo "$as_me: WARNING: Failed to find iText.jar
+    as $PTITEXTPDF_JAR.
+    Perhaps the iText is not installed?
+    You need not download the iText interface unless you
+    would like to export PDF from Vergil.
+    Note that the iText jar file has the Affero General Public License (AGPL),
+    which is an extension of the GNU Public License.
+    To use the iText interface, download iText from http://itextpdf.com
+    place iText.jar in $PTII/vendors/misc/itext/ and then rerun configure." >&2;}
+	# Note that we don't substitute in the ${PTII} here
+	PTITEXTPDF_JAR='${PTII}/vendors/misc/itext/iText.jar'
+    fi
+fi
+
+if test -z "$PTITEXTPDF_DIR"; then
+   ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/vergil/basic/itextpdf/"
+else
+   ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
+    <classpathentry kind=\"lib\" path=\"$PTITEXTPDF_JAR\"/>"
+fi
+
+#--------------------------------------------------------------------
 #       GMP - GNU arbitrary precision arithmetic library, needed only by mescal
 #
 #--------------------------------------------------------------------
@@ -11240,6 +11320,17 @@ fi
 # $PTII/ptolemy/plot/ptplot.jnlp.in reads this
 
 
+# Set to itextpdf and used in
+# $PTII/ptolemy/vergil/basic/makefile if iText.jar was found
+
+
+# iText PDF jar file.  iText is from
+# http://itextpdf.com
+
+
+# PTITEXTPDF_PACKAGES is used in ptII/doc/makefile if iTextjar is found
+
+
 # Set to ptjacl and used in
 # $PTII/ptolemy/actor/gui/makefile if ptjacl.jar was found
 
@@ -12360,6 +12451,9 @@ PTGR_PACKAGES!$PTGR_PACKAGES$ac_delim
 PTGRO_DIR!$PTGRO_DIR$ac_delim
 PTGRO_PACKAGES!$PTGRO_PACKAGES$ac_delim
 PTII!$PTII$ac_delim
+PTITEXTPDF_DIR!$PTITEXTPDF_DIR$ac_delim
+PTITEXTPDF_JAR!$PTITEXTPDF_JAR$ac_delim
+PTITEXTPDF_PACKAGES!$PTITEXTPDF_PACKAGES$ac_delim
 PTJACL_DIR!$PTJACL_DIR$ac_delim
 PTJACL_JAR!$PTJACL_JAR$ac_delim
 PTJAI_DIR!$PTJAI_DIR$ac_delim
@@ -12400,9 +12494,6 @@ PTMATLAB_DIR!$PTMATLAB_DIR$ac_delim
 PTMATLAB_LD_ARGS!$PTMATLAB_LD_ARGS$ac_delim
 PTMESCAL_DIR!$PTMESCAL_DIR$ac_delim
 PTPDFRENDERER_DIR!$PTPDFRENDERER_DIR$ac_delim
-PTPDFRENDERER_JAR!$PTPDFRENDERER_JAR$ac_delim
-PTPSDF_DIR!$PTPSDF_DIR$ac_delim
-PTSVG_DIR!$PTSVG_DIR$ac_delim
 _ACEOF
 
   if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 97; then
@@ -12444,6 +12535,9 @@ _ACEOF
 ac_delim='%!_!# '
 for ac_last_try in false false false false false :; do
   cat >conf$$subs.sed <<_ACEOF
+PTPDFRENDERER_JAR!$PTPDFRENDERER_JAR$ac_delim
+PTPSDF_DIR!$PTPSDF_DIR$ac_delim
+PTSVG_DIR!$PTSVG_DIR$ac_delim
 PTSVG_JAR!$PTSVG_JAR$ac_delim
 PTPTALON_DIR!$PTPTALON_DIR$ac_delim
 PTPTALON_PACKAGES!$PTPTALON_PACKAGES$ac_delim
@@ -12484,7 +12578,7 @@ LIBOBJS!$LIBOBJS$ac_delim
 LTLIBOBJS!$LTLIBOBJS$ac_delim
 _ACEOF
 
-  if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 38; then
+  if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 41; then
     break
   elif $ac_last_try; then
     { { echo "$as_me:$LINENO: error: could not make $CONFIG_STATUS" >&5
