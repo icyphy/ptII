@@ -30,6 +30,7 @@ package ptolemy.util;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
@@ -79,7 +80,7 @@ public class FileUtilities {
     public static boolean binaryCopyURLToFile(URL sourceURL,
             File destinationFile) throws IOException {
         URL destinationURL = destinationFile.getCanonicalFile().toURI().toURL();
-
+ 
         if (sourceURL.sameFile(destinationURL)) {
             return false;
         }
@@ -111,6 +112,16 @@ public class FileUtilities {
         _binaryCopyStream(sourceURL.openStream(), destinationFile);
 
         return true;
+    }
+
+    /** Read a sourceURL without doing any byte conversion.
+     *  @param sourceURL The source URL
+     *  @return The array of bytes read from the URL.
+     *  @exception IOException If the source URL does not exist.
+     */
+    public static byte[] binaryReadURLToByteArray(URL sourceURL)
+             throws IOException {
+        return _binaryReadStream(sourceURL.openStream());
     }
 
     /** Extract a jar file into a directory.  This is a trivial
@@ -636,6 +647,56 @@ public class FileUtilities {
                 }
             }
         }
+    }
+
+
+    /** Read a stream safely.  If there are problems, the streams are
+     *  close appropriately.
+     *  @param inputStream The input stream.
+     *  @exception IOException If the input stream cannot be read.
+     */
+    private static byte [] _binaryReadStream(InputStream inputStream)
+            throws IOException {
+        // Copy the source file.
+        BufferedInputStream input = null;
+
+        ByteArrayOutputStream output = null;
+
+        try {
+            input = new BufferedInputStream(inputStream);
+
+            try {
+                output = new ByteArrayOutputStream();
+
+                int c;
+
+                while ((c = input.read()) != -1) {
+                    output.write(c);
+                }
+            } finally {
+                if (output != null) {
+                    try {
+                        // ByteArrayOutputStream.close() has no
+                        // effect, but we try it anyway for good form.
+                        output.close();
+                    } catch (Throwable throwable) {
+                        throw new RuntimeException(throwable);
+                    }
+                }
+            }
+        } finally {
+            if (input != null) {
+                try {
+                    input.close();
+                } catch (Throwable throwable) {
+                    throw new RuntimeException(throwable);
+                }
+            }
+        }
+        if (output != null) { 
+            return output.toByteArray();
+        }
+        return null;
     }
 
     /** Search the classpath.

@@ -115,6 +115,48 @@ test FileUtilities-1.4 {binaryCopyURLToFile same file} {
 ######################################################################
 ####
 #
+test FileUtilities-1.6.1 {binaryReadURLToByteArray} {
+    set sourceURL [java::new java.net.URL file:./makefile]
+
+    set byteArray [java::call ptolemy.util.FileUtilities binaryReadURLToByteArray \
+		       $sourceURL]
+    # The first few characters of the makefile
+    list [$byteArray getrange 0 10]
+} {{35 32 77 97 107 101 102 105 108 101}}
+
+######################################################################
+####
+#
+test FileUtilities-1.6.2 {binaryReadURLToByteArray does not exist} {
+    set sourceURL [java::new java.net.URL file:./doesnotexist]
+
+    set fileExists0 [file exists doesnotexist]
+    catch {java::call ptolemy.util.FileUtilities binaryReadURLToByteArray \
+	       $sourceURL} errMsg
+    regsub {Exception:.*doesnot} $errMsg {Exception: ./doesnot} r2
+    regsub {No such file or directory} $r2 {The system cannot find the file specified} r3
+    list $fileExists0 $r3
+} {0 {java.io.FileNotFoundException: ./doesnotexist (The system cannot find the file specified)}}
+
+######################################################################
+####
+#
+test FileUtilities-1.6.3 {binaryReadURLToByteArray Get the first characters from a PDF file in a jar file} {
+    # Note that $PTII/ptolemy/util/test/PDFSample.pdf must be in the classpath
+    # for this to work
+    # This test is used to validate that ptolemy/vergil/pdfrenderer/PDFAttribute can read a 
+    # pdf from a jar file
+    set sourceURL [java::new java.net.URL jar:file:/Users/cxh/ptII/ptolemy/util/test/PDFSample.jar!/ptolemy/vergil/pdfrenderer/sample.pdf]
+
+    set byteArray [java::call ptolemy.util.FileUtilities binaryReadURLToByteArray \
+		       $sourceURL]
+    # The first few characters of the makefile
+    list [$byteArray getrange 0 30]
+} {{37 80 68 70 45 49 46 51 10 37 -60 -27 -14 -27 -21 -89 -13 -96 -48 -60 -58 10 52 32 48 32 111 98 106 10}}
+
+######################################################################
+####
+#
 test FileUtilities-2.1 {nameToFile: null and "" name} {
     set file1 [java::call ptolemy.util.FileUtilities nameToFile \
 	[java::null] [java::null]]

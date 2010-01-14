@@ -163,10 +163,8 @@ public class PDFAttribute extends VisibleAttribute {
                         throw new IllegalActionException(this, ex, "Failed to open " + source.getExpression());
                     } else {
                         try {
-                            File file = new File(JNLPUtilities.saveJarURLAsTempFile(jarURL.toString(), "PDFAttribute", ".pdf", null));
-                            RandomAccessFile raf = new RandomAccessFile(file, "r");
-                            FileChannel channel = raf.getChannel();
-                            byteBuffer = channel.map(FileChannel.MapMode.READ_ONLY, 0, channel.size());
+                            byte [] contents = FileUtilities.binaryReadURLToByteArray(jarURL);
+                            byteBuffer = ByteBuffer.wrap(contents);
                         } catch (Exception ex3) {
                             throw new IllegalActionException(this, ex, "Failed to open " + source.getExpression()
                                     + ".  Also, tried to open jar URL " + jarURL + ", exception was: \n"

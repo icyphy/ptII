@@ -35,7 +35,9 @@ ME =		ptolemy/util/test
 # Root of the Ptolemy II directory
 ROOT =		../../..
 
-CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(SAXON_JAR)
+# Jar used in FileUtilities.tcl
+PDFSAMPLE = $(ROOT)$(ME)/PDFSample.jar
+CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(SAXON_JAR)$(CLASSPATHSEPARATOR)$(PDFSAMPLE)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
@@ -69,6 +71,7 @@ JGRAPHICAL_TESTS = \
 	dummy.tcl
 
 EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) $(JSIMPLE_TESTS) \
+	PDFSample.jar \
 	test.xml \
 	copy.xsl \
 	addMarkers.xsl \
