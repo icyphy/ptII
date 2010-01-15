@@ -372,7 +372,7 @@ $(PTII_SRC): $(PTII_FULL)
 		find . -name jdom.jar -prune -o -name nesc.jar -prune -o -name "*.jar" -ls -exec rm {} \; ;\
 		cd ../../../doc; \
 		echo "About to remove jars in `pwd`"; \
-		find . -name "*.jar" -ls -exec rm {} \; ;\
+		find . -name PDFSample.jar -prune -o -name "*.jar" -ls -exec rm {} \; ;\
 		cd ..; \
 		rm -rf doc/codeDoc*; \
 		rm -rf `cat $(GENDIR)/src.ex`; \
