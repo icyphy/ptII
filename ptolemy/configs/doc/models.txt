@@ -93,8 +93,8 @@ $CLASSPATH/ptolemy/domains/ci/demo/Router/Router.xml
 $CLASSPATH/ptolemy/domains/continuous/demo/BouncingBall/BouncingBall.xml
 $CLASSPATH/ptolemy/domains/continuous/demo/BouncingBall/BouncingBallWithoutGR.xml
 $CLASSPATH/ptolemy/domains/continuous/demo/Brownian/Brownian.xml
-$CLASSPATH/ptolemy/domains/continuous/demo/CarTracking/CarTracking.xml
 $CLASSPATH/ptolemy/domains/continuous/demo/CartPendulum/CartPendulum.xml
+$CLASSPATH/ptolemy/domains/continuous/demo/CarTracking/CarTracking.xml
 $CLASSPATH/ptolemy/domains/continuous/demo/ComparedClocks/ComparedClocks.xml
 $CLASSPATH/ptolemy/domains/continuous/demo/ContinuousInsideDE/ContinuousInsideDE.xml
 $CLASSPATH/ptolemy/domains/continuous/demo/FurutaPendulum/FurutaPendulum.xml
@@ -141,11 +141,11 @@ $CLASSPATH/ptolemy/domains/csp/demo/WriteRegulator/WriteRegulator.xml
 $CLASSPATH/ptolemy/domains/ct/demo/BouncingBall/BouncingBall.xml
 $CLASSPATH/ptolemy/domains/ct/demo/BouncingBall/BouncingBallWithoutGR.xml
 $CLASSPATH/ptolemy/domains/ct/demo/Brownian/Brownian.xml
-$CLASSPATH/ptolemy/domains/ct/demo/CTInsideDE/CTInsideDE.xml
-$CLASSPATH/ptolemy/domains/ct/demo/CarTracking/CarTracking.xml
 $CLASSPATH/ptolemy/domains/ct/demo/CartPendulum/CartPendulum.xml
+$CLASSPATH/ptolemy/domains/ct/demo/CarTracking/CarTracking.xml
 $CLASSPATH/ptolemy/domains/ct/demo/ComparedClocks/ComparedClocks.xml
 $CLASSPATH/ptolemy/domains/ct/demo/ContinuousClock/TriggeredContinuousClock.xml
+$CLASSPATH/ptolemy/domains/ct/demo/CTInsideDE/CTInsideDE.xml
 $CLASSPATH/ptolemy/domains/ct/demo/Helicopter/Helicopter.xml
 $CLASSPATH/ptolemy/domains/ct/demo/HierarchicalExecution/HierarchicalExecution.xml
 $CLASSPATH/ptolemy/domains/ct/demo/HybridPlant/DeterministicHybridPlant.xml
@@ -360,6 +360,6 @@ $CLASSPATH/ptolemy/matlab/demo/MatlabCT/MatlabCT.xml
 $CLASSPATH/ptolemy/matlab/demo/MatlabExpression/MatlabExpression.xml
 $CLASSPATH/ptolemy/moml/demo/Networked/Networked.xml
 $CLASSPATH/ptolemy/vergil/kernel/attributes/demo/AnimateVergil/AnimateVergil.xml
+$CLASSPATH/ptolemy/verification/demo/iRobotHillClimbing/iRobotCreateVerification.xml
 $CLASSPATH/ptolemy/verification/demo/RailroadControl/RailroadControl.xml
 $CLASSPATH/ptolemy/verification/demo/SimpleTrafficLight/SimpleTrafficLight.xml
-$CLASSPATH/ptolemy/verification/demo/iRobotHillClimbing/iRobotCreateVerification.xml
