@@ -70,13 +70,12 @@ import ptolemy.kernel.util.Workspace;
  The semantics of this domain is given in the following two papers:
  <ul>
  <li>
- Edward A. Lee and Haiyang Zheng, "Operational Semantics of Hybrid Systems,"
+ Edward A. Lee and Haiyang Zheng, "<a href="http://ptolemy.eecs.berkeley.edu/publications/papers/05/OperationalSemantics/#in_browser">Operational Semantics of Hybrid Systems</a>,"
  Invited paper in Proceedings of Hybrid Systems: Computation and Control
- (HSCC) LNCS 3414, Zurich, Switzerland, March 9-11, 2005.
+ (HSCC) LNCS 3414, Zurich, Switzerland, March 9-11, 2005.</li>
  <li>
- Edward A. Lee, Haiyang Zheng, "Leveraging Synchronous Language
- Principles for Heterogeneous Modeling and Design of Embedded Systems,"
- EMSOFT 07, September 30-October 3, 2007, Salzburg, Austria.
+ Edward A. Lee, Haiyang Zheng, "<a href="http://ptolemy.eecs.berkeley.edu/publications/papers/07/unifying/index.htm#in_browser">Leveraging Synchronous Language Principles for Heterogeneous Modeling and Design of Embedded Systems</a>,"
+ EMSOFT 07, September 30-October 3, 2007, Salzburg, Austria.</li>
  </ul>
  <p>
  A signal is a set of "events," each of which has a tag and value.
@@ -93,7 +92,7 @@ import ptolemy.kernel.util.Workspace;
  at tag (<i>t</i>, 0). It typically settles to
  a "final value" after a finite number of indices.
  If it fails to settle to a final value, the signal is said to
- have a "stuttering Zeno" condition, and time will not progress.
+ have a "stuttering Zeno" condition, and time will not progress.</p>
  <p>
  In our semantics, all signals are piecewise continuous.
  This means that the initial value, as a function of time,
@@ -101,7 +100,7 @@ import ptolemy.kernel.util.Workspace;
  of time, is continuous on the right, and the signal
  has exactly one value (meaning the initial value and the final value
  are the same) at all times except those
- on a discrete subset D.
+ on a discrete subset D.</p>
  <p>
  A purely continuous signal has exactly one value at
  all times, meaning that the final value equals the initial
@@ -111,55 +110,55 @@ import ptolemy.kernel.util.Workspace;
  times, and at a discrete subset of the times, it may
  have non-absent values. The only signal that is both
  purely continuous and purely discrete is the one that
- is absent at all tags.
+ is absent at all tags.</p>
  <p>
  A signal may be mostly continuous,
  but have multiple values at a discrete subset of times.
  These multiple values semantically represent discontinuities
- in a continuous signal that is not purely continuous.
+ in a continuous signal that is not purely continuous.</p>
  <p>
  The set of times where signals have more than one distinct value
  is a discrete subset D of the time line. These times are called
  "breakpoints" and are treated specially in the execution.
  Between these times, an ordinary differential equation (ODE)
  solver governs the execution. Initial values are always given
- by the ODE solver.
- <P>
+ by the ODE solver.</p>
+ <p>
  The parameters of this director are:
- <UL>
- <LI> <i>startTime</i>: The start time of the
+ <ul>
+ <li> <i>startTime</i>: The start time of the
  execution. This parameter has no effect if
- this director is not at the top-level of a model.
+ this director is not at the top-level of a model.</li>
 
- <LI> <i>stopTime</i>: The stop time of the execution.
+ <li> <i>stopTime</i>: The stop time of the execution.
  When the current time reaches this value, postfire() will return false.
- This will occur whether or not this director is at the top level.
+ This will occur whether or not this director is at the top level.</li>
 
- <LI> <i>initStepSize</i>: The suggested integration step size.
+ <li> <i>initStepSize</i>: The suggested integration step size.
  If the ODE solver is a fixed step size solver, then this parameter
  gives the step size taken. Otherwise, at the start of execution,
  this provides the first guess for the integration step size.
  In later iterations, the integrators provide the suggested step
- size. This is a double with default value 0.1
+ size. This is a double with default value 0.1</li>
 
- <LI> <i>maxStepSize</i>: The maximum step size.
+ <li> <i>maxStepSize</i>: The maximum step size.
  This can be used to prevent the solver from too few
  samples of signals. That is, for certain models, it might
  be possible to get accurate results for very large step
  sizes, but plots of the signals may be misleading (even
  if they are accurate) because they represent the signal
- with only a few samples. The default value is 1.0.
+ with only a few samples. The default value is 1.0.</li>
 
- <LI> <i>maxIterations</i>:
+ <li> <i>maxIterations</i>:
  The maximum number of iterations that an
  ODE solver can use to resolve the states of integrators.
  Implicit solvers, for example, iterate until they converge,
  and this parameter bounds the number of iterations.
  An example of an implicit solver is the BackwardsEuler solver.
  The default value is 20, and the type is int.
- FIXME: Currently, this package implements no implicit solvers.
+ FIXME: Currently, this package implements no implicit solvers.</li>
 
- <LI> <i>ODESolver</i>:
+ <li> <i>ODESolver</i>:
  The class name of the ODE solver used for integration.
  This is a string that defaults to "ExplicitRK23Solver",
  a solver that tends to deliver smooth renditions of signals.
@@ -170,9 +169,9 @@ import ptolemy.kernel.util.Workspace;
  "ptolemy.domains.continuous.kernel.solver".
  If there is another ContinuousDirector above this one
  in the hierarchy, then the value of this parameter is ignored and the
- solver given by the first ContinuousDirector above will be used.
+ solver given by the first ContinuousDirector above will be used.</li>
 
- <LI> <i>errorTolerance</i>: This is the local truncation
+ <li> <i>errorTolerance</i>: This is the local truncation
  error tolerance, used for controlling the integration accuracy
  in variable step size ODE solvers, and also for determining whether
  unpredictable breakpoints have been accurately identified. Any actor
@@ -181,10 +180,9 @@ import ptolemy.kernel.util.Workspace;
  For example, if the local truncation error
  in some integrator is greater than this tolerance, then the
  integration step is considered to have failed, and should be restarted with
- a reduced step size. The default value is 1e-4.
-
- </UL>
- <P>
+ a reduced step size. The default value is 1e-4.</li>
+ </ul>
+ <p>
  This director maintains a breakpoint table to record all predictable
  breakpoints that are greater than or equal to
  the current time. The breakpoints are sorted in chronological order.
@@ -193,7 +191,7 @@ import ptolemy.kernel.util.Workspace;
  be inserted into the table by calling the fireAt() method. The fireAt method
  may be requested by the director, which inserts the stop time of the
  execution. The fireAt method may also be requested by actors and the
- requested firing time will be inserted into the breakpoint table.
+ requested firing time will be inserted into the breakpoint table.</p>
  <p>
  This director is designed to work with any other director that
  implements the strict actor semantics. As long as the other director does
@@ -202,13 +200,13 @@ import ptolemy.kernel.util.Workspace;
  this director. If, in addition to implementing the strict
  actor semantics that other director also respects calls to
  fireAt(), then this director may be used within a model
- governed by that director.
+ governed by that director.</p>
  <p>
  This director is based on the CTDirector by Jie Liu and Haiyang Zheng,
- but it has a much simpler scheduler and a fixed-point semantics.
+ but it has a much simpler scheduler and a fixed-point semantics.</p>
 
-FIXME: the design of clone method should be examined and reimplemented.
-All Continuous files need this.
+<p>FIXME: the design of clone method should be examined and reimplemented.
+All Continuous files need this.</P>
 
  @author Haiyang Zheng and Edward A. Lee
  @version $Id$
