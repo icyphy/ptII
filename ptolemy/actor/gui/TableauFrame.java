@@ -299,8 +299,9 @@ public class TableauFrame extends Top {
         // if we do "Listen to Actor", then getConfiguration()
         // is returning null?
         if (configuration != null) {
+            String alternateTopPackClass = "_alternateTopPackClass";
             StringAttribute alternateTopPackClassAttribute = (StringAttribute) configuration
-                    .getAttribute("_alternateTopPackClass");
+                .getAttribute(alternateTopPackClass);
 
             // If the _alternateTopPackClass attribute is present,
             // then we use the specified class to pack the gui
@@ -312,20 +313,28 @@ public class TableauFrame extends Top {
                 try {
                     topPackClassName = alternateTopPackClassAttribute
                             .getExpression();
+                    if (topPackClassName == null) {
+                        throw new NullPointerException("Null expression from the \""
+                                + alternateTopPackClass + "\" attribute?  It could be that "
+                                + "the Configuration is not yet constructed?");
+                    }
                     Class topPackClass = Class.forName(topPackClassName);
+                    if (topPackClass == null) {
+                        throw new ClassNotFoundException("Failed to find class \""
+                                + topPackClass + "\", Class.forName() returned null.");
+                    }
                     _topPack = (TopPack) topPackClass.newInstance();
                     // Do the alternate pack
                     _topPack.pack(this, _packCalled);
                     _packCalled = true;
-                } catch (Exception e) {
-                    System.out
-                            .println("Could not get the alternate top pack class \""
-                                    + topPackClassName
-                                    + "\" named in the configuration by the "
-                                    + "_alternateTopPackClass attribute: "
-                                    + e.getMessage()
-                                    + "\nPlease check your configuration and try again.  Using the default "
-                                    + "Top pack().");
+                } catch (Exception ex) {
+                    throw new InternalErrorException(configuration, ex,
+                            "Could not get the alternate top pack class \""
+                            + topPackClassName
+                            + "\" named in the configuration by the \""
+                            + alternateTopPackClass + "\" attribute because: "
+                            + ex.getMessage()
+                            + "\nPlease check your configuration and try again.");
                 }
             } else {
                 super.pack();
