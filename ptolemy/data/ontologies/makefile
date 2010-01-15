@@ -62,11 +62,12 @@ JSRCS = \
 	ParseTreeASTNodeAdapterCollector.java \
 	ParseTreeAnnotationEvaluator.java \
 	OntologyAdapter.java \
+	OntologyAnnotationAttribute.java \
 	OntologyMoMLHandler.java \
 	OntologyResolutionException.java \
 	OntologySolver.java \
 	OntologySolverBase.java \
-	SharedUtilities.java
+	OntologySolverUtilities.java
 
 OTHER_FILES_TO_BE_JARED = \
 	ontologyLibrary.xml
@@ -76,7 +77,7 @@ EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
 # if $(DIRS) includes demo, then do not set MISC_FILES= $(DIRS) 
-MISC_FILES = doc gui lattice util #test
+MISC_FILES = doc gui lattice util adapters lattices #test
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES

@@ -53,6 +53,7 @@ PTCLASSALLJARS = \
 	logic/logic.jar
 
 JSRCS = \
+	Const.java \
 	CurrentTime.java \
 	DiscreteClock.java \
 	Expression.java \
@@ -60,7 +61,8 @@ JSRCS = \
 	MultiplyDivide.java \
 	RecordAssembler.java \
 	RecordDisassembler.java \
-	Scale.java 
+	Scale.java \
+	Source.java
 
 EXTRA_SRCS =    $(JSRCS)
 
