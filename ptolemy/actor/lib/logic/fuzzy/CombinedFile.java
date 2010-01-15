@@ -72,8 +72,7 @@ file name will be <code><i>filename</i>Model.xml</code>.
 public class CombinedFile extends DefaultHandler {
 
     /**
-     * Construct a new CombinedFile Object. 
-     *
+     * Construct a new CombinedFile Object.
      */
     public CombinedFile() {
         super();
@@ -82,16 +81,16 @@ public class CombinedFile extends DefaultHandler {
     }
 
     /**
-     *  Construct a combined file object, parse the specified file,
+     *  Construct a CombinedFile object, parse the specified file,
      *  and create the Ptolemy II model.
      *  It is expected that this is run from the path $PTII and it 
      *  prepends the location "ptolemy\\actor\\lib\\logic\\fuzzy\\" to 
-     *  the filename
+     *  the filename.
      *  @param filename The name of the XML file to be parsed
      *  @exception Exception If the input file cannot be read or
      *  parsed.
      */
-    public CombinedFile(String filename) throws Exception {
+    public CombinedFile(String filename) throws Exception{
 
         _startArchitecture = false;
         _startOption = false;
@@ -109,8 +108,9 @@ public class CombinedFile extends DefaultHandler {
         handler._outputFileName = _outputFileName;
         xmlReader.setContentHandler(handler);
         xmlReader.setErrorHandler(handler);
-        FileReader reader = new FileReader("ptolemy\\actor\\lib\\logic" +
-                "\\fuzzy\\"+ filename);
+
+        FileReader reader = new FileReader("ptolemy\\actor\\lib\\logic" 
+                + "\\fuzzy\\"+ filename);
         xmlReader.parse(new InputSource(reader));
     }
 
@@ -130,9 +130,10 @@ public class CombinedFile extends DefaultHandler {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /* Read the TSST xml file and produce the MoML xml file with the 
-     * Ptolemy II model.
-     *
+    /**
+     *  Read the TSST xml file and produce the MoML xml file with the 
+     *  Ptolemy II model. The Ptolemy II model is placed in $PTII\
+     *  "ptolemy\\actor\\lib\\logic\\fuzzy\\".
      */
     private void readCreate() {
         ArrayList<String> componentNames = new ArrayList<String>();
@@ -158,8 +159,8 @@ public class CombinedFile extends DefaultHandler {
             Option tOption;
             for (int i = 0; i < architecture.myOptions.size(); i++) {
                 tOption = (Option) architecture.myOptions.get(i);
-                componentNames.add(tOption.name + "_"
-                        + tOption.relatedDimensions.get(0).toString());
+                componentNames.add(tOption._name + "_"
+                        + tOption._relatedDimensions.get(0).toString());
             }
             if(_debugging){
                 System.out.println("there are currently "
@@ -178,14 +179,14 @@ public class CombinedFile extends DefaultHandler {
                         +"class=\"ptolemy.data.expr.Parameter\"" 
                         +" value=\""
                         + ((Option) (architecture.myOptions.get(i))).
-                        relatedDimensions.get(0)
+                        _relatedDimensions.get(0)
                         + ".xml\">"
                         +"</property>"
                         +"<property name=\"componentType\" " 
                         +"class=\"ptolemy.data.expr.Parameter" 
                         +"\" value=\""
                         + ((Option) (architecture.myOptions.get(i))).
-                        name + "\">"
+                        _name + "\">"
                         +"</property>"+_eol
                         +"<property name=\"init\" class=\"ptolemy." 
                         +"data.expr.Parameter\" value=\"2\">"
@@ -203,7 +204,6 @@ public class CombinedFile extends DefaultHandler {
                     +"actor.lib.gui.Display\">"+_eol
                     +"</entity>"+_eol);
 
-
             int relationCount = componentNames.size()*3;
             for (int i = 0; i < relationCount; i++) {
                 output.append(" <relation name=\"relation" + i
@@ -213,7 +213,6 @@ public class CombinedFile extends DefaultHandler {
                         + "</property>"+ _eol
                         +"</relation>"+ _eol);
             }
-
 
             int tempRelCounter = 0;
             for (int i = 0; i < componentNames.size() - 1; i++) {                        
@@ -225,7 +224,6 @@ public class CombinedFile extends DefaultHandler {
                         + ".riskInput\" relation=\"relation" + 
                         tempRelCounter+ "\"/>"+_eol);
                 tempRelCounter++;
-
                 //cost
                 output.append("<link port=\"" + componentNames.get(i)
                         + ".cost\" relation=\"relation" + tempRelCounter
@@ -234,7 +232,6 @@ public class CombinedFile extends DefaultHandler {
                         + ".costInput\" relation=\"relation" + tempRelCounter
                         +"\"/>"+_eol);
                 tempRelCounter++;
-
                 //mass
                 output.append("<link port=\"" + componentNames.get(i)
                         + ".mass\" relation=\"relation" + tempRelCounter 
@@ -244,6 +241,7 @@ public class CombinedFile extends DefaultHandler {
                         + "\"/>"+ _eol);
                 tempRelCounter++;
             }
+
             if (componentNames.size() > 1) {
                 //risk
                 output.append("<link port=\""
@@ -253,7 +251,6 @@ public class CombinedFile extends DefaultHandler {
                         + "<link port=\"RiskDisplay.input\" relation=\"" 
                         +"relation" +tempRelCounter + "\"/>"+_eol);
                 tempRelCounter++;
-
                 //cost
                 output.append("<link port=\""
                         + componentNames.get(componentNames.size() - 1)
@@ -263,7 +260,6 @@ public class CombinedFile extends DefaultHandler {
                         +"relation" +tempRelCounter + "\"/>"+ _eol);
 
                 tempRelCounter++;
-
                 //mass
                 output.append("<link port=\""
                         + componentNames.get(componentNames.size() - 1)
@@ -316,48 +312,54 @@ public class CombinedFile extends DefaultHandler {
         String name="";
         ArrayList myOptions;
 
-        /*Default Constructor
-         * */
+        /** Default Constructor */
         public Architecture() {
             name = "dummy";
             myOptions = new ArrayList<String>();
         }
-        /*
-         *          * */
+
+        /**
+         * Return an array list consisting of the components/options
+         * in the architecture. 
+         * */
         public ArrayList getComponents() {
             ArrayList<String> componentNames = new ArrayList<String>();
 
             Option tOption;
             for (int i = 0; i < this.myOptions.size(); i++) {
                 tOption = (Option) myOptions.get(i);
-                componentNames.add(tOption.name + "_"
-                        + tOption.relatedDimensions.get(0).toString());
+                componentNames.add(tOption._name + "_"
+                        + tOption._relatedDimensions.get(0).toString());
             }
             return componentNames;
         }
 
+        /** Return the name of the architecture */
         public String getName() {
             return name;
         }
     }
 
     /**
-     * Private options class, it stores the different dimensions in an
+     * Option class, it stores the different dimensions in an
      * architecture.
-     *
      */
     static class Option {
-        String name;
-        ArrayList relatedDimensions;
-
+        /** Default Option constructor*/
         public Option() {
-            name = "dummy";
-            relatedDimensions = new ArrayList();
+            _name = "dummy";
+            _relatedDimensions = new ArrayList();
         }
 
+        /**Return the display name for the option */
         public String displayName() {
-            return name;
+            return _name;
         }
+
+        // name of the option
+        private String _name;
+        // list of the dimensions related to this option
+        private ArrayList _relatedDimensions;
     }
 
     /**
@@ -374,7 +376,6 @@ public class CombinedFile extends DefaultHandler {
             fileName = reader.readLine();
             if(fileName!= null){
                 CombinedFile cF = new CombinedFile(fileName);
-
             }
 
         } catch(Exception ex){
@@ -392,22 +393,26 @@ public class CombinedFile extends DefaultHandler {
         return architecture;
     }
 
-
     ////////////////////////////////////////////////////////////////////
-    // Event handlers.
+    // Customized SAX XML Event handlers.
     ////////////////////////////////////////////////////////////////////
-    /*
-     * The end Document handler is called at the end of an XML document
-     *
-     */
-    public void endDocument() {
-        System.out.println("End document");
+    /**
+     * Called once when the SAX driver sees the beginning of a document.
+     * */
+    public void startDocument() {
     }
 
-    /*
-     * The start Element handler is called when an new XML element is seen
-     *
-     */
+    /**
+     * Called once when the SAX driver sees the end of a document, even if errors occured.
+     * */
+    public void endDocument() {
+    }
+
+    /** Called each time the SAX parser sees the beginning of an element
+     * @param uri The Namespace Uniform Resource Identifier(URI)
+     * @param name Is the elements local name
+     * @param qName Is the XML 1.0 name 
+     * */
     public void startElement(String uri, String name, String qName,
             Attributes atts) {
         if ("".equals(uri)) {
@@ -437,10 +442,11 @@ public class CombinedFile extends DefaultHandler {
         }
     }
 
-    /*
-     * The end Element handler is called at the end of and XML element.
-     *
-     */
+    /** Called each time the SAX parser sees the end of an element
+     * @param uri The Namespace Uniform Resource Identifier(URI)
+     * @param name Is the elements local name
+     * @param qName Is the XML 1.0 name 
+     * */
     public void endElement(String uri, String name, String qName) {
         if ("".equals(uri)) {
             if ("gov.nasa.jpl.trades.ui.menu.ExportArchitecture_-ArchitectureExport"
@@ -451,15 +457,14 @@ public class CombinedFile extends DefaultHandler {
                     System.out.println("For arch " + architecture.getName()
                             + "there are : " + architecture.myOptions.size()
                             + " different options.");
-                    // System.out.println("***architecture name is: "+thisArchitecture.getName());
                     System.out.println("they are: ");
                 }
                 Option tOption;
                 for (int i = 0; i < architecture.myOptions.size(); i++) {
                     if(_debugging){
                         tOption = (Option) architecture.myOptions.get(i);
-                        System.out.println(tOption.name + " "
-                                + tOption.relatedDimensions.get(0).toString());
+                        System.out.println(tOption._name + " "
+                                + tOption._relatedDimensions.get(0).toString());
                     }
                 }
                 if(_debugging){
@@ -480,7 +485,7 @@ public class CombinedFile extends DefaultHandler {
                 _endOption = false;
 
                 if(_debugging){
-                    int k = _option.relatedDimensions.size();
+                    int k = _option._relatedDimensions.size();
                     System.out.println("there are " + k
                             + "dimensions with this option");
                 }
@@ -504,6 +509,11 @@ public class CombinedFile extends DefaultHandler {
         }
     }
 
+    /** Called by the SAX parser to report regular characters.
+     * @param ch[] The array containing characters
+     * @param start Is the starting point in the character array
+     * @param lenght Is length of the character array 
+     * */
     public void characters(char ch[], int start, int length) {
         if (_startArchitecture == true) {
             _startArchitecture = false;
@@ -517,19 +527,19 @@ public class CombinedFile extends DefaultHandler {
             _startOption = false;
             StringBuffer tempBuff = new StringBuffer();
             tempBuff.append(ch, start, length);
-            _option.name = tempBuff.toString();
+            _option._name = tempBuff.toString();
             if(_debugging){
-                System.out.println("option has value " + _option.name);
+                System.out.println("option has value " + _option._name);
             }
         } else if (_startDimension == true) {
             _startDimension = false;
             StringBuffer tempBuff = new StringBuffer();
             tempBuff.append(ch, start, length);
-            _option.relatedDimensions.add(tempBuff.toString());
+            _option._relatedDimensions.add(tempBuff.toString());
             if(_debugging){
                 System.out.println("related dimension is: " + tempBuff.toString());
                 System.out
-                .println("size is " + _option.relatedDimensions.size());
+                .println("size is " + _option._relatedDimensions.size());
             }
         }
         if(_debugging){
