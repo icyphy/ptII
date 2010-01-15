@@ -73,7 +73,7 @@ import ptolemy.vergil.basic.BasicGraphFrame;
             class="ptolemy.data.expr.StringParameter"
             value="ptolemy.vergil.basic.itextpdf.ExportPDFAction"/>
  </pre> 
- {@link ptolemy.vergil.basic.BasicGraphFrame checks for this parameter
+ {@link ptolemy.vergil.basic.BasicGraphFrame} checks for this parameter
  and adds the "Export PDF" menu choice if the class named by that parameter exists.
 
  <p>The <code>$PTII/ptolemy/configs/defaultFullConfiguration.xml</code> file
