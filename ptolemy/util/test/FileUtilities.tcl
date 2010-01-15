@@ -146,7 +146,14 @@ test FileUtilities-1.6.3 {binaryReadURLToByteArray Get the first characters from
     # for this to work
     # This test is used to validate that ptolemy/vergil/pdfrenderer/PDFAttribute can read a 
     # pdf from a jar file
-    set sourceURL [java::new java.net.URL jar:file:/Users/cxh/ptII/ptolemy/util/test/PDFSample.jar!/ptolemy/vergil/pdfrenderer/sample.pdf]
+    # Make $PTII absolute.
+    set PTIIAbsolute [[[[java::new java.io.File $PTII] getCanonicalFile] toURI] getPath]
+
+    # Get rid of the trailing slash.
+    set PTIIAbsolute [string range $PTIIAbsolute 0 [expr {[string length $PTIIAbsolute] - 2}]]
+
+    
+    set sourceURL [java::new java.net.URL jar:file:$PTIIAbsolute/ptolemy/util/test/PDFSample.jar!/ptolemy/vergil/pdfrenderer/sample.pdf]
 
     set byteArray [java::call ptolemy.util.FileUtilities binaryReadURLToByteArray \
 		       $sourceURL]
