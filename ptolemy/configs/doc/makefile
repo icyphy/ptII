@@ -132,7 +132,7 @@ models.txt: $(ROOT)/ptolemy/actor/gui/HTMLAbout.class completeDemos.htm
 	"$(JAVA)" "-Dptolemy.ptII.dir=$(PTII)" \
 		-classpath "$(CLASSPATH)$(CLASSPATHSEPARATOR)$(AUXCLASSPATH)" \
 		ptolemy.actor.gui.HTMLAbout 
-	sort models.txt > /tmp/models.txt
+	sort -f models.txt > /tmp/models.txt
 	mv /tmp/models.txt models.txt
 
 update: $(DERIVED_FILES)
