@@ -65,7 +65,9 @@ MISC_FILES =    $(DIRS)
 OPTIONAL_FILES = \
 	doc \
 	'ASTPtProductNode$$1.class' \
+	'ASTPtProductNode$$ASTPtProductNodeMonotonicFunction.class' \
 	'ASTPtProductNode$$FunctionTerm.class'
+
 
 JCLASS = $(JSRCS:%.java=%.class)
 

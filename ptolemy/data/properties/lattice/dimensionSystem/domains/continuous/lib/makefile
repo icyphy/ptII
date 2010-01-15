@@ -64,6 +64,7 @@ MISC_FILES =    $(DIRS)
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	doc \
+	'Integrator$$DerivativeOfState.class' \
 	'Integrator$$FunctionTerm.class' \
 	'Integrator$$StateOfDerivative.class'
 JCLASS = $(JSRCS:%.java=%.class)
