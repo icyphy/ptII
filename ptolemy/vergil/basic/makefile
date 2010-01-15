@@ -32,7 +32,8 @@
 
 ME =		ptolemy/vergil/basic
 
-DIRS =		img itextpdf layout test
+# PTITEXTPDF_DIR is set to itextpdf if iText.jar was found by configure.
+DIRS =		img $(PTITEXTPDF_DIR) layout test
 
 # Root of the Java directory
 ROOT =		../../..
