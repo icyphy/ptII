@@ -1,0 +1,2 @@
+ptolemy                                 svn://source.eecs.berkeley.edu/chess/ptII/trunk
+ptolemy-lib
