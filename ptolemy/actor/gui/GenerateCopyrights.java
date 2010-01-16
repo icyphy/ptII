@@ -185,6 +185,9 @@ public class GenerateCopyrights {
         _addIfPresent(copyrightsMap, "vendors.vr.Volume",
                 "ptolemy/domains/gr/lib/vr/vr-copyright.htm");
 
+        _addIfPresent(copyrightsMap, "com.itextpdf.text.Document",
+                "ptolemy/vergil/basic/itextpdf/itextpdf-copyright.htm");
+
         // FIXME: This is really lame needing to add in sub package
         // copyrights for other apps, but it is the best we can do right now.
         _addIfPresent(copyrightsMap, "mescal.domains.mescalPE.kernel.parser",

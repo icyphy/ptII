@@ -54,6 +54,9 @@ PTCLASSALLJARS =
 JSRCS = \
 	ExportPDFAction.java
 
+OTHER_FILES_TO_JAR = \
+	itextpdf-copyright.htm
+
 EXTRA_SRCS =	$(JSRCS)
 
 
