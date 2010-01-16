@@ -1,0 +1,65 @@
+#!/bin/sh
+# $Id$
+# A script to convert from Ptolemy II DocML files
+# from ptII/doc/codeDoc/*/*.xml to Kepler KAR .xml files
+
+for docmlfile in $*
+do
+	cat $docmlfile |
+	awk 'BEGIN { print "<?xml version=\"1.0\"?>"}
+	$0 ~ /^<doc name/ {
+	   split($0, f, "\"")
+	   name = f[2]
+	   class = f[4]
+	   # FIXME: Might be org.kepler.moml.PropertyEntity for Directors
+	   print "<entity name=\"" name "\" class=\"ptolemy.kernel.ComponentEntity\">"
+	   print "<property name=\"class\" value=\"" class "\" class=\"ptolemy.kernel.util.StringAttribute\">"
+	   print "  <property name=\"id\" value=\"urn:lsid:kepler-project.org:class:FIXME:1\" class=\"ptolemy.kernel.util.StringAttribute\"/>"
+	   print "</property>"
+	   print "<property name=\"entityId\"  value=\"urn:lsid:kepler-project.org:actor:FIXME2:1\" class=\"org.kepler.moml.NamedObjId\"/>"
+	   print "<property name=\"KeplerDocumentation\" class=\"ptolemy.vergil.basic.KeplerDocumentationAttribute\">"
+	   print "<property name=\"description\" class=\"ptolemy.kernel.util.ConfigurableAttribute\"><configure>null</configure></property>"
+	}
+	$1 == "<description>" && NF == 1 {
+	   inDescription = 1
+	   print "<property name=\"userLevelDocumentation\" class=\"ptolemy.kernel.util.ConfigurableAttribute\"><configure>"
+	}
+	inDescription > 1 && $0 !~ /<\/description>$/ {
+	   inDescription++ 
+           print $0		      
+	}
+	inDescription >= 1 && $0 ~ /<\/description>$/ {
+	   inDescription = 0
+	   print substr($0,1, length($0)-15)"</configure></property>"
+        }
+	$1 == "<author>" {
+	   author = substr($0, 10, length($0) - 10 - 9)
+	   print "<property name=\"author\" class=\"ptolemy.kernel.util.ConfigurableAttribute\"><configure>" author "</configure></property>"
+	}
+	$0 ~ /    <property name=/ {
+            inProperty = 1
+	    split($0, f, "\"")
+	    name = f[2]
+	    value = substr($0, index($0, ">") + 1, length($0));
+	    if (value ~ /<\/property>/) {
+	        value = substr(value, 1, length(value) - 11)
+	    }	    
+	    print "<property name=\"prop:" name "\" class=\"ptolemy.kernel.util.ConfigurableAttribute\"><configure>" value
+        }
+	inProperty > 1 && $0 !~ /<\/property>/ {
+	    inProperty++ 
+            print ":::" $0 ":::"
+        }
+	inProperty == 1 && $0 ~ /<\/property>/ {
+	   inProperty = 0
+	   print "</configure></property>"
+        }             
+	inProperty > 1 && $0 ~ /<\/property>/ {
+	   inProperty = 0
+	   print substr($0,1, length($0)-11)"</configure></property>"
+        }             
+        END {
+	   print "</property>"
+	   print "</property>"
+	}'
+done
