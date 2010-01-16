@@ -22,16 +22,19 @@
         <all-permissions/> 
   </security> 
   <resources>
-        <!-- Bump maximum heap size to 128Mb, use JVM Props. to confirm -->
-  	<j2se version="1.5+" max-heap-size="128m" />
+        <!-- Bump maximum heap size to 512Mb, use JVM Props. to confirm -->
+  	<j2se version="1.5+" max-heap-size="512m" />
 	<!-- Start Jars -->
 	<!-- End Jars -->
   </resources>
-  <resources os="Windows">
-  	<nativelib href="signed/lib/matlabWindows.jar"/>
+  <resources os="Mac OS X">
+  	<nativelib href="signed/lib/matlabMacOSX.jar"/>
   </resources>
   <resources os="SunOS">
   	<nativelib href="signed/lib/matlabSunOS.jar"/>
+  </resources>
+  <resources os="Windows">
+  	<nativelib href="signed/lib/matlabWindows.jar"/>
   </resources>
   <application-desc main-class="ptolemy.actor.gui.jnlp.VisualSenseApplication">
 	<argument>-visualsense</argument>
