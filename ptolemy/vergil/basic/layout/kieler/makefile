@@ -53,7 +53,8 @@ JSRCS = \
 	KielerLayout.java \
 	PtolemyModelUtil.java
 
-OTHER_FILES_TO_BE_JARED =
+OTHER_FILES_TO_BE_JARED = \
+	kieler-copyright.htm
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 

@@ -105,7 +105,7 @@ public class GenerateCopyrights {
                 "com.jgoodies.forms.factories.DefaultComponentFactory",
                 "com/jgoodies/jgoodies-copyright.htm");
 
-        _addIfPresent(copyrightsMap, "fuzzy.FuzzyEngine",
+        _addIfPresent(copyrightsMap, "actor.lib.logic.fuzzy.FuzzyLogic",
                 "ptolemy/actor/lib/logic/fuzzy/FuzzyEngine-copyright.htm");
 
         _addIfPresent(copyrightsMap, "ptolemy.domains.gro.kernel.GRODirector",
@@ -176,6 +176,9 @@ public class GenerateCopyrights {
                 "ptolemy.domains.psdf.kernel.PSDFScheduler",
                 "ptolemy/domains/psdf/mapss-copyright.htm");
 
+        _addIfPresent(copyrightsMap, "ptolemy.vergil.basic.layout,KielerLayoutGUI",
+                "ptolemy/vergil/basic/layout/kieler/kieler-copyright.htm");
+
         _addIfPresent(copyrightsMap, "ptolemy.matlab.Expression",
                 "ptolemy/matlab/copyright.htm");
 
@@ -185,7 +188,7 @@ public class GenerateCopyrights {
         _addIfPresent(copyrightsMap, "vendors.vr.Volume",
                 "ptolemy/domains/gr/lib/vr/vr-copyright.htm");
 
-        _addIfPresent(copyrightsMap, "com.itextpdf.text.Document",
+        _addIfPresent(copyrightsMap, "ptolemy.vergil.basic.itextpdf.ExportPDFAction",
                 "ptolemy/vergil/basic/itextpdf/itextpdf-copyright.htm");
 
         // FIXME: This is really lame needing to add in sub package

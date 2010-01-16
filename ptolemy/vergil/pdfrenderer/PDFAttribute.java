@@ -76,7 +76,9 @@ import com.sun.pdfview.PDFPage;
  PDFRenderer.jar in the classpath, it is usually
  found in $PTII/lib/PDFRenderer.jar.
  </p>
- 
+ <p>The pdf-renderer package is licensed under the
+<a href="http://www.gnu.org/copyleft/lesser.html#in_browser">GNU Lesser General Public License (LGPL)</a>. 
+ </p> 
  @author Edward A. Lee
  @version $Id$
  @since Ptolemy II 4.0
