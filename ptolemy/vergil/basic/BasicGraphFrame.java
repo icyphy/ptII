@@ -1915,6 +1915,8 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
     protected JMenuItem[] _createFileMenuItems() {
         JMenuItem[] fileMenuItems = super._createFileMenuItems();
         try {
+            // FIXME: this does not work because the configuration is
+            // not set when this method is called.
             Configuration configuration = getConfiguration();
             if (configuration == null) {
                 //new Exception("BSF: configuration is null").printStackTrace();
@@ -1947,6 +1949,25 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             throw new InternalErrorException(null, ex,
                     "Failed to read _exportPDFActionName from the Configuration");
         }
+
+        // Uncomment the next block to have Export PDF *ALWAYS* enabled.
+        // We don't want it always enabled because ptiny, the applets and
+        // Web Start should not included this AGPL'd piece of software
+
+//         if (_exportPDFAction == null) {
+//             //String exportPDFActionClassName = exportPDFActionClassNameParameter.stringValue();
+//             String exportPDFActionClassName = "ptolemy.vergil.basic.itextpdf.ExportPDFAction";
+//             try {
+//                 Class exportPDFActionClass = Class
+//                     .forName(exportPDFActionClassName);
+//                 Constructor exportPDFActionConstructor = exportPDFActionClass.getDeclaredConstructor(BasicGraphFrame.class);
+//                 _exportPDFAction = (AbstractAction) exportPDFActionConstructor.newInstance(this);
+//             } catch (Throwable throwable) {
+//                 new InternalErrorException(null, throwable, "Failed to construct export PDF class \""
+//                         + exportPDFActionClassName
+//                         + "\", which was read from the configuration.");
+//             }
+//         }
 
         if (_exportPDFAction != null) {
             // Insert the Export PDF item after the Print item in the menu.
