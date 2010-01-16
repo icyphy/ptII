@@ -484,9 +484,6 @@ HYVISUALPACKAGES = \
 	ptolemy.domains.modal.kernel \
 	ptolemy.domains.modal.kernel.ia \
 	ptolemy.domains.modal.modal \
-	ptolemy.domains.pthales.JNI \
-	ptolemy.domains.pthales.kernel \
-	ptolemy.domains.pthales.lib \
 	ptolemy.domains.sdf.kernel \
 	ptolemy.domains.sdf.lib \
 	ptolemy.domains.sdf.lib.vq \
@@ -665,6 +662,9 @@ ALLPACKAGES = \
 	ptolemy.domains.properties.kernel \
 	ptolemy.domains.ptera.kernel \
 	ptolemy.domains.ptera.lib \
+	ptolemy.domains.pthales.JNI \
+	ptolemy.domains.pthales.kernel \
+	ptolemy.domains.pthales.lib \
 	ptolemy.domains.rendezvous.kernel \
 	ptolemy.domains.rendezvous.lib \
 	ptolemy.domains.sequence.kernel \
