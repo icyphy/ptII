@@ -44,10 +44,8 @@
                 class="ptolemy.domains.continuous.lib.ContinuousSpectrum"/>
         <entity name="Noise"
                 class="ptolemy.domains.continuous.lib.Noise"/>
-  	    <input source="ptolemy/actor/lib/random.xml"/>
-  		<entity name="Random">
-  			<rename name="Discrete Random"/>
-  		</entity>
+	<!-- Don't include ptolemy/actor/lib/random.xml here because it
+             imports colt.xml which means that Continuous would require colt-->
   </entity>
   <entity name="Miscellaneous" class="ptolemy.moml.EntityLibrary">
 		<entity name="ResettableTimer"
