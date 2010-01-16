@@ -364,15 +364,15 @@ $(PTII_SRC): $(PTII_FULL)
 		touch mk/ptII.mk.in; \
 		find . -name "*.class" -ls -exec rm {} \; ;\
 		cd ptolemy; \
-		echo "About to remove jars in `pwd`"; \
-		find . \( -name ptinyos -o -name jini -o -name extractJarFileTest.jar -o -name antlr.jar -o -name "ojdbc5.jar" -o -name "ojdbc6.jar" -o -name "mysql-connector-java-5.1.6-bin.jar" \) -prune -o -name "*.jar" -ls -exec rm {} \; ;\
+		echo "(1)About to remove jars in `pwd`"; \
+		find . \( -name ptinyos -o -name jini -o -name extractJarFileTest.jar -o -name antlr.jar -o -name "ojdbc5.jar" -o -name "ojdbc6.jar" -o -name "mysql-connector-java-5.1.6-bin.jar" -name PDFSample.jar \) -prune -o -name "*.jar" -ls -exec rm {} \; ;\
 		cd ..; \
 		cd ptolemy/domains/ptinyos; \
-		echo "About to remove jars in `pwd`"; \
+		echo "(2)About to remove jars in `pwd`"; \
 		find . -name jdom.jar -prune -o -name nesc.jar -prune -o -name "*.jar" -ls -exec rm {} \; ;\
 		cd ../../../doc; \
-		echo "About to remove jars in `pwd`"; \
-		find . -name PDFSample.jar -prune -o -name "*.jar" -ls -exec rm {} \; ;\
+		echo "(3)About to remove jars in `pwd`"; \
+		find . -name "*.jar" -ls -exec rm {} \; ;\
 		cd ..; \
 		rm -rf doc/codeDoc*; \
 		rm -rf `cat $(GENDIR)/src.ex`; \
