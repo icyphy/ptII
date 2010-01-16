@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="ReceiveAntennaPattern" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
     <property name="WirelessDirector" class="ptolemy.domains.wireless.kernel.WirelessDirector">
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -26,7 +26,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 45.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, -1, 801, 648}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 799, 640}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[586, 530]">
     </property>
@@ -87,7 +87,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="40.0, -20.0">
             </property>
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 126, 902, 655}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 126, 900, 649}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[687, 539]">
         </property>
@@ -137,7 +137,7 @@ of this actor relative to the position of the Sender.</text></svg></configure>
             </property>
             <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.2,0.2,0.2,1.0}">
             </property>
-            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Simply discard the data received since we are only &#10;interested in measuring the received power here. ">
+            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Simply discard the data received since we are only &#10;interested in measearing the received power here. ">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[355.0, 65.0]">
             </property>
@@ -251,7 +251,7 @@ of this actor relative to the position of the Sender.</text></svg></configure>
         <entity name="XYPlotter" class="ptolemy.actor.lib.gui.XYPlotter">
             <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="false">
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={630, 351, 392, 415}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={630, 351, 384, 404}, maximized=false}">
             </property>
             <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[384, 360]">
             </property>
@@ -293,7 +293,7 @@ of this actor relative to the position of the Sender.</text></svg></configure>
             </property>
             <property name="receiverLocation" class="ptolemy.data.expr.Parameter" value="{255.0, 185.0000000000009}">
             </property>
-            <property name="properties" class="ptolemy.data.expr.Parameter" value="{power = 0.087390539457, range = Infinity}">
+            <property name="properties" class="ptolemy.data.expr.Parameter" value="{power = 0.0076371063866, range = Infinity}">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, 80.0]">
             </property>
@@ -324,7 +324,7 @@ of this actor relative to the position of the Sender.</text></svg></configure>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="90.0, 50.0">
                 </property>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={160, 194, 965, 568}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={160, 194, 963, 562}, maximized=false}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[750, 452]">
             </property>
@@ -576,31 +576,61 @@ of this actor relative to the position of the Sender.</text></svg></configure>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[470.0, 355.0]">
                 </property>
             </entity>
+            <entity name="AntennaModel" class="ptolemy.domains.wireless.demo.AntennaPattern.AntennaModel">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[395.0, 235.0]">
+                </property>
+                <property name="numberOfElements" class="ptolemy.data.expr.Parameter" value="numberOfElements">
+                </property>
+                <property name="steeringAngle" class="ptolemy.data.expr.Parameter" value="steeringAngle">
+                </property>
+            </entity>
             <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+                <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
             </relation>
             <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+                <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
             </relation>
             <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+                <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
                 <vertex name="vertex1" value="[155.0, 195.0]">
                 </vertex>
             </relation>
             <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+                <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
                 <vertex name="vertex1" value="[145.0, 145.0]">
                 </vertex>
             </relation>
             <relation name="relation10" class="ptolemy.actor.TypedIORelation">
+                <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
             </relation>
             <relation name="relation11" class="ptolemy.actor.TypedIORelation">
+                <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
             </relation>
             <relation name="relation" class="ptolemy.actor.TypedIORelation">
+                <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
             </relation>
             <relation name="relation12" class="ptolemy.actor.TypedIORelation">
+                <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
             </relation>
             <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+                <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
             </relation>
             <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+                <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
             </relation>
             <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+                <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
             </relation>
             <link port="SetVariable.input" relation="relation"/>
             <link port="CartesianToPolar.x" relation="relation5"/>
@@ -624,36 +654,60 @@ of this actor relative to the position of the Sender.</text></svg></configure>
             <link port="MultiplyDivide.multiply" relation="relation12"/>
             <link port="MultiplyDivide.multiply" relation="relation3"/>
             <link port="MultiplyDivide.output" relation="relation9"/>
+            <link port="AntennaModel.angle" relation="relation8"/>
+            <link port="AntennaModel.gain" relation="relation3"/>
         </entity>
         <relation name="relation" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
             <vertex name="vertex1" value="60.0, 80.0">
             </vertex>
         </relation>
         <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
         </relation>
         <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
             <vertex name="vertex1" value="[205.0, 260.0]">
             </vertex>
         </relation>
         <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
             <vertex name="vertex1" value="[55.0, 250.0]">
             </vertex>
         </relation>
         <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
         </relation>
         <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
             <vertex name="vertex1" value="[180.0, 335.0]">
             </vertex>
         </relation>
         <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
         </relation>
         <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
         </relation>
         <relation name="relation10" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
         </relation>
         <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
         </relation>
         <relation name="relation11" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
         </relation>
         <link port="in" relation="relation"/>
         <link port="GetProperties.output" relation="relation4"/>
@@ -737,6 +791,8 @@ of this actor relative to the position of the Sender.</text></svg></configure>
             </property>
         </entity>
         <relation name="relation" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
         </relation>
         <link port="out" relation="relation"/>
         <link port="Clock.output" relation="relation"/>
