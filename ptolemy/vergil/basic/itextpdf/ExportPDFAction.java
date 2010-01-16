@@ -25,7 +25,7 @@
  COPYRIGHTENDKEY 2
  */
 
-package ptolemy.vergil.basic;
+package ptolemy.vergil.basic.itextpdf;
 
 import javax.swing.AbstractAction;
 import javax.swing.JFileChooser;
