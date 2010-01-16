@@ -667,11 +667,12 @@ public class FileUtilities {
 
             try {
                 output = new ByteArrayOutputStream();
-
-                int c;
-
-                while ((c = input.read()) != -1) {
-                    output.write(c);
+                // Read the stream in 8k chunks
+                final int BUFFERSIZE = 8192;
+                byte [] buffer = new byte[BUFFERSIZE];
+                int bytesRead = 0;
+                while ((bytesRead = input.read(buffer, 0, BUFFERSIZE)) != -1) {
+                    output.write(buffer, 0, bytesRead);
                 }
             } finally {
                 if (output != null) {
