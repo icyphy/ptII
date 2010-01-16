@@ -247,13 +247,16 @@ HYBRID_SYSTEMS_ONLY0_JNLP_JARS = \
 	doc/codeDocHyVisual.jar \
 	ptolemy/hsif/hsif.jar \
 	ptolemy/hsif/demo/demo.jar \
+	ptolemy/domains/continuous/continuous.jar \
 	ptolemy/domains/ct/ct.jar \
 	ptolemy/domains/de/de.jar \
 	ptolemy/domains/fsm/fsm.jar \
 	ptolemy/domains/gr/gr.jar \
 	ptolemy/domains/gr/demo/demo.jar \
+	ptolemy/domains/modal/modal.jar \
 	ptolemy/domains/sdf/lib/lib.jar \
-	ptolemy/domains/sdf/kernel/kernel.jar
+	ptolemy/domains/sdf/kernel/kernel.jar \
+	ptolemy/domains/sr/sr.jar
 
 
 HYBRID_SYSTEMS_ONLY_JNLP_JARS = \
@@ -265,16 +268,21 @@ HYBRID_SYSTEMS_MAIN_JAR = \
 	ptolemy/actor/gui/jnlp/HyVisualApplication.jar
 
 HYBRID_SYSTEMS_DEMO_AND_DOC_JARS = \
+	ptolemy/domains/continuous/demo/demo.jar \
+	ptolemy/domains/continuous/doc/doc.jar \
 	ptolemy/domains/ct/demo/demo.jar \
 	ptolemy/domains/ct/doc/doc.jar \
 	ptolemy/domains/fsm/doc/doc.jar \
 	ptolemy/domains/fsm/demo/demo.jar \
+	ptolemy/domains/modal/doc/doc.jar \
+	ptolemy/domains/modal/demo/demo.jar \
 	ptolemy/domains/sdf/demo/demo.jar \
 	ptolemy/domains/sdf/doc/doc.jar
 
 HYBRID_SYSTEMS_JNLP_JARS =	\
 	$(HYBRID_SYSTEMS_MAIN_JAR) \
 	$(HYBRID_SYSTEMS_ONLY_JNLP_JARS) \
+	$(HYBRID_SYSTEMS_DEMO_AND_DOC_JARS) \
 	doc/docConfig.jar \
 	lib/diva.jar \
 	lib/kieler.jar \
@@ -315,16 +323,12 @@ PTINY_ONLY_JNLP_JARS = \
 	$(HYBRID_SYSTEMS_DEMO_AND_DOC_JARS) \
 	ptolemy/data/type/demo/demo.jar \
 	ptolemy/data/unit/demo/demo.jar \
-	ptolemy/domains/continuous/demo/demo.jar \
-	ptolemy/domains/continuous/doc/doc.jar \
 	ptolemy/domains/ddf/demo/demo.jar \
 	ptolemy/domains/ddf/doc/doc.jar \
 	ptolemy/domains/de/demo/demo.jar \
 	ptolemy/domains/de/doc/doc.jar \
 	ptolemy/domains/hdf/demo/demo.jar \
 	ptolemy/domains/hdf/doc/doc.jar \
-	ptolemy/domains/modal/doc/doc.jar \
-	ptolemy/domains/modal/demo/demo.jar \
 	ptolemy/domains/pn/demo/demo.jar \
 	ptolemy/domains/pn/doc/doc.jar \
 	ptolemy/domains/rendezvous/demo/demo.jar \
@@ -377,6 +381,13 @@ EXEC_JARS = 	ptolemy/actor/gui/exec/exec.jar
 
 PDFRENDERER_JARS = ptolemy/vergil/pdfrenderer/pdfrenderer.jar \
 		lib/PDFRenderer.jar
+
+PTERA_JARS = \
+	ptolemy/domains/ptera/ptera.jar \
+	ptolemy/domains/ptera/demo/demo.jar \
+	ptolemy/domains/ptera/doc/doc.jar \
+	ptolemy/vergil/ptera/ptera.jar
+
 
 PTJACL_JARS =	ptolemy/actor/gui/ptjacl/ptjacl.jar \
 		lib/ptjacl.jar
@@ -468,9 +479,7 @@ FULL_ONLY_JNLP_JARS = \
 	ptolemy/domains/tm/doc/doc.jar \
 	ptolemy/verification/verification.jar \
 	ptolemy/verification/demo/demo.jar \
-	ptolemy/domains/ptera/ptera.jar \
-	ptolemy/domains/ptera/demo/demo.jar \
-	ptolemy/domains/ptera/doc/doc.jar \
+	$(PTERA_JARS) \
 	$(PDFRENDERER_JARS) \
 	ptolemy/vergil/ptera/ptera.jar \
 	ptolemy/vergil/fsm/fmv/fmv.jar \
@@ -563,10 +572,12 @@ VISUAL_SENSE_ONLY_JNLP_JARS = \
 VISUAL_SENSE_MAIN_JAR = \
 	ptolemy/actor/gui/jnlp/VisualSenseApplication.jar
 
+# wireless/demo/Intersections/Intersections.xml uses Ptera
 VISUAL_SENSE_JNLP_JARS =	\
 	$(VISUAL_SENSE_MAIN_JAR) \
 	$(CORE_JNLP_JARS) \
 	$(WIRELESS_JARS) \
+	$(PTERA_JARS) \
 	$(PTINY_ONLY_JNLP_JARS) \
 	$(VISUAL_SENSE_ONLY_JNLP_JARS)
 
