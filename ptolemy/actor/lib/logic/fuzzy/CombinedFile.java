@@ -510,9 +510,9 @@ public class CombinedFile extends DefaultHandler {
     }
 
     /** Called by the SAX parser to report regular characters.
-     * @param ch[] The array containing characters
+     * @param ch The array containing characters
      * @param start Is the starting point in the character array
-     * @param lenght Is length of the character array 
+     * @param length Is length of the character array 
      * */
     public void characters(char ch[], int start, int length) {
         if (_startArchitecture == true) {
