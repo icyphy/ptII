@@ -1935,6 +1935,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                             .forName(exportPDFActionClassName);
                         Constructor exportPDFActionConstructor = exportPDFActionClass.getDeclaredConstructor(BasicGraphFrame.class);
                         _exportPDFAction = (AbstractAction) exportPDFActionConstructor.newInstance(this);
+                        System.out.println("BGF: _exportPDFAction: " + _exportPDFAction);
                     } catch (Throwable throwable) {
                         new InternalErrorException(null, throwable, "Failed to construct export PDF class \""
                                 + exportPDFActionClassName
@@ -1947,19 +1948,21 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                     "Failed to read _exportPDFActionName from the Configuration");
         }
 
-        // Insert the Export PDF item after the Print item in the menu.
-        int i = 0;
-        for (JMenuItem item : fileMenuItems) {
-            i++;
-            if (item.getActionCommand().equals("Print")) {
-                // Add a Export PDF item here.
-                JMenuItem exportItem = new JMenuItem(_exportPDFAction);
-                JMenuItem[] newItems = new JMenuItem[fileMenuItems.length + 1];
-                System.arraycopy(fileMenuItems, 0, newItems, 0, i);
-                newItems[i] = exportItem;
-                System.arraycopy(fileMenuItems, i, newItems, i + 1,
-                        fileMenuItems.length - i);
-                return newItems;
+        if (_exportPDFAction != null) {
+            // Insert the Export PDF item after the Print item in the menu.
+            int i = 0;
+            for (JMenuItem item : fileMenuItems) {
+                i++;
+                if (item.getActionCommand().equals("Print")) {
+                    // Add a Export PDF item here.
+                    JMenuItem exportItem = new JMenuItem(_exportPDFAction);
+                    JMenuItem[] newItems = new JMenuItem[fileMenuItems.length + 1];
+                    System.arraycopy(fileMenuItems, 0, newItems, 0, i);
+                    newItems[i] = exportItem;
+                    System.arraycopy(fileMenuItems, i, newItems, i + 1,
+                            fileMenuItems.length - i);
+                    return newItems;
+                }
             }
         }
         return fileMenuItems;
