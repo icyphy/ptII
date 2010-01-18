@@ -28,8 +28,6 @@
 
 package ptolemy.domains.pthales.kernel;
 
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -229,18 +227,7 @@ public class PthalesReceiver extends SDFReceiver {
      */
     public void putToAll(Token token, Receiver[] receivers)
             throws NoRoomException, IllegalActionException {
-        FileWriter writer;
         for (Receiver receiver : receivers) {
-            try {
-                writer = new FileWriter(receiver.getContainer().getContainer()
-                        .getName()
-                        + ".txt", true);
-                writer.write(token.toString() + "\r\n");
-                writer.flush();
-            } catch (IOException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
             receiver.put(token);
         }
     }
