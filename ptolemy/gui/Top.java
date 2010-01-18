@@ -41,9 +41,13 @@ import java.awt.print.Pageable;
 import java.awt.print.Printable;
 import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -336,6 +340,9 @@ public abstract class Top extends JFrame {
 
                     _menubar.add(_fileMenu);
 
+                    // History fill
+                    _populateHistory(_readHistory());
+
                     // Construct the Help menu by adding action commands
                     // and action listeners.
                     HelpMenuListener helpMenuListener = new HelpMenuListener();
@@ -600,14 +607,26 @@ public abstract class Top extends JFrame {
      *  @return The items in the File menu.
      */
     protected JMenuItem[] _createFileMenuItems() {
-        JMenuItem[] fileMenuItems = {
-                new JMenuItem("Open File", KeyEvent.VK_O),
-                new JMenuItem("Open URL", KeyEvent.VK_U), new JMenu("New"),
-                new JMenuItem("Save", KeyEvent.VK_S),
-                new JMenuItem("Save As", KeyEvent.VK_A),
-                new JMenuItem("Print", KeyEvent.VK_P),
-                new JMenuItem("Close", KeyEvent.VK_C),
-                new JMenuItem("Exit", KeyEvent.VK_X), };
+        JMenuItem[] fileMenuItems = new JMenuItem[11];
+
+        fileMenuItems[0] = new JMenuItem("Open File", KeyEvent.VK_O);
+        fileMenuItems[1] = new JMenuItem("Open URL", KeyEvent.VK_U);
+        fileMenuItems[2] = new JMenu("New");
+        fileMenuItems[3] = new JMenuItem("Save", KeyEvent.VK_S);
+        fileMenuItems[4] = new JMenuItem("Save As", KeyEvent.VK_A);
+        fileMenuItems[5] = new JMenuItem("Print", KeyEvent.VK_P);
+        fileMenuItems[6] = new JMenuItem("Close", KeyEvent.VK_C);
+
+        // Separators
+        fileMenuItems[7] = null;
+        fileMenuItems[9] = null;
+
+        // History submenu
+        JMenu history = new JMenu("Recent Files");
+        fileMenuItems[8] = history;
+
+        // Exit
+        fileMenuItems[10] = new JMenuItem("Exit", KeyEvent.VK_X);
 
         if (StringUtilities.inApplet()) {
             // If we are in an applet, disable certain menu items.
@@ -747,11 +766,11 @@ public abstract class Top extends JFrame {
                 // FIXME: we should support users under applets opening files
                 // on the server.
                 String currentWorkingDirectory = StringUtilities
-                    .getProperty("user.dir");
+                        .getProperty("user.dir");
 
                 if (currentWorkingDirectory != null) {
-                    fileDialog
-                        .setCurrentDirectory(new File(currentWorkingDirectory));
+                    fileDialog.setCurrentDirectory(new File(
+                            currentWorkingDirectory));
                 }
             }
 
@@ -774,11 +793,13 @@ public abstract class Top extends JFrame {
                         // this code should be in PtolemyEffigy, but
                         // if it is here, we get the time it takes to
                         // read any file, not just a Ptolemy model.
-                        System.out
-                            .println("Opened " + file + " in "
-                                    + (System.currentTimeMillis() - startTime)
-                                    + " ms.");
+                        System.out.println("Opened " + file + " in "
+                                + (System.currentTimeMillis() - startTime)
+                                + " ms.");
                     }
+                    // Only add file if no exception
+                    _updateHistory(file.getAbsolutePath(),false);
+
                 } catch (Error error) {
                     // Be sure to catch Error here so that if we throw an
                     // Error, then we will report it to with a window.
@@ -1264,6 +1285,113 @@ public abstract class Top extends JFrame {
         }
     }
 
+    // History management
+    
+    
+    /** Get the history from the file that contains names
+     * Always return a list, that can be empty
+     * @return list of file history
+     */
+    private List<String> _readHistory() {
+        ArrayList<String> historyList = new ArrayList<String>();
+        String s;
+        try {
+            FileReader fr = new FileReader(_historyFile);
+            BufferedReader br = new BufferedReader(fr);
+            while ((s = br.readLine()) != null) {
+                historyList.add(s);
+            }
+        } catch (IOException e) {
+            // if no history, no action taken
+        }
+
+        return historyList;
+    }
+    
+    /** Write history to the file defined by _historyName
+     * 
+     */
+    private void _writeHistory(List<String> historyList)
+    {
+        try {
+            FileWriter fw = new FileWriter(_historyFile);
+            for (String s : historyList)
+                fw.write(s + "\n");
+            fw.close();
+        } catch (IOException e) {
+            // Impossible to write History
+            MessageHandler.error("Impossible to write history. Please check that file is not in use !");
+        }
+    }
+
+    /** Add the name of the last file open or set the name 
+     * to the first position if already in the list
+     * @param file name of the file to add
+     */
+    private void _updateHistory(String file, boolean delete) {
+        List<String> historyList = _readHistory();
+        
+        // Remove if already present (then added to first position)
+        for (int i = 0; i < historyList.size(); i++) {
+            if (historyList.get(i).equals(file))
+                historyList.remove(i);
+        }
+     
+        // Remove if depth > limit
+        if (historyList.size() >= _historyDepth)
+            historyList.remove(historyList.size() - 1);
+
+        // Add to fist position
+        if (!delete)
+            historyList.add(0, file);
+        
+        // Serialize history
+        _writeHistory(historyList);
+
+         // Update submenu
+        _populateHistory(historyList);
+    }
+
+    /** Update submenu with history list
+     * and add listener to each line
+     * @param historyList
+     */
+    private void _populateHistory(List historyList) {
+        JMenu history = (JMenu) _fileMenu.getMenuComponents()[8];
+        HistoryMenuListener listener = new HistoryMenuListener();
+        
+        history.removeAll();
+        
+        for (int i = 0; i < historyList.size(); i++) {
+            JMenuItem item = new JMenuItem((String) historyList.get(i));
+            item.addActionListener(listener);
+            history.add(item);
+        }
+    }
+
+    /** Listener for history menu commands. */
+    class HistoryMenuListener implements ActionListener {
+        public void actionPerformed(ActionEvent e) {
+            // Make this the default context for modal messages.
+            UndeferredGraphicalMessageHandler.setContext(Top.this);
+
+            JMenuItem target = (JMenuItem) e.getSource();
+            String actionCommand = target.getActionCommand();
+
+            File file = new File(actionCommand);
+            try {
+                                
+                _read(file.toURI().toURL());
+                _updateHistory(actionCommand, false);
+                
+            } catch (Exception exception) {
+                // Impossible to read History
+                MessageHandler.error("Impossible to read history. Please check that file exists and is not in use !");
+                _updateHistory(actionCommand, true);
+            }
+        }
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
@@ -1284,6 +1412,12 @@ public abstract class Top extends JFrame {
 
     // The most recently entered URL in Open URL.
     private String _lastURL = "http://ptolemy.eecs.berkeley.edu/xml/models/";
+
+    // History depth
+    private int _historyDepth = 4;
+
+    // History file name
+    private String _historyFile = "history.ini";
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
