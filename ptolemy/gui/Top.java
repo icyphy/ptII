@@ -28,6 +28,7 @@ package ptolemy.gui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.EventQueue;
 import java.awt.Frame;
 import java.awt.Toolkit;
@@ -66,6 +67,7 @@ import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import javax.swing.filechooser.FileFilter;
 
+import ptolemy.kernel.util.KernelRuntimeException;
 import ptolemy.util.MessageHandler;
 import ptolemy.util.StringUtilities;
 
@@ -1357,7 +1359,18 @@ public abstract class Top extends JFrame {
      * @param historyList
      */
     private void _populateHistory(List historyList) {
-        JMenu history = (JMenu) _fileMenu.getMenuComponents()[8];
+        Component[] components = _fileMenu.getMenuComponents();
+        JMenu history = null;
+        for (Component component : components) {
+            if (component instanceof JMenu
+                    && ((JMenu) component).getText().equals("Recent Files")) {
+                history = (JMenu) component;
+            }
+        }
+        if (history == null) {
+            throw new KernelRuntimeException(
+                    "Unexpected loss of Recent Files menu.");
+        }
         HistoryMenuListener listener = new HistoryMenuListener();
         
         history.removeAll();
