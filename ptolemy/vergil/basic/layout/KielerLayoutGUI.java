@@ -27,13 +27,10 @@
 package ptolemy.vergil.basic.layout;
 
 import java.awt.BorderLayout;
-import java.awt.Button;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.lang.reflect.Constructor;
-import java.io.File;
 import java.net.URL;
 import java.util.List;
 
@@ -45,17 +42,12 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JSplitPane;
 import javax.swing.JTextArea;
 
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.gui.Configuration;
-import ptolemy.actor.gui.Configurer;
 import ptolemy.actor.gui.PtolemyFrame;
 import ptolemy.actor.gui.Tableau;
-import ptolemy.codegen.kernel.CodeGenerator;
-import ptolemy.gui.JTextAreaExec;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -137,7 +129,7 @@ public class KielerLayoutGUI extends PtolemyFrame {
         caveatsPanel.add(moreInfoButton);
         JPanel upper = new JPanel();
         upper.setLayout(new BoxLayout(upper, BoxLayout.Y_AXIS));
-        caveatsPanel.setMaximumSize(new Dimension(500, 100));
+        //caveatsPanel.setMaximumSize(new Dimension(500, 100));
         upper.add(caveatsPanel);
 
         // Panel for push buttons.
@@ -181,8 +173,9 @@ public class KielerLayoutGUI extends PtolemyFrame {
             button.addActionListener(actions[i]);
         }
 
-        buttonPanel.setMaximumSize(new Dimension(500, 50));
+        //buttonPanel.setMaximumSize(new Dimension(500, 50));
         upper.add(buttonPanel);
+        upper.setPreferredSize(new Dimension(200, 100));        
         getContentPane().add(upper, BorderLayout.CENTER);
     }
 
