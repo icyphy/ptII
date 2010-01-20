@@ -351,7 +351,7 @@ public class PthalesReceiver extends SDFReceiver {
     public void setExternalBuffer(Actor actor, IOPort port, Token[] buffer) {
         if (_buffer == null) {
             _buffer = buffer;
-             _posIn = _buffer.length;
+             _posOut = _buffer.length;
             try {
                 setOutputArray(port,actor);
             } catch (IllegalActionException e) {

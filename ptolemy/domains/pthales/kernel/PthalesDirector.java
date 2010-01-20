@@ -40,7 +40,6 @@ import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.util.DFUtilities;
 import ptolemy.data.Token;
 import ptolemy.data.expr.StringParameter;
-import ptolemy.domains.pthales.lib.PthalesIOPort;
 import ptolemy.domains.sdf.kernel.SDFDirector;
 import ptolemy.domains.sdf.kernel.SDFReceiver;
 import ptolemy.kernel.CompositeEntity;
@@ -229,6 +228,19 @@ public class PthalesDirector extends SDFDirector {
         super.preinitialize();
     }
 
+    /** 
+     *  @exception IllegalActionException If port methods throw it.
+     *  @return true If all of the input ports of the container of this
+     *  director have enough tokens.
+     */
+    public boolean prefire() throws IllegalActionException {
+        // Set current time based on the enclosing model.
+        for (PthalesReceiver recv : _receivers) {
+            recv.reset();
+        }
+        return super.prefire();
+    }
+    
     /** Attribute update
      * @see ptolemy.domains.sdf.kernel.SDFDirector#attributeChanged(ptolemy.kernel.util.Attribute)
      */
@@ -266,9 +278,6 @@ public class PthalesDirector extends SDFDirector {
      *   container.
      */
     public void fire() throws IllegalActionException {
-        for (PthalesReceiver recv : _receivers) {
-            recv.reset();
-        }
         super.fire();
     }
 
