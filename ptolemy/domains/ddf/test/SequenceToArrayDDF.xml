@@ -13,27 +13,27 @@
         </property>
         <property name="runUntilDeadlockInOneIteration" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{240, 90}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, 75.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={210, 91, 1230, 782}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={154, 34, 1000, 543}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1017, 672]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[787, 433]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{508.5, 336.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{393.5, 216.5}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value=" DDF SequenceToArray bug submitted by Tomasz Zok&#10; The problem is that if the length of the Const actor changes&#10; between runs from three elements to two elements, then the output of &#10; the second run does not occur.&#10;&#10;See SequenceToArrayDDF.tcl for a test that uses this model.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value=" DDF SequenceToArray bug submitted by Tomasz Zok&#10; The problem is that if the length of the Const actor changes&#10; between runs from three elements to two elements, then the output of &#10; the second run does not occur.&#10;&#10;To illustrate the bug, run the model, check the output and see&#10;that {&quot;aaa&quot;, &quot;bbb&quot;, &quot;ccc&quot;} appears.&#10;&#10;Then, change the value parameter of the Const to&#10;{&quot;aaa&quot;, &quot;bbb&quot;} and run the model.  Note that no output appears.&#10;&#10;See SequenceToArrayDDF.tcl for a test that uses this model.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[395.0, 40.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 15.0]">
         </property>
     </property>
     <entity name="Sequence To Array" class="ptolemy.domains.sdf.lib.SequenceToArray">
         <property name="arrayLength" class="ptolemy.actor.parameters.PortParameter" value="2">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[530.0, 320.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[395.0, 305.0]">
         </property>
     </entity>
     <entity name="Array To Sequence" class="ptolemy.domains.sdf.lib.ArrayToSequence">
@@ -41,11 +41,11 @@
         </property>
         <property name="enforceArrayLength" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[390.0, 290.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[255.0, 275.0]">
         </property>
     </entity>
     <entity name="Array Length" class="ptolemy.actor.lib.ArrayLength">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[390.0, 350.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[255.0, 335.0]">
         </property>
     </entity>
     <entity name="Const" class="ptolemy.actor.lib.Const">
@@ -57,21 +57,21 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[220.0, 290.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 275.0]">
         </property>
     </entity>
     <entity name="Recorder" class="ptolemy.actor.lib.Recorder">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[740.0, 320.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[605.0, 305.0]">
         </property>
     </entity>
     <entity name="ExpressionWriter" class="ptolemy.actor.lib.io.ExpressionWriter">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[735.0, 395.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[600.0, 380.0]">
         </property>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <vertex name="vertex1" value="[320.0, 290.0]">
+        <vertex name="vertex1" value="[185.0, 275.0]">
         </vertex>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
@@ -85,7 +85,7 @@
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[620.0, 320.0]">
+        <vertex name="vertex1" value="[485.0, 305.0]">
         </vertex>
     </relation>
     <link port="Sequence To Array.input" relation="relation2"/>
