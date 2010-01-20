@@ -608,15 +608,6 @@ public abstract class OntologySolver extends OntologySolverBase {
     }
 
     /**
-     * Prepare for automatic testing. In this base class, do nothing.
-     * 
-     * @param options The map of options for automatic testing
-     */
-    public void setOptions(Map options) {
-        return;
-    }
-
-    /**
      * Update the property. This method is called from both invoked and
      * auxiliary solvers.
      * @exception IllegalActionException
@@ -697,12 +688,6 @@ public abstract class OntologySolver extends OntologySolverBase {
         System.out.println(_getStatsAsString(": "));
 
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                      public variables                     ////
-
-    /** String that represents the solver option for nondeep testing. */
-    public static final String NONDEEP_TEST_OPTION = "-nondeep";
 
     ///////////////////////////////////////////////////////////////////
     ////                      protected methods                    ////

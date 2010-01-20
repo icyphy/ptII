@@ -466,27 +466,6 @@ public class LatticeOntologySolver extends OntologySolver implements Testable {
         _logMode = isLogMode;
     }
 
-    /**
-     * Prepare for automatic testing.
-     * 
-     * @param options The map of options for automatic testing
-     */
-    public void setOptions(Map options) {
-        super.setOptions(options);
-
-        // By default, look up the logMode parameter in the model to
-        // see if we need to test the constraints.
-        if (options.containsKey(NONDEEP_TEST_OPTION)) {
-            setLogMode(false);
-        }
-
-        if (isLogMode()) {
-            System.out.println("doing deep testing.");
-        } else {
-            System.out.println("NOT deep testing: " + options.size());
-        }
-    }
-
     /** Run a test. This invokes the solver in TEST mode.
      *  @throws IllegalActionException If the test fails.
      */
