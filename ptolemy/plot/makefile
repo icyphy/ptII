@@ -347,7 +347,7 @@ include $(ROOT)/mk/ptdist.mk
 
 # Java Network Launch Protocol aka Web Start
 ptplot.jnlp: ptplot.jnlp.in
-	sed 's%@PTII_LOCALURL@%$(PTII_LOCALURL)%' $< > $@
+	sed 's%@PTII_URL@%$(PTII_LOCALURL)%' $< > $@
 
 FIND=/usr/bin/find
 PTTMPME= $(PTTMPDIR)/$(PTDIST)/$(ME)
