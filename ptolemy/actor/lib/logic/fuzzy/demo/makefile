@@ -1,11 +1,10 @@
-# Makefile for Java Ptolemy polymorphic actor classes
+# Makefile for Java Ptolemy II Fuzzy Logic demos
 #
-# @Authors: Shanna-Shaye Forbes. A modification of a makefile by Christopher Hylands which is
-# based on a file by Thomas M. Parks
+# @Authors: Christopher Brooks, based on a file by Thomas M. Parks
 #
 # @Version: $Id$
 #
-# @Copyright (c) 2009 The Regents of the University of California.
+# @Copyright (c) 2010 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -30,64 +29,51 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-# This directory contains polymorphic actors.
+ME =		ptolemy/actor/lib/logic/fuzzy/demo
 
-ME =		ptolemy/actor/lib/logic/fuzzy
+DIRS =		ArchitectureModel
 
-DIRS = 		demo
+# Root of the Ptolemy II directory
+ROOT =		../../../../../..
 
-# Root of the Java directory
-ROOT =		../../../../..
-
-# FuzzyEngine directory that contains fuzzy/FuzzyEngine.class
-# http://people.clarkson.edu/~esazonov/FuzzyEngine.htm
-CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(PTFUZZYENGINE_DIR)
+CLASSPATH =	$(ROOT)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	fuzzy
-PTCLASSJAR = 	$(PTPACKAGE).jar
+PTPACKAGE = 	demo
+PTCLASSJAR =
+
+# Include the .class files from these jars in PTCLASSALLJAR
+PTCLASSALLJARS = \
+	ArchitectureModel/ArchitectureModel.jar
+
+PTCLASSALLJAR = $(PTPACKAGE).jar
 
 # Keep this list alphabetized.
-JSRCS = \
-	FuzzyLogic.java \
-	CombinedFile.java
+JSRCS =
 
-
-OTHER_FILES_TO_BE_JARED = \
-	Antenna.xml \
-	FuzzyEngine-copyright.htm \
-	fuzzy.xml \
-	Power.xml \
-	Propulsion.xml \
-	TSSTPtolemyIIDocumentation.pdf \
-	rules.xml
-
-EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
+EXTRA_SRCS =	$(JSRCS)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =
+MISC_FILES =	$(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	doc \
-	demo \
-	'CombinedFile$$Architecture.class' \
-	'CombinedFile$$Option.class' \
-	FuzzyParser.class
-
+	doc
 
 JCLASS = $(JSRCS:%.java=%.class)
 
-
 all: jclass
+	@echo "To run the demos, run 'make demo'"
+
 install: jclass jars
 
+demo: subdemo
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
