@@ -71,6 +71,7 @@ public class IOPortEvent implements DebugEvent {
         _tokenArray = tokens;
         _token = null;
         _vectorLength = vectorLength;
+        _receiverPort = null;
     }
 
     /** Create a new port event with the given parameters.  This
@@ -89,6 +90,36 @@ public class IOPortEvent implements DebugEvent {
             Token token) {
         _port = port;
         _event = event;
+        _channel = channel;
+        _outside = outside;
+        _tokenArray = null;
+        _token = token;
+        _vectorLength = SINGLETOKEN;
+        _receiverPort = null;
+    }
+    
+    /** Create a new port event with the given parameters.  This
+     *  constructor is used when a token is directly put in a
+     *  receiver instead of transferred with IOPort's send() or
+     *  sendInside() methods.
+     *  @param port The IOPort where the event occurred
+     *  @param receiverPort The IOPort of the receiver.
+     *  @param isBegin True if this event is the start.
+     *  @param channel Channel the token was transferred on.
+     *  @param outside True if the event is related the port's outside
+     *  activity, false if the event is related to the port's inside
+     *  activity.
+     *  @param token The token that was transferred.
+     */
+    public IOPortEvent(IOPort port, IOPort receiverPort, boolean isBegin,
+            int channel, boolean outside, Token token) {
+        _port = port;
+        if(isBegin) {
+            _event = SEND_BEGIN;
+        } else {
+            _event = SEND_END;
+        }
+        _receiverPort = receiverPort;
         _channel = channel;
         _outside = outside;
         _tokenArray = null;
@@ -113,8 +144,18 @@ public class IOPortEvent implements DebugEvent {
         return _channel;
     }
 
-    /** Return the type of event.
-     *  @return The int event.
+    /**
+     * Return the receiver's port if this event represents a token put directly
+     * into a receiver instead of transferred via IOPort send or sendInside.
+     * Returns null if token was transferred in IOPort.
+     */
+    public IOPort getReceiverPort() {
+        return _receiverPort;
+    }
+
+    /**
+     * Return the type of event.
+     * @return The int event.
      */
     public int getEventType() {
         return _event;
@@ -232,6 +273,11 @@ public class IOPortEvent implements DebugEvent {
     /** The channel on which the token was sent. */
     private int _channel;
 
+    /** The receiver's port if this event represents a token put directly
+     * into a receiver instead of transferred via IOPort send or sendInside.
+     */
+    private IOPort _receiverPort;
+    
     /** The IOPort that was activated. */
     private IOPort _port;
 
