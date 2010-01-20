@@ -24,7 +24,7 @@ applet is displayed on a XGA screen-->
 <APPLET 
    code = "ptolemy.vergil.VergilApplet"
    codebase = "../../../../.."
-   archive = "ptolemy/domains/continuous/demo/Transmission/Transmission.jar,ptolemy/data/data.jar,ptolemy/domains.modal/fsm.jar,ptolemy/ptsupport.jar,ptolemy/domains/continuous/ct.jar,lib/diva.jar,ptolemy/domains/modal/modal.jar,ptolemy/domains.modal/fsm.jar,ptolemy/domains/continuous/ct.jar,ptolemy/vergil/vergilApplet.jar"
+   archive = "ptolemy/domains/continuous/demo/Transmission/Transmission.jar,ptolemy/data/data.jar,ptolemy/ptsupport.jar,ptolemy/domains/continuous/ct.jar,lib/diva.jar,ptolemy/domains/modal/modal.jar,ptolemy/domains/fsm/fsm.jar,ptolemy/domains/continuous/ct.jar,ptolemy/vergil/vergilApplet.jar"
    width = "100"
    height = "100"
    >
@@ -39,14 +39,11 @@ applet is displayed on a XGA screen-->
 </APPLET>
 <!-- /PT JNLP APPLET CONVERTER -->
 </CENTER>
-
+</p>
+<p>
 This model shows a model of a car with a transmission.  A transmission is generally used when an engine has a relatively narrow band over which the maximum power of the engine is available.  In order to obtain high torque over a wider range of speeds, the engine is connected to a set of gears with different size ratios (the transmission).  The efficiency function used for this model can be seen <a href="EfficiencyCurve.htm">in this model</a>.
 <br>
-A car with a transmission is a classic example of a hybrid system, since the continuous dynamics of the car depend on the current discrete state of the transmission.  An automatic transmission can be viewed as a feedback control system which takes the current continuous and discrete states of the system, in addition to the throttle input from a driver, and generates a signal which is the current gear selection.  Designing a "good" transmission that balances driver comfort (minimum jerkiness) with performance (maximum applied torque) over all parameters (engine speed, vehicle speed, and throttle) while incorporating practical details (implementation limitations, material wear) is a challenging problem.
-
-The <a href="TransmissionVergil.htm">block diagram</a>
-for the model was constructed using the Ptolemy II schematic editor
-called Vergil.
+A car with a transmission is a classic example of a hybrid system, since the continuous dynamics of the car depend on the current discrete state of the transmission.  An automatic transmission can be viewed as a feedback control system which takes the current continuous and discrete states of the system, in addition to the throttle input from a driver, and generates a signal which is the current gear selection.  Designing a "good" transmission that balances driver comfort (minimum jerkiness) with performance (maximum applied torque) over all parameters (engine speed, vehicle speed, and throttle) while incorporating practical details (implementation limitations, material wear) 
 </p>
 </BODY>
 </HTML>

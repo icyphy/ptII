@@ -2,19 +2,19 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="Barrier" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
     <property name="CSP Director" class="ptolemy.domains.csp.kernel.CSPDirector">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 40.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={4, 4, 871, 518}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={4, 22, 928, 512}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[656, 400]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[715, 402]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{328.0, 200.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{357.5, 201.0}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model illustrates a design pattern with CSP&#10;called a &quot;barrier synchronization.&quot; In this example,&#10;the two Ramps are sending increasing sequences of&#10;integers to the Displays. However, the transfer&#10;is constrained to occur only when the Barrier actor&#10;reads inputs. Thus, a multi-way rendezvous between the&#10;two Ramp actors, the two Display actors, and the Barrier&#10;actor constrains the two transfers to the Display actors&#10;to occur simultaneously.  The Barrier actor, after&#10;reading inputs, will rendezvous with the Sleep actor&#10;connected to its output.  This sleep actor will sleep&#10;a random amount of time after reading its input, and&#10;during that time will not accept additional inputs.&#10;Thus, after the first two transfers to the Display&#10;actors (why two?) the time between transfers is&#10;controlled by the Sleep actor.">
@@ -39,7 +39,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Random wait time.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[540.0, 365.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[585.0, 365.0]">
         </property>
     </property>
     <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -51,7 +51,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Relation results&#10;in multi-way&#10;rendezvous.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[455.0, 55.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[500.0, 55.0]">
         </property>
     </property>
     <property name="Annotation5" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -66,7 +66,7 @@
     </property>
     <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
         <doc>Create a sequence of tokens with increasing value</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[410.0, 110.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[455.0, 110.0]">
         </property>
     </entity>
     <entity name="Display" class="ptolemy.actor.lib.gui.Display">
@@ -76,7 +76,7 @@
         </property>
         <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="20">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[570.0, 110.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[615.0, 110.0]">
         </property>
     </entity>
     <entity name="Sleep" class="ptolemy.actor.lib.Sleep">
@@ -88,7 +88,7 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[595.0, 285.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[640.0, 285.0]">
         </property>
     </entity>
     <entity name="Uniform" class="ptolemy.actor.lib.Uniform">
@@ -103,7 +103,7 @@
             </property>
         </property>
         <doc>Create a sequence of uniformly distributed random numbers</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[420.0, 365.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[465.0, 365.0]">
         </property>
     </entity>
     <entity name="Round" class="ptolemy.actor.lib.conversions.Round">
@@ -119,7 +119,7 @@
                 </property>
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[520.0, 365.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[565.0, 365.0]">
         </property>
     </entity>
     <entity name="Barrier" class="ptolemy.domains.csp.lib.Barrier">
@@ -129,12 +129,12 @@
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[515.0, 285.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[560.0, 285.0]">
         </property>
     </entity>
     <entity name="Ramp2" class="ptolemy.actor.lib.Ramp">
         <doc>Create a sequence of tokens with increasing value</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[410.0, 180.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[455.0, 180.0]">
         </property>
     </entity>
     <entity name="Display2" class="ptolemy.actor.lib.gui.Display">
@@ -144,11 +144,11 @@
         </property>
         <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="20">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[570.0, 180.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[615.0, 180.0]">
         </property>
     </entity>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[460.0, 110.0]">
+        <vertex name="vertex1" value="[505.0, 110.0]">
         </vertex>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
@@ -156,7 +156,7 @@
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[470.0, 180.0]">
+        <vertex name="vertex1" value="[515.0, 180.0]">
         </vertex>
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">

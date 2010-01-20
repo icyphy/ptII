@@ -9,8 +9,7 @@
 
 <H1>Units</H1>
 
-<P>
- <!-- All of the controls of the applet should be visible when the
+<!-- All of the controls of the applet should be visible when the
 applet is displayed on a XGA screen-->
 <!-- PT DEPLOYJAVA CONVERTER -->
 <p>
@@ -46,6 +45,7 @@ Thus, for example, if the primary unit of length is meters, then the
 expression "1.0 * cm" will have an internal value of 0.01 * meters.
 Compound units are specified by just multiplying and dividing, as in
 for example "1.0 * cm/second".
+</p>
 
  <p>The way this is realized is that these unit constants are
 tokens just
@@ -53,11 +53,6 @@ like other Ptolemy II data, and multiplication and division are
 overloaded in the base classes for numeric valued tokens.  We continue
 to work on this architecture to enable users to customize the unit
 system on a per-model basis.
-
-<P>
-The <a href="UnitsVergil.htm">block diagram</a>
-for the model was constructed using the Ptolemy II schematic editor
-called Vergil.
 </p>
 <p></p>
 </BODY>
