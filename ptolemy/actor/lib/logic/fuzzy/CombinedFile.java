@@ -408,10 +408,11 @@ public class CombinedFile extends DefaultHandler {
     public void endDocument() {
     }
 
-    /** Called each time the SAX parser sees the beginning of an element
+    /** Called each time the SAX parser sees the beginning of an element.
      * @param uri The Namespace Uniform Resource Identifier(URI)
      * @param name Is the elements local name
      * @param qName Is the XML 1.0 name 
+     * @param atts   an Attributes object
      * */
     public void startElement(String uri, String name, String qName,
             Attributes atts) {
@@ -442,7 +443,7 @@ public class CombinedFile extends DefaultHandler {
         }
     }
 
-    /** Called each time the SAX parser sees the end of an element
+    /** Called each time the SAX parser sees the end of an element.
      * @param uri The Namespace Uniform Resource Identifier(URI)
      * @param name Is the elements local name
      * @param qName Is the XML 1.0 name 

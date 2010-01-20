@@ -349,7 +349,22 @@ public class FuzzyLogic extends TypedAtomicActor{
         risk.send(0, new StringToken(myRisk));
         mass.send(0, new StringToken(myMass));
     }
-
+    
+    /*
+     * Evaluate the fuzzy logic rules specified and determines the
+     * output for this component. The fuzzy logic rules are specified
+     * in {@link #rulesFileName}.
+     * @exception IllegalActionException If thrown by the base class.
+     */
+    public boolean postfire() throws IllegalActionException {
+        boolean boolvalue = super.postfire();
+//      //FIXME: Would changing your state here cause this to misbehave in the continuous domain?
+//        cost.send(0, new DoubleToken(myCost));
+//        risk.send(0, new StringToken(myRisk));
+//        mass.send(0, new StringToken(myMass));
+        
+        return boolvalue;
+    }
 
 
     ////////////////////////////////////////////////////////////////////
