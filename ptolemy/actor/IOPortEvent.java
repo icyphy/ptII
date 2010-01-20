@@ -147,7 +147,7 @@ public class IOPortEvent implements DebugEvent {
     /**
      * Return the receiver's port if this event represents a token put directly
      * into a receiver instead of transferred via IOPort send or sendInside.
-     * Returns null if token was transferred in IOPort.
+     * @return Return the receiver's port or null if token was transferred in IOPort.
      */
     public IOPort getReceiverPort() {
         return _receiverPort;
