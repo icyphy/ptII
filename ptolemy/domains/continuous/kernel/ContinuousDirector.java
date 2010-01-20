@@ -208,7 +208,7 @@ import ptolemy.kernel.util.Workspace;
 <p>FIXME: the design of clone method should be examined and reimplemented.
 All Continuous files need this.</P>
 
- @author Haiyang Zheng and Edward A. Lee
+ @author Haiyang Zheng and Edward A. Lee, based on CTDirector by Jie Liu and Haiyang Zheng
  @version $Id$
  @since Ptolemy II 6.0
  @Pt.ProposedRating Yellow (hyzheng)
