@@ -1,5 +1,5 @@
 // Methods for interfacing clients using BSD sockets.
-#define NDEBUG 0
+
 /*
 ********************************************************************
 Copyright Notice
@@ -163,13 +163,12 @@ int assembleBuffer(int flag,
 {
   int i;
   int retVal;
-  const int ver = 1;
   char temCha[1024]; // temporary character array
   memset((char*) *buffer, '\0', *bufLen);
   // Set up how many values will be in buffer
   // This is an internally used version number to make update
   // of the format possible later without braking old versions
-  sprintf(temCha, "%d ", ver);
+  sprintf(temCha, "%d ", MAINVERSION);
   retVal = save_append(buffer, temCha, bufLen);
   if ( retVal != 0 ) return retVal;
   sprintf(temCha, "%d ", flag);
@@ -396,6 +395,19 @@ int getsocketportnumber(const char *const docname) {
     free(res);
   return retVal;
 }
+
+//////////////////////////////////////////////////////////////////
+/// Returns the version number.
+///
+/// This method returns the version number. A negative return value
+/// is used in a dummy dll to check in EnergyPlus whether the BCVTB
+/// has been installed.
+///
+/// \return The main version number, or a negative value if an error occured.
+int getmainversionnumber(){
+  return MAINVERSION;
+}
+
 /////////////////////////////////////////////////////////////////////
 /// Gets the hostname for the BSD socket communication.
 ///
@@ -421,7 +433,6 @@ int establishclientsocket(const char *const docname){
   int portNo, retVal, sockfd;
   char* hostname;
   char* serverIP;
-
 #ifdef _MSC_VER /************* Windows specific code ********/
   struct hostent* FAR server;
   WSADATA wsaData;
@@ -435,7 +446,7 @@ int establishclientsocket(const char *const docname){
   if (f1 == NULL)
     f1 = fopen ("utilSocket.log", "w");
   if (f1 == NULL){
-    fprintf(stderr, "Cannot open file %s\n", "utilSocket.log");
+    fprintf(stderr, "Could not open file '%s'\n", "utilSocket.log");
     return -1;
   }
   else
@@ -452,10 +463,17 @@ int establishclientsocket(const char *const docname){
 
   //////////////////////////////////////////////////////
   // get the socket port number
+#ifdef NDEBUG
+    fprintf(f1, "Getting socket port number.\n");
+#endif
   portNo = getsocketportnumber(docname);
+#ifdef NDEBUG
+  fprintf(f1, "Received socket port number %d.\n", portNo);
+#endif
   if ( portNo < 0 ){
+    fprintf(stderr, "Error: Could not obtain socket port number. Return value = %d.\n", portNo);
 #ifdef NDEBUG  
-    fprintf(f1, "ERROR: Could not obtain socket port number. Return value = %d.\n", portNo);
+    fprintf(f1, "Error: Could not obtain socket port number. Return value = %d.\n", portNo);
 #endif
     return portNo;
   }
@@ -467,7 +485,7 @@ int establishclientsocket(const char *const docname){
   retVal = getsockethost(docname, hostname);
   if ( retVal < 0 ){
 #ifdef NDEBUG  
-    fprintf(f1, "ERROR: Could not obtain socket hostname. Return value = %d.\n", retVal);
+    fprintf(f1, "Error: Could not obtain socket hostname. Return value = %d.\n", retVal);
 #endif
     return retVal;
   }
@@ -479,7 +497,7 @@ int establishclientsocket(const char *const docname){
    /* Tell the user that we could not find a usable */
    /* WinSock DLL.                                  */
 #ifdef NDEBUG  
-    fprintf(f1, "ERROR: Could not find a usable WinSock DLL.\n");
+    fprintf(f1, "Error: Could not find a usable WinSock DLL.\n");
     fprintf(f1, "WSAGetLastError = %d\n", WSAGetLastError());
 #endif
     return -1;
@@ -494,7 +512,7 @@ int establishclientsocket(const char *const docname){
     /* Tell the user that we could not find a usable */
     /* WinSock DLL.                                  */
 #ifdef NDEBUG  
-    fprintf(f1, "ERROR: Could not find a usable WinSock DLL for requested version.\n");
+    fprintf(f1, "Error: Could not find a usable WinSock DLL for requested version.\n");
 #endif
     WSACleanup( );
     return -1; 
@@ -507,7 +525,7 @@ int establishclientsocket(const char *const docname){
   sockfd = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
   if( sockfd < 0){
 #ifdef NDEBUG
-    fprintf(f1, "ERROR opening socket. sockfd = %d.\n", sockfd);
+    fprintf(f1, "Error opening socket. sockfd = %d.\n", sockfd);
 #endif
     return sockfd;
   }
@@ -516,7 +534,7 @@ int establishclientsocket(const char *const docname){
 #endif
   if( setsockopt(sockfd, SOL_SOCKET, SO_KEEPALIVE, (char *)&arg, sizeof(arg)) != 0){
 #ifdef NDEBUG
-        fprintf(f1, "ERROR setting socket option keep alive.\n");
+        fprintf(f1, "Error setting socket option keep alive.\n");
         fprintf(f1, "Error flag errno = %d.\n", errno);
 #endif
         return -1;
@@ -524,9 +542,8 @@ int establishclientsocket(const char *const docname){
   
   if (sockfd < 0){
 #ifdef NDEBUG
-    fprintf(f1, "ERROR opening socket\n");
+    fprintf(f1, "Error opening socket\n");
 #endif
-    fprintf(stderr, "Returning from establish... with sockfd= %d\n", sockfd);
     return sockfd;
   }
   //////////////////////////////////////////////////////
@@ -535,7 +552,7 @@ int establishclientsocket(const char *const docname){
   free(hostname);
   if (server == NULL) {
 #ifdef NDEBUG
-    fprintf(f1,"ERROR, no such host\n");
+    fprintf(f1,"Error, no such host\n");
 #endif
     return -1;
   }
@@ -551,9 +568,9 @@ int establishclientsocket(const char *const docname){
   if ( retVal < 0){
 #ifdef NDEBUG
 #ifdef _MSC_VER
-    fprintf(f1, "ERROR when connecting to socket: WSAGetLastError = %d\n", WSAGetLastError());
+    fprintf(f1, "Error when connecting to socket: WSAGetLastError = %d\n", WSAGetLastError());
 #else
-    fprintf(f1, "ERROR when connecting to socket: %s\n",  strerror(errno));
+    fprintf(f1, "Error when connecting to socket: %s\n",  strerror(errno));
 #endif
 #endif
     return retVal;
@@ -599,10 +616,10 @@ int writetosocket(const int *sockfd,
   /////////////////////////////////////////////////////
   // make sure that the socketFD is valid
 if (*sockfd < 0 ){
-    fprintf(stderr, "ERROR: Called write to socket with negative socket number.\n");
+    fprintf(stderr, "Error: Called write to socket with negative socket number.\n");
     fprintf(stderr, "       sockfd : %d\n",  *sockfd);
 #ifdef NDEBUG
-    fprintf(f1, "ERROR: Called write to socket with negative socket number.\n");
+    fprintf(f1, "Error: Called write to socket with negative socket number.\n");
     fprintf(f1, "       sockfd : %d\n",  *sockfd);
     fflush(f1);
 #endif
@@ -630,11 +647,11 @@ if (*sockfd < 0 ){
 			  &buffer, &bufLen);
   
   if (retVal != 0 ){
-    fprintf(stderr, "ERROR: Failed to allocate memory for buffer before writing to socket.\n");
+    fprintf(stderr, "Error: Failed to allocate memory for buffer before writing to socket.\n");
     fprintf(stderr, "       retVal : %d\n",  retVal);
     fprintf(stderr, "       Message: %s\n",  strerror(errno));
 #ifdef NDEBUG
-    fprintf(f1, "ERROR: Failed to allocate memory for buffer before writing to socket.\n");
+    fprintf(f1, "Error: Failed to allocate memory for buffer before writing to socket.\n");
     fprintf(f1, "       retVal : %d\n",  retVal);
     fprintf(f1, "       Message: %s\n",  strerror(errno));
     fflush(f1);
@@ -659,14 +676,14 @@ if (*sockfd < 0 ){
   if (retVal >= 0)
     fprintf(f1, "Wrote %d characters to socket.\n",  retVal);
   else
-    fprintf(f1, "ERROR writing to socket: Return value = %d.\n",  retVal);
+    fprintf(f1, "Error writing to socket: Return value = %d.\n",  retVal);
 #endif
   if (retVal < 0){
 #ifdef NDEBUG
 #ifdef _MSC_VER
-    fprintf(f1, "ERROR writing to socket: WSAGetLastError = %d\n", WSAGetLastError());
+    fprintf(f1, "Error writing to socket: WSAGetLastError = %d\n", WSAGetLastError());
 #else
-    fprintf(f1, "ERROR writing to socket: %s\n",  strerror(errno));
+    fprintf(f1, "Error writing to socket: %s\n",  strerror(errno));
 #endif
     fflush(f1);
 #endif
@@ -680,23 +697,42 @@ if (*sockfd < 0 ){
 ///
 /// This method should be used by clients if they need to send
 /// a flag to the BCVTB.
-/// A typical invocation would send flaWri=+1 if the simulation
-/// reached the end time, or flaWri=-1 if the simulation 
-/// needs to terminate due to an error.
+///
+/// The flag flaWri is defined as follows:
+/// +1: simulation reached end time.
+/// -1: simulation terminates due to an (unspecified) error.
+/// -10: simulation terminates due to error during initialization.
+/// -20: simulation terminates due to error during time integration. 
 ///
 ///\deprecated Use \c sendclientmessage instead
 ///
 ///\param sockfd Socket file descripter
 ///\param flaWri Flag to be sent to the BCVTB
 int sendclientmessage(const int *sockfd, const int *flaWri){
-  int zI=0;
+  int zI = 0;
+  int retVal = 0;
   double zD = 0;
+  int bufLen = BUFFER_LENGTH;
+  char inpBuf[BUFFER_LENGTH]; 
+  memset(inpBuf, 0, BUFFER_LENGTH);
+
   if ( *sockfd >= 0 ){
-    return writetosocket(sockfd, flaWri, &zI, &zI, &zI, &zD,
-			 NULL, NULL, NULL);
+    retVal = writetosocket(sockfd, flaWri, &zI, &zI, &zI, &zD,
+			   NULL, NULL, NULL);
+#ifdef NDEBUG
+    fprintf(f1, "sendclientmessage wrote flag %d, return value = %d.\n", 
+	    *flaWri, retVal);
+#endif
+    if ( retVal >= 0 ){
+      // No error. Wait for acknowledgement. This is needed on Windows for E+.
+      // Otherwise, E+ sometimes terminates and breaks the socket connection before
+      // Ptolemy read the message.
+      retVal = readbufferfromsocket(sockfd, inpBuf, &bufLen);
+    }
   }
   else
-    return 0;
+    retVal = 0;
+  return retVal;
 }
 
 /////////////////////////////////////////////////////////////////
@@ -720,37 +756,31 @@ int readfromsocket(const int *sockfd, int *flaRea,
 		   double dblValRea[], int intValRea[], int booValRea[])
 {
   int retVal, i;
+  int bufLen = BUFFER_LENGTH;
   char inpBuf[BUFFER_LENGTH]; 
   memset(inpBuf, 0, BUFFER_LENGTH);
 
   /////////////////////////////////////////////////////
   // make sure that the socketFD is valid
 if (*sockfd < 0 ){
-    fprintf(stderr, "ERROR: Called read from socket with negative socket number.\n");
+    fprintf(stderr, "Error: Called read from socket with negative socket number.\n");
     fprintf(stderr, "       sockfd : %d\n",  *sockfd);
 #ifdef NDEBUG
-    fprintf(f1, "ERROR: Called read from socket with negative socket number.\n");
+    fprintf(f1, "Error: Called read from socket with negative socket number.\n");
     fprintf(f1, "       sockfd : %d\n",  *sockfd);
     fflush(f1);
 #endif
     return -1; // return a negative value in case of an error
   }
 
-#ifdef _MSC_VER
-    // MSG_WAITALL is not in the winsock2.h file, at least not on my system...
-#define MSG_WAITALL 0x8 /* do not complete until packet is completely filled */
-  retVal = recv(*sockfd, inpBuf, BUFFER_LENGTH-1, 0);//, MSG_OOB);
-  //  retVal = recv(*sockfd, inpBuf, BUFFER_LENGTH-1, MSG_WAITALL);
-#else
-  retVal = read(*sockfd, inpBuf, BUFFER_LENGTH-1);
-#endif
+ retVal = readbufferfromsocket(sockfd, inpBuf, &bufLen);
 
   if (retVal < 0){
 #ifdef NDEBUG
 #ifdef _MSC_VER
-    fprintf(f1, "ERROR reading: WSAGetLastError = %d\n", WSAGetLastError());
+    fprintf(f1, "Error reading: WSAGetLastError = %d\n", WSAGetLastError());
 #else
-    fprintf(f1, "ERROR reading: %s\n",  strerror(errno));
+    fprintf(f1, "Error reading: %s\n",  strerror(errno));
 #endif
     fflush(f1);
 #endif
@@ -770,6 +800,31 @@ if (*sockfd < 0 ){
 #ifdef NDEBUG
   fprintf(f1, "Disassembled buffer.\n");
 #endif
+  return retVal;
+}
+
+/////////////////////////////////////////////////////////////////
+/// Reads a character buffer from the socket.
+///
+/// This method is called by \c readfromsocket.
+///
+///\param sockfd The socket file descripter.
+///\param buffer The buffer into which the values will be written.
+///\param bufLen The buffer length prior to the call.
+///\return The exit value of the \c read command.
+int readbufferfromsocket(const int *sockfd, char *buffer, int *bufLen){
+  int retVal;
+#ifdef _MSC_VER
+    // MSG_WAITALL is not in the winsock2.h file, at least not on my system...
+#define MSG_WAITALL 0x8 /* do not complete until packet is completely filled */
+  retVal = recv(*sockfd, buffer, (*bufLen)-1, 0);//, MSG_OOB);
+#else
+  retVal = read(*sockfd, buffer, (*bufLen)-1);
+#endif
+#ifdef NDEBUG
+  fprintf(f1, "In readbufferfromsocket: Read from buffer: %s.\n", buffer);
+#endif
+
   return retVal;
 }
 
@@ -851,37 +906,11 @@ int closeipc(int* sockfd){
 #endif
 }
 
-#include <stdio.h>
+
 int main( int argc, const char* argv[] )
 {
-  int i, retVal;
-  char *buffer;
-  const char* toAdd = "abcd ef";
-  int bufLen=1; // just for testing, a better setting would be 1024
-  int flaWri=0;
-  const int nDbl=3;
-  double dbl[] = {1, 2, 3};
-  const int nInt = 2;
-  int inte[] = {10, 20};
-    
-  printf( "\nHello World\n\n" );
-#ifdef NDEBUG
-  if (f1 == NULL)
-    f1 = fopen ("utilSocket.log", "w");
-#endif
-  buffer = malloc(bufLen);
-
-  for(i=0; i < 4; i++){
-    retVal = assembleBuffer(flaWri, nDbl, nInt, nInt,
-			  60.0,
-			    dbl, inte, inte,
-			  &buffer, &bufLen);
-
-  //    save_append(buffer, toAdd, &bufLen);
-    fprintf(stderr, "main: buffer        = %s.\n", buffer);
-    fprintf(stderr, "main: string length = %zx.\n", strlen(buffer));
-  }
-  printf( "\nEnd of program\n\n" );
+  fprintf(stderr, "Calling establ...'\n");
+  //  establishclientsocket("socket.cfg");
 }
 
 

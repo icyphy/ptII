@@ -129,9 +129,9 @@ EPstart(void *data, const char *el, const char **attr)
     if( 0 == source){
       for(i=0; attr[i]; i++)i=i; 
       if (i != 4) {
-        fprintf(stderr, "Error: Variable configuration file not valide.\n"
+        fprintf(stderr, "Error: Variable configuration file invalid.\n"
                         "       Expected two attribute values for source\n"
-                        "       of EnergyPlus: \"name\" and \"type\".\n");
+                        "       of EnergyPlus: 'name' and 'type'.\n");
         ERROR_STATUS = 1; return;
       }
       if ( 0 == strcmp(attr[0], "name") && 0 == strcmp(attr[2], "type") )
@@ -141,7 +141,7 @@ EPstart(void *data, const char *el, const char **attr)
       else {
         fprintf(stderr, "Error: Variable configuration file not valide.\n"
                         "       Expected two attribute values for source\n"
-                        "       of EnergyPlus: \"name\" and \"type\".\n");
+                        "       of EnergyPlus: 'name' and 'type'.\n");
         ERROR_STATUS = 1; return;
       }
         
@@ -258,12 +258,12 @@ int getepvariables( char*  const fileName,
 
   fd = fopen(fileName, "r");
   if(!fd){
-    fprintf(stderr, "Error: Couldn't open file '%s'.\n", fileName);
+    fprintf(stderr, "Error: Could not open file '%s' when getting EnergyPlus variables.\n", fileName);
     return -1;
   }
   p = XML_ParserCreate(NULL);
   if(!p){
-    fprintf(stderr, "Error: Couldn't allocate memory for parser in function \"getepvariables\".\n");
+    fprintf(stderr, "Error: Could not allocate memory for parser in function 'getepvariables'.\n");
     return -1;
   }
   
@@ -423,6 +423,7 @@ getxmlvalues(char* const fileName,
   XML_Parser p;
   vals = myVals;
   numVals = myNumVals;
+  *numVals = 0;
   strLen = &myStrLen;
   att = NULL;
   expStk.head = NULL;
@@ -430,12 +431,12 @@ getxmlvalues(char* const fileName,
   expStk.cur = -1;
   fd = fopen(fileName, "r");
   if(!fd) {
-    fprintf(stderr, "Error: Couldn't open file \"%s\".\n", fileName);
+    fprintf(stderr, "Error: Could not open file '%s'.\n", fileName);
     return -1;
   }
   p = XML_ParserCreate(NULL);
   if (!p) {
-    fprintf(stderr, "Error: Couldn't allocate memory for parser in function \"getxmlvalue\".\n");
+    fprintf(stderr, "Error: Could not allocate memory for parser in function 'getxmlvalue'.\n");
     return -1;
   }
   i=2; j=0;
@@ -701,17 +702,21 @@ int getxmlvalue(char* const fileName,
 	                   str,
 	                   nVals,
 	                   strLen);
-  if(*nVals == 0){
-    fprintf(stderr,"Error: No xml value parsed in file \"%s\"\n",fileName); 
+
+  if(ret != 0){
+    fprintf(stderr,"Error: Error when attempting to parse file '%s'\n",fileName); 
     return -1;
   }
-  if(*nVals != 1){
+  if(*nVals == 0){
+    fprintf(stderr,"Error: No xml value parsed in file '%s'\n",fileName); 
+    return -1;
+  }
+  if(*nVals > 1){
     fprintf(stderr, "Error: More than one xml values parsed, \n"
                     "       while expecting one value. \n"
                     "       number of xml values parsed is: %d\n"
-                    "       xPath: \"%s\"\n"
-                    "       string parsed: \"%s\"",
-                    *nVals, exp, str);
+                    "       xPath: '%s'\n",
+                    *nVals, exp);
     return -1;
   }
   return 0;
@@ -756,7 +761,7 @@ int check_variable_cfg_Validate(char* const fileName){
   if(NULL == command) {
     fprintf(stderr, "Error: Memory allocation failed in"
                     "       check_variable_cfg_Validate"
-                    "       when parsing file \"%s\".\n"
+                    "       when parsing file '%s'.\n"
                     "       Program aborting.\n", fileName);
     return -1;
   }
@@ -764,7 +769,7 @@ int check_variable_cfg_Validate(char* const fileName){
   if(NULL == command) {
     fprintf(stderr, "Error: Memory allocation failed in"
                     "       check_variable_cfg_Validate"
-                    "       when parsing file \"%s\". \n"
+                    "       when parsing file '%s'. \n"
                     "       Program aborting.\n", fileName);
     return -1;
   }
@@ -772,9 +777,7 @@ int check_variable_cfg_Validate(char* const fileName){
   sprintf(dtdFileName, "%s%s%s", BCVTB_HOME, xmlPath, "variables.dtd");
   dtdF = fopen(dtdFileName, "r");
   if( NULL == dtdF ){
-    fprintf(stderr, "Error: Cannot locate variables.dtd at"
-                    "       %s.\n"
-                    "       Program aborting.\n", dtdFileName);
+    fprintf(stderr, "Error: Cannot open '%s'.\n", dtdFileName);
     return -1;
   }
   else fclose(dtdF);

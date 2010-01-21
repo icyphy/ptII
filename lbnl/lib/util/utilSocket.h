@@ -228,6 +228,16 @@ int getsocketportnumber(const char *const docname);
 int getsockethost(const char *const docname, char *const hostname);
 
 //////////////////////////////////////////////////////////////////
+/// Returns the main version number.
+///
+/// This method returns the version number. A negative return value
+/// is used in a dummy dll to check in EnergyPlus whether the BCVTB
+/// has been installed.
+///
+/// \return The main version number, or a negative value if an error occured.
+int getmainversionnumber();
+
+//////////////////////////////////////////////////////////////////
 /// Establishes a connection to the socket.
 ///
 /// This method establishes the client socket.
@@ -263,10 +273,12 @@ int writetosocket(const int *sockfd,
 ///
 /// This method should be used by clients if they need to send
 /// a flag to the BCVTB.
-/// A typical invocation would send flaWri=+1 if the simulation
-/// reached the end time, or flaWri=-1 if the simulation 
-/// needs to terminate due to an error.
 ///
+/// The flag flaWri is defined as follows:
+/// +1: simulation reached end time.
+/// -1: simulation terminates due to an (unspecified) error.
+/// -10: simulation terminates due to error during initialization.
+/// -20: simulation terminates due to error during time integration. 
 ///
 ///\param sockfd Socket file descripter
 ///\param flaWri Flag to be sent to the BCVTB
@@ -305,6 +317,17 @@ int readfromsocket(const int *sockfd, int *flaRea,
 		   int *nDblRea, int *nIntRea, int *nBooRea,
 		   double *curSimTim,
 		   double dblValRea[], int intValRea[], int booValRea[]);
+
+/////////////////////////////////////////////////////////////////
+/// Reads a character buffer from the socket.
+///
+/// This method is called by \c readfromsocket.
+///
+///\param sockfd The socket file descripter.
+///\param buffer The buffer into which the values will be written.
+///\param bufLen The buffer length prior to the call.
+///\return The exit value of the \c read command.
+int readbufferfromsocket(const int *sockfd, char *buffer, int *bufLen);
 
 /////////////////////////////////////////////////////////////////
 /// Exchanges data with the socket.

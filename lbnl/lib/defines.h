@@ -1,4 +1,42 @@
-// Define statements used by the BCVTB C methods.
+/**
+ * \file   defines.h
+ *
+ * \brief  Define statements used by the BCVTB C methods.
+ *
+ * \author Michael Wetter,
+ *         Simulation Research Group, 
+ *         LBNL,
+ *         MWetter@lbl.gov
+ *
+ * \date   2007-12-01
+ *
+ */
+
+#ifndef __DEFINES_H__
+#define __DEFINES_H__
+
+/** \val Debug flag, uncomment to enable debug messages 
+
+#ifndef NDEBUG 
+#define NDEBUG 
+#endif
+*/
+
+/** \val Lenght of buffer used to communicate with the BSD socket. */
+#define BUFFER_LENGTH  1024
+
+/** \val Maximum number of double values that can be exchanged by Simulink.
+ *     To increase this value, change it in this file and in the files
+ *     \c matlab/compile.m and 
+ *     \c matlab/exchangeDoublesWithSocket.m
+ */
+#define NDBLMAX 128
+
+/** \val The main version of the socket interface.
+ */
+#define MAINVERSION 1
+
+#endif /*__DEFINES_H__*/
 
 
 /*
@@ -32,7 +70,7 @@ and to permit others to do so.
 Modified BSD License agreement
 ------------------------------
 
-Building Controls Virtual Test Bed (BCVTB) Copyright (c) 2008-2009, The
+Building Controls Virtual Test Bed (BCVTB) Copyright (c) 2008, The
 Regents of the University of California, through Lawrence Berkeley
 National Laboratory (subject to receipt of any required approvals from
 the U.S. Dept. of Energy).  All rights reserved.
@@ -76,38 +114,3 @@ derivative works thereof, in binary and source code form.
 
 ********************************************************************
 */
-
-/**
- * \file   defines.h
- *
- * \brief  Define statements used by the BCVTB C methods.
- *
- * \author Michael Wetter,
- *         Simulation Research Group, 
- *         LBNL,
- *         MWetter@lbl.gov
- *
- * \date   2007-12-01
- *
- * \version $Id$
- */
-
-#ifndef __DEFINES_H__
-#define __DEFINES_H__
-
-/** \val Debug flag, uncomment to enable debug messages */
-#ifndef NDEBUG 
-#define NDEBUG 
-#endif
-
-/** \val Lenght of buffer used to communicate with the BSD socket. */
-#define BUFFER_LENGTH  1024
-
-/** \val Maximum number of double values that can be exchanged by Simulink.
- *     To increase this value, change it in this file and in the files
- *     \c matlab/compile.m and 
- *     \c matlab/exchangeDoublesWithSocket.m
- */
-#define NDBLMAX 128
-
-#endif /*__DEFINES_H__*/
