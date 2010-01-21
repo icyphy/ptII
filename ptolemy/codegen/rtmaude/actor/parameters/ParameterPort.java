@@ -36,22 +36,29 @@ import ptolemy.kernel.util.IllegalActionException;
 //// ParameterPort
 
 /**
- * Generate RTMaude code for a ParameterPort
+ * Generate RTMaude code for a ParameterPort.
  *
  * @see ptolemy.actor.parameters.ParameterPort
  * @author Kyungmin Bae
-@version $Id$
-@since Ptolemy II 7.1
  * @version $Id$
- * @Pt.ProposedRating Red (kquine)
- *
+ * @since Ptolemy II 7.1
+ * @Pt.ProposedRating red (kquine)
+ * @Pt.AcceptedRating red (kquine)
  */
 public class ParameterPort extends IOPort {
-
+    
+    /**
+     * Constructs the code generator adapter
+     * associated with the given ParameterPort.
+     * @param component The associated ParameterPort
+     */
     public ParameterPort(ptolemy.actor.parameters.ParameterPort component) {
         super(component);
     }
 
+    /* (non-Javadoc)
+     * @see ptolemy.codegen.rtmaude.kernel.RTMaudeAdaptor#getInfo(java.lang.String, java.util.List)
+     */
     protected String getInfo(String name, List<String> parameters)
             throws IllegalActionException {
         if (name.equals("param")) {

@@ -37,14 +37,16 @@ import ptolemy.codegen.rtmaude.kernel.Entity;
  *
  * @see ptolemy.actor.lib.gui.TimedPlotter
  * @author Kyungmin Bae
-@version $Id$
-@since Ptolemy II 7.1
  * @version $Id$
- * @Pt.ProposedRating Red (kquine)
- *
+ * @since Ptolemy II 7.1
+ * @Pt.ProposedRating red (kquine)
+ * @Pt.AcceptedRating red (kquine)
  */
 public class TimedPlotter extends Entity {
-
+    /**
+     * Constructor method for the TimedPlotter adapter.
+     * @param component The associated TimedPlotter actor
+     */
     public TimedPlotter(ptolemy.actor.lib.gui.TimedPlotter component) {
         super(component);
     }

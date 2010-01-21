@@ -31,18 +31,20 @@ package ptolemy.codegen.rtmaude.domains.de.lib;
 //// NonInterruptibleTimer
 
 /**
-* Generate RTMaude code for a NonInterruptibleTimer in DE domain.
-*
-* @see ptolemy.domains.de.lib.NonInterruptibleTimer
-* @author Kyungmin Bae
-@version $Id$
-@since Ptolemy II 7.1
-* @version $Id$
-* @Pt.ProposedRating Red (kquine)
-*
-*/
+ * Generate RTMaude code for a NonInterruptibleTimer in DE domain.
+ *
+ * @see ptolemy.domains.de.lib.NonInterruptibleTimer
+ * @author Kyungmin Bae
+ * @version $Id$
+ * @since Ptolemy II 7.1
+ * @Pt.ProposedRating red (kquine)
+ * @Pt.AcceptedRating red (kquine)
+ */
 public class NonInterruptibleTimer extends Timer {
-
+    /**
+     * Constructor method for the NonInterruptibleTimer adapter.
+     * @param component The associated NonInterruptibleTimer
+     */
     public NonInterruptibleTimer(
             ptolemy.domains.de.lib.NonInterruptibleTimer component) {
         super(component);

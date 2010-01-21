@@ -35,27 +35,43 @@ import ptolemy.kernel.util.IllegalActionException;
 //// ListTerm
 
 /**
-* Generate a list RTMaude term (AU or ACU) for an iterable data structure.
-*
-* @author Kyungmin Bae
-@version $Id$
-@since Ptolemy II 7.1
-* @version $Id$
-* @Pt.ProposedRating Red (kquine)
-*
-*/
+ * Generate a list RTMaude term (AU or ACU) for a data structure with an Iterator.
+ *
+ * @author Kyungmin Bae
+ * @version $Id$
+ * @since Ptolemy II 7.1
+ * @Pt.ProposedRating red (kquine)
+ * @Pt.AcceptedRating red (kquine)
+ */
 public class ListTerm<T> {
 
+    /** The delimiter for the list term representation, e.g., "," */
     protected String delimiter;
+    
+    /** The term for the empty list */
     protected String empty;
+    
+    /** The contents of the given list of T objects */
     protected Iterator<T> iter;
 
+    /**
+     * Constructs a ListTerm object.
+     *
+     * @param empty      An empty term
+     * @param delimiter  A delimiter for the given list term
+     * @param target     An Iterable object which contains the elements
+     */
     public ListTerm(String empty, String delimiter, Iterable<T> target) {
         this.iter = target.iterator();
         this.empty = empty;
         this.delimiter = delimiter;
     }
 
+    /** Generates the term representation of the list using an empty term,
+     * a delimiter, and an item member function.
+     * @return The term representation of the list
+     * @throws IllegalActionException
+     */
     public String generateCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
         String v = null;
@@ -81,6 +97,14 @@ public class ListTerm<T> {
         }
     }
 
+    /** Returns the term representation of the given element v.
+     * By overriding this method, we can define any term representation
+     * for elements in the list. 
+     * 
+     * @param v the element
+     * @return the string representation of v
+     * @throws IllegalActionException An overriding methods may generate this exception.
+     */
     public String item(T v) throws IllegalActionException {
         return v.toString();
     }

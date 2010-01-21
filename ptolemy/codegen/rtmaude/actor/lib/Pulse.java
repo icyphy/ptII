@@ -37,14 +37,16 @@ import ptolemy.codegen.rtmaude.kernel.Entity;
  *
  * @see ptolemy.actor.lib.Pulse
  * @author Kyungmin Bae
-@version $Id$
-@since Ptolemy II 7.1
  * @version $Id$
- * @Pt.ProposedRating Red (kquine)
- *
+ * @since Ptolemy II 7.1
+ * @Pt.ProposedRating red (kquine)
+ * @Pt.AcceptedRating red (kquine)
  */
 public class Pulse extends Entity {
-
+    /**
+     * Constructor method for the Pulse adapter.
+     * @param component The associated Pulse actor
+     */
     public Pulse(ptolemy.actor.lib.Pulse component) {
         super(component);
     }

@@ -40,22 +40,31 @@ import ptolemy.kernel.util.NamedObj;
 //// Director
 
 /**
-* Generate RTMaude code for a general Director in DE domain.
-*
-* @see ptolemy.actor.Director
-* @author Kyungmin Bae
-@version $Id$
-@since Ptolemy II 7.1
-* @version $Id$
-* @Pt.ProposedRating Red (kquine)
-*
-*/
+ * Generate RTMaude code for a general Director in DE domain.
+ *
+ * @see ptolemy.actor.Director
+ * @author Kyungmin Bae
+ * @version $Id$
+ * @since Ptolemy II 7.1
+ * @Pt.ProposedRating red (kquine)
+ * @Pt.AcceptedRating red (kquine)
+ */
 public class Director extends ptolemy.codegen.actor.Director {
-
+    /** Construct the code generator adaptor associated with the given director.
+     *  @param director The associated director.
+     */
     public Director(ptolemy.actor.Director director) {
         super(director);
     }
 
+    /** Generate the code specified by the given block with given arguments
+     * for each actor associated to the director.
+     * 
+     * @param blockName The name of the block.
+     * @param args The arguments for the block.
+     * @return The code described by the given block.
+     * @throws IllegalActionException
+     */
     public List<String> getBlockCodeList(String blockName, String... args)
             throws IllegalActionException {
         List<Actor> actors = ((CompositeActor) _director.getContainer())

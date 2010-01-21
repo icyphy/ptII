@@ -40,22 +40,24 @@ import ptolemy.kernel.util.NamedObj;
  *
  * @see ptolemy.actor.IORelation
  * @author Kyungmin Bae
-@version $Id$
-@since Ptolemy II 7.1
  * @version $Id$
- * @Pt.ProposedRating Red (kquine)
- *
+ * @since Ptolemy II 7.1
+ * @Pt.ProposedRating red (kquine)
+ * @Pt.AcceptedRating red (kquine)
  */
 public class IORelation extends RTMaudeAdaptor {
 
     /** Construct the code generator helper associated
-     *  with the given TypedCompositeActor.
+     *  with the given IORelation.
      *  @param component The associated component.
      */
     public IORelation(ptolemy.actor.IORelation component) {
         super(component);
     }
 
+    /* (non-Javadoc)
+     * @see ptolemy.codegen.rtmaude.kernel.RTMaudeAdaptor#generateTermCode()
+     */
     public String generateTermCode() throws IllegalActionException {
         final ptolemy.actor.IORelation r = (ptolemy.actor.IORelation) getComponent();
         StringBuffer rec = new StringBuffer();
@@ -77,12 +79,24 @@ public class IORelation extends RTMaudeAdaptor {
         return rec.toString();
     }
 
+    /** Returns the RTMaude representation of the given port name. 
+     * @param container The object containing the given port 
+     * @param port The associated port
+     * @return The term representation of the given port id
+     * @throws IllegalActionException
+     */
     private String generateEPortId(NamedObj container, ptolemy.actor.IOPort port)
             throws IllegalActionException {
         return _generateBlockCode("scopeBlock", generateActorIdforPort(
                 container, port), port.getName());
     }
 
+    /** Returns the name of the container of the given port
+     * in the RTMaude term representation.   
+     * @param container The object containing the given port
+     * @param port The associated port
+     * @return The name of the container
+     */
     private String generateActorIdforPort(NamedObj container,
             ptolemy.actor.IOPort port) {
         String actorId;

@@ -31,22 +31,22 @@ package ptolemy.codegen.rtmaude.domains.de.lib;
 //// VariableDelay
 
 /**
-* Generate RTMaude code for a VariableDelay in DE domain.
-*
-* @see ptolemy.domains.de.lib.VariableDelay
-* @author Kyungmin Bae
-@version $Id$
-@since Ptolemy II 7.1
-* @version $Id$
-* @Pt.ProposedRating Red (kquine)
-*
-*/
+ * Generate RTMaude code for a VariableDelay in DE domain.
+ *
+ * @see ptolemy.domains.de.lib.VariableDelay
+ * @author Kyungmin Bae
+ * @version $Id$
+ * @since Ptolemy II 7.1
+ * @Pt.ProposedRating red (kquine)
+ * @Pt.AcceptedRating red (kquine)
+ */
 public class VariableDelay extends TimedDelay {
-
+    /**
+     * Constructor method for the VariableDelay adapter.
+     * @param component The associated actor
+     */
     public VariableDelay(ptolemy.domains.de.lib.VariableDelay component) {
         super(component);
     }
-
     //FIXME:Hierarchical import is not supported
-
 }

@@ -33,18 +33,20 @@ import ptolemy.codegen.rtmaude.kernel.Entity;
 //// SingleEvent
 
 /**
-* Generate RTMaude code for a SingleEvent in DE domain.
-*
-* @see ptolemy.domains.de.lib.SingleEvent
-* @author Kyungmin Bae
-@version $Id$
-@since Ptolemy II 7.1
-* @version $Id$
-* @Pt.ProposedRating Red (kquine)
-*
-*/
+ * Generate RTMaude code for a SingleEvent in DE domain.
+ *
+ * @see ptolemy.domains.de.lib.SingleEvent
+ * @author Kyungmin Bae
+ * @version $Id$
+ * @since Ptolemy II 7.1
+ * @Pt.ProposedRating red (kquine)
+ * @Pt.AcceptedRating red (kquine)
+ */
 public class SingleEvent extends Entity {
-
+    /**
+     * Constructor method for the SingleEvent adapter.
+     * @param component The associated SingleEvent
+     */
     public SingleEvent(ptolemy.domains.de.lib.SingleEvent component) {
         super(component);
     }

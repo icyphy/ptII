@@ -37,14 +37,16 @@ import ptolemy.codegen.rtmaude.kernel.Entity;
  *
  * @see ptolemy.actor.lib.Ramp
  * @author Kyungmin Bae
-@version $Id$
-@since Ptolemy II 7.1
  * @version $Id$
- * @Pt.ProposedRating Red (kquine)
- *
+ * @since Ptolemy II 7.1
+ * @Pt.ProposedRating red (kquine)
+ * @Pt.AcceptedRating red (kquine)
  */
 public class Ramp extends Entity {
-
+    /**
+     * Constructor method for the Ramp adapter.
+     * @param component The associated Ramp actor
+     */
     public Ramp(ptolemy.actor.lib.Ramp component) {
         super(component);
     }

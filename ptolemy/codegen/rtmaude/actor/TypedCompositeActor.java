@@ -47,18 +47,21 @@ import ptolemy.kernel.util.IllegalActionException;
  * @author Kyungmin Bae
  * @since Ptolemy II 7.1
  * @version $Id$
- * @Pt.AcceptedRating Red (kquine)
- * @Pt.ProposedRating Red (kquine)
+ * @Pt.ProposedRating red (kquine)
+ * @Pt.AcceptedRating red (kquine)
  */
 public class TypedCompositeActor extends Entity {
     /** Construct the code generator helper associated
      *  with the given TypedCompositeActor.
-     *  @param component The associated component.
+     *  @param component The associated TypedCompositeActor.
      */
     public TypedCompositeActor(ptolemy.actor.TypedCompositeActor component) {
         super(component);
     }
     
+    /* (non-Javadoc)
+     * @see ptolemy.codegen.rtmaude.kernel.RTMaudeAdaptor#getBlockCodeList(java.lang.String, java.lang.String[])
+     */
     public List<String> getBlockCodeList(String blockName, String ... args) 
             throws IllegalActionException {
         Director directorHelper = (Director) _getHelper(((ptolemy.actor
@@ -70,6 +73,9 @@ public class TypedCompositeActor extends Entity {
         return self;
     }
     
+    /* (non-Javadoc)
+     * @see ptolemy.codegen.rtmaude.kernel.RTMaudeAdaptor#generateFireFunctionCode()
+     */
     public String generateFireFunctionCode() throws IllegalActionException {
         Director directorHelper = (Director) _getHelper(((ptolemy.actor
                 .CompositeActor) getComponent()).getDirector());
@@ -78,6 +84,9 @@ public class TypedCompositeActor extends Entity {
             _eol + directorHelper.generateFireFunctionCode();
     }
     
+    /* (non-Javadoc)
+     * @see ptolemy.codegen.rtmaude.kernel.RTMaudeAdaptor#getModuleCode(java.lang.String)
+     */
     public List<String> getModuleCode(String header)
             throws IllegalActionException {
         
@@ -101,6 +110,9 @@ public class TypedCompositeActor extends Entity {
         return modNames;
     }
 
+    /* (non-Javadoc)
+     * @see ptolemy.codegen.rtmaude.kernel.Entity#getInfo(java.lang.String, java.util.List)
+     */
     protected String getInfo(String name, List<String> parameters)
             throws IllegalActionException {
         ptolemy.actor.TypedCompositeActor c_actor = (ptolemy.actor.TypedCompositeActor) getComponent();

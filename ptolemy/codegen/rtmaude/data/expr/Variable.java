@@ -33,18 +33,22 @@ import ptolemy.codegen.rtmaude.kernel.RTMaudeAdaptor;
 ////PropertyParameter
 
 /**
-* Generate RTMaude code for a Variable in DE domain.
-*
-* @see ptolemy.data.expr.Variable
-* @author Kyungmin Bae
-@version $Id$
-@since Ptolemy II 7.1
-* @version $Id$
-* @Pt.ProposedRating Red (kquine)
-*
-*/
+ * Generate RTMaude code for a Variable in DE domain.
+ *
+ * @see ptolemy.data.expr.Variable
+ * @author Kyungmin Bae
+ * @version $Id$
+ * @since Ptolemy II 7.1
+ * @Pt.ProposedRating red (kquine)
+ * @Pt.AcceptedRating red (kquine)
+ */
 public class Variable extends RTMaudeAdaptor {
 
+    /**
+     * Constructs the code generator adapter associated
+     * with the Variable.
+     * @param component the associated Variable object
+     */
     public Variable(ptolemy.data.expr.Variable component) {
         super(component);
     }

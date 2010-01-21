@@ -36,23 +36,28 @@ import ptolemy.kernel.util.IllegalActionException;
 //// AbstractActionsAttribute
 
 /**
-* Generate RTMaude code for an AbstractActionsAttribute in DE domain.
-*
-* @see ptolemy.domains.fsm.kernel.AbstractActionsAttribute
-* @author Kyungmin Bae
-@version $Id$
-@since Ptolemy II 7.1
-* @version $Id$
-* @Pt.ProposedRating Red (kquine)
-*
-*/
+ * Generate RTMaude code for an AbstractActionsAttribute in DE domain.
+ *
+ * @see ptolemy.domains.fsm.kernel.AbstractActionsAttribute
+ * @author Kyungmin Bae
+ * @version $Id$
+ * @since Ptolemy II 7.1
+ * @Pt.ProposedRating red (kquine)
+ * @Pt.AcceptedRating red (kquine)
+ */
 public class AbstractActionsAttribute extends RTMaudeAdaptor {
-
+    /** Construct the code generator adapter associated
+     * with the given AbstractActionsAttribute.
+     *  @param component The associated component.
+     */
     public AbstractActionsAttribute(
             ptolemy.domains.fsm.kernel.AbstractActionsAttribute component) {
         super(component);
     }
 
+    /* (non-Javadoc)
+     * @see ptolemy.codegen.rtmaude.kernel.RTMaudeAdaptor#generateTermCode()
+     */
     public String generateTermCode() throws IllegalActionException {
         final ptolemy.domains.fsm.kernel.AbstractActionsAttribute aa = (ptolemy.domains.fsm.kernel.AbstractActionsAttribute) getComponent();
         final ParseTreeCodeGenerator pcg = getParseTreeCodeGenerator();
@@ -66,5 +71,4 @@ public class AbstractActionsAttribute extends RTMaudeAdaptor {
             }
         }.generateCode();
     }
-
 }

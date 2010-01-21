@@ -27,6 +27,11 @@
  */
 package ptolemy.codegen.rtmaude.actor.lib;
 
+import java.util.List;
+
+import ptolemy.codegen.rtmaude.kernel.Entity;
+import ptolemy.kernel.util.IllegalActionException;
+
 //////////////////////////////////////////////////////////////////////////
 //// SetVariable
 
@@ -35,23 +40,23 @@ package ptolemy.codegen.rtmaude.actor.lib;
  *
  * @see ptolemy.actor.lib.SetVariable
  * @author Kyungmin Bae
-@version $Id$
-@since Ptolemy II 7.1
  * @version $Id$
- * @Pt.ProposedRating Red (kquine)
- *
+ * @since Ptolemy II 7.1
+ * @Pt.ProposedRating red (kquine)
+ * @Pt.AcceptedRating red (kquine)
  */
-import java.util.List;
-
-import ptolemy.codegen.rtmaude.kernel.Entity;
-import ptolemy.kernel.util.IllegalActionException;
-
 public class SetVariable extends Entity {
-
+    /**
+     * Constructor method for the SetVariable adapter.
+     * @param component The associated SetVariable actor
+     */
     public SetVariable(ptolemy.actor.lib.SetVariable component) {
         super(component);
     }
 
+    /* (non-Javadoc)
+     * @see ptolemy.codegen.rtmaude.kernel.Entity#getInfo(java.lang.String, java.util.List)
+     */
     protected String getInfo(String name, List<String> parameters)
             throws IllegalActionException {
         if (name.equals("variableName")) {

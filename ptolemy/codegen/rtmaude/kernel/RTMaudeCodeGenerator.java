@@ -57,11 +57,15 @@ import ptolemy.kernel.util.Settable;
 *
 */
 public class RTMaudeCodeGenerator extends CodeGenerator {
-
-    String maudeCommand = "/usr/local/share/maude/maude.intelDarwin";
-
-    Parameter simulation_bound;
-
+    /** 
+     * Create a new instance of the RTMaude code generator.
+     * @param container The container.
+     * @param name      The name of the code generator.
+     * @throws IllegalActionException   If the super class throws the
+     *   exception or error occurs when setting the file path.
+     * @throws NameDuplicationException If the super class throws the
+     *   exception or an error occurs when setting the file path.
+     */
     public RTMaudeCodeGenerator(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
@@ -82,6 +86,9 @@ public class RTMaudeCodeGenerator extends CodeGenerator {
         generatorPackage.setExpression("ptolemy.codegen.rtmaude");
     }
 
+    /* (non-Javadoc)
+     * @see ptolemy.codegen.kernel.CodeGenerator#_generateBodyCode()
+     */
     protected String _generateBodyCode() throws IllegalActionException {
         CompositeEntity model = (CompositeEntity) getContainer();
 
@@ -89,32 +96,50 @@ public class RTMaudeCodeGenerator extends CodeGenerator {
         return CodeStream.indent(1, compositeHelper.generateFireCode() + " ");
     }
 
+    /* (non-Javadoc)
+     * @see ptolemy.codegen.kernel.CodeGenerator#generateMainEntryCode()
+     */
     public String generateMainEntryCode() throws IllegalActionException {
         return super.generateMainEntryCode()
                 + ((RTMaudeAdaptor) _getHelper(getContainer()))
                         .generateEntryCode();
     }
 
+    /* (non-Javadoc)
+     * @see ptolemy.codegen.kernel.CodeGenerator#generateMainExitCode()
+     */
     public String generateMainExitCode() throws IllegalActionException {
         return super.generateMainExitCode()
                 + ((RTMaudeAdaptor) _getHelper(getContainer()))
                         .generateExitCode();
     }
 
+    /* (non-Javadoc)
+     * @see ptolemy.codegen.kernel.CodeGenerator#_generateIncludeFiles()
+     */
     protected String _generateIncludeFiles() throws IllegalActionException {
         return "load ptolemy-base.maude";
     }
 
+    /* (non-Javadoc)
+     * @see ptolemy.codegen.kernel.CodeGenerator#_finalPassOverCode(java.lang.StringBuffer)
+     */
     protected StringBuffer _finalPassOverCode(StringBuffer code)
             throws IllegalActionException {
         // TODO Auto-generated method stub
         return code;
     }
 
+    /* (non-Javadoc)
+     * @see ptolemy.codegen.kernel.CodeGenerator#formatComment(java.lang.String)
+     */
     public String formatComment(String comment) {
         return "***( " + comment + " )***" + _eol;
     }
 
+    /* (non-Javadoc)
+     * @see ptolemy.codegen.kernel.CodeGenerator#_executeCommands()
+     */
     protected int _executeCommands() throws IllegalActionException {
         List commands = new LinkedList();
 
@@ -142,4 +167,12 @@ public class RTMaudeCodeGenerator extends CodeGenerator {
         }
         return _executeCommands.getLastSubprocessReturnCode();
     }
+
+    /** The default path of the Maude program.
+     * FIXME: Users may need to change this. 
+     */
+    String maudeCommand = "/usr/local/share/maude/maude.intelDarwin";
+
+    /** The bound (natural number) of steps to simulate a given model. */
+    Parameter simulation_bound;
 }

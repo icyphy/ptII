@@ -67,22 +67,28 @@ import ptolemy.util.StringUtilities;
 //// RTMaudeParseTreeCodeGenerator
 
 /**
-* Generate RTMaude code for expressions
-*
-* @author Kyungmin Bae
-@version $Id$
-@since Ptolemy II 7.1
-* @version $Id$
-* @Pt.ProposedRating Red (kquine)
-*
-*/
+ * Generate RTMaude code for expressions.
+ *
+ * @author Kyungmin Bae
+ * @version $Id$
+ * @since Ptolemy II 7.1
+ * @Pt.AcceptedRating Red (kquine)
+ * @Pt.ProposedRating Red (kquine)*
+ */
 public class RTMaudeParseTreeCodeGenerator extends AbstractParseTreeVisitor
         implements ParseTreeCodeGenerator {
 
+    /**
+     * Create a new instance of the RTMaude parse tree 
+     * code generator.
+     */
     public RTMaudeParseTreeCodeGenerator() {
         super();
     }
 
+    /* (non-Javadoc)
+     * @see ptolemy.codegen.kernel.ParseTreeCodeGenerator#evaluateParseTree(ptolemy.data.expr.ASTPtRootNode, ptolemy.data.expr.ParserScope)
+     */
     public ptolemy.data.Token evaluateParseTree(ASTPtRootNode node,
             ParserScope scope) throws IllegalActionException {
 
@@ -98,16 +104,26 @@ public class RTMaudeParseTreeCodeGenerator extends AbstractParseTreeVisitor
         return null;
     }
 
+    /* (non-Javadoc)
+     * @see ptolemy.codegen.kernel.ParseTreeCodeGenerator#generateFireCode()
+     */
     public String generateFireCode() {
         return result;
     }
 
+    /**
+     * Returns the id table value.
+     */
     public Map<String, Set<String>> getIdTable() {
         return idTable;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+    
+    /* (non-Javadoc)
+     * @see ptolemy.data.expr.AbstractParseTreeVisitor#visitLeafNode(ptolemy.data.expr.ASTPtLeafNode)
+     */
     public void visitLeafNode(ASTPtLeafNode node) throws IllegalActionException {
         if (node.isConstant() && node.isEvaluated()) {
             ptolemy.data.Token tok = node.getToken();
@@ -124,6 +140,9 @@ public class RTMaudeParseTreeCodeGenerator extends AbstractParseTreeVisitor
         }
     }
 
+    /* (non-Javadoc)
+     * @see ptolemy.data.expr.AbstractParseTreeVisitor#visitArrayConstructNode(ptolemy.data.expr.ASTPtArrayConstructNode)
+     */
     public void visitArrayConstructNode(ASTPtArrayConstructNode node)
             throws IllegalActionException {
         _writer.print("{");
@@ -131,6 +150,9 @@ public class RTMaudeParseTreeCodeGenerator extends AbstractParseTreeVisitor
         _writer.print("}");
     }
 
+    /* (non-Javadoc)
+     * @see ptolemy.data.expr.AbstractParseTreeVisitor#visitLogicalNode(ptolemy.data.expr.ASTPtLogicalNode)
+     */
     public void visitLogicalNode(ASTPtLogicalNode node)
             throws IllegalActionException {
         _writer.print("(");
@@ -138,6 +160,9 @@ public class RTMaudeParseTreeCodeGenerator extends AbstractParseTreeVisitor
         _writer.print(")");
     }
 
+    /* (non-Javadoc)
+     * @see ptolemy.data.expr.AbstractParseTreeVisitor#visitBitwiseNode(ptolemy.data.expr.ASTPtBitwiseNode)
+     */
     public void visitBitwiseNode(ASTPtBitwiseNode node)
             throws IllegalActionException {
         _writer.print("(");
@@ -145,6 +170,9 @@ public class RTMaudeParseTreeCodeGenerator extends AbstractParseTreeVisitor
         _writer.print(")");
     }
 
+    /* (non-Javadoc)
+     * @see ptolemy.data.expr.AbstractParseTreeVisitor#visitPowerNode(ptolemy.data.expr.ASTPtPowerNode)
+     */
     public void visitPowerNode(ASTPtPowerNode node)
             throws IllegalActionException {
         _writer.print("(");
@@ -152,6 +180,9 @@ public class RTMaudeParseTreeCodeGenerator extends AbstractParseTreeVisitor
         _writer.print(")");
     }
 
+    /* (non-Javadoc)
+     * @see ptolemy.data.expr.AbstractParseTreeVisitor#visitProductNode(ptolemy.data.expr.ASTPtProductNode)
+     */
     public void visitProductNode(ASTPtProductNode node)
             throws IllegalActionException {
         _writer.print("(");
@@ -159,6 +190,9 @@ public class RTMaudeParseTreeCodeGenerator extends AbstractParseTreeVisitor
         _writer.print(")");
     }
 
+    /* (non-Javadoc)
+     * @see ptolemy.data.expr.AbstractParseTreeVisitor#visitRelationalNode(ptolemy.data.expr.ASTPtRelationalNode)
+     */
     public void visitRelationalNode(ASTPtRelationalNode node)
             throws IllegalActionException {
         _writer.print("(");
@@ -166,6 +200,9 @@ public class RTMaudeParseTreeCodeGenerator extends AbstractParseTreeVisitor
         _writer.print(")");
     }
 
+    /* (non-Javadoc)
+     * @see ptolemy.data.expr.AbstractParseTreeVisitor#visitShiftNode(ptolemy.data.expr.ASTPtShiftNode)
+     */
     public void visitShiftNode(ASTPtShiftNode node)
             throws IllegalActionException {
         _writer.print("(");
@@ -173,12 +210,18 @@ public class RTMaudeParseTreeCodeGenerator extends AbstractParseTreeVisitor
         _writer.print(")");
     }
 
+    /* (non-Javadoc)
+     * @see ptolemy.data.expr.AbstractParseTreeVisitor#visitSumNode(ptolemy.data.expr.ASTPtSumNode)
+     */
     public void visitSumNode(ASTPtSumNode node) throws IllegalActionException {
         _writer.print("(");
         _printChildrenSeparated(node, node.getLexicalTokenList());
         _writer.print(")");
     }
 
+    /* (non-Javadoc)
+     * @see ptolemy.data.expr.AbstractParseTreeVisitor#visitUnaryNode(ptolemy.data.expr.ASTPtUnaryNode)
+     */
     public void visitUnaryNode(ASTPtUnaryNode node)
             throws IllegalActionException {
         _writer.print("(");
@@ -193,6 +236,9 @@ public class RTMaudeParseTreeCodeGenerator extends AbstractParseTreeVisitor
         _writer.print(")");
     }
 
+    /* (non-Javadoc)
+     * @see ptolemy.data.expr.AbstractParseTreeVisitor#visitFunctionalIfNode(ptolemy.data.expr.ASTPtFunctionalIfNode)
+     */
     public void visitFunctionalIfNode(ASTPtFunctionalIfNode node)
             throws IllegalActionException {
         _writer.print("(");
@@ -204,6 +250,9 @@ public class RTMaudeParseTreeCodeGenerator extends AbstractParseTreeVisitor
         _writer.print(")");
     }
 
+    /* (non-Javadoc)
+     * @see ptolemy.data.expr.AbstractParseTreeVisitor#visitFunctionApplicationNode(ptolemy.data.expr.ASTPtFunctionApplicationNode)
+     */
     public void visitFunctionApplicationNode(ASTPtFunctionApplicationNode node)
             throws IllegalActionException {
         _writer.print("(");
@@ -218,6 +267,9 @@ public class RTMaudeParseTreeCodeGenerator extends AbstractParseTreeVisitor
         _writer.print("))");
     }
 
+    /* (non-Javadoc)
+     * @see ptolemy.data.expr.AbstractParseTreeVisitor#visitFunctionDefinitionNode(ptolemy.data.expr.ASTPtFunctionDefinitionNode)
+     */
     public void visitFunctionDefinitionNode(ASTPtFunctionDefinitionNode node)
             throws IllegalActionException {
         _writer.print("(function(");
@@ -238,6 +290,9 @@ public class RTMaudeParseTreeCodeGenerator extends AbstractParseTreeVisitor
         _writer.print(")");
     }
 
+    /* (non-Javadoc)
+     * @see ptolemy.data.expr.AbstractParseTreeVisitor#visitMatrixConstructNode(ptolemy.data.expr.ASTPtMatrixConstructNode)
+     */
     public void visitMatrixConstructNode(ASTPtMatrixConstructNode node)
             throws IllegalActionException {
         int n = 0;
@@ -259,6 +314,9 @@ public class RTMaudeParseTreeCodeGenerator extends AbstractParseTreeVisitor
         _writer.print("]");
     }
 
+    /* (non-Javadoc)
+     * @see ptolemy.data.expr.AbstractParseTreeVisitor#visitMethodCallNode(ptolemy.data.expr.ASTPtMethodCallNode)
+     */
     public void visitMethodCallNode(ASTPtMethodCallNode node)
             throws IllegalActionException {
         _writer.print("(");
@@ -280,6 +338,9 @@ public class RTMaudeParseTreeCodeGenerator extends AbstractParseTreeVisitor
         _writer.print(")");
     }
 
+    /* (non-Javadoc)
+     * @see ptolemy.data.expr.AbstractParseTreeVisitor#visitRecordConstructNode(ptolemy.data.expr.ASTPtRecordConstructNode)
+     */
     public void visitRecordConstructNode(ASTPtRecordConstructNode node)
             throws IllegalActionException {
         Iterator names = node.getFieldNames().iterator();
@@ -296,11 +357,25 @@ public class RTMaudeParseTreeCodeGenerator extends AbstractParseTreeVisitor
         _writer.print("}");
     }
 
+    /**
+     * Visits the index-th child of the given node, so that the
+     * expression of the child node is generated.
+     * @param node The node
+     * @param index The index which will be visited
+     * @throws IllegalActionException
+     */
     private void _printChild(ASTPtRootNode node, int index)
             throws IllegalActionException {
         ((ASTPtRootNode) node.jjtGetChild(index)).visit(this);
     }
 
+    /**
+     * Visits all children of the given node, and the resulting
+     * expression is the list with the given separators.
+     * @param node The node
+     * @param separatorList The list of separators
+     * @throws IllegalActionException
+     */
     private void _printChildrenSeparated(ASTPtRootNode node, List separatorList)
             throws IllegalActionException {
         Iterator separators = separatorList.iterator();
@@ -315,6 +390,13 @@ public class RTMaudeParseTreeCodeGenerator extends AbstractParseTreeVisitor
         }
     }
 
+    /**
+     * Visits all children of the given node, and the resulting
+     * expression is the list with the given separator.
+     * @param node The node
+     * @param string The separator
+     * @throws IllegalActionException
+     */
     private void _printChildrenSeparated(ASTPtRootNode node, String string)
             throws IllegalActionException {
         for (int i = 0; i < node.jjtGetNumChildren(); i++) {
@@ -325,6 +407,11 @@ public class RTMaudeParseTreeCodeGenerator extends AbstractParseTreeVisitor
         }
     }
 
+    /**
+     * Returns a RTMaude operator from the given Ptolemy expression operator.
+     * @param op The given Ptolemy expression operator
+     * @return The RTMaude operator
+     */
     private static String _transformOp(String op) {
         if (op.equals("<")) {
             return "lessThan";
@@ -340,6 +427,11 @@ public class RTMaudeParseTreeCodeGenerator extends AbstractParseTreeVisitor
         }
     }
 
+    /**
+     * Returns a RTMaude term from the given (Leaf) Ptolemy expression.
+     * @param id The given Ptolemy expression.
+     * @return The RTMaude term
+     */
     private String _transformLeaf(String id) {
         Matcher m = Pattern.compile("(.*)_isPresent").matcher(id);
         if (m.matches()) {
@@ -356,6 +448,9 @@ public class RTMaudeParseTreeCodeGenerator extends AbstractParseTreeVisitor
         }
     }
 
+    /* (non-Javadoc)
+     * @see ptolemy.codegen.kernel.ParseTreeCodeGenerator#escapeForTargetLanguage(java.lang.String)
+     */
     public String escapeForTargetLanguage(String string) {
         string = StringUtilities.substitute(string, "\\", "\\\\");
         string = StringUtilities.substitute(string, "\"", "\\\"");
@@ -363,7 +458,9 @@ public class RTMaudeParseTreeCodeGenerator extends AbstractParseTreeVisitor
         return string;
     }
 
+    /** Used to accumulate generated strings. */
     protected PrintWriter _writer;
+    
     private Map<String, Set<String>> idTable;
     private String result = null;
 }

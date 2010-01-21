@@ -33,20 +33,21 @@ import ptolemy.codegen.rtmaude.actor.Director;
 ////Director
 
 /**
-* Generate RTMaude code for a FSM Director in DE domain.
-*
-* @see ptolemy.domains.fsm.kernel.FSMDirector
-* @author Kyungmin Bae
-@version $Id$
-@since Ptolemy II 7.1
-* @version $Id$
-* @Pt.ProposedRating Red (kquine)
-*
-*/
+ * Generate RTMaude code for a FSM Director in DE domain.
+ *
+ * @see ptolemy.domains.fsm.kernel.FSMDirector
+ * @author Kyungmin Bae
+ * @version $Id$
+ * @since Ptolemy II 7.1
+ * @Pt.ProposedRating red (kquine)
+ * @Pt.AcceptedRating red (kquine)
+ */
 public class FSMDirector extends Director {
-
+    /** Construct the code generator adaptor associated 
+     * with the given FSM director.
+     *  @param director The associated FSM director.
+     */
     public FSMDirector(ptolemy.domains.fsm.kernel.FSMDirector director) {
         super(director);
     }
-
 }

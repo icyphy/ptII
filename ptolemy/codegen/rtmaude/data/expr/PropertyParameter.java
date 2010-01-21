@@ -36,23 +36,35 @@ import ptolemy.kernel.util.NamedObj;
 //// PropertyParameter
 
 /**
-* The PropertyParameter is a StringParameter with RTMaude LTL formula.
-* The contents is translated to related RTMaude model checking command.
-*
-* @author Kyungmin Bae
-@version $Id$
-@since Ptolemy II 7.1
-* @version $Id$
-* @Pt.ProposedRating Red (kquine)
-*
-*/
+ * The PropertyParameter is a StringParameter with RTMaude LTL formula.
+ * The contents is translated to related RTMaude model checking command.
+ *
+ * @author Kyungmin Bae
+ * @version $Id$
+ * @since Ptolemy II 7.1
+ * @Pt.ProposedRating red (kquine)
+ * @Pt.AcceptedRating red (kquine)
+ */
 public class PropertyParameter extends StringParameter {
-
+    /**
+     * Constructs a PropertyParameter object, which contains
+     * a string of a temporal logic formula.
+     *
+     * @param container  The container
+     * @param name       The name of the parameter
+     * @throws IllegalActionException   If the parameter is not of an
+     *   acceptable class for the container
+     * @throws NameDuplicationException If the name coincides with
+     *   a parameter already in the container.
+     */
     public PropertyParameter(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
+    /* (non-Javadoc)
+     * @see ptolemy.data.expr.StringParameter#stringValue()
+     */
     public String stringValue() throws IllegalActionException {
         String timesign;
         String ret = super.stringValue();

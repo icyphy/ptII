@@ -37,17 +37,15 @@ import ptolemy.codegen.rtmaude.kernel.Entity;
  *
  * @see ptolemy.actor.lib.Clock
  * @author Kyungmin Bae
-@version $Id$
-@since Ptolemy II 7.1
  * @version $Id$
- * @Pt.ProposedRating Red (kquine)
- *
+ * @since Ptolemy II 7.1
+ * @Pt.ProposedRating red (kquine)
+ * @Pt.AcceptedRating red (kquine)
  */
 public class Clock extends Entity {
-
     /**
      * Constructor method for the Clock adapter.
-     * @param component the associated actor
+     * @param component The associated Clock actor
      */
     public Clock(ptolemy.actor.lib.Clock component) {
         super(component);

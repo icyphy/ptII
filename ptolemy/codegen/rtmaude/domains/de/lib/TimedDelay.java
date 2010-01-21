@@ -33,18 +33,20 @@ import ptolemy.codegen.rtmaude.kernel.Entity;
 //// TimedDelay
 
 /**
-* Generate RTMaude code for a TimedDelay in DE domain.
-*
-* @see ptolemy.domains.de.lib.TimedDelay
-* @author Kyungmin Bae
-@version $Id$
-@since Ptolemy II 7.1
-* @version $Id$
-* @Pt.ProposedRating Red (kquine)
-*
-*/
+ * Generate RTMaude code for a TimedDelay in DE domain.
+ *
+ * @see ptolemy.domains.de.lib.TimedDelay
+ * @author Kyungmin Bae
+ * @version $Id$
+ * @since Ptolemy II 7.1
+ * @Pt.ProposedRating red (kquine)
+ * @Pt.AcceptedRating red (kquine)
+ */
 public class TimedDelay extends Entity {
-
+    /**
+     * Constructor method for the TimedDelay adapter.
+     * @param component The associated TimedDelay
+     */
     public TimedDelay(ptolemy.domains.de.lib.TimedDelay component) {
         super(component);
     }

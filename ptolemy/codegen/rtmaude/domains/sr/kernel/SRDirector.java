@@ -33,21 +33,22 @@ import ptolemy.codegen.rtmaude.actor.Director;
 ////Director
 
 /**
-* Generate RTMaude code for a SRDirector. In the current RTMaude model,
-* a SR model is subsumed by DE model, and there is no difference.
-*
-* @see ptolemy.domains.sr.kernel.SRDirector
-* @author Kyungmin Bae
-@version $Id$
-@since Ptolemy II 7.1
-* @version $Id$
-* @Pt.ProposedRating Red (kquine)
-*
-*/
+ * Generate RTMaude code for a SRDirector. In the current RTMaude model,
+ * a SR model is subsumed by DE model, and there is no difference.
+ *
+ * @see ptolemy.domains.sr.kernel.SRDirector
+ * @author Kyungmin Bae
+ * @version $Id$
+ * @since Ptolemy II 7.1
+ * @Pt.ProposedRating red (kquine)
+ * @Pt.AcceptedRating red (kquine)
+ */
 public class SRDirector extends Director {
-
+    /** Construct the code generator adaptor associated 
+     * with the given SR director.
+     *  @param director The associated SR director.
+     */
     public SRDirector(ptolemy.domains.sr.kernel.SRDirector director) {
         super(director);
     }
-
 }

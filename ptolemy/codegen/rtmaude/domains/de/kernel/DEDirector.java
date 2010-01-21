@@ -34,18 +34,20 @@ import ptolemy.codegen.rtmaude.actor.Director;
 //// DEDirector
 
 /**
-* Generate RTMaude code for a DE Director (in DE domain).
-*
-* @see ptolemy.domains.de.kernel.DEDirector
-* @author Kyungmin Bae
-@version $Id$
-@since Ptolemy II 7.1
-* @version $Id$
-* @Pt.ProposedRating Red (kquine)
-*
-*/
+ * Generate RTMaude code for a DE Director (in DE domain).
+ *
+ * @see ptolemy.domains.de.kernel.DEDirector
+ * @author Kyungmin Bae
+ * @version $Id$
+ * @since Ptolemy II 7.1
+ * @Pt.ProposedRating red (kquine)
+ * @Pt.AcceptedRating red (kquine)
+ */
 public class DEDirector extends Director {
-
+    /** Construct the code generator adaptor associated with 
+     * the given DE director.
+     *  @param director The associated DE director.
+     */
     public DEDirector(ptolemy.domains.de.kernel.DEDirector director) {
         super(director);
     }

@@ -39,22 +39,27 @@ import ptolemy.kernel.util.IllegalActionException;
 //// ModalModel
 
 /**
-* Generate RTMaude code for a ModalModel in DE domain.
-*
-* @see ptolemy.domains.fsm.modal.ModalModel
-* @author Kyungmin Bae
-@version $Id$
-@since Ptolemy II 7.1
-* @version $Id$
-* @Pt.ProposedRating Red (kquine)
-*
-*/
+ * Generate RTMaude code for a ModalModel in DE domain.
+ *
+ * @see ptolemy.domains.fsm.modal.ModalModel
+ * @author Kyungmin Bae
+ * @version $Id$
+ * @since Ptolemy II 7.1
+ * @Pt.ProposedRating red (kquine)
+ * @Pt.AcceptedRating red (kquine)
+ */
 public class ModalModel extends TypedCompositeActor {
-
+    /**
+     * Constructor method for the ModalModel adapter.
+     * @param component the associated actor
+     */
     public ModalModel(ptolemy.domains.fsm.modal.ModalModel component) {
         super(component);
     }
 
+    /* (non-Javadoc)
+     * @see ptolemy.codegen.rtmaude.actor.TypedCompositeActor#getInfo(java.lang.String, java.util.List)
+     */
     protected String getInfo(String name, List<String> parameters)
             throws IllegalActionException {
         ptolemy.domains.fsm.modal.ModalModel mm = (ptolemy.domains.fsm.modal.ModalModel) getComponent();

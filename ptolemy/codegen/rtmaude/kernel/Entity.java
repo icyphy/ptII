@@ -49,9 +49,13 @@ import ptolemy.kernel.util.IllegalActionException;
  * @version $Id$
  * @Pt.AcceptedRating Red (kquine)
  * @Pt.ProposedRating Red (kquine)
-*/
+ */
 public class Entity extends RTMaudeAdaptor {
-
+    /** 
+     * Construct the code generator adaptor associated
+     * with the given Entity object.
+     * @param component The associated Entity
+     */
     public Entity(ptolemy.kernel.Entity component) {
         super(component);
     }
@@ -73,6 +77,9 @@ public class Entity extends RTMaudeAdaptor {
             );
     }
     
+    /* (non-Javadoc)
+     * @see ptolemy.codegen.rtmaude.kernel.RTMaudeAdaptor#getInfo(java.lang.String, java.util.List)
+     */
     protected String getInfo(String name, List<String> parameters)
             throws IllegalActionException {
         if (name.equals("class"))
@@ -96,6 +103,12 @@ public class Entity extends RTMaudeAdaptor {
         return super.getInfo(name, parameters);
     }
     
+    /**
+     * @param mod
+     * @param pattern
+     * @return
+     * @throws IllegalActionException
+     */
     private String getInfoFromTemplateWithClass(String mod, String pattern)
             throws IllegalActionException {
         for (Class c = getComponent().getClass() ;

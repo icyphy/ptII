@@ -41,22 +41,27 @@ import ptolemy.kernel.util.IllegalActionException;
 ////Director
 
 /**
-* Generate RTMaude code for a FSMActor in DE domain.
-*
-* @see ptolemy.domains.fsm.kernel.FSMActor
-* @author Kyungmin Bae
-@version $Id$
-@since Ptolemy II 7.1
-* @version $Id$
-* @Pt.ProposedRating Red (kquine)
-*
-*/
+ * Generate RTMaude code for a FSMActor in DE domain.
+ *
+ * @see ptolemy.domains.fsm.kernel.FSMActor
+ * @author Kyungmin Bae
+ * @version $Id$
+ * @since Ptolemy II 7.1
+ * @Pt.ProposedRating red (kquine)
+ * @Pt.AcceptedRating red (kquine)
+ */
 public class FSMActor extends Entity {
-
+    /**
+     * Constructor method for the FSMActor adapter.
+     * @param component the associated FSMActor
+     */
     public FSMActor(ptolemy.domains.fsm.kernel.FSMActor component) {
         super(component);
     }
 
+    /* (non-Javadoc)
+     * @see ptolemy.codegen.rtmaude.kernel.Entity#getInfo(java.lang.String, java.util.List)
+     */
     protected String getInfo(String name, List<String> parameters)
             throws IllegalActionException {
         ptolemy.domains.fsm.kernel.FSMActor fa = (ptolemy.domains.fsm.kernel.FSMActor) getComponent();
@@ -77,5 +82,4 @@ public class FSMActor extends Entity {
         }
         return super.getInfo(name, parameters);
     }
-
 }

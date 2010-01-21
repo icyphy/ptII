@@ -33,20 +33,21 @@ import ptolemy.codegen.rtmaude.kernel.Entity;
 //// Timer
 
 /**
-* Generate RTMaude code for a Timer in DE domain.
-*
-* @see ptolemy.domains.de.lib.Timer
-* @author Kyungmin Bae
-@version $Id$
-@since Ptolemy II 7.1
-* @version $Id$
-* @Pt.ProposedRating Red (kquine)
-*
-*/
+ * Generate RTMaude code for a Timer in DE domain.
+ *
+ * @see ptolemy.domains.de.lib.Timer
+ * @author Kyungmin Bae
+ * @version $Id$
+ * @since Ptolemy II 7.1
+ * @Pt.ProposedRating red (kquine)
+ * @Pt.AcceptedRating red (kquine)
+ */
 public class Timer extends Entity {
-
+    /**
+     * Constructor method for the Timer adapter.
+     * @param component The associated actor
+     */
     public Timer(ptolemy.domains.de.lib.Timer component) {
         super(component);
     }
-
 }

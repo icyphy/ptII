@@ -40,22 +40,24 @@ import ptolemy.kernel.util.IllegalActionException;
  *
  * @see ptolemy.actor.IOPort
  * @author Kyungmin Bae
-@version $Id$
-@since Ptolemy II 7.1
  * @version $Id$
- * @Pt.ProposedRating Red (kquine)
- *
+ * @since Ptolemy II 7.1
+ * @Pt.ProposedRating red (kquine)
+ * @Pt.AcceptedRating red (kquine)
  */
 public class IOPort extends RTMaudeAdaptor implements PortCodeGenerator {
 
-    /** Construct the code generator helper associated
+    /** Construct the code generator adaptor associated
      *  with the given IOPort.
-     *  @param component The associated component.
+     *  @param component The associated IOPort.
      */
     public IOPort(ptolemy.actor.IOPort component) {
         super(component);
     }
 
+    /* (non-Javadoc)
+     * @see ptolemy.codegen.rtmaude.kernel.RTMaudeAdaptor#generateTermCode()
+     */
     public String generateTermCode() throws IllegalActionException {
         ptolemy.actor.IOPort p = (ptolemy.actor.IOPort) getComponent();
         if (p.getWidth() > 1) {

@@ -37,22 +37,27 @@ import ptolemy.kernel.util.IllegalActionException;
 ////Director
 
 /**
-* Generate RTMaude code for a Transition in DE domain.
-*
-* @see ptolemy.domains.fsm.kernel.Transition
-* @author Kyungmin Bae
-@version $Id$
-@since Ptolemy II 7.1
-* @version $Id$
-* @Pt.ProposedRating Red (kquine)
-*
-*/
+ * Generate RTMaude code for a Transition in DE domain.
+ *
+ * @see ptolemy.domains.fsm.kernel.Transition
+ * @author Kyungmin Bae
+ * @version $Id$
+ * @since Ptolemy II 7.1
+ * @Pt.ProposedRating red (kquine)
+ * @Pt.AcceptedRating red (kquine)
+ */
 public class Transition extends RTMaudeAdaptor {
-
+    /** Construct the code generator adapter associated
+     *  with the given Transition.
+     *  @param component The associated component.
+     */
     public Transition(ptolemy.domains.fsm.kernel.Transition component) {
         super(component);
     }
 
+    /* (non-Javadoc)
+     * @see ptolemy.codegen.rtmaude.kernel.RTMaudeAdaptor#generateTermCode()
+     */
     public String generateTermCode() throws IllegalActionException {
         ptolemy.domains.fsm.kernel.Transition t = (ptolemy.domains.fsm.kernel.Transition) getComponent();
         ParseTreeCodeGenerator pcg = getParseTreeCodeGenerator();
@@ -70,5 +75,4 @@ public class Transition extends RTMaudeAdaptor {
         return _generateBlockCode(defaultTermBlock, t.sourceState().getName(),
                 t.destinationState().getName(), guard, out, set);
     }
-
 }

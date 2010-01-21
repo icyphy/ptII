@@ -37,14 +37,16 @@ import ptolemy.codegen.rtmaude.kernel.Entity;
  *
  * @see ptolemy.actor.lib.CurrentTime
  * @author Kyungmin Bae
-@version $Id$
-@since Ptolemy II 7.1
  * @version $Id$
- * @Pt.ProposedRating Red (kquine)
- *
+ * @since Ptolemy II 7.1
+ * @Pt.ProposedRating red (kquine)
+ * @Pt.AcceptedRating red (kquine)
  */
 public class CurrentTime extends Entity {
-
+    /**
+     * Constructor method for the CurrentTime adapter.
+     * @param component The associated CurrentTime actor
+     */
     public CurrentTime(ptolemy.actor.lib.CurrentTime component) {
         super(component);
     }
