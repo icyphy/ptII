@@ -149,7 +149,6 @@ public class SequenceToArray extends SDFTransformer {
      */
     public void fire() throws IllegalActionException {
         super.fire();
-        arrayLength.update();
 
         int length = ((IntToken) arrayLength.getToken()).intValue();
 
@@ -169,6 +168,7 @@ public class SequenceToArray extends SDFTransformer {
      *  @see ptolemy.actor.IOPort#hasToken(int, int)
      */
     public boolean prefire() throws IllegalActionException {
+        arrayLength.update();
         int length = ((IntToken) arrayLength.getToken()).intValue();
 
         if (!input.hasToken(0, length)) {
