@@ -1,83 +1,75 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="ArchiModel" class="ptolemy.actor.TypedCompositeActor">
+<entity name="ArchitectureModel" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
     <property name="director" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, -10.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-5.0, -15.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-4, -4, 1448, 874}, maximized=true}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={232, 253, 815, 517}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1233, 757]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.8">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{695.625, 423.125}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
     </property>
     <entity name="Solar_Power" class="ptolemy.actor.lib.logic.fuzzy.FuzzyLogic">
-        <property name="rulesFileName" class="ptolemy.data.expr.Parameter" value="Power.xml">
+        <property name="rulesFileName" class="ptolemy.data.expr.FileParameter" value="Power.xml">
         </property>
         <property name="componentType" class="ptolemy.data.expr.Parameter" value="Solar">
         </property>
         <property name="init" class="ptolemy.data.expr.Parameter" value="2">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 135.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, 80.0]">
         </property>
     </entity>
     <entity name="High gain_Antenna" class="ptolemy.actor.lib.logic.fuzzy.FuzzyLogic">
-        <property name="rulesFileName" class="ptolemy.data.expr.Parameter" value="Antenna.xml">
+        <property name="rulesFileName" class="ptolemy.data.expr.FileParameter" value="Antenna.xml">
         </property>
         <property name="componentType" class="ptolemy.data.expr.Parameter" value="High gain">
         </property>
         <property name="init" class="ptolemy.data.expr.Parameter" value="2">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 135.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[165.0, 80.0]">
         </property>
     </entity>
     <entity name="Electrical_Propulsion" class="ptolemy.actor.lib.logic.fuzzy.FuzzyLogic">
-        <property name="rulesFileName" class="ptolemy.data.expr.Parameter" value="Propulsion.xml">
+        <property name="rulesFileName" class="ptolemy.data.expr.FileParameter" value="Propulsion.xml">
         </property>
         <property name="componentType" class="ptolemy.data.expr.Parameter" value="Electrical">
         </property>
         <property name="init" class="ptolemy.data.expr.Parameter" value="2">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[320.0, 135.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[325.0, 80.0]">
         </property>
     </entity>
-    <entity name="Numeric Cost" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={766, 82, 334, 241}, maximized=false}">
+    <entity name="RiskDisplay" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={473, 383, 334, 258}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[326, 203]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[580.0, 60.0]">
+        </property>
+    </entity>
+    <entity name="CostDisplay" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={473, 391, 334, 241}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[326, 186]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[530.0, 20.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[570.0, 150.0]">
         </property>
     </entity>
-    <entity name="Risk" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={767, 185, 334, 241}, maximized=false}">
+    <entity name="MassDisplay" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={473, 391, 334, 241}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[326, 186]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[545.0, 95.0]">
-        </property>
-    </entity>
-    <entity name="Mass" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={769, 308, 334, 241}, maximized=false}">
-        </property>
-        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[326, 186]">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[540.0, 155.0]">
-        </property>
-    </entity>
-    <entity name="Cost" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={771, 426, 334, 241}, maximized=false}">
-        </property>
-        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[326, 186]">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[540.0, 220.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[535.0, 225.0]">
         </property>
     </entity>
     <relation name="relation0" class="ptolemy.actor.TypedIORelation">
@@ -92,46 +84,46 @@
         <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
         </property>
     </relation>
-    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+        </property>
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+        </property>
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+        </property>
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+        </property>
     </relation>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+        </property>
     </relation>
     <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+        </property>
     </relation>
-    <relation name="relation9" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation10" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <link port="Solar_Power.output" relation="relation0"/>
-    <link port="Solar_Power.risk" relation="relation5"/>
-    <link port="Solar_Power.mass" relation="relation3"/>
-    <link port="Solar_Power.cost" relation="relation9"/>
-    <link port="High gain_Antenna.input" relation="relation0"/>
-    <link port="High gain_Antenna.output" relation="relation1"/>
-    <link port="High gain_Antenna.inRisk" relation="relation5"/>
-    <link port="High gain_Antenna.inCost" relation="relation3"/>
-    <link port="High gain_Antenna.inMass" relation="relation9"/>
-    <link port="High gain_Antenna.risk" relation="relation4"/>
-    <link port="High gain_Antenna.mass" relation="relation6"/>
-    <link port="High gain_Antenna.cost" relation="relation10"/>
-    <link port="Electrical_Propulsion.input" relation="relation1"/>
-    <link port="Electrical_Propulsion.output" relation="relation2"/>
-    <link port="Electrical_Propulsion.inRisk" relation="relation4"/>
-    <link port="Electrical_Propulsion.inCost" relation="relation6"/>
-    <link port="Electrical_Propulsion.inMass" relation="relation10"/>
-    <link port="Electrical_Propulsion.risk" relation="relation"/>
-    <link port="Electrical_Propulsion.mass" relation="relation7"/>
-    <link port="Electrical_Propulsion.cost" relation="relation8"/>
-    <link port="Numeric Cost.input" relation="relation2"/>
-    <link port="Risk.input" relation="relation"/>
-    <link port="Mass.input" relation="relation7"/>
-    <link port="Cost.input" relation="relation8"/>
+    <link port="Solar_Power.risk" relation="relation0"/>
+    <link port="Solar_Power.cost" relation="relation1"/>
+    <link port="Solar_Power.mass" relation="relation2"/>
+    <link port="High gain_Antenna.riskInput" relation="relation0"/>
+    <link port="High gain_Antenna.costInput" relation="relation1"/>
+    <link port="High gain_Antenna.massInput" relation="relation2"/>
+    <link port="High gain_Antenna.risk" relation="relation3"/>
+    <link port="High gain_Antenna.cost" relation="relation4"/>
+    <link port="High gain_Antenna.mass" relation="relation5"/>
+    <link port="Electrical_Propulsion.riskInput" relation="relation3"/>
+    <link port="Electrical_Propulsion.costInput" relation="relation4"/>
+    <link port="Electrical_Propulsion.massInput" relation="relation5"/>
+    <link port="Electrical_Propulsion.risk" relation="relation6"/>
+    <link port="Electrical_Propulsion.cost" relation="relation7"/>
+    <link port="Electrical_Propulsion.mass" relation="relation8"/>
+    <link port="RiskDisplay.input" relation="relation6"/>
+    <link port="CostDisplay.input" relation="relation7"/>
+    <link port="MassDisplay.input" relation="relation8"/>
 </entity>
