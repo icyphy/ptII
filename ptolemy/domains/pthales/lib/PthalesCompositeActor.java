@@ -136,6 +136,19 @@ public class PthalesCompositeActor extends TypedCompositeActor  {
         _initialize();
     }
 
+    /** Fire all entities inside the composite actor at each iteration
+     *
+     *  @exception IllegalActionException If there is no director, or if
+     *   the director's fire() method throws it, or if the actor is not
+     *   opaque.
+     */
+    public void fire() throws IllegalActionException {
+        int iterations = PthalesAtomicActor.getIteration(this);
+        for (int i = 0; i < iterations; i++)
+        {
+            super.fire();
+        }
+    }
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
