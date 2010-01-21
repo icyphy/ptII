@@ -413,7 +413,6 @@ void processEvents() {
 */
 void fireActor(Event* currentEvent) {
     if (currentEvent->fireMethod != NULL){
-        enableInterrupts();
         (currentEvent->fireMethod)();
     } else {
         die("no such method, cannot fire\n");

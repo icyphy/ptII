@@ -205,10 +205,8 @@ void getRealTime(Time * const physicalTime){
 		        case 2:         physicalTime->nsecs = 500000000; break;
 		        case 3:         physicalTime->nsecs = 750000000; break;
 		    }
-		    // because the systick handler runs at 4 times the rate of 50MHz (20MHz),
-		    // since convertCyclesToNsecs assumes 50MHz clock, we need to divide the
-		    // # of nsec by 4.
-	    	physicalTime->nsecs += (convertCyclesToNsecs(TIMER_ROLLOVER_CYCLES - tick2) >> 2);
+		    // convertCyclesToNsecs assumes 50MHz clock
+	    	physicalTime->nsecs += (convertCyclesToNsecs((TIMER_ROLLOVER_CYCLES >> 2) - tick2));
 			break;
 		}
 	}
@@ -513,7 +511,11 @@ void initializePDSystem() {
 
         TIMER_ROLLOVER_CYCLES = SysCtlClockGet();
 
-        SysTickPeriodSet(TIMER_ROLLOVER_CYCLES);  
+        // since systick register is only 24 bits, it can only hold values
+        // between 0 and 1677xxxx, assuming the main system clock runs at 50MHz,
+        // TIMER_ROLLOVER_CYCLES >> 2 gives 12500000. In other words, systick
+        // rolls over 4 times every second.
+        SysTickPeriodSet(TIMER_ROLLOVER_CYCLES >> 2);  
         SysTickEnable();
         IntEnable(FAULT_SYSTICK);  //sys tick vector
 
