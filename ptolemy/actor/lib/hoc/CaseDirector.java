@@ -30,7 +30,9 @@ import java.util.Iterator;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.Director;
+import ptolemy.actor.FiringEvent;
 import ptolemy.actor.IOPort;
+import ptolemy.actor.IOPortEvent;
 import ptolemy.actor.Mailbox;
 import ptolemy.actor.NoRoomException;
 import ptolemy.actor.NoTokenException;
@@ -127,9 +129,15 @@ public class CaseDirector extends Director {
             throw new IllegalActionException(container,
                     "Has no current refinement");
         }
+        if (_debugging) {
+            _debug(new FiringEvent(this, container._current,
+                    FiringEvent.BEFORE_FIRE));
+        }
         container._current.fire();
         if (_debugging) {
             _debug("Called fire()");
+            _debug(new FiringEvent(this, container._current,
+                    FiringEvent.AFTER_FIRE));
         }
     }
 
@@ -218,8 +226,21 @@ public class CaseDirector extends Director {
                                 for (int j = 0; j < insideReceivers[i].length; j++) {
                                     if (insideReceivers[i][j].getContainer()
                                             .getContainer() == refinement) {
-                                        insideReceivers[i][j].put(token);
+ 
                                         if (_debugging) {
+                                            _debug(new IOPortEvent(port,
+                                                    insideReceivers[i][j]
+                                                            .getContainer(),
+                                                    true, i, false, token));
+                                        }
+
+                                        insideReceivers[i][j].put(token);
+
+                                        if (_debugging) {
+                                            _debug(new IOPortEvent(port,
+                                                    insideReceivers[i][j]
+                                                            .getContainer(),
+                                                    false, i, false, token));
                                             _debug(
                                                     getFullName(),
                                                     "transferring input from "
@@ -240,7 +261,16 @@ public class CaseDirector extends Director {
             if (_stopRequested) {
                 return false;
             }
-            return container._current.prefire();
+            if (_debugging) {
+                _debug(new FiringEvent(this, container._current,
+                        FiringEvent.BEFORE_PREFIRE));
+            }
+            boolean result = container._current.prefire();
+            if (_debugging) {
+                _debug(new FiringEvent(this, container._current,
+                        FiringEvent.AFTER_PREFIRE));
+            }
+            return result;
         } finally {
             _workspace.doneReading();
         }
@@ -257,6 +287,19 @@ public class CaseDirector extends Director {
             _debug("Calling postfire()");
         }
         Case container = (Case) getContainer();
-        return container._current.postfire() && !_finishRequested;
+
+        if (_debugging) {
+            _debug(new FiringEvent(this, container._current,
+                    FiringEvent.BEFORE_POSTFIRE));
+        }
+        
+        boolean result = container._current.postfire();
+        
+        if (_debugging) {
+            _debug(new FiringEvent(this, container._current,
+                    FiringEvent.AFTER_POSTFIRE));
+        }
+        
+        return result && !_finishRequested;
     }
 }
