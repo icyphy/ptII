@@ -143,12 +143,8 @@ public class PthalesCompositeActor extends TypedCompositeActor  {
      *   opaque.
      */
     public void fire() throws IllegalActionException {
-        int iterations = PthalesAtomicActor.getIteration(this);
-        for (int i = 0; i < iterations; i++)
-        {
-            super.fire();
-        }
-    }
+        super.fire();
+}
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
