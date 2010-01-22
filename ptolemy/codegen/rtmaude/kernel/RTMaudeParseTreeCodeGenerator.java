@@ -113,6 +113,7 @@ public class RTMaudeParseTreeCodeGenerator extends AbstractParseTreeVisitor
 
     /**
      * Returns the id table value.
+     * @return a Map object representing the id table value
      */
     public Map<String, Set<String>> getIdTable() {
         return idTable;

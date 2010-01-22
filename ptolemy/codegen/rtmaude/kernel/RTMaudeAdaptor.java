@@ -323,12 +323,13 @@ public class RTMaudeAdaptor extends CodeGeneratorHelper {
     
     /**
      * Returns the RTMmodule value.
+     * @return a Map object representing the RTMmodule value
      */
     public Map<String,String> getRTMmodule() {
         return RTMmodule;
     }
     
-    /** The default name of the block for the term template */
+    /** The default name of the block for the term template. */
     protected String defaultTermBlock = "termBlock";
     
     Map<String,String> RTMmodule;

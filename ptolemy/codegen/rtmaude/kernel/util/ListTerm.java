@@ -45,13 +45,13 @@ import ptolemy.kernel.util.IllegalActionException;
  */
 public class ListTerm<T> {
 
-    /** The delimiter for the list term representation, e.g., "," */
+    /** The delimiter for the list term representation, e.g., ",". */
     protected String delimiter;
     
-    /** The term for the empty list */
+    /** The term for the empty list. */
     protected String empty;
     
-    /** The contents of the given list of T objects */
+    /** The contents of the given list. */
     protected Iterator<T> iter;
 
     /**
