@@ -49,7 +49,6 @@ import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.util.StringUtilities;
 import fuzzy.FuzzyEngine;
 import fuzzy.LinguisticVariable;
 
@@ -200,9 +199,9 @@ public class FuzzyLogic extends TypedAtomicActor{
      *  For example: The file <code>rules.xml</code> should contain
      *  <pre>
      *  <FUZZIFY NAME="rules">
-     *    <TERM NAME="Solar" POINTS="1 0 0 2" />
-     *    <TERM NAME="Wind" POINTS="0 0 0 1" />
-     *    <TERM NAME="Default" POINTS="2 0 0 3" />
+     *    &lt;TERM NAME="Solar" POINTS="1 0 0 2" /&gt;
+     *    &lt;TERM NAME="Wind" POINTS="0 0 0 1" /&gt;
+     *    &lt;TERM NAME="Default" POINTS="2 0 0 3" /&gt;
      *  </FUZZIFY>
      *  </pre> 
      *  For details about the xml specification see {@link #rulesFileName}.
@@ -232,9 +231,6 @@ public class FuzzyLogic extends TypedAtomicActor{
 
         _linguisticVariableArray = _fuzzyParser.getLinguisticVariableArray();
         String componentTypeValue = componentType.getExpression();
-        //FIXME one option is to create a FuzzyLogic base class(abstract class) and a TSSTFuzzyLogic class that inherits from it
-        // the class comment would then need to detail how the class should be extended.
-        // this lines below could be called from an initializeLinguisticVariables method
         FuzzyLogicVar tempvar = tempArray.get(0);
         int commaindex;
         int periodindex;
@@ -263,7 +259,7 @@ public class FuzzyLogic extends TypedAtomicActor{
     }
 
     /*
-     * Evaluate the fuzzy logic rules specified and determines the
+     * Evaluate the fuzzy logic rules specified and determine the
      * output for this component. The fuzzy logic rules are specified
      * in {@link #rulesFileName}.
      * @exception IllegalActionException If thrown by the base class.
@@ -295,16 +291,16 @@ public class FuzzyLogic extends TypedAtomicActor{
             + " "
             + rulesFileName.getExpression().substring(0,
                     rulesFileName.getExpression().length() - 4)
-                    + " risk is medium."
-                    + StringUtilities.getProperty("line.separator");
-            ;
+                    + " risk is medium.";
+                    //+ _eol;
+            
             myMass = componentType.getExpression()
             + " "
             + rulesFileName.getExpression().substring(0,
                     rulesFileName.getExpression().length() - 4)
-                    + " mass is medium."
-                    + StringUtilities.getProperty("line.separator");
-            ;
+                    + " mass is medium.";
+                    //+ _eol;
+            
             if (_debugging) {
                 _debug("result is: " + myCost);
             }
@@ -328,20 +324,26 @@ public class FuzzyLogic extends TypedAtomicActor{
         if (riskInput.isOutsideConnected()) {
             if (riskInput.hasToken(0)) {
                 token = riskInput.get(0);
-                myRisk += token.toString();
-                while (myRisk.contains("\"")) {
-                    myRisk = myRisk.replace('\"', ' ');
+                String dummyString = token.toString();
+                System.out.println("DummyString is "+dummyString);
+                while (dummyString.contains("\"")) {
+                    dummyString = dummyString.replaceAll(_eol,"");
+                    dummyString = dummyString.replace("\"", "");
                 }
+                myRisk = dummyString +" "+ myRisk;
             }
         }
 
         if (massInput.isOutsideConnected()) {
             if (massInput.hasToken(0)) {
                 token = massInput.get(0);
-                myMass += token.toString();
-                while (myMass.contains("\"")) {
-                    myMass = myMass.replace('\"', ' ');
+                String dummyString = token.toString();
+                System.out.println("DummyString is "+dummyString);
+                while (dummyString.contains("\"")) {
+                    dummyString = dummyString.replaceAll(_eol,"");
+                    dummyString = dummyString.replace("\"", "");
                 }
+                myMass = dummyString +" "+ myMass;
             }
         }
         //FIXME: Would changing your state here cause this to misbehave in the continuous domain?
@@ -349,20 +351,19 @@ public class FuzzyLogic extends TypedAtomicActor{
         risk.send(0, new StringToken(myRisk));
         mass.send(0, new StringToken(myMass));
     }
-    
+
     /*
-     * Evaluate the fuzzy logic rules specified and determines the
-     * output for this component. The fuzzy logic rules are specified
-     * in {@link #rulesFileName}.
+     * Call the corresponding method in the base class.
+     * FIXME: This method can be deleted if changing state in fire is not problematic
      * @exception IllegalActionException If thrown by the base class.
      */
     public boolean postfire() throws IllegalActionException {
         boolean boolvalue = super.postfire();
-//      //FIXME: Would changing your state here cause this to misbehave in the continuous domain?
-//        cost.send(0, new DoubleToken(myCost));
-//        risk.send(0, new StringToken(myRisk));
-//        mass.send(0, new StringToken(myMass));
-        
+//      //FIXME: Uncomment below if changing your state in fire will cause the actor to misbehalve in the continuous domain?
+//      cost.send(0, new DoubleToken(myCost));
+//      risk.send(0, new StringToken(myRisk));
+//      mass.send(0, new StringToken(myMass));
+
         return boolvalue;
     }
 
@@ -373,26 +374,31 @@ public class FuzzyLogic extends TypedAtomicActor{
     private ArrayList<String> _rules;
     private ArrayList<LinguisticVariable> _linguisticVariableArray;
     private FuzzyParser _fuzzyParser;
+    private final String _eol = System.getProperty("line.separator");
 
+    ////////////////////////////////////////////////////////////////////
+    ////                       protected classes                    ////
     /* A record type used when parsing*/
-    private class FuzzyLogicVar{
-        /**The name of the fuzzy logic variable */
-        String name;
-        /*An array of term names. Each string in the termNames array
-         * is in the format name,initialvalue  specifying a single string with two values
-         * a  name and an initial value for the name*/
-        ArrayList<String> termNames;
+    protected class FuzzyLogicVar{
+
         /**
          * Fuzzy Logic Variable Constructor
          */
         FuzzyLogicVar(){
             termNames = new ArrayList<String>();
         }
+        /**The name of the fuzzy logic variable */
+        String name;
+        /*An array of term names. Each string in the termNames array
+         * is in the format name,initialvalue  specifying a single 
+         * string with two values a  name and an initial value for
+         * the name*/
+        ArrayList<String> termNames;
     }
     /**
      * Parse an XML file containing the fuzzy logic rules.
      */
-    private class FuzzyParser extends DefaultHandler {
+    protected class FuzzyParser extends DefaultHandler {
         /**
          * Construct a Fuzzy Parser.
          */
@@ -429,35 +435,69 @@ public class FuzzyLogic extends TypedAtomicActor{
                 }
             }
         }
-        private void initialize() {
-            _startVar = false;
-            _toDefuzzyify = -1;
-            _currentIndex = 0;
-            _linguisticVarArray = new ArrayList<LinguisticVariable>();
-            _myRules = new ArrayList<String>();
-            _fuzzyVar = new FuzzyLogicVar();
-            _fuzzyLogicVariableArray = new ArrayList<FuzzyLogicVar>();
+        ////////////////////////////////////////////////////////////////////
+        ////                         public methods                   ////
+
+        /** Called by the SAX parser to report regular characters.
+         * @param ch The array containing characters
+         * @param start Is the starting point in the character array
+         * @param length Is length of the character array 
+         * */
+        public void characters(char ch[], int start, int length) {
+
+        }
+
+        /**
+         * Called once when the SAX driver sees the end of a document, even if errors occured.
+         * */
+        public void endDocument() {
+        }
+
+        /** Called each time the SAX parser sees the end of an element
+         * @param uri The Namespace Uniform Resource Identifier(URI)
+         * @param name Is the elements local name
+         * @param qName Is the XML 1.0 name 
+         * */
+        public void endElement(String uri, String name, String qName) {
+            if ("".equals(uri)) {
+                if ("FUZZIFY".equals(qName) || "DEFUZZIFY".equals(qName)){
+                    _startVar = false;
+                    _currentIndex++;
+                    if("FUZZIFY".equals(qName)){
+                        _fuzzyLogicVariableArray.add(_fuzzyVar);
+                        _fuzzyVar = new FuzzyLogicVar();
+                    }
+                }
+                if ("RULEBLOCK".equals(qName)) {
+                }
+            } else {
+                if(_debugging){
+                    System.out.println("End element:   {" + uri + "}" + name);
+                }
+            }
+        }
+
+        /** Return an array of fuzzy logic variables read from the xml file. */
+        public ArrayList<FuzzyLogicVar> getFuzzyLogicVariableArray() {
+            return _fuzzyLogicVariableArray;
         }
 
         /** Return the array list index of the variable to be defuzzified. */
-        int getIndexToDefuzzify() {
+        public int getIndexToDefuzzify() {
             return _toDefuzzyify;
         }
 
         /** Return an array of linguistic variables read from the xml file. */
-        ArrayList<LinguisticVariable> getLinguisticVariableArray() {
+        public ArrayList<LinguisticVariable> getLinguisticVariableArray() {
             return _linguisticVarArray;
         }
 
-        /** Return an array of fuzzy logic variables read from the xml file. */
-        ArrayList<FuzzyLogicVar> getFuzzyLogicVariableArray() {
-            return _fuzzyLogicVariableArray;
-        }
+
 
         /** Return a string representation of the rules specified in
          *  the xml file.
          */
-        ArrayList<String> getRules() {
+        public ArrayList<String> getRules() {
             return _myRules;
         }
 
@@ -470,11 +510,7 @@ public class FuzzyLogic extends TypedAtomicActor{
         public void startDocument() {
         }
 
-        /**
-         * Called once when the SAX driver sees the end of a document, even if errors occured.
-         * */
-        public void endDocument() {
-        }
+
 
         /** Called each time the SAX parser sees the beginning of an element
          * @param uri The Namespace Uniform Resource Identifier(URI)
@@ -532,47 +568,30 @@ public class FuzzyLogic extends TypedAtomicActor{
             }
         }
 
-        /** Called each time the SAX parser sees the end of an element
-         * @param uri The Namespace Uniform Resource Identifier(URI)
-         * @param name Is the elements local name
-         * @param qName Is the XML 1.0 name 
-         * */
-        public void endElement(String uri, String name, String qName) {
-            if ("".equals(uri)) {
-                if ("FUZZIFY".equals(qName) || "DEFUZZIFY".equals(qName)) {
-                    _startVar = false;
-                    _currentIndex++;
-                    if("FUZZIFY".equals(qName)){
-                        _fuzzyLogicVariableArray.add(_fuzzyVar);
-                        _fuzzyVar = new FuzzyLogicVar();
-                    }
-                }
-                if ("RULEBLOCK".equals(qName)) {
-                }
-            } else {
-                if(_debugging){
-                    System.out.println("End element:   {" + uri + "}" + name);
-                }
-            }
-        }
 
-        /** Called by the SAX parser to report regular characters.
-         * @param ch The array containing characters
-         * @param start Is the starting point in the character array
-         * @param length Is length of the character array 
-         * */
-        public void characters(char ch[], int start, int length) {
 
+
+        ////////////////////////////////////////////////////////////////////
+        ///                         private methods                     ////   
+        private void initialize() {
+            _startVar = false;
+            _toDefuzzyify = -1;
+            _currentIndex = 0;
+            _linguisticVarArray = new ArrayList<LinguisticVariable>();
+            _myRules = new ArrayList<String>();
+            _fuzzyVar = new FuzzyLogicVar();
+            _fuzzyLogicVariableArray = new ArrayList<FuzzyLogicVar>();
         }
         ////////////////////////////////////////////////////////////////////
         ////                         private variables                 ////
-        private boolean _debugging = false;
-        private boolean _startVar;
-        private int _toDefuzzyify;
         private int _currentIndex;
+        private boolean _debugging = false;
+
+        private ArrayList<FuzzyLogicVar> _fuzzyLogicVariableArray;
         private FuzzyLogicVar _fuzzyVar;
         private ArrayList<LinguisticVariable> _linguisticVarArray;
         private ArrayList<String> _myRules;
-        private ArrayList<FuzzyLogicVar> _fuzzyLogicVariableArray;
+        private boolean _startVar;
+        private int _toDefuzzyify;
     }
 }
