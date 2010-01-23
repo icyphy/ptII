@@ -50,6 +50,7 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
+import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
 //// DifferentialSystem
@@ -132,33 +133,23 @@ public class DifferentialSystem extends TypedCompositeActor {
     public DifferentialSystem(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
+        _init();
+    }
 
-        StringToken[] empty = new StringToken[1];
-        stateVariableNames = new Parameter(this, "stateVariableNames");
-        empty[0] = new StringToken("");
-        stateVariableNames.setToken(new ArrayToken(BaseType.STRING, empty));
-
-        setClassName("ptolemy.domains.ct.lib.DifferentialSystem");
-        
-        t = new Parameter(this, "t");
-        t.setTypeEquals(BaseType.DOUBLE);
-        t.setVisibility(Settable.EXPERT);
-        t.setExpression("0.0");
-        
-        // This actor contains a ContinuousDirector.
-        // This director is not persistent, however.
-        // There is no need to store it in the MoML file, since
-        // it is created here in the constructor.
-        (new ContinuousDirector(this, "ContinuousDirector")).setPersistent(false);
-
-        // icon
-        _attachText("_iconDescription", "<svg>\n"
-                + "<rect x=\"-50\" y=\"-30\" " + "width=\"100\" height=\"60\" "
-                + "style=\"fill:white\"/>\n" + "<text x=\"-45\" y=\"-10\" "
-                + "style=\"font-size:14\">\n" + "dx/dt=f(x, u, t)"
-                + "</text>\n" + "<text x=\"-45\" y=\"10\" "
-                + "style=\"font-size:14\">\n" + "     y=g(x, u, t)"
-                + "</text>\n" + "style=\"fill:blue\"/>\n" + "</svg>\n");
+    /** Construct a DifferentialSystem in the specified
+     *  workspace with no container and an empty string as a name. You
+     *  can then change the name with setName(). If the workspace
+     *  argument is null, then use the default workspace.
+     *  @param workspace The workspace that will list the actor.
+     *  @exception IllegalActionException If the name has a period in it, or
+     *   the director is not compatible with the specified container.
+     *  @exception NameDuplicationException If the container already contains
+     *   an entity with the specified name.
+     */
+    public DifferentialSystem(Workspace workspace) throws IllegalActionException,
+            NameDuplicationException {
+        super(workspace);
+        _init();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -471,6 +462,37 @@ public class DifferentialSystem extends TypedCompositeActor {
                         + "\" to specify the output map.");
             }
         }
+    }
+
+    /** Initialize the class. */
+    private void _init() throws IllegalActionException,
+            NameDuplicationException {
+        StringToken[] empty = new StringToken[1];
+        stateVariableNames = new Parameter(this, "stateVariableNames");
+        empty[0] = new StringToken("");
+        stateVariableNames.setToken(new ArrayToken(BaseType.STRING, empty));
+
+        setClassName("ptolemy.domains.ct.lib.DifferentialSystem");
+        
+        t = new Parameter(this, "t");
+        t.setTypeEquals(BaseType.DOUBLE);
+        t.setVisibility(Settable.EXPERT);
+        t.setExpression("0.0");
+        
+        // This actor contains a ContinuousDirector.
+        // This director is not persistent, however.
+        // There is no need to store it in the MoML file, since
+        // it is created here in the constructor.
+        (new ContinuousDirector(this, "ContinuousDirector")).setPersistent(false);
+
+        // icon
+        _attachText("_iconDescription", "<svg>\n"
+                + "<rect x=\"-50\" y=\"-30\" " + "width=\"100\" height=\"60\" "
+                + "style=\"fill:white\"/>\n" + "<text x=\"-45\" y=\"-10\" "
+                + "style=\"font-size:14\">\n" + "dx/dt=f(x, u, t)"
+                + "</text>\n" + "<text x=\"-45\" y=\"10\" "
+                + "style=\"font-size:14\">\n" + "     y=g(x, u, t)"
+                + "</text>\n" + "style=\"fill:blue\"/>\n" + "</svg>\n");
     }
 
     /** Set this composite actor to opaque and request for reinitialization

@@ -45,6 +45,7 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
 //// LinearStateSpace
@@ -99,42 +100,22 @@ public class LinearStateSpace extends TypedCompositeActor {
     public LinearStateSpace(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
-        input = new TypedIOPort(this, "input", true, false);
-        input.setMultiport(true);
-        output = new TypedIOPort(this, "output", false, true);
-        output.setMultiport(true);
-        stateOutput = new TypedIOPort(this, "stateOutput", false, true);
-        stateOutput.setMultiport(true);
-        _opaque = true;
-        _requestInitialization = true;
-
-        double[][] one = { { 1.0 } };
-        double[][] zero = { { 0.0 } };
-
-        A = new Parameter(this, "A", new DoubleMatrixToken(one));
-        A.setTypeEquals(BaseType.DOUBLE_MATRIX);
-
-        B = new Parameter(this, "B", new DoubleMatrixToken(one));
-        B.setTypeEquals(BaseType.DOUBLE_MATRIX);
-
-        C = new Parameter(this, "C", new DoubleMatrixToken(one));
-        C.setTypeEquals(BaseType.DOUBLE_MATRIX);
-
-        D = new Parameter(this, "D", new DoubleMatrixToken(zero));
-        D.setTypeEquals(BaseType.DOUBLE_MATRIX);
-
-        initialStates = new Parameter(this, "initialStates",
-                new DoubleMatrixToken(zero));
-        initialStates.setTypeEquals(BaseType.DOUBLE_MATRIX);
-        setClassName("ptolemy.domains.ct.lib.LinearStateSpace");
-
-        // icon
-        _attachText("_iconDescription", "<svg>\n"
-                + "<rect x=\"-50\" y=\"-30\" " + "width=\"100\" height=\"60\" "
-                + "style=\"fill:white\"/>\n" + "<text x=\"-45\" y=\"-10\" "
-                + "style=\"font-size:14\">\n" + "dx/dt=Ax+Bu " + "</text>\n"
-                + "<text x=\"-45\" y=\"10\" " + "style=\"font-size:14\">\n"
-                + "    y=Cx+Du" + "</text>\n" + "</svg>\n");
+        _init();
+    }
+    /** Construct a LinearStateSpace in the specified
+     *  workspace with no container and an empty string as a name. You
+     *  can then change the name with setName(). If the workspace
+     *  argument is null, then use the default workspace.
+     *  @param workspace The workspace that will list the actor.
+     *  @exception IllegalActionException If the name has a period in it, or
+     *   the director is not compatible with the specified container.
+     *  @exception NameDuplicationException If the container already contains
+     *   an entity with the specified name.
+     */
+    public LinearStateSpace(Workspace workspace) throws IllegalActionException,
+            NameDuplicationException {
+        super(workspace);
+        _init();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -520,6 +501,47 @@ public class LinearStateSpace extends TypedCompositeActor {
                             + "the number of columns of the A matrix (" + n
                             + ").");
         }
+    }
+
+    /** Initialize the class. */
+    private void _init() throws IllegalActionException,
+            NameDuplicationException {
+        input = new TypedIOPort(this, "input", true, false);
+        input.setMultiport(true);
+        output = new TypedIOPort(this, "output", false, true);
+        output.setMultiport(true);
+        stateOutput = new TypedIOPort(this, "stateOutput", false, true);
+        stateOutput.setMultiport(true);
+        _opaque = true;
+        _requestInitialization = true;
+
+        double[][] one = { { 1.0 } };
+        double[][] zero = { { 0.0 } };
+
+        A = new Parameter(this, "A", new DoubleMatrixToken(one));
+        A.setTypeEquals(BaseType.DOUBLE_MATRIX);
+
+        B = new Parameter(this, "B", new DoubleMatrixToken(one));
+        B.setTypeEquals(BaseType.DOUBLE_MATRIX);
+
+        C = new Parameter(this, "C", new DoubleMatrixToken(one));
+        C.setTypeEquals(BaseType.DOUBLE_MATRIX);
+
+        D = new Parameter(this, "D", new DoubleMatrixToken(zero));
+        D.setTypeEquals(BaseType.DOUBLE_MATRIX);
+
+        initialStates = new Parameter(this, "initialStates",
+                new DoubleMatrixToken(zero));
+        initialStates.setTypeEquals(BaseType.DOUBLE_MATRIX);
+        setClassName("ptolemy.domains.ct.lib.LinearStateSpace");
+
+        // icon
+        _attachText("_iconDescription", "<svg>\n"
+                + "<rect x=\"-50\" y=\"-30\" " + "width=\"100\" height=\"60\" "
+                + "style=\"fill:white\"/>\n" + "<text x=\"-45\" y=\"-10\" "
+                + "style=\"font-size:14\">\n" + "dx/dt=Ax+Bu " + "</text>\n"
+                + "<text x=\"-45\" y=\"10\" " + "style=\"font-size:14\">\n"
+                + "    y=Cx+Du" + "</text>\n" + "</svg>\n");
     }
 
     /** Set this composite actor to opaque and request for reinitialization

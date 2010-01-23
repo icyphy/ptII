@@ -46,6 +46,7 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
 //// ContinuousTransferFunction
@@ -95,27 +96,23 @@ public class ContinuousTransferFunction extends TypedCompositeActor {
     public ContinuousTransferFunction(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
-        input = new TypedIOPort(this, "input", true, false);
-        output = new TypedIOPort(this, "output", false, true);
-        _opaque = true;
+        _init();
+    }
 
-        numerator = new Parameter(this, "numerator");
-        numerator.setExpression("{1.0}");
-        numerator.setTypeEquals(new ArrayType(BaseType.DOUBLE));
-
-        denominator = new Parameter(this, "denominator");
-        denominator.setExpression("{1.0}");
-        denominator.setTypeEquals(new ArrayType(BaseType.DOUBLE));
-
-        // Do not use TypedCompositeActor as the MoML name for this actor.
-        setClassName("ptolemy.domains.ct.lib.ContinuousTransferFunction");
-
-        // icon
-        _attachText("_iconDescription", "<svg>\n"
-                + "<rect x=\"-30\" y=\"-20\" " + "width=\"60\" height=\"40\" "
-                + "style=\"fill:white\"/>\n" + "<text x=\"-25\" y=\"0\" "
-                + "style=\"font-size:14\">\n" + "b(s)/a(s) \n" + "</text>\n"
-                + "style=\"fill:blue\"/>\n" + "</svg>\n");
+    /** Construct a ContinuousTransferFunction in the specified
+     *  workspace with no container and an empty string as a name. You
+     *  can then change the name with setName(). If the workspace
+     *  argument is null, then use the default workspace.
+     *  @param workspace The workspace that will list the actor.
+     *  @exception IllegalActionException If the name has a period in it, or
+     *   the director is not compatible with the specified container.
+     *  @exception NameDuplicationException If the container already contains
+     *   an entity with the specified name.
+     */
+    public ContinuousTransferFunction(Workspace workspace) throws IllegalActionException,
+            NameDuplicationException {
+        super(workspace);
+        _init();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -343,7 +340,37 @@ public class ContinuousTransferFunction extends TypedCompositeActor {
     }
 
     ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+    /** Initialize the class. */
+    private void _init() throws IllegalActionException,
+            NameDuplicationException {
+
+        input = new TypedIOPort(this, "input", true, false);
+        output = new TypedIOPort(this, "output", false, true);
+        _opaque = true;
+
+        numerator = new Parameter(this, "numerator");
+        numerator.setExpression("{1.0}");
+        numerator.setTypeEquals(new ArrayType(BaseType.DOUBLE));
+
+        denominator = new Parameter(this, "denominator");
+        denominator.setExpression("{1.0}");
+        denominator.setTypeEquals(new ArrayType(BaseType.DOUBLE));
+
+        // Do not use TypedCompositeActor as the MoML name for this actor.
+        setClassName("ptolemy.domains.ct.lib.ContinuousTransferFunction");
+
+        // icon
+        _attachText("_iconDescription", "<svg>\n"
+                + "<rect x=\"-30\" y=\"-20\" " + "width=\"60\" height=\"40\" "
+                + "style=\"fill:white\"/>\n" + "<text x=\"-25\" y=\"0\" "
+                + "style=\"font-size:14\">\n" + "b(s)/a(s) \n" + "</text>\n"
+                + "style=\"fill:blue\"/>\n" + "</svg>\n");
+    }
+
+    ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    // opaqueness.
+    /** Opaqueness. */
     private boolean _opaque;
 }
