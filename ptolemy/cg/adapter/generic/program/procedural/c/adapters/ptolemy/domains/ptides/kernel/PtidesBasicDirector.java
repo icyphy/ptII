@@ -104,7 +104,7 @@ public class PtidesBasicDirector extends Director {
         code.append(_templateParser.getCodeStream().getCodeBlock("initPIBlock"));
         return code.toString();
     }
-    
+
     /** Generate a main loop for an execution under the control of
      *  this director.  In this base class, this simply delegates
      *  to generateFireCode() and generatePostfireCOde().
@@ -114,7 +114,7 @@ public class PtidesBasicDirector extends Director {
     public String generateMainLoop() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
-        code.append("    while(true) {};" + _eol);
+        code.append(_eol + "void execute() { while(1){}; }" + _eol);
         return code.toString();
     }
 

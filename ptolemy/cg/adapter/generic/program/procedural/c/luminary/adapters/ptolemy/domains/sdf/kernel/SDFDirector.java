@@ -78,9 +78,10 @@ public class SDFDirector
         TypedCompositeActor compositeActorAdapter = (TypedCompositeActor) getCodeGenerator()
                 .getAdapter(container);
 
-        if (container instanceof CompiledCompositeActor
+        if ((container instanceof CompiledCompositeActor
                 && ((BooleanToken) getCodeGenerator().generateEmbeddedCode
-                        .getToken()).booleanValue()) {
+                        .getToken()).booleanValue()) ||
+                        (container instanceof CompositeActor)) {
 
             // FindBugs wants this instanceof check.
             if (!(inputPort instanceof TypedIOPort)) {
@@ -178,9 +179,10 @@ public class SDFDirector
         TypedCompositeActor compositeActorAdapter = (TypedCompositeActor) getCodeGenerator()
                 .getAdapter(container);
 
-        if (container instanceof CompiledCompositeActor
+        if ((container instanceof CompiledCompositeActor
                 && ((BooleanToken) getCodeGenerator().generateEmbeddedCode
-                        .getToken()).booleanValue()) {
+                        .getToken()).booleanValue()) ||
+                        (container instanceof CompositeActor)) {
 
             ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.IOPort portAdapter 
             = (ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.IOPort) 
