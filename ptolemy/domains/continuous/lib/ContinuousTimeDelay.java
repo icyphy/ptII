@@ -51,16 +51,9 @@ import ptolemy.kernel.util.Workspace;
 //// ContinuousTimeDelay
 
 /**
- * FIXME: delay cannot change during a run (more precisely... ignored until next initialize()).
- * 
- * FIXME: implement solver step size control to capture periods of fine granularity; without
- * this, though input events were stored with the same resolution as the solver deemed necessary,
- * these delayed input events may be sampled sparsely if no other actor requires increased
- * resolution at output time. If this actor uses fireAt() to force the solver to sample with the
- * same resolution at which the input was generated, then subsequent inputs to the delay actor
- * will arrive with this frequency regardless of whether or not this resolution is necessary.
- * 
- This actor delays the input by a specified amount of time. It is designed
+ Delay the input by a specified amount of time.
+
+ <p>This actor is designed
  to be used in timed domains such as DE and Continuous. It can also be used
  in other domains, such as SR and SDF, but this will only be useful if the
  delay value is a multiple of the period of those directors. The amount
@@ -106,6 +99,20 @@ import ptolemy.kernel.util.Workspace;
  @Pt.AcceptedRating Red (eal)
  */
 public class ContinuousTimeDelay extends Transformer {
+    // FIXME: delay cannot change during a run (more
+    // precisely... ignored until next initialize()).
+  
+    // FIXME: implement solver step size control to capture periods of
+    // fine granularity; without this, though input events were stored
+    // with the same resolution as the solver deemed necessary, these
+    // delayed input events may be sampled sparsely if no other actor
+    // requires increased resolution at output time. If this actor
+    // uses fireAt() to force the solver to sample with the same
+    // resolution at which the input was generated, then subsequent
+    // inputs to the delay actor will arrive with this frequency
+    // regardless of whether or not this resolution is necessary.
+  
+
     /** Construct an actor with the specified container and name.
      *  Constrain that the output type to be the same as the input type.
      *  @param container The composite entity to contain this one.
