@@ -111,16 +111,16 @@ by the {@link BandlimitedNoise} actor.
  */
 public class Noise extends ptolemy.domains.continuous.kernel.Noise {
 
-    // NOTE: This is simply a wrapper for ContinuousIntegrator to make
+    // NOTE: This is simply a wrapper for continuous.kernel.Noise to make
     // it appear in the lib package.
 
-    /** Construct an integrator.
-     * @see ptolemy.domains.ct.kernel.CTBaseIntegrator
-     * @param container The container.
-     * @param name The name.
-     * @exception NameDuplicationException If another star already had
-     * this name.
-     * @exception IllegalActionException If there was an internal problem.
+    /** Construct an actor with the given container and name.
+     *  @param container The container.
+     *  @param name The name of this actor.
+     *  @exception IllegalActionException If the actor cannot be contained
+     *   by the proposed container.
+     *  @exception NameDuplicationException If the container already has an
+     *   actor with this name.
      */
     public Noise(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
