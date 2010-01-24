@@ -322,6 +322,8 @@ public class ModelCreator extends DefaultHandler {
      *  will be prompted for a filename.
      * </p>
      * @param args with inputs to the main method.
+     @exception Exception If the input file cannot be read or
+     *  parsed.
      * 
      * Inputs are currently not used
      */
@@ -381,7 +383,7 @@ public class ModelCreator extends DefaultHandler {
      * @param uri The Namespace Uniform Resource Identifier(URI)
      * @param name Is the elements local name
      * @param qName Is the XML 1.0 name 
-     * @param atts   an Attributes object
+     * @param atts  An Attributes object
      * */
     public void startElement(String uri, String name, String qName,
             Attributes atts) {
@@ -435,9 +437,11 @@ public class ModelCreator extends DefaultHandler {
         }
 
         ///////////////////////////////////////////////////////////////////
-        ////    public variables                  ////
-        //      FIXME add a description for what each of these variables does/ mean
+        ////    public variables                                       ////
+       
+        /**Name of the TSST architecture being modeled by this Architecture class */
         public String name="";
+        /** List of TSST options associated with this architecture*/
         public ArrayList<Option> myOptions;
 
         ///////////////////////////////////////////////////////////////////
@@ -445,6 +449,8 @@ public class ModelCreator extends DefaultHandler {
 
         /**
          * Return an array list consisting of the components/options
+         * in the architecture.
+         * @return An array list consisting of the components/options 
          * in the architecture. 
          * */
         public ArrayList<String> getComponents() {
@@ -459,7 +465,8 @@ public class ModelCreator extends DefaultHandler {
             return componentNames;
         }
 
-        /** Return the name of the architecture. */
+        /** Return the name of the architecture.
+         * @return The name of the architecture */
         public String getName() {
             return name;
         }
@@ -475,7 +482,8 @@ public class ModelCreator extends DefaultHandler {
         ///////////////////////////////////////////////////////////////////
         ////                         public methods                    ////
 
-        /** Return the display name for the option. */
+        /** Return the display name for the option.
+         * @return The display name for the option. */
         public String displayName() {
             return _name;
         }
@@ -679,7 +687,7 @@ public class ModelCreator extends DefaultHandler {
     //these variables are constants used throught the class
     private final boolean _debugging = false;
     /** newline marker*/
-    private static final String _eol = System.getProperty("line.separator");
+    private final String _eol = System.getProperty("line.separator");
     // These flags mark the start and end of architectures, options,
     // and dimensions in the file produced by TSST.
     private boolean _startArchitecture;

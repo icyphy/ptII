@@ -378,7 +378,7 @@ public class FuzzyLogic extends TypedAtomicActor{
 
     ////////////////////////////////////////////////////////////////////
     ////                       protected classes                    ////
-    /* A record type used when parsing*/
+    /** A record type used when parsing a Fuzzy Logic XML file.*/
     protected class FuzzyLogicVar{
 
         /**
@@ -448,12 +448,12 @@ public class FuzzyLogic extends TypedAtomicActor{
         }
 
         /**
-         * Called once when the SAX driver sees the end of a document, even if errors occured.
+         * Called once when the SAX driver sees the end of a document, even if errors occurred.
          * */
         public void endDocument() {
         }
 
-        /** Called each time the SAX parser sees the end of an element
+        /** Called each time the SAX parser sees the end of an element.
          * @param uri The Namespace Uniform Resource Identifier(URI)
          * @param name Is the elements local name
          * @param qName Is the XML 1.0 name 
@@ -477,12 +477,14 @@ public class FuzzyLogic extends TypedAtomicActor{
             }
         }
 
-        /** Return an array of fuzzy logic variables read from the xml file. */
+        /** Return an array of fuzzy logic variables read from the xml file. 
+         * @return Return an array of fuzzy logic variables read from the xml file.*/
         public ArrayList<FuzzyLogicVar> getFuzzyLogicVariableArray() {
             return _fuzzyLogicVariableArray;
         }
 
-        /** Return the array list index of the variable to be defuzzified. */
+        /** Return the array list index of the variable to be defuzzified. 
+         * @return Return the array list index of the variable to be defuzzified.*/
         public int getIndexToDefuzzify() {
             return _toDefuzzyify;
         }
@@ -495,6 +497,8 @@ public class FuzzyLogic extends TypedAtomicActor{
 
 
         /** Return a string representation of the rules specified in
+         *  the xml file.
+         *  @return Return a string representation of the rules specified in
          *  the xml file.
          */
         public ArrayList<String> getRules() {
@@ -512,13 +516,16 @@ public class FuzzyLogic extends TypedAtomicActor{
 
 
 
-        /** Called each time the SAX parser sees the beginning of an element
+        /** Called each time the SAX parser sees the beginning of an element.
          * @param uri The Namespace Uniform Resource Identifier(URI)
          * @param name Is the elements local name
          * @param qName Is the XML 1.0 name 
+         * @param atts An Attributes object
          * */
         public void startElement(String uri, String name, String qName,
                 Attributes atts) {
+            // Note: The method names and the parameters match those in the 
+            // DefaultHandler class 
             String tempString;
             if ("".equals(uri)) {
                 if ("FUZZIFY".equals(qName) || "DEFUZZIFY".equals(qName)) {
