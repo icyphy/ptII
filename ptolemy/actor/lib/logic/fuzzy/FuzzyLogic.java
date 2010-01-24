@@ -489,7 +489,8 @@ public class FuzzyLogic extends TypedAtomicActor{
             return _toDefuzzyify;
         }
 
-        /** Return an array of linguistic variables read from the xml file. */
+        /** Return an array of linguistic variables read from the xml file. 
+         * @return Return an array of linguistic variables read from the xml file.*/
         public ArrayList<LinguisticVariable> getLinguisticVariableArray() {
             return _linguisticVarArray;
         }

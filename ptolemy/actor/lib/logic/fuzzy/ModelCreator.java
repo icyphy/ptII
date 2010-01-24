@@ -322,7 +322,7 @@ public class ModelCreator extends DefaultHandler {
      *  will be prompted for a filename.
      * </p>
      * @param args with inputs to the main method.
-     @exception Exception If the input file cannot be read or
+     * @exception Exception If the input file cannot be read or
      *  parsed.
      * 
      * Inputs are currently not used
@@ -439,9 +439,9 @@ public class ModelCreator extends DefaultHandler {
         ///////////////////////////////////////////////////////////////////
         ////    public variables                                       ////
        
-        /**Name of the TSST architecture being modeled by this Architecture class */
+        /**Name of the TSST architecture being modeled by this Architecture class.*/
         public String name="";
-        /** List of TSST options associated with this architecture*/
+        /** List of TSST options associated with this architecture.*/
         public ArrayList<Option> myOptions;
 
         ///////////////////////////////////////////////////////////////////
