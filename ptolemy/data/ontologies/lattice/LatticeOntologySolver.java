@@ -898,7 +898,7 @@ public class LatticeOntologySolver extends OntologySolver implements Testable {
      * @return The Constraints.
      * @exception IllegalActionException
      */
-    private List _getConstraintAsLogFileString(Inequality inequality,
+    private List<String> _getConstraintAsLogFileString(Inequality inequality,
             String annotation) throws IllegalActionException {
         List<String> logConstraints = new LinkedList<String>();
 
@@ -977,12 +977,12 @@ public class LatticeOntologySolver extends OntologySolver implements Testable {
         if (propertyTerm instanceof Concept) {
             // FIXME: This is bogus unreadable syntax. "eff" means "effective"
             // (whatever that means).
-            return (true ? "eff" : "ineff") + "\t" + "\t"
+            return "eff" + "\t" + "\t"
                     + propertyTerm.getClass().getSuperclass().getSimpleName()
                     + "\t" + propertyTerm.toString() + "\t"
                     + propertyTerm.getValue();
         } else if (propertyTerm instanceof MonotonicFunction) {
-            return (true ? "eff" : "ineff")
+            return "eff"
                     + "\t"
                     + actorName
                     + "\t"
@@ -1014,7 +1014,7 @@ public class LatticeOntologySolver extends OntologySolver implements Testable {
                     }
                 }
                 // FIXME: effective is not implemented.
-                return (true ? "eff" : "ineff") + "\t"
+                return "eff" + "\t"
                         + containerName + "\t"
                         + object.getClass().getSimpleName() + "\t"
                         + _getReducedFullName(object) + "\t"
@@ -1136,33 +1136,6 @@ public class LatticeOntologySolver extends OntologySolver implements Testable {
                 "%5c", "/");
     }
 
-    /**
-     * 
-     * @param adapter
-     * @exception IllegalActionException
-     */
-    private void _logHelperConstraints(LatticeOntologyAdapter adapter)
-            throws IllegalActionException {
-        List<Inequality>[] constraintSet = new List[2];
-        /*  FIXME: Removing chunks of code wholesale now.
-         * --Ben 12/04/2009
-        constraintSet[0] = adapter._ownConstraints;
-        constraintSet[1] = adapter._subHelperConstraints;
-
-        for (int i = 0; i < 2; i++) {
-            //String whichSet = (i == 0) ? " own " : " subHelper's ";
-
-            for (Inequality constraint : constraintSet[i]) {
-                Iterator logConstraints = _getConstraintAsLogFileString(
-                        constraint, "").iterator();
-                while (logConstraints.hasNext()) {
-                    _trainedConstraints.add((String) logConstraints.next());
-                }
-            }
-        }
-        */
-    }
-
     private void _readConstraintFile(String filename){
 
         File file = new File(filename);
@@ -1203,46 +1176,6 @@ public class LatticeOntologySolver extends OntologySolver implements Testable {
             return;
         }
         NamedObj namedObj = (NamedObj) object;
-
-        StringBuffer errorMessage = new StringBuffer(_eol +
-                "Concept \"" + getName() +
-                "\" resolution failed for " +
-                namedObj.getFullName() +
-                "'s adapter." + _eol);
-
-        List<Inequality>[] constraintSet = new List[2];
-        /*  FIXME: Removing chunks of code wholesale now.
-         * --Ben 12/04/2009
-        constraintSet[0] = adapter._ownConstraints;
-        constraintSet[1] = adapter._subHelperConstraints;
-
-        boolean hasError = false;
-
-        for (int i = 0; i < 2; i++) {
-            String whichSet = i == 0 ? " own " : " subHelper's ";
-
-            for (Inequality constraint : constraintSet[i]) {
-
-                Iterator logConstraints = _getConstraintAsLogFileString(
-                        constraint, "").iterator();
-                while (logConstraints.hasNext()) {
-                    String constraintString = (String) logConstraints.next();
-                    // Remove from the trained set so we can test for duplicates.
-                    if (!_trainedConstraints.remove(constraintString)) {
-                        errorMessage.append("    Extra" + whichSet
-                                + "constraint generated: \"" + constraintString
-                                + "\"." + _eol);
-
-                        hasError = true;
-                    }
-                }
-            }
-        }
-
-        if (hasError) {
-            getSharedUtilities().addErrors(errorMessage.toString());
-        }
-        */
 
     }
  

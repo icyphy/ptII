@@ -130,8 +130,8 @@ public class OntologySolverUtilities {
      * Clear and return the previously recorded errors.
      * @return The list of previously recorded errors.
      */
-    public List removeErrors() {
-        List result = new ArrayList(_errors);
+    public List<String> removeErrors() {
+        List<String> result = new ArrayList<String>(_errors);
         _errors.clear();
         return result;
     }

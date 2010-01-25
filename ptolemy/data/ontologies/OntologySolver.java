@@ -33,7 +33,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-import ptolemy.actor.parameters.SharedParameter;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.ontologies.gui.OntologyDisplayActions;
@@ -46,7 +45,6 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.util.ClassUtilities;
 import ptolemy.util.FileUtilities;
-import ptolemy.util.MessageHandler;
 import ptolemy.util.StringUtilities;
 
 //////////////////////////////////////////////////////////////////////////
@@ -113,7 +111,7 @@ public abstract class OntologySolver extends OntologySolverBase {
 
         // FIXME: remove the errors as well.
 
-        List errors = _ontologySolverUtilities.removeErrors();
+        List<String> errors = _ontologySolverUtilities.removeErrors();
         Collections.sort(errors);
 
         if (!errors.isEmpty()) {
@@ -491,9 +489,6 @@ public abstract class OntologySolver extends OntologySolverBase {
      */
     public void updateProperties() throws IllegalActionException {
 
-        boolean hasDecided = false;
-        boolean userDecision = true;
-
         _addStatistics();
 
         for (Object propertyable : getAllPropertyables()) {
@@ -508,7 +503,7 @@ public abstract class OntologySolver extends OntologySolverBase {
             NamedObj namedObj = (NamedObj) propertyable;
 
             // Get the value resolved by the solver.
-            Concept property = getProperty(namedObj);
+            getProperty(namedObj);
 
         }
         
