@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="dynamic2" class="ptolemy.actor.TypedCompositeActor">
+<entity name="dynamic2_2" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 0, 1608, 1178}, maximized=false}">
@@ -88,7 +88,7 @@
                 </property>
                 <property name="tiling" class="ptolemy.data.expr.Parameter" value="">
                 </property>
-                <property name="size" class="ptolemy.data.expr.Parameter" value="">
+                <property name="size" class="ptolemy.data.expr.Parameter" value="[dim1 = 20, dim2 = 5]">
                 </property>
             </port>
             <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
@@ -117,7 +117,7 @@
         <link port="PthalesAddHeaderActor.out" relation="relation2"/>
     </entity>
     <entity name="consumer" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[615.0, 200.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[580.0, 200.0]">
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={392, 342, 1070, 706}, maximized=false}">
         </property>
@@ -138,10 +138,15 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[-60.0, 35.0]">
             </property>
         </port>
+        <port name="port2" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[380.0, 35.0]">
+            </property>
+        </port>
         <entity name="Sink" class="ptolemy.domains.pthales.lib.PthalesCompositeActor">
             <property name="repetitions" class="ptolemy.data.expr.Parameter" value="{1}">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[215.0, 15.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{215.0, 15.0}">
             </property>
             <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
                 <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
@@ -173,18 +178,40 @@
                 <property name="size" class="ptolemy.data.expr.Parameter" value="">
                 </property>
             </port>
+            <port name="port" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+                <property name="base" class="ptolemy.data.expr.Parameter">
+                </property>
+                <property name="pattern" class="ptolemy.data.expr.Parameter" value="[dim1={1,1}]">
+                </property>
+                <property name="tiling" class="ptolemy.data.expr.Parameter" value="[dim1=1, dim2=1]">
+                </property>
+                <property name="dimensionNames" class="ptolemy.data.expr.StringParameter" value="">
+                </property>
+                <property name="size" class="ptolemy.data.expr.Parameter" value="">
+                </property>
+                <property name="dataType" class="ptolemy.data.expr.StringParameter" value="">
+                </property>
+                <property name="dataTypeSize" class="ptolemy.data.expr.StringParameter" value="">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[280.0, 200.0]">
+                </property>
+            </port>
             <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={939, 140, 355, 760}, maximized=false}">
+                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={633, 479, 334, 241}, maximized=false}">
                 </property>
-                <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[347, 705]">
+                <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[326, 186]">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 200.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[250.0, 270.0]">
                 </property>
             </entity>
-            <relation name="relation" class="ptolemy.actor.TypedIORelation">
+            <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+                <vertex name="vertex1" value="[175.0, 200.0]">
+                </vertex>
             </relation>
-            <link port="port_0" relation="relation"/>
-            <link port="Display.input" relation="relation"/>
+            <link port="port_0" relation="relation2"/>
+            <link port="port" relation="relation2"/>
+            <link port="Display.input" relation="relation2"/>
         </entity>
         <entity name="PthalesRemoveHeaderActor" class="ptolemy.domains.pthales.lib.PthalesRemoveHeaderActor">
             <property name="_location" class="ptolemy.kernel.util.Location" value="{40, 15}">
@@ -194,13 +221,29 @@
         </relation>
         <relation name="relation" class="ptolemy.actor.TypedIORelation">
         </relation>
+        <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        </relation>
         <link port="port" relation="relation"/>
+        <link port="port2" relation="relation3"/>
         <link port="Sink.port_0" relation="relation2"/>
+        <link port="Sink.port" relation="relation3"/>
         <link port="PthalesRemoveHeaderActor.in" relation="relation"/>
         <link port="PthalesRemoveHeaderActor.out" relation="relation2"/>
     </entity>
+    <entity name="Display" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={624, 479, 351, 241}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[343, 186]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[725.0, 200.0]">
+        </property>
+    </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
     </relation>
     <link port="producer.port" relation="relation"/>
     <link port="consumer.port" relation="relation"/>
+    <link port="consumer.port2" relation="relation2"/>
+    <link port="Display.input" relation="relation2"/>
 </entity>
