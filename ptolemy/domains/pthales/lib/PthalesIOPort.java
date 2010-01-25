@@ -49,6 +49,7 @@ import ptolemy.domains.modal.kernel.State;
 import ptolemy.domains.modal.modal.ModalModel;
 import ptolemy.domains.modal.modal.Refinement;
 import ptolemy.domains.modal.modal.RefinementPort;
+import ptolemy.domains.pthales.kernel.PthalesDirector;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -497,6 +498,14 @@ public class PthalesIOPort {
         }
     }
 
+    /** Propagate the header through application relations
+     * to update informations
+     * @param portIn
+     * @param dims
+     * @param sizes
+     * @param headersize
+     * @param arraySizes
+     */
     public static void propagateHeader(IOPort portIn, String[] dims,
             int[] sizes, int headersize, LinkedHashMap<String, Integer> arraySizes ) {
         // Header
@@ -551,7 +560,9 @@ public class PthalesIOPort {
                                 sum *= sizes[i];
                             sum += headersize;
 
-                            PthalesIOPort._modifyPattern(portIn, "global", sum);
+                            // If within Pthales domain, update of the port informations
+                            if ( ((CompositeActor) portIn.getContainer()).getDirector() instanceof PthalesDirector)
+                                PthalesIOPort._modifyPattern(portIn, "global", sum);
                             propagateHeader(port2, dims, sizes, headersize,arraySizes);
                         }
                     }
@@ -560,6 +571,10 @@ public class PthalesIOPort {
         }
     }
 
+    /** Update actor iterations according to pattern and tiling informations 
+     * @param portIn
+     * @param sizes
+     */
     public static void propagateIterations(IOPort portIn, LinkedHashMap<String, Integer> sizes) {
         // Iterations
         if (portIn.getContainer() instanceof PthalesCompositeActor) {
