@@ -42,25 +42,15 @@ int16_T exchangeDoublesWithBSDSocket(int16_T* sockfd,
   int myFlaWri = *flaWri;
   int myFlaRea = 0;
   int myNDblWri = *nDblWri;
-
-  const int zer = 0;
-  int nIntRea;
-  int nBooRea;
   int nDblRea;
-  /* 0 is illegal array size for Matlab under cygwin  
-     int intValRea[0];
-     int booValRea[0];
-  */
-  int intValRea[1];
-  int booValRea[1];
-  int retVal = exchangewithsocket(&mySockfd, 
-				  &myFlaWri, &myFlaRea,
-				  &myNDblWri, &zer, &zer,
-				  &nDblRea, &nIntRea, &nBooRea,
-				  simTimWri,
-				  dblValWri, NULL, NULL,
-				  simTimRea,
-				  dblValRea, intValRea, booValRea);
+  int retVal = exchangedoubleswithsocket(&mySockfd, 
+					 &myFlaWri, &myFlaRea,
+					 &myNDblWri,
+					 &nDblRea,
+					 simTimWri,
+					 dblValWri,
+					 simTimRea,
+					 dblValRea);
   /* NDBLMAX is defined in lib/defines.h */
   if ( nDblRea > NDBLMAX ){
     fprintf(stderr, "simulinkSocket: Read too many double values.\n");

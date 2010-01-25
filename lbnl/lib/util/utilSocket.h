@@ -95,14 +95,14 @@ derivative works thereof, in binary and source code form.
 /// establish a socket connection. Clients typically call
 /// the method \c establishclientsocket()
 /// once, and then call the method 
-/// \c exchangewithsocket() in each time step.
+/// \c exchangedoubleswithsocket() in each time step.
 /// At the end of the simulation, a client should call
 /// \c closeipc() to close the socket connection.
 /// These three functions are the only functions that are
 /// needed to interface a client to the BCVTB.
 ///
 /// \sa establishclientsocket
-/// \sa exchangewithsocket
+/// \sa exchangedoubleswithsocket
 /// \sa closeipc
 ///
 ///////////////////////////////////////////////////////
@@ -257,7 +257,7 @@ int establishclientsocket(const char *const docname);
 ///\param nBooWri Number of boolean values to write.
 ///\param curSimTim Current simulation time in seconds.
 ///\param dblValWri Double values to write.
-///\param intlValWri Integer values to write.
+///\param intValWri Integer values to write.
 ///\param boolValWri Boolean values to write.
 ///\sa int establishclientsocket(uint16_t *portNo)
 ///\return The exit value of \c send, or a negative value if an error occured.
@@ -310,7 +310,7 @@ int sendclienterror(const int *sockfd, const int *flaWri){
 ///\param nBooRea Number of boolean values to read.
 ///\param curSimTim Current simulation time in seconds read from socket.
 ///\param dblValRea Double values read from socket.
-///\param intlValRea Integer values read from socket.
+///\param intValRea Integer values read from socket.
 ///\param boolValRea Boolean values read from socket.
 ///\sa int establishclientsocket(uint16_t *portNo)
 int readfromsocket(const int *sockfd, int *flaRea, 
@@ -344,11 +344,11 @@ int readbufferfromsocket(const int *sockfd, char *buffer, int *bufLen);
 ///\param nBooRea Number of boolean values to read.
 ///\param simTimWri Current simulation time in seconds to write.
 ///\param dblValWri Double values to write.
-///\param intlValWri Integer values to write.
+///\param intValWri Integer values to write.
 ///\param boolValWri Boolean values to write.
 ///\param simTimRea Current simulation time in seconds read from socket.
 ///\param dblValRea Double values read from socket.
-///\param intlValRea Integer values read from socket.
+///\param intValRea Integer values read from socket.
 ///\param boolValRea Boolean values read from socket.
 ///\sa int establishclientsocket(uint16_t *portNo)
 ///\return The exit value of \c send or \c read, or a negative value if an error occured.
@@ -361,6 +361,29 @@ int exchangewithsocket(const int *sockfd,
 		       double *simTimRea,
 		       double dblValRea[], int intValRea[], int booValRea[]);
 
+/////////////////////////////////////////////////////////////////
+/// Exchanges data with the socket.
+///
+/// Clients can call this method to exchange data through the socket.
+///\param sockfd Socket file descripter
+///\param flaWri Communication flag to write to the socket stream.
+///\param flaRea Communication flag read from the socket stream.
+///\param nDblWri Number of double values to write.
+///\param nDblRea Number of double values to read.
+///\param simTimWri Current simulation time in seconds to write.
+///\param dblValWri Double values to write.
+///\param simTimRea Current simulation time in seconds read from socket.
+///\param dblValRea Double values read from socket.
+///\sa int establishclientsocket(uint16_t *portNo)
+///\return The exit value of \c send or \c read, or a negative value if an error occured.
+int exchangedoubleswithsocket(const int *sockfd, 
+			      const int *flaWri, int *flaRea,
+			      const int *nDblWri,
+			      int *nDblRea,
+			      double *simTimWri,
+			      double dblValWri[],
+			      double *simTimRea,
+			      double dblValRea[]);
 
 ///////////////////////////////////////////////////////////
 /// Closes the inter process communication socket.
