@@ -167,7 +167,7 @@ public class PthalesScheduler extends SDFScheduler {
             if (!(port instanceof ParameterPort)) {
                 if (port.isInput()) {
                     DFUtilities.setTokenConsumptionRate(port, PthalesIOPort
-                            .getDataProducedSize(port)
+                            .getArraySize(port)
                             * PthalesIOPort.getNbTokenPerData(port));
                     _declareDependency(analysis, port, "tokenConsumptionRate",
                             _rateVariables);
