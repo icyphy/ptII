@@ -27,11 +27,15 @@
  */
 package ptolemy.domains.pthales.lib;
 
+import java.util.LinkedHashMap;
+
+import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Port;
+import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -42,18 +46,18 @@ import ptolemy.kernel.util.Workspace;
 ////PthalesCompositeActor
 
 /**
-   A composite actor imposes the use of PthalesIOPort
-   as they contain needed values used by PThalesDirector.
-   A PthalesCompositeActor can contain actors from different model (as SDF),
-   but the port must be a PthalesIOPort, because of the ArrayOL parameters. 
-   @author R&eacute;mi Barr&egrave;re
-   @see ptolemy.actor.TypedIOPort
-   @version $Id$
-   @since Ptolemy II 8.2
-   @Pt.ProposedRating Red (cxh)
-   @Pt.AcceptedRating Red (cxh)
+ A composite actor imposes the use of PthalesIOPort
+ as they contain needed values used by PThalesDirector.
+ A PthalesCompositeActor can contain actors from different model (as SDF),
+ but the port must be a PthalesIOPort, because of the ArrayOL parameters. 
+ @author R&eacute;mi Barr&egrave;re
+ @see ptolemy.actor.TypedIOPort
+ @version $Id$
+ @since Ptolemy II 8.2
+ @Pt.ProposedRating Red (cxh)
+ @Pt.AcceptedRating Red (cxh)
  */
-public class PthalesCompositeActor extends TypedCompositeActor  {
+public class PthalesCompositeActor extends TypedCompositeActor {
     /** Construct a PthalesCompositeActor in the default workspace with no
      *  container and an empty string as its name. Add the actor to the
      *  workspace directory.  You should set the local director or
@@ -136,15 +140,47 @@ public class PthalesCompositeActor extends TypedCompositeActor  {
         _initialize();
     }
 
-    /** Fire all entities inside the composite actor at each iteration
-     *
-     *  @exception IllegalActionException If there is no director, or if
-     *   the director's fire() method throws it, or if the actor is not
-     *   opaque.
-     */
-    public void fire() throws IllegalActionException {
-        super.fire();
-}
+    public void computeIterations(IOPort portIn,
+            LinkedHashMap<String, Integer> sizes) {
+
+        String repetition = "{";
+
+        // Simple example : pattern is fixed and iterations
+        LinkedHashMap<String, Integer[]> patternDims = PthalesIOPort
+                .getInternalPattern(portIn);
+        LinkedHashMap<String, Integer[]> tilingDims = PthalesIOPort
+                ._getTiling(portIn);
+
+        // Input array dimension
+        Object[] dims = tilingDims.keySet().toArray();
+
+        for (int i = 0; i < tilingDims.size(); i++) {
+
+            // No tiling => no repetition on dimension => next dim
+            if (tilingDims.get(dims[i]) != null) {
+                int nb = 1;
+                int jump = 1;
+                if (patternDims.get(dims[i]) != null) {
+                    nb = (patternDims.get(dims[i])[0] - 1)
+                            * patternDims.get(dims[i])[1] + 1;
+                    jump = patternDims.get(dims[i])[1];
+                }
+                int val = (int) Math.floor((sizes.get(dims[i]) - nb) / jump) + 1;
+
+                repetition += val;
+
+                if (i < dims.length - 1)
+                    repetition += ",";
+            }
+        }
+        repetition += "}";
+
+        Attribute repetitions = getAttribute(PthalesCompositeActor.REPETITIONS);
+        if (repetitions != null && repetitions instanceof Parameter) {
+            ((Parameter) repetitions).setExpression(repetition);
+        }
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
@@ -153,7 +189,6 @@ public class PthalesCompositeActor extends TypedCompositeActor  {
      *  the integer "1".
      */
     public Parameter repetitions;
-
 
     /** Create a new PthalesIOPort with the specified name.
      *  The container of the port is set to this actor.
@@ -170,7 +205,7 @@ public class PthalesCompositeActor extends TypedCompositeActor  {
 
             TypedIOPort port = new TypedIOPort(this, name, false, false);
             PthalesIOPort.initialize(port);
-            
+
             return port;
         } catch (IllegalActionException ex) {
             // This exception should not occur, so we throw a runtime
@@ -180,15 +215,16 @@ public class PthalesCompositeActor extends TypedCompositeActor  {
             workspace().doneWriting();
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                   ////
 
     protected void _initialize() throws IllegalActionException,
             NameDuplicationException {
-        
+
         if (getAttribute("_iconDescription") != null) {
-            ((SingletonConfigurableAttribute)getAttribute("_iconDescription")).setExpression("<svg width=\"60\" height=\"40\"><polygon points=\"2.54167,37.2083 13.9198,20.0125 2.54167,2.45833 46.675,2.45833 57.7083,20.0125 47.0198,37.2083\"style=\"fill:#c0c0ff;stroke:#000080;stroke-width:1\"/><text x=\"18\" y=\"31\" style=\"fill:#000080;font-size:35\">H</text></svg>");
+            ((SingletonConfigurableAttribute) getAttribute("_iconDescription"))
+                    .setExpression("<svg width=\"60\" height=\"40\"><polygon points=\"2.54167,37.2083 13.9198,20.0125 2.54167,2.45833 46.675,2.45833 57.7083,20.0125 47.0198,37.2083\"style=\"fill:#c0c0ff;stroke:#000080;stroke-width:1\"/><text x=\"18\" y=\"31\" style=\"fill:#000080;font-size:35\">H</text></svg>");
         }
         if (getAttribute("repetitions") == null) {
             repetitions = new Parameter(this, "repetitions");

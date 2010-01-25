@@ -35,8 +35,8 @@ import java.util.Set;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.AtomicActor;
+import ptolemy.actor.CompositeActor;
 import ptolemy.actor.IOPort;
-import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.IntToken;
@@ -45,6 +45,10 @@ import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.data.type.BaseType;
+import ptolemy.domains.modal.kernel.State;
+import ptolemy.domains.modal.modal.ModalModel;
+import ptolemy.domains.modal.modal.Refinement;
+import ptolemy.domains.modal.modal.RefinementPort;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -465,8 +469,6 @@ public class PthalesIOPort {
     public static void initialize(IOPort port) throws IllegalActionException,
             NameDuplicationException {
 
-        Actor actor = (Actor) port.getContainer();
-
         if (port.getAttribute("base") == null) {
             new Parameter(port, "base");
         }
@@ -492,6 +494,119 @@ public class PthalesIOPort {
 
         if (port.getAttribute("dataTypeSize") == null) {
             new StringParameter(port, "dataTypeSize");
+        }
+    }
+
+    public static void propagateHeader(IOPort portIn, String[] dims,
+            int[] sizes, int headersize, LinkedHashMap<String, Integer> arraySizes ) {
+        // Header
+        if (portIn.getContainer() instanceof PthalesRemoveHeaderActor) {
+            int sum = 1;
+            for (int i = 0; i < sizes.length; i++)
+                sum *= sizes[i];
+            sum += headersize;
+
+            // Input pattern
+            PthalesIOPort._modifyPattern(portIn, "global", sum);
+
+            // Output pattern
+            PthalesIOPort._modifyPattern(
+                    (IOPort) ((PthalesRemoveHeaderActor) portIn.getContainer())
+                            .getPort("out"), dims, sizes);
+
+            // Header found, update of all following Pthales actors
+            propagateIterations((IOPort) ((PthalesRemoveHeaderActor) portIn
+                    .getContainer()).getPort("out"),arraySizes);
+        }
+
+        if (portIn.isOutput()) {
+            if (!(portIn instanceof RefinementPort)) {
+                for (IOPort port : (List<IOPort>) portIn.connectedPortList()) {
+                    propagateHeader(port, dims, sizes, headersize,arraySizes);
+                }
+            }
+            if (portIn instanceof RefinementPort
+                    && portIn.getContainer() instanceof Refinement) {
+                Refinement ref = ((Refinement) portIn.getContainer());
+                State state = ((ModalModel) ref.getContainer()).getController()
+                        .currentState();
+                if (state.getName().equals(ref.getName())) {
+                    for (IOPort port : (List<IOPort>) portIn
+                            .connectedPortList()) {
+                        propagateHeader(port, dims, sizes, headersize,arraySizes);
+                    }
+
+                }
+            }
+        }
+        if (portIn.isInput()) {
+            if (portIn.getContainer() instanceof CompositeActor) {
+                for (Actor entity : (List<Actor>) ((CompositeActor) portIn
+                        .getContainer()).entityList()) {
+                    for (IOPort port : (List<IOPort>) entity.inputPortList()) {
+                        IOPort port2 = (IOPort) port;
+                        if (port2.connectedPortList().contains(portIn)) {
+                            int sum = 1;
+                            for (int i = 0; i < sizes.length; i++)
+                                sum *= sizes[i];
+                            sum += headersize;
+
+                            PthalesIOPort._modifyPattern(portIn, "global", sum);
+                            propagateHeader(port2, dims, sizes, headersize,arraySizes);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    public static void propagateIterations(IOPort portIn, LinkedHashMap<String, Integer> sizes) {
+        // Iterations
+        if (portIn.getContainer() instanceof PthalesCompositeActor) {
+            // Iteration computation
+            ((PthalesCompositeActor) portIn.getContainer()).computeIterations(portIn,sizes);
+            
+            // Once iterations are computed, output port can be computed
+            for (IOPort portOut : (List<IOPort>)((PthalesCompositeActor)portIn.getContainer()).outputPortList()) {
+                LinkedHashMap<String, Integer> outputs = PthalesIOPort.getArraySizes(portOut); 
+                for (IOPort port : (List<IOPort>) portOut.connectedPortList()) {
+                    propagateIterations(port,outputs);
+                }
+            }
+        }
+
+        if (portIn.isOutput()) {
+            if (!(portIn instanceof RefinementPort)) {
+                for (IOPort port : (List<IOPort>) portIn.connectedPortList()) {
+                    propagateIterations(port,sizes);
+                }
+            }
+            if (portIn instanceof RefinementPort
+                    && portIn.getContainer() instanceof Refinement) {
+                Refinement ref = ((Refinement) portIn.getContainer());
+                State state = ((ModalModel) ref.getContainer()).getController()
+                        .currentState();
+                if (state.getName().equals(ref.getName())) {
+                    for (IOPort port : (List<IOPort>) portIn
+                            .connectedPortList()) {
+                        propagateIterations(port,sizes);
+                    }
+
+                }
+            }
+        }
+        if (portIn.isInput()) {
+            if (portIn.getContainer() instanceof CompositeActor) {
+                for (Actor entity : (List<Actor>) ((CompositeActor) portIn
+                        .getContainer()).entityList()) {
+                    for (IOPort port : (List<IOPort>) entity.inputPortList()) {
+                        IOPort port2 = (IOPort) port;
+                        if (port2.connectedPortList().contains(portIn)) {
+                            propagateIterations(port2,sizes);
+                        }
+                    }
+                }
+            }
         }
     }
 
@@ -526,6 +641,47 @@ public class PthalesIOPort {
     public static LinkedHashMap<String, Integer[]> _getPattern(IOPort port) {
         return _parseSpec(port, PATTERN);
     }
+
+    public static void _modifyPattern(IOPort port, String dim, int dimSize) {
+        Attribute pattern = port.getAttribute(PATTERN);
+        if (port.getAttribute(PATTERN) == null) {
+            try {
+                pattern = new Parameter(port, PATTERN);
+            } catch (IllegalActionException e) {
+                e.printStackTrace();
+            } catch (NameDuplicationException e) {
+                 e.printStackTrace();
+            }
+        }
+
+        if (pattern instanceof Parameter) {
+            ((Parameter)pattern).setExpression("["+dim+"={"+dimSize+",1}]");
+        }
+   }
+    
+    public static void _modifyPattern(IOPort port, String[]dims, int[] dimSizes) {
+        Attribute pattern = port.getAttribute(PATTERN);
+        if (port.getAttribute(PATTERN) == null) {
+            try {
+                pattern = new Parameter(port, PATTERN);
+            } catch (IllegalActionException e) {
+                e.printStackTrace();
+            } catch (NameDuplicationException e) {
+                 e.printStackTrace();
+            }
+        }
+
+        String s = "[";
+        if (pattern instanceof Parameter) {
+            for (int i =0 ; i < dims.length; i++) {
+                s +=dims[i]+"={"+dimSizes[i]+",1}";
+                if (i < dims.length - 1)
+                    s+=",";
+            }
+        }
+        s+="]";
+        ((Parameter)pattern).setExpression(s);
+   }
 
     /** returns the tiling of this port 
      *  @return tiling 
