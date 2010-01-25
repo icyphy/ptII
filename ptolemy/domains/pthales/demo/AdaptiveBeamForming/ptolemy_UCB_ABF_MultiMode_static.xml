@@ -10,7 +10,7 @@
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{302.610692033864, 328.09600995767}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{-131.2736486486488, 165.6638513513514}">
     </property>
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="2">
@@ -19,7 +19,7 @@
         </property>
         <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{-215.0, 30.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-255.0, 95.0]">
         </property>
     </property>
     <entity name="ModalModel" class="ptolemy.domains.modal.modal.ModalModel">
@@ -1696,28 +1696,21 @@
         <link port="state2.out" relation="outRelation"/>
         <link port="state2.mode" relation="modeRelation"/>
     </entity>
-    <entity name="Sequence" class="ptolemy.actor.lib.Sequence">
+    <entity name="Mode" class="ptolemy.actor.lib.Sequence">
         <property name="values" class="ptolemy.data.expr.Parameter" value="{1,2}">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-365.0, 425.0]">
-        </property>
-    </entity>
-    <entity name="Sequence2" class="ptolemy.actor.lib.Sequence">
-        <property name="values" class="ptolemy.data.expr.Parameter" value="{1,2}">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-90.0, 430.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-380.0, 415.0]">
         </property>
     </entity>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[-325.0, 415.0]">
+        </vertex>
     </relation>
     <link port="ModalModel.port" relation="relation3"/>
     <link port="ModalModel.mode" relation="relation"/>
     <link port="ModalModel2.out" relation="relation3"/>
-    <link port="ModalModel2.mode" relation="relation2"/>
-    <link port="Sequence.output" relation="relation2"/>
-    <link port="Sequence2.output" relation="relation"/>
+    <link port="ModalModel2.mode" relation="relation"/>
+    <link port="Mode.output" relation="relation"/>
 </entity>
