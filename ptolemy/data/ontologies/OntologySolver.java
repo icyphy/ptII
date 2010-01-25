@@ -77,12 +77,7 @@ public abstract class OntologySolver extends OntologySolverBase {
     public OntologySolver(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-
-        action = new SharedParameter(this, "action", OntologySolver.class,
-                TRAINING);
-        action.setStringMode(true);
-        _addActions(action);
-
+        
         _momlHandler = new OntologyMoMLHandler(this, "OntologyMoMLHandler");
 
         // FIXME: We do not want this GUI dependency here...
@@ -90,14 +85,6 @@ public abstract class OntologySolver extends OntologySolverBase {
         // of here in the Java code.
         new OntologyDisplayActions(this, "PropertyDisplayActions");
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                   ports and parameters                    ////
-
-    /**
-     * The action mode of the solver (e.g. ANNOTATE, TRAINING, CLEAR, and etc.).
-     */
-    public Parameter action;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -166,10 +153,6 @@ public abstract class OntologySolver extends OntologySolverBase {
      * the highlightColor attribute in the property-able object.
      */
     public void displayProperties() throws IllegalActionException {
-        // Do nothing if we are not in a mode that allows display.
-        if (!(isResolve() || isView())) {
-            return;
-        }
 
         if (_momlHandler.highlight.getToken() == BooleanToken.TRUE) {
             _momlHandler.highlightProperties();
@@ -317,33 +300,12 @@ public abstract class OntologySolver extends OntologySolverBase {
 
             displayProperties();
 
-            if (isTraining() && success) {
-                _setTesting();
-            }
-
         } catch (KernelException e) {
             resetAll();
             throw new InternalErrorException(e);
         }
 
         return success;
-    }
-
-    /** True if the solver is in clear mode; otherwise false.
-     * 
-     * @return true if the OntologySolver is in clear mode, false otherwise
-     */
-    public boolean isClear() {
-        return action.getExpression().equals(OntologySolver.CLEAR);
-    }
-
-    /** True if the solver is in resolution mode; otherwise false.
-     * 
-     * @return true if the OntologySolver is in resolve mode, false otherwise
-     */
-    public boolean isResolve() {
-        return action.getExpression().equals(ANNOTATE)
-                || action.getExpression().equals(TRAINING);
     }
 
     /**
@@ -356,31 +318,6 @@ public abstract class OntologySolver extends OntologySolverBase {
      */
     public boolean isSettable(Object object) {
         return !_nonSettables.contains(object);
-    }
-
-    /** True if the solver is in testing mode; otherwise false.
-     * 
-     * @return true if the OntologySolver is in test mode, false otherwise
-     */
-    public boolean isTesting() {
-        return action.getExpression().equals(OntologySolver.TEST);
-    }
-
-    /** True if the solver is in training mode; otherwise false.
-     * 
-     * @return true if the OntologySolver is in training mode, false otherwise
-     */
-    public boolean isTraining() {
-        return action.getExpression().equals(TRAINING);
-    }
-
-    /** True if the solver is in viewing mode; otherwise false.
-     * FIXME: Not sure what the view mode for the solver does...
-     * 
-     * @return true if the OntologySolver is in view mode, false otherwise
-     */
-    public boolean isView() {
-        return action.getExpression().equals(OntologySolver.VIEW);
     }
     
     /**
@@ -495,33 +432,9 @@ public abstract class OntologySolver extends OntologySolverBase {
             _analyzer = analyzer;
             _isInvoked = isInvoked;
 
-            // Clear the resolved properties for the chosen solver.
-            String actionValue = action.getExpression();
-            if (actionValue.equals(CLEAR_ANNOTATION)) {
-                if (isInvoked) {
-                    _momlHandler.clearAnnotations();
-                }
-                return true;
-            } else if (actionValue.equals(CLEAR)) {
-                if (isInvoked) {
-                    _resolvedProperties.clear();
-                    _momlHandler.clearProperties();
-                    _momlHandler.clearDisplay();
-                }
-                return true;
-
-            } else if (actionValue.equals(VIEW)) {
-                if (isInvoked) {
-                    _momlHandler.clearDisplay();
-                    displayProperties();
-                }
-                return true;
-
-            }
-
             // If this is not an intermediate (invoked) solver,
             // we need to clear the display.
-            if (isInvoked && isResolve()) {
+            if (isInvoked) {
                 OntologySolver previousSolver = _ontologySolverUtilities._previousInvokedSolver;
 
                 // Clear the display properties of the previous invoked solver.
@@ -552,38 +465,14 @@ public abstract class OntologySolver extends OntologySolverBase {
             String trainedException = failedSolver.getTrainedException()
                     .replaceAll("\r", "");
             String exception = ex.getMessage().replaceAll("\r", "");
-            if (isTesting()) {
                 if (!exception.equals(trainedException)) {
                     addErrors(OntologySolver
                             .getTrainedExceptionMismatchMessage(exception,
                                     trainedException));
                 }
-            } else if (isResolve()) {
-                if (!exception.equals(trainedException)) {
-
-                    // ask the user if this is expected,
-                    boolean doRecord = MessageHandler
-                            .yesNoQuestion(OntologySolver
-                                    .getTrainedExceptionMismatchMessage(
-                                            exception, trainedException)
-                                    + "Do you want to record it?");
-
-                    if (doRecord) {
-                        // If so, record the exception in ex.solver.
-                        failedSolver.recordTrainedException(exception);
-                    } else {
-                        if (isTraining()) {
-                            // Don't set mode to TEST because the user
-                            // did not train (record) this exception.
-                            success = false;
-                        }
-                        throw ex;
-                    }
-                }
-            }
         }
 
-        if (isTesting() && noException && getTrainedException().length() > 0) {
+        if (noException && getTrainedException().length() > 0) {
             // if in TEST mode, if there is a previously trained
             // RegressionTestErrorExceptionException
             // and we do not get one in the resolution,
@@ -596,32 +485,14 @@ public abstract class OntologySolver extends OntologySolverBase {
     }
 
     /**
-     * Set the action mode of the solver. This sets the expression of the action
-     * parameter to the specified action value string.
-     * @param actionString The specified action value.
-     * @return The previous value of the action parameter.
-     */
-    public String setAction(String actionString) {
-        String oldAction = action.getExpression();
-        action.setExpression(actionString);
-        return oldAction;
-    }
-
-    /**
      * Update the property. This method is called from both invoked and
      * auxiliary solvers.
      * @exception IllegalActionException
      */
     public void updateProperties() throws IllegalActionException {
-        if (isView() || isClear()) {
-            return;
-        }
 
         boolean hasDecided = false;
         boolean userDecision = true;
-
-        // Only test the invoked solver.
-        boolean updating = isResolve();
 
         _addStatistics();
 
@@ -639,71 +510,14 @@ public abstract class OntologySolver extends OntologySolverBase {
             // Get the value resolved by the solver.
             Concept property = getProperty(namedObj);
 
-            if (updating) {
-                Concept previous = getPreviousProperty(namedObj);
-
-                if (!_isInvoked && !hasDecided) {
-
-                    // Check if the previous and resolved properties are
-                    // different.
-                    if (previous == null && property != null
-                            || previous != null && !previous.equals(property)) {
-
-                        /* FIXME: find a better way.
-                        if (_analyzer == null) {
-                            // Get user's decision.
-                            userDecision = MessageHandler
-                                    .yesNoQuestion("Resolved auxilary property for \""
-                                            + getExtendedUseCaseName()
-                                            + "\" is different from previous. "
-                                            + "Update this property?");
-                        } else {
-                            // Suppress the dialog.
-                            userDecision = ((Parameter) _analyzer
-                                    .getAttribute("overwriteDependentProperties"))
-                                    .getToken() == BooleanToken.TRUE;
-
-                        }
-                        */
-                        // Remember that we have made a decision.
-                        hasDecided = true;
-                    }
-                }
-
-                // Do nothing only if the previous resolved property
-                // did not exist AND the user did not want to update.
-                if (userDecision || previous != null) {
-
-                    // Get the property attribute so we can either update
-                    // its value or compare its value against the resolved
-                    // value (regression testing).
-                    ConceptAttribute attribute = _getPropertyAttribute(namedObj);
-                    _updatePropertyAttribute(attribute, userDecision ? property
-                            : previous);
-
-                }
-            }
         }
-
+        
         System.out.println(_getStatsAsString(": "));
 
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                      protected methods                    ////
-
-    /**
-     * Populate the possible choices for the specified action parameter.
-     * @param actionParameter The specified action parameter.
-     */
-    protected static void _addActions(Parameter actionParameter) {
-        actionParameter.addChoice(ANNOTATE);
-        actionParameter.addChoice(CLEAR);
-        actionParameter.addChoice(TEST);
-        actionParameter.addChoice(TRAINING);
-        actionParameter.addChoice(VIEW);
-        actionParameter.addChoice(CLEAR_ANNOTATION);
-    }
 
     /**
      * Add choices to the parameter where the choices are subdirectories of the
@@ -900,24 +714,6 @@ public abstract class OntologySolver extends OntologySolverBase {
     protected static final String _eol = StringUtilities
             .getProperty("line.separator");
 
-    /** The display label for "annotate" in the action choices. */
-    protected static final String ANNOTATE = "ANNOTATE";
-
-    /** The display label for "clear" in the action choices. */
-    protected static final String CLEAR = "CLEAR";
-
-    /** The display label for "clear annotation" in the action choices. */
-    protected static final String CLEAR_ANNOTATION = "CLEAR_ANNOTATION";
-
-    /** The display label for "test" in the action choices. */
-    protected static final String TEST = "TEST";
-
-    /** The display label for "training" in the action choices. */
-    protected static final String TRAINING = "TRAINING";
-
-    /** The display label for "view" in the action choices. */
-    protected static final String VIEW = "VIEW";
-
     ///////////////////////////////////////////////////////////////////
     ////                        private methods                    ////
 
@@ -938,14 +734,6 @@ public abstract class OntologySolver extends OntologySolverBase {
         }
     }
     
-
-    /**
-     * Set the solver to testing mode.
-     */
-    private void _setTesting() {
-        action.setPersistent(true);
-        setAction(TEST);
-    }
 
     /**
      * @param attribute

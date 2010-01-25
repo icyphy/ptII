@@ -405,44 +405,12 @@ public class LatticeOntologySolver extends OntologySolver implements Testable {
     }
 
     /**
-     * Return true if the solver is in collect constraints mode; otherwise,
-     * return false.
-     * @return True if the solver is in collect constraints mode; otherwise,
-     * return false.
-     */
-    public boolean isCollectConstraints() {
-        return action.getExpression().equals(COLLECT_CONSTRAINTS);
-    }
-
-    /**
-     * Return true if the solver is in initialization mode; otherwise, return
-     * false.
-     * @return True if the solver is in initialization mode; otherwise, return
-     * false.
-     */
-    public boolean isInitializeSolver() {
-        return action.getExpression().equals(INITIALIZE_SOLVER);
-    }
-
-    /**
      * Return true if the OntologySolver log mode is enabled, false otherwise.
      * 
      * @return true if the OntologySolver log mode is enabled, false otherwise
      */
     public Boolean isLogMode() {
         return _logMode;
-    }
-
-    /**
-     * Override the base class method. Return true if the solver is in
-     * initialization mode; otherwise, return the result of the super method
-     * (default).
-     * @return True if the solver is in initialization mode; otherwise, return
-     * the result of the super method (default).
-     */
-    public boolean isResolve() {
-        return isCollectConstraints() || isInitializeSolver()
-                || super.isResolve();
     }
 
     /**
@@ -470,31 +438,19 @@ public class LatticeOntologySolver extends OntologySolver implements Testable {
      *  @throws IllegalActionException If the test fails.
      */
     public void test() throws IllegalActionException {
-        // FIXME: Brute force method here just sets the action to TEST.
-        // However, the TEST and TRAINING modes should be removed.
-        String previousAction = action.getExpression();
-        try {
-            action.setExpression(TEST);
-            invokeSolver();
-            resetAll();
-        } finally {
-            action.setExpression(previousAction);
-        }
+        invokeSolver();
+        resetAll();
     }
     
     /** Train a test. This invokes the solver in TRAINING mode.
      */
     public void train() {
-        // FIXME: Brute force method here just sets the action to TRAINING.
-        // However, the TEST and TRAINING modes should be removed.
-        String previousAction = action.getExpression();
+        // Training is not supported yet.
         try {
             workspace().getWriteAccess();
-            action.setExpression(TRAINING);
             invokeSolver();
             resetAll();
         } finally {
-            action.setExpression(previousAction);
             workspace().doneWriting();
         }
     }
@@ -511,29 +467,19 @@ public class LatticeOntologySolver extends OntologySolver implements Testable {
         adapter = getAdapter(_toplevel());
 
         if (isLogMode()) {
-            String constraintFilename = _getTrainedConstraintFilename()
+            String constraintFilename = _getTrainedConstraintFilename() 
                     + "_resolved.txt";
 
-            if (super.isResolve()) {
 
-                _trainedConstraints.clear();
+            // Populate the _trainedConstraints list.
+            _readConstraintFile(constraintFilename);
 
-                // Populate the _trainedConstraints list.
-                _logHelperConstraints((LatticeOntologyAdapter) adapter);
+            // Match and remove from the list.
+            _regressionTestConstraints((LatticeOntologyAdapter) adapter);
 
-                // Write the list to file.
-                _updateConstraintFile(constraintFilename);
+            // Check if there are unmatched constraints.
+            _checkMissingConstraints();
 
-            } else if (isTesting() && isLogMode()) {
-                // Populate the _trainedConstraints list.
-                _readConstraintFile(constraintFilename);
-
-                // Match and remove from the list.
-                _regressionTestConstraints((LatticeOntologyAdapter) adapter);
-
-                // Check if there are unmatched constraints.
-                _checkMissingConstraints();
-            }
         }
     }
 
@@ -720,32 +666,18 @@ public class LatticeOntologySolver extends OntologySolver implements Testable {
                         + getName() + "__" + timestamp.replace(" ", "_")
                         + ".txt";
 
-                if (super.isResolve() && isLogMode()) {
-                    String directoryPath = logDirectory.getExpression();
-                    directoryPath += directoryPath.endsWith("/")
-                            || directoryPath.endsWith("\\") ? "" : "/";
 
-                    if (directoryPath.startsWith("$CLASSPATH")) {
-                        URI directory = new File(URIAttribute.getModelURI(this))
-                                .getParentFile().toURI();
-
-                        file = FileUtilities.nameToFile(directoryPath
-                                .substring(11)
-                                + logFilename, directory);
-
-                    } else {
-                        if (!logDirectory.asFile().exists()) {
-                            if (!logDirectory.asFile().mkdirs()) {
-                                throw new IllegalActionException(this,
-                                        "Failed to create \""
-                                                + logDirectory.asFile()
-                                                        .getAbsolutePath()
-                                                + "\" directory.");
-                            }
-                        }
-                        file = FileUtilities.nameToFile(logFilename,
-                                logDirectory.asFile().toURI());
+                if (!logDirectory.asFile().exists()) {
+                    if (!logDirectory.asFile().mkdirs()) {
+                        throw new IllegalActionException(this,
+                                "Failed to create \""
+                                + logDirectory.asFile()
+                                .getAbsolutePath()
+                                + "\" directory.");
                     }
+                file = FileUtilities.nameToFile(logFilename,
+                        logDirectory.asFile().toURI());
+
 
                     try {
                         if (!file.exists()) {
@@ -780,43 +712,13 @@ public class LatticeOntologySolver extends OntologySolver implements Testable {
                     }
                 }
 
-                // Record the initial constraints.
-                // FIXME: merge comment: Jackies code is "if (super.isResolve() && isLogMode()) {"; why different?
-                // FIXME: Charles Shelton 05/27/09 - We took the change that Jackie made to include the isLogMode() condition.
-                if (super.isResolve() && isLogMode()) {
-                    String constraintFilename = _getTrainedConstraintFilename()
-                            + "_initial.txt";
-
-                    // Populate the _trainedConstraints list.
-                    _logHelperConstraints(toplevelAdapter);
-
-                    // Write the list to file.
-                    _updateConstraintFile(constraintFilename);
+                // Find the greatest solution (most general type)
+                if (solvingFixedPoint.stringValue().equals("greatest")) {
+                    solver.solveGreatest();
+                } else {
+                    solver.solveLeast();
                 }
 
-                //              END CHANGE Thomas, 04/10/2008
-
-                if (!isCollectConstraints()) {
-                    // Find the greatest solution (most general type)
-                    if (solvingFixedPoint.stringValue().equals("greatest")) {
-                        solver.solveGreatest();
-                    } else {
-                        solver.solveLeast();
-                    }
-                }
-
-                // log resolved constraints to file.
-                if (super.isResolve() && isLogMode()) {
-                    try {
-                        writer.write(_getConstraintsAsLogFileString(
-                                constraintList, "R"));
-                        writer.close();
-                    } catch (IOException ex) {
-                        throw new OntologyResolutionException(this, ex,
-                                "Error writing to constraint log file \""
-                                        + file.getAbsolutePath() + "\".");
-                    }
-                }
 
                 // If some inequalities are not satisfied, or type variables
                 // are resolved to unacceptable types, such as
@@ -859,22 +761,20 @@ public class LatticeOntologySolver extends OntologySolver implements Testable {
             }
 
             // Check for solution correctness.
-            // In initialize mode, we can skip this.
-            if (!isInitializeSolver() && !isCollectConstraints()) {
-                if (conflicts.size() > 0) {
-                    throw new OntologyResolutionException(this, toplevel(),
-                            "Properties conflicts occurred in "
-                                    + toplevel().getFullName()
-                                    + " on the following inequalities:\n"
-                                    + conflicts);
-                }
-                if (unacceptable.size() > 0) {
-                    throw new TypeConflictException(unacceptable,
-                            "Properties resolved to unacceptable types in "
-                                    + toplevel.getFullName()
-                                    + " due to the following inequalities:");
-                }
+            if (conflicts.size() > 0) {
+                throw new OntologyResolutionException(this, toplevel(),
+                        "Properties conflicts occurred in "
+                        + toplevel().getFullName()
+                        + " on the following inequalities:\n"
+                        + conflicts);
             }
+            if (unacceptable.size() > 0) {
+                throw new TypeConflictException(unacceptable,
+                        "Properties resolved to unacceptable types in "
+                        + toplevel.getFullName()
+                        + " due to the following inequalities:");
+            }
+            
         } catch (IllegalActionException ex) {
             // This should not happen. The exception means that
             // _checkDeclaredProperty or constraintList is called on a
@@ -958,8 +858,6 @@ public class LatticeOntologySolver extends OntologySolver implements Testable {
         //      fsmConstraintType.addChoice("sink > src");
         //      fsmConstraintType.addChoice("sink != src");
 
-        action.addChoice(INITIALIZE_SOLVER);
-        action.addChoice(COLLECT_CONSTRAINTS);
     }
 
     private void _checkMissingConstraints() {
@@ -1347,74 +1245,6 @@ public class LatticeOntologySolver extends OntologySolver implements Testable {
         */
 
     }
-
-    /**
-     * Log the trained constraints in a subdirectory under the specified
-     * logDirectory. The contraint file has an unique name consist of the name
-     * of toplevel container and this solver. If the constraint file already
-     * exists, an overwrite warning message is sent to the user.
-     * @param filename
-     * @exception OntologyResolutionException Thrown if there is a problem
-     * opening, writing, or closing the constraint file.
-     */
-    private void _updateConstraintFile(String filename)
-            throws IllegalActionException {
-        if (!super.isResolve() || !isLogMode()) {
-            return;
-        }
-
-        try {
-            File constraintFile = new File(filename);
-
-            if (constraintFile.exists()) {
-                if (_analyzer != null
-                        && ((Parameter) _analyzer
-                                .getAttribute("overwriteConstraint"))
-                                .getExpression().equals("false")) {
-                    return;
-                }
-                // Ask user for a decision.
-                if (_analyzer == null && !isLogMode()) {
-                    /*
-                     * !MessageHandler.yesNoQuestion( "The constraint file \"" +
-                     * filename + "\"" + " exists. OK to overwrite?")) {
-                     */
-                    // Don't overwrite, do nothing and return.
-                    return;
-                }
-            } else {
-                if (!constraintFile.getParentFile().exists()) {
-                    if (!constraintFile.getParentFile().mkdirs()) {
-                        throw new IllegalActionException(this,
-                                "Failed to create \""
-                                        + constraintFile.getParentFile()
-                                                .getAbsolutePath()
-                                        + "\" directory.");
-                    }
-                }
-                if (!constraintFile.createNewFile()) {
-                    throw new IllegalActionException(this,
-                            "Failed to create \""
-                                    + constraintFile.getAbsolutePath() + "\".");
-                }
-            }
-
-            Writer writer = null;
-            try {
-                writer = new FileWriter(filename);
-                for (String constraint : _trainedConstraints) {
-                    writer.write(constraint + _eol);
-                }
-            } finally {
-                writer.close();
-            }
-
-        } catch (IOException ex) {
-            throw new OntologyResolutionException(this, ex,
-                    "Failed to train the constraint log file \"" + filename
-                            + "\".");
-        }
-    }
  
     
     /**
@@ -1481,18 +1311,5 @@ public class LatticeOntologySolver extends OntologySolver implements Testable {
      * a user-defined lattice.  This is obsolete and should be removed.
      */
     protected static final String _USER_DEFINED_LATTICE = "Attribute::";
-
-    /**
-     * The string that represents the menu choice to set the OntologySolver
-     * to only collect all the constraints in the model without actually running
-     * the solver algorithm.
-     */
-    protected static final String COLLECT_CONSTRAINTS = "COLLECT_CONSTRAINTS";
-
-    /**
-     * The string that represents the menu choice to set the OntologySolver
-     * to initialize the constraints in the solving algorithm without running it.
-     */
-    protected static final String INITIALIZE_SOLVER = "INITIALIZE_SOLVER";
 
 }
