@@ -343,7 +343,13 @@ public abstract class Top extends JFrame {
                     _menubar.add(_fileMenu);
 
                     // History fill
-                    _populateHistory(_readHistory());
+                    try { 
+                        _populateHistory(_readHistory());
+                    } catch (IOException ex) {
+                        // Ignore
+                    } catch (SecurityException ex) {
+                        // Ignore
+                    }
 
                     // Construct the Help menu by adding action commands
                     // and action listeners.
@@ -631,6 +637,11 @@ public abstract class Top extends JFrame {
         fileMenuItems[10] = new JMenuItem("Exit", KeyEvent.VK_X);
 
         if (StringUtilities.inApplet()) {
+            JMenuItem[] appletFileMenuItems = new JMenuItem[8];
+            System.arraycopy(fileMenuItems, 0,
+                    appletFileMenuItems, 0, appletFileMenuItems.length);
+            appletFileMenuItems[7] = fileMenuItems[10];
+            fileMenuItems = appletFileMenuItems;
             // If we are in an applet, disable certain menu items.
             fileMenuItems[0].setEnabled(false);
             fileMenuItems[2].setEnabled(false);
@@ -1276,6 +1287,16 @@ public abstract class Top extends JFrame {
         }
     }
 
+    /** Return the value of the history file name.
+     *  @return The value of the history file name, which is usually in
+     *  the Ptolemy II preferences directory.  The value returned is usually.
+     *  "~/.ptolemyII/history.txt".
+     *  @exception IOException If thrown while reading the preferences directory.
+     */
+    private String _getHistoryFileName() throws IOException { 
+        return StringUtilities.preferencesDirectory() + "history.txt";
+    }
+
     private static void _macCheck() {
         if (PtGUIUtilities.macOSLookAndFeel()
                 && System.getProperty("java.version").startsWith("1.5")) {
@@ -1294,35 +1315,43 @@ public abstract class Top extends JFrame {
      * Always return a list, that can be empty
      * @return list of file history
      */
-    private List<String> _readHistory() {
+    private List<String> _readHistory() throws IOException {
         ArrayList<String> historyList = new ArrayList<String>();
-        String s;
+        String historyFileName = _getHistoryFileName();
+        if (! new File(historyFileName).exists()) {
+            // No history file, so just return
+            return historyList;
+        }
+        FileReader fileReader = null;
         try {
-            FileReader fr = new FileReader(_historyFile);
-            BufferedReader br = new BufferedReader(fr);
-            while ((s = br.readLine()) != null) {
-                historyList.add(s);
+            fileReader = new FileReader(historyFileName);
+            BufferedReader bufferedReader = new BufferedReader(fileReader);
+            String line;
+            while ((line = bufferedReader.readLine()) != null) {
+                historyList.add(line);
             }
-        } catch (IOException e) {
-            // if no history, no action taken
+        } finally {
+            if (fileReader != null) {
+                fileReader.close();
+            }
         }
 
         return historyList;
     }
     
-    /** Write history to the file defined by _historyName
-     * 
-     */
+    /** Write history to the file defined by _getHistoryFileName(). */
     private void _writeHistory(List<String> historyList)
-    {
+            throws IOException {
+        FileWriter fileWriter = null;
         try {
-            FileWriter fw = new FileWriter(_historyFile);
-            for (String s : historyList)
-                fw.write(s + "\n");
-            fw.close();
-        } catch (IOException e) {
-            // Impossible to write History
-            MessageHandler.error("Impossible to write history. Please check that file is not in use !");
+            fileWriter = new FileWriter(_getHistoryFileName());
+            for (String line : historyList) {
+                fileWriter.write(line + "\n");
+            }
+        } finally {
+            if (fileWriter != null) {
+                fileWriter.close();
+            }
         }
     }
 
@@ -1330,7 +1359,8 @@ public abstract class Top extends JFrame {
      * to the first position if already in the list
      * @param file name of the file to add
      */
-    private void _updateHistory(String file, boolean delete) {
+    private void _updateHistory(String file, boolean delete) 
+            throws IOException {
         List<String> historyList = _readHistory();
         
         // Remove if already present (then added to first position)
@@ -1344,9 +1374,10 @@ public abstract class Top extends JFrame {
             historyList.remove(historyList.size() - 1);
 
         // Add to fist position
-        if (!delete)
+        if (!delete) {
             historyList.add(0, file);
-        
+        }
+
         // Serialize history
         _writeHistory(historyList);
 
@@ -1382,6 +1413,9 @@ public abstract class Top extends JFrame {
         }
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         inner classes                     ////
+
     /** Listener for history menu commands. */
     class HistoryMenuListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
@@ -1396,11 +1430,14 @@ public abstract class Top extends JFrame {
                                 
                 _read(file.toURI().toURL());
                 _updateHistory(actionCommand, false);
-                
-            } catch (Exception exception) {
                 // Impossible to read History
-                MessageHandler.error("Impossible to read history. Please check that file exists and is not in use !");
-                _updateHistory(actionCommand, true);
+            } catch (Exception ex) {
+                MessageHandler.error("Impossible to read history. Please check that file exists and is not in use !", ex);
+                try {
+                    _updateHistory(actionCommand, true);
+                } catch (IOException ex2) {
+                    // Ignore
+                }
             }
         }
     }
@@ -1428,12 +1465,6 @@ public abstract class Top extends JFrame {
 
     // History depth
     private int _historyDepth = 4;
-
-    // History file name
-    private String _historyFile = "history.ini";
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         inner classes                     ////
 
     // Indicator that the menu has been populated.
     private boolean _menuPopulated = false;
