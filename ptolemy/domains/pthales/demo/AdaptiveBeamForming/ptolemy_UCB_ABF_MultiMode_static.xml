@@ -112,7 +112,7 @@
         </entity>
         <entity name="state" class="ptolemy.domains.modal.modal.Refinement">
             <property name="Pthales Director" class="ptolemy.domains.pthales.kernel.PthalesDirector">
-                <property name="iterations" class="ptolemy.data.expr.Parameter" value="2">
+                <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
                 </property>
                 <property name="library" class="ptolemy.data.expr.StringParameter" value="ABF">
                 </property>
@@ -357,7 +357,7 @@
         </entity>
         <entity name="ABF" class="ptolemy.domains.modal.modal.Refinement">
             <property name="PThales Director" class="ptolemy.domains.pthales.kernel.PthalesDirector">
-                <property name="iterations" class="ptolemy.data.expr.Parameter" value="2">
+                <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
                 </property>
                 <property name="library" class="ptolemy.data.expr.StringParameter" value="ABF">
                 </property>
@@ -1019,7 +1019,7 @@
         </entity>
         <entity name="state" class="ptolemy.domains.modal.modal.Refinement">
             <property name="PThales Director" class="ptolemy.domains.pthales.kernel.PthalesDirector">
-                <property name="iterations" class="ptolemy.data.expr.Parameter" value="2">
+                <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
                 </property>
                 <property name="library" class="ptolemy.data.expr.StringParameter" value="ABF">
                 </property>
@@ -1295,7 +1295,7 @@
         </entity>
         <entity name="state2" class="ptolemy.domains.modal.modal.Refinement">
             <property name="PThales Director" class="ptolemy.domains.pthales.kernel.PthalesDirector">
-                <property name="iterations" class="ptolemy.data.expr.Parameter" value="2">
+                <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
                 </property>
                 <property name="library" class="ptolemy.data.expr.StringParameter" value="ABF">
                 </property>
