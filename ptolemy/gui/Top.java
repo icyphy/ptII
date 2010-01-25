@@ -1430,6 +1430,7 @@ public abstract class Top extends JFrame {
                                 
                 _read(file.toURI().toURL());
                 _updateHistory(actionCommand, false);
+                setDirectory(file);
                 // Impossible to read History
             } catch (Exception ex) {
                 MessageHandler.error("Impossible to read history. Please check that file exists and is not in use !", ex);
