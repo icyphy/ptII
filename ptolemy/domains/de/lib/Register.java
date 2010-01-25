@@ -171,9 +171,12 @@ public class Register extends Sampler {
      */
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
-        // Declare that output does not immediately depend on the input,
-        // though there is no lower bound on the time delay.
+        // Declare that output does not immediately depend on the input.
         declareDelayDependency(input, output, 0.0);
-        declareDelayDependency(trigger, output, 0.0);
+        // Note the dependency between trigger and output port is not
+        // declared. This is because declaring a dependency
+        // of 0.0 really means (0.0, 1) (i.e., the output does not
+        // immediately depend on the trigger). However, in this case the
+        // output could immediately depend on the trigger port.
     }
 }
