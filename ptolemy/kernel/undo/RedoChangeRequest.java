@@ -59,6 +59,17 @@ public class RedoChangeRequest extends ChangeRequest {
     }
 
     ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
+    /** Return the context specified in the constructor, or null if none
+     *  was specified.
+     *  @return The context.
+     */
+    public NamedObj getContext() {
+        return _context;
+    }
+
+    ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
     /** Execute the change by invoking redo on the undo stack of
