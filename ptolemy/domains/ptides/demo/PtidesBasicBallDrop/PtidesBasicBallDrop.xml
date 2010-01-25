@@ -12,13 +12,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-280.0, 220.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 111, 1303, 629}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={25, 140, 1255, 628}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1080, 515]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1041, 515]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{192.1401515151515, 422.7329545454545}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{172.6401515151515, 422.7329545454545}">
     </property>
     <property name="discDefaultRate" class="ptolemy.data.expr.Parameter" value="4 * encoderTicksPerRevolution">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -643,7 +643,7 @@
     <entity name="Controller" class="ptolemy.actor.TypedCompositeActor">
         <property name="_location" class="ptolemy.kernel.util.Location" value="{240.0, 510.0}">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={17, 148, 1263, 686}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={25, 114, 1254, 685}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1040, 572]">
         </property>
@@ -1284,7 +1284,7 @@
         <entity name="Disc Kinematics" class="ptolemy.actor.TypedCompositeActor">
             <property name="_location" class="ptolemy.kernel.util.Location" value="[430.0, 65.0]">
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 0, 805, 486}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={25, 0, 796, 485}, maximized=false}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[582, 372]">
             </property>
@@ -1338,7 +1338,7 @@
             <entity name="Planner" class="ptolemy.actor.TypedCompositeActor">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{0.0, 160.0}">
                 </property>
-                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 0, 1456, 916}, maximized=false}">
+                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={25, 0, 1255, 800}, maximized=false}">
                 </property>
                 <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1233, 802]">
                 </property>
@@ -1585,7 +1585,7 @@
                         <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 415.0]">
                         </property>
                     </property>
-                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={124, 158, 1131, 501}, maximized=false}">
+                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={124, 158, 1122, 500}, maximized=false}">
                     </property>
                     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[908, 387]">
                     </property>
@@ -1875,6 +1875,29 @@
                         </property>
                     </port>
                 </entity>
+                <entity name="TestActorPortDepth" class="ptolemy.domains.de.lib.TestActorPortDepth">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, -120.0]">
+                    </property>
+                    <port name="trigger" class="ptolemy.actor.TypedIOPort">
+                        <property name="input"/>
+                        <property name="minDelay" class="ptolemy.data.expr.Parameter" value="{0.0}">
+                        </property>
+                    </port>
+                </entity>
+                <entity name="Display" class="ptolemy.actor.lib.gui.Display">
+                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={25, 0, 1255, 800}, maximized=false}">
+                    </property>
+                    <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[1247, 753]">
+                    </property>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="{175, -120}">
+                    </property>
+                    <port name="input" class="ptolemy.actor.TypedIOPort">
+                        <property name="input"/>
+                        <property name="multiport"/>
+                        <property name="minDelay" class="ptolemy.data.expr.Parameter" value="{0.0}">
+                        </property>
+                    </port>
+                </entity>
                 <relation name="relation5" class="ptolemy.actor.TypedIORelation">
                     <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
                     </property>
@@ -1947,6 +1970,8 @@
                     <vertex name="vertex1" value="[675.0, 295.0]">
                     </vertex>
                 </relation>
+                <relation name="relation15" class="ptolemy.actor.TypedIORelation">
+                </relation>
                 <link port="tCenter" relation="relation2"/>
                 <link port="theta" relation="relation5"/>
                 <link port="desiredTheta" relation="relation17"/>
@@ -1991,9 +2016,12 @@
                 <link port="AddSubtract3.output" relation="relation7"/>
                 <link port="Const3.output" relation="relation9"/>
                 <link port="Const3.trigger" relation="relation2"/>
+                <link port="TestActorPortDepth.trigger" relation="relation5"/>
+                <link port="TestActorPortDepth.output" relation="relation15"/>
+                <link port="Display.input" relation="relation15"/>
             </entity>
             <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
-                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 215, 516, 357}, maximized=false}">
+                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={25, 215, 508, 347}, maximized=false}">
                 </property>
                 <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
                 </property>
@@ -2010,8 +2038,8 @@
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
 <title>TimedPlotter</title>
-<xRange min="1.7976931348623157E308" max="-1.7976931348623157E308"/>
-<yRange min="1.7976931348623157E308" max="-1.7976931348623157E308"/>
+<xRange min="0.0" max="3.2745656461"/>
+<yRange min="0.0" max="6540.999999988519"/>
 </plot>?>
                 </configure>
             </entity>
@@ -2218,7 +2246,7 @@
             </property>
         </port>
         <entity name="Control Signal" class="ptolemy.actor.lib.gui.TimedPlotter">
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 18, 582, 434}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={25, 18, 574, 424}, maximized=false}">
             </property>
             <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[566, 377]">
             </property>
@@ -2231,13 +2259,13 @@
 <title>Control Signal</title>
 <xLabel>time (s)</xLabel>
 <yLabel>control signal (V)</yLabel>
-<xRange min="1.7976931348623157E308" max="-1.7976931348623157E308"/>
-<yRange min="1.7976931348623157E308" max="-1.7976931348623157E308"/>
+<xRange min="2.5E-4" max="3.2743156461000003"/>
+<yRange min="-1.5814841986287589" max="3.8515035423867277"/>
 </plot>?>
             </configure>
         </entity>
         <entity name="Disc Rate" class="ptolemy.actor.lib.gui.TimedPlotter">
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 437, 575, 463}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={25, 337, 567, 453}, maximized=false}">
             </property>
             <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[559, 406]">
             </property>
@@ -2250,8 +2278,8 @@
 <title>Disc Rate</title>
 <xLabel>time (s)</xLabel>
 <yLabel>Rate (rev/s)</yLabel>
-<xRange min="0.0" max="0.0"/>
-<yRange min="0.0020" max="0.0020"/>
+<xRange min="0.0" max="3.2745656461"/>
+<yRange min="0.0020" max="8.0"/>
 </plot>?>
             </configure>
         </entity>
@@ -2275,7 +2303,7 @@
             </property>
         </entity>
         <entity name="Error" class="ptolemy.actor.lib.gui.TimedPlotter">
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 20, 578, 434}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={25, 20, 570, 424}, maximized=false}">
             </property>
             <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[562, 377]">
             </property>
@@ -2288,13 +2316,13 @@
 <title>Error</title>
 <xLabel>time (s)</xLabel>
 <yLabel>position (rad)</yLabel>
-<xRange min="1.7976931348623157E308" max="-1.7976931348623157E308"/>
-<yRange min="1.7976931348623157E308" max="-1.7976931348623157E308"/>
+<xRange min="0.0" max="3.2740656461"/>
+<yRange min="-1.5002342" max="3.262258599999999"/>
 </plot>?>
             </configure>
         </entity>
         <entity name="Disc Position" class="ptolemy.actor.lib.gui.TimedPlotter">
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 434, 581, 466}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={25, 334, 573, 456}, maximized=false}">
             </property>
             <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[565, 409]">
             </property>
@@ -2305,8 +2333,8 @@
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
 <title>Disc Position</title>
-<xRange min="0.0" max="0.0"/>
-<yRange min="1.0" max="1.0"/>
+<xRange min="0.0" max="3.2745656461"/>
+<yRange min="1.0" max="6541.0"/>
 </plot>?>
             </configure>
         </entity>
