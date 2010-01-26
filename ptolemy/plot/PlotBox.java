@@ -462,6 +462,49 @@ public class PlotBox extends JPanel implements Printable {
         }
     }
 
+    /** Destroy the plotter.  This method is usually 
+     *  called by PlotApplet.destroy().  It does
+     *  various cleanups to reduce memory usage.
+     */
+    public void destroy() {
+        clear(true);
+        // Avoid leaking _timerTask;
+        setAutomaticRescale(false);
+        setTimedRepaint(false);
+
+        // Remove the buttons
+        if (_printButton != null) {
+            ActionListener [] listeners = _printButton.getActionListeners();
+            for (int i = 0; i < listeners.length; i++) {
+                _printButton.removeActionListener(listeners[i]);
+            }
+            _printButton = null;
+        }
+        if (_resetButton != null) {
+            ActionListener [] listeners = _resetButton.getActionListeners();
+            for (int i = 0; i < listeners.length; i++) {
+                _resetButton.removeActionListener(listeners[i]);
+            }
+            _resetButton = null;
+        }
+        if (_formatButton != null) {
+            ActionListener [] listeners = _formatButton.getActionListeners();
+            for (int i = 0; i < listeners.length; i++) {
+                _formatButton.removeActionListener(listeners[i]);
+            }
+            _formatButton = null;
+        }
+        if (_fillButton != null) {
+            ActionListener [] listeners = _fillButton.getActionListeners();
+            for (int i = 0; i < listeners.length; i++) {
+                _fillButton.removeActionListener(listeners[i]);
+            }
+            _fillButton = null;
+        }
+
+        removeAll();
+    }
+
     /** Export a description of the plot.
      *  Currently, only EPS is supported.  But in the future, this
      *  may cause a dialog box to open to allow the user to select
@@ -1213,10 +1256,16 @@ public class PlotBox extends JPanel implements Printable {
     public void setAutomaticRescale(boolean automaticRescale) {
         _automaticRescale = automaticRescale;
         if (automaticRescale) {
+            if (_timerTask == null) {
+                _timerTask = new TimedRepaint();
+            }
             _timerTask.addListener(this);
         } else if (!_timedRepaint) {
             _resetScheduledTasks();
-            _timerTask.removeListener(this);
+            if (_timerTask != null) {
+                _timerTask.removeListener(this);
+                _timerTask = null;
+            }
         }
     }
 
@@ -1259,6 +1308,7 @@ public class PlotBox extends JPanel implements Printable {
      *  should be used only by applets, which normally do not have menus.
      *  This method should only be called from within the event dispatch
      *  thread, since it interacts with swing.
+     *  @see #removeButtons()
      */
     public synchronized void setButtons(boolean visible) {
         // Changing legend means we need to repaint the offscreen buffer.
@@ -1533,9 +1583,15 @@ public class PlotBox extends JPanel implements Printable {
     public void setTimedRepaint(boolean timedRepaint) {
         _timedRepaint = timedRepaint;
         if (timedRepaint) {
+            if (_timerTask == null) {
+                _timerTask = new TimedRepaint();
+            }
             _timerTask.addListener(this);
         } else if (!_automaticRescale) {
-            _timerTask.removeListener(this);
+            if (_timerTask != null) {
+                _timerTask.removeListener(this);
+                _timerTask = null;
+            }
             _resetScheduledTasks();
         }
     }
@@ -4197,7 +4253,7 @@ public class PlotBox extends JPanel implements Printable {
     private boolean _timedRepaint = false;
 
     // The timer task that does the repainting.
-    static private TimedRepaint _timerTask = new TimedRepaint();
+    static private TimedRepaint _timerTask = null;
 
     // Variables keeping track of the interactive zoom box.
     // Initialize to impossible values.

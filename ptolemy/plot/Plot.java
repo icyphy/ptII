@@ -2331,6 +2331,9 @@ public class Plot extends PlotBox {
         super.clear(format);
         _currentdataset = -1;
         _points.clear();
+        for (ArrayList<Bin> data : _bins) {
+            data.clear();
+        }
         _bins.clear();
         _prevxpos.clear();
         _prevypos.clear();

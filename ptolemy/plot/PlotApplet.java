@@ -36,6 +36,7 @@ import java.awt.Color;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.net.URL;
 
@@ -73,6 +74,19 @@ public class PlotApplet extends JApplet {
     //             _mutex = new Object();
     //         }
     //     }
+
+    /** Cleanup after execution of the model.  This method is called
+     *  by the browser or appletviewer to inform this applet that
+     *  it should clean up.
+     */
+    public void destroy() {
+        _plot.destroy(); 
+        // Needed to get rid of the Mouse, MouseMotion and Key listeners
+        //getRootPane().getContentPane().removeAll();
+        getContentPane().remove(_plot);
+        _plot = null;
+        super.destroy();
+    }
 
     /** Return a string describing this applet.
      *  @return A string describing the applet.
