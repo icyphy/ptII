@@ -2397,67 +2397,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             super._writeFile(file);
         }
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected variables               ////
-
-    /** The default Library. **/
-    protected LibraryAttribute _defaultLibrary;
-
-    /** The cut action. */
-    protected Action _cutAction;
-
-    /** The copy action. */
-    protected Action _copyAction;
-
-    /** The edit menu. */
-    protected JMenu _editMenu;
-
-    /** The action to edit preferences. */
-    protected EditPreferencesAction _editPreferencesAction;
     
-    /** The export to PDF action. */
-    protected Action _exportPDFAction;
-
-    /** The panner. */
-    protected JCanvasPanner _graphPanner;
-
-    /** The library display widget. */
-    protected JTree _library;
-
-    /** The library context menu creator. */
-    protected PTreeMenuCreator _libraryContextMenuCreator;
-
-    /** The library model. */
-    protected EntityTreeModel _libraryModel;
-
-    /** The library scroll pane. */
-    protected JScrollPane _libraryScrollPane;
-
-    /** Action to move to the back. */
-    protected MoveToBackAction _moveToBackAction;
-
-    /** Action to move to the front. */
-    protected MoveToFrontAction _moveToFrontAction;
-
-    /** The library display panel. */
-    protected JPanel _palettePane;
-
-    /** The paste action. */
-    protected Action _pasteAction;
-
-    /** The split pane for library and editor. */
-    protected JSplitPane _splitPane;
-
-    /** The toolbar. */
-    protected JToolBar _toolbar;
-
-    /** The library. */
-    protected CompositeEntity _topLibrary;
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
-
     /** Return the MoML to delete the specified selection objects.
      *  This has the side effect of unselecting the objects. It also
      *  deletes edges that are not fully connected (these deletions
@@ -2467,7 +2407,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
      *  @param model The selection model.
      *  @return The MoML to delete the selected objects.
      */
-    private StringBuffer _deleteMoML(AbstractBasicGraphModel graphModel,
+    protected StringBuffer _deleteMoML(AbstractBasicGraphModel graphModel,
             Object[] selection, SelectionModel model) {
 
         // First collect selected objects into the userObjects array
@@ -2572,6 +2512,64 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
 
         return moml;
     }
+
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected variables               ////
+
+    /** The default Library. **/
+    protected LibraryAttribute _defaultLibrary;
+
+    /** The cut action. */
+    protected Action _cutAction;
+
+    /** The copy action. */
+    protected Action _copyAction;
+
+    /** The edit menu. */
+    protected JMenu _editMenu;
+
+    /** The action to edit preferences. */
+    protected EditPreferencesAction _editPreferencesAction;
+    
+    /** The export to PDF action. */
+    protected Action _exportPDFAction;
+
+    /** The panner. */
+    protected JCanvasPanner _graphPanner;
+
+    /** The library display widget. */
+    protected JTree _library;
+
+    /** The library context menu creator. */
+    protected PTreeMenuCreator _libraryContextMenuCreator;
+
+    /** The library model. */
+    protected EntityTreeModel _libraryModel;
+
+    /** The library scroll pane. */
+    protected JScrollPane _libraryScrollPane;
+
+    /** Action to move to the back. */
+    protected MoveToBackAction _moveToBackAction;
+
+    /** Action to move to the front. */
+    protected MoveToFrontAction _moveToFrontAction;
+
+    /** The library display panel. */
+    protected JPanel _palettePane;
+
+    /** The paste action. */
+    protected Action _pasteAction;
+
+    /** The split pane for library and editor. */
+    protected JSplitPane _splitPane;
+
+    /** The toolbar. */
+    protected JToolBar _toolbar;
+
+    /** The library. */
+    protected CompositeEntity _topLibrary;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
