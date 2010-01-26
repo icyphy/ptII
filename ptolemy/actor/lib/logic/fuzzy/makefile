@@ -54,8 +54,7 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 # Keep this list alphabetized.
 JSRCS = \
 	FuzzyLogic.java \
-	CombinedFile.java
-
+	ModelCreator.java \
 
 OTHER_FILES_TO_BE_JARED = \
 	Antenna.xml \
@@ -77,10 +76,10 @@ MISC_FILES =
 OPTIONAL_FILES = \
 	doc \
 	demo \
-	'CombinedFile$$Architecture.class' \
-	'CombinedFile$$Option.class' \
-	FuzzyParser.class
-
+	'FuzzyLogic$$FuzzyLogicVar.class' \
+	'FuzzyLogic$$FuzzyParser.class' \
+	'ModelCreator$$Architecture.class' \
+	'ModelCreator$$Option.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 
