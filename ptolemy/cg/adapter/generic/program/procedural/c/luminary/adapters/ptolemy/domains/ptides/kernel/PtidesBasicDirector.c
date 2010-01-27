@@ -189,7 +189,7 @@ void getRealTime(Time * const physicalTime){
     uint32 tick2;
     uint32 tempSecs;
     uint32 tempQuarterSecs;
-	for (;;) {
+        for (;;) {
         tick1 = SysTickValueGet();
         tempSecs = _secs;
         tempQuarterSecs = _quarterSecs;
@@ -197,19 +197,19 @@ void getRealTime(Time * const physicalTime){
         //If the system tick rolls over (the tick counts down) between accessing
         // the volatile variables _secs and _quartersecs, then we account for this here
         // by incrementing _quartersecs
-	    if(tick2 < tick1) {
-		    physicalTime->secs = tempSecs;
-		    switch(tempQuarterSecs){
-				case 0:			physicalTime->nsecs = 0;		 break;
-		        case 1:         physicalTime->nsecs = 250000000; break;
-		        case 2:         physicalTime->nsecs = 500000000; break;
-		        case 3:         physicalTime->nsecs = 750000000; break;
-		    }
-		    // convertCyclesToNsecs assumes 50MHz clock
-	    	physicalTime->nsecs += (convertCyclesToNsecs((TIMER_ROLLOVER_CYCLES >> 2) - tick2));
-			break;
-		}
-	}
+            if(tick2 < tick1) {
+                    physicalTime->secs = tempSecs;
+                    switch(tempQuarterSecs){
+                                case 0:                        physicalTime->nsecs = 0;                 break;
+                        case 1:         physicalTime->nsecs = 250000000; break;
+                        case 2:         physicalTime->nsecs = 500000000; break;
+                        case 3:         physicalTime->nsecs = 750000000; break;
+                    }
+                    // convertCyclesToNsecs assumes 50MHz clock
+                    physicalTime->nsecs += (convertCyclesToNsecs((TIMER_ROLLOVER_CYCLES >> 2) - tick2));
+                        break;
+                }
+        }
 }
 
 /* timer */
@@ -627,10 +627,10 @@ __heap_limit
 ;
 ;******************************************************************************
 
-$externs		
+$externs                
         EXTERN  Timer0IntHandler
-		EXTERN  Timer1IntHandler
-		EXTERN  SysTickHandler
+                EXTERN  Timer1IntHandler
+                EXTERN  SysTickHandler
 
 ;******************************************************************************
 ;
@@ -650,11 +650,11 @@ __Vectors
         DCD     0                           ; Reserved
         DCD     0                           ; Reserved
         DCD     0                           ; Reserved
-        DCD     SVCallHandler	            ; SVCall Handler
+        DCD     SVCallHandler                    ; SVCall Handler
         DCD     IntDefaultHandler           ; Debug Monitor Handler
         DCD     0                           ; Reserved
         DCD     IntDefaultHandler           ; PendSV Handler
-        DCD     SysTickHandler 	            ; SysTick Handler
+        DCD     SysTickHandler                     ; SysTick Handler
         DCD     $GPIOAHandler               ; GPIO Port A
         DCD     $GPIOBHandler               ; GPIO Port B
         DCD     $GPIOCHandler               ; GPIO Port C
@@ -753,28 +753,28 @@ IntDefaultHandler
 ;******************************************************************************
 ; IMPORTANT: this subroutine assumes addStack is compiled to run BEFORE popping out of ISR
 addStack
-    MRS		R1, MSP    	; move stackpointer to R1
+    MRS                R1, MSP            ; move stackpointer to R1
     ; Copy previous R4, LR to very top of future stack
-    LDRD	R2, R3, [R1, #0]
-    STRD 	R2, R3, [R1, #-64]
-    ADD		R1, R1, #8
-    MSR		MSP, R1
-    PUSH	{R4-R11}
-    ;MOV		R3, #0        ; load R1 with the previous xPSR
-    LDR		R3, [R1, #28]		    ; load R1 with the previous xPSR
-    STR		R3, [R1, #-36]			; store it for use of processEvents
-    LDR		R3, =processEvents		; find where "processEvents + 2" is
-    ADD		R3, R3, #2
-    STR		R3, [R1, #-40]			; store this value into correct place in memory.
-    MOV		R2, #00000000			; write value #00000000
-    MOV		R3, #00000000
-    ;MOV		R0, #3    	; to 6 x 4 bytes to the top of the stack.
-    SUB		R1, R1, #72
-    STRD	R2, R3, [R1, #8]			; store value in R2 to address pointed by R1-32
-    STRD	R2, R3, [R1, #16]			; store value in R2 to address pointed by R1-32
-    STRD	R2, R3, [R1, #24]			; store value in R2 to address pointed by R1-32
-    MSR		MSP, R1    	; update Main Stack Pointer    
-    BX		LR
+    LDRD        R2, R3, [R1, #0]
+    STRD         R2, R3, [R1, #-64]
+    ADD                R1, R1, #8
+    MSR                MSP, R1
+    PUSH        {R4-R11}
+    ;MOV                R3, #0        ; load R1 with the previous xPSR
+    LDR                R3, [R1, #28]                    ; load R1 with the previous xPSR
+    STR                R3, [R1, #-36]                        ; store it for use of processEvents
+    LDR                R3, =processEvents                ; find where "processEvents + 2" is
+    ADD                R3, R3, #2
+    STR                R3, [R1, #-40]                        ; store this value into correct place in memory.
+    MOV                R2, #00000000                        ; write value #00000000
+    MOV                R3, #00000000
+    ;MOV                R0, #3            ; to 6 x 4 bytes to the top of the stack.
+    SUB                R1, R1, #72
+    STRD        R2, R3, [R1, #8]                        ; store value in R2 to address pointed by R1-32
+    STRD        R2, R3, [R1, #16]                        ; store value in R2 to address pointed by R1-32
+    STRD        R2, R3, [R1, #24]                        ; store value in R2 to address pointed by R1-32
+    MSR                MSP, R1            ; update Main Stack Pointer    
+    BX                LR
 
 ;******************************************************************************
 ;
@@ -782,11 +782,11 @@ addStack
 ;
 ;******************************************************************************
 stackRestore
-    MRS		R0, MSP    	; move stackpointer to R0
-    ADD		R0, R0, #32     ; the stack that was just pushed by the ISR is ignored
-    MSR		MSP, R0    	; instead we use the stack that was saved before the first ISR
-    POP		{R4-R11}
-    BX		LR    		; branch back to end this ISR
+    MRS                R0, MSP            ; move stackpointer to R0
+    ADD                R0, R0, #32     ; the stack that was just pushed by the ISR is ignored
+    MSR                MSP, R0            ; instead we use the stack that was saved before the first ISR
+    POP                {R4-R11}
+    BX                LR                    ; branch back to end this ISR
 
 ;******************************************************************************
 ;
@@ -797,16 +797,16 @@ stackRestore
 ;
 ;******************************************************************************
 SVCallHandler
-		        B		stackRestore				
-		        
+                        B                stackRestore                                
+                        
 ;******************************************************************************
 ;
 ; External declaration for the stack manipulation used by the application.
 ;
 ;******************************************************************************
-				EXPORT addStack
-				EXPORT stackRestore
-				IMPORT processEvents
+                                EXPORT addStack
+                                EXPORT stackRestore
+                                IMPORT processEvents
 
 ;******************************************************************************
 ;

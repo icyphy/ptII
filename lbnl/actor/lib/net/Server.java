@@ -216,13 +216,13 @@ public class Server {
                 .getInputStream());
         final BufferedReader d = new BufferedReader(inpStrRea);
         final String line = d.readLine();
-	if ( line == null ){
-	    final String em = "Client did not send any new values." + LS +
-		"It appears that it terminated without sending" + LS + 
-		"an error message to the server." + LS +
-		"Check log files of client program for possible errors.";
-	    throw new IOException(em);
-	}
+        if ( line == null ){
+            final String em = "Client did not send any new values." + LS +
+                "It appears that it terminated without sending" + LS + 
+                "an error message to the server." + LS +
+                "Check log files of client program for possible errors.";
+            throw new IOException(em);
+        }
         ////////////////////////////////////////////////////
         // get elements from the line
         String[] ele = line.split(" ");
@@ -278,7 +278,7 @@ public class Server {
             for (int iSer = 0; iSer < 2; iSer++) {
                 Thread.sleep(10); // in milliseconds
                 ser[iSer].read();
-                //		Thread.sleep(10);
+                //                Thread.sleep(10);
                 ser[iSer].write(0, new Double(iLoo).doubleValue(), dbl);
                 System.out.println("Loop number: " + iLoo);
             }

@@ -167,7 +167,7 @@ public class OrderedRecordToken extends RecordToken {
             
             // labels match
             if (!label.equals(argLabel)) {
-            	return false;
+                    return false;
             }
             
             Token token1 = get(label);
@@ -240,7 +240,7 @@ public class OrderedRecordToken extends RecordToken {
 
             // labels match
             if (!label.equals(argLabel)) {
-            	return BooleanToken.FALSE;
+                    return BooleanToken.FALSE;
             }
             
             Token token1 = get(label);

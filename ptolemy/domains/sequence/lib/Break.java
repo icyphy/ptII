@@ -124,12 +124,12 @@ public class Break extends ControlActor {
      *  @exception IllegalActionException Not thrown here
      */
     public void preinitialize() throws IllegalActionException {
-    	super.preinitialize();
-    	
-    	if (input.connectedPortList().isEmpty())
-    	{
-    		input.setTypeEquals(BaseType.BOOLEAN);
-    	}
+            super.preinitialize();
+            
+            if (input.connectedPortList().isEmpty())
+            {
+                    input.setTypeEquals(BaseType.BOOLEAN);
+            }
     }
     
     

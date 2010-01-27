@@ -285,7 +285,7 @@ end(void *data, const char *el);
 ///\param exp the xPath expression
 ////////////////////////////////////////////////////////////////
 int getnumberofxmlvalues( char* const fileName,
-			  char* const exp);
+                          char* const exp);
 
 ////////////////////////////////////////////////////////////////
 /// This method returns the xmlvalues parsed given xPath expressions.

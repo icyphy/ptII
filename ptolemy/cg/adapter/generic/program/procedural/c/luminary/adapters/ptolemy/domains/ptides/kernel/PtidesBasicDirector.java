@@ -133,7 +133,7 @@ public class PtidesBasicDirector
             }
             if (foundConfig == false) {
                 throw new IllegalActionException(actor, "Cannot found the configuration for this " +
-                		"actor.");
+                                "actor.");
             }
         }
         for (int i = 0; i < configurationSize; i++) {

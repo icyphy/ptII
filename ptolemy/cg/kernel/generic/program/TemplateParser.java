@@ -901,7 +901,7 @@ public class TemplateParser {
             return _replaceHasTokenMacro(parameter);
         } else if (macro.equals("ref")) {
             CGException.throwException("$ref is no longer supported as a macro. To reference " +
-            		"input/output ports, use $get() and $put(). For parameters, use $param()");
+                            "input/output ports, use $get() and $put(). For parameters, use $param()");
         } else if (macro.equals("param")) {
             return _replaceParameter(parameter);
         } else if (macro.equals("targetType")) {
@@ -1284,7 +1284,7 @@ public class TemplateParser {
         // First is the name of the parameter, second is the offset of the parameter.
         if (!(_component instanceof Actor)) {
             CGException.throwException(_component, "Parameters are only supported for" +
-            		"actors, but this component is not one.");
+                            "actors, but this component is not one.");
         }
         Director directorAdapter = (Director)_codeGenerator.getAdapter(((Actor)_component).getDirector());
         NamedProgramCodeGeneratorAdapter adapter = 
@@ -1296,7 +1296,7 @@ public class TemplateParser {
             offset[1] = parameters.get(1);
         } else if (parameters.size() != 1){
             CGException.throwException(_component, "$param() can be used as follows:" +
-            		"$param(name), or, $param(name, offset)");
+                            "$param(name), or, $param(name, offset)");
         }
         Attribute attribute = adapter.getComponent().getAttribute(paramName);
         return directorAdapter.getParameter(adapter, attribute, offset);

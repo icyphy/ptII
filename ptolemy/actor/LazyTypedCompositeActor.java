@@ -772,8 +772,8 @@ public class LazyTypedCompositeActor extends TypedCompositeActor implements
                             // Must have been given in a CDATA section.
                             parser.parse(_base, _configureText);
 
-			    // Our work here is done, free this up.
-			    _configureText = null;
+                            // Our work here is done, free this up.
+                            _configureText = null;
                         }
                     }
                 } finally {

@@ -60,7 +60,7 @@ public class PointerToken extends Token {
      */
     public PointerToken() {
         super();
-	_check32Bit();
+        _check32Bit();
     }
 
     /** Construct a token with the specified memory location.
@@ -71,7 +71,7 @@ public class PointerToken extends Token {
      */
     public PointerToken(int pointer) throws IllegalActionException {
         _value = pointer;
-	_check32Bit();
+        _check32Bit();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -307,19 +307,19 @@ public class PointerToken extends Token {
      *  @return true if this is a 32bit JVM.
      */
     public static boolean is32Bit() {
-	String dataModelProperty = StringUtilities.getProperty("sun.arch.data.model");
-	// FIXME: it is difficult to detect if we are under a
-	// 64bit JVM.  See
-	// http://forums.sun.com/thread.jspa?threadID=5306174
-	if (dataModelProperty.indexOf("64") != -1) {
-	    return false;
-	} else {
-	    String javaVmNameProperty = StringUtilities.getProperty("java.vm.name");
-	    if (javaVmNameProperty.indexOf("64") != -1) {
-		return false;
-	    }
-	} 
-	return true;
+        String dataModelProperty = StringUtilities.getProperty("sun.arch.data.model");
+        // FIXME: it is difficult to detect if we are under a
+        // 64bit JVM.  See
+        // http://forums.sun.com/thread.jspa?threadID=5306174
+        if (dataModelProperty.indexOf("64") != -1) {
+            return false;
+        } else {
+            String javaVmNameProperty = StringUtilities.getProperty("java.vm.name");
+            if (javaVmNameProperty.indexOf("64") != -1) {
+                return false;
+            }
+        } 
+        return true;
     }
 
 
@@ -333,16 +333,16 @@ public class PointerToken extends Token {
     ////                         private methods                   ////
 
     private static void _check32Bit() {
-	if (!_checked32Bit) {
-	    // Check only once if we are on a 32 bit platform.
-	    _checked32Bit = true;
-	    _is32Bit = is32Bit();
-	}
-	if (!_is32Bit) {
-	    throw new RuntimeException("PointerTokens do not work "
-				       + "under 64bit JVMs, see "
-				       + "https://chess.eecs.berkeley.edu/bugzilla/show_bug.cgi?id=285");
-	}
+        if (!_checked32Bit) {
+            // Check only once if we are on a 32 bit platform.
+            _checked32Bit = true;
+            _is32Bit = is32Bit();
+        }
+        if (!_is32Bit) {
+            throw new RuntimeException("PointerTokens do not work "
+                                       + "under 64bit JVMs, see "
+                                       + "https://chess.eecs.berkeley.edu/bugzilla/show_bug.cgi?id=285");
+        }
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -232,9 +232,9 @@ public class SequenceScheduler extends Scheduler {
      */
     public SequenceSchedule getSchedule(List<SequenceAttribute> independentList) throws IllegalActionException,
             NotSchedulableException {
-    	
-    	// Check the list of sequence attributes
-    	// There must be at least one actor with a sequence attribute in the model
+            
+            // Check the list of sequence attributes
+            // There must be at least one actor with a sequence attribute in the model
         if (independentList == null || independentList.isEmpty()) {
             throw new IllegalActionException(this, "A model or composite actor with a SequencedModelDirector must have at least one actor, not dependent on other actors such as control actors, with a SequenceAttribute or ProcessAttribute.  No SequenceAttributes or ProcessAttributes were found.");
         }
@@ -242,8 +242,8 @@ public class SequenceScheduler extends Scheduler {
         // Set class variables _independentList and _dependentList
         _independentList = independentList;
         _dependentList = new ArrayList<SequenceAttribute>();
-    	
-    	// From Scheduler.java
+            
+            // From Scheduler.java
         try {
             workspace().getReadAccess();            
             
@@ -351,7 +351,7 @@ public class SequenceScheduler extends Scheduler {
                 // old container. Search for another scheduler contained
                 // by the composite.  If it contains more than one,
                 // use the most recently added one.
-            	// Beth - 10/29/08 - Changes this to a SequenceScheduler instead of just Scheduler
+                    // Beth - 10/29/08 - Changes this to a SequenceScheduler instead of just Scheduler
                 SequenceScheduler previous = null;
                 
                 // Beth - changed to SequencedModelDirector
@@ -443,9 +443,9 @@ public class SequenceScheduler extends Scheduler {
         // This graph must use all opaque entities (i.e., those
         // returned by container.deepEntityList
     
-    	// The director is the container of the SequenceScheduler
-    	SequencedModelDirector director = (SequencedModelDirector) getContainer();
-    	
+            // The director is the container of the SequenceScheduler
+            SequencedModelDirector director = (SequencedModelDirector) getContainer();
+            
         // Get the deepEntityList from the container of the director (the composite actor it's in)
         _createActorGraph(((CompositeEntity) director.getContainer()).deepEntityList());
         
@@ -530,8 +530,8 @@ public class SequenceScheduler extends Scheduler {
                                 // (which it should be), the actor will not be in the original list
                                 // Add it so that its upstream actors will be calculated
                                 if (!_independentList.contains(conAttribute) && !moreActors.contains(conAttribute))
-                                {	
-                                	moreActors.add(conAttribute);
+                                {        
+                                        moreActors.add(conAttribute);
                                 }
                                 
                                 // Also, add these sequence attributes to the _dependentList
@@ -774,10 +774,10 @@ public class SequenceScheduler extends Scheduler {
      */
     private void _processGraph(List<Object[]> subGraphList, List<Node> sequencedActorGraphNodes) throws IllegalActionException {
 
-	 // From original SequenceDirector 
+         // From original SequenceDirector 
 
-	 // Added: Create a hash table
-	 //  of actors to directed graphs of upstream actors
+         // Added: Create a hash table
+         //  of actors to directed graphs of upstream actors
 
         DirectedAcyclicGraph subGraph;
 
@@ -809,9 +809,9 @@ public class SequenceScheduler extends Scheduler {
                 throw new IllegalActionException("There is a cycle of the actors in the model. " + nodesAsList.toString());
             } else {// else if no cycles: subgraph => list
 
-            	// Uncomment this section to print the subgraph
+                    // Uncomment this section to print the subgraph
                 
-            	/*
+                    /*
                 printSubGraph(subGraph);
                 
                 System.out.println("For actor: " + seqActorNode.getWeight().toString());
@@ -959,44 +959,44 @@ public class SequenceScheduler extends Scheduler {
                     // If the connected node is not a sequenced actor
                     if (((Entity) a).attributeList(SequenceAttribute.class).isEmpty())
                     {
-                    	// Check if the source node is already in the graph.  If not, add it, and 
-                    	// process source node's connected nodes.
-                    	if (!graph.containsNode(sourceNode)) {    
-                        	graph.addNode(sourceNode);// then add node to new graph
-                        	_connectedSubGraph(sourceNode, graph, sequencedActorGraphNodes);
-                        	
-                        	// Must add the edge after we add the node
-                        	if (!graph.containsEdge(inputEdge) ) {
+                            // Check if the source node is already in the graph.  If not, add it, and 
+                            // process source node's connected nodes.
+                            if (!graph.containsNode(sourceNode)) {    
+                                graph.addNode(sourceNode);// then add node to new graph
+                                _connectedSubGraph(sourceNode, graph, sequencedActorGraphNodes);
+                                
+                                // Must add the edge after we add the node
+                                if (!graph.containsEdge(inputEdge) ) {
 
-                            	graph.addEdge(sourceNode, node); // Else add nodes and edges to new graph
+                                    graph.addEdge(sourceNode, node); // Else add nodes and edges to new graph
 
-                            	if (_debugging) {
-                                	_debug("Adding Edge node to SubGraph : sourceNode" + sourceNode.getWeight() + " sinkNode" + node.getWeight());
-                            	}
-                        	}
-                    	}
-                    	
-                    	// Else, if the graph contains the node, but not the edge, add just the edge
-                    	else
-                    	{
-                    		
-                    		// Beth added this 11/25/08 as a bug fix 
-                    		// New functional regression test case added under sequence director folder
-                    		// If the subgraph already contains the source node, just add the edge
-                    		// This would occur for a graph with edges:
-                    		// A -> B; A -> C; B -> D; C -> D
-                    		// so node A would be processed as a predecessor of either B or C
-                    		// Otherwise, without this edge, it is possible that the topological 
-                    		// sort will be incorrect, and that B or C would be fired before A
-                    		if (!graph.containsEdge(inputEdge) ) {
+                                    if (_debugging) {
+                                        _debug("Adding Edge node to SubGraph : sourceNode" + sourceNode.getWeight() + " sinkNode" + node.getWeight());
+                                    }
+                                }
+                            }
+                            
+                            // Else, if the graph contains the node, but not the edge, add just the edge
+                            else
+                            {
+                                    
+                                    // Beth added this 11/25/08 as a bug fix 
+                                    // New functional regression test case added under sequence director folder
+                                    // If the subgraph already contains the source node, just add the edge
+                                    // This would occur for a graph with edges:
+                                    // A -> B; A -> C; B -> D; C -> D
+                                    // so node A would be processed as a predecessor of either B or C
+                                    // Otherwise, without this edge, it is possible that the topological 
+                                    // sort will be incorrect, and that B or C would be fired before A
+                                    if (!graph.containsEdge(inputEdge) ) {
 
-                    			graph.addEdge(sourceNode, node); // Else add nodes and edges to new graph
+                                            graph.addEdge(sourceNode, node); // Else add nodes and edges to new graph
 
-                    			if (_debugging) {
-                    				_debug("Adding Edge node to SubGraph : sourceNode" + sourceNode.getWeight() + " sinkNode" + node.getWeight());
-                    			}
-                    		}
-                    	}
+                                            if (_debugging) {
+                                                    _debug("Adding Edge node to SubGraph : sourceNode" + sourceNode.getWeight() + " sinkNode" + node.getWeight());
+                                            }
+                                    }
+                            }
 
                     }
                 }

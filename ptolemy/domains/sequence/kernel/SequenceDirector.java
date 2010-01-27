@@ -143,8 +143,8 @@ public class SequenceDirector extends SequencedModelDirector{
 
         // Must call preinitialize() before fire(), since otherwise the
         // schedule will not be set
-    	// Call superclass function with _schedule as argument to handle firing 
-    	fireSchedule(_schedule);
+            // Call superclass function with _schedule as argument to handle firing 
+            fireSchedule(_schedule);
     }
 
     

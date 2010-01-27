@@ -114,20 +114,20 @@ public class SequenceAttribute extends Parameter implements Comparable {
      *  @return 0 if the sequence numbers are the same.
      */
     public int compareTo(Object obj) {
-    	
-    	int seq1 = this.getSequenceNumber();
-    	int seq2 = 0;
-    	 
+            
+            int seq1 = this.getSequenceNumber();
+            int seq2 = 0;
+             
         // Check for either a SequenceAttribute or ProcessAttribute (which is a SequenceAttribute)
         if (obj instanceof SequenceAttribute) {
             // If the second object is a ProcessAttribute, use the correct getSequenceNumber()
-        	// FIXME:  Is this needed, or is it OK just to use (SequenceAttribute) x.getSequenceNumber()?
+                // FIXME:  Is this needed, or is it OK just to use (SequenceAttribute) x.getSequenceNumber()?
                 // FIXME:  This is bad coding style, because SequenceAtribute should not know about 
                 // its subclass ProcessAttribute - refactor?
             if (obj instanceof ProcessAttribute) {
-            	seq2 = ((ProcessAttribute) obj).getSequenceNumber();
+                    seq2 = ((ProcessAttribute) obj).getSequenceNumber();
             } else {
-            	seq2 = ((SequenceAttribute) obj).getSequenceNumber();
+                    seq2 = ((SequenceAttribute) obj).getSequenceNumber();
             }
             
             if (seq1 < seq2) {
@@ -138,9 +138,9 @@ public class SequenceAttribute extends Parameter implements Comparable {
                 return 0;
             }
         }
-    	throw new IllegalArgumentException(
-    	        "SequenceAttribute can only be compared to other" +
-    	        " instances of SequenceAttribute.");
+            throw new IllegalArgumentException(
+                    "SequenceAttribute can only be compared to other" +
+                    " instances of SequenceAttribute.");
     }
     
     /** Returns the sequence number as an int, or 0 if there is none.
@@ -175,13 +175,13 @@ public class SequenceAttribute extends Parameter implements Comparable {
         StringBuffer sbf = new StringBuffer();
         if (container != null) {
         
-        	// Beth 10/14/08 - added check for no director
-        	// If there is no director, don't need any of these warnings
-        	
-        	if (((CompositeActor)container.getContainer()).getDirector() != null)
-        	{
+                // Beth 10/14/08 - added check for no director
+                // If there is no director, don't need any of these warnings
+                
+                if (((CompositeActor)container.getContainer()).getDirector() != null)
+                {
         
-        		if ( ( this.getClass() == SequenceAttribute.class ) && ((CompositeActor)container.getContainer()).getDirector().getClass() == ProcessDirector.class ) {
+                        if ( ( this.getClass() == SequenceAttribute.class ) && ((CompositeActor)container.getContainer()).getDirector().getClass() == ProcessDirector.class ) {
                     
                     sbf.append("Warning: " + container.getName() +"'s Sequence Attribute will be ignored");
                     System.out.println (sbf);
@@ -194,29 +194,29 @@ public class SequenceAttribute extends Parameter implements Comparable {
                 String changedToken = this.getToken().toString();
 
                 if (changedToken != null && !changedToken.equals("") && changedToken.contains("{")) {
-                	changedToken = changedToken.replace("\'", "").replace("\"", "");
-                	String tokens[] = changedToken.split(",");
+                        changedToken = changedToken.replace("\'", "").replace("\"", "");
+                        String tokens[] = changedToken.split(",");
                 
-                	for (int i=0; i < tokens.length; i++) {
-                		token = tokens[i].replace("{", "").replace("}", "").trim();
-                		
-                		// Beth changed 01/19/09
-                		// Want to allow any non-whitespace character as a process name
-                		if ( i == 0 && !Pattern.matches("[^\\s]+",token)) {
-                			System.out.println ("Warning for actor " + container.getName() + ": A process name must have at least one character; please change atrribute: " + this.getToken().toString());
-                		}
+                        for (int i=0; i < tokens.length; i++) {
+                                token = tokens[i].replace("{", "").replace("}", "").trim();
+                                
+                                // Beth changed 01/19/09
+                                // Want to allow any non-whitespace character as a process name
+                                if ( i == 0 && !Pattern.matches("[^\\s]+",token)) {
+                                        System.out.println ("Warning for actor " + container.getName() + ": A process name must have at least one character; please change atrribute: " + this.getToken().toString());
+                                }
 
-                		// Beth changed 01/19/09
-                		// The sequence number must be a non-blank number 
-                		// (we want [\\d]+, not [\\d]*, because [\\d]* would match a zero-length
-                		// expression, i.e. an empty string)
-                		if ( i == 1 && !Pattern.matches("[\\d]+",token)) {  
-                			System.out.println ("Warning for actor " + container.getName() + ": A sequence number must be at least one digit; please change atrribute: " + this.getToken().toString());
-                		}
+                                // Beth changed 01/19/09
+                                // The sequence number must be a non-blank number 
+                                // (we want [\\d]+, not [\\d]*, because [\\d]* would match a zero-length
+                                // expression, i.e. an empty string)
+                                if ( i == 1 && !Pattern.matches("[\\d]+",token)) {  
+                                        System.out.println ("Warning for actor " + container.getName() + ": A sequence number must be at least one digit; please change atrribute: " + this.getToken().toString());
+                                }
 
-                	}
+                        }
                 }
-        	}
+                }
         }
         return result;  
     }

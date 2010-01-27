@@ -234,51 +234,51 @@ public class Simulator extends SDFTransformer {
                 // before the read happens, the client program will advance one time step
                 _readFromServer();
                 if (server.getClientFlag() == 0) {
-		    // Get values sent by simulator
+                    // Get values sent by simulator
                     double[] dblRea = server.getDoubleArray();
                     outTok = new DoubleMatrixToken(dblRea, dblRea.length, 1);
-		    
-		    // Make sure that simulation times are synchronized
-		    final double simTimRea = server.getSimulationTimeReadFromClient();
-		    final double simTim = getDirector().getModelTime().getDoubleValue();
-		    if ( firstFire )
-			firstFire = false;
-		    else{
-			if (Math.abs((simTimRea - simTimReaPre)-(simTim - simTimPre)) > 0.0001) {
-			    final String em = "Simulation time of "
-				+ this.getFullName() + " is not synchronized."
-				+ LS + "Time step in Ptolemy = " + (simTim - simTimPre) + LS
-				+ "Time step in client  = " + (simTimRea - simTimReaPre) + LS 
-				+ "Time in client = " + simTimRea;
-			    throw new IllegalActionException(this, em);
-			}
-		    }
-		    // Store simulation time
-		    simTimReaPre = simTimRea;
-		    simTimPre    = simTim;
-		}
-		
+                    
+                    // Make sure that simulation times are synchronized
+                    final double simTimRea = server.getSimulationTimeReadFromClient();
+                    final double simTim = getDirector().getModelTime().getDoubleValue();
+                    if ( firstFire )
+                        firstFire = false;
+                    else{
+                        if (Math.abs((simTimRea - simTimReaPre)-(simTim - simTimPre)) > 0.0001) {
+                            final String em = "Simulation time of "
+                                + this.getFullName() + " is not synchronized."
+                                + LS + "Time step in Ptolemy = " + (simTim - simTimPre) + LS
+                                + "Time step in client  = " + (simTimRea - simTimReaPre) + LS 
+                                + "Time in client = " + simTimRea;
+                            throw new IllegalActionException(this, em);
+                        }
+                    }
+                    // Store simulation time
+                    simTimReaPre = simTimRea;
+                    simTimPre    = simTim;
+                }
+                
             } else { // Either client is down or this is the first time step.
-		if ( clientTerminated ){
-		    // Client terminated in last call, but Ptolemy keeps doing a
-		    // (at least one) more time step. Hence we issue a warning.
-		    // Start a new thread for the warning window so that the simulation can continue.
-		    if ( warWin == null ){
-			if (!isHeadless){
-			    warWin = new Thread(new WarningWindow(terminationMessage));
-			    warWin.start();
-			}
-			System.err.println("*** " + terminationMessage);
-		    }
-		}
-		// Consume token
+                if ( clientTerminated ){
+                    // Client terminated in last call, but Ptolemy keeps doing a
+                    // (at least one) more time step. Hence we issue a warning.
+                    // Start a new thread for the warning window so that the simulation can continue.
+                    if ( warWin == null ){
+                        if (!isHeadless){
+                            warWin = new Thread(new WarningWindow(terminationMessage));
+                            warWin.start();
+                        }
+                        System.err.println("*** " + terminationMessage);
+                    }
+                }
+                // Consume token
                 input.get(0);
-		final double simTimRea = server.getSimulationTimeReadFromClient();
-		final double simTim = getDirector().getModelTime().getDoubleValue();
-		// Store simulation time
-		simTimReaPre = simTimRea;
-		simTimPre    = simTim;
-	    
+                final double simTimRea = server.getSimulationTimeReadFromClient();
+                final double simTim = getDirector().getModelTime().getDoubleValue();
+                // Store simulation time
+                simTimReaPre = simTimRea;
+                simTimPre    = simTim;
+            
             }
         }
         //////////////////////////////////////////////////////
@@ -298,7 +298,7 @@ public class Simulator extends SDFTransformer {
         // Write data to server
         dblWri = _getDoubleArray(input.get(0));
         try {
-            //	    	   		Thread.sleep(1000); // in milliseconds
+            //                                       Thread.sleep(1000); // in milliseconds
             server.write(0, tokTim, dblWri);
         } catch (IOException e) {
             String em = "Error while writing to client: " + LS + e.getMessage();
@@ -321,69 +321,69 @@ public class Simulator extends SDFTransformer {
         //////////////////////////////////////////////////////
         // Read data from server
         try {
-            //		Thread.sleep(100); // in milliseconds
+            //                Thread.sleep(100); // in milliseconds
             server.read();
 
-	    final int serFla = server.getClientFlag();
-	    if ( serFla < 0){
-		String em = "Error: Client " + this.getFullName()
-		    + " terminated communication by sending flag = " + serFla
-		    + " at time "
-		    + getDirector().getModelTime().getDoubleValue() + "," + LS;
-		// Add specifics of error message.
-		switch (serFla) {
-		case -10:
-		    em += "which indicates a problem in the client during its initialization.";
-		    break;
-		case -20:
-		    em += "which indicates a problem in the client during its time integration.";
-		    break;
-		default: // used for -1 and other (undefined) flags
-		    em += "which indicates a problem in the client.";
-		    break;
-		}
-		throw new IllegalActionException(this, em);
-	    }
-	    
+            final int serFla = server.getClientFlag();
+            if ( serFla < 0){
+                String em = "Error: Client " + this.getFullName()
+                    + " terminated communication by sending flag = " + serFla
+                    + " at time "
+                    + getDirector().getModelTime().getDoubleValue() + "," + LS;
+                // Add specifics of error message.
+                switch (serFla) {
+                case -10:
+                    em += "which indicates a problem in the client during its initialization.";
+                    break;
+                case -20:
+                    em += "which indicates a problem in the client during its time integration.";
+                    break;
+                default: // used for -1 and other (undefined) flags
+                    em += "which indicates a problem in the client.";
+                    break;
+                }
+                throw new IllegalActionException(this, em);
+            }
+            
             if (serFla > 0) {
-		// Client reached its final time. If this is also the last
-		// step from Ptolemy, then we don't want to issue a warning.
-		// Hence, we store the information, and if there is one more
-		// step from Ptolemy, then we issue a warning.
-		clientTerminated = true;
-		terminationMessage = "Warning: "
-		    + this.getFullName()
-		    + " terminated communication by sending flag = "
-		    + serFla
-		    + " at time "
-		    + getDirector().getModelTime().getDoubleValue()
-		    + "."
-		    + LS
-		    + "Simulation will continue withouth updated values from client program.";
+                // Client reached its final time. If this is also the last
+                // step from Ptolemy, then we don't want to issue a warning.
+                // Hence, we store the information, and if there is one more
+                // step from Ptolemy, then we issue a warning.
+                clientTerminated = true;
+                terminationMessage = "Warning: "
+                    + this.getFullName()
+                    + " terminated communication by sending flag = "
+                    + serFla
+                    + " at time "
+                    + getDirector().getModelTime().getDoubleValue()
+                    + "."
+                    + LS
+                    + "Simulation will continue withouth updated values from client program.";
             }
         } catch (java.net.SocketTimeoutException e) {
             String em = "SocketTimeoutException while reading from client in "
-		+ this.getFullName()
-		+ ": "
-		+ LS
-		+ e.getMessage()
-		+ "."
-		+ LS
-		+ "Try to increase the value of the parameter 'socketTimeout'." + LS
-		+ "It could be that the client \""
+                + this.getFullName()
+                + ": "
+                + LS
+                + e.getMessage()
+                + "."
+                + LS
+                + "Try to increase the value of the parameter 'socketTimeout'." + LS
+                + "It could be that the client \""
                 + programName.getExpression() 
                 + "\" is not executing properly.  From the command line, "
                 + "try running:" + LS
                 + "  " + programName.getExpression() + " " 
-		+ programArguments.getExpression() + LS
-		+ "You should see something like:" + LS
+                + programArguments.getExpression() + LS
+                + "You should see something like:" + LS
                 + "  Simulation model has time step       60" + LS
                 + "  Error: Failed to obtain socket file descriptor. sockfd=-1." + LS
                 + "The error message is expected because Ptolemy is not "
                 + "present." + LS
                 + "Also, make sure that the directory that contains" + LS 
-		+ "\"bcvtb.dll\" (on Windows), \"libbcvtb.so\" (on Linux) or" + LS
-		+ "\"libbcvtb.dylib\" (on Mac OS X) is on your"
+                + "\"bcvtb.dll\" (on Windows), \"libbcvtb.so\" (on Linux) or" + LS
+                + "\"libbcvtb.dylib\" (on Mac OS X) is on your"
                 + "PATH, LD_LIBRARY_PATH or DYLD_LIBRARY_PATH for Windows, " + LS
                 + "Linux and Mac OS X respectively." + LS
                 + "That directory contains the shared library used by the simulator.";
@@ -391,15 +391,15 @@ public class Simulator extends SDFTransformer {
                 server.close();
             } catch (IOException e2) {
             }
-	    // Check the exit value of the subprocess
-	    em += "\nClient subprocess exit value (should be 0): ";
-	    try {
-		// If the subprocess is still running, then we may
-		// get an exception here.  See Process.exitValue().
-		em +=  cliPro.exitValue();
-	    } catch (Throwable throwable) {
-		em += "<<Unknown: " + throwable.getMessage();
-	    }
+            // Check the exit value of the subprocess
+            em += "\nClient subprocess exit value (should be 0): ";
+            try {
+                // If the subprocess is still running, then we may
+                // get an exception here.  See Process.exitValue().
+                em +=  cliPro.exitValue();
+            } catch (Throwable throwable) {
+                em += "<<Unknown: " + throwable.getMessage();
+            }
             ; // do nothing here
             throw new IllegalActionException(this, e, em);
         } catch (IOException e) {
@@ -409,15 +409,15 @@ public class Simulator extends SDFTransformer {
             } catch (IOException e2) {
             }
             ; // do nothing here
-	    // If the client sent a termination flag, then clientTerminated=true
-	    // In this case, the client may have closed the socket connection, and
-	    // hence we don't throw an IOException, but rather issue a warning 
-	    // in case that Ptolemy proceeds with its iterations.
-	    // Without the check (!clientTerminated), an IOException is thrown
-	    // on Windows (but not on Mac or Linux) from the actor that connects 
-	    // to EnergyPlus.
-	    if ( ! clientTerminated )
-		throw new IllegalActionException(this, e, em);
+            // If the client sent a termination flag, then clientTerminated=true
+            // In this case, the client may have closed the socket connection, and
+            // hence we don't throw an IOException, but rather issue a warning 
+            // in case that Ptolemy proceeds with its iterations.
+            // Without the check (!clientTerminated), an IOException is thrown
+            // on Windows (but not on Mac or Linux) from the actor that connects 
+            // to EnergyPlus.
+            if ( ! clientTerminated )
+                throw new IllegalActionException(this, e, em);
         }
     }
 
@@ -431,14 +431,14 @@ public class Simulator extends SDFTransformer {
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
 
-	// Flag that indicates whether the client terminated,
-	// and thread for the warning window that is used in such a situation
-	clientTerminated = false;
-	terminationMessage = "";
-	warWin = null;
+        // Flag that indicates whether the client terminated,
+        // and thread for the warning window that is used in such a situation
+        clientTerminated = false;
+        terminationMessage = "";
+        warWin = null;
 
-	// Check if we run in headless mode
-	isHeadless = StringUtilities.getProperty("ptolemy.ptII.isHeadless").equals("true");
+        // Check if we run in headless mode
+        isHeadless = StringUtilities.getProperty("ptolemy.ptII.isHeadless").equals("true");
         // Working directory
         worDir = Simulator.resolveDirectory(getContainer(), 
                 cutQuotationMarks(workingDirectory.getExpression()));
@@ -455,7 +455,7 @@ public class Simulator extends SDFTransformer {
         final String simCon = socketConfigurationFile.stringValue();
         // Assign BSD port number
         porNo = Integer.valueOf(socketPortNumber.getExpression());
-        //////////////////////////////////////////////////////////////	
+        //////////////////////////////////////////////////////////////        
         // Instantiate server for IPC
         try {
             // time out in milliseconds
@@ -496,8 +496,8 @@ public class Simulator extends SDFTransformer {
         } catch (IOException e) {
             throw new IllegalActionException(this, e, e.toString());
         }
-        ////////////////////////////////////////////////////////////// 	
-	// Start the simulation
+        //////////////////////////////////////////////////////////////         
+        // Start the simulation
         _startSimulation();
     }
 
@@ -512,40 +512,40 @@ public class Simulator extends SDFTransformer {
      *                           are invalid.
      */
     public static String resolveCommandName(final File programName) 
-	throws IllegalActionException {
+        throws IllegalActionException {
         File commandFile = programName;
 
-	// If we are under Windows, look for the .exe
-	if ( System.getProperty("os.name").startsWith("Windows") ){
-	    File winComFil = new File(commandFile.toString() + ".exe");
-	    if (winComFil.exists())
-		commandFile = winComFil;
-	}
+        // If we are under Windows, look for the .exe
+        if ( System.getProperty("os.name").startsWith("Windows") ){
+            File winComFil = new File(commandFile.toString() + ".exe");
+            if (winComFil.exists())
+                commandFile = winComFil;
+        }
 
-	// Remove the path if the argument points to a directory.
-	// This fixes the problem if the argument is matlab, and the
-	// user runs vergil from a directory that has a subdirectory 
-	// called matlab.
-	if ( commandFile.isDirectory() )
-	    return commandFile.getName(); 
-	
-	String comArg = commandFile.toString();
-	// Get the absolute file name. Otherwise, invoking a command
-	// like ../cclient will not work
-	commandFile = new File(comArg);
-	if (commandFile.exists() && !commandFile.isDirectory() ) {
-	    try {
-		comArg = commandFile.getCanonicalPath();
-	    } catch (IOException exc) {
-		String em = "Error: Could not get canonical path for '"
-		    + comArg + "'.";
-		throw new IllegalActionException(em);
-	    }
-	}
-	else
-	    comArg = commandFile.getName();
-	    
-	return comArg;
+        // Remove the path if the argument points to a directory.
+        // This fixes the problem if the argument is matlab, and the
+        // user runs vergil from a directory that has a subdirectory 
+        // called matlab.
+        if ( commandFile.isDirectory() )
+            return commandFile.getName(); 
+        
+        String comArg = commandFile.toString();
+        // Get the absolute file name. Otherwise, invoking a command
+        // like ../cclient will not work
+        commandFile = new File(comArg);
+        if (commandFile.exists() && !commandFile.isDirectory() ) {
+            try {
+                comArg = commandFile.getCanonicalPath();
+            } catch (IOException exc) {
+                String em = "Error: Could not get canonical path for '"
+                    + comArg + "'.";
+                throw new IllegalActionException(em);
+            }
+        }
+        else
+            comArg = commandFile.getName();
+            
+        return comArg;
     }
 
     /** Get the MoML file.
@@ -591,15 +591,15 @@ public class Simulator extends SDFTransformer {
      *                           are invalid.
      */
     private void _startSimulation() throws IllegalActionException {
-        //////////////////////////////////////////////////////////////	
+        //////////////////////////////////////////////////////////////        
         // Construct the argument list for the process builder
         List<String> com = new ArrayList<String>();
 
         // Process the program name
         // Maybe the user specified $CLASSPATH/lbnl/demo/CRoom/client
-	com.add( Simulator.resolveCommandName(programName.asFile() ));
+        com.add( Simulator.resolveCommandName(programName.asFile() ));
 
-	// Process program arguments
+        // Process program arguments
         final String argLin = cutQuotationMarks(programArguments.getExpression());
 
 
@@ -614,19 +614,19 @@ public class Simulator extends SDFTransformer {
             cliPro.disposeWindow();
 
         cliPro = new ClientProcess(this.getFullName());
-	cliPro.redirectErrorStream(true);
+        cliPro.redirectErrorStream(true);
         cliPro.setProcessArguments(com, worDir);
-	// Check if we run in headless mode
-	final boolean showConsole = ((BooleanToken)(showConsoleWindow.getToken())).booleanValue();
+        // Check if we run in headless mode
+        final boolean showConsole = ((BooleanToken)(showConsoleWindow.getToken())).booleanValue();
         cliPro.showConsoleWindow( showConsole && (! isHeadless) );
 
         // Set simulation log file.
-	// The call to System.gc() is required on Windows: If this actor is called multiple times
-	// on Windows using vmware fusion and vmware workstation, then the simulation log file 
-	// exists but cannot be deleted. Calling System.gc() releases the resources which allows
-	// Java to delete the file. See also http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=6266377
-	// This error does not happen on Linux and on Mac OS X.
-	System.gc();
+        // The call to System.gc() is required on Windows: If this actor is called multiple times
+        // on Windows using vmware fusion and vmware workstation, then the simulation log file 
+        // exists but cannot be deleted. Calling System.gc() releases the resources which allows
+        // Java to delete the file. See also http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=6266377
+        // This error does not happen on Linux and on Mac OS X.
+        System.gc();
 
         File slf = simulationLogFile.asFile();
         try {
@@ -672,42 +672,42 @@ public class Simulator extends SDFTransformer {
         tokTim = getDirector().getModelTime().getDoubleValue();
         firstFire = true;
 
-        //////////////////////////////////////////////////////////////	
+        //////////////////////////////////////////////////////////////        
         // New code since 2008-01-05
         // Send initial output token. See also domains/sdf/lib/SampleDelay.java
         _readFromServer();
         double[] dblRea = server.getDoubleArray();
-	final int serFla = server.getClientFlag();
-	if ( serFla != 0){
-	    String em = "Actor " + this.getFullName() + ": " + LS
-		+ "When trying to read from server, at time "
-		+ getDirector().getModelTime().getDoubleValue() + ", " 
-		+ "client sent flag " + server.getClientFlag() + "," + LS;
-	    // Add specifics of error message.
-	    switch (serFla) {
-	    case 1:
-		em += "which indicates that it reached the end of its simulation." + LS
-		    + "This should not happen during the initialization of this actor.";
-		break;
-	    case -10:
-		em += "which indicates a problem in the client during its initialization.";
-		break;
-	    case -20:
-		em += "which indicates a problem in the client during its time integration.";
-		break;
-	    default: // used for -1 and other (undefined) flags
-		em += "which indicates a problem in the client.";
-		break;
-	    }
-	    throw new IllegalActionException(em);
-	}
-	// Check for null to avoid a NullPointerException
-	if ( dblRea == null ){
-	    final String em = "Actor " + this.getFullName() + ": " + LS
-		+ "When trying to read from server, obtained 'null' at time "
-		+ getDirector().getModelTime().getDoubleValue();
-	    throw new IllegalActionException(em);
-	}
+        final int serFla = server.getClientFlag();
+        if ( serFla != 0){
+            String em = "Actor " + this.getFullName() + ": " + LS
+                + "When trying to read from server, at time "
+                + getDirector().getModelTime().getDoubleValue() + ", " 
+                + "client sent flag " + server.getClientFlag() + "," + LS;
+            // Add specifics of error message.
+            switch (serFla) {
+            case 1:
+                em += "which indicates that it reached the end of its simulation." + LS
+                    + "This should not happen during the initialization of this actor.";
+                break;
+            case -10:
+                em += "which indicates a problem in the client during its initialization.";
+                break;
+            case -20:
+                em += "which indicates a problem in the client during its time integration.";
+                break;
+            default: // used for -1 and other (undefined) flags
+                em += "which indicates a problem in the client.";
+                break;
+            }
+            throw new IllegalActionException(em);
+        }
+        // Check for null to avoid a NullPointerException
+        if ( dblRea == null ){
+            final String em = "Actor " + this.getFullName() + ": " + LS
+                + "When trying to read from server, obtained 'null' at time "
+                + getDirector().getModelTime().getDoubleValue();
+            throw new IllegalActionException(em);
+        }
         outTok = new DoubleMatrixToken(dblRea, dblRea.length, 1);
         output.send(0, outTok);
     }
@@ -726,15 +726,15 @@ public class Simulator extends SDFTransformer {
             // Close the server.
             server.close();
         } catch (IOException e) {
-	    if ( ! clientTerminated )
-		throw new IllegalActionException(this, e, e.getMessage());
+            if ( ! clientTerminated )
+                throw new IllegalActionException(this, e, e.getMessage());
         }
-	if (!isHeadless) {
-	    // Reset position of window that shows console output so
-	    // that for the next simulation, the window will be placed
-	    // on top of the screen again
-	    ClientProcess.resetWindowLocation();
-	}
+        if (!isHeadless) {
+            // Reset position of window that shows console output so
+            // that for the next simulation, the window will be placed
+            // on top of the screen again
+            ClientProcess.resetWindowLocation();
+        }
     }
 
     /** Cut the leading and terminating quotation marks if present.
@@ -839,7 +839,7 @@ public class Simulator extends SDFTransformer {
     protected Thread warWin;
 
     /** Message that will be displayed in the warning window when the client terminated,
-	but Ptolemy continues with the simulation. */
+        but Ptolemy continues with the simulation. */
     protected String terminationMessage;
 
     /** Flag, set the <code>true</code> if Ptolemy is run without any graphical

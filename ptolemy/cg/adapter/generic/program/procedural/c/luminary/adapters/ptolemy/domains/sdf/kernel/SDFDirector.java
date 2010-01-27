@@ -114,8 +114,8 @@ public class SDFDirector
                     inputCode.append("[" + Integer.toString(i) + "]");
                     if (bufferSize > 1 || dynamicReferencesAllowed) {
                         throw new InternalErrorException("Generation of input transfer code" +
-                        		"requires the knowledge of offset in the buffer, this" +
-                        		"is not yet supported.");
+                                        "requires the knowledge of offset in the buffer, this" +
+                                        "is not yet supported.");
 //                        inputCode.append("[" + bufferSize + "]");
                     }
                 } else {

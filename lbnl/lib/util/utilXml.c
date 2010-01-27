@@ -310,8 +310,8 @@ int getepvariables( char*  const fileName,
   }
   if((i+1) != *myNumInputKeys ){
     fprintf(stderr, 
-	    "Error: Number of input variables keys found does not match:\nFound %d, expected %d\n", 
-	    i+1, * myNumInputKeys);
+            "Error: Number of input variables keys found does not match:\nFound %d, expected %d\n", 
+            i+1, * myNumInputKeys);
     freeResource(inputKeys, i+1);
     return -1;
   }
@@ -337,10 +337,10 @@ int getepvariables( char*  const fileName,
     done = feof(fd);
 
     if (XML_Parse(p, Buff, len, done) == XML_STATUS_ERROR
-	|| ERROR_STATUS == 1) {
+        || ERROR_STATUS == 1) {
       fprintf(stderr, "Error: Parser error in file '%s':\n%s\n",
-	      fileName,
-	      XML_ErrorString(XML_GetErrorCode(p)));
+              fileName,
+              XML_ErrorString(XML_GetErrorCode(p)));
       freeResource(inputKeys, numInputKeys);
       return -1;
     }
@@ -476,7 +476,7 @@ getxmlvalues(char* const fileName,
     att = (char*) malloc(sizeof(char) * (strlen(temp) ) );
     if(att == NULL) {
       fprintf(stderr, "Error: Memory allocation failed in 'utilXml.c'.\n");
-	  free(temp);
+          free(temp);
       return -1;
     }
     for(i=1; i<strlen(temp); i++) 
@@ -486,9 +486,9 @@ getxmlvalues(char* const fileName,
   }
   else {
     fprintf(stderr, "Error when parsing expression in 'utilXml.c'.\n");
-	free(temp);
-	free(att);
-	while(i!= -1) stackPop();
+        free(temp);
+        free(att);
+        while(i!= -1) stackPop();
     return -1;
   }
   expStk.cur = 0;
@@ -510,7 +510,7 @@ getxmlvalues(char* const fileName,
 
     if (XML_Parse(p, Buff, len, done) == XML_STATUS_ERROR) {
       fprintf(stderr, "Error: Parse error in file '%s':\n%s\n",
-	      fileName,
+              fileName,
               XML_ErrorString(XML_GetErrorCode(p)));
       return -1;
     }
@@ -519,8 +519,8 @@ getxmlvalues(char* const fileName,
       break;
   }
   if( 0 == *numVals ){
-	  fprintf(stderr, "Error: Did not find xml value\n       for expression '%s'.\n       in file '%s'\n", 
-		  exp, fileName);
+          fprintf(stderr, "Error: Did not find xml value\n       for expression '%s'.\n       in file '%s'\n", 
+                  exp, fileName);
   }
   while( i != -1 ) 
     i = stackPop();  
@@ -592,7 +592,7 @@ end(void *data, const char *el)
 ///\param exp the xPath expression
 ////////////////////////////////////////////////////////////////
 int getnumberofxmlvalues( char* const fileName,
-		                      char* const exp){
+                                      char* const exp){
   int n, ret;
   char* str;
   int strLen = 0;
@@ -652,16 +652,16 @@ int getxmlvaluesf(char* const fileName,
   //////////////////////////////////////////////
   PARSEVALUE = 1;
   ret = getxmlvalues(fileName,
-	                   exp,
-	                   str,
-	                   nVal,
-	                   *strLen);
+                           exp,
+                           str,
+                           nVal,
+                           *strLen);
   if( -1 == ret || *nVal > *strLen )
     return -1;
   if( strlen(str)+2 >= *strLen ) {
     fprintf(stderr, "Error: Not enough memory allocated for parsed xml\n"
                     "       values in getxmlvaluesf, allocated: %zx.\n", 
-	    (size_t)*strlen);
+            (size_t)*strlen);
     return -1;
   }
   strcat(str,";");
@@ -698,10 +698,10 @@ int getxmlvalue(char* const fileName,
   int ret; 
   PARSEVALUE = 1;
   ret = getxmlvalues(fileName,
-	                   exp,
-	                   str,
-	                   nVals,
-	                   strLen);
+                           exp,
+                           str,
+                           nVals,
+                           strLen);
 
   if(ret != 0){
     fprintf(stderr,"Error: Error when attempting to parse file '%s'\n",fileName); 

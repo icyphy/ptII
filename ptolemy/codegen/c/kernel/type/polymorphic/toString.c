@@ -264,17 +264,17 @@ char* toString_StringArray(Token thisToken) {
       // Make space also for the quotes "\"" characters.
       currentSize += strlen(elementString) + 2;
       if (i != 0) {
-	// Add space for the ", "
-	currentSize += 2;
+        // Add space for the ", "
+        currentSize += 2;
       }
       // Re-allocate storage.
       if (currentSize > allocatedSize) {
-	allocatedSize *= 2;
-	string = (char*) realloc(string, allocatedSize);
+        allocatedSize *= 2;
+        string = (char*) realloc(string, allocatedSize);
       }
       // Concat the element strings and separators.
       if (i != 0) {
-	strcat(string, ", ");
+        strcat(string, ", ");
       }
       strcat(string, "\"");
       strcat(string, elementString);

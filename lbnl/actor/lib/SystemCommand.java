@@ -290,8 +290,8 @@ public class SystemCommand extends TypedAtomicActor {
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
 
-	// Check if we run in headless mode
-	isHeadless = StringUtilities.getProperty("ptolemy.ptII.isHeadless").equals("true");
+        // Check if we run in headless mode
+        isHeadless = StringUtilities.getProperty("ptolemy.ptII.isHeadless").equals("true");
 
         // Working directory
         String workDire = cutQuotationMarks(workingDirectory.getExpression());
@@ -316,11 +316,11 @@ public class SystemCommand extends TypedAtomicActor {
      *                           are invalid.
      */
     private void _initializeSimulation() throws IllegalActionException {
-        //////////////////////////////////////////////////////////////	
+        //////////////////////////////////////////////////////////////        
         worDir = Simulator.resolveDirectory(getContainer(), 
                 cutQuotationMarks(workingDirectory.getExpression()));
 
-        //////////////////////////////////////////////////////////////	
+        //////////////////////////////////////////////////////////////        
         // Initialize the simulation process
         // Get the command as a File in case it has $CLASSPATH in it.
         File commandFile = programName.asFile();
@@ -341,16 +341,16 @@ public class SystemCommand extends TypedAtomicActor {
         }
         final String argLin = cutQuotationMarks(programArguments.getExpression());
         commandList = new ArrayList<String>();
-	/* mwetter: 
-	   Disabled section. Otherwise, C:\Program Files\xyz is parsed to
+        /* mwetter: 
+           Disabled section. Otherwise, C:\Program Files\xyz is parsed to
                     two tokens ("C:\Program" and "Files\xyz") in which case
                     the process builder would try to launch C:\Program
-	  StringTokenizer st = new StringTokenizer(comArg);
-	  while (st.hasMoreTokens()) {
+          StringTokenizer st = new StringTokenizer(comArg);
+          while (st.hasMoreTokens()) {
             commandList.add(st.nextToken());
         }
-	*/
-	commandList.add(comArg);
+        */
+        commandList.add(comArg);
         StringTokenizer st = new StringTokenizer(argLin);
         while (st.hasMoreTokens()) {
             commandList.add(st.nextToken());
@@ -361,7 +361,7 @@ public class SystemCommand extends TypedAtomicActor {
         if ( cliPro != null )
             cliPro.disposeWindow();
         cliPro = new ClientProcess(this.getFullName());
-	final boolean showConsole = ((BooleanToken)(showConsoleWindow.getToken())).booleanValue();
+        final boolean showConsole = ((BooleanToken)(showConsoleWindow.getToken())).booleanValue();
         cliPro.showConsoleWindow( showConsole && (! isHeadless) );
     }
 
@@ -375,17 +375,17 @@ public class SystemCommand extends TypedAtomicActor {
         ArrayList<String> com = new ArrayList<String>();
         // Iterate over the list of command to replace all references to input port names.
         // Reference take the form $portName where portName is the name of the port.
-	// We call cutQuotationMarks(String) to remove the quotation marks that the Tokens
-	// may have. Otherwise, an entry programArguments=$fileName may be parsed to
-	// programArguments="$fileName" and commands such as cat $fileName may not find
-	// the file on Linux.
+        // We call cutQuotationMarks(String) to remove the quotation marks that the Tokens
+        // may have. Otherwise, an entry programArguments=$fileName may be parsed to
+        // programArguments="$fileName" and commands such as cat $fileName may not find
+        // the file on Linux.
         for (Iterator itc = commandList.iterator(); itc.hasNext (); ) {
             String comIte = (String)itc.next();
             for (Map.Entry<String, Token> e : _tokenMap.entrySet()){
                 final String fin = '$' + e.getKey();
                 while ( comIte.contains(fin) )
                     comIte = comIte.replace(fin, 
-					    cutQuotationMarks(e.getValue().toString()));
+                                            cutQuotationMarks(e.getValue().toString()));
             }
             // Replace $time and $iteration
             String fin = "$time";
@@ -398,21 +398,21 @@ public class SystemCommand extends TypedAtomicActor {
                         Integer.valueOf(_iterationCount).toString());
             com.add(comIte);
         }
-	///////////////////////////////
-	// Resolve the command in case it is a relative file name or in case
-	// it has CLASSPATH or relative file names in it.
-	com.set(0, Simulator.resolveCommandName(new File(com.get(0))));
+        ///////////////////////////////
+        // Resolve the command in case it is a relative file name or in case
+        // it has CLASSPATH or relative file names in it.
+        com.set(0, Simulator.resolveCommandName(new File(com.get(0))));
 
         // Set process arguments
         cliPro.setProcessArguments(com, worDir);
 
         // Set simulation log file.
-	// The call to System.gc() is required on Windows: If this actor is called multiple times
-	// on Windows using vmware fusion and vmware workstation, then the simulation log file 
-	// exists but cannot be deleted. Calling System.gc() releases the resources which allows
-	// Java to delete the file. See also http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=6266377
-	// This error does not happen on Linux and on Mac OS X.
-	System.gc();
+        // The call to System.gc() is required on Windows: If this actor is called multiple times
+        // on Windows using vmware fusion and vmware workstation, then the simulation log file 
+        // exists but cannot be deleted. Calling System.gc() releases the resources which allows
+        // Java to delete the file. See also http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=6266377
+        // This error does not happen on Linux and on Mac OS X.
+        System.gc();
         File slf = simulationLogFile.asFile();
         try {
             if (slf.exists()) {

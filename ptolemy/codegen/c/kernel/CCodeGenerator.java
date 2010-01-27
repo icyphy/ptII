@@ -1267,7 +1267,7 @@ public class CCodeGenerator extends CodeGenerator {
 
             // Define substitutions to be used in the makefile
             substituteMap.put("@PTJNI_NO_CYGWIN@", "");
-	    substituteMap.put("@PTJNI_PLATFORM_LDFLAG@", " ");
+            substituteMap.put("@PTJNI_PLATFORM_LDFLAG@", " ");
             substituteMap.put("@PTJNI_SHAREDLIBRARY_CFLAG@", "");
             substituteMap.put("@PTJNI_SHAREDLIBRARY_LDFLAG@", "");
             substituteMap.put("@PTJNI_SHAREDLIBRARY_PREFIX@", "");

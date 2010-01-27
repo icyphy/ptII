@@ -1220,7 +1220,7 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
         if (node instanceof ASTPtOrderedRecordConstructNode) {
             _evaluatedChildToken = (new OrderedRecordToken(labels, tokens));
         } else {
-        	_evaluatedChildToken = (new RecordToken(labels, tokens));
+                _evaluatedChildToken = (new RecordToken(labels, tokens));
         }
 
         //if (node.isConstant()) {

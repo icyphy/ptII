@@ -107,7 +107,7 @@ public class LoopTest2 extends TypedAtomicActor {
      */
     public boolean postfire() throws IllegalActionException {
         return continueLooping;
-        //		return super.postfire();
+        //                return super.postfire();
     }
 
 }

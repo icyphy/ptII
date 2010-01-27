@@ -159,7 +159,7 @@ public class ColtBinomialSelector extends ColtRandomSource {
 
         // Constrain trialsRemaining to be less than or equal to the sourcePool.
         if (trialsRemaining > sourcePool) {
-        	trialsRemaining = (int) sourcePool;
+                trialsRemaining = (int) sourcePool;
         }
         // While there are trials remaining...
         // Loop through the array multiple times.  Formerly, if we passed

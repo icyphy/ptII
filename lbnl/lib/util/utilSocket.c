@@ -156,10 +156,10 @@ int save_append(char* *buffer, const char *toAdd, int *bufLen){
 ///\param bufLen The buffer length prior and after the call.
 ///\return 0 if no error occurred.
 int assembleBuffer(int flag,
-		    int nDbl, int nInt, int nBoo,
-		    double curSimTim,
-		    double dblVal[], int intVal[], int booVal[],
-		    char* *buffer, int *bufLen)
+                    int nDbl, int nInt, int nBoo,
+                    double curSimTim,
+                    double dblVal[], int intVal[], int booVal[],
+                    char* *buffer, int *bufLen)
 {
   int i;
   int retVal;
@@ -224,7 +224,7 @@ int assembleBuffer(int flag,
 ///\param The value contained in the character buffer.
 ///\return 0 if no error occurred.
 int getIntCheckError(const char *nptr, char **endptr, const int base,
-		      int* val){
+                      int* val){
   errno = 0; // must reset errno to 0
   *val = strtol(nptr, endptr, base);  
   /////////////////////////////////////////////////////////////////
@@ -257,7 +257,7 @@ int getIntCheckError(const char *nptr, char **endptr, const int base,
 ///\param The value contained in the character buffer.
 ///\return 0 if no error occurred.
 int getDoubleCheckError(const char *nptr, char **endptr, 
-			double* val){
+                        double* val){
   errno = 0; // must reset errno to 0
   *val = strtod(nptr, endptr);  
   /////////////////////////////////////////////////////////////////
@@ -289,10 +289,10 @@ int getDoubleCheckError(const char *nptr, char **endptr,
 ///\param booVal The array that stores the boolean values.
 ///\return 0 if no error occurred.
 int disassembleBuffer(const char* buffer,
-		      int *fla,
-		      int *nDbl, int *nInt, int *nBoo,
-		      double *curSimTim,
-		      double dblVal[], int intVal[], int booVal[])
+                      int *fla,
+                      int *nDbl, int *nInt, int *nBoo,
+                      double *curSimTim,
+                      double dblVal[], int intVal[], int booVal[])
 {
   const int base = 10;
   char *endptr = 0;
@@ -594,10 +594,10 @@ int establishclientsocket(const char *const docname){
 ///\sa int establishclientsocket(uint16_t *portNo)
 ///\return The exit value of \c send, or a negative value if an error occured.
 int writetosocket(const int *sockfd, 
-		  const int *flaWri,
-		  const int *nDblWri, const int *nIntWri, const int *nBooWri,
-		  double *curSimTim,
-		  double dblValWri[], int intValWri[], int booValWri[])
+                  const int *flaWri,
+                  const int *nDblWri, const int *nIntWri, const int *nBooWri,
+                  double *curSimTim,
+                  double dblValWri[], int intValWri[], int booValWri[])
 {
   int retVal;
   // buffer used to exchange data
@@ -642,9 +642,9 @@ if (*sockfd < 0 ){
   //////////////////////////////////////////////////////
   // copy arguments to buffer
   retVal = assembleBuffer(*flaWri, *nDblWri, *nIntWri, *nBooWri, 
-			  *curSimTim,
-			  dblValWri, intValWri, booValWri, 
-			  &buffer, &bufLen);
+                          *curSimTim,
+                          dblValWri, intValWri, booValWri, 
+                          &buffer, &bufLen);
   
   if (retVal != 0 ){
     fprintf(stderr, "Error: Failed to allocate memory for buffer before writing to socket.\n");
@@ -718,10 +718,10 @@ int sendclientmessage(const int *sockfd, const int *flaWri){
 
   if ( *sockfd >= 0 ){
     retVal = writetosocket(sockfd, flaWri, &zI, &zI, &zI, &zD,
-			   NULL, NULL, NULL);
+                           NULL, NULL, NULL);
 #ifdef NDEBUG
     fprintf(f1, "sendclientmessage wrote flag %d, return value = %d.\n", 
-	    *flaWri, retVal);
+            *flaWri, retVal);
 #endif
     if ( retVal >= 0 ){
       // No error. Wait for acknowledgement. This is needed on Windows for E+.
@@ -751,9 +751,9 @@ int sendclientmessage(const int *sockfd, const int *flaWri){
 ///\param boolValRea Boolean values read from socket.
 ///\sa int establishclientsocket(uint16_t *portNo)
 int readfromsocket(const int *sockfd, int *flaRea, 
-		   int *nDblRea, int *nIntRea, int *nBooRea,
-		   double *curSimTim,
-		   double dblValRea[], int intValRea[], int booValRea[])
+                   int *nDblRea, int *nIntRea, int *nBooRea,
+                   double *curSimTim,
+                   double dblValRea[], int intValRea[], int booValRea[])
 {
   int retVal, i;
   int bufLen = BUFFER_LENGTH;
@@ -793,10 +793,10 @@ if (*sockfd < 0 ){
 #endif
 
   retVal = disassembleBuffer(inpBuf,
-			     flaRea,
-			     nDblRea, nIntRea, nBooRea, 
-			     curSimTim,
-			     dblValRea, intValRea, booValRea);
+                             flaRea,
+                             nDblRea, nIntRea, nBooRea, 
+                             curSimTim,
+                             dblValRea, intValRea, booValRea);
 #ifdef NDEBUG
   fprintf(f1, "Disassembled buffer.\n");
 #endif
@@ -852,13 +852,13 @@ int readbufferfromsocket(const int *sockfd, char *buffer, int *bufLen){
 ///\sa int establishclientsocket(uint16_t *portNo)
 ///\return The exit value of \c send or \c read, or a negative value if an error occured.
 int exchangewithsocket(const int *sockfd, 
-		       const int *flaWri, int *flaRea,
-		       const int *nDblWri, const int *nIntWri, const int *nBooWri,
-		       int *nDblRea, int *nIntRea, int *nBooRea,
-		       double *simTimWri,
-		       double dblValWri[], int intValWri[], int booValWri[],
-		       double *simTimRea,
-		       double dblValRea[], int intValRea[], int booValRea[]){
+                       const int *flaWri, int *flaRea,
+                       const int *nDblWri, const int *nIntWri, const int *nBooWri,
+                       int *nDblRea, int *nIntRea, int *nBooRea,
+                       double *simTimWri,
+                       double dblValWri[], int intValWri[], int booValWri[],
+                       double *simTimRea,
+                       double dblValRea[], int intValRea[], int booValRea[]){
   int retVal;
 #ifdef NDEBUG
   if (f1 == NULL)
@@ -873,18 +873,18 @@ int exchangewithsocket(const int *sockfd,
   fprintf(f1, "Writing to socket at time = %e\n", *simTimWri);
 #endif
   retVal = writetosocket(sockfd, flaWri, 
-			 nDblWri, nIntWri, nBooWri,
-			 simTimWri,
-			 dblValWri, intValWri, booValWri);
+                         nDblWri, nIntWri, nBooWri,
+                         simTimWri,
+                         dblValWri, intValWri, booValWri);
   if ( retVal >= 0 ){
 #ifdef NDEBUG
   fprintf(f1, "Reading from socket.\n");
   fflush(f1);
 #endif
     retVal = readfromsocket(sockfd, flaRea,
-			    nDblRea, nIntRea, nBooRea,
-			    simTimRea,
-			    dblValRea, intValRea, booValRea);
+                            nDblRea, nIntRea, nBooRea,
+                            simTimRea,
+                            dblValRea, intValRea, booValRea);
   }
 #ifdef NDEBUG
   fprintf(f1, "Finished exchanging data with socket: simTimRea=%e, flag=%d.\n", *simTimRea, retVal);
@@ -909,26 +909,26 @@ int exchangewithsocket(const int *sockfd,
 ///\sa int establishclientsocket(uint16_t *portNo)
 ///\return The exit value of \c send or \c read, or a negative value if an error occured.
 int exchangedoubleswithsocket(const int *sockfd, 
-		       const int *flaWri, int *flaRea,
-		       const int *nDblWri,
-		       int *nDblRea,
-		       double *simTimWri,
-		       double dblValWri[],
-		       double *simTimRea,
-		       double dblValRea[]){
+                       const int *flaWri, int *flaRea,
+                       const int *nDblWri,
+                       int *nDblRea,
+                       double *simTimWri,
+                       double dblValWri[],
+                       double *simTimRea,
+                       double dblValRea[]){
   const int zer = 0;
   int nIntRea;
   int nBooRea;
   int intValRea[1]; // allocate array of non-zero size
   int booValRea[1]; // allocate array of non-zero size
   return exchangewithsocket(sockfd, 
-			    flaWri, flaRea,
-			    nDblWri, &zer, &zer,
-			    nDblRea, &nIntRea, &nBooRea,
-			    simTimWri,
-			    dblValWri, NULL, NULL,
-			    simTimRea,
-			    dblValRea, intValRea, booValRea);
+                            flaWri, flaRea,
+                            nDblWri, &zer, &zer,
+                            nDblRea, &nIntRea, &nBooRea,
+                            simTimWri,
+                            dblValWri, NULL, NULL,
+                            simTimRea,
+                            dblValRea, intValRea, booValRea);
 }
 
 ///////////////////////////////////////////////////////////

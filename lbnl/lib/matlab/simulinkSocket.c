@@ -31,26 +31,26 @@ int16_T establishBSDSocket(int16_T* flag){
 }
 
 int16_T exchangeDoublesWithBSDSocket(int16_T* sockfd,
-			      int16_T* flaWri, 
-		              int16_T* flaRea,
-         		      int16_T* nDblWri,
-			      double* simTimWri,
-			      double dblValWri[], 
-			      double* simTimRea,
-			      double dblValRea[]){
+                              int16_T* flaWri, 
+                              int16_T* flaRea,
+                               int16_T* nDblWri,
+                              double* simTimWri,
+                              double dblValWri[], 
+                              double* simTimRea,
+                              double dblValRea[]){
   int mySockfd = *sockfd;
   int myFlaWri = *flaWri;
   int myFlaRea = 0;
   int myNDblWri = *nDblWri;
   int nDblRea;
   int retVal = exchangedoubleswithsocket(&mySockfd, 
-					 &myFlaWri, &myFlaRea,
-					 &myNDblWri,
-					 &nDblRea,
-					 simTimWri,
-					 dblValWri,
-					 simTimRea,
-					 dblValRea);
+                                         &myFlaWri, &myFlaRea,
+                                         &myNDblWri,
+                                         &nDblRea,
+                                         simTimWri,
+                                         dblValWri,
+                                         simTimRea,
+                                         dblValRea);
   /* NDBLMAX is defined in lib/defines.h */
   if ( nDblRea > NDBLMAX ){
     fprintf(stderr, "simulinkSocket: Read too many double values.\n");

@@ -7,11 +7,11 @@ static com.jopdesign.io.SerialPort $actorSymbol(ser) = com.jopdesign.io.IOFactor
 if ($actorSymbol(firstFire)) {
     // read the value if available
     if (($actorSymbol(ser).status & com.jopdesign.io.SerialPort.MASK_RDRF)!=0) {
-		$put(output, $actorSymbol(ser).data);
+                $put(output, $actorSymbol(ser).data);
     } else {
-		$put(output, -1);
+                $put(output, -1);
     }
-   	$actorSymbol(firstFire) = false;
+           $actorSymbol(firstFire) = false;
 }
 /**/
 

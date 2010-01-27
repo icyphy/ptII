@@ -68,13 +68,13 @@ int sendclienterror(const int *sockfd, const int *flaWri);
 ///\sa int establishclientsocket(uint16_t *portNo)
 ///\return The exit value of \c send or \c read, or a negative value if an error occured.
 int exchangewithsocket(const int *sockfd, 
-		       const int *flaWri, int *flaRea,
-		       const int *nDblWri, const int *nIntWri, const int *nBooWri,
-		       int *nDblRea, int *nIntRea, int *nBooRea,
-		       double *simTimWri,
-		       double dblValWri[], int intValWri[], int booValWri[],
-		       double *simTimRea,
-		       double dblValRea[], int intValRea[], int booValRea[]);
+                       const int *flaWri, int *flaRea,
+                       const int *nDblWri, const int *nIntWri, const int *nBooWri,
+                       int *nDblRea, int *nIntRea, int *nBooRea,
+                       double *simTimWri,
+                       double dblValWri[], int intValWri[], int booValWri[],
+                       double *simTimRea,
+                       double dblValRea[], int intValRea[], int booValRea[]);
 
 
 ///////////////////////////////////////////////////////////

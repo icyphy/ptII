@@ -28,13 +28,13 @@
 int16_T establishBSDSocket(int16_T* flag);
 
 int16_T exchangeDoublesWithBSDSocket(int16_T* sockfd,
-			      int16_T* flaWri, 
-		              int16_T* flaRea,
-         		      int16_T* nDblWri,
-			      double* simTimWri,
-			      double dblValWri[], 
-			      double* simTimRea,
-			      double dblValRea[]);
+                              int16_T* flaWri, 
+                              int16_T* flaRea,
+                               int16_T* nDblWri,
+                              double* simTimWri,
+                              double dblValWri[], 
+                              double* simTimRea,
+                              double dblValRea[]);
 
 int16_T closeBSDSocket(int16_T* sockfd, int16_T* doClose);
 

@@ -220,7 +220,7 @@ do
         fi
 
         # Check for lines with tabs
-        results=`egrep '[	]' $file`
+        results=`egrep '[        ]' $file`
         if [ "x$results" != "x" ]; then
             echo "$file: contains tabs, run rmtabs to fix this"
             echo "$results"

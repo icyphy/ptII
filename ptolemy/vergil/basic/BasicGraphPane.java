@@ -133,7 +133,7 @@ public class BasicGraphPane extends GraphPane {
                 // If there is no actor library, do not issue a warning.
                 if (configuration.getEntity("actor library") != null) {
                     System.out.println("Configuration does not contain a PtolemyPreferences object. " +
-                    		"Using default background color.");
+                                    "Using default background color.");
                 }
             }
         }

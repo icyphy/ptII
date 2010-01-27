@@ -95,9 +95,9 @@ int main(int argc, char *argv[]){
     /////////////////////////////////////////////////////////////
     // Exchange values
     retVal = exchangedoubleswithsocket(&sockfd, &flaWri, &flaRea,
-				       &nDblWri, &nDblRea,
-				       &simTimWri, dblValWri, 
-				       &simTimRea, dblValRea);
+                                       &nDblWri, &nDblRea,
+                                       &simTimWri, dblValWri, 
+                                       &simTimRea, dblValRea);
     /////////////////////////////////////////////////////////////
     // Check flags
     if (retVal < 0){

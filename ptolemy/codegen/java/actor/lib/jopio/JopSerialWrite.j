@@ -13,6 +13,6 @@ $actorSymbol(lastVal) = $ref(input#$channel);
 /*** postfireBlock ***/
 $actorSymbol(val) = $actorSymbol(lastVal);
 if (($actorSymbol(ser).status & com.jopdesign.io.SerialPort.MASK_TDRE)!=0) {
-	$actorSymbol(ser).data = $actorSymbol(val);
+        $actorSymbol(ser).data = $actorSymbol(val);
 }
 /**/

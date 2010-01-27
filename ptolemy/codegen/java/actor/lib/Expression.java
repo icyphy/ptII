@@ -96,7 +96,7 @@ public class Expression extends JavaCodeGeneratorHelper {
                                            + " This can happen if there is an odd order of execution");
         }
         if (_javaParseTreeCodeGenerator.generateFireCode() == null) {
-            throw new NullPointerException("calling generateFireCode on " 	
+            throw new NullPointerException("calling generateFireCode on "         
                     + _javaParseTreeCodeGenerator + " returned null");
         }
         code.append(processCode("    $ref(output) = "

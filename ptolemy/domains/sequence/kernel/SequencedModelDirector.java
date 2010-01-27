@@ -515,12 +515,12 @@ public abstract class SequencedModelDirector extends Director{
             // FIXME:  Beth comment 01/26/09 - handle sequence numbers of zero
             if (!processAttributes.isEmpty())
             {
-            	_sequencedList.add((ProcessAttribute) processAttributes.get(0));
+                    _sequencedList.add((ProcessAttribute) processAttributes.get(0));
             }
                 
             else if (!sequenceAttributes.isEmpty())
             {
-            	_sequencedList.add((SequenceAttribute) sequenceAttributes.get(0));
+                    _sequencedList.add((SequenceAttribute) sequenceAttributes.get(0));
             }
         }
     }
@@ -717,41 +717,41 @@ public abstract class SequencedModelDirector extends Director{
     
     void fireSchedule(SequenceSchedule seqSchedule) throws IllegalActionException
     {
-    	// Get a firing iterator for this schedule
-    	Iterator firings = seqSchedule.firingIterator();
+            // Get a firing iterator for this schedule
+            Iterator firings = seqSchedule.firingIterator();
     
-    	if (firings == null)
-    	{
-    		// FIXME: Throw exception?  Should exclude empty schedules
-    		System.out.println("Null firing iterator in ProcessDirector or SequenceDirector");
+            if (firings == null)
+            {
+                    // FIXME: Throw exception?  Should exclude empty schedules
+                    System.out.println("Null firing iterator in ProcessDirector or SequenceDirector");
         
-    	}
+            }
     
-    	while (firings.hasNext() && !_stopRequested) {
-    		Firing firing = (Firing) firings.next();
-    		Actor actor = firing.getActor();
+            while (firings.hasNext() && !_stopRequested) {
+                    Firing firing = (Firing) firings.next();
+                    Actor actor = firing.getActor();
         
-    		int iterationCount = firing.getIterationCount();
+                    int iterationCount = firing.getIterationCount();
 
-    		if (_debugging) {
-    			_debug(new FiringEvent(this, actor, FiringEvent.BEFORE_ITERATE,
-    					iterationCount));
-    		}
+                    if (_debugging) {
+                            _debug(new FiringEvent(this, actor, FiringEvent.BEFORE_ITERATE,
+                                            iterationCount));
+                    }
 
-    		int returnValue = actor.iterate(iterationCount);
+                    int returnValue = actor.iterate(iterationCount);
 
-    		if (returnValue == STOP_ITERATING) {
-    			_postfireReturns = false;
-    		} else if (returnValue == NOT_READY) {
-    			throw new IllegalActionException(this, actor, "Actor "
-    					+ "is not ready to fire.");
-    		}
+                    if (returnValue == STOP_ITERATING) {
+                            _postfireReturns = false;
+                    } else if (returnValue == NOT_READY) {
+                            throw new IllegalActionException(this, actor, "Actor "
+                                            + "is not ready to fire.");
+                    }
 
-    		if (_debugging) {
-    			_debug(new FiringEvent(this, actor, FiringEvent.AFTER_ITERATE,
+                    if (_debugging) {
+                            _debug(new FiringEvent(this, actor, FiringEvent.AFTER_ITERATE,
                     iterationCount));
-    		}
-    	}
+                    }
+            }
     }
     
     ///////////////////////////////////////////////////////////////////

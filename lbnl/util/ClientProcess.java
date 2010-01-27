@@ -138,7 +138,7 @@ public class ClientProcess extends Thread {
      *  @param flag if true, redirects the standard error stream to the standard output stream
      */
     public void redirectErrorStream(boolean flag){
-	redErrStr = flag;
+        redErrStr = flag;
     }
 
     /** Sets the simulation log file.
@@ -160,7 +160,7 @@ public class ClientProcess extends Thread {
         try {
             proSta = false;
             pb.directory(worDir);
-	    pb.redirectErrorStream(redErrStr);
+            pb.redirectErrorStream(redErrStr);
             // FIXME: should we call simPro.exitValue() and destroy() 
             simPro = pb.start();
             proSta = true;
@@ -225,21 +225,21 @@ public class ClientProcess extends Thread {
      *  @return the standard output of the process
      */
     public String getStandardOutput() {
-	return stdOut.toString();
+        return stdOut.toString();
     }
 
     /** Get the standard error of the process.
      *  @return the standard error of the process
      */
     public String getStandardError() {
-	return stdErr.toString();
+        return stdErr.toString();
     }
 
     /** Get the exit value of the process.
      * @return the exit value of the process
      */
     public int exitValue() {
-	return simPro.exitValue();
+        return simPro.exitValue();
     }
 
     
@@ -255,13 +255,13 @@ public class ClientProcess extends Thread {
         // compared to the top left corner.
 
 
-	// Move window up on Mac and Windows so that it does not overlap with taskbar
-	final String osName = System.getProperty("os.name").toLowerCase();
-	int dLocY = 0;
-	if (osName.indexOf("windows") > -1)
-	    dLocY = 20;
-	if (osName.indexOf("mac") > -1)
-	    dLocY = 20;
+        // Move window up on Mac and Windows so that it does not overlap with taskbar
+        final String osName = System.getProperty("os.name").toLowerCase();
+        int dLocY = 0;
+        if (osName.indexOf("windows") > -1)
+            dLocY = 20;
+        if (osName.indexOf("mac") > -1)
+            dLocY = 20;
 
         locY = Math.max(0, screenSize.height - dY - dLocY);
     }
@@ -303,24 +303,24 @@ public class ClientProcess extends Thread {
                 stdAre = new JTextArea();
                 stdScrPan = new JScrollPane(stdAre);
                 if ( showConsoleWindow ){
-		    // If locY < 0, then this is the first call to any instance of
-		    // ClientProcess, hence we reset the window position.
-		    if ( locY < 0 )
-			resetWindowLocation();
+                    // If locY < 0, then this is the first call to any instance of
+                    // ClientProcess, hence we reset the window position.
+                    if ( locY < 0 )
+                        resetWindowLocation();
 
-		    stdFra.setLocation(30, locY);
-		    // Move the location up so that the window of another simulation
-		    // does not overlap
-		    // Move window up on Windows so that it does not overlap with taskbar
-		    final String osName = System.getProperty("os.name").toLowerCase();
-		    if (osName.indexOf("linux") > -1)
-			locY -= (dY+22);
-		    else if (osName.indexOf("mac") > -1)
-			locY -= (dY+22);
-		    else
-			locY -= dY;
+                    stdFra.setLocation(30, locY);
+                    // Move the location up so that the window of another simulation
+                    // does not overlap
+                    // Move window up on Windows so that it does not overlap with taskbar
+                    final String osName = System.getProperty("os.name").toLowerCase();
+                    if (osName.indexOf("linux") > -1)
+                        locY -= (dY+22);
+                    else if (osName.indexOf("mac") > -1)
+                        locY -= (dY+22);
+                    else
+                        locY -= dY;
 
-		    
+                    
                     stdAre.setEditable(false);
                     stdScrPan.setVerticalScrollBarPolicy(
                             JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
@@ -342,15 +342,15 @@ public class ClientProcess extends Thread {
             PrintWriter pwLogFil = null;
             PrintWriter pwSysOut = null;
             BufferedReader br = null;
-	    BufferedWriter bufWri = null;
-	    FileWriter filWri = null;
+            BufferedWriter bufWri = null;
+            FileWriter filWri = null;
             try {
                 isr = new InputStreamReader(is);
                 br = new BufferedReader(isr);
                 pwSysOut = new PrintWriter(System.out);
                 try {
-		    filWri = new FileWriter( logFil );
-		    bufWri = new BufferedWriter (filWri);
+                    filWri = new FileWriter( logFil );
+                    bufWri = new BufferedWriter (filWri);
                     pwLogFil = new PrintWriter( bufWri );
                 } catch (java.io.IOException e) {
                     e.printStackTrace();
@@ -391,8 +391,8 @@ public class ClientProcess extends Thread {
                     try {
                         // FIXME: is this ok if pwLogFil is System.err?
                         pwLogFil.close();
-			bufWri.close();
-			filWri.close();
+                        bufWri.close();
+                        filWri.close();
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -433,15 +433,15 @@ public class ClientProcess extends Thread {
             PrintWriter pwLogFil = null;
             PrintWriter pwSysOut = null;
             BufferedReader br = null;
-	    BufferedWriter bufWri = null;
-	    FileWriter filWri = null;
+            BufferedWriter bufWri = null;
+            FileWriter filWri = null;
             try {
                 isr = new InputStreamReader(is);
                 br = new BufferedReader(isr);
                 pwSysOut = new PrintWriter(System.err);
                 try {
-		    filWri = new FileWriter( logFil );
-		    bufWri = new BufferedWriter (filWri);
+                    filWri = new FileWriter( logFil );
+                    bufWri = new BufferedWriter (filWri);
                     pwLogFil = new PrintWriter( bufWri );
                 } catch (java.io.IOException e) {
                     e.printStackTrace();
@@ -451,7 +451,7 @@ public class ClientProcess extends Thread {
                 String line;
                 try {
                     while ((line = br.readLine()) != null) {
-			System.out.println("Error: "+ line);
+                        System.out.println("Error: "+ line);
                         if (logToSysOut) {
                             pwSysOut.println(line);
                             pwSysOut.flush();
@@ -477,8 +477,8 @@ public class ClientProcess extends Thread {
                     try {
                         // FIXME: is this ok if pwLogFil is System.err?
                         pwLogFil.close();
-			bufWri.close();
-			filWri.close();
+                        bufWri.close();
+                        filWri.close();
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -512,11 +512,11 @@ public class ClientProcess extends Thread {
     public void setProcessArguments(List<String> cmdarray, String dir)
             throws IllegalActionException {
         cmdArr = new ArrayList<String>();
-	// Note: Earlier versions resolved the path name. This has been moved
-	// to the calling program, as the calling program already implements
-	// some file and path name checking.
+        // Note: Earlier versions resolved the path name. This has been moved
+        // to the calling program, as the calling program already implements
+        // some file and path name checking.
         for (int i = 0; i < cmdarray.size(); i++)
-	    cmdArr.add(cmdarray.get(i));
+            cmdArr.add(cmdarray.get(i));
 
         if (dir.equalsIgnoreCase(".")) {
             worDir = new File(System.getProperty("user.dir"));

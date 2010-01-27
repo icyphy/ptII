@@ -194,7 +194,7 @@ public class PtidesBasicDirector extends DEDirector {
         } else {
             if (getSyncError() != 0.0) {
                 throw new IllegalActionException(this, "The synchronization error is non-zero, the top level" +
-                		"needs to be a PtidesTopLevelDirector.");
+                                "needs to be a PtidesTopLevelDirector.");
             }
             return director.getModelTime();
         }
@@ -1246,7 +1246,7 @@ public class PtidesBasicDirector extends DEDirector {
             }
         } else {
             throw new IllegalActionException(port, "minDelay parameter is needed, " +
-            		"but it does not exist.");
+                            "but it does not exist.");
         }
     }
 
@@ -2107,9 +2107,9 @@ public class PtidesBasicDirector extends DEDirector {
         if (timeDiff.compareTo(_zero) < 0) {
             return _lastAbsoluteDeadline;
 //            throw new InternalErrorException("While computing the absolute deadline" +
-//            		"of a new pure event, the difference between the new " +
-//            		"timestamp and the old timestamp is less than the minimum" +
-//            		"model time delay");
+//                            "of a new pure event, the difference between the new " +
+//                            "timestamp and the old timestamp is less than the minimum" +
+//                            "model time delay");
         }
         return _lastAbsoluteDeadline.add(timeDiff);
     }

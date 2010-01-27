@@ -417,7 +417,7 @@ public class RemoveGraphicalClasses implements MoMLFilter {
                 "ptolemy.vergil.properties.LatticeElementIcon", null);
 
         _graphicalClasses.put("ptolemy.vergil.actor.lib.MonitorReceiverContents",
-			      null);
+                              null);
 
     }
 

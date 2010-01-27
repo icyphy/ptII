@@ -244,12 +244,12 @@ public class ProcessDirector extends SequencedModelDirector{
         // processes in alphabetical order.  In the future, some other order,
         // or even a dynamic order, could be used.
         // Create a list out of these which will be sortable
-    	
+            
         ArrayList<String> keyList = new ArrayList();
         
         for (String key : (Set<String>) _processSeqMap.keySet())
         {
-        		keyList.add(key);
+                        keyList.add(key);
         }
         
         // Sort alphabetically (process names are converted to all capital
@@ -314,11 +314,11 @@ public class ProcessDirector extends SequencedModelDirector{
 
                     processID = processID.substring(processID.indexOf("{")+1, processID.indexOf(",")).replace("\'", "");
                    
-                	// Beth added 01/21/09 - Ignore the process name "None", or the empty string
-                	// These should be treated as dependent actors
+                        // Beth added 01/21/09 - Ignore the process name "None", or the empty string
+                        // These should be treated as dependent actors
                     if (!processID.equalsIgnoreCase("None") && processID.length() > 0)
                     {
-                    	_processSeqMap.put(processID, (ProcessAttribute) seq);
+                            _processSeqMap.put(processID, (ProcessAttribute) seq);
                     }
 
                 } 

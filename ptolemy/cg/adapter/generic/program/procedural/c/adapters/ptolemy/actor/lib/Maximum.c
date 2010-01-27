@@ -5,18 +5,18 @@ int $actorSymbol(channelTemp);
 
 /*** fireInitBlock($channel)***/
 if ($hasToken(input#$channel)) {
-	$actorSymbol(maximumTemp) = $get(input#$channel);
-	$actorSymbol(channelTemp) = $channel;
-	break;
+        $actorSymbol(maximumTemp) = $get(input#$channel);
+        $actorSymbol(channelTemp) = $channel;
+        break;
 }
 /**/
 
 /*** findBlock($arg) ***/
 if ($hasToken(input#$arg)) {
-	if ($get(input#$arg) > $actorSymbol(maximumTemp)) {
-   		$actorSymbol(maximumTemp) = $get(input#$arg);
-    	$actorSymbol(channelTemp) = $arg;
-	}
+        if ($get(input#$arg) > $actorSymbol(maximumTemp)) {
+                   $actorSymbol(maximumTemp) = $get(input#$arg);
+            $actorSymbol(channelTemp) = $arg;
+        }
 }
 /**/
 

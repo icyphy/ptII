@@ -244,7 +244,7 @@ public class ParseTreeWriter extends AbstractParseTreeVisitor {
         if (node instanceof ASTPtOrderedRecordConstructNode) {
             _writer.print("[");
         } else {
-        	_writer.print("{");
+                _writer.print("{");
         }
         
         if (node.jjtGetNumChildren() > 0) {
@@ -263,7 +263,7 @@ public class ParseTreeWriter extends AbstractParseTreeVisitor {
         if (node instanceof ASTPtOrderedRecordConstructNode) {
             _writer.print("]");
         } else {
-        	_writer.print("}");
+                _writer.print("}");
         }
     }
 
