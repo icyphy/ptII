@@ -37,7 +37,7 @@ import ptolemy.kernel.util.IllegalActionException;
  * An adapter class for ptolemy.actor.lib.UnaryMathFunction.
  *
  * @author Man-Kit Leung
- * @version $Id: UnaryMathFunction.java 53095 2009-04-12 19:12:45Z cxh $
+ * @version $Id$
  * @since Ptolemy II 6.0
  * @Pt.ProposedRating Green (mankit)
  * @Pt.AcceptedRating Green (mankit)

@@ -43,7 +43,7 @@ import ptolemy.kernel.util.InternalErrorException;
   Adapter for the SDFDirector, targeted to the Luminary platform.
 
   @author Jia Zou
-  @version $Id: TransformationEvaluator.java 56631 2009-12-13 03:32:59Z cxh $
+  @version $Id$
   @since Ptolemy II 8.1
   @Pt.ProposedRating Red (tfeng)
   @Pt.AcceptedRating Red (tfeng)

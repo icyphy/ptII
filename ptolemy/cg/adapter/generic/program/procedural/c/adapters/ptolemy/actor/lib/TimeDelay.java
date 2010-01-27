@@ -40,7 +40,7 @@ import ptolemy.kernel.util.IllegalActionException;
  * A adapter class for ptolemy.actor.lib.TimeDelay.
  *
  * @author Jia Zou
- * @version $Id: TimedDelay.java 54721 2009-06-26 22:32:23Z cxh $
+ * @version $Id$
  * @since Ptolemy II 7.1
  * @Pt.ProposedRating Red (jiazou)
  * @Pt.AcceptedRating Red (jiazou)

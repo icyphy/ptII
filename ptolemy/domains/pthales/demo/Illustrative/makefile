@@ -2,7 +2,7 @@
 #
 # @Authors: Christopher Hylands (makefile only)
 #
-# @Version: $Id: makefile 56090 2009-11-05 16:59:28Z cxh $
+# @Version: $Id$
 #
 # @Copyright (c) 2009 The Regents of the University of California.
 # All rights reserved.

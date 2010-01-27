@@ -38,7 +38,7 @@ import ptolemy.kernel.util.IllegalActionException;
  A code generation adapter class for ptolemy.domains.sdf.lib.UpSample.
 
  @author Man-Kit Leung, Dai Bui, Bert Rodiers
- @version $Id: UpSample.java 53042 2009-04-10 20:31:21Z cxh $
+ @version $Id$
  @since Ptolemy II 7.1
  @Pt.ProposedRating Red (mankit)
  @Pt.AcceptedRating Red (mankit)

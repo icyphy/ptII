@@ -66,7 +66,7 @@ If the input file name is <code><i>filename</i>.xml</code>, the output
 file name will be <code><i>filename</i>Model.xml</code>.</p> 
 
 @author Shanna-Shaye Forbes
-@version $Id: CombinedFile.java 56976 2010-01-20 23:11:58Z sssf $
+@version $Id$
 @since Ptolemy II 8.0
 @Pt.ProposedRating red (sssf)
 @Pt.AcceptedRating red (sssf)

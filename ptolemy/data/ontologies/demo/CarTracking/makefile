@@ -1,6 +1,6 @@
 # Makefile for Ptolemy Ontologies CarTracking Demo
 #
-# @Version: $Id: makefile 55838 2009-10-13 23:24:43Z cxh $
+# @Version: $Id$
 # @Author: Christopher Brooks (makefile only)
 #
 # @Copyright (c) 2009 The Regents of the University of California

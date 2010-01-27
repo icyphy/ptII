@@ -43,7 +43,7 @@ import ptolemy.kernel.util.IllegalActionException;
  * Subclasses should override clone() to do a deep cloning.
  * 
  * @author Man-Kit Leung
- * @version $Id: StructuredProperty.java 47513 2007-12-07 06:32:21Z cxh $
+ * @version $Id$
  * @since Ptolemy II 7.1
  * @Pt.ProposedRating Red (mankit)
  * @Pt.AcceptedRating Red (mankit)

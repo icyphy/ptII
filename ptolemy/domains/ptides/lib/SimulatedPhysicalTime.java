@@ -44,7 +44,7 @@ the simulated physical time, i.e., the time of the containing DE actor.
 The output is of type double.
 
 @author Jia Zou
-@version $Id: CurrentTime.java 51551 2008-11-11 00:19:48Z rodiers $
+@version $Id$
 @since Ptolemy II 0.3
 @Pt.ProposedRating Yellow (jiazou)
 @Pt.AcceptedRating

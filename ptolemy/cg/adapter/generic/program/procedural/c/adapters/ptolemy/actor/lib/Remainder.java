@@ -37,7 +37,7 @@ import ptolemy.kernel.util.IllegalActionException;
  * An adapter class for ptolemy.actor.lib.Remainder.
  *
  * @author Man-Kit Leung
- * @version $Id: Remainder.java 47513 2007-12-07 06:32:21Z cxh $
+ * @version $Id$
  * @since Ptolemy II 6.0
  * @Pt.ProposedRating Green (mankit)
  * @Pt.AcceptedRating Green (cxh)

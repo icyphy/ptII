@@ -38,7 +38,7 @@ import ptolemy.kernel.util.IllegalActionException;
  * An adapter class for ptolemy.actor.lib.Maximum.
  *
  * @author Man-Kit Leung, Gang Zhou
- * @version $Id: Maximum.java 53095 2009-04-12 19:12:45Z cxh $
+ * @version $Id$
  * @since Ptolemy II 6.0
  * @Pt.ProposedRating Green (cxh)
  * @Pt.AcceptedRating Green (mankit)

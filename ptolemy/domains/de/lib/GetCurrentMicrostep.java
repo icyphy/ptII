@@ -42,7 +42,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 Produce an output token on each firing with a value that is
 the current microstep.
 @author Jia Zou
-@version $Id: CurrentTime.java 51551 2008-11-11 00:19:48Z rodiers $
+@version $Id$
 @since Ptolemy II 0.3
 @Pt.ProposedRating Yellow (jiazou)
 @Pt.AcceptedRating

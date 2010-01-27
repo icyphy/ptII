@@ -32,7 +32,7 @@ import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
  A code generation adapter class for ptolemy.domains.sdf.lib.DownSample.
 
  @author Man-Kit Leung, Dai Bui
- @version $Id: DownSample.java 47513 2007-12-07 06:32:21Z cxh $
+ @version $Id$
  @since Ptolemy II 7.1
  @Pt.ProposedRating Red (mankit)
  @Pt.AcceptedRating Red (mankit)

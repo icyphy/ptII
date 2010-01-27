@@ -65,7 +65,7 @@ import ptolemy.kernel.util.InternalErrorException;
  * hence satisfies this property constraint).
  * 
  * @author Man-Kit Leung
- * @version $Id: RecordProperty.java 49948 2008-06-24 20:46:43Z eal $
+ * @version $Id$
  * @since Ptolemy II 7.1
  * @Pt.ProposedRating Red (mankit)
  * @Pt.AcceptedRating Red (mankit)

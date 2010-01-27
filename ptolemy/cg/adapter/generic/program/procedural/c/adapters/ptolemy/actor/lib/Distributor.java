@@ -39,7 +39,7 @@ import ptolemy.kernel.util.IllegalActionException;
  * A code generation adapter class for ptolemy.actor.lib.Distributor.
  *
  * @author Man-Kit Leung, Christopher Brooks
- * @version $Id: Distributor.java 53095 2009-04-12 19:12:45Z cxh $
+ * @version $Id$
  * @since Ptolemy II 6.0
  * @Pt.ProposedRating Green (mankit)
  * @Pt.AcceptedRating Green (cxh)

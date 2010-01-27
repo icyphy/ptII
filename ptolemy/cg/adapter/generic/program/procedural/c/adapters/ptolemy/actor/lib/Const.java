@@ -34,7 +34,7 @@ package ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.actor.l
  A adapter class for Const.
 
  @author Bert Rodiers
- @version $Id: Scale.java 55459 2009-08-15 01:16:52Z rodiers $
+ @version $Id$
  @since Ptolemy II 7.1
  @Pt.ProposedRating Red (rodiers)
  @Pt.AcceptedRating Red (rodiers)
