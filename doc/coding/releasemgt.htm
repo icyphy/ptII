@@ -209,6 +209,27 @@ svn commit -m "Added keywords and eol-style properties" `cat /tmp/eols /tmp/keys
 <li> Run <CODE>$PTII/adm/copyright/fixcopyrights</CODE> (not shipped with
 the release) and update the copyrights on the <CODE>.java</CODE>, <CODE>.tcl</CODE> and makefiles
 
+<li>Run
+<CODE>$PTII/adm/copyright/chkcopyright</CODE> on all the nightly buildfiles.
+<br>First, edit <code>$PTII/adm/copyright/chkcopyright</code> and update the year.
+<br>Then, do:
+<pre>
+cat /tmp/f | grep -v .class | grep -v codeDoc | grep -v xml | grep -v \
+alljtests.tcl | grep -v .htm | grep -v qcf | grep -v .dtd | grep -v \
+gif | grep -v .svn | xargs sh $PTII/adm/copyright/chkcopyright &gt;&amp  /tmp/copycheck 
+grep "does not contain a Copyright" /tmp/copycheck | awk '$1 ~ /.java$/ {print $1}' | grep -v /actor/corba >/tmp/jc
+</pre>
+
+Then, edit <code>$PTII/adm/copyright/copyright.txt</code>
+and <code>$PTII/adm/copyright/insertcopyright</code> and run
+<pre>
+adm/copyright/insertcopyright -p `cat /tmp/j`
+</pre>
+and then
+<pre>
+adm/copyright/insertcopyright `cat /tmp/j`
+</pre>
+
 <li> Check out all the files again so we can build a release:
 <pre>
 cd $PTII
@@ -219,25 +240,40 @@ svn update
 <code>$PTII/adm/gen-<i>X.Y</i></code>, update the version number
 and run make.  See the top of the file for the appropriate make command.
 
-<li>Run
-<CODE>$PTII/adm/copyright/chkcopyright</CODE> on all the nightly buildfiles.
-<br>First, edit <code>$PTII/adm/copyright/chkcopyright</code> and update the year.
-<br>Then, do:
+<li>Check the copyright on new files
+First, untar the previous source release in ptII/adm/dists.  Then:
 <pre>
-
-cat /tmp/f | grep -v .class | grep -v codeDoc | grep -v xml | grep -v \
-alljtests.tcl | grep -v .htm | grep -v qcf | grep -v .dtd | grep -v \
-gif | grep -v .svn | xargs sh $PTII/adm/copyright/chkcopyright &gt;&amp  /tmp/copycheck 
-grep "does not contain a Copyright" /tmp/copycheck | grep "\.java$"
+cd $PTII/adm/dists
+diff -r ptII7.0.1 ptII8.1.devel > /tmp/pt.diffs
+grep Copyright `egrep "^Only in ptII8.1.devel" /tmp/pt.diffs | \
+   grep.java | sed 's@ptII8.1.devel/@@' | awk '{print substr($3,1,length($3)-1) "/" $4}'`
 </pre>
 
-
 <li> Run <CODE>$PTII/adm/bin/fixsince</CODE> (not shipped with
-the release) and update the @since tags
+the release) and update the @since tags.  To use
+<code>fixsince</code>, first edit <code>$PTII/adm/bin/fixsince</code>
+and update the variables at the top.  Then
+<pre>
+cd $PTII
+$PTII/adm/bin/fixsince
+</pre>
+Then check the output.
+Then edit the file and uncomment the cp line at the bottom:
+<pre>
+  #cp $tmpfile $file
+</pre>
 
 <li> Run <CODE>cd $PTII/doc; make chkpackagehtml</CODE> (not shipped with
 the release) and create any missing <code>package.html</code>
 or <code>README.txt</code> files.
+<pre>
+cd $PTII/doc
+make chkpackagehtml > /tmp/s
+cd $PTII
+$PTII/adm/bin/mkpackagehtml `cat /tmp/s`
+svn add `egrep '(README.txt|package.html)' /tmp/s | awk '{print $2}'`
+svn commit -m "Added package.html and README.txt" `egrep '(README.txt|package.html)' /tmp/s | awk '{print $2}'`
+</pre>
 
 <li> Concatenate all the javadoc files in to one file and run
 <code>$PTII/util/testsuite/ptspell</code>. 
