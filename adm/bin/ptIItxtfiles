@@ -6,7 +6,9 @@ $PTII/adm/bin/ptIIfiles | egrep -v '\.#' |egrep -v '\.au$' \
 	| egrep -v '\.aif$' \
 	| egrep -v '\.bin$' |egrep -v '\.bmp$' \
 	| egrep -v '\.class$' |egrep -v '\.dat$' |egrep -v '\.data$' \
-	| egrep -v '\.dll$' |egrep -v '\.doc$' \
+	| egrep -v '\.dll$' \
+	| egrep -v '\.dll.a$' \
+        | egrep -v '\.doc$' \
         | egrep -v '\.dmg$' \
 	| egrep -v '\.dsp$' |egrep -v '\.dsw$' \
         | egrep -v '\.dylib$' \
@@ -36,5 +38,6 @@ $PTII/adm/bin/ptIIfiles | egrep -v '\.#' |egrep -v '\.au$' \
 	| egrep -v '\.qcf$' | egrep -v '\.so$' \
         | egrep -v '\.so\.[0-9]*$' \
         | egrep -v '\.vsd$' \
-	| egrep -v '\.wav$'
+	| egrep -v '\.wav$' \
+	| egrep -v '\.zargo$'
 
