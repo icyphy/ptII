@@ -1,6 +1,6 @@
 # Makefile for Ptolemy Classic style Codegen fsm kernel
 #
-# @Version: $Id: makefile 54594 2009-06-20 18:05:09Z cxh $
+# @Version: $Id$
 # @Author: Christopher Brooks
 #
 # @Copyright (c) 2009 The Regents of the University of California

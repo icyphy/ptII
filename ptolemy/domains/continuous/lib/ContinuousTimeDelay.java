@@ -93,7 +93,7 @@ import ptolemy.kernel.util.Workspace;
  of this zero-valued delay as an infinitesimal delay.
 
  @author Edward A. Lee, Jeff C. Jensen
- @version $Id: ContinuousTimeDelay.java 55615 2009-08-27 22:32:34Z cxh $
+ @version $Id$
  @since Ptolemy II 7.1
  @Pt.ProposedRating Yellow (eal)
  @Pt.AcceptedRating Red (eal)

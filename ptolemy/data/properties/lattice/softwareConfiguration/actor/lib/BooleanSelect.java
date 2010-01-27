@@ -44,7 +44,7 @@ import ptolemy.kernel.util.IllegalActionException;
  An adapter class for ptolemy.actor.lib.BooleanSelect.
 
  @author Man-Kit Leung, Thomas Mandl, Beth
- @version $Id: BooleanSelect.java 55837 2009-10-13 23:09:28Z cxh $
+ @version $Id$
  @since Ptolemy II 6.2
  @Pt.ProposedRating Red (beth)
  @Pt.AcceptedRating Red (beth)

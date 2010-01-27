@@ -60,7 +60,7 @@ import ptolemy.kernel.util.Workspace;
  *  approximating a Riemann integral.
 
  @author Jeff C. Jensen
- @version $Id: Integrator.java 39805 2005-10-28 20:19:33Z cxh $
+ @version $Id$
  @since Ptolemy II 8.1
  @see ptolemy.actor.lib.Accumulator
  */

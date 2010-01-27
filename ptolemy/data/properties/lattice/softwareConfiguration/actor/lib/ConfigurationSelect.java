@@ -46,7 +46,7 @@ import ptolemy.kernel.util.IllegalActionException;
  An adapter class for ptolemy.actor.lib.ConfigurationSelect.
 
  @author Charles Shelton
- @version $Id: ConfigurationSelect.java 55837 2009-10-13 23:09:28Z cxh $
+ @version $Id$
  @since Ptolemy II 6.2
  @Pt.ProposedRating Red (cshelton)
  @Pt.AcceptedRating Red (cshelton)

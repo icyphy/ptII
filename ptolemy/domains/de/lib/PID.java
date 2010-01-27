@@ -78,7 +78,7 @@ import ptolemy.kernel.util.Workspace;
  the derivative (for one sample) and the integral.
  <p>
  @author Jeff C. Jensen
- @version $Id: PID.java 39805 2005-10-28 20:19:33Z cxh $
+ @version $Id$
  @since Ptolemy II 8.1
  @see ptolemy.domains.de.lib.Integrator
  @see ptolemy.domains.de.lib.Derivative

@@ -58,7 +58,7 @@ import ptolemy.kernel.util.NamedObj;
  Code generator helper class associated with the MultirateFSMDirector class.
 
  @author Gang Zhou
- @version $Id: MultirateFSMDirector.java 54721 2009-06-26 22:32:23Z cxh $
+ @version $Id$
  @since Ptolemy II 7.1
  @Pt.ProposedRating Red (zgang)
  @Pt.AcceptedRating Red (zgang)

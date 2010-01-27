@@ -41,7 +41,7 @@ import ptolemy.kernel.util.Workspace;
 Output the first token received on the input port, and suppress any other
 inputs received with the same physical time index.
  @author Jeff C. Jensen
- @version $Id: SuppressSimultanousEvents.java 39805 2005-10-28 20:19:33Z cxh $
+ @version $Id$
  @since Ptolemy II 8.1
  */
 public class SuppressSimultaneousEvents extends DETransformer {

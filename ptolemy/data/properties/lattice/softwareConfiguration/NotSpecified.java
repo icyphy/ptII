@@ -39,7 +39,7 @@ import ptolemy.data.properties.lattice.PropertyLattice;
  A lattice element for the softwareConfiguration lattice.
 
  @author Thomas Mandl
- @version $Id: AtomicActor.java 55837 2009-10-13 23:09:28Z cxh $
+ @version $Id$
  @since Ptolemy II 8.0
  @Pt.ProposedRating Red (cxh)
  @Pt.AcceptedRating Red (cxh)
