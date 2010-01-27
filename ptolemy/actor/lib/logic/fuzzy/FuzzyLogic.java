@@ -226,7 +226,9 @@ public class FuzzyLogic extends TypedAtomicActor{
             _debug("rules file name is :" + rulesFileName.getExpression());
         }
 
-        _fuzzyParser = new FuzzyParser(rulesFileName.asURL().toString().replace("file:/",""));
+        // FIXME: we should pass around urls so that this code works in applets
+        // and in the installer
+        _fuzzyParser = new FuzzyParser(rulesFileName.asURL().getFile());
         ArrayList<FuzzyLogicVar> tempArray = _fuzzyParser.getFuzzyLogicVariableArray();
 
         _linguisticVariableArray = _fuzzyParser.getLinguisticVariableArray();
