@@ -53,8 +53,8 @@ public class GPOutputDevice extends OutputDevice {
     /** Construct an adapter with the given
      *  ptolemy.domains.ptides.lib.GPOutputDevice actor.
      *  @param actor The given ptolemy.domains.ptides.lib.targets.luminary.GPOutputDevice actor.
-     *  @throws IllegalActionException 
-     *  @throws NameDuplicationException 
+     *  @exception IllegalActionException 
+     *  @exception NameDuplicationException 
      */
     public GPOutputDevice(
             ptolemy.domains.ptides.lib.luminary.GPOutputDevice actor)
@@ -81,8 +81,8 @@ public class GPOutputDevice extends OutputDevice {
 
     }
 
-    ////////////////////////////////////////////////////////////////////
-    ////                     public methods                         ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /**
      * Return the code for the actuator actuation function.
@@ -150,8 +150,8 @@ public class GPOutputDevice extends OutputDevice {
         return code.toString();
     }
 
-    ////////////////////////////////////////////////////////////////////
-    ////                     private variables                      ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     private String _pinID;
     private String _padID;

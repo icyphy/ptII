@@ -32,7 +32,7 @@ import ptolemy.data.properties.Property;
 import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.util.IllegalActionException;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// MeetFunction
 
 /**
@@ -155,7 +155,7 @@ public class MeetFunction extends MonotonicFunction {
                 "Cannot set the effectiveness of a MeetFunction term.");
     }
 
-    ///////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     ////                       private inner variable          ////
 
     private final PropertyConstraintSolver _solver;

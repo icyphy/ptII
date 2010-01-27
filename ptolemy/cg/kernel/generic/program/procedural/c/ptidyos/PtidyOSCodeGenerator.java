@@ -39,7 +39,7 @@ import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 ////PtidyOSCodeGenerator
 
 /** Base class for PtidyOS code generator.
@@ -92,7 +92,7 @@ public class PtidyOSCodeGenerator extends CCodeGenerator {
     ////                         protected methods                 ////
 
     /** Generate code for the assembly file.
-     *  @throws IllegalActionException if getAdaptor throws it.
+     *  @exception IllegalActionException if getAdaptor throws it.
      * 
      */
     protected void _generateAssemblyFile() throws IllegalActionException {
@@ -128,7 +128,7 @@ public class PtidyOSCodeGenerator extends CCodeGenerator {
      *  to determine whether this is top level. Test if the containing actor
      *  is in the top level.
      *  @return true if the containing actor is in the top level.
-     *  @throws IllegalActionException 
+     *  @exception IllegalActionException 
      */
     protected boolean _isTopLevel() throws IllegalActionException {
         Director director = ((Actor)getContainer()).getDirector();

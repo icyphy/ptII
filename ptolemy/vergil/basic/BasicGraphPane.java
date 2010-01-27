@@ -40,7 +40,7 @@ import diva.graph.GraphController;
 import diva.graph.GraphModel;
 import diva.graph.GraphPane;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// BasicGraphPane
 
 /**
@@ -83,7 +83,7 @@ public class BasicGraphPane extends GraphPane {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                        private methods                    ////
+    ////                         private methods                   ////
 
     /** If the model contains local preferences, use that to set the background
      *  color. Otherwise, use the global preferences from the configuration.
@@ -140,7 +140,7 @@ public class BasicGraphPane extends GraphPane {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                        private variables                  ////
+    ////                         private variables                 ////
 
     /** Counter to ensure that no more than one message is printed
      *  when we fail to find the default preferences in the configuration.

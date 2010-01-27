@@ -36,7 +36,7 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.Workspace;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// TrapezoidalRuleSolver
 
 /**This is a second order variable step size ODE solver that uses the

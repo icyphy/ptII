@@ -43,7 +43,7 @@ import ptolemy.data.type.Type;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// RecordToken
 
 /**
@@ -710,7 +710,7 @@ public class RecordToken extends AbstractNotConvertibleToken {
      * @param labels An array of String labels for the RecordToken to be created.
      * @param values An array of Token values for the RecordToken to be created.
      * @return a new RecordToken.
-     * @throws IllegalActionException If thrown while constructing the RecordToken
+     * @exception IllegalActionException If thrown while constructing the RecordToken
      */
     protected RecordToken _createRecordToken(String[] labels, Token[] values) throws IllegalActionException {
         return new RecordToken(labels, values);

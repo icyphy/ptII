@@ -214,7 +214,7 @@ public class PropertyTokenSolver extends PropertySolver {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////             protected methods                             ////
+    ////                         protected methods                 ////
 
     /*
      * Resolve the property values for the specified top-level entity by

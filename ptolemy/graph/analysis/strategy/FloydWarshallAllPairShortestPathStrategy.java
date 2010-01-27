@@ -36,7 +36,7 @@ import ptolemy.graph.Node;
 import ptolemy.graph.analysis.analyzer.AllPairShortestPathAnalyzer;
 import ptolemy.graph.mapping.ToDoubleMapping;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// FloydWarshallAllPairShortestPathStrategy
 
 /**

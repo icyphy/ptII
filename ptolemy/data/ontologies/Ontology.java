@@ -35,7 +35,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// Ontology
 
 /**
@@ -58,9 +58,9 @@ public class Ontology extends CompositeEntity {
      *  name.
      *  @param container The container.
      *  @param name The name for the ontology.
-     *  @throws NameDuplicationException If the container already contains an
+     *  @exception NameDuplicationException If the container already contains an
      *   ontology with the specified name.
-     *  @throws IllegalActionException If the base class throws it.
+     *  @exception IllegalActionException If the base class throws it.
      */
     public Ontology(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
@@ -70,7 +70,7 @@ public class Ontology extends CompositeEntity {
     
     /** Create a new Ontology with no container or name.
      *  @param workspace The workspace into which to put it.
-     *  @throws IllegalActionException If the base class throws it.
+     *  @exception IllegalActionException If the base class throws it.
      */
     public Ontology(Workspace workspace)
             throws IllegalActionException {
@@ -78,8 +78,8 @@ public class Ontology extends CompositeEntity {
         _attachText("_iconDescription", _ICON);
     }
     
-    ////////////////////////////////////////////////////////////////////////////
-    ////                   public methods                                   ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /** Return the graph represented by this ontology.
      *  Graph is weighted by Concepts on the nodes and ConceptRelations on
@@ -198,7 +198,7 @@ public class Ontology extends CompositeEntity {
     }
         
     ///////////////////////////////////////////////////////////////////
-    ////                       private variables                   ////
+    ////                         private variables                 ////
 
     /** The cached graph. */
     private ConceptGraph _graph;

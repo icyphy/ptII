@@ -42,7 +42,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.vergil.icon.EditorIcon;
 import ptolemy.vergil.kernel.attributes.RectangleAttribute;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// LEDMatrix
 
 /** An actor that displays an array of LEDs.  The array display only

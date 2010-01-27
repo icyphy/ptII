@@ -38,7 +38,7 @@ import ptolemy.backtrack.util.PathFinder;
 
 import com.microstar.xml.XmlParser;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// ConfigXmlHandler
 /**
  XML handler that generates the library description for backtracking actors.
@@ -52,7 +52,7 @@ import com.microstar.xml.XmlParser;
 public class ConfigXmlHandler extends XmlHandler {
 
     ///////////////////////////////////////////////////////////////////
-    ////                       public methods                      ////
+    ////                         public methods                    ////
 
     /** Exclude the specified XML document from the scan.
      *

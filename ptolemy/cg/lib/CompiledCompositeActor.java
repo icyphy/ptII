@@ -73,7 +73,7 @@ import ptolemy.util.MessageHandler;
 import ptolemy.util.StringBufferExec;
 import ptolemy.util.StringUtilities;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// CompiledCompositeActor
 
 /**
@@ -982,7 +982,7 @@ public class CompiledCompositeActor extends TypedCompositeActor {
                 }
             }
 
-        } else if(type instanceof ArrayType) {
+        } else if (type instanceof ArrayType) {
 
             for (int i = 0; i < port.getWidthInside(); i++) {
                 for (int k = 0; k < rate; k++) {
@@ -1005,9 +1005,9 @@ public class CompiledCompositeActor extends TypedCompositeActor {
                         
                         Token[] convertedTokens = new Token[size];
                         
-                        for(int j = 0; j < size; j++) {
+                        for (int j = 0; j < size; j++) {
                             Object element =  (Object)getPayload.invoke(elements[j], (Object[])null);
-                            if(type == BaseType.INT) {
+                            if (type == BaseType.INT) {
                                 convertedTokens[j] = new IntToken(Integer.parseInt(element.toString())); 
                             } else if (type == BaseType.DOUBLE) {
                                 convertedTokens[j] = new DoubleToken(Double.parseDouble(element.toString()));

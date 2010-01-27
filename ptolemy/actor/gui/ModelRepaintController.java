@@ -40,7 +40,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// ModelRepaintController
 
 /**
@@ -189,7 +189,7 @@ public class ModelRepaintController extends Attribute {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       private methods                     ////
+    ////                         private methods                   ////
 
     /** Schedule a repaint in case the value parameter equals True.
      *  This is done by requesting a ChangeRequest.

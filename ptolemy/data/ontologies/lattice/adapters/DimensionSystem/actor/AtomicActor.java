@@ -35,7 +35,7 @@ import ptolemy.data.ontologies.lattice.adapters.DimensionSystem.DimensionSystemA
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// AtomicActor
 
 /**

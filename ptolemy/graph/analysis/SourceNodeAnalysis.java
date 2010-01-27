@@ -31,7 +31,7 @@ import ptolemy.graph.analysis.analyzer.Analyzer;
 import ptolemy.graph.analysis.analyzer.SourceNodeAnalyzer;
 import ptolemy.graph.analysis.strategy.SourceNodeStrategy;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// SourceNodeAnalysis
 
 /**

@@ -37,7 +37,7 @@ import org.osgi.framework.BundleContext;
 
 import ptolemy.backtrack.eclipse.plugin.console.OutputConsole;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// EclipsePlugin
 /**
  Main class for the Eclipse plugin. This class initializes the Eclipse plugin.
@@ -59,7 +59,7 @@ public class EclipsePlugin extends AbstractUIPlugin {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       public methods                      ////
+    ////                         public methods                    ////
 
     /** Return the console for this plugin.
      *

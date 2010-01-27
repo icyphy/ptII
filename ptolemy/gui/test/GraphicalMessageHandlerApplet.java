@@ -36,7 +36,7 @@ import ptolemy.kernel.attributes.VersionAttribute;
 import ptolemy.util.MessageHandler;
 import ptolemy.vergil.VergilApplication;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// GraphicalMessageHandlerApplet
 /** An applet that bring up a toplevel, standalone Vergil frame.
 

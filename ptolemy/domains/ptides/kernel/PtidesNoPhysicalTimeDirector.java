@@ -74,7 +74,7 @@ public class PtidesNoPhysicalTimeDirector extends PtidesBasicDirector {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                     public methods                        ////
+    ////                         public methods                    ////
 
     /** Initialize the actors and request a refiring at the current
      *  time of the executive director. This overrides the base class to
@@ -90,7 +90,7 @@ public class PtidesNoPhysicalTimeDirector extends PtidesBasicDirector {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                     protected methods                     ////
+    ////                         protected methods                 ////
 
     /** Enqueue event and keep track of what event is at which input port.
      *  @param ioPort The port the event resides.
@@ -222,13 +222,13 @@ public class PtidesNoPhysicalTimeDirector extends PtidesBasicDirector {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                     protected variables                   ////
+    ////                         protected variables               ////
 
     /** The index of the event we are peeking in the event queue. */
     protected int _peekingIndex;
 
     ///////////////////////////////////////////////////////////////////
-    ////                     private variables                     ////
+    ////                         private variables                 ////
 
     private HashMap<IOPort, PriorityQueue> _eventAtPort;
 

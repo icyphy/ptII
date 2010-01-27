@@ -254,7 +254,7 @@ public class PropertyConstraintSolver extends PropertySolver {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                     public methods                        ////
+    ////                         public methods                    ////
 
     /**
      * Return the property value associated with the specified object.
@@ -493,9 +493,9 @@ public class PropertyConstraintSolver extends PropertySolver {
      * @param toplevel The top-level container
      * @param toplevelHelper Must be toplevel.getHelper()
      * @param constraintList The constraint list that we are solving
-     * @throws TypeConflictException If an unacceptable solution is reached
-     * @throws IllegalActionException 
-     * @throws TypeConflictException 
+     * @exception TypeConflictException If an unacceptable solution is reached
+     * @exception IllegalActionException 
+     * @exception TypeConflictException 
      */
     protected void _resolveProperties(NamedObj toplevel,
             PropertyConstraintHelper toplevelHelper,

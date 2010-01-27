@@ -172,9 +172,9 @@ public class GTGUIAction extends GUIAction {
      *
      *  @param model The model that contains the selected or unselected objects.
      *  @param ignore Whether the objects should be ignored.
-     *  @throws NameDuplicationException If instances of IgnoringAttribute
+     *  @exception NameDuplicationException If instances of IgnoringAttribute
      *   cannot be created for the objects.
-     *  @throws IllegalActionException If IgnoringAttribute exists and have the
+     *  @exception IllegalActionException If IgnoringAttribute exists and have the
      *   same names.
      */
     protected void _processUnselectedObjects(NamedObj model, boolean ignore)

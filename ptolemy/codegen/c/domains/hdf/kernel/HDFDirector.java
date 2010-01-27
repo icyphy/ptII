@@ -49,7 +49,7 @@ import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// HDFDirector
 
 /**
@@ -72,8 +72,8 @@ public class HDFDirector extends SDFDirector {
         super(director);
     }
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         public methods                         ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /** Generate code for declaring read and write offset variables if
      *  needed.  First relay the information of firings per global

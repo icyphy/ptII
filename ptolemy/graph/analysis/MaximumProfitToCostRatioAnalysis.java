@@ -33,7 +33,7 @@ import ptolemy.graph.analysis.strategy.ParhiMaximumProfitToCostRatioStrategy;
 import ptolemy.graph.mapping.ToDoubleMapping;
 import ptolemy.graph.mapping.ToIntMapping;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// MaximumProfitToCostRatioAnalysis
 
 /**

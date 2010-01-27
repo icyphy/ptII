@@ -59,7 +59,7 @@ public class Director extends HTMLCodeGeneratorAdapter {
         super(director);
     }
 
-    /////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     ////                Public Methods                           ////
 
     /** Generate the code for the firing of actors.

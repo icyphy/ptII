@@ -25,7 +25,7 @@
  COPYRIGHTENDKEY
 
  */
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// Autocorrelation
 package ptolemy.backtrack.automatic.ptolemy.domains.sdf.lib;
 
@@ -167,7 +167,7 @@ public class Autocorrelation extends SDFTransformer implements Rollbackable {
     // The constructor takes a port argument so that the clone()
     // method can construct an instance of this class for the
     // input port on the clone.
-    ///////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     ////                       public inner methods            ////
     private int _numberOfInputs;
 

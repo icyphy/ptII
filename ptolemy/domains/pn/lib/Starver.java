@@ -36,7 +36,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// Starver
 
 /**
@@ -80,7 +80,7 @@ public class Starver extends Transformer {
     public Parameter limit;
 
     ///////////////////////////////////////////////////////////////////
-    ////                       public methods                      ////
+    ////                         public methods                    ////
 
     /** Read at most one input token, and if the number of outputs
      *  has not yet exceeded the value given by <i>limit</i>, then
@@ -109,7 +109,7 @@ public class Starver extends Transformer {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       public methods                      ////
+    ////                         public methods                    ////
 
     /** The count of outputs that have been produced. */
     private int _count;

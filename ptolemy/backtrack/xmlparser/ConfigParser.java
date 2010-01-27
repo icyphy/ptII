@@ -39,7 +39,7 @@ import ptolemy.backtrack.util.PathFinder;
 
 import com.microstar.xml.XmlParser;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// ConfigParser
 
 /**
@@ -75,7 +75,7 @@ public class ConfigParser {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       public methods                      ////
+    ////                         public methods                    ////
 
     /** Add an excluded file to the XML handler.
      *
@@ -202,7 +202,7 @@ public class ConfigParser {
             + "ptolemy/configs/full/configuration.xml";
 
     ///////////////////////////////////////////////////////////////////
-    ////                      private methods                      ////
+    ////                         private methods                   ////
 
     /** The recursive function to traverse the XML tree and add a package
      *  prefix to each class name found in the given set.

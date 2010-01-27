@@ -83,7 +83,7 @@ import ptolemy.util.CancelException;
 import ptolemy.util.MessageHandler;
 import ptolemy.util.StringUtilities;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// PtinyOSDirector
 
 /**
@@ -897,7 +897,7 @@ public class PtinyOSDirector extends Director {
         }
     }
 
-    ///////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     // Methods for accessing sockets from TOSSIM in
     // $TOSROOT/contrib/ptII/ptinyos/tos/platform/ptII/external_comm.c
     //
@@ -907,7 +907,7 @@ public class PtinyOSDirector extends Director {
     // These are all JNI methods that get called by TOSSIM through the
     // Java loader.
     //
-    ///////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
 
     /** Accept a connection on a
      *  java.nio.channels.ServerSocketChannel.  If serverSocketChannel

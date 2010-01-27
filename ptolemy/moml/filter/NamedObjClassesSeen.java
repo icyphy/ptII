@@ -35,7 +35,7 @@ import ptolemy.actor.TypedCompositeActor;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.MoMLFilter;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// NamedObjClassesSeen
 
 /** Create a Set of classes that extend NamedObj that are in the MoML

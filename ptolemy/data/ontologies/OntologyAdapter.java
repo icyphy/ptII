@@ -51,7 +51,7 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.StringAttribute;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// OntologyAdapter
 
 /**
@@ -88,7 +88,7 @@ constraints.
 public abstract class OntologyAdapter {
 
     ///////////////////////////////////////////////////////////////////
-    ////                 public methods                            ////
+    ////                         public methods                    ////
 
     /**
      * Return the associated component object.
@@ -278,7 +278,7 @@ public abstract class OntologyAdapter {
         return getName() + " " + super.toString();
     }
 
-    /////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     ////          public inner classes                               ////
 
     /**
@@ -348,7 +348,7 @@ public abstract class OntologyAdapter {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////               protected methods                           ////
+    ////                         protected methods                 ////
 
     /**
      * Create a new ParseTreeAnnotationEvaluator that is tailored for the
@@ -378,7 +378,7 @@ public abstract class OntologyAdapter {
      * parsing the expression of every property-able Attribute.
      *
      * @return The list of PropertyHelpers for ASTPtRootNodes.
-     * @throws IllegalActionException If the AST expression is not parseable
+     * @exception IllegalActionException If the AST expression is not parseable
      */
     protected List<OntologyAdapter> _getASTNodeAdapters()
             throws IllegalActionException {
@@ -611,7 +611,7 @@ public abstract class OntologyAdapter {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////       protected variables                                 ////
+    ////                         protected variables               ////
 
     /** The annotation evaluator. */
     protected ParseTreeAnnotationEvaluator _annotationEvaluator;
@@ -620,7 +620,7 @@ public abstract class OntologyAdapter {
     protected OntologySolver _solver;
 
     ///////////////////////////////////////////////////////////////////
-    ////       private methods                                     ////
+    ////                         private methods                   ////
 
     /**
      * Evaluate the expression of the specified AnnotationAttribute.
@@ -683,7 +683,7 @@ public abstract class OntologyAdapter {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                   private variables                       ////
+    ////                         private variables                 ////
 
     /* The associated component. */
     private Object _component;

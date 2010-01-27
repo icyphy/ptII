@@ -38,7 +38,7 @@ import org.eclipse.jdt.core.dom.AnonymousClassDeclaration;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.Expression;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// ASTDump
 
 /**
@@ -74,7 +74,7 @@ public class ASTDump extends ASTVisitor {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       public methods                      ////
+    ////                         public methods                    ////
 
     /** Read in one or more Java source files, parse them with the
      *  Eclipse parser, and output their AST structure to standard
@@ -150,7 +150,7 @@ public class ASTDump extends ASTVisitor {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                      private methods                      ////
+    ////                         private methods                   ////
 
     /** Decrease the current indentation by a unit (four spaces).
      */

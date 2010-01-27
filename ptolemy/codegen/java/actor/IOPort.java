@@ -43,7 +43,7 @@ import ptolemy.data.BooleanToken;
 import ptolemy.domains.pn.kernel.PNQueueReceiver;
 import ptolemy.kernel.util.IllegalActionException;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 ////IOPort
 
 /**
@@ -67,8 +67,8 @@ public class IOPort extends JavaCodeGeneratorHelper implements
         super(component);
     }
 
-    /////////////////////////////////////////////////////////////////////
-    ////                           public methods                    ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     public String generateCodeForSend(String channel, String dataToken)
             throws IllegalActionException {

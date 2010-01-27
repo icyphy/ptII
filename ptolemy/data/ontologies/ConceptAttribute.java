@@ -184,7 +184,7 @@ public class ConceptAttribute extends AbstractSettableAttribute {
      * for the ConceptAttribute class.
      * 
      * @return null
-     * @throws IllegalActionException To match the signature of the
+     * @exception IllegalActionException To match the signature of the
      * {@linkplain ptolemy.kernel.util.Settable#validate validate()}
      * method in the {@linkplain ptolemy.kernel.util.Settable Settable}
      * interface, but this is not ever thrown here.

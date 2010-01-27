@@ -32,7 +32,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// PropertyLatticeAttribute
 
 /**
@@ -94,7 +94,7 @@ public class PropertyLatticeAttribute extends ModelAttribute {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                      protected methods                    ////
+    ////                         protected methods                 ////
 
     /**
      * Return the class name of the contained model top-level. A property

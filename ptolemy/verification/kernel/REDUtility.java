@@ -58,7 +58,7 @@ import ptolemy.verification.kernel.MathematicalModelConverter.FormulaType;
 import ptolemy.verification.lib.BoundedBufferNondeterministicDelay;
 import ptolemy.verification.lib.BoundedBufferTimedDelay;
 
-// ////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 // //REDUtility
 
 /**
@@ -2403,7 +2403,7 @@ public class REDUtility {
      * @param outputSignalName The output signal
      * @return description of the TimedDelayActor acceptable by model checker
      *         RED.
-     * @throws IllegalActionException If the <i>delay</i> or 
+     * @exception IllegalActionException If the <i>delay</i> or 
      * <i>bufferSize</i> parameters of the delayedActor cannot be read.
      */
     private static REDSingleEntityBean _translateBBNondeterministicDelayedActor(
@@ -3038,7 +3038,7 @@ public class REDUtility {
      * analysis is possible.
      * @return description of the TimedDelayActor acceptable by model checker
      * RED.
-     * @throws IllegalActionException If thrown while getting the initial
+     * @exception IllegalActionException If thrown while getting the initial
      * state of the actor, deciding the guard signal variable set or
      * generating transitions.
      */
@@ -3641,8 +3641,8 @@ public class REDUtility {
 
     private static HashMap<String, VariableInfo> _variableInfo;
 
-    // /////////////////////////////////////////////////////////////////
-    // // inner class ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         inner class                       ////
     private static class VariableInfo {
         private VariableInfo(String paraMax, String paraMin) {
 
@@ -3655,8 +3655,8 @@ public class REDUtility {
 
     }
 
-    // /////////////////////////////////////////////////////////////////
-    // // inner class ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         inner class                       ////
     private static class REDSingleEntityBean {
         private REDSingleEntityBean() {
             _defineConstants = new StringBuffer("");
@@ -3678,8 +3678,8 @@ public class REDUtility {
 
     }
 
-    // /////////////////////////////////////////////////////////////////
-    // // inner class ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         inner class                       ////
     private static class REDModuleNameInitialBean {
         private REDModuleNameInitialBean() {
 
@@ -3689,8 +3689,8 @@ public class REDUtility {
         private String _initialStateDescription = "";
     }
 
-    // /////////////////////////////////////////////////////////////////
-    // // inner class ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         inner class                       ////
     private static class REDTransitionBean {
         private REDTransitionBean() {
 

@@ -34,7 +34,7 @@ import ptolemy.data.properties.token.PropertyTokenHelper;
 import ptolemy.data.properties.token.PropertyTokenSolver;
 import ptolemy.kernel.util.IllegalActionException;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// FirstTokenGotListener
 
 /**

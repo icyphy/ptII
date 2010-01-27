@@ -38,7 +38,7 @@ import org.eclipse.ui.IWorkbenchPreferencePage;
 
 import ptolemy.backtrack.eclipse.plugin.EclipsePlugin;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// EditorPreferencePage
 
 /**
@@ -63,7 +63,7 @@ public class EditorPreferencePage extends SectionPreferencePage implements
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       public methods                      ////
+    ////                         public methods                    ////
 
     /** Create the contents of the preference page with the parent as its
      *  container.
@@ -83,7 +83,7 @@ public class EditorPreferencePage extends SectionPreferencePage implements
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       private methods                     ////
+    ////                         private methods                   ////
 
     /** Enable the color selectors if a check box is checked, or disable it
      *  otherwise.

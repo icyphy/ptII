@@ -34,7 +34,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InvalidStateException;
 import ptolemy.kernel.util.Nameable;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// ConditionalReceive
 
 /**
@@ -302,7 +302,7 @@ public class ConditionalReceive extends ConditionalBranch implements Runnable {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                      protected methods                    ////
+    ////                         protected methods                 ////
 
     /** Return true if this conditional branch is ready to rendezvous
      *  or has already completed its rendezvous.

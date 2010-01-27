@@ -41,7 +41,7 @@ import ptolemy.domains.fsm.kernel.State;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// HDFDirector
 
 /**
@@ -65,8 +65,8 @@ public class HDFFSMDirector extends MultirateFSMDirector {
         super(director);
     }
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         public methods                         ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /** Generate code for declaring read and write offset variables if
      *  needed.  First find out the maximum buffer sizes needed for

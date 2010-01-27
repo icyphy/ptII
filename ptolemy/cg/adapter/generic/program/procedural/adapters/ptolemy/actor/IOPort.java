@@ -34,7 +34,7 @@ import ptolemy.data.type.BaseType;
 import ptolemy.data.type.Type;
 import ptolemy.kernel.util.IllegalActionException;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 ////IOPort
 
 /**
@@ -58,8 +58,8 @@ public class IOPort extends NamedProgramCodeGeneratorAdapter implements
         super(component);
     }
 
-    /////////////////////////////////////////////////////////////////////
-    ////                           public methods                    ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /** 
      * Generate code for replacing the get() macro.
@@ -264,7 +264,7 @@ public class IOPort extends NamedProgramCodeGeneratorAdapter implements
     /** 
      * Get the adapters for receiver contained in this port.
      * @return The adapters.
-     * @throws IllegalActionException Thrown if {@link #getAdapter(Object)}
+     * @exception IllegalActionException Thrown if {@link #getAdapter(Object)}
      * throws it.
      */
     public Receiver[][] getReceiverAdapters() throws IllegalActionException {
@@ -283,7 +283,7 @@ public class IOPort extends NamedProgramCodeGeneratorAdapter implements
     /** 
      * Get the adapters for the remote receivers connected to this port.
      * @return The adapters.
-     * @throws IllegalActionException Thrown if {@link #getAdapter(Object)}
+     * @exception IllegalActionException Thrown if {@link #getAdapter(Object)}
      * throws it.
      */
     public Receiver[][] getRemoteReceiverAdapters()

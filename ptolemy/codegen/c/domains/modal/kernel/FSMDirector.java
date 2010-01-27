@@ -41,7 +41,7 @@ import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// FSMDirector
 
 /**
@@ -63,8 +63,8 @@ public class FSMDirector extends Director {
         super(director);
     }
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         public methods                         ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /** Generate the code for the firing of actors controlled by this
      *  director.  It generates code for making preemptive transition,

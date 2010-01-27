@@ -30,7 +30,7 @@ package ptolemy.backtrack.util;
 import java.util.Iterator;
 import java.util.Stack;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// FieldRecord
 
 /**
@@ -90,7 +90,7 @@ public class FieldRecord {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       public methods                      ////
+    ////                         public methods                    ////
 
     /** Add an old value to the records, associated with a timestamp. This
      *  is the same as calling <tt>add(null, value, timestamp)</tt>, where
@@ -836,7 +836,7 @@ public class FieldRecord {
 
     ///////////////////////////////////////////////////////////////////
     ////                       nested classes                      ////
-    //////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     //// CombinedIterator
 
     /**
@@ -956,7 +956,7 @@ public class FieldRecord {
         private RecordList _lastRecord;
     }
 
-    //////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     //// IndividualIterator
 
     /**
@@ -1030,7 +1030,7 @@ public class FieldRecord {
         private RecordList _lastRecord;
     }
 
-    //////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     //// Record
 
     /**
@@ -1173,7 +1173,7 @@ public class FieldRecord {
         private Object _value;
     }
 
-    //////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     //// RecordList
 
     /** Add a record to the list at the given index.
@@ -1189,7 +1189,7 @@ public class FieldRecord {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                     protected methods                     ////
+    ////                         protected methods                 ////
 
     /** Perform a deep copy from a source array to a destination array. If
      *  those arrays are multi-dimensional, sub-arrays of them are copied

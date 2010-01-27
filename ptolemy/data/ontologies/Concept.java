@@ -37,7 +37,7 @@ import ptolemy.kernel.util.Flowable;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// Concept
 
 /**
@@ -58,9 +58,9 @@ public class Concept extends ComponentEntity implements InequalityTerm, Flowable
      *  
      *  @param ontology The specified ontology where this concept resides.
      *  @param name The specified name for the concept.
-     *  @throws NameDuplicationException If the ontology already contains a
+     *  @exception NameDuplicationException If the ontology already contains a
      *   concept with the specified name.
-     *  @throws IllegalActionException If the base class throws it.
+     *  @exception IllegalActionException If the base class throws it.
      */
     public Concept(CompositeEntity ontology, String name)
             throws NameDuplicationException, IllegalActionException {
@@ -76,7 +76,7 @@ public class Concept extends ComponentEntity implements InequalityTerm, Flowable
         abovePort = new ComponentPort(this, "abovePort");
     }
     
-    ////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     ////                   parameters and ports                             ////
     
     /** The port linked to concepts above this one in the lattice. */
@@ -90,8 +90,8 @@ public class Concept extends ComponentEntity implements InequalityTerm, Flowable
      */
     public Parameter isAcceptable;
 
-    ////////////////////////////////////////////////////////////////////////////
-    ////                   public methods                                   ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /** Return null.
      *  For variable InequaliyTerms, this method will return a reference to the
@@ -153,7 +153,7 @@ public class Concept extends ComponentEntity implements InequalityTerm, Flowable
      *  @param concept The concept to compare.
      *  @return True if this concept is greater than or equal to the
      *   specified concept.
-     *  @throws IllegalActionException If the specified concept
+     *  @exception IllegalActionException If the specified concept
      *   does not have the same ontology as this one.
      */
     public boolean isAboveOrEqualTo(Concept concept) throws IllegalActionException {
@@ -216,7 +216,7 @@ public class Concept extends ComponentEntity implements InequalityTerm, Flowable
     }
     
     ///////////////////////////////////////////////////////////////////
-    ////                       protected variables                 ////
+    ////                         protected variables               ////
 
     /**
      * The name of this Concept.
@@ -224,7 +224,7 @@ public class Concept extends ComponentEntity implements InequalityTerm, Flowable
     protected String _name;
     
     ///////////////////////////////////////////////////////////////////
-    ////                       private variables                   ////
+    ////                         private variables                 ////
     
     /** Empty array. */
     private static InequalityTerm[] _EMPTY_ARRAY = new InequalityTerm[0];

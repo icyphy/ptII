@@ -69,7 +69,7 @@ import ptolemy.vergil.basic.ExtendedGraphFrame;
 import diva.graph.GraphPane;
 import diva.gui.GUIUtilities;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// FSMGraphFrame
 
 /**
@@ -417,7 +417,7 @@ public class FSMGraphFrame extends ExtendedGraphFrame implements ActionListener 
     private List<IOPort> _modifiedPorts = new LinkedList<IOPort>();
 
     ///////////////////////////////////////////////////////////////////
-    ////                        inner classes                      ////
+    ////                         inner classes                     ////
 
     /** Listener for debug menu commands. */
     public class DebugMenuListener implements ActionListener {

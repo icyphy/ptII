@@ -53,7 +53,7 @@ import net.jini.lookup.ServiceDiscoveryManager;
 import ptolemy.distributed.common.DistributedActor;
 import ptolemy.kernel.util.KernelException;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 ////ClientServerInteractionManager
 
 /**
@@ -283,7 +283,7 @@ public class ClientServerInteractionManager implements DiscoveryListener,
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       private methods                   ////
+    ////                         private methods                   ////
 
     /** Construct the list of aliveServices.
      */

@@ -83,7 +83,7 @@ import diva.graph.layout.AbstractGlobalLayout;
 import diva.graph.layout.LayoutTarget;
 import diva.graph.modular.EdgeModel;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 ////KielerLayout
 /**
  * Ptolemy Layouter that uses the KIELER layout algorithm from an external
@@ -163,11 +163,11 @@ public class KielerLayout extends AbstractGlobalLayout {
         this.setModel(ptolemyContainer);
     }
 
-    // /////////////////////////////////////////////////////////////////
-    // // public variables ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public variables                  ////
 
-    // /////////////////////////////////////////////////////////////////
-    // // public methods ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /**
      * Layout the given composite. Main entry point for the layout action.
@@ -1319,8 +1319,8 @@ public class KielerLayout extends AbstractGlobalLayout {
         }
     }
 
-    // /////////////////////////////////////////////////////////////////
-    // // private variables ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     /**
      * The default width used by Kieler for inner ports.

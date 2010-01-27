@@ -49,7 +49,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NamedObj;
 
-//////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 ////SDFDirector
 
 /**
@@ -73,8 +73,8 @@ public class SDFDirector extends StaticSchedulingDirector {
         super(sdfDirector);
     }
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         public methods                         ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /** Generate code for declaring read and write offset variables if needed.
      *
@@ -421,8 +421,8 @@ public class SDFDirector extends StaticSchedulingDirector {
         //}
     }
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         protected methods                      ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
 
     /** Create offset variables for the channels of the given port.
      *  The offset variables are generated unconditionally, but this
@@ -769,8 +769,8 @@ public class SDFDirector extends StaticSchedulingDirector {
         }
     }
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         private methods                        ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
 
     /** Pad the buffer for the channel of the given port with the given
      *  channel number to a power of two.  Return the new buffer size.

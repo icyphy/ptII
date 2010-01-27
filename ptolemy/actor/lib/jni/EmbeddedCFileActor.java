@@ -73,8 +73,8 @@ public class EmbeddedCFileActor extends EmbeddedCActor {
 
     }
 
-    ////////////////////////////////////////////////////////////////////
-    ////                     public methods                        ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /**
      * Set the embeddedCCode parameter in the EmbeddedCActor to
@@ -116,8 +116,8 @@ public class EmbeddedCFileActor extends EmbeddedCActor {
         }
     }
 
-    ///////////////////////////////////////////////////////////////////////
-    ////                      protected methods                        ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
 
     /** Generate and compile the code.
      *  This method calls {@link #changeEmbeddedCCode()} and then
@@ -154,8 +154,8 @@ public class EmbeddedCFileActor extends EmbeddedCActor {
      */
     public FileParameter codeBlockFile;
 
-    ////////////////////////////////////////////////////////////////////
-    ////                     inner classes                          ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         inner classes                     ////
 
     /** An actor inside the EmbeddedCFileActor that is used as a dummy
      *  placeholder.  It serves the same purpose as the EmbeddedActor

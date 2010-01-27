@@ -43,7 +43,7 @@ import ptolemy.data.properties.lattice.dimensionSystem.DivideMonotonicFunction;
 import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.util.IllegalActionException;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// ASTPtLeafNode
 
 /**

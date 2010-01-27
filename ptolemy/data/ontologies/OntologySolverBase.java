@@ -62,7 +62,7 @@ import ptolemy.util.FileUtilities;
 import ptolemy.util.StringBufferExec;
 import ptolemy.util.StringUtilities;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 ////OntologySolverBase
 
 /**
@@ -143,7 +143,7 @@ public abstract class OntologySolverBase extends MoMLModelAttribute {
     public SharedParameter ontologySolverUtilitiesWrapper;
 
     ///////////////////////////////////////////////////////////////////
-    ////                     public methods                        ////
+    ////                         public methods                    ////
 
     /**
      * Clear the resolved property for the specified object. The
@@ -161,7 +161,7 @@ public abstract class OntologySolverBase extends MoMLModelAttribute {
      * ontology solver.
      *
      * @return The list of PropertyHelpers.
-     * @throws IllegalActionException If there is an exception from getting
+     * @exception IllegalActionException If there is an exception from getting
      * all the subHelpers. 
      */
     public List<OntologyAdapter> getAllAdapters() throws IllegalActionException {
@@ -269,7 +269,7 @@ public abstract class OntologySolverBase extends MoMLModelAttribute {
      *  If this solver contains more than one ontology, then return the
      *  last one added. If it contains no ontologies, then return null.
      *  @return The ontology for this constraint solver.
-     *  @throws IllegalActionException If the structure is not a lattice.
+     *  @exception IllegalActionException If the structure is not a lattice.
      */
     public Ontology getOntology() throws IllegalActionException {
         NamedObj containedModel = getContainedModel();
@@ -457,7 +457,7 @@ public abstract class OntologySolverBase extends MoMLModelAttribute {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////             protected methods                             ////
+    ////                         protected methods                 ////
 
     /**
      * Return the PropertyHelper for the specified component. This
@@ -556,7 +556,7 @@ public abstract class OntologySolverBase extends MoMLModelAttribute {
      * Return the package name that contains the class of this solver.
      *
      * @return The package name.
-     * @throws IllegalActionException 
+     * @exception IllegalActionException 
      */
     protected String _getPackageName() throws IllegalActionException {
         // FIXME: Is it a good idea to hard code the adapters string in the package name?
@@ -589,7 +589,7 @@ public abstract class OntologySolverBase extends MoMLModelAttribute {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////             protected variables                           ////
+    ////                         protected variables               ////
 
     /**
      * The HashMap that caches components and their PropertyHelper objects.
@@ -617,7 +617,7 @@ public abstract class OntologySolverBase extends MoMLModelAttribute {
 
 
     ///////////////////////////////////////////////////////////////////
-    ////             private methods                               ////
+    ////                         private methods                   ////
 
     private void _resetParser() {
         // Avoid FindBugs: Write to static field from instance method.
@@ -625,7 +625,7 @@ public abstract class OntologySolverBase extends MoMLModelAttribute {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                        private variables                  ////
+    ////                         private variables                 ////
 
     private StringBufferExec _executeCommands;
 

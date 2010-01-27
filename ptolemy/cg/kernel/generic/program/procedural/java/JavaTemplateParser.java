@@ -35,7 +35,7 @@ import ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapter;
 import ptolemy.cg.kernel.generic.program.procedural.ProceduralTemplateParser;
 import ptolemy.kernel.util.IllegalActionException;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 ////Java TemplateParser
 
 /**
@@ -59,7 +59,7 @@ public class JavaTemplateParser extends ProceduralTemplateParser {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         public methods                   ////
+    ////                         public methods                    ////
 
     /** Init the TemplateParser with the associated
      *  given component and the given adapter.

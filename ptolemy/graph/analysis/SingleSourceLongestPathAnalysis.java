@@ -34,7 +34,7 @@ import ptolemy.graph.analysis.analyzer.SingleSourceLongestPathAnalyzer;
 import ptolemy.graph.analysis.strategy.AllEdgeSingleSourceLongestPathStrategy;
 import ptolemy.graph.mapping.ToDoubleMapping;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// SingleSourceLongestPathAnalysis
 
 /**

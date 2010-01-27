@@ -37,7 +37,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import cern.jet.random.Binomial;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// Binomial Selector
 
 /**
@@ -171,7 +171,7 @@ public class ColtBinomialSelector extends ColtRandomSource {
         // selections in one or two populations given, results like 7, 8, 14
         // or 7, 11, 11 were common.
         // See test/auto/ColtBinomialSelectorManyTrials.xml
-        while(trialsRemaining>0) {
+        while (trialsRemaining>0) {
             for (int i = 0; i < _current.length; i++) {
                 // Do a selection for a population.
                 int selected = 0;

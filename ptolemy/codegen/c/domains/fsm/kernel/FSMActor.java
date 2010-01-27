@@ -53,7 +53,7 @@ import ptolemy.domains.fsm.kernel.Transition;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// FSMActor
 
 /**
@@ -73,8 +73,8 @@ public class FSMActor extends CCodeGeneratorHelper {
         super(component);
     }
 
-    /////////////////////////////////////////////////////////////////////
-    ////                           public methods                    ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /** Generate the fire code of the associated FSMActor.  It provides
      *  generateTransitionCode(StringBuffer, TransitionRetriever) with an
@@ -565,7 +565,7 @@ public class FSMActor extends CCodeGeneratorHelper {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         protected variables                 ////
+    ////                         protected variables               ////
 
     /** The scope to generate code for guard expression, choice action
      *  and commit action.

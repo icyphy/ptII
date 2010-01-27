@@ -36,7 +36,7 @@ import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.moml.MoMLParser;
 import ptolemy.util.MessageHandler;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// OffsetMoMLChangeRequest
 /** A mutation request specified in MoML that offsets any objects
  *  that are created in the toplevel.

@@ -42,7 +42,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.util.ClassUtilities;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// EffigyFactory
 
 /**
@@ -173,7 +173,7 @@ public class EffigyFactory extends CompositeEntity {
                         // Test if DTD public Id is declared on the next line                        
                         if (contents.startsWith(dtdStart)) {
                             contents  += reader.readLine();
-                            if( contents.matches(dtdEndRegExp)) {
+                            if (contents.matches(dtdEndRegExp)) {
                                 // This file has the DTD for which we are looking.
                                 foundDTD = true;
                                 break;

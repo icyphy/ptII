@@ -74,7 +74,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 ////ModularCodeGenTypedCompositeActor
 
 /**
@@ -251,7 +251,7 @@ public class ModularCodeGenTypedCompositeActor extends LazyTypedCompositeActor {
                 profile = null;
             }
         }
-        if (!_USE_PROFILE || profile == null){
+        if (!_USE_PROFILE || profile == null) {
             populate();
             List<?> entities = entityList(ModularCodeGenTypedCompositeActor.class);
             for (Object entity : entities) {
@@ -646,7 +646,7 @@ public class ModularCodeGenTypedCompositeActor extends LazyTypedCompositeActor {
                     try {
                         for (Profile.Port port : profile.ports()) {
                             for (Object actorPort : ports) {
-                                if(port.name().equals(((NamedObj) actorPort).getName())) {
+                                if (port.name().equals(((NamedObj) actorPort).getName())) {
                                     DFUtilities.setRateVariable((IOPort)actorPort, 
                                             port.input() ? "tokenConsumptionRate":"tokenProductionRate", port.rate());
                                     ((TypedIOPort)actorPort).setTypeEquals(JavaCodeGenerator.codeGenTypeToPtType(port.type()));
@@ -956,7 +956,7 @@ public class ModularCodeGenTypedCompositeActor extends LazyTypedCompositeActor {
 
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private methods                 ////
+    ////                         private methods                   ////
 
 
     private void _createCodeGenerator() throws IllegalActionException, NameDuplicationException {
@@ -1012,7 +1012,7 @@ public class ModularCodeGenTypedCompositeActor extends LazyTypedCompositeActor {
     }
 
     private Profile _getProfile() {
-        try{
+        try {
         if (_profile != null || _modelChanged()) {
             // if _modelChanged => _profile == null
             return _profile;
@@ -1122,7 +1122,7 @@ public class ModularCodeGenTypedCompositeActor extends LazyTypedCompositeActor {
                 }
             }
 
-        } else if(type instanceof ArrayType) {
+        } else if (type instanceof ArrayType) {
 
             for (int i = 0; i < port.getWidthInside(); i++) {
                 for (int k = 0; k < rate; k++) {
@@ -1145,9 +1145,9 @@ public class ModularCodeGenTypedCompositeActor extends LazyTypedCompositeActor {
                         
                         Token[] convertedTokens = new Token[size];
                         
-                        for(int j = 0; j < size; j++) {
+                        for (int j = 0; j < size; j++) {
                             Object element =  (Object)getPayload.invoke(elements[j], (Object[])null);
-                            if(type == BaseType.INT) {
+                            if (type == BaseType.INT) {
                                 convertedTokens[j] = new IntToken(Integer.parseInt(element.toString())); 
                             } else if (type == BaseType.DOUBLE) {
                                 convertedTokens[j] = new DoubleToken(Double.parseDouble(element.toString()));

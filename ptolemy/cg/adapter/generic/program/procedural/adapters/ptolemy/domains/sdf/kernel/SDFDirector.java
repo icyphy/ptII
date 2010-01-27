@@ -54,7 +54,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NamedObj;
 
-//////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 ////SDFDirector
 
 /**
@@ -79,8 +79,8 @@ public class SDFDirector extends StaticSchedulingDirector {
         super(sdfDirector);
     }
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         public methods                         ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /** Generate the initialize code for the associated SDF director.
      *  @return The generated initialize code.
@@ -245,8 +245,8 @@ public class SDFDirector extends StaticSchedulingDirector {
         //}
     }
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         protected methods                      ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
 
     /** Create offset variables for the channels of the given port.
      *  The offset variables are generated unconditionally, but this
@@ -471,7 +471,7 @@ public class SDFDirector extends StaticSchedulingDirector {
      * @param attribute The given attribute.
      * @param channelAndOffset The given channel and offset.
      * @return an unique label for the given attribute.
-     * @throws IllegalActionException If the adapter throws it while
+     * @exception IllegalActionException If the adapter throws it while
      *  generating the label.
      */
     @Override
@@ -556,8 +556,8 @@ public class SDFDirector extends StaticSchedulingDirector {
         }
     }
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         private methods                        ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
 
     /** Check to see if variables are needed to represent read and
      *  write offsets for the ports in the director's container.  If
@@ -815,7 +815,7 @@ public class SDFDirector extends StaticSchedulingDirector {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         protected variables                 ////
+    ////                         protected variables               ////
 
     /** A hashmap that keeps track of parameters that are referenced for
      *  the associated actor.

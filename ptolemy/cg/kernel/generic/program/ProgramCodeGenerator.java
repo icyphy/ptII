@@ -59,7 +59,7 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.util.StreamExec;
 import ptolemy.util.StringUtilities;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 ////ProgramCodeGenerator
 
 /** Base class for Program code generator.
@@ -535,7 +535,7 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
         ProgramCodeGeneratorAdapter adapter = (ProgramCodeGeneratorAdapter) super._instantiateAdapter(component, componentClass, adapterClassName);
         try {
             Class<?> templateParserClass = _templateParserClass();
-            if (templateParserClass != null){
+            if (templateParserClass != null) {
                 adapter.setTemplateParser((TemplateParser) templateParserClass.newInstance());
             }
         } catch (InstantiationException e) {
@@ -645,7 +645,7 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         protected methods                   ////
+    ////                         protected methods                 ////
 
     /** Add libraries specified by the actors in this model.
      *  @exception IllegalActionException Never in this base class.

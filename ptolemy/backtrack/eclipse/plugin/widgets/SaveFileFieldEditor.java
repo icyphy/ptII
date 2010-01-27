@@ -34,7 +34,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.FileDialog;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// SaveFileFieldEditor
 
 /**
@@ -73,7 +73,7 @@ public class SaveFileFieldEditor extends FileFieldEditor {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       public methods                      ////
+    ////                         public methods                    ////
 
     /** Set the allowed extensions.
      *
@@ -85,7 +85,7 @@ public class SaveFileFieldEditor extends FileFieldEditor {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                     protected methods                     ////
+    ////                         protected methods                 ////
 
     /** Pop up the file selection dialog after the change button is pressed, and
      *  retrieve the name of the selected file.
@@ -132,7 +132,7 @@ public class SaveFileFieldEditor extends FileFieldEditor {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                      private methods                      ////
+    ////                         private methods                   ////
 
     /** Pop up the file selection dialog, and return the file object of the
      *  selected file.

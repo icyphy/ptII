@@ -25,7 +25,7 @@
  COPYRIGHTENDKEY
 
  */
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// Gaussian
 package ptolemy.backtrack.automatic.ptolemy.actor.lib;
 
@@ -72,7 +72,7 @@ public class Gaussian extends RandomSource implements Rollbackable {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
     ///////////////////////////////////////////////////////////////////
-    ////                      protected variables                  ////
+    ////                         protected variables               ////
     /**     
      * The random number for the current iteration. 
      */

@@ -37,7 +37,7 @@ import ptolemy.vergil.toolbox.AttributeBoundsManipulator;
 import diva.canvas.interactor.SelectionInteractor;
 import diva.graph.GraphController;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// ResizableAttributeControllerFactory
 
 /**

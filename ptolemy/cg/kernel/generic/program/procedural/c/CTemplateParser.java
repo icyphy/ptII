@@ -40,7 +40,7 @@ import ptolemy.domains.fsm.modal.ModalController;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.util.StringUtilities;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// CTemplateParser
 
 /**
@@ -63,7 +63,7 @@ public class CTemplateParser extends ProceduralTemplateParser {
     }
     
     ///////////////////////////////////////////////////////////////////
-    ////                         public methods                   ////
+    ////                         public methods                    ////
 
     /** Init the TemplateParser with the associated
      *  given component and the given adapter.

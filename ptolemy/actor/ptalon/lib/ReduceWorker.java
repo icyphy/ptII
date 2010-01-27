@@ -43,7 +43,7 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 ////ReduceWorker
 
 /**
@@ -325,7 +325,7 @@ public class ReduceWorker extends TypedAtomicActor {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                        private methods                    ////
+    ////                         private methods                   ////
 
     /**
      * Set the map method using the class specified in <i>classNameForMap<i>.

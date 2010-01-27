@@ -131,8 +131,8 @@ public class PtidesBasicReceiver extends DEReceiver {
         }
     }
 
-    // /////////////////////////////////////////////////////////////////
-    // // private methods ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
 
     /**
      * Return the director that created this receiver. If this receiver is an
@@ -192,8 +192,8 @@ public class PtidesBasicReceiver extends DEReceiver {
                 "Does not have a IOPort as the container of the receiver.");
     }
 
-    // /////////////////////////////////////////////////////////////////
-    // // private variables ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     // The director where this DEReceiver should register for ptides events.
     private PtidesBasicDirector _director;

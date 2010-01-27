@@ -52,7 +52,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.util.StringUtilities;
 
-///////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// GiottoDirector
 
 /**
@@ -334,12 +334,12 @@ public class GiottoDirector extends
         }
 
         args1.add("");
-        //if(_isTopGiottoDirector())
+        //if (_isTopGiottoDirector())
         //{
         args1.set(0, periodString);
         //        code.append("\\run driver code here"+_eol);
         //code.append(_generateBlockCode("createSchedulerThread", args1));
-        //if()
+        //if ()
         code.append(generateSchedulerThread(periodString));
         if (_debugging) {
             _debug("*************just generated the scheduling thread for director: $actorSymbol()_");
@@ -373,7 +373,7 @@ public class GiottoDirector extends
             //+ periodString+")/"+i+"/ "+outerActorFrequency+ "/portTICK_RATE_MS;"+_eol);
             //code.append("xLastWakeTime = gxLastWakeTime;"+_eol);
             //code.append("count = 0;"+_eol);
-            code.append("   for(;;){" + _eol);
+            code.append("   for (;;){" + _eol);
             //code.append("vTaskDelayUntil(&xLastWakeTime,xFrequency);"+_eol);
             //code.append("xFrequency =("+ periodString+")/"+i+"/ "+outerActorFrequency+ "/portTICK_RATE_MS;"+_eol);
             //code.append("count++;"+_eol);
@@ -381,9 +381,9 @@ public class GiottoDirector extends
             //code.append("  //call the methods for the tasks at this frequency of "+ i+_eol);
             //code.append("//sprintf(buff,\"f"+i+"thread %d\",count);"+_eol);
             //code.append("//RIT128x96x4StringDraw(buff, 0,_,15);"+_eol);
-            code.append("     if(xSemaphoreTake($actorSymbol()_frequency" + i
+            code.append("     if (xSemaphoreTake($actorSymbol()_frequency" + i
                     + "start,portMAX_DELAY)== pdTRUE){" + _eol);
-            //code.append("if(xSemaphoreGive($actorSymbol()_frequency"+i+"start)){"+_eol);
+            //code.append("if (xSemaphoreGive($actorSymbol()_frequency"+i+"start)){"+_eol);
             //code.append("//not able to release input ready semaphore");
             //code.append(_eol+"}"+_eol);
             for (int j = 0; j < ActorFrequencies[i].size(); j++) {
@@ -392,7 +392,7 @@ public class GiottoDirector extends
             }
             code.append("xSemaphoreGive($actorSymbol()_frequency" + i
                     + "done);" + _eol);
-            //code.append("} else{"+_eol);//close
+            //code.append("} else {"+_eol);//close
             //code.append("//wait until it's avaliable"+_eol);
             //code.append("vTaskSuspend(NULL);");
             code.append(_eol + "}" + _eol); // close if
@@ -495,7 +495,7 @@ public class GiottoDirector extends
                     ((TypedCompositeActor) _director.getContainer()).deepEntityList()) {
                 List outputPortList = actor.outputPortList();
                 Iterator outputPorts = outputPortList.iterator();
-                while(outputPorts.hasNext())
+                while (outputPorts.hasNext())
                 {
                     IOPort outpt = (IOPort)outputPorts.next();
                     args.set(0, _getActorName(actor)+"_"+outpt.getName());
@@ -592,7 +592,7 @@ public class GiottoDirector extends
      * Generate code for the scheduler thread.
      * @param period The period of the Giotto director.
      * @return Code that creates the Scheduler thread.
-     * @throws IllegalActionException If thrown while accessing
+     * @exception IllegalActionException If thrown while accessing
      * the model.
      */
     public String generateSchedulerThread(String period)
@@ -664,16 +664,16 @@ public class GiottoDirector extends
                     + "done,(portTickType)0);" + _eol);
         }
         if (_isTopGiottoDirector()) {
-            code.append("    for(;;){" + _eol);
+            code.append("    for (;;){" + _eol);
         } else {
-            code.append("    for(i = 0;i < " + myLCM + ";i++){" + _eol);
+            code.append("    for (i = 0;i < " + myLCM + ";i++){" + _eol);
         }
         Arrays.sort(myFrequencies);
 
         int i = 0;
         for (int k = 0; k < _getAllFrequencies().size(); k++) {
             i = (Integer) myFrequencies[k];
-            code.append("if( schedTick %" + (myLCM / i) + " == 0){" + _eol);
+            code.append("if (schedTick %" + (myLCM / i) + " == 0){" + _eol);
 
             for (int j = 0; j < ActorFrequencies[i].size(); j++) {
                 //call generate driver code for each of the actors    
@@ -687,7 +687,7 @@ public class GiottoDirector extends
         i = 0;
         for (int k = 0; k < _getAllFrequencies().size(); k++) {
             i = (Integer) myFrequencies[k];
-            code.append("if( schedTick %" + (myLCM / i) + " == 0){" + _eol);
+            code.append("if (schedTick %" + (myLCM / i) + " == 0){" + _eol);
 
             for (int j = 0; j < ActorFrequencies[i].size(); j++) {
                 //call generate driver code for each of the actors
@@ -701,15 +701,15 @@ public class GiottoDirector extends
         code.append(_eol + "     vTaskDelayUntil(&xLastWakeTime,xFrequency);"
                 + _eol);
         code.append("schedTick++;" + _eol);
-        code.append("if(schedTick == " + (myLCM) + ") {" + _eol);
+        code.append("if (schedTick == " + (myLCM) + ") {" + _eol);
         code.append("schedTick = 0;" + _eol);
         code.append("}" + _eol + _eol);
 
         for (int k = 0; k < _getAllFrequencies().size(); k++) {
             i = (Integer) myFrequencies[k];
-            code.append("if( schedTick %" + (myLCM / i) + " == 0){" + _eol);
+            code.append("if (schedTick %" + (myLCM / i) + " == 0){" + _eol);
             //take the semaphore
-            code.append("if(xSemaphoreTake($actorSymbol()_frequency" + i
+            code.append("if (xSemaphoreTake($actorSymbol()_frequency" + i
                     + "done,(portTickType)0) ==  pdFALSE){" + _eol + "warn" + i
                     + " = 1;" + _eol + "Warn(\"" + i + "overrun\");" + _eol
                     + "}" + _eol);
@@ -719,9 +719,9 @@ public class GiottoDirector extends
 
         for (int k = 0; k < _getAllFrequencies().size(); k++) {
             i = (Integer) myFrequencies[k];
-            code.append("if( schedTick %" + (myLCM / i) + " == 0){" + _eol);
+            code.append("if (schedTick %" + (myLCM / i) + " == 0){" + _eol);
             //take the semaphore
-            code.append("if(warn" + i + " == 1){" + _eol
+            code.append("if (warn" + i + " == 1){" + _eol
                     + "xSemaphoreTake($actorSymbol()_frequency" + i
                     + "done,portMAX_DELAY); " + _eol + _eol + "warn" + i
                     + " = 0;" + _eol + "}");// end if warn
@@ -920,7 +920,7 @@ public class GiottoDirector extends
                 .append("//Beginning of generateFireCode inside OpenRTOS GiottoDirector***************");
         //code.append("scheduler()");
 
-        if (_isTopGiottoDirector()) {//if(!_isTopDirectorFSM()){
+        if (_isTopGiottoDirector()) {//if (!_isTopDirectorFSM()) {
             //top director isn't fsm so close the method that would normally contain the fire code 
             //if the inline option was enabled and being used. Inline is invalid for giotto codegen
             code.append(_eol + "}" + _eol);
@@ -1050,7 +1050,7 @@ public class GiottoDirector extends
 
     /**
      * Generates methods for all the actors seen by this director
-     *      * @throws IllegalActionException
+     *      * @exception IllegalActionException
      */
     private String _generateActorsCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
@@ -1158,9 +1158,9 @@ public class GiottoDirector extends
 
                             code.append(_generateBlockCode("updatePort", args)
                                     + _eol);
-                        } // while(tome.hasNext())
+                        } // while (tome.hasNext())
                         i++; // not sure if this is the correct place to increment i
-                    }//end while(myItr.hasNext())
+                    }//end while (myItr.hasNext())
 
                     //transfer input values to embedded actor inputs
                     myItr = myInputs.iterator();
@@ -1395,7 +1395,7 @@ public class GiottoDirector extends
 
                 // Iterator cpIterator = connectedPorts.iterator();
                 Iterator cpIterator = connectToMe.iterator();
-                while (cpIterator.hasNext()) {//&&(j <connectToMe.size()-1)){
+                while (cpIterator.hasNext()) {//&&(j <connectToMe.size()-1)) {
                     TypedIOPort sourcePort = (TypedIOPort) cpIterator.next();
                     // FIXME: figure out the channel number for the sourcePort.
                     // if you need to transfer inputs inside
@@ -1628,7 +1628,7 @@ public class GiottoDirector extends
                 System.out.println(directorHelper.getWCET());
                 //ptolemy.codegen.actor.Director df = new ptolemy.codegen.actor.Director(
                 //        actor.getDirector());
-                //if(dir == null)
+                //if (dir == null)
                 if (dir == null) {
 
                     if (_debugging) {
@@ -1728,7 +1728,7 @@ public class GiottoDirector extends
     /**
      * Generates a two dimensional array of actors at each frequency
      * @return ArrayList with actor names at each frequency
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      */
     private ArrayList<String>[] _getActorFrequencyTable()
             throws IllegalActionException {
@@ -1800,7 +1800,7 @@ public class GiottoDirector extends
      * this Giotto Director 
      * @return a Hashset of integers containing the frequencies seen 
      * by the Giotto director
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      */
     private HashSet<Integer> _getAllFrequencies() throws IllegalActionException {
         HashSet frequencies = new HashSet();
@@ -1837,7 +1837,7 @@ public class GiottoDirector extends
     /**
      * Determines the frequeny of the actor passed in as a parameter
      * @param actor
-     *       * @throws IllegalActionException
+     *       * @exception IllegalActionException
      */
     private int _getFrequency(Actor actor) throws IllegalActionException {
         Attribute frequency = ((Entity) actor).getAttribute("frequency");
@@ -1854,7 +1854,7 @@ public class GiottoDirector extends
      * I.E. If the actor has a frequency 1, and it is inside a composite actor at the top of the director chain with frequency2,
      * the actor's true frequency is 1*2 = 2, which is the priority it should be given.
      * @param actor
-     *       * @throws IllegalActionException
+     *       * @exception IllegalActionException
      */
     private int _getPriority(Actor actor) throws IllegalActionException {
         Attribute frequency = ((Entity) actor).getAttribute("frequency");
@@ -1880,7 +1880,7 @@ public class GiottoDirector extends
      * Determines the period of this Giotto Director. If it is not the top most Giotto director
      * return the period of the Executive Giotto Director
      * @return the period of the top most/ executive Giotto director
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      */
     private double _getPeriod() throws IllegalActionException {
         ptolemy.actor.Director director = ((TypedCompositeActor) _director
@@ -2038,7 +2038,7 @@ public class GiottoDirector extends
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private variables               ////
+    ////                         private variables                 ////
 
     private static int _MAX_PRIORITY_LEVEL = 254;
 }

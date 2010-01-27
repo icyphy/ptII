@@ -36,7 +36,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.StringAttribute;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// Undefined
 
 /**
@@ -81,7 +81,7 @@ public class Undefined extends Source {
     public StringAttribute outputType;
 
     ///////////////////////////////////////////////////////////////////
-    ////                     public methods                        ////
+    ////                         public methods                    ////
 
     /** Override the base class to change the type of the output port.
      *  @param attribute The attribute that changed.

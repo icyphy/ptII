@@ -47,7 +47,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NamedObj;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// CausalityInterfaceForComposites
 
 /**
@@ -440,7 +440,7 @@ public class CausalityInterfaceForComposites extends DefaultCausalityInterface {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       protected variables                 ////
+    ////                         protected variables               ////
 
     /** Workspace version when actor depth was last computed. */
     protected long _actorDepthVersion = -1;
@@ -461,7 +461,7 @@ public class CausalityInterfaceForComposites extends DefaultCausalityInterface {
     protected Map<IOPort, Map<IOPort, Dependency>> _reverseDependencies;
 
     ///////////////////////////////////////////////////////////////////
-    ////                       protected methods                   ////
+    ////                         protected methods                 ////
 
     /** Compute the depth of ports and actors.
      *  The actor depth is typically used to prioritize firings in response

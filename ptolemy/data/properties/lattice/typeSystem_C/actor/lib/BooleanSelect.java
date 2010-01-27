@@ -34,7 +34,7 @@ import ptolemy.data.properties.lattice.typeSystem_C.Lattice;
 import ptolemy.data.properties.lattice.typeSystem_C.actor.AtomicActor;
 import ptolemy.kernel.util.IllegalActionException;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// BooleanSelect
 
 /**

@@ -53,7 +53,7 @@ import ptolemy.vergil.actor.DocManager;
 import ptolemy.vergil.actor.DocTableau;
 import ptolemy.vergil.toolbox.FigureAction;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// GetDocumentationAction
 
 /** This is an action that accesses the documentation for a Ptolemy

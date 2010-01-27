@@ -44,7 +44,7 @@ import ptolemy.vergil.icon.EditorIcon;
 import ptolemy.vergil.kernel.attributes.RectangleAttribute;
 import ptolemy.vergil.kernel.attributes.TextAttribute;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// MonitorReceiverAttribute
 
 /**
@@ -94,7 +94,7 @@ public class MonitorReceiverAttribute extends SingletonAttribute implements
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                     public methods                        ////
+    ////                         public methods                    ////
 
     /** Add a listener to be notified when the value of this settable
      *  object changes. An implementation of this method should ignore

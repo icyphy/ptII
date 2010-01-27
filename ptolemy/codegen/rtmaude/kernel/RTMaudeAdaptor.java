@@ -82,7 +82,7 @@ public class RTMaudeAdaptor extends CodeGeneratorHelper {
      * @param blockName The name of the block.
      * @param args      The arguments for the block.
      * @return The list of the block codes
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      */
     public List<String> getBlockCodeList(String blockName, String ... args) 
             throws IllegalActionException {
@@ -98,7 +98,7 @@ public class RTMaudeAdaptor extends CodeGeneratorHelper {
      * @param blockName The name of the block.
      * @param args      The arguments for the block.
      * @return The block code
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      */
     protected String _generateBlockCode(String blockName, String ... args)
             throws IllegalActionException {
@@ -149,7 +149,7 @@ public class RTMaudeAdaptor extends CodeGeneratorHelper {
      * Generate a Real-time Maude term representation of given component.
      * 
      * @return the term representation of a component
-     * @throws IllegalActionException 
+     * @exception IllegalActionException 
      */
     public String generateTermCode() throws IllegalActionException {
         try 
@@ -185,7 +185,7 @@ public class RTMaudeAdaptor extends CodeGeneratorHelper {
      * will be "header_Class".
      * @param header    The header of the template block
      * @return The RTMaude module code
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      */
     public List<String> getModuleCode(String header) 
             throws IllegalActionException {
@@ -218,7 +218,7 @@ public class RTMaudeAdaptor extends CodeGeneratorHelper {
      * Generates the entry code for RTMaude model, whose template is defined
      * in "mainEntry" block.
      * @return The entry code
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      */
     public String generateEntryCode() throws IllegalActionException {
         LinkedHashSet<String> incs ;
@@ -238,7 +238,7 @@ public class RTMaudeAdaptor extends CodeGeneratorHelper {
      * Generates the exit code for the RTMaude model, whose template is defined
      * in "mainExit" block.
      * @return The exit code
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      */
     public String generateExitCode() throws IllegalActionException {
         LinkedHashSet<String> check_inc_set = new LinkedHashSet<String>();
@@ -278,7 +278,7 @@ public class RTMaudeAdaptor extends CodeGeneratorHelper {
      * @param name       The name of the desired information
      * @param parameters The parameters for the information
      * @return The information indicated by the given name.
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      */
     protected String getInfo(String name, List<String> parameters)
             throws IllegalActionException {

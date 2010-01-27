@@ -216,7 +216,7 @@ public class Server {
                 .getInputStream());
         final BufferedReader d = new BufferedReader(inpStrRea);
         final String line = d.readLine();
-        if ( line == null ){
+        if ( line == null ) {
             final String em = "Client did not send any new values." + LS +
                 "It appears that it terminated without sending" + LS + 
                 "an error message to the server." + LS +

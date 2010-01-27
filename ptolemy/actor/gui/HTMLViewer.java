@@ -55,7 +55,7 @@ import ptolemy.gui.Top;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.util.MessageHandler;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// HTMLViewer
 
 /**
@@ -430,7 +430,7 @@ public class HTMLViewer extends TableauFrame implements Printable,
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       protected variables                 ////
+    ////                         protected variables               ////
 
     /** The main scroll pane. */
     protected JScrollPane _scroller;

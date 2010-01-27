@@ -174,7 +174,7 @@ import diva.graph.JGraph;
 import diva.gui.GUIUtilities;
 import diva.gui.toolbox.JContextMenu;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// TransformationEditor
 
 /**
@@ -683,7 +683,7 @@ public class TransformationEditor extends GTFrame implements ActionListener,
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                        protected methods                  ////
+    ////                         protected methods                 ////
 
     protected JComponent _createRightComponent(NamedObj entity) {
         JComponent component = super._createRightComponent(entity);

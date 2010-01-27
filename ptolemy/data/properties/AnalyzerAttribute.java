@@ -370,7 +370,7 @@ public class AnalyzerAttribute extends Attribute {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                        private methods                    ////
+    ////                         private methods                   ////
 
     private void _addChoices() throws IllegalActionException {
 
@@ -399,7 +399,7 @@ public class AnalyzerAttribute extends Attribute {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                      private variables                    ////
+    ////                         private variables                 ////
 
     private final List<Class> _solvers = new LinkedList<Class>();
 

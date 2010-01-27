@@ -30,7 +30,7 @@ import ptolemy.graph.analysis.analyzer.MirrorTransformer;
 import ptolemy.graph.analysis.analyzer.Transformer;
 import ptolemy.graph.analysis.strategy.MirrorTransformerStrategy;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// MirrorTransformation
 
 /**

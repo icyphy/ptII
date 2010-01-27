@@ -52,7 +52,7 @@ import ptolemy.domains.ptides.lib.SensorInputDevice;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
 
-//////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// PtidesBasicDirector
 
 /**
@@ -78,8 +78,8 @@ public class PtidesBasicDirector extends Director {
         super(ptidesBasicDirector);
     }
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         public methods                         ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /** Generate the assembly file associated for this PtidyOS program.
      *  Here we return an empty string, but the target specific adapter
@@ -114,7 +114,7 @@ public class PtidesBasicDirector extends Director {
     public String generateMainLoop() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
-        code.append(_eol + "void execute() { while(1){}; }" + _eol);
+        code.append(_eol + "void execute() { while (1){}; }" + _eol);
         return code.toString();
     }
 
@@ -222,8 +222,8 @@ public class PtidesBasicDirector extends Director {
     }
 
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         public variables                       ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public variables                  ////
 
     /** Map of Actors to actuator number. */
     public Map<Actor, Integer> actuators;
@@ -231,8 +231,8 @@ public class PtidesBasicDirector extends Director {
     /** Map of Sensor to sensor number. */
     public Map<Actor, Integer> sensors;
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         protected methods                      ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
 
     /**
      *  Return the code for the actuatorActuations array.
@@ -410,8 +410,8 @@ public class PtidesBasicDirector extends Director {
         }
     }
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         private methods                        ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
 
     /** Fire methods for each actor.
      * @return fire methods for each actor
@@ -468,7 +468,7 @@ public class PtidesBasicDirector extends Director {
     /** This code reset the Event_Head pointer for each channel to null.
      * @param actor The actor which the input channels reside, whose pointers are pointed to null
      * @return The code that clears the event head.
-     * @throws IllegalActionException 
+     * @exception IllegalActionException 
      */
     private String _generateClearEventHeadCode(Actor actor)
             throws IllegalActionException {

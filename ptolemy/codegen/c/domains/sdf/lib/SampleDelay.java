@@ -33,7 +33,7 @@ import ptolemy.codegen.c.kernel.CCodeGeneratorHelper;
 import ptolemy.data.ArrayToken;
 import ptolemy.kernel.util.IllegalActionException;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// SampleDelay
 
 /**
@@ -54,8 +54,8 @@ public class SampleDelay extends CCodeGeneratorHelper {
         super(actor);
     }
 
-    ////////////////////////////////////////////////////////////////////
-    ////                     public methods                         ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /** Generate the initialize code for the SampleDelay actor by
      *  declaring the initial values of the sink channels of the

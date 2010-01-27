@@ -60,7 +60,7 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// ContinuousDirector
 
 /**
@@ -1021,7 +1021,7 @@ public class ContinuousDirector extends FixedPointDirector implements
     /** Resume the actor at the specified time. If the actor has not
      *  been suspended since the last call to initialize(), then this
      *  has no effect.
-     *  @throws IllegalActionException If the fireAt() request throws it.
+     *  @exception IllegalActionException If the fireAt() request throws it.
      */
     public void resume(Time time) throws IllegalActionException {
         if (_lastSuspendTime != null) {
@@ -1254,7 +1254,7 @@ public class ContinuousDirector extends FixedPointDirector implements
     /** Resume the actor at the specified time. If the actor has not
      *  been suspended since the last call to initialize(), then this
      *  has no effect.
-     *  @throws IllegalActionException If the suspend cannot be completed.
+     *  @exception IllegalActionException If the suspend cannot be completed.
      */
     public void suspend(Time time) throws IllegalActionException {
         resume(time);
@@ -1402,7 +1402,7 @@ public class ContinuousDirector extends FixedPointDirector implements
      *  it checks the current step of the solver.
      *  @return True if either the solver is not doing a multi-step
      *   solution or it is at the last step of the multi-step solution.
-     *  @throws IllegalActionException If the Time class throws it.
+     *  @exception IllegalActionException If the Time class throws it.
      */
     protected boolean _isIntermediateStep() throws IllegalActionException {
         ContinuousDirector enclosingDirector = _enclosingContinuousDirector();
@@ -1440,7 +1440,7 @@ public class ContinuousDirector extends FixedPointDirector implements
 
     /** Set all receivers on the inside of input ports to
      *  absent.
-     *  @throws IllegalActionException If the send fails.
+     *  @exception IllegalActionException If the send fails.
      */
     private void _assertAbsentInside() throws IllegalActionException {
         CompositeActor container = (CompositeActor) getContainer();
@@ -1566,7 +1566,7 @@ public class ContinuousDirector extends FixedPointDirector implements
      *  table before the specified time.
      *  @param time The time.
      *  @param index The superdense time index.
-     *  @throws IllegalActionException If there are any breakpoints in the
+     *  @exception IllegalActionException If there are any breakpoints in the
      *   breakpoint table earlier than the specified time.
      */
     private void _handleBreakpointsBefore(Time time, int index)

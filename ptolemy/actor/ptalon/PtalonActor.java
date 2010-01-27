@@ -53,7 +53,7 @@ import ptolemy.util.StringUtilities;
 
 import com.microstar.xml.XmlParser;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 ////PtalonActor
 
 /**
@@ -381,7 +381,7 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
     public FileParameter ptalonCodeLocation;
 
     ///////////////////////////////////////////////////////////////////
-    ////                        protected methods                  ////
+    ////                         protected methods                 ////
 
     /** Add the attribute, and if the attribute is a PtalonParameter,
      *  add it to a list of Ptalon parameters.
@@ -617,7 +617,7 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                        private methods                    ////
+    ////                         private methods                   ////
 
     /** Return true if the value of the given PtalonParameter has
      *  changed.  This method checks for newly assigned values (where

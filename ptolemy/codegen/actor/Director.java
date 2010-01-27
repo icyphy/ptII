@@ -80,8 +80,8 @@ public class Director extends CodeGeneratorHelper {
         _director = director;
     }
 
-    /////////////////////////////////////////////////////////////////
-    ////                public methods                           ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /** Generate code for declaring read and write offset variables if needed.
          *  It delegates to the helpers of contained actors.
@@ -694,8 +694,8 @@ public class Director extends CodeGeneratorHelper {
     }
 
 
-    /////////////////////////////////////////////////////////////////////
-    ////                   protected methods                         ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
 
     /** Return the minimum number of power of two that is greater than or
      *  equal to the given integer.
@@ -774,8 +774,8 @@ public class Director extends CodeGeneratorHelper {
 
     }
 
-    ////////////////////////////////////////////////////////////////////
-    ////                     protected variables                    ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected variables               ////
 
     /** End of line character.  Under Unix: "\n", under Windows: "\n\r".
      *  We use a end of line charactor so that the files we generate

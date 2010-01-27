@@ -88,7 +88,7 @@ public class ConceptController extends StateController {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                        public methods                     ////
+    ////                         public methods                    ////
 
     /**
      * Add hot keys to the actions in the given JGraph. It would be better that
@@ -101,7 +101,7 @@ public class ConceptController extends StateController {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                   protected variables                     ////
+    ////                         protected variables               ////
 
     /** The edit custom icon action. */
     protected ToggleAcceptabilityAction _toggleAcceptabilityAction = new ToggleAcceptabilityAction();

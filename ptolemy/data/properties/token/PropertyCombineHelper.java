@@ -43,7 +43,7 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.NameDuplicationException;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// PropertyCombineHelper
 /** 
 
@@ -153,7 +153,7 @@ public class PropertyCombineHelper extends PropertyHelper {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////               protected methods                           ////
+    ////                         protected methods                 ////
 
     /**
      * Create an new ParseTreeAnnotationEvaluator that is tailored for the

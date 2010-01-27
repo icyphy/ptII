@@ -55,7 +55,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.verification.lib.SMVLegacyCodeActor;
 
-// ////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 // //SMVUtility
 
 /**
@@ -2369,7 +2369,7 @@ public class SMVUtility {
      * @param lValue
      * @param offset
      * @param operatingSign
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      */
     private static void _generatePremiseAndResultEachTransition(
             String statePrecondition,
@@ -5532,8 +5532,8 @@ public class SMVUtility {
     private static int DOMAIN_GT = Integer.MAX_VALUE;
     private static int DOMAIN_LS = Integer.MIN_VALUE;
 
-    // /////////////////////////////////////////////////////////////////
-    // // inner class ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         inner class                       ////
     private static class VariableInfo {
         private VariableInfo(String paraMax, String paraMin) {
             _maxValue = paraMax;
@@ -5545,8 +5545,8 @@ public class SMVUtility {
 
     }
 
-    // /////////////////////////////////////////////////////////////////
-    // // inner class ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         inner class                       ////
     private static class VariableTransitionInfo {
         private VariableTransitionInfo() {
         }

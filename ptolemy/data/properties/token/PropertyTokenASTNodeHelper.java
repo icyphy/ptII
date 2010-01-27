@@ -86,8 +86,8 @@ public class PropertyTokenASTNodeHelper extends PropertyTokenHelper {
     /**
      * 
      * @param attributeList
-     * @throws IllegalActionException
-     * @throws NameDuplicationException
+     * @exception IllegalActionException
+     * @exception NameDuplicationException
      */
     public void determineProperty(List<Attribute> attributeList)
             throws IllegalActionException, NameDuplicationException {

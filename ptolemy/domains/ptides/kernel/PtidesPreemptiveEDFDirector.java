@@ -83,7 +83,7 @@ public class PtidesPreemptiveEDFDirector extends PtidesBasicDirector {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                     public methods                        ////
+    ////                         public methods                    ////
 
     /** Clears what's stored in _eventToProcess, and call the super method
      *  of preinitialize.
@@ -99,7 +99,7 @@ public class PtidesPreemptiveEDFDirector extends PtidesBasicDirector {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                     protected methods                     ////
+    ////                         protected methods                 ////
 
     /** Calculates the deadline for each channel in each input port within the 
      *  composite actor governed by this Ptides director. Deadlines are calculated 
@@ -384,7 +384,7 @@ public class PtidesPreemptiveEDFDirector extends PtidesBasicDirector {
     /** Sets the relativeDeadline parameter for an input port
      * @param inputPort The port to set the parameter.
      * @param dependency The value of the relativeDeadline to be set.
-     * @throws IllegalActionException If unsuccessful in getting the attribute.
+     * @exception IllegalActionException If unsuccessful in getting the attribute.
      */
     protected void _setDeadline(IOPort inputPort, SuperdenseDependency dependency) 
             throws IllegalActionException {
@@ -447,7 +447,7 @@ public class PtidesPreemptiveEDFDirector extends PtidesBasicDirector {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                     protected variables                   ////
+    ////                         protected variables               ////
 
     /** The event to be processed next. */
     protected PtidesEvent _eventToProcess;

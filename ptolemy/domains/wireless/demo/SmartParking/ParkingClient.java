@@ -40,7 +40,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 ///ParkingClient
 
 /**
@@ -117,7 +117,7 @@ public class ParkingClient extends TypedAtomicActor {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private methods                ////
+    ////                         private methods                   ////
     //  Generate random number uniformly distributed between 0 and the
     // <i>size</i> parameter.
     private int _getRandom(int size) {

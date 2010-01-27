@@ -39,7 +39,7 @@ import ptolemy.moml.filter.BackwardCompatibility;
 import ptolemy.moml.filter.RemoveGraphicalClasses;
 import ptolemy.util.StringUtilities;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// MoMLSimpleApplication
 
 /** A simple application that reads in a .xml file as a command

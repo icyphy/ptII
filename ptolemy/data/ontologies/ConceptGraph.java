@@ -30,7 +30,7 @@ import ptolemy.graph.DirectedAcyclicGraph;
 import ptolemy.graph.Edge;
 import ptolemy.graph.Node;
 
-//////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// ConceptLattice
 
 /** A data structure defining the relationships in an ontology. An ontology is a set of concepts
@@ -71,7 +71,7 @@ public class ConceptGraph extends DirectedAcyclicGraph {
      *  and weight2.
      * @return The set of edges that were added; each element
      *  of this set is an instance of {@link Edge}.
-     * @throws IllegalArgumentException If the newEdgeWeight argument is not an
+     * @exception IllegalArgumentException If the newEdgeWeight argument is not an
      *  instance of {@link ConceptRelation}.
      */
     public Collection addEdge(Object weight1, Object weight2, Object newEdgeWeight) {
@@ -84,7 +84,7 @@ public class ConceptGraph extends DirectedAcyclicGraph {
     /** Add a concept to this concept graph.
      *  @param weight The concept.
      *  @return The constructed node in the graph.
-     *  @throws IllegalArgumentException If the argument is not
+     *  @exception IllegalArgumentException If the argument is not
      *   an instance of {@link Concept}.
      */
     public Node addNodeWeight(Object weight) {
@@ -105,7 +105,7 @@ public class ConceptGraph extends DirectedAcyclicGraph {
      * method, so there is no need to do another check.
      * @param structuredPropertiesToAdd The bit-wise OR union of the structured
      * properties desired to add.
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      */
     /* FIXME: To support structured concepts:
     public void addStructuredProperties(int structuredPropertiesToAdd)
@@ -186,7 +186,7 @@ public class ConceptGraph extends DirectedAcyclicGraph {
     // public final int ARRAY = 0x2;
 
     ///////////////////////////////////////////////////////////////////
-    ////                        private methods                    ////
+    ////                         private methods                   ////
 
     /** If the argument is a structured concept, return its representative;
      *  otherwise, return the argument.

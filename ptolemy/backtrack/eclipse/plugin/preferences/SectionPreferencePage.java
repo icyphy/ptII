@@ -50,7 +50,7 @@ import org.eclipse.ui.forms.widgets.TableWrapLayout;
 
 import ptolemy.backtrack.eclipse.plugin.EclipsePlugin;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// SectionPreferencePage
 
 /**
@@ -80,7 +80,7 @@ public class SectionPreferencePage extends FieldEditorPreferencePage implements
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       public methods                      ////
+    ////                         public methods                    ////
 
     /** Create the contents of the preference page with the parent as its
      *  container.
@@ -109,7 +109,7 @@ public class SectionPreferencePage extends FieldEditorPreferencePage implements
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                     protected methods                     ////
+    ////                         protected methods                 ////
 
     /** Create a section in this page with a title and a section description.
      *

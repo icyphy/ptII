@@ -34,7 +34,7 @@ import ptolemy.data.type.Type;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// ObjectToken
 
 /**
@@ -238,7 +238,7 @@ public class ObjectToken extends Token {
     public static final ObjectToken NULL = new ObjectToken();
 
     ///////////////////////////////////////////////////////////////////
-    ////                          private variables                ////
+    ////                         private variables                 ////
 
     /** The class of the object.
      */

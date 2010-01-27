@@ -30,7 +30,7 @@ package ptolemy.codegen.kernel;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// ComponentCodeGenerator
 
 /** Interface for components that can generate code.

@@ -41,7 +41,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.vergil.icon.EditorIcon;
 import ptolemy.vergil.kernel.attributes.RectangleAttribute;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// MicaLeds
 
 /** An actor to display the LEDs of the simulated mote.  There are

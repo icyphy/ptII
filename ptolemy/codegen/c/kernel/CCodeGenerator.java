@@ -61,7 +61,7 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.util.MessageHandler;
 import ptolemy.util.StringUtilities;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 ////CodeGenerator
 
 /** Base class for C code generator.
@@ -170,14 +170,14 @@ public class CCodeGenerator extends CodeGenerator {
             // "function declaration isn't a prototype
             if (!_hasPlaceable()) {
                 return _eol + _eol + "void initialize(void) {" + _eol;
-            } else if(_hasPlaceable() && target.getExpression().equals("posix")){
+            } else if (_hasPlaceable() && target.getExpression().equals("posix")) {
                 return _eol + _eol + "#ifdef __MAC_OS_X_VERSION_10_0" + _eol
                 + "void initialize(void * options) {" + _eol
                 + "#else" + _eol
                 + "void initialize(void) {" + _eol
                 + "#endif" + _eol;
                 
-            } else{
+            } else {
                 return _eol + _eol +
                      "void initialize(void) {" + _eol;
                    

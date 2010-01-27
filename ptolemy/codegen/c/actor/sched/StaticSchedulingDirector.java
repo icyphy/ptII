@@ -45,7 +45,7 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
 
-//////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 ////StaticSchedulingDirector
 
 /**
@@ -70,8 +70,8 @@ public class StaticSchedulingDirector extends Director {
         super(staticSchedulingDirector);
     }
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         public methods                         ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /** Generate the code for the firing of actors according to the SDF
      *  schedule.

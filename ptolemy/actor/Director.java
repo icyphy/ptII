@@ -52,7 +52,7 @@ import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.math.ExtendedMath;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// Director
 
 /**
@@ -480,7 +480,7 @@ public class Director extends Attribute implements Executable {
      *  defined to be the value returned by the @link{#getModelTime()}
      *  method of the top-level director in the model.
      *  @return The time of the top-level director in the model.
-     * @throws IllegalActionException If the top level is not an Actor.
+     * @exception IllegalActionException If the top level is not an Actor.
      */
     public Time getGlobalTime() throws IllegalActionException {
         NamedObj toplevel = toplevel();
@@ -1580,7 +1580,7 @@ public class Director extends Attribute implements Executable {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       protected variables                 ////
+    ////                         protected variables               ////
 
     /** Set of actors that have returned false from  postfire(),
      *  indicating that they do not wish to be iterated again.
@@ -1653,7 +1653,7 @@ public class Director extends Attribute implements Executable {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       private variables                   ////
+    ////                         private variables                 ////
 
     /** Time resolution cache, with a reasonable default value. */
     private double _timeResolution = 1E-10;

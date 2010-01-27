@@ -33,7 +33,7 @@ import ptolemy.data.properties.lattice.PropertyConstraintSolver;
 import ptolemy.data.properties.lattice.logicalAND.actor.AtomicActor;
 import ptolemy.kernel.util.IllegalActionException;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// Integrator
 
 /**
@@ -62,7 +62,7 @@ public class Integrator extends AtomicActor {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                            public methods                 ////
+    ////                         public methods                    ////
 
     /**
      * Return the list of constraints that specifies the analysis

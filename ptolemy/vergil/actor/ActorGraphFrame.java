@@ -71,8 +71,8 @@ import diva.graph.GraphController;
 import diva.graph.GraphPane;
 import diva.gui.GUIUtilities;
 
-// ////////////////////////////////////////////////////////////////////////
-// // ActorGraphFrame
+///////////////////////////////////////////////////////////////////
+//// ActorGraphFrame
 
 /**
  * This is a graph editor frame for ptolemy models. Given a composite entity and
@@ -145,8 +145,8 @@ public class ActorGraphFrame extends ExtendedGraphFrame implements
         }
     }
 
-    /////////////////////////////////////////////////////////////////
-    ////                        protected methods                ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
 
     /**
      * Initialize this class.
@@ -311,7 +311,7 @@ public class ActorGraphFrame extends ExtendedGraphFrame implements
         return new BasicGraphPane(_controller, graphModel, entity);
     }
 
-    /////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     //                    protected variables                    ////
 
     /** The graph controller. This is created in _createGraphPane(). */
@@ -341,7 +341,7 @@ public class ActorGraphFrame extends ExtendedGraphFrame implements
     /** The action for instantiating an entity. */
     protected Action _instantiateEntityAction;
 
-    /////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     //                     private variables                     ////
 
     /** The most recent class name for instantiating an attribute. */
@@ -480,10 +480,10 @@ public class ActorGraphFrame extends ExtendedGraphFrame implements
         private Director _listeningTo;
     }
 
-    // /////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     // // private inner classes ////
 
-    // /////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     // // CreateHierarchy
 
     /**
@@ -512,7 +512,7 @@ public class ActorGraphFrame extends ExtendedGraphFrame implements
         }
     }
 
-    // /////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     // // ImportLibraryAction
 
     /** An action to import a library of components. */
@@ -567,7 +567,7 @@ public class ActorGraphFrame extends ExtendedGraphFrame implements
         }
     }
 
-    // /////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     // // InstantiateAttributeAction
 
     /** An action to instantiate an entity given a class name. */
@@ -628,7 +628,7 @@ public class ActorGraphFrame extends ExtendedGraphFrame implements
         }
     }
 
-    // /////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     // // InstantiateEntityAction
 
     /** An action to instantiate an entity given a class name. */
@@ -699,7 +699,7 @@ public class ActorGraphFrame extends ExtendedGraphFrame implements
         }
     }
 
-    // /////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     // // LayoutAction
 
     /** Action to automatically lay out the graph. */
@@ -724,7 +724,7 @@ public class ActorGraphFrame extends ExtendedGraphFrame implements
         }
     }
 
-    // /////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     // // SaveInLibraryAction
 
     /** An action to save the current model in a library. */

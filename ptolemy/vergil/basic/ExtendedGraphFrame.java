@@ -47,7 +47,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.moml.LibraryAttribute;
 import diva.gui.GUIUtilities;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// ExtendedGraphFrame
 
 /**
@@ -220,7 +220,7 @@ public abstract class ExtendedGraphFrame extends BasicGraphFrame {
     private JDialog _screen;
 
     ///////////////////////////////////////////////////////////////////
-    ////                     inner classes                         ////
+    ////                         inner classes                     ////
 
     ///////////////////////////////////////////////////////////////////
     //// FullScreenAction

@@ -63,7 +63,7 @@ import diva.graph.NodeRenderer;
 import diva.util.java2d.Polygon2D;
 import diva.util.java2d.ShapeUtilities;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// IOPortController
 
 /**
@@ -127,7 +127,7 @@ public class IOPortController extends AttributeController {
     public static final double MULTIPORT_CONNECTION_SPACING = 5.0;
 
     ///////////////////////////////////////////////////////////////////
-    ////                      protected methods                    ////
+    ////                         protected methods                 ////
 
     /** Return one of {-270, -180, -90, 0, 90, 180, 270} specifying
      *  the orientation of a port. This depends on whether the port

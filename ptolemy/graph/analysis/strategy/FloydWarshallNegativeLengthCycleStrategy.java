@@ -30,7 +30,7 @@ import ptolemy.graph.Graph;
 import ptolemy.graph.analysis.analyzer.NegativeLengthCycleAnalyzer;
 import ptolemy.graph.mapping.ToDoubleMapping;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// FloydWarshallNegativeLengthCycleStrategy
 
 /**

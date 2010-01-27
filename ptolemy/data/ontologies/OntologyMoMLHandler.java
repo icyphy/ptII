@@ -43,7 +43,7 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.moml.MoMLChangeRequest;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// OntologyMoMLHandler
 
 /**
@@ -287,7 +287,7 @@ public class OntologyMoMLHandler extends Attribute {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                   private methods                         ////
+    ////                         private methods                   ////
 
     /**
      * Wrap the given MoML request string with extra enclosing tags

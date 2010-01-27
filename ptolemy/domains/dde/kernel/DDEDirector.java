@@ -54,8 +54,8 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 
-// ////////////////////////////////////////////////////////////////////////
-// // DDEDirector
+///////////////////////////////////////////////////////////////////
+//// DDEDirector
 
 /**
  * A DDEDirector governs the execution of actors operating according to the DDE
@@ -177,7 +177,7 @@ public class DDEDirector extends CompositeProcessDirector implements
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       public variables                    ////
+    ////                         public variables                  ////
 
     /**
      * The stopTime parameter specifies the completion time of a model's
@@ -189,7 +189,7 @@ public class DDEDirector extends CompositeProcessDirector implements
     public Parameter stopTime;
 
     ///////////////////////////////////////////////////////////////////
-    ////                       public methods                      ////
+    ////                         public methods                    ////
 
     /** Return a boolean dependency representing a model-time delay
      *  of the specified amount.
@@ -401,7 +401,7 @@ public class DDEDirector extends CompositeProcessDirector implements
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                     public variables                      ////
+    ////                         public variables                  ////
 
     // Findbugs suggests making these final.
 
@@ -412,7 +412,7 @@ public class DDEDirector extends CompositeProcessDirector implements
     public static final boolean WRITE_BLOCKED = false;
 
     ///////////////////////////////////////////////////////////////////
-    ////                    protected methods                      ////
+    ////                         protected methods                 ////
 
     /**
      * Increment the port capacity's according to Tom Parks' algorithm. Select
@@ -525,7 +525,7 @@ public class DDEDirector extends CompositeProcessDirector implements
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                        private variables                  ////
+    ////                         private variables                 ////
 
     /** The completion time. Since the completionTime is a constant,
      *  we do not convert it to a time object.

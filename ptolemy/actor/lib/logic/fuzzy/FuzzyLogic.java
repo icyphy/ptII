@@ -239,8 +239,8 @@ public class FuzzyLogic extends TypedAtomicActor{
         String tempTermName;
 
         periodindex = rulesFileName.getExpression().indexOf('.');
-        if(rulesFileName.getExpression().substring(0,periodindex).equalsIgnoreCase(tempvar.name)){
-            for(int j = 0; j < tempvar.termNames.size(); j++){
+        if (rulesFileName.getExpression().substring(0,periodindex).equalsIgnoreCase(tempvar.name)) {
+            for (int j = 0; j < tempvar.termNames.size(); j++) {
                 tempTermName = tempvar.termNames.get(j);
                 commaindex = tempTermName.indexOf(',');
                 if (componentTypeValue.equalsIgnoreCase(tempTermName.substring(0,commaindex))) {
@@ -370,7 +370,7 @@ public class FuzzyLogic extends TypedAtomicActor{
     }
 
 
-    ////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     private FuzzyEngine _fuzzyEngine;
     private ArrayList<String> _rules;
@@ -378,7 +378,7 @@ public class FuzzyLogic extends TypedAtomicActor{
     private FuzzyParser _fuzzyParser;
     private final String _eol = System.getProperty("line.separator");
 
-    ////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     ////                       protected classes                    ////
     /** A record type used when parsing a Fuzzy Logic XML file.*/
     protected class FuzzyLogicVar{
@@ -386,7 +386,7 @@ public class FuzzyLogic extends TypedAtomicActor{
         /**
          * Fuzzy Logic Variable Constructor
          */
-        FuzzyLogicVar(){
+        FuzzyLogicVar() {
             termNames = new ArrayList<String>();
         }
         /**The name of the fuzzy logic variable */
@@ -426,10 +426,10 @@ public class FuzzyLogic extends TypedAtomicActor{
                 throw new IllegalActionException(null, ex, "Failed to parse " 
                         + filename + ".");
             } finally{
-                if(r!=null){
-                    try{
+                if (r!=null) {
+                    try {
                         r.close();
-                    }catch(IOException ex){
+                    } catch (IOException ex) {
                         //FIXME change null to super.this but something that actually works
                         throw new IllegalActionException(null, ex, 
                                 "Failed to close " + filename + ".");
@@ -462,10 +462,10 @@ public class FuzzyLogic extends TypedAtomicActor{
          * */
         public void endElement(String uri, String name, String qName) {
             if ("".equals(uri)) {
-                if ("FUZZIFY".equals(qName) || "DEFUZZIFY".equals(qName)){
+                if ("FUZZIFY".equals(qName) || "DEFUZZIFY".equals(qName)) {
                     _startVar = false;
                     _currentIndex++;
-                    if("FUZZIFY".equals(qName)){
+                    if ("FUZZIFY".equals(qName)) {
                         _fuzzyLogicVariableArray.add(_fuzzyVar);
                         _fuzzyVar = new FuzzyLogicVar();
                     }
@@ -473,7 +473,7 @@ public class FuzzyLogic extends TypedAtomicActor{
                 if ("RULEBLOCK".equals(qName)) {
                 }
             } else {
-                if(_debugging){
+                if (_debugging) {
                     System.out.println("End element:   {" + uri + "}" + name);
                 }
             }
@@ -537,7 +537,7 @@ public class FuzzyLogic extends TypedAtomicActor{
                         _toDefuzzyify = _currentIndex;
                     }
                     int index = atts.getIndex("NAME");
-                    if("FUZZIFY".equals(qName)){
+                    if ("FUZZIFY".equals(qName)) {
                         _fuzzyVar.name = atts.getValue(index); 
                     } 
                     _linguisticVarArray.add(new LinguisticVariable(atts
@@ -571,7 +571,7 @@ public class FuzzyLogic extends TypedAtomicActor{
                     _myRules.add(atts.getValue(1));
                 }
             } else {
-                if(_debugging){
+                if (_debugging) {
                     System.out.println("Start element: {" + uri + "}" + name);
                 }
 

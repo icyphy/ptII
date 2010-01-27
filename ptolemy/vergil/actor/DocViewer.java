@@ -85,7 +85,7 @@ import diva.graph.GraphPane;
 import diva.graph.GraphViewEvent;
 import diva.graph.JGraph;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// DocViewer
 
 /**
@@ -186,7 +186,7 @@ public class DocViewer extends HTMLViewer {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       protected methods                   ////
+    ////                         protected methods                 ////
 
     /** Override the base class to do nothing.
      *  The main content pane is added after the top content.

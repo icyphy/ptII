@@ -149,8 +149,8 @@ public class Derivative extends DETransformer {
      */
     public boolean postfire() throws IllegalActionException {
         //If reset port is connected and has a token, reset state.
-        if(reset.getWidth() > 0){
-            if(reset.hasToken(0)){
+        if (reset.getWidth() > 0){
+            if (reset.hasToken(0)){
                 //Consume reset token
                 reset.get(0);
                 

@@ -70,7 +70,7 @@ public class ListTerm<T> {
     /** Generates the term representation of the list using an empty term,
      * a delimiter, and an item member function.
      * @return The term representation of the list
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      */
     public String generateCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
@@ -103,7 +103,7 @@ public class ListTerm<T> {
      * 
      * @param v the element
      * @return the string representation of v
-     * @throws IllegalActionException An overriding methods may generate this exception.
+     * @exception IllegalActionException An overriding methods may generate this exception.
      */
     public String item(T v) throws IllegalActionException {
         return v.toString();

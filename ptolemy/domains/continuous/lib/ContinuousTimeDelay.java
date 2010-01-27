@@ -214,7 +214,7 @@ public class ContinuousTimeDelay extends Transformer {
         _nextFireAt = new Time(getDirector(), 0);
 
         //Place the initial token in the input buffer
-        if(initialToken != null){
+        if (initialToken != null){
             Time modelStartTime = getDirector().getModelStartTime();
             _inputBuffer.put(new TimedEvent(modelStartTime, initialToken));
         }
@@ -266,12 +266,12 @@ public class ContinuousTimeDelay extends Transformer {
         // absent events are present everywhere in the signal. This would result in
         // monotonically decreasing solver step size that quickly converges to the minimum
         // allowed step size, effectively bypassing the solver logic and slowing simulation.
-        if(input.isKnown(0) && input.hasToken(0)){
+        if (input.isKnown(0) && input.hasToken(0)){
             Token inputToken = input.get(0);
-            if(!inputToken.equals(AbsentToken.ABSENT)){
+            if (!inputToken.equals(AbsentToken.ABSENT)){
                 _inputBuffer.put(new TimedEvent(currentTime, inputToken));
             }
-            else{
+            else {
                 inputToken = null;
             }
         }
@@ -279,15 +279,15 @@ public class ContinuousTimeDelay extends Transformer {
         // Discard expired input events that will never be considered
         // by the solver. These are events that have timestamps before
         // the current time less delay.
-        while(_inputBuffer.size() > 0){
+        while (_inputBuffer.size() > 0){
             Time earliestEventTime = ((TimedEvent)_inputBuffer.get()).timeStamp;   
 
             //Expired event
-            if(earliestEventTime.compareTo(centerTime) < 0){
+            if (earliestEventTime.compareTo(centerTime) < 0){
                 _discarded = (TimedEvent) _inputBuffer.take();
             }
             //Earliest event is valid, so stop searching
-            else{
+            else {
                 break;
             }
         }
@@ -300,35 +300,35 @@ public class ContinuousTimeDelay extends Transformer {
         
         //Record the right event; because expired events are discarded from the
         // input queue, the right event is always the first element of the queue
-        if(_inputBuffer.size() > 0){
+        if (_inputBuffer.size() > 0){
             rightEvent = (TimedEvent) _inputBuffer.get();
         }
         
         // If the input signal was recorded at the center point, output it here,
         // and remove the event from the input queue to prevent refiring
-        if(rightEvent != null && rightEvent.timeStamp.equals(centerTime)){
+        if (rightEvent != null && rightEvent.timeStamp.equals(centerTime)){
             _currentOutput = (Token)rightEvent.contents;
             _discarded = (TimedEvent) _inputBuffer.take();
         }
         // If the current time is less than the delay time, output the initial value
-        else if(currentTime.compareTo(new Time(getDirector(), _delay)) < 0){
+        else if (currentTime.compareTo(new Time(getDirector(), _delay)) < 0){
             _currentOutput = initialOutput.getToken();
         }
         // If the current time is equal to the center time (delay=0), but the event was
         // not on the input queue, then we have not read the input. Output nothing now,
         // and postFire() will read the input and request a refiring at the current time;
         // this will force the director to increase its microstep.
-        else if(currentTime.equals(centerTime)){
+        else if (currentTime.equals(centerTime)){
             //Do nothing
         }
         // If we have a left point, we construct the center point here
-        else if(leftEvent != null){
+        else if (leftEvent != null){
             //If we have a right point, then we interpolate the center point
-            if(rightEvent != null){
+            if (rightEvent != null){
                 _currentOutput = linearInterpolate(leftEvent, rightEvent);
             }
             // If we have a left point but no right point, we assume the value has not changed.
-            else{
+            else {
                 //FIXME: Is this the best solution?
                 _currentOutput = (Token) leftEvent.contents;
             }
@@ -337,12 +337,12 @@ public class ContinuousTimeDelay extends Transformer {
         // and do not have a left point (e.g. no initial value). We cannot generate output.
         
         // Produce output
-        if(_currentOutput != null && !output.isKnown(0)){
+        if (_currentOutput != null && !output.isKnown(0)){
             output.send(0, _currentOutput);
             // In the case where delay is zero (currentTime = centerTime) we have refired in
             // order to output a token with an increased microstep. After this token is sent,
             // it needs to be removed from the input buffer.
-            if(currentTime.equals(centerTime)){
+            if (currentTime.equals(centerTime)){
                 _discarded = (TimedEvent)_inputBuffer.take();
             }
         }
@@ -366,7 +366,7 @@ public class ContinuousTimeDelay extends Transformer {
     public boolean postfire() throws IllegalActionException {
         // Schedule the next output event. This event may fire at the same
         // physical time in the case of zero delay or simultaneous events.
-        if(_inputBuffer.size() > 0){
+        if (_inputBuffer.size() > 0){
             TimedEvent nextEvent = (TimedEvent)_inputBuffer.get();
             Time nextOutputTime = nextEvent.timeStamp.add(_delay);
             Time currentTime = getDirector().getModelTime();
@@ -374,7 +374,7 @@ public class ContinuousTimeDelay extends Transformer {
             // If the next output time is now, then there are additional tokens to output at the
             // current physical time, so a refire is requested. If the next output time is in the
             // future, first ensure we have not already scheduled this actor to fire. 
-            if(nextOutputTime.equals(currentTime) || !nextOutputTime.equals(_nextFireAt)){
+            if (nextOutputTime.equals(currentTime) || !nextOutputTime.equals(_nextFireAt)){
                 getDirector().fireAt(this, nextOutputTime);
                 _nextFireAt = nextOutputTime;
             }

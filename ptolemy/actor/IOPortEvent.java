@@ -31,7 +31,7 @@ import ptolemy.data.Token;
 import ptolemy.kernel.util.DebugEvent;
 import ptolemy.kernel.util.NamedObj;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// PortEvent
 
 /**
@@ -114,7 +114,7 @@ public class IOPortEvent implements DebugEvent {
     public IOPortEvent(IOPort port, IOPort receiverPort, boolean isBegin,
             int channel, boolean outside, Token token) {
         _port = port;
-        if(isBegin) {
+        if (isBegin) {
             _event = SEND_BEGIN;
         } else {
             _event = SEND_END;

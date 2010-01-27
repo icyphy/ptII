@@ -60,7 +60,7 @@ import ptolemy.moml.MoMLChangeRequest;
 // NOTE: This class duplicates code in Refinement, but
 // because of the inheritance hierarchy, there appears to be no convenient
 // way to share the code.
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// ModalController
 
 /**
@@ -367,7 +367,7 @@ public class ModalController extends FSMActor implements DropTargetHandler,
     /** Indicator that we are processing a newPort request. */
     protected boolean _mirrorDisable = false;
 
-    //////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     //// ClassComparator
 
     /**

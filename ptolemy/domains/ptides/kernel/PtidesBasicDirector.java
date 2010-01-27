@@ -141,7 +141,7 @@ public class PtidesBasicDirector extends DEDirector {
     public Parameter syncError;
 
     ///////////////////////////////////////////////////////////////////
-    ////                     public methods                        ////
+    ////                         public methods                    ////
 
     /**
      * Return the default dependency between input and output ports which for
@@ -178,7 +178,7 @@ public class PtidesBasicDirector extends DEDirector {
     /** Return the model time of the enclosing director, which is our model
      *  of physical time.
      *  @return Physical time.
-     *  @throws IllegalActionException 
+     *  @exception IllegalActionException 
      */
     public Time getPhysicalTime() throws IllegalActionException {
         Director director = this;
@@ -202,7 +202,7 @@ public class PtidesBasicDirector extends DEDirector {
     
     /** Get the synchronization error of this platform.
      *  @return the synchronization error.
-     *  @throws IllegalActionException
+     *  @exception IllegalActionException
      */
     public double getSyncError() throws IllegalActionException {
            return ((DoubleToken) syncError.getToken()).doubleValue();
@@ -651,7 +651,7 @@ public class PtidesBasicDirector extends DEDirector {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                     protected variables                   ////
+    ////                         protected variables               ////
 
     /** The list of currently executing actors and their remaining execution time.
      */
@@ -662,7 +662,7 @@ public class PtidesBasicDirector extends DEDirector {
     protected Time _zero;
 
     ///////////////////////////////////////////////////////////////////
-    ////                     protected methods                     ////
+    ////                         protected methods                 ////
 
     /** Causality analysis that happens at the preinitialization phase.
      *  The goal is to annotate each port with a minDelay parameter,
@@ -799,7 +799,7 @@ public class PtidesBasicDirector extends DEDirector {
      *  be connected to a NetworkInputDeivce. Also, it should not have a realTimeDelay
      *  attribute.
      *  </p>
-     *  @throws IllegalActionException 
+     *  @exception IllegalActionException 
      */
     protected void _checkSensorActuatorNetworkConsistency() throws IllegalActionException {
         // These checks are constantly being updated. It is not yet complete.
@@ -895,7 +895,7 @@ public class PtidesBasicDirector extends DEDirector {
      *  @param refEvent
      *  @param event
      *  @return whether the two input events are destined to the same equivalence class.
-     *  @throws IllegalActionException 
+     *  @exception IllegalActionException 
      */
     protected boolean _destinedToSameEquivalenceClass(PtidesEvent refEvent, PtidesEvent event) 
             throws IllegalActionException {
@@ -2074,7 +2074,7 @@ public class PtidesBasicDirector extends DEDirector {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                     private methods                       ////
+    ////                         private methods                   ////
     
     /** Calculates the absolute deadline for the pure event. This uses
      *  information stored earlier. The exact calculation is done as follows:
@@ -2193,7 +2193,7 @@ public class PtidesBasicDirector extends DEDirector {
      * 
      *  @param actor The destination actor.
      *  @return whether the future pure event is causally related to any input port(s)
-     *  @throws IllegalActionException
+     *  @exception IllegalActionException
      */
     private IOPort _getCausalPortForThisPureEvent(Actor actor) throws IllegalActionException {
         CausalityMarker causalityMarker = (CausalityMarker)((NamedObj)actor)
@@ -2270,7 +2270,7 @@ public class PtidesBasicDirector extends DEDirector {
      *  and the minimum model time delay of the last executing event. These information
      *  is used to calculate the absolute deadline of the produced pure event.
      *  @param eventsToProcess
-     *  @throws IllegalActionException
+     *  @exception IllegalActionException
      */
     private void _saveEventInformation(List<PtidesEvent> eventsToProcess)
             throws IllegalActionException {
@@ -2322,7 +2322,7 @@ public class PtidesBasicDirector extends DEDirector {
     /** Set the minDelay of a port to an array of minDelay values.
      *  @param inputPort The input port to be annotated.
      *  @param minDelays The minDelay values to annotate.
-     *  @throws IllegalActionException
+     *  @exception IllegalActionException
      */
     private static void _setMinDelay(IOPort inputPort, double[] minDelays)
             throws IllegalActionException {
@@ -2358,7 +2358,7 @@ public class PtidesBasicDirector extends DEDirector {
     }
     
     /** Starting from the startPort, traverse the graph to calculate the minDelay offset.
-     *  @throws IllegalActionException 
+     *  @exception IllegalActionException 
      */
     private void _traverseToCalcMinDelay(IOPort startPort) throws IllegalActionException {
         // Setup a local priority queue to store all reached ports
@@ -2491,7 +2491,7 @@ public class PtidesBasicDirector extends DEDirector {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                     private variables                     ////
+    ////                         private variables                 ////
     
     /** Maps input ports to model time delays. These model time delays are then used
      *  to calculate the minDelay parameter, which is used for safe to process analysis.
@@ -2552,7 +2552,7 @@ public class PtidesBasicDirector extends DEDirector {
     private Set _visitedActors;
 
     ///////////////////////////////////////////////////////////////////
-    ////                     inner classes                         ////
+    ////                         inner classes                     ////
 
     /** A TimedEvent extended with an additional field to represent
      *  the remaining execution time (in physical time) for processing

@@ -56,7 +56,7 @@ import ptolemy.kernel.util.Location;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Settable;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// PtalonMatcher
 
 /**
@@ -108,7 +108,7 @@ public class PtalonMatcher extends TypedCompositeActor implements
     
     /** Setup parameters for this actor. 
      *  @param attribute The attribute that changed.
-     *  @throws IllegalActionException If there are problems setting
+     *  @exception IllegalActionException If there are problems setting
      *  up parameters for this actor, or if the superclass throws it.
      */
     public void attributeChanged(Attribute attribute)
@@ -232,7 +232,7 @@ public class PtalonMatcher extends TypedCompositeActor implements
         /** If we are not initalizing or fixed, then call attributeChanged()
          *  in the super class.   
          *  @param attribute The attribute that changed.
-         *  @throws IllegalActionException If thrown by the superclass.
+         *  @exception IllegalActionException If thrown by the superclass.
          */
         public void attributeChanged(Attribute attribute)
                 throws IllegalActionException {

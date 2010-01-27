@@ -79,7 +79,7 @@ public abstract class LuminarySensorInputDevice extends SensorInputDevice {
     /** A sensor device could have multiple access pin and pads 
      *  (configurations), This method returns the current configuration.
      *  @return The current configuration captured in a string.
-     *  @throws IllegalActionException
+     *  @exception IllegalActionException
      */
     abstract public String configuration() throws IllegalActionException;
     

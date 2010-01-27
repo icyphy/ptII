@@ -35,7 +35,7 @@ import ptolemy.actor.util.CausalityInterfaceForComposites;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// FixedPointScheduler
 
 /**

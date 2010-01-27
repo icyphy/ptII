@@ -60,7 +60,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 
-//////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 ////StaticSchedulingDirector
 
 /**
@@ -85,8 +85,8 @@ public class StaticSchedulingDirector extends Director {
         super(staticSchedulingDirector);
     }
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         public methods                         ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /** Return whether the channels in multiports can be dynamically
      *  referenced using the $ref macro.
@@ -385,7 +385,7 @@ public class StaticSchedulingDirector extends Director {
      *  a write reference; otherwise, this is a read reference.  
      * @param target The ProgramCodeGeneratorAdapter for which code needs to be generated.
      * @return an unique reference label for the given port channel.
-     * @throws IllegalActionException If the adapter throws it while
+     * @exception IllegalActionException If the adapter throws it while
      *  generating the label.     
      */
     public String getReference(TypedIOPort port, String[] channelAndOffset,
@@ -608,8 +608,8 @@ public class StaticSchedulingDirector extends Director {
         allowDynamicMultiportReference.setTypeEquals(BaseType.BOOLEAN);
     }
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         protected methods                      ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
     
     /**
      * Generate the code that updates the input/output port offset.
@@ -645,7 +645,7 @@ public class StaticSchedulingDirector extends Director {
      * @param attribute The given attribute.
      * @param channelAndOffset The given channel and offset.
      * @return an unique label for the given attribute.
-     * @throws IllegalActionException If the adapter throws it while
+     * @exception IllegalActionException If the adapter throws it while
      *  generating the label.
      */
     protected String _getParameter(NamedProgramCodeGeneratorAdapter target,

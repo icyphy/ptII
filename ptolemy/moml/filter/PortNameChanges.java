@@ -36,7 +36,7 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.MoMLFilter;
 import ptolemy.moml.MoMLParser;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// FilterBackwardCompatibility
 
 /** When this class is registered with the MoMLParser.setMoMLFilter()

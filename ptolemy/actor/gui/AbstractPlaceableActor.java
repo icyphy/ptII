@@ -40,7 +40,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// AbstractPlaceableActor
 
 /**
@@ -142,7 +142,7 @@ public abstract class AbstractPlaceableActor extends TypedAtomicActor implements
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                    protected variables                    ////
+    ////                         protected variables               ////
 
     /** The associated frame. */
     protected JFrame _frame;

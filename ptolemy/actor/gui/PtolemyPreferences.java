@@ -51,7 +51,7 @@ import ptolemy.kernel.util.Settable;
 import ptolemy.moml.MoMLParser;
 import ptolemy.util.StringUtilities;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// PtolemyPreferences
 
 /**
@@ -145,7 +145,7 @@ public class PtolemyPreferences extends ScopeExtendingAttribute {
     public ColorAttribute backgroundColor;
 
     ///////////////////////////////////////////////////////////////////
-    ////                       public methods                      ////
+    ////                         public methods                    ////
 
     /** Get the PtolemyPreferences within the specified configuration.
      *  @param configuration  The configuration in which to search for
@@ -347,7 +347,7 @@ public class PtolemyPreferences extends ScopeExtendingAttribute {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       public variables                    ////
+    ////                         public variables                  ////
 
     /** The file name where user-defined preferences are stored. */
     public static final String PREFERENCES_FILE_NAME = "PtolemyPreferences.xml";

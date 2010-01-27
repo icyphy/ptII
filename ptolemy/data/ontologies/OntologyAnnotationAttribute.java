@@ -62,9 +62,9 @@ public class OntologyAnnotationAttribute extends StringAttribute {
      * separated by "::".
      * 
      * @param name The new name that the attribute should be set to.
-     * @throws NameDuplicationException If the name coincides with an
+     * @exception NameDuplicationException If the name coincides with an
      * attribute already in the container.
-     * @throws IllegalActionException If the name does not have the correct syntax
+     * @exception IllegalActionException If the name does not have the correct syntax
      * or does not refer to a valid ontology.
      */
     public void setName(String name) throws IllegalActionException,
@@ -111,7 +111,7 @@ public class OntologyAnnotationAttribute extends StringAttribute {
      * attribute is a constraint.
      *
      * @return A String representing the name of the referred ontology.
-     * @throws IllegalActionException If a valid ontology identifier cannot be
+     * @exception IllegalActionException If a valid ontology identifier cannot be
      * found in the attribute name.
      */
     public String getOntologyIdentifier() throws IllegalActionException {

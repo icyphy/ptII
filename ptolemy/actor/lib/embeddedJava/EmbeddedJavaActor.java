@@ -38,7 +38,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.StringAttribute;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 ////embeddedJavaActor
 
 /**
@@ -132,7 +132,7 @@ public class EmbeddedJavaActor extends CompiledCompositeActor {
     public StringAttribute embeddedJavaCode;
 
     ///////////////////////////////////////////////////////////////////
-    ////                     public methods                        ////
+    ////                         public methods                    ////
 
     /** Create the embedded actor and add ports to it.
      */

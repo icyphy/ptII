@@ -39,7 +39,7 @@ import ptolemy.graph.analysis.analyzer.CycleExistenceAnalyzer;
 import ptolemy.graph.analysis.analyzer.CycleMeanAnalyzer;
 import ptolemy.graph.mapping.ToDoubleMapping;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// KarpCycleMeanAnalyzer
 
 /**

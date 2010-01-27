@@ -92,7 +92,7 @@ public class TDLCodeGenerator extends Attribute {
     }
 
     ///////////////////////////////////////////////////////////////////
-    //// public methods ////
+    ////                         public methods                    ////
 
     /**
      * Generate TDL code for the given TDL model.
@@ -108,8 +108,8 @@ public class TDLCodeGenerator extends Attribute {
         return TDLCodeGeneratorUtilities.generateTDLCode(model);
     }
 
-    // /////////////////////////////////////////////////////////////////
-    // // protected methods ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
 
     /**
      * Method to instantiate the Editor Factory class called from the
@@ -127,8 +127,8 @@ public class TDLCodeGenerator extends Attribute {
         new TDLEditorFactory(this, "_editorFactory");
     }
 
-    // /////////////////////////////////////////////////////////////////
-    // // private methods ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
     private void _init() throws IllegalActionException,
             NameDuplicationException {
         _attachText("_iconDescription", "<svg>\n"
@@ -144,8 +144,8 @@ public class TDLCodeGenerator extends Attribute {
         hide.setVisibility(Settable.EXPERT);
     }
 
-    // /////////////////////////////////////////////////////////////////
-    // // inner classes ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         inner classes                     ////
 
     /**
      * An attribute that can create an TDL code editor for a TDL model.

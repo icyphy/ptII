@@ -40,7 +40,7 @@ import java.util.Set;
 
 import ptolemy.backtrack.util.Strings;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// LocalClassLoader
 
 /**
@@ -108,7 +108,7 @@ public class LocalClassLoader extends URLClassLoader {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       public methods                      ////
+    ////                         public methods                    ////
 
     /** Add a class path to the list of class paths to be searched
      *  from.
@@ -449,7 +449,7 @@ public class LocalClassLoader extends URLClassLoader {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                      protected methods                    ////
+    ////                         protected methods                 ////
 
     /** Load a class with a given name. It is called in {@link
      *  #loadClass(String name)}, the function that users use to
@@ -525,7 +525,7 @@ public class LocalClassLoader extends URLClassLoader {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       private methods                     ////
+    ////                         private methods                   ////
 
     //----------------------------------------------------------------
     // All these private methods return null if no class is found.

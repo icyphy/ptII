@@ -60,7 +60,7 @@ import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// SequenceScheduler
 
 /**
@@ -770,7 +770,7 @@ public class SequenceScheduler extends Scheduler {
      * subGraphs containing SequencedActor with directed upstream actors. 
      * @param subGraphList
      * @param sequencedActorGraphNodes
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      */
     private void _processGraph(List<Object[]> subGraphList, List<Node> sequencedActorGraphNodes) throws IllegalActionException {
 
@@ -818,14 +818,14 @@ public class SequenceScheduler extends Scheduler {
                 System.out.println("Printing subGraph edges -- >");
 
                 List<Edge> subGraphData = new ArrayList<Edge>(subGraph.edges());
-                for (Edge edge : subGraphData){
+                for (Edge edge : subGraphData) {
                     System.out.println("SubGraph Edges: "+ edge );                    
                 }
                 System.out.println(" Printing subGraph Nodes -- >" );
 
                 List<Node> subGraphNode = new ArrayList<Node>(subGraph.nodes());
 
-                for (Node node : subGraphNode){
+                for (Node node : subGraphNode) {
                     System.out.println("SubGraph Node: "+ node );                    
                 }
                 */
@@ -891,14 +891,14 @@ public class SequenceScheduler extends Scheduler {
             _debug("Printing subGraph edges -- >");
 
             List<Edge> subGraphData = new ArrayList<Edge>(subGraph.edges());
-            for (Edge edge : subGraphData){
+            for (Edge edge : subGraphData) {
                 _debug("SubGraph Edges: "+ edge );                    
             }
             _debug(" Printing subGraph Nodes -- >" );
 
             List<Node> subGraphNode = new ArrayList<Node>(subGraph.nodes());
 
-            for (Node node : subGraphNode){
+            for (Node node : subGraphNode) {
                 _debug("SubGraph Node: "+ node );                    
             }
         }        
@@ -1007,13 +1007,13 @@ public class SequenceScheduler extends Scheduler {
     /** From original SequenceDirector - copied directly
      *  Remove duplicate sequence numbers
      * @param sequenceList
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      */
     private void _identifyDuplicateSequences(List sequenceList) throws IllegalActionException {
         HashSet<Integer> found = new HashSet<Integer>();
         Iterator seqIterator = sequenceList.iterator();
         SequenceAttribute obj = null;
-        while (seqIterator.hasNext()){
+        while (seqIterator.hasNext()) {
             obj = (SequenceAttribute)seqIterator.next();
             
             // Replaced with call to .getSequenceNumber() 
@@ -1022,7 +1022,7 @@ public class SequenceScheduler extends Scheduler {
             //Integer sequenceNumber = new Integer(obj.getExpression());
             
             Integer sequenceNumber = new Integer(obj.getSequenceNumber());
-            if (!found.add(sequenceNumber)){
+            if (!found.add(sequenceNumber)) {
                 throw new IllegalActionException(this,"Attempted to use duplicate sequence number : " + sequenceNumber + " in sequenceAttribute "+obj.getContainer());
             }
         }

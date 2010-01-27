@@ -46,7 +46,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 import com.sun.j3d.utils.geometry.Primitive;
 import com.sun.j3d.utils.geometry.Sphere;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// Sphere3D
 
 /** This actor contains the geometry and appearance specifications for a

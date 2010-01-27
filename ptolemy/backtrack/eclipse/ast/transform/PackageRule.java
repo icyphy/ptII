@@ -47,7 +47,7 @@ import ptolemy.backtrack.eclipse.ast.Type;
 import ptolemy.backtrack.eclipse.ast.TypeAnalyzer;
 import ptolemy.backtrack.eclipse.ast.TypeAnalyzerState;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// PackageRule
 
 /**
@@ -63,7 +63,7 @@ import ptolemy.backtrack.eclipse.ast.TypeAnalyzerState;
  */
 public class PackageRule extends TransformRule {
     ///////////////////////////////////////////////////////////////////
-    ////                       public methods                      ////
+    ////                         public methods                    ////
 
     /** Rename the occurance of package names after the AST is traversed. The
      *  transformer implemented for this rule traverses the AST once again and
@@ -125,7 +125,7 @@ public class PackageRule extends TransformRule {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                      private methods                      ////
+    ////                         private methods                   ////
 
     /** Add an importation declaration for a class in the old package. That
      *  class is implicitly imported by the class being handled. When the class
@@ -226,8 +226,8 @@ public class PackageRule extends TransformRule {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                        inner class                        ////
-    //////////////////////////////////////////////////////////////////////////
+    ////                         inner class                       ////
+    ///////////////////////////////////////////////////////////////////
     //// Renamer
 
     /** The prefix to be added to the package name, not including the "."

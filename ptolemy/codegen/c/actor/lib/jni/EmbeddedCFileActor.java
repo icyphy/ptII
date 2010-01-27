@@ -51,7 +51,7 @@ public class EmbeddedCFileActor extends CompiledCompositeActor {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                      inner classes                        ////
+    ////                         inner classes                     ////
 
     /** A placeholder or dummy actor used in Embedded C code generation.
      *  It extends the EmbeddedActor class in the EmbeddedCActor.

@@ -33,7 +33,7 @@ import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Vector;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// ConfigXmlTree
 /**
  Tree representation of XML starting from an element.
@@ -55,7 +55,7 @@ public class ConfigXmlTree implements Cloneable {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       public methods                      ////
+    ////                         public methods                    ////
 
     /** Add a child to this node. This child will be added after the existing
      *  children.
@@ -188,7 +188,7 @@ public class ConfigXmlTree implements Cloneable {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                      protected methods                    ////
+    ////                         protected methods                 ////
 
     /** Print the content of the sub-tree starting from this node to the given
      *  output stream in a text format. The sub-tree is indented with the
@@ -235,7 +235,7 @@ public class ConfigXmlTree implements Cloneable {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       private methods                     ////
+    ////                         private methods                   ////
 
     /** Print a string to the given output stream in a text format. The string
      *  is indented with the specified amount.

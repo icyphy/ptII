@@ -27,7 +27,7 @@
  */
 package ptolemy.domains.modal.kernel;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 ////RelationNode
 
 /**
@@ -59,8 +59,8 @@ public final class RelationNode {
         _previousDifference = difference;
     }
 
-    ///////////////////////////////////////////////////////////////
-    ////                       public methods                  ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /** Reset the relation node by setting the former type and difference
      *  information to RelationType.INVALID and 0.0 respectively.
@@ -136,7 +136,7 @@ public final class RelationNode {
                 && (_previousType != _currentType);
     }
 
-    ///////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     ////                       private fields                  ////
     private int _currentType;
 

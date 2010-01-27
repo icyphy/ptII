@@ -44,7 +44,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 
-////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// HDFDirector
 
 /**
@@ -141,7 +141,7 @@ public class HDFDirector extends SDFDirector {
         _init();
     }
 
-    ////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     ////                           parameters                           ////
 
     /** A parameter representing the size of the schedule cache to use.
@@ -155,8 +155,8 @@ public class HDFDirector extends SDFDirector {
      */
     public Parameter scheduleCacheSize;
 
-    ///////////////////////////////////////////////////////////////////////
-    ////                         public methods                        ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /** If the attribute changed is the <i>scheduleCacheSize</i> parameter,
      *  construct the cache in the associated CachedSDFScheduler with the

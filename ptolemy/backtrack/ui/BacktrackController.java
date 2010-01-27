@@ -37,7 +37,7 @@ import ptolemy.actor.CompositeActor;
 import ptolemy.backtrack.Checkpoint;
 import ptolemy.backtrack.Rollbackable;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// BacktrackController
 /**
  Backtracking controller for composite actors. This controller is built on top
@@ -56,7 +56,7 @@ import ptolemy.backtrack.Rollbackable;
  */
 public class BacktrackController {
     ///////////////////////////////////////////////////////////////////
-    ////                       public methods                      ////
+    ////                         public methods                    ////
 
     /** Commit a checkpoint handle. After it is committed, the system can no
      *  longer roll back to that checkpoint, or any other checkpoint taken

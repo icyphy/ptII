@@ -60,7 +60,7 @@ public class Source extends AtomicActor {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                            public methods                 ////
+    ////                         public methods                    ////
 
     public List<Inequality> constraintList() throws IllegalActionException {
         ptolemy.actor.lib.Source actor = (ptolemy.actor.lib.Source) getComponent();

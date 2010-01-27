@@ -36,7 +36,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// MoMLModelAttribute
 
 /**
@@ -148,7 +148,7 @@ public class MoMLModelAttribute extends Attribute implements Configurable {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                      protected methods                    ////
+    ////                         protected methods                 ////
 
     /** Write a MoML description this object, which includes a
      *  MoML description of the contained model within the &lt;configure&gt; tag.
@@ -167,7 +167,7 @@ public class MoMLModelAttribute extends Attribute implements Configurable {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                    protected variables                    ////
+    ////                         protected variables               ////
 
     /** The contained model. This is protected so that derived classes
      *  can provide a default model.

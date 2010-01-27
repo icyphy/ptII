@@ -39,7 +39,7 @@ import ptolemy.kernel.util.InvalidStateException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// StaticSchedulingDirector
 
 /**
@@ -351,7 +351,7 @@ public class StaticSchedulingDirector extends Director {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       protected variables                 ////
+    ////                         protected variables               ////
 
     /** The value that the postfire method will return. */
     protected boolean _postfireReturns;

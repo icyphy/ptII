@@ -44,7 +44,7 @@ import diva.graph.EdgeRenderer;
 import diva.graph.GraphController;
 import diva.graph.JGraph;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// RelationController
 
 /**
@@ -75,7 +75,7 @@ public class RelationController extends TransitionController {
     }
     
     ///////////////////////////////////////////////////////////////////
-    ////                     protected methods                     ////
+    ////                         protected methods                 ////
 
     /** Create an edge renderer specifically for relations in an ontology.
      */

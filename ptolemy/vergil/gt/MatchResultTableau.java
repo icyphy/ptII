@@ -46,7 +46,7 @@ import ptolemy.moml.LibraryAttribute;
 import ptolemy.vergil.modal.CaseGraphTableau;
 import ptolemy.vergil.tree.TreeTableau;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// GTRuleGraphTableau
 
 /** An editor tableau for graph transformation in Ptolemy II. FIXME: more

@@ -35,7 +35,7 @@ import ptolemy.domains.ct.kernel.CTStepSizeControlActor;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// CTDummySSControlActor
 
 /**

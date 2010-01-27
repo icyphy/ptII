@@ -33,7 +33,7 @@ import ptolemy.data.properties.lattice.PropertyConstraintSolver;
 import ptolemy.data.properties.lattice.logicalAND.actor.AtomicActor;
 import ptolemy.kernel.util.IllegalActionException;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// SampleDelay
 
 /**
@@ -61,7 +61,7 @@ public class SampleDelay extends AtomicActor {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                            public methods                 ////
+    ////                         public methods                    ////
 
     public List<Inequality> constraintList() throws IllegalActionException {
         /* always set output of feedback loop to False if we want to

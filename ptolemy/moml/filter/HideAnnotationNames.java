@@ -35,7 +35,7 @@ import ptolemy.kernel.util.Settable;
 import ptolemy.moml.MoMLFilter;
 import ptolemy.moml.MoMLParser;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// HideAnnotationNames
 
 /** When this class is registered with the MoMLParser.addMoMLFilter()

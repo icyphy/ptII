@@ -38,7 +38,7 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// Ramp
 
 /**
@@ -118,7 +118,7 @@ public class Ramp extends SequenceSource {
     /** If the argument is the <i>init</i> parameter, then reset the
      *  state to the specified value.
      *  @param attribute The attribute that changed.
-     *  @throws IllegalActionException If <i>init<i> cannot be evaluated
+     *  @exception IllegalActionException If <i>init<i> cannot be evaluated
      *   or cannot be converted to the output type, or if the superclass
      *   throws it.
      */

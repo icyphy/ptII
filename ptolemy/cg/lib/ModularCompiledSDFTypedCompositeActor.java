@@ -79,7 +79,7 @@ import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 ////ModularCodeGenTypedCompositeActor
 
 /**
@@ -304,7 +304,7 @@ public class ModularCompiledSDFTypedCompositeActor extends LazyTypedCompositeAct
      *  @exception IllegalActionException If any port throws it.
      */
     public void createReceivers() throws IllegalActionException {
-        if(_modelChanged())
+        if (_modelChanged())
             super.createReceivers();
         else {
             if (workspace().getVersion() != _receiversVersion) {
@@ -314,7 +314,7 @@ public class ModularCompiledSDFTypedCompositeActor extends LazyTypedCompositeAct
                     workspace().getWriteAccess();
                     while (ports.hasNext()) {
                         IOPort onePort = (IOPort) ports.next();
-                        if(onePort.isInput())
+                        if (onePort.isInput())
                             onePort.createReceivers();
                     }
                     _receiversVersion = workspace().getVersion();
@@ -363,7 +363,7 @@ public class ModularCompiledSDFTypedCompositeActor extends LazyTypedCompositeAct
                 profile = null;
             }
         }
-        if (!_USE_PROFILE || profile == null){
+        if (!_USE_PROFILE || profile == null) {
             populate();
             List<?> entities = entityList(ModularCompiledSDFTypedCompositeActor.class);
             for (Object entity : entities) {
@@ -764,7 +764,7 @@ public class ModularCompiledSDFTypedCompositeActor extends LazyTypedCompositeAct
             //create a director for default preinitialize
             Nameable container = getContainer();
             if (container instanceof Actor) {
-                if(getDirector() == ((Actor) container).getDirector()) {
+                if (getDirector() == ((Actor) container).getDirector()) {
                     try {
                         Director director = new SDFDirector(this, "SDF Director");
                         setDirector(director);
@@ -790,7 +790,7 @@ public class ModularCompiledSDFTypedCompositeActor extends LazyTypedCompositeAct
             if (!_addedSubscribersFromProfile) {
                 _addedSubscribersFromProfile = true;
                 if (profile != null) {
-                    for(FiringFunction firing: profile.firings()) {
+                    for (FiringFunction firing: profile.firings()) {
                         System.out.print(firing.firingIndex + ": ");
                         System.out.println(firing.ports);
                     }
@@ -803,7 +803,7 @@ public class ModularCompiledSDFTypedCompositeActor extends LazyTypedCompositeAct
                     try {
                         for (Profile.Port port : profile.ports()) {
                             for (Object actorPort : ports) {
-                                if(port.name().equals(((NamedObj) actorPort).getName())) {
+                                if (port.name().equals(((NamedObj) actorPort).getName())) {
                                     DFUtilities.setRateVariable((IOPort)actorPort, 
                                             port.input() ? "tokenConsumptionRate":"tokenProductionRate", port.rate());
                                     ((TypedIOPort)actorPort).setTypeEquals(JavaCodeGenerator.codeGenTypeToPtType(port.type()));
@@ -1036,7 +1036,7 @@ public class ModularCompiledSDFTypedCompositeActor extends LazyTypedCompositeAct
      * @return The profile.
      */
     public Profile getProfile() {
-        if(_profile == null) {
+        if (_profile == null) {
             String className = NamedProgramCodeGeneratorAdapter.generateName(this) + "_profile";        
             Class<?> classInstance = null;
 
@@ -1169,7 +1169,7 @@ public class ModularCompiledSDFTypedCompositeActor extends LazyTypedCompositeAct
 
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private methods                 ////
+    ////                         private methods                   ////
 
 
     private void _createCodeGenerator() throws IllegalActionException, NameDuplicationException {
@@ -1220,7 +1220,7 @@ public class ModularCompiledSDFTypedCompositeActor extends LazyTypedCompositeAct
     }
 
     private Profile _getProfile() {
-        try{
+        try {
         if (_profile != null || _modelChanged()) {
             // if _modelChanged => _profile == null
             return _profile;
@@ -1330,7 +1330,7 @@ public class ModularCompiledSDFTypedCompositeActor extends LazyTypedCompositeAct
                 }
             }
 
-        } else if(type instanceof ArrayType) {
+        } else if (type instanceof ArrayType) {
 
             for (int i = 0; i < port.getWidthInside(); i++) {
                 for (int k = 0; k < rate; k++) {
@@ -1353,9 +1353,9 @@ public class ModularCompiledSDFTypedCompositeActor extends LazyTypedCompositeAct
                         
                         Token[] convertedTokens = new Token[size];
                         
-                        for(int j = 0; j < size; j++) {
+                        for (int j = 0; j < size; j++) {
                             Object element =  (Object)getPayload.invoke(elements[j], (Object[])null);
-                            if(type == BaseType.INT) {
+                            if (type == BaseType.INT) {
                                 convertedTokens[j] = new IntToken(Integer.parseInt(element.toString())); 
                             } else if (type == BaseType.DOUBLE) {
                                 convertedTokens[j] = new DoubleToken(Double.parseDouble(element.toString()));

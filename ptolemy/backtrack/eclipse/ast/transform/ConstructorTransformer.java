@@ -50,7 +50,7 @@ import org.eclipse.jdt.core.dom.TypeDeclaration;
 import ptolemy.backtrack.eclipse.ast.Type;
 import ptolemy.backtrack.eclipse.ast.TypeAnalyzerState;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// ConstructorTransformer
 
 /**
@@ -79,7 +79,7 @@ public class ConstructorTransformer extends AbstractTransformer implements
         MethodDeclarationHandler {
 
     ///////////////////////////////////////////////////////////////////
-    ////                       public methods                      ////
+    ////                         public methods                    ////
 
     /** Enter an anonymous class declaration.
      *
@@ -259,7 +259,7 @@ public class ConstructorTransformer extends AbstractTransformer implements
     public static final Hashtable<String, String> SPECIAL_TYPE_MAPPING = new Hashtable<String, String>();
 
     ///////////////////////////////////////////////////////////////////
-    ////                      private methods                      ////
+    ////                         private methods                   ////
 
     /** Refactor a class instance creation node and add a method call to it.
      *  At run-time, this results in setting the checkpoint object of the new

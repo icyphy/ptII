@@ -29,7 +29,7 @@ import ptolemy.data.properties.lattice.LatticeProperty;
 import ptolemy.data.properties.lattice.PropertyLattice;
 import ptolemy.kernel.util.IllegalActionException;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// Lattice
 
 /**
@@ -48,7 +48,7 @@ public class Lattice extends PropertyLattice {
 
     /**
      * Construct a new ontology lattice.
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      */
     public Lattice() throws IllegalActionException {
         super();

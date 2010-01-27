@@ -47,7 +47,7 @@ import ptolemy.domains.csp.kernel.CSPDirector;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 
-///////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// DiningApplet
 
 /**

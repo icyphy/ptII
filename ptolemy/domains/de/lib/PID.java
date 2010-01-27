@@ -140,7 +140,7 @@ public class PID extends DETransformer {
         if (attribute == Kp || attribute == Ki || attribute == Kd) {
                 try {
                     Parameter value = (Parameter)attribute;
-                    if(value.getToken() == null || ((DoubleToken)value.getToken()).isNil()){
+                    if (value.getToken() == null || ((DoubleToken)value.getToken()).isNil()){
                         throw new IllegalActionException(this, "Must have a numeric value for gains.");
                     }
                 } catch (ClassCastException e) {
@@ -180,7 +180,7 @@ public class PID extends DETransformer {
             DoubleToken currentOutput = (DoubleToken)currentToken.multiply(Kp.getToken());
 
             //If a previous input was given, then add integral and derivative components
-            if(_lastInput != null){
+            if (_lastInput != null){
                 DoubleToken lastToken = (DoubleToken)_lastInput.contents;
                 Time  lastTime = _lastInput.timeStamp;
                 DoubleToken timeGap = new DoubleToken(currentTime.subtract(lastTime).getDoubleValue());
@@ -190,14 +190,14 @@ public class PID extends DETransformer {
                 // signal was already generated. However if the value has changed, then the signal
                 // is discontinuous and we should throw an exception unless derivative control
                 // is disabled (Kd=0).
-                if(timeGap.equals(0)){
-                    if(!Kd.equals(0) && !currentToken.equals(lastToken)){
+                if (timeGap.equals(0)){
+                    if (!Kd.equals(0) && !currentToken.equals(lastToken)){
                         throw new IllegalActionException("PID controller recevied discontinuous input.");
                     }
                 }
                 // Otherwise, the signal is continuous and we add integral and derivative components
-                else{
-                    if(!Ki.getExpression().equals(0)){
+                else {
+                    if (!Ki.getExpression().equals(0)){
                         //Calculate integral component and accumulate
                         _accumulated = (DoubleToken) _accumulated.add(currentToken.add(lastToken)
                                 .multiply(timeGap)
@@ -207,7 +207,7 @@ public class PID extends DETransformer {
                     }
                     
                     //Add derivative component to controller output
-                    if(!Kd.equals(0)){
+                    if (!Kd.equals(0)){
                         currentOutput = (DoubleToken) currentOutput.add(
                                 currentToken.subtract(lastToken)
                                             .divide(timeGap)
@@ -226,8 +226,8 @@ public class PID extends DETransformer {
      */
     public boolean postfire() throws IllegalActionException {
         //If reset port is connected and has a token, reset state.
-        if(reset.getWidth() > 0){
-            if(reset.hasToken(0)){
+        if (reset.getWidth() > 0){
+            if (reset.hasToken(0)){
                 //Consume reset token
                 reset.get(0);
                 

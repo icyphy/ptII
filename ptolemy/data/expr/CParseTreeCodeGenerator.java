@@ -34,7 +34,7 @@ import java.util.List;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// ParseTreeCodeGenerator
 
 /**
@@ -1233,7 +1233,7 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       protected methods                   ////
+    ////                         protected methods                 ////
 
     /**
      * Assert that the given boolean value, which describes the given

@@ -60,7 +60,7 @@ import ptolemy.vergil.gt.TransformationAttributeController;
 import ptolemy.vergil.gt.TransformationAttributeEditorFactory;
 import ptolemy.vergil.gt.TransformationAttributeIcon;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// TransformationAttribute
 
 /**
@@ -413,7 +413,7 @@ public class TransformationAttribute extends Attribute implements Configurable,
      */
     private PteraModalModel _modelUpdater;
 
-    //////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     //// TransformationListener
 
     /**

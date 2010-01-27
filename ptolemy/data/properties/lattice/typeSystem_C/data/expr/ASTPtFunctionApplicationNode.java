@@ -35,7 +35,7 @@ import ptolemy.data.properties.lattice.PropertyConstraintSolver;
 import ptolemy.data.properties.lattice.typeSystem_C.Lattice;
 import ptolemy.kernel.util.IllegalActionException;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// ASTPtFunctionApplicationNode
 
 /**

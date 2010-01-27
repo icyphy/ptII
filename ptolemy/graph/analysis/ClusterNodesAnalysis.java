@@ -32,7 +32,7 @@ import ptolemy.graph.analysis.analyzer.Analyzer;
 import ptolemy.graph.analysis.analyzer.ClusterNodesTransformer;
 import ptolemy.graph.analysis.strategy.ClusterNodesTransformerStrategy;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// ClusterNodesAnalysis
 
 /**

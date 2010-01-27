@@ -49,7 +49,7 @@ import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// LatticeOntologyAdapter
 
 /**
@@ -513,7 +513,7 @@ public class LatticeOntologyAdapter extends OntologyAdapter {
      * @param object The given object that represents the sink for the default constraints
      * @param objectList The list of objects passed in as a {@linkplain List} that
      * represents the sources for the default constraints
-     * @throws IllegalActionException If an exception is thrown
+     * @exception IllegalActionException If an exception is thrown
      */
     protected void _constraintObject(ConstraintType constraintType,
             Object object, List objectList) throws IllegalActionException {
@@ -570,7 +570,7 @@ public class LatticeOntologyAdapter extends OntologyAdapter {
      * @param object The given object that represents the sink for the default constraints
      * @param objectList The list of objects passed in as a {@linkplain Set} that
      * represents the sources for the default constraints
-     * @throws IllegalActionException If an exception is thrown
+     * @exception IllegalActionException If an exception is thrown
      */
     protected void _constraintObject(ConstraintType constraintType,
             Object object, Set<Object> objectList)
@@ -671,7 +671,7 @@ public class LatticeOntologyAdapter extends OntologyAdapter {
      * @param expressionASTNodeConstraintType The default ConstraintType
      * for Ptolemy expression language AST nodes; will be used it the model component
      * is an AST node
-     * @throws IllegalActionException If an exception is thrown
+     * @exception IllegalActionException If an exception is thrown
      */
     protected void _setConnectionConstraintType(ConstraintType constraintType,
             ConstraintType compositeConstraintType,
@@ -763,7 +763,7 @@ public class LatticeOntologyAdapter extends OntologyAdapter {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       protected variables                 ////
+    ////                         protected variables               ////
 
     /** The list of Inequality constraints contained by this LatticeOntologyAdapter. */
     protected List<Inequality> _ownConstraints = new LinkedList<Inequality>();

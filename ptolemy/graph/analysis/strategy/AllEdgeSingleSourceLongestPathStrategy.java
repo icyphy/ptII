@@ -37,7 +37,7 @@ import ptolemy.graph.analysis.analyzer.CycleExistenceAnalyzer;
 import ptolemy.graph.analysis.analyzer.SingleSourceLongestPathAnalyzer;
 import ptolemy.graph.mapping.ToDoubleMapping;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// AllEdgeSingleSourceLongestPathStrategy
 
 /**

@@ -990,7 +990,7 @@ public class TDLModuleDirector extends ModalDirector {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                        private variables                  ////
+    ////                         private variables                 ////
 
     /**
      * Current worst case execution time, this is set when the execution of a

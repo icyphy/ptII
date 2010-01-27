@@ -52,7 +52,7 @@ public interface Suspendable extends Executable {
      *  been suspended since the last call to initialize(), then this
      *  has no effect.
      *  @param time The time at which the actor is resumed.
-     *  @throws IllegalActionException If the resume cannot be completed.
+     *  @exception IllegalActionException If the resume cannot be completed.
      */
     public void resume(Time time) throws IllegalActionException;
     
@@ -61,7 +61,7 @@ public interface Suspendable extends Executable {
      *  but the accumulated suspend time is incremented by the time
      *  since it was last suspended.
      *  @param time The time at which the actor is suspended.
-     *  @throws IllegalActionException If the suspend cannot be completed.
+     *  @exception IllegalActionException If the suspend cannot be completed.
      */
     public void suspend(Time time) throws IllegalActionException;
 }

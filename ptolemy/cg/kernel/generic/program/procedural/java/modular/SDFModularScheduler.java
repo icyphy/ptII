@@ -41,7 +41,7 @@ public class SDFModularScheduler extends SDFScheduler {
      * @param vectorizationFactor The vectorization factor
      * @return A map from each actor to its fractional
      *  firing.
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      */
     public Map getFiringVector(CompositeActor container, int vectorizationFactor) 
         throws IllegalActionException {

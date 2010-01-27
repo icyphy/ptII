@@ -46,7 +46,7 @@ import ptolemy.kernel.util.Settable;
 import com.sun.j3d.utils.geometry.Box;
 import com.sun.j3d.utils.geometry.Primitive;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// Box3D
 
 /** This actor contains the geometry and appearance specifications for a

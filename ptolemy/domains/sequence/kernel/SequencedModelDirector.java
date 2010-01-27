@@ -283,7 +283,7 @@ public abstract class SequencedModelDirector extends Director{
      * then a value will be available for the first actor to use.
      * 
      * @param actorEntity The entity
-     * @throws IllegalActionException If thrown while getting the width of a port or
+     * @exception IllegalActionException If thrown while getting the width of a port or
      * getting the value of a parameter. 
      */
     public void setOutputInitialValues(Entity actorEntity) throws IllegalActionException {
@@ -421,7 +421,7 @@ public abstract class SequencedModelDirector extends Director{
      *  on control actors, and remove them from the _independentList. 
      * 
      * @param compositeActor The composite actor to be searched for entities.
-     * @throws IllegalActionException If thrown while checking the attribute type.
+     * @exception IllegalActionException If thrown while checking the attribute type.
      */
     public void getContainedEntities(CompositeActor compositeActor) throws IllegalActionException {
 
@@ -530,7 +530,7 @@ public abstract class SequencedModelDirector extends Director{
      * @param actor The actor to be checked.
      * @param sequenceAttributes The list of sequence attributes to be checked.
      * @param processAttributes The list of process attributes to be checked
-     * @throws IllegalActionException If sequenceAttributes has a length greater than one
+     * @exception IllegalActionException If sequenceAttributes has a length greater than one
      * or if actor is not an instance of ControlActor. 
      */
     public void checkAttributeType(Actor actor, List sequenceAttributes, List processAttributes) throws IllegalActionException {
@@ -755,7 +755,7 @@ public abstract class SequencedModelDirector extends Director{
     }
     
     ///////////////////////////////////////////////////////////////////
-    ////                         private methods                 ////
+    ////                         private methods                   ////
     
     /** Initialize the object.   In this case, we give the SequencedModelDirector a
      *  default scheduler of the class SequenceScheduler, an iterations
@@ -810,7 +810,7 @@ public abstract class SequencedModelDirector extends Director{
     // boolean _allowDisconnectedGraphs = false;
 
     ///////////////////////////////////////////////////////////////////
-    ////                       protected variables                 ////
+    ////                         protected variables               ////
     
     /** The list of sequenced actors in the model. */
     protected List<SequenceAttribute> _sequencedList;  

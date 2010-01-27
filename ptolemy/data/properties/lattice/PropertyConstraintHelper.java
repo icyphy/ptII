@@ -48,7 +48,7 @@ import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// PropertyConstraintHelper
 
 /**
@@ -617,7 +617,7 @@ public class PropertyConstraintHelper extends PropertyHelper {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       protected variables                 ////
+    ////                         protected variables               ////
 
     protected List<Inequality> _ownConstraints = new LinkedList<Inequality>();
 

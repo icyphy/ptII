@@ -49,7 +49,7 @@ import ptolemy.moml.LibraryAttribute;
 import ptolemy.vergil.basic.ExtendedGraphFrame;
 import ptolemy.vergil.modal.CaseGraphTableau;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// GTRuleGraphTableau
 
 /** An editor tableau for graph transformation in Ptolemy II. FIXME: more

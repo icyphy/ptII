@@ -40,7 +40,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// InterfaceTableau
 
 /**
@@ -104,14 +104,14 @@ public class InterfaceTableau extends Tableau {
         setFrame(frame);
     }
 
-    ///////////////////////////////////////////////////////////////////////////
-    ////                             private variables                     ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     /** The manager. */
     private Manager _manager;
 
-    ///////////////////////////////////////////////////////////////////////////
-    ////                             inner classes                         ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         inner classes                     ////
 
     /** A factory that creates run control panel tableaux for Ptolemy models.
      */

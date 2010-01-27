@@ -35,7 +35,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.StringAttribute;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 ////SMVLegacyCodeActor
 /**
  * An actor of this class contains pure SMV codes. Note that the

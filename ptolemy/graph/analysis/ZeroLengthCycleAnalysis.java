@@ -30,7 +30,7 @@ import ptolemy.graph.analysis.analyzer.ZeroLengthCycleAnalyzer;
 import ptolemy.graph.analysis.strategy.FloydWarshallZeroLengthCycleStrategy;
 import ptolemy.graph.mapping.ToDoubleMapping;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// ZeroLengthCycleAnalysis
 
 /**

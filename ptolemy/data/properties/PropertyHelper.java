@@ -50,7 +50,7 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.StringAttribute;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 ////PropertyHelper
 
 /**
@@ -87,7 +87,7 @@ constraints.
 public abstract class PropertyHelper {
 
     ///////////////////////////////////////////////////////////////////
-    ////                 public methods                            ////
+    ////                         public methods                    ////
 
     /**
      * Return the associated component object.
@@ -268,7 +268,7 @@ public abstract class PropertyHelper {
         return getName() + " " + super.toString();
     }
 
-    /////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     ////          public inner classes                               ////
 
     /**
@@ -338,7 +338,7 @@ public abstract class PropertyHelper {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////               protected methods                           ////
+    ////                         protected methods                 ////
 
     /**
      * Create an new ParseTreeAnnotationEvaluator that is tailored for the
@@ -590,7 +590,7 @@ public abstract class PropertyHelper {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////       protected variables                                 ////
+    ////                         protected variables               ////
 
     /** The annotation evaluator. */
     protected ParseTreeAnnotationEvaluator _annotationEvaluator;
@@ -599,7 +599,7 @@ public abstract class PropertyHelper {
     protected PropertySolver _solver;
 
     ///////////////////////////////////////////////////////////////////
-    ////       private methods                                     ////
+    ////                         private methods                   ////
 
     /**
      * Evaluate the expression of the specified AnnotationAttribute.
@@ -659,7 +659,7 @@ public abstract class PropertyHelper {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                   private variables                       ////
+    ////                         private variables                 ////
 
     /* The associated component. */
     private Object _component;

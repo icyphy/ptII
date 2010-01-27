@@ -269,13 +269,13 @@ public class SystemCommand extends TypedAtomicActor {
             }
         }
         _startSimulation();
-        try{
+        try {
             final int exiVal = cliPro.waitFor();
             exitValue.send(0, new IntToken(exiVal));
             output.send(0, new StringToken(cliPro.getStandardOutput()));
             error.send(0, new StringToken(cliPro.getStandardError()));
         }
-        catch(InterruptedException e){
+        catch (InterruptedException e) {
             String em = "Error: System command has been interrupted.";
             throw new IllegalActionException(this, e, em);
         }
@@ -381,7 +381,7 @@ public class SystemCommand extends TypedAtomicActor {
         // the file on Linux.
         for (Iterator itc = commandList.iterator(); itc.hasNext (); ) {
             String comIte = (String)itc.next();
-            for (Map.Entry<String, Token> e : _tokenMap.entrySet()){
+            for (Map.Entry<String, Token> e : _tokenMap.entrySet()) {
                 final String fin = '$' + e.getKey();
                 while ( comIte.contains(fin) )
                     comIte = comIte.replace(fin, 

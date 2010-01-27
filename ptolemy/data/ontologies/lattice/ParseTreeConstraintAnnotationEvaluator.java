@@ -64,7 +64,7 @@ public class ParseTreeConstraintAnnotationEvaluator extends
      *  catches the superclass' exception to check for a Concept.
      *  
      *  @param node The leaf node to be visited
-     *  @throws IllegalActionException If the node label cannot be resolved to a
+     *  @exception IllegalActionException If the node label cannot be resolved to a
      *  component in the model
      */    
     public void visitLeafNode(ASTPtLeafNode node) throws IllegalActionException {
@@ -92,7 +92,7 @@ public class ParseTreeConstraintAnnotationEvaluator extends
      * '==', '>=', or '<='.
      * 
      * @param node The relational node to be visited
-     * @throws IllegalActionException If the operator is not supported (should be
+     * @exception IllegalActionException If the operator is not supported (should be
      * one of '==', '>=', or '<=')
      */
     public void visitRelationalNode(ASTPtRelationalNode node)

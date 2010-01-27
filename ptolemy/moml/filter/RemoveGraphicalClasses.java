@@ -34,7 +34,7 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.MoMLFilter;
 import ptolemy.moml.MoMLParser;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// RemoveGraphicalClasses
 
 /** When this class is registered with the MoMLParser.setMoMLFilter()

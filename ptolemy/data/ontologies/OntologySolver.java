@@ -48,7 +48,7 @@ import ptolemy.util.ClassUtilities;
 import ptolemy.util.FileUtilities;
 import ptolemy.util.StringUtilities;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 ////OntologySolver
 
 /**
@@ -127,7 +127,7 @@ public abstract class OntologySolver extends OntologySolverBase implements Testa
      * Check if there are any OntologySolver resolution errors after resolving
      * properties. If so, throw an IllegalActionException.
      * 
-     * @throws IllegalActionException If an exception is thrown by calling checkErrors()
+     * @exception IllegalActionException If an exception is thrown by calling checkErrors()
      */
     public void checkResolutionErrors() throws IllegalActionException {
         for (Object propertyable : getAllPropertyables()) {
@@ -513,7 +513,7 @@ public abstract class OntologySolver extends OntologySolverBase implements Testa
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                      protected methods                    ////
+    ////                         protected methods                 ////
 
     /**
      * Add choices to the parameter where the choices are subdirectories of the
@@ -685,7 +685,7 @@ public abstract class OntologySolver extends OntologySolverBase implements Testa
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                    protected variables                    ////
+    ////                         protected variables               ////
 
     /**
      * The model analyzer, if the solver is created by one; otherwise, this is
@@ -711,7 +711,7 @@ public abstract class OntologySolver extends OntologySolverBase implements Testa
             .getProperty("line.separator");
 
     ///////////////////////////////////////////////////////////////////
-    ////                        private methods                    ////
+    ////                         private methods                   ////
 
     /**
      * Record as an error for the given property-able object and its resolved
@@ -751,7 +751,7 @@ public abstract class OntologySolver extends OntologySolverBase implements Testa
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                      private variables                    ////
+    ////                         private variables                 ////
 
     /**
      * The record of the previously resolved properties. It is a map between the

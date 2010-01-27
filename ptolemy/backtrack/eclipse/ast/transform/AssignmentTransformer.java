@@ -83,7 +83,7 @@ import ptolemy.backtrack.eclipse.ast.TypeAnalyzerState;
 import ptolemy.backtrack.util.CheckpointRecord;
 import ptolemy.backtrack.util.FieldRecord;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// AssignmentTransformer
 
 /**
@@ -115,7 +115,7 @@ public class AssignmentTransformer extends AbstractTransformer implements
         FieldDeclarationHandler, MethodDeclarationHandler {
 
     ///////////////////////////////////////////////////////////////////
-    ////                       public methods                      ////
+    ////                         public methods                    ////
 
     /** Enter an anonymous class declaration. Nothing is done in this method.
      *
@@ -482,7 +482,7 @@ public class AssignmentTransformer extends AbstractTransformer implements
     public static final String RESTORE_NAME = "$RESTORE";
 
     ///////////////////////////////////////////////////////////////////
-    ////                      private methods                      ////
+    ////                         private methods                   ////
 
     /** Create assignment methods for each accessed field that has been
      *  recorded. If a field is a multi-dimensional array, access with

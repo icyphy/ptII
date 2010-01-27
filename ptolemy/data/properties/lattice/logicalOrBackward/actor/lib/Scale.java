@@ -35,7 +35,7 @@ import ptolemy.data.properties.lattice.logicalOrBackward.Lattice;
 import ptolemy.data.properties.lattice.logicalOrBackward.actor.AtomicActor;
 import ptolemy.kernel.util.IllegalActionException;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// Scale
 
 /**

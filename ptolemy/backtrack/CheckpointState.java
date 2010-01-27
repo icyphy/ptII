@@ -33,7 +33,7 @@ package ptolemy.backtrack;
 import java.util.LinkedList;
 import java.util.List;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// CheckpointState
 
 /**
@@ -53,7 +53,7 @@ import java.util.List;
  */
 public class CheckpointState {
     ///////////////////////////////////////////////////////////////////
-    ////                       public methods                      ////
+    ////                         public methods                    ////
 
     /** Create a new checkpoint, and return the new timestamp.
      *

@@ -30,7 +30,7 @@ import ptolemy.graph.CPO;
 import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.util.IllegalActionException;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// LatticeProperty
 
 /**
@@ -332,7 +332,7 @@ public class LatticeProperty extends Property implements PropertyTerm, Cloneable
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       protected variables                 ////
+    ////                         protected variables               ////
 
     /**
      * The property lattice containing this lattice property.

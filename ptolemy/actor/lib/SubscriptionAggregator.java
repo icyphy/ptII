@@ -39,7 +39,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// SubscriptionAggregator
 
 /**
@@ -205,7 +205,7 @@ public class SubscriptionAggregator extends Subscriber {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       protected methods                   ////
+    ////                         protected methods                 ////
 
     /** Update the connection to the publishers, if there are any.
      *  @exception IllegalActionException If creating the link

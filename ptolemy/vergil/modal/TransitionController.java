@@ -79,7 +79,7 @@ import diva.graph.JGraph;
 import diva.gui.GUIUtilities;
 import diva.gui.toolbox.MenuCreator;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// TransitionController
 
 /**
@@ -302,7 +302,7 @@ public class TransitionController extends BasicEdgeController {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                     protected methods                     ////
+    ////                         protected methods                 ////
 
 
     /** Create an edge renderer specifically for instances of Transition.

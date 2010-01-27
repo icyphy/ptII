@@ -32,7 +32,7 @@ import java.util.List;
 
 import ptolemy.backtrack.eclipse.ast.TypeAnalyzer;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// HandlerList
 
 /**
@@ -47,7 +47,7 @@ import ptolemy.backtrack.eclipse.ast.TypeAnalyzer;
  */
 public class HandlerList {
     ///////////////////////////////////////////////////////////////////
-    ////                       public methods                      ////
+    ////                         public methods                    ////
 
     /** Add an alias handler to the list.
      *

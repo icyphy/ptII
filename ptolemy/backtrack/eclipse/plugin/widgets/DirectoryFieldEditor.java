@@ -44,7 +44,7 @@ import org.eclipse.ui.dialogs.ContainerSelectionDialog;
 
 import ptolemy.backtrack.eclipse.plugin.util.Environment;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// DirectoryFieldEditor
 
 /**
@@ -84,7 +84,7 @@ public class DirectoryFieldEditor extends
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       public methods                      ////
+    ////                         public methods                    ////
 
     /** Set whether this directory field editor should only show the directories
      *  in the current workspace.
@@ -97,7 +97,7 @@ public class DirectoryFieldEditor extends
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                     protected methods                     ////
+    ////                         protected methods                 ////
 
     /** Pop up the directory selection dialog after the change button is
      *  pressed, and retrieve the name of the selected directory.
@@ -177,7 +177,7 @@ public class DirectoryFieldEditor extends
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                      private methods                      ////
+    ////                         private methods                   ////
 
     /** Whether the field editor can be left empty.
      */

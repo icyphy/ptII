@@ -872,7 +872,7 @@ public class PteraDirector extends Director implements TimedDirector,
         public boolean reset;
     }
 
-    //////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     //// TimedEvent
 
     /** Insert initial events into the event queue, and request firing from the

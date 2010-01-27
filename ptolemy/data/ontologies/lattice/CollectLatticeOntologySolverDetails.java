@@ -38,7 +38,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.moml.MoMLModelAttribute;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// GetCausalityInterface
 
 /**
@@ -118,7 +118,7 @@ public class CollectLatticeOntologySolverDetails extends MoMLModelAttribute impl
     /** Initialize the LatticeOntologySolver and check to see if the solverName refers to a LatticeOntologySolver in the model.
      *  If not, then throw an exception.
      *  
-     *  @throws IllegalActionException If the solver cannot be found in the model.
+     *  @exception IllegalActionException If the solver cannot be found in the model.
      */
     public void initializeLatticeOntologySolver() throws IllegalActionException {
         String solverNameString = solverName.stringValue();
@@ -135,7 +135,7 @@ public class CollectLatticeOntologySolverDetails extends MoMLModelAttribute impl
     /** Test whether the details received from the LatticeOntologySolver
      *  matches the stored values in the actor.
      *  
-     *  @throws IllegalActionException If the test fails and the results are different.
+     *  @exception IllegalActionException If the test fails and the results are different.
      */
     public void test() throws IllegalActionException {
         initializeLatticeOntologySolver();        

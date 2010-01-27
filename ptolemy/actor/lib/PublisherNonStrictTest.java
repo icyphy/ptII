@@ -44,7 +44,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.util.StringUtilities;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// PublisherNonStrictTest
 
 /**
@@ -415,7 +415,7 @@ public class PublisherNonStrictTest extends Publisher {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       protected variables                 ////
+    ////                         protected variables               ////
 
     /** Set to true if fire() is called once.  If fire() is not called at
      *  least once, then throw an exception in wrapup().

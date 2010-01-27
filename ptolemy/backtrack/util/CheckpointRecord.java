@@ -33,7 +33,7 @@ import java.util.Stack;
 import ptolemy.backtrack.Checkpoint;
 import ptolemy.backtrack.Rollbackable;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// CheckpointRecord
 
 /**
@@ -57,7 +57,7 @@ import ptolemy.backtrack.Rollbackable;
 public class CheckpointRecord {
 
     ///////////////////////////////////////////////////////////////////
-    ////                       public methods                      ////
+    ////                         public methods                    ////
 
     /** Add a checkpoint object to the top of this record, associating with it
      *  a timestamp. The timestamp is usually the current timestamp of the new
@@ -165,7 +165,7 @@ public class CheckpointRecord {
     ///////////////////////////////////////////////////////////////////
     ////                        nested class                       ////
 
-    //////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     //// Record
 
     /**

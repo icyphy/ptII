@@ -44,7 +44,7 @@ import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.vergil.actor.DocApplicationSpecializer;
 import ptolemy.vergil.toolbox.FigureAction;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// CustomizeDocumentationAction
 
 /**
@@ -217,7 +217,7 @@ public class CustomizeDocumentationAction extends FigureAction {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                        private methods                    ////
+    ////                         private methods                   ////
 
     /** Edit the specified documentation attribute.
      *  @param owner The owning frame.

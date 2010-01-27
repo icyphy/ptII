@@ -64,7 +64,7 @@ public class RecordAssembler extends AtomicActor {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                            public methods                 ////
+    ////                         public methods                    ////
 
     public List<Inequality> constraintList() throws IllegalActionException {
         ptolemy.actor.lib.RecordAssembler actor = (ptolemy.actor.lib.RecordAssembler) getComponent();
@@ -107,7 +107,7 @@ public class RecordAssembler extends AtomicActor {
         return super.constraintList();
     }
 
-    //    ///////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     //    ////                         protected methods                 ////
     //
     //    @Override

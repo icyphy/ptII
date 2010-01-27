@@ -88,7 +88,7 @@ public class PtidesPreemptiveUserEDFDirector extends
     public Parameter calculateDeadlineFromModelDelay;
     
     ///////////////////////////////////////////////////////////////////
-    ////                     public methods                        ////
+    ////                         public methods                    ////
 
     /** Calculates dependencies between each pair of ports in the composite
      *  actor governed by this director. These values are cached and later
@@ -101,7 +101,7 @@ public class PtidesPreemptiveUserEDFDirector extends
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                     protected methods                     ////
+    ////                         protected methods                 ////
 
     /** Only calculate the deadline using model time delay if asked to.
      *  Calculates the deadline for each channel in each input port within the 
@@ -117,7 +117,7 @@ public class PtidesPreemptiveUserEDFDirector extends
     
     /** Calculates the dependencies between each pair of input ports within the composite
      *  actor that is governed by this director.
-     *  @throws IllegalActionException
+     *  @exception IllegalActionException
      */
     protected void _calculatePortDependencies() throws IllegalActionException {
         // Initializes the input pairs. By default, each input port pair has oPlusIdentity
@@ -215,7 +215,7 @@ public class PtidesPreemptiveUserEDFDirector extends
      *  to check if there are any events in the same platform that may result in
      *  this event unsafe to process. If so, return false, else return true.
      *  @param event The event of interest.
-     *  @throws IllegalActionException
+     *  @exception IllegalActionException
      */
     protected boolean _safeToProcess(PtidesEvent event) throws IllegalActionException {
         boolean result = super._safeToProcess(event);
@@ -290,7 +290,7 @@ public class PtidesPreemptiveUserEDFDirector extends
     }
     
     ///////////////////////////////////////////////////////////////////
-    ////                     private variables                     ////
+    ////                         private variables                 ////
 
     /** Computed dependencies between each pair of input ports of actors in the
      *  composite actor that is governed by this director. */
@@ -300,7 +300,7 @@ public class PtidesPreemptiveUserEDFDirector extends
      *  where o is an output port, and o is directly connected to b. 
      *  @param thisPort
      *  @return one input port.
-     *  @throws IllegalActionException 
+     *  @exception IllegalActionException 
      */
     private IOPort _getOneSinkPort(IOPort thisPort) throws IllegalActionException {
         Collection<IOPort> outputPorts = _finiteDependentPorts(thisPort);

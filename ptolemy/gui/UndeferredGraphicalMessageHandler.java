@@ -40,7 +40,7 @@ import ptolemy.util.CancelException;
 import ptolemy.util.MessageHandler;
 import ptolemy.util.StringUtilities;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// UndeferredGraphicalMessageHandler
 
 /**
@@ -322,7 +322,7 @@ public class UndeferredGraphicalMessageHandler extends MessageHandler {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       protected methods                   ////
+    ////                         protected methods                 ////
 
     /** Display a stack trace dialog. The "info" argument is a
      *  string printed at the top of the dialog instead of the Throwable

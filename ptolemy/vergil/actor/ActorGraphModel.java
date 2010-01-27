@@ -76,7 +76,7 @@ import diva.util.NullIterator;
 // thought out.  This work has been started, with the NamedObjNodeModel
 // base class and the AttributeNodeModel derived class.  The remaining
 // node models here and in the FSMGraphModel remain to be done.  EAL.
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// ActorGraphModel
 
 /**

@@ -83,7 +83,7 @@ public class IORelation extends RTMaudeAdaptor {
      * @param container The object containing the given port 
      * @param port The associated port
      * @return The term representation of the given port id
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      */
     private String generateEPortId(NamedObj container, ptolemy.actor.IOPort port)
             throws IllegalActionException {

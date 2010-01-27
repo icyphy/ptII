@@ -54,7 +54,7 @@ import ptolemy.backtrack.eclipse.plugin.widgets.DirectoryFieldEditor;
 import ptolemy.backtrack.eclipse.plugin.widgets.SaveFileFieldEditor;
 import ptolemy.backtrack.util.Strings;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// BacktrackingPreferencePage
 
 /**
@@ -79,7 +79,7 @@ public class BacktrackingPreferencePage extends SectionPreferencePage implements
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       public methods                      ////
+    ////                         public methods                    ////
 
     /** Create the contents of the preference page with the parent as its
      *  container.
@@ -115,7 +115,7 @@ public class BacktrackingPreferencePage extends SectionPreferencePage implements
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       private methods                     ////
+    ////                         private methods                   ////
 
     /** Create the first section named "Sources for Batch Refactoring" in the
      *  preference page.

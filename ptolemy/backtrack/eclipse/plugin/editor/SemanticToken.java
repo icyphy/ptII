@@ -42,7 +42,7 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.IBinding;
 import org.eclipse.jdt.core.dom.SimpleName;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// SemanticToken
 /**
  Semantic token in the Java source.
@@ -56,7 +56,7 @@ import org.eclipse.jdt.core.dom.SimpleName;
 public final class SemanticToken {
 
     ///////////////////////////////////////////////////////////////////
-    ////                       public methods                      ////
+    ////                         public methods                    ////
 
     /** Return the binding, or null if undefined.
      *
@@ -92,7 +92,7 @@ public final class SemanticToken {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                      protected methods                    ////
+    ////                         protected methods                 ////
 
     /** Clear this token. This method should only be called by {@link
      *  SemanticHighlightingReconciler}.

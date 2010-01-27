@@ -64,7 +64,7 @@ public class LatticeElementIcon extends StateIcon {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                      protected methods                    ////
+    ////                         protected methods                 ////
 
     /**
      * Return the fill color. It returns the solution color of the lattice

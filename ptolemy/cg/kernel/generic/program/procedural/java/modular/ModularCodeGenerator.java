@@ -50,7 +50,7 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.util.StringBufferExec;
 import ptolemy.util.StringUtilities;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 ////GenericCodeGenerator
 
 /**
@@ -87,8 +87,8 @@ public class ModularCodeGenerator extends JavaCodeGenerator {
                 .setExpression("generic.program.procedural.java.modular");
     }
 
-    // /////////////////////////////////////////////////////////////////
-    // // public methods ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /**
      * Create the profile for the model (at this level).

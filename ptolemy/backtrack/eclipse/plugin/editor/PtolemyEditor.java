@@ -36,7 +36,7 @@ import org.eclipse.jdt.internal.ui.text.java.IJavaReconcilingListener;
 import org.eclipse.jdt.ui.text.IColorManager;
 import org.eclipse.swt.widgets.Composite;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// PtolemyEditor
 
 /**
@@ -52,7 +52,7 @@ import org.eclipse.swt.widgets.Composite;
 public class PtolemyEditor extends CompilationUnitEditor {
 
     ///////////////////////////////////////////////////////////////////
-    ////                       public methods                      ////
+    ////                         public methods                    ////
 
     /** Notify all the reconciling listeners before reconciliation is performed.
      */
@@ -122,7 +122,7 @@ public class PtolemyEditor extends CompilationUnitEditor {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                      protected methods                    ////
+    ////                         protected methods                 ////
 
     /** Install the semantic highlighting handler.
      *

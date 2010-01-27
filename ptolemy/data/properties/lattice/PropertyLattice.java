@@ -81,7 +81,7 @@ public class PropertyLattice extends DirectedAcyclicGraph {
      * method, so there is no need to do another check.
      * @param structuredPropertiesToAdd The bit-wise OR union of the structured
      * properties desired to add.
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      */
     public void addStructuredProperties(int structuredPropertiesToAdd)
             throws IllegalActionException {
@@ -158,7 +158,7 @@ public class PropertyLattice extends DirectedAcyclicGraph {
      * Return the element associated with the specified name.
      * @param elementName The specified name.
      * @return The element.
-     * @throws IllegalActionException Thrown if this lattice does not contain
+     * @exception IllegalActionException Thrown if this lattice does not contain
      * the element with the specified name.
      */
     public LatticeProperty getElement(String elementName)
@@ -493,7 +493,7 @@ public class PropertyLattice extends DirectedAcyclicGraph {
     public final int ARRAY = 0x10;
 
     ///////////////////////////////////////////////////////////////////
-    ////                        private methods                    ////
+    ////                         private methods                   ////
 
     // If the argument is a structured type, return its representative;
     // otherwise, return the argument. In the latter case, the argument

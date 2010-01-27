@@ -49,7 +49,7 @@ import diva.graph.GraphController;
 import diva.graph.GraphModel;
 import diva.graph.NodeInteractor;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// LocatableNodeController
 
 /**
@@ -370,7 +370,7 @@ public class LocatableNodeController extends BasicNodeController {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                      protected variables                  ////
+    ////                         protected variables               ////
 
     /** A flag indicating that the figures associated with this
      *  controller can be decorated to indicate that they are derived.

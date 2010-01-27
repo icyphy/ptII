@@ -36,7 +36,7 @@ import java.util.StringTokenizer;
 import ptolemy.data.StringToken;
 import ptolemy.kernel.util.IllegalActionException;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// MatlabUtilities
 
 /** This class provides access to the Ptolemy Matlab interface

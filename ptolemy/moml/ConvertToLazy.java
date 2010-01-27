@@ -37,7 +37,7 @@ import ptolemy.kernel.util.ChangeListener;
 import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.moml.filter.BackwardCompatibility;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// ConvertToLazy
 
 /** Read a specified MoML file and convert all instances of

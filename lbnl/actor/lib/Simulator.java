@@ -243,7 +243,7 @@ public class Simulator extends SDFTransformer {
                     final double simTim = getDirector().getModelTime().getDoubleValue();
                     if ( firstFire )
                         firstFire = false;
-                    else{
+                    else {
                         if (Math.abs((simTimRea - simTimReaPre)-(simTim - simTimPre)) > 0.0001) {
                             final String em = "Simulation time of "
                                 + this.getFullName() + " is not synchronized."
@@ -259,12 +259,12 @@ public class Simulator extends SDFTransformer {
                 }
                 
             } else { // Either client is down or this is the first time step.
-                if ( clientTerminated ){
+                if ( clientTerminated ) {
                     // Client terminated in last call, but Ptolemy keeps doing a
                     // (at least one) more time step. Hence we issue a warning.
                     // Start a new thread for the warning window so that the simulation can continue.
-                    if ( warWin == null ){
-                        if (!isHeadless){
+                    if ( warWin == null ) {
+                        if (!isHeadless) {
                             warWin = new Thread(new WarningWindow(terminationMessage));
                             warWin.start();
                         }
@@ -325,7 +325,7 @@ public class Simulator extends SDFTransformer {
             server.read();
 
             final int serFla = server.getClientFlag();
-            if ( serFla < 0){
+            if ( serFla < 0) {
                 String em = "Error: Client " + this.getFullName()
                     + " terminated communication by sending flag = " + serFla
                     + " at time "
@@ -516,7 +516,7 @@ public class Simulator extends SDFTransformer {
         File commandFile = programName;
 
         // If we are under Windows, look for the .exe
-        if ( System.getProperty("os.name").startsWith("Windows") ){
+        if ( System.getProperty("os.name").startsWith("Windows") ) {
             File winComFil = new File(commandFile.toString() + ".exe");
             if (winComFil.exists())
                 commandFile = winComFil;
@@ -678,7 +678,7 @@ public class Simulator extends SDFTransformer {
         _readFromServer();
         double[] dblRea = server.getDoubleArray();
         final int serFla = server.getClientFlag();
-        if ( serFla != 0){
+        if ( serFla != 0) {
             String em = "Actor " + this.getFullName() + ": " + LS
                 + "When trying to read from server, at time "
                 + getDirector().getModelTime().getDoubleValue() + ", " 
@@ -702,7 +702,7 @@ public class Simulator extends SDFTransformer {
             throw new IllegalActionException(em);
         }
         // Check for null to avoid a NullPointerException
-        if ( dblRea == null ){
+        if ( dblRea == null ) {
             final String em = "Actor " + this.getFullName() + ": " + LS
                 + "When trying to read from server, obtained 'null' at time "
                 + getDirector().getModelTime().getDoubleValue();

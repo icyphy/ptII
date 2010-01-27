@@ -31,7 +31,7 @@ import ptolemy.graph.analysis.analyzer.Analyzer;
 import ptolemy.graph.analysis.analyzer.SinkNodeAnalyzer;
 import ptolemy.graph.analysis.strategy.SinkNodeStrategy;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// SinkNodeAnalysis
 
 /**

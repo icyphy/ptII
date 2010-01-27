@@ -61,9 +61,9 @@ public class RTMaudeCodeGenerator extends CodeGenerator {
      * Create a new instance of the RTMaude code generator.
      * @param container The container.
      * @param name      The name of the code generator.
-     * @throws IllegalActionException   If the super class throws the
+     * @exception IllegalActionException   If the super class throws the
      *   exception or error occurs when setting the file path.
-     * @throws NameDuplicationException If the super class throws the
+     * @exception NameDuplicationException If the super class throws the
      *   exception or an error occurs when setting the file path.
      */
     public RTMaudeCodeGenerator(NamedObj container, String name)

@@ -204,7 +204,7 @@ public class PropertyLatticeComposite extends FSMActor {
          * Return a LatticeProperty that is labeled with the specified name.
          * @param name The specified name.
          * @return A LatticeProperty.
-         * @throws IllegalActionException If no element with the specified name
+         * @exception IllegalActionException If no element with the specified name
          * is found.
          */
         public LatticeProperty getElement(String name)
@@ -236,7 +236,7 @@ public class PropertyLatticeComposite extends FSMActor {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                        private methods                    ////
+    ////                         private methods                   ////
 
     private void _clearHighlightColor(List<LatticeElement> elements) {
         // TODO Auto-generated method stub

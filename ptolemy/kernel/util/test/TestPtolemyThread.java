@@ -30,7 +30,7 @@ package ptolemy.kernel.util.test;
 import ptolemy.kernel.util.DebugEvent;
 import ptolemy.kernel.util.PtolemyThread;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// TestPtolemyThread
 
 /** This class is used to test the protected _debug() method in

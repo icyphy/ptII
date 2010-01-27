@@ -71,7 +71,7 @@ public class Director extends NamedProgramCodeGeneratorAdapter {
         _director = director;
     }
 
-    /////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     ////                Public Methods                           ////
 
     /** Generate the send code for Port port.
@@ -504,15 +504,15 @@ public class Director extends NamedProgramCodeGeneratorAdapter {
      *  @param attribute The attribute
      *  @param channelAndOffset The given channel and offset.
      *  @return code for the parameter
-     *  @throws IllegalActionException
+     *  @exception IllegalActionException
      */
     public String getParameter(NamedProgramCodeGeneratorAdapter target,
             Attribute attribute, String[] channelAndOffset) throws IllegalActionException {
         return _getParameter(target, attribute, channelAndOffset);
     }
     
-    /////////////////////////////////////////////////////////////////////
-    ////                   protected methods                         ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
 
     /** Return the minimum number of power of two that is greater than or
      *  equal to the given integer.
@@ -567,7 +567,7 @@ public class Director extends NamedProgramCodeGeneratorAdapter {
      * @param attribute The given attribute.
      * @param channelAndOffset The given channel and offset.
      * @return an unique label for the given attribute.
-     * @throws IllegalActionException If the adapter throws it while
+     * @exception IllegalActionException If the adapter throws it while
      *  generating the label.
      */
     protected String _getParameter(NamedProgramCodeGeneratorAdapter target,
@@ -576,8 +576,8 @@ public class Director extends NamedProgramCodeGeneratorAdapter {
         return "";
     }
 
-    ////////////////////////////////////////////////////////////////////
-    ////                     protected variables                    ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected variables               ////
 
     /** The associated director.
      */

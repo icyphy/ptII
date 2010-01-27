@@ -63,7 +63,7 @@ import ptolemy.data.expr.Token;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.util.StringUtilities;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// RTMaudeParseTreeCodeGenerator
 
 /**
@@ -363,7 +363,7 @@ public class RTMaudeParseTreeCodeGenerator extends AbstractParseTreeVisitor
      * expression of the child node is generated.
      * @param node The node
      * @param index The index which will be visited
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      */
     private void _printChild(ASTPtRootNode node, int index)
             throws IllegalActionException {
@@ -375,7 +375,7 @@ public class RTMaudeParseTreeCodeGenerator extends AbstractParseTreeVisitor
      * expression is the list with the given separators.
      * @param node The node
      * @param separatorList The list of separators
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      */
     private void _printChildrenSeparated(ASTPtRootNode node, List separatorList)
             throws IllegalActionException {
@@ -396,7 +396,7 @@ public class RTMaudeParseTreeCodeGenerator extends AbstractParseTreeVisitor
      * expression is the list with the given separator.
      * @param node The node
      * @param string The separator
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      */
     private void _printChildrenSeparated(ASTPtRootNode node, String string)
             throws IllegalActionException {

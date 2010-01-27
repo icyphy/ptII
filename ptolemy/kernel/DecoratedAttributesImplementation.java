@@ -41,7 +41,7 @@ import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.Workspace;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 ////DecoratedAttributesImplementation
 
 /**
@@ -205,7 +205,7 @@ public class DecoratedAttributesImplementation extends DecoratedAttributes {
         return _decoratorPath;
     }
     ///////////////////////////////////////////////////////////////////
-    ////                         private methods                 ////
+    ////                         private methods                   ////
 
     /** Find the real container of this object.
      *  @param containerOfCodeGenerator The container of the decorator.

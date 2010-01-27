@@ -55,7 +55,7 @@ import ptolemy.kernel.util.Workspace;
 // protect emacs' comment text formatting from a "{@link..." appearing
 // at the start of a line and disabling paragraph reformatting and
 // line-wrap (zk)
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// MultiInstanceComposite
 
 /**

@@ -140,7 +140,7 @@ import org.eclipse.jdt.core.dom.VariableDeclarationStatement;
 import org.eclipse.jdt.core.dom.WhileStatement;
 import org.eclipse.jdt.core.dom.WildcardType;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// ASTFormatter
 
 /**
@@ -225,7 +225,7 @@ public class ASTFormatter extends ASTVisitor {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       public methods                      ////
+    ////                         public methods                    ////
 
     /** Read in one or more Java source files, parse them with the
      *  Eclipse parser, format their AST, and print out to the standard
@@ -2316,7 +2316,7 @@ public class ASTFormatter extends ASTVisitor {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                      private methods                      ////
+    ////                         private methods                   ////
 
     /** Check the comments from the start position.
      *

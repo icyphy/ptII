@@ -36,7 +36,7 @@ import ptolemy.util.ClassUtilities;
 import ptolemy.util.FileUtilities;
 import ptolemy.util.StringUtilities;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// JNLPUtilities
 
 /** This class contains utilities for use with JNLP, aka Web Start.

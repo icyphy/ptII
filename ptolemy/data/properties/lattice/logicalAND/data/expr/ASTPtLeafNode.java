@@ -34,7 +34,7 @@ import ptolemy.data.expr.Constants;
 import ptolemy.data.properties.lattice.PropertyConstraintSolver;
 import ptolemy.kernel.util.IllegalActionException;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// ASTPtLeafNode
 
 /**
@@ -61,7 +61,7 @@ public class ASTPtLeafNode extends ASTPtRootNode {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                            public methods                 ////
+    ////                         public methods                    ////
 
     public List<Inequality> constraintList() throws IllegalActionException {
         ptolemy.data.expr.ASTPtLeafNode node = (ptolemy.data.expr.ASTPtLeafNode) _getNode();

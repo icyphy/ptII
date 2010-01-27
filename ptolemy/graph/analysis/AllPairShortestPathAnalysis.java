@@ -33,7 +33,7 @@ import ptolemy.graph.analysis.analyzer.Analyzer;
 import ptolemy.graph.analysis.strategy.FloydWarshallAllPairShortestPathStrategy;
 import ptolemy.graph.mapping.ToDoubleMapping;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// AllPairShortestPathAnalysis
 
 /**

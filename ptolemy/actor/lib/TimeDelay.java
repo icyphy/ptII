@@ -45,7 +45,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// TimeDelay
 
 /**
@@ -212,7 +212,7 @@ public class TimeDelay extends Transformer {
         Time currentTime = getDirector().getModelTime();
         _currentOutput = null;
         
-        if(_delayedOutputTokens.size() == 0) {
+        if (_delayedOutputTokens.size() == 0) {
             output.send(0, null);
             return;
         }

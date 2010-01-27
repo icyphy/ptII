@@ -45,7 +45,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.vergil.kernel.attributes.LineAttribute;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// LinkVisualizer
 
 /**
@@ -160,7 +160,7 @@ public class LinkVisualizer extends TypedAtomicActor implements ChannelListener 
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                      protected methods                    ////
+    ////                         protected methods                 ////
 
     /** Draw a line from the sender container to the destination container
      *  with name lineName.
@@ -273,7 +273,7 @@ public class LinkVisualizer extends TypedAtomicActor implements ChannelListener 
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       protected variables                 ////
+    ////                         protected variables               ////
 
     /** Status of line that visualizes the radio link.
      *  Initialized to true. */

@@ -45,7 +45,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.media.javasound.SoundWriter;
 
-///////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// AudioWriteBuffer
 
 /**

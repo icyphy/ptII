@@ -39,7 +39,7 @@ import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 
-///////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// SDFDirector
 
 /**
@@ -64,8 +64,8 @@ public class SDFDirector extends
         super(sdfDirector);
     }
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         public methods                         ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /**
      * Return the worst case execution time (WCET) seen by this

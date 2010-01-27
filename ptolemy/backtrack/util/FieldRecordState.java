@@ -30,7 +30,7 @@ package ptolemy.backtrack.util;
 import ptolemy.backtrack.Rollbackable;
 import ptolemy.backtrack.util.FieldRecord.RecordList;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// FieldRecordState
 
 /**
@@ -62,7 +62,7 @@ public class FieldRecordState {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                     protected methods                     ////
+    ////                         protected methods                 ////
 
     /** Decrease the total number of changes recorded in this field record
      *  state by 1.

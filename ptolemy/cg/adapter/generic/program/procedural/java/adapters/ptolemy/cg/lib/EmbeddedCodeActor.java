@@ -32,7 +32,7 @@ import java.util.Set;
 import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
 import ptolemy.kernel.util.IllegalActionException;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// EmbeddedCodeActor
 
 /**
@@ -55,8 +55,8 @@ public class EmbeddedCodeActor extends CompiledCompositeActor {
         super(component);
     }
 
-    /////////////////////////////////////////////////////////////////////
-    ////                           public methods                    ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /**
      * Generate the type conversion fire code. This method is called by the

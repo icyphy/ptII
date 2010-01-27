@@ -301,7 +301,7 @@ public class GraphMatcher extends GraphAnalyzer {
     };
 
     ///////////////////////////////////////////////////////////////////
-    ////                        protected methods                  ////
+    ////                         protected methods                 ////
 
     /** Return whether the object in the pattern should be ignored in the
      *  pattern matching. An object is ignored if it is tagged to be ignored, or
@@ -1684,7 +1684,7 @@ public class GraphMatcher extends GraphAnalyzer {
 
     }
 
-    //////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     //// LookbackList
 
     /**
@@ -1699,7 +1699,7 @@ public class GraphMatcher extends GraphAnalyzer {
     private static class LookbackList extends FastLinkedList<LookbackEntry> {
     }
 
-    //////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     //// NameComparator
 
     /**
@@ -1725,7 +1725,7 @@ public class GraphMatcher extends GraphAnalyzer {
         }
     }
 
-    //////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     //// ObjectList
 
     /**
@@ -1740,7 +1740,7 @@ public class GraphMatcher extends GraphAnalyzer {
     private static class ObjectList extends FastLinkedList<Object> {
     }
 
-    //////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     //// ParameterIterator
 
     /**

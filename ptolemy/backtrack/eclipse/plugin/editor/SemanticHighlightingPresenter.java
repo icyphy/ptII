@@ -64,7 +64,7 @@ import org.eclipse.swt.custom.StyleRange;
 import ptolemy.backtrack.eclipse.plugin.editor.SemanticHighlightingReconciler.HighlightedPosition;
 import ptolemy.backtrack.eclipse.plugin.editor.SemanticHighlightingReconciler.HighlightingStyle;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// SemanticHighlightingPresenter
 /**
  Semantic highlighting presenter. This class is a modification of Eclipse's

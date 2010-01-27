@@ -36,7 +36,7 @@ import ptolemy.domains.ct.demo.Corba.util.CorbaUnknownParamException;
 import ptolemy.domains.ct.demo.Corba.util.CorbaUnknownPortException;
 import ptolemy.domains.ct.demo.Corba.util._CorbaActorImplBase;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// NonlinearServant
 
 /**

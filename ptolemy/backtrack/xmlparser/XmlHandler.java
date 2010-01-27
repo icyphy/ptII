@@ -32,7 +32,7 @@ import java.util.Hashtable;
 
 import ptolemy.moml.MoMLParser;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// XmlHandler
 /**
  The XML element handler that builds the XML tree.
@@ -46,7 +46,7 @@ import ptolemy.moml.MoMLParser;
 public class XmlHandler implements com.microstar.xml.XmlHandler {
 
     ///////////////////////////////////////////////////////////////////
-    ////                       public methods                      ////
+    ////                         public methods                    ////
 
     /** Handle an attribute. Its name and value will be recorded in the hash
      *  table of attributes.

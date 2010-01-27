@@ -35,7 +35,7 @@ import ptolemy.cg.kernel.generic.program.procedural.java.JavaCodeGenerator;
 import ptolemy.cg.kernel.generic.program.procedural.java.JavaTemplateParser;
 import ptolemy.kernel.util.IllegalActionException;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// Test
 
 /**

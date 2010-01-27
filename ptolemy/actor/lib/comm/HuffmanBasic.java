@@ -44,7 +44,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// HuffmanBasic
 
 /**
@@ -109,7 +109,7 @@ public class HuffmanBasic extends Transformer {
     public TypedIOPort huffmanCodeBook;
 
     ///////////////////////////////////////////////////////////////////
-    ////                     public methods                        ////
+    ////                         public methods                    ////
 
     /** Override the base class to set type constraints.
      *  @param workspace The workspace for the new object.

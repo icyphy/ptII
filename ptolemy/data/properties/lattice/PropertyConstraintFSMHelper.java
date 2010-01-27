@@ -46,7 +46,7 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// FSMActor
 
 /**
@@ -241,7 +241,7 @@ public class PropertyConstraintFSMHelper extends
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                      protected methods                    ////
+    ////                         protected methods                 ////
 
     /**
      * Return a list of root nodes for the parse trees of attribute expressions.
@@ -305,7 +305,7 @@ public class PropertyConstraintFSMHelper extends
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                        private methods                    ////
+    ////                         private methods                   ////
 
     private void _checkIneffectiveOutputPorts(FSMActor actor,
             Set<NamedObj> setDestinations1, Set<NamedObj> setDestinations2) {

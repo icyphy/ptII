@@ -43,7 +43,7 @@ import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
 
-///////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 ////PtidesBasicReceiver
 
 /** The adapter for ptides basic recevier.
@@ -58,15 +58,15 @@ public class PtidesBasicReceiver extends ptolemy.cg.adapter.generic.program.proc
     /** Construct a ptides basic receiver.
      *  @param receiver The ptolemy.domains.ptides.kernel.PtidesBasicReceiver
      *  that corresponds with this adapter.
-     *  @throws IllegalActionException If throw by the superclass.
+     *  @exception IllegalActionException If throw by the superclass.
      */
     public PtidesBasicReceiver (
             ptolemy.domains.ptides.kernel.PtidesBasicReceiver receiver) throws IllegalActionException {
         super(receiver);
     }
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         public methods                         ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /**
      * Generate code for getting tokens from the receiver.

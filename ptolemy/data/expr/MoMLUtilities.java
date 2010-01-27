@@ -34,7 +34,7 @@ import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// MoMLUtilities
 
 /** This class provides access to the Ptolemy MoML parser
@@ -51,7 +51,7 @@ public class MoMLUtilities {
     /** Parse the string provided and return the result wrapped in a token.
      *  @param moml The MoML string.
      *  @return The result of parsing the MoML.
-     *  @throws Exception If the MoML is invalid or the results is not an
+     *  @exception Exception If the MoML is invalid or the results is not an
      *   instance of Entity.
      */
     public static ActorToken parseMoML(String moml) throws Exception {

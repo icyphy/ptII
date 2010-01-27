@@ -107,7 +107,7 @@ public class Entity extends RTMaudeAdaptor {
      * @param mod
      * @param pattern
      * @return The info
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      */
     private String getInfoFromTemplateWithClass(String mod, String pattern)
             throws IllegalActionException {

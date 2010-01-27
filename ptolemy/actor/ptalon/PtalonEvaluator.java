@@ -589,8 +589,8 @@ public class PtalonEvaluator extends AbstractPtalonEvaluator {
                 + ".ptln";
     }
 
-    // /////////////////////////////////////////////////////////////////
-    // // private methods ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
 
     /** Break an expression like:
      *  <p>

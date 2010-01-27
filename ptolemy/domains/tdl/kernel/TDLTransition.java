@@ -125,7 +125,7 @@ public class TDLTransition extends Transition {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private methods                  ////
+    ////                         private methods                   ////
 
     /**
      * Compute the list of ports that are used in this guard expression.

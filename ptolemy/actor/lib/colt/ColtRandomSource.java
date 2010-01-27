@@ -44,7 +44,7 @@ import edu.cornell.lassp.houle.RngPack.Ranecu;
 import edu.cornell.lassp.houle.RngPack.Ranlux;
 import edu.cornell.lassp.houle.RngPack.Ranmar;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// ColtRandomSource
 
 /** Base class for Colt random sources.

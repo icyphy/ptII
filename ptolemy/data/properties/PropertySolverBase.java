@@ -62,7 +62,7 @@ import ptolemy.util.FileUtilities;
 import ptolemy.util.StringBufferExec;
 import ptolemy.util.StringUtilities;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 ////PropertySolverBase
 
 /**
@@ -153,7 +153,7 @@ public abstract class PropertySolverBase extends Attribute {
     public SharedParameter sharedUtilitiesWrapper;
 
     ///////////////////////////////////////////////////////////////////
-    ////                     public methods                        ////
+    ////                         public methods                    ////
 
     /**
      * Add the given unique solver (user-case) identifier to the
@@ -509,7 +509,7 @@ public abstract class PropertySolverBase extends Attribute {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////             protected methods                             ////
+    ////                         protected methods                 ////
 
     /**
      * Return the PropertyHelper for the specified component. This
@@ -630,7 +630,7 @@ public abstract class PropertySolverBase extends Attribute {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////             protected variables                           ////
+    ////                         protected variables               ////
 
     /**
      * The list that keeps track of the dependencies on other
@@ -667,7 +667,7 @@ public abstract class PropertySolverBase extends Attribute {
 
 
     ///////////////////////////////////////////////////////////////////
-    ////             private methods                               ////
+    ////                         private methods                   ////
 
     /**
      *
@@ -775,7 +775,7 @@ public abstract class PropertySolverBase extends Attribute {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                        private variables                  ////
+    ////                         private variables                 ////
 
     private StringBufferExec _executeCommands;
 

@@ -56,8 +56,8 @@ import ptolemy.verification.kernel.MathematicalModelConverter.FormulaType;
 import diva.graph.GraphPane;
 import diva.gui.GUIUtilities;
 
-// ////////////////////////////////////////////////////////////////////////
-// // FmvAutomatonGraphFrame
+///////////////////////////////////////////////////////////////////
+//// FmvAutomatonGraphFrame
 
 /**
  * This is a graph editor frame for Ptolemy FmvAutomaton models. Given a
@@ -114,8 +114,8 @@ public class FmvAutomatonGraphFrame extends FSMGraphFrame {
         super(entity, tableau, defaultLibrary);
     }
 
-    // /////////////////////////////////////////////////////////////////
-    // // protected methods ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
 
     /**
      * Create a new graph pane. Note that this method is called in constructor
@@ -164,8 +164,8 @@ public class FmvAutomatonGraphFrame extends FSMGraphFrame {
     /** The case menu. */
     protected JMenu _fmvMenu;
 
-    // /////////////////////////////////////////////////////////////////
-    // // private methods ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
     // The action for composing with another Fmv automaton.
     private InvokeNuSMVAction _invokeNuSMVAction = new InvokeNuSMVAction();
     private TranslateSmvAction _translateSmvAction = new TranslateSmvAction();
@@ -173,9 +173,9 @@ public class FmvAutomatonGraphFrame extends FSMGraphFrame {
     // The directory of the current model.
     private File _directory;
 
-    // /////////////////////////////////////////////////////////////////
-    // // inner classes ////
-    // /////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
+    ////                         inner classes                     ////
+    ///////////////////////////////////////////////////////////////////
     // // TranslateSmvAction
 
     /** An action to perform format translation to .smv file. */
@@ -312,7 +312,7 @@ public class FmvAutomatonGraphFrame extends FSMGraphFrame {
 
     }
 
-    // /////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     // // InvokeNuSMVAction
 
     /** An action to perform format translation to .smv file. */
@@ -413,7 +413,7 @@ public class FmvAutomatonGraphFrame extends FSMGraphFrame {
         }
     }
 
-    // /////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     // // SMVFileFilter
     /** A file filter that accepts files that end with ".smv". */
     protected static class SMVFileFilter extends

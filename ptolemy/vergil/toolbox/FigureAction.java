@@ -57,7 +57,7 @@ import diva.graph.JGraph;
 import diva.gui.toolbox.JContextMenu;
 import diva.util.UserObjectContainer;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// FigureAction
 
 /**
@@ -434,7 +434,7 @@ public class FigureAction extends AbstractAction {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         public variables                 ////
+    ////                         public variables                  ////
 
     /** When the action was fired from a canvas interactor.
      */

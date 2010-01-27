@@ -39,7 +39,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// ModalDirector
 
 /**
@@ -341,7 +341,7 @@ public class ModalDirector extends FSMDirector {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       protected variables                 ////
+    ////                         protected variables               ////
 
     /** Actors that were fired in the current iteration. */
     protected Set _actorsFired = new HashSet();

@@ -52,7 +52,7 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// DifferentialSystem
 
 /**
@@ -380,7 +380,7 @@ public class DifferentialSystem extends TypedCompositeActor {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       protected methods                   ////
+    ////                         protected methods                 ////
 
     /** Add a port to this actor. This overrides the base class to
      *  add a parameter with the same name as the port. This parameter

@@ -41,7 +41,7 @@ import ptolemy.actor.IOPort;
 import ptolemy.actor.parameters.ParameterPort;
 import ptolemy.kernel.util.IllegalActionException;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// DefaultCausalityInterface
 
 /**
@@ -428,7 +428,7 @@ public class DefaultCausalityInterface implements CausalityInterface {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       protected methods                   ////
+    ////                         protected methods                 ////
 
     /** If the input port is already in the inputs set, do nothing
      *  and return. Otherwise, add the input port to the inputs set,

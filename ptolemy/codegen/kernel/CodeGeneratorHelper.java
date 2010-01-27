@@ -1492,7 +1492,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
         return getComponent().toString() + "'s Helper";
     }
 
-    /////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     ////                      public inner classes                   ////
 
     /**

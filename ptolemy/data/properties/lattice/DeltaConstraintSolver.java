@@ -40,7 +40,7 @@ import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// DeltaConstraintSolver
 
 /**
@@ -62,8 +62,8 @@ public class DeltaConstraintSolver extends PropertyConstraintSolver {
      * 
      *  @param container  T che container.
      *  @param name       The name of this DeltaConstraintSolver
-     *  @throws IllegalActionException If the superclass throws it.
-     *  @throws NameDuplicationException If the superclass throws it.
+     *  @exception IllegalActionException If the superclass throws it.
+     *  @exception NameDuplicationException If the superclass throws it.
      */
     public DeltaConstraintSolver(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
@@ -72,12 +72,12 @@ public class DeltaConstraintSolver extends PropertyConstraintSolver {
     }
     
     ///////////////////////////////////////////////////////////////////
-    ////                        protected methods                  ////
+    ////                         protected methods                 ////
 
     /** Resolve the property values for the toplevel entity that contains this
      *  solver, given the model analyzer that invokes this.
      *  @param analyzer The given model analyzer.
-     *  @throws KernelException If the superclass throws it.
+     *  @exception KernelException If the superclass throws it.
      */
     protected void _resolveProperties(NamedObj analyzer) throws KernelException {
 
@@ -112,7 +112,7 @@ public class DeltaConstraintSolver extends PropertyConstraintSolver {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                        private methods                    ////
+    ////                         private methods                   ////
 
     /** Iterate on the given list of constraints to find a minimal
      * subset that still contains an error.
@@ -134,9 +134,9 @@ public class DeltaConstraintSolver extends PropertyConstraintSolver {
      * @param toplevel
      * @param toplevelHelper
      * @param constraintList A list of constraints that causes an error
-     * @throws TypeConflictException
-     * @throws PropertyResolutionException
-     * @throws IllegalActionException
+     * @exception TypeConflictException
+     * @exception PropertyResolutionException
+     * @exception IllegalActionException
      */
     private void _doDeltaIteration(NamedObj toplevel,
             PropertyConstraintHelper toplevelHelper,
@@ -184,7 +184,7 @@ public class DeltaConstraintSolver extends PropertyConstraintSolver {
      * @param toplevelHelper Must be toplevel.getHelper()
      * @param constraintList The constraint list that we are solving
      * @return True If the found solution has errors.
-     * @throws IllegalActionException 
+     * @exception IllegalActionException 
      */
     protected boolean _resolvePropertiesHasErrors(NamedObj toplevel,
             PropertyConstraintHelper toplevelHelper,

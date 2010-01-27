@@ -34,7 +34,7 @@ import ptolemy.data.properties.lattice.PropertyConstraintSolver;
 import ptolemy.data.properties.lattice.logicalAND.actor.AtomicActor;
 import ptolemy.kernel.util.IllegalActionException;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// Scale
 
 /**

@@ -35,7 +35,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import x10.Command;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// Listener
 
 /** Monitor the X10 network for any and all commands and output a string

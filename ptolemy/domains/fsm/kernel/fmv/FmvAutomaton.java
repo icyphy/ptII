@@ -44,8 +44,8 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.verification.kernel.MathematicalModelConverter.FormulaType;
 
-// ////////////////////////////////////////////////////////////////////////
-// // FmvAutomaton
+///////////////////////////////////////////////////////////////////
+//// FmvAutomaton
 
 /**
  * A Formal Method Verification (FMV) Automaton. An FmvAutomaton is not
@@ -2810,8 +2810,8 @@ public class FmvAutomaton extends FSMActor {
     private static int DOMAIN_GT = Integer.MAX_VALUE;
     private static int DOMAIN_LS = Integer.MIN_VALUE;
 
-    // /////////////////////////////////////////////////////////////////
-    // // inner class ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         inner class                       ////
     private static class VariableInfo {
         private VariableInfo(String paraMax, String paraMin) {
 
@@ -2824,8 +2824,8 @@ public class FmvAutomaton extends FSMActor {
 
     }
 
-    // /////////////////////////////////////////////////////////////////
-    // // inner class ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         inner class                       ////
     private static class VariableTransitionInfo {
         private VariableTransitionInfo() {
 

@@ -49,7 +49,7 @@ import ptolemy.kernel.util.NamedObj;
 // NOTE: This is a combination of ModalController and CTStepSizeControlActor,
 // but because of the inheritance hierarchy, there appears to be no convenient
 // way to share the code.
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// Refinement
 
 /**
@@ -230,7 +230,7 @@ public class Refinement extends TypedCompositeActor implements RefinementActor, 
      *  has no effect. If this actor has a director that implements
      *  Suspendable, then this method is also delegated to it.
      *  @param time The time at which the actor is resumed.
-     *  @throws IllegalActionException  If the resume cannot be completed.
+     *  @exception IllegalActionException  If the resume cannot be completed.
      */
     public void resume(Time time) throws IllegalActionException {
         if (_lastSuspendTime != null) {
@@ -255,7 +255,7 @@ public class Refinement extends TypedCompositeActor implements RefinementActor, 
      *  that implements Suspendable, then its suspend() method is also
      *  called.
      *  @param time The time at which the actor is suspended.
-     *  @throws IllegalActionException If the suspend cannot be completed.
+     *  @exception IllegalActionException If the suspend cannot be completed.
      */
     public void suspend(Time time) throws IllegalActionException {
         resume(time);

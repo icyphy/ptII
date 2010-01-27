@@ -44,7 +44,7 @@ import org.eclipse.jface.util.PropertyChangeEvent;
 
 import ptolemy.backtrack.eclipse.plugin.preferences.PreferenceConstants;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// SemanticHighlightings
 
 /**
@@ -61,7 +61,7 @@ import ptolemy.backtrack.eclipse.plugin.preferences.PreferenceConstants;
 public class SemanticHighlightings {
 
     ///////////////////////////////////////////////////////////////////
-    ////                       public methods                      ////
+    ////                         public methods                    ////
 
     /** Test whether the event in store affects the enablement of semantic
      *  highlighting.
@@ -132,7 +132,7 @@ public class SemanticHighlightings {
     ///////////////////////////////////////////////////////////////////
     ////                   protected inner classes                 ////
 
-    //////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     //// MethodHighlighting
     /**
      Semantic highlighting for methods.
@@ -384,7 +384,7 @@ public class SemanticHighlightings {
         }
     }
 
-    //////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     //// StateVariableHighlighting
     /**
      Semantic highlighting for state variables.

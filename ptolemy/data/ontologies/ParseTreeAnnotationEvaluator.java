@@ -56,7 +56,7 @@ import ptolemy.kernel.Port;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// ParseTreePropertyInference
 
 /**
@@ -93,7 +93,7 @@ public class ParseTreeAnnotationEvaluator extends AbstractParseTreeVisitor {
      * model component.
      * 
      * @param node The assignment node to be visited.
-     * @throws IllegalActionException If the assignment is not possible.
+     * @exception IllegalActionException If the assignment is not possible.
      */
     public void visitAssignmentNode(ASTPtAssignmentNode node)
             throws IllegalActionException {
@@ -126,7 +126,7 @@ public class ParseTreeAnnotationEvaluator extends AbstractParseTreeVisitor {
      *  check to see if the node refers to a Concept rather than a model Component.
      *  
      *  @param node The leaf node to be visited
-     *  @throws IllegalActionException If the node label cannot be resolved to a
+     *  @exception IllegalActionException If the node label cannot be resolved to a
      *  component in the model 
      */    
     public void visitLeafNode(ASTPtLeafNode node) throws IllegalActionException {
@@ -142,7 +142,7 @@ public class ParseTreeAnnotationEvaluator extends AbstractParseTreeVisitor {
      * Visit the method node when parsing a user-defined ontology annotation.
      * 
      * @param node The method call node to be visited
-     * @throws IllegalActionException If the method label cannot be resolved.
+     * @exception IllegalActionException If the method label cannot be resolved.
      */
     public void visitMethodCallNode(ASTPtMethodCallNode node)
             throws IllegalActionException {

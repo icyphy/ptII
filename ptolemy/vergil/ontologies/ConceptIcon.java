@@ -66,7 +66,7 @@ public class ConceptIcon extends StateIcon {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                      protected methods                    ////
+    ////                         protected methods                 ////
 
     /** Return the fill color. This will return the color specified by
      *  the first instance of ColorAttribute in the container, or white

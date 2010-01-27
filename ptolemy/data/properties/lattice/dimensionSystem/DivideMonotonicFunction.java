@@ -35,7 +35,7 @@ import ptolemy.data.properties.lattice.PropertyLattice;
 import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.util.IllegalActionException;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// DivideMonotonicFunction
 //// This class implements a monotonic function for the quotient
 //// of a division of a dividend and divisor.  It returns the correct
@@ -68,8 +68,8 @@ public class DivideMonotonicFunction extends MonotonicFunction {
         _adapter = adapter;
     }
 
-    ///////////////////////////////////////////////////////////////
-    ////                       public methods                  ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /** Return the monotonic function result which is the property of the quotient
      *  based on the properties of the dividend and the divisor.
@@ -137,8 +137,8 @@ public class DivideMonotonicFunction extends MonotonicFunction {
                 _adapter.getPropertyTerm(_divisor) };
     }
     
-    ///////////////////////////////////////////////////////////////
-    ////                       private methods                 ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
     
     // _dividend and _divisor are Objects because they can be any propertyable object
     // which might be IOPorts, Attributes, ASTPtNodes, etc.

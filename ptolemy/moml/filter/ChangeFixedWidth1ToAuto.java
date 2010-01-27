@@ -39,7 +39,7 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.MoMLFilter;
 import ptolemy.moml.MoMLParser;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// ChangeFixedWidth1ToAuto
 
 /** When this class is registered with the MoMLParser.setMoMLFilter()

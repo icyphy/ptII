@@ -64,7 +64,7 @@ import ptolemy.moml.MoMLParser;
 import ptolemy.vergil.basic.BasicGraphFrame;
 import ptolemy.vergil.gt.GTFrameTools;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// ModelView
 
 /**
@@ -119,7 +119,7 @@ public class ModelView extends TypedAtomicActor implements WindowListener {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                     public methods                        ////
+    ////                         public methods                    ////
 
     /** Read the input, if there is any, and issue a change
      *  request to apply the MoML in the input to the displayed model.

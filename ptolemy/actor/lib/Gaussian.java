@@ -34,7 +34,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// Gaussian
 
 /**
@@ -117,7 +117,7 @@ public class Gaussian extends RandomSource {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                      protected variables                  ////
+    ////                         protected variables               ////
 
     /** The random number for the current iteration. */
     protected double _current;

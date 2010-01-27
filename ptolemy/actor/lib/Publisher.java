@@ -42,7 +42,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// Publisher
 
 /**
@@ -250,12 +250,12 @@ public class Publisher extends TypedAtomicActor {
     ////                       protected method                    ////
 
     ///////////////////////////////////////////////////////////////////
-    ////                       protected variables                 ////
+    ////                         protected variables               ////
 
     /** Cached channel name. */
     protected String _channel;
 
     ///////////////////////////////////////////////////////////////////
-    ////                       private variables                   ////
+    ////                         private variables                 ////
 
 }

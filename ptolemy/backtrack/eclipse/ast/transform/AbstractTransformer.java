@@ -45,7 +45,7 @@ import ptolemy.backtrack.eclipse.ast.Type;
 import ptolemy.backtrack.eclipse.ast.TypeAnalyzerState;
 import ptolemy.backtrack.eclipse.ast.LocalClassLoader.ClassImport;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// AbstractTransformer
 
 /**
@@ -69,7 +69,7 @@ import ptolemy.backtrack.eclipse.ast.LocalClassLoader.ClassImport;
  */
 public abstract class AbstractTransformer {
     ///////////////////////////////////////////////////////////////////
-    ////                       public methods                      ////
+    ////                         public methods                    ////
 
     /** Given a table of lists, add a value to the list associated with a key.
      *  If the list does not exist, it is created and put into the table.
@@ -372,7 +372,7 @@ public abstract class AbstractTransformer {
     public static final String SET_CHECKPOINT_NAME = "$SET$CHECKPOINT";
 
     ///////////////////////////////////////////////////////////////////
-    ////                     protected methods                     ////
+    ////                         protected methods                 ////
 
     /** Get the name of the assignment method.
      *
@@ -394,7 +394,7 @@ public abstract class AbstractTransformer {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                      private methods                      ////
+    ////                         private methods                   ////
 
     /** Get the shortest possible name of the a class. If there is no conflict,
      *  the class is first imported, and only the simple class is returned;

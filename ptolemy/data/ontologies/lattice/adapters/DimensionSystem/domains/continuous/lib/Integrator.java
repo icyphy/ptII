@@ -37,7 +37,7 @@ import ptolemy.data.ontologies.lattice.adapters.DimensionSystem.DimensionSystemA
 import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.util.IllegalActionException;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// Integrator
 
 /**

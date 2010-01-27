@@ -68,7 +68,7 @@ import org.eclipse.ui.IWorkbenchPartSite;
 
 import ptolemy.backtrack.eclipse.plugin.EclipsePlugin;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// SemanticHighlightingReconciler
 
 /**
@@ -88,7 +88,7 @@ public class SemanticHighlightingReconciler implements
         IJavaReconcilingListener, IPropertyChangeListener, ITextInputListener {
 
     ///////////////////////////////////////////////////////////////////
-    ////                       public methods                      ////
+    ////                         public methods                    ////
 
     /** Prepare to reconcile the document. Nothing needs to be done in this
      *  method.
@@ -219,7 +219,7 @@ public class SemanticHighlightingReconciler implements
     ///////////////////////////////////////////////////////////////////
     ////                   protected inner classes                 ////
 
-    //////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     //// HighlightedPosition
     /**
      The position of a semantic highlighting.
@@ -364,7 +364,7 @@ public class SemanticHighlightingReconciler implements
         private HighlightingStyle _style;
     }
 
-    //////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     //// HighlightingStyle
     /**
      The semantic highlighting style.
@@ -431,7 +431,7 @@ public class SemanticHighlightingReconciler implements
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       private methods                     ////
+    ////                         private methods                   ////
 
     /** Adapt to a change on the enabled state.
      *
@@ -926,7 +926,7 @@ public class SemanticHighlightingReconciler implements
      */
     private SemanticHighlighting[] _semanticHighlightings;
 
-    //////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     //// PositionCollector
     /**
      The AST visitor to collect positions to be reconciled.

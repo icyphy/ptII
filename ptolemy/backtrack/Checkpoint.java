@@ -33,7 +33,7 @@ package ptolemy.backtrack;
 import java.util.Iterator;
 import java.util.List;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// CheckPoint
 
 /**
@@ -66,7 +66,7 @@ public class Checkpoint {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       public methods                      ////
+    ////                         public methods                    ////
 
     /** Add an object to the monitored object list.
      *

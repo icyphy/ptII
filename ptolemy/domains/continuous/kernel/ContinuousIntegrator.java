@@ -51,7 +51,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.Workspace;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// ContinuousIntegrator
 
 /**
@@ -472,7 +472,7 @@ public class ContinuousIntegrator extends TypedAtomicActor implements
     /** If either the <i>impulse</i> or <i>initialState</i> input is unknown,
      *  then return false. Otherwise, return true.
      *  @return True If the actor is ready to fire.
-     *  @throws IllegalActionException If the superclass throws it.
+     *  @exception IllegalActionException If the superclass throws it.
      */
     public boolean prefire() throws IllegalActionException {
         boolean result = super.prefire();

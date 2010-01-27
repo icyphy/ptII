@@ -56,8 +56,8 @@ import diva.graph.GraphPane;
 import diva.graph.NodeRenderer;
 import diva.gui.toolbox.FigureIcon;
 
-// ////////////////////////////////////////////////////////////////////////
-// // FmvAutomatonGraphController
+///////////////////////////////////////////////////////////////////
+//// FmvAutomatonGraphController
 
 /**
  * A Graph Controller for Fmv automata models. This controller adds the "Invoke NuSMV" menu item to the Graph menu.
@@ -84,8 +84,8 @@ public class FmvAutomatonGraphController extends FSMGraphController {
         // _directory = directory;
     }
 
-    // /////////////////////////////////////////////////////////////////
-    // // public methods ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /**
      * Add commands to the specified menu and toolbar, as appropriate for this

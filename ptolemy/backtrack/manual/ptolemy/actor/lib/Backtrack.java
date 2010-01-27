@@ -45,7 +45,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.Workspace;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// Backtrack
 /**
  This actor provides the interface to the backtracking mechanism. It is able to
@@ -228,7 +228,7 @@ public class Backtrack extends TypedAtomicActor {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                        private methods                    ////
+    ////                         private methods                   ////
 
     /** Create checkpoints for the actors in the given composite actor, and
      *  record the checkpoint handles in the map. The checkpoint objects are the

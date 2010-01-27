@@ -44,7 +44,7 @@ import ptolemy.codegen.kernel.PortCodeGenerator;
 import ptolemy.data.BooleanToken;
 import ptolemy.kernel.util.IllegalActionException;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 ////IOPort
 
 /**
@@ -66,8 +66,8 @@ public class IOPort extends CCodeGeneratorHelper implements PortCodeGenerator {
         super(component);
     }
 
-    /////////////////////////////////////////////////////////////////////
-    ////                           public methods                    ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     public String generateCodeForGet(String channel)
             throws IllegalActionException {
@@ -399,7 +399,7 @@ public class IOPort extends CCodeGeneratorHelper implements PortCodeGenerator {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       protected methods                   ////
+    ////                         protected methods                 ////
 
     /**
      * Generate the expression that represents the offset in the generated
@@ -554,7 +554,7 @@ public class IOPort extends CCodeGeneratorHelper implements PortCodeGenerator {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                     protected variables                   ////
+    ////                         protected variables               ////
 
     /** A HashMap that keeps track of the bufferSizes of each channel
      *  of the actor.

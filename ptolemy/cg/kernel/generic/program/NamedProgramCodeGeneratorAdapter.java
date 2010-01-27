@@ -55,7 +55,7 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.util.FileUtilities;
 import ptolemy.util.StringUtilities;
 
-///////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 ////NamedProgramCodeGeneratorAdapter
 
 //FIXME: Overhaul comments.
@@ -979,7 +979,7 @@ public class NamedProgramCodeGeneratorAdapter extends ProgramCodeGeneratorAdapte
     
     
     ///////////////////////////////////////////////////////////////////
-    ////                         protected variables                 ////
+    ////                         protected variables               ////
     
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////

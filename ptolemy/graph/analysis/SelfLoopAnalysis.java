@@ -31,7 +31,7 @@ import ptolemy.graph.analysis.analyzer.Analyzer;
 import ptolemy.graph.analysis.analyzer.SelfLoopAnalyzer;
 import ptolemy.graph.analysis.strategy.SelfLoopStrategy;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// SelfLoopAnalysis
 
 /**

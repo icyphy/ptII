@@ -33,7 +33,7 @@ import ptolemy.graph.analysis.analyzer.CycleMeanAnalyzer;
 import ptolemy.graph.analysis.strategy.KarpCycleMeanStrategy;
 import ptolemy.graph.mapping.ToDoubleMapping;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// CycleMeanAnalysis
 
 /**

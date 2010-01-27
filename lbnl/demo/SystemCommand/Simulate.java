@@ -30,7 +30,7 @@ class Simulate
         System.out.println("x2   = " + args[2]);
 
         // Write arguments to files
-        try{
+        try {
             FileOutputStream fos = new FileOutputStream("outputX1.txt");
             new PrintStream(fos).println(args[1]);
             fos.close();
@@ -38,7 +38,7 @@ class Simulate
             new PrintStream(fos).println(args[2]);
             fos.close();
         }
-        catch (IOException e){
+        catch (IOException e) {
             System.err.println ("Unable to write to file");
             System.exit(1);
         }

@@ -34,7 +34,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.math.ExtendedMath;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// Time
 
 /**
@@ -580,7 +580,7 @@ public class Time implements Comparable {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       protected methods                   ////
+    ////                         protected methods                 ////
     
     /** Return the time resolution for this Time object, which in this
      *  class is the time resolution of the director given in the

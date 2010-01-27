@@ -32,7 +32,7 @@ import ptolemy.domains.continuous.kernel.ContinuousODESolver;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InvalidStateException;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// ExplicitRK45Solver
 
 /**
@@ -216,7 +216,7 @@ public class ExplicitRK45Solver extends ContinuousODESolver {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                     protected methods                     ////
+    ////                         protected methods                 ////
 
     /** Return the current round.
      *  @return The current round.

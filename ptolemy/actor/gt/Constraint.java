@@ -41,7 +41,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.vergil.toolbox.VisibleParameterEditorFactory;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 ////Constraint
 
 /**
@@ -133,7 +133,7 @@ public class Constraint extends GTParameter {
     public VisibleParameterEditorFactory editorFactory;
 
     ///////////////////////////////////////////////////////////////////
-    ////                       protected methods                   ////
+    ////                         protected methods                 ////
 
     /** Evaluate the current expression to a token with the given pattern and
      *  match result using {@link ptolemy.actor.gt.GTParameter.Evaluator}. If

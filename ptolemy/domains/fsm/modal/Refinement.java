@@ -46,7 +46,7 @@ import ptolemy.kernel.util.NamedObj;
 // NOTE: This is a combination of ModalController and CTStepSizeControlActor,
 // but because of the inheritance hierarchy, there appears to be no convenient
 // way to share the code.
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// Refinement
 
 /**

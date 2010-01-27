@@ -30,7 +30,7 @@ package ptolemy.cg.adapter.generic.program.procedural.java.modular.adapters.ptol
 
 import ptolemy.kernel.util.IllegalActionException;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 ////ModularCodeGenTypedCompositeActor
 
 /**
@@ -56,8 +56,8 @@ public class ModularCodeGenTypedCompositeActor
         super(component);
     }
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         public methods                         ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
     
     /**
      * Generate the type conversion fire code. This method is called by the

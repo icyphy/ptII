@@ -54,7 +54,7 @@ import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.util.MessageHandler;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// SetVariable
 
 /**
@@ -164,7 +164,7 @@ public class SetVariable extends TypedAtomicActor implements ChangeListener,
     public StringAttribute variableName;
 
     ///////////////////////////////////////////////////////////////////
-    ////                     public methods                        ////
+    ////                         public methods                    ////
 
     /** Do nothing.
      *  @param change The change that executed.

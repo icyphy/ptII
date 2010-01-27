@@ -43,7 +43,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.util.MessageHandler;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// RendezvousDirector
 
 /**
@@ -252,7 +252,7 @@ public class RendezvousDirector extends CompositeProcessDirector {
     protected boolean _inWrapup = false;
 
     ///////////////////////////////////////////////////////////////////
-    ////                          private variables                ////
+    ////                         private variables                 ////
 
     /** The map that records the result maps for the threads. Keys are the
      *  threads, and values are the result maps associated with those threads.

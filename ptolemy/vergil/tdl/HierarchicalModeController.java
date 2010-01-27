@@ -52,7 +52,7 @@ import ptolemy.vergil.toolbox.FigureAction;
 import ptolemy.vergil.toolbox.MenuActionFactory;
 import diva.graph.GraphController;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// HierarchicalModeController
 
 /** A state controller associated with a graph controller.

@@ -56,8 +56,8 @@ public class TesterDirector extends Director {
     /** Construct a director.
      *  @param container The container.
      *  @param name The name.
-     *  @throws IllegalActionException If the base class throws it.
-     *  @throws NameDuplicationException If the base class throws it.
+     *  @exception IllegalActionException If the base class throws it.
+     *  @exception NameDuplicationException If the base class throws it.
      */
     public TesterDirector(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
@@ -97,7 +97,7 @@ public class TesterDirector extends Director {
     /** Override the base class to first invoke preinitialize() on all
      *  contained actors and then invoke either test() or train() on all
      *  Testable attributes.
-     *  @throws IllegalActionException If the superclass throws it.
+     *  @exception IllegalActionException If the superclass throws it.
      */
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();

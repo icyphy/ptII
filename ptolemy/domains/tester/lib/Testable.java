@@ -35,7 +35,7 @@ import ptolemy.kernel.util.IllegalActionException;
 public interface Testable {
 
     /** Run a test and throw an exception if it fails.
-     *  @throws IllegalActionException If the test fails.
+     *  @exception IllegalActionException If the test fails.
      */
     public void test() throws IllegalActionException;
 

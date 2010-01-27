@@ -67,7 +67,7 @@ public class PthalesScheduler extends SDFScheduler {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                      protected methods                    ////
+    ////                         protected methods                 ////
 
     protected Schedule _getSchedule() throws IllegalActionException,
             NotSchedulableException {

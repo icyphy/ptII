@@ -36,7 +36,7 @@ import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.ASTParser;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// ASTBuilder
 
 /**
@@ -53,7 +53,7 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
  */
 public class ASTBuilder {
     ///////////////////////////////////////////////////////////////////
-    ////                       public methods                      ////
+    ////                         public methods                    ////
 
     /** Return the ID of the Java language specification being used by the
      *  parser.

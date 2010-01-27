@@ -40,7 +40,7 @@ import ptolemy.data.Token;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// DEReceiver
 
 /** An implementation of the ptolemy.actor.Receiver interface for the

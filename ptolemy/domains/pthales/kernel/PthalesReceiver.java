@@ -61,7 +61,7 @@ public class PthalesReceiver extends SDFReceiver {
      *  @param patternSpec Fitting of the array.
      *  @param tilingSpec Paving of the array.
      *  @param dimensions Dimensions contained in the array.
-     *  @throws IllegalActionException FIXME: If what?
+     *  @exception IllegalActionException FIXME: If what?
      */
     public void checkArray(LinkedHashMap<String, Integer[]> baseSpec,
             LinkedHashMap<String, Integer[]> patternSpec,
@@ -246,7 +246,7 @@ public class PthalesReceiver extends SDFReceiver {
      * Here we only check that everything is correct, and computes addresses in output buffer.
      * @param port
      * @param actor
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      */
     public void setInputArray(IOPort port, Actor actor)
             throws IllegalActionException {
@@ -264,7 +264,7 @@ public class PthalesReceiver extends SDFReceiver {
      * This function allocates a buffer that is used as a memory would be (linear)
      * @param port
      * @param actor
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      */
     public void setOutputArray(IOPort port, Actor actor)
             throws IllegalActionException {
@@ -397,7 +397,7 @@ public class PthalesReceiver extends SDFReceiver {
     int _nbTokens;
 
     ///////////////////////////////////////////////////////////////////
-    ////                      protected variables                  ////
+    ////                         protected variables               ////
 
     /** Buffer memory. */
     protected Token[] _buffer = null;
@@ -411,7 +411,7 @@ public class PthalesReceiver extends SDFReceiver {
     String[] _dimensions = null;
 
     ///////////////////////////////////////////////////////////////////
-    ////                      private methods                      ////
+    ////                         private methods                   ////
 
     // Direct access method
     int getAddress(int pos, boolean input) {

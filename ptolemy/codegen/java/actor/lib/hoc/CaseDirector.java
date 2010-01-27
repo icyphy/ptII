@@ -36,7 +36,7 @@ import ptolemy.data.BooleanToken;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.util.IllegalActionException;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// CaseDirector
 
 /**
@@ -58,8 +58,8 @@ public class CaseDirector extends Director {
         super(director);
     }
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         public methods                         ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /** Generate the code for the firing of actors controlled by this
      *  director.

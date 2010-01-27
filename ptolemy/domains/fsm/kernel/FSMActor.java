@@ -92,7 +92,7 @@ import ptolemy.kernel.util.StreamListener;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.Workspace;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// FSMActor
 
 /**
@@ -1974,7 +1974,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
      *  total accumulated suspension time. Otherwise, set current time to
      *  match that of the environment. If there is no environment, do nothing.
      *  @param refinement The refinement.
-     *  @throws IllegalActionException If setModelTime() throws it.
+     *  @exception IllegalActionException If setModelTime() throws it.
      */
     private void _setTimeForRefinement(Actor refinement)
             throws IllegalActionException {

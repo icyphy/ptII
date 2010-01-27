@@ -36,7 +36,7 @@ import java.util.Set;
 
 import org.eclipse.jdt.core.dom.ASTNode;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// Type
 
 /**
@@ -74,7 +74,7 @@ import org.eclipse.jdt.core.dom.ASTNode;
 public class Type {
 
     ///////////////////////////////////////////////////////////////////
-    ////                       public methods                      ////
+    ////                         public methods                    ////
 
     /** Add one dimension to this type object, and return the new type object.
      *  If this type object is primitive, the return type is a primitive array

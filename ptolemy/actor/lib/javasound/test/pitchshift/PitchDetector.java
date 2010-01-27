@@ -30,7 +30,7 @@ package ptolemy.actor.lib.javasound.test.pitchshift;
 import ptolemy.math.Complex;
 import ptolemy.math.SignalProcessing;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// PitchDetector
 
 /** Perform pitch detection on an input signal using an autocorrelation

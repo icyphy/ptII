@@ -29,7 +29,7 @@ package ptolemy.domains.continuous.kernel;
 
 import ptolemy.kernel.util.IllegalActionException;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// ContinuousODESolver
 
 /**
@@ -105,7 +105,7 @@ public abstract class ContinuousODESolver {
             ContinuousIntegrator integrator);
 
     ///////////////////////////////////////////////////////////////////
-    ////                     protected methods                     ////
+    ////                         protected methods                 ////
 
     /** Report a debug message via the director.
      *  @param message The message.
@@ -165,7 +165,7 @@ public abstract class ContinuousODESolver {
     protected abstract void _setRound(int round);
 
     ///////////////////////////////////////////////////////////////////
-    ////                     protected variables                   ////
+    ////                         protected variables               ////
 
     /** The Continuous director that contains this solver. */
     protected ContinuousDirector _director = null;

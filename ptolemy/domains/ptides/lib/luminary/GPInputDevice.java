@@ -86,7 +86,7 @@ public class GPInputDevice extends LuminarySensorInputDevice {
     public StringParameter pad;
 
     /** A GPInputDevice's configuration is its pad name.
-     *  @throws IllegalActionException 
+     *  @exception IllegalActionException 
      */
     public String configuration() throws IllegalActionException {
         return pad.stringValue();

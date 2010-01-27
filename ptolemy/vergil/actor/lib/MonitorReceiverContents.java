@@ -44,7 +44,7 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.SingletonAttribute;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// MonitorReceiverContents
 
 /**
@@ -91,7 +91,7 @@ public class MonitorReceiverContents extends SingletonAttribute {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                     public methods                        ////
+    ////                         public methods                    ////
 
     /** Specify the container. If the container is not the same as the
      *  previous container, then stop monitoring queue contents in the
@@ -240,7 +240,7 @@ public class MonitorReceiverContents extends SingletonAttribute {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       private variables                   ////
+    ////                         private variables                 ////
 
     /** The executable that creates the monitor attributes in initialize(). */
     private Executable _executable;

@@ -32,7 +32,7 @@ import net.jini.core.lookup.ServiceItem;
 import ptolemy.distributed.common.DistributedActor;
 import ptolemy.kernel.util.KernelException;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 ////ClientThread
 
 /**
@@ -155,7 +155,7 @@ public class ClientThread extends Thread {
     public static final int ITERATE = 4;
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private variables               ////
+    ////                         private variables                 ////
 
     /** It states whether debugging messages should be printed. */
     private boolean VERBOSE = false;

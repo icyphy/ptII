@@ -32,7 +32,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// SourceOutputStream
 
 /**
@@ -48,7 +48,7 @@ import java.io.IOException;
  */
 public class SourceOutputStream extends FileOutputStream {
     ///////////////////////////////////////////////////////////////////
-    ////                       public methods                      ////
+    ////                         public methods                    ////
 
     /** Get an output stream with a output root directory, the name of the
      *  package which the output class is in, and an output file name. If the

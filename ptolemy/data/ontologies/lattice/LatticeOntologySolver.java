@@ -70,7 +70,7 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.util.FileUtilities;
 
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// LatticeOntologySolver
 
 /**
@@ -265,7 +265,7 @@ public class LatticeOntologySolver extends OntologySolver {
     public FileParameter trainedConstraintDirectory;
     
     ///////////////////////////////////////////////////////////////////
-    ////                     public methods                        ////
+    ////                         public methods                    ////
     
     /**
      * Add the specified object to the hash table of manually annotated
@@ -300,7 +300,7 @@ public class LatticeOntologySolver extends OntologySolver {
      * 
      * @param updateTerm This parameter doesn't appear to be used
      * @return The list of inequality terms that are affected by the OntologySolver
-     * @throws IllegalActionException If an exception is thrown
+     * @exception IllegalActionException If an exception is thrown
      */
     public List<ptolemy.graph.InequalityTerm> getAffectedTerms(ptolemy.graph.InequalityTerm updateTerm)
             throws IllegalActionException {
@@ -324,7 +324,7 @@ public class LatticeOntologySolver extends OntologySolver {
      * 
      *  @return A hash table containing string representations of the solver statistics and
      *   constraints information, separated by tabs.
-     *  @throws IllegalActionException If an exception occurs when collecting the constraints.
+     *  @exception IllegalActionException If an exception occurs when collecting the constraints.
      */
     public Hashtable getInitialSolverInformation() throws IllegalActionException {
         NamedObj toplevel = _toplevel();
@@ -372,7 +372,7 @@ public class LatticeOntologySolver extends OntologySolver {
      * 
      *  @return A hash table containing string representations of the solver statistics and
      *   constraints information, separated by tabs.
-     *  @throws IllegalActionException If an exception occurs when collecting the constraints.
+     *  @exception IllegalActionException If an exception occurs when collecting the constraints.
      */
     public Hashtable getResolvedSolverInformation() throws IllegalActionException {
         if (_resolvedConstraintList == null) {
@@ -403,7 +403,7 @@ public class LatticeOntologySolver extends OntologySolver {
      * node.
      * @param node The given ASTPtRootNode.
      * @return The associated property constraint adapter.
-     * @throws IllegalActionException If an exception is thrown in the private
+     * @exception IllegalActionException If an exception is thrown in the private
      * _getHelper method
      */
     public LatticeOntologyASTNodeAdapter getAdapter(ASTPtRootNode node)
@@ -417,7 +417,7 @@ public class LatticeOntologySolver extends OntologySolver {
      * component.
      * @param component The given component
      * @return The associated property constraint adapter.
-     * @throws IllegalActionException If an exception is thrown in the private
+     * @exception IllegalActionException If an exception is thrown in the private
      * _getHelper method
      */
     public OntologyAdapter getAdapter(NamedObj component)
@@ -430,7 +430,7 @@ public class LatticeOntologySolver extends OntologySolver {
      * Return the property constraint adapter associated with the given object.
      * @param object The given object.
      * @return The associated property constraint adapter.
-     * @throws IllegalActionException If an exception is thrown in the private
+     * @exception IllegalActionException If an exception is thrown in the private
      * _getHelper method
      */
     public OntologyAdapter getAdapter(Object object)
@@ -517,7 +517,7 @@ public class LatticeOntologySolver extends OntologySolver {
     }
 
     /** Run a test. This invokes the solver in TEST mode.
-     *  @throws IllegalActionException If the test fails.
+     *  @exception IllegalActionException If the test fails.
      */
     public void test() throws IllegalActionException {
         invokeSolver();
@@ -640,7 +640,7 @@ public class LatticeOntologySolver extends OntologySolver {
      * Resolve the property values for the toplevel entity that contains this
      * solver, given the model analyzer that invokes this.
      * @param analyzer The given model analyzer.
-     * @throws KernelException If there is an exception thrown during the OntologySolver
+     * @exception KernelException If there is an exception thrown during the OntologySolver
      * resolution
      */
     protected void _resolveProperties(NamedObj analyzer) throws KernelException {
@@ -681,8 +681,8 @@ public class LatticeOntologySolver extends OntologySolver {
      * @param toplevel The top-level container
      * @param toplevelAdapter Must be toplevel.getAdapter()
      * @param constraintList The constraint list that we are solving
-     * @throws TypeConflictException If an unacceptable solution is reached
-     * @throws OntologyResolutionException If constraints are unsatisfiable
+     * @exception TypeConflictException If an unacceptable solution is reached
+     * @exception OntologyResolutionException If constraints are unsatisfiable
      */
     protected void _resolveProperties(NamedObj toplevel,
             LatticeOntologyAdapter toplevelAdapter,
@@ -1223,7 +1223,7 @@ public class LatticeOntologySolver extends OntologySolver {
                 "%5c", "/");
     }
 
-    private void _readConstraintFile(String filename){
+    private void _readConstraintFile(String filename) {
 
         File file = new File(filename);
 

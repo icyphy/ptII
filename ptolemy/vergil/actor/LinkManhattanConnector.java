@@ -35,7 +35,7 @@ import diva.canvas.Site;
 import diva.canvas.connector.BasicManhattanRouter;
 import diva.canvas.connector.ManhattanConnector;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// LinkManhattanConnector
 
 /**
@@ -94,7 +94,7 @@ public class LinkManhattanConnector extends ManhattanConnector {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                     public methods                        ////
+    ////                         public methods                    ////
 
     /** Override the base class to return a different site for each
      *  connection to a multiport.

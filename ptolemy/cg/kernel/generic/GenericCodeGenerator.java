@@ -70,7 +70,7 @@ import ptolemy.util.FileUtilities;
 import ptolemy.util.MessageHandler;
 import ptolemy.util.StringUtilities;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// GenericCodeGenerator
 
 /** Base class for code generator.
@@ -197,7 +197,7 @@ public abstract class GenericCodeGenerator extends Attribute implements
     public Parameter overwriteFiles;
 
     ///////////////////////////////////////////////////////////////////
-    ////                     public methods                        ////
+    ////                         public methods                    ////
 
     /** If the attribute is the codeDirectory parameter, then set the
      *  base directory of the codeDirectory parameter.
@@ -891,7 +891,7 @@ public abstract class GenericCodeGenerator extends Attribute implements
 
     /** Test if the containing actor is in the top level.
      *  @return true if the containing actor is in the top level.
-     *  @throws IllegalActionException 
+     *  @exception IllegalActionException 
      */
     protected boolean _isTopLevel() throws IllegalActionException {
         return getContainer().getContainer() == null;

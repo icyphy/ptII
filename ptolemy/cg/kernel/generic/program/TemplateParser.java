@@ -66,7 +66,7 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.util.StringUtilities;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 ////TemplateParser
 
 /**
@@ -90,7 +90,7 @@ public class TemplateParser {
     }
     
     ///////////////////////////////////////////////////////////////////
-    ////                         public methods                   ////
+    ////                         public methods                    ////
 
     /** Add a function to the Set of function used thus far.
      *  @param functionName A string naming the function.
@@ -1169,7 +1169,7 @@ public class TemplateParser {
      *  array.
      *  @param name
      *  @return port and channel
-     *  @throws IllegalActionException
+     *  @exception IllegalActionException
      */
     private String[] _parsePortChannel(String name)
         throws IllegalActionException {
@@ -1239,7 +1239,7 @@ public class TemplateParser {
     /** replace the $hasToken() with the corresponding parameter 
      *  @param parameter The name and offset of the parameter
      *  @return the hasToken parameter is returned
-     *  @throws IllegalActionException
+     *  @exception IllegalActionException
      */
     private String _replaceHasTokenMacro(String parameter) throws IllegalActionException {
         // e.g. $hasToken(input#channel, offset); or
@@ -1277,7 +1277,7 @@ public class TemplateParser {
     /** replace the $param() with the corresponding parameter
      *  @param parameter The name and offset of the parameter.
      *  @return the parameter to be returned.
-     *  @throws IllegalActionException
+     *  @exception IllegalActionException
      */
     private String _replaceParameter(String parameter) throws IllegalActionException {
         // e.g. $param(thisParam, 0), or $param(thisParam).
@@ -1294,7 +1294,7 @@ public class TemplateParser {
         String[] offset = new String[]{"", ""};
         if (parameters.size() == 2) {
             offset[1] = parameters.get(1);
-        } else if (parameters.size() != 1){
+        } else if (parameters.size() != 1) {
             CGException.throwException(_component, "$param() can be used as follows:" +
                             "$param(name), or, $param(name, offset)");
         }
@@ -1362,8 +1362,8 @@ public class TemplateParser {
     protected ParseTreeCodeGenerator _parseTreeCodeGenerator;
 
     
-    /////////////////////////////////////////////////////////////////////
-    ////                      inner classes                   ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         inner classes                     ////
     
 
     /** This class implements a scope, which is used to generate the

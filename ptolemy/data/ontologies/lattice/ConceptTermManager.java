@@ -36,7 +36,7 @@ import java.util.List;
 import ptolemy.data.ontologies.Concept;
 import ptolemy.kernel.util.IllegalActionException;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// PropertyTermManager.
 
 /**
@@ -116,7 +116,7 @@ public class ConceptTermManager implements ConceptTermFactory {
      * 
      * @param updateTerm This parameter doesn't appear to be used
      * @return The list of inequality terms that are affected by the OntologySolver
-     * @throws IllegalActionException If an exception is thrown
+     * @exception IllegalActionException If an exception is thrown
      */
     public List<ptolemy.graph.InequalityTerm> getAffectedTerms(ptolemy.graph.InequalityTerm updateTerm)
             throws IllegalActionException {

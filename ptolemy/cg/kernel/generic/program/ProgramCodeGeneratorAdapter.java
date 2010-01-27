@@ -34,7 +34,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.Nameable;
 import ptolemy.util.StringUtilities;
 
-///////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// ProgramCodeGeneratorAdapter
 
 /**
@@ -57,7 +57,7 @@ public class ProgramCodeGeneratorAdapter extends CodeGeneratorAdapter {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         public methods                 ////
+    ////                         public methods                    ////
 
     /** Get the code generator adapter associated with the given component.
      *  @param component The given component.
@@ -163,7 +163,7 @@ public class ProgramCodeGeneratorAdapter extends CodeGeneratorAdapter {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         protected variables                 ////
+    ////                         protected variables               ////
     
     /** The associated component. */
     protected Object _component;

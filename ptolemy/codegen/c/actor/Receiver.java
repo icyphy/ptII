@@ -46,8 +46,8 @@ public class Receiver extends CCodeGeneratorHelper {
         super(receiver);
     }
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         public methods                         ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /**
      * Generate code for getting tokens from the receiver.

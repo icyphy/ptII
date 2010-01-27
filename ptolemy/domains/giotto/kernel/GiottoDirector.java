@@ -252,12 +252,12 @@ TimedDirector, Decorator {
 
             while (scheduleIterator.hasNext()) {
                 Actor actor = ((Firing) scheduleIterator.next()).getActor();
-                if(_debugging){
+                if (_debugging) {
                     _debug("actor to be fired in this iteration has name "+actor.getFullName());
                 }
                 Time thistime = getModelTime();
 
-                if(_debugging){
+                if (_debugging) {
                     _debug("the current time is "+thistime.toString());
                 }
                 if (_debugging) {
@@ -270,7 +270,7 @@ TimedDirector, Decorator {
 
                 while (outputPorts.hasNext()) {
                     IOPort port = (IOPort) outputPorts.next();
-                    if(_debugging){
+                    if (_debugging) {
                         _debug("output port is "+port.getDisplayName());
                     }
                     Receiver[][] channelArray = port.getRemoteReceivers();
@@ -304,7 +304,7 @@ TimedDirector, Decorator {
                             + actor.getFullName() + "\"");
                 }
             }
-            if(_debugging){
+            if (_debugging) {
                 _debug("unit index has value "+_unitIndex);
             }
             _unitIndex++;
@@ -313,10 +313,10 @@ TimedDirector, Decorator {
             _expectedNextIterationTime = _expectedNextIterationTime
             .add(_unitTimeIncrement);
             //this compensates for rounding errors that may occur  
-            if(_unitIndex == _lcm)
+            if (_unitIndex == _lcm)
             {
                 _expectedNextIterationTime = new Time(this,_iterationCount+(_periodValue *(_unitIndex)));
-                if(_debugging){
+                if (_debugging) {
                     _debug("unit index is equal to lcm");
                     _debug("iteration count is: "+_iterationCount);
                 }
@@ -356,7 +356,7 @@ TimedDirector, Decorator {
      *    permissible (e.g. the given time is in the past).
      */
     public Time fireAt(Actor actor, Time time) throws IllegalActionException {
-        if(_debugging){
+        if (_debugging) {
             _debug("fireAt method was called for actor: "+actor.getFullName());
         }
         // No executive director. Return current time plus the period divided
@@ -373,7 +373,7 @@ TimedDirector, Decorator {
         int frequencyValue = _getActorFrequency((NamedObj) actor);
 
         double actorPeriod = _periodValue / frequencyValue;
-        if(_debugging){
+        if (_debugging) {
             _debug("inside fireAt the frequency value is : "+frequencyValue);
             _debug("inside fireAt the actor period is: "+actorPeriod);
         }
@@ -381,7 +381,7 @@ TimedDirector, Decorator {
 
         Time nextFiringTime = currentTime.add(actorPeriod);
 
-        if(_debugging){
+        if (_debugging) {
             _debug("current time is: "+currentTime.getDoubleValue());
             _debug("next firing time is: "+nextFiringTime.getDoubleValue());
             _debug("desired firing time is: "+time.getDoubleValue());
@@ -652,22 +652,22 @@ TimedDirector, Decorator {
         Actor actor;
         double wcet = 0;
         boolean errorHandlerSet = false;
-        try{
+        try {
             createDecoratedAttributes(this); 
 
-        }catch(NameDuplicationException e){
+        } catch (NameDuplicationException e) {
             e.printStackTrace();
         }
 
 
         Attribute dirWCET = this.getContainer().getAttribute("WCET");
-        if(dirWCET != null){
+        if (dirWCET != null) {
             wcet = ((DoubleToken) ((Variable) dirWCET).getToken()).doubleValue();
         }
 
-        if(wcet >_periodValue) {
+        if (wcet >_periodValue) {
 
-            if(_debugging){
+            if (_debugging) {
                 _debug("throw an exception");
             }
 
@@ -675,7 +675,7 @@ TimedDirector, Decorator {
                     ") is larger than period ("+_periodValue +") for actor "+((CompositeActor) (getContainer())).getDisplayName()));
 
         }  //end of if  
-        if(_debugging){
+        if (_debugging) {
             _debug("at the end of preinitialize in the giotto director.");
         }
 
@@ -867,23 +867,23 @@ TimedDirector, Decorator {
             Attribute frequency = ((Entity)actor).getAttribute("frequency");
             ptolemy.actor.Director dd =actor.getDirector();
             Attribute WCET = ((Entity)actor).getAttribute("WCET");
-            if(!( actor instanceof ptolemy.domains.giotto.lib.GiottoError)){
+            if (!( actor instanceof ptolemy.domains.giotto.lib.GiottoError)) {
 
-                if(actor instanceof CompositeActor)
+                if (actor instanceof CompositeActor)
                 {
 
-                    if(_debugging) {
+                    if (_debugging) {
                         // _debug("Composite Actor, if it has a director I need to ask it for it's WCET");
                     }
                     Director dir = actor.getDirector();
 
-                    if(_debugging){
+                    if (_debugging) {
                         //_debug(dir.getFullName());
                     }
-                    if(dir == null)
+                    if (dir == null)
                     {
 
-                        if(_debugging) {
+                        if (_debugging) {
                             //    _debug("no director in composite actor ");
                         }
 
@@ -892,23 +892,23 @@ TimedDirector, Decorator {
                     {
                         double dummyWCET = 0.0011;
                         Attribute dirWCET = dir.getAttribute("WCET");
-                        if(dirWCET != null){
+                        if (dirWCET != null) {
                             dummyWCET = ((DoubleToken) ((Variable) dirWCET).getToken()).doubleValue();
                         }
-                        if(_debugging) {
+                        if (_debugging) {
                             // _debug("Composite Actor:"+actor.getFullName()+" has WCET "+ dummyWCET);
                         }
                         wcet+= dummyWCET;
                     }
-                }else{
+                }else {
 
                     if (WCET == null) {
                         actorWCET = 0.0;
                     } else {
-                        try{
+                        try {
 
                             actorWCET =  ((DoubleToken) ((Variable) WCET).getToken()).doubleValue();
-                        }catch(Exception e2){ // I don't think this is the right fix.. let's see if it works for now
+                        } catch (Exception e2){ // I don't think this is the right fix.. let's see if it works for now
                             actorWCET =  ((IntToken) ((Variable) WCET).getToken()).intValue();   
                         }
                     }
@@ -921,7 +921,7 @@ TimedDirector, Decorator {
                     wcet+= (actorFrequency * actorWCET);
                 }
             }
-            if(_debugging) {
+            if (_debugging) {
                 //     _debug("with actor "+actor.getFullName()+" wect thus far is "+wcet);
 
                 // _debug("with actor "+actor.getFullName()+" wect thus far is "+wcet);

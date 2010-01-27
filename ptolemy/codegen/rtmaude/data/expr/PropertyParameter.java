@@ -52,9 +52,9 @@ public class PropertyParameter extends StringParameter {
      *
      * @param container  The container
      * @param name       The name of the parameter
-     * @throws IllegalActionException   If the parameter is not of an
+     * @exception IllegalActionException   If the parameter is not of an
      *   acceptable class for the container
-     * @throws NameDuplicationException If the name coincides with
+     * @exception NameDuplicationException If the name coincides with
      *   a parameter already in the container.
      */
     public PropertyParameter(NamedObj container, String name)

@@ -33,7 +33,7 @@ import ptolemy.data.properties.lattice.PropertyConstraintSolver;
 import ptolemy.data.properties.lattice.logicalOrBackward.Lattice;
 import ptolemy.kernel.util.IllegalActionException;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// Discard
 
 /**

@@ -39,7 +39,7 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.MoMLFilter;
 import ptolemy.moml.MoMLParser;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// RelationWidthChanges
 
 /** When this class is registered with the MoMLParser.setMoMLFilter()
@@ -181,7 +181,7 @@ public class RelationWidthChanges implements MoMLFilter {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private methods                    ////
+    ////                         private methods                   ////
 
     /** Return whether changes are necessary.
      * This is only the case for models older than version 7.2.devel

@@ -31,7 +31,7 @@ import ptolemy.data.properties.lattice.PropertyConstraintHelper;
 import ptolemy.data.properties.lattice.PropertyConstraintSolver;
 import ptolemy.kernel.util.IllegalActionException;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// AddSubtract
 
 /**

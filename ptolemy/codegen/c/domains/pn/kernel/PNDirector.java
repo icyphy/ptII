@@ -46,7 +46,7 @@ import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
 
-//////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 ////PNDirector
 
 /**
@@ -74,8 +74,8 @@ public class PNDirector extends Director {
 
     }
 
-    // //////////////////////////////////////////////////////////////////////
-    // // public methods ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /**
      * Generate the body code that lies between variable declaration and wrapup.
@@ -419,8 +419,8 @@ public class PNDirector extends Director {
         return sharedCode;
     }
 
-    // //////////////////////////////////////////////////////////////////////
-    // // protected methods ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
 
     /**
      * Create offset variables for the channels of the given port. The offset

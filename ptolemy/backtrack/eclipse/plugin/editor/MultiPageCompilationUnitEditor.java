@@ -75,7 +75,7 @@ import ptolemy.backtrack.eclipse.plugin.preferences.PreferenceConstants;
 import ptolemy.backtrack.eclipse.plugin.util.Environment;
 import ptolemy.backtrack.util.Strings;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// MultiPageCompilationUnitEditor
 /**
  Multi-page editor with Ptolemy semantic highlighting and transformation tab.
@@ -94,7 +94,7 @@ import ptolemy.backtrack.util.Strings;
 public class MultiPageCompilationUnitEditor extends PtolemyEditor {
 
     ///////////////////////////////////////////////////////////////////
-    ////                       public methods                      ////
+    ////                         public methods                    ////
 
     /** Create the controls for this editor.
      *
@@ -170,7 +170,7 @@ public class MultiPageCompilationUnitEditor extends PtolemyEditor {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                      protected methods                    ////
+    ////                         protected methods                 ////
 
     /** Set the preview tab so it is not editable. */
     public void test() {
@@ -276,7 +276,7 @@ public class MultiPageCompilationUnitEditor extends PtolemyEditor {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       private methods                     ////
+    ////                         private methods                   ////
 
     /** Create the top-level container for this editor.
      *
@@ -433,7 +433,7 @@ public class MultiPageCompilationUnitEditor extends PtolemyEditor {
      */
     private PtolemyEditor _preview;
 
-    //////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     //// RefactoringOutputThread
     /**
      The thread to output the refactoring result to the "Preview" tab, and
@@ -487,7 +487,7 @@ public class MultiPageCompilationUnitEditor extends PtolemyEditor {
         private PipedInputStream _inputStream;
     }
 
-    //////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     //// TransformerRunnable
     /**
      The runnable object that executes the transformation.

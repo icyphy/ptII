@@ -1086,7 +1086,7 @@ public abstract class AbstractPtalonEvaluator {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                      protected methods                    ////
+    ////                         protected methods                 ////
 
     /** Return a number of spaces that is proportional to the
      *  argument. If the argument is negative or zero, return an empty
@@ -1206,7 +1206,7 @@ public abstract class AbstractPtalonEvaluator {
     protected Map<String, TypedIOPort> _transparentRelations = new Hashtable<String, TypedIOPort>();
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private methods                    ////
+    ////                         private methods                   ////
 
     /** This is a representation of an if/else construct in Ptalon.
      *  The true branch and/or the false branch can point to a set of

@@ -137,10 +137,10 @@ public class Integrator extends DETransformer {
                     .divide(new DoubleToken(2));
                 
                 //Accumulate the integrand
-                if(_accumulated != null){
+                if (_accumulated != null){
                     _accumulated = _accumulated.add(integrand);
                 }
-                else{
+                else {
                     _accumulated = integrand;
                 }
             }
@@ -149,7 +149,7 @@ public class Integrator extends DETransformer {
         //If we have accumulated a value, output it here; otherwise,
         //   we did not have an initial value and have not yet received
         //   two inputs.
-        if(_accumulated != null){
+        if (_accumulated != null){
             output.broadcast(_accumulated);
         }
     }
@@ -170,8 +170,8 @@ public class Integrator extends DETransformer {
      */
     public boolean postfire() throws IllegalActionException {
         //If reset port is connected and has a token, reset state.
-        if(reset.getWidth() > 0){
-            if(reset.hasToken(0)){
+        if (reset.getWidth() > 0){
+            if (reset.hasToken(0)){
                 //Consume reset token
                 reset.get(0);
                 
@@ -191,15 +191,15 @@ public class Integrator extends DETransformer {
     ////                         protected methods                 ////
 
     /** Reset value of the accumulator to either an initial value or null.
-     * @throws IllegalActionException If the base class throws it
+     * @exception IllegalActionException If the base class throws it
      */  
     protected void resetAccumulation() throws IllegalActionException{
         Token initialToken = initialValue.getToken();
         
-        if(initialToken != null){
+        if (initialToken != null){
             _accumulated = initialToken;
         }
-        else{
+        else {
             _accumulated = null;
         }
     }

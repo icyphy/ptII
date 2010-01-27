@@ -68,8 +68,8 @@ public class TDLCodeGeneratorUtilities {
     private TDLCodeGeneratorUtilities() {
     }
 
-    // /////////////////////////////////////////////////////////////////
-    // // public methods ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /**
      * Throw an exception if the given string is a valid TDL reserved word,
@@ -209,8 +209,8 @@ public class TDLCodeGeneratorUtilities {
         return retVal;
     }
 
-    // /////////////////////////////////////////////////////////////////
-    // // protected methods ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
 
     /**
      * Generate code for the actuator. Usually, there is only one actuator.

@@ -124,12 +124,12 @@ public class ClientProcess extends Thread {
     /** Set a flag that determines whether the console window will be displayed.
      *  @param showWindow Set to false to avoid the console window to be shown
      */
-    public void showConsoleWindow(boolean showWindow){
+    public void showConsoleWindow(boolean showWindow) {
         showConsoleWindow = showWindow;
     }
 
     /** Disposes the window that displays the console output. */
-    public void disposeWindow(){
+    public void disposeWindow() {
         if ( stdFra != null )
             stdFra.dispose();
     }
@@ -137,7 +137,7 @@ public class ClientProcess extends Thread {
     /** Redirects the standard error stream to the standard output stream.
      *  @param flag if true, redirects the standard error stream to the standard output stream
      */
-    public void redirectErrorStream(boolean flag){
+    public void redirectErrorStream(boolean flag) {
         redErrStr = flag;
     }
 
@@ -249,7 +249,7 @@ public class ClientProcess extends Thread {
      * so that for the next simulation, the window will be placed at the
      * same position again as in the previous simulation
      */
-    public static void resetWindowLocation(){
+    public static void resetWindowLocation() {
         Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
         // Set the window to the bottom left corner, where it gets less in the way
         // compared to the top left corner.
@@ -286,7 +286,7 @@ public class ClientProcess extends Thread {
     /** Default height of window. */
     protected static final int dY = 200;
 
-    /////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     /** Inner class to print any output of the process to the console. */
     private class PrintOutput extends Thread {
 
@@ -296,13 +296,13 @@ public class ClientProcess extends Thread {
          */
         public PrintOutput(final String programName) {
             stdOut = new StringBuilder();
-            if ( showConsoleWindow && stdFra == null ){
+            if ( showConsoleWindow && stdFra == null ) {
                 stdFra = new JFrame("Output of " + modNam);
                 JFrame.setDefaultLookAndFeelDecorated(true);
                 stdFra.setSize(600, dY);
                 stdAre = new JTextArea();
                 stdScrPan = new JScrollPane(stdAre);
-                if ( showConsoleWindow ){
+                if ( showConsoleWindow ) {
                     // If locY < 0, then this is the first call to any instance of
                     // ClientProcess, hence we reset the window position.
                     if ( locY < 0 )
@@ -367,7 +367,7 @@ public class ClientProcess extends Thread {
                         pwLogFil.println(line);
                         pwLogFil.flush();
                         stdOut.append(line + LS);
-                        if ( showConsoleWindow ){
+                        if ( showConsoleWindow ) {
                             stdAre.append(line + LS);
                             //scroll to bottom of text area
                             stdAre.scrollRectToVisible(
@@ -416,7 +416,7 @@ public class ClientProcess extends Thread {
         }
     }
 
-    /////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     /** Inner class to print any stderr of the process to the console. */
     private class PrintStderr extends Thread {
         public PrintStderr() {
@@ -502,7 +502,7 @@ public class ClientProcess extends Thread {
         }
     }
 
-    /////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     /** Set the process arguments.
      * @param cmdarray array containing the command to call and its arguments.
      * @param dir the working directory of the subprocess.

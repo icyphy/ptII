@@ -63,7 +63,7 @@ public class Director extends ptolemy.codegen.actor.Director {
      * @param blockName The name of the block.
      * @param args The arguments for the block.
      * @return The code described by the given block.
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      */
     public List<String> getBlockCodeList(String blockName, String... args)
             throws IllegalActionException {

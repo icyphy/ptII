@@ -46,7 +46,7 @@ import ptolemy.math.Overflow;
 import ptolemy.math.Precision;
 import ptolemy.math.Rounding;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// SynchronousFixPointTransformer
 
 /**
@@ -92,7 +92,7 @@ public abstract class SynchronousFixTransformer extends FixTransformer {
     public Parameter initialValue;
 
     ///////////////////////////////////////////////////////////////////
-    ////                     public methods                        ////
+    ////                         public methods                    ////
 
     /** Override the base class to determine which function is being
      *  specified.

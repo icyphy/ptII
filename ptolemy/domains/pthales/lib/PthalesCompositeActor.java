@@ -42,7 +42,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.SingletonConfigurableAttribute;
 import ptolemy.kernel.util.Workspace;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 ////PthalesCompositeActor
 
 /**
@@ -217,7 +217,7 @@ public class PthalesCompositeActor extends TypedCompositeActor {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         protected methods                   ////
+    ////                         protected methods                 ////
 
     protected void _initialize() throws IllegalActionException,
             NameDuplicationException {

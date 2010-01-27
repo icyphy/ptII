@@ -32,7 +32,7 @@ import ptolemy.domains.continuous.kernel.ContinuousODESolver;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InvalidStateException;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// ExplicitRK23Solver
 
 /**
@@ -186,7 +186,7 @@ public class ExplicitRK23Solver extends ContinuousODESolver {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                     protected methods                     ////
+    ////                         protected methods                 ////
 
     /** Return the current round.
      *  @return The current round.
@@ -225,13 +225,13 @@ public class ExplicitRK23Solver extends ContinuousODESolver {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                     protected variables                   ////
+    ////                         protected variables               ////
 
     /** The ratio of time increments within one integration step. */
     protected static final double[] _TIME_INCREMENTS = { 0.5, 0.75, 1.0, 1.0 };
 
     ///////////////////////////////////////////////////////////////////
-    ////                     private variables                     ////
+    ////                         private variables                 ////
 
     /** B coefficients. */
     private static final double[][] _B = { { 0.5 }, { 0, 0.75 },

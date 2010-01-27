@@ -31,7 +31,7 @@ package ptolemy.domains.wireless.kernel;
 import ptolemy.data.RecordToken;
 import ptolemy.data.Token;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// ChannelListener
 /**
  Interface for channel listeners.  If a ChannelListener is added to a channel,

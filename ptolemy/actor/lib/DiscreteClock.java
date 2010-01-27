@@ -46,7 +46,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.Workspace;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// DiscreteClock
 
 /**
@@ -227,7 +227,7 @@ public class DiscreteClock extends TimedSource {
     public Parameter values;
 
     ///////////////////////////////////////////////////////////////////
-    ////                      public methods                       ////
+    ////                         public methods                    ////
 
     /** If the argument is the <i>offsets</i> parameter, check that the
      *  array is nondecreasing and has the right dimension; if the
@@ -524,7 +524,7 @@ public class DiscreteClock extends TimedSource {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                      protected methods                    ////
+    ////                         protected methods                 ////
 
     /** Get the specified output value, checking the form of the values
      *  parameter.
@@ -577,7 +577,7 @@ public class DiscreteClock extends TimedSource {
 
     /** Skip the current firing phase and request a refiring at the
      *  time of the next one.
-     *  @throws IllegalActionException If the period cannot be evaluated.
+     *  @exception IllegalActionException If the period cannot be evaluated.
      */
     private void _skipToNextPhase() throws IllegalActionException {
         _phase++;

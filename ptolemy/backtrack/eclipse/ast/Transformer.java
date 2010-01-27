@@ -54,7 +54,7 @@ import ptolemy.backtrack.util.Strings;
 import ptolemy.backtrack.xmlparser.ConfigParser;
 import ptolemy.backtrack.xmlparser.XmlOutput;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// Transformer
 
 /**
@@ -72,7 +72,7 @@ import ptolemy.backtrack.xmlparser.XmlOutput;
 public class Transformer {
 
     ///////////////////////////////////////////////////////////////////
-    ////                       public methods                      ////
+    ////                         public methods                    ////
 
     /** Transform a set of files into backtracking-enabled ones. The set of
      *  files is given by an array of strings as their names, or the names of
@@ -462,7 +462,7 @@ public class Transformer {
             new AssignmentRule(), new PackageRule() };
 
     ///////////////////////////////////////////////////////////////////
-    ////                     protected methods                     ////
+    ////                         protected methods                 ////
 
     /** Call the <tt>afterTraverse</tt> of all the refactoring rules. For
      *  each rule, the <tt>afterTraverse</tt> is called after the AST is
@@ -566,7 +566,7 @@ public class Transformer {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                      private methods                      ////
+    ////                         private methods                   ////
 
     /** Construct a transformer. This constructor should not be called from
      *  outside of this class.
@@ -688,7 +688,7 @@ public class Transformer {
     ///////////////////////////////////////////////////////////////////
     ////                        nested class                       ////
 
-    //////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     //// InnerClassFilter
 
     /**

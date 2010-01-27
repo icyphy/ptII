@@ -38,7 +38,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// ModelAnalyzer
 
 /**
@@ -122,7 +122,7 @@ public class ModelAnalyzer extends Transformer {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                     private variables                     ////
+    ////                         private variables                 ////
 
     /** The analyzer attribute. */
     private AnalyzerAttribute _analyzerWrapper;

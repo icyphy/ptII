@@ -154,7 +154,7 @@ public class TDLController extends TDLActor {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       protected methods                   ////
+    ////                         protected methods                 ////
 
     /**
      * Override the base class to ensure that the proposed container is a
@@ -176,7 +176,7 @@ public class TDLController extends TDLActor {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                     protected variables                   ////
+    ////                         protected variables               ////
 
     /** Indicator that we are processing a newPort request. */
     protected boolean _mirrorDisable = false;

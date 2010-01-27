@@ -148,7 +148,7 @@ public class ProcessDirector extends SequencedModelDirector{
         _processToSchedule = new Hashtable();
         
         // Get key set from _processSeqMap
-        for(String key : (Set<String>) _processSeqMap.keySet())
+        for (String key : (Set<String>) _processSeqMap.keySet())
         {
             // Get collection of ProcessAttributes for this key
             ArrayList processAttributes = (ArrayList) _processSeqMap.get(key);
@@ -291,7 +291,7 @@ public class ProcessDirector extends SequencedModelDirector{
      * Uses the _sequencedList as an input, which has a list of all sequenced
      * actors in the model.
      * 
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      */
     private void _createProcessActorList() throws IllegalActionException {
 
@@ -336,7 +336,7 @@ public class ProcessDirector extends SequencedModelDirector{
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       protected variables                 ////
+    ////                         protected variables               ////
 
     /** The hashMap for Process and corresponding sequence numbers. */
     protected MultiHashMap _processSeqMap;

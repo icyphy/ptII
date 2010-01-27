@@ -36,7 +36,7 @@ import ptolemy.cg.kernel.generic.program.TemplateParser;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InvalidStateException;
 
-///////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// Receiver
 
 /**
@@ -60,8 +60,8 @@ public abstract class Receiver extends ProgramCodeGeneratorAdapter {
         super(receiver);
     }
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         public methods                         ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /**
      * Generate code for getting tokens from the receiver.
@@ -155,7 +155,7 @@ public abstract class Receiver extends ProgramCodeGeneratorAdapter {
      *  <p>The token should be in the form of "sinkRef = $convert(sourceRef)".</p>
      *  @param token A string that contains the assignment.  
      *  @return The right hand side of the assignment.
-     *  @throws IllegalActionException  If the token does contain a "=".
+     *  @exception IllegalActionException  If the token does contain a "=".
      */
     protected String _removeSink(String token) throws IllegalActionException {
         int equalIndex = TemplateParser.indexOf("=", token, 0);
@@ -176,7 +176,7 @@ public abstract class Receiver extends ProgramCodeGeneratorAdapter {
     
     /** Each receiver is associated with a director, return that director.
      *  @return The director associated with this receiver.
-     *  @throws IllegalActionException 
+     *  @exception IllegalActionException 
      *  
      *  FIXME: this is not exactly correct.
      */
@@ -185,7 +185,7 @@ public abstract class Receiver extends ProgramCodeGeneratorAdapter {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private variables                ////
+    ////                         private variables                 ////
 
     /** The name of the receiver. */
     private String _name;

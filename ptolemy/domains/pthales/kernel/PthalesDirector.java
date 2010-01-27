@@ -253,7 +253,7 @@ public class PthalesDirector extends SDFDirector {
 
     /**
      * @return the name of the library to use
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      */
     public String getLibName() throws IllegalActionException {
         return _library;
@@ -393,13 +393,13 @@ public class PthalesDirector extends SDFDirector {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                      protected variables                  ////
+    ////                         protected variables               ////
 
     /** Buffer memory. */
     protected StringParameter library;
 
     ///////////////////////////////////////////////////////////////////
-    ////                      private variables                    ////
+    ////                         private variables                 ////
 
     /** The dimensions relevant to this receiver. */
     private ArrayList<PthalesReceiver> _receivers = new ArrayList<PthalesReceiver>();

@@ -43,7 +43,7 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.moml.MoMLParser;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// ModelAttribute
 
 /**
@@ -202,7 +202,7 @@ public class ModelAttribute extends Attribute implements Configurable {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                      protected methods                    ////
+    ////                         protected methods                 ////
 
     /**
      * Write a MoML description of the contents of this object. This wraps the
@@ -239,7 +239,7 @@ public class ModelAttribute extends Attribute implements Configurable {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                        private methods                    ////
+    ////                         private methods                   ////
 
     private static void _clearURI(NamedObj object)
             throws IllegalActionException, NameDuplicationException {
@@ -279,7 +279,7 @@ public class ModelAttribute extends Attribute implements Configurable {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                      private variables                    ////
+    ////                         private variables                 ////
 
     private String _configureSource;
 

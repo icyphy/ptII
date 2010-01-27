@@ -74,8 +74,8 @@ public class CausalityMarker extends Attribute {
     /** Construct a CausalityMarker. This creates a list of sets of ports.
      *  @param container The container for this marker
      *  @param name The name of this marker.
-     *  @throws IllegalActionException
-     *  @throws NameDuplicationException
+     *  @exception IllegalActionException
+     *  @exception NameDuplicationException
      */
     public CausalityMarker(NamedObj container, String name) 
             throws IllegalActionException, NameDuplicationException {
@@ -94,7 +94,7 @@ public class CausalityMarker extends Attribute {
      *  @param port to be checked.
      *  @return true if this port is contained in causality marker. Else
      *  return false.
-     *  @throws IllegalActionException
+     *  @exception IllegalActionException
      */
     public boolean containsPort(Port port) throws IllegalActionException {
         for (Set portSet : causalityMarker) {

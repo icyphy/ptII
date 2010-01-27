@@ -47,8 +47,8 @@ public abstract class OutputDevice extends NamedProgramCodeGeneratorAdapter {
         super(actor);
     }
 
-    ////////////////////////////////////////////////////////////////////
-    ////                     public methods                         ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /**
      * Return the code for the actuator actuation function.

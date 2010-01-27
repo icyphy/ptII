@@ -30,7 +30,7 @@ import ptolemy.graph.analysis.analyzer.Analyzer;
 import ptolemy.graph.analysis.analyzer.TransitiveClosureAnalyzer;
 import ptolemy.graph.analysis.strategy.FloydWarshallTransitiveClosureStrategy;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// TransitiveClosureAnalysis
 
 /**

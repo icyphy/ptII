@@ -109,8 +109,8 @@ public class MultirateFSMDirector extends FSMDirector {
         super(container, name);
     }
 
-    /////////////////////////////////////////////////////////////////////
-    ////                           public methods                    ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /** Choose the next non-transient state given the current state.
      *  @param currentState The current state.
@@ -611,8 +611,8 @@ public class MultirateFSMDirector extends FSMDirector {
         return transferred;
     }
 
-    //////////////////////////////////////////////////////////////////////////
-    ////                         protected methods                        ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
 
     /** Add a DependencyDeclaration (with the name
      *  "_MultirateFSMRateDependencyDeclaration") to the variable with the
@@ -887,8 +887,8 @@ public class MultirateFSMDirector extends FSMDirector {
         return outputRateChanged;
     }
 
-    /////////////////////////////////////////////////////////////////////////
-    ////                       protected variables                       ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected variables               ////
 
     /** A flag indicating whether the initialize method is called due
      *  to reinitialization.

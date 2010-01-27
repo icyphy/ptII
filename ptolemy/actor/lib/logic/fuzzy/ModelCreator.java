@@ -101,11 +101,11 @@ public class ModelCreator extends DefaultHandler {
         _endOption = false;
         _endDimension = false;
         _outputFileName = filename.replace(".xml", "Model.xml");
-        if(_debugging){
+        if (_debugging) {
             System.out.println("combinedfile constructor called");
         }
         FileReader reader = null;
-        try{
+        try {
 
             XMLReader xmlReader = XMLReaderFactory.createXMLReader();
             ModelCreator handler = new ModelCreator();
@@ -120,10 +120,10 @@ public class ModelCreator extends DefaultHandler {
             throw new IllegalActionException(null, ex, "Failed to parse " 
                     + filename + ".");
         } finally{
-            if(reader!=null){
-                try{
+            if (reader!=null) {
+                try {
                     reader.close();
-                }catch(IOException ex){
+                } catch (IOException ex) {
                     throw new IllegalActionException(null, ex, 
                             "Failed to close " + filename + ".");
                 }
@@ -145,7 +145,7 @@ public class ModelCreator extends DefaultHandler {
             StringBuffer tempBuff = new StringBuffer();
             tempBuff.append(ch, start, length);
             _architecture.name = tempBuff.toString();
-            if(_debugging){
+            if (_debugging) {
                 System.out.println("architecture name is " + _architecture.name);
             }
         } else if (_startOption == true) {
@@ -153,7 +153,7 @@ public class ModelCreator extends DefaultHandler {
             StringBuffer tempBuff = new StringBuffer();
             tempBuff.append(ch, start, length);
             _option._name = tempBuff.toString();
-            if(_debugging){
+            if (_debugging) {
                 System.out.println("option has value " + _option._name);
             }
         } else if (_startDimension == true) {
@@ -161,13 +161,13 @@ public class ModelCreator extends DefaultHandler {
             StringBuffer tempBuff = new StringBuffer();
             tempBuff.append(ch, start, length);
             _option._relatedDimensions.add(tempBuff.toString());
-            if(_debugging){
+            if (_debugging) {
                 System.out.println("related dimension is: " + tempBuff.toString());
                 System.out
                 .println("size is " + _option._relatedDimensions.size());
             }
         }
-        if(_debugging){
+        if (_debugging) {
             System.out.print("Characters:    \"");
         }
         //Note: Findbugs state that the same code is used for two switch statements
@@ -175,38 +175,38 @@ public class ModelCreator extends DefaultHandler {
         for (int i = start; i < start + length; i++) {
             switch (ch[i]) {
             case '\\':
-                if(_debugging){
+                if (_debugging) {
                     System.out.print("\\\\");
                 }
                 break;
             case '"':
-                if(_debugging){
+                if (_debugging) {
                     System.out.print("\\\"");
                 }
                 break;
             case '\n':
-                if(_debugging){
+                if (_debugging) {
                     System.out.print("\\n");
                 }
                 break;
             case '\r':
-                if(_debugging){
+                if (_debugging) {
                     System.out.print("\\r");
                 }
                 break;
             case '\t':
-                if(_debugging){
+                if (_debugging) {
                     System.out.print("\\t");
                 }
                 break;
             default:
-                if(_debugging){
+                if (_debugging) {
                     System.out.print(ch[i]);
                 }
             break;
             }
         }
-        if(_debugging){
+        if (_debugging) {
             System.out.print("\"\n");
         }
     }
@@ -228,7 +228,7 @@ public class ModelCreator extends DefaultHandler {
             if ("gov.nasa.jpl.trades.ui.menu.ExportArchitecture_-ArchitectureExport"
                     .equals(qName)) {
                 _endArchitecture = true;
-                if(_debugging){
+                if (_debugging) {
                     System.out.println("#### in End element");
                     System.out.println("For arch " + _architecture.getName()
                             + "there are : " + _architecture.myOptions.size()
@@ -237,13 +237,13 @@ public class ModelCreator extends DefaultHandler {
                 }
                 Option tOption;
                 for (int i = 0; i < _architecture.myOptions.size(); i++) {
-                    if(_debugging){
+                    if (_debugging) {
                         tOption = (Option) _architecture.myOptions.get(i);
                         System.out.println(tOption._name + " "
                                 + tOption._relatedDimensions.get(0).toString());
                     }
                 }
-                if(_debugging){
+                if (_debugging) {
                     System.out.println("before readCreate in EndElement");
                 }
                 readCreate();
@@ -260,13 +260,13 @@ public class ModelCreator extends DefaultHandler {
             if (_endOption == true) {
                 _endOption = false;
 
-                if(_debugging){
+                if (_debugging) {
                     int k = _option._relatedDimensions.size();
                     System.out.println("there are " + k
                             + "dimensions with this option");
                 }
             }
-            if(_debugging){
+            if (_debugging) {
                 System.out.println("End element: " + qName);
             }
 
@@ -279,7 +279,7 @@ public class ModelCreator extends DefaultHandler {
             } else if ("associatedDimensions".equals(name)) {
                 _endDimension = true;
             }
-            if(_debugging){
+            if (_debugging) {
                 System.out.println("End element:   {" + uri + "}" + name);
             }
         }
@@ -302,7 +302,7 @@ public class ModelCreator extends DefaultHandler {
      * @exception <code>SAXException</code> when things go wrong
      */
     public void processingInstruction(String target, String data) {
-        if(_debugging){
+        if (_debugging) {
             System.out.println("Inside processignInstruction:");
             System.out.println("target name is: " + target + " and data value is: "
                     + data);
@@ -331,42 +331,42 @@ public class ModelCreator extends DefaultHandler {
         BufferedReader reader = null;
         String fileName = null;
         try {
-            if(args.length < 1){
+            if (args.length < 1) {
 
                 System.out.println("Enter the name of the XML file containing the TSST XML output");
-                try{
+                try {
                     reader = new BufferedReader(new InputStreamReader(System.in));
                     fileName = reader.readLine();
-                }catch(IOException ex){
+                } catch (IOException ex) {
                     throw new IllegalActionException(null, ex, "Failed to parse input."); 
                 } finally{
-                    if(reader!=null){
-                        try{
+                    if (reader!=null) {
+                        try {
                             reader.close();
-                        }catch(IOException ex){
+                        } catch (IOException ex) {
                             throw new IllegalActionException(null, ex, 
                             "Failed to close buffered reader which reads input.");
                         }
                     }
                 }
-            }else{
+            }else {
                 fileName = args[0];
             }
-            if(fileName!= null){
+            if (fileName!= null) {
                 //Note: Findbugs correctly detects a deadstore to a local
                 // variable. This is acceptable in this case since the work is done
                 // in the constructor
                 ModelCreator cF = new ModelCreator(fileName);
             }
 
-        } catch(Exception ex){
+        } catch (Exception ex) {
             ex.printStackTrace();
             System.exit(1);
         }finally{
-            if(reader!=null){
-                try{
+            if (reader!=null) {
+                try {
                     reader.close();
-                }catch(IOException ex){
+                } catch (IOException ex) {
 
                     throw new IllegalActionException(null, ex, 
                             "Failed to close " + fileName + ".");
@@ -390,7 +390,7 @@ public class ModelCreator extends DefaultHandler {
         // Note: The method names and the parameters match those in the 
         // DefaultHandler class 
         if ("".equals(uri)) {
-            if(_debugging){
+            if (_debugging) {
                 System.out.println("Start element: " + qName);
             }
             if ("architectureName".equals(qName)) {
@@ -409,21 +409,21 @@ public class ModelCreator extends DefaultHandler {
             } else if ("associatedDimensions".equals(name)) {
                 _startDimension = true;
             }
-            if(_debugging){
+            if (_debugging) {
                 System.out.println("Start element: {" + uri + "}" + name);
                 System.out.println("in else of start element");
             }
         }
     }
 
-    ////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     // Customized SAX XML Event handlers.
-    ////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     /** Called once when the SAX driver sees the beginning of a document. */
     public void startDocument() {
     }
 
-    ////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     ////               protected classes                        ////   
     /**
      * Private architecture class to recreate a textual representation 
@@ -531,7 +531,7 @@ public class ModelCreator extends DefaultHandler {
                 componentNames.add(option._name + "_"
                         + option._relatedDimensions.get(0));
             }
-            if(_debugging){
+            if (_debugging) {
                 System.out.println("There are currently "
                         + _architecture.myOptions.size()
                         + " components with this architecture " 
@@ -638,26 +638,26 @@ public class ModelCreator extends DefaultHandler {
                         +"</entity>");
             }
         } finally {
-            if(_debugging){
+            if (_debugging) {
                 System.out
                 .println("I've closed the output stream. The " +
                         "output file has the name "
                         + _outputFileName);
             }
             BufferedWriter outputStream=null;
-            try{
+            try {
                 outputStream = new BufferedWriter(new FileWriter(
                         "ptolemy/actor/lib/logic/fuzzy/" +
                         _outputFileName));
                 outputStream.write(output.toString());
                 outputStream.close();
             } catch (IOException ioe) {
-                try{
-                    if(outputStream != null){
+                try {
+                    if (outputStream != null) {
                         outputStream.close();
                     }
-                }catch(IOException ioex){
-                    if(_debugging){
+                } catch (IOException ioex) {
+                    if (_debugging) {
                         System.out.println("There was an exception " +
                                 "when attempting to close the " +
                                 "file from" +
@@ -669,8 +669,8 @@ public class ModelCreator extends DefaultHandler {
         }
     }
 
-    ////////////////////////////////////////////////////////////////////
-    ////                         private variables                  ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     /**
      * A TSST may contain multiple architectures where an architecture 

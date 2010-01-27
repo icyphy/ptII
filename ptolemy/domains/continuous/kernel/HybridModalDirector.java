@@ -49,7 +49,7 @@ import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// HybridModalDirector
 
 /**
@@ -613,7 +613,7 @@ public class HybridModalDirector extends FSMDirector implements
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       protected methods                   ////
+    ////                         protected methods                 ////
 
     /** Return the enclosing continuous director, or null if there
      *  is none.  The enclosing continuous director is a director

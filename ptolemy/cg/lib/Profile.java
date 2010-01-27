@@ -34,7 +34,7 @@ import java.util.List;
 
 import ptolemy.kernel.util.IllegalActionException;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// Profile
 
 /**
@@ -148,7 +148,7 @@ abstract public class Profile {
         }
         
         public Profile getProfile() throws IllegalActionException {
-            try{
+            try {
                 if (_profile != null) {
                     return _profile;
                 } else {

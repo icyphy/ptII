@@ -53,8 +53,8 @@ public class GPInputDevice extends InputDevice {
     /** Construct an adapter with the given
      *  ptolemy.domains.ptides.lib.GPInputDevice actor.
      *  @param actor The given ptolemy.domains.ptides.lib.targets.luminary.GPInputDevice actor.
-     *  @throws IllegalActionException 
-     * @throws NameDuplicationException 
+     *  @exception IllegalActionException 
+     * @exception NameDuplicationException 
      */
     public GPInputDevice(
             ptolemy.domains.ptides.lib.luminary.GPInputDevice actor)
@@ -81,8 +81,8 @@ public class GPInputDevice extends InputDevice {
 
     }
 
-    ////////////////////////////////////////////////////////////////////
-    ////                     public methods                         ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /**
      * Return the code for the sensing function.
@@ -123,8 +123,8 @@ public class GPInputDevice extends InputDevice {
         return code.toString();
     }
 
-    ////////////////////////////////////////////////////////////////////
-    ////                     private variables                      ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     private String _pinID;
     private String _padID;

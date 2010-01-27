@@ -85,14 +85,14 @@ public class SuppressSimultaneousEvents extends DETransformer {
 
     /** Consume one token from the input port, and output if it is the first
      *  token seen at this point in physical time.
-     * @throws IllegalActionException 
+     * @exception IllegalActionException 
      */
     public void fire() throws IllegalActionException{
         super.fire();
         if (input.hasToken(0)) {
             Time currentTime = getDirector().getModelTime();
             Token currentToken = input.get(0);
-            if(_lastEventTime == null || !_lastEventTime.equals(currentTime)){
+            if (_lastEventTime == null || !_lastEventTime.equals(currentTime)){
                 output.broadcast(currentToken);
             }
             _lastEventTime = currentTime;

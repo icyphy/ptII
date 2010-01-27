@@ -41,7 +41,7 @@ import ptolemy.domains.ptides.lib.luminary.LuminarySensorInputDevice;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
 
-//////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// PtidesBasicDirector
 
 /**
@@ -78,8 +78,8 @@ public class PtidesBasicDirector
         super(ptidesBasicDirector);
     }
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         public methods                         ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /** Generate the assembly file associated for this PtidyOS program.
      *  Here we return an empty string, but the target specific adapter
@@ -304,7 +304,7 @@ public class PtidesBasicDirector
 
     /** Generate the initialization code for any hardware component that is used.
      *  @return code initialization code for hardware peripherals
-     *  @throws IllegalActionException
+     *  @exception IllegalActionException
      */
     protected String _generateInitializeHardwareCode()
             throws IllegalActionException {

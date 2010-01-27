@@ -138,7 +138,7 @@ public class PthalesAtomicActor extends TypedAtomicActor {
      *  integers, a value and a stride, in that order.
      *  @param name The name of the parameter
      *  @return The dimension data, or an empty array if the parameter does not exist.
-     *  @throws IllegalActionException If the parameter cannot be evaluated.
+     *  @exception IllegalActionException If the parameter cannot be evaluated.
      */
     protected static Integer[] _parseRepetitions(ComponentEntity actor,
             String name) {
@@ -248,7 +248,7 @@ public class PthalesAtomicActor extends TypedAtomicActor {
     protected static String REPETITIONS = "repetitions";
 
     ///////////////////////////////////////////////////////////////////
-    ////                         protected methods                   ////
+    ////                         protected methods                 ////
 
     protected void _initialize() throws IllegalActionException,
             NameDuplicationException {

@@ -42,7 +42,7 @@ import org.eclipse.ui.IWorkbenchPreferencePage;
 import ptolemy.backtrack.eclipse.plugin.EclipsePlugin;
 import ptolemy.backtrack.eclipse.plugin.widgets.DirectoryFieldEditor;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// PtolemyPreferencePage
 /**
  The class to create the Ptolemy preference page.
@@ -68,7 +68,7 @@ public class PtolemyPreferencePage extends FieldEditorPreferencePage implements
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       public methods                      ////
+    ////                         public methods                    ////
 
     /** Create the contents in the Ptolemy preference. A field editor will be
      *  created for the path of Ptolemy home.

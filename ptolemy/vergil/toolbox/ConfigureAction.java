@@ -41,7 +41,7 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.util.MessageHandler;
 import diva.gui.GUIUtilities;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// ConfigureAction
 
 /**
@@ -117,7 +117,7 @@ public class ConfigureAction extends FigureAction {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                        protected methods                  ////
+    ////                         protected methods                 ////
 
     /** Open an edit parameters dialog.  This is a modal dialog, so
      *  this method returns only after the dialog has been dismissed.

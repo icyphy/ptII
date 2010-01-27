@@ -47,7 +47,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 import com.sun.j3d.utils.geometry.Cylinder;
 import com.sun.j3d.utils.geometry.Primitive;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// Cylinder3D
 
 /** This actor contains the geometry and appearance specifications for a GR

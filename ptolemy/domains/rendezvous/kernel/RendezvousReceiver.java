@@ -47,8 +47,8 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.InvalidStateException;
 
-// ////////////////////////////////////////////////////////////////////////
-// // RendezvousReceiver
+///////////////////////////////////////////////////////////////////
+//// RendezvousReceiver
 
 /**
  * Receiver for rendezvous style communication. In the rendezvous
@@ -745,7 +745,7 @@ public class RendezvousReceiver extends AbstractReceiver implements
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                          private methods                  ////
+    ////                         private methods                   ////
 
     /**
      * Check whether a rendezvous can be formed starting from the given
@@ -1169,7 +1169,7 @@ public class RendezvousReceiver extends AbstractReceiver implements
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                          private variables                ////
+    ////                         private variables                 ////
 
     /** Flag to test whether an operation does a get. */
     private static final int GET = 4; // 0100

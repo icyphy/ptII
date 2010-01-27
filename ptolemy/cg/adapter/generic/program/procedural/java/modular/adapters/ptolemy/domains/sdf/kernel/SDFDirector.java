@@ -26,7 +26,7 @@
 
  */
 
-//////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 ////SDFDirector
 
 /**
@@ -68,7 +68,7 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NamedObj;
 
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 ////SDFDirector
 
 /** Class for modular code generator.
@@ -95,8 +95,8 @@ public class SDFDirector
         // TODO Auto-generated constructor stub
     }
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         public methods                         ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
     /** Generate the code for the firing of actors according to the SDF
      *  schedule.
      *  @return The generated fire code.
@@ -188,11 +188,11 @@ public class SDFDirector
                     
                     
                     for (int i = 0; i < outputPort.getWidth(); i++) {
-                        if(rate <= 1)
+                        if (rate <= 1)
                             code.append(codegeneratorAdaptor.getReference( outputPort.getName() + "#" + i) + 
                                 " = " + actorName + "." + codegeneratorAdaptor.getReference( "@" + outputPort.getName() + "#" + i) + ";" + _eol);
                         else {
-                            for(int k = 0; k < rate; k++) {
+                            for (int k = 0; k < rate; k++) {
                                 code.append(codegeneratorAdaptor.getReference( outputPort.getName() + "#" + i)
                                     + " = " + actorName + "." + codegeneratorAdaptor.getReference( "@" + outputPort.getName() + "#" + i) + ";" + _eol);
                             }
@@ -453,7 +453,7 @@ public class SDFDirector
      *  a write reference; otherwise, this is a read reference.  
      * @param target The ProgramCodeGeneratorAdapter for which code needs to be generated.
      * @return an unique reference label for the given port channel.
-     * @throws IllegalActionException If the adapter throws it while
+     * @exception IllegalActionException If the adapter throws it while
      *  generating the label.     
      */
     public String getReference(TypedIOPort port, String[] channelAndOffset,
@@ -591,14 +591,14 @@ public class SDFDirector
                     
                     String res = _ports.generateOffset(sinkPort,
                             channelAndOffset[1], sinkChannelNumber, true);
-                    if(res.equals("")) {
-                        if(sinkPort.getContainer() instanceof CompositeActor) {
+                    if (res.equals("")) {
+                        if (sinkPort.getContainer() instanceof CompositeActor) {
                             SDFDirector directorAdapter = (SDFDirector) getAdapter(((CompositeActor)sinkPort.getContainer()).getDirector());
                             result.append(directorAdapter._ports.generateOffset(sinkPort,
                                 channelAndOffset[1], sinkChannelNumber, true));
                         }
                     }
-                    else{
+                    else {
                         result.append(res);
                     }
  
@@ -626,7 +626,7 @@ public class SDFDirector
                 result.append("[" + channelAndOffset[0] + "]");
             }
 /*
-            if(port.getContainer() instanceof CompositeActor) {
+            if (port.getContainer() instanceof CompositeActor) {
                 SDFDirector directorAdapter = (SDFDirector) getAdapter(((CompositeActor)port.getContainer()).getDirector());
                 result.append(directorAdapter._ports.generateOffset(port,
                         channelAndOffset[1], channelNumber, isWrite));
@@ -672,7 +672,7 @@ public class SDFDirector
                 }
             }
 
-            if(!(actor instanceof AtomicActor))
+            if (!(actor instanceof AtomicActor))
             {
                 Iterator<?> outputPorts = actor.outputPortList().iterator();
                 while (outputPorts.hasNext()) {
@@ -769,7 +769,7 @@ public class SDFDirector
     
         return result.toString();
     }
-    ////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     ////                         private members                        ////
     
 }

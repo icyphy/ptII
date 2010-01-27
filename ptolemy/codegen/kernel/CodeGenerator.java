@@ -79,7 +79,7 @@ import ptolemy.util.MessageHandler;
 import ptolemy.util.StreamExec;
 import ptolemy.util.StringUtilities;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// CodeGenerator
 
 /** Base class for code generator.
@@ -318,7 +318,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
     public StringParameter target;
 
     ///////////////////////////////////////////////////////////////////
-    ////                     private methods                       ////
+    ////                         private methods                   ////
 
     /** Generate code and append it to the given string buffer.
 

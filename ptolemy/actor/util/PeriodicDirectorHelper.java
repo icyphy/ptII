@@ -34,7 +34,7 @@ import ptolemy.actor.Manager;
 import ptolemy.actor.SuperdenseTimeDirector;
 import ptolemy.kernel.util.IllegalActionException;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// PeriodicDirectorHelper
 
 /**
@@ -52,7 +52,7 @@ public class PeriodicDirectorHelper {
 
     /** Construct a new helper.
      *  @param director The associated director.
-     *  @throws IllegalActionException If the argument is not an instance of
+     *  @exception IllegalActionException If the argument is not an instance of
      *   Director.
      */
     public PeriodicDirectorHelper(PeriodicDirector director)

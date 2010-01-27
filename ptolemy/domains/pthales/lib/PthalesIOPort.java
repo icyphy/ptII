@@ -56,7 +56,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Settable;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 ////PthalesIOPort
 
 /**
@@ -626,7 +626,7 @@ public class PthalesIOPort {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                      public variables                  ////
+    ////                         public variables                  ////
 
     /** The name of the base parameter. */
     public static String BASE = "base";
@@ -711,7 +711,7 @@ public class PthalesIOPort {
      *  integers, a value and a stride, in that order.
      *  @param name The name of the parameter
      *  @return The dimension data, or null if the parameter does not exist.
-     *  @throws IllegalActionException If the parameter cannot be evaluated.
+     *  @exception IllegalActionException If the parameter cannot be evaluated.
      */
     private static LinkedHashMap<String, Integer[]> _parseSpec(IOPort port,
             String name) {

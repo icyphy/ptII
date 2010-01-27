@@ -60,7 +60,7 @@ import ptolemy.vergil.actor.ActorGraphModel;
 import diva.graph.GraphPane;
 import diva.graph.JGraph;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// ModelDisplay
 
 /**
@@ -108,7 +108,7 @@ public class ModelDisplay extends AbstractPlaceableActor implements
     public TypedIOPort input;
 
     ///////////////////////////////////////////////////////////////////
-    ////                     public methods                        ////
+    ////                         public methods                    ////
 
     /** React to a change in an attribute.  If the attribute is
      *  modelURL, then read the specified URL and parse it to create
@@ -272,7 +272,7 @@ public class ModelDisplay extends AbstractPlaceableActor implements
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                     private methods                       ////
+    ////                         private methods                   ////
 
     /** Create a blank entity associated with this display.
      */
@@ -292,7 +292,7 @@ public class ModelDisplay extends AbstractPlaceableActor implements
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                     private variables                     ////
+    ////                         private variables                 ////
 
     /** The effigy representing the model. */
     private PtolemyEffigy _effigy;

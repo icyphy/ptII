@@ -52,7 +52,7 @@ import ptolemy.util.FileUtilities;
 import ptolemy.util.MessageHandler;
 import ptolemy.util.StringUtilities;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 ////PropertySolver
 
 /**
@@ -391,7 +391,7 @@ public abstract class PropertySolver extends PropertySolverBase implements Testa
     }
     
     /** Run a test. This invokes the solver in TEST mode.
-     *  @throws IllegalActionException If the test fails.
+     *  @exception IllegalActionException If the test fails.
      */
     public void test() throws IllegalActionException {
         // FIXME: Brute force method here just sets the action to TEST.
@@ -744,12 +744,12 @@ public abstract class PropertySolver extends PropertySolverBase implements Testa
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                      public variables                     ////
+    ////                         public variables                  ////
 
     public static final String NONDEEP_TEST_OPTION = "-nondeep";
 
     ///////////////////////////////////////////////////////////////////
-    ////                      protected methods                    ////
+    ////                         protected methods                 ////
 
     /**
      * Populate the possible choices for the specified action parameter.
@@ -986,7 +986,7 @@ public abstract class PropertySolver extends PropertySolverBase implements Testa
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                    protected variables                    ////
+    ////                         protected variables               ////
 
     /**
      * The model analyzer, if the solver is created by one; otherwise, this is
@@ -1030,7 +1030,7 @@ public abstract class PropertySolver extends PropertySolverBase implements Testa
     protected static final String VIEW = "VIEW";
 
     ///////////////////////////////////////////////////////////////////
-    ////                        private methods                    ////
+    ////                         private methods                   ////
 
     /**
      * Record as an error for the given property-able object and its resolved
@@ -1075,7 +1075,7 @@ public abstract class PropertySolver extends PropertySolverBase implements Testa
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                      private variables                    ////
+    ////                         private variables                 ////
 
     /**
      * The record of the previously resolved properties. It is a map between the

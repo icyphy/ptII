@@ -41,7 +41,7 @@ import ptolemy.kernel.attributes.VersionAttribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.util.StringUtilities;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// VergilApplet
 /** An applet that bring up a toplevel, standalone Vergil frame.
 

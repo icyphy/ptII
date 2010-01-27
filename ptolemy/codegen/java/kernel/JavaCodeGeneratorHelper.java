@@ -51,7 +51,7 @@ import ptolemy.util.FileUtilities;
 import ptolemy.util.StreamExec;
 import ptolemy.util.StringUtilities;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// JavaCodeGeneratorHelper
 
 /**
@@ -644,7 +644,7 @@ public class JavaCodeGeneratorHelper extends CodeGeneratorHelper {
     ////                         protected variables               ////
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private methods                  ////
+    ////                         private methods                   ////
 
     private void _portVariableDeclaration(StringBuffer code, TypedIOPort port)
             throws IllegalActionException {

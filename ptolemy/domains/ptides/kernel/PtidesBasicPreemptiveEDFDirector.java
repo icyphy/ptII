@@ -66,7 +66,7 @@ public class PtidesBasicPreemptiveEDFDirector extends PtidesBasicDirector {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                     protected methods                     ////
+    ////                         protected methods                 ////
 
     /** Return whether we want to preempt the currently executing actor
      *  and instead execute the earliest event on the event queue.

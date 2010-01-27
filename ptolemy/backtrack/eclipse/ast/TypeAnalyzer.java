@@ -111,7 +111,7 @@ import ptolemy.backtrack.eclipse.ast.transform.HandlerList;
 import ptolemy.backtrack.eclipse.ast.transform.MethodDeclarationHandler;
 import ptolemy.backtrack.util.PathFinder;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// TypeAnalyzer
 
 /**
@@ -167,7 +167,7 @@ public class TypeAnalyzer extends ASTVisitor {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       public methods                      ////
+    ////                         public methods                    ////
 
     /** Add a name of a type to the set of types to be cross-analyzed.
      *
@@ -1353,7 +1353,7 @@ public class TypeAnalyzer extends ASTVisitor {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                     protected methods                     ////
+    ////                         protected methods                 ////
 
     /** Get the type of a field in a class by its name. If not found
      *  in the class definition, this function also searches the
@@ -1570,7 +1570,7 @@ public class TypeAnalyzer extends ASTVisitor {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                      private methods                      ////
+    ////                         private methods                   ////
 
     /** Convert a list of arguments into an array of types of those arguments.
      *  Each argument in the list is an {@link ASTNode} with type associated
@@ -2044,7 +2044,7 @@ public class TypeAnalyzer extends ASTVisitor {
         _classScopeRelation.remove(hashCode);
     }
 
-    //////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     //// TypeAndOwner
 
     /** A relation between classes and their scopes. Keys are {@link

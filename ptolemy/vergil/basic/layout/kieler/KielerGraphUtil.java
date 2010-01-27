@@ -53,7 +53,7 @@ import de.cau.cs.kieler.kiml.layout.klayoutdata.KPoint;
 import de.cau.cs.kieler.kiml.layout.klayoutdata.KShapeLayout;
 import de.cau.cs.kieler.kiml.layout.util.KimlLayoutUtil;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 ////KielerGraphUtil
 /**
  * Static helper class to work with KIELER graph datastructures.

@@ -41,7 +41,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// Subscriber
 
 /**
@@ -280,7 +280,7 @@ public class Subscriber extends TypedAtomicActor {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       protected methods                   ////
+    ////                         protected methods                 ////
 
     /** Update the connection to the publisher, if there is one.
      *  Note that this method is computationally intensive for large
@@ -311,7 +311,7 @@ public class Subscriber extends TypedAtomicActor {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       protected variables                 ////
+    ////                         protected variables               ////
 
     /** Cached channel name. */
     protected String _channel;

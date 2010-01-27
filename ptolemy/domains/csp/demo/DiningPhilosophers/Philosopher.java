@@ -44,7 +44,7 @@ import ptolemy.domains.csp.kernel.CSPActor;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// Philosopher in the Dining Philosophers demo.
 
 /**

@@ -34,7 +34,7 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 
 import ptolemy.backtrack.eclipse.ast.TypeAnalyzer;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// AssignmentRule
 
 /**
@@ -50,7 +50,7 @@ import ptolemy.backtrack.eclipse.ast.TypeAnalyzer;
  */
 public class AssignmentRule extends TransformRule {
     ///////////////////////////////////////////////////////////////////
-    ////                       public methods                      ////
+    ////                         public methods                    ////
 
     /** Execute actions after the AST is traversed. (Not necessary for
      *  this rule.)

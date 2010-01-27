@@ -32,7 +32,7 @@ import ptolemy.data.expr.ASTPtRootNode;
 import ptolemy.data.expr.AbstractParseTreeVisitor;
 import ptolemy.kernel.util.IllegalActionException;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// ParseTreePropertyInference
 
 /**
@@ -79,7 +79,7 @@ public class ParseTreeASTNodeAdapterCollector extends AbstractParseTreeVisitor {
      *  value to be determined.
      *  
      *  @param node The root node whose children will be visited
-     *  @throws IllegalActionException If an exception is thrown while
+     *  @exception IllegalActionException If an exception is thrown while
      *  visiting child nodes
      */
     protected void _visitAllChildren(ASTPtRootNode node)
@@ -98,7 +98,7 @@ public class ParseTreeASTNodeAdapterCollector extends AbstractParseTreeVisitor {
      *  
      *  @param node The root node whose child will be visited
      *  @param i The index (starting from 0) of the child node to be visited
-     *  @throws IllegalActionException If an exception is thrown while
+     *  @exception IllegalActionException If an exception is thrown while
      *  visiting the child node
      */
     protected void _visitChild(ASTPtRootNode node, int i)

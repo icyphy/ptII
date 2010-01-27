@@ -53,7 +53,7 @@ import ptolemy.kernel.util.ValueListener;
 import ptolemy.moml.MoMLFilter;
 import ptolemy.moml.MoMLParser;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// DesignPatternImporter
 
 /**
@@ -108,7 +108,7 @@ public class DesignPatternImporter extends Attribute implements GTAttribute,
      *
      *  @param container The new container.
      *  @exception IllegalActionException If thrown by the superclass.
-     *  @throws NameDuplicationException If thrown by the superclass.
+     *  @exception NameDuplicationException If thrown by the superclass.
      */
     public void setContainer(NamedObj container) throws IllegalActionException,
             NameDuplicationException {
@@ -287,7 +287,7 @@ public class DesignPatternImporter extends Attribute implements GTAttribute,
      */
     private HashMap<String, Token> _lastValues = new HashMap<String, Token>();
 
-    //////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     //// MoMLContentFilter
 
     /**

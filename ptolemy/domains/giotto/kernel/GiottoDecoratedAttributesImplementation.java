@@ -83,14 +83,14 @@ DecoratedAttributes {
         //Get all the actors seen by the Director and add a WCET attribute paramater equal to the default execution time value
         //also add a parameter to the container that has the WCET for all the actors inside... ie this will propogate information 
         //out
-        if(_debugging){
+        if (_debugging) {
             _debug("inside GiottoDecoratedAttributesImplementation Constructor.");
             _debug("container has name " + container.getDisplayName()+ " decorator has name " + decorator.getDisplayName());
         }
         Parameter dummyParam;
         for (Actor actor : (List<Actor>) ((TypedCompositeActor) container.getContainer()).deepEntityList()) {
             NamedObj temp = (NamedObj) actor;
-            if(_debugging){
+            if (_debugging) {
                 _debug("temp has name " + temp.getDisplayName());
             }
             if (!(actor instanceof ptolemy.domains.giotto.lib.GiottoError)) {
@@ -104,7 +104,7 @@ DecoratedAttributes {
                 } catch (Exception e) {// "WCET parameter already exists so just determine the value of WCET with _getWCET and set it"
                     //Parameter wcetPar = (Parameter) temp.getAttribute("WCET");
                     //  wcetPar.setExpression("0.0011");//Double.toString(_getWCET()));  
-                    if(_debugging){
+                    if (_debugging) {
                         _debug(actor.getFullName()
                                 + " already had wcet parameter appended");
                     }
@@ -117,7 +117,7 @@ DecoratedAttributes {
 
                 } catch (Exception e) {// "WCET parameter already exists so just determine the value of WCET with _getWCET and set it"
 
-                    if(_debugging){
+                    if (_debugging) {
                         _debug(actor.getFullName()
                                 + " already had frequency parameter appended");
                     }
@@ -130,14 +130,14 @@ DecoratedAttributes {
         double dirWCET = tempDir._getWCET();
         try {
             //add parameter to the container if it's not already there
-            if(_debugging){
+            if (_debugging) {
                 _debug("the container is "+container.getContainer().getDisplayName()+"it should get value "+dirWCET);
             }
             dummyParam = new Parameter(container.getContainer(), "WCET");
             dummyParam.setTypeEquals(BaseType.DOUBLE);
             dummyParam.setExpression(Double.toString(dirWCET));
         } catch (Exception e) {
-            if(_debugging){
+            if (_debugging) {
                 _debug("container already had wcet parameter set so updating the value to "+dirWCET);
             }
             dummyParam = (Parameter) container.getContainer().getAttribute("WCET");
@@ -153,7 +153,7 @@ DecoratedAttributes {
 
         } catch (Exception e) {
 
-            if(_debugging){
+            if (_debugging) {
                 _debug("container already had frequency parameters set");
             }
         }
@@ -201,7 +201,7 @@ DecoratedAttributes {
      */
     public void attributeChanged(Attribute attribute)
     throws IllegalActionException {
-        if(_debugging){
+        if (_debugging) {
             _debug("attribute changed method called");
         }
         StringAttribute decoratorPath = _decoratorPath();
@@ -304,7 +304,7 @@ DecoratedAttributes {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private methods                 ////
+    ////                         private methods                   ////
 
     /** Find the real container of this object.
      *  @param containerOfCodeGenerator The container of the decorator.

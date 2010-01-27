@@ -70,7 +70,7 @@ import diva.graph.basic.BasicLayoutTarget;
 import diva.graph.layout.LayoutTarget;
 import diva.graph.layout.LevelLayout;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// BusContentionApplet
 
 /** A model of hardware subsystems accessing a shared resource using

@@ -38,7 +38,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.StringAttribute;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 ////EmbeddedCActor
 
 /**
@@ -133,7 +133,7 @@ public class EmbeddedCActor extends CompiledCompositeActor {
     public StringAttribute embeddedCCode;
 
     ///////////////////////////////////////////////////////////////////
-    ////                     public methods                        ////
+    ////                         public methods                    ////
 
     /** Create the embedded actor and add ports to it.
      */

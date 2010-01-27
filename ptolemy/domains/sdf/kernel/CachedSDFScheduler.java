@@ -45,7 +45,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
-////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// CachedSDFScheduler
 
 /**
@@ -110,8 +110,8 @@ public class CachedSDFScheduler extends SDFScheduler {
         constructCaches(cacheSize);
     }
 
-    ////////////////////////////////////////////////////////////////////
-    ////                   public methods                           ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /** Clear the schedule cache, cache keys and cache for external rates
      *  of this scheduler.
@@ -140,8 +140,8 @@ public class CachedSDFScheduler extends SDFScheduler {
         _cacheSize = cacheSize;
     }
 
-    //////////////////////////////////////////////////////////////////
-    ////                  protected methods                       ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
 
     /** Return the scheduling sequence. If the schedule exist in the
      *  cache (schedules are identified by the rate signatures of ports),
@@ -244,8 +244,8 @@ public class CachedSDFScheduler extends SDFScheduler {
         return schedule;
     }
 
-    /////////////////////////////////////////////////////////////////////////
-    ////                        private methods                          ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
 
     /** Return a list of all the input ports contained by the
      *  deeply contained entities of the container of this director.
@@ -297,8 +297,8 @@ public class CachedSDFScheduler extends SDFScheduler {
         return outputPortList;
     }
 
-    /////////////////////////////////////////////////////////////
-    ////                    private variables                ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
     // The size of the cache.
     private int _cacheSize;
 

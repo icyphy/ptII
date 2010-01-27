@@ -37,7 +37,7 @@ import ptolemy.domains.ct.kernel.CTWaveformGenerator;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// CTDummyEventInterpreter
 
 /**

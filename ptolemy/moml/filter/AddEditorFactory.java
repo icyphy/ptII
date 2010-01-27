@@ -32,7 +32,7 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.MoMLFilter;
 import ptolemy.moml.MoMLParser;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// AddEditorFactory
 
 /** Add a VisibleParameterEditorFactory named _editorFactory to certain

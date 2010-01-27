@@ -32,7 +32,7 @@ import java.util.Hashtable;
 import java.util.Set;
 import java.util.Stack;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// TypeAnalyzerState
 
 /**
@@ -61,7 +61,7 @@ public class TypeAnalyzerState {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       public methods                      ////
+    ////                         public methods                    ////
 
     /** Add a variable to the current scope.
      *

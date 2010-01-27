@@ -35,7 +35,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.util.ExecuteCommands;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// JNICodeGenerator
 
 /** Generate Java Native Interface (JNI) support code and create ports

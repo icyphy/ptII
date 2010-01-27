@@ -28,7 +28,7 @@ import java.util.List;
 
 import ptolemy.graph.InequalityTerm;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// MonotonicFunction
 
 /**
@@ -92,7 +92,7 @@ public abstract class MonotonicFunction extends
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                      protected methods                    ////
+    ////                         protected methods                 ////
 
     /**
      * Return an array of terms depended by this monotonic function.

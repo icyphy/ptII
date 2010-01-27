@@ -35,7 +35,7 @@ import ptolemy.data.properties.lattice.PropertyLattice;
 import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.util.IllegalActionException;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// MultiplyMonotonicFunction
 //// This class implements a monotonic function for the product
 //// of a multiplication of two factors.  It returns the correct
@@ -67,8 +67,8 @@ public class MultiplyMonotonicFunction extends MonotonicFunction {
         _adapter = adapter;
     }
 
-    ///////////////////////////////////////////////////////////////
-    ////                       public methods                  ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /** Return the monotonic function result which is the property of the product
      *  based on the properties of the two factors.
@@ -134,8 +134,8 @@ public class MultiplyMonotonicFunction extends MonotonicFunction {
                 _adapter.getPropertyTerm(_factor2) };
     }
     
-    ///////////////////////////////////////////////////////////////
-    ////                       private methods                 ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
     
     // _factor1 and _factor2 are Objects because they can be any propertyable object
     // which might be IOPorts, Attributes, ASTPtNodes, etc.

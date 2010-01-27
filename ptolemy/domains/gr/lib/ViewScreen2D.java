@@ -63,7 +63,7 @@ import diva.canvas.event.LayerListener;
 import diva.canvas.event.LayerMotionListener;
 import diva.canvas.toolbox.BasicFigure;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// ViewScreen2D
 
 /**
@@ -526,7 +526,7 @@ public class ViewScreen2D extends GRActor2D implements Placeable,
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       inner classes                       ////
+    ////                         inner classes                     ////
 
     /** Listen for Layer, LayerMotion and Key events.
      */
